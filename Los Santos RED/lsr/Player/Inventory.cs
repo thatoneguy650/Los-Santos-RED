@@ -162,6 +162,10 @@ namespace LosSantosRED.lsr.Player
                 return ii.Amount;
             }
         }
+        public void Reset()
+        {
+            Clear();
+        }
         public void Clear()
         {
             ItemsList.Clear();

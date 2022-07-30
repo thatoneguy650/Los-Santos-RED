@@ -3,4 +3,5 @@
     Friendly,
     Neutral,
     Hostile,
+    Member,
 }

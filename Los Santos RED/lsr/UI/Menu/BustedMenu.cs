@@ -99,13 +99,13 @@ public class BustedMenu : Menu
     {
         if (selectedItem == ResistArrest)
         {
-            Respawning.ResistArrest();
+            Respawning.Respawning.ResistArrest();
         }
         else if (selectedItem == Bribe)
         {
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
             {
-                if (Respawning.BribePolice(BribeAmount))
+                if (Respawning.Respawning.BribePolice(BribeAmount))
                 {
 
                 }
@@ -113,11 +113,11 @@ public class BustedMenu : Menu
         }
         else if (selectedItem == PayFine)
         {
-            Respawning.PayFine();
+            Respawning.Respawning.PayFine();
         }
         else if (selectedItem == Surrender)
         {
-            Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
+            Respawning.Respawning.SurrenderToPolice(CurrentSelectedSurrenderLocation);
         }
         else if (selectedItem == TakeoverRandomPed)
         {

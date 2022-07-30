@@ -12,35 +12,25 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IDisplayable
     {
+        BankAccounts BankAccounts { get; }
+        CriminalHistory CriminalHistory { get; }
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
         LocationData CurrentLocation { get; set; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         HumanState HumanState { get; set; }
         Investigation Investigation { get; }
         PoliceResponse PoliceResponse { get; }
         Sprinting Sprinting { get; }
         Violations Violations { get; }
+        Intoxication Intoxication { get; }
         bool CanConverseWithLookedAtPed { get; }
         int CellX { get; }
         int CellY { get; }
         Ped Character { get; }
         bool CharacterModelIsPrimaryCharacter { get; }
-        int CriminalHistoryMaxWantedLevel { get; }
         VehicleExt CurrentSeenVehicle { get; }
         VehicleExt CurrentVehicle { get; }
-        string DebugLine1 { get; }
-        string DebugLine2 { get; }
-        string DebugLine3 { get; }
-        string DebugLine4 { get; set; }
-        string DebugLine5 { get; }
-        string DebugLine6 { get; }
-        string DebugLine7 { get; }
-        string DebugLine8 { get; }
-        string DebugLine9 { get; }
-        bool HasCriminalHistory { get; }
-        bool HasDeadlyCriminalHistory { get; }
-        float IntoxicatedIntensityPercent { get; }
         bool IsAliveAndFree { get; }
         bool IsBusted { get; }
         bool IsConversing { get; }
@@ -50,12 +40,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsPerformingActivity { get; }
         bool IsSleeping { get; }
-        bool IsSpeeding { get; }
         bool IsTransacting { get; }
         bool IsWanted { get; }
-        int LastChangeMoneyAmount { get; }
-        int Money { get; }
-        bool RecentlyChangedMoney { get; }
         float VehicleSpeedKMH { get; }
         float VehicleSpeedMPH { get; }
     }

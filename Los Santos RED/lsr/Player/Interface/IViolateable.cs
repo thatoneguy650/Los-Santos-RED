@@ -8,9 +8,11 @@ namespace LosSantosRED.lsr.Interface
     {
         LocationData CurrentLocation { get; set; }
         GangRelationships GangRelationships { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         Investigation Investigation { get; }
         PoliceResponse PoliceResponse { get; }
+        Intoxication Intoxication { get; }
+        SurrenderActivity Surrendering { get; }
         bool AnyHumansNear { get; }
         bool AnyPoliceCanHearPlayer { get; }
         bool AnyPoliceCanRecognizePlayer { get; }
@@ -22,10 +24,8 @@ namespace LosSantosRED.lsr.Interface
         PedExt CurrentTargetedPed { get; }
         VehicleExt CurrentVehicle { get; }
         int GroupID { get; }
-        bool HandsAreUp { get; }
         bool HasBeenMoving { get; }
         bool HasBeenMovingFast { get; }
-        float IntoxicatedIntensity { get; }
         bool IsAliveAndFree { get; }
         bool IsBeingANuisance { get; set; }
         bool IsBreakingIntoCar { get; }
@@ -39,7 +39,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsHoldingUp { get; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }
-        bool IsIntoxicated { get; }
         bool IsInVehicle { get; }
         bool IsOnMotorcycle { get; }
         bool IsSleeping { get; }

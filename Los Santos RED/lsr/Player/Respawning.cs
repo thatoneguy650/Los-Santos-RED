@@ -53,7 +53,6 @@ public class Respawning// : IRespawning
     public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
 
 
-
     public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 30000;
     public bool RecentlyPaidFine => GameTimeLastPaidFine != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
@@ -79,7 +78,7 @@ public class Respawning// : IRespawning
     public bool BribePolice(int Amount)
     {
         CalculateBribe();
-        if (CurrentPlayer.Money < Amount)
+        if (CurrentPlayer.BankAccounts.Money < Amount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
             return false;
@@ -89,7 +88,7 @@ public class Respawning// : IRespawning
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
-                CurrentPlayer.GiveMoney(-1 * Amount);
+                CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             }
             return false;
         }
@@ -97,20 +96,22 @@ public class Respawning// : IRespawning
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
-            CurrentPlayer.GiveMoney(-1 * Amount);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
-            CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));            
+            CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
+            CurrentPlayer.Scanner.OnBribedPolice();
             return true;
         }
     }
     public void PayoffPolice()
     {
         GameTimeLastBribedPolice = Game.GameTime;
+        CurrentPlayer.Scanner.OnBribedPolice();
     }
     public bool PayFine()
     {
         int FineAmount = CurrentPlayer.FineAmount();
-        if (CurrentPlayer.Money < FineAmount)
+        if (CurrentPlayer.BankAccounts.Money < FineAmount)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", FineAmount));
             return false;
@@ -118,25 +119,21 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false);
-
-
             CitationCopResponses = new List<string>()
                 {
                     $"Thank you for paying the citation amount of ~r~${FineAmount}~s~. Fuck off before you regret it.",
                     $"You have paid the citation amount of ~r~${FineAmount}~s~, now fuck off.",
                     $"Citation of ~r~${FineAmount}~s~ paid. Move along."
                 };
-
-
             Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", EntryPoint.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
-            CurrentPlayer.GiveMoney(-1 * FineAmount);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;
+            CurrentPlayer.Scanner.OnPaidFine();
             return true;
         }
     }
     public void ResistArrest()
     {
-
         ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false, false);
         GameTimeLastResistedArrest = Game.GameTime;
     }
@@ -144,8 +141,9 @@ public class Respawning// : IRespawning
     {
         if (CanUndie)
         {
+            int wantedLevel = CurrentPlayer.WantedLevel;
             Respawn(resetWanted, true, false, false, clearCriminalHistory, clearInventory, false, false, false, false, false, false, false);
-            CurrentPlayer.SetWantedLevel(CurrentPlayer.MaxWantedLastLife, "RespawnAtCurrentLocation", true);
+            CurrentPlayer.SetWantedLevel(wantedLevel, "RespawnAtCurrentLocation", true);
             if (withInvicibility & Settings.SettingsManager.RespawnSettings.InvincibilityOnRespawn)
             {
                // CurrentPlayer.BigMessage.ShowMissionPassedMessage("Invincible", Settings.SettingsManager.RespawnSettings.RespawnInvincibilityTime);
@@ -196,7 +194,7 @@ public class Respawning// : IRespawning
             CheckWeapons();
         }
         CalculateBail();
-        CurrentPlayer.RaiseHands();
+        CurrentPlayer.Surrendering.RaiseHands();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (PoliceStation == null)
@@ -348,7 +346,7 @@ public class Respawning// : IRespawning
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
 
 
-        CurrentPlayer.UnSetArrestedAnimation();
+        CurrentPlayer.Surrendering.UnSetArrestedAnimation();
 
 
     }
@@ -390,7 +388,7 @@ public class Respawning// : IRespawning
     }
     private void SetHospitalFee(string HospitalName)
     {    
-        int CurrentCash = CurrentPlayer.Money;
+        int CurrentCash = CurrentPlayer.BankAccounts.Money;
         int TotalNeededPayment = HospitalFee + HospitalBillPastDue;
         int TodaysPayment;
         if (TotalNeededPayment > CurrentCash)
@@ -404,7 +402,7 @@ public class Respawning// : IRespawning
             TodaysPayment = TotalNeededPayment;
         }
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
-        CurrentPlayer.GiveMoney(-1 * TodaysPayment);
+        CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
     }
     private void SetPlayerAtLocation(BasicLocation ToSet)
     {
@@ -420,7 +418,7 @@ public class Respawning// : IRespawning
     }
     private void SetBailFee(string PoliceStationName, int BailFee)
     {
-        int CurrentCash = CurrentPlayer.Money;
+        int CurrentCash = CurrentPlayer.BankAccounts.Money;
         int TotalNeededPayment = BailFee + BailFeePastDue;
         int TodaysPayment;
         if (TotalNeededPayment > CurrentCash)
@@ -437,7 +435,7 @@ public class Respawning// : IRespawning
         if (!LesterHelp)
         {
             Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", BailFee, TodaysPayment, BailFeePastDue, BailReport));
-            CurrentPlayer.GiveMoney(-1 * TodaysPayment);
+            CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
         }
         else
         {

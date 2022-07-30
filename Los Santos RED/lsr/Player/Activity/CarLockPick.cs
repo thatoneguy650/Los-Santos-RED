@@ -90,7 +90,7 @@ public class CarLockPick
     {
         OriginalLockStatus = TargetVehicle.LockStatus;
         TargetVehicle.SetLock((VehicleLockStatus)3);//Attempt to lock most car doors
-        Player.Equipment.SetUnarmed();
+        Player.WeaponEquipment.SetUnarmed();
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
             EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}", 3);//some IV pack cars fail even with the door open.....

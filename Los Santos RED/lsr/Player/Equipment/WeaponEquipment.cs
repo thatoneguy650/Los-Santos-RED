@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Equipment
+public class WeaponEquipment
 {
     private bool isActive = true;
     private IItemEquipable Player;
@@ -26,7 +26,7 @@ public class Equipment
     public short CurrentWeaponMagazineSize { get; private set; }
     public WeaponInformation CurrentSeenWeapon => !Player.IsInVehicle ? CurrentWeapon : null;
     public WeaponHash LastWeaponHash { get; private set; }
-    public Equipment(IItemEquipable player, IWeaponDroppable weaponDroppable, IWeapons weapons, ISettingsProvideable settings, IWeaponSwayable weaponSwayable, IWeaponRecoilable weaponRecoilable, IWeaponSelectable weaponSelectable)
+    public WeaponEquipment(IItemEquipable player, IWeaponDroppable weaponDroppable, IWeapons weapons, ISettingsProvideable settings, IWeaponSwayable weaponSwayable, IWeaponRecoilable weaponRecoilable, IWeaponSelectable weaponSelectable)
     {
         Player = player;
         Weapons = weapons;
@@ -76,6 +76,10 @@ public class Equipment
         {
             WeaponDropping.Update();
         }
+    }
+    public void Reset()
+    {
+        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
     }
     public void DropWeapon() => WeaponDropping.DropWeapon();
     public void SetUnarmed()
@@ -174,5 +178,7 @@ public class Equipment
             Player.IsVisiblyArmed = true;
         }
     }
+
+
 }
 

@@ -14,7 +14,7 @@ using System.Xml.Serialization;
 public class VendingMachine : InteractableLocation
 {
     private LocationCamera StoreCamera;
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -237,7 +237,7 @@ public class VendingMachine : InteractableLocation
         bool IsCompleted = false;
         while (Player.CanPerformActivities && !IsCancelled)
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
             if (AnimationTime >= 0.5f)
             {

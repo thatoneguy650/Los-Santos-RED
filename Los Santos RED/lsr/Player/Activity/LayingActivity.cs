@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             EntryPoint.WriteToConsole("Laying Activity Enter", 5);
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             Player.IsLayingDown = true;
             if (FindLayingDownProp)
             {
@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"LAYING ANIMATION TIME {AnimationTime} isUsingVehicleAnimations {UseRegularAnimations}");
                     GameTimeLastDidThing = Game.GameTime;
                 }
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();
             }
 
@@ -260,7 +260,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    Player.Equipment.SetUnarmed();
+                    Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
             }
@@ -289,7 +289,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    Player.Equipment.SetUnarmed();
+                    Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
             }
@@ -337,7 +337,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                     }
-                    Player.Equipment.SetUnarmed();
+                    Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
                 EntryPoint.WriteToConsole("Laying Activity Exit 3", 5);

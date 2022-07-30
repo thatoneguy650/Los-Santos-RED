@@ -151,7 +151,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             if(Player.IsWanted && !hasAddedArmedRobberyCrime)
             {
-                Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "ResistingArrest"), true, Player.Character.Position, Player.CurrentVehicle, Player.Equipment.CurrentWeapon, true, true, true);
+                Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "ResistingArrest"), true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
                 hasAddedArmedRobberyCrime = true;
             }
         }
@@ -434,7 +434,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     else if(gm.IsDeadlyChase && !Player.PoliceResponse.IsDeadlyChase && gm.WorstObservedCrime != null)
                     {
                         EntryPoint.WriteToConsole($"DEADLY CHASE Adding Crime {gm.WorstObservedCrime.Name}!");
-                        Player.AddCrime(gm.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.Equipment.CurrentWeapon, true, true, true);
+                        Player.AddCrime(gm.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
                     }
                     else if(gm.WorstObservedCrime == null)
                     {

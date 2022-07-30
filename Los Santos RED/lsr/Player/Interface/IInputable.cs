@@ -13,23 +13,21 @@ namespace LosSantosRED.lsr.Interface
     {
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         Sprinting Sprinting { get; }
-        Stance Stance { get; }
-        Cop AliasedCop { get; }      
+        Stance Stance { get; }  
+        SurrenderActivity Surrendering { get; }
         bool CanCancelCurrentActivity { get; }
         bool CanConverseWithLookedAtPed { get; }
         bool CanHoldUpTargettedPed { get; }
         bool CanPauseCurrentActivity { get; }
         bool CanPerformActivities { get; }
-        bool CanSurrender { get; }
-        bool CanWaveHands { get; }
 
         Ped Character { get; }
         VehicleExt CurrentVehicle { get; }
         bool CurrentVehicleIsInAir { get; }
         bool CurrentVehicleIsRolledOver { get; }
-        bool HandsAreUp { get; set; }
+
         bool IsAiming { get; }
         bool IsAliveAndFree { get; }
         bool IsBusted { get; }
@@ -46,8 +44,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; set; }
         bool IsPressingFireWeapon { get; set; }
         bool IsWanted { get; }
-        bool IsWavingHands { get; set; }
         bool ReleasedFireWeapon { get; set; }
+        int WantedLevel { get; }
+
         void CancelCurrentActivity();
         void CloseDriverDoor();
         void ContinueCurrentActivity();
@@ -55,15 +54,12 @@ namespace LosSantosRED.lsr.Interface
         void Gesture();
         void GrabPed();
         void LootPed();
-        void LowerHands();
         void PauseCurrentActivity();
         void PlaySpeech(string player, bool v);
-        void RaiseHands();
         void StartConversation();
         void StartLocationInteraction();
         void StartScenario();
         void StartSimpleCellphoneActivity();
         void StartTransaction();
-        void WaveHands();
     }
 }

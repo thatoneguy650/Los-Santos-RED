@@ -97,7 +97,7 @@ public class Loot : DynamicActivity
             }
             if (Ped.Money > 0)//dead peds already drop it, truned off dropping for now
             {
-                Player.GiveMoney(Ped.Money);
+                Player.BankAccounts.GiveMoney(Ped.Money);
                 CashAdded = Ped.Money;
                 Ped.Money = 0;
                 Ped.Pedestrian.Money = 0;
@@ -248,16 +248,16 @@ public class Loot : DynamicActivity
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
         AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@idle_a");
-        if (Player.Equipment.CurrentWeapon != null)
+        if (Player.WeaponEquipment.CurrentWeapon != null)
         {
-            LastWeapon = Player.Equipment.CurrentWeapon;
+            LastWeapon = Player.WeaponEquipment.CurrentWeapon;
         }
         else
         {
             LastWeapon = null;
         }
 
-        Player.Equipment.SetUnarmed();
+        Player.WeaponEquipment.SetUnarmed();
         List<string> IdleToPlay = new List<string>() { "idle_a" , "idle_b" , "idle_c" };
         if(PlayAnimation("amb@medic@standing@tendtodead@enter", "enter") && PlayAnimation("amb@medic@standing@tendtodead@idle_a", IdleToPlay.PickRandom()))
         {

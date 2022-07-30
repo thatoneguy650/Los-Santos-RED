@@ -132,9 +132,9 @@ public class Residence : InteractableLocation
     }
     public void ReRent()
     {
-        if (Player.Money >= RentalFee)
+        if (Player.BankAccounts.Money >= RentalFee)
         {
-            Player.GiveMoney(-1 * RentalFee);
+            Player.BankAccounts.GiveMoney(-1 * RentalFee);
             DateRentalPaymentPaid = Time.CurrentDateTime;
             DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
             UpdateStoredData();
@@ -265,7 +265,7 @@ public class Residence : InteractableLocation
     }
     private bool Rent()
     {
-        if(CanRent && Player.Money >= RentalFee)
+        if(CanRent && Player.BankAccounts.Money >= RentalFee)
         {
             OnRented();
             return true;
@@ -275,7 +275,7 @@ public class Residence : InteractableLocation
     }
     private bool Purchase()
     {
-        if (CanBuy && Player.Money >= PurchasePrice)
+        if (CanBuy && Player.BankAccounts.Money >= PurchasePrice)
         {
             OnPurchased();
             return true;
@@ -310,7 +310,7 @@ public class Residence : InteractableLocation
     }
     private void OnRented()
     {
-        Player.GiveMoney(-1 * RentalFee);
+        Player.BankAccounts.GiveMoney(-1 * RentalFee);
         DateRentalPaymentPaid = Time.CurrentDateTime;
         IsRented = true;
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
@@ -329,7 +329,7 @@ public class Residence : InteractableLocation
     }
     private void OnPurchased()
     {
-        Player.GiveMoney(-1 * PurchasePrice);
+        Player.BankAccounts.GiveMoney(-1 * PurchasePrice);
         IsOwned = true;
         
 

@@ -17,6 +17,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsMoveControlPressed { get; }
         bool IsPerformingActivity { get; set; }
 
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
     }
 }

@@ -142,7 +142,7 @@ public class CorruptCopInteraction
     private void PayoffCop(PhoneContact contact)
     {
 
-        EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearWanted {CostToClearWanted}");
+        EntryPoint.WriteToConsole($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
         if (Player.WantedLevel > 4)
         {
             List<string> Replies = new List<string>() {
@@ -173,15 +173,15 @@ public class CorruptCopInteraction
                 };
             Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
-        else if (Player.Money >= CostToClearWanted)
+        else if (Player.BankAccounts.Money >= CostToClearWanted)
         {
-            Player.GiveMoney(-1 * CostToClearWanted);
+            Player.BankAccounts.GiveMoney(-1 * CostToClearWanted);
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
                 int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
                 GameFiber.Sleep(SleepTime);
-                Player.PayoffPolice();
+                Player.Respawning.PayoffPolice();
                 Player.SetWantedLevel(0, "Cop Payoff", true);
 
             }, "PayoffFiber");
@@ -193,7 +193,7 @@ public class CorruptCopInteraction
                 };
             Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
-        else if (Player.Money < CostToClearWanted)
+        else if (Player.BankAccounts.Money < CostToClearWanted)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",
@@ -212,16 +212,16 @@ public class CorruptCopInteraction
     private void PayoffCopInvestigation(PhoneContact contact)
     {
 
-        EntryPoint.WriteToConsole($"Player.Money {Player.Money} CostToClearInvestigation {CostToClearInvestigation}");
-        if (Player.Money >= CostToClearInvestigation)
+        EntryPoint.WriteToConsole($"Player.Money {Player.BankAccounts.Money} CostToClearInvestigation {CostToClearInvestigation}");
+        if (Player.BankAccounts.Money >= CostToClearInvestigation)
         {
-            Player.GiveMoney(-1 * CostToClearInvestigation);
+            Player.BankAccounts.GiveMoney(-1 * CostToClearInvestigation);
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
                 int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
                 GameFiber.Sleep(SleepTime);
-                Player.PayoffPolice();
+                Player.Respawning.PayoffPolice();
                 Player.SetWantedLevel(0, "Cop Payoff", true);
                 Player.Investigation.Expire();
 
@@ -234,7 +234,7 @@ public class CorruptCopInteraction
                 };
             Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
         }
-        else if (Player.Money < CostToClearInvestigation)
+        else if (Player.BankAccounts.Money < CostToClearInvestigation)
         {
             List<string> Replies = new List<string>() {
                 $"Don't bother me unless you have some money",

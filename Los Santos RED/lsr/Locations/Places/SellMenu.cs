@@ -14,7 +14,7 @@ public class SellMenu : Menu
     private UIMenu sellMenuRNUI;
     private IModItems ModItems;
     private MenuPool MenuPool;
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private Vehicle SellingVehicle;
     private Rage.Object SellingProp;
     private Ped SellingPed;
@@ -47,7 +47,7 @@ public class SellMenu : Menu
 
     public int MoneySpent { get; private set; } = 0;
 
-    public SellMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)
+    public SellMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, ILocationInteractable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)
     {
         ModItems = modItems;
         Player = player;
@@ -272,7 +272,7 @@ public class SellMenu : Menu
             description = $"List Price {formattedSalesPrice}";
         }
         bool enabled = false;
-        if (Player.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(myItem.ModelItem.ModelName)))
+        if (Player.VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(myItem.ModelItem.ModelName)))
         {
             enabled = true;
         }
@@ -298,12 +298,12 @@ public class SellMenu : Menu
             MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
-                EntryPoint.WriteToConsole($"Vehicle Sell {menuItem.ModItemName} Player.Money {Player.Money} menuItem.SalesPrice {menuItem.SalesPrice}", 5);
+                EntryPoint.WriteToConsole($"Vehicle Sell {menuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.SalesPrice {menuItem.SalesPrice}", 5);
                 if (!SellVehicle(CurrentModItem))
                 {
                     return;
                 }
-                Player.GiveMoney(menuItem.SalesPrice);
+                Player.BankAccounts.GiveMoney(menuItem.SalesPrice);
                 MoneySpent += menuItem.SalesPrice;
             }
             sender.Visible = false;
@@ -545,7 +545,7 @@ public class SellMenu : Menu
         CurrentTotalPrice = TotalPrice;
         if (Player.Inventory.Remove(modItem, TotalItems))
         {
-            Player.GiveMoney(TotalPrice);
+            Player.BankAccounts.GiveMoney(TotalPrice);
             MoneySpent += TotalPrice;
             menuItem.ItemsBoughtFromPlayer += TotalItems;
             Transaction.OnAmountChanged(CurrentModItem);
@@ -592,10 +592,10 @@ public class SellMenu : Menu
 
     private bool SellVehicle(ModItem modItem)
     {
-        VehicleExt toSell = Player.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(modItem.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
+        VehicleExt toSell = Player.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(modItem.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
         if (toSell != null)
         {
-            Player.RemoveOwnershipOfVehicle(toSell);
+            Player.VehicleOwnership.RemoveOwnershipOfVehicle(toSell);
             Transaction.OnItemSold(modItem, CurrentMenuItem, 1);
             //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", "Thank you for your sale");
             return true;
@@ -695,7 +695,7 @@ public class SellMenu : Menu
     {
         if (itemToShow != null && itemToShow.ModelItem != null)
         {
-            VehicleExt toSell = Player.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(itemToShow.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
+            VehicleExt toSell = Player.VehicleOwnership.OwnedVehicles.Where(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(itemToShow.ModelItem.ModelName)).OrderBy(x => x.Vehicle.DistanceTo2D(Player.Position)).FirstOrDefault();
             if (toSell != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(itemToShow.ModelItem.ModelName)))
             {
                 SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
@@ -946,7 +946,7 @@ public class SellMenu : Menu
                 {
                     return;
                 }
-                Player.GiveMoney(TotalPrice);
+                Player.BankAccounts.GiveMoney(TotalPrice);
                 MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
             }
@@ -1087,7 +1087,7 @@ public class SellMenu : Menu
                 NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, CurrentWeapon.Hash);
                 Transaction.OnItemSold(CurrentModItem, CurrentMenuItem, 1);
                 //Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StoreName, "~g~Sale", $"Thank you for your sale of ~r~{CurrentMenuItem.ModItemName}~s~");
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 return true;
             }
         }

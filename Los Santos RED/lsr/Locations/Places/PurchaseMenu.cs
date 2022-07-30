@@ -23,7 +23,7 @@ public class PurchaseMenu : Menu
     private MenuPool MenuPool;
     private IModItems ModItems;
     private string PlateString = "";
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private string PlayingAnim;
     private string PlayingDict;
     private int PrimaryColor = 0;
@@ -45,7 +45,7 @@ public class PurchaseMenu : Menu
 
     private Transaction Transaction;
     private ShopMenu ShopMenu;
-    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
+    public PurchaseMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, ILocationInteractable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)// public StorePurchaseMenu(MenuPool menuPool, UIMenu parentMenu, TransactableLocation store, Camera storeCam, IModItems modItems, IActivityPerformable player, IEntityProvideable world, ISettingsProvideable settings, StoreTransaction storeTransaction, IWeapons weapons, ITimeControllable time)
     {
         ModItems = modItems;
         Player = player;
@@ -831,8 +831,8 @@ public class PurchaseMenu : Menu
             MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
             if (menuItem != null)
             {
-                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
-                if (Player.Money < menuItem.PurchasePrice)
+                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+                if (Player.BankAccounts.Money < menuItem.PurchasePrice)
                 {
                     DisplayInsufficientFundsMessage();
                     return;
@@ -841,7 +841,7 @@ public class PurchaseMenu : Menu
                 {
                     return;
                 }
-                Player.GiveMoney(-1 * menuItem.PurchasePrice);
+                Player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice);
                 MoneySpent += menuItem.PurchasePrice;
             }
             sender.Visible = false;
@@ -891,8 +891,8 @@ public class PurchaseMenu : Menu
                         TotalPrice += mie.PurchasePrice;
                     }
                 }
-                EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice}", 5);
-                if (Player.Money < TotalPrice)
+                EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice}", 5);
+                if (Player.BankAccounts.Money < TotalPrice)
                 {
                     DisplayInsufficientFundsMessage();
                     return;
@@ -901,7 +901,7 @@ public class PurchaseMenu : Menu
                 {
                     return;
                 }
-                Player.GiveMoney(-1 * TotalPrice);
+                Player.BankAccounts.GiveMoney(-1 * TotalPrice);
                 MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
             }
@@ -917,8 +917,8 @@ public class PurchaseMenu : Menu
             if (CurrentMenuItem != null)
             {
                 int TotalPrice = CurrentMenuItem.SubPrice * TotalItems;
-                EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {1}", 5);
-                if (Player.Money < TotalPrice)
+                EntryPoint.WriteToConsole($"Weapon Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {1}", 5);
+                if (Player.BankAccounts.Money < TotalPrice)
                 {
                     DisplayInsufficientFundsMessage();
                     return;
@@ -927,7 +927,7 @@ public class PurchaseMenu : Menu
                 {
                     return;
                 }
-                Player.GiveMoney(-1 * TotalPrice);
+                Player.BankAccounts.GiveMoney(-1 * TotalPrice);
                 MoneySpent += TotalPrice;
                 OnWeaponMenuOpen(sender);
             }
@@ -956,8 +956,8 @@ public class PurchaseMenu : Menu
             WeaponComponent myComponent = CurrentWeapon.PossibleComponents.Where(x => x.Name == myItem.SelectedItem.ExtraName).FirstOrDefault();
             if (myComponent != null && CurrentMenuItem != null)
             {
-                EntryPoint.WriteToConsole($"Weapon Component Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice} myComponent {myComponent.Name}", 5);
-                if (Player.Money < myItem.SelectedItem.PurchasePrice)
+                EntryPoint.WriteToConsole($"Weapon Component Purchase {CurrentMenuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {CurrentMenuItem.PurchasePrice} myComponent {myComponent.Name}", 5);
+                if (Player.BankAccounts.Money < myItem.SelectedItem.PurchasePrice)
                 {
                     DisplayInsufficientFundsMessage();
                     return;
@@ -972,7 +972,7 @@ public class PurchaseMenu : Menu
                 {
                     return;
                 }
-                Player.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice);
+                Player.BankAccounts.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice);
                 MoneySpent += myItem.SelectedItem.PurchasePrice;
                 OnWeaponMenuOpen(sender);
             }
@@ -1397,7 +1397,7 @@ public class PurchaseMenu : Menu
     {
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
         CurrentTotalPrice = TotalPrice;
-        if (Player.Money >= TotalPrice || IsStealing)
+        if (Player.BankAccounts.Money >= TotalPrice || IsStealing)
         {
             Transaction.OnItemPurchased(modItem, menuItem, TotalItems);
             menuItem.ItemsSoldToPlayer += TotalItems;
@@ -1411,7 +1411,7 @@ public class PurchaseMenu : Menu
             }
             if (!IsStealing)
             {
-                Player.GiveMoney(-1 * TotalPrice);
+                Player.BankAccounts.GiveMoney(-1 * TotalPrice);
                 MoneySpent += TotalPrice;
             }
             return true;
@@ -1438,7 +1438,7 @@ public class PurchaseMenu : Menu
                     EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
                 }
                 World.Vehicles.AddEntity(MyNewCar, ResponseType.None);
-                Player.TakeOwnershipOfVehicle(MyNewCar, false);
+                Player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
                 return true;
             }
             else
@@ -1467,7 +1467,7 @@ public class PurchaseMenu : Menu
                 {
                     CurrentWeapon.ApplyWeaponVariation(Player.Character, CurrentWeaponVariation);
                 }
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 return true;
             }
         }

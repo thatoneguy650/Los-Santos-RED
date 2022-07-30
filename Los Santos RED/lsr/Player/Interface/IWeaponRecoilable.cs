@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWeaponRecoilable
     {
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         bool IsInVehicle { get; }
         bool IsRagdoll { get; }
         bool IsStunned { get; }

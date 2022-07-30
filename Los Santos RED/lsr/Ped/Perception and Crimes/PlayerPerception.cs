@@ -328,7 +328,7 @@ public class PlayerPerception
         GameTimeLastSeenTarget = Game.GameTime;
         PositionLastSeenTarget = Target.Character.Position;
         VehicleLastSeenTargetIn = Target.CurrentSeenVehicle;
-        WeaponLastSeenTargetWith = Target.Equipment.CurrentSeenWeapon;
+        WeaponLastSeenTargetWith = Target.WeaponEquipment.CurrentSeenWeapon;
         if (GameTimeContinuoslySeenTargetSince == 0)
         {
             GameTimeContinuoslySeenTargetSince = Game.GameTime;

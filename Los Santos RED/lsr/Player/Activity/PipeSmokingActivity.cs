@@ -148,7 +148,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             Player.IsPerformingActivity = true;
             Idle();
         }
@@ -188,7 +188,7 @@ namespace LosSantosRED.lsr.Player
             IsActivelySmoking = true;
             while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
                     //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
@@ -286,8 +286,6 @@ namespace LosSantosRED.lsr.Player
             {
                 IsHandByFace = false;
             }
-            Player.DebugLine4 = $"Smoking Activity: DistanceBetweenHandAndFace {Math.Round(DistanceBetweenHandAndFace,2,MidpointRounding.AwayFromZero)} DistanceBetweenSmokedItemAndFace {Math.Round(DistanceBetweenSmokedItemAndFace, 2, MidpointRounding.AwayFromZero)} IsHandByFace {IsHandByFace} IsSmokedItemNearMouth {IsSmokedItemNearMouth}";
-            // EntryPoint.WriteToConsole($"Smoking Activity: DistanceBetweenHandAndFace {DistanceBetweenHandAndFace} IsHandByFace {IsHandByFace}", 5);
         }
         private void UpdateSmoke()
         {

@@ -98,7 +98,7 @@ public class GunDealerInteraction
         GunStore gunStore = PlacesOfInterest.PossibleLocations.GunStores.FirstOrDefault(x => x.Name.ToLower() == name.ToLower());
         if (gunStore != null)
         {
-            Player.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);
+            Player.Destinations.AddGPSRoute(gunStore.Name, gunStore.EntrancePosition);
             List<string> Replies = new List<string>() {
                     $"Our shop is located on {gunStore.FullStreetAddress} come see us.",
                     $"Come check out our shop on {gunStore.FullStreetAddress}.",

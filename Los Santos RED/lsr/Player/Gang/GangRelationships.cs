@@ -12,36 +12,19 @@ public class GangRelationships
     private IGangs Gangs;
     private IGangRelateable Player;
     private ISettingsProvideable Settings;
+    private IPlacesOfInterest PlacesOfInterest;
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
-    public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings)
+    public Gang CurrentGang { get; private set; }
+    public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Gangs = gangs;
         Player = player;
         Settings = settings;
+        PlacesOfInterest = placesOfInterest;
     }
-    //public int CostToPayoffGang(Gang gang)//int repLevel)
-    //{
-    //    GangReputation Rep = GetReputation(gang);
-    //    if(Rep == null)
-    //    {
-    //        return 0;
-    //    }
-    //    if (Rep.ReputationLevel < 0)
-    //    {
-    //        return ((0 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
-    //    }
-    //    else if (Rep.ReputationLevel >= 500)
-    //    {
-    //        return 0;
-    //    }
-    //    else
-    //    {
-    //        return ((500 - Rep.ReputationLevel) * gang.CostToPayoffGangScalar).Round(100);
-    //    }
-    //}
     public void Dispose()
     {
-        ResetAllReputations();
+        Reset();
     }
     public void Setup()
     {
@@ -53,22 +36,24 @@ public class GangRelationships
     public void Update()
     {
         string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGangInitials;//might need the key here instead of just iniitilas
-
         foreach (GangReputation rg in GangReputations)
         {
-            int WantedRep = rg.Gang.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
-            if (Player.IsWanted)
+            if (!rg.IsMember)
             {
-                if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID  && rg.ReputationLevel >= WantedRep)
+                int WantedRep = rg.Gang.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
+                if (Player.IsWanted)
                 {
-                    ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                    if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID && rg.ReputationLevel >= WantedRep)
+                    {
+                        ChangeReputation(rg.Gang, -1 * WantedRep, false);
+                    }
                 }
-            }
-            else
-            {
-                if (rg.Gang.AddAmbientRep)
+                else
                 {
-                    rg.AddembientRep();
+                    if (rg.Gang.AddAmbientRep)
+                    {
+                        rg.AddembientRep();
+                    }
                 }
             }
         }
@@ -86,7 +71,7 @@ public class GangRelationships
             GangReputations.Add(gr);
         }
         int preValue = gr.ReputationLevel;
-        gr.SetRepuation(gr.ReputationLevel + amount, sendNotification);
+        gr.SetReputation(gr.ReputationLevel + amount, sendNotification);
         if (amount > 1)
         {
             EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} preValue {preValue} amount {amount} current {gr.ReputationLevel}", 5);
@@ -120,7 +105,7 @@ public class GangRelationships
             GangReputations.Add(gr);
         }
         int preValue = gr.ReputationLevel;
-        gr.SetRepuation(value, sendNotification);
+        gr.SetReputation(value, sendNotification);
         EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} preValue {preValue} toset {value} current {gr.ReputationLevel}", 5);
     }
     public void AddDebt(Gang gang, int amount)
@@ -151,7 +136,7 @@ public class GangRelationships
         }
         gr.PlayerDebt = Math.Abs(amount);
     }
-    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt)
+    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember)
     {
         if (gang == null)
         {
@@ -170,20 +155,29 @@ public class GangRelationships
         gr.MembersCarJacked = carjacked;
         gr.MembersCarJackedInTerritory = carjackedInTerritory;
         gr.PlayerDebt = playerDebt;
+        gr.IsMember = isMember;
     }
-    public void ResetAllReputations()
+    public void Reset()
     {
         foreach (GangReputation rg in GangReputations)
         {
             rg.Reset(false);
-            //rg.SetRepuation(rg.DefaultRepAmount,false);
         }
+        foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
+        {
+            gd.Reset();
+        }
+        foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
+        {
+            gd.Reset();
+        }
+        CurrentGang = null;
     }
     public void SetAllRandomReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(RandomItems.GetRandomNumberInt(rg.RepMinimum, rg.RepMaximum),false);
+            rg.SetReputation(RandomItems.GetRandomNumberInt(rg.RepMinimum, rg.RepMaximum),false);
         }
     }
     public string PrintRelationships()
@@ -271,27 +265,25 @@ public class GangRelationships
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(rg.RepMaximum,false);
+            rg.SetReputation(rg.RepMaximum,false);
         }
     }
     public void SetHostileReputations()
     {
         foreach (GangReputation rg in GangReputations)
         {
-            rg.SetRepuation(rg.RepMinimum,false);
+            rg.SetReputation(rg.RepMinimum,false);
         }
     }
-
     public void SetSingleRandomReputation()
     {
         GangReputation gr = GangReputations.PickRandom();
         if(gr != null)
         {
-            GangReputations.PickRandom()?.SetRepuation(RandomItems.GetRandomNumberInt(gr.RepMinimum, gr.RepMaximum), false);
+            GangReputations.PickRandom()?.SetReputation(RandomItems.GetRandomNumberInt(gr.RepMinimum, gr.RepMaximum), false);
         }
         
     }
-
     public void OnLostWanted()
     {
         foreach (GangReputation gangRep in GangReputations)
@@ -299,13 +291,61 @@ public class GangRelationships
             gangRep.ResetRelationshipGroups();
         }
     }
-
     public void OnBecameWanted()
     {
         foreach (GangReputation gangRep in GangReputations)
         {
             gangRep.SetRelationshipGroupNeutral();
         }      
-    }  
+    }
+    public void SetGang(Gang gang, bool showNotification)
+    {
+        ResetGang(showNotification);
+        if (gang != null)
+        {
+            CurrentGang = gang;
+            foreach (GangReputation rg in GangReputations)
+            {
+                if (rg.Gang?.ID == gang.ID)
+                {
+                    rg.Reset(false);
+                    rg.IsMember = true;
+                    rg.SetReputation(rg.RepMaximum, false);
+                }
+                else
+                {
+                    rg.IsMember = false;
+                }
+            }
+            if (showNotification)
+            {
+                Game.DisplayHelp($"Joined {CurrentGang.FullName}");
+            }
+        }
+    }
+    public void ResetGang(bool showNotification)
+    {
+        if (CurrentGang != null)
+        {
+            foreach (GangReputation rg in GangReputations)
+            {
+
+                if (rg.Gang?.ID == CurrentGang.ID)
+                {
+                    rg.Reset(false);
+                }
+                else
+                {
+                    rg.IsMember = false;
+                }
+            }
+            if (showNotification)
+            {
+                Game.DisplayHelp($"Left {CurrentGang.FullName}");
+            }
+            CurrentGang = null;
+        }
+    }
+
 }
 

@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr
         public uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PlayerOtherSettings.SearchMode_SearchTimeMultiplier;//30000;//30 seconds each
         public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public string DebugString { get; set; }
-        public void UpdateWanted()
+        public void Update()
         {
             if (IsActive)
             {
@@ -47,22 +47,6 @@ namespace LosSantosRED.lsr
         {
             IsActive = false;
         }
-        //public void StopVanilla()
-        //{
-        //    if(IsActive)
-        //    {
-        //        if (Settings.SettingsManager.PlayerSettings.SearchMode_FakeActiveWanted)
-        //        {
-        //            //StopSearchMode.Tick(Player.IsWanted, Player.IsInVehicle);
-
-
-
-
-
-        //            //ghost cop is turned off from the fake wanted level stuff
-        //        }
-        //    } 
-        //}
         private void DetermineMode()
         {
             if (Player.IsWanted)// && Player.HasBeenWantedFor >= 5000)

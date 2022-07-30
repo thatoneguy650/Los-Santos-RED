@@ -13,7 +13,7 @@ using System.Xml.Serialization;
 public class Bar : InteractableLocation
 {
     private LocationCamera StoreCamera;
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;

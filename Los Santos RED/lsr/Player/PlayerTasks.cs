@@ -67,6 +67,10 @@ public class PlayerTasks
             }
         }
     }
+    public void Reset()
+    {
+        Clear();
+    }
     public void Clear()
     {
         PlayerTaskList.Clear();
@@ -128,7 +132,7 @@ public class PlayerTasks
 
             if (myTask.PaymentAmountOnCompletion != 0)
             {
-                Player.GiveMoney(myTask.PaymentAmountOnCompletion);
+                Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion);
             }
 
             myTask.IsActive = false;

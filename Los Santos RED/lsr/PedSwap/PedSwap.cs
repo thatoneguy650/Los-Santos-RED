@@ -36,11 +36,14 @@ public class PedSwap : IPedSwap
     private PedVariation TargetPedVariation;
     private Vehicle TargetPedVehicle;
     private IWeapons Weapons;
-    private ITimeControllable World;
+    private ITimeControllable Time;
     private IModItems ModItems;
-    public PedSwap(ITimeControllable world, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems)
+    private IEntityProvideable World;
+    private IPedGroups PedGroups;
+    private IShopMenus ShopMenus;
+    public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, IPedGroups pedGroups, IShopMenus shopMenus)
     {
-        World = world;
+        Time = time;
         Player = player;
         Settings = settings;
         Entities = entities;
@@ -48,6 +51,9 @@ public class PedSwap : IPedSwap
         Crimes = crimes;
         Names = names;
         ModItems = modItems;
+        World = world;
+        PedGroups = pedGroups;
+        ShopMenus = shopMenus;
     }
     public int CurrentPedMoney { get; private set; }
     public void AddOffset()
@@ -125,7 +131,7 @@ public class PedSwap : IPedSwap
                 Game.FadeScreenIn(0);
                 return;
             }
-            World.PauseTime();
+            Time.PauseTime();
             CurrentPed = Game.LocalPlayer.Character;
             CurrentModelPlayerIs = TargetPed.Model;
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
@@ -169,10 +175,10 @@ public class PedSwap : IPedSwap
         HandlePreviousPed(false, TargetPed);
         PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
         //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
-        IssueWeapons(toSwapWith.WeaponInventory.Sidearm, toSwapWith.WeaponInventory.LongGun);
-        Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer", CurrentModelPlayerIs.Name);
-        Entities.Pedestrians.AddEntity(Player.AliasedCop);
-        Player.AliasedCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
+        IssueWeapons(null, toSwapWith.WeaponInventory.Sidearm, toSwapWith.WeaponInventory.LongGun);
+        //Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer", CurrentModelPlayerIs.Name);
+        //Entities.Pedestrians.AddEntity(Player.AliasedCop);
+        //Player.AliasedCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
     }
     public void BecomeRandomPed()
     {
@@ -204,6 +210,65 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+
+
+    public void BecomeGangMember(Gang gang)
+    {
+        try
+        {
+            if (gang != null)
+            {
+                DispatchablePerson toBecome = gang.Personnel.PickRandom();
+                if (toBecome != null)
+                {
+                    Game.FadeScreenOut(500, true);
+                    ResetOffsetForCurrentModel();
+                    Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+                    EntryPoint.SpawnedEntities.Add(TargetPed);
+                    GameFiber.Yield();
+                    if (!TargetPed.Exists())
+                    {
+                        Game.FadeScreenIn(0);
+                        return;
+                    }
+                    TargetPed.RandomizeVariation();
+                    StoreTargetPedData(TargetPed);
+                    NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+                    Player.IsCop = false;
+                    HandlePreviousPed(false, TargetPed);
+                    PostTakeover(CurrentModelPlayerIs.Name, true, "", 0);
+                    Player.GangRelationships.SetGang(gang, false);
+                    IssueWeapons(RandomItems.RandomPercent(gang.PercentageWithMelee) ? gang.GetRandomMeleeWeapon(Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(true, Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(false, Weapons) : null);
+                    if (RandomItems.RandomPercent(gang.VehicleSpawnPercentage))
+                    {
+                        SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
+                        vehicleSpawn.GetClosestStreet();
+                        if (vehicleSpawn.HasSpawns)
+                        {
+                            SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
+                            carSpawn.AllowAnySpawn = true;
+                            carSpawn.AttemptSpawn();
+                            carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                            VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
+                            if (createdVehicle != null && createdVehicle.Vehicle.Exists())
+                            {
+                                Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                            }
+                        }
+                    }
+                    
+                    GameFiber.Sleep(500);
+                    Game.FadeScreenIn(500, true);
+                    GiveHistory();
+                }
+            }
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+
     public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation)
     {
         try
@@ -212,7 +277,7 @@ public class PedSwap : IPedSwap
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
             Player.PlayerName = fullName;
-            Player.SetMoney(money);
+            Player.BankAccounts.SetMoney(money);
             if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
             {
                 SetPlayerOffset();
@@ -242,7 +307,7 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            World.PauseTime();
+            Time.PauseTime();
             CurrentPed = Game.LocalPlayer.Character;
             CurrentModelPlayerIs = TargetPed.Model;
             Vector3 MyPos = Game.LocalPlayer.Character.Position;
@@ -274,7 +339,11 @@ public class PedSwap : IPedSwap
         // ResetExistingModelHash();
 
         NativeHelper.ChangeModel(InitialPlayerModel.Name);
-        InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
+
+        if (InitialPlayerVariation != null)
+        {
+            InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
+        }
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset(InitialPlayerModel.Hash);
@@ -285,7 +354,7 @@ public class PedSwap : IPedSwap
         }
         if (Settings.SettingsManager.PedSwapSettings.SetRandomMoney && CurrentPedMoney > 0)
         {
-            Player.SetMoney(CurrentPedMoney);
+            Player.BankAccounts.SetMoney(CurrentPedMoney);
         }
     }
     public void RemoveOffset()
@@ -402,7 +471,7 @@ public class PedSwap : IPedSwap
         }
         if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
         {
-            Player.AddCrimeToHistory(Crimes.CrimeList.PickRandom());
+            Player.CriminalHistory.AddCrime(Crimes.CrimeList.PickRandom());
         }
         if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomItems))
         {
@@ -507,11 +576,12 @@ public class PedSwap : IPedSwap
             return false;
         }
     }
-    private void IssueWeapons(IssuableWeapon sidearm, IssuableWeapon longGun)
+    private void IssueWeapons(IssuableWeapon melee,IssuableWeapon sidearm, IssuableWeapon longGun)
     {
-        if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)WeaponHash.StunGun, false))
+        if (melee != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)melee.GetHash(), false))
         {
-            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, (uint)WeaponHash.StunGun, 100, false, false);
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, (uint)melee.GetHash(), 200, false, false);
+            melee.ApplyVariation(Player.Character);
         }
         if (sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, (uint)sidearm.GetHash(), false))
         {
@@ -574,8 +644,8 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.NETWORK_REQUEST_CONTROL_OF_ENTITY<bool>(Game.LocalPlayer.Character);
         NativeFunction.Natives.xC0AA53F866B3134D();
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
-        Player.Equipment.SetUnarmed();
-        World.UnPauseTime();
+        Player.WeaponEquipment.SetUnarmed();
+        Time.UnPauseTime();
     }
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign)
     {
@@ -586,7 +656,7 @@ public class PedSwap : IPedSwap
             NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
             NativeHelper.ChangeModel(ModelToChange);
         }
-        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter())
+        if (!Game.LocalPlayer.Character.IsConsideredMainCharacter() && TargetPedVariation != null)
         {
             TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
         }
@@ -604,14 +674,14 @@ public class PedSwap : IPedSwap
                 NewVehicle.IsStolen = false;
                 if (NewVehicle.Vehicle.Exists())
                 {
-                    Player.TakeOwnershipOfVehicle(NewVehicle, false);
+                    Player.VehicleOwnership.TakeOwnershipOfVehicle(NewVehicle, false);
                     NewVehicle.Vehicle.IsStolen = false;
                 }
             }
         }
         else
         {
-            Player.ClearVehicleOwnership();
+            Player.VehicleOwnership.ClearVehicleOwnership();
             Game.LocalPlayer.Character.IsCollisionEnabled = true;
         }
         if (setRandomDemographics)
@@ -629,7 +699,7 @@ public class PedSwap : IPedSwap
             NewVehicle.IsStolen = false;
             if (NewVehicle.Vehicle.Exists())
             {
-                Player.TakeOwnershipOfVehicle(NewVehicle, false);
+                Player.VehicleOwnership.TakeOwnershipOfVehicle(NewVehicle, false);
                 NewVehicle.Vehicle.IsStolen = false;
             }
         }
@@ -651,8 +721,8 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
         // NativeFunction.Natives.SET_PED_CONFIG_FLAG(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
         ActivatePreviousScenarios();
-        Player.Equipment.SetUnarmed();
-        World.UnPauseTime();
+        Player.WeaponEquipment.SetUnarmed();
+        Time.UnPauseTime();
         GameFiber.Wait(50);
         Player.DisplayPlayerNotification();
     }
@@ -714,7 +784,7 @@ public class PedSwap : IPedSwap
     private void StoreTargetPedData(Ped TargetPed)
     {
         CurrentModelPlayerIs = TargetPed.Model;
-        CurrentPedMoney = Player.Money;
+        CurrentPedMoney = Player.BankAccounts.Money;
         CurrentPedPosition = Player.Position;
         CurrentPedIsDead = Player.Character.IsDead;
         CurrentPedIsBusted = Player.IsBusted;
@@ -730,7 +800,7 @@ public class PedSwap : IPedSwap
         TargetPedVariation = NativeHelper.GetPedVariation(TargetPed);
         TargetPedPosition = TargetPed.Position;
         TargetPedRelationshipGroup = TargetPed.RelationshipGroup;
-        World.PauseTime();
+        Time.PauseTime();
         if (Game.LocalPlayer.Character.IsDead)
         {
             NativeFunction.Natives.xB69317BF5E782347(Game.LocalPlayer.Character);//NETWORK_REQUEST_CONTROL_OF_ENTITY

@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr.Player
             ModItem = modItem;
             Intoxicants = intoxicants;
         }
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
+        public override string DebugString => $"";
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
@@ -91,7 +91,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             AttachItemToHand();
             Player.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastGaveHealth = Game.GameTime;
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 //if (AnimationTime >= 0.25f)
                 //{
@@ -156,7 +156,6 @@ namespace LosSantosRED.lsr.Player
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }
-                Player.DebugLine4 = $"Injection Activity AnimationTime: {AnimationTime} hasStartedIntoxicating {hasStartedIntoxicating}";
                 GameFiber.Yield();
             }
             //GameFiber.Sleep(5000);//wait for it to take effect!

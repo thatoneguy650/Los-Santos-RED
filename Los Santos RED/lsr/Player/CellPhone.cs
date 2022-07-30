@@ -37,11 +37,13 @@ public class CellPhone
     private EmergencyServicesInteraction EmergencyServicesInteraction;
     private bool isRunningForcedMobileTask;
     private BurnerPhone BurnerPhone;
+    private IEntityProvideable World;
+    private ICrimes Crimes;
     public bool IsActive => BurnerPhone?.IsActive == true;
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
-    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories)
+    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -55,6 +57,8 @@ public class CellPhone
         PlacesOfInterest = placesOfInterest;
         GangTerritories = gangTerritories;
         ContactInteractable = gangInteractable;
+        Crimes = crimes;
+        World = world;
         BurnerPhone = new BurnerPhone(Player, Time, Settings);
     }
     public void Setup()
@@ -372,6 +376,54 @@ public class CellPhone
             BurnerPhone.ClosePhone();
         }
     }
+
+    public void CallEMS()
+    {
+        if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1)
+        {
+            Player.Scanner.Reset();
+            Player.Investigation.Start(Player.Position, false, false, true, false);
+            Player.Scanner.OnMedicalServicesRequested();
+        }
+    }
+    public void CallFire()
+    {
+        if (World.TotalWantedLevel <= 1)
+        {
+            Player.Scanner.Reset();
+            Player.Investigation.Start(Player.Position, false, false, false, true);
+            Player.Scanner.OnFirefightingServicesRequested();
+        }
+    }
+    public void CallPolice()
+    {
+        Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
+        PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+        CrimeSceneDescription description;
+        if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+        {
+            description = new CrimeSceneDescription(!violatingCiv.IsInVehicle, Player.IsCop, violatingCiv.Pedestrian.Position, false) { VehicleSeen = null, WeaponSeen = null };
+            ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+        }
+        else
+        {
+            description = new CrimeSceneDescription(false, Player.IsCop, Player.Position);
+        }
+
+        if (Player.IsCop)
+        {
+            Player.Scanner.Reset();
+            Player.Scanner.AnnounceCrime(ToCallIn, description);
+            Player.Investigation.Start(Player.Position, false, true, false, false);
+        }
+        else
+        {
+            Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
+        }
+    }
+
+
+
     private void CheckScheduledItems()
     {
         CheckScheduledTexts();

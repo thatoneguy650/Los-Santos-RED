@@ -12,9 +12,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWeaponSelectable
     {
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         bool ReleasedFireWeapon { get; }
-        string DebugLine4 { get; set; }
         Ped Character { get; }
         bool IsInVehicle { get; }
     }

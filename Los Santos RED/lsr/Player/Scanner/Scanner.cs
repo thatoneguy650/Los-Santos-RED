@@ -392,7 +392,7 @@ namespace LosSantosRED.lsr
         }
         public void OnSuspectWasted()
         {
-            if (!SuspectWasted.HasRecentlyBeenPlayed && Player.AnyPoliceRecentlySeenPlayer && Player.MaxWantedLastLife > 1)
+            if (!SuspectWasted.HasRecentlyBeenPlayed && Player.AnyPoliceRecentlySeenPlayer && Player.WantedLevel > 1)// && Player.MaxWantedLastLife > 1)
             {
                 AddToQueue(SuspectWasted);
             }
@@ -471,7 +471,7 @@ namespace LosSantosRED.lsr
             //end newish
             DispatchQueue.Clear();
         }
-        public void Tick()
+        public void Update()
         {
             if (Settings.SettingsManager.ScannerSettings.IsEnabled)
             {

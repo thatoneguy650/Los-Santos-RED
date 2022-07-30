@@ -101,7 +101,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             //AttachBottleToHand();
             Player.IsPerformingActivity = true;
             //PlayingDict = Data.AnimEnterDictionary;

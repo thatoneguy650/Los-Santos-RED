@@ -14,8 +14,7 @@ public class GangDen : InteractableLocation
     private LocationCamera StoreCamera;
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
-
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -23,13 +22,10 @@ public class GangDen : InteractableLocation
     private ITimeControllable Time;
     private UIMenuItem completeTask;
 
-
     private Transaction Transaction;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
     private bool KeepInteractionGoing;
     private UIMenuItem LayLowMenuItem;
-
-
     public GangDen() : base()
     {
 
@@ -55,12 +51,8 @@ public class GangDen : InteractableLocation
     public Gang AssociatedGang { get; set; }
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
-
-
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
     public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         GangID = _gangID;
@@ -157,9 +149,9 @@ public class GangDen : InteractableLocation
         }
         else if (selectedItem == dropoffCash)
         {
-            if(Player.Money >= ExpectedMoney)
+            if(Player.BankAccounts.Money >= ExpectedMoney)
             {
-                Player.GiveMoney(-1*ExpectedMoney);
+                Player.BankAccounts.GiveMoney(-1*ExpectedMoney);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
                 ExpectedMoney = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
@@ -203,7 +195,6 @@ public class GangDen : InteractableLocation
             LayLow();
         }
     }
-
     public void Reset()
     {
         IsEnabled = false;
@@ -254,7 +245,8 @@ public class GangDen : InteractableLocation
             }
 
             Player.SetWantedLevel(0, "Gang Lay Low", true);
-            RemoveLayLow();
+            LayLowMenuItem.Enabled = false;
+            //RemoveLayLow();
         }, "LayLowWatcher");
     }
     private void RemoveLayLow()

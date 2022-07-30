@@ -35,7 +35,7 @@ public class Transaction
     public Transaction() : base()
     {
     }
-    public void CreateTransactionMenu(IActivityPerformable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public void CreateTransactionMenu(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         if (ShopMenu != null && ShopMenu.Items.Any(x => x.Purchaseable))
         {

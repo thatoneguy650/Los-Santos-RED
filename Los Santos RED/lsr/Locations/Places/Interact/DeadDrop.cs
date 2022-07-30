@@ -57,9 +57,9 @@ public class DeadDrop : InteractableLocation
         }
         //base.OnInteract(player);
     }
-    private void DoDropOff(IActivityPerformable Player)
+    private void DoDropOff(ILocationInteractable Player)
     {
-        if (Player.Money >= Math.Abs(MoneyAmount))
+        if (Player.BankAccounts.Money >= Math.Abs(MoneyAmount))
         {
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
@@ -70,7 +70,7 @@ public class DeadDrop : InteractableLocation
                 return;
             }
             Game.DisplayHelp("You have dropped off the cash, leave the area");
-            Player.GiveMoney(-1 * MoneyAmount);
+            Player.BankAccounts.GiveMoney(-1 * MoneyAmount);
             //CompleteOnLeaveArea(Player);
             //IsEnabled = false;
             CanInteract = false;
@@ -88,7 +88,7 @@ public class DeadDrop : InteractableLocation
             Game.DisplayHelp("You do not have enought cash to make the drop");
         }
     }
-    private void DoPickup(IActivityPerformable Player)
+    private void DoPickup(ILocationInteractable Player)
     {
         CanInteract = false;
         Player.IsInteractingWithLocation = true;
@@ -99,7 +99,7 @@ public class DeadDrop : InteractableLocation
             return;
         }
         Game.DisplayHelp("You have picked up the cash, don't hang around");
-        Player.GiveMoney(MoneyAmount);
+        Player.BankAccounts.GiveMoney(MoneyAmount);
 
         IsEnabled = false;
 
@@ -112,7 +112,7 @@ public class DeadDrop : InteractableLocation
         Player.IsInteractingWithLocation = false;
         //ClearActiveGangTasks(Player);
     }
-    private bool PlayMoneyAnimation(IActivityPerformable Player)
+    private bool PlayMoneyAnimation(ILocationInteractable Player)
     {
         Player.StopDynamicActivity();
         AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
@@ -126,7 +126,7 @@ public class DeadDrop : InteractableLocation
 
         while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_safehousevagos@", "package_dropoff");
             if (AnimationTime >= 1.0f)
             {
@@ -153,7 +153,7 @@ public class DeadDrop : InteractableLocation
             return true;
         }    
     }
-    private bool MoveToDrop(IActivityPerformable Player)
+    private bool MoveToDrop(ILocationInteractable Player)
     {
         Vector3 MovePosition = NativeHelper.GetOffsetPosition(EntrancePosition, EntranceHeading, 2f);//  Store.PropObject.GetOffsetPositionFront(-1f);
         MovePosition = new Vector3(MovePosition.X, MovePosition.Y, Game.LocalPlayer.Character.Position.Z);

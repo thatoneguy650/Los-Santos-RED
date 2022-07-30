@@ -21,12 +21,15 @@ public class PedSwapMenu : Menu
     private UIMenuItem RemoveOffset;
     private UIMenuItem SetAsCop;
     private UIMenuItem SetAsCivilian;
+    private UIMenuListScrollerItem<Gang> SetAsGangMember;
     private IPedSwap PedSwap;
     private List<DistanceSelect> Distances;
+    private IGangs Gangs;
    // private PedSwapCustomMenu PedSwapCustomMenu;
-    public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap)
+    public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap, IGangs gangs)
     {
         PedSwap = pedSwap;
+        Gangs = gangs;
         PedSwapUIMenu = menuPool.AddSubMenu(parentMenu, "Ped Swap");
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Change your character by taking over an existing ped or creating a ped from scratch.";
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
@@ -82,10 +85,21 @@ public class PedSwapMenu : Menu
         SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
         SetAsCivilian = new UIMenuItem("Set as Civilian", "Treat the current player model as a civilian without any changes.");
 
+        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a gang member of the selected gang", Gangs.GetAllGangs());
+        SetAsGangMember.Activated += (menu, item) =>
+        {
+            PedSwap.BecomeGangMember(SetAsGangMember.SelectedItem);
+            PedSwapUIMenu.Visible = false;
+        };
+
+
+
+
 
         PedSwapUIMenu.AddItem(TakeoverRandomPed);
         PedSwapUIMenu.AddItem(BecomeRandomPed);
         PedSwapUIMenu.AddItem(BecomeCustomPed);
+        PedSwapUIMenu.AddItem(SetAsGangMember);
         //PedSwapUIMenu.AddItem(BecomeRandomCop);
         // PedSwapUIMenu.AddItem(AddOffset);
         // PedSwapUIMenu.AddItem(RemoveOffset);

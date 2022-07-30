@@ -95,7 +95,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         HoursBetweenTasksWhenFailed = 24;
         AllowMobileRadioOnFoot = false;
         DisableVanillaGangHassling = true;
-        AllowAttackingFriendlyPeds = true;
+        AllowAttackingFriendlyPeds = false;
 
         OverwriteHandOffset = false;
         HandOffsetX = 0.0f;

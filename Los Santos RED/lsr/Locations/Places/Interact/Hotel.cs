@@ -13,7 +13,7 @@ public class Hotel : InteractableLocation
 {
     private LocationCamera StoreCamera;
 
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -110,9 +110,9 @@ public class Hotel : InteractableLocation
     }
     private void StayAtHotel(int Price, int Nights)
     {
-        if (Player.Money >= Price)
+        if (Player.BankAccounts.Money >= Price)
         {
-            Player.GiveMoney(-1 * Price);
+            Player.BankAccounts.GiveMoney(-1 * Price);
             //if(Time.CurrentHour <= 10)
             //{
             //    Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights-1, 11, 0, 0));

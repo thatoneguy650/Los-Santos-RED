@@ -17,7 +17,7 @@ public class CityHall : InteractableLocation
 {
     private LocationCamera StoreCamera;
 
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -134,12 +134,12 @@ public class CityHall : InteractableLocation
     {
         if(selectedItem == ChangeNameMenu)
         {
-            if(Player.Money >= NameChangeFee)
+            if(Player.BankAccounts.Money >= NameChangeFee)
             {
                 string NewName = NativeHelper.GetKeyboardInput("");
                 if(NewName != "")
                 {
-                    Player.GiveMoney(-1 * NameChangeFee);
+                    Player.BankAccounts.GiveMoney(-1 * NameChangeFee);
                     Player.ChangeName(NewName);
                     ChangeNameMenu.Description = NameDescription();
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have successfully changed your name to {NewName}");
@@ -156,18 +156,18 @@ public class CityHall : InteractableLocation
         }
         else if (selectedItem == DriversLicenseMenu)
         {
-            if(Player.Money >= DriversLicenseFee)
+            if(Player.BankAccounts.Money >= DriversLicenseFee)
             {
                 if (Player.Licenses.HasDriversLicense && Player.Licenses.DriversLicense.IsValid(Time))
                 {
-                    Player.GiveMoney(-1 * DriversLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your drivers license.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
                 }
                 else
                 {
-                    Player.GiveMoney(-1 * DriversLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
                     Player.Licenses.DriversLicense = new DriversLicense();
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
@@ -181,18 +181,18 @@ public class CityHall : InteractableLocation
         }
         else if (selectedItem == CCWLicenseMenu)
         {
-            if (Player.Money >= CCWLicenseFee)
+            if (Player.BankAccounts.Money >= CCWLicenseFee)
             {
                 if (Player.Licenses.HasCCWLicense && Player.Licenses.CCWLicense.IsValid(Time))
                 {
-                    Player.GiveMoney(-1 * CCWLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee);
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your CCW license.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
                 }
                 else
                 {
-                    Player.GiveMoney(-1 * CCWLicenseFee);
+                    Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee);
                     Player.Licenses.CCWLicense = new CCWLicense();
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();

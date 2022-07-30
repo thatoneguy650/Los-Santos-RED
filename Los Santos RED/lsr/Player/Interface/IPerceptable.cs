@@ -10,7 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPerceptable
     {
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         Violations Violations { get; }
         Ped Character { get; }
         VehicleExt CurrentSeenVehicle { get; }
@@ -22,6 +22,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyGangMemberCanHearPlayer { get; set; }
         bool AnyGangMemberRecentlySeenPlayer { get; set; }
         bool IsInVehicle { get; }
-        void AddDistressedPed(Vector3 positionLastSeenDistressedPed);
+        void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
     }
 }

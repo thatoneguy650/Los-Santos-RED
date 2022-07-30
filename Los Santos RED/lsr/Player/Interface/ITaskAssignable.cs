@@ -10,9 +10,10 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ITaskAssignable
     {
+        BankAccounts BankAccounts { get; }
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         GangRelationships GangRelationships { get; }
         GunDealerRelationship GunDealerRelationship { get; }
         Investigation Investigation { get; }
@@ -29,6 +30,5 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyShot { get; }
         int WantedLevel { get; }
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
-        void GiveMoney(int paymentAmountOnCompletion);
     }
 }

@@ -13,10 +13,21 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IActionable
     {
+        SurrenderActivity Surrendering { get; }
+        VehicleOwnership VehicleOwnership { get; }
+        BankAccounts BankAccounts { get; }
+        HumanState HumanState { get; }
+        Stance Stance { get; }
+        WeaponEquipment WeaponEquipment { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        CellPhone CellPhone { get; }
+        Investigation Investigation { get; }
+        GangRelationships GangRelationships { get; }
+        Inventory Inventory { get; }
+        Intoxication Intoxication { get; }
+        PoliceResponse PoliceResponse { get; }
 
-
-
-
+        LocationData CurrentLocation { get; }
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
@@ -25,13 +36,10 @@ namespace LosSantosRED.lsr.Interface
         DanceData LastDance { get; set; }
         List<LicensePlate> SpareLicensePlates { get; }
         bool IsCop { get; }
-        LocationData CurrentLocation { get; }
         Ped Character { get; }
         bool IsMale { get; }
         bool IsSitting { get; set; }
-
         bool IsLayingDown { get; set; }
-
         Rage.Object AttachedProp { get; }
         bool IsMoveControlPressed { get; }
         string ModelName { get; }
@@ -39,16 +47,24 @@ namespace LosSantosRED.lsr.Interface
         bool CharacterModelIsFreeMode { get; }
         GestureData LastGesture { get; set; }
         bool IsMakingInsultingGesture { get; set; }
+        bool IsDancing { get; set; }
+        VehicleExt CurrentVehicle { get; }
+        bool IsNotWanted { get; }
+        bool IsStill { get; }
+        bool IsResting { get; set; }
+        bool IsSleeping { get; set; }
+
+        void Gesture();
+        void Dance(DanceData selectedItem);
+        void Dance();
+        void CloseDriverDoor();
         void StartSittingDown(bool FindSittingProp, bool EnterForward);
         void CommitSuicide();
         void DisplayPlayerNotification();
-        void GiveMoney(int v);
         void RemovePlate();
         void ChangePlate(int Index);
         void StopDynamicActivity();
         void ChangePlate(LicensePlate selectedItem);
-        void TakeOwnershipOfNearestCar();
-        void CallPolice();
         void StartConsumingActivity(ModItem selectedStuff, bool performActivity);
         void PauseCurrentActivity();
         void ContinueCurrentActivity();
@@ -60,29 +76,6 @@ namespace LosSantosRED.lsr.Interface
         void SetBodyArmor(int value);
         void StartLayingDown(bool v);
         void StartHotwiring();
-        GangRelationships GangRelationships { get; }
-        Inventory Inventory { get; }
-        Intoxication Intoxication { get; }
-        bool IsDancing { get; set; }
-        VehicleExt CurrentVehicle { get; }
-        ButtonPrompts ButtonPrompts { get; }
-        CellPhone CellPhone { get; }
-        Investigation Investigation { get; }
-        bool IsNotWanted { get; }
-        PoliceResponse PoliceResponse { get; }
-        bool IsStill { get; }
-        bool IsResting { get; set; }
-        bool IsSleeping { get; set; }
-        HumanState HumanState { get; }
-        Stance Stance { get; }
-        Equipment Equipment { get; }
-        void RemoveOwnershipOfNearestCar();
-        void SetMoney(int bribeAmount);
-        void Gesture();
-        void Dance(DanceData selectedItem);
-        void Dance();
-        void ToggleSurrender();
-        void CloseDriverDoor();
         void ToggleRightIndicator();
         void ToggleLeftIndicator();
         void ToggleHazards();

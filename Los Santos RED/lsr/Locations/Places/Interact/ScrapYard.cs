@@ -17,7 +17,7 @@ public class ScrapYard : InteractableLocation
 {
     private LocationCamera StoreCamera;
 
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -189,7 +189,7 @@ public class ScrapYard : InteractableLocation
             Game.FadeScreenIn(1000, true);
 
             //InteractionMenu.Visible = false;
-            Player.GiveMoney(Price);
+            Player.BankAccounts.GiveMoney(Price);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Scrapped", $"Thank you for scrapping your ~p~{CarName}~s~ at ~y~{Name}~s~");
         }
         else

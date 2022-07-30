@@ -63,7 +63,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Civilians = new Civilians(World, Player, Player, ModDataFileManager.Settings);
             GameFiber.Yield();
-            PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems);
+            PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems, World, ModDataFileManager.RelationshipGroups, ModDataFileManager.ShopMenus);
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
@@ -127,14 +127,14 @@ namespace LosSantosRED.lsr
             }));
             TaskGroups.Add(new ModTaskGroup("Group2", new List<ModTask>()
             {
-                new ModTask(250, "Player.Violations.Update", Player.ViolationsUpdate, 0),
+                new ModTask(250, "Player.Violations.Update", Player.Violations.Update, 0),
                 new ModTask(250, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
                 new ModTask(250, "Player.Investigation.Update", Player.Investigation.Update, 2),
-                new ModTask(250, "Player.SearchModeUpdate", Player.SearchModeUpdate, 3),
+                new ModTask(250, "Player.SearchModeUpdate", Player.SearchMode.Update, 3),
 
-                new ModTask(250, "Player.TrafficViolationsUpdate", Player.TrafficViolationsUpdate, 4),
+                new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.UpdateTraffic, 4),
                 new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
-                new ModTask(250, "Player.ArrestWarrantUpdate",Player.ArrestWarrantUpdate, 6),//these were all 500
+                new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
             }));
             TaskGroups.Add(new ModTaskGroup("Group3", new List<ModTask>()
             {
@@ -144,7 +144,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3), //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
-                new ModTask(1500, "Player.ScannerUpdate", Player.ScannerUpdate, 6),//500
+                new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),//500
                 //new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
             }));
             TaskGroups.Add(new ModTaskGroup("Group4", new List<ModTask>()

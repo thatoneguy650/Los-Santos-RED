@@ -13,7 +13,7 @@ namespace LosSantosRED.lsr.Interface
     {
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         GangRelationships GangRelationships { get; }
         GunDealerRelationship GunDealerRelationship { get; }
         Inventory Inventory { get; }
@@ -21,7 +21,8 @@ namespace LosSantosRED.lsr.Interface
         PlayerTasks PlayerTasks { get; }
         Properties Properties { get; }
         Violations Violations { get; }
-
+        VehicleOwnership VehicleOwnership { get; }
+        BankAccounts BankAccounts { get; }
         bool CanConverse { get; }
         bool CanPerformActivities { get; }
         Ped Character { get; }
@@ -46,19 +47,18 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         Vehicle LastFriendlyVehicle { get; set; }
         string ModelName { get; }
-        int Money { get; }
-        List<VehicleExt> OwnedVehicles { get; }
         string PlayerName { get; }
         Vector3 Position { get; }
         bool RecentlyCrashedVehicle { get; }
         float VehicleSpeedMPH { get; }
+
+
+
         void ChangeName(string newName);
         void EnterVehicleAsPassenger();
-        void GiveMoney(int moneyToReceive);
-        void RemoveOwnershipOfVehicle(VehicleExt myNewCar);
         void SetWantedLevel(int v1, string v2, bool v3);
         void StartConsumingActivity(ModItem modItem, bool v);
         void StopDynamicActivity();
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
+
     }
 }

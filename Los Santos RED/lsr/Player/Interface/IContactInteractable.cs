@@ -10,25 +10,19 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IContactInteractable
     {
-
-
+        BankAccounts BankAccounts { get; }
+        Destinations Destinations { get; }
         GangRelationships GangRelationships { get; }
         PlayerTasks PlayerTasks { get; }
         CellPhone CellPhone { get; }
-        bool IsWanted { get; }
-        bool IsNotWanted { get; }
-        int WantedLevel { get; }
-        int Money { get; }
         PoliceResponse PoliceResponse { get; }
         LocationData CurrentLocation { get; }
         Investigation Investigation { get; }
+        bool IsWanted { get; }
+        bool IsNotWanted { get; }
+        int WantedLevel { get; }
+        Respawning Respawning { get; }
 
-        void AddGPSRoute(string name, Vector3 entrancePosition);
-        void GiveMoney(int p);
-        void PayoffPolice();
         void SetWantedLevel(int v1, string v2, bool v3);
-        void CallPolice();
-        void CallEMS();
-        void CallFire();
     }
 }

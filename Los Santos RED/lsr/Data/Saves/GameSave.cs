@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr.Data
         {
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
-            Money = player.Money;
+            Money = player.BankAccounts.Money;
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
@@ -74,7 +74,7 @@ namespace LosSantosRED.lsr.Data
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
             }
             OwnedVehicleVariations.Clear();
-            foreach (VehicleExt car in player.OwnedVehicles)
+            foreach (VehicleExt car in player.VehicleOwnership.OwnedVehicles)
             {
                 if (car.Vehicle.Exists())
                 {
@@ -101,7 +101,7 @@ namespace LosSantosRED.lsr.Data
             GangReputations = new List<GangRepSave>();
             foreach (GangReputation gr in player.GangRelationships.GangReputations)
             {
-                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt));
+                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember));
             }
 
             Contacts = new List<SavedContact>();
@@ -174,7 +174,7 @@ namespace LosSantosRED.lsr.Data
                 {
                     player.Inventory.Add(modItems.Get(cii.ModItemName), (int)cii.RemainingPercent);
                 }
-                player.ClearVehicleOwnership();
+                player.VehicleOwnership.ClearVehicleOwnership();
                 foreach (VehicleSaveStatus OwnedVehicleVariation in OwnedVehicleVariations)
                 {
                     NativeHelper.GetStreetPositionandHeading(Game.LocalPlayer.Character.Position, out Vector3 SpawnPos, out float Heading, false);
@@ -200,7 +200,7 @@ namespace LosSantosRED.lsr.Data
                                 World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                                 OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
                             }
-                            player.TakeOwnershipOfVehicle(MyVeh,false);
+                            player.VehicleOwnership.TakeOwnershipOfVehicle(MyVeh,false);
                             if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
                             {
                                 NewVehicle.Position = OwnedVehicleVariation.LastPosition;
@@ -215,7 +215,7 @@ namespace LosSantosRED.lsr.Data
                     if (myGang != null)
                     {
                         player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
-                        player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt);
+                        player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember);
                     }
                 }
                 foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))

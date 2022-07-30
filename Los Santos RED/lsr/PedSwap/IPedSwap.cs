@@ -26,5 +26,6 @@ namespace LosSantosRED.lsr.Interface
         void AddOffset();
         void TreatAsCivilian();
         void TreatAsCop();
+        void BecomeGangMember(Gang selectedItem);
     }
 }

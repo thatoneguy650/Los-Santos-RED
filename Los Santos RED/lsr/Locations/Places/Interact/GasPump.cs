@@ -16,7 +16,7 @@ using System.Xml.Serialization;
 public class GasPump : InteractableLocation
 {
     private LocationCamera StoreCamera;
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
@@ -263,7 +263,7 @@ public class GasPump : InteractableLocation
     }
     private void FuelVehicle(int UnitsToAdd)
     {
-        if (UnitsToAdd * pricePerUnit > Player.Money)
+        if (UnitsToAdd * pricePerUnit > Player.BankAccounts.Money)
         {
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
@@ -312,7 +312,7 @@ public class GasPump : InteractableLocation
                         {
                             VehicleToFill.Vehicle.FuelLevel += PercentFilledPerUnit;
                         }
-                        Player.GiveMoney(-1 * pricePerUnit);
+                        Player.BankAccounts.GiveMoney(-1 * pricePerUnit);
                         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
 
                         EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * pricePerUnit}");

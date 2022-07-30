@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 public class GunStore : InteractableLocation
 {
     private LocationCamera StoreCamera;
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;

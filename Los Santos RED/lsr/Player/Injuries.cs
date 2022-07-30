@@ -160,8 +160,23 @@ public class Injuries
     }
     public bool IsSwerving { get; private set; }
     public float CurrentIntensity { get; private set; }
+    public void Reset()
+    {
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+        NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
+        if (IsInjured)
+        {
+            SetHealthy(true);
+        }
+        if(IsInjured)
+        {
+            Restart();
+        }
+    }
     public void Dispose()
     {
+        Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+        NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
         if (IsInjured)
         {
             SetHealthy(true);
@@ -300,7 +315,7 @@ public class Injuries
     private void SetHealthy(bool ResetClipset)
     {
         IsInjured = false;
-        if (!Player.IsIntoxicated)
+        if (!Player.Intoxication.IsIntoxicated)
         {
             NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
             if (ResetClipset)

@@ -52,7 +52,7 @@ public class BarDisplay
         float BackPosY = PosY;
 
         float BackHeight = 0.0075f;
-        float FrontWidth = BackWidth * Player.IntoxicatedIntensityPercent;
+        float FrontWidth = BackWidth * Player.Intoxication.CurrentIntensityPercent;
         float FrontPosX = BackPosX;
         float FrontPosY = PosY;
         float FrontHeight = 0.0075f;

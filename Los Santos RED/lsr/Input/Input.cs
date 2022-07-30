@@ -162,7 +162,7 @@ namespace LosSantosRED.lsr
             }
             if (IsPressingSelectorToggle)
             {
-                Player.Equipment.ToggleSelector();
+                Player.WeaponEquipment.ToggleSelector();
             }
             if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
             {
@@ -178,24 +178,24 @@ namespace LosSantosRED.lsr
 
             if (IsPressingSurrender)
             {
-                if (Player.CanSurrender)
+                if (Player.Surrendering.CanSurrender)
                 {
-                    Player.RaiseHands();
+                    Player.Surrendering.RaiseHands();
                 }
-                else if (Player.CanWaveHands)
+                else if (Player.Surrendering.CanWaveHands)
                 {
-                    Player.WaveHands();
+                    Player.Surrendering.WaveHands();
                 }
             }
             else
             {
-                if (Player.HandsAreUp && !Player.IsBusted)
+                if (Player.Surrendering.HandsAreUp && !Player.IsBusted)
                 {
-                    Player.LowerHands();
+                    Player.Surrendering.LowerHands();
                 }
-                else if (Player.IsWavingHands)
+                else if (Player.Surrendering.IsWavingHands)
                 {
-                    Player.LowerHands();
+                    Player.Surrendering.LowerHands();
                 }
             }
 

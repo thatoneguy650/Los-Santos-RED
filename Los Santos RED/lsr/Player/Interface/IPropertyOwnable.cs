@@ -8,6 +8,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPropertyOwnable
     {
-        int Money { get; }
+        BankAccounts BankAccounts { get; }
     }
 }

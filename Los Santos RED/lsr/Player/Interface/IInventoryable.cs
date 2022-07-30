@@ -11,13 +11,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInventoryable
     {
-        Inventory Inventory { get; }
-        bool IsPerformingActivity { get; }
-        int Money { get; }
-        Ped Character { get; }
-        void GiveMoney(int salesPrice);
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
-        void DisplayPlayerNotification();
         GangRelationships GangRelationships { get; }
         CellPhone CellPhone { get; }
         GunDealerRelationship GunDealerRelationship { get; }
@@ -25,7 +18,11 @@ namespace LosSantosRED.lsr.Interface
         Properties Properties { get; }
         OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
         HumanState HumanState { get; }
-
-        void ClearVehicleOwnership();
+        VehicleOwnership VehicleOwnership { get; }
+        Inventory Inventory { get; }
+        BankAccounts BankAccounts { get; }
+        bool IsPerformingActivity { get; }
+        Ped Character { get; }
+        void DisplayPlayerNotification();
     }
 }

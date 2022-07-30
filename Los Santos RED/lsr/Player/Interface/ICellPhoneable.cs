@@ -12,32 +12,25 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ICellPhoneable
     {
+        BankAccounts BankAccounts { get; }
+        Destinations Destinations { get; }
         LocationData CurrentLocation { get; }
-        int Money { get; }
-
-        void CallPolice();
-
         GangRelationships GangRelationships { get; }
         PlayerTasks PlayerTasks { get; }
+        CellPhone CellPhone { get; }
+        PoliceResponse PoliceResponse { get; }
         int WantedLevel { get; }
         bool IsWanted { get; }
         bool IsNotWanted { get; }
-        PoliceResponse PoliceResponse { get; }
         VehicleExt CurrentVehicle { get; }
-
         string PlayerName { get; }
-        CellPhone CellPhone { get; }
         Rage.Ped Character { get; }
         string ModelName { get; }
-
-        void GiveMoney(int v);
-        void AddGPSRoute(string name, Vector3 entrancePosition);
+        Scanner Scanner { get; }
+        Investigation Investigation { get; }
+        Vector3 Position { get; }
+        bool IsCop { get; }
         void SetWantedLevel(int v1, string v2, bool v3);
-        void PayoffPolice();
-        //bool IsHostile(Gang myGang);
-        //bool IsFriendly(Gang myGang);
-        //int GetRepuationLevel(Gang gangLastCalled);
-        //void GiveMoney(int v);
-        //void SetReputation(Gang gangLastCalled, int v, bool sendNotification);
+        void AddCrime(Crime toCallIn, bool v1, Vector3 placeSeen, VehicleExt vehicleSeen, WeaponInformation weaponSeen, bool v2, bool v3, bool v4);
     }
 }

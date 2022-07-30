@@ -36,7 +36,11 @@ public class Properties
     }
     public void Dispose()
     {
-        foreach(Residence residence in Residences)
+        Reset();
+    }
+    public void Reset()
+    {
+        foreach (Residence residence in Residences)
         {
             residence.Reset();
         }

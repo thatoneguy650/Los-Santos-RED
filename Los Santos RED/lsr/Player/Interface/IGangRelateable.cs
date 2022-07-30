@@ -11,36 +11,22 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IGangRelateable
     {
+        VehicleOwnership VehicleOwnership { get; }
+        PoliceResponse PoliceResponse { get; }
+        CellPhone CellPhone { get; }
+        GangRelationships GangRelationships { get; }
+        PlayerTasks PlayerTasks { get; }
+        Licenses Licenses { get; }
+        BankAccounts BankAccounts { get; }
         LocationData CurrentLocation { get; }
         bool IsWanted { get; }
         int WantedLevel { get; }
-        //List<GangReputation> GangReputations { get; }
-        int Money { get; }
         string PlayerName { get; }
         List<Crime> WantedCrimes { get; }
-       // VehicleExt OwnedVehicle { get; }
-        PoliceResponse PoliceResponse { get; }
-        List<VehicleExt> OwnedVehicles { get; }
-       // List<iFruitText> TextList { get; }
-        //List<iFruitContact> ContactList { get; }
-        CellPhone CellPhone { get; }
-        Blip CurrentGPSBlip { get; set; }
-        GangRelationships GangRelationships { get; }
-        PlayerTasks PlayerTasks { get; }
         Ped Character { get; }
-        Licenses Licenses { get; }
         bool IsNotWanted { get; }
-
+        Destinations Destinations { get; }
         void SetDenStatus(Gang gang, bool v);
-        void AddGPSRoute(string name, Vector3 entrancePosition);
-        void RemoveGPSRoute();
-        void RemoveOwnershipOfVehicle(VehicleExt car);
         void StopDynamicActivity();
-        //void AddContact(Gang gang);
-        //void AddContact(string contactName, string contactIcon);
-        //void DisableContact(string contactName);
-        //bool IsContactEnabled(string contactName);
-        //void AddScheduledText(string contactName, string contactIcon, string v);
-        //void AddGangText(Gang gang, bool v);
     }
 }

@@ -11,9 +11,12 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPedSwappable
     {
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         Inventory Inventory { get; set; }
-        Cop AliasedCop { get; set; }
+        VehicleOwnership VehicleOwnership { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        CriminalHistory CriminalHistory { get; }
+        BankAccounts BankAccounts { get; }
         Ped Character { get; }
         bool CharacterModelIsFreeMode { get; }
         PedVariation CurrentModelVariation { get; set; }
@@ -25,20 +28,15 @@ namespace LosSantosRED.lsr.Interface
         bool IsMoveControlPressed { get; }
         bool IsWanted { get; }
         string ModelName { get; set; }
-        int Money { get; }
         string PlayerName { get; set; }
         Vector3 Position { get; }
         int WantedLevel { get; }
-        ButtonPrompts ButtonPrompts { get; }
+        GangRelationships GangRelationships { get; }
 
-        void AddCrimeToHistory(Crime crime);
-        void ClearVehicleOwnership();
         void DisplayPlayerNotification();
         void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool v13);
         void SetDemographics(string modelName, bool isMale, string v1, int v2);
-        void SetMoney(int currentPedMoney);
         void SetWantedLevel(int v1, string v2, bool v3);
-        void TakeOwnershipOfVehicle(VehicleExt currentVehicle, bool showNotification);
         void UpdateVehicleData();
     }
 }

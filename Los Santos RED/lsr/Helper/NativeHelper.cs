@@ -24,6 +24,10 @@ namespace LosSantosRED.lsr.Helper
 
         }
 
+        internal static uint CashHash(object p)
+        {
+            throw new NotImplementedException();
+        }
 
         public static void StartScript(string scriptName, int buffer)
         {
@@ -309,13 +313,18 @@ namespace LosSantosRED.lsr.Helper
                     myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
 
-
-                NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
-                if(structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
+                try
                 {
-                    myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
+                    NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
+                    if(structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
+                    {
+                        myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
+                    }
                 }
-
+                catch (Exception e)
+                {
+                    EntryPoint.WriteToConsole("Copy Ped Variation Error Head Data: " + e.Message, 0);
+                }
                 return myPedVariation;
             }
             catch (Exception e)

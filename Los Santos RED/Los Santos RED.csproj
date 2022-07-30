@@ -235,6 +235,7 @@
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\GunPickupTask.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\UndergroundGunsTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\WitnessEliminationTask.cs" />
+    <Compile Include="lsr\Player\ActivityManager.cs" />
     <Compile Include="lsr\Player\Activity\CellPhoneInteractionActivity.cs" />
     <Compile Include="lsr\Player\Activity\DanceActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\DanceData.cs" />
@@ -242,6 +243,7 @@
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
+    <Compile Include="lsr\Player\BankAccounts.cs" />
     <Compile Include="lsr\Player\ButtonPrompts.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone_Simple.cs" />
@@ -253,6 +255,7 @@
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\PhoneText.cs" />
+    <Compile Include="lsr\Player\Destinations.cs" />
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />
     <Compile Include="lsr\Player\HumanState\HumanNeed.cs" />
@@ -266,8 +269,11 @@
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
     <Compile Include="lsr\Player\Interaction\PersonTransaction.cs" />
     <Compile Include="lsr\Player\Interaction\SpeechData.cs" />
+    <Compile Include="lsr\Player\Interface\IActivityManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IBankAccountHoldable.cs" />
     <Compile Include="lsr\Player\Interface\IButtonPromptable.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
+    <Compile Include="lsr\Player\Interface\IDestinateable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
     <Compile Include="lsr\Player\Interface\IHumanStateable.cs" />
     <Compile Include="lsr\Player\Interface\IItemEquipable.cs" />
@@ -275,6 +281,7 @@
     <Compile Include="lsr\Player\Interface\ILocationInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IPropertyOwnable.cs" />
     <Compile Include="lsr\Player\Interface\IStanceable.cs" />
+    <Compile Include="lsr\Player\Interface\IVehicleOwnable.cs" />
     <Compile Include="lsr\Player\Intoxication\IntoxicationEffect.cs" />
     <Compile Include="lsr\Player\Licenses\CCWLicense.cs" />
     <Compile Include="lsr\Player\Licenses\DriversLicense.cs" />
@@ -314,7 +321,8 @@
     <Compile Include="lsr\Player\Properties\Properties.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\Player\Stance\Stance.cs" />
-    <Compile Include="lsr\Player\Equipment\Equipment.cs" />
+    <Compile Include="lsr\Player\Equipment\WeaponEquipment.cs" />
+    <Compile Include="lsr\Player\VehicleOwnership.cs" />
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />

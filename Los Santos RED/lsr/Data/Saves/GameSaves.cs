@@ -140,7 +140,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28),DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) {  });
-        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0) };
+        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false) };
         PedVariation SawyerVariation = new PedVariation(new List<PedComponent>()
         {
             //original
@@ -210,7 +210,7 @@ public class GameSaves : IGameSaves
         SawyerGameSave.CCWLicense = new CCWLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
         SawyerGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = SawyerGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = SawyerGameSave.CurrentDateTime });
         SawyerGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",3000,0,0,0,0,0,0,0) };
+        SawyerGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST",3000,0,0,0,0,0,0,0, false) };
         SawyerGameSave.HungerValue = 75.0f;
         SawyerGameSave.ThirstValue = 75.0f;
         SawyerGameSave.SleepValue = 75.0f;

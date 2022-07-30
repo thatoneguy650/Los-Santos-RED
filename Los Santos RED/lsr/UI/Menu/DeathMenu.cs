@@ -14,7 +14,7 @@ public class DeathMenu : Menu
     private UIMenuItem Undie;
     private IPedSwap PedSwap;
     private IPlacesOfInterest PlacesOfInterest;
-    private IRespawning Respawning;
+    private IRespawning PlayerRespawning;//this is confusing
     private List<Hospital> Hospitals;
     private List<DistanceSelect> Distances;
     private ISettingsProvideable Settings;
@@ -23,7 +23,7 @@ public class DeathMenu : Menu
     public DeathMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IRespawnable player, IGameSaves gameSaves)
     {
         PedSwap = pedSwap;
-        Respawning = respawning;
+        PlayerRespawning = respawning;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         Player = player;
@@ -54,7 +54,7 @@ public class DeathMenu : Menu
             {
                 HospitalRespawn.Enabled = true;
             }
-            if(Settings.SettingsManager.RespawnSettings.AllowUndie && Player.CanUndie && !Settings.SettingsManager.RespawnSettings.PermanentDeathMode)
+            if(Settings.SettingsManager.RespawnSettings.AllowUndie && Player.Respawning.CanUndie && !Settings.SettingsManager.RespawnSettings.PermanentDeathMode)
             {
                 Undie.Enabled = true;
             }
@@ -89,11 +89,11 @@ public class DeathMenu : Menu
     {
         if (selectedItem == Undie)
         {
-            Respawning.RespawnAtCurrentLocation(true, false, false, false);
+            PlayerRespawning.Respawning.RespawnAtCurrentLocation(true, false, false, false);
         }
         if (selectedItem == HospitalRespawn)
         {
-            Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
+            PlayerRespawning.Respawning.RespawnAtHospital(CurrentSelectedHospitalLocation);
         }
         else if (selectedItem == TakeoverRandomPed)
         {

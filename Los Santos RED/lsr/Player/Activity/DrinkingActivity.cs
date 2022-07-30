@@ -50,7 +50,7 @@ namespace LosSantosRED.lsr.Player
             Intoxicants = intoxicants;
         }
         public override ModItem ModItem { get; set; }
-        public override string DebugString => $"Intox {Player.IsIntoxicated} Consum: {Player.IsPerformingActivity} I: {Player.IntoxicatedIntensity}";
+        public override string DebugString => $"";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Drinking";
@@ -112,13 +112,13 @@ namespace LosSantosRED.lsr.Player
         }
         private void Enter()
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             AttachBottleToHand();
             Player.IsPerformingActivity = true;
             StartNewEnterAnimation();
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
@@ -158,7 +158,7 @@ namespace LosSantosRED.lsr.Player
             StartNewIdleAnimation();
             while (Player.CanPerformActivities && !IsCancelled)
             {
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {

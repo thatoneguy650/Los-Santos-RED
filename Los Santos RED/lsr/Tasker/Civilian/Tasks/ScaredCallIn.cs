@@ -106,7 +106,7 @@ public class ScaredCallIn : ComplexTask
             }
             else if (Ped.HasSeenDistressedPed)
             {
-                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
                 Ped.HasSeenDistressedPed = false;
             }
         }
@@ -133,7 +133,7 @@ public class ScaredCallIn : ComplexTask
             }
             else if (Ped.HasSeenDistressedPed)
             {
-                Player.AddDistressedPed(Ped.PositionLastSeenDistressedPed);
+                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
                 Ped.HasSeenDistressedPed = false;
             }
         }

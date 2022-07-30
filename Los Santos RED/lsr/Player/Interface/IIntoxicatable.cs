@@ -10,24 +10,14 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IIntoxicatable : IActivityPerformable
     {
-        bool IsIntoxicated { get; set; }
-        float IntoxicatedIntensity { get; set; }
-        Vector3 Position { get; }
-       // bool IsMoveControlPressed { get; }
         Scenario ClosestScenario { get; }
-        bool IsInVehicle { get; }
-        bool IsDriver { get; }
-        VehicleExt CurrentVehicle { get; }
         bool IsSitting { get; set; }
         Rage.Object AttachedProp { get; set; }
-        float IntoxicatedIntensityPercent { get; set; }
         Intoxication Intoxication { get; }
-        string DebugLine4 { get; set; }
         Sprinting Sprinting { get; }
         bool IsOnMuscleRelaxants { get; set; }
         HumanState HumanState { get; }
 
-        // void SetUnarmed();
         void PauseCurrentActivity();
         void ChangeHealth(int healthGained);
     }

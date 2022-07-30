@@ -10,6 +10,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IBusRideable
     {
+        ButtonPrompts ButtonPrompts { get; }
+        Destinations Destinations { get; }
         bool IsInVehicle { get; }
         bool IsRidingBus { get; set; }
         bool IsGettingIntoAVehicle { get; }
@@ -18,10 +20,6 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         float VehicleSpeedMPH { get; }
         bool IsNotWanted { get; }
-        ButtonPrompts ButtonPrompts { get; }
         bool IsAliveAndFree { get; }
-
-        void AddGPSRoute(string v, Vector3 entrancePosition);
-        void RemoveGPSRoute();
     }
 }

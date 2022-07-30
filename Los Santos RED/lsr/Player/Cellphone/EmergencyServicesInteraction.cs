@@ -103,7 +103,7 @@ public class EmergencyServicesInteraction
         fullText += " is en route to ";
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
         Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CallPolice();
+        Player.CellPhone.CallPolice();
     }
     private void RequestFireAssistance()
     {
@@ -125,7 +125,7 @@ public class EmergencyServicesInteraction
 
         //fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
         Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CallFire();
+        Player.CellPhone.CallFire();
     }
     private void RequestEMSAssistance()
     {
@@ -146,7 +146,7 @@ public class EmergencyServicesInteraction
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
        // fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
         Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CallEMS();
+        Player.CellPhone.CallEMS();
     }
 
 }

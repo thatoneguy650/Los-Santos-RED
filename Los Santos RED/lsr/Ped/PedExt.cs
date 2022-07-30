@@ -438,7 +438,7 @@ public class PedExt : IComplexTaskable
                     }
                     if(IsCop && HasSeenDistressedPed)
                     {
-                        perceptable.AddDistressedPed(PositionLastSeenDistressedPed);
+                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
                         HasSeenDistressedPed = false;
                     }
 

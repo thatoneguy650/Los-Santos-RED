@@ -20,15 +20,12 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-        IItemEquipable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable
     {
         public int UpdateState = 0;
-        private int money = 0;
         private uint GameTimeGotInVehicle;
         private uint GameTimeGotOutOfVehicle;
         private uint GameTimeLastBusted;
-        private uint GameTimeLastChangedMoney;
-        private uint GameTimeLastCheckedRouteBlip;
         private uint GameTimeLastCrashedVehicle;
         private uint GameTimeLastDied;
         private uint GameTimeLastFedUpCop;
@@ -44,7 +41,6 @@ namespace Mod
         private uint GameTimeStartedMovingFast;
         private uint GameTimeStartedPlaying;
         private uint GameTimeWantedLevelStarted;
-        private uint GangNotificationID = 0;
         private bool HasThrownGotOffFreeway;
         private bool HasThrownGotOnFreeway;
         private bool isActive = true;
@@ -55,7 +51,6 @@ namespace Mod
         private bool isHotwiring;
         private bool isInVehicle;
         private bool isJacking = false;
-        private uint LookedAtPedButtonPromptHandle;
         private Vector3 position;
         private int PreviousWantedLevel;
         private int storedViewMode = -1;
@@ -64,10 +59,8 @@ namespace Mod
         private int wantedLevel = 0;
         private float CurrentVehicleRoll;
         private uint GameTimeLastClosedDoor;
-        private uint GameTimeLastToggledSurrender;
         private bool isCheckingExcessSpeed;
         private bool isShooting;
-        private bool isGettingOutOfAVehicle;
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
 
@@ -88,12 +81,6 @@ namespace Mod
         private IGangTerritories GangTerritories;
         private IGameSaves GameSaves;
 
-        private HealthState HealthState;
-        private CriminalHistory CriminalHistory;
-        private Respawning Respawning;
-        private Scanner Scanner;
-        private SearchMode SearchMode;
-        private SurrenderActivity Surrendering;
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups, IDances dances, ISpeeches speeches)
         {
@@ -132,8 +119,8 @@ namespace Mod
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            GangRelationships = new GangRelationships(gangs, this, Settings);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories);
+            GangRelationships = new GangRelationships(gangs, this, Settings, PlacesOfInterest);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
             OfficerFriendlyRelationship = new OfficerFriendlyRelationship(this, PlacesOfInterest);
@@ -145,19 +132,25 @@ namespace Mod
             HumanState = new HumanState(this, TimeControllable, Settings);
             Speeches = speeches;
             Stance = new Stance(this);
-            Equipment = new Equipment(this, this, Weapons, Settings, this, this, this);
+            WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
+            Destinations = new Destinations(this, World);
+            VehicleOwnership = new VehicleOwnership(this,World);
+            BankAccounts = new BankAccounts(this, Settings);
+            ActivityManager = new ActivityManager(this);
         }
 
-
+        public Destinations Destinations { get; private set; }
+        public CriminalHistory CriminalHistory { get; private set; }
         public PlayerTasks PlayerTasks { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
         public ButtonPrompts ButtonPrompts { get; private set; }
         public CellPhone CellPhone { get; private set; }
         public LocationData CurrentLocation { get; set; }
-        public Equipment Equipment { get; private set; }
+        public WeaponEquipment WeaponEquipment { get; private set; }
         public GangRelationships GangRelationships { get; private set; }
         public GunDealerRelationship GunDealerRelationship { get; private set; }
         public HumanState HumanState { get; set; }
+        public HealthState HealthState { get; private set; }
         public Injuries Injuries { get; private set; }
         public Intoxication Intoxication { get; private set; }
         public Inventory Inventory { get; set; }
@@ -168,17 +161,15 @@ namespace Mod
         public Sprinting Sprinting { get; private set; }
         public Stance Stance { get; private set; }
         public Violations Violations { get; private set; }
-
-
-
-
-
-
-
-
+        public Respawning Respawning { get; private set; }
+        public Scanner Scanner { get; private set; }
+        public SearchMode SearchMode { get; private set; }
+        public SurrenderActivity Surrendering { get; private set; }
+        public VehicleOwnership VehicleOwnership { get; private set; }
+        public BankAccounts BankAccounts { get; private set; }
+        public ActivityManager ActivityManager { get; private set; }
 
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
-        public Cop AliasedCop { get; set; }
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
         public bool AnyGangMemberRecentlySeenPlayer { get; set; }
@@ -199,10 +190,7 @@ namespace Mod
         public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsDancing;
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
-        public bool CanSurrender => Surrendering.CanSurrender;
-        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && Equipment.CurrentWeapon != null && Equipment.CurrentWeapon.CanPistolSuicide;
-        public bool CanUndie => Respawning.CanUndie;
-        public bool CanWaveHands => Surrendering.CanWaveHands;
+        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && WeaponEquipment.CurrentWeapon != null && WeaponEquipment.CurrentWeapon.CanPistolSuicide;
         public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
         public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
         public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -218,38 +206,21 @@ namespace Mod
         public InteractableLocation ClosestInteractableLocation { get; private set; }
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public Scenario ClosestScenario { get; private set; }
-        public int CriminalHistoryMaxWantedLevel => CriminalHistory.MaxWantedLevel;
-        public Blip CurrentGPSBlip { get; set; }
         public PedExt CurrentLookedAtPed { get; private set; }
         public PedVariation CurrentModelVariation { get; set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public PedExt CurrentTargetedPed { get; private set; }
-        public ComplexTask CurrentTask { get; set; }
         public VehicleExt CurrentVehicle { get;  set; }
         public bool CurrentVehicleIsRolledOver { get; set; }
         public bool CurrentVehicleIsInAir { get; set; }
-        public string DebugLine1 => $"Player: {ModelName},{Game.LocalPlayer.Character.Handle} RcntStrPly: {RecentlyStartedPlaying} IsMovingDynam: {IsMovingDynamically} IsIntoxicated: {IsIntoxicated} {CurrentLocation?.CurrentZone?.InternalGameName}";
-        public string DebugLine2 => $"Vio: {Violations.LawsViolatingDisplay}";
-        public string DebugLine3 => $"Rep: {PoliceResponse.ReportedCrimesDisplay}";
-        public string DebugLine4 { get; set; }
-        public string DebugLine5 => $"{CurrentLookedAtPed?.Handle} CanLootLookedAtPed {CanLootLookedAtPed} CanGrabLookedAtPed {CanGrabLookedAtPed} DIstance {CurrentLookedAtPed?.DistanceToPlayer}  {Violations?.LawsViolatingDisplay}";
-        public string DebugLine6 => $"RolledOver: {CurrentVehicleIsRolledOver} CurrentVehicleRoll: {CurrentVehicleRoll} CurrentVehicleIsInAir {CurrentVehicleIsInAir}";
-        public string DebugLine7 => $"AnyPolice: CanSee: {AnyPoliceCanSeePlayer}, RecentlySeen: {AnyPoliceRecentlySeenPlayer}, CanHear: {AnyPoliceCanHearPlayer}, CanRecognize {AnyPoliceCanRecognizePlayer}";
-        public string DebugLine8 => SearchMode.DebugString;
-        public string DebugLine9 => "";
         public bool DiedInVehicle { get; private set; }
         public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
         public int GroupID { get; set; }
-        public bool HandsAreUp { get; set; }
         public bool HasBeenMoving => GameTimeStartedMoving != 0 && Game.GameTime - GameTimeStartedMoving >= 5000;
         public bool HasBeenMovingFast => GameTimeStartedMovingFast != 0 && Game.GameTime - GameTimeStartedMovingFast >= 2000;
-        public bool HasCriminalHistory => CriminalHistory.HasHistory;
-        public bool HasCurrentActivity => UpperBodyActivity != null;
-        public bool HasDeadlyCriminalHistory => CriminalHistory.HasDeadlyHistory;
+        public bool HasCurrentActivity => UpperBodyActivity != null || LowerBodyActivity != null;
         public bool HasOnBodyArmor { get; private set; }
         public Interaction Interaction { get; private set; }
-        public float IntoxicatedIntensity { get; set; }
-        public float IntoxicatedIntensityPercent { get; set; } = 0.0f;
         public bool IsAiming
         {
             get => isAiming;
@@ -275,7 +246,7 @@ namespace Mod
             }
         }
         public bool IsAliveAndFree => !IsBusted && !IsDead;
-        public bool IsAttemptingToSurrender => HandsAreUp && !PoliceResponse.IsWeaponsFree;
+        public bool IsAttemptingToSurrender => Surrendering.HandsAreUp && !PoliceResponse.IsWeaponsFree;
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
         public bool IsBusted { get; private set; }
@@ -316,7 +287,6 @@ namespace Mod
         public bool IsInSearchMode { get; set; }
         public bool IsInteracting => IsConversing || IsHoldingUp;
         public bool IsInteractingWithLocation { get; set; } = false;
-        public bool IsIntoxicated { get; set; }
         public bool IsInVehicle
         {
             get => isInVehicle;
@@ -364,56 +334,21 @@ namespace Mod
                 }
             }
         }
-        public bool IsSpeeding => Violations.IsSpeeding;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }
         public bool IsVisiblyArmed { get; set; }
         public bool IsWanted => wantedLevel > 0;
-        public bool IsWavingHands { get; set; }
         public Vehicle LastFriendlyVehicle { get; set; }
         public GestureData LastGesture { get; set; }
         public DanceData LastDance { get; set; }
-        public int MaxWantedLastLife { get; set; }
         public string ModelName { get; set; }
-        public int LastChangeMoneyAmount { get; set; }
-        public int Money
-        {
-            get
-            {
-                int CurrentCash;
-                uint PlayerCashHash;
-                if (CharacterModelIsPrimaryCharacter)
-                {
-                    PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
-                }
-                else
-                {
-                    PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
-                }
-
-                if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
-                {
-                    unsafe
-                    {
-                        NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
-                    }
-                    return CurrentCash;
-                }
-                else
-                {
-                    return money;
-                }
-            }
-        }
-        public List<VehicleExt> OwnedVehicles { get; set; } = new List<VehicleExt>();
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public string PlayerName { get; set; }
         public Vector3 Position => position;
         public VehicleExt PreviousVehicle { get; private set; }
         public bool RecentlyBribedPolice => Respawning.RecentlyBribedPolice;
         public bool RecentlyBusted => GameTimeLastBusted != 0 && Game.GameTime - GameTimeLastBusted <= 5000;
-        public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
         public bool RecentlyCrashedVehicle => GameTimeLastCrashedVehicle != 0 && Game.GameTime - GameTimeLastCrashedVehicle <= 5000;
         public bool RecentlyFedUpCop => GameTimeLastFedUpCop != 0 && Game.GameTime - GameTimeLastFedUpCop <= 5000;
         public bool RecentlyPaidFine => Respawning.RecentlyPaidFine;
@@ -442,8 +377,6 @@ namespace Mod
         }
         public uint TimeInCurrentVehicle => GameTimeGotInVehicle == 0 || !IsInVehicle ? 0 : Game.GameTime - GameTimeGotInVehicle;
         public uint TimeInSearchMode => SearchMode.TimeInSearchMode;
-        public uint TimeOnFoot => GameTimeGotOutOfVehicle == 0 || IsInVehicle ? 0 : Game.GameTime - GameTimeGotOutOfVehicle;
-        public int TimesDied => Respawning.TimesDied;
         public uint TimeToRecognize
         {
             get
@@ -479,9 +412,7 @@ namespace Mod
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
 
-
-
-
+        //Required
         public void Setup()
         {
             Violations.Setup();
@@ -494,16 +425,21 @@ namespace Mod
             Properties.Setup();
             ButtonPrompts.Setup();
             HumanState.Setup();
+            Destinations.Setup();
             SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-            Equipment.SetUnarmed();
+            WeaponEquipment.SetUnarmed();
+
+            VehicleOwnership.Setup();
+
+
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
             {
                 UpdateCurrentVehicle();
-                TakeOwnershipOfVehicle(CurrentVehicle, false);
+                VehicleOwnership.TakeOwnershipOfVehicle(CurrentVehicle, false);
             }
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
@@ -521,7 +457,7 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, true, false);
             }
-            Equipment.Setup();
+            WeaponEquipment.Setup();
             GameFiber.StartNew(delegate
             {
                 while (isActive)
@@ -548,93 +484,90 @@ namespace Mod
             UpdateData();
             ButtonPrompts.Update();
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool clearCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds)
         {
             IsDead = false;
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             HealthState.Reset();
+            
             IsPerformingActivity = false;
+            
+            
             CurrentVehicle = null;
-            RemoveGPSRoute();
-            NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+
+            Destinations.Reset();
+
+            NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
             IsMobileRadioEnabled = false;
 
-            // IsIntoxicated = false;
+
             if (resetWanted)
             {
+                GameTimeStartedPlaying = Game.GameTime;
                 PoliceResponse.Reset();
                 Investigation.Reset();
-                Violations.Reset();
-                MaxWantedLastLife = 0;
-                GameTimeStartedPlaying = Game.GameTime;
+                Violations.Reset();            
                 Scanner.Reset();
                 Update();
             }
+
+
             if (resetTimesDied)
             {
                 Respawning.Reset();
             }
-            if (clearWeapons)
+
+            if (resetWeapons)
             {
-                Game.LocalPlayer.Character.Inventory.Weapons.Clear();
+                WeaponEquipment.Reset();           
             }
-            if (clearCriminalHistory)
+
+
+            if (resetCriminalHistory)
             {
-                CriminalHistory.Clear();
+                CriminalHistory.Reset();
             }
-            if (clearInventory)
+
+            if (resetInventory)
             {
-                Inventory.Clear();
+                Inventory.Reset();
             }
-            if (clearIntoxication)
+
+            if (resetIntoxication)
             {
-                Intoxication.Dispose();
+                Intoxication.Reset();
             }
-            else if (IsIntoxicated)
+
+            if (resetRelationships)
             {
-                Intoxication.Restart();
-            }
-            if (resetGangRelationships)
-            {
-                GangRelationships.ResetAllReputations();
-                foreach (GangDen gd in PlacesOfInterest.PossibleLocations.GangDens)
-                {
-                    gd.Reset();
-                }
-                foreach (DeadDrop gd in PlacesOfInterest.PossibleLocations.DeadDrops)
-                {
-                    gd.Reset();
-                }
+                GangRelationships.Reset();
                 OfficerFriendlyRelationship.Reset(false);
                 GunDealerRelationship.Reset(false);
             }
-            if (clearOwnedVehicles)
+
+            if (resetOwnedVehicles)
             {
-                ClearVehicleOwnership();
+                VehicleOwnership.Reset();
             }
-            if (clearCellphone)
+
+            if (resetCellphone)
             {
                 CellPhone.Reset();
             }
-            if (clearActiveTasks)
+            if (resetActiveTasks)
             {
-                PlayerTasks.Clear();
+                PlayerTasks.Reset();
             }
-            if (clearProperties)
+            if (resetProperties)
             {
-                Properties.Dispose();
+                Properties.Reset();
             }
+
             if (resetHealth)
             {
-                Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-                NativeFunction.Natives.RESET_PED_VISIBLE_DAMAGE(Game.LocalPlayer.Character);
-                Injuries.Dispose();
-            }
-            else if (Injuries.IsInjured)
-            {
-                Injuries.Restart();
+                Injuries.Reset();
             }
 
             if (resetNeeds)
@@ -644,6 +577,7 @@ namespace Mod
         }
         public void Dispose()
         {
+            isActive = false;
             Investigation.Dispose(); //remove blip
             CriminalHistory.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
@@ -656,20 +590,14 @@ namespace Mod
             ButtonPrompts.Dispose();
             Intoxication.Dispose();
             Injuries.Dispose();
-
             GunDealerRelationship.Dispose();
             OfficerFriendlyRelationship.Dispose();
             HumanState.Dispose();
-            Equipment.Dispose();
-
-            isActive = false;
-            RemoveGPSRoute();
+            WeaponEquipment.Dispose();
+            Destinations.Dispose();
+            VehicleOwnership.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
-
-
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
-            // NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
-
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
             NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET<bool>(Game.LocalPlayer.Character);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
@@ -679,155 +607,20 @@ namespace Mod
                 NativeFunction.Natives.x80C8B1846639BB19(0);
                 NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
             }
-
             Game.LocalPlayer.WantedLevel = 0;
             NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(0);
-            NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 6);
-
-            NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);
-            ClearVehicleOwnership();
+            NativeFunction.Natives.SET_MAX_WANTED_LEVEL(6);
+            NativeFunction.Natives.SET_PED_AS_COP(Game.LocalPlayer.Character, false);      
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
                 Game.TimeScale = 1f;
             }
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
-
             NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
             NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, true);
+        }
 
-            //Game.DisableControlAction(0, GameControl.Attack, false);
-        }
-        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
-        {
-            if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
-            {
-                return;
-            }
-            else if (RecentlyPaidFine && crimeObserved.ResultingWantedLevel <= 1)
-            {
-                return;
-            }
-            else if (RecentlyStartedPlaying)
-            {
-                return;
-            }
-            GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
-            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
-            PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
-            if (!isObservedByPolice && IsNotWanted)
-            {
-                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription, true, false, false);
-            }
-            if (AnnounceCrime)
-            {
-                Scanner.AnnounceCrime(crimeObserved, description);
-            }
-        }
-        public void AddCrimeToHistory(Crime crime) => CriminalHistory.AddCrime(crime);
-        public void AddDistressedPed(Vector3 position)
-        {
-            if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
-            {
-                //Scanner.Reset();
-                Investigation.Start(position, false, false, true, false);
-                Scanner.OnMedicalServicesRequested();
-            }
-        }
-        public void AddGPSRoute(string Name, Vector3 position)
-        {
-            if (CurrentGPSBlip.Exists())
-            {
-                NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-                CurrentGPSBlip.Delete();
-            }
-            if (position != Vector3.Zero)
-            {
-                Blip MyLocationBlip = new Blip(position)
-                {
-                    Name = Name
-                };
-                if (MyLocationBlip.Exists())
-                {
-                    MyLocationBlip.Color = Color.LightYellow;
-                    NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE(MyLocationBlip, false);
-                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
-                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
-                    NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
-                    CurrentGPSBlip = MyLocationBlip;
-                    World.AddBlip(MyLocationBlip);
-                    Game.DisplaySubtitle($"Adding GPS To {Name}");
-                    GameTimeLastCheckedRouteBlip = Game.GameTime;
-                }
-            }
-        }
-        public void AnnounceCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved)
-        {
-            CrimeSceneDescription description = new CrimeSceneDescription(false, isObservedByPolice, Location, false) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved };
-            Scanner.AnnounceCrime(crimeObserved, description);
-        }
-        public void Arrest()
-        {
-            BeingArrested = true;
-            if (!IsBusted)
-            {
-                OnPlayerBusted();
-            }
-        }
-        public void ArrestWarrantUpdate() => CriminalHistory.Update();
-        public bool BribePolice(int bribeAmount)
-        {
-            bool toReturn = Respawning.BribePolice(bribeAmount);
-            if (toReturn)
-            {
-                Scanner.OnBribedPolice();
-            }
-            return toReturn;
-        }
-        public void CallEMS()
-        {
-            if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1)
-            {
-                Scanner.Reset();
-                Investigation.Start(Position, false, false, true, false);
-                Scanner.OnMedicalServicesRequested();
-            }
-        }
-        public void CallFire()
-        {
-            if (World.TotalWantedLevel <= 1)
-            {
-                Scanner.Reset();
-                Investigation.Start(Position, false, false, false, true);
-                Scanner.OnFirefightingServicesRequested();
-            }
-        }
-        public void CallPolice()
-        {
-            Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
-            PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-            CrimeSceneDescription description;
-            if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-            {
-                description = new CrimeSceneDescription(!violatingCiv.IsInVehicle, IsCop, violatingCiv.Pedestrian.Position, false) { VehicleSeen = null, WeaponSeen = null };
-                ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-            }
-            else
-            {
-                description = new CrimeSceneDescription(false, IsCop, Position);
-            }
-
-            if (IsCop)
-            {
-                Scanner.Reset();
-                Scanner.AnnounceCrime(ToCallIn, description);
-                Investigation.Start(Position, false, true, false, false);
-            }
-            else
-            {
-                AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
-            }
-        }
+        //Needed
         public void ChangeHealth(int ToAdd)
         {
             if (ToAdd > 0)
@@ -866,199 +659,6 @@ namespace Mod
             PlayerName = newName;
             EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}", 3);
         }
-        public void ChangePlate(int Index)
-        {
-            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, World);
-                UpperBodyActivity.Start();
-            }
-        }
-        public void ChangePlate(LicensePlate toChange)
-        {
-            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, toChange, Settings, World);
-                UpperBodyActivity.Start();
-            }
-        }
-        public void ClearVehicleOwnership()
-        {
-            foreach (VehicleExt car in OwnedVehicles)
-            {
-                if (car.Vehicle.Exists())
-                {
-                    Blip attachedBlip = car.Vehicle.GetAttachedBlip();
-                    if (attachedBlip.Exists())
-                    {
-                        attachedBlip.Delete();
-                    }
-                    if (car.AttachedBlip.Exists())
-                    {
-                        car.AttachedBlip.Delete();
-                    }
-                    car.Vehicle.IsPersistent = false;
-                }
-            }
-            OwnedVehicles.Clear();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLEs CLEARED", 5);
-        }
-        public void CloseDriverDoor()
-        {
-            if (Game.GameTime - GameTimeLastClosedDoor >= 1500)
-            {
-                if (!IsPerformingActivity && IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
-                {
-                    bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
-                    if (isValid)
-                    {
-                        float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
-
-                        if (DoorAngle > 0.0f)
-                        {
-                            string toPlay = "";
-                            int TimeToWait = 250;
-                            if (DoorAngle >= 0.7)
-                            {
-                                toPlay = "d_close_in";
-                                TimeToWait = 500;
-                            }
-                            else
-                            {
-                                toPlay = "d_close_in_near";
-                            }
-                            EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
-                            AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
-                            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
-                            GameFiber DoorWatcher = GameFiber.StartNew(delegate
-                            {
-                                GameFiber.Sleep(TimeToWait);
-                                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-                                {
-                                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
-                                    GameFiber.Sleep(250);
-                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
-                                }
-                                else
-                                {
-                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
-                                }
-                            }, "DoorWatcher");
-                        }
-                        GameTimeLastClosedDoor = Game.GameTime;
-                    }
-                }
-            }
-        }
-        public void ToggleLeftIndicator()
-        {
-            if (CurrentVehicle != null)
-            {
-                CurrentVehicle.Indicators.ToggleLeft();
-            }
-        }
-        public void ToggleHazards()
-        {
-            if (CurrentVehicle != null)
-            {
-                CurrentVehicle.Indicators.ToggleHazards();
-            }
-        }
-        public void ToggleRightIndicator()
-        {
-            if (CurrentVehicle != null)
-            {
-                CurrentVehicle.Indicators.ToggleRight();
-            }
-        }
-        public void ToggleVehicleEngine()
-        {
-            if (CurrentVehicle != null)
-            {
-                CurrentVehicle.Engine.Toggle();
-            }
-        }
-        public void ToggleDriverWindow()
-        {
-            if (CurrentVehicle != null)
-            {
-                CurrentVehicle.SetDriverWindow(!CurrentVehicle.ManuallyRolledDriverWindowDown);
-            }
-        }
-        public void CommitSuicide()
-        {
-            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                UpperBodyActivity = new SuicideActivity(this, Settings);
-                UpperBodyActivity.Start();
-            }
-        }
-        private void ConsumeItem(ModItem toAdd)
-        {
-            if (toAdd.CanConsume)
-            {
-                if (toAdd.ChangesHealth)
-                {
-                    ChangeHealth(toAdd.HealthChangeAmount);
-                }
-
-                if (toAdd.ChangesHunger)
-                {
-                    HumanState.Hunger.Change(toAdd.HungerChangeAmount, true);
-                }
-                if (toAdd.ChangesSleep)
-                {
-                    HumanState.Sleep.Change(toAdd.SleepChangeAmount, true);
-                }
-                if (toAdd.ChangesThirst)
-                {
-                    HumanState.Thirst.Change(toAdd.ThirstChangeAmount, true);
-                }
-            }
-        }
-        public void ContinueCurrentActivity()
-        {
-            if (UpperBodyActivity != null && UpperBodyActivity.CanPause && UpperBodyActivity.IsPaused())
-            {
-                UpperBodyActivity.Continue();
-            }
-            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause && LowerBodyActivity.IsPaused())
-            {
-                LowerBodyActivity.Continue();
-            }
-        }
-        public void DeleteTrackedVehicles()
-        {
-            TrackedVehicles.Clear();
-        }
-        public void DisplayPlayerGangNotification()
-        {
-            Game.RemoveNotification(GangNotificationID);
-            string NotifcationText = GangRelationships.PrintRelationships();
-            if (NotifcationText != "")
-            {
-                GangNotificationID = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", NotifcationText);
-            }
-            else
-            {
-                GangNotificationID = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Gang Info", $"~y~{PlayerName}", "~s~Gangs: N/A");
-            }
-        }
         public void DisplayPlayerNotification()
         {
             string NotifcationText = "Warrants: ~g~None~s~";
@@ -1066,292 +666,20 @@ namespace Mod
             {
                 NotifcationText = "Wanted For:" + PoliceResponse.PrintCrimes();
             }
-            else if (HasCriminalHistory)
+            else if (CriminalHistory.HasHistory)
             {
-                NotifcationText = "Wanted For:" + PrintCriminalHistory();
+                NotifcationText = "Wanted For:" + CriminalHistory.PrintCriminalHistory();
             }
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", $"~y~{PlayerName}", NotifcationText);
             // DisplayPlayerVehicleNotification();
         }
-        public void DisplayPlayerVehicleNotification(VehicleExt toDescribe)
+        public void SetDemographics(string modelName, bool isMale, string playerName, int money)
         {
-            string NotifcationText = "";
-            VehicleExt VehicleToDescribe = toDescribe;
-            bool usingOwned = true;
-            if (VehicleToDescribe != null)
-            {
-                string Make = VehicleToDescribe.MakeName();
-                string Model = VehicleToDescribe.ModelName();
-                string VehicleName = "";
-                if (Make != "")
-                {
-                    VehicleName = Make;
-                }
-                if (Model != "")
-                {
-                    VehicleName += " " + Model;
-                }
-
-                //string VehicleNameColor = "~p~";
-                //string VehicleString = "";
-                if (usingOwned)
-                {
-                    NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
-                }
-                else if (!VehicleToDescribe.IsStolen)
-                {
-                    NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
-                }
-                else
-                {
-                    NotifcationText += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
-                }
-                if (VehicleToDescribe.CarPlate != null && VehicleToDescribe.CarPlate.IsWanted)
-                {
-                    NotifcationText += $"~n~Plate: ~r~{VehicleToDescribe.CarPlate.PlateNumber} ~r~(Wanted)~s~";
-                }
-                else
-                {
-                    NotifcationText += $"~n~Plate: ~p~{VehicleToDescribe.CarPlate.PlateNumber} ~s~";
-                }
-            }
-
-            if (NotifcationText != "")
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{PlayerName}", NotifcationText);
-            }
-            else
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{PlayerName}", "~s~Vehicle: None");
-            }
-        }
-        public void EnterLocation()
-        {
-            //if (ClosestTeleportEntrance != null)
-            //{
-            //    Game.FadeScreenOut(1500, true);
-            //    CurrentInteriorLocation = ClosestTeleportEntrance;
-            //    Character.Position = ClosestTeleportEntrance.TeleportEnterPosition;
-            //    Character.Heading = ClosestTeleportEntrance.TeleportEnterHeading;
-            //    Game.FadeScreenIn(1500, true);
-            //}
-            //else if (ClosestPurchaseLocation != null && ClosestPurchaseLocation.IsPurchased)
-            //{
-            //    Game.DisplayNotification("ENTERED BRO");
-            //}
-        }
-        public void EnterVehicleAsPassenger()
-        {
-            VehicleExt toEnter = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
-            if (toEnter != null && toEnter.Vehicle.Exists())
-            {
-                int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
-                if (seatIndex != null)
-                {
-                    foreach (Ped passenger in toEnter.Vehicle.Occupants)
-                    {
-                        if (passenger.Exists())
-                        {
-                            passenger.StaysInVehiclesWhenJacked = true;
-                            passenger.BlockPermanentEvents = true;
-                        }
-                    }
-                    LastFriendlyVehicle = toEnter.Vehicle;
-                    NativeFunction.Natives.TASK_ENTER_VEHICLE(Character, toEnter.Vehicle, 5000, seatIndex, 1f, 9);
-                }
-            }
-        }
-        public void ExitLocation()
-        {
-            //if (CurrentInteriorLocation != null)
-            //{
-            //    Game.FadeScreenOut(1500, true);
-            //    Character.Position = CurrentInteriorLocation.EntrancePosition;
-            //    Character.Heading = CurrentInteriorLocation.EntranceHeading;
-            //    CurrentInteriorLocation = null;
-            //    Game.FadeScreenIn(1500, true);
-            //}
-        }
-        public int FineAmount()
-        {
-            int InitialAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
-            if (PoliceResponse.PlayerSeenInVehicleDuringWanted)
-            {
-                if (!Licenses.HasDriversLicense || !Licenses.DriversLicense.IsValid(TimeControllable))
-                {
-                    InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
-                }
-            }
-            return InitialAmount;
-        }
-        public void ForceErraticDriver()
-        {
-            if (IsInVehicle && !IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-            {
-                Ped Driver = CurrentVehicle.Vehicle.Driver;
-                if (Driver.Exists() && Driver.Handle != Character.Handle)
-                {
-                    PedExt DriverExt = World.Pedestrians.GetPedExt(Driver.Handle);
-                    Driver.BlockPermanentEvents = true;
-                    Driver.KeepTasks = true;
-                    if (DriverExt != null)
-                    {
-                        DriverExt.CanBeAmbientTasked = false;
-                        DriverExt.WillCallPolice = false;
-                        DriverExt.WillCallPoliceIntense = false;
-                        DriverExt.WillFight = false;
-                        DriverExt.CanBeTasked = false;
-                    }
-                    NativeFunction.Natives.SET_DRIVER_ABILITY(Driver, 100f);
-
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_COORS_TARGET", 0, CurrentVehicle.Vehicle, 358.9726f, -1582.881f, 29.29195f, 8, 50f, (int)eCustomDrivingStyles.Code3, 0f, 2f, true);//8f
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
-
-                    //unsafe
-                    //{
-                    //    int lol = 0;
-                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    //    //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, CurrentVehicle.Vehicle, -1, -1, 15.0f, 9);
-                    //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, Position.X,Position.Y,Position.Z,5000f,-1, false, false);
-
-                    //    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, CurrentVehicle.Vehicle, 25f, (int)eCustomDrivingStyles.FastEmergency, 25f);
-                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
-                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    //}
-                }
-            }
-        }
-        public void GangRelationshipsUpdate() => GangRelationships.Update();
-        public void Gesture(GestureData gestureData)
-        {
-            EntryPoint.WriteToConsole($"Gesture Start 2 NO DATA?: {gestureData == null}");
-            if (!IsPerformingActivity && CanPerformActivities)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                LastGesture = gestureData;
-                UpperBodyActivity = new GestureActivity(this, gestureData);
-                UpperBodyActivity.Start();
-            }
-        }
-        public void Gesture()
-        {
-            Gesture(LastGesture);
-        }
-        public void Dance(DanceData danceData)
-        {
-            EntryPoint.WriteToConsole($"Dance Start 2 NO DATA?: {danceData == null}");
-            if (!IsPerformingActivity && CanPerformActivities && !IsInVehicle)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                LastDance = danceData;
-                UpperBodyActivity = new DanceActivity(this, danceData, RadioStations, Settings, Dances);
-                UpperBodyActivity.Start();
-            }
-        }
-        public void Dance()
-        {
-            StopDynamicActivity();
-            LastDance = Dances.DanceLookups.PickRandom();
-            Dance(LastDance);
-        }
-        public void GiveMoney(int Amount)
-        {
-            if (Amount != 0)
-            {
-                LastChangeMoneyAmount = Amount;
-                GameTimeLastChangedMoney = Game.GameTime;
-            }
-            int CurrentCash;
-            uint PlayerCashHash;
-            if (CharacterModelIsPrimaryCharacter)
-            {
-                PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
-            }
-            else
-            {
-                PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
-            }
-
-            EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
-
-            //uint PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
-
-            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
-            {
-
-                unsafe
-                {
-                    NativeFunction.CallByName<int>("STAT_GET_INT", PlayerCashHash, &CurrentCash, -1);
-                }
-                if (CurrentCash + Amount < 0)
-                {
-                    NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, 0, 1);
-                }
-                else
-                {
-                    NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, CurrentCash + Amount, 1);
-                }
-            }
-            else
-            {
-                if (money + Amount < 0)
-                {
-                    money = 0;
-                }
-                else
-                {
-                    money += Amount;
-                }
-            }
-        }
-        public void GrabPed()
-        {
-
-
-            if (!IsPerformingActivity && CanPerformActivities && CanGrabLookedAtPed && !IsInVehicle)
-            {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                if (LowerBodyActivity != null)
-                {
-                    LowerBodyActivity.Cancel();
-                }
-                LowerBodyActivity = new HumanShield(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
-                LowerBodyActivity.Start();
-            }
-
-
-
-
-            //if (!IsInteracting && CanLootLookedAtPed)
-            //{
-            //    if (Interaction != null)
-            //    {
-            //        Interaction.Dispose();
-            //    }
-            //    Interaction = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
-            //    Interaction.Start();
-            //}
+            ModelName = modelName;
+            PlayerName = playerName;
+            IsMale = isMale;
+            BankAccounts.SetMoney(money);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
         }
         public void LocationUpdate()
         {
@@ -1369,39 +697,83 @@ namespace Mod
                 HasThrownGotOffFreeway = true;
             }
         }
-        public void LootPed()
+
+        //Maybe?
+        public int FineAmount()
         {
-            if (!IsPerformingActivity && CanPerformActivities && CanLootLookedAtPed && !IsInVehicle)
+            int InitialAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
+            if (PoliceResponse.PlayerSeenInVehicleDuringWanted)
             {
-                if (UpperBodyActivity != null)
+                if (!Licenses.HasDriversLicense || !Licenses.DriversLicense.IsValid(TimeControllable))
                 {
-                    UpperBodyActivity.Cancel();
+                    InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
                 }
-                if (LowerBodyActivity != null)
+            }
+            return InitialAmount;
+        }
+        public void SetDenStatus(Gang gang, bool v)
+        {
+            World.Places.StaticPlaces.SetGangLocationActive(gang.ID, v);
+        }
+        public void SetAngeredCop()
+        {
+            GameTimeLastFedUpCop = Game.GameTime;
+        }
+        public void SetBodyArmor(int Type)
+        {
+            if (CharacterModelIsFreeMode)
+            {
+                int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
+                int TextureID = 0;
+
+                if (NumberOfTextureVariations > 0)
                 {
-                    LowerBodyActivity.Cancel();
+                    RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
                 }
-                LowerBodyActivity = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
-                LowerBodyActivity.Start();
+                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
+                if (!HasOnBodyArmor)
+                {
+                    Character.Armor = 200;
+                }
+                HasOnBodyArmor = true;
             }
         }
-        public void DragPed()
+        public void ShootAt(Vector3 TargetCoordinate)
         {
-            if (!IsPerformingActivity && CanPerformActivities && CanDragLookedAtPed && !IsInVehicle)
+            NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
+            GameTimeLastShot = Game.GameTime;
+        }
+        public void SetShot()
+        {
+            GameTimeLastShot = Game.GameTime;
+        }
+        public void ToggleBodyArmor(int Type)
+        {
+            if (CharacterModelIsFreeMode)
             {
-                if (UpperBodyActivity != null)
+                if (HasOnBodyArmor)
                 {
-                    UpperBodyActivity.Cancel();
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, 0, 0, 0);
+                    HasOnBodyArmor = false;
+                    Character.Armor = 0;
                 }
-                if (LowerBodyActivity != null)
+                else
                 {
-                    LowerBodyActivity.Cancel();
+                    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
+                    int TextureID = 0;
+
+                    if (NumberOfTextureVariations > 0)
+                    {
+                        RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
+                    }
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
+                    HasOnBodyArmor = true;
+                    Character.Armor = 200;
                 }
-                LowerBodyActivity = new Drag(this, CurrentLookedAtPed, Settings, Crimes, ModItems, World);
-                LowerBodyActivity.Start();
             }
         }
-        public void LowerHands() => Surrendering.LowerHands();
+
+        //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
         public void OnGotOffFreeway()
         {
@@ -1502,231 +874,402 @@ namespace Mod
         public void OnWantedActiveMode() => Scanner.OnWantedActiveMode();
         public void OnWantedSearchMode() => Scanner.OnWantedSearchMode();
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
-        public void PauseCurrentActivity()
+        private void OnAimingChanged()
         {
-            if (UpperBodyActivity != null && UpperBodyActivity.CanPause)
+            if (IsAiming)
             {
-                UpperBodyActivity.Pause();
             }
-            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause)
+            else
             {
-                LowerBodyActivity.Pause();
             }
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsAiming Changed to: {IsAiming}", 5);
         }
-        public void CancelCurrentActivity()
+        private void OnAimingInVehicleChanged()
         {
-            if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
+            if (IsAimingInVehicle)
             {
-                UpperBodyActivity.Cancel();
-            }
-            else if (LowerBodyActivity != null && LowerBodyActivity.CanCancel)
-            {
-                LowerBodyActivity.Cancel();
-            }
-        }
-        public bool PayFine()
-        {
-            bool toReturn = Respawning.PayFine();
-            if (toReturn)
-            {
-                Scanner.OnPaidFine();
-            }
-            return toReturn;
-        }
-        public void PayoffPolice()
-        {
-            Respawning.PayoffPolice();
-            Scanner.OnBribedPolice();
-        }
-        public void PlayDispatchDebug(Crime toPlay, CrimeSceneDescription toAnnounce)
-        {
-            Scanner.Reset();
-            Scanner.AnnounceCrime(toPlay, toAnnounce);
-        }
-        public void PlaySpeech(string speechName, bool useMegaphone)
-        {
-            if (CharacterModelIsFreeMode && FreeModeVoice != "")
-            {
-                if (useMegaphone)
+                if (WeaponEquipment.CurrentWeapon == null)
                 {
-                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
-
+                    IsMakingInsultingGesture = true;
                 }
                 else
                 {
-                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.Force);
+                    EntryPoint.WriteToConsole($"CurrentWeapon {WeaponEquipment.CurrentWeapon.ModelName}", 5);
                 }
-                EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
             }
             else
             {
-                Character.PlayAmbientSpeech(speechName, useMegaphone);
+                IsMakingInsultingGesture = false;
             }
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}", 5);
         }
-        public string PrintCriminalHistory() => CriminalHistory.PrintCriminalHistory();
-        public void RaiseHands() => Surrendering.RaiseHands();
-        public void ToggleSurrender()
+        private void OnExcessiveSpeed()
         {
-            if (Game.GameTime - GameTimeLastToggledSurrender >= 1000)
+            GameFiber.Yield();
+            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed)
             {
-                if (HandsAreUp)
+                GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
-                    if (!IsBusted)
+                    isCheckingExcessSpeed = true;
+                    GameFiber.Sleep(5000);
+                    if (isExcessiveSpeed)
                     {
-                        Surrendering.LowerHands();
+                        Scanner.OnExcessiveSpeed();
                     }
-                }
-                else if (IsWavingHands)
+                    isCheckingExcessSpeed = false;
+                }, "FastForwardWatcher");
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);
+        }
+        private void OnGettingIntoAVehicleChanged()
+        {
+            //GameFiber.Yield();//TR Yield RemovedTest 2
+            if (IsGettingIntoAVehicle)
+            {
+                Vehicle VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
+                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+                if (VehicleTryingToEnter == null)
                 {
-                    Surrendering.LowerHands();
+                    return;
+                }
+                UpdateCurrentVehicle();
+                //GameFiber.Yield();//TR Yield RemovedTest 2
+                if (CurrentVehicle != null)
+                {
+                    Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
+                    VehicleGettingInto = CurrentVehicle;
+                    if (VehicleOwnership.OwnedVehicles.Any(x => x.Handle == CurrentVehicle.Handle) && CurrentVehicle.Vehicle.Exists())//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
+                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && CurrentVehicle.Vehicle.GetAttachedBlip()?.Sprite == BlipSprite.GangVehicle)//vanilla owned vehicles?
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
+                    else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)//vanilla owned vehicles?
+                    {
+                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                        CurrentVehicle.Vehicle.MustBeHotwired = false;
+                    }
+                    else
+                    {
+                        if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
+                        {
+                            CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                            CurrentVehicle.Vehicle.MustBeHotwired = false;
+                        }
+                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
+                        {
+                            CurrentVehicle.AttemptToLock();
+                            //GameFiber.Yield();//TR Yield RemovedTest 2
+                        }
+                        bool hasScrewDriver = Inventory.HasTool(ToolTypes.Screwdriver);
+                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
+                        {
+                            if (CurrentVehicle.Vehicle.MustBeHotwired)
+                            {
+                                CurrentVehicle.IsHotWireLocked = true;
+                                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                            }
+                            if (CurrentVehicle.IsHotWireLocked && hasScrewDriver)
+                            {
+                                CurrentVehicle.IsHotWireLocked = false;
+                                CurrentVehicle.Vehicle.MustBeHotwired = true;
+                            }
+                        }
+
+                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !hasScrewDriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
+                        {
+                            Game.DisplayHelp("Screwdriver required to lockpick");
+                        }
+
+
+                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
+                            CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
+                            MyLockPick.PickLock();
+                        }
+                        else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
+                            PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
+                            Violations.AddCarJacked(jackedPed);
+                            CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, WeaponEquipment.CurrentWeapon);
+                            MyJack.Start();
+                        }
+                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
+                        {
+                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
+                            MyBreakIn.BreakIn();
+                        }
+                        //else if (SeatTryingToEnter != -1)
+                        //{
+                        //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
+                        //    {
+                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                        //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
+                        //        MyBusRide.Start();
+                        //    }
+                        //    else
+                        //    {
+                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
+                        //    }
+                        //}
+                    }
                 }
                 else
                 {
-                    if (CanSurrender)
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
+                }
+            }
+            else
+            {
+            }
+            isGettingIntoVehicle = IsGettingIntoAVehicle;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
+        }
+        private void OnIsInVehicleChanged()
+        {
+            GameFiber.Yield();
+            if (IsInVehicle)
+            {
+                GameTimeGotInVehicle = Game.GameTime;
+                GameTimeGotOutOfVehicle = 0;
+                if (IsWanted && AnyPoliceCanSeePlayer)
+                {
+                    Scanner.OnGotInVehicle();
+                }
+                //RemoveOwnedVehicleBlip();
+                if (CurrentVehicle != null)
+                {
+                    CurrentVehicle.HasAutoSetRadio = false;
+                }
+
+
+
+
+
+
+
+            }
+            else
+            {
+                GameTimeGotOutOfVehicle = Game.GameTime;
+                GameTimeGotInVehicle = 0;
+                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll)
+                {
+                    Scanner.OnGotOutOfVehicle();
+                }
+                //CreateOwnedVehicleBlip();
+
+                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && IsMobileRadioEnabled && !IsDancing)
+                {
+                    IsMobileRadioEnabled = false;
+                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
+                }
+
+
+
+            }
+            //UpdateOwnedBlips();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
+        }
+        private void OnPlayerBusted()
+        {
+            GameFiber.Yield();
+            DiedInVehicle = IsInVehicle;
+            IsBusted = true;
+            BeingArrested = true;
+            GameTimeLastBusted = Game.GameTime;
+            Surrendering.OnPlayerBusted();
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
+            {
+                Game.TimeScale = 0.4f;
+            }
+            Game.LocalPlayer.HasControl = false;
+            Scanner.OnPlayerBusted();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
+        }
+        private void OnPlayerDied()
+        {
+            GameFiber.Yield();
+            TimeControllable.PauseTime();
+            DiedInVehicle = IsInVehicle;
+            IsDead = true;
+            GameTimeLastDied = Game.GameTime;
+            Game.LocalPlayer.Character.Kill();
+            Game.LocalPlayer.Character.Health = 0;
+            Game.LocalPlayer.Character.IsInvincible = true;
+            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
+            {
+                Game.TimeScale = 0.4f;
+            }
+            Scanner.OnSuspectWasted();
+            EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
+        }
+        private void OnIsShootingChanged()
+        {
+            if (IsShooting)
+            {
+                if (IsWanted && WantedLevel <= 4 && AnyPoliceRecentlySeenPlayer)
+                {
+                    Scanner.OnSuspectShooting();
+                }
+                EntryPoint.WriteToConsole("PLAYER EVENT: Starting Shooting");
+            }
+            else
+            {
+                EntryPoint.WriteToConsole("PLAYER EVENT: Stopped Shooting");
+            }
+        }
+        private void OnStartedDuckingInVehicle()
+        {
+            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
+            {
+                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
+                if (viewMode != 4)
+                {
+                    storedViewMode = viewMode;
+                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(4);
+                }
+                EntryPoint.WriteToConsole($"OnStartedDuckingInVehicle viewMode {viewMode} storedViewMode {storedViewMode}", 5);
+            }
+        }
+        private void OnStoppedDuckingInVehicle()
+        {
+            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
+            {
+                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
+                if (viewMode != storedViewMode)
+                {
+                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(storedViewMode);
+                    storedViewMode = -1;
+                }
+                EntryPoint.WriteToConsole($"OnStoppedDuckingInVehicle storedViewMode {storedViewMode}", 5);
+            }
+        }
+        private void OnTargettingHandleChanged()
+        {
+            if (TargettingHandle != 0)
+            {
+                CurrentTargetedPed = World.Pedestrians.GetPedExt(TargettingHandle);
+                GameFiber.Yield();
+                if (!IsInteracting && !IsInVehicle && CanHoldUpTargettedPed && CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged)//isinvehicle added here
+                {
+                    StartHoldUp();
+                }
+            }
+            else
+            {
+                CurrentTargetedPed = null;
+            }
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle} CanHoldUpTargettedPed {CanHoldUpTargettedPed} CurrentTargetedPed?.CanBeMugged {CurrentTargetedPed?.CanBeMugged}", 5);
+        }
+        private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
+        {
+            GameFiber.Yield();
+            if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
+            {
+                if (!RecentlySetWanted)//only allow my process to set the wanted level
+                {
+                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
-                        Surrendering.RaiseHands();
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
+                        SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
                     }
-                    else if (CanWaveHands)
+                }
+                else
+                {
+                    CriminalHistory.OnLostWanted();
+                    GameFiber.Yield();
+                    PoliceResponse.OnLostWanted();
+                    GameFiber.Yield();
+                    GangRelationships.OnLostWanted();
+                    World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+                }
+            }
+            else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
+            {
+                if (!RecentlySetWanted)//only allow my process to set the wanted level
+                {
+                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
-                        Surrendering.WaveHands();
+                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
+                        SetWantedLevel(0, "GAME AUTO SET WANTED", true);
                     }
                 }
-                GameTimeLastToggledSurrender = Game.GameTime;
-            }
-        }
-        public void RemoveGPSRoute()
-        {
-            if (CurrentGPSBlip.Exists())
-            {
-                NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-                CurrentGPSBlip.Delete();
-            }
-        }
-        public void RemoveOwnershipOfNearestCar()
-        {
-            VehicleExt toTakeOwnershipOf;
-            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-            {
-                toTakeOwnershipOf = CurrentVehicle;
-            }
-            else
-            {
-                toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
-            }
-            if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
-            {
-                RemoveOwnershipOfVehicle(toTakeOwnershipOf);
-                //DisplayPlayerNotification();
-            }
-            else
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), "No Vehicle Found");
-            }
-        }
-        public void RemoveOwnershipOfVehicle(VehicleExt toOwn)
-        {
-            if (toOwn != null && toOwn.Vehicle.Exists())
-            {
-                Blip attachedBlip = toOwn.Vehicle.GetAttachedBlip();
-                if (attachedBlip.Exists())
+                else
                 {
-                    attachedBlip.Delete();
+                    Investigation.Reset();
+                    GameFiber.Yield();
+                    PoliceResponse.OnBecameWanted();
+                    GameFiber.Yield();
+                    GangRelationships.OnBecameWanted();
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
+            }
+            else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
+            {
+                PoliceResponse.OnWantedLevelIncreased();
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
+                //BigMessage.ShowColoredShard("WANTED", $"{wantedLevel} stars", HudColor.Gold, HudColor.InGameBackground);
+            }
+            else if (IsWanted && PreviousWantedLevel > WantedLevel)
+            {
+                //PoliceResponse.OnWantedLevelDecreased();
+                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
+            }
+            EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
+            PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
+        }
 
-                if (toOwn.AttachedBlip.Exists())
-                {
-                    toOwn.AttachedBlip.Delete();
-                }
-
-                toOwn.Vehicle.IsPersistent = false;
-            }
-            if (OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
+        //Crimes
+        public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
+        {
+            if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
             {
-                OwnedVehicles.Remove(toOwn);
+                return;
             }
-            UpdateOwnedBlips();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}", 5);
-        }
-        public void RemovePlate()
-        {
-            if (!IsPerformingActivity && CanPerformActivities)
+            else if (RecentlyPaidFine && crimeObserved.ResultingWantedLevel <= 1)
             {
-                if (UpperBodyActivity != null)
-                {
-                    UpperBodyActivity.Cancel();
-                }
-                IsPerformingActivity = true;
-                UpperBodyActivity = new PlateTheft(this, Settings, World);
-                UpperBodyActivity.Start();
+                return;
             }
-        }
-        public void ResetScanner() => Scanner.Reset();
-        public void ResetScannerDebug()
-        {
-            Scanner.Reset();
-        }
-        public void ResistArrest() => Respawning.ResistArrest();
-        public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory, bool clearInventory) => Respawning.RespawnAtCurrentLocation(withInvicibility, resetWanted, clearCriminalHistory, clearInventory);
-        public void RespawnAtHospital(Hospital currentSelectedHospitalLocation) => Respawning.RespawnAtHospital(currentSelectedHospitalLocation);
-        public void ScannerPlayDebug() => Scanner.DebugPlayDispatch();
-        public void ScannerUpdate() => Scanner.Tick();
-        public void SearchModeUpdate() => SearchMode.UpdateWanted();
-        public void SetAngeredCop()
-        {
-            GameTimeLastFedUpCop = Game.GameTime;
-        }
-        public void SetArrestedAnimation(bool stayStanding) => Surrendering.SetArrestedAnimation(stayStanding);
-        public void SetBodyArmor(int Type)
-        {
-            if (CharacterModelIsFreeMode)
+            else if (RecentlyStartedPlaying)
             {
-                int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
-                int TextureID = 0;
-
-                if (NumberOfTextureVariations > 0)
-                {
-                    RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
-                }
-                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
-                if (!HasOnBodyArmor)
-                {
-                    Character.Armor = 200;
-                }
-                HasOnBodyArmor = true;
+                return;
+            }
+            GameFiber.Yield();//TR 6 this is new, seems helpful so far with no downsides
+            CrimeSceneDescription description = new CrimeSceneDescription(!IsInVehicle, isObservedByPolice, Location, HaveDescription) { VehicleSeen = VehicleObserved, WeaponSeen = WeaponObserved, Speed = Game.LocalPlayer.Character.Speed };
+            PoliceResponse.AddCrime(crimeObserved, description, isForPlayer);
+            if (!isObservedByPolice && IsNotWanted)
+            {
+                Investigation.Start(Location, PoliceResponse.PoliceHaveDescription, true, false, false);
+            }
+            if (AnnounceCrime)
+            {
+                Scanner.AnnounceCrime(crimeObserved, description);
             }
         }
-        public void SetDemographics(string modelName, bool isMale, string playerName, int money)
+        public void AddMedicalEvent(Vector3 position)
         {
-            ModelName = modelName;
-            PlayerName = playerName;
-            IsMale = isMale;
-            SetMoney(money);
-            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
+            if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1 && World.Pedestrians.PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasStartedEMTTreatment))
+            {
+                //Scanner.Reset();
+                Investigation.Start(position, false, false, true, false);
+                Scanner.OnMedicalServicesRequested();
+            }
         }
-        public void SetDenStatus(Gang gang, bool v)
+        public void Arrest()
         {
-            World.Places.StaticPlaces.SetGangLocationActive(gang.ID, v);
-        }
-        public void SetMoney(int Amount)
-        {
-            uint PlayerCashHash;
-            if (CharacterModelIsPrimaryCharacter)
+            BeingArrested = true;
+            if (!IsBusted)
             {
-                PlayerCashHash = NativeHelper.CashHash(ModelName.ToLower());
-            }
-            else
-            {
-                PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
-            }
-
-            EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {ModelName}");
-            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || CharacterModelIsPrimaryCharacter)
-            {
-                NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, Amount, 1);
-            }
-            else
-            {
-                money = Amount;
+                OnPlayerBusted();
             }
         }
         public void SetWantedLevel(int desiredWantedLevel, string Reason, bool UpdateRecent)
@@ -1761,14 +1304,390 @@ namespace Mod
                 }
             }
         }
-        public void ShootAt(Vector3 TargetCoordinate)
+
+        //Vehicle Stuff
+        public void ChangePlate(int Index)
         {
-            NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Game.LocalPlayer.Character, TargetCoordinate.X, TargetCoordinate.Y, TargetCoordinate.Z, true);
-            GameTimeLastShot = Game.GameTime;
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                UpperBodyActivity = new PlateTheft(this, SpareLicensePlates[Index], Settings, World);
+                UpperBodyActivity.Start();
+            }
         }
-        public void SetShot()
+        public void ChangePlate(LicensePlate toChange)
         {
-            GameTimeLastShot = Game.GameTime;
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                UpperBodyActivity = new PlateTheft(this, toChange, Settings, World);
+                UpperBodyActivity.Start();
+            }
+        }
+        public void CloseDriverDoor()
+        {
+            if (Game.GameTime - GameTimeLastClosedDoor >= 1500)
+            {
+                if (!IsPerformingActivity && IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())// Game.LocalPlayer.Character.CurrentVehicle.Exists() && )
+                {
+                    bool isValid = NativeFunction.Natives.x645F4B6E8499F632<bool>(CurrentVehicle.Vehicle, 0);
+                    if (isValid)
+                    {
+                        float DoorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(CurrentVehicle.Vehicle, 0);
+
+                        if (DoorAngle > 0.0f)
+                        {
+                            string toPlay = "";
+                            int TimeToWait = 250;
+                            if (DoorAngle >= 0.7)
+                            {
+                                toPlay = "d_close_in";
+                                TimeToWait = 500;
+                            }
+                            else
+                            {
+                                toPlay = "d_close_in_near";
+                            }
+                            EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+                            AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
+                            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
+                            GameFiber DoorWatcher = GameFiber.StartNew(delegate
+                            {
+                                GameFiber.Sleep(TimeToWait);
+                                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                                {
+                                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+                                    GameFiber.Sleep(250);
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                }
+                                else
+                                {
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Character);
+                                }
+                            }, "DoorWatcher");
+                        }
+                        GameTimeLastClosedDoor = Game.GameTime;
+                    }
+                }
+            }
+        }
+        public void ToggleLeftIndicator()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleLeft();
+            }
+        }
+        public void ToggleHazards()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleHazards();
+            }
+        }
+        public void ToggleRightIndicator()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Indicators.ToggleRight();
+            }
+        }
+        public void ToggleVehicleEngine()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.Engine.Toggle();
+            }
+        }
+        public void ToggleDriverWindow()
+        {
+            if (CurrentVehicle != null)
+            {
+                CurrentVehicle.SetDriverWindow(!CurrentVehicle.ManuallyRolledDriverWindowDown);
+            }
+        }
+
+        //ACtions
+        public void CommitSuicide()
+        {
+            if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                UpperBodyActivity = new SuicideActivity(this, Settings);
+                UpperBodyActivity.Start();
+            }
+        }
+        private void ConsumeItem(ModItem toAdd)
+        {
+            if (toAdd.CanConsume)
+            {
+                if (toAdd.ChangesHealth)
+                {
+                    ChangeHealth(toAdd.HealthChangeAmount);
+                }
+
+                if (toAdd.ChangesHunger)
+                {
+                    HumanState.Hunger.Change(toAdd.HungerChangeAmount, true);
+                }
+                if (toAdd.ChangesSleep)
+                {
+                    HumanState.Sleep.Change(toAdd.SleepChangeAmount, true);
+                }
+                if (toAdd.ChangesThirst)
+                {
+                    HumanState.Thirst.Change(toAdd.ThirstChangeAmount, true);
+                }
+            }
+        }
+        public void ContinueCurrentActivity()
+        {
+            if (UpperBodyActivity != null && UpperBodyActivity.CanPause && UpperBodyActivity.IsPaused())
+            {
+                UpperBodyActivity.Continue();
+            }
+            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause && LowerBodyActivity.IsPaused())
+            {
+                LowerBodyActivity.Continue();
+            }
+        }
+        public void Gesture(GestureData gestureData)
+        {
+            EntryPoint.WriteToConsole($"Gesture Start 2 NO DATA?: {gestureData == null}");
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                LastGesture = gestureData;
+                UpperBodyActivity = new GestureActivity(this, gestureData);
+                UpperBodyActivity.Start();
+            }
+        }
+        public void Gesture()
+        {
+            Gesture(LastGesture);
+        }
+        public void Dance(DanceData danceData)
+        {
+            EntryPoint.WriteToConsole($"Dance Start 2 NO DATA?: {danceData == null}");
+            if (!IsPerformingActivity && CanPerformActivities && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                LastDance = danceData;
+                UpperBodyActivity = new DanceActivity(this, danceData, RadioStations, Settings, Dances);
+                UpperBodyActivity.Start();
+            }
+        }
+        public void Dance()
+        {
+            StopDynamicActivity();
+            LastDance = Dances.DanceLookups.PickRandom();
+            Dance(LastDance);
+        }
+        public void EnterVehicleAsPassenger()
+        {
+            VehicleExt toEnter = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
+            if (toEnter != null && toEnter.Vehicle.Exists())
+            {
+                int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+                if (seatIndex != null)
+                {
+                    foreach (Ped passenger in toEnter.Vehicle.Occupants)
+                    {
+                        if (passenger.Exists())
+                        {
+                            passenger.StaysInVehiclesWhenJacked = true;
+                            passenger.BlockPermanentEvents = true;
+                        }
+                    }
+                    LastFriendlyVehicle = toEnter.Vehicle;
+                    NativeFunction.Natives.TASK_ENTER_VEHICLE(Character, toEnter.Vehicle, 5000, seatIndex, 1f, 9);
+                }
+            }
+        }
+        public void ForceErraticDriver()
+        {
+            if (IsInVehicle && !IsDriver && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
+            {
+                Ped Driver = CurrentVehicle.Vehicle.Driver;
+                if (Driver.Exists() && Driver.Handle != Character.Handle)
+                {
+                    PedExt DriverExt = World.Pedestrians.GetPedExt(Driver.Handle);
+                    Driver.BlockPermanentEvents = true;
+                    Driver.KeepTasks = true;
+                    if (DriverExt != null)
+                    {
+                        DriverExt.CanBeAmbientTasked = false;
+                        DriverExt.WillCallPolice = false;
+                        DriverExt.WillCallPoliceIntense = false;
+                        DriverExt.WillFight = false;
+                        DriverExt.CanBeTasked = false;
+                    }
+                    NativeFunction.Natives.SET_DRIVER_ABILITY(Driver, 100f);
+
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_COORS_TARGET", 0, CurrentVehicle.Vehicle, 358.9726f, -1582.881f, 29.29195f, 8, 50f, (int)eCustomDrivingStyles.Code3, 0f, 2f, true);//8f
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+
+                    //unsafe
+                    //{
+                    //    int lol = 0;
+                    //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    //    //NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, CurrentVehicle.Vehicle, -1, -1, 15.0f, 9);
+                    //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", 0, Position.X,Position.Y,Position.Z,5000f,-1, false, false);
+
+                    //    //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, CurrentVehicle.Vehicle, 25f, (int)eCustomDrivingStyles.FastEmergency, 25f);
+                    //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Driver, lol);
+                    //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    //}
+                }
+            }
+        }
+        public void GrabPed()
+        {
+
+
+            if (!IsPerformingActivity && CanPerformActivities && CanGrabLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new HumanShield(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+                LowerBodyActivity.Start();
+            }
+
+
+
+
+            //if (!IsInteracting && CanLootLookedAtPed)
+            //{
+            //    if (Interaction != null)
+            //    {
+            //        Interaction.Dispose();
+            //    }
+            //    Interaction = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+            //    Interaction.Start();
+            //}
+        }
+        public void LootPed()
+        {
+            if (!IsPerformingActivity && CanPerformActivities && CanLootLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new Loot(this, CurrentLookedAtPed, Settings, Crimes, ModItems);
+                LowerBodyActivity.Start();
+            }
+        }
+        public void DragPed()
+        {
+            if (!IsPerformingActivity && CanPerformActivities && CanDragLookedAtPed && !IsInVehicle)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                if (LowerBodyActivity != null)
+                {
+                    LowerBodyActivity.Cancel();
+                }
+                LowerBodyActivity = new Drag(this, CurrentLookedAtPed, Settings, Crimes, ModItems, World);
+                LowerBodyActivity.Start();
+            }
+        }
+        public void PauseCurrentActivity()
+        {
+            if (UpperBodyActivity != null && UpperBodyActivity.CanPause)
+            {
+                UpperBodyActivity.Pause();
+            }
+            else if (LowerBodyActivity != null && LowerBodyActivity.CanPause)
+            {
+                LowerBodyActivity.Pause();
+            }
+        }
+        public void CancelCurrentActivity()
+        {
+            if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
+            {
+                UpperBodyActivity.Cancel();
+            }
+            else if (LowerBodyActivity != null && LowerBodyActivity.CanCancel)
+            {
+                LowerBodyActivity.Cancel();
+            }
+        }
+        public void PlaySpeech(string speechName, bool useMegaphone)
+        {
+            if (CharacterModelIsFreeMode && FreeModeVoice != "")
+            {
+                if (useMegaphone)
+                {
+                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.ForceMegaphone);
+
+                }
+                else
+                {
+                    Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.Force);
+                }
+                EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
+            }
+            else
+            {
+                Character.PlayAmbientSpeech(speechName, useMegaphone);
+            }
+        }
+        public void RemovePlate()
+        {
+            if (!IsPerformingActivity && CanPerformActivities)
+            {
+                if (UpperBodyActivity != null)
+                {
+                    UpperBodyActivity.Cancel();
+                }
+                IsPerformingActivity = true;
+                UpperBodyActivity = new PlateTheft(this, Settings, World);
+                UpperBodyActivity.Start();
+            }
         }
         public void ShuffleToNextSeat()
         {
@@ -1792,7 +1711,7 @@ namespace Mod
 
                 if (modItem.PercentLostOnUse > 0.0f)
                 {
-                    UseInventoryItem(modItem);
+                    Inventory.Use(modItem);
                 }
                 else
                 {
@@ -1959,6 +1878,64 @@ namespace Mod
                 LowerBodyActivity.Start();
             }
         }
+        public void StopDynamicActivity()
+        {
+            if (IsPerformingActivity)
+            {
+                UpperBodyActivity?.Cancel();
+                IsPerformingActivity = false;
+            }
+        }
+        public void YellInPain()
+        {
+            if (CanYell)
+            {
+                if (RandomItems.RandomPercent(80))
+                {
+                    List<int> PossibleYells = new List<int>() { 8 };
+                    int YellType = PossibleYells.PickRandom();
+                    NativeFunction.Natives.PLAY_PAIN(Character, YellType, 0, 0);
+
+                    List<string> PossibleAnimations = new List<string>() { "pain_6","pain_5","pain_4","pain_3","pain_2","pain_1",
+      "electrocuted_1",
+      "burning_1" };
+                    string Animation = PossibleAnimations.PickRandom();
+                    if (IsMale)
+                    {
+                        if (ModelName.ToLower() == "player_zero")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_zero@base");
+                        }
+                        else if (ModelName.ToLower() == "player_one")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_one@base");
+                        }
+                        else if (ModelName.ToLower() == "player_two")
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_two@base");
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_male@base");
+                        }
+                    }
+                    else
+                    {
+                        NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_female@base");
+                    }
+                    EntryPoint.WriteToConsole($"PLAYER YELL IN PAIN {Character.Handle} YellType {YellType} Animation {Animation}");
+                }
+                else
+                {
+                    PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+                    EntryPoint.WriteToConsole($"PLAYER CRY SPEECH FOR PAIN {Character.Handle}");
+                }
+
+                GameTimeLastYelled = Game.GameTime;
+            }
+        }
+
+        //Interactions
         public void StartTransaction()
         {
             if (!IsInteracting && CanConverseWithLookedAtPed)
@@ -1983,86 +1960,8 @@ namespace Mod
                 }
             }
         }
-        public void StopDynamicActivity()
-        {
-            if (IsPerformingActivity)
-            {
-                UpperBodyActivity?.Cancel();
-                IsPerformingActivity = false;
-            }
-        }
-        public void SurrenderToPolice(PoliceStation currentSelectedSurrenderLocation) => Respawning.SurrenderToPolice(currentSelectedSurrenderLocation);
-        public void TakeOwnershipOfNearestCar()
-        {
-            VehicleExt toTakeOwnershipOf;
-            if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
-            {
-                toTakeOwnershipOf = CurrentVehicle;
-            }
-            else
-            {
-                toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
-            }
-            if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
-            {
-                TakeOwnershipOfVehicle(toTakeOwnershipOf, true);
-                //DisplayPlayerNotification();
-            }
-            else
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", PlayerName), "No Vehicle Found");
-            }
-        }
-        public void TakeOwnershipOfVehicle(VehicleExt toOwn, bool showNotification)
-        {
-            if (toOwn != null && toOwn.Vehicle.Exists() && !OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
-            {
-                toOwn.SetNotWanted();
-                toOwn.Vehicle.IsStolen = false;
-                toOwn.Vehicle.IsPersistent = true;
 
-                OwnedVehicles.Add(toOwn);
-                UpdateOwnedBlips();
-                if (showNotification)
-                {
-                    DisplayPlayerVehicleNotification(toOwn);
-                }
-                EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}", 5);
-            }
-        }
-        public void ToggleBodyArmor(int Type)
-        {
-            if (CharacterModelIsFreeMode)
-            {
-                if (HasOnBodyArmor)
-                {
-                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, 0, 0, 0);
-                    HasOnBodyArmor = false;
-                    Character.Armor = 0;
-                }
-                else
-                {
-                    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Character, 9, Type) - 1;
-                    int TextureID = 0;
-
-                    if (NumberOfTextureVariations > 0)
-                    {
-                        RandomItems.GetRandomNumberInt(0, NumberOfTextureVariations);
-                    }
-                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Character, 9, Type, TextureID, 0);
-                    HasOnBodyArmor = true;
-                    Character.Armor = 200;
-                }
-            }
-        }
-        public void TrafficViolationsUpdate() => Violations.UpdateTraffic();
-        public void UnSetArrestedAnimation()
-        {
-            //if (HandsAreUp)
-            //{
-            Surrendering.UnSetArrestedAnimation();
-            //}
-        }
+        //Update Data
         public void UpdateStateData()
         {
             if (Game.LocalPlayer.Character.IsDead && !IsDead)
@@ -2082,10 +1981,6 @@ namespace Mod
             if (BeingArrested && !IsBusted)
             {
                 OnPlayerBusted();
-            }
-            if (IsAliveAndFree && !Game.LocalPlayer.Character.IsDead)
-            {
-                MaxWantedLastLife = WantedLevel;
             }
             //this was below that, see if this helps with the flashing.....
             int realWantedLevel = Game.LocalPlayer.WantedLevel;
@@ -2215,23 +2110,11 @@ namespace Mod
             {
                 CurrentLookedAtPed.InsultedByPlayer();
             }
-            if (CurrentGPSBlip.Exists())
-            {
-                if (CurrentGPSBlip.DistanceTo2D(Position) <= 30f)
-                {
-                    NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-                    CurrentGPSBlip.Delete();
-                }
-                else
-                {
-                    if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 10000)
-                    {
-                        NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, true);
-                        GameTimeLastCheckedRouteBlip = Game.GameTime;
-                    }
-                }
-            }
-            if (IsWavingHands)
+
+
+            Destinations.Update();
+
+            if (Surrendering.IsWavingHands)
             {
                 if (Game.GameTime - GameTimeLastYelled >= 5000)
                 {
@@ -2243,7 +2126,7 @@ namespace Mod
                     GameTimeLastYelled = Game.GameTime;
                 }
             }
-            else if (HandsAreUp)
+            else if (Surrendering.HandsAreUp)
             {
 
                 if (Game.GameTime - GameTimeLastYelled >= 10000)
@@ -2293,7 +2176,7 @@ namespace Mod
             IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
             if (IsInVehicle)
             {
-                if (Character.CurrentVehicle.Exists() && OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Handle == Character.CurrentVehicle.Handle))//OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicle.Vehicle.Handle)
+                if (Character.CurrentVehicle.Exists() && VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Handle == Character.CurrentVehicle.Handle))//OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicle.Vehicle.Handle)
                 {
                     isJacking = false;
                 }
@@ -2514,10 +2397,10 @@ namespace Mod
                 }
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
-            UpdateOwnedBlips();
+            VehicleOwnership.Update();
         }
         public void UpdateWeaponData()
-        {
+        {           
             if (Game.LocalPlayer.Character.IsShooting)
             {
                 GameTimeLastShot = Game.GameTime;
@@ -2529,422 +2412,12 @@ namespace Mod
                 NativeFunction.Natives.SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(Game.LocalPlayer, Settings.SettingsManager.PlayerOtherSettings.MeleeDamageModifier, true);
                 GameTimeLastSetMeleeModifier = Game.GameTime;
             }
-            Equipment.Update();
+            WeaponEquipment.Update();
             UpdateTargetedPed();
             GameFiber.Yield();
             UpdateLookedAtPed();
             GameFiber.Yield();
             IsShooting = RecentlyShot;
-        }
-        public bool UseInventoryItem(ModItem modItem) => Inventory.Use(modItem);
-        public void ViolationsUpdate() => Violations.Update();
-        public void WaveHands() => Surrendering.WaveHands();
-        public void YellInPain()
-        {
-            if (CanYell)
-            {
-                if (RandomItems.RandomPercent(80))
-                {
-                    List<int> PossibleYells = new List<int>() { 8 };
-                    int YellType = PossibleYells.PickRandom();
-                    NativeFunction.Natives.PLAY_PAIN(Character, YellType, 0, 0);
-
-                    List<string> PossibleAnimations = new List<string>() { "pain_6","pain_5","pain_4","pain_3","pain_2","pain_1",
-      "electrocuted_1",
-      "burning_1" };
-                    string Animation = PossibleAnimations.PickRandom();
-                    if (IsMale)
-                    {
-                        if (ModelName.ToLower() == "player_zero")
-                        {
-                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_zero@base");
-                        }
-                        else if (ModelName.ToLower() == "player_one")
-                        {
-                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_one@base");
-                        }
-                        else if (ModelName.ToLower() == "player_two")
-                        {
-                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@p_m_two@base");
-                        }
-                        else
-                        {
-                            NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_male@base");
-                        }
-                    }
-                    else
-                    {
-                        NativeFunction.Natives.PLAY_FACIAL_ANIM(Character, Animation, "facials@gen_female@base");
-                    }
-                    EntryPoint.WriteToConsole($"PLAYER YELL IN PAIN {Character.Handle} YellType {YellType} Animation {Animation}");
-                }
-                else
-                {
-                    PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
-                    EntryPoint.WriteToConsole($"PLAYER CRY SPEECH FOR PAIN {Character.Handle}");
-                }
-
-                GameTimeLastYelled = Game.GameTime;
-            }
-        }
-        private void OnAimingChanged()
-        {
-            if (IsAiming)
-            {
-            }
-            else
-            {
-            }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsAiming Changed to: {IsAiming}", 5);
-        }
-        private void OnAimingInVehicleChanged()
-        {
-            if (IsAimingInVehicle)
-            {
-                if (Equipment.CurrentWeapon == null)
-                {
-                    IsMakingInsultingGesture = true;
-                }
-                else
-                {
-                    EntryPoint.WriteToConsole($"CurrentWeapon {Equipment.CurrentWeapon.ModelName}", 5);
-                }
-            }
-            else
-            {
-                IsMakingInsultingGesture = false;
-            }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsAimingInVehicle Changed to: {IsAimingInVehicle}", 5);
-        }
-        private void OnExcessiveSpeed()
-        {
-            GameFiber.Yield();
-            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed)
-            {
-                GameFiber SpeedWatcher = GameFiber.StartNew(delegate
-                {
-                    isCheckingExcessSpeed = true;
-                    GameFiber.Sleep(5000);
-                    if (isExcessiveSpeed)
-                    {
-                        Scanner.OnExcessiveSpeed();
-                    }
-                    isCheckingExcessSpeed = false;
-                }, "FastForwardWatcher");
-            }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);
-        }
-        private void OnGettingIntoAVehicleChanged()
-        {
-            //GameFiber.Yield();//TR Yield RemovedTest 2
-            if (IsGettingIntoAVehicle)
-            {
-                Vehicle VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
-                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-                if (VehicleTryingToEnter == null)
-                {
-                    return;
-                }
-                UpdateCurrentVehicle();
-                //GameFiber.Yield();//TR Yield RemovedTest 2
-                if (CurrentVehicle != null)
-                {
-                    Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
-                    VehicleGettingInto = CurrentVehicle;
-                    if (OwnedVehicles.Any(x => x.Handle == CurrentVehicle.Handle) && CurrentVehicle.Vehicle.Exists())//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && CurrentVehicle.Vehicle.GetAttachedBlip()?.Sprite == BlipSprite.GangVehicle)//vanilla owned vehicles?
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)//vanilla owned vehicles?
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else
-                    {
-                        if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
-                        {
-                            CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                            CurrentVehicle.Vehicle.MustBeHotwired = false;
-                        }
-                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
-                        {
-                            CurrentVehicle.AttemptToLock();
-                            //GameFiber.Yield();//TR Yield RemovedTest 2
-                        }
-                        bool hasScrewDriver = Inventory.HasTool(ToolTypes.Screwdriver);
-                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
-                        {
-                            if (CurrentVehicle.Vehicle.MustBeHotwired)
-                            {
-                                CurrentVehicle.IsHotWireLocked = true;
-                                CurrentVehicle.Vehicle.MustBeHotwired = false;
-                            }
-                            if (CurrentVehicle.IsHotWireLocked && hasScrewDriver)
-                            {
-                                CurrentVehicle.IsHotWireLocked = false;
-                                CurrentVehicle.Vehicle.MustBeHotwired = true;
-                            }
-                        }
-
-                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !hasScrewDriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
-                        {
-                            Game.DisplayHelp("Screwdriver required to lockpick");
-                        }
-
-
-                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
-                            CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
-                            MyLockPick.PickLock();
-                        }
-                        else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                            PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
-                            Violations.AddCarJacked(jackedPed);
-                            CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, Equipment.CurrentWeapon);
-                            MyJack.Start();
-                        }
-                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
-                            MyBreakIn.BreakIn();
-                        }
-                        //else if (SeatTryingToEnter != -1)
-                        //{
-                        //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
-                        //    {
-                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                        //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
-                        //        MyBusRide.Start();
-                        //    }
-                        //    else
-                        //    {
-                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
-                        //    }
-                        //}
-                    }
-                }
-                else
-                {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
-                }
-            }
-            else
-            {
-            }
-            isGettingIntoVehicle = IsGettingIntoAVehicle;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
-        }
-        private void OnIsInVehicleChanged()
-        {
-            GameFiber.Yield();
-            if (IsInVehicle)
-            {
-                GameTimeGotInVehicle = Game.GameTime;
-                GameTimeGotOutOfVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer)
-                {
-                    Scanner.OnGotInVehicle();
-                }
-                //RemoveOwnedVehicleBlip();
-                if (CurrentVehicle != null)
-                {
-                    CurrentVehicle.HasAutoSetRadio = false;
-                }
-
-
-
-
-
-
-
-            }
-            else
-            {
-                GameTimeGotOutOfVehicle = Game.GameTime;
-                GameTimeGotInVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll)
-                {
-                    Scanner.OnGotOutOfVehicle();
-                }
-                //CreateOwnedVehicleBlip();
-
-                if (!Settings.SettingsManager.PlayerOtherSettings.AllowMobileRadioOnFoot && IsMobileRadioEnabled && !IsDancing)
-                {
-                    IsMobileRadioEnabled = false;
-                    NativeFunction.CallByName<bool>("SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY", false);
-                }
-
-
-
-            }
-            //UpdateOwnedBlips();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
-        }
-        private void OnPlayerBusted()
-        {
-            GameFiber.Yield();
-            DiedInVehicle = IsInVehicle;
-            IsBusted = true;
-            BeingArrested = true;
-            GameTimeLastBusted = Game.GameTime;
-            HandsAreUp = false;
-            if (WantedLevel > 1)
-            {
-                Surrendering.SetArrestedAnimation(WantedLevel <= 2);//needs to move
-            }
-
-            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
-            {
-                Game.TimeScale = 0.4f;
-            }
-
-            Game.LocalPlayer.HasControl = false;
-            Scanner.OnPlayerBusted();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
-        }
-        private void OnPlayerDied()
-        {
-            GameFiber.Yield();
-            TimeControllable.PauseTime();
-            DiedInVehicle = IsInVehicle;
-            IsDead = true;
-            GameTimeLastDied = Game.GameTime;
-            Game.LocalPlayer.Character.Kill();
-            Game.LocalPlayer.Character.Health = 0;
-            Game.LocalPlayer.Character.IsInvincible = true;
-            if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
-            {
-                Game.TimeScale = 0.4f;
-            }
-            Scanner.OnSuspectWasted();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
-        }
-        private void OnIsShootingChanged()
-        {
-            if (IsShooting)
-            {
-                if (IsWanted && WantedLevel <= 4 && AnyPoliceRecentlySeenPlayer)
-                {
-                    Scanner.OnSuspectShooting();
-                }
-                EntryPoint.WriteToConsole("PLAYER EVENT: Starting Shooting");
-            }
-            else
-            {
-                EntryPoint.WriteToConsole("PLAYER EVENT: Stopped Shooting");
-            }
-        }
-        private void OnStartedDuckingInVehicle()
-        {
-            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
-            {
-                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
-                if (viewMode != 4)
-                {
-                    storedViewMode = viewMode;
-                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(4);
-                }
-                EntryPoint.WriteToConsole($"OnStartedDuckingInVehicle viewMode {viewMode} storedViewMode {storedViewMode}", 5);
-            }
-        }
-        private void OnStoppedDuckingInVehicle()
-        {
-            if (Settings.SettingsManager.VehicleSettings.ForceFirstPersonOnVehicleDuck)
-            {
-                int viewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
-                if (viewMode != storedViewMode)
-                {
-                    NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(storedViewMode);
-                    storedViewMode = -1;
-                }
-                EntryPoint.WriteToConsole($"OnStoppedDuckingInVehicle storedViewMode {storedViewMode}", 5);
-            }
-        }
-        private void OnTargettingHandleChanged()
-        {
-            if (TargettingHandle != 0)
-            {
-                CurrentTargetedPed = World.Pedestrians.GetPedExt(TargettingHandle);
-                GameFiber.Yield();
-                if (!IsInteracting && !IsInVehicle && CanHoldUpTargettedPed && CurrentTargetedPed != null && CurrentTargetedPed.CanBeMugged)//isinvehicle added here
-                {
-                    StartHoldUp();
-                }
-            }
-            else
-            {
-                CurrentTargetedPed = null;
-            }
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle} CanHoldUpTargettedPed {CanHoldUpTargettedPed} CurrentTargetedPed?.CanBeMugged {CurrentTargetedPed?.CanBeMugged}", 5);
-        }
-        private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)
-        {
-            GameFiber.Yield();
-            if (IsNotWanted && PreviousWantedLevel != 0)//Lost Wanted
-            {
-                if (!RecentlySetWanted)//only allow my process to set the wanted level
-                {
-                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
-                    {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
-                        SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
-                    }
-                }
-                else
-                {
-                    CriminalHistory.OnLostWanted();
-                    GameFiber.Yield();
-                    PoliceResponse.OnLostWanted();
-                    GameFiber.Yield();
-                    GangRelationships.OnLostWanted();
-                    World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
-                }
-            }
-            else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
-            {
-                if (!RecentlySetWanted)//only allow my process to set the wanted level
-                {
-                    if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
-                    {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
-                        SetWantedLevel(0, "GAME AUTO SET WANTED", true);
-                    }
-                }
-                else
-                {
-                    Investigation.Reset();
-                    GameFiber.Yield();
-                    PoliceResponse.OnBecameWanted();
-                    GameFiber.Yield();
-                    GangRelationships.OnBecameWanted();
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
-                }
-            }
-            else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
-            {
-                PoliceResponse.OnWantedLevelIncreased();
-                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
-                //BigMessage.ShowColoredShard("WANTED", $"{wantedLevel} stars", HudColor.Gold, HudColor.InGameBackground);
-            }
-            else if (IsWanted && PreviousWantedLevel > WantedLevel)
-            {
-                //PoliceResponse.OnWantedLevelDecreased();
-                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
-            }
-            EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
-            PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         private void UpdateCurrentVehicle() //should this be public?
         {
@@ -3007,7 +2480,7 @@ namespace Mod
                         {
                             if (!existingVehicleExt.IsStolen)
                             {
-                                if (IsDriver && !OwnedVehicles.Any(x => x.Handle == existingVehicleExt.Handle))// == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
+                                if (IsDriver && !VehicleOwnership.OwnedVehicles.Any(x => x.Handle == existingVehicleExt.Handle))// == null || existingVehicleExt.Handle != OwnedVehicle.Handle))
                                 {
                                     existingVehicleExt.IsStolen = true;
                                 }
@@ -3127,33 +2600,6 @@ namespace Mod
                 GameFiber.Yield();
             }
         }
-        private void UpdateOwnedBlips()
-        {
-            //EntryPoint.WriteToConsole($"PLAYER EVENT: UpdateOwnedBlips CurrentVehicle {CurrentVehicle != null}", 5);
-            foreach (VehicleExt car in OwnedVehicles)
-            {
-                if (car.Vehicle.Exists())
-                {
-                    if (CurrentVehicle?.Handle == car.Handle)
-                    {
-                        if (car.AttachedBlip.Exists())
-                        {
-                            car.AttachedBlip.Delete();
-                        }
-                    }
-                    else
-                    {
-                        if (!car.AttachedBlip.Exists())
-                        {
-                            car.AttachedBlip = car.Vehicle.AttachBlip();
-                            car.AttachedBlip.Sprite = BlipSprite.GetawayCar;
-                            car.AttachedBlip.Color = System.Drawing.Color.Red;
-                        }
-                    }
-                }
-            }
-            //}
-        }
         private void UpdateTargetedPed()
         {
             if (IsAiming)
@@ -3173,5 +2619,6 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
+
     }
 }

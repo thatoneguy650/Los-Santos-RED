@@ -96,7 +96,7 @@ public class PlateTheft : DynamicActivity
     {
         try
         {
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             if (!MovePedToCarPosition(TargetVehicle.Vehicle, Player.Character, TargetVehicle.Vehicle.Heading, ChangeSpot, true))
             {
                 Player.IsPerformingActivity = false;

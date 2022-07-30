@@ -26,8 +26,7 @@ namespace LosSantosRED.lsr.Interface
         Investigation Investigation { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; }
         bool IsNotWanted { get; }
-        ComplexTask CurrentTask { get; }
-        Cop AliasedCop { get; }
+
         bool IsCop { get; }
         bool IsMoving { get; }
         bool AnyGangMemberRecentlySeenPlayer { get; }
@@ -40,7 +39,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCommitingSuicide { get; }
         Cop ClosestCopToPlayer { get; }
 
-        void AddDistressedPed(Vector3 positionLastSeenDistressedPed);
+        void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
 
         LocationData CurrentLocation { get; }
 

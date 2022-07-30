@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 public class PersonTransaction : Interaction
 {
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     private PedExt Ped;
     private ShopMenu ShopMenu;
     private Transaction Transaction;
@@ -55,7 +55,7 @@ public class PersonTransaction : Interaction
     
     public override string DebugString => "";
 
-    public PersonTransaction(IActivityPerformable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public PersonTransaction(ILocationInteractable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
         Ped = ped;

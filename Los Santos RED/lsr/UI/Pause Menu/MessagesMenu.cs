@@ -519,12 +519,12 @@ public class MessagesMenu
             UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;
             if (selectedItem != null && myItem != null && myItem.Items.Any() && myItem.SelectedItem != null)
             {
-                Player.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);
+                Player.Destinations.AddGPSRoute(myItem.SelectedItem.Name, myItem.SelectedItem.EntrancePosition);
             }
         }
         else if (selectedItem.Text == "Remove GPR Route")
         {
-            Player.RemoveGPSRoute();
+            Player.Destinations.RemoveGPSRoute();
         }
     }
     private string GetSafeLocationName(LocationType lt)
@@ -570,7 +570,7 @@ public class MessagesMenu
     }
     private void UpdateMenu()
     {
-        tabView.MoneySubtitle = Player.Money.ToString("C0");
+        tabView.MoneySubtitle = Player.BankAccounts.Money.ToString("C0");
         tabView.Name = Player.PlayerName;
         tabView.Money = Time.CurrentTime;
 

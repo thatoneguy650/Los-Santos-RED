@@ -3,25 +3,23 @@ using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using System;
 using System.Linq;
 
 public class SurrenderActivity : DynamicActivity
 {
     private IInputable Player;
-    //private VehicleExt VehicleTryingToEnter;
-    //private int SeatTryingToEnter;
     private IEntityProvideable World;
     private uint GameTimeLastYelled;
+    private uint GameTimeLastToggledSurrender;
 
-    //private Vehicle VehicleTaskedToEnter;
-    //private int SeatTaskedToEnter;
     public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world)
     {
         Player = currentPlayer;
         World = world;
     }
-    public bool CanSurrender => !Player.HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
-    public bool CanWaveHands => !Player.HandsAreUp && !Player.IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
+    public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
+    public bool CanWaveHands => !HandsAreUp && !IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
@@ -30,6 +28,11 @@ public class SurrenderActivity : DynamicActivity
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
     public bool IsCommitingSuicide { get; set; }
+
+    public bool IsWavingHands { get; private set; }
+    public bool HandsAreUp { get; private set; }
+
+
     public override void Cancel()
     {
         LowerHands();
@@ -50,8 +53,8 @@ public class SurrenderActivity : DynamicActivity
     public void LowerHands()
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
-        Player.HandsAreUp = false; // You put your hands down
-        Player.IsWavingHands = false;
+        HandsAreUp = false; // You put your hands down
+        IsWavingHands = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.IsPerformingActivity = false;
     }
@@ -62,13 +65,12 @@ public class SurrenderActivity : DynamicActivity
         {
             Player.Character.RemoveHelmet(true);
         }
-        if (Player.HandsAreUp)
+        if (HandsAreUp)
         {
             return;
         }
-        Player.Equipment.SetUnarmed();
-        Player.HandsAreUp = true;
-
+        Player.WeaponEquipment.SetUnarmed();
+        HandsAreUp = true;
         if(Player.IsInVehicle)
         {
             AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
@@ -81,20 +83,15 @@ public class SurrenderActivity : DynamicActivity
         }
 
     }
-
     public void WaveHands()
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
-
-
-
-
-        if (Player.HandsAreUp || Player.IsInVehicle || Player.IsWavingHands)
+        if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
         {
             return;
         }
-        Player.Equipment.SetUnarmed();
-        Player.IsWavingHands = true;
+        Player.WeaponEquipment.SetUnarmed();
+        IsWavingHands = true;
 
         string Animation;
         string DictionaryName;
@@ -119,8 +116,6 @@ public class SurrenderActivity : DynamicActivity
 
 
     }
-
-
     public void SetArrestedAnimation(bool StayStanding)
     {
         //StayStanding = false;
@@ -141,7 +136,7 @@ public class SurrenderActivity : DynamicActivity
             {
                 return;
             }
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             if (Player.Character.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = Player.Character.CurrentVehicle;
@@ -242,102 +237,47 @@ public class SurrenderActivity : DynamicActivity
             }
         }, "UnSetArrestedAnimation");
     }
-    //public void SetInPoliceCar()
-    //{
-    //    GameFiber SetPlayerInPoliceCarGF = GameFiber.StartNew(delegate
-    //    {
-    //        Player.ButtonPrompts.Add(new ButtonPrompt("Skip Ride", "Surrender", "PlayerSkipRide", System.Windows.Forms.Keys.O, 1));
-    //        while (!Player.IsInVehicle && !Player.ButtonPrompts.Any(x => x.Identifier == "PlayerSkipRide" && x.IsPressedNow))
-    //        {
-    //            if (VehicleTaskedToEnter == null || !VehicleTaskedToEnter.Exists())
-    //            {
-    //                GetClosesetPoliceVehicle();
-    //                EntryPoint.WriteToConsole($"PlayerArrested: Get in Car, Got New Car, was Blank", 3);
-    //                GetInCarTask();
-    //            }
-    //            else if (VehicleTryingToEnter != null && VehicleTaskedToEnter.Exists() && !VehicleTaskedToEnter.IsSeatFree(SeatTaskedToEnter) && VehicleTaskedToEnter.GetPedOnSeat(SeatTaskedToEnter).Exists() && VehicleTaskedToEnter.GetPedOnSeat(SeatTaskedToEnter).Handle != Player.Character.Handle)// && (VehicleTryingToEnter.Vehicle.Handle != VehicleTaskedToEnter.Handle || SeatTaskedToEnter != SeatTryingToEnter) && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsInAnyVehicle(true))
-    //            {
-    //                GetClosesetPoliceVehicle();
-    //                EntryPoint.WriteToConsole($"PlayerArrested: Get in Car Got New Car, was occupied?", 3);
-    //                GetInCarTask();
-    //            }
-    //            else if (VehicleTryingToEnter != null && VehicleTaskedToEnter.Exists() && VehicleTaskedToEnter.Speed > 1.0f)// && (VehicleTryingToEnter.Vehicle.Handle != VehicleTaskedToEnter.Handle || SeatTaskedToEnter != SeatTryingToEnter) && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsInAnyVehicle(true))
-    //            {
-    //                GetClosesetPoliceVehicle();
-    //                EntryPoint.WriteToConsole($"PlayerArrested: Get in Car Got New Car, was driving away?", 3);
-    //                GetInCarTask();
-    //            }
-    //            GameFiber.Yield();
-    //        }
-    //        Player.ButtonPrompts.RemoveAll(x => x.Group == "Surrender");
-    //        Player.SurrenderToPolice(null);
-    //    }, "SetPlayerInPoliceCarGF");
-    //}
-    //private void GetInCarTask()
-    //{
-    //    if (Player.Character.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
-    //    {
-    //        EntryPoint.WriteToConsole($"GetArrested: Get in Car TASK START", 3);
-    //        Player.Character.BlockPermanentEvents = true;
-    //        Player.Character.KeepTasks = true;
-    //        VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
-    //        SeatTaskedToEnter = SeatTryingToEnter;
-    //        unsafe
-    //        {
-    //            int lol = 0;
-    //            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-    //            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", 0, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-    //            NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
-    //            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-    //            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-    //            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-    //            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-    //        }
-    //    }
-    //}
-    //private void GetClosesetPoliceVehicle()
-    //{
-    //    VehicleExt ClosestAvailablePoliceVehicle = null;
-    //    int OpenSeatInClosestAvailablePoliceVehicle = 9;
-    //    float ClosestAvailablePoliceVehicleDistance = 999f;
-    //    foreach (VehicleExt copCar in World.PoliceVehicleList)
-    //    {
-    //        if (copCar.Vehicle.Exists() && copCar.Vehicle.Model.NumberOfSeats >= 4 && copCar.Vehicle.Speed == 0f)//stopped 4 door car with at least one seat free in back
-    //        {
-    //            float DistanceTo = copCar.Vehicle.DistanceTo2D(Player.Character);
-    //            if (DistanceTo <= 50f)
-    //            {
-    //                if (copCar.Vehicle.IsSeatFree(1))
-    //                {
-    //                    if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
-    //                    {
-    //                        OpenSeatInClosestAvailablePoliceVehicle = 1;
-    //                        ClosestAvailablePoliceVehicle = copCar;
-    //                        ClosestAvailablePoliceVehicleDistance = DistanceTo;
-    //                    }
 
-    //                }
-    //                else if (copCar.Vehicle.IsSeatFree(2))
-    //                {
-    //                    if (DistanceTo < ClosestAvailablePoliceVehicleDistance)
-    //                    {
-    //                        OpenSeatInClosestAvailablePoliceVehicle = 2;
-    //                        ClosestAvailablePoliceVehicle = copCar;
-    //                        ClosestAvailablePoliceVehicleDistance = DistanceTo;
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //    VehicleTryingToEnter = ClosestAvailablePoliceVehicle;
-    //    SeatTryingToEnter = OpenSeatInClosestAvailablePoliceVehicle;
-    //    if (ClosestAvailablePoliceVehicle != null && ClosestAvailablePoliceVehicle.Vehicle.Exists())
-    //    {
-    //        EntryPoint.WriteToConsole($"PlayerArrested: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
-    //    }
-    //    else
-    //    {
-    //        EntryPoint.WriteToConsole($"PlayerArrested: Seat NOT Assigned", 3);
-    //    }
-    //}
+    public void OnPlayerBusted()
+    {
+        HandsAreUp = false;
+        IsWavingHands = false;
+        if (Player.WantedLevel > 1)
+        {
+            SetArrestedAnimation(Player.WantedLevel <= 2);//needs to move
+        }
+    }
+
+    public void ToggleSurrender()
+    {
+        if (Game.GameTime - GameTimeLastToggledSurrender >= 1000)
+        {
+            if (HandsAreUp)
+            {
+                if (!Player.IsBusted)
+                {
+                    LowerHands();
+                }
+            }
+            else if (IsWavingHands)
+            {
+                LowerHands();
+            }
+            else
+            {
+                if (CanSurrender)
+                {
+                    RaiseHands();
+                }
+                else if (CanWaveHands)
+                {
+                    WaveHands();
+                }
+            }
+            GameTimeLastToggledSurrender = Game.GameTime;
+        }
+    }
+
+
+
 }

@@ -15,7 +15,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsDead { get; }
         bool IsCarJacking { get; set; }
         bool IsMoveControlPressed { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         void ShootAt(Vector3 targetCoordinate);
         Ped Character { get; }
     }

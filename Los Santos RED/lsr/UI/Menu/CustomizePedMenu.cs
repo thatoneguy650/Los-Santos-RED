@@ -105,7 +105,7 @@ public class CustomizePedMenu : Menu
         MovePlayerToBookingRoom();
         NewModelName = Player.ModelName;
         WorkingName = Player.PlayerName;
-        WorkingMoney = Player.Money;
+        WorkingMoney = Player.BankAccounts.Money;
         CreateModelPed();
         SetModelAsCharacter();
         SetupMenu();

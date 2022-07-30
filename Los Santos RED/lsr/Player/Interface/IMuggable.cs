@@ -8,7 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IMuggable
     {
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         bool IsInVehicle { get; }
     }
 }

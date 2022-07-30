@@ -384,7 +384,7 @@ public class CarJack
     }
     private bool SetupCarJack()
     {
-        Player.Equipment.SetLastWeapon();
+        Player.WeaponEquipment.SetLastWeapon();
         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver.Pedestrian, TargetVehicle, 27, -1);
         Driver.Pedestrian.BlockPermanentEvents = true;
         Vector3 GameEntryPosition = NativeFunction.CallByHash<Vector3>(0xC0572928C0ABFDA3, TargetVehicle, 0);//GET_ENTRY_POSITION
@@ -400,7 +400,7 @@ public class CarJack
             return false;
         }
         AnimationDictionary.RequestAnimationDictionay(Dictionary);
-        Player.Equipment.SetLastWeapon();
+        Player.WeaponEquipment.SetLastWeapon();
         if (!Driver.Pedestrian.IsInAnyVehicle(false))
         {
             Driver.Pedestrian.WarpIntoVehicle(TargetVehicle, -1);

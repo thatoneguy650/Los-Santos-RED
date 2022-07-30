@@ -10,7 +10,7 @@ public class MainMenu : Menu
     private InventoryMenu InventoryMenu;
     private UIMenu Main;
     private PedSwapMenu PedSwapMenu;
-    private IActionable Player;
+    private ILocationInteractable Player;
     private UIMenuItem RemoveVehicleOwnership;
     private SaveMenu SaveMenu;
     private ISettingsProvideable Settings;
@@ -23,13 +23,18 @@ public class MainMenu : Menu
     private MenuPool MenuPool;
     private UIMenu VehicleItems;
     private UIMenuItem ShowSimplePhoneMenu;
+    private UIMenu GangItems;
+    private UIMenuListScrollerItem<Gang> SetAsGangMember;
+    private IGangs Gangs;
+    private UIMenuItem LeaveGang;
 
-    public MainMenu(MenuPool menuPool, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures)
+    public MainMenu(MenuPool menuPool, IActionable actionablePlayer, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures)
     {
         MenuPool = menuPool;
         Player = player;
         Settings = settings;
         Tasker = tasker;
+        Gangs = gangs;
         UI = ui;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         Main.SetBannerType(EntryPoint.LSRedColor);
@@ -38,8 +43,8 @@ public class MainMenu : Menu
         Main.OnListChange += OnListChange;
         SettingsMenu = new SettingsMenu(menuPool, Main, Settings);
         SaveMenu = new SaveMenu(menuPool, Main, saveablePlayer, gameSaves, weapons, pedswap, playerinventory, Settings, world, gangs, time, placesOfInterest, modItems);
-        PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap);
-        ActionMenu = new ActionMenu(menuPool, Main, Player, Settings, dances, gestures);
+        PedSwapMenu = new PedSwapMenu(menuPool, Main, pedswap, gangs);
+        ActionMenu = new ActionMenu(menuPool, Main, actionablePlayer, Settings, dances, gestures);
         InventoryMenu = new InventoryMenu(menuPool, Main, player, modItems, false);
         CreateMainMenu();
     }
@@ -132,6 +137,33 @@ public class MainMenu : Menu
 
         VehicleItems.OnItemSelect += OnItemSelect;
 
+
+
+        GangItems = MenuPool.AddSubMenu(Main, "Gangs");
+        GangItems.SetBannerType(EntryPoint.LSRedColor);
+        Main.MenuItems[Main.MenuItems.Count() - 1].Description = "Join or Leave a Gang.";
+        Main.MenuItems[Main.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Alert;
+
+        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a gang member of the selected gang", Gangs.GetAllGangs());
+        SetAsGangMember.Activated += (menu, item) =>
+        {
+            Player.GangRelationships.ResetGang(true);
+            Player.GangRelationships.SetGang(SetAsGangMember.SelectedItem, true);
+            menu.Visible = false;
+        };
+        GangItems.AddItem(SetAsGangMember);
+
+        LeaveGang = new UIMenuItem("Leave Gang", "Leave your current gang");
+        LeaveGang.Activated += (menu, item) =>
+        {
+            Player.GangRelationships.ResetGang(true);
+            menu.Visible = false;
+        };
+        GangItems.AddItem(LeaveGang);
+
+
+
+
         Main.AddItem(UnloadMod);
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -153,12 +185,12 @@ public class MainMenu : Menu
         }
         else if (selectedItem == TakeVehicleOwnership)
         {
-            Player.TakeOwnershipOfNearestCar();
+            Player.VehicleOwnership.TakeOwnershipOfNearestCar();
             Main.Visible = false;
         }
         else if (selectedItem == RemoveVehicleOwnership)
         {
-            Player.RemoveOwnershipOfNearestCar();
+            Player.VehicleOwnership.RemoveOwnershipOfNearestCar();
             Main.Visible = false;
         }
         else if (selectedItem == AboutMenu)

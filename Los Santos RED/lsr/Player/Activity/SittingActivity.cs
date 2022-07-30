@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             EntryPoint.WriteToConsole($"Sitting Activity Enter {FindSittingProp}", 5);
-            Player.Equipment.SetUnarmed();
+            Player.WeaponEquipment.SetUnarmed();
             Player.IsSitting = true;
             if (FindSittingProp)
             {
@@ -127,7 +127,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
 
                 if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
                 {
@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
                     while (AnimationTime < 1.0f)
                     {
                         AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                        Player.Equipment.SetUnarmed();
+                        Player.WeaponEquipment.SetUnarmed();
                         GameFiber.Yield();
                     }
                     EntryPoint.WriteToConsole("Sitting Activity Exit 2", 5);
@@ -225,7 +225,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                Player.Equipment.SetUnarmed();
+                Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();
             }
             if (NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene) >= 0.95f)

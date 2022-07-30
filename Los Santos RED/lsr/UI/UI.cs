@@ -102,7 +102,7 @@ public class UI : IMenuProvideable
         menuPool = new MenuPool();
         DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(menuPool, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures);
+        MainMenu = new MainMenu(menuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures);
         DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
@@ -130,9 +130,9 @@ public class UI : IMenuProvideable
         if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
         {
             DrawUIText();
-            if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.IntoxicatedIntensityPercent > 0.0f)
+            if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.Intoxication.CurrentIntensityPercent > 0.0f)
             {
-                BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.IntoxicatedIntensityPercent, 0.0f);
+                BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.Intoxication.CurrentIntensityPercent, 0.0f);
             }
             if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree && IsDrawingWheelMenu)
             {
@@ -222,7 +222,6 @@ public class UI : IMenuProvideable
                 }
             }
             debugString1 = $"Heading: {Math.Round(DisplayablePlayer.Character.Heading, 1)}";
-            DisplayablePlayer.DebugLine4 = debugString1;
         }
     }
     public void Dispose()
@@ -396,7 +395,7 @@ public class UI : IMenuProvideable
 
     private void DisplayTopMenu()
     {     
-        if(IsDrawingWheelMenu && DisplayablePlayer.Equipment.CurrentWeapon!= null)
+        if(IsDrawingWheelMenu && DisplayablePlayer.WeaponEquipment.CurrentWeapon!= null)
         {
             NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);//WEAPON_ICON
         }
@@ -409,10 +408,10 @@ public class UI : IMenuProvideable
         IsVanillaCashHUDVisible = !Settings.SettingsManager.UIGeneralSettings.DisableVanillaCashDisplay;
 
 
-        bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
-        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.Equipment.CurrentWeapon != null && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Throwable;
+        bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.BankAccounts.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu);
+        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.ShowWeaponDisplay && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.WeaponEquipment.CurrentWeapon != null && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable;
 
-        bool willShowCashChange = willShowCash && DisplayablePlayer.RecentlyChangedMoney;
+        bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
         bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
 
 
@@ -466,14 +465,14 @@ public class UI : IMenuProvideable
         if (willShowCash)
         {
            // DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale + Settings.SettingsManager.LSRHUDSettings.TopDisplayOutlineSize, Color.Black, GTAFont.FontPricedown, (GTATextJustification)0, true);
-            DisplayTextOnScreen("$" + DisplayablePlayer.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+            DisplayTextOnScreen("$" + DisplayablePlayer.BankAccounts.Money.ToString(), CashPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
         if(willShowCashChange)
         {
-            string Prefix = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "~g~" : "~r~";
-            string indicator = DisplayablePlayer.LastChangeMoneyAmount > 0 ? "+" : "-";
-            DisplayTextOnScreen(Prefix + indicator + "$" + Math.Abs(DisplayablePlayer.LastChangeMoneyAmount).ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
+            string Prefix = DisplayablePlayer.BankAccounts.LastChangeMoneyAmount > 0 ? "~g~" : "~r~";
+            string indicator = DisplayablePlayer.BankAccounts.LastChangeMoneyAmount > 0 ? "+" : "-";
+            DisplayTextOnScreen(Prefix + indicator + "$" + Math.Abs(DisplayablePlayer.BankAccounts.LastChangeMoneyAmount).ToString(), CashChangePosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }
 
         if (willShowNeeds)
@@ -592,9 +591,9 @@ public class UI : IMenuProvideable
                 PlayerDisplay += $"~o~ Emergency Services Responding{CurrentDefaultTextColor}";
             }
         }
-        else if (DisplayablePlayer.HasCriminalHistory)
+        else if (DisplayablePlayer.CriminalHistory.HasHistory)
         {
-            if (DisplayablePlayer.HasDeadlyCriminalHistory)
+            if (DisplayablePlayer.CriminalHistory.HasDeadlyHistory)
             {
                 PlayerDisplay += $"~r~ APB Issued{CurrentDefaultTextColor}";
             }
@@ -618,43 +617,43 @@ public class UI : IMenuProvideable
     }
     private string GetSelectorText()
     {
-        if (DisplayablePlayer.Equipment.CurrentWeapon != null && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.Equipment.CurrentWeapon.Category != WeaponCategory.Throwable)
+        if (DisplayablePlayer.WeaponEquipment.CurrentWeapon != null && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable)
         {
             if (Settings.SettingsManager.LSRHUDSettings.WeaponDisplaySimpleSelector)
             {
-                if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.Safe)
+                if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.Safe)
                 {
                     return "~w~S~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
                 {
                     return "~r~1~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
                 {
                     return "~r~2~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
                 {
                     return "~r~3~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
                 {
                     return "~r~4~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
                 {
                     return "~r~5~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
                 {
-                    if (DisplayablePlayer.Equipment.CurrentWeaponMagazineSize == 0)
+                    if (DisplayablePlayer.WeaponEquipment.CurrentWeaponMagazineSize == 0)
                     {
                         return $"~r~FULL AUTO~s~";
                     }
                     else
                     {
-                        return $"~r~{DisplayablePlayer.Equipment.CurrentWeaponMagazineSize}~s~";
+                        return $"~r~{DisplayablePlayer.WeaponEquipment.CurrentWeaponMagazineSize}~s~";
                     }
                 }
                 else
@@ -664,33 +663,33 @@ public class UI : IMenuProvideable
             }
             else
             {
-                if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.Safe)
+                if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.Safe)
                 {
                     return "~s~SAFE~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.SemiAuto)
                 {
                     return "~r~Semi-Auto~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.TwoRoundBurst)
                 {
                     return "~r~2 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.ThreeRoundBurst)
                 {
                     return "~r~3 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FourRoundBurst)
                 {
                     return "~r~4 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FiveRoundBurst)
                 {
                     return "~r~5 Round Burst~s~";
                 }
-                else if (DisplayablePlayer.Equipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
+                else if (DisplayablePlayer.WeaponEquipment.CurrentSelectorSetting == SelectorOptions.FullAuto)
                 {
-                    if (DisplayablePlayer.Equipment.CurrentWeaponMagazineSize == 0)
+                    if (DisplayablePlayer.WeaponEquipment.CurrentWeaponMagazineSize == 0)
                     {
                         return $"~r~FULL AUTO~s~";
                     }
@@ -856,7 +855,7 @@ public class UI : IMenuProvideable
             else
             {
                 string ColorPrefx = CurrentDefaultTextColor;
-                if (DisplayablePlayer.IsSpeeding)
+                if (DisplayablePlayer.Violations.IsSpeeding)
                 {
                     ColorPrefx = "~r~";
                 }

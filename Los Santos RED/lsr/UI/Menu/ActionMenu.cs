@@ -221,7 +221,7 @@ public class ActionMenu : Menu
         }
         else if (selectedItem == CallPolice)
         {
-            Player.CallPolice();
+            Player.CellPhone.CallPolice();
         }
         else if (selectedItem == ToggleBodyArmor)
         {

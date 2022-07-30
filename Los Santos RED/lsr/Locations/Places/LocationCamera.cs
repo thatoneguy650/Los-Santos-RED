@@ -30,11 +30,11 @@ public class LocationCamera
     public float ItemPreviewHeading { get; set; } = 0f;
 
 
-    private IActivityPerformable Player;
+    private ILocationInteractable Player;
     public Camera StoreCam { get; private set; }
     public Camera CurrentCamera { get; private set; }
     public bool SayGreeting { get; set; } = true;
-    public LocationCamera(InteractableLocation store, IActivityPerformable player)
+    public LocationCamera(InteractableLocation store, ILocationInteractable player)
     {
         Store = store;
         Player = player;

@@ -461,13 +461,13 @@ public class DebugMenu : Menu
         //}
         else if (selectedItem == GiveMoney)
         {
-            Player.GiveMoney(50000);
+            Player.BankAccounts.GiveMoney(50000);
         }
         else if (selectedItem == SetMoney)
         {
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
             {
-                Player.SetMoney(moneyToSet);
+                Player.BankAccounts.SetMoney(moneyToSet);
             }
         }
         else if (selectedItem == FillHealth)
@@ -572,7 +572,7 @@ public class DebugMenu : Menu
         }
         else if (selectedItem == DefaultGangRep)
         {
-            Player.GangRelationships.ResetAllReputations();
+            Player.GangRelationships.Reset();
         }
         else if (selectedItem == HostileGangRep)
         {

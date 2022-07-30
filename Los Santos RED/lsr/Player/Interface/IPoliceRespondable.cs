@@ -9,8 +9,9 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPoliceRespondable
     {
+        Respawning Respawning { get; }
         LocationData CurrentLocation { get; set; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         GangRelationships GangRelationships { get; }
         Investigation Investigation { get; }
         Licenses Licenses { get; }
@@ -37,7 +38,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsVisiblyArmed { get; }
         bool IsWanted { get; }
-        int MaxWantedLastLife { get; }
+        //int MaxWantedLastLife { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
         Vector3 Position { get; }
         bool RecentlyBusted { get; }
@@ -60,7 +61,6 @@ namespace LosSantosRED.lsr.Interface
         void OnWantedActiveMode();
         void OnWantedSearchMode();
         void OnWeaponsFree();
-        void ResetScanner();
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
         void YellInPain();
     }

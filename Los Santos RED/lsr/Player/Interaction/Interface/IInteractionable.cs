@@ -13,9 +13,11 @@ namespace LosSantosRED.lsr.Interface
     {
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
-        Equipment Equipment { get; }
+        WeaponEquipment WeaponEquipment { get; }
         GangRelationships GangRelationships { get; }
         Inventory Inventory { get; }
+        VehicleOwnership VehicleOwnership { get; }
+        BankAccounts BankAccounts { get; }
         bool CanConverse { get; }
         bool CanPerformActivities { get; }
         Ped Character { get; }
@@ -37,9 +39,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         bool IsSitting { get; }
         bool IsTransacting { get; set; }
-        int Money { get; }
-        void GiveMoney(int v);
         void SetAngeredCop();
-        void TakeOwnershipOfVehicle(VehicleExt myNewCar, bool showNotification);
     }
 }

@@ -23,9 +23,9 @@ public class WeaponRecoil
     }
     public void Update()
     {
-        if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.Equipment.CurrentWeapon != null)// && !IsInVehicle)
+        if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.WeaponEquipment.CurrentWeapon != null)// && !IsInVehicle)
         {
-            if (Player.Equipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.Equipment.CurrentWeapon.Category == WeaponCategory.Unknown)
+            if (Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;
             }
@@ -66,7 +66,7 @@ public class WeaponRecoil
     }
     private void AdjustPitch()
     {
-        AdjustedPitch = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinVerticalRecoil, Player.Equipment.CurrentWeapon.MaxVerticalRecoil);
+        AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
         if (Player.IsInVehicle)
         {
             AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
@@ -80,7 +80,7 @@ public class WeaponRecoil
     }
     private void AdjustHeading()
     {
-        AdjustedHeading = RandomItems.GetRandomNumber(Player.Equipment.CurrentWeapon.MinHorizontalRecoil, Player.Equipment.CurrentWeapon.MaxHorizontalRecoil);
+        AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalRecoil);
         if (RandomItems.RandomPercent(50))
         {
             AdjustedHeading *= -1.0f;

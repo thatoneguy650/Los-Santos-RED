@@ -97,6 +97,7 @@ public class GangReputation
     //        }
     //    }
     //}
+    public bool IsMember { get; set; }
 
     public GangReputation()
     {
@@ -119,7 +120,11 @@ public class GangReputation
     {
         get
         {
-            if(ReputationLevel < NeutralRepLevel)
+            if(IsMember)
+            {
+                return GangRespect.Member;
+            }
+            else if(ReputationLevel < NeutralRepLevel)
             {
                 return GangRespect.Hostile;
             }
@@ -153,13 +158,18 @@ public class GangReputation
         }
         else if (GangRelationship == GangRespect.Friendly)
         {
-            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Companion);//changed from like to companion?
-            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Companion);      
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Like);//changed from like to companion?
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Like);      
         }
         else if (GangRelationship == GangRespect.Neutral)
         {
             rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
+        }
+        else if (GangRelationship == GangRespect.Member)
+        {
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Companion);
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Companion);
         }
     }
     public void SetRelationshipGroupNeutral()
@@ -168,7 +178,7 @@ public class GangReputation
         rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
         RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
     }
-    public void SetRepuation(int value, bool sendText)
+    public void SetReputation(int value, bool sendText)
     {
         if(reputationLevel != value)
         {
@@ -189,20 +199,21 @@ public class GangReputation
     }
     public void Reset(bool sendText)
     {
-        SetRepuation(DefaultRepAmount, sendText);
+        IsMember = false;
+        SetReputation(DefaultRepAmount, sendText);
         MembersHurt = 0;
         MembersKilled = 0;
         MembersCarJacked = 0;
         MembersHurtInTerritory = 0;
         MembersKilledInTerritory = 0;
         MembersCarJackedInTerritory = 0;
-        PlayerDebt = 0;
+        PlayerDebt = 0; 
     }
     public void AddembientRep()
     {
         if (ReputationLevel < DefaultRepAmount && Game.GameTime - GameTimeLastAddedAmbientRep >= Gang.GameTimeToRecoverAmbientRep)
         {
-            SetRepuation(ReputationLevel + 1, true);
+            SetReputation(ReputationLevel + 1, true);
             GameTimeLastAddedAmbientRep = Game.GameTime;
         }
     }
@@ -234,8 +245,20 @@ public class GangReputation
             {
                 rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
-                //rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Respect);
-                //RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Respect);
+                Player.SetDenStatus(Gang, true);
+                if (sendText)
+                {
+                    Player.CellPhone.AddGangText(Gang, true);
+                }
+                else
+                {
+                    Player.CellPhone.AddContact(Gang, false);
+                }
+            }
+            else if (GangRelationship == GangRespect.Member || IsMember)
+            {
+                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Companion);
+                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Companion);
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
@@ -259,7 +282,13 @@ public class GangReputation
     public override string ToString()
     {
         string ending = "";
-        if(GangRelationship == GangRespect.Friendly)
+        string repLevel = $" ({ReputationLevel})";
+        if (GangRelationship == GangRespect.Member)
+        {
+            ending = ": ~g~Member~s~";
+            repLevel = "";
+        }
+        else if (GangRelationship == GangRespect.Friendly)
         {
             ending = ": ~g~Friendly~s~";
         }
@@ -271,12 +300,18 @@ public class GangReputation
         {
             ending = ": ~r~Hostile~s~";
         }
-        return Gang.ColorInitials.ToString() + ending + $" ({ReputationLevel})";
+        return Gang.ColorInitials.ToString() + ending + repLevel;
     }
     public string ToStringBare()
     {
         string ending = "";
-        if (GangRelationship == GangRespect.Friendly)
+        string repLevel = $" ({ReputationLevel})";
+        if (GangRelationship == GangRespect.Member)
+        {
+            ending = "~g~Member~s~";
+            repLevel = "";
+        }
+        else if (GangRelationship == GangRespect.Friendly)
         {
             ending = "~g~Friendly~s~";
         }
@@ -288,29 +323,16 @@ public class GangReputation
         {
             ending = "~r~Hostile~s~";
         }
-        return ending + $" ({ReputationLevel})";
-    }
-    public string ToStringBareRaw()
-    {
-        string ending = "";
-        if (GangRelationship == GangRespect.Friendly)
-        {
-            ending = "~g~Friendly~s~";
-        }
-        else if (GangRelationship == GangRespect.Neutral)
-        {
-            ending = "~s~Neutral~s~";
-        }
-        else if (GangRelationship == GangRespect.Hostile)
-        {
-            ending = "~r~Hostile~s~";
-        }
-        return ending;
+        return ending + repLevel;
     }
     public string ToBlip()
     {
         string ending = "";
-        if (GangRelationship == GangRespect.Friendly)
+        if (GangRelationship == GangRespect.Member)
+        {
+            ending = "~g~(Member)~s~";
+        }
+        else if (GangRelationship == GangRespect.Friendly)
         {
             ending = "~g~(Friendly)~s~";
         }

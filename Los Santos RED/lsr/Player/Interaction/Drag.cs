@@ -232,15 +232,15 @@ public class Drag : DynamicActivity
     }
     private bool StartDrag()
     {  
-        if (Player.Equipment.CurrentWeapon != null)
+        if (Player.WeaponEquipment.CurrentWeapon != null)
         {
-            LastWeapon = Player.Equipment.CurrentWeapon;
+            LastWeapon = Player.WeaponEquipment.CurrentWeapon;
         }
         else
         {
             LastWeapon = null;
         }
-        Player.Equipment.SetUnarmed();
+        Player.WeaponEquipment.SetUnarmed();
         Player.ButtonPrompts.RemovePrompts("Drop");
         if (!Player.ButtonPrompts.HasPrompt("Drop"))
         {
