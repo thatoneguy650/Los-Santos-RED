@@ -118,7 +118,7 @@
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
-    <Compile Include="lsr\Data\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PropItems.cs" />
@@ -369,7 +369,7 @@
     <Compile Include="lsr\Data\Interface\IGameSaves.cs" />
     <Compile Include="lsr\Data\Interface\IJursidctions.cs" />
     <Compile Include="lsr\Data\Peds\Bones.cs" />
-    <Compile Include="lsr\Data\Crimes.cs" />
+    <Compile Include="lsr\Data\Agencies\Crimes.cs" />
     <Compile Include="lsr\Data\Interface\IAgencies.cs" />
     <Compile Include="lsr\Data\Saves\GameSave.cs" />
     <Compile Include="lsr\Data\Saves\GameSaves.cs" />

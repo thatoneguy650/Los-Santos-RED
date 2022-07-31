@@ -14,70 +14,23 @@ using System.Windows.Forms;
 
 public class DebugMenu : Menu
 {
-    private UIMenu DispatcherMenu;
+
     private UIMenu Debug;
-    private UIMenuListItem AutoSetRadioStation;
-    private UIMenuItem GiveMoney;
-    private UIMenuItem SetMoney;
-    private UIMenuItem FillHealth;
-    private UIMenuItem FillHealthAndArmor;
-    private UIMenuItem ForceSober;
-    private UIMenuItem SpawnGunAttackersMenu;
-    private UIMenuItem SpawnNoGunAttackersMenu;
-    private UIMenuListScrollerItem<Agency> SpawnAgencyFoot;
-    private UIMenuListScrollerItem<Agency> SpawnAgencyVehicle;
-    private UIMenuItem ToggleInvestigation;
-    private UIMenuNumericScrollerItem<int> FastForwardTime;
-    private UIMenuItem GoToReleaseSettings;
-    private UIMenuItem GoToHardCoreSettings;
-    private UIMenuItem StartRandomCrime;
-    private UIMenuItem KillPlayer;
-    private UIMenuItem LogCameraPositionMenu;
-    private UIMenuItem LogInteriorMenu;
-    private UIMenuItem LogLocationMenu;
-    private UIMenuItem LogLocationSimpleMenu;
-    private UIMenuListItem GetRandomWeapon;
-    private UIMenuListItem GetRandomUpgradedWeapon;
-    private UIMenuListItem TeleportToPOI;
-    private UIMenuItem DefaultGangRep;
-    private UIMenuItem RandomGangRep;
-    private UIMenuItem SetDateToToday;
-    private UIMenuItem Holder1;
     private IActionable Player;
     private RadioStations RadioStations;
-    private int RandomWeaponCategory;
-    private IWeapons Weapons;
-    private IPlacesOfInterest PlacesOfInterest;
-    private int PlaceOfInterestSelected;
-    private ISettingsProvideable Settings;
-    private ITimeControllable Time;
     private Camera FreeCam;
     private float FreeCamScale = 1.0f;
-    private UIMenuItem FreeCamMenu;
-    private UIMenuItem LoadSPMap;
-    private UIMenuItem LoadMPMap;
+    private IWeapons Weapons;
+    private IPlacesOfInterest PlacesOfInterest;
+    private ISettingsProvideable Settings;
+    private ITimeControllable Time;
     private IEntityProvideable World;
-    private UIMenuItem HostileGangRep;
-    private UIMenuItem FriendlyGangRep;
-    private UIMenuItem RandomSingleGangRep;
     private ITaskerable Tasker;
     private MenuPool MenuPool;
     private Dispatcher Dispatcher;
     private IAgencies Agencies;
-    private UIMenuListScrollerItem<Gang> SpawnGangFoot;
-    private UIMenuListScrollerItem<Gang> SpawnGangVehicle;
-    private UIMenuItem SpawnRockblock;
     private IGangs Gangs;
-    private UIMenuListScrollerItem<Gang> SetGangRepDefault;
-    private UIMenuListScrollerItem<Gang> SetGangRepFriendly;
-    private UIMenuListScrollerItem<Gang> SetGangRepHostile;
-    private UIMenuListScrollerItem<int> SetWantedLevel;
-    private UIMenuItem GetAllItems;
-    private UIMenuItem GetSomeItems;
-    private IModItems ModItems;
-    private int RandomUpgradedWeaponCategory;
-    private UIMenuItem SetRandomNeeds;
-    private UIMenuItem ResetNeeds;
+    private IModItems ModItems;  
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems)
     {
@@ -96,11 +49,7 @@ public class DebugMenu : Menu
         ModItems = modItems;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
-        menuPool.Add(Debug);
-
-        
-        Debug.OnItemSelect += DebugMenuSelect;
-        Debug.OnListChange += OnListChange;
+        menuPool.Add(Debug);      
         CreateDebugMenu();
     }
     public override void Hide()
@@ -127,282 +76,236 @@ public class DebugMenu : Menu
     }
     private void CreateDebugMenu()
     {
-
-        DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
-        DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
-        DispatcherMenu.OnItemSelect += DispatcherMenuSelect;
-
-        SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Cop Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
-        SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
-
-        SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
-        SpawnGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Vehicle Spawn", "Spawn a random gang ped with a vehicle", Gangs.GetAllGangs());
-        SpawnRockblock = new UIMenuItem("Spawn Roadblock","Spawn roadblock");
-
-        DispatcherMenu.AddItem(SpawnAgencyFoot);
-        DispatcherMenu.AddItem(SpawnAgencyVehicle);
-
-
-        DispatcherMenu.AddItem(SpawnGangFoot);
-        DispatcherMenu.AddItem(SpawnGangVehicle);
-        DispatcherMenu.AddItem(SpawnRockblock);
-
-
-        SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Default", "Sets the selected gang to the default reputation", Gangs.GetAllGangs());
-        SetGangRepFriendly = new UIMenuListScrollerItem<Gang>("Set Gang Friendly", "Sets the selected gang to a friendly reputation", Gangs.GetAllGangs());
-        SetGangRepHostile = new UIMenuListScrollerItem<Gang>("Set Gang Hostile", "Sets the selected gang to a hostile reputation", Gangs.GetAllGangs());
-
-
-
-
-
-
-
-
-        FastForwardTime = new UIMenuNumericScrollerItem<int>("Fast Forward Time", "Fast forward time.", 1, 24, 1) { Formatter = v => v + " Hours"};
-        GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
-
-
-        GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
-
-
-        StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
-        KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
-        GetRandomWeapon = new UIMenuListItem("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
-
-        GetRandomUpgradedWeapon = new UIMenuListItem("Get Random Upgraded Weapon", "Gives the Player a random upgraded weapon and ammo.", Enum.GetNames(typeof(WeaponCategory)).ToList());
-
-
-        GiveMoney = new UIMenuItem("Get Money", "Give you some cash");
-        SetMoney = new UIMenuItem("Set Money", "Sets your cash");
-        GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
-        GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
-        FillHealth = new UIMenuItem("Fill Health", "Refill health only");
-        FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
-
-        ForceSober = new UIMenuItem("Become Sober", "Forces a sober state on the player (if intoxicated)");
-
-        SpawnGunAttackersMenu = new UIMenuItem("Spawn Gun Attacker", "spawns some peds with guns that will atack you");
-        SpawnNoGunAttackersMenu = new UIMenuItem("Spawn No Gun Attackers", "spawns some peds without guins that will attack you");
-
-
-        AutoSetRadioStation = new UIMenuListItem("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
-        LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
-        LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
-        LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
-        LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
-        FreeCamMenu = new UIMenuItem("Free Cam", "Start Free Camera Mode");
-
-        LoadSPMap = new UIMenuItem("Load SP Map", "Loads the SP map if you have the MP map enabled");
-        LoadMPMap = new UIMenuItem("Load MP Map", "Load the MP map if you have the SP map enabled");
-
-
-       // TeleportToPOI = new UIMenuListItem("Teleport To POI", "Teleports to A POI on the Map", PlacesOfInterest.GetAllPlaces());
-
-
-        DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
-        RandomGangRep = new UIMenuItem("Set Gang Rep Random", "Sets the player reputation to each gang to a randomized number");
-        RandomSingleGangRep = new UIMenuItem("Set Single Gang Rep Random", "Sets the player reputation to random gang to a randomized number");
-
-        HostileGangRep = new UIMenuItem("Set Gang Rep Hostile", "Sets the player reputation to each gang to hostile");
-        FriendlyGangRep = new UIMenuItem("Set Gang Rep Friendly", "Sets the player reputation to each gang to friendly");
-        SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
-
-        SetRandomNeeds = new UIMenuItem("Set Random Needs", "Sets the player needs level random");
-        ResetNeeds = new UIMenuItem("Reset Needs", "Sets the player needs to the default level");
-
-        Holder1 = new UIMenuItem("Placeholder", "Placeholder nullsub");
-
-
-
-        Debug.AddItem(KillPlayer);
-        Debug.AddItem(GetRandomWeapon);
-        Debug.AddItem(GetRandomUpgradedWeapon);
-
-
-
-        SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
-        Debug.AddItem(SetWantedLevel);
-        ToggleInvestigation = new UIMenuItem("Toggle Investigation", "Start or stop an investigation.");
-
-        Debug.AddItem(ToggleInvestigation);
-
-
-        Debug.AddItem(GiveMoney);
-        Debug.AddItem(SetMoney);
-        Debug.AddItem(GetAllItems);
-        Debug.AddItem(GetSomeItems);
-        Debug.AddItem(FillHealth);
-        Debug.AddItem(FillHealthAndArmor);
-        Debug.AddItem(FastForwardTime);
-        Debug.AddItem(GoToReleaseSettings);
-        Debug.AddItem(GoToHardCoreSettings);
-
-
-
-        Debug.AddItem(ResetNeeds);
-        Debug.AddItem(SetRandomNeeds);
-
-        Debug.AddItem(SpawnGunAttackersMenu);
-        Debug.AddItem(SpawnNoGunAttackersMenu);
-
-        Debug.AddItem(ForceSober);
-
-        Debug.AddItem(AutoSetRadioStation);
-        Debug.AddItem(StartRandomCrime);
-       // Debug.AddItem(TeleportToPOI);
-        Debug.AddItem(DefaultGangRep);
-        Debug.AddItem(RandomGangRep);
-        Debug.AddItem(RandomSingleGangRep);
-
-        Debug.AddItem(SetGangRepDefault);
-        Debug.AddItem(SetGangRepFriendly);
-        Debug.AddItem(SetGangRepHostile);
-
-
-        //Debug.AddItem(HostileGangRep);
-        //Debug.AddItem(FriendlyGangRep);
-
-        Debug.AddItem(FreeCamMenu);
-        Debug.AddItem(LogLocationMenu);
-        Debug.AddItem(LogLocationSimpleMenu);
-        Debug.AddItem(LogInteriorMenu);
-        Debug.AddItem(LogCameraPositionMenu);
-        Debug.AddItem(SetDateToToday);
-        Debug.AddItem(LoadSPMap);
-        Debug.AddItem(LoadMPMap);
-
-
-
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To ScrapYard", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.ScrapYards));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Hotel", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Hotels));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To GunStores", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GunStores));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Gang Den", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GangDens));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dead Drops", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DeadDrops));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Residence", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Residences));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To City Hall", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CityHalls));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PoliceStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PoliceStations));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To FireStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.FireStations));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Hospital", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Hospitals));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Restaurant", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Restaurants));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Bank", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Banks));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To BeautyShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.BeautyShops));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Dispensary", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Dispensaries));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To HardwardStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.HardwareStores));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To HeadShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.HeadShops));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To PawnShop", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.PawnShops));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Pharmacy", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Pharmacies));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Stadium", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Stadiums));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To ConvenienceStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.ConvenienceStores));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To LiquorStore", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.LiquorStores));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To GasStation", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.GasStations));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To Bar", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.Bars));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To FoodStand", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.FoodStands));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To CarDealership", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.CarDealerships));
-        Debug.AddItem(new UIMenuListScrollerItem<BasicLocation>($"Teleport To DriveThru", "Teleports to A POI on the Map", PlacesOfInterest.PossibleLocations.DriveThrus));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //foreach (LocationType lt in (LocationType[])Enum.GetValues(typeof(LocationType)))
-        //{
-        //    Debug.AddItem(new UIMenuListScrollerItem<GameLocation>($"Teleport To {lt}", "Teleports to A POI on the Map", PlacesOfInterest.GetLocations(lt)));
-        //}
-
-
-
+        CreateDispatcherMenu();
+        CreateGangItemsMenu();
+        CreateTimeMenu();
+        CreateCrimeMenu();
+        CreatePlayerStateMenu();
+        CreateTeleportMenu();
+        CreateOtherItems();
     }
-
-    private void DispatcherMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void CreateTeleportMenu()
     {
-        if(selectedItem == SpawnAgencyFoot)
+        UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Menu");
+        LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various location items.";
+        UIMenuItem LogLocationMenu = new UIMenuItem("Log Game Location", "Location Type, Then Name");
+        LogLocationMenu.Activated += (menu, item) =>
         {
-            EntryPoint.WriteToConsole($"SpawnAgencyFoot SELECTED {SpawnAgencyFoot.SelectedItem.ID}");
+            LogGameLocation();
+            menu.Visible = false;
+        };
+        UIMenuItem LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
+        LogLocationSimpleMenu.Activated += (menu, item) =>
+        {
+            LogGameLocationSimple();
+            menu.Visible = false;
+        };
+        UIMenuItem LogInteriorMenu = new UIMenuItem("Log Game Interior", "Interior Name");
+        LogInteriorMenu.Activated += (menu, item) =>
+        {
+            LogGameInterior();
+            menu.Visible = false;
+        };
+        UIMenuItem LogCameraPositionMenu = new UIMenuItem("Log Camera Position", "Logs current rendering cam post direction and rotation");
+        LogCameraPositionMenu.Activated += (menu, item) =>
+        {
+            LogCameraPosition();
+            menu.Visible = false;
+        };
+        UIMenuItem FreeCamMenu = new UIMenuItem("Free Cam", "Start Free Camera Mode");
+        FreeCamMenu.Activated += (menu, item) =>
+        {
+            Frecam();
+            menu.Visible = false;
+        };
+        UIMenuItem LoadSPMap = new UIMenuItem("Load SP Map", "Loads the SP map if you have the MP map enabled");
+        LoadSPMap.Activated += (menu, item) =>
+        {
+            World.LoadSPMap();
+            menu.Visible = false;
+        };
+        UIMenuItem LoadMPMap = new UIMenuItem("Load MP Map", "Load the MP map if you have the SP map enabled");
+        LoadMPMap.Activated += (menu, item) =>
+        {
+            World.LoadMPMap();
+            menu.Visible = false;
+        };
 
-            if(SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
+        LocationItemsMenu.AddItem(LogLocationMenu);
+        LocationItemsMenu.AddItem(LogLocationSimpleMenu);
+        LocationItemsMenu.AddItem(LogInteriorMenu);
+        LocationItemsMenu.AddItem(LogCameraPositionMenu);
+        LocationItemsMenu.AddItem(FreeCamMenu);
+        LocationItemsMenu.AddItem(LoadSPMap);
+        LocationItemsMenu.AddItem(LoadMPMap);
+
+
+        List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().Where(x => x.ShowsOnDirectory).ToList();
+        foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
+        {
+            UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"Teleport To {typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
+            myLocationType.Activated += (menu, item) =>
             {
-                Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true);
-            }
-            else 
-            {
-
-                Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
-            }
+                BasicLocation toTele = myLocationType.SelectedItem;
+                if(toTele != null)
+                {
+                    Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
+                    Game.LocalPlayer.Character.Heading = toTele.EntranceHeading;
+                }
+                menu.Visible = false;
+            };
+            LocationItemsMenu.AddItem(myLocationType);
         }
-        else if (selectedItem == SpawnAgencyVehicle)
-        {
-            EntryPoint.WriteToConsole($"SpawnAgencyVehicle SELECTED {SpawnAgencyVehicle.SelectedItem.ID}");
-            if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
-            {
-                Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false);
-            }
-            else
-            {
-                Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
-            }
-        }
-
-
-        else if (selectedItem == SpawnGangFoot)
-        {
-            EntryPoint.WriteToConsole($"SpawnGangFoot SELECTED {SpawnGangFoot.SelectedItem.ID}");
-            Dispatcher.DebugSpawnGang(SpawnGangFoot.SelectedItem.ID, true);
-        }
-        else if (selectedItem == SpawnGangVehicle)
-        {
-            EntryPoint.WriteToConsole($"SpawnGangVehicle SELECTED {SpawnGangVehicle.SelectedItem.ID}");
-            Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
-        }
-
-
-        else if(selectedItem == SpawnRockblock)
-        {
-            Dispatcher.SpawnRoadblock();
-        }
-
-
-        sender.Visible = false;
     }
-
-    private void DebugMenuSelect(UIMenu sender, UIMenuItem selectedItem, int index)
+    private void CreatePlayerStateMenu()
     {
-        if (selectedItem == KillPlayer)
+        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Player State Menu");
+        PlayerStateItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various time items.";
+        UIMenuItem KillPlayer = new UIMenuItem("Kill Player", "Immediatly die and ragdoll");
+        KillPlayer.Activated += (menu, item) =>
         {
             Game.LocalPlayer.Character.Kill();
-        }
-        else if (selectedItem == SetWantedLevel)
+            menu.Visible = false;
+        };
+        UIMenuItem GiveMoney = new UIMenuItem("Give Money", "Give the player $50K");
+        GiveMoney.Activated += (menu, item) =>
         {
-            Player.SetWantedLevel(SetWantedLevel.SelectedItem,"Debug Menu",true);
-        }
-        else if (selectedItem == SpawnGunAttackersMenu)
+            Player.BankAccounts.GiveMoney(50000);
+            menu.Visible = false;
+        };
+        UIMenuItem SetMoney = new UIMenuItem("Set Money", "Sets the current player money");
+        SetMoney.Activated += (menu, item) =>
         {
-            SpawnGunAttackers();
-        }
-        else if (selectedItem == SpawnNoGunAttackersMenu)
+            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
+            {
+                Player.BankAccounts.SetMoney(moneyToSet);
+            }
+            menu.Visible = false;
+        };
+        UIMenuItem GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
+        GetAllItems.Activated += (menu, item) =>
         {
-            SpawnNoGunAttackers();
-        }
-        else if (selectedItem == ToggleInvestigation)
+            foreach (ModItem modItem in ModItems.Items)
+            {
+                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                {
+                    if (!modItem.ConsumeOnPurchase)
+                    {
+                        Player.Inventory.Add(modItem, 10);
+                    }
+                }
+            }
+            menu.Visible = false;
+        };
+        UIMenuItem GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
+        GetSomeItems.Activated += (menu, item) =>
+        {
+            foreach (ModItem modItem in ModItems.Items.OrderBy(x => RandomItems.MyRand.Next()).Take(30))
+            {
+                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                {
+                    if (!modItem.ConsumeOnPurchase)
+                    {
+                        Player.Inventory.Add(modItem, 10);
+                    }
+                }
+            }
+            menu.Visible = false;
+        };
+        UIMenuItem FillHealth = new UIMenuItem("Fill Health", "Refill health only");
+        FillHealth.Activated += (menu, item) =>
+        {
+            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+            menu.Visible = false;
+        };
+        UIMenuItem FillHealthAndArmor = new UIMenuItem("Fill Health and Armor", "Get loaded for bear");
+        FillHealthAndArmor.Activated += (menu, item) =>
+        {
+            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
+            Game.LocalPlayer.Character.Armor = 100;
+            menu.Visible = false;
+        };
+        UIMenuItem ForceSober = new UIMenuItem("Become Sober", "Forces a sober state on the player (if intoxicated)");
+        ForceSober.Activated += (menu, item) =>
+        {
+            Player.Intoxication.Dispose();
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<WeaponCategory> GetRandomWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Weapon", "Gives the Player a random weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
+        GetRandomWeapon.Activated += (menu, item) =>
+        {
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomWeapon.SelectedItem);
+            if (myGun != null)
+            {
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+            }
+            menu.Visible = false;
+        };
+
+        UIMenuListScrollerItem<WeaponCategory> GetRandomUpgradedWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Upgraded Weapon", "Gives the Player a random upgraded weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
+        GetRandomUpgradedWeapon.Activated += (menu, item) =>
+        {
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomUpgradedWeapon.SelectedItem);
+            if (myGun != null)
+            {
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Magazine).OrderBy(x => x.Name == "Box Magazine" ? 1 : x.Name == "Drum Magazine" ? 2 : x.Name == "Extended Clip" ? 3 : 4).FirstOrDefault();
+                if (bestMagazineUpgrade != null)
+                {
+                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
+                }
+            }
+            menu.Visible = false;
+        };
+        UIMenuItem SetRandomNeeds = new UIMenuItem("Set Random Needs", "Sets the player needs level random");
+        SetRandomNeeds.Activated += (menu, item) =>
+        {
+            Player.HumanState.SetRandom();
+            menu.Visible = false;
+        };
+        UIMenuItem ResetNeeds = new UIMenuItem("Reset Needs", "Sets the player needs to the default level");
+        ResetNeeds.Activated += (menu, item) =>
+        {
+            Player.HumanState.Reset();
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<RadioStation> AutoSetRadioStation = new UIMenuListScrollerItem<RadioStation>("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
+        AutoSetRadioStation.Activated += (menu, item) =>
+        {
+            Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation = AutoSetRadioStation.SelectedItem.InternalName;
+            menu.Visible = false;
+        };
+        AutoSetRadioStation.IndexChanged += (UIMenuScrollerItem sender, int oldIndex, int newIndex) =>
+        {
+            Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation = AutoSetRadioStation.SelectedItem.InternalName;
+        };
+        PlayerStateItemsMenu.AddItem(KillPlayer);
+        PlayerStateItemsMenu.AddItem(GiveMoney);
+        PlayerStateItemsMenu.AddItem(SetMoney);
+        PlayerStateItemsMenu.AddItem(GetAllItems);
+        PlayerStateItemsMenu.AddItem(GetSomeItems);
+        PlayerStateItemsMenu.AddItem(FillHealthAndArmor);
+        PlayerStateItemsMenu.AddItem(GetRandomWeapon);
+        PlayerStateItemsMenu.AddItem(GetRandomUpgradedWeapon);
+        PlayerStateItemsMenu.AddItem(SetRandomNeeds);
+        PlayerStateItemsMenu.AddItem(ResetNeeds);
+        PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
+    }
+    private void CreateCrimeMenu()
+    {
+        UIMenu CrimeItemsMenu = MenuPool.AddSubMenu(Debug, "Crime Menu");
+        CrimeItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various crime items.";
+        UIMenuListScrollerItem<int>  SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+        SetWantedLevel.Activated += (menu, item) =>
+        {
+            Player.SetWantedLevel(SetWantedLevel.SelectedItem, "Debug Menu", true);
+            menu.Visible = false;
+        };
+        UIMenuItem ToggleInvestigation = new UIMenuItem("Toggle Investigation", "Start or stop an investigation.");
+        ToggleInvestigation.Activated += (menu, item) =>
         {
             if (Player.IsNotWanted)
             {
@@ -415,226 +318,206 @@ public class DebugMenu : Menu
                     Player.Investigation.Expire();
                 }
             }
-        }
-        else if (selectedItem == GoToReleaseSettings)
+            menu.Visible = false;
+        };
+        UIMenuItem SpawnGunAttackersMenu = new UIMenuItem("Spawn Gun Attacker", "spawns some peds with guns that will attack you");
+        SpawnGunAttackersMenu.Activated += (menu, item) =>
         {
-            Settings.SetRelease();
-            
-        }
-        else if (selectedItem == GoToHardCoreSettings)
+            SpawnGunAttackers();
+            menu.Visible = false;
+        };
+        UIMenuItem SpawnNoGunAttackersMenu = new UIMenuItem("Spawn No Gun Attackers", "spawns some peds without guins that will attack you");
+        SpawnNoGunAttackersMenu.Activated += (menu, item) =>
         {
-            Settings.SetHard();
-        }
-        else if (selectedItem == FastForwardTime)
-        {
-            Time.FastForward(FastForwardTime.Value);
-        }
-        else if (selectedItem == GetRandomWeapon)
-        {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon((WeaponCategory)RandomWeaponCategory);
-            if (myGun != null)
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-            }
-        }
-        else if (selectedItem == GetRandomUpgradedWeapon)
-        {
-            WeaponInformation myGun = Weapons.GetRandomRegularWeapon((WeaponCategory)RandomUpgradedWeaponCategory);
-            if (myGun != null)
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
-                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Magazine).OrderBy(x=> x.Name == "Box Magazine" ? 1 : x.Name == "Drum Magazine" ? 2 : x.Name == "Extended Clip" ? 3: 4).FirstOrDefault();
-                if (bestMagazineUpgrade != null)
-                {
-                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
-                }
-            }
-        }
-        //else if (selectedItem == TeleportToPOI)
-        //{
-        //    GameLocation ToTeleportTo = PlacesOfInterest.GetAllPlaces()[PlaceOfInterestSelected];
-        //    if(ToTeleportTo != null)
-        //    {
-        //        Game.LocalPlayer.Character.Position = ToTeleportTo.EntrancePosition;
-        //        Game.LocalPlayer.Character.Heading = ToTeleportTo.EntranceHeading;
-        //    }
-        //}
-        else if (selectedItem == GiveMoney)
-        {
-            Player.BankAccounts.GiveMoney(50000);
-        }
-        else if (selectedItem == SetMoney)
-        {
-            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
-            {
-                Player.BankAccounts.SetMoney(moneyToSet);
-            }
-        }
-        else if (selectedItem == FillHealth)
-        {
-            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-        }
-        else if (selectedItem == FillHealthAndArmor)
-        {
-            Game.LocalPlayer.Character.Health = Game.LocalPlayer.Character.MaxHealth;
-            Game.LocalPlayer.Character.Armor = 100;
-        }
-        else if (selectedItem == StartRandomCrime)
+            SpawnNoGunAttackers();
+            menu.Visible = false;
+        };
+        UIMenuItem StartRandomCrime = new UIMenuItem("Start Random Crime", "Trigger a random crime around the map.");
+        StartRandomCrime.Activated += (menu, item) =>
         {
             Tasker.CreateCrime();
-        }
-        else if (selectedItem == ForceSober)
+            menu.Visible = false;
+        };
+        CrimeItemsMenu.AddItem(SetWantedLevel);
+        CrimeItemsMenu.AddItem(ToggleInvestigation);
+        CrimeItemsMenu.AddItem(SpawnGunAttackersMenu);
+        CrimeItemsMenu.AddItem(SpawnNoGunAttackersMenu);
+        CrimeItemsMenu.AddItem(StartRandomCrime);
+    }
+    private void CreateOtherItems()
+    {
+        UIMenu OtherItemsMenu = MenuPool.AddSubMenu(Debug, "Other Menu");
+        OtherItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various time items.";
+        UIMenuItem GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
+        GoToReleaseSettings.Activated += (menu, item) =>
         {
-            Player.Intoxication.Dispose();
-        }
-        else if (selectedItem == LogLocationMenu)
+            Settings.SetRelease();
+            menu.Visible = false;
+        };
+        UIMenuItem GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
+        GoToHardCoreSettings.Activated += (menu, item) =>
         {
-            LogGameLocation();
-        }
-        else if (selectedItem == LogLocationSimpleMenu)
+            Settings.SetHard();
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(GoToReleaseSettings);
+        OtherItemsMenu.AddItem(GoToHardCoreSettings);    
+    }
+    private void CreateTimeMenu()
+    {
+        UIMenu TimeItems = MenuPool.AddSubMenu(Debug, "Time Menu");
+        TimeItems.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various time items.";
+        UIMenuNumericScrollerItem<int> FastForwardTime = new UIMenuNumericScrollerItem<int>("Fast Forward Time", "Fast forward time.", 1, 24, 1) { Formatter = v => v + " Hours" };
+        FastForwardTime.Activated += (menu, item) =>
         {
-            LogGameLocationSimple();
-        }
-        else if (selectedItem == LogCameraPositionMenu)
-        {
-            LogCameraPosition();
-        }
-        else if (selectedItem == LogInteriorMenu)
-        {
-            LogGameInterior();
-        }
-        else if (selectedItem == SetDateToToday)
+            Time.FastForward(FastForwardTime.Value);
+            menu.Visible = false;
+        };
+        UIMenuItem SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
+        SetDateToToday.Activated += (menu, item) =>
         {
             Time.SetDateToToday();
-        }
-        else if (selectedItem == FreeCamMenu)
-        {
-            Frecam();
-        }
-        else if (selectedItem == Holder1)
-        {
+            menu.Visible = false;
+        };
+        TimeItems.AddItem(FastForwardTime);
+        TimeItems.AddItem(SetDateToToday);
+    }
+    private void CreateGangItemsMenu()
+    {
+        UIMenu GangItems = MenuPool.AddSubMenu(Debug, "Gang Items");
+        GangItems.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Debug Gang Items.";
 
-        }
-        else if (selectedItem == LoadMPMap)
+        UIMenuListScrollerItem<Gang> SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a gang member of the selected gang", Gangs.GetAllGangs());
+        SetAsGangMember.Activated += (menu, item) =>
         {
-            World.LoadMPMap();
-        }
-        else if (selectedItem == LoadSPMap)
+            Player.GangRelationships.ResetGang(true);
+            Player.GangRelationships.SetGang(SetAsGangMember.SelectedItem, true);
+            menu.Visible = false;
+        };
+        UIMenuItem LeaveGang = new UIMenuItem("Leave Gang", "Leave your current gang");
+        LeaveGang.Activated += (menu, item) =>
         {
-            World.LoadSPMap();
-        }
-
-        else if (selectedItem == GetAllItems)
-        {
-            foreach (ModItem modItem in ModItems.Items)
-            {
-                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
-                {
-                    if (!modItem.ConsumeOnPurchase)
-                    {
-                        Player.Inventory.Add(modItem, 10);
-                    }
-                }
-            }
-        }
-        else if (selectedItem == GetSomeItems)
-        {
-            foreach (ModItem modItem in ModItems.Items.OrderBy(x => RandomItems.MyRand.Next()).Take(30))
-            {
-                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
-                {
-                    if (!modItem.ConsumeOnPurchase)
-                    {
-                        Player.Inventory.Add(modItem, 10);
-                    }
-                }
-            }
-        }
-        if (selectedItem == SetGangRepHostile)
-        {
-            Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -5000, false);
-        }
-        if (selectedItem == SetGangRepDefault)
+            Player.GangRelationships.ResetGang(true);
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SetGangRepDefault = new UIMenuListScrollerItem<Gang>("Set Gang Default", "Sets the selected gang to the default reputation", Gangs.GetAllGangs());
+        SetGangRepDefault.Activated += (menu, item) =>
         {
             Player.GangRelationships.SetReputation(SetGangRepDefault.SelectedItem, 200, false);
-        }
-        if (selectedItem == SetGangRepFriendly)
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SetGangRepFriendly = new UIMenuListScrollerItem<Gang>("Set Gang Friendly", "Sets the selected gang to a friendly reputation", Gangs.GetAllGangs());
+        SetGangRepFriendly.Activated += (menu, item) =>
         {
             Player.GangRelationships.SetReputation(SetGangRepFriendly.SelectedItem, 5000, false);
-        }
-        else if (selectedItem == RandomGangRep)
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SetGangRepHostile = new UIMenuListScrollerItem<Gang>("Set Gang Hostile", "Sets the selected gang to a hostile reputation", Gangs.GetAllGangs());
+        SetGangRepHostile.Activated += (menu, item) =>
         {
-            Player.GangRelationships.SetAllRandomReputations();
-        }
-        else if (selectedItem == RandomSingleGangRep)
-        {
-            Player.GangRelationships.SetSingleRandomReputation();
-        }
-        else if (selectedItem == DefaultGangRep)
+            Player.GangRelationships.SetReputation(SetGangRepHostile.SelectedItem, -5000, false);
+            menu.Visible = false;
+        };
+        UIMenuItem DefaultGangRep = new UIMenuItem("Set Gang Rep Default", "Sets the player reputation to each gang to the default value");
+        DefaultGangRep.Activated += (menu, item) =>
         {
             Player.GangRelationships.Reset();
-        }
-        else if (selectedItem == HostileGangRep)
+            menu.Visible = false;
+        };
+        UIMenuItem RandomGangRep = new UIMenuItem("Set Gang Rep Random", "Sets the player reputation to each gang to a randomized number");
+        RandomGangRep.Activated += (menu, item) =>
+        {
+            Player.GangRelationships.SetAllRandomReputations();
+            menu.Visible = false;
+        };
+        UIMenuItem RandomSingleGangRep = new UIMenuItem("Set Single Gang Rep Random", "Sets the player reputation to random gang to a randomized number");
+        RandomSingleGangRep.Activated += (menu, item) =>
+        {
+            Player.GangRelationships.SetSingleRandomReputation();
+            menu.Visible = false;
+        };
+        UIMenuItem HostileGangRep = new UIMenuItem("Set Gang Rep Hostile", "Sets the player reputation to each gang to hostile");
+        HostileGangRep.Activated += (menu, item) =>
         {
             Player.GangRelationships.SetHostileReputations();
-        }
-        else if (selectedItem == FriendlyGangRep)
+            menu.Visible = false;
+        };
+        UIMenuItem FriendlyGangRep = new UIMenuItem("Set Gang Rep Friendly", "Sets the player reputation to each gang to friendly");
+        FriendlyGangRep.Activated += (menu, item) =>
         {
             Player.GangRelationships.SetFriendlyReputations();
-        }
+            menu.Visible = false;
+        };
 
+        GangItems.AddItem(SetAsGangMember);
+        GangItems.AddItem(LeaveGang);
+        GangItems.AddItem(SetGangRepDefault);
+        GangItems.AddItem(SetGangRepFriendly);
+        GangItems.AddItem(SetGangRepHostile);
+        GangItems.AddItem(DefaultGangRep);
+        GangItems.AddItem(RandomGangRep);
+        GangItems.AddItem(RandomSingleGangRep);
+        GangItems.AddItem(HostileGangRep);
+        GangItems.AddItem(FriendlyGangRep);
 
-        else if (selectedItem == SetRandomNeeds)
-        {
-            Player.HumanState.SetRandom();
-        }
-        else if (selectedItem == ResetNeeds)
-        {
-            Player.HumanState.Reset();
-        }
-
-
-        //if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<GameLocation>))
-        //{
-        //    UIMenuListScrollerItem<GameLocation> myItem = (UIMenuListScrollerItem<GameLocation>)selectedItem;
-        //    if (myItem.SelectedItem != null)
-        //    {
-        //        Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
-        //        Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
-        //    }
-        //}
-        if (selectedItem.GetType() == typeof(UIMenuListScrollerItem<BasicLocation>))
-        {
-            UIMenuListScrollerItem<BasicLocation> myItem = (UIMenuListScrollerItem<BasicLocation>)selectedItem;
-            if (myItem.SelectedItem != null)
-            {
-                Game.LocalPlayer.Character.Position = myItem.SelectedItem.EntrancePosition;
-                Game.LocalPlayer.Character.Heading = myItem.SelectedItem.EntranceHeading;
-            }
-        }
-
-        Debug.Visible = false;
     }
-    private void OnListChange(UIMenu sender, UIMenuListItem list, int index)
+    private void CreateDispatcherMenu()
     {
-        if (list == GetRandomWeapon)
+        UIMenu DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
+        DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
+        UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Cop Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
+        SpawnAgencyFoot.Activated += (menu, item) =>
         {
-            RandomWeaponCategory = index;
-        }
-        if (list == AutoSetRadioStation)
+            if (SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
+            {
+                Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true);
+            }
+            else
+            {
+                Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
+            }
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Agency> SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
+        SpawnAgencyVehicle.Activated += (menu, item) =>
         {
-            Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation = RadioStations.RadioStationList[index].InternalName;
-        }
-        if (list == TeleportToPOI)
+            if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
+            {
+                Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false);
+            }
+            else
+            {
+                Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
+            }
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
+        SpawnGangFoot.Activated += (menu, item) =>
         {
-            PlaceOfInterestSelected = index;
-        }
-        if(list == GetRandomUpgradedWeapon)
+            Dispatcher.DebugSpawnGang(SpawnGangFoot.SelectedItem.ID, true);
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SpawnGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Vehicle Spawn", "Spawn a random gang ped with a vehicle", Gangs.GetAllGangs());
+        SpawnGangVehicle.Activated += (menu, item) =>
         {
-            RandomUpgradedWeaponCategory = index;
-        }
+            Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
+            menu.Visible = false;
+        };
+        UIMenuItem SpawnRockblock = new UIMenuItem("Spawn Roadblock", "Spawn roadblock");
+        SpawnRockblock.Activated += (menu, item) =>
+        {
+            Dispatcher.SpawnRoadblock();
+            menu.Visible = false;
+        };
+        DispatcherMenu.AddItem(SpawnAgencyFoot);
+        DispatcherMenu.AddItem(SpawnAgencyVehicle);
+        DispatcherMenu.AddItem(SpawnGangFoot);
+        DispatcherMenu.AddItem(SpawnGangVehicle);
+        DispatcherMenu.AddItem(SpawnRockblock);
     }
-
     private void Frecam()
     {
         GameFiber.StartNew(delegate
@@ -759,7 +642,6 @@ public class DebugMenu : Menu
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
-
     private void SpawnGunAttackers()
     {
         GameFiber.StartNew(delegate
@@ -843,6 +725,5 @@ public class DebugMenu : Menu
 
         }, "Run Debug Logic");
     }
-
 
 }

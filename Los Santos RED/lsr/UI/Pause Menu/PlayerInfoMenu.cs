@@ -32,8 +32,10 @@ public class PlayerInfoMenu
     private List<BasicLocation> SearchResultLocations = new List<BasicLocation>();
     private UIMenuItem SearchLocationByName;
     private UIMenuListScrollerItem<BasicLocation> LocationResults;
-
-    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world)
+    private IShopMenus ShopMenus;
+    private IModItems ModItems;
+    private IWeapons Weapons;
+    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons)
     {
         Player = player;
         Time = time;
@@ -44,6 +46,9 @@ public class PlayerInfoMenu
         Streets = streets;
         Interiors = interiors;
         World = world;
+        ShopMenus = shopMenus;
+        ModItems = modItems;
+        Weapons = weapons;
     }
     public void Setup()
     {
@@ -158,14 +163,82 @@ public class PlayerInfoMenu
         foreach (GangReputation gr in Player.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
         {
             string DescriptionText = "";
-
+            ShopMenu dealerMenu;
+            ShopMenu denMenu;
             DescriptionText = "Relationship: " + gr.ToStringBare();
             GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
             if (myDen != null && myDen.IsEnabled)
             {
                 DescriptionText += $"~n~{gr.Gang.DenName}: {myDen.FullStreetAddress}"; //+ gr.ToStringBare();
             }
-
+            dealerMenu = ShopMenus.GetRandomMenu(gr.Gang.DealerMenuGroup);
+            denMenu = myDen?.Menu;
+            List<string> Drugs = new List<string>();
+            List<string> Guns = new List<string>();
+            if (dealerMenu != null)
+            {
+                foreach (MenuItem mi in dealerMenu.Items)
+                {
+                    ModItem modItem = ModItems.Get(mi.ModItemName);
+                    if (modItem != null)
+                    {
+                        if (modItem.ItemType == ItemType.Drugs)
+                        {
+                            if (!Drugs.Contains(modItem.Name))
+                            {
+                                Drugs.Add(modItem.Name);
+                            }
+                        }
+                        else if (modItem.ItemType == ItemType.Weapons)
+                        {
+                            WeaponInformation wi = Weapons.GetWeapon(modItem.ModelItem?.ModelName);
+                            if (wi != null)
+                            {
+                                if (!Guns.Contains(wi.Category.ToString()))
+                                {
+                                    Guns.Add(wi.Category.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(denMenu != null)
+            {
+                foreach (MenuItem mi in denMenu.Items)
+                {
+                    ModItem modItem = ModItems.Get(mi.ModItemName);
+                    if (modItem != null)
+                    {
+                        if (modItem.ItemType == ItemType.Drugs)
+                        {
+                            if (!Drugs.Contains(modItem.Name))
+                            {
+                                Drugs.Add(modItem.Name);
+                            }
+                        }
+                        else if (modItem.ItemType == ItemType.Weapons)
+                        {
+                            WeaponInformation wi = Weapons.GetWeapon(modItem.ModelItem?.ModelName);
+                            if (wi != null)
+                            {
+                                if (!Guns.Contains(wi.Category.ToString()))
+                                {
+                                    Guns.Add(wi.Category.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if(Drugs.Any())
+            {
+                DescriptionText += $"~n~Drugs: {string.Join(", ",Drugs.OrderBy(x=> x))}"; //+ gr.ToStringBare();
+            }
+            if (Guns.Any())
+            {
+                DescriptionText += $"~n~Guns: {string.Join(", ", Guns.OrderBy(x=> x))}"; //+ gr.ToStringBare();
+            }
             string TerritoryText = "None";
             List<ZoneJurisdiction> gangTerritory = GangTerritories.GetGangTerritory(gr.Gang.ID);
             if (gangTerritory.Any())

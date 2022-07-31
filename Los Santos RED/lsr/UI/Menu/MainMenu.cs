@@ -139,27 +139,7 @@ public class MainMenu : Menu
 
 
 
-        GangItems = MenuPool.AddSubMenu(Main, "Gangs");
-        GangItems.SetBannerType(EntryPoint.LSRedColor);
-        Main.MenuItems[Main.MenuItems.Count() - 1].Description = "Join or Leave a Gang.";
-        Main.MenuItems[Main.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Alert;
 
-        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a gang member of the selected gang", Gangs.GetAllGangs());
-        SetAsGangMember.Activated += (menu, item) =>
-        {
-            Player.GangRelationships.ResetGang(true);
-            Player.GangRelationships.SetGang(SetAsGangMember.SelectedItem, true);
-            menu.Visible = false;
-        };
-        GangItems.AddItem(SetAsGangMember);
-
-        LeaveGang = new UIMenuItem("Leave Gang", "Leave your current gang");
-        LeaveGang.Activated += (menu, item) =>
-        {
-            Player.GangRelationships.ResetGang(true);
-            menu.Visible = false;
-        };
-        GangItems.AddItem(LeaveGang);
 
 
 

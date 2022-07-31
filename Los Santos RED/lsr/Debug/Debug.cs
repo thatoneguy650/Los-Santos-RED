@@ -1137,104 +1137,107 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        {
-            int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
-            if (TotalLiveries > -1)
-            {
+        Gang myGang = Gangs.AllGangs.PickRandom();
+        Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime} with a very long string, so long it will be cut off i am sure, but how many characters will i see? I am unsusre, but this is gettting pretty long, how much do i need in here?", Time.CurrentDateTime.AddMinutes(0));
 
-                int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
-                if (LiveryNumber != -1)
-                {
-                    NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
-                }
-                Game.DisplaySubtitle($"Livery Selected: {LiveryNumber} TotalLiveries:{TotalLiveries}");
-            }
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+        //    if (TotalLiveries > -1)
+        //    {
 
-        }
-        else
-        {
+        //        int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
+        //        if (LiveryNumber != -1)
+        //        {
+        //            NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+        //        }
+        //        Game.DisplaySubtitle($"Livery Selected: {LiveryNumber} TotalLiveries:{TotalLiveries}");
+        //    }
 
-            //string PlayingAnim = "left";
-            //string PlayingDict = "get_up@standard";
+        //}
+        //else
+        //{
 
-
-            string PlayingAnim = "forward";
-            string PlayingDict = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
-
-            AnimationDictionary.RequestAnimationDictionay(PlayingDict);
-            AnimationDictionary.RequestAnimationDictionay("amb@world_human_bum_slumped@male@laying_on_left_side@base");
-
-            bool isReverse = false;
-            
+        //    //string PlayingAnim = "left";
+        //    //string PlayingDict = "get_up@standard";
 
 
-            if (1==1)
-            {
-                isReverse = true;
-                NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
-                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
-                //NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
-                //NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
-                Game.DisplaySubtitle("REVERSE");
-            }
-            else
-            {
-                Game.DisplaySubtitle("STANDARD");
-            }
-            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 0, 0, false, false, false);//-1
+        //    string PlayingAnim = "forward";
+        //    string PlayingDict = "amb@world_human_bum_slumped@male@laying_on_left_side@flee";
 
-            NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 0, 0.99f, 0, 0);
-            if (isReverse)
-            {
-                NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
-                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+        //    AnimationDictionary.RequestAnimationDictionay(PlayingDict);
+        //    AnimationDictionary.RequestAnimationDictionay("amb@world_human_bum_slumped@male@laying_on_left_side@base");
 
-                float AnimationTime = 0.0f;
-                GameFiber.StartNew(delegate
-                {
-                    uint GameTimeStarted = Game.GameTime;
-                    while (Game.GameTime - GameTimeStarted <= 2000)
-                    {
-                        AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-
-                        if(AnimationTime == 0.0f)
-                        {
-                            break;
-                        }
-                        EntryPoint.WriteToConsole($"Animation Time {AnimationTime}");
-
-                        NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
-                        GameFiber.Yield();
-                    }
-
-                    PlayingAnim = "base";
-                    PlayingDict = "amb@world_human_bum_slumped@male@laying_on_left_side@base";
-
-                    NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 1, 0.0f, 0, 0);
-
-
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, 1, 0, false, false, false);//-1
-
-
-                }, "Run Debug Logic");
+        //    bool isReverse = false;
 
 
 
+        //    if (1==1)
+        //    {
+        //        isReverse = true;
+        //        NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+        //        NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+        //        //NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+        //        //NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+        //        Game.DisplaySubtitle("REVERSE");
+        //    }
+        //    else
+        //    {
+        //        Game.DisplaySubtitle("STANDARD");
+        //    }
+        //    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 0, 0, false, false, false);//-1
+
+        //    NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 0, 0.99f, 0, 0);
+        //    if (isReverse)
+        //    {
+        //        NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, PlayingDict, PlayingAnim, 1.0f);
+        //        NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+
+        //        float AnimationTime = 0.0f;
+        //        GameFiber.StartNew(delegate
+        //        {
+        //            uint GameTimeStarted = Game.GameTime;
+        //            while (Game.GameTime - GameTimeStarted <= 2000)
+        //            {
+        //                AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+
+        //                if(AnimationTime == 0.0f)
+        //                {
+        //                    break;
+        //                }
+        //                EntryPoint.WriteToConsole($"Animation Time {AnimationTime}");
+
+        //                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
+        //                GameFiber.Yield();
+        //            }
+
+        //            PlayingAnim = "base";
+        //            PlayingDict = "amb@world_human_bum_slumped@male@laying_on_left_side@base";
+
+        //            NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 1, 0.0f, 0, 0);
 
 
-            }
+        //            //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 8.0f, -8.0f, -1, 1, 0, false, false, false);//-1
 
 
-            //int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
-            //if (LiveryNumber != -1)
-            //{
-            //    foreach (VehicleExt veh in World.Vehicles.PoliceVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) < 150f))
-            //    {
-            //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
-            //    }
-            //}
-        }
+        //        }, "Run Debug Logic");
+
+
+
+
+
+        //    }
+
+
+        //    //int.TryParse(NativeHelper.GetKeyboardInput(""), out int LiveryNumber);
+        //    //if (LiveryNumber != -1)
+        //    //{
+        //    //    foreach (VehicleExt veh in World.Vehicles.PoliceVehicleList.Where(x => x.Vehicle.Exists() && x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) < 150f))
+        //    //    {
+        //    //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+        //    //    }
+        //    //}
+        //}
 
 
 

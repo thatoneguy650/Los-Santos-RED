@@ -39,6 +39,9 @@ public class CellPhone
     private BurnerPhone BurnerPhone;
     private IEntityProvideable World;
     private ICrimes Crimes;
+    private uint GameTimeLastCheckedScheduledItems;
+
+    private bool ShouldCheckScheduledItems => GameTimeLastCheckedScheduledItems == 0 || Game.GameTime - GameTimeLastCheckedScheduledItems >= 15000;
     public bool IsActive => BurnerPhone?.IsActive == true;
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
@@ -426,10 +429,17 @@ public class CellPhone
 
     private void CheckScheduledItems()
     {
-        CheckScheduledTexts();
-        CheckScheduledContacts();
+        if (ShouldCheckScheduledItems)
+        {
+            bool hasDisplayed = CheckScheduledTexts();
+            if (!hasDisplayed)
+            {
+                CheckScheduledContacts();
+            }
+            GameTimeLastCheckedScheduledItems = Game.GameTime;
+        }
     }
-    private void CheckScheduledTexts()
+    private bool CheckScheduledTexts()
     {
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
@@ -440,13 +450,7 @@ public class CellPhone
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
                     NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
-                    //TextSound = NativeFunction.Natives.GET_SOUND_ID<int>();
-                    //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TextSound, "Phone_Generic_Key_01", "HUD_MINIGAME_SOUNDSET", 0);
-
-
                     PlayTextReceivedSound();
-
-
                     if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                     {
                         Gang relatedGang = Gangs.GetGangByContact(sc.ContactName);
@@ -466,8 +470,10 @@ public class CellPhone
                     }
                 }
                 ScheduledTexts.RemoveAt(i);
+                return true;
             }
         }
+        return false;
     }
     private void CheckScheduledContacts()
     {
@@ -729,14 +735,18 @@ public class CellPhone
     public void AddPhoneResponse(string Name, string IconName, string Message)
     {
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message,Time.CurrentDateTime));
-        Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
+        NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
+        //Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
     }
     public void AddPhoneResponse(string Name, string Message)
     {
         string IconName = ContactList.FirstOrDefault(x => x.Name.ToLower() == Name.ToLower())?.IconName;
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
-        Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
+
+        NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
+
+        //Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
     }
     public void DisableContact(string Name)

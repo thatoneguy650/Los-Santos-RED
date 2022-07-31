@@ -105,7 +105,7 @@ public class KeySettings : ISettingsDefaultable
         ActionPopUpDisplayKeyModifier = Keys.None;
 
         AltActionPopUpDisplayKey = Keys.N;//N
-        AltActionPopUpDisplayKeyModifier = Keys.None;
+        AltActionPopUpDisplayKeyModifier = Keys.Alt;
 
 
     }
