@@ -16,39 +16,32 @@ public class PhysicalItem
     {
         ModelName = modelName;
     }
+    public PhysicalItem(string modelName, ePhysicalItemType type)
+    {
+        ModelName = modelName;
+        Type = type;
+    }
     public PhysicalItem(string modelName, Vector3 attachOffset, Rotator attachRotation)
     {
         AttachOffsetOverride = attachOffset;
         AttachRotationOverride = attachRotation;
         ModelName = modelName;
     }
-
-
     public PhysicalItem(string modelName, Vector3 attachOffsetOverride, Rotator attachRotationOverride, Vector3 secondaryAttachOffsetOverride, Rotator secondaryAttachRotationOverride)
     {
         AttachOffsetOverride = attachOffsetOverride;
         AttachRotationOverride = attachRotationOverride;
-
         SecondaryAttachOffsetOverride = secondaryAttachOffsetOverride;
         SecondaryAttachRotationOverride = secondaryAttachRotationOverride;
-
-
         ModelName = modelName;
     }
-
-    public PhysicalItem(string modelName, uint modelHash)
+    public PhysicalItem(string modelName, uint modelHash, ePhysicalItemType type)
     {
         ModelName = modelName;
         ModelHash = modelHash;
+        Type = type;
     }
-    public PhysicalItem(string modelName, uint modelHash, Vector3 attachOffset, Rotator attachRotation)
-    {
-        AttachOffsetOverride = attachOffset;
-        AttachRotationOverride = attachRotation;
-        ModelName = modelName;
-        ModelHash = modelHash;
-    }
-
+    public string ID => ModelName.ToLower();
     public string ModelName { get; set; } = "";
     public uint ModelHash { get; set; } = 0;
     public bool IsLarge { get; set; } = false;

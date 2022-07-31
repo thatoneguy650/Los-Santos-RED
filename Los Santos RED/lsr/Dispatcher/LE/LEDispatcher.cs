@@ -399,6 +399,13 @@ public class LEDispatcher
         }
         return HasDispatchedThisTick;
     }
+    public void LocationDispatch()
+    {
+        if (Settings.SettingsManager.PoliceSettings.ManageDispatching)
+        {
+            HandleStationSpawns();
+        }
+    }
     public void Dispose()
     {
         RemoveRoadblock();

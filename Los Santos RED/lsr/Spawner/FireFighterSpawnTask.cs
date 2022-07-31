@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Linq;
 
 public class FireFighterSpawnTask : SpawnTask
 {
@@ -280,9 +281,9 @@ public class FireFighterSpawnTask : SpawnTask
         }
         Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale));
         World.Pedestrians.AddEntity(PrimaryFirefighter);
-        if (PrimaryFirefighter != null && PersonType.OverrideVoice != "")
+        if (PrimaryFirefighter != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
-            PrimaryFirefighter.VoiceName = PersonType.OverrideVoice;
+            PrimaryFirefighter.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
         return PrimaryFirefighter;
     }

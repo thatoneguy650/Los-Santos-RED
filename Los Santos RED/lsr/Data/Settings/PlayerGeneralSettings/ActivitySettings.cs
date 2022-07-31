@@ -47,6 +47,11 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Allow the player to go into crouch mode.")]
     public bool AllowPlayerCrouching { get; set; }
 
+    [Description("Change player movement when in crouch mode.")]
+    public bool CrouchingAdjustsMovementSpeed { get; set; }
+
+    [Description("Amount of override player movement when crouching.")]
+    public float CrouchMovementSpeedOverride { get; set; }
 
     public ActivitySettings()
     {
@@ -69,5 +74,7 @@ public class ActivitySettings : ISettingsDefaultable
         AllowPlayerCrouching = true;
         PlayDraggingPedAnimation = false;
         UseSimpleConversation = true;
+        CrouchingAdjustsMovementSpeed = true;
+        CrouchMovementSpeedOverride = 5.0f;
     }
 }

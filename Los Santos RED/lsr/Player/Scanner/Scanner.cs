@@ -408,7 +408,7 @@ namespace LosSantosRED.lsr
         }
         public void OnVehicleCrashed()
         {
-            if (!VehicleCrashed.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer)
+            if (!VehicleCrashed.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer && VehicleCrashed.HasntBeenPlayedForAWhile)
             {
                 VehicleCrashed.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleCrashed);
@@ -417,7 +417,7 @@ namespace LosSantosRED.lsr
         }
         public void OnVehicleStartedFire()
         {
-            if (!VehicleStartedFire.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer)
+            if (!VehicleStartedFire.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer && VehicleStartedFire.HasntBeenPlayedForAWhile)
             {
                 VehicleStartedFire.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleStartedFire);
@@ -1311,7 +1311,7 @@ namespace LosSantosRED.lsr
         {
             if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.ScannerSettings.AllowStatusAnnouncements)
             {
-                if (Player.PoliceResponse.HasBeenWantedFor > 25000)
+                if (Player.PoliceResponse.HasBeenWantedFor > 25000 && Player.WantedLevel <= 4)
                 {
                     if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.AnyPoliceCanSeePlayer)
                     {

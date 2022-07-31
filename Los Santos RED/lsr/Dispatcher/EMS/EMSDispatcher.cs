@@ -57,62 +57,22 @@ public class EMSDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.EMSSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
+        if(Settings.SettingsManager.EMSSettings.ManageDispatching)
         {
-            HasDispatchedThisTick = true;
-            if (GetSpawnLocation() && GetSpawnTypes(false,null))
-            {
-                CallSpawnTask(false, true);
-            }
-            GameTimeAttemptedDispatch = Game.GameTime;
-        }
-        if (Settings.SettingsManager.EMSSettings.ManageDispatching)
-        {
-            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
-            {
-                if (ps.PossiblePedSpawns != null)
-                {
-                    bool spawnedsome = false;
-                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
-                    {
-                        if (RandomItems.RandomPercent(cl.Percentage))
-                        {
-                            HasDispatchedThisTick = true;
-                            SpawnLocation = new SpawnLocation(cl.Location);
-                            SpawnLocation.Heading = cl.Heading;
-                            SpawnLocation.StreetPosition = cl.Location;
-                            SpawnLocation.SidewalkPosition = cl.Location;
-                            Agency toSpawn = ps.AssignedAgency;
-                            if (toSpawn == null)
-                            {
-                                Zone CurrentZone = Zones.GetZone(cl.Location);
-                                Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.EMS);
-                                if (ZoneAgency != null)
-                                {
-                                    toSpawn = ZoneAgency;
-                                }
-                            }
-                            if (GetSpawnTypes(true, toSpawn))
-                            {
-                                CallSpawnTask(true, false);
-                                spawnedsome = true;
-                            }
-                        }
-                    }
-                    ps.IsDispatchFilled = true;
-                }
-                else
-                {
-                    ps.IsDispatchFilled = true;
-                }
-            }
-            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
-            {
-                ps.IsDispatchFilled = false;
-            }
-        }
+            HandleAmbientSpawns();
+            HandleStationSpawns();
+        }   
         return HasDispatchedThisTick;
     }
+
+    public void LocationDispatch()
+    {
+        if (Settings.SettingsManager.EMSSettings.ManageDispatching)
+        {
+            HandleStationSpawns();
+        }
+    }
+
     public void Dispose()
     {
 
@@ -131,6 +91,64 @@ public class EMSDispatcher
             }
             GameTimeAttemptedRecall = Game.GameTime;
         }
+    }
+    private void HandleAmbientSpawns()
+    {
+        if (IsTimeToDispatch && HasNeedToDispatch)
+        {
+            HasDispatchedThisTick = true;
+            if (GetSpawnLocation() && GetSpawnTypes(false, null))
+            {
+                CallSpawnTask(false, true);
+            }
+            GameTimeAttemptedDispatch = Game.GameTime;
+        }
+    }
+    private void HandleStationSpawns()
+    {
+        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+        {
+            if (ps.PossiblePedSpawns != null)
+            {
+                bool spawnedsome = false;
+                foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                {
+                    if (RandomItems.RandomPercent(cl.Percentage))
+                    {
+                        HasDispatchedThisTick = true;
+                        SpawnLocation = new SpawnLocation(cl.Location);
+                        SpawnLocation.Heading = cl.Heading;
+                        SpawnLocation.StreetPosition = cl.Location;
+                        SpawnLocation.SidewalkPosition = cl.Location;
+                        Agency toSpawn = ps.AssignedAgency;
+                        if (toSpawn == null)
+                        {
+                            Zone CurrentZone = Zones.GetZone(cl.Location);
+                            Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.EMS);
+                            if (ZoneAgency != null)
+                            {
+                                toSpawn = ZoneAgency;
+                            }
+                        }
+                        if (GetSpawnTypes(true, toSpawn))
+                        {
+                            CallSpawnTask(true, false);
+                            spawnedsome = true;
+                        }
+                    }
+                }
+                ps.IsDispatchFilled = true;
+            }
+            else
+            {
+                ps.IsDispatchFilled = true;
+            }
+        }
+        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
+        {
+            ps.IsDispatchFilled = false;
+        }
+        
     }
     private bool GetSpawnLocation()
     {

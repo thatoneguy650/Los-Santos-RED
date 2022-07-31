@@ -56,15 +56,55 @@ public class FireDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
+        if (Settings.SettingsManager.FireSettings.ManageDispatching)
+        {
+            HandleAmbientSpawns();
+            HandleStationSpawns();
+        }
+        return HasDispatchedThisTick;
+    }
+
+    public void LocationDispatch()
+    {
+        if (Settings.SettingsManager.FireSettings.ManageDispatching)
+        {
+            HandleStationSpawns();
+        }
+    }
+
+    public void Dispose()
+    {
+
+    }
+    public void Recall()
+    {
+        if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToRecall)
+        {
+            foreach (Firefighter ff in DeletableOfficers)
+            {
+                if (ShouldBeRecalled(ff))
+                {
+                    Delete(ff);
+                    GameFiber.Yield();
+                }
+            }
+            GameTimeAttemptedRecall = Game.GameTime;
+        }
+    }
+    private void HandleAmbientSpawns()
+    {
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            if (GetSpawnLocation() && GetSpawnTypes(false,null))
+            if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false,true);
+                CallSpawnTask(false, true);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
+    }
+    private void HandleStationSpawns()
+    {
         if (Settings.SettingsManager.FireSettings.ManageDispatching)
         {
             foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
@@ -109,27 +149,6 @@ public class FireDispatcher
             {
                 ps.IsDispatchFilled = false;
             }
-        }
-
-        return HasDispatchedThisTick;
-    }
-    public void Dispose()
-    {
-
-    }
-    public void Recall()
-    {
-        if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToRecall)
-        {
-            foreach (Firefighter ff in DeletableOfficers)
-            {
-                if (ShouldBeRecalled(ff))
-                {
-                    Delete(ff);
-                    GameFiber.Yield();
-                }
-            }
-            GameTimeAttemptedRecall = Game.GameTime;
         }
     }
     private void CallSpawnTask(bool allowAny, bool allowBuddy)

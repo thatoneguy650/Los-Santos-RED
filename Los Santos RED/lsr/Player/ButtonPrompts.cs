@@ -27,6 +27,9 @@ public class ButtonPrompts
     public void Update()
     {
         bool addedPromptGroup = false;
+
+
+
         if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
         {
             PersonInteractingPrompts();
@@ -37,6 +40,10 @@ public class ButtonPrompts
             Prompts.RemoveAll(x => x.Group == "StartConversation");
             Prompts.RemoveAll(x => x.Group == "StartTransaction");
         }
+
+
+
+
         if(!addedPromptGroup)
         {
             if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
@@ -58,6 +65,10 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
+
+
+
+
         if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
         {
             PersonGrabPrompts();
@@ -67,6 +78,10 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "Grab");
         }
+
+
+
+
         if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
         {
             LocationInteractingPrompts();
@@ -76,6 +91,9 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "InteractableLocation");
         }
+
+
+
         if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();

@@ -66,6 +66,43 @@ public class GangDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
+        if (Settings.SettingsManager.GangSettings.ManageDispatching )
+        {
+            HandleAmbientSpawns();
+            HandleDenSpawns();
+        }
+        return HasDispatchedThisTick;
+    }
+
+    public void LocationDispatch()
+    {
+        if (Settings.SettingsManager.GangSettings.ManageDispatching)
+        {
+            HandleDenSpawns();
+        }
+    }
+
+    public void Dispose()
+    {
+
+    }
+    public void Recall()
+    {
+        if (IsTimeToRecall)
+        {
+            foreach (GangMember emt in DeleteableGangMembers)
+            {
+                if (ShouldBeRecalled(emt))
+                {
+                    Delete(emt);
+                    GameFiber.Yield();
+                }
+            }
+            GameTimeAttemptedRecall = Game.GameTime;
+        }
+    }
+    private void HandleAmbientSpawns()
+    {
         if (Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
@@ -75,7 +112,9 @@ public class GangDispatcher
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
-
+    }
+    private void HandleDenSpawns()
+    {
         if (!HasDispatchedThisTick && Settings.SettingsManager.GangSettings.ManageDispatching)
         {
             foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(Game.LocalPlayer.Character) <= 150f))
@@ -111,26 +150,6 @@ public class GangDispatcher
             {
                 ps.IsDispatchFilled = false;
             }
-        }
-        return HasDispatchedThisTick;
-    }
-    public void Dispose()
-    {
-
-    }
-    public void Recall()
-    {
-        if (IsTimeToRecall)
-        {
-            foreach (GangMember emt in DeleteableGangMembers)
-            {
-                if (ShouldBeRecalled(emt))
-                {
-                    Delete(emt);
-                    GameFiber.Yield();
-                }
-            }
-            GameTimeAttemptedRecall = Game.GameTime;
         }
     }
     private bool GetSpawnLocation()

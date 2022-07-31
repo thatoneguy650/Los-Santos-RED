@@ -126,16 +126,32 @@ public abstract class SpawnTask
             if (ped.Exists())
             {
                 NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
-                //if (blendHead == null)
-                //{
-                //    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
-                //}
-                //else
-                //{
-                //    float Mix1 = RandomItems.GetRandomNumber(0.6f, 1.0f);
-                //    float Mix2 = 1.0f - Mix1;
-                //    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, Mix1, Mix2, 0, 0, false);
-                //}
+                if (blendHead == null)
+                {
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+                }
+                else
+                {
+                    float Mix1 = RandomItems.GetRandomNumber(0.6f, 1.0f);
+                    float Mix2 = 1.0f - Mix1;
+                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, 0, Mix1, Mix2, 0, false);
+                }
+
+
+
+
+                /*
+                 *             
+                 *             if (float.TryParse(item.OptionText, out float newMix))
+            {
+                WorkingVariation.HeadBlendData.shapeMix = newMix;
+                WorkingVariation.HeadBlendData.skinMix = 1.0f - newMix;
+
+                Parent2MixMenu.Value = 1.0f - newMix;
+                WorkingVariation.ApplyToPed(ModelPed);
+            }
+                 */
+
                 GameFiber.Yield();
             }
             if (ped.Exists())

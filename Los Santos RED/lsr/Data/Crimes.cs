@@ -39,7 +39,7 @@ public class Crimes : ICrimes
             new Crime("KillingPolice", "Police Fatality", 3, true, 1, false, true, true) { CanViolateWithoutPerception = true },
             new Crime("TerroristActivity", "Terrorist Activity", 4, true, 2, false, false, true) { CanReportBySound = true },
             new Crime("FiringWeaponNearPolice", "Shots Fired at Police", 3, true, 3, false, false, true) { CanReportBySound = true },
-            new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, false, 4, false, false, true),
+            new Crime("AimingWeaponAtPolice", "Aiming Weapons At Police", 3, true, 4, false, false, true),
             new Crime("HurtingPolice", "Assaulting Police", 3, false, 5,false, false, true) { CanViolateWithoutPerception = true },
             new Crime("BrandishingHeavyWeapon", "Brandishing Heavy Weapon", 3, false, 6, false, true, true),
             new Crime("TrespessingOnGovtProperty", "Trespassing on Government Property", 3, false, 7, false, false, true),

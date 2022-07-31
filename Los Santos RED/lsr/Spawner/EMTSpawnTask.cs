@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Linq;
 
 public class EMTSpawnTask :SpawnTask
 {
@@ -286,9 +287,9 @@ public class EMTSpawnTask :SpawnTask
         }
         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale));
         World.Pedestrians.AddEntity(PrimaryEmt);
-        if (PrimaryEmt != null && PersonType.OverrideVoice != "")
+        if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
-            PrimaryEmt.VoiceName = PersonType.OverrideVoice;
+            PrimaryEmt.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
         return PrimaryEmt;
     }

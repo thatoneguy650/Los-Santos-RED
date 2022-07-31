@@ -7,7 +7,12 @@ public class DispatchablePerson
     public PedVariation RequiredVariation { get; set; }
     public bool AllowRandomizeBeforeVariationApplied { get; set; } = false;
     public bool RandomizeHead { get; set; }
-    public string OverrideVoice { get; set; } = "";
+    public List<string> OverrideVoice { get; set; }
+
+
+
+
+
 
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;

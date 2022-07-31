@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class LESpawnTask : SpawnTask
 {
@@ -309,9 +310,9 @@ public class LESpawnTask : SpawnTask
         }
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName);
         World.Pedestrians.AddEntity(PrimaryCop);
-        if (PrimaryCop != null && PersonType.OverrideVoice != "")
+        if (PrimaryCop != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
-            PrimaryCop.VoiceName = PersonType.OverrideVoice;
+            PrimaryCop.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
         PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
         PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);

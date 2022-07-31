@@ -39,6 +39,7 @@ public class Respawning// : IRespawning
     private DateTime HospitalDischargeDate;
     private string HospitalStayReport;
     private int HospitalFee;
+    private uint GameTimeLastPlacedAtLocation;
 
     public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
@@ -52,7 +53,7 @@ public class Respawning// : IRespawning
     public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= Settings.SettingsManager.RespawnSettings.RecentlyRespawnedTime;
     public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
 
-
+    public bool WasRecentlyTeleported => GameTimeLastPlacedAtLocation != 0 && Game.GameTime - GameTimeLastPlacedAtLocation <= 5000;
     public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 30000;
     public bool RecentlyPaidFine => GameTimeLastPaidFine != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
@@ -410,10 +411,11 @@ public class Respawning// : IRespawning
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
         EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
         EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
-        if (ToSet.HasInterior)
-        {
+        //if (ToSet.HasInterior)
+        //{
             World.Places.StaticPlaces.ActivateBasicLocation(ToSet);
-        }
+        //}
+        GameTimeLastPlacedAtLocation = Game.GameTime;
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }
     private void SetBailFee(string PoliceStationName, int BailFee)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class ModItem
@@ -44,8 +45,14 @@ public class ModItem
         Type = type;
         ItemType = itemType;
     }
+    [XmlIgnore]
     public PhysicalItem ModelItem { get; set; }
+    [XmlIgnore]
     public PhysicalItem PackageItem { get; set; }
+
+    public string ModelItemID { get; set; }
+    public string PackageItemID { get; set; }
+
     public string Name { get; set; }
     public string Description { get; set; } = "";
     public ItemType ItemType { get; set; } = ItemType.None;

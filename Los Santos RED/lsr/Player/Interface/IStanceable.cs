@@ -12,5 +12,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool IsInVehicle { get; }
         Ped Character { get; }
+        bool IsAiming { get; }
     }
 }

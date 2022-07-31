@@ -114,12 +114,14 @@
     <Compile Include="lsr\Data\Interface\IInteriors.cs" />
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
     <Compile Include="lsr\Data\Interface\IIssuableWeapons.cs" />
+    <Compile Include="lsr\Data\Interface\IPropItems.cs" />
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Intoxicants.cs" />
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
+    <Compile Include="lsr\Data\Items\PropItems.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\FoodType.cs" />

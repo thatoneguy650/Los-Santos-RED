@@ -1549,193 +1549,193 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu>() {
         new ShopMenu("DealerMenu", "Marijuana Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 20  }}, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",20, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 20  }}, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 3, 1) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 5 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana", 19, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 5 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 6, 2) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 7 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana", 18, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 18, NumberOfItemsToSellToPlayer = 7 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 5, 1) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 9 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana", 17, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 9 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Marijuana", 4, 1) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana", 16, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 6", new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 16 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",15, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 16 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 7", new List<MenuItem>() {
-                    new MenuItem("Marijuana",10, 6) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",14, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 19, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 8", new List<MenuItem>() {
-                    new MenuItem("Marijuana",11, 5) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",13, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 22, NumberOfItemsToSellToPlayer = 15 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 9", new List<MenuItem>() {
-                    new MenuItem("Marijuana",9, 5) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 34, NumberOfItemsToSellToPlayer = 22 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",20, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 34, NumberOfItemsToSellToPlayer = 22 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 10", new List<MenuItem>() {
-                    new MenuItem("Marijuana",20, 5) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 9 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",19, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 9 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 11", new List<MenuItem>() {
-                    new MenuItem("Marijuana",11, 8) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",18, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 12", new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 7) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",17, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 13", new List<MenuItem>() {
-                    new MenuItem("Marijuana",15, 8) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 19 } }, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",16, 12) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 19 } }, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 14", new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 11 }}, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",15, 11) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 11 }}, "MarijuanaDealerMenu"),
             new ShopMenu("DealerMenu", "Marijuana Dealer 15", new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 }}, "MarijuanaDealerMenu"),
+                    new MenuItem("Marijuana",14, 10) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 }}, "MarijuanaDealerMenu"),
 
             new ShopMenu("DealerMenu", "Toilet Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",25, 2) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 12 } }, "ToiletCleanerDealerMenu"),
+                    new MenuItem("Toilet Cleaner",27, 17) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 12 } }, "ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu", "Toilet Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",26, 5) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 2, NumberOfItemsToSellToPlayer = 15 } }, "ToiletCleanerDealerMenu"),
+                    new MenuItem("Toilet Cleaner",26, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 2, NumberOfItemsToSellToPlayer = 15 } }, "ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu", "Toilet Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 11 },
+                    new MenuItem("Toilet Cleaner",25, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 11 },
                     new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true }, }, "ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu", "Toilet Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 4, NumberOfItemsToSellToPlayer = 16 },}, "ToiletCleanerDealerMenu"),
+                    new MenuItem("Toilet Cleaner",24, 16) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 4, NumberOfItemsToSellToPlayer = 16 },}, "ToiletCleanerDealerMenu"),
             new ShopMenu("DealerMenu", "Toilet Dealer 53", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",20, 8) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 7 },
+                    new MenuItem("Toilet Cleaner",23, 18) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 7 },
                     new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },}, "ToiletCleanerDealerMenu"),
 
             new ShopMenu("DealerMenu", "SPANK Dealer 1", new List<MenuItem>() {
-                    new MenuItem("SPANK", 45, 23) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 13 } }, "SPANKDealerMenu"),
+                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 13 } }, "SPANKDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 2", new List<MenuItem>() {
-                    new MenuItem("SPANK", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 14 } }, "SPANKDealerMenu"),
+                    new MenuItem("SPANK", 52, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 14 } }, "SPANKDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 3", new List<MenuItem>() {
-                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 15 },
+                    new MenuItem("SPANK", 51, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 15 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}, "SPANKDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 4", new List<MenuItem>() {
-                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 9 },
+                    new MenuItem("SPANK", 50, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 9 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, "SPANKDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 5", new List<MenuItem>() {
-                    new MenuItem("SPANK", 39, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("SPANK", 48, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 12 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, "SPANKDealerMenu"),
 
             new ShopMenu("DealerMenu", "Meth Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 45, 23) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 12 } }, "MethamphetamineDealerMenu"),
+                    new MenuItem("Methamphetamine", 65, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 12 } }, "MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu", "Meth Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 55, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }, "MethamphetamineDealerMenu"),
+                    new MenuItem("Methamphetamine", 55, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 13 } }, "MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu", "Meth Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 56, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("Methamphetamine", 60, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 15, NumberOfItemsToSellToPlayer = 12 },
                     new MenuItem("Hawk & Little PTF092F",200) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}, "MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu", "Meth Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 66, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 20 },
+                    new MenuItem("Methamphetamine", 64, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 5, NumberOfItemsToSellToPlayer = 20 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, "MethamphetamineDealerMenu"),
             new ShopMenu("DealerMenu", "Meth Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 57, 20) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 13 },
+                    new MenuItem("Methamphetamine", 62, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 20, NumberOfItemsToSellToPlayer = 13 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, "MethamphetamineDealerMenu"),
 
             new ShopMenu("DealerMenu", "Heroin Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Heroin", 145, 67) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, "HeroinDealerMenu"),
+                    new MenuItem("Heroin", 150, 110) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, "HeroinDealerMenu"),
             new ShopMenu("DealerMenu", "Heroin Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Heroin", 156, 86) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 8 } }, "HeroinDealerMenu"),
+                    new MenuItem("Heroin", 156, 108) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 8 } }, "HeroinDealerMenu"),
             new ShopMenu("DealerMenu", "Heroin Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Heroin", 160, 78) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 14 },
+                    new MenuItem("Heroin", 160, 101) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 14 },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}, "HeroinDealerMenu"),
             new ShopMenu("DealerMenu", "Heroin Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Heroin", 170, 67) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 16 },
+                    new MenuItem("Heroin", 158, 99) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 11, NumberOfItemsToSellToPlayer = 16 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, "HeroinDealerMenu"),
             new ShopMenu("DealerMenu", "Heroin Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Heroin", 155, 70) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 7 }, }, "HeroinDealerMenu"),
+                    new MenuItem("Heroin", 155, 105) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 7 }, }, "HeroinDealerMenu"),
 
             new ShopMenu("DealerMenu", "Crack Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Crack", 38, 23) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 15 } }, "CrackDealerMenu"),
+                    new MenuItem("Crack", 58, 40) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 15 } }, "CrackDealerMenu"),
             new ShopMenu("DealerMenu", "Crack Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Crack", 52, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 20 } }, "CrackDealerMenu"),
+                    new MenuItem("Crack", 48, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 7, NumberOfItemsToSellToPlayer = 20 } }, "CrackDealerMenu"),
             new ShopMenu("DealerMenu", "Crack Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Crack", 39, 22) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 11 },
+                    new MenuItem("Crack", 52, 36) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 11 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Hawk & Little Desert Slug",950) { IsIllicilt = true },}, "CrackDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Crack", 39, 25) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 15 },
+                    new MenuItem("Crack", 53, 38) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 15 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, "CrackDealerMenu"),
             new ShopMenu("DealerMenu", "SPANK Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Crack", 41, 30) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 },
+                    new MenuItem("Crack", 50, 32) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 },
                     new MenuItem("Shrewsbury A7-4K",856) { IsIllicilt = true } }, "CrackDealerMenu"),
 
             new ShopMenu("DealerMenu", "Coke Dealer 1", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 145, 67) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, "CokeDealerMenu"),
+                    new MenuItem("Cocaine", 180, 130) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 6, NumberOfItemsToSellToPlayer = 12 } }, "CokeDealerMenu"),
             new ShopMenu("DealerMenu", "Coke Dealer 2", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 146, 56) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 15 } }, "CokeDealerMenu"),
+                    new MenuItem("Cocaine", 175, 126) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 8, NumberOfItemsToSellToPlayer = 15 } }, "CokeDealerMenu"),
             new ShopMenu("DealerMenu", "Coke Dealer 3", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 152, 60) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 16 },
+                    new MenuItem("Cocaine", 170, 125) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 9, NumberOfItemsToSellToPlayer = 16 },
                     new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                     new MenuItem("Combat Knife",120) { IsIllicilt = true },
                     new MenuItem("Switchblade",300) { IsIllicilt = true },}, "CokeDealerMenu"),
             new ShopMenu("DealerMenu", "Coke Dealer 4", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 150, 64) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 8 },
+                    new MenuItem("Cocaine", 160, 120) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 12, NumberOfItemsToSellToPlayer = 8 },
                     new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },}, "CokeDealerMenu"),
             new ShopMenu("DealerMenu", "Coke Dealer 5", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 158, 65) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 10 },
+                    new MenuItem("Cocaine", 172, 128) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 10, NumberOfItemsToSellToPlayer = 10 },
                     new MenuItem("Hawk & Little PTF092F",250) { IsIllicilt = true } }, "CokeDealerMenu"),
 
 
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 1", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 15) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 3 }}),
+                    new MenuItem("Marijuana",0, 35) { IsIllicilt = true,NumberOfItemsToPurchaseFromPlayer = 3 }}),
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 2", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 16) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),
+                    new MenuItem("Marijuana",0, 32) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 3", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 11) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),
+                    new MenuItem("Marijuana",0, 30) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 }}),
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 4", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 17) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 }}),
+                    new MenuItem("Marijuana",0, 34) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 }}),
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 5", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 10) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 },}),
+                    new MenuItem("Marijuana",0, 33) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 },}),
             new ShopMenu("DrugCustomerMenu", "Marijuana Customer 6", new List<MenuItem>() {
-                    new MenuItem("Marijuana",0, 6) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 },}),
+                    new MenuItem("Marijuana",0, 31) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 },}),
 
             new ShopMenu("DrugCustomerMenu", "Toilet Customer 1", new List<MenuItem>() {
                     new MenuItem("Toilet Cleaner",0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Toilet Customer 2", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 55) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
+                    new MenuItem("Toilet Cleaner",0, 42) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
             new ShopMenu("DrugCustomerMenu", "Toilet Customer 3", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 35) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
+                    new MenuItem("Toilet Cleaner",0, 38) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
             new ShopMenu("DrugCustomerMenu", "Toilet Customer 4", new List<MenuItem>() {
-                    new MenuItem("Toilet Cleaner",0, 25) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Toilet Cleaner",0, 39) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
 
             new ShopMenu("DrugCustomerMenu", "SPANK Customer 1", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 50) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
+                    new MenuItem("SPANK", 0, 62) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
             new ShopMenu("DrugCustomerMenu", "SPANK Customer 2", new List<MenuItem>() {
-                    new MenuItem("SPANK", 0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("SPANK", 0, 67) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "SPANK Customer 3", new List<MenuItem>() {
                     new MenuItem("SPANK", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
             new ShopMenu("DrugCustomerMenu", "SPANK Customer 4", new List<MenuItem>() {
                     new MenuItem("SPANK", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
 
             new ShopMenu("DrugCustomerMenu", "Meth Customer 1", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 52) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Methamphetamine", 0, 85) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Meth Customer 2", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 62) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
+                    new MenuItem("Methamphetamine", 0, 80) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
             new ShopMenu("DrugCustomerMenu", "Meth Customer 3", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 63) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Methamphetamine", 0, 75) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Meth Customer 4", new List<MenuItem>() {
-                    new MenuItem("Methamphetamine", 0, 71) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5} }),
+                    new MenuItem("Methamphetamine", 0, 77) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5} }),
 
             new ShopMenu("DrugCustomerMenu", "Crack Customer 1", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 47) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
+                    new MenuItem("Crack", 0, 70) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
             new ShopMenu("DrugCustomerMenu", "Crack Customer 2", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 56) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
+                    new MenuItem("Crack", 0, 68) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
             new ShopMenu("DrugCustomerMenu", "Crack Customer 3", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 45) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Crack", 0, 65) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Crack Customer 4", new List<MenuItem>() {
-                    new MenuItem("Crack", 0, 40) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 } }),
+                    new MenuItem("Crack", 0, 66) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 5 } }),
 
             new ShopMenu("DrugCustomerMenu", "Coke Customer 1", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 142) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Cocaine", 0, 210) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Coke Customer 2", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 156) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
+                    new MenuItem("Cocaine", 0, 202) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
             new ShopMenu("DrugCustomerMenu", "Coke Customer 3", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 162) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Cocaine", 0, 199) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Coke Customer 4", new List<MenuItem>() {
-                    new MenuItem("Cocaine", 0, 167) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
+                    new MenuItem("Cocaine", 0, 208) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 4 } }),
 
             new ShopMenu("DrugCustomerMenu", "Heroin Customer 1", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 135) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Heroin", 0, 180) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Heroin Customer 2", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 144) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
+                    new MenuItem("Heroin", 0, 178) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 1 } }),
             new ShopMenu("DrugCustomerMenu", "Heroin Customer 3", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 153) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
+                    new MenuItem("Heroin", 0, 175) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 3 } }),
             new ShopMenu("DrugCustomerMenu", "Heroin Customer 4", new List<MenuItem>() {
-                    new MenuItem("Heroin", 0, 156) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
+                    new MenuItem("Heroin", 0, 168) { IsIllicilt = true, NumberOfItemsToPurchaseFromPlayer = 2 } }),
 
             new ShopMenu("GunVendorMenu", "Gun Vendor", new List<MenuItem>() {
                 new MenuItem("Shrewsbury 420 Sawed-Off",340) { IsIllicilt = true },
@@ -1785,8 +1785,8 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu> { 
 
                 new ShopMenu("GenericGangDenMenu","GenericGangDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana",12, 4),
-                    new MenuItem("Toilet Cleaner",25, 5) ,
+                    new MenuItem("Marijuana",16,12),
+                    new MenuItem("Toilet Cleaner",22, 18) ,
                     new MenuItem("SPANK", 45, 20),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
@@ -1889,7 +1889,7 @@ public class ShopMenus : IShopMenus
                new ShopMenu("LostDenMenu","LostDenMenu",new List<MenuItem>() {
 
 
-                   new MenuItem("Methamphetamine",35, 20),
+                   new MenuItem("Methamphetamine",50, 40),
 
 
                     new MenuItem("Baseball Bat",45),
@@ -2239,8 +2239,8 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("FamiliesDenMenu","FamiliesDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 10, 5),
-                    new MenuItem("Toilet Cleaner",22, 6) ,
+                    new MenuItem("Marijuana", 15, 12),
+                    new MenuItem("Toilet Cleaner",20, 16) ,
                     new MenuItem("SPANK", 40, 25),
                     new MenuItem("Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
@@ -2359,7 +2359,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("VagosDenMenu","VagosDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana",11, 5),
+                    new MenuItem("Marijuana",15, 10),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),
@@ -2420,7 +2420,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("BallasDenMenu","BallasDenMenu",new List<MenuItem>() {
-                    new MenuItem("Crack",25, 20),
+                    new MenuItem("Crack",46, 40),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),
@@ -2476,7 +2476,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("VarriosDenMenu","VarriosDenMenu",new List<MenuItem>() {
-                    new MenuItem("Crack",24, 19),
+                    new MenuItem("Crack",45, 41),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),
@@ -2533,7 +2533,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("MarabunteDenMenu", "MarabunteDenMenu", new List<MenuItem>() {
-                    new MenuItem("Marijuana",10, 6),
+                    new MenuItem("Marijuana",14, 11),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -2633,7 +2633,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("TriadsDenMenu", "TriadsDenMenu", new List<MenuItem>() {
-                    new MenuItem("Heroin",125, 90),
+                    new MenuItem("Heroin",130, 100),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -2733,7 +2733,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("KkangpaeDenMenu", "KkangpaeDenMenu", new List<MenuItem>() {
-                    new MenuItem("Heroin",110, 80),
+                    new MenuItem("Heroin",125, 110),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -2951,7 +2951,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("YardiesDenMenu","YardiesDenMenu",new List<MenuItem>() {
-                    new MenuItem("Marijuana", 9, 6),
+                    new MenuItem("Marijuana", 13, 10),
                     new MenuItem("Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
@@ -3069,7 +3069,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("ArmenianDenMenu","ArmenianDenMenu",new List<MenuItem>() {
-                    new MenuItem("Heroin",130, 90),
+                    new MenuItem("Heroin",135, 90),
                     new MenuItem("Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
@@ -3187,7 +3187,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("MadrazoDenMenu","MadrazoDenMenu",new List<MenuItem>() {
-                    new MenuItem("Methamphetamine",40, 25),
+                    new MenuItem("Methamphetamine",45, 40),
                     new MenuItem("Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
@@ -3306,7 +3306,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("GambettiDenMenu", "GambettiDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",110, 90),
+                    new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -3406,7 +3406,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("PavanoDenMenu", "PavanoDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",115, 90),
+                    new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -3506,7 +3506,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("LupisellaDenMenu", "LupisellaDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",125, 80),
+                    new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -3606,7 +3606,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("MessinaDenMenu", "MessinaDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",130, 75),
+                    new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),
@@ -3706,7 +3706,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu> {
                 new ShopMenu("AncelottiDenMenu", "AncelottiDenMenu", new List<MenuItem>() {
-                    new MenuItem("Cocaine",110, 70),
+                    new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
                     new MenuItem("Machete",45),

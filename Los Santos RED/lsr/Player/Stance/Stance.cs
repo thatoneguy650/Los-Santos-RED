@@ -10,10 +10,19 @@ using System.Threading.Tasks;
 public class Stance
 {
     private IStanceable Player;
+    private ISettingsProvideable Settings;
     public bool IsCrouched { get; set; }
-    public Stance(IStanceable player)
+    public Stance(IStanceable player, ISettingsProvideable settings)
     {
         Player = player;
+        Settings = settings;
+    }
+    public void Update()
+    {
+        if(IsCrouched && Settings.SettingsManager.ActivitySettings.CrouchingAdjustsMovementSpeed && !Player.IsAiming)
+        {
+            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Player.Character, Settings.SettingsManager.ActivitySettings.CrouchMovementSpeedOverride);
+        }
     }
     public void Crouch()
     {

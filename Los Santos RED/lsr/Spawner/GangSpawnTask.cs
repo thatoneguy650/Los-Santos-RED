@@ -4,6 +4,7 @@ using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Linq;
 
 public class GangSpawnTask : SpawnTask
 {
@@ -337,9 +338,9 @@ public class GangSpawnTask : SpawnTask
             NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
         }
-        if (GangMember != null && PersonType.OverrideVoice != "")
+        if (GangMember != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
-            GangMember.VoiceName = PersonType.OverrideVoice;
+            GangMember.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
         return GangMember;
     }

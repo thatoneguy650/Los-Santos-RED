@@ -31,6 +31,7 @@ public class Dispatcher
     private IGangTerritories GangTerritories;
     private IShopMenus ShopMenus;
     private IPlacesOfInterest PlacesOfInterest;
+    private bool hasLocationDispatched;
 
     public Dispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IGangs gangs, IGangTerritories gangTerritories, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest)
     {
@@ -74,6 +75,26 @@ public class Dispatcher
         {
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();
+        }
+        LocationDispatch();
+    }
+    public void LocationDispatch()
+    {
+        if (Player.Respawning.WasRecentlyTeleported && !hasLocationDispatched)
+        {
+            LEDispatcher.LocationDispatch();
+            GameFiber.Yield();
+            EMSDispatcher.LocationDispatch();
+            GameFiber.Yield();
+            FireDispatcher.LocationDispatch();
+            GameFiber.Yield();
+            GangDispatcher.LocationDispatch();
+            GameFiber.Yield();
+            hasLocationDispatched = true;
+        }
+        else
+        {
+            hasLocationDispatched = false;
         }
     }
     public void Recall()

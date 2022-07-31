@@ -38,7 +38,7 @@ public class HoldUp : Interaction
         {
             GameFiber.StartNew(delegate
             {
-                if (Target.Pedestrian.Exists() && (!Target.IsInVehicle || Target.Pedestrian.Speed <= 3f))
+                if (Target.Pedestrian.Exists() && (!Target.IsInVehicle || Target.Pedestrian.Speed <= 5f))
                 {
                     Setup();
                 }

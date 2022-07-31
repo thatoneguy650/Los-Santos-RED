@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"LAYING ANIMATION TIME {AnimationTime} isUsingVehicleAnimations {UseRegularAnimations}");
                     GameTimeLastDidThing = Game.GameTime;
                 }
-                Player.WeaponEquipment.SetUnarmed();
+                //Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();
             }
 
@@ -260,7 +260,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    Player.WeaponEquipment.SetUnarmed();
+                    //Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
             }
@@ -289,7 +289,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
-                    Player.WeaponEquipment.SetUnarmed();
+                    //Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
             }
@@ -327,7 +327,8 @@ namespace LosSantosRED.lsr.Player
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
                 }
                 float AnimationTime = 0f;
-                while (AnimationTime < MaxExit)
+                uint GameTimeStartedWaiting = Game.GameTime;
+                while (AnimationTime < MaxExit && Game.GameTime - GameTimeStartedWaiting <= 5000)
                 {
                     if (UseRegularAnimations)
                     {
@@ -337,7 +338,7 @@ namespace LosSantosRED.lsr.Player
                     {
                         AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                     }
-                    Player.WeaponEquipment.SetUnarmed();
+                    //Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
                 EntryPoint.WriteToConsole("Laying Activity Exit 3", 5);
