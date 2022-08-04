@@ -185,5 +185,6 @@ public class ModDataFileManager
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
 
+
 }
 

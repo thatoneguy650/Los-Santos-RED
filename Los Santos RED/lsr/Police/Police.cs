@@ -17,6 +17,8 @@ namespace LosSantosRED.lsr
         private int TotalRan;
         private int TotalChecked;
         private IItemEquipable ItemEquipablePlayer;
+        private uint GameTimeLastUpdatedSearchLocation;
+
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer)
         {
             World = world;
@@ -195,6 +197,35 @@ namespace LosSantosRED.lsr
                         EntryPoint.WriteToConsole($"POLICE EVENT: Updated Place Police Last Seen To A Citizen Reported Location", 3);
                     }
                 }
+
+
+                if (Player.SearchMode.IsInStartOfSearchMode)
+                {
+                    //if (Game.GameTime - GameTimeLastUpdatedSearchLocation >= 10000)
+                    //{
+                    if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) >= 10f)
+                    {
+                        Player.PlacePoliceShouldSearchForPlayer = Player.Position;
+                    }
+                        //GameTimeLastUpdatedSearchLocation = Game.GameTime;
+                    //}
+
+                    if(Game.GameTime - GameTimeLastUpdatedSearchLocation >= 1000)
+                    {
+                        EntryPoint.WriteToConsole("Ghost Position Update for Cop Tasking");
+                        GameTimeLastUpdatedSearchLocation = Game.GameTime;
+                    }
+
+                }
+                else
+                {
+                    Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
+                }
+                    
+                
+
+
+
                 if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
                 {
                     if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)

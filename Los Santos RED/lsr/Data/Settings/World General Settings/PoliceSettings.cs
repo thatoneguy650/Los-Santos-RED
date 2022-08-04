@@ -166,18 +166,13 @@
     public int TimeBetweenCopSpeak_WeaponsFree_Min { get; set; }
     public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min { get; set; }
     public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max { get; set; }
+    public float SixthSensePercentage { get; set; }
+    public float SearchModeStartPercent { get; set; }
 
     public PoliceSettings()
     {
         SetDefault();
-        #if DEBUG
-                ShowSpawnedBlips = true;
-                ShowVanillaBlips = false;
-       // ManageDispatching = false;
-       // AllowRadioInAnimations = true;
-#else
-                       // ShowSpawnedBlips = false;
-#endif
+
 
     }
     public void SetDefault()
@@ -352,6 +347,20 @@
         TimeBetweenCopSpeak_WeaponsFree_Min = 10000;
         TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min = 0;
         TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 5000;
+
+
+        SixthSensePercentage = 40f;
+        SearchModeStartPercent = 0.6f;
+
+
+
+#if DEBUG
+        ShowSpawnedBlips = true;
+        ShowVanillaBlips = false;
+        SixthSensePercentage = 100f;
+        SearchModeStartPercent = 0.1f;
+#else
+#endif
 
 
     }

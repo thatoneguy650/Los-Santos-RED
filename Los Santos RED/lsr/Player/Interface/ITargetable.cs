@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsVisiblyArmed { get; }
         WeaponEquipment WeaponEquipment { get; }
         bool IsDangerouslyArmed { get; }
+        Vector3 PlacePoliceShouldSearchForPlayer { get; }
+        SearchMode SearchMode { get; }
 
 
         //bool IsHostile(Gang gang);

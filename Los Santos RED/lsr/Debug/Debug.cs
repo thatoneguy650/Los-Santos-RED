@@ -416,15 +416,15 @@ public class Debug
     private void DebugNumpad4()
     {
 
-        Player.CellPhone.OpenBurner();
-        GameFiber.Sleep(1000);
+       // Player.CellPhone.OpenBurner();
+       // GameFiber.Sleep(1000);
 
-        return;
+       // return;
 
-       // StuffTwo();
+       //// StuffTwo();
 
 
-        return;
+       // return;
         // Player.ResetScannerDebug();
         //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
@@ -1137,8 +1137,9 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Gang myGang = Gangs.AllGangs.PickRandom();
-        Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime} with a very long string, so long it will be cut off i am sure, but how many characters will i see? I am unsusre, but this is gettting pretty long, how much do i need in here?", Time.CurrentDateTime.AddMinutes(0));
+        SetIndex();
+        //Gang myGang = Gangs.AllGangs.PickRandom();
+        //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime} with a very long string, so long it will be cut off i am sure, but how many characters will i see? I am unsusre, but this is gettting pretty long, how much do i need in here?", Time.CurrentDateTime.AddMinutes(0));
 
         //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //{

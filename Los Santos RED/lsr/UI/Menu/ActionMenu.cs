@@ -43,9 +43,6 @@ public class ActionMenu : Menu
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Start, Pause, or Stop actions with your character.";
         parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Tick;
         Actions.SetBannerType(EntryPoint.LSRedColor);
-        Actions.OnItemSelect += OnActionItemSelect;
-        Actions.OnScrollerChange += OnScrollerChange;
-
         CreateActionsMenu();
     }
     public override void Hide()
@@ -93,69 +90,26 @@ public class ActionMenu : Menu
     {
         Actions.Clear();
 
-        if (Player.IsCop)
-        {
-            CallPolice = new UIMenuItem("Radio for Backup", "Need some help?");
-            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
-            Actions.AddItem(CallPolice);
-        }
-        else
-        {
-            CallPolice = new UIMenuItem("Call Police", "Need some help?");
-            CallPolice.RightBadge = UIMenuItem.BadgeStyle.Alert;
-        }
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
-        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
-        RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
-        LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
-        GestureMenu = new UIMenuListScrollerItem<GestureData>("Gesture", "Perform the selected gesture", Gestures.GestureLookups);
-        DanceMenu = new UIMenuListScrollerItem<DanceData>("Dance", "Perform the selected dance", Dances.DanceLookups);
-        CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue", "Pause", "Stop" });
-        EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
-        ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
-        IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
-        HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
-        ToggleActionMode = new UIMenuItem("Toggle Action Mode", "Toggle action mode on or off");
-        ToggleStealthMode = new UIMenuItem("Toggle Stealth Mode", "Toggle stealth mode on or off");
-        ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
-        ToggleBodyArmor.Value = 0;
-
-        Actions.AddItem(CurrentActivityMenu);
-        Actions.AddItem(GestureMenu);
-        Actions.AddItem(DanceMenu);
-        Actions.AddItem(SitDown);
-        Actions.AddItem(ToggleActionMode);
-        Actions.AddItem(ToggleStealthMode);
-
-        Actions.AddItem(LayDown);
-
-        Actions.AddItem(ChangePlate);
-        Actions.AddItem(RemovePlate);
-        Actions.AddItem(Suicide);
-        Actions.AddItem(ToggleBodyArmor);
-#if DEBUG
-        Actions.AddItem(EnterAsPassenger);
-        Actions.AddItem(ShuffleSeat);
-        Actions.AddItem(IntimidateDriver);
-        Actions.AddItem(HotwireVehicle);
-#endif
-    }
-    private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem == Suicide)
+        Suicide.Activated += (sender, selectedItem) =>
         {
             Player.CommitSuicide();
-        }
-        else if (selectedItem == ChangePlate)
+            Actions.Visible = false;
+        };
+        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
+        ChangePlate.Activated += (sender, selectedItem) =>
         {
             Player.ChangePlate(ChangePlate.SelectedItem);
-        }
-        else if (selectedItem == RemovePlate)
+            Actions.Visible = false;
+        };       
+        RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
+        RemovePlate.Activated += (sender, selectedItem) =>
         {
             Player.RemovePlate();
-        }
-        else if (selectedItem == SitDown)
+            Actions.Visible = false;
+        };
+        SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
+        SitDown.Activated += (sender, selectedItem) =>
         {
             if (SitDown.SelectedItem == "At Closest Seat")
             {
@@ -172,8 +126,10 @@ public class ActionMenu : Menu
                     Player.StartSittingDown(false, true);
                 }
             }
-        }
-        else if (selectedItem == LayDown)
+            Actions.Visible = false;
+        };
+        LayDown = new UIMenuListScrollerItem<string>("Lay Down", "Lay down either at the nearest seat or where you are.", new List<string>() { "At Closest Bed", "Here" });
+        LayDown.Activated += (sender, selectedItem) =>
         {
             if (LayDown.SelectedItem == "At Closest Bed")
             {
@@ -183,20 +139,22 @@ public class ActionMenu : Menu
             {
                 Player.StartLayingDown(false);
             }
-        }
-        else if (selectedItem == EnterAsPassenger)
+            Actions.Visible = false;
+        };
+        GestureMenu = new UIMenuListScrollerItem<GestureData>("Gesture", "Perform the selected gesture", Gestures.GestureLookups);
+        GestureMenu.Activated += (sender, selectedItem) =>
         {
-            Player.EnterVehicleAsPassenger();
-        }
-        else if (selectedItem == ShuffleSeat)
+            Player.Gesture(GestureMenu.SelectedItem);
+            Actions.Visible = false;
+        };
+        DanceMenu = new UIMenuListScrollerItem<DanceData>("Dance", "Perform the selected dance", Dances.DanceLookups);
+        DanceMenu.Activated += (sender, selectedItem) =>
         {
-            Player.ShuffleToNextSeat();
-        }
-        else if (selectedItem == IntimidateDriver)
-        {
-            Player.ForceErraticDriver();
-        }
-        else if (selectedItem == CurrentActivityMenu)
+            Player.Dance(DanceMenu.SelectedItem);
+            Actions.Visible = false;
+        };
+        CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue", "Pause", "Stop" });
+        CurrentActivityMenu.Activated += (sender, selectedItem) =>
         {
             if (CurrentActivityMenu.SelectedItem == "Continue")
             {
@@ -210,44 +168,72 @@ public class ActionMenu : Menu
             {
                 Player.StopDynamicActivity();
             }
-        }
-        else if (selectedItem == GestureMenu)
+            Actions.Visible = false;
+        };
+        EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
+        EnterAsPassenger.Activated += (sender, selectedItem) =>
         {
-            Player.Gesture(GestureMenu.SelectedItem);
-        }
-        else if (selectedItem == DanceMenu)
+            Player.EnterVehicleAsPassenger();
+            Actions.Visible = false;
+        };
+        ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
+        ShuffleSeat.Activated += (sender, selectedItem) =>
         {
-            Player.Dance(DanceMenu.SelectedItem);
-        }
-        else if (selectedItem == CallPolice)
+            Player.ShuffleToNextSeat();
+            Actions.Visible = false;
+        };
+        IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
+        IntimidateDriver.Activated += (sender, selectedItem) =>
         {
-            Player.CellPhone.CallPolice();
-        }
-        else if (selectedItem == ToggleBodyArmor)
-        {
-            Player.ToggleBodyArmor(ToggleBodyArmor.Value);
-        }
-        else if (selectedItem == HotwireVehicle)
+            Player.ForceErraticDriver();
+            Actions.Visible = false;
+        };
+        HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
+        HotwireVehicle.Activated += (sender, selectedItem) =>
         {
             Player.StartHotwiring();
-        }
-
-        else if (selectedItem == ToggleActionMode)
+            Actions.Visible = false;
+        };
+        ToggleActionMode = new UIMenuItem("Toggle Action Mode", "Toggle action mode on or off");
+        ToggleActionMode.Activated += (sender, selectedItem) =>
         {
             Player.Stance.ToggleActionMode();
-        }
-        else if (selectedItem == ToggleStealthMode)
+            Actions.Visible = false;
+        };
+        ToggleStealthMode = new UIMenuItem("Toggle Stealth Mode", "Toggle stealth mode on or off");
+        ToggleStealthMode.Activated += (sender, selectedItem) =>
         {
             Player.Stance.ToggleStealthMode();
-        }
-        Actions.Visible = false;
-        ChangePlate.Items = Player.SpareLicensePlates;
-    }
-    private void OnScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
-    {
-        if (item == ToggleBodyArmor)
+            Actions.Visible = false;
+        };
+        ToggleBodyArmor = new UIMenuNumericScrollerItem<int>("Toggle Body Armor", "Select to take toggle, scroll to change", 0, 18, 1);
+        ToggleBodyArmor.Value = 0;
+        ToggleBodyArmor.Activated += (sender, selectedItem) =>
+        {
+            Player.ToggleBodyArmor(ToggleBodyArmor.Value);
+            Actions.Visible = false;
+        };
+        ToggleBodyArmor.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             Player.SetBodyArmor(ToggleBodyArmor.Value);
-        }
+        };
+
+        Actions.AddItem(CurrentActivityMenu);
+        Actions.AddItem(GestureMenu);
+        Actions.AddItem(DanceMenu);
+        Actions.AddItem(SitDown);
+        Actions.AddItem(ToggleActionMode);
+        Actions.AddItem(ToggleStealthMode);
+        Actions.AddItem(LayDown);
+        Actions.AddItem(ChangePlate);
+        Actions.AddItem(RemovePlate);
+        Actions.AddItem(Suicide);
+        Actions.AddItem(ToggleBodyArmor);
+#if DEBUG
+        Actions.AddItem(EnterAsPassenger);
+        Actions.AddItem(ShuffleSeat);
+        Actions.AddItem(IntimidateDriver);
+        Actions.AddItem(HotwireVehicle);
+#endif
     }
 }

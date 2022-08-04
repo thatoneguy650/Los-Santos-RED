@@ -272,7 +272,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Locate")
         {
             EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
-            Cop.CurrentTask = new Locate(Cop, Player);
+            Cop.CurrentTask = new Locate(Cop, Player, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

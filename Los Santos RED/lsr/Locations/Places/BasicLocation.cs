@@ -111,7 +111,7 @@ public class BasicLocation
     public bool IsNearby { get; private set; } = false;
 
 
-
+    public string FullName => Name + " - " + StreetAddress;
 
 
     public BasicLocation()

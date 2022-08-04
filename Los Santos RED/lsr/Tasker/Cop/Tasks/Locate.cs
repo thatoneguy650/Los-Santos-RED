@@ -15,6 +15,9 @@ public class Locate : ComplexTask
     private Task CurrentTask = Task.Nothing;
     private bool HasReachedReportedPosition;
     private bool isSetCode3Close;
+    private bool hasSixthSense = false;
+    private ISettingsProvideable Settings;
+    private Vector3 PlaceToGoTo => hasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
 
     private enum Task
     {
@@ -36,10 +39,11 @@ public class Locate : ComplexTask
             }
         }
     }
-    public Locate(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
+    public Locate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Locate";
         SubTaskName = "";
+        Settings = settings;
     }
     public override void Start()
     {
@@ -52,7 +56,9 @@ public class Locate : ComplexTask
 
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
+            hasSixthSense = RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
 
+            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();
         }
     }
@@ -116,10 +122,10 @@ public class Locate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NeedsUpdates = true;
-            if (CurrentTaskedPosition.DistanceTo2D(Player.PlacePoliceLastSeenPlayer) >= 5f && !HasReachedReportedPosition)
+            if (CurrentTaskedPosition.DistanceTo2D(PlaceToGoTo) >= 5f && !HasReachedReportedPosition) //if (CurrentTaskedPosition.DistanceTo2D(Player.PlacePoliceLastSeenPlayer) >= 5f && !HasReachedReportedPosition)
             {
                 HasReachedReportedPosition = false;
-                CurrentTaskedPosition = Player.PlacePoliceLastSeenPlayer;
+                CurrentTaskedPosition = PlaceToGoTo;// Player.PlacePoliceLastSeenPlayer;
                 if (Ped.Pedestrian.IsInAnyVehicle(false))
                 {
                     if (Ped.IsDriver)
@@ -160,7 +166,16 @@ public class Locate : ComplexTask
             }
             if (DistanceToCoordinates <= 25f)
             {
-                HasReachedReportedPosition = true;
+                if(hasSixthSense && Player.SearchMode.IsInStartOfSearchMode)
+                {
+
+                }
+                else
+                {
+                    HasReachedReportedPosition = true;
+                }
+                
+                EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
             if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
             {

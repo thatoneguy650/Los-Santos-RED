@@ -105,6 +105,10 @@ public class PlateController
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
                     vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
                     vehicleExt.CarPlate.PlateType = NewType.Index;
+
+
+
+                    
                 }
             }
             else

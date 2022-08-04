@@ -348,6 +348,7 @@ namespace Mod
         public DanceData LastDance { get; set; }
         public string ModelName { get; set; }
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
+        public Vector3 PlacePoliceShouldSearchForPlayer { get; set; }
         public string PlayerName { get; set; }
         public Vector3 Position => position;
         public VehicleExt PreviousVehicle { get; private set; }
@@ -2001,6 +2002,7 @@ namespace Mod
                         {
                             SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (1)", true);
                             PlacePoliceLastSeenPlayer = Position;
+                            
                         }
                     }
                     else//or is they want my mod to just accept any wanted level generated

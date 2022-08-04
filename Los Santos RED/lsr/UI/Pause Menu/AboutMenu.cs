@@ -23,9 +23,11 @@ public class AboutMenu
     {
         tabView = new TabView("About Los Santos ~r~RED~s~");
         tabView.Tabs.Clear();
-        tabView.OnMenuClose += TabView_OnMenuClose;
+        tabView.OnMenuClose += (s, e) =>
+        {
+            Game.IsPaused = false;
+        };
     }
-
     public void Toggle()
     {
         if (!TabView.IsAnyPauseMenuVisible)
@@ -45,6 +47,24 @@ public class AboutMenu
         {
             tabView.Money = Time.CurrentTime;
         }
+    }
+    private void UpdateMenu()
+    {
+        tabView.MoneySubtitle = Player.BankAccounts.Money.ToString("C0");
+        tabView.Name = Player.PlayerName;
+        tabView.Money = Time.CurrentTime;
+        tabView.Tabs.Clear();
+        tabView.ScrollTabs = true;
+
+        AddActions();
+        AddContacts();
+        AddPedSwap();
+        AddGangs();
+        AddRespawn();
+        AddPolice();
+        AddCivilians();
+        AddStores();
+        tabView.RefreshIndex();
     }
     private void AddActions()
     {
@@ -184,44 +204,6 @@ public class AboutMenu
         items.Add(Five);
         items.Add(Six);
         tabView.AddTab(new TabSubmenuItem("Locations", items));
-    }
-    //private string FormatControls(Keys modifier, Keys key)
-    //{
-    //    if (modifier != Keys.None && key != Keys.None)
-    //    {
-    //        return $"~o~{modifier}~s~ + ~o~{key}~s~";
-    //    }
-    //    else if (modifier != Keys.None && key == Keys.None)
-    //    {
-    //        return $"~o~{modifier}~s~";
-    //    }
-    //    else if (modifier == Keys.None && key != Keys.None)
-    //    {
-    //        return $"~o~{key}~s~";
-    //    }
-    //    return "";
-    //}
-    private void TabView_OnMenuClose(object sender, EventArgs e)
-    {
-        Game.IsPaused = false;
-    }
-    private void UpdateMenu()
-    {
-        tabView.MoneySubtitle = Player.BankAccounts.Money.ToString("C0");
-        tabView.Name = Player.PlayerName;
-        tabView.Money = Time.CurrentTime;
-        tabView.Tabs.Clear();
-        tabView.ScrollTabs = true;
-
-        AddActions();
-        AddContacts();
-        AddPedSwap();
-        AddGangs();
-        AddRespawn();
-        AddPolice();
-        AddCivilians();
-        AddStores();
-        tabView.RefreshIndex();
     }
 }
 

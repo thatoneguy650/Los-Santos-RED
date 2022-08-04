@@ -40,6 +40,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         //int MaxWantedLastLife { get; }
         Vector3 PlacePoliceLastSeenPlayer { get; set; }
+
+
+        Vector3 PlacePoliceShouldSearchForPlayer { get; set; }
+
+
         Vector3 Position { get; }
         bool RecentlyBusted { get; }
         bool RecentlyShot { get; }
@@ -51,6 +56,7 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         bool IsDangerouslyArmed { get; }
         bool IsStill { get; }
+        SearchMode SearchMode { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void Arrest();

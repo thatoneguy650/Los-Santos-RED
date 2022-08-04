@@ -86,6 +86,7 @@ public class Destinations
         {
             NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
             CurrentGPSBlip.Delete();
+            Game.DisplaySubtitle("GPS Route Removed");
         }
     }
 

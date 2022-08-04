@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr
             Settings = settings;
         }
         public float SearchModePercentage => IsInSearchMode ? 1.0f - ((float)TimeInSearchMode / (float)CurrentSearchTime) : 0;
+        public bool IsInStartOfSearchMode => IsInSearchMode && SearchModePercentage >= Settings.SettingsManager.PoliceSettings.SearchModeStartPercent;
         public bool IsInSearchMode { get; private set; }
         public bool IsInActiveMode { get; private set; }
         public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? Game.GameTime - GameTimeStartedSearchMode : 0;
