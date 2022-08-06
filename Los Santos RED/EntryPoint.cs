@@ -12,9 +12,10 @@ using System.Windows.Forms;
 public static class EntryPoint
 {
     private static int LogLevel = 0;
-    private static bool MenyooRunning = false;
-    private static System.Reflection.Assembly assembly;
-    private static System.Diagnostics.FileVersionInfo fvi;
+    private static System.Reflection.Assembly LSRAssembly;
+    private static System.Diagnostics.FileVersionInfo LSRInstalledVersionInfo;
+    private static string StartMessage;
+    private static DependencyChecker RageNativeUIChecker;
     public static int PersistentPedsCreated { get; set; } = 0;
     public static int PersistentPedsNonPersistent { get; set; } = 0;
     public static int PersistentPedsDeleted { get; set; } = 0;
@@ -32,6 +33,7 @@ public static class EntryPoint
     public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
     public static string UndergroundGunsContactName => "Underground Guns";//these have gotta go, but where?
     public static string EmergencyServicesContactName => "911 - Emergency Services";//these have gotta go, but where?
+
     public static void Main()
     {
         #if DEBUG
@@ -41,20 +43,19 @@ public static class EntryPoint
         {
             GameFiber.Yield();
         }
+        Startup();
         Loop();
+    }
+
+    private static void Startup()
+    {
+        GetVersionInfo();
+        StartMessage = $"~s~Los Santos ~r~RED ~s~v{LSRInstalledVersionInfo.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start";
+        CheckDependencies();
+        NotificationID = Game.DisplayNotification($"{StartMessage}");
     }
     private static void Loop()
     {
-        assembly = System.Reflection.Assembly.GetExecutingAssembly();
-        fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-        //if (File.Exists("menyoo.asi"))
-        //{
-        //    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
-        //}
-        //else
-        //{
-            NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start");
-       // }
         while (true)
         {
             if ((ModController == null || !ModController.IsRunning) && Game.IsKeyDown(Keys.F10) && Game.IsShiftKeyDownRightNow)//maybe add cheat string instead of keys?
@@ -63,29 +64,32 @@ public static class EntryPoint
                 {
                     Game.RemoveNotification(NotificationID);
                 }
-                //if (File.Exists("menyoo.asi"))
-                //{
-                //    MenyooRunning = true;
-                //    NotificationID = Game.DisplayNotification($"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} ~n~By ~g~Greskrendtregk~s~~n~~n~~r~Menyoo~s~ can cause issues with duplicated items/peds/vehicles, remove it if you encounter issues");
-                //}
                 ModController = new ModController();
                 ModController.Setup();
             }
             GameFiber.Yield();
         }
     }
-    public static void WriteToConsole(string Message)
+    private static void GetVersionInfo()
     {
-        if (5 <= LogLevel)
+        LSRAssembly = System.Reflection.Assembly.GetExecutingAssembly();
+        LSRInstalledVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(LSRAssembly.Location);
+    }
+    private static void CheckDependencies()
+    {
+        RageNativeUIChecker = new DependencyChecker("RAGENativeUI.dll", "1.9.0.0");
+        RageNativeUIChecker.Verify();
+        if (!RageNativeUIChecker.IsValid)
         {
-            Game.Console.Print($"m{(MenyooRunning ? 7556 : 0)} v{fvi.FileVersion} - {Message}");
+            StartMessage = $"{StartMessage} ~n~~n~{RageNativeUIChecker.Result()}~s~";
         }
     }
+    public static void WriteToConsole(string Message) => WriteToConsole(Message, 5);
     public static void WriteToConsole(string Message, int level)
     {
         if (level <= LogLevel)
         {
-            Game.Console.Print($"m{(MenyooRunning ? 7556 : 0)} v{fvi.FileVersion} - {Message}");
+            Game.Console.Print($"v{LSRInstalledVersionInfo.FileVersion} - {Message}");
         }
     }
     [ConsoleCommand]

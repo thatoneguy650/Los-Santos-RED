@@ -307,6 +307,7 @@ namespace Mod
         public bool IsDraggingBody { get; set; }
         public bool IsMakingInsultingGesture { get; set; }
         public bool IsMale { get; set; }
+        public string Gender => IsMale ? "M" : "F";
         public bool IsMobileRadioEnabled { get; private set; }
         public bool IsMoveControlPressed { get; set; }
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
@@ -624,6 +625,14 @@ namespace Mod
             NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);//enable all controls in case we left some disabled
             NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Character, false, false);
             NativeFunction.Natives.SET_PLAYER_CAN_BE_HASSLED_BY_GANGS(Game.LocalPlayer, true);
+
+            NativeFunction.Natives.DESTROY_ALL_CAMS(0);
+            NativeFunction.Natives.CLEAR_FOCUS();
+            Game.LocalPlayer.HasControl = true;
+            if(Game.IsScreenFadedOut ||Game.IsScreenFadingOut)
+            {
+                Game.FadeScreenIn(0, false);
+            }
         }
 
         //Needed

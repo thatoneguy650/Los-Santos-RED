@@ -61,44 +61,8 @@ public class GangReputation
             }
         }
     }
-    //public int CostToPayoff
-    //{
-    //    get
-    //    {
-    //        if (ReputationLevel < 0)
-    //        {
-    //            return ((0 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
-    //        }
-    //        else if (ReputationLevel >= 500)
-    //        {
-    //            return 0;
-    //        }
-    //        else
-    //        {
-    //            return ((500 - ReputationLevel) * Gang.CostToPayoffGangScalar).Round(100);
-    //        }
-    //    }
-    //}
-    //public int RepToNextLevel
-    //{
-    //    get
-    //    {
-    //        if (ReputationLevel < 0)
-    //        {
-    //            return 0 - ReputationLevel;
-    //        }
-    //        else if (ReputationLevel >= 500)
-    //        {
-    //            return 0;
-    //        }
-    //        else
-    //        {
-    //            return 500 - ReputationLevel;
-    //        }
-    //    }
-    //}
     public bool IsMember { get; set; }
-
+    public bool IsEnemy { get; set; }
     public GangReputation()
     {
 
@@ -124,6 +88,10 @@ public class GangReputation
             {
                 return GangRespect.Member;
             }
+            else if (IsEnemy)
+            {
+                return GangRespect.Hostile;
+            }
             else if(ReputationLevel < NeutralRepLevel)
             {
                 return GangRespect.Hostile;
@@ -142,11 +110,9 @@ public class GangReputation
     public int MembersHurt { get; set; }
     public int MembersKilled { get; set; }
     public int MembersCarJacked { get; set; }
-
     public int MembersHurtInTerritory { get; set; }
     public int MembersKilledInTerritory { get; set; }
     public int MembersCarJackedInTerritory { get; set; }
-
     public int PlayerDebt { get; set; } = 0;
     public void ResetRelationshipGroups()
     {
@@ -200,6 +166,7 @@ public class GangReputation
     public void Reset(bool sendText)
     {
         IsMember = false;
+        IsEnemy = false;
         SetReputation(DefaultRepAmount, sendText);
         MembersHurt = 0;
         MembersKilled = 0;
@@ -224,7 +191,7 @@ public class GangReputation
         if(PreviousGangRelationship != GangRelationship)
         {
             RelationshipGroup rg = new RelationshipGroup(Gang.ID);
-            if (GangRelationship == GangRespect.Hostile)
+            if (GangRelationship == GangRespect.Hostile || IsEnemy)
             {
                 if (Player.IsNotWanted)//handled on the became/lost wanted events
                 {

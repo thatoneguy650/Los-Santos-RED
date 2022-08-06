@@ -131,7 +131,7 @@ public class CustomizePedMenu : Menu
     {
         if (1 == 1)
         {
-            if (!Player.ButtonPrompts.HasPrompt($"ChangeCamera"))
+            if (!Player.ButtonPrompts.HasPrompt($"ZoomCameraIn"))
             {
                 Player.ButtonPrompts.RemovePrompts("ChangeCamera");
                 Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Turn Left", $"RotateModelLeft", System.Windows.Forms.Keys.J, 1);

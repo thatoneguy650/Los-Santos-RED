@@ -56,7 +56,7 @@ public class Locate : ComplexTask
 
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            hasSixthSense = RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
+            hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
 
             EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();

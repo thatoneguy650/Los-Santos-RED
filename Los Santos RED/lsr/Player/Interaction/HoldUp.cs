@@ -145,7 +145,7 @@ public class HoldUp : Interaction
                     }
                     if (!Player.ButtonPrompts.HasPrompt("ForceDown")) //if (!Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown"))
                     {
-                        Player.ButtonPrompts.AddPrompt("HoldUp", "Force Down", "ForceDown", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
+                        Player.ButtonPrompts.AddPrompt("HoldUp", "Force Down", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);//Player.ButtonPromptList.Add(new ButtonPrompt("Force Down", "HoldUp", "ForceDown", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2));
                     }
                     if (!Player.ButtonPrompts.HasPrompt("Flee")) //if (!Player.ButtonPromptList.Any(x => x.Identifier == "Flee"))
                     {

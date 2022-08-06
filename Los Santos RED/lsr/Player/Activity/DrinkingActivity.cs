@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
@@ -83,7 +84,7 @@ namespace LosSantosRED.lsr.Player
             CreateBottle();
             if (Bottle.Exists() && !IsAttachedToHand)
             {
-                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND"), Data.HandOffset, Data.HandRotator);
+                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
                 Player.AttachedProp = Bottle;
             }
@@ -376,29 +377,30 @@ namespace LosSantosRED.lsr.Player
             string AnimExit;
             string AnimExitDictionary;
             string AnimIdleDictionary;
-            int HandBoneID;
-            Vector3 HandOffset = Vector3.Zero;
-            Rotator HandRotator = Rotator.Zero;
+
             string PropModel = "";
             bool isBottle = false;
-
             if (ModItem != null && ModItem.Name.ToLower().Contains("bottle"))
             {
                 isBottle = true;
             }
             EntryPoint.WriteToConsole($"Drinking Start isBottle {isBottle} isMale {Player.IsMale}");
-            HandBoneID = 18905;
-            //HandOffset = new Vector3(0.12f, -0.07f, 0.07f);
-            //HandRotator = new Rotator(-110.0f, 14.0f, 1.0f);
-            HandOffset = new Vector3();
-            HandRotator = new Rotator();
+
+            string HandBoneName = "BONETAG_L_PH_HAND";
+            Vector3 HandOffset = new Vector3();
+            Rotator HandRotator = new Rotator();        
             if (ModItem != null && ModItem.ModelItem != null)
             {
                 PropModel = ModItem.ModelItem.ModelName;
-                //HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
-                HandRotator = ModItem.ModelItem.AttachRotationOverride;
+                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x=> x.Name == "LeftHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                if(pa != null)
+                {
+                    HandOffset = pa.Attachment;
+                    HandRotator = pa.Rotation;
+                    HandBoneName = pa.BoneName;
+                }
             }
+
             if (Player.IsInVehicle)
             {
                 if (Player.IsDriver)
@@ -474,7 +476,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
-            Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
+            Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
         }
     }
 }

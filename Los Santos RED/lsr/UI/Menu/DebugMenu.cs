@@ -284,6 +284,7 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(KillPlayer);
         PlayerStateItemsMenu.AddItem(GiveMoney);
         PlayerStateItemsMenu.AddItem(SetMoney);
+        PlayerStateItemsMenu.AddItem(ForceSober);
         PlayerStateItemsMenu.AddItem(GetAllItems);
         PlayerStateItemsMenu.AddItem(GetSomeItems);
         PlayerStateItemsMenu.AddItem(FillHealthAndArmor);

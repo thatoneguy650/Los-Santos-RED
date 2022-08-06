@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         bool IsWanted { get; }
         PlayerTasks PlayerTasks { get; }
+        string Gender { get; }
 
         void StopDynamicActivity();
         void StartConsumingActivity(ModItem modItem, bool v);

@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
@@ -62,7 +63,7 @@ namespace LosSantosRED.lsr.Player
             CreateItem();
             if (Item.Exists() && !IsAttachedToHand)
             {
-                Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
                 Player.AttachedProp = Item;
             }
@@ -105,7 +106,6 @@ namespace LosSantosRED.lsr.Player
             {
                 Item.Detach();
             }
-            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.IsPerformingActivity = false;
             if (!CurrentIntoxicant.ContinuesWithoutCurrentUse)
@@ -130,11 +130,6 @@ namespace LosSantosRED.lsr.Player
                     if (Item.Exists())
                     {
                         Item.Delete();
-                        //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                        //{
-                        //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
-                        //    hasGainedHP = true;
-                        //}
                     }
                 }
                 if (AnimationTime >= 0.35f)
@@ -144,7 +139,6 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            //GameFiber.Sleep(5000);//wait for it to take effect!
             Exit();
         }
         private void Setup()
@@ -155,27 +149,23 @@ namespace LosSantosRED.lsr.Player
             string AnimExit = "";
             string AnimExitDictionary = "";
             string AnimIdleDictionary;
-            int HandBoneID = 57005;
-            Vector3 HandOffset = Vector3.Zero;
-            Rotator HandRotator = Rotator.Zero;
+
             string PropModel = "";
 
-            //if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
-            //{
-            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@male@idle_a";
-            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-            //}
-            //else
-            //{
-            //    AnimIdleDictionary = "amb@code_human_wander_eating_donut@female@idle_a";
-            //    AnimIdle = new List<string>() { "idle_a", "Idle_b", "Idle_c" };
-            //}
+            string HandBoneName = "BONETAG_R_PH_HAND";
+            Vector3 HandOffset = Vector3.Zero;
+            Rotator HandRotator = Rotator.Zero;
+
             if (ModItem != null && ModItem.ModelItem != null)
             {
-               // HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
-                HandRotator = ModItem.ModelItem.AttachRotationOverride;
                 PropModel = ModItem.ModelItem.ModelName;
+                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                if (pa != null)
+                {
+                    HandOffset = pa.Attachment;
+                    HandRotator = pa.Rotation;
+                    HandBoneName = pa.BoneName;
+                }
             }
 
             AnimIdleDictionary = "mp_suicide";
@@ -188,7 +178,7 @@ namespace LosSantosRED.lsr.Player
             }
 
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
-            Data = new EatingData("", "", AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, PropModel);
+            Data = new EatingData("", "", AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
         }
     }
 }

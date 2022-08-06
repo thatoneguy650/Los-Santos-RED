@@ -1,28 +1,42 @@
-﻿public class PoliceSettings : ISettingsDefaultable
-{
-    public bool ManageDispatching { get; set; }
-    public bool ManageTasking { get; set; }
+﻿using System.ComponentModel;
 
+public class PoliceSettings : ISettingsDefaultable
+{
+    [Description("Allows mod spawning of police in the world. (Not recommended to disable)")]
+    public bool ManageDispatching { get; set; }
+    [Description("Allows tasking of ambient police pedestrians in the world. (Not recommended to disable)")]
+    public bool ManageTasking { get; set; }
+    [Description("Attach a blip to any spawned police pedestrian")]
     public bool ShowSpawnedBlips { get; set; }
+    [Description("Show the vanilla police blip")]
     public bool ShowVanillaBlips { get; set; }
 
-
+    [Description("Enable or Disable accuracy override")]
     public bool OverrideAccuracy { get; set; }
+    [Description("Enable or disable health override")]
     public bool OverrideHealth { get; set; }
+    [Description("Enable or disable armor override")]
     public bool OverrideArmor { get; set; }
 
-
+    [Description("Enable or disable auto load setting. (Not recommended to disable)")]
     public bool ManageLoadout { get; set; }
+    [Description("Enable or disable ambient speech from police during chases")]
     public bool AllowAmbientSpeech { get; set; }
+    [Description("Enable or disable chase assists to allow the police to better keep up with the player")]
     public bool AllowChaseAssists { get; set; }
+    [Description("Enable or disable clearing or offscreen non-mission vehicles that are blocking police vehicles")]
     public bool AllowFrontVehicleClearAssist { get; set; }
+    [Description("Enable or disable collision proffing for police vehicles")]
     public bool AllowReducedCollisionPenaltyAssist { get; set; }
+    [Description("Enable or disable increased power for police vehicles")]
     public bool AllowPowerAssist { get; set; }
 
 
-
+    [Description("Enable or disable the non-vanilla wanted system. (Not recommended to disable)")]
     public bool UseFakeWantedLevelSystem { get; set; }
+    [Description("If enabled, only LSR will be able to set the wanted level.")]
     public bool TakeExclusiveControlOverWantedLevel { get; set; }
+    [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
 
 
@@ -166,8 +180,14 @@
     public int TimeBetweenCopSpeak_WeaponsFree_Min { get; set; }
     public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min { get; set; }
     public int TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max { get; set; }
+
+
+    [Description("Percentage of cops that have an idea of your location during search mode.")]
     public float SixthSensePercentage { get; set; }
-    public float SearchModeStartPercent { get; set; }
+    [Description("Percentage of cops in a helicopter that have an idea of your location during search mode.")]
+    public float SixthSenseHelicopterPercentage { get; set; }
+    [Description("Percentage of search mode that cops will be able to use their sixth sense. A value of 0.7 means they would be able to use their sixth sense powers for the first 30% of search mode (1.0 is none, 0.0 is the entire search mode).")]
+    public float SixthSenseSearchModeLimitPercentage { get; set; }
 
     public PoliceSettings()
     {
@@ -193,23 +213,6 @@
         ShowSpawnedBlips = false;
         ShowVanillaBlips = false;
         OverrideAccuracy = true;
-
-
-
-        //GeneralCombatAbility = 1;
-
-
-
-        //GeneralAccuracy = 40;
-        //TaserAccuracy = 30;
-        //VehicleAccuracy = 10;
-        //GeneralShootRate = 500;//even
-        //TaserShootRate = 100;
-        //VehicleShootRate = 20;
-
-
-
-
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;
         RecentlySeenTime = 15000;
@@ -220,13 +223,7 @@
         AllowPowerAssist = true;
         ManageLoadout = true;
         BustDistance = 4f;//5f;
-        //AllowRadioInAnimations = false;
         OverrideHealth = true;
-        //MinHealth = 85;
-        //MaxHealth = 125;
-        //OverrideArmor = true;
-        //MinArmor = 0;
-        //MaxArmor = 50;
         PedSpawnLimit_Default = 7;
         PedSpawnLimit_Investigation = 8;
         PedSpawnLimit_Wanted1 = 9;//7;
@@ -247,24 +244,13 @@
         KillLimit_Wanted4 = 5;
         KillLimit_Wanted5 = 10;
         KillLimit_Wanted6 = 20;
+
         WantedLevelIncreasesOverTime = true;
-        //WantedLevelIncreaseTime = 180000;//240000
-
-        //WantedLevelIncreaseTime_FromWanted1 = 60000;//1 min
-        //WantedLevelIncreaseTime_FromWanted2 = 120000;//2 mins
-        //WantedLevelIncreaseTime_FromWanted3 = 210000;//3.5 mins
-        //WantedLevelIncreaseTime_FromWanted4 = 240000;//4 minutes
-        //WantedLevelIncreaseTime_FromWanted5 = 240000;//4 minutes
-
         WantedLevelIncreaseTime_FromWanted1 = 90000;//1.5 min
         WantedLevelIncreaseTime_FromWanted2 = 180000;//3 mins
         WantedLevelIncreaseTime_FromWanted3 = 270000;//4.5 mins
         WantedLevelIncreaseTime_FromWanted4 = 360000;//6 minutes
         WantedLevelIncreaseTime_FromWanted5 = 600000;//10 minutes
-
-
-
-
 
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
@@ -289,9 +275,6 @@
         UseFakeWantedLevelSystem = true;
         PedestrianSpawnPercentage = 50f;
 
-
-
-
         InvestigationRespondingOfficers_Wanted1 = 2;
         InvestigationRespondingOfficers_Wanted2 = 4;
         InvestigationRespondingOfficers_Wanted3 = 6;
@@ -301,10 +284,8 @@
 
         PercentageSpawnOnFootNearStation = 50;
 
-
         LikelyHoodOfAnySpawn_Default = 5;
         LikelyHoodOfCountySpawn_Default = 5;
-
 
         LikelyHoodOfAnySpawn_Wanted1 = 5;
         LikelyHoodOfCountySpawn_Wanted1 = 5;
@@ -324,11 +305,7 @@
         LikelyHoodOfAnySpawn_Wanted6 = 20;
         LikelyHoodOfCountySpawn_Wanted6 = 20;
 
-
         RemoveVanillaSpawnedPeds = false;
-
-
-
 
         TimeBetweenCopSpeak_Armed_Min = 10000;
         TimeBetweenCopSpeak_Armed_Randomizer_Min = 0;
@@ -348,17 +325,13 @@
         TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min = 0;
         TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 5000;
 
-
-        SixthSensePercentage = 40f;
-        SearchModeStartPercent = 0.6f;
-
-
+        SixthSensePercentage = 70f;
+        SixthSenseHelicopterPercentage = 70f;
+        SixthSenseSearchModeLimitPercentage = 0.7f;
 
 #if DEBUG
         ShowSpawnedBlips = true;
         ShowVanillaBlips = false;
-        SixthSensePercentage = 100f;
-        SearchModeStartPercent = 0.1f;
 #else
 #endif
 

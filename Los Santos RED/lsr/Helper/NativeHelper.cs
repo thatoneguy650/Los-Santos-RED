@@ -317,7 +317,6 @@ namespace LosSantosRED.lsr.Helper
                 {
                     myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
-
                 try
                 {
                     NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
@@ -328,13 +327,13 @@ namespace LosSantosRED.lsr.Helper
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Copy Ped Variation Error Head Data: " + e.Message, 0);
+                    EntryPoint.WriteToConsole($"GetPedVariation GET_PED_HEAD_BLEND_DATA Error: {e.Message} {e.StackTrace}", 5);
                 }
                 return myPedVariation;
             }
             catch (Exception e)
             {
-                EntryPoint.WriteToConsole("Copy Ped Variation Error: " + e.Message, 0);
+                EntryPoint.WriteToConsole("GetPedVariation General Error: " + e.Message, 0);
                 return null;
             }
         }

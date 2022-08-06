@@ -155,7 +155,7 @@ public class PedExt : IComplexTaskable
     public bool IsInWrithe { get; private set; } = false;
     public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 10f;
+    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }

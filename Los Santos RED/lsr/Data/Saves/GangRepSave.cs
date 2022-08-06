@@ -11,7 +11,7 @@ public class GangRepSave
     {
     }
 
-    public GangRepSave(string gangID, int reputation, int membersHurt, int membersKilled, int membersCarJacked, int membersHurtInTerritory, int membersKilledInTerritory, int membersCarJackedInTerritory, int playerDebt, bool isMember)
+    public GangRepSave(string gangID, int reputation, int membersHurt, int membersKilled, int membersCarJacked, int membersHurtInTerritory, int membersKilledInTerritory, int membersCarJackedInTerritory, int playerDebt, bool isMember, bool isEnemy)
     {
         GangID = gangID;
         Reputation = reputation;
@@ -23,6 +23,7 @@ public class GangRepSave
         MembersCarJackedInTerritory = membersCarJackedInTerritory;
         PlayerDebt = playerDebt;
         IsMember = isMember;
+        IsEnemy = isEnemy;
     }
 
     public string GangID { get; set; }
@@ -36,5 +37,6 @@ public class GangRepSave
     public int MembersCarJackedInTerritory { get; set; }
     public int PlayerDebt { get; set; } = 0;
     public bool IsMember { get; set; } = false;
+    public bool IsEnemy { get; set; } = false;
 }
 

@@ -324,7 +324,7 @@ namespace LosSantosRED.lsr
         private void DisplayLoadSuccessfulMessage()
         {
             System.Reflection.Assembly assembly = System.Reflection.Assembly.GetExecutingAssembly();
-            System.Diagnostics.FileVersionInfo fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
             if (EntryPoint.NotificationID != 0)
             {
                 Game.RemoveNotification(EntryPoint.NotificationID);

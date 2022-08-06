@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         Sprinting Sprinting { get; }
         bool IsOnMuscleRelaxants { get; set; }
         HumanState HumanState { get; }
+        string Gender { get; }
 
         void PauseCurrentActivity();
         void ChangeHealth(int healthGained);

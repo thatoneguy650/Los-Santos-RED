@@ -170,6 +170,7 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\Inventory\PropAttachment.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
@@ -215,6 +216,7 @@
     <Compile Include="lsr\Locations\Places\Interact\VendingMachine.cs" />
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\ModController\ModTaskGroup.cs" />
+    <Compile Include="lsr\Other\DependencyChecker.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
@@ -238,7 +240,6 @@
     <Compile Include="lsr\Player\ActiveTasks\Underground Guns\UndergroundGunsTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\Corrupt Cop\WitnessEliminationTask.cs" />
     <Compile Include="lsr\Player\ActivityManager.cs" />
-    <Compile Include="lsr\Player\Activity\CellPhoneInteractionActivity.cs" />
     <Compile Include="lsr\Player\Activity\DanceActivity.cs" />
     <Compile Include="lsr\Player\Activity\Data\DanceData.cs" />
     <Compile Include="lsr\Player\Activity\Data\LayingData.cs" />

@@ -50,7 +50,7 @@ public class GangRelationships
                 }
                 else
                 {
-                    if (rg.Gang.AddAmbientRep)
+                    if (rg.Gang.AddAmbientRep && !rg.IsEnemy)
                     {
                         rg.AddembientRep();
                     }
@@ -136,7 +136,7 @@ public class GangRelationships
         }
         gr.PlayerDebt = Math.Abs(amount);
     }
-    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember)
+    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy)
     {
         if (gang == null)
         {
@@ -156,6 +156,7 @@ public class GangRelationships
         gr.MembersCarJackedInTerritory = carjackedInTerritory;
         gr.PlayerDebt = playerDebt;
         gr.IsMember = isMember;
+        gr.IsEnemy = isEnemy;
     }
     public void Reset()
     {
@@ -316,6 +317,16 @@ public class GangRelationships
                 {
                     rg.IsMember = false;
                 }
+
+                if(CurrentGang.EnemyGangs?.Any(x=> x == rg.Gang?.ID) == true)
+                {
+                    rg.IsEnemy = true;
+                }
+                else
+                {
+                    rg.IsEnemy = false;
+                }
+
             }
             if (showNotification)
             {
@@ -329,13 +340,13 @@ public class GangRelationships
         {
             foreach (GangReputation rg in GangReputations)
             {
-
                 if (rg.Gang?.ID == CurrentGang.ID)
                 {
                     rg.Reset(false);
                 }
                 else
                 {
+                    rg.IsEnemy = false;
                     rg.IsMember = false;
                 }
             }

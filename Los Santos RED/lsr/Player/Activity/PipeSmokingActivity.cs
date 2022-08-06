@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class PipeSmokingActivity : DynamicActivity
+    public class PipeSmokingActivity : DynamicActivity//this one needs lotsa work!!!
     {
         private Intoxicant CurrentIntoxicant;
         private SmokingData Data;
@@ -45,6 +45,8 @@ namespace LosSantosRED.lsr.Player
         private int LeftHandBoneID = 18905;
         private Vector3 LighterOffset = new Vector3(0.13f,0.02f,0.02f);
         private Rotator LighterRotator = new Rotator(-93f,40f,0f);
+        private int HandBoneID;
+        private int MouthBoneID;
 
         public PipeSmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
@@ -100,7 +102,7 @@ namespace LosSantosRED.lsr.Player
             CreateSmokedItem();
             if (SmokedItem.Exists())
             {
-                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
+                SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsSmokedItemAttachedToMouth = false;
                 Player.AttachedProp = SmokedItem;
             }
@@ -184,7 +186,7 @@ namespace LosSantosRED.lsr.Player
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
             while (Player.CanPerformActivities && !IsCancelled && !isPaused)
             {
@@ -198,7 +200,7 @@ namespace LosSantosRED.lsr.Player
                     //}
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
                 }
                 UpdatePosition();
                 UpdateSmoke();
@@ -211,9 +213,13 @@ namespace LosSantosRED.lsr.Player
      
         private void Setup()
         {
-            int HandBoneID = 57005;
-            Vector3 HandOffset = new Vector3(0.13f, 0.04f, -0.01f);
-            Rotator HandRotator = new Rotator(-92f, 0f, 0f);
+
+            HandBoneID = 57005;
+            MouthBoneID = 17188;
+
+            string HandBoneName;
+            Vector3 HandOffset = new Vector3();// new Vector3(0.13f, 0.04f, -0.01f);
+            Rotator HandRotator = new Rotator();// new Rotator(-92f, 0f, 0f);
             string AnimBase;
             string AnimBaseDictionary;
             string AnimEnter;
@@ -222,10 +228,10 @@ namespace LosSantosRED.lsr.Player
             string AnimExitDictionary;
             List<string> AnimIdle;
             string AnimIdleDictionary;
-            int MouthBoneID;
+            string MouthBoneName;
             Vector3 MouthOffset;
             Rotator MouthRotator;
-            string PropModelName = "ng_proc_cigarette01a";
+            string PropModelName = "";
             
             AnimBaseDictionary = "timetable@ron@smoking_meth";
             AnimBase = "";
@@ -237,13 +243,29 @@ namespace LosSantosRED.lsr.Player
             AnimExit = "";
             HasLightingAnimation = false;     
 
+
+
+            HandOffset = new Vector3();
+            HandRotator = new Rotator();
+            HandBoneName = "BONETAG_R_PH_HAND";
+            MouthOffset = new Vector3();
+            MouthRotator = new Rotator();
+            MouthBoneName = "";
             if (ModItem != null && ModItem.ModelItem != null)
             {
-                //HandBoneID = ModItem.ModelItem.AttachBoneIndex;
-                HandOffset = ModItem.ModelItem.AttachOffsetOverride;
-                HandRotator = ModItem.ModelItem.AttachRotationOverride;
                 PropModelName = ModItem.ModelItem.ModelName;
+                PropAttachment pa = ModItem.ModelItem.Attachments.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+                if (pa != null)
+                {
+                    HandOffset = pa.Attachment;
+                    HandRotator = pa.Rotation;
+                    HandBoneName = pa.BoneName;
+                }
             }
+
+
+
+
             if (ModItem != null && ModItem.IsIntoxicating)
             {
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
@@ -253,18 +275,18 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
-            Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneID, HandOffset, HandRotator, 0, Vector3.Zero, Rotator.Zero, PropModelName);
+            Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, MouthBoneName, MouthOffset, MouthRotator, PropModelName);
         }
         private void UpdatePosition()
         {
-            DistanceBetweenHandAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, Data.HandBoneID)).DistanceTo(NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, Data.MouthBoneID)));
+            DistanceBetweenHandAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, HandBoneID)).DistanceTo(NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)));
             if (DistanceBetweenHandAndFace <= MinDistanceBetweenHandAndFace)
             {
                 MinDistanceBetweenHandAndFace = DistanceBetweenHandAndFace;
             }
             if (SmokedItem.Exists())
             {
-                DistanceBetweenSmokedItemAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, Data.MouthBoneID)).DistanceTo(SmokedItem);
+                DistanceBetweenSmokedItemAndFace = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, MouthBoneID)).DistanceTo(SmokedItem);
                 if (DistanceBetweenSmokedItemAndFace <= MinDistanceBetweenSmokedItemAndFace)
                 {
                     MinDistanceBetweenSmokedItemAndFace = DistanceBetweenSmokedItemAndFace;

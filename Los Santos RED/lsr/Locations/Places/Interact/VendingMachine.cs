@@ -235,6 +235,18 @@ public class VendingMachine : InteractableLocation
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
         EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
         bool IsCompleted = false;
+
+
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        PropAttachment pa = item?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        if (pa != null)
+        {
+            HandOffset = pa.Attachment;
+            HandRotator = pa.Rotation;
+            HandBoneName = pa.BoneName;
+        }
         while (Player.CanPerformActivities && !IsCancelled)
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -244,10 +256,10 @@ public class VendingMachine : InteractableLocation
                 if (HasProp && modelName != "" && !hasAttachedProp)
                 {
                     SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
-                    GameFiber.Yield();
+                    GameFiber.Yield();                  
                     if (SellingProp.Exists())
                     {
-                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), item.ModelItem.AttachOffsetOverride, item.ModelItem.AttachRotationOverride);
+                        SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                     }
                     hasAttachedProp = true;
                 }

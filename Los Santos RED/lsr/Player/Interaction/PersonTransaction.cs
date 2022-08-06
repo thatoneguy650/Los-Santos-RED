@@ -747,13 +747,26 @@ public class PersonTransaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_b", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
+
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        if (pa != null)
+        {
+            HandOffset = pa.Attachment;
+            HandRotator = pa.Rotation;
+            HandBoneName = pa.BoneName;
+        }
+
+
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, HandBoneName), HandOffset, HandRotator);
             }
         }
         GameFiber.Sleep(500);
@@ -781,7 +794,7 @@ public class PersonTransaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
             }
         }
         GameFiber.Sleep(1000);
@@ -867,14 +880,23 @@ public class PersonTransaction : Interaction
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", "givetake1_a", 1.0f, -1.0f, 5000, 50, 0, false, false, false);
         }
         GameFiber.Sleep(500);
-
+        string HandBoneName = "BONETAG_R_PH_HAND";
+        Vector3 HandOffset = Vector3.Zero;
+        Rotator HandRotator = Rotator.Zero;
+        PropAttachment pa = modItem?.ModelItem?.Attachments?.FirstOrDefault(x => x.Name == "RightHand" && (x.Gender == "U" || x.Gender == Player.Gender));
+        if (pa != null)
+        {
+            HandOffset = pa.Attachment;
+            HandRotator = pa.Rotation;
+            HandBoneName = pa.BoneName;
+        }
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
             SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
+                SellingProp.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
             }
         }
         GameFiber.Sleep(500);
@@ -904,7 +926,7 @@ public class PersonTransaction : Interaction
         {
             if (SellingProp.Exists())
             {
-                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Ped.Pedestrian, 57005), modItem.ModelItem.AttachOffsetOverride, modItem.ModelItem.AttachRotationOverride);
+                SellingProp.AttachTo(Ped.Pedestrian, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, HandBoneName), HandOffset, HandRotator);
             }
         }
         GameFiber.Sleep(1000);

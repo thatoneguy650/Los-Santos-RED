@@ -5,7 +5,7 @@ namespace LosSantosRED.lsr.Player.Activity
 {
     public class SmokingData
     {
-        public SmokingData(string animBase, string animBaseDictionary, string animEnter, string animEnterDictionary, string animExit, string animExitDictionary, List<string> animIdle, string animIdleDictionary, int handBoneID, Vector3 handOffset, Rotator handRotator, int mouthBoneID, Vector3 mouthOffset, Rotator mouthRotator, string propModelName)
+        public SmokingData(string animBase, string animBaseDictionary, string animEnter, string animEnterDictionary, string animExit, string animExitDictionary, List<string> animIdle, string animIdleDictionary, string handBoneName, Vector3 handOffset, Rotator handRotator, string mouthBoneName, Vector3 mouthOffset, Rotator mouthRotator, string propModelName)
         {
             AnimBase = animBase;
             AnimBaseDictionary = animBaseDictionary;
@@ -15,10 +15,10 @@ namespace LosSantosRED.lsr.Player.Activity
             AnimExitDictionary = animExitDictionary;
             AnimIdle = animIdle;
             AnimIdleDictionary = animIdleDictionary;
-            HandBoneID = handBoneID;
+            HandBoneName = handBoneName;
             HandOffset = handOffset;
             HandRotator = handRotator;
-            MouthBoneID = mouthBoneID;
+            MouthBoneName = mouthBoneName;
             MouthOffset = mouthOffset;
             MouthRotator = mouthRotator;
             PropModelName = propModelName;
@@ -32,10 +32,10 @@ namespace LosSantosRED.lsr.Player.Activity
         public string AnimExitDictionary { get; set; }
         public List<string> AnimIdle { get; set; } = new List<string>();
         public string AnimIdleDictionary { get; set; }
-        public int HandBoneID { get; set; }
+        public string HandBoneName { get; set; }
         public Vector3 HandOffset { get; set; }
         public Rotator HandRotator { get; set; }
-        public int MouthBoneID { get; set; }
+        public string MouthBoneName { get; set; }
         public Vector3 MouthOffset { get; set; }
         public Rotator MouthRotator { get; set; }
         public string PropModelName { get; set; }
