@@ -162,7 +162,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 2);
+            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 1);
         }
         private void SendTaskAbortMessage()
         {

@@ -16,6 +16,7 @@ public class Investigate : ComplexTask
     private bool HasReachedReportedPosition;
     private bool isSetCode3Close;
     private bool isSetCode2;
+    private ISettingsProvideable Settings;
 
     private bool IsRespondingCode3 => Player.Investigation.InvestigationWantedLevel > 1;
     private enum Task
@@ -51,10 +52,11 @@ public class Investigate : ComplexTask
             }
         }
     }
-    public Investigate(IComplexTaskable cop, ITargetable player) : base(player, cop, 1000)
+    public Investigate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Investigate";
         SubTaskName = "";
+        Settings = settings;
     }
     public override void Start()
     {
@@ -235,7 +237,7 @@ public class Investigate : ComplexTask
 
                     if (isCode3)
                     {
-                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 75f && Player.CurrentLocation.IsOffroad)
+                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 150f && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
                         {
                             if (!isSetCode3Close)
                             {

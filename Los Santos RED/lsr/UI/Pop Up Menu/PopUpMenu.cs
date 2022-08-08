@@ -18,7 +18,7 @@ public class PopUpMenu
     private ISettingsProvideable Settings;
     private List<PositionMap> PositionMaps = new List<PositionMap>();
     private PopUpMenuMap SelectedMenuMap;
-    private uint GameTimeLastClicked;
+    private int GameTimeLastClicked;
     private PopUpMenuMap PrevSelectedMenuMap;
     private PositionMap ClosestPositionMap;
     private int ActionSoundID;
@@ -337,7 +337,7 @@ public class PopUpMenu
             {
                 if ((popUpMenuMap.Action != null || popUpMenuMap.ChildMenuID != ""))
                 {
-                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 100)//or is disbaled control just released.....
+                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
                         if (popUpMenuMap.ClosesMenu)
                         {
@@ -356,7 +356,7 @@ public class PopUpMenu
                             CurrentPage = 0;
                             TotalPages = 0;
                         }
-                        GameTimeLastClicked = Game.GameTime;
+                        GameTimeLastClicked = Environment.TickCount;
                     }
                 }
                 SelectedMenuMap = popUpMenuMap;

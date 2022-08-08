@@ -210,8 +210,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
-
     public void BecomeGangMember(Gang gang)
     {
         try
@@ -273,7 +271,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
     public void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation)
     {
         try
@@ -489,7 +486,27 @@ public class PedSwap : IPedSwap
                 }
             }
         }
-
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetDriversLicense))
+        {
+            Player.Licenses.DriversLicense = new DriversLicense();
+            Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+        }
+        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCCWLicense))
+        {
+            Player.Licenses.CCWLicense = new CCWLicense();
+            Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+        }
+        if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+        {
+            if (Settings.SettingsManager.PedSwapSettings.SetRandomNeeds)
+            {
+                Player.HumanState.SetRandom();
+            }
+            else
+            {
+                Player.HumanState.Reset();
+            }
+        }
     }
     private void HandlePreviousPed(bool deleteOld, Ped TargetPed)
     {

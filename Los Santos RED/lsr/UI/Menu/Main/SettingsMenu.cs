@@ -11,22 +11,29 @@ using System.Windows.Forms;
 public class SettingsMenu : Menu//needs lots of cleanup still
 {
     private MenuPool MenuPool;
+    private UIMenu ParentMenu;
+
     private UIMenuItem ReloadSettingsFromFile;
     private UIMenuItem SaveSettingsToFile;
     private UIMenuItem DefaultSettings;
     private UIMenuItem EasySettings;
     private UIMenuItem HardSettings;
-    private ISettingsProvideable SettingsProvider;
     private UIMenu SettingsUIMenu;
     private UIMenuItem MySettings;
+
+    private ISettingsProvideable SettingsProvider;
 
     public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable)
     {
         MenuPool = menuPool;
+        ParentMenu = parentMenu;
         SettingsProvider = settingsProvideable;
-        SettingsUIMenu = menuPool.AddSubMenu(parentMenu, "Settings");
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Change, Save, and Load Settings for the mod.";
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Art;
+    }
+    public void Setup()
+    {
+        SettingsUIMenu = MenuPool.AddSubMenu(ParentMenu, "Settings");
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Change, Save, and Load Settings for the mod.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Art;
         SettingsUIMenu.SetBannerType(EntryPoint.LSRedColor);
         CreateSettingsMenu();
     }

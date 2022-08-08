@@ -563,7 +563,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 2);
+            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
         }
         private void SendCompletedMessage()
         {

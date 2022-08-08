@@ -25,6 +25,9 @@ namespace LosSantosRED.lsr.Locations
         private bool CurrentStreetIsHighway = false;
         private bool HasThrownGotOffFreeway;
         private bool HasThrownGotOnFreeway;
+        private bool isCurrentlyOffroad;
+        private uint GameTimeGotOffRoad;
+        private uint GameTimeGotOnRoad;
 
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors)
         {
@@ -46,6 +49,9 @@ namespace LosSantosRED.lsr.Locations
         public Vector3 ClosestRoadNode => ClosestNode;
         public int ClosestRoadNodeID => ClosestNodeID;
         public string NodeString { get; set; }
+
+        public bool HasBeenOffRoad => isCurrentlyOffroad && GameTimeGotOffRoad != 0 && Game.GameTime - GameTimeGotOffRoad >= 15000;
+
         public bool HasBeenOnHighway => CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000;
         public bool HasBeenOffHighway => !CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway;
         public void Update(Entity entityToLocate)
@@ -73,6 +79,13 @@ namespace LosSantosRED.lsr.Locations
                 CurrentInterior = null;
                 GameTimeGotOffFreeway = 0;
                 GameTimeGotOnFreeway = 0;
+                GameTimeGotOffRoad = 0;
+                GameTimeGotOnRoad = 0;
+                if(isCurrentlyOffroad)
+                {
+                    GameTimeGotOffRoad = Game.GameTime;
+                    isCurrentlyOffroad = false;
+                }
                 if (CurrentStreetIsHighway)
                 {
                     GameTimeGotOffFreeway = Game.GameTime;
@@ -161,7 +174,35 @@ namespace LosSantosRED.lsr.Locations
             {
                 IsOffroad = true;
             }
+
+            if(isCurrentlyOffroad != IsOffroad)
+            {
+                if(IsOffroad)
+                {
+                    OnWentOffRoad();
+                }
+                else
+                {
+                    OnGotOnRoad();
+                }
+                isCurrentlyOffroad = IsOffroad;
+            }
+
+
         }
+
+        private void OnGotOnRoad()
+        {
+            GameTimeGotOffRoad = 0;
+            GameTimeGotOnRoad = Game.GameTime;
+        }
+
+        private void OnWentOffRoad()
+        {
+            GameTimeGotOffRoad = Game.GameTime;
+            GameTimeGotOnRoad = 0;
+        }
+
         private void GetStreets()
         {
             if (IsOffroad || IsInside)

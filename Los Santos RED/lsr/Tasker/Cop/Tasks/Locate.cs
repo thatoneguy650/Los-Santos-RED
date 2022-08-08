@@ -56,7 +56,13 @@ public class Locate : ComplexTask
 
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
+
+
             hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
+            if (!hasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SixthSensePercentageClose))
+            {
+                hasSixthSense = true;
+            }
 
             EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();
@@ -177,7 +183,7 @@ public class Locate : ComplexTask
                 
                 EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
-            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 175f && Player.CurrentLocation.IsOffroad)
+            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 150f && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
             {
                 if (!isSetCode3Close)
                 {

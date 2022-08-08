@@ -151,7 +151,7 @@ public class ModDataFileManager
     private void SetupEUP()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\EUP");
-        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford. Need some vehicles to match? The FullExpandedJurisdiction config includes the EUP uniforms along with vehicles for most lore friendly departments. If you have your own or just want to use vanilla, this is the config for you. " + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine + Environment.NewLine +
             "To use, copy all of the .xml files from the AlternateConfigs\\EUP folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
             "";
@@ -160,7 +160,7 @@ public class ModDataFileManager
     private void SetupFullExpandedJurisdiction()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
-        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. No gameconfig changes are needed, as these are mostly replace." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. No gameconfig changes are needed, as these are replace." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine + Environment.NewLine +
             "Expanded Department Liveries Installation: " + Environment.NewLine +
             "Stanier (police) - Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\x64e.rpf\\levels\\gta5\\vehicles.rpf'" + Environment.NewLine +
@@ -181,7 +181,12 @@ public class ModDataFileManager
     private void SetupLosSantos2008()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
-        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LS with Niko. Includes a 2008 flavored vehiclemodelsets.meta and popgroups.ymt";
+        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LS with Niko. Includes a custom vehiclemodelsets.meta and popgroups.ymt to give you a 2008 feel using existing GTA 5 vehicles. More to come!" + Environment.NewLine + Environment.NewLine +
+        "Los Santos 2008 Installation: " + Environment.NewLine +
+        "Copy popgroups.ymt from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\x64\\levels\\gta5\\'" + Environment.NewLine +
+        "Copy vehiclemodelsets.meta from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\common\\data\\ai\\'" + Environment.NewLine +
+        "To use, copy all of the .xml files from the AlternateConfigs\\LosSantos2008 folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
+        "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
 

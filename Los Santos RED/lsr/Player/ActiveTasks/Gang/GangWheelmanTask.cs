@@ -604,8 +604,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void GetRobberyInformation()
         {
             List<BasicLocation> PossibleSpots = new List<BasicLocation>();
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
-            PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
+            //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Banks);
+            //PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.BeautyShops);
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ConvenienceStores);
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Dispensaries);
             PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.GasStations);
@@ -726,7 +726,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 3);
+            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 1);
         }
         private void SendFailMessage()
         {
@@ -738,7 +738,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so badly?",
                         $"You just cost me a lot with this fuckup.",
                         };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 3);
+            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 1);
         }
         private void SendTaskAbortMessage()
         {

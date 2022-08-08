@@ -199,13 +199,17 @@ public class GangReputation
                     RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
                 }
                 Player.SetDenStatus(Gang, false);
-                if (sendText)
+
+                if (!IsEnemy)
                 {
-                    Player.CellPhone.AddGangText(Gang, false);
-                }
-                else
-                {
-                    Player.CellPhone.AddContact(Gang, false);
+                    if (sendText)
+                    {
+                        Player.CellPhone.AddGangText(Gang, false);
+                    }
+                    else
+                    {
+                        Player.CellPhone.AddContact(Gang, false);
+                    }
                 }
             }
             else if (GangRelationship == GangRespect.Friendly)
@@ -276,6 +280,11 @@ public class GangReputation
         if (GangRelationship == GangRespect.Member)
         {
             ending = "~g~Member~s~";
+            repLevel = "";
+        }
+        else if (IsEnemy)
+        {
+            ending = "~r~Enemy~s~";
             repLevel = "";
         }
         else if (GangRelationship == GangRespect.Friendly)

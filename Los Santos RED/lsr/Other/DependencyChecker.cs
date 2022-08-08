@@ -37,21 +37,43 @@ public class DependencyChecker
             }
         }
     }
-    public string Result()
+    public string GameMessage
     {
-        if(AssemblyFile == null)
+        get
         {
-            return $"~y~{AssemblyName}~s~ ~r~Not Found~s~";
+            if (AssemblyFile == null)
+            {
+                return $"~y~{AssemblyName}~s~ ~r~Not Found~s~";
+            }
+            else if (ComparisonResults < 0)
+            {
+                return $"~y~{AssemblyName}~s~ ~r~Invalid Version~s~. Inst: ~y~{AssemblyVersion}~s~ Req: ~y~{RequiredVersion}~s~";
+            }
+            else if (IsValid)
+            {
+                return $"~y~{AssemblyName}~s~ ~g~Installed Successfully~s~. Inst: ~y~{AssemblyVersion}~s~ Req: ~y~{RequiredVersion}~s~";
+            }
+            return "";
         }
-        else if (ComparisonResults < 0)
+    }
+    public string LogMessage
+    {
+        get
         {
-            return $"~y~{AssemblyName}~s~ ~r~Invalid Version~s~. Inst: ~y~{AssemblyVersion}~s~ Req: ~y~{RequiredVersion}~s~";
+            if (AssemblyFile == null)
+            {
+                return $"ERROR: {AssemblyName} Not Found";
+            }
+            else if (ComparisonResults < 0)
+            {
+                return $"ERROR: {AssemblyName} Invalid Version. Installed Version: {AssemblyVersion} Required Version: {RequiredVersion}";
+            }
+            else if (IsValid)
+            {
+                return $"{AssemblyName} Validated. Installed Version: {AssemblyVersion} Required Version: {RequiredVersion}";
+            }
+            return "";
         }
-        else if (IsValid)
-        {
-            return $"~y~{AssemblyName}~s~ ~g~Installed Successfully~s~. Inst: ~y~{AssemblyVersion}~s~ Req: ~y~{RequiredVersion}~s~";
-        }
-        return "";
     }
 }
 

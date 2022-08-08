@@ -10,9 +10,13 @@ using System.Linq;
 
 public class SaveMenu : Menu
 {
+    private MenuPool MenuPool;
+    private UIMenu ParentMenu;
+
     private UIMenu Saves;
     private UIMenuItem SaveGameItem;
     private UIMenuListScrollerItem<GameSave> GameSaveMenuList;
+
     private ISaveable PlayerSave;
     private IWeapons Weapons;
     private IGameSaves GameSaves;
@@ -26,6 +30,8 @@ public class SaveMenu : Menu
     private IModItems ModItems;
     public SaveMenu(MenuPool menuPool, UIMenu parentMenu, ISaveable playersave, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerinventory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
+        MenuPool = menuPool;
+        ParentMenu = parentMenu;
         PlayerSave = playersave;
         GameSaves = gameSaves;
         Weapons = weapons;
@@ -37,11 +43,14 @@ public class SaveMenu : Menu
         Time = time;
         ModItems = modItems;
         PlacesOfInterest = placesOfInterest;
-        Saves = menuPool.AddSubMenu(parentMenu, "Save/Load Player");
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
+
+    }
+    public void Setup()
+    {
+        Saves = MenuPool.AddSubMenu(ParentMenu, "Save/Load Player");
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
         Saves.SetBannerType(EntryPoint.LSRedColor);
-        Saves.OnItemSelect += OnActionItemSelect;
         CreateSavesMenu();
     }
     public override void Hide()
@@ -71,24 +80,27 @@ public class SaveMenu : Menu
     private void CreateSavesMenu()
     {
         Saves.Clear();
+
         GameSaveMenuList = new UIMenuListScrollerItem<GameSave>("Load Player", "Load the selected player", GameSaves.GameSaveList);
-        SaveGameItem = new UIMenuItem("Save Player", "Save current player");
+        GameSaveMenuList.Activated += (s, e) =>
+        {
+            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
+            Saves.Visible = false;
+            GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
+        };
         Saves.AddItem(GameSaveMenuList);
+
+
+        SaveGameItem = new UIMenuItem("Save Player", "Save current player");
+        SaveGameItem.Activated += (s, e) =>
+        {
+            GameSaves.Save(PlayerSave, Weapons, Time, PlacesOfInterest);
+            Saves.Visible = false;
+            GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
+        };
         Saves.AddItem(SaveGameItem);
 
         GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
     }
-    private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem == GameSaveMenuList)
-        {
-            GameSaves.Load(GameSaveMenuList.SelectedItem, Weapons, PedSwap, PlayerInvetory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
-        }
-        else if (selectedItem == SaveGameItem)
-        {
-            GameSaves.Save(PlayerSave, Weapons, Time, PlacesOfInterest);
-        }
-        Saves.Visible = false;
-        GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
-    }
+
 }

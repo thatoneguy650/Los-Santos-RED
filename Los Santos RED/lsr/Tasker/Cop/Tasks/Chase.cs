@@ -24,12 +24,14 @@ public class Chase : ComplexTask
     private bool NeedsUpdates;
     private bool prevIsChasingSlowly = false;
     private IEntityProvideable World;
-    public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, Cop cop) : base(player, myPed, 500)//was 500
+    private ISettingsProvideable Settings;
+    public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
         Name = "Chase";
         SubTaskName = "";
         World = world;
         Cop = cop;
+        Settings = settings;
     }
     private enum eVehicleMissionType
     {
@@ -577,7 +579,7 @@ public class Chase : ComplexTask
 
 
 
-            if (Ped.RecentlySeenPlayer)
+            if (Ped.RecentlySeenPlayer && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
             {
                 NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
             }

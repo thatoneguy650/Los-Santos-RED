@@ -7,33 +7,40 @@ using System.Linq;
 
 public class InventoryMenu : Menu
 {
+    private MenuPool MenuPool;
+    private UIMenu ParentMenu;
+
     private UIMenu inventoryMenu;
+    private List<UIMenu> CategoryMenus = new List<UIMenu>();
+
     private ILocationInteractable ActionablePlayer;
     private IActivityPerformable ActivityPerformablePlayer;
     private IModItems ModItems;
+
     private bool IsInside;
-    private MenuPool MenuPool;
-    private List<UIMenu> CategoryMenus = new List<UIMenu>();
+    public int SelectedPlateIndex { get; set; }
     public InventoryMenu(MenuPool menuPool, UIMenu parentMenu, ILocationInteractable player, IModItems modItems, bool isInside)
     {
+        MenuPool = menuPool;
+        ParentMenu = parentMenu;
         ActionablePlayer = player;
         ModItems = modItems;
         IsInside = isInside;
         MenuPool = menuPool;
-        inventoryMenu = menuPool.AddSubMenu(parentMenu,"Inventory");
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Access purchased items.";
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
+
+    }
+    public void Setup()
+    {
+        inventoryMenu = MenuPool.AddSubMenu(ParentMenu, "Inventory");
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Access purchased items.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
         inventoryMenu.SetBannerType(EntryPoint.LSRedColor);
         inventoryMenu.OnItemSelect += OnActionItemSelect;
-        //CreateInventoryMenu();
     }
-    public int SelectedPlateIndex { get; set; }
-
     public override void Hide()
     {
         inventoryMenu.Visible = false;
     }
-
     public override void Show()
     {
         Update();

@@ -14,7 +14,7 @@ public static class EntryPoint
     private static int LogLevel = 0;
     private static System.Reflection.Assembly LSRAssembly;
     private static System.Diagnostics.FileVersionInfo LSRInstalledVersionInfo;
-    private static string StartMessage;
+    private static string PreStartMessage;
     private static DependencyChecker RageNativeUIChecker;
     public static int PersistentPedsCreated { get; set; } = 0;
     public static int PersistentPedsNonPersistent { get; set; } = 0;
@@ -50,9 +50,8 @@ public static class EntryPoint
     private static void Startup()
     {
         GetVersionInfo();
-        StartMessage = $"~s~Los Santos ~r~RED ~s~v{LSRInstalledVersionInfo.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start";
         CheckDependencies();
-        NotificationID = Game.DisplayNotification($"{StartMessage}");
+        NotificationID = Game.DisplayNotification($"{PreStartMessage}");
     }
     private static void Loop()
     {
@@ -74,6 +73,8 @@ public static class EntryPoint
     {
         LSRAssembly = System.Reflection.Assembly.GetExecutingAssembly();
         LSRInstalledVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(LSRAssembly.Location);
+        PreStartMessage = $"~s~Los Santos ~r~RED ~s~v{LSRInstalledVersionInfo.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start";
+        WriteToConsole($"Has Started Successfully");
     }
     private static void CheckDependencies()
     {
@@ -81,15 +82,16 @@ public static class EntryPoint
         RageNativeUIChecker.Verify();
         if (!RageNativeUIChecker.IsValid)
         {
-            StartMessage = $"{StartMessage} ~n~~n~{RageNativeUIChecker.Result()}~s~";
+            PreStartMessage = $"{PreStartMessage} ~n~~n~{RageNativeUIChecker.GameMessage}~s~";
         }
+        WriteToConsole($"{RageNativeUIChecker.LogMessage}");
     }
     public static void WriteToConsole(string Message) => WriteToConsole(Message, 5);
     public static void WriteToConsole(string Message, int level)
     {
         if (level <= LogLevel)
         {
-            Game.Console.Print($"v{LSRInstalledVersionInfo.FileVersion} - {Message}");
+            Game.Console.Print($"Los Santos RED v{LSRInstalledVersionInfo.FileVersion} - {Message}");
         }
     }
     [ConsoleCommand]

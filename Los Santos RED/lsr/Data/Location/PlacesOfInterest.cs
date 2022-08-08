@@ -679,22 +679,22 @@ public class PlacesOfInterest : IPlacesOfInterest
         });
         PossibleLocations.BeautyShops.AddRange(new List<BeautyShop>()
         {
-            new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", ""),
-            new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", ""),
-            new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", ""),
-            new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", ""),
-            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", ""),
+            new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", "") { IsEnabled = false },
+            new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", "") { IsEnabled = false },
+            new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", "") { IsEnabled = false },
+            new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", "") { IsEnabled = false },
+            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "") { IsEnabled = false },
         });
         PossibleLocations.Banks.AddRange(new List<Bank>()
         {
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Fleeca Bank"),
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Fleeca Bank"),
-            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Maze Bank"),
-            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", ""),
-            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", ""),
-            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", ""),
-            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", ""),
-            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", ""),
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Fleeca Bank") { IsEnabled = false },
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Fleeca Bank") { IsEnabled = false },
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Maze Bank") { IsEnabled = false },
+            new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "") { IsEnabled = false },
+            new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "") { IsEnabled = false },
+            new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "") { IsEnabled = false },
+            new Bank(new Vector3(-2966.905f, 483.1484f, 15.6927f), 86.25156f,  "Fleeca Bank", "") { IsEnabled = false },
+            new Bank(new Vector3(1175.215f, 2702.15f, 38.17273f), 176.9885f, "Fleeca Bank", "") { IsEnabled = false },
         });
         PossibleLocations.ConvenienceStores.AddRange(new List<ConvenienceStore>()
         {
@@ -900,25 +900,25 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.BusStops.AddRange(new List<BusStop>()
         {
                 
-                new BusStop(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, "La Mesa Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(355.6272f, -1064.027f, 28.86697f), 270.2965f, "La Mesa Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
 
-                new BusStop(new Vector3(-107.1481f, -1687.019f, 28.4079f), 141.5815f, "Chamberlain Hills Stop 1","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-107.1481f, -1687.019f, 28.4079f), 141.5815f, "Chamberlain Hills Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
 
-                new BusStop(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, "Pillbox Hill Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-251.2524f, -882.9617f, 29.76333f), 249.6444f, "Pillbox Hill Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-271.6416f, -824.817f, 30.89726f), 340.778f, "Pillbox Hill Bus Stop 3","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-243.9823f, -712.2824f, 32.61737f), 160.4338f, "Pillbox Hill Bus Stop 4","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(117.3493f, -784.5579f, 31.25886f), 69.6745f, "Pillbox Hill Bus Stop 5","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(307.3152f, -766.6166f, 29.24787f), 155.4713f, "Pillbox Hill Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-251.2524f, -882.9617f, 29.76333f), 249.6444f, "Pillbox Hill Bus Stop 2","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-271.6416f, -824.817f, 30.89726f), 340.778f, "Pillbox Hill Bus Stop 3","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-243.9823f, -712.2824f, 32.61737f), 160.4338f, "Pillbox Hill Bus Stop 4","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(117.3493f, -784.5579f, 31.25886f), 69.6745f, "Pillbox Hill Bus Stop 5","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
 
 
-                new BusStop(new Vector3(-506.5057f, -667.5629f, 32.20013f), 269.3689f, "Little Seoul Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-692.9445f, -667.7023f, 29.95664f), 267.5733f, "Little Seoul Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-506.5057f, -667.5629f, 32.20013f), 269.3689f, "Little Seoul Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-692.9445f, -667.7023f, 29.95664f), 267.5733f, "Little Seoul Bus Stop 2","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
 
-                new BusStop(new Vector3(-1213.239f, -1216.875f, 6.736316f), 191.0029f, "Vespucci Beach Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-1168.73f, -1471.557f, 3.438046f), 215.5927f, "Vespucci Beach Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-1213.239f, -1216.875f, 6.736316f), 191.0029f, "Vespucci Beach Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-1168.73f, -1471.557f, 3.438046f), 215.5927f, "Vespucci Beach Bus Stop 2","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
 
-                new BusStop(new Vector3(-1421.381f, -87.43785f, 51.512f), 298.6868f, "Richman Bus Stop 1","") { OpenTime = 0, CloseTime = 24, },
-                new BusStop(new Vector3(-645.8302f, -139.4489f, 36.86523f), 31.0542f, "Rockford Hills Bus Stop 2","") { OpenTime = 0, CloseTime = 24, },
+                new BusStop(new Vector3(-1421.381f, -87.43785f, 51.512f), 298.6868f, "Richman Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
+                new BusStop(new Vector3(-645.8302f, -139.4489f, 36.86523f), 31.0542f, "Rockford Hills Bus Stop 2","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
         });
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);

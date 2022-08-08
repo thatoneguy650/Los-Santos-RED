@@ -20,8 +20,21 @@ public class WorldSettings : ISettingsDefaultable
     public bool CleanupVehicles { get; set; }
     [Description("Delete the ambient shopkeeper peds as they spawn to not interfere with mod spawned merchant peds.")]
     public bool ReplaceVanillaShopKeepers { get; set; }
+    [Description("If enabled all locations will be visible on the in game directoy (Messages or Player Info Menu). Disabled will show only legal locations.")]
 
 
+
+    public bool ShowAllLocationsOnDirectory { get; set; }
+
+
+    [Description("If enabled, the civilian ped population will be lessened at 4+ stars.")]
+    public bool LowerPedSpawnsAtHigherWantedLevels { get; set; }
+    [Description("Civilian ped density multiplier at 4 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 5 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 6 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier { get; set; }
     public WorldSettings()
     {
         SetDefault();
@@ -35,8 +48,12 @@ public class WorldSettings : ISettingsDefaultable
         RandomVehiclePlatesPercent = 10f;
         AllowRandomVanityPlates = true;
         RandomVehicleVanityPlatesPercent = 2f;
+        ShowAllLocationsOnDirectory = false;
 
-
+        LowerPedSpawnsAtHigherWantedLevels = true;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier = 0.5f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;
 #if DEBUG
         RandomVehiclePlatesPercent = 15f;
         RandomVehicleVanityPlatesPercent = 10f;

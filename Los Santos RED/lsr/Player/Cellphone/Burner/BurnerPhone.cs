@@ -551,6 +551,10 @@ public class BurnerPhone
                 {
                     contact.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
                 }
+                
+
+
+
                 IsDisplayingCall = true;
                 Call(contact);
                 DisplayCallUI(contact.Name, "CELL_211", contact.IconName.ToUpper());
@@ -566,7 +570,7 @@ public class BurnerPhone
         }
         if (CurrentRow < 0)
         {
-            CurrentRow = 0;
+            CurrentRow = TotalContacts - 1;
         }
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {

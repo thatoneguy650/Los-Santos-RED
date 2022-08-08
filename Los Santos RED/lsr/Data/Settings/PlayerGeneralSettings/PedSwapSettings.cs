@@ -27,6 +27,12 @@ public class PedSwapSettings : ISettingsDefaultable
     public int MaxRandomItemsToGet { get; set; }
     [Description("Max amount to get for each random item when taking over a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsAmount { get; set; }
+    [Description("Percentage of time you will get a valid drivers license when taking over a random ped. 0 is never 100 is always.")]
+    public float PercentageToGetDriversLicense { get; set; }
+    [Description("Percentage of time you will get a valid ccw license when taking over a random ped. 0 is never 100 is always.")]
+    public float PercentageToGetCCWLicense { get; set; }
+    [Description("Enable randomly setting needs values after takeover. If diabled you will start with full needs. Requires PlayerSettings.NeedsSettings.ApplyNeeds")]
+    public bool SetRandomNeeds { get; set; }
 
     public PedSwapSettings()
     {
@@ -50,5 +56,9 @@ public class PedSwapSettings : ISettingsDefaultable
         PercentageToGetRandomItems = 80;
         MaxRandomItemsToGet = 5;
         MaxRandomItemsAmount = 7;
+        PercentageToGetRandomItems = 80.0f;
+        PercentageToGetDriversLicense = 90.0f;
+        PercentageToGetCCWLicense = 10.0f;
+        SetRandomNeeds = true;
     }
 }

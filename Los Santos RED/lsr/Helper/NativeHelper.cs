@@ -317,18 +317,20 @@ namespace LosSantosRED.lsr.Helper
                 {
                     myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
-                try
-                {
-                    NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
-                    if(structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
+
+                    try
                     {
-                        myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
+                        NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
+                        if (structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
+                        {
+                            myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
+                        }
                     }
-                }
-                catch (Exception e)
-                {
-                    EntryPoint.WriteToConsole($"GetPedVariation GET_PED_HEAD_BLEND_DATA Error: {e.Message} {e.StackTrace}", 5);
-                }
+                    catch (Exception e)//started throwing an error after a gta update
+                    {
+                        //EntryPoint.WriteToConsole($"GetPedVariation GET_PED_HEAD_BLEND_DATA Error: {e.Message} {e.StackTrace}", 5);
+                    }
+                
                 return myPedVariation;
             }
             catch (Exception e)

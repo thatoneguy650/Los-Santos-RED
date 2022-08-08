@@ -116,6 +116,7 @@ namespace LosSantosRED.lsr
             Weather.Dispose();
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
+            EntryPoint.WriteToConsole($"Has Been Deactivated");
         }
         private void StartModLogic()
         {
@@ -166,9 +167,13 @@ namespace LosSantosRED.lsr
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
+
                 new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 2),//1000
                 new ModTask(2000, "Player.GangRelationshipsUpdate", Player.GangRelationships.Update, 3),//might become a priority...
                 new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 4),//might become a priority...
+
+                new ModTask(1000, "World.Update", World.Update, 5),
+
             }));
             TaskGroups.Add(new ModTaskGroup("Group8", new List<ModTask>()
             {
@@ -193,7 +198,7 @@ namespace LosSantosRED.lsr
                     }
                     catch (Exception e)
                     {
-                        EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                        EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                         DisplayCrashMessage();
                         Dispose();
                     }
@@ -215,7 +220,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     DisplayCrashMessage();
                     Dispose();
                 }
@@ -234,7 +239,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     DisplayCrashMessage();
                     Dispose();
                 }
@@ -255,7 +260,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     DisplayCrashMessage();
                     Dispose();
                 }
@@ -272,7 +277,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     DisplayCrashMessage();
                     Dispose();
                 }
@@ -291,7 +296,7 @@ namespace LosSantosRED.lsr
                 }
                 catch (Exception e)
                 {
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     DisplayCrashMessage();
                     Dispose();
                 }
@@ -312,7 +317,7 @@ namespace LosSantosRED.lsr
                 catch (Exception e)
                 {
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~has crashed and needs to be restarted");
-                    EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                    EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
                     Dispose();
                 }
             }, "Run Debug Logic");
@@ -339,8 +344,10 @@ namespace LosSantosRED.lsr
                 $"~n~Press {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} " +
                     $"or {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)} " +
                     $"to open the ~r~Action Wheel~s~");
-                
-                
+
+            EntryPoint.WriteToConsole($"Has Loaded Successfully");
+
+
         }
     }
 }

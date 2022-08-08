@@ -320,7 +320,10 @@ public class GangRelationships
 
                 if(CurrentGang.EnemyGangs?.Any(x=> x == rg.Gang?.ID) == true)
                 {
+                    rg.Reset(false);
                     rg.IsEnemy = true;
+                    rg.SetReputation(rg.RepMinimum, false);
+                    
                 }
                 else
                 {

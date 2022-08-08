@@ -186,8 +186,13 @@ public class PoliceSettings : ISettingsDefaultable
     public float SixthSensePercentage { get; set; }
     [Description("Percentage of cops in a helicopter that have an idea of your location during search mode.")]
     public float SixthSenseHelicopterPercentage { get; set; }
+
+    [Description("Percentage of cops that have an idea of your location during search mode and are already close to you when it starts.")]
+    public float SixthSensePercentageClose { get; set; }
+
     [Description("Percentage of search mode that cops will be able to use their sixth sense. A value of 0.7 means they would be able to use their sixth sense powers for the first 30% of search mode (1.0 is none, 0.0 is the entire search mode).")]
     public float SixthSenseSearchModeLimitPercentage { get; set; }
+    public bool AllowDriveBySight { get; set; }
 
     public PoliceSettings()
     {
@@ -221,6 +226,10 @@ public class PoliceSettings : ISettingsDefaultable
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
         AllowPowerAssist = true;
+
+
+
+
         ManageLoadout = true;
         BustDistance = 4f;//5f;
         OverrideHealth = true;
@@ -326,8 +335,12 @@ public class PoliceSettings : ISettingsDefaultable
         TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 5000;
 
         SixthSensePercentage = 70f;
-        SixthSenseHelicopterPercentage = 70f;
+        SixthSenseHelicopterPercentage = 90f;
         SixthSenseSearchModeLimitPercentage = 0.7f;
+
+        AllowDriveBySight = false;
+        AllowPowerAssist = false;
+
 
 #if DEBUG
         ShowSpawnedBlips = true;

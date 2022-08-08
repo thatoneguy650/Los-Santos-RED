@@ -43,15 +43,26 @@ public class ModItems : IModItems
 
     public void Setup(PropItems propItems)
     {
-        foreach(ModItem mi in ModItemsList)
+        foreach (ModItem mi in ModItemsList)
         {
-            if(mi.ModelItemID != "")
+            if (mi.ItemType == ItemType.Vehicles)
             {
-                mi.ModelItem = propItems.Get(mi.ModelItemID);
+                mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
             }
-            if(mi.PackageItemID != "")
+            else if (mi.ItemType == ItemType.Weapons)
             {
-                mi.PackageItem = propItems.Get(mi.PackageItemID);
+                mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
+            }
+            else
+            {
+                if (mi.ModelItemID != "")
+                {
+                    mi.ModelItem = propItems.Get(mi.ModelItemID);
+                }
+                if (mi.PackageItemID != "")
+                {
+                    mi.PackageItem = propItems.Get(mi.PackageItemID);
+                }
             }
         }
     }
@@ -273,7 +284,7 @@ public class ModItems : IModItems
                 ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
             new ModItem("Tuna Sandwich","Haven't got enough heavy metals in you at your job? Try tuna!",eConsumableType.Eat, ItemType.Food) {
                 ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
-            new ModItem("Taco",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, ItemSubType = ItemSubType.Entree, ModelItemID = "prop_taco_01" },
+            new ModItem("Taco",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree, ModelItemID = "prop_taco_01" },
             new ModItem("Strawberry Rails Cereal","The breakfast food you snort!",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 50, HungerChangeAmount = 30.0f, ItemSubType = ItemSubType.Cereal} ,
             new ModItem("Crackles O' Dawn Cereal","Smile at the crack!",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 60, HungerChangeAmount = 40.0f, ThirstChangeAmount = -5.0f, ItemSubType = ItemSubType.Cereal} ,
             new ModItem("White Bread","Extra white, with minimal taste.",eConsumableType.Eat, ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -5.0f, AmountPerPackage = 25, ItemSubType = ItemSubType.Bread} ,

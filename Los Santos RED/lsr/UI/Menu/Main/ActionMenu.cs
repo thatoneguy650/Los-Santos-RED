@@ -8,13 +8,14 @@ using System.Linq;
 
 public class ActionMenu : Menu
 {
+    private MenuPool MenuPool;
+    private UIMenu ParentMenu;
+
     private UIMenu Actions;
     private UIMenuItem CallPolice;
     private UIMenuListScrollerItem<LSR.Vehicles.LicensePlate> ChangePlate;
     private UIMenuListScrollerItem<string> CurrentActivityMenu;
     private UIMenuItem EnterAsPassenger;
-    private List<GestureData> GestureLookups;
-    private List<DanceData> DanceLookups;
     private UIMenuListScrollerItem<GestureData> GestureMenu;
     private UIMenuListScrollerItem<DanceData> DanceMenu;
     private UIMenuItem HotwireVehicle;
@@ -22,26 +23,33 @@ public class ActionMenu : Menu
     private UIMenuItem ToggleStealthMode;
     private UIMenuItem IntimidateDriver;
     private UIMenuListScrollerItem<string> LayDown;
-    private MenuPool MenuPool;
-    private IActionable Player;
     private UIMenuItem RemovePlate;
-    private ISettingsProvideable Settings;
     private UIMenuItem ShuffleSeat;
     private UIMenuListScrollerItem<string> SitDown;
     private UIMenuItem Suicide;
     private UIMenuNumericScrollerItem<int> ToggleBodyArmor;
+
+    private List<GestureData> GestureLookups;
+    private List<DanceData> DanceLookups;
+
+    private IActionable Player;
+    private ISettingsProvideable Settings;
     private IDances Dances;
     private IGestures Gestures;
     public ActionMenu(MenuPool menuPool, UIMenu parentMenu, IActionable player, ISettingsProvideable settings, IDances dances, IGestures gestures)
     {
+        MenuPool = menuPool;
+        ParentMenu = parentMenu;
         Player = player;
         Settings = settings;
-        MenuPool = menuPool;
         Dances = dances;
         Gestures = gestures;
-        Actions = MenuPool.AddSubMenu(parentMenu, "Actions");
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Start, Pause, or Stop actions with your character.";
-        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Tick;
+    }
+    public void Setup()
+    {
+        Actions = MenuPool.AddSubMenu(ParentMenu, "Actions");
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Start, Pause, or Stop actions with your character.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Tick;
         Actions.SetBannerType(EntryPoint.LSRedColor);
         CreateActionsMenu();
     }

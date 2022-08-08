@@ -40,7 +40,7 @@ public class UI : IMenuProvideable
     private string lastZoneDisplay;
     private MainMenu MainMenu;
     private List<Menu> MenuList;
-    private MenuPool menuPool;
+    private MenuPool MenuPool;
     private string overrideTimeDisplay = "";
     private Fader PlayerFader;
     private bool playerIsInVehicle = false;
@@ -88,7 +88,7 @@ public class UI : IMenuProvideable
     private bool IsVanillaCashHUDVisible;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
-    public bool IsDisplayingMenu => menuPool.IsAnyMenuOpen();
+    public bool IsDisplayingMenu => MenuPool.IsAnyMenuOpen();
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus)
     {
         DisplayablePlayer = displayablePlayer;
@@ -99,19 +99,19 @@ public class UI : IMenuProvideable
         Tasker = tasker;
         World = world;
         BigMessage = new BigMessageThread(true);
-        menuPool = new MenuPool();
-        DeathMenu = new DeathMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
-        BustedMenu = new BustedMenu(menuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(menuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures);
-        DebugMenu = new DebugMenu(menuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
+        MenuPool = new MenuPool();
+        DeathMenu = new DeathMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
+        BustedMenu = new BustedMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
+        MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures);
+        DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
         ZoneFader = new Fader(Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
         //WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
-        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons);
-        MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World);
+        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings);
+        MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
@@ -120,6 +120,7 @@ public class UI : IMenuProvideable
     public void Setup()
     {
         IsDisposed = false;
+        MainMenu.Setup();
         PlayerInfoMenu.Setup();
         MessagesMenu.Setup();
         AboutMenu.Setup();
@@ -127,7 +128,7 @@ public class UI : IMenuProvideable
     }
     public void Tick1()
     {
-        if (!menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
+        if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
         {
             DrawUIText();
             if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.Intoxication.CurrentIntensityPercent > 0.0f)
@@ -286,7 +287,7 @@ public class UI : IMenuProvideable
         try
         {
 
-            if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !menuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
+            if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
             {
                 if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
                 {
@@ -1023,7 +1024,7 @@ public class UI : IMenuProvideable
     }
     private void MenuUpdate()
     {
-        menuPool.ProcessMenus();
+        MenuPool.ProcessMenus();
         PlayerInfoMenu.Update();
         MessagesMenu.Update();
         AboutMenu.Update();

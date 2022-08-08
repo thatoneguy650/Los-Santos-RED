@@ -29,6 +29,9 @@ namespace Mod
         private IStreets Streets;
         private IPlacesOfInterest PlacesOfInterest;
         private List<Blip> CreatedBlips = new List<Blip>();
+        private float CurrentSpawnMultiplier;
+        private bool isSettingDensity;
+
         public World(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IPlateTypes plateTypes, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IAudioPlayable audio, IGangs gangs, IGangTerritories gangTerritories, IStreets streets)
         {
             PlacesOfInterest = placesOfInterest;
@@ -60,6 +63,13 @@ namespace Mod
             Places.Setup();
             Vehicles.Setup();
             AddBlipsToMap();
+        }
+        public void Update()
+        {
+            if(Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
+            {
+                SetDensity();
+            }
         }
         public void Dispose()
         {
@@ -116,5 +126,46 @@ namespace Mod
                 }
             }
         }
+
+        public void SetDensity()
+        {
+            CurrentSpawnMultiplier = 1.0f;
+            if(TotalWantedLevel >= 6)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier;
+            }
+            else if (TotalWantedLevel == 5)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier;
+            }
+            else if(TotalWantedLevel == 4)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier;
+            }
+
+
+            if(CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
+            {
+                isSettingDensity = true;
+                EntryPoint.WriteToConsole($"World - START Setting Population Density {CurrentSpawnMultiplier}");
+                GameFiber.StartNew(delegate
+                {
+                    while (CurrentSpawnMultiplier != 1.0f)
+                    {
+                        NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                        NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                        NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                        NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                        NativeFunction.Natives.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                        GameFiber.Yield();
+                    }
+                    isSettingDensity = false;
+                    EntryPoint.WriteToConsole($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
+                }, $"Density Runner");
+            }
+
+        }
+
+
     }
 }

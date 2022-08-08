@@ -12,6 +12,7 @@ public class SurrenderActivity : DynamicActivity
     private IEntityProvideable World;
     private uint GameTimeLastYelled;
     private uint GameTimeLastToggledSurrender;
+    private bool IsToggled;
 
     public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world)
     {
@@ -52,68 +53,75 @@ public class SurrenderActivity : DynamicActivity
     }
     public void LowerHands()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
-        HandsAreUp = false; // You put your hands down
-        IsWavingHands = false;
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.IsPerformingActivity = false;
+        if (!IsToggled)
+        {
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
+            HandsAreUp = false; // You put your hands down
+            IsWavingHands = false;
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            Player.IsPerformingActivity = false;
+        }
     }
     public void RaiseHands()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
-        if (Player.Character.IsWearingHelmet)
+        if (!IsToggled)
         {
-            Player.Character.RemoveHelmet(true);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
+            if (Player.Character.IsWearingHelmet)
+            {
+                Player.Character.RemoveHelmet(true);
+            }
+            if (HandsAreUp)
+            {
+                return;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+            HandsAreUp = true;
+            if (Player.IsInVehicle)
+            {
+                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
+            }
+            else
+            {
+                AnimationDictionary.RequestAnimationDictionay("ped");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+            }
         }
-        if (HandsAreUp)
-        {
-            return;
-        }
-        Player.WeaponEquipment.SetUnarmed();
-        HandsAreUp = true;
-        if(Player.IsInVehicle)
-        {
-            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
-        }
-        else
-        {
-            AnimationDictionary.RequestAnimationDictionay("ped");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        }
-
     }
     public void WaveHands()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
-        if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
+        if (!IsToggled)
         {
-            return;
-        }
-        Player.WeaponEquipment.SetUnarmed();
-        IsWavingHands = true;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
+            if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
+            {
+                return;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+            IsWavingHands = true;
 
-        string Animation;
-        string DictionaryName;
-        if(Player.IsMale)
-        {
-            DictionaryName = "anim@amb@waving@male";
-        }
-        else
-        {
-            DictionaryName = "anim@amb@waving@female";
-        }
-        //if (RandomItems.RandomPercent(50))
-        //{
-        //    Animation = "ground_wave";
-        //}
-        //else
-        //{
+            string Animation;
+            string DictionaryName;
+            if (Player.IsMale)
+            {
+                DictionaryName = "anim@amb@waving@male";
+            }
+            else
+            {
+                DictionaryName = "anim@amb@waving@female";
+            }
+            //if (RandomItems.RandomPercent(50))
+            //{
+            //    Animation = "ground_wave";
+            //}
+            //else
+            //{
             Animation = "air_wave";
-        //}
-        AnimationDictionary.RequestAnimationDictionay(DictionaryName);
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, 49, 0, false, false, false);
-
+            //}
+            AnimationDictionary.RequestAnimationDictionay(DictionaryName);
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, 49, 0, false, false, false);
+        }
 
     }
     public void SetArrestedAnimation(bool StayStanding)
@@ -250,30 +258,39 @@ public class SurrenderActivity : DynamicActivity
 
     public void ToggleSurrender()
     {
-        if (Game.GameTime - GameTimeLastToggledSurrender >= 1000)
+        
+        if (Game.GameTime - GameTimeLastToggledSurrender >= 500)
         {
+            EntryPoint.WriteToConsole($"Surrender Toggle START {IsToggled}");
             if (HandsAreUp)
             {
                 if (!Player.IsBusted)
                 {
+                    IsToggled = false;
                     LowerHands();
+                    
                 }
             }
             else if (IsWavingHands)
             {
+                IsToggled = false;
                 LowerHands();
+                
             }
             else
             {
                 if (CanSurrender)
                 {
                     RaiseHands();
+                    IsToggled = true;
                 }
                 else if (CanWaveHands)
                 {
                     WaveHands();
+                    IsToggled = true;
                 }
             }
+            EntryPoint.WriteToConsole($"Surrender Toggle END {IsToggled}");
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
