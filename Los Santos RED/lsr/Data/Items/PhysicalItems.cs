@@ -6,75 +6,60 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-public class PropItems : IPropItems
+public class PhysicalItems : IPropItems
 {
-    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PropItems.xml";
-    private List<PhysicalItem> PhysicalItems;
+    private readonly string ConfigFileName = "Plugins\\LosSantosRED\\PhysicalItems.xml";
+    private List<PhysicalItem> PhysicalItemsList;
 
-    public PropItems()
+    public PhysicalItems()
     {
 
     }
 
-    public List<PhysicalItem> Items => PhysicalItems;
+    public List<PhysicalItem> Items => PhysicalItemsList;
     public PhysicalItem Get(string ID)
     {
-        return PhysicalItems.FirstOrDefault(x => x.ID == ID);
+        return PhysicalItemsList.FirstOrDefault(x => x.ID == ID);
     }
     public PhysicalItem GetRandomItem()
     {
-        return PhysicalItems.Where(x => x.Type != ePhysicalItemType.Vehicle && x.Type != ePhysicalItemType.Weapon && x.Type != ePhysicalItemType.Ped).PickRandom();
+        return PhysicalItemsList.Where(x => x.Type != ePhysicalItemType.Vehicle && x.Type != ePhysicalItemType.Weapon && x.Type != ePhysicalItemType.Ped).PickRandom();
     }
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
-        FileInfo ConfigFile = LSRDirectory.GetFiles("PropItems*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
+        FileInfo ConfigFile = LSRDirectory.GetFiles("PhysicalItems*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)
         {
-            EntryPoint.WriteToConsole($"Loaded Prop Items config: {ConfigFile.FullName}", 0);
-            PhysicalItems = Serialization.DeserializeParams<PhysicalItem>(ConfigFile.FullName);
+            EntryPoint.WriteToConsole($"Loaded Physical Items config: {ConfigFile.FullName}", 0);
+            PhysicalItemsList = Serialization.DeserializeParams<PhysicalItem>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
-            EntryPoint.WriteToConsole($"Loaded Prop Items config  {ConfigFileName}", 0);
-            PhysicalItems = Serialization.DeserializeParams<PhysicalItem>(ConfigFileName);
+            EntryPoint.WriteToConsole($"Loaded Physical Items config  {ConfigFileName}", 0);
+            PhysicalItemsList = Serialization.DeserializeParams<PhysicalItem>(ConfigFileName);
         }
         else
         {
-            EntryPoint.WriteToConsole($"No Prop Items config found, creating default", 0);
+            EntryPoint.WriteToConsole($"No Physical Items config found, creating default", 0);
             DefaultConfig();
         }
     }
     private void DefaultConfig()
     {
-        PhysicalItems = new List<PhysicalItem> { };
+        PhysicalItemsList = new List<PhysicalItem> { };
         DefaultConfig_Drinks();
         DefaultConfig_Food();
         DefaultConfig_Drugs();
         DefaultConfig_Tools();
         DefaultConfig_Vehicles();
         DefaultConfig_Weapons();
-
-//#if DEBUG
-//        foreach (PhysicalItem pi in PhysicalItems)
-//        {
-//            if (pi.Attachments != null)
-//            {
-//                foreach (PropAttachment pa in pi.Attachments)
-//                {
-//                    pa.Attachment = new Vector3();
-//                    pa.Rotation = new Rotator();
-//                }
-//            }
-//        }
-//#endif
-
-        Serialization.SerializeParams(PhysicalItems, ConfigFileName);
+        Serialization.SerializeParams(PhysicalItemsList, ConfigFileName);
     }
 
     private void DefaultConfig_Drinks()
     {
-        PhysicalItems.AddRange(new List<PhysicalItem> {
+        PhysicalItemsList.AddRange(new List<PhysicalItem> {
             //Drinks
             //Bottles
             new PhysicalItem("ba_prop_club_water_bottle", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, -0.05f), new Rotator(0.0f, 0.0f, 0.0f)) }),
@@ -119,7 +104,7 @@ public class PropItems : IPropItems
     }
     private void DefaultConfig_Drugs()
     {
-        PhysicalItems.AddRange(new List<PhysicalItem>
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
             //Cigarettes/Cigars
             new PhysicalItem("ng_proc_cigarette01a", new List<PropAttachment>() {
@@ -182,7 +167,7 @@ public class PropItems : IPropItems
     private void DefaultConfig_Food()
     {
         //all of this is no longer attached right for some reason....
-        PhysicalItems.AddRange(new List<PhysicalItem>
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
             //Generic Food
             new PhysicalItem("prop_cs_hotdog_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(178.0f, 28.0f, 0.0f)) }),
@@ -261,7 +246,7 @@ public class PropItems : IPropItems
     }
     private void DefaultConfig_Tools()
     {
-        PhysicalItems.AddRange(new List<PhysicalItem>
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
             //Generic Tools
             new PhysicalItem("prop_tool_screwdvr01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
@@ -281,7 +266,7 @@ public class PropItems : IPropItems
     }
     private void DefaultConfig_Weapons()
     {
-        PhysicalItems.AddRange(new List<PhysicalItem>
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
             new PhysicalItem("weapon_bat",0x958a4a8f,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_crowbar",0x84bd7bfd,ePhysicalItemType.Weapon),
@@ -355,7 +340,7 @@ public class PropItems : IPropItems
     }
     private void DefaultConfig_Vehicles()
     {
-        PhysicalItems.AddRange(new List<PhysicalItem>
+        PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
             new PhysicalItem("alpha",ePhysicalItemType.Vehicle),
             new PhysicalItem("btype",ePhysicalItemType.Vehicle),

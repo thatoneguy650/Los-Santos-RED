@@ -36,7 +36,7 @@ public class ModDataFileManager
     public Dances DanceList;
     public Gestures GestureList;
     public Speeches SpeechList;
-    private PropItems PropItems;
+    private PhysicalItems PhysicalItems;
 
     public ModDataFileManager()
     {
@@ -49,13 +49,13 @@ public class ModDataFileManager
         Settings = new Settings();
         Settings.ReadConfig();
 
-        PropItems = new PropItems();
-        PropItems.ReadConfig();
+        PhysicalItems = new PhysicalItems();
+        PhysicalItems.ReadConfig();
 
         GameFiber.Yield();
         ModItems = new ModItems();
         ModItems.ReadConfig();
-        ModItems.Setup(PropItems);
+        ModItems.Setup(PhysicalItems);
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();

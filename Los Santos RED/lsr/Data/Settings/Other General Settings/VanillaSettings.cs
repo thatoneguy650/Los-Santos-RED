@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 public class VanillaSettings : ISettingsDefaultable
 {
+
+
     public bool TerminateRespawn { get; set; }
     public bool TerminateDispatch { get; set; }
     public bool TerminateHealthRecharge { get; set; }
     public bool TerminateWantedMusic { get; set; }
     public bool TerminateScanner { get; set; }
     public bool TerminateScenarioCops { get; set; }
-    public bool TerminateScenarioGangs { get; set; }
+    //public bool TerminateScenarioGangs { get; set; }
     public bool SuppressVanillaGangPeds { get; set; }
     public bool TerminateScenarioPeds { get; set; }
     public bool TerminateRandomEvents { get; set; }
+    public bool BlockGangScenarios { get; set; }
     public VanillaSettings()
     {
 
@@ -29,10 +32,11 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = true;
-        TerminateScenarioGangs = true;
+        //TerminateScenarioGangs = true;
         SuppressVanillaGangPeds = false;
         TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
         TerminateRandomEvents = false;
+        BlockGangScenarios = true;
     }
 
 }

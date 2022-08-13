@@ -34,7 +34,7 @@ public class HungerNeed : HumanNeed
     }
     public override void Update()
     {
-        if (NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplyHunger)
+        if (NeedsValueUpdate && Settings.SettingsManager.NeedsSettings.ApplyHunger)
         {
             UpdateRealTimeScalar();
             if (ShouldChange)

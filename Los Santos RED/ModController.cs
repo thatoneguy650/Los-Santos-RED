@@ -71,12 +71,13 @@ namespace LosSantosRED.lsr
             Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList, ModDataFileManager.ShopMenus);
+            UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList, ModDataFileManager.ShopMenus, Player);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, ModDataFileManager.Settings, UI, PedSwap);
             GameFiber.Yield();
-            VanillaManager = new VanillaManager(ModDataFileManager.Settings);
+            VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
+            VanillaManager.Setup();
             GameFiber.Yield();
             Weather = new Weather(WavAudioPlayer, ModDataFileManager.Settings, Time, Player);
             Weather.Setup();
@@ -116,7 +117,7 @@ namespace LosSantosRED.lsr
             Weather.Dispose();
             Debug.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
-            EntryPoint.WriteToConsole($"Has Been Deactivated");
+            EntryPoint.WriteToConsole($"Has Been Deactivated",0);
         }
         private void StartModLogic()
         {
@@ -345,7 +346,7 @@ namespace LosSantosRED.lsr
                     $"or {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)} " +
                     $"to open the ~r~Action Wheel~s~");
 
-            EntryPoint.WriteToConsole($"Has Loaded Successfully");
+            EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
 
 
         }

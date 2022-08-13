@@ -74,7 +74,7 @@ namespace LosSantosRED.lsr.Interface
         void ForceErraticDriver();
         void ToggleBodyArmor(int Type);
         void SetBodyArmor(int value);
-        void StartLayingDown(bool v);
+        void StartSleeping(bool v);
         void StartHotwiring();
         void ToggleRightIndicator();
         void ToggleLeftIndicator();

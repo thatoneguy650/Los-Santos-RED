@@ -41,7 +41,7 @@ public class ModItems : IModItems
         }
     }
 
-    public void Setup(PropItems propItems)
+    public void Setup(PhysicalItems propItems)
     {
         foreach (ModItem mi in ModItemsList)
         {

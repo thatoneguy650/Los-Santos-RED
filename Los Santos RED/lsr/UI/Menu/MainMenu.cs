@@ -31,9 +31,10 @@ public class MainMenu : Menu
     private ITaskerable Tasker;
     private ISettingsProvideable Settings;
     private ILocationInteractable Player;
+    private IActivityPerformable ActivityPerformable;
 
     public MainMenu(MenuPool menuPool, IActionable actionablePlayer, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, 
-        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures)
+        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures, IActivityPerformable activityPerformable)
     {
         MenuPool = menuPool;
         ActionablePlayer = actionablePlayer;
@@ -56,7 +57,7 @@ public class MainMenu : Menu
         Tasker = tasker;
         Gangs = gangs;
         UI = ui;
-
+        ActivityPerformable = activityPerformable;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings);
         SaveMenu = new SaveMenu(MenuPool, Main, SaveablePlayer, GameSaves, Weapons, PedSwap, PlayerInventory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);

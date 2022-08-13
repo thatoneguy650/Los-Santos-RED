@@ -14,7 +14,6 @@ public class InventoryMenu : Menu
     private List<UIMenu> CategoryMenus = new List<UIMenu>();
 
     private ILocationInteractable ActionablePlayer;
-    private IActivityPerformable ActivityPerformablePlayer;
     private IModItems ModItems;
 
     private bool IsInside;
@@ -27,7 +26,6 @@ public class InventoryMenu : Menu
         ModItems = modItems;
         IsInside = isInside;
         MenuPool = menuPool;
-
     }
     public void Setup()
     {
@@ -123,12 +121,12 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        ActivityPerformablePlayer.StartConsumingActivity(selectedModItem, false);
+                        ActionablePlayer.StartConsumingActivity(selectedModItem, false);
 
                     }
                     else
                     {
-                        ActivityPerformablePlayer.StartConsumingActivity(selectedModItem, true);
+                        ActionablePlayer.StartConsumingActivity(selectedModItem, true);
                     }
                     InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
                     if (ii != null)

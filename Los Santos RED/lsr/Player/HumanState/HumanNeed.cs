@@ -13,7 +13,8 @@ public abstract class HumanNeed
     private float MaxValue;
     private float MinValue;
     private uint GameTimeLastUpdated;
-    private uint GameTimeBetweenUpdates = 1000;
+    private uint GameTimeBetweenValueUpdates = 1000;
+    private uint GameTimeBetweenResultUpdates = 15000;
     private ITimeReportable Time;
     private uint GameTimeLastChangedNeed;
     private int Digits;
@@ -28,8 +29,16 @@ public abstract class HumanNeed
         Time = time;
         Digits = digits;
     }
+
+    public bool IsAboveQuarter => CurrentValue >= MaxValue * 0.25f;
+    public bool IsBelowQuarter => CurrentValue <= MaxValue * 0.25f;
+
+    public bool IsAboveHalf => CurrentValue >= MaxValue * 0.5f;
+    public bool IsBelowHalf => CurrentValue <= MaxValue * 0.5f;
+    public bool IsNearMax => CurrentValue >= 0.9f * MaxValue;
     public bool IsMax => CurrentValue == MaxValue;
-    public bool NeedsUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenUpdates;
+    public bool NeedsValueUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenValueUpdates;
+    public bool NeedsResultUpdate => Game.GameTime - GameTimeLastUpdated >= GameTimeBetweenResultUpdates;
     public bool RecentlyChanged => GameTimeLastChangedNeed > 0 && Game.GameTime - GameTimeLastChangedNeed <= 5000;
     public string Name { get; set; }
     public float CurrentValue { get; private set; }

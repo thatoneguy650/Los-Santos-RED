@@ -31,6 +31,7 @@ public class Residence : InteractableLocation
     private UIMenuItem RentDisplayItem;
     private bool KeepInteractionGoing;
     private InventoryMenu InventoryMenu;
+    private IActivityPerformable ActivityPerformable;
 
     public Residence() : base()
     {
@@ -77,7 +78,7 @@ public class Residence : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
+        //ActivityPerformable = activityPerformable;
 
 
 
@@ -292,13 +293,17 @@ public class Residence : InteractableLocation
         {
             while (Time.IsFastForwarding)
             {
+                Player.IsResting = true;
+                Player.IsSleeping = true;
                 if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
                 {
                     Game.LocalPlayer.Character.Health++;
                 }
                 GameFiber.Yield();
             }
-            if(RentDisplayItem != null)
+            Player.IsResting = false;
+            Player.IsSleeping = false;
+            if (RentDisplayItem != null)
             {
                 RentDisplayItem.Description = $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
                 RentDisplayItem.RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();

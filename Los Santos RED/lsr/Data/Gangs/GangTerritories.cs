@@ -34,6 +34,7 @@ public class GangTerritories : IGangTerritories
         else
         {
             EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
+            DefaultConfig_LosSantos2008();
             DefaultZoneConfig();
         }
     }
@@ -339,6 +340,65 @@ public class GangTerritories : IGangTerritories
 
         };
         Serialization.SerializeParams(ZoneJurisdictionsList, ZoneConfigFileName);
+    }
+
+
+    private void DefaultConfig_LosSantos2008()
+    {
+        List<ZoneJurisdiction> OldZoneJurisdictionsList = new List<ZoneJurisdiction>()
+        {
+            new ZoneJurisdiction("AMBIENT_GANG_DIABLOS","ELYSIAN", 0, 100, 100),//elysian island
+            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEACH", 0, 100, 100),//Vespucci Beach
+
+            new ZoneJurisdiction("AMBIENT_GANG_FAMILY","STRAW", 0, 100, 100),//Strawberry
+            new ZoneJurisdiction("AMBIENT_GANG_FAMILY","CHAMH", 0, 100, 100),//chamberlain hills
+            new ZoneJurisdiction("AMBIENT_GANG_FAMILY","DAVIS", 0, 100, 100),
+
+            new ZoneJurisdiction("AMBIENT_GANG_BALLAS","TEXTI", 0, 100, 100),//Textile City
+            new ZoneJurisdiction("AMBIENT_GANG_BALLAS","SKID", 0, 100, 100),//Mission Row
+
+            new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","CYPRE", 0, 100, 100),//Cypress Flats
+            new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","SANAND", 0, 100, 100),//broken zone in east LS
+
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","DESRT", 0, 100, 100),//grande senora desert
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","EAST_V", 0, 100, 100),//East Vinewood
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","MIRR", 0, 100, 100),//mirror park
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","PALFOR", 0, 100, 100),//Paleto Forest
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","SLAB", 0, 100, 100),//stab city aka slab city
+
+            new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","EBURO", 0, 100, 100),//el burro heights
+            new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","MURRI", 0, 100, 100),//Murrieta Heights
+        
+            new ZoneJurisdiction("AMBIENT_GANG_SALVA","STAD", 0, 100, 100),//Maze Bank
+            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","DTVINE", 0, 100, 100),//Downtown Vinewood
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","WVINE", 0, 100, 100),//West Vinewood
+
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","CHU", 0, 100, 100),//Chumash
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","MORN", 0, 100, 100),//Morningwood
+
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","GRAPES", 0, 100, 100),//Grapeseed
+
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","PALETO", 0, 100, 100),//Paleto Bay
+
+            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","KOREAT", 0, 100, 100),//Little Seoul
+            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","VCANA", 0, 100, 100),//Vespucci Canals
+
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","LEGSQU", 0, 100, 100),//Legion Square
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","PBOX", 0, 100, 100),//Pillbox Hill
+
+            new ZoneJurisdiction("AMBIENT_GANG_ARMENIAN","LOSPUER", 0, 100, 100),//La Puerta
+
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_MADRAZO","LMESA", 0, 100, 100),//La Mesa
+
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","RICHM", 0, 100, 100),//Richman
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","ROCKF", 0, 100, 100),//Rockford Hills
+
+        };
+        Serialization.SerializeParams(OldZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\GangTerritories_LosSantos2008.xml");
     }
 }
 

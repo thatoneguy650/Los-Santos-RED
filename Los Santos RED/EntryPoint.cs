@@ -74,7 +74,7 @@ public static class EntryPoint
         LSRAssembly = System.Reflection.Assembly.GetExecutingAssembly();
         LSRInstalledVersionInfo = System.Diagnostics.FileVersionInfo.GetVersionInfo(LSRAssembly.Location);
         PreStartMessage = $"~s~Los Santos ~r~RED ~s~v{LSRInstalledVersionInfo.FileVersion} ~n~By ~g~Greskrendtregk ~n~~s~Press Shift+F10 to Start";
-        WriteToConsole($"Has Started Successfully");
+        WriteToConsole($"Has Started Successfully",0);
     }
     private static void CheckDependencies()
     {
@@ -84,7 +84,7 @@ public static class EntryPoint
         {
             PreStartMessage = $"{PreStartMessage} ~n~~n~{RageNativeUIChecker.GameMessage}~s~";
         }
-        WriteToConsole($"{RageNativeUIChecker.LogMessage}");
+        WriteToConsole($"{RageNativeUIChecker.LogMessage}",0);
     }
     public static void WriteToConsole(string Message) => WriteToConsole(Message, 5);
     public static void WriteToConsole(string Message, int level)

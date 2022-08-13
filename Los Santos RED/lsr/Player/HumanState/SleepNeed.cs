@@ -33,20 +33,39 @@ public class SleepNeed : HumanNeed
 
     public override void Update()
     {
-        if (NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplySleep)
+        if (Settings.SettingsManager.NeedsSettings.ApplySleep)
         {
-            UpdateRealTimeScalar();
-            if (ShouldChange)
+            if (NeedsValueUpdate)
             {
-                if (ShouldRecover)
+                UpdateRealTimeScalar();
+                if (ShouldChange)
                 {
-                    Recover();
+                    if (ShouldRecover)
+                    {
+                        Recover();
+                    }
+                    else
+                    {
+                        Drain();
+                    }
                 }
-                else
-                {
-                    Drain();
-                }
+                
             }
+            if(NeedsResultUpdate)
+            {
+                UpdateResults();
+            }
+        }
+    }
+    private void UpdateResults()
+    {
+        if(IsAboveHalf)
+        {
+            //Player.ChangeHealth(1);
+        }
+        else if (IsBelowQuarter)
+        {
+
         }
     }
     private void UpdateRealTimeScalar()//move this into the base class?

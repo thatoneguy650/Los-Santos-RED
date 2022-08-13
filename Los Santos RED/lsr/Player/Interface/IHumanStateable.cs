@@ -22,5 +22,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSleeping { get; }
         bool IsSitting { get; }
         bool IsLayingDown { get; }
+
+        void ChangeHealth(int v);
     }
 }

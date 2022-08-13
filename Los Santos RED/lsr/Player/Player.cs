@@ -485,6 +485,10 @@ namespace Mod
             }
             LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
             LastDance = Dances.GetRandomDance();
+
+
+           // NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 11, 320, 0, 0); NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 10, 70, 0, 0);
+
         }
         public void Update()
         {
@@ -1720,11 +1724,11 @@ namespace Mod
                 {
                     if (!Inventory.UseTool(modItem.RequiredToolType))
                     {
-                        Game.DisplayNotification($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
+                        Game.DisplayHelp($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
+                        //Game.DisplayNotification($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
                         return;
                     }
                 }
-
                 if (modItem.PercentLostOnUse > 0.0f)
                 {
                     Inventory.Use(modItem);
@@ -1821,7 +1825,7 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = true;
             }
         }
-        public void StartLayingDown(bool FindSittingProp)
+        public void StartSleeping(bool FindSittingProp)
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsLayingDown)
             {
@@ -1833,8 +1837,18 @@ namespace Mod
                 {
                     LowerBodyActivity.Cancel();
                 }
-                LowerBodyActivity = new LayingActivity(this, Settings, FindSittingProp);
-                LowerBodyActivity.Start();
+
+                if(HumanState.Sleep.IsNearMax)
+                {
+                    Game.DisplayHelp("You are not tired enough to sleep");
+                }
+                else
+                {
+                    LowerBodyActivity = new SleepingActivity(this, Settings);
+                    LowerBodyActivity.Start();
+                }
+
+
             }
         }
         public void StartLocationInteraction()

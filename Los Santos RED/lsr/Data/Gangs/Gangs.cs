@@ -141,46 +141,46 @@ public class Gangs : IGangs
                                             PickupPaymentMin = 1000, PickupPaymentMax = 3000, TheftPaymentMin = 2000, TheftPaymentMax = 7000, HitPaymentMin = 20000, HitPaymentMax = 57000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
                                             ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
                                             ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
-            //new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Pavano Boss","CHAR_DOM","Pavano Assocaite") { 
-            //                                DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_ARMENIAN" }, DealerMenuGroup = "CokeDealerMenu",
-            //                                PickupPaymentMin = 1000, PickupPaymentMax = 3500, TheftPaymentMin = 2000, TheftPaymentMax = 6000, HitPaymentMin = 20000, HitPaymentMax = 55000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
-            //                                ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
-            //new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Lupisella Boss","CHAR_AGENT14","Lupisella Assocaite") { 
-            //                                DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE" }, DealerMenuGroup = "CokeDealerMenu",
-            //                                PickupPaymentMin = 1000, PickupPaymentMax = 3200, TheftPaymentMin = 2000, TheftPaymentMax = 8000, HitPaymentMin = 20000, HitPaymentMax = 52000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
-            //                                ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
-            //new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Messina Boss","CHAR_BARRY","Messina Assocaite") { 
-            //                                DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG","AMBIENT_GANG_SALVA" }, DealerMenuGroup = "CokeDealerMenu",
-            //                                PickupPaymentMin = 1000, PickupPaymentMax = 3400, TheftPaymentMin = 2000, TheftPaymentMax = 9000, HitPaymentMin = 20000, HitPaymentMax = 45000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
-            //                                ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
-            //new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Ancelotti Boss","CHAR_DREYFUSS","Ancelotti Associate") { 
-            //                                DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST" }, DealerMenuGroup = "CokeDealerMenu",
-            //                                PickupPaymentMin = 1000, PickupPaymentMax = 3800, TheftPaymentMin = 2000, TheftPaymentMax = 6000, HitPaymentMin = 20000, HitPaymentMax = 44000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
-            //                                ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
-            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", "CartelPeds", "CartelVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Madrazo","CHAR_MANUEL","Cartel Member") { 
+            new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family","Pavano", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Pavano Boss","CHAR_DOM","Pavano Assocaite") {
+                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_ARMENIAN" }, DealerMenuGroup = "CokeDealerMenu",
+                                            PickupPaymentMin = 1000, PickupPaymentMax = 3500, TheftPaymentMin = 2000, TheftPaymentMax = 6000, HitPaymentMin = 20000, HitPaymentMax = 55000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
+                                            ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family","Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Lupisella Boss","CHAR_AGENT14","Lupisella Assocaite") {
+                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE" }, DealerMenuGroup = "CokeDealerMenu",
+                                            PickupPaymentMin = 1000, PickupPaymentMax = 3200, TheftPaymentMin = 2000, TheftPaymentMax = 8000, HitPaymentMin = 20000, HitPaymentMax = 52000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
+                                            ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family","Messina", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Messina Boss","CHAR_BARRY","Messina Assocaite") {
+                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG","AMBIENT_GANG_SALVA" }, DealerMenuGroup = "CokeDealerMenu",
+                                            PickupPaymentMin = 1000, PickupPaymentMax = 3400, TheftPaymentMin = 2000, TheftPaymentMax = 9000, HitPaymentMin = 20000, HitPaymentMax = 45000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
+                                            ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
+            new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family","Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "","MeleeWeapons","MafiaSidearms","MafiaLongGuns","Ancelotti Boss","CHAR_DREYFUSS","Ancelotti Associate") {
+                                            DenName = "Safehouse",AmbientMemberMoneyMin = 1000, AmbientMemberMoneyMax = 10000,EnemyGangs = new List<string>() { "AMBIENT_GANG_LOST" }, DealerMenuGroup = "CokeDealerMenu",
+                                            PickupPaymentMin = 1000, PickupPaymentMax = 3800, TheftPaymentMin = 2000, TheftPaymentMax = 6000, HitPaymentMin = 20000, HitPaymentMax = 44000,DeliveryPaymentMin = 3000, DeliveryPaymentMax = 8000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 3500, StartingRep = 0, MaximumRep = 8000, MinimumRep = -8000
+                                            ,PercentageWithMelee = 5f, PercentageWithSidearms = 35f, PercentageWithLongGuns = 2f} ,//cocaine
+            new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel","Cartel", "Red", "CartelPeds", "CartelVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Madrazo","CHAR_MANUEL","Cartel Member") {
                                             DenName = "Mansion",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_MARABUNTE" }, DealerMenuGroup = "MethamphetamineDealerMenu",
                                             PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
                                             ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
                                             ,PercentageWithMelee = 25f, PercentageWithSidearms = 20f, PercentageWithLongGuns = 15f} ,//Meth
-            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Armenian Leader","CHAR_MP_PROF_BOSS","Armenian Member") { 
+            new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob","Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Armenian Leader","CHAR_MP_PROF_BOSS","Armenian Member") {
                                             DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_GAMBETTI" }, DealerMenuGroup = "HeroinDealerMenu",
                                             PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
                                             ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
                                             ,PercentageWithMelee = 20f, PercentageWithSidearms = 25f, PercentageWithLongGuns = 15f} ,//heroin
-            //new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", "YardiesPeds", "YardieVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Yardie O.G.","CHAR_MP_GERALD","Yardie Member") { 
-            //                                DenName = "Chill Spot",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE", "AMBIENT_GANG_DIABLOS" },DealerMenuGroup = "MarijuanaDealerMenu",
-            //                                PickupPaymentMin = 200, PickupPaymentMax = 15000, TheftPaymentMin = 1000, TheftPaymentMax = 7000, HitPaymentMin = 10000, HitPaymentMax = 20000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
-            //                                ,PercentageWithMelee = 15f, PercentageWithSidearms = 10f, PercentageWithLongGuns = 2f} ,//marijuana
-            //new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", "VagosPeds", "DiablosVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Diablo Leader","CHAR_TW","Diablo Soldier") { 
-            //                                DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_YARDIES" }, DealerMenuGroup = "SPANKDealerMenu",
-            //                                PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
-            //                                ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
-            //                                ,PercentageWithMelee = 15f, PercentageWithSidearms = 15f, PercentageWithLongGuns = 2f} ,//SPANK
+            new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies","Yardies", "Green", "YardiesPeds", "YardieVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Yardie O.G.","CHAR_MP_GERALD","Yardie Member") {
+                                            DenName = "Chill Spot",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_KKANGPAE", "AMBIENT_GANG_DIABLOS" },DealerMenuGroup = "MarijuanaDealerMenu",
+                                            PickupPaymentMin = 200, PickupPaymentMax = 15000, TheftPaymentMin = 1000, TheftPaymentMax = 7000, HitPaymentMin = 10000, HitPaymentMax = 20000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
+                                            ,PercentageWithMelee = 15f, PercentageWithSidearms = 10f, PercentageWithLongGuns = 2f} ,//marijuana
+            new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos","Diablos", "Red", "VagosPeds", "DiablosVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Diablo Leader","CHAR_TW","Diablo Soldier") {
+                                            DenName = "Hangout",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_YARDIES" }, DealerMenuGroup = "SPANKDealerMenu",
+                                            PickupPaymentMin = 200, PickupPaymentMax = 1000, TheftPaymentMin = 1000, TheftPaymentMax = 5000, HitPaymentMin = 10000, HitPaymentMax = 30000,DeliveryPaymentMin = 1000, DeliveryPaymentMax = 4000
+                                            ,NeutralRepLevel = 0, FriendlyRepLevel = 1500, StartingRep = 0, MaximumRep = 3000, MinimumRep = -3000
+                                            ,PercentageWithMelee = 15f, PercentageWithSidearms = 15f, PercentageWithLongGuns = 2f} ,//SPANK
 
             //DefaultGang
         };

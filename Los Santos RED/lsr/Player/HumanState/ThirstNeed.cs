@@ -33,7 +33,7 @@ public class ThirstNeed : HumanNeed
     }
     public override void Update()
     {
-        if (NeedsUpdate && Settings.SettingsManager.NeedsSettings.ApplyThirst)
+        if (NeedsValueUpdate && Settings.SettingsManager.NeedsSettings.ApplyThirst)
         {
             UpdateRealTimeScalar();
             if (ShouldChange)

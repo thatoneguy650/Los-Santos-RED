@@ -522,12 +522,6 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         List<DispatchableVehicleGroup> OldVehicleLookupGroup = new List<DispatchableVehicleGroup>();
         List<DispatchableVehicle> LSPDVehicles_Old = new List<DispatchableVehicle>() {
-
-#if DEBUG
-            new DispatchableVehicle("police6", 85, 85),
-            new DispatchableVehicle("police8", 85, 85),
-#endif
-
             new DispatchableVehicle("police", 85,85) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(2, true, 100) } },
             new DispatchableVehicle("police2", 15, 15),
             new DispatchableVehicle("policet", 0, 25) { MinWantedLevelSpawn = 3} };

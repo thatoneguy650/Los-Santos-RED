@@ -121,7 +121,7 @@
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
-    <Compile Include="lsr\Data\Items\PropItems.cs" />
+    <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\FoodType.cs" />
@@ -300,7 +300,7 @@
     <Compile Include="lsr\Player\Activity\Data\EatingData.cs" />
     <Compile Include="lsr\Player\Activity\GestureActivity.cs" />
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
-    <Compile Include="lsr\Player\Activity\LayingActivity.cs" />
+    <Compile Include="lsr\Player\Activity\SleepingActivity.cs" />
     <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
     <Compile Include="lsr\Player\CellPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\NotificationIconTypes.cs" />
@@ -463,6 +463,9 @@
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuGroup.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuMap.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PositionMap.cs" />
+    <Compile Include="lsr\VanillaManager\VanillaCopManager.cs" />
+    <Compile Include="lsr\VanillaManager\VanillaGangManager.cs" />
+    <Compile Include="lsr\VanillaManager\VanillaWorldManager.cs" />
     <Compile Include="lsr\Vehicle\eCustomDrivingStyles.cs" />
     <Compile Include="lsr\Vehicle\Engine.cs" />
     <Compile Include="lsr\Vehicle\Variation\VehicleExtra.cs" />

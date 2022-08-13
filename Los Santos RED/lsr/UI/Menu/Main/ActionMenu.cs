@@ -141,11 +141,11 @@ public class ActionMenu : Menu
         {
             if (LayDown.SelectedItem == "At Closest Bed")
             {
-                Player.StartLayingDown(true);
+                Player.StartSleeping(true);
             }
             else
             {
-                Player.StartLayingDown(false);
+                Player.StartSleeping(false);
             }
             Actions.Visible = false;
         };

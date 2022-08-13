@@ -141,7 +141,7 @@ public class DebugMenu : Menu
         LocationItemsMenu.AddItem(LoadMPMap);
 
 
-        List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().Where(x => x.ShowsOnDirectory).ToList();
+        List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"Teleport To {typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
@@ -376,14 +376,23 @@ public class DebugMenu : Menu
             Time.FastForward(FastForwardTime.Value);
             menu.Visible = false;
         };
+        TimeItems.AddItem(FastForwardTime);
         UIMenuItem SetDateToToday = new UIMenuItem("Set Game Date Current", "Sets the game date the same as system date");
         SetDateToToday.Activated += (menu, item) =>
         {
             Time.SetDateToToday();
             menu.Visible = false;
         };
-        TimeItems.AddItem(FastForwardTime);
         TimeItems.AddItem(SetDateToToday);
+        UIMenuNumericScrollerItem<int> SetDateYear = new UIMenuNumericScrollerItem<int>("Set Game Date Year", "Sets the game date to the year selected (August 1st at 1 PM)", 1970, 2030, 1);
+        SetDateYear.Activated += (menu, item) =>
+        {
+            DateTime toSet = new DateTime(SetDateYear.Value, 8, 1, 13, 0, 0);
+            Time.SetDateTime(toSet);
+            Game.DisplayHelp($"Date Set to {toSet}");
+            menu.Visible = false;
+        };
+        TimeItems.AddItem(SetDateYear);
     }
     private void CreateGangItemsMenu()
     {
