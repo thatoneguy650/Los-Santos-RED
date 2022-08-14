@@ -24,6 +24,9 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; }
         string ModelName { get; }
         Scanner Scanner { get; }
+        int SpeechSkill { get; }
+        ButtonPrompts ButtonPrompts { get; }
+        Ped Character { get; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool v13);
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);

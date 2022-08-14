@@ -64,6 +64,11 @@ public class RespawnSettings : ISettingsDefaultable
     public bool ClearIllicitInventoryOnDeath { get; set; }
     [Description("Remove weapons from player after respawning at a hostpital")]
     public bool RemoveWeaponsOnDeath { get; set; }
+
+
+
+
+
     public RespawnSettings()
     {
         SetDefault();

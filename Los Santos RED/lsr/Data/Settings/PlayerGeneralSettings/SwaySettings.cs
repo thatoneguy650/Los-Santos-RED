@@ -36,14 +36,11 @@ public class SwaySettings : ISettingsDefaultable
     public SwaySettings()
     {
         SetDefault();
-#if DEBUG
-        ApplySwayInFirstPerson = true;
-#endif
     }
     public void SetDefault()
     {
         ApplySway = true;
-        ApplySwayInVehicle = true;
+        ApplySwayInVehicle = false;
         ApplySwayOnFoot = true;
         VeritcalSwayAdjuster = 1.0f;
         HorizontalSwayAdjuster = 1.0f;

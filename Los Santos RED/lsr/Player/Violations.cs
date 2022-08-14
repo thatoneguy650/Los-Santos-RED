@@ -478,6 +478,10 @@ namespace LosSantosRED.lsr
             {
                 AddViolating(CrimeList.FirstOrDefault(x => x.ID == "PublicVagrancy"));//.IsCurrentlyViolating = true;
             }
+            if(Player.IsLootingBody)
+            {
+                AddViolating(CrimeList.FirstOrDefault(x => x.ID == "Mugging"));//.IsCurrentlyViolating = true;
+            }
         }
         private void CheckTrafficViolations()
         {

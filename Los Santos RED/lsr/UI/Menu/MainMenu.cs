@@ -68,12 +68,8 @@ public class MainMenu : Menu
 
     public void Setup()
     {
-
         Main.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(Main);
-
-
-
 
         SettingsMenu.Setup(); 
         SaveMenu.Setup();     

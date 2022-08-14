@@ -58,6 +58,7 @@ public class Respawning// : IRespawning
     public bool RecentlyPaidFine => GameTimeLastPaidFine != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
     public int TimesDied { get; private set; }
+    public int TimesTalked { get; private set; }
     public void Reset()
     {
         TimesDied = 0;
@@ -132,6 +133,65 @@ public class Respawning// : IRespawning
             CurrentPlayer.Scanner.OnPaidFine();
             return true;
         }
+    }
+    public bool TalkOutOfTicket()
+    {
+        TimesTalked++;
+        List<string> AttemptTalkOut = new List<string>()
+                {
+                    $"It wasn't me officer, it was the one-armed man!.",
+                    $"I pay your salary just so you know.",
+                    $"I don't know what you are talking about.",
+                    $"I plead the fifth.",
+                    $"I am a law abiding citizen and I will not take this harassment!",
+                    $"That stuff? It isn't mine. I also didn't do it. Whatever it is.",
+                    $"What seems to be the problem officer?",
+                    $"Are you sure this is your jurisdiction?",
+
+
+                    $"He went that way.",
+                };
+        Game.DisplaySubtitle("You: ~s~" + AttemptTalkOut.PickRandom());
+        GameFiber.Sleep(4000);
+        if (RandomItems.RandomPercent(CurrentPlayer.SpeechSkill))
+        {
+            List<string> TalkOutResponsePositive = new List<string>()
+                {
+                    $"I don't care enough for this shit. I'm outta here.",
+                    $"I need to go tongue a ~p~Rusty Brown~s~ Ring Donut anyways.",
+                    $"It's almost happy hour at ~p~Wigwam~s~, get outta here.",
+                    $"I need me a bleeder burger at ~p~Burger Shot~s~ anyways. Get outta my sight.",
+                    $"I've got enough paperwork already. Don't let me catch you again",
+                    $"Whatever, ~y~Republican Space Rangers~s~ is almost on. Fuck off.",
+                    $"Must have forgot my drop gun. You're clean. Beat it.",
+                    $"Whatever prick.",
+                };
+            Game.DisplaySubtitle("~g~Cop: ~s~" + TalkOutResponsePositive.PickRandom());
+            GameFiber.Sleep(4000);
+
+
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false);
+            CurrentPlayer.Scanner.OnTalkedOutOfTicket();
+            return true;
+        }
+        else
+        {
+            List<string> TalkOutResponseNegative = new List<string>()
+                {
+                    $"Shut the fuck up prick.",
+                    $"A most persuasive argument, too bad I don't give a fuck.",
+                    $"Try having great tits next time.",
+                    $"Next time you speak, you are getting a beating.",
+                    $"Wanna try me again?",
+                    $"This isn't Alderny prick.",
+                    $"Are you trying to really piss me off?",
+                    $"Next time bring cash.",
+                    $"Does this work wherever the fuck your are from?",
+                };
+            Game.DisplaySubtitle("~r~Cop: ~s~" + TalkOutResponseNegative.PickRandom());
+            return false;
+        }
+        
     }
     public void ResistArrest()
     {
@@ -445,6 +505,10 @@ public class Respawning// : IRespawning
         }
     }
 
+    public void OnPlayerBusted()
+    {
+        TimesTalked = 0;
+    }
 }
 
 

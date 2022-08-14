@@ -352,6 +352,10 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
+        public void OnTalkedOutOfTicket()
+        {
+            OnPaidFine();
+        }
         public void OnPlayerBusted()
         {
             if (!SuspectArrested.HasRecentlyBeenPlayed && Player.AnyPoliceCanSeePlayer && Player.WantedLevel > 1)

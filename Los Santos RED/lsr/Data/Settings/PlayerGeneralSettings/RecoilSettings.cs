@@ -38,10 +38,6 @@ public class RecoilSettings : ISettingsDefaultable
     public RecoilSettings()
     {
         SetDefault();
-#if DEBUG
-        ApplyRecoilInVehicle = true;
-        ApplyRecoilInFirstPerson = true;
-#endif
     }
     public void SetDefault()
     {

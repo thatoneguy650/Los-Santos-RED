@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LSR.Vehicles;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,14 @@ namespace LosSantosRED.lsr.Interface
         string PauseCurrentActivityPrompt { get; }
         string CancelCurrentActivityPrompt { get; }
         string ContinueCurrentActivityPrompt { get; }
+        bool IsDead { get; }
+        bool IsBusted { get; }
+        VehicleExt CurrentLookedAtVehicle { get; }
+        bool IsMovingFast { get; }
+        bool IsWanted { get; }
+        bool IsStill { get; }
+        bool IsAliveAndFree { get; }
+        PoliceResponse PoliceResponse { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

@@ -40,6 +40,9 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedDoorClose;
         private uint GameTimeLastPressedCrouch;
         private uint GameTimeLastPressedSimplePhone;
+        private int TicksPressedVehicleEnter;
+        private int TicksNotPressedVehicleEnter;
+        private bool heldVehicleEnter;
 
         public bool IsPressingMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.MenuKey);
         public bool IsPressingDebugMenuKey => Game.IsKeyDown(Settings.SettingsManager.KeySettings.DebugMenuKey);
@@ -58,7 +61,7 @@ namespace LosSantosRED.lsr
         private bool ReleasedFireWeapon => NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.Attack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehicleAttack2) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack) || NativeFunction.Natives.xFB6C4072E9A32E92<bool>(2, (int)GameControl.VehiclePassengerAttack);
         private bool IsPressingFireWeapon => Game.IsControlPressed(0, GameControl.Attack) || Game.IsControlPressed(0, GameControl.Attack2) || Game.IsControlPressed(0, GameControl.VehicleAttack) || Game.IsControlPressed(0, GameControl.VehicleAttack2) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack) || Game.IsControlPressed(0, GameControl.VehiclePassengerAttack);
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
-        private bool IsNotHoldingEnter => !Game.IsControlPressed(2, GameControl.Enter);
+        private bool IsNotHoldingEnter => !heldVehicleEnter;//!Game.IsControlPressed(2, GameControl.Enter);
         private bool IsPressingVehicleAccelerate => Game.IsControlPressed(0, GameControl.VehicleAccelerate);
         private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 250;
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 500;
@@ -66,7 +69,7 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
         private bool IsPressingActionWheelMenu => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
-        public void Update()
+        public void Tick()
         {        
             DisableVanillaControls();
             UpdateControlStatus();
@@ -257,6 +260,27 @@ namespace LosSantosRED.lsr
                     Game.DisableControlAction(0, GameControl.VehicleMoveLeftRight, true);
                     Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
                 }
+            }
+
+            if(Game.IsControlPressed(2, GameControl.Enter))
+            {
+                TicksNotPressedVehicleEnter = 0;
+                TicksPressedVehicleEnter++;
+            }
+            else
+            {
+                TicksNotPressedVehicleEnter++;
+                TicksPressedVehicleEnter = 0;
+            }
+
+
+            if(TicksPressedVehicleEnter >= 20)
+            {
+                heldVehicleEnter = true;
+            }
+            else if(TicksNotPressedVehicleEnter >= 60)
+            {
+                heldVehicleEnter = false;
             }
         }
         private void MenuControlCheck()

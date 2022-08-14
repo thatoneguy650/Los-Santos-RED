@@ -120,6 +120,9 @@ public class UI : IMenuProvideable
     public void Setup()
     {
         IsDisposed = false;
+        BustedMenu.Setup();
+        DeathMenu.Setup();
+
         MainMenu.Setup();
         PlayerInfoMenu.Setup();
         MessagesMenu.Setup();
@@ -507,7 +510,15 @@ public class UI : IMenuProvideable
             {
                 foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.Prompts.OrderByDescending(x => x.Order))
                 {
-                    if (buttonPrompt.Key != Keys.None)
+                    if(buttonPrompt.GameControl != GameControl.NextCamera)
+                    {
+
+                        InstructionalButton mybutt = new InstructionalButton(buttonPrompt.GameControl, buttonPrompt.Text);
+                        instructional.Buttons.Add(mybutt);
+
+                        //instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text,));// InstructionalButton.GetButtonId(buttonPrompt.GameControl)));
+                    }
+                    else if (buttonPrompt.Key != Keys.None)
                     {
                         if (buttonPrompt.Modifier != Keys.None)
                         {
@@ -522,7 +533,11 @@ public class UI : IMenuProvideable
                     {
                         instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey()));
                     }
+
                 }
+
+
+                string stuff = InstructionalButton.GetButtonId(GameControl.Enter);
             }
             instructional.Update();
             if (DisplayablePlayer.ButtonPrompts.Prompts.Any())

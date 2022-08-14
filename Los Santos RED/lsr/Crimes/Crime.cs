@@ -36,4 +36,10 @@ public class Crime
     public int Priority { get; set; } = 99;
     public bool Enabled { get; set; } = true;
     public float MaxReportingDistance { get; set; } = 999f;
+
+
+
+    public bool RequiresCitation { get; set; } = false;
+    public bool RequiresSearch { get; set; } = false;
+
 }

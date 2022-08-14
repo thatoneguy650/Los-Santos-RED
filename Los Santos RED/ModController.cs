@@ -215,7 +215,7 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-                        Input.Update();
+                        Input.Tick();
                         GameFiber.Yield();
                     }
                 }

@@ -133,6 +133,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.HungerValue = 75.0f;
         AlexisGameSave.ThirstValue = 75.0f;
         AlexisGameSave.SleepValue = 75.0f;
+        AlexisGameSave.SpeechSkill = 80;
 
 
         AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30,"CHAR_BLANK_ENTRY"));
@@ -214,7 +215,7 @@ public class GameSaves : IGameSaves
         SawyerGameSave.HungerValue = 75.0f;
         SawyerGameSave.ThirstValue = 75.0f;
         SawyerGameSave.SleepValue = 75.0f;
-
+        SawyerGameSave.SpeechSkill = 80;
 
 
         GameSaveList = new List<GameSave>

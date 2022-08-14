@@ -39,39 +39,21 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public double HoursBetweenTasksWhenFailed { get; set; }
     [Description("Allows mobile radio when on foot.")]
     public bool AllowMobileRadioOnFoot { get; set; }
+    [Description("Attempts to disable being hassled by vanilla spawned gang peds.")]
     public bool DisableVanillaGangHassling { get; set; }
+    [Description("If enabled, friendly gangs will not be able to be targetted or carjacked by you.")]
     public bool AllowAttackingFriendlyPeds { get; set; }
-
-    public bool OverwriteHandOffset { get; set; }
-    public float HandOffsetX { get; set; }
-    public float HandOffsetY { get; set; }
-    public float HandOffsetZ { get; set; }
-
-    public float HandRotateX { get; set; }
-    public float HandRotateY { get; set; }
-    public float HandRotateZ { get; set; }
-
-
-
-
-    public bool OverwriteMouthOffset { get; set; }
-    public float MouthOffsetX { get; set; }
-    public float MouthOffsetY { get; set; }
-    public float MouthOffsetZ { get; set; }
-
-    public float MouthRotateX { get; set; }
-    public float MouthRotateY { get; set; }
-    public float MouthRotateZ { get; set; }
+    [Description("If enabled, DLC vehicles will appear in the stores. You will need a trainer to stop the rockstar security measure that despawns DPC cars in SP.")]
     public bool AllowDLCVehiclesInStores { get; set; }
+
+    [Description("Minimum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
+    public int PlayerSpeechSkill_Min { get; set; }
+    [Description("Maximum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
+    public int PlayerSpeechSkill_Max { get; set; }
 
     public PlayerOtherSettings()
     {
         SetDefault();
-#if DEBUG
-        MeleeDamageModifier = 1.0f;
-        //SetSlowMoOnBusted = false;
-        //SetSlowMoOnDeath = false;
-    #endif
     }
     public void SetDefault()
     {
@@ -96,27 +78,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowMobileRadioOnFoot = false;
         DisableVanillaGangHassling = true;
         AllowAttackingFriendlyPeds = false;
-
-        OverwriteHandOffset = false;
-        HandOffsetX = 0.0f;
-        HandOffsetY = 0.0f;
-        HandOffsetZ = 0.0f;
-        HandRotateX = 0.0f;
-        HandRotateY = 0.0f;
-        HandRotateZ = 0.0f;
-
-
-
-        OverwriteMouthOffset = false;
-        MouthOffsetX = 0.0f;
-        MouthOffsetY = 0.0f;
-        MouthOffsetZ = 0.0f;
-        MouthRotateX = 0.0f;
-        MouthRotateY = 0.0f;
-        MouthRotateZ = 0.0f;
-
         AllowDLCVehiclesInStores = false;
-
+        PlayerSpeechSkill_Min = 30;
+        PlayerSpeechSkill_Max = 80;
     }
 
 }

@@ -453,16 +453,16 @@ namespace LosSantosRED.lsr.Player
                 CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
-            if(Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
-            {
-                HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
-                HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
-            }
-            if (Settings.SettingsManager.PlayerOtherSettings.OverwriteMouthOffset)
-            {
-                MouthOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.MouthOffsetX, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetY, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetZ);
-                MouthRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.MouthRotateX, Settings.SettingsManager.PlayerOtherSettings.MouthRotateY, Settings.SettingsManager.PlayerOtherSettings.MouthRotateZ);
-            }
+            //if(Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
+            //{
+            //    HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
+            //    HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
+            //}
+            //if (Settings.SettingsManager.PlayerOtherSettings.OverwriteMouthOffset)
+            //{
+            //    MouthOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.MouthOffsetX, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetY, Settings.SettingsManager.PlayerOtherSettings.MouthOffsetZ);
+            //    MouthRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.MouthRotateX, Settings.SettingsManager.PlayerOtherSettings.MouthRotateY, Settings.SettingsManager.PlayerOtherSettings.MouthRotateZ);
+            //}
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);

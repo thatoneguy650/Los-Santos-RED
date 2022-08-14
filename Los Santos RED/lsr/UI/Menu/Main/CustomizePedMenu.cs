@@ -59,14 +59,15 @@ public class CustomizePedMenu : Menu
     private uint GameTimeLastPrinted;
     private IEntityProvideable World;
     private PedExt ModelPedExt;
-
-    public CustomizePedMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world)
+    private ISettingsProvideable Settings;
+    public CustomizePedMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
         Names = names;
         Player = player;
         World = world;
+        Settings = settings;
         CustomizeMainMenu = new UIMenu("Customize Ped", "Select an Option");
         CustomizeMainMenu.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(CustomizeMainMenu);
@@ -416,7 +417,7 @@ public class CustomizePedMenu : Menu
                 }
                 else
                 {
-                    PedSwap.BecomeExistingPed(ModelPed, NewModelName, WorkingName, WorkingMoney, WorkingVariation);
+                    PedSwap.BecomeExistingPed(ModelPed, NewModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min,Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
                 }
                 Dispose();
             }

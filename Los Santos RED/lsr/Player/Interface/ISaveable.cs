@@ -28,5 +28,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsMale { get; }
         Vector3 Position { get; }
         Ped Character { get; }
+        int SpeechSkill { get; }
     }
 }

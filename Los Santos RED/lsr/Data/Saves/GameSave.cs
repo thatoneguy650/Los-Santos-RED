@@ -56,6 +56,7 @@ namespace LosSantosRED.lsr.Data
         public float HungerValue { get; set; }
         public float ThirstValue { get; set; }
         public float SleepValue { get; set; }
+        public int SpeechSkill { get; set; }
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             PlayerName = player.PlayerName;
@@ -148,6 +149,7 @@ namespace LosSantosRED.lsr.Data
                     SavedResidences.Add(myRes);
                 }
             }
+            SpeechSkill = player.SpeechSkill;
         }
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -155,7 +157,7 @@ namespace LosSantosRED.lsr.Data
             {
                 Game.FadeScreenOut(1500, true);
                 time.SetDateTime(CurrentDateTime);
-                pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+                pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
                 foreach (StoredWeapon MyOldGuns in WeaponInventory)
                 {

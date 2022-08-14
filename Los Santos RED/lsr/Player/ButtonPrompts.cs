@@ -1,4 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ public class ButtonPrompts
     
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
+    private bool addedPromptGroup;
+
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
@@ -26,85 +30,13 @@ public class ButtonPrompts
     }
     public void Update()
     {
-        bool addedPromptGroup = false;
-
-
-
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
-        {
-            PersonInteractingPrompts();
-            addedPromptGroup = true;
-        }
-        else
-        {
-            Prompts.RemoveAll(x => x.Group == "StartConversation");
-            Prompts.RemoveAll(x => x.Group == "StartTransaction");
-        }
-
-
-
-
-        if(!addedPromptGroup)
-        {
-            if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
-            {
-                PersonLootingPrompts();
-                addedPromptGroup = true;
-            }
-            else
-            {
-                Prompts.RemoveAll(x => x.Group == "Search");
-            }
-            if (Player.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
-            {
-                PersonDraggingPrompts();
-                addedPromptGroup = true;
-            }
-            else
-            {
-                Prompts.RemoveAll(x => x.Group == "Drag");
-            }
-        }
-
-
-
-
-        if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
-        {
-            PersonGrabPrompts();
-            addedPromptGroup = true;
-        }
-        else
-        {
-            Prompts.RemoveAll(x => x.Group == "Grab");
-        }
-
-
-
-
-        if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
-        {
-            LocationInteractingPrompts();
-            addedPromptGroup = true;
-        }
-        else
-        {
-            Prompts.RemoveAll(x => x.Group == "InteractableLocation");
-        }
-
-
-
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
-        {
-            ScenarioPrompts();
-            addedPromptGroup = true;
-        }
-        else
-        {
-            Prompts.RemoveAll(x => x.Group == "StartScenario");
-        }
-
-        ActivityPrompts();
+        addedPromptGroup = false;
+        AttemptAddInteractionPrompts();
+        AttemptAddAdvancedInteractionPrompts();
+        AttemptAddLocationPrompts();
+        AttemptAddActivityPrompts();
+        AttemptRemoveMenuPrompts();
+        AttemptAddVehiclePrompts();
     }
     public void Dispose()
     {
@@ -130,6 +62,21 @@ public class ButtonPrompts
         if (!Prompts.Any(x => x.Identifier == identifier))
         {
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+        }
+    }
+
+    public void AddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
+        }
+    }
+    public void AddPrompt(string groupName, string prompt, string identifier, GameControl gameCcontrol, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameCcontrol, order));
         }
     }
     public bool HasPrompt(string identifier)
@@ -226,6 +173,35 @@ public class ButtonPrompts
             AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999);
         }
     }
+    private void VehicleInteractPrompts()
+    {
+        if(Player.CurrentLookedAtVehicle.Vehicle.Exists())
+        {
+            if(Player.CurrentLookedAtVehicle.Vehicle.HasDriver)
+            {
+                if (!HasPrompt($"Carjack {Player.CurrentLookedAtVehicle?.Handle}"))
+                {
+                    RemovePrompts("VehicleInteract");
+                    AddPrompt("VehicleInteract", $"CarJack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
+                }
+            }
+            else
+            {
+                if (!HasPrompt($"Enter {Player.CurrentLookedAtVehicle?.Handle}"))
+                {
+                    RemovePrompts("VehicleInteract");
+                    AddPrompt("VehicleInteract", $"LockPick (Tap)", $"Enter {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
+                }
+            }
+
+
+        }
+        else
+        {
+            RemovePrompts("VehicleInteract");
+        }
+
+    }
     private void LocationInteractingPrompts()
     {
         RemovePrompts("StartConversation");
@@ -255,7 +231,7 @@ public class ButtonPrompts
             AddPrompt("StartScenario", $"{Player.ClosestScenario?.Name}", $"StartScenario", Settings.SettingsManager.KeySettings.ScenarioStart, 2);
         }
     }
-    private void ActivityPrompts()
+    private void AttemptAddActivityPrompts()
     {
         if(HasPrompt(Settings.SettingsManager.KeySettings.InteractNegativeOrNo, "ActivityControlPause"))
         {
@@ -316,5 +292,110 @@ public class ButtonPrompts
     {
         throw new NotImplementedException();
     }
+    private void AttemptRemoveMenuPrompts()
+    {
+        if(!Player.IsDead)
+        {
+            RemovePrompts("MenuShowDead");
+        }
+        if (!Player.IsBusted)
+        {
+            RemovePrompts("MenuShowBusted");
+        }
+    }
+    private void AttemptAddInteractionPrompts()
+    {
+        if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
+        {
+            PersonInteractingPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "StartConversation");
+            Prompts.RemoveAll(x => x.Group == "StartTransaction");
+        }
+    }
+    private void AttemptAddAdvancedInteractionPrompts()
+    {
+        if (!addedPromptGroup)
+        {
+            if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
+            {
+                PersonLootingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Prompts.RemoveAll(x => x.Group == "Search");
+            }
+            if (Player.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
+            {
+                PersonDraggingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Prompts.RemoveAll(x => x.Group == "Drag");
+            }
+        }
+
+        if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        {
+            PersonGrabPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "Grab");
+        }
+
+
+        if(!Player.IsMovingFast && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree)
+        {
+            AddPrompt("ShowSurrender", "Surrender (Hold)", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
+        }
+        else
+        {
+            RemovePrompts("ShowSurrender");
+        }
+
+    }
+    private void AttemptAddLocationPrompts()
+    {
+        if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
+        {
+            LocationInteractingPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "InteractableLocation");
+        }
+
+
+
+        if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
+        {
+            ScenarioPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "StartScenario");
+        }
+    }
+    private void AttemptAddVehiclePrompts()
+    {
+        if(!Player.IsInVehicle && !Player.IsMovingFast && Player.CurrentLookedAtVehicle != null && Player.CurrentLookedAtVehicle.Vehicle.Exists() && Player.IsAliveAndFree)
+        {
+            VehicleInteractPrompts();   
+        }
+        else
+        {
+            RemovePrompts("VehicleInteract");
+        }
+    }
+
 }
 

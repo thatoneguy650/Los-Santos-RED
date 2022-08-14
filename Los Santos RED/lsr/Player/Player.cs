@@ -368,6 +368,7 @@ namespace Mod
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
+        public int SpeechSkill { get; set; }
         public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();
         public uint TargettingHandle
         {
@@ -486,8 +487,8 @@ namespace Mod
             LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
             LastDance = Dances.GetRandomDance();
 
-
-           // NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 11, 320, 0, 0); NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 10, 70, 0, 0);
+            SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
+            // NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 11, 320, 0, 0); NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 10, 70, 0, 0);
 
         }
         public void Update()
@@ -692,12 +693,13 @@ namespace Mod
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", $"~y~{PlayerName}", NotifcationText);
             // DisplayPlayerVehicleNotification();
         }
-        public void SetDemographics(string modelName, bool isMale, string playerName, int money)
+        public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill)
         {
             ModelName = modelName;
             PlayerName = playerName;
             IsMale = isMale;
             BankAccounts.SetMoney(money);
+            SpeechSkill = speechSkill;// 
             EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
         }
         public void LocationUpdate()
@@ -953,6 +955,9 @@ namespace Mod
                 }
                 UpdateCurrentVehicle();
                 //GameFiber.Yield();//TR Yield RemovedTest 2
+
+
+
                 if (CurrentVehicle != null)
                 {
                     Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
@@ -1106,11 +1111,15 @@ namespace Mod
             GameTimeLastBusted = Game.GameTime;
             WasDangerouslyArmedWhenBusted = IsDangerouslyArmed;
             Surrendering.OnPlayerBusted();
+            Respawning.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
                 Game.TimeScale = 0.4f;
             }
             Game.LocalPlayer.HasControl = false;
+
+
+
             Scanner.OnPlayerBusted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
         }

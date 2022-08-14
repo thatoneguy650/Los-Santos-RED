@@ -349,11 +349,11 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"Eating Activity Found Attachment {HandOffset} {HandRotator} {HandBoneName}");
                 }
             }
-            if (Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
-            {
-                HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
-                HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
-            }
+            //if (Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
+            //{
+            //    HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
+            //    HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
+            //}
 
             AnimIdleDictionary = "mp_player_inteat@burger";
             AnimIdle = new List<string>() { "mp_player_int_eat_burger" };
