@@ -70,6 +70,9 @@ public class PedSwap : IPedSwap
             PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
+
+
+
             GameFiber.Yield();
             while (menuPool.IsAnyMenuOpen())
             {
@@ -77,10 +80,13 @@ public class PedSwap : IPedSwap
                 GameFiber.Yield();
             }
             PedSwapCustomMenu.Dispose();
-            if (!PedSwapCustomMenu.ChoseNewModel)
+            if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
             {
                 AddOffset();
             }
+
+
+
             Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
     }

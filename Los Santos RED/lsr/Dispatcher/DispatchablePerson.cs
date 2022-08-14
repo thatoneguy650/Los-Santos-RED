@@ -63,6 +63,9 @@ public class DispatchablePerson
     public string UnitCode { get; set; } = "";
     public int RequiredHelmetType { get; set; } = -1;
 
+    public PedComponent EmptyHolster { get; set; }
+    public PedComponent FullHolster { get; set; }
+
 
     public string DebugName { get; set; } = "";
 

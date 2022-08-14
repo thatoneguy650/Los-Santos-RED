@@ -22,6 +22,7 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         bool IsNotWanted { get; }
         Respawning Respawning { get; }
+        bool IsCustomizingPed { get; }
 
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }

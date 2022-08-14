@@ -12,6 +12,7 @@ public class WeaponInventory
 {
     private IWeaponIssuable WeaponOwner;
     private uint GameTimeLastWeaponCheck;
+    private bool IsHolsterFull;
 
     public IssuableWeapon LongGun { get; private set; }
     public IssuableWeapon Sidearm { get; private set; }
@@ -25,16 +26,35 @@ public class WeaponInventory
 
     public bool HasHeavyWeaponOnPerson { get; private set; }
     private ISettingsProvideable Settings;
+    private uint currentVehicleWeapon;
+    private bool hasVehicleWeapon;
+
+
+    private IPoliceRespondable Player;
+
+    private PedComponent EmptyHolster { get; set; }
+    private PedComponent FullHolster { get; set; }
+
+
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;
         Settings = settings;
     }
+
+    public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings, PedComponent emptyHolster, PedComponent fullHolster)
+    {
+        WeaponOwner = weaponOwner;
+        Settings = settings;
+        EmptyHolster = emptyHolster;
+        FullHolster = fullHolster;
+    }
+
     public bool NeedsWeaponCheck => GameTimeLastWeaponCheck == 0 || Game.GameTime > GameTimeLastWeaponCheck + 750;
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public string DebugWeaponState { get; set; }
     public bool HasPistol => Sidearm != null;
-    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun)
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, PedComponent emptyHolster, PedComponent fullHolster)
     {
         if (issueMelee)
         {
@@ -70,17 +90,20 @@ public class WeaponInventory
                 LongGun.ApplyVariation(WeaponOwner.Pedestrian);
             }
         }
+
+        EmptyHolster = emptyHolster;
+        FullHolster = fullHolster;
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
     }
-    public void UpdateLoadout(bool PlayerInVehicle, bool IsDeadlyChase, int WantedLevel, bool isAttemptingToSurrender, bool isBusted, bool isWeaponsFree, bool hasShotAtPolice, bool lethalForceAuthorized, IItemEquipable player)
+
+    public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer)
     {
+        Player = policeRespondablePlayer;
+
         if (WeaponOwner.Pedestrian.Exists())
         {
-            uint currentVehicleWeapon;
-            bool hasVehicleWeapon = false;
-            hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(WeaponOwner.Pedestrian, out currentVehicleWeapon);
-            //3450622333 searchlight
+            GetVehicleWeapon();
             if (hasVehicleWeapon && currentVehicleWeapon == 3450622333)//searchlight
             {
                 return;
@@ -89,121 +112,27 @@ public class WeaponInventory
             {
                 if (WeaponOwner.CurrentTask?.Name == "AIApprehend")
                 {
-                    HasHeavyWeaponOnPerson = true;
-                    if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.IsDeadlyChase)
-                    {
-                        SetDeadly(true);
-                    }
-                    else
-                    {
-                        if (WeaponOwner.IsInVehicle)
-                        {
-                            SetUnarmed();
-                        }
-                        else
-                        {
-                            SetLessLethal();
-                        }
-                    }
+                    AutoSetWeapons_AI();
                 }
                 else
                 {
-                    if (WantedLevel == 0)
+                    if (Player.IsNotWanted)
                     {
-                        if (!IsSetDefault && !IsSetUnarmed)
-                        {
-                            SetDefault();
-                            HasHeavyWeaponOnPerson = false;
-                        }
+                        AutoSetWeapons_Default();
                     }
                     else
                     {
-                        if (IsDeadlyChase)
+                        if (Player.PoliceResponse.IsDeadlyChase)
                         {
-                            if (WeaponOwner.IsInVehicle)
-                            {
-                                HasHeavyWeaponOnPerson = true;
-                                if (isWeaponsFree)
-                                {
-                                    SetDeadly(false);
-                                }
-                                else
-                                {
-                                    if (isAttemptingToSurrender)
-                                    {
-                                        SetUnarmed();
-                                    }
-                                    else if (!hasShotAtPolice && WantedLevel <= 4)
-                                    {
-                                        SetUnarmed();
-                                    }
-                                    else
-                                    {
-                                        SetDeadly(false);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                SetDeadly(false);
-                            }
+                            AutoSetWeapons_Deadly();
                         }
-                        else if (isBusted)
+                        else if (Player.IsBusted)
                         {
-                            if (WeaponOwner.IsInVehicle)
-                            {
-                                SetUnarmed();
-                            }
-                            else
-                            {
-                                if (lethalForceAuthorized || player.WasDangerouslyArmedWhenBusted)
-                                {
-                                    SetDeadly(false);
-                                }
-                                else
-                                {
-                                    if(WantedLevel >= 2)
-                                    {
-                                        if(player.IsDangerouslyArmed)
-                                        {
-                                            SetDeadly(false);
-                                        }
-                                        else
-                                        {
-                                            SetLessLethal();
-                                        }
-                                    }
-                                    else
-                                    {
-                                        GameTimeLastWeaponCheck = Game.GameTime;
-                                        SetUnarmed();
-                                    }
-                                }
-                            }
+                            AutoSetWeapons_Busted();
                         }
                         else
                         {
-                            if (WeaponOwner.IsInVehicle || WantedLevel == 1)
-                            {
-                                SetUnarmed();
-                            }
-                            else
-                            {
-                                if (player.IsDangerouslyArmed)
-                                {
-                                    SetDeadly(false);
-                                }
-                                else
-                                {
-                                    SetLessLethal();
-                                }
-                            }
-
-
-                            if(WeaponOwner.IsInVehicle && player.IsDangerouslyArmed)
-                            {
-                                HasHeavyWeaponOnPerson = true;
-                            }
+                            AutoSetWeapons_Other();
                         }
                     }
                 }
@@ -213,6 +142,123 @@ public class WeaponInventory
                 }
             }
         }
+    }
+    private void AutoSetWeapons_AI()
+    {
+        HasHeavyWeaponOnPerson = true;
+        if (WeaponOwner.CurrentTask.OtherTarget != null && WeaponOwner.CurrentTask.OtherTarget.IsDeadlyChase)
+        {
+            SetDeadly(true);
+        }
+        else
+        {
+            if (WeaponOwner.IsInVehicle)
+            {
+                SetUnarmed();
+            }
+            else
+            {
+                SetLessLethal();
+            }
+        }
+    }
+    private void AutoSetWeapons_Default()
+    {
+        if (!IsSetDefault && !IsSetUnarmed)
+        {
+            SetDefault();
+            HasHeavyWeaponOnPerson = false;
+        }
+    }
+    private void AutoSetWeapons_Deadly()
+    {
+        if (WeaponOwner.IsInVehicle)
+        {
+            HasHeavyWeaponOnPerson = true;
+            if (Player.PoliceResponse.IsWeaponsFree)
+            {
+                SetDeadly(false);
+            }
+            else
+            {
+                if (Player.IsAttemptingToSurrender)
+                {
+                    SetUnarmed();
+                }
+                else if (!Player.PoliceResponse.HasShotAtPolice && Player.WantedLevel <= 4)
+                {
+                    SetUnarmed();
+                }
+                else
+                {
+                    SetDeadly(false);
+                }
+            }
+        }
+        else
+        {
+            SetDeadly(false);
+        }
+    }
+    private void AutoSetWeapons_Busted()
+    {
+        if (WeaponOwner.IsInVehicle)
+        {
+            SetUnarmed();
+        }
+        else
+        {
+            if (Player.PoliceResponse.LethalForceAuthorized || Player.WasDangerouslyArmedWhenBusted)
+            {
+                SetDeadly(false);
+            }
+            else
+            {
+                if (Player.WantedLevel >= 2)
+                {
+                    if (Player.IsDangerouslyArmed)
+                    {
+                        SetDeadly(false);
+                    }
+                    else
+                    {
+                        SetLessLethal();
+                    }
+                }
+                else
+                {
+                    GameTimeLastWeaponCheck = Game.GameTime;
+                    SetUnarmed();
+                }
+            }
+        }
+    }
+    private void AutoSetWeapons_Other()
+    {
+        if (WeaponOwner.IsInVehicle || Player.WantedLevel == 1)
+        {
+            SetUnarmed();
+        }
+        else
+        {
+            if (Player.IsDangerouslyArmed)
+            {
+                SetDeadly(false);
+            }
+            else
+            {
+                SetLessLethal();
+            }
+        }
+        if (WeaponOwner.IsInVehicle && Player.IsDangerouslyArmed)
+        {
+            HasHeavyWeaponOnPerson = true;
+        }
+    }
+    private void GetVehicleWeapon()
+    {
+        hasVehicleWeapon = NativeFunction.Natives.GET_CURRENT_PED_VEHICLE_WEAPON<bool>(WeaponOwner.Pedestrian, out currentVehicleWeapon);
+        //3450622333 searchlight
     }
     public void UpdateSettings()
     {
@@ -272,6 +318,13 @@ public class WeaponInventory
             IsSetUnarmed = false;
             IsSetDeadly = false;
             IsSetDefault = true;
+
+
+            if(!IsHolsterFull)
+            {
+                HolsterPistol();
+            }
+
             DebugWeaponState = "Set Default";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -338,10 +391,25 @@ public class WeaponInventory
             }
             NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys       
+
+            if (HasHeavyWeaponOnPerson && !IsHolsterFull)
+            {
+                HolsterPistol();
+            }
+            else if (!HasHeavyWeaponOnPerson && IsHolsterFull)
+            {
+                UnHolsterPistol();
+            }
+
+
             IsSetLessLethal = false;
             IsSetUnarmed = false;
             IsSetDeadly = true;
             IsSetDefault = false;
+
+
+
+
             DebugWeaponState = "Set Deadly";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -380,11 +448,19 @@ public class WeaponInventory
                     NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
                 }
                 NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
-            }    
+            }
+
+            if (!IsHolsterFull)
+            {
+                HolsterPistol();
+            }
+
             IsSetLessLethal = true;
             IsSetUnarmed = false;
             IsSetDeadly = false;
             IsSetDefault = false;
+
+
             DebugWeaponState = "Set Less Lethal";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -401,10 +477,20 @@ public class WeaponInventory
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
             }
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
+
+            if (!IsHolsterFull)
+            {
+                HolsterPistol();
+            }
+
+
             IsSetLessLethal = false;
             IsSetUnarmed = true;
             IsSetDeadly = false;
             IsSetDefault = false;
+
+
+
             DebugWeaponState = "Set Unarmed";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -423,10 +509,19 @@ public class WeaponInventory
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
             }
             NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
+
+            if (!IsHolsterFull)
+            {
+                HolsterPistol();
+            }
+
             IsSetLessLethal = false;
             IsSetUnarmed = true;
             IsSetDeadly = false;
             IsSetDefault = false;
+
+
+
             DebugWeaponState = "Set Unarmed";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -438,6 +533,45 @@ public class WeaponInventory
         IsSetUnarmed = false;
         IsSetDefault = false;
         ShouldAutoSetWeaponState = true;
+    }
+
+
+
+    private void HolsterPistol()
+    {
+        EntryPoint.WriteToConsole($"Holster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
+
+        if (!IsHolsterFull)
+        {
+
+            if (FullHolster != null)
+            {
+                if (WeaponOwner.Pedestrian.Exists())
+                {
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(WeaponOwner.Pedestrian, FullHolster.ComponentID, FullHolster.DrawableID, FullHolster.TextureID, FullHolster.PaletteID);
+                    GameFiber.Yield();
+                }
+            }
+
+            IsHolsterFull = true;
+        }
+    }
+    private void UnHolsterPistol()
+    {
+        EntryPoint.WriteToConsole($"UnHolster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
+        if (IsHolsterFull)
+        {
+            if(EmptyHolster != null)
+            {
+                if (WeaponOwner.Pedestrian.Exists())
+                {
+                    NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(WeaponOwner.Pedestrian, EmptyHolster.ComponentID, EmptyHolster.DrawableID, EmptyHolster.TextureID, EmptyHolster.PaletteID);
+                    GameFiber.Yield();
+                }
+            }
+
+            IsHolsterFull = false;
+        }
     }
 }
 

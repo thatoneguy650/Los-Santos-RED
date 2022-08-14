@@ -314,7 +314,7 @@ public class LESpawnTask : SpawnTask
         {
             PrimaryCop.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
-        PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true);
+        PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true, PersonType.EmptyHolster,PersonType.FullHolster);
         PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
         PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
         PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);

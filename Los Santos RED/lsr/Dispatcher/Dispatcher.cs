@@ -61,6 +61,10 @@ public class Dispatcher
     }
     public void Dispatch()
     {
+        if(Player.IsCustomizingPed)
+        {
+            return;
+        }
         if (!LEDispatcher.Dispatch())
         {
             if (!EMSDispatcher.Dispatch())

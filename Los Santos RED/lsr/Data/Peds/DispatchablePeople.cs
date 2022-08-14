@@ -55,9 +55,9 @@ public class DispatchablePeople : IDispatchablePeople
             //new PedPropComponent(0, 0, 0) Goofy Hat
             //new PedPropComponent(1, 0, 0) Aviators
 
-            new DispatchablePerson("s_f_y_cop_01",0,0) { MaxWantedLevelSpawn = 2
+            new DispatchablePerson("s_f_y_cop_01",0,0) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),MaxWantedLevelSpawn = 2
                 , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) },OptionalPropChance = 10 },//new PedPropComponent(0, 0, 0)//Hat,//new PedPropComponent(1, 0, 0)//Glasses
-            new DispatchablePerson("s_m_y_cop_01",0,0) { MaxWantedLevelSpawn = 2
+            new DispatchablePerson("s_m_y_cop_01",0,0) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),MaxWantedLevelSpawn = 2
                 , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0), new PedPropComponent(1, 2, 0), new PedPropComponent(1, 3, 0) }
                 ,OptionalPropChance = 10 },
 
@@ -90,7 +90,7 @@ public class DispatchablePeople : IDispatchablePeople
 
 
             },//no body armor with glasses and goofy hat
-
+            //170
 
             //new DispatchablePerson("s_m_y_cop_01",30,30) { MaxWantedLevelSpawn = 2
             //    , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0), new PedPropComponent(1, 2, 0), new PedPropComponent(1, 3, 0) }
@@ -119,11 +119,11 @@ public class DispatchablePeople : IDispatchablePeople
         //new PedPropComponent(0, 1, 0) Cowboy Hat
         //new PedPropComponent(1, 0, 0) Aviators
 
-            new DispatchablePerson("s_f_y_sheriff_01",35,35) { MaxWantedLevelSpawn = 2
+            new DispatchablePerson("s_f_y_sheriff_01",35,35) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),MaxWantedLevelSpawn = 2
                 , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0) },OptionalPropChance = 70 },
-            new DispatchablePerson("s_f_y_sheriff_01",0,15) { MinWantedLevelSpawn = 3
+            new DispatchablePerson("s_f_y_sheriff_01",0,15) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),MinWantedLevelSpawn = 3
                 , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0) },OptionalPropChance = 70 },
-            new DispatchablePerson("s_m_y_sheriff_01",65,65) { MaxWantedLevelSpawn = 2, AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) })
+            new DispatchablePerson("s_m_y_sheriff_01",65,65) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),MaxWantedLevelSpawn = 2, AllowRandomizeBeforeVariationApplied = true, RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) })
                 , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(0, 1, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) },OptionalPropChance = 70 },//filled duty belt
             new DispatchablePerson("s_m_y_sheriff_01",0,85) { MinWantedLevelSpawn = 3
                 , AllowRandomizeBeforeVariationApplied = true
@@ -207,10 +207,10 @@ public class DispatchablePeople : IDispatchablePeople
             //new PedPropComponent(0, 0, 0) Helmet
             //new PedPropComponent(1, 0, 0) Spy Glasses Forward
             //new PedPropComponent(1, 1, 0) Aviators
-            new DispatchablePerson("s_m_y_hwaycop_01",100,100){ AllowRandomizeBeforeVariationApplied = true,GroupName = "StandardSAHP"
+            new DispatchablePerson("s_m_y_hwaycop_01",100,100){ EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),AllowRandomizeBeforeVariationApplied = true,GroupName = "StandardSAHP"
             , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }, OptionalPropChance = 70
             , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 1, 0, 0) }, new List<PedPropComponent>() ) },
-            new DispatchablePerson("s_m_y_hwaycop_01",0,0){ RequiredHelmetType = 1024, GroupName = "MotorcycleCop",UnitCode = "Mary", AllowRandomizeBeforeVariationApplied = true
+            new DispatchablePerson("s_m_y_hwaycop_01",0,0){ EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),RequiredHelmetType = 1024, GroupName = "MotorcycleCop",UnitCode = "Mary", AllowRandomizeBeforeVariationApplied = true
             , OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) }, OptionalPropChance = 90
             , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) }, new List<PedPropComponent>() ) },};
         List<DispatchablePerson> MilitaryPeds = new List<DispatchablePerson>() {
@@ -347,10 +347,14 @@ public class DispatchablePeople : IDispatchablePeople
 
 
         List<DispatchablePerson> StandardCops_Old = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_f_y_cop_01",40,40) { OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//new PedPropComponent(0, 0, 0)//Hat,//new PedPropComponent(1, 0, 0)//Glasses
-            new DispatchablePerson("s_m_y_cop_01",60,60) { OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0), new PedPropComponent(1, 2, 0), new PedPropComponent(1, 3, 0) }
+            new DispatchablePerson("s_f_y_cop_01",40,40) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0),OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0) } },//new PedPropComponent(0, 0, 0)//Hat,//new PedPropComponent(1, 0, 0)//Glasses
+            new DispatchablePerson("s_m_y_cop_01",60,60) { EmptyHolster = new PedComponent(9,0,0,0), FullHolster = new PedComponent(9,1,0,0), OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 0, 0), new PedPropComponent(1, 0, 0), new PedPropComponent(1, 1, 0), new PedPropComponent(1, 2, 0), new PedPropComponent(1, 3, 0) }
                 , AllowRandomizeBeforeVariationApplied = true
-                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) }) },};
+                , RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(9, 1, 0, 0) }) },
+               
+        
+        
+        };
 
 
         List<DispatchablePerson> FIBPeds_Old = new List<DispatchablePerson>() {

@@ -120,7 +120,10 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
-        gr.PlayerDebt += Math.Abs(amount);
+        if (!gr.IsMember)
+        {
+            gr.PlayerDebt += Math.Abs(amount);
+        }
     }
     public void SetDebt(Gang gang, int amount)
     {
