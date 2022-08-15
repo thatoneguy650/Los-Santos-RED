@@ -12,5 +12,7 @@ namespace LosSantosRED.lsr.Interface
     public interface ISprintable
     {
         Ped Character { get; }
+        HumanState HumanState { get; }
+        Injuries Injuries { get; }
     }
 }

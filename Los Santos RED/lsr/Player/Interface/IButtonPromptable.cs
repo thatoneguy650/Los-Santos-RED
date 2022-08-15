@@ -41,6 +41,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         bool IsAliveAndFree { get; }
         PoliceResponse PoliceResponse { get; }
+        bool IsIncapacitated { get; }
+        WeaponEquipment WeaponEquipment { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

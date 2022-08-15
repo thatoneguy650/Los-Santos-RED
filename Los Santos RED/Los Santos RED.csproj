@@ -444,6 +444,7 @@
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
+    <Compile Include="lsr\UI\Other\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\CrimesTab.cs" />

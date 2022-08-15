@@ -44,5 +44,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         float VehicleSpeedKMH { get; }
         float VehicleSpeedMPH { get; }
+        SearchMode SearchMode { get; }
+        bool IsStill { get; }
+        bool IsSitting { get; }
     }
 }

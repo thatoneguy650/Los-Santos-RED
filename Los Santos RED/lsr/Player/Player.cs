@@ -183,8 +183,8 @@ namespace Mod
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public Rage.Object AttachedProp { get; set; }
         public bool BeingArrested { get; private set; }
-        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 15f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
-        public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && CanConverse;
+        public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 5f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
+        public bool CanConverseWithLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CurrentLookedAtPed.CanConverse && (!CurrentLookedAtPed.IsCop || (IsNotWanted && !Investigation.IsActive)) && CanConverse;
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 15f;
@@ -634,7 +634,7 @@ namespace Mod
             NativeFunction.Natives.DESTROY_ALL_CAMS(0);
             NativeFunction.Natives.CLEAR_FOCUS();
             Game.LocalPlayer.HasControl = true;
-            if(Game.IsScreenFadedOut ||Game.IsScreenFadingOut)
+            if(Game.IsScreenFadedOut || Game.IsScreenFadingOut)
             {
                 Game.FadeScreenIn(0, false);
             }
@@ -1532,7 +1532,7 @@ namespace Mod
             LastDance = Dances.DanceLookups.PickRandom();
             Dance(LastDance);
         }
-        public void EnterVehicleAsPassenger()
+        public void EnterVehicleAsPassenger(bool withBlocking)
         {
             VehicleExt toEnter = World.Vehicles.GetClosestVehicleExt(Character.Position, false, 10f);
             if (toEnter != null && toEnter.Vehicle.Exists())
@@ -1540,12 +1540,16 @@ namespace Mod
                 int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
                 if (seatIndex != null)
                 {
-                    foreach (Ped passenger in toEnter.Vehicle.Occupants)
+                    if (withBlocking)
                     {
-                        if (passenger.Exists())
+                        foreach (Ped passenger in toEnter.Vehicle.Occupants)
                         {
-                            passenger.StaysInVehiclesWhenJacked = true;
-                            passenger.BlockPermanentEvents = true;
+                            if (passenger.Exists())
+                            {
+                                //passenger.CanBePulledOutOfVehicles = false;//when does this get turned off  ?
+                                passenger.StaysInVehiclesWhenJacked = true;
+                                passenger.BlockPermanentEvents = true;
+                            }
                         }
                     }
                     LastFriendlyVehicle = toEnter.Vehicle;

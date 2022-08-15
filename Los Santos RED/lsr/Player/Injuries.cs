@@ -26,6 +26,7 @@ public class Injuries
     private bool IsPrimary;
     public bool IsInjured { get; private set; }
     public string DebugString { get; set; }
+    public bool IsSeverlyInjured => CurrentIntensity > 1.5f;
     private string ClipsetAtCurrentIntensity
     {
         get

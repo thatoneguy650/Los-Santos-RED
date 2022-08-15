@@ -416,14 +416,20 @@ public class Debug
     private void DebugNumpad4()
     {
 
-       // Player.CellPhone.OpenBurner();
-       // GameFiber.Sleep(1000);
+        // Player.CellPhone.OpenBurner();
+        // GameFiber.Sleep(1000);
 
-       // return;
+        // return;
 
-       //// StuffTwo();
+        //// StuffTwo();
 
 
+        VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
+        if(myCar != null && myCar.Vehicle.Exists())
+        {
+            NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(myCar.Vehicle, true);
+            Game.DisplayHelp("Set Light State");
+        }
        // return;
         // Player.ResetScannerDebug();
         //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
@@ -442,27 +448,27 @@ public class Debug
         //}
         //Game.DisplayNotification($"Interior ID {Player.CurrentLocation?.CurrentInterior?.ID}");
 
-        PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //PedExt myPed = World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if (myPed != null)
-        {
-
-
-            // myPed.IsDealingDrugs = true;
+        //if (myPed != null)
+        //{
 
 
+        //    // myPed.IsDealingDrugs = true;
 
-            //if(RandomItems.RandomPercent(50))
-            //{
-            myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
-            //}
-            //else
-            //{
-            //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
-            //}
 
-            //}
-        }
+
+        //    //if(RandomItems.RandomPercent(50))
+        //    //{
+        //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+        //    //}
+        //    //else
+        //    //{
+        //    //    myPed.ShopMenu = ShopMenus.GetRandomDrugCustomerMenu();
+        //    //}
+
+        //    //}
+        //}
             if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
             Player.CurrentVehicle.HasUpdatedPlateType = true;

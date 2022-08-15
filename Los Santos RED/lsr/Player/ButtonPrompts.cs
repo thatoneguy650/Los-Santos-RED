@@ -179,10 +179,18 @@ public class ButtonPrompts
         {
             if(Player.CurrentLookedAtVehicle.Vehicle.HasDriver)
             {
-                if (!HasPrompt($"Carjack {Player.CurrentLookedAtVehicle?.Handle}"))
+                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeaponCategory != WeaponCategory.Melee)
+                {
+
+                    if (!HasPrompt($"Carjack {Player.CurrentLookedAtVehicle?.Handle}"))
+                    {
+                        RemovePrompts("VehicleInteract");
+                        AddPrompt("VehicleInteract", $"CarJack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
+                    }
+                }
+                else
                 {
                     RemovePrompts("VehicleInteract");
-                    AddPrompt("VehicleInteract", $"CarJack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
                 }
             }
             else
@@ -387,7 +395,7 @@ public class ButtonPrompts
     }
     private void AttemptAddVehiclePrompts()
     {
-        if(!Player.IsInVehicle && !Player.IsMovingFast && Player.CurrentLookedAtVehicle != null && Player.CurrentLookedAtVehicle.Vehicle.Exists() && Player.IsAliveAndFree)
+        if(!Player.IsInVehicle && !Player.IsMovingFast && Player.CurrentLookedAtVehicle != null && Player.CurrentLookedAtVehicle.Vehicle.Exists() && Player.IsAliveAndFree && !Player.IsIncapacitated)
         {
             VehicleInteractPrompts();   
         }

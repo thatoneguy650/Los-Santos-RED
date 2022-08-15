@@ -55,7 +55,7 @@ namespace LosSantosRED.lsr.Interface
 
 
         void ChangeName(string newName);
-        void EnterVehicleAsPassenger();
+        void EnterVehicleAsPassenger(bool withBlocking);
         void SetWantedLevel(int v1, string v2, bool v3);
         void StartConsumingActivity(ModItem modItem, bool v);
         void StopDynamicActivity();

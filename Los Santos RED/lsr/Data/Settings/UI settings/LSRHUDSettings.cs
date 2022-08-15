@@ -1,5 +1,6 @@
 ﻿public class LSRHUDSettings : ISettingsDefaultable
 {
+
     public bool CrimesDisplayEnabled { get; set; }
     public float CrimesDisplayPositionX { get; set; }
     public float CrimesDisplayPositionY { get; set; }
@@ -7,10 +8,7 @@
     public int CrimesDisplayJustificationID { get; set; }
     public GTAFont CrimesDisplayFont { get; set; }
 
-    public bool ShowSpeedLimitDisplay { get; set; }
-    public float SpeedLimitPositionX { get; set; }
-    public float SpeedLimitPositionY { get; set; }
-    public float SpeedLimitScale { get; set; }
+
     public string SpeedDisplayUnits { get; set; }
 
 
@@ -85,22 +83,25 @@
 
 
 
-
-    public bool ShowWeaponDisplay { get; set; }
-    //public bool FadeWeaponDisplay { get; set; }
     public float TopDisplayPositionX { get; set; }
     public float TopDisplayPositionY { get; set; }
     public float TopDisplayScale { get; set; }
-
     public float TopDisplaySpacing { get; set; }
+    public bool TopDisplayShowWeapon { get; set; }
+    public bool TopDisplayWeaponSimpleSelector { get; set; }
 
+    //public float LowerDisplayPositionX { get; set; }
+    //public float LowerDisplayPositionY { get; set; }
+    //public float LowerDisplayScale { get; set; }
+    public float LowerDisplaySpacing { get; set; }
 
-    //public bool FadeWeaponDisplayDuringWantedAndInvestigation { get; set; }
-    //public uint WeaponDisplayTimeToShow { get; set; }
-    //public uint WeaponDisplayTimeToFade { get; set; }
-    public bool WeaponDisplaySimpleSelector { get; set; }
+    public float LowerDisplayTimerBarSpacing { get; set; }
+    public float LowerDisplayButtonPromptSpacing { get; set; }
+    public float LowerDisplayNoItemSpacing { get; set; }
+    public bool ShowStaminaDisplay { get; set; }
+    public bool ShowIntoxicationDisplay { get; set; }
+    public bool ShowSearchModeDisplay { get; set; }
 
-    //public int DropShadowPixels { get; set; }
 
     public LSRHUDSettings()
     {
@@ -114,10 +115,12 @@
         CrimesDisplayScale = 0.4f;
         CrimesDisplayJustificationID = 2;
         CrimesDisplayFont = GTAFont.FontChaletComprimeCologne;
-        ShowSpeedLimitDisplay = true;
-        SpeedLimitPositionX = 0.75f;//0.78f
-        SpeedLimitPositionY = 0.98f;
-        SpeedLimitScale = 0.2f;
+
+
+
+
+
+
         SpeedDisplayUnits = "MPH";
         VehicleDisplayEnabled = true;
         FadeVehicleDisplay = true;
@@ -167,47 +170,38 @@
         ZoneDisplayShowPrimaryAgency = true;
         ZoneDisplayShowSecondaryAgency = false;
         ZoneDisplayShowPrimaryGang = true;     
-        ShowWeaponDisplay = true;
-        //FadeWeaponDisplay = true;
-        //FadeWeaponDisplayDuringWantedAndInvestigation = false;
-        //WeaponDisplayTimeToShow = 2500;
-        //WeaponDisplayTimeToFade = 2500;
-        WeaponDisplaySimpleSelector = false;
+        TopDisplayShowWeapon = true;
+        TopDisplayWeaponSimpleSelector = false;
 
 
-        //WeaponDisplayPositionX = 0.78f;
-        //WeaponDisplayPositionY = 0.98f;
 
+
+        //Top Display
         TopDisplayPositionX = 0.0175f; 
         TopDisplayPositionY = 0.985f;
         TopDisplayScale = 0.65f;
-
-
-
-
-
         TopDisplaySpacing = 0.035f;
 
 
-        //TopDisplay2PositionX = 0.0525f;
-        //TopDisplay2PositionY = 0.985f;
-        //TopDisplay2Scale = 0.65f;
-
-        //0.35f between?
-
-
-        //Vanilla Cash Position 1
-        /*
-         *        
-         *        AltCashPositionX = 0.0175f;
-        AltCashPositionY = 0.985f;
-        AltCashScale = 0.65f;
-        */
+        //Lower Display
+        //LowerDisplayPositionX = 0.93f;
+        //LowerDisplayPositionY = 0.98f;
+        //LowerDisplayScale = 0.52f;
+        LowerDisplaySpacing = 0.035f;
+        LowerDisplayTimerBarSpacing = 0.035f;
+        LowerDisplayButtonPromptSpacing = 0.04f;
+        LowerDisplayNoItemSpacing = 0.04f;
 
 
-        //Weapon Position 2
-        /*        WeaponDisplayPositionX = 0.0525f;
-        WeaponDisplayPositionY = 0.985f;
-        WeaponDisplayScale = 0.65f;*/
+        ShowStaminaDisplay = true;
+        ShowIntoxicationDisplay = true;
+        ShowSearchModeDisplay = true;
+
+        CrimesDisplayPositionX = 0.83f;
+        VehicleDisplayPositionX = 0.86f;
+        PlayerStatusPositionX = 0.89f;
+        StreetPositionX = 0.92f;
+        ZonePositionX = 0.95f;
+
     }
 }

@@ -20,6 +20,7 @@ public class HumanState
     public HungerNeed Hunger { get; private set; }
     public ThirstNeed Thirst { get; private set; }
     public SleepNeed Sleep { get; private set; }
+    public bool HasPressingNeeds { get; private set; }
     public HumanState(IHumanStateable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
@@ -43,10 +44,20 @@ public class HumanState
         }
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
+            bool IsBelowQuarter = false;
             foreach (HumanNeed humanNeed in HumanNeeds)
             {
                 humanNeed.Update();
+                if(humanNeed.IsBelowQuarter)
+                {
+                    IsBelowQuarter = true;
+                }
             }
+            HasPressingNeeds = IsBelowQuarter;
+        }
+        else
+        {
+            HasPressingNeeds = false;
         }
     }
     public void Reset()

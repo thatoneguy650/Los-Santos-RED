@@ -49,6 +49,8 @@ public class VehicleSettings : ISettingsDefaultable
     public bool DisableAutoHelmet { get; set; }
     [Description("Stops the auto rollover assistance feature")]
     public bool DisableRolloverFlip { get; set; }
+    [Description("If enabled, the player light rendering (dynamic shadows, more emissive) will be applied to ALL vehicles in the world. Light won't do the weird transition when getting out of a vehicle. Only applies within about 75 meters.")]
+    public bool UseBetterLightStateOnAI { get; set; }
 
     public VehicleSettings()
     {
@@ -81,5 +83,8 @@ public class VehicleSettings : ISettingsDefaultable
         AllowLockMissionVehicles = false;
         DisableAutoHelmet = true;
         DisableRolloverFlip = true;
+
+
+        UseBetterLightStateOnAI = false;
     }
 }

@@ -70,6 +70,11 @@ public class Vehicles
         GameFiber.Yield();
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
+
+            if (Settings.SettingsManager.VehicleSettings.UseBetterLightStateOnAI)
+            {
+                NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(vehicle, true);
+            }
             if (AddEntity(vehicle))
             {   
                 GameFiber.Yield();

@@ -181,7 +181,7 @@ public class ActionMenu : Menu
         EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
         EnterAsPassenger.Activated += (sender, selectedItem) =>
         {
-            Player.EnterVehicleAsPassenger();
+            Player.EnterVehicleAsPassenger(false);
             Actions.Visible = false;
         };
         ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");

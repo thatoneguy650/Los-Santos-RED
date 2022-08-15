@@ -53,6 +53,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
+        VehicleExt CurrentLookedAtVehicle { get; }
 
         void Gesture();
         void Dance(DanceData selectedItem);
@@ -69,7 +70,7 @@ namespace LosSantosRED.lsr.Interface
         void PauseCurrentActivity();
         void ContinueCurrentActivity();
         void Gesture(GestureData gestureData);
-        void EnterVehicleAsPassenger();
+        void EnterVehicleAsPassenger(bool withBlocking);
         void ShuffleToNextSeat();
         void ForceErraticDriver();
         void ToggleBodyArmor(int Type);
