@@ -42,10 +42,10 @@ public class TimerBarController
         SearchMode.BackgroundColor = Color.FromArgb(100, 202, 169, 66);
         SearchMode.ForegroundColor = Color.FromArgb(255, 202, 169, 66);//Yellow
 
-        if (TimerBarPool != null)
-        {
-            TimerBarPool.Add(StaminaBar, Intoxication, SearchMode);
-        }
+        //if (TimerBarPool != null)
+        //{
+        //    TimerBarPool.Add(StaminaBar, Intoxication, SearchMode);
+        //}
     }
     public void Update()
     {
@@ -64,7 +64,7 @@ public class TimerBarController
     private void UpdateStamina()
     {
         StaminaBar.Percentage = Player.Sprinting.StaminaPercentage;
-        if (Player.Sprinting.StaminaPercentage < 1.0f && Settings.SettingsManager.LSRHUDSettings.ShowStaminaDisplay)
+        if (Player.IsAliveAndFree && Player.Sprinting.StaminaPercentage < 1.0f && Settings.SettingsManager.LSRHUDSettings.ShowStaminaDisplay)
         {
             itemsDisplaying++;
             SafeAdd(StaminaBar);
@@ -77,7 +77,7 @@ public class TimerBarController
     private void UpdateIntoxication()
     {
         Intoxication.Percentage = Player.Intoxication.CurrentIntensityPercent;
-        if (Player.Intoxication.CurrentIntensityPercent > 0.0f && Settings.SettingsManager.LSRHUDSettings.ShowIntoxicationDisplay)
+        if (Player.IsAliveAndFree && Player.Intoxication.CurrentIntensityPercent > 0.0f && Settings.SettingsManager.LSRHUDSettings.ShowIntoxicationDisplay)
         {
             itemsDisplaying++;
             SafeAdd(Intoxication);
@@ -90,7 +90,7 @@ public class TimerBarController
     private void UpdateSearchMode()
     {
         SearchMode.Percentage = Player.SearchMode.SearchModePercentage;
-        if (Player.IsInSearchMode && Settings.SettingsManager.LSRHUDSettings.ShowSearchModeDisplay)
+        if (Player.IsAliveAndFree && Player.IsInSearchMode && Settings.SettingsManager.LSRHUDSettings.ShowSearchModeDisplay)
         {
             itemsDisplaying++;
             SafeAdd(SearchMode);         

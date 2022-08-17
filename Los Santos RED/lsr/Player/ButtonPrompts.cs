@@ -177,15 +177,15 @@ public class ButtonPrompts
     {
         if(Player.CurrentLookedAtVehicle.Vehicle.Exists())
         {
-            if(Player.CurrentLookedAtVehicle.Vehicle.HasDriver)
+            bool hasDriver = Player.CurrentLookedAtVehicle.Vehicle.HasDriver;
+            if (hasDriver && !Player.IsCop && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar)
             {
                 if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeaponCategory != WeaponCategory.Melee)
                 {
-
                     if (!HasPrompt($"Carjack {Player.CurrentLookedAtVehicle?.Handle}"))
                     {
                         RemovePrompts("VehicleInteract");
-                        AddPrompt("VehicleInteract", $"CarJack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
+                        AddPrompt("VehicleInteract", $"Armed Carjack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
                     }
                 }
                 else
@@ -193,16 +193,14 @@ public class ButtonPrompts
                     RemovePrompts("VehicleInteract");
                 }
             }
-            else
+            else if(!hasDriver && !Player.CurrentLookedAtVehicle.HasBeenEnteredByPlayer && !Player.IsCop && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar)
             {
                 if (!HasPrompt($"Enter {Player.CurrentLookedAtVehicle?.Handle}"))
                 {
                     RemovePrompts("VehicleInteract");
-                    AddPrompt("VehicleInteract", $"LockPick (Tap)", $"Enter {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
+                    AddPrompt("VehicleInteract", $"Stealth Enter (Tap)", $"Enter {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
                 }
             }
-
-
         }
         else
         {

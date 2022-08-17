@@ -45,7 +45,6 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool AllowAttackingFriendlyPeds { get; set; }
     [Description("If enabled, DLC vehicles will appear in the stores. You will need a trainer to stop the rockstar security measure that despawns DPC cars in SP.")]
     public bool AllowDLCVehiclesInStores { get; set; }
-
     [Description("Minimum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Min { get; set; }
     [Description("Maximum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
@@ -67,10 +66,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MaleFreeModeVoice = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
         FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GenerateStoreItemPreviews = true;
-
         MeleeDamageModifier = 1.0f;
-
-
         CorruptCopInvestigationClearCost = 2000;
         CorruptCopWantedClearCostScalar = 5000;
         HoursBetweenTasksWhenCompleted = 6;
@@ -79,8 +75,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         DisableVanillaGangHassling = true;
         AllowAttackingFriendlyPeds = false;
         AllowDLCVehiclesInStores = false;
-        PlayerSpeechSkill_Min = 30;
-        PlayerSpeechSkill_Max = 80;
+        PlayerSpeechSkill_Min = 15;
+        PlayerSpeechSkill_Max = 55;
     }
 
 }

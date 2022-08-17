@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class Sprinting
 {
+    private string SprintDisabledReason;
     private uint GameTimeStartedSprinting;
     private uint GameTimeStoppedSprinting;
     private bool isSprinting = false;
@@ -36,8 +37,15 @@ public class Sprinting
     {
         if (!isSprinting && CurrentStamina > Settings.SettingsManager.SprintSettings.MinStaminaToStart && Player.Character.Speed >= 2.0f)
         {
-            GameTimeStartedSprinting = Game.GameTime;
-            isSprinting = true;
+            if (CanSprint)
+            {
+                GameTimeStartedSprinting = Game.GameTime;
+                isSprinting = true;
+            }
+            else if(SprintDisabledReason != "")
+            {
+                Game.DisplayHelp($"Unable to Sprint ({SprintDisabledReason})");
+            }
         }
     }
     public void Stop()
@@ -123,16 +131,19 @@ public class Sprinting
     {
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds && Player.HumanState.HasPressingNeeds)
         {
+            SprintDisabledReason = "Needs";
             CanSprint = false;
             CanRegainStamina = false;
         }
         else if (Settings.SettingsManager.DamageSettings.AllowInjuryEffects && Player.Injuries.IsInjured && Player.Injuries.IsSeverlyInjured)
         {
+            SprintDisabledReason = "Injured";
             CanSprint = false;
             CanRegainStamina = false;
         }
         else
         {
+            SprintDisabledReason = "";
             CanSprint = true;
             CanRegainStamina = true;
         }

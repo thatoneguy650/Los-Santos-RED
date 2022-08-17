@@ -147,9 +147,11 @@ public class Respawning// : IRespawning
                     $"That stuff? It isn't mine. I also didn't do it. Whatever it is.",
                     $"What seems to be the problem officer?",
                     $"Are you sure this is your jurisdiction?",
-
-
                     $"He went that way.",
+                    $"Call my lawyer.",
+                    $"I ain't saying nothing!",
+                    $"...",
+                    $"Am I going to be on ~y~The Underbelly Of Paradise~s~?",
                 };
         Game.DisplaySubtitle("You: ~s~" + AttemptTalkOut.PickRandom());
         GameFiber.Sleep(4000);
@@ -163,8 +165,9 @@ public class Respawning// : IRespawning
                     $"I need me a bleeder burger at ~p~Burger Shot~s~ anyways. Get outta my sight.",
                     $"I've got enough paperwork already. Don't let me catch you again",
                     $"Whatever, ~y~Republican Space Rangers~s~ is almost on. Fuck off.",
-                    $"Must have forgot my drop gun. You're clean. Beat it.",
+                    $"It's your lucky day, I must have forgot my drop gun. Beat it.",
                     $"Whatever prick.",
+                    $"You aren't worth my time.",
                 };
             Game.DisplaySubtitle("~g~Cop: ~s~" + TalkOutResponsePositive.PickRandom());
             GameFiber.Sleep(4000);
@@ -186,7 +189,9 @@ public class Respawning// : IRespawning
                     $"This isn't Alderny prick.",
                     $"Are you trying to really piss me off?",
                     $"Next time bring cash.",
-                    $"Does this work wherever the fuck your are from?",
+                    $"Does this work wherever the fuck you are from?",
+                    $"You trying to sweet talk me asshole?",
+                    $"Keep being smart with me and you'll be eating the pavement.",
                 };
             Game.DisplaySubtitle("~r~Cop: ~s~" + TalkOutResponseNegative.PickRandom());
             return false;
@@ -240,6 +245,7 @@ public class Respawning// : IRespawning
         World.ClearSpawned();
         Time.SetDateTime(HospitalDischargeDate);
         GameFiber.Sleep(2000);
+        CurrentPlayer.HumanState.SetRandom();
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
         {
@@ -270,6 +276,7 @@ public class Respawning// : IRespawning
         World.ClearSpawned();
         Time.SetDateTime(BailPostingTime);
         GameFiber.Sleep(2000);
+        CurrentPlayer.HumanState.SetRandom();
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
         {
