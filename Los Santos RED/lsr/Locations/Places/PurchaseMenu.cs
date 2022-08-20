@@ -1421,10 +1421,24 @@ public class PurchaseMenu : Menu
     }
     private bool PurchaseVehicle(ModItem modItem)
     {
-        bool ItemInDeliveryBay = Rage.World.GetEntities(Transaction.ItemDeliveryPosition, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
-        if (!ItemInDeliveryBay)
+
+
+        bool ItemInDeliveryBay = true;
+        SpawnPlace ChosenSpawn = null;
+        foreach(SpawnPlace sp in Transaction.ItemDeliveryLocations)
         {
-            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, Transaction.ItemDeliveryPosition, Transaction.ItemDeliveryHeading);
+            ItemInDeliveryBay = Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+            if (!ItemInDeliveryBay)
+            {
+                ChosenSpawn = sp;
+                break;
+            }
+        }
+        
+
+        if (!ItemInDeliveryBay && ChosenSpawn != null)
+        {
+            Vehicle NewVehicle = new Vehicle(modItem.ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             if (NewVehicle.Exists())
             {
                 Transaction.OnItemPurchased(modItem, CurrentMenuItem, 1);

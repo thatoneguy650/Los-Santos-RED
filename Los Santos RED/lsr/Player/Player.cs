@@ -440,6 +440,8 @@ namespace Mod
 
             VehicleOwnership.Setup();
 
+            BankAccounts.Setup();
+
 
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -608,6 +610,7 @@ namespace Mod
             WeaponEquipment.Dispose();
             Destinations.Dispose();
             VehicleOwnership.Dispose();
+            BankAccounts.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -2562,6 +2565,7 @@ namespace Mod
             Injuries.Update(!IntoxicationIsPrimary);
             GameFiber.Yield();//TR Yield RemovedTest 1
             HumanState.Update();
+            BankAccounts.Update();
         }
         private void UpdateLookedAtPed()
         {

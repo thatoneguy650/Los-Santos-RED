@@ -315,11 +315,48 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<GunStore> GunStores = new List<GunStore>()
 
         {
-            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General shop","GunShop1") { IsEnabled = true, ContactName = EntryPoint.UndergroundGunsContactName, ParkingSpot = new Vector3(1044.326f, -2404.086f, 29.69204f), ParkingHeading = 352.682f },
-            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, MoneyToUnlock = 5000, ContactName = EntryPoint.UndergroundGunsContactName, ParkingSpot = new Vector3(-233.4157f, -1306.795f, 31.31846f), ParkingHeading = 89.50895f},
-            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, MoneyToUnlock = 10000, ContactName = EntryPoint.UndergroundGunsContactName, ParkingSpot = new Vector3(322.9245f, -1981.151f, 23.22856f), ParkingHeading = 305.8783f},
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, MoneyToUnlock = 15000, ContactName = EntryPoint.UndergroundGunsContactName, ParkingSpot = new Vector3(-258.1833f, 6250.695f, 31.48922f), ParkingHeading =25.17568f, },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, MoneyToUnlock = 25000, ContactName = EntryPoint.UndergroundGunsContactName, ParkingSpot = new Vector3(1661.471f, 4951.514f, 42.07043f), ParkingHeading = 217.9459f},
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Underground Guns #1", "General shop","GunShop1") { IsEnabled = true, ContactName = EntryPoint.UndergroundGunsContactName, 
+                ParkingSpaces = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(1044.326f, -2404.086f, 29.69204f),352.682f),
+
+                    new SpawnPlace(new Vector3(1044.763f, -2397.967f, 29.08815f), 355.825f),
+                    new SpawnPlace(new Vector3(1045.676f, -2389.352f, 29.35636f), 355.9221f),
+                    new SpawnPlace(new Vector3(1061.272f, -2445.152f, 28.1964f), 89.23737f),
+                    new SpawnPlace(new Vector3(1066.94f, -2463.334f, 27.96432f), 357.0727f),
+                } },
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Underground Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, MoneyToUnlock = 5000, ContactName = EntryPoint.UndergroundGunsContactName,                
+                ParkingSpaces = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-233.4157f, -1306.795f, 31.31846f),89.50895f),
+
+                    new SpawnPlace(new Vector3(-221.8178f, -1291.497f, 30.46753f), 38.83605f),
+                    new SpawnPlace(new Vector3(-215.6527f, -1306.28f, 30.48727f), 275.802f),
+                    new SpawnPlace(new Vector3(-198.912f, -1300.158f, 30.46804f), 260.0593f),
+                    new SpawnPlace(new Vector3(-223.2236f, -1308.06f, 30.46892f), 89.06057f),
+            } },
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Underground Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, MoneyToUnlock = 10000, ContactName = EntryPoint.UndergroundGunsContactName,                
+                ParkingSpaces = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(322.9245f, -1981.151f, 23.22856f),305.8783f),
+
+                    new SpawnPlace(new Vector3(317.3759f, -1986.411f, 21.63353f), 137.6388f),
+                    new SpawnPlace(new Vector3(318.4567f, -2005.651f, 21.25648f), 205.8739f),
+                    new SpawnPlace(new Vector3(308.2981f, -1978.542f, 21.6238f), 141.6945f),
+            } },
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Underground Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, MoneyToUnlock = 15000, ContactName = EntryPoint.UndergroundGunsContactName,                
+                ParkingSpaces = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
+
+                    new SpawnPlace(new Vector3(-256.5694f, 6265.761f, 30.58578f), 317.2921f),
+                    new SpawnPlace(new Vector3(-267.765f, 6251.046f, 30.61459f), 312.4225f),
+                    new SpawnPlace(new Vector3(-269.5155f, 6274.559f, 30.46577f), 136.3388f),
+                } },
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Underground Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, MoneyToUnlock = 25000, ContactName = EntryPoint.UndergroundGunsContactName,                
+                ParkingSpaces = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
+
+                    new SpawnPlace(new Vector3(1659.542f, 4946.245f, 41.20879f), 224.609f),
+                    new SpawnPlace(new Vector3(1695.27f, 4973.078f, 42.8186f), 288.7947f),
+                    new SpawnPlace(new Vector3(1703.823f, 4947.335f, 41.68751f), 54.86424f),
+                } },
 
         };
         List<Hotel> Hotels = new List<Hotel>()
@@ -889,31 +926,98 @@ public class PlacesOfInterest : IPlacesOfInterest
             new CarDealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "","BenefactorGallavanterMenu") { BannerImagePath = "benefactorgallivanter.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(-83.40893f, 80.80059f, 71.08399f), ItemDeliveryHeading = 150.8571f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-83.40893f, 80.80059f, 71.08399f),150.8571f),
+                    new SpawnPlace(new Vector3(-91.7436f, 80.85535f, 70.77888f), 332.7139f),
+                    new SpawnPlace(new Vector3(-85.95417f, 92.15825f, 71.52161f), 335.7605f),
+                    new SpawnPlace(new Vector3(-91.628f, 94.93055f, 71.50634f), 336.9444f),
+                    new SpawnPlace(new Vector3(-94.94605f, 96.75835f, 71.55168f), 334.6241f),
+                    new SpawnPlace(new Vector3(-97.94375f, 98.12598f, 71.58062f), 333.6715f),
+                    new SpawnPlace(new Vector3(-101.6502f, 99.49832f, 71.58549f), 337.4208f),
+                    new SpawnPlace(new Vector3(-106.9904f, 89.61737f, 70.6558f), 330.9741f),
+                    new SpawnPlace(new Vector3(-100.8206f, 86.50267f, 70.71719f), 329.1442f),
+                    new SpawnPlace(new Vector3(-97.96925f, 84.45586f, 70.71719f), 333.292f),
+                    new SpawnPlace(new Vector3(-76.91218f, 94.65022f, 72.13159f), 249.3525f),
+                    new SpawnPlace(new Vector3(-62.50578f, 88.61669f, 72.6437f), 247.8105f),
+                } },
+
             new CarDealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid", "","VapidMenu") { BannerImagePath = "vapid.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(-223.3041f, -1166.967f, 22.99067f), ItemDeliveryHeading = 347.7626f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-223.3041f, -1166.967f, 22.99067f), 347.7626f),
+
+                    new SpawnPlace(new Vector3(-237.1176f, -1176.55f, 22.12655f), 322.7791f),
+                    new SpawnPlace(new Vector3(-237.2399f, -1165.014f, 22.14342f), 272.7086f),
+                    new SpawnPlace(new Vector3(-224.3428f, -1177.964f, 22.16829f), 13.04972f),
+                } },
+
             new CarDealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "","SandersMenu") { BannerImagePath = "sanders.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(259.3008f, -1150.141f, 29.29169f), ItemDeliveryHeading = 358.0416f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(259.3008f, -1150.141f, 29.29169f), 358.0416f),
+
+                    new SpawnPlace(new Vector3(262.3277f, -1161.748f, 28.36098f), 177.7536f),
+                    new SpawnPlace(new Vector3(262.2397f, -1149.571f, 28.46074f), 180.2331f),
+                    new SpawnPlace(new Vector3(256.4698f, -1161.971f, 28.34791f), 175.3772f),
+                    new SpawnPlace(new Vector3(256.4955f, -1150.385f, 28.4598f), 181.1595f),
+                    new SpawnPlace(new Vector3(250.4825f, -1161.918f, 28.31437f), 175.5457f),
+                    new SpawnPlace(new Vector3(250.2824f, -1150.506f, 28.44035f), 177.726f),
+                    new SpawnPlace(new Vector3(247.0185f, -1162.408f, 28.32439f), 175.2579f),
+                } },
+
             new CarDealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "","HelmutMenu") { BannerImagePath = "helmut.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(-214.548f, 6195.725f, 31.48873f), ItemDeliveryHeading = 314.937f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-214.548f, 6195.725f, 31.48873f), 314.937f),
+
+                    new SpawnPlace(new Vector3(-229.8454f, 6197.135f, 30.65802f), 312.3795f),
+                    new SpawnPlace(new Vector3(-240.5559f, 6199.209f, 30.65911f), 320.0063f),
+                    new SpawnPlace(new Vector3(-245.7337f, 6203.578f, 30.65917f), 312.8283f),
+                    new SpawnPlace(new Vector3(-247.8804f, 6205.941f, 30.65889f), 317.6494f),
+                    new SpawnPlace(new Vector3(-204.6075f, 6204.576f, 30.65833f), 312.9748f),
+                } },
+
             new CarDealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "","PremiumDeluxeMenu") {
                 CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
-                ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,
-                ItemDeliveryPosition = new Vector3(-56.35966f, -1116.532f, 26.4349f), ItemDeliveryHeading = 2.403779f,InteriorID = 7170},
+                ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,InteriorID = 7170,
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-56.35966f, -1116.532f, 26.4349f), 2.403779f),
+
+                    new SpawnPlace(new Vector3(-57.66466f, -1107.103f, 25.60543f), 65.5113f),
+                    new SpawnPlace(new Vector3(-47.87741f, -1115.788f, 25.60351f), 3.64787f),
+                    new SpawnPlace(new Vector3(-50.5764f, -1116.585f, 25.60393f), 0.4485914f),
+                    new SpawnPlace(new Vector3(-53.53827f, -1115.804f, 25.60398f), 1.730222f),
+                    new SpawnPlace(new Vector3(-58.79285f, -1116.476f, 25.60338f), 2.648925f),
+                    new SpawnPlace(new Vector3(-48.28887f, -1078.742f, 25.9386f), 260.1963f),
+                    new SpawnPlace(new Vector3(-15.29717f, -1094.516f, 25.84302f), 173.1287f),
+                } },
+
             new CarDealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "","LuxuryAutosMenu") {
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(-768.5347f, -245.1849f, 37.2452f), ItemDeliveryHeading = 197.8712f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(-768.5347f, -245.1849f, 37.2452f), 197.8712f),
+
+                    new SpawnPlace(new Vector3(-811.3596f, -221.3954f, 36.38088f), 30.76537f),
+                    new SpawnPlace(new Vector3(-803.5298f, -234.8655f, 36.26606f), 29.17092f),
+                    new SpawnPlace(new Vector3(-755.7492f, -242.3515f, 36.36629f), 281.1064f),
+                    new SpawnPlace(new Vector3(-760.1515f, -232.0841f, 36.45313f), 204.9191f),
+                } },
+
             new CarDealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales","","LarrysRVMenu"){
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-                ItemDeliveryPosition = new Vector3(1236.887f, 2709.858f, 38.00579f), ItemDeliveryHeading = 201.5402f},
+                ItemDeliveryLocations = new List<SpawnPlace>() { 
+                    new SpawnPlace(new Vector3(1236.887f, 2709.858f, 38.00579f), 201.5402f),
+
+                    new SpawnPlace(new Vector3(1246.11f, 2712.359f, 37.17435f), 200.71f),
+                    new SpawnPlace(new Vector3(1232.931f, 2699.977f, 37.18208f), 94.271f),
+                    new SpawnPlace(new Vector3(1210.044f, 2706.118f, 37.17501f), 173.5784f),
+                    new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
+                } },
 
         };
         List<DriveThru> DriveThrus = new List<DriveThru>()

@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using Rage;
 using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
@@ -68,9 +69,13 @@ public class LocationsTab
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             List<MissionInformation> missionInfoList = new List<MissionInformation>();
-            foreach (BasicLocation bl in DirectoryLocations.Where(x => x.TypeName == typeName).OrderBy(x => Player.Character.DistanceTo2D(x.EntrancePosition)))
+            foreach (BasicLocation bl in DirectoryLocations.Where(x => x.TypeName == typeName).OrderBy(x=> x.SortOrder).ThenBy(x => Player.Character.DistanceTo2D(x.EntrancePosition)))
             {
-                MissionInformation locationInfo = new MissionInformation(bl.FullName, bl.Description, bl.DirectoryInfo(Time.CurrentHour, Player.Character.DistanceTo2D(bl.EntrancePosition)));
+                MissionInformation locationInfo = new MissionInformation(bl.Name, "", bl.DirectoryInfo(Time.CurrentHour, Player.Character.DistanceTo2D(bl.EntrancePosition)));
+                if (bl.HasBannerImage)
+                {
+                    locationInfo.Logo = new MissionLogo(Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{bl.BannerImagePath}"));
+                }
                 missionInfoList.Add(locationInfo);
             }
             TabMissionSelectItem basicLocationTypeList = new TabMissionSelectItem(typeName, missionInfoList);
@@ -78,7 +83,8 @@ public class LocationsTab
             {
                 if (selectedItem != null)
                 {
-                    BasicLocation toGPS = DirectoryLocations.FirstOrDefault(x => x.FullName == selectedItem.Name);
+                    string streetAddress = selectedItem.ValueList.FirstOrDefault(x => x.Item1 == "Address:")?.Item2;
+                    BasicLocation toGPS = DirectoryLocations.FirstOrDefault(x => x.Name == selectedItem.Name && x.StreetAddress == streetAddress);
                     if (toGPS != null)
                     {
                         Player.Destinations.AddGPSRoute(toGPS.Name, toGPS.EntrancePosition);

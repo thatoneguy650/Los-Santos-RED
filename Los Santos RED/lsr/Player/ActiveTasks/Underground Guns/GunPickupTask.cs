@@ -31,11 +31,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Vehicle SpawnedVehicle = null;
         private VehicleExt SpawnedVehicleExt;
         private Rage.Object GunProp;
+
+
         private GunStore DropOffStore;
         private GunStore PickUpStore;
+
+
+
+
         private int MoneyToRecieve;
         private bool IsSpawnedVehicleDestroyed => !SpawnedVehicle.Exists() || SpawnedVehicle.Health <= 300 || SpawnedVehicle.EngineHealth <= 300;
-        private bool IsSpawnedVehicleParkedAtDestination => SpawnedVehicle.Exists() && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, DropOffStore.CellX, DropOffStore.CellY, 2) && !SpawnedVehicle.HasOccupants && SpawnedVehicle.DistanceTo2D(DropOffStore.ParkingSpot) <= 50f;
+        private bool IsSpawnedVehicleParkedAtDestination => SpawnedVehicle.Exists() && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, DropOffStore.CellX, DropOffStore.CellY, 2) && !SpawnedVehicle.HasOccupants && SpawnedVehicle.DistanceTo2D(DropOffStore.EntrancePosition) <= 50f;
         private bool IsPlayerDrivingSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.Driver?.Handle == Player.Character.Handle;
         private bool IsPlayerFarAwayFromSpawnedVehicle => SpawnedVehicle.Exists() && SpawnedVehicle.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearbyPickupStore => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, PickUpStore.CellX, PickUpStore.CellY, 5);
@@ -244,14 +250,27 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             PickUpStore = null;
             if (DropOffStore != null)
             {
-                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == EntryPoint.UndergroundGunsContactName && x.Name != DropOffStore.Name && x.ParkingSpot != Vector3.Zero).PickRandom();
+                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == EntryPoint.UndergroundGunsContactName && x.Name != DropOffStore.Name && x.ParkingSpaces.Any()).PickRandom();
             }
         }
         private bool SpawnVehicle(GunStore PickUpStore)
         {
             SpawnLocation SpawnLocation = new SpawnLocation(PickUpStore.EntrancePosition);
-            SpawnLocation.StreetPosition = PickUpStore.ParkingSpot;
-            SpawnLocation.Heading = PickUpStore.ParkingHeading;
+            SpawnPlace ParkingSpot = null;
+            foreach (SpawnPlace sp in PickUpStore.ParkingSpaces)
+            {
+                if (!Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any())
+                {
+                    ParkingSpot = sp;
+                    break;
+                }
+            }
+            if(ParkingSpot == null)
+            {
+                return false;
+            }
+            SpawnLocation.StreetPosition = ParkingSpot.Position;
+            SpawnLocation.Heading = ParkingSpot.Heading;
             if (SpawnLocation.StreetPosition != Vector3.Zero)
             {
                 SpawnedVehicle = new Vehicle("burrito3", SpawnLocation.StreetPosition, SpawnLocation.Heading);

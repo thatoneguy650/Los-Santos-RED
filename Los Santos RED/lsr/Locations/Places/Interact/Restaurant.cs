@@ -96,7 +96,7 @@ public class Restaurant : InteractableLocation
     public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
         List<Tuple<string, string>> BaseList = base.DirectoryInfo(currentHour, distanceTo).ToList();
-        BaseList.Add(Tuple.Create(FoodType.ToString(), ""));
+        BaseList.Add(Tuple.Create("Type: ", FoodType.ToString()));
         return BaseList;
 
     }

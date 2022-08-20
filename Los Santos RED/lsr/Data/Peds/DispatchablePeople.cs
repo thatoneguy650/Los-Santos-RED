@@ -315,12 +315,89 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("g_m_y_mexgang_01",30,30,5,10,400,600,0,1),
             new DispatchablePerson("a_m_y_mexthug_01",30,30,5,10,400,600,0,1), };
         List<DispatchablePerson> MafiaPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
-            new DispatchablePerson("s_m_m_highsec_02",30,30,5,10,400,600,0,1),
-            new DispatchablePerson("u_m_m_jewelsec_01",30,30,5,10,400,600,0,1),
-             new DispatchablePerson("u_m_m_aldinapoli",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            //new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 0, 0) },new List<PedPropComponent>() {  }) },//not good, bad heads
+            //new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 1, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            //new DispatchablePerson("s_m_m_highsec_01",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(0, 0, 2, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+            //new DispatchablePerson("s_m_m_highsec_02",30,30,5,10,400,600,0,1),
+            //new DispatchablePerson("u_m_m_jewelsec_01",30,30,5,10,400,600,0,1),
+            // new DispatchablePerson("u_m_m_aldinapoli",30,30,5,10,400,600,0,1) { RequiredVariation = new PedVariation(new List<PedComponent>() { new PedComponent(4, 0, 0, 0) },new List<PedPropComponent>() { }) },//not good, bad heads
+
+            //Dark Grey Unbuttoned Suit with Red Tie and buttoned undershirt
+            new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) { RandomizeHead = true,
+             RequiredVariation = new PedVariation(new List<PedComponent>() { 
+                 new PedComponent(3, 4, 0, 0),
+                 new PedComponent(4, 10, 0, 0),
+                 new PedComponent(6, 10, 0, 0),
+                 new PedComponent(7, 21, 2, 0),
+                 new PedComponent(8, 10, 0, 0),
+                 new PedComponent(11, 4, 0, 0) },new List<PedPropComponent>() { }),
+             OptionalComponents = new List<PedComponent>() {
+                new PedComponent(7, 21, 1, 0),//7-21 is a tie in lotsa colors
+                new PedComponent(7, 21, 2, 0),
+                new PedComponent(7, 21, 3, 0),
+                new PedComponent(7, 21, 4, 0),
+                new PedComponent(7, 21, 5, 0),
+                new PedComponent(7, 21, 6, 0),
+                new PedComponent(7, 21, 7, 0),
+                new PedComponent(7, 21, 8, 0),
+                new PedComponent(7, 21, 9, 0),
+                new PedComponent(7, 21, 10, 0),
+                new PedComponent(7, 21, 11, 0),
+                new PedComponent(7, 21, 12, 0),
+
+                new PedComponent(8, 10, 0, 0),//undershirt in a few colors, buttoned
+                new PedComponent(8, 10, 1, 0),
+                new PedComponent(8, 10, 2, 0),
+                new PedComponent(8, 10, 3, 0),
+                new PedComponent(8, 10, 4, 0),
+                new PedComponent(8, 10, 5, 0),
+                new PedComponent(8, 10, 6, 0),
+                new PedComponent(8, 10, 7, 0),
+                new PedComponent(8, 10, 8, 0),
+                new PedComponent(8, 10, 9, 0),
+                new PedComponent(8, 10, 10, 0),
+                new PedComponent(8, 10, 11, 0),
+                new PedComponent(8, 10, 12, 0),
+                new PedComponent(8, 10, 13, 0),
+                new PedComponent(8, 10, 14, 0),
+                new PedComponent(8, 10, 15, 0),
+
+                new PedComponent(11, 10, 0, 0),//closed jacket
+             },
+             OptionalComponentChance = 80,
+             },
+            //Dark Grey Unbuttoned Suit with unbuttoned undershirt
+            new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) { RandomizeHead = true,
+             RequiredVariation = new PedVariation(new List<PedComponent>() {  
+                 new PedComponent(3, 4, 0, 0),
+                 new PedComponent(4, 10, 0, 0),
+                 new PedComponent(6, 10, 0, 0),
+                 new PedComponent(8, 11, 0, 0),
+                 new PedComponent(11, 4, 0, 0) },new List<PedPropComponent>() { }),
+             OptionalComponents = new List<PedComponent>() {
+                new PedComponent(8, 11, 0, 0),//undershirt in a few colors, unbuttoned
+                new PedComponent(8, 11, 1, 0),
+                new PedComponent(8, 11, 2, 0),
+                new PedComponent(8, 11, 3, 0),
+                new PedComponent(8, 11, 4, 0),
+                new PedComponent(8, 11, 5, 0),
+                new PedComponent(8, 11, 6, 0),
+                new PedComponent(8, 11, 7, 0),
+                new PedComponent(8, 11, 8, 0),
+                new PedComponent(8, 11, 9, 0),
+                new PedComponent(8, 11, 10, 0),
+                new PedComponent(8, 11, 11, 0),
+                new PedComponent(8, 11, 12, 0),
+                new PedComponent(8, 11, 13, 0),
+                new PedComponent(8, 11, 14, 0),
+                new PedComponent(8, 11, 15, 0),
+
+                new PedComponent(11, 10, 0, 0),//closed jacket
+             },
+             OptionalComponentChance = 80,
+             },
+
+
                                                                                                                                                                                                    };
         List<DispatchablePerson> YardiesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("a_m_m_og_boss_01",30,30,5,10,400,600,0,1),

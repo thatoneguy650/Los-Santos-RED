@@ -176,6 +176,7 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
+    <Compile Include="lsr\Locations\SpawnPlace.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Inventory\ToolTypes.cs" />

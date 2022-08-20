@@ -20,8 +20,9 @@ public class Transaction
     public bool HasCustomItemPostion => ItemPreviewPosition != Vector3.Zero;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
-    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
-    public float ItemDeliveryHeading { get; set; } = 0f;
+    //public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
+    //public float ItemDeliveryHeading { get; set; } = 0f;
+    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public bool PreviewItems { get; set; } = true;
     public PersonTransaction PersonTransaction;
 

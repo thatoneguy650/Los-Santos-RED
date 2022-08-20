@@ -97,6 +97,9 @@ public class BasicLocation
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapIconAlpha { get; set; } = 1.0f;
+
+    public virtual int SortOrder { get; set; } = 999;
+
     [XmlIgnore]
     public int CellX { get; set; }
     [XmlIgnore]
@@ -256,11 +259,13 @@ public class BasicLocation
     {
         return new List<Tuple<string, string>>       
         {
-        Tuple.Create(IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~", ""),
-        Tuple.Create(Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime-12}{(CloseTime <= 11 ? " am" : " pm")}", ""),
-        Tuple.Create(StreetAddress, ""),
-        Tuple.Create("~p~" + ZoneName + "~s~", ""),
-        Tuple.Create(Math.Round(distanceTo * 0.000621371,2).ToString() + " Miles away", ""),
+        Tuple.Create("Currently:",IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~"),
+        Tuple.Create("Hours:", Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime-12}{(CloseTime <= 11 ? " am" : " pm")}"),
+        Tuple.Create("Address:" ,StreetAddress),
+        Tuple.Create("Location:","~p~" + ZoneName + "~s~"),
+        Tuple.Create("Distance:",Math.Round(distanceTo * 0.000621371,2).ToString() + " Miles away"),
+        //Tuple.Create("~s~~s~", FullName),//need a key to look these up, cant store anything in here
+
         };
     }
 

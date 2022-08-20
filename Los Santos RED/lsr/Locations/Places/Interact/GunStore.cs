@@ -31,8 +31,9 @@ public class GunStore : InteractableLocation
     //public string MenuID { get; set; }
 
 
-    public Vector3 ParkingSpot { get; set; }
-    public float ParkingHeading { get; set; }
+    //public Vector3 ParkingSpot { get; set; }
+    //public float ParkingHeading { get; set; }
+    public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gun Store";
     public override int MapIcon { get; set; } = (int)BlipSprite.AmmuNation;

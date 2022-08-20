@@ -399,6 +399,9 @@ public class GangDispatcher
     }
     public void DebugSpawnGangMember(string gangID, bool onFoot)
     {
+        VehicleType = null;
+        PersonType = null;
+        Gang = null;
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;

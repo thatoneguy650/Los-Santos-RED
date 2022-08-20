@@ -33,6 +33,10 @@ public class Residence : InteractableLocation
     private InventoryMenu InventoryMenu;
     private IActivityPerformable ActivityPerformable;
 
+    private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
+    private string IsRentedRightLabel => Time == null ? $"Due Date: {DateRentalPaymentDue}" : "Remaining Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
+    private string CanRentRightLabel => $"{RentalFee:C0} for {RentalDays} days";
+    private string CanPurchaseRightLabel => $"{PurchasePrice:C0}";
     public Residence() : base()
     {
 
@@ -61,7 +65,7 @@ public class Residence : InteractableLocation
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
 
-
+    public override int SortOrder => IsOwnedOrRented ? 1 : 999;
 
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -199,12 +203,12 @@ public class Residence : InteractableLocation
 
                 if (!IsOwned && CanBuy)
                 {
-                    PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = $"{PurchasePrice:C0}" };
+                    PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
                     OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
                 }
                 if (!IsRented && CanRent)
                 {
-                    RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = $"{RentalFee:C0} for {RentalDays} days" };
+                    RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
                     OfferSubMenu.AddItem(RentResidenceMenuItem);
                 }
             }
@@ -217,18 +221,12 @@ public class Residence : InteractableLocation
         {
             if (IsRented)
             {
-                RentDisplayItem = new UIMenuItem("Rental Period", $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~") { RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString() };
+                RentDisplayItem = new UIMenuItem("Rental Period", IsRentedDescription) { RightLabel = IsRentedRightLabel };
                 InteractionMenu.AddItem(RentDisplayItem);
             }
             RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
-            //InventoryMenuItem = new UIMenuItem("Inventory", "Access the inventory at this location");
-            //InventoryMenuItem.RightBadge = UIMenuItem.BadgeStyle.Heart;
             InteractionMenu.AddItem(RestMenuItem);
-            //InteractionMenu.AddItem(InventoryMenuItem);
-
             InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
-
-
         }
     }
     private void OfferMenu_OnMenuClose(UIMenu sender)
@@ -400,5 +398,36 @@ public class Residence : InteractableLocation
             return $"Inquire About {Name}";
         }
     }
+
+    public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
+    {
+        List<Tuple<string, string>> BaseList = base.DirectoryInfo(currentHour, distanceTo).ToList();
+        if (IsOwnedOrRented)
+        {
+            if (IsRented)
+            {
+                BaseList.Add(Tuple.Create("Status:", IsRentedRightLabel));
+            }
+            else if (IsOwned)
+            {
+                BaseList.Add(Tuple.Create("Status:", "~g~Owned~s~"));
+            }
+        }
+        else
+        {
+            if (CanRent)
+            {
+                BaseList.Add(Tuple.Create("Rent:", CanRentRightLabel));
+
+            }
+            if (CanBuy)
+            {
+                BaseList.Add(Tuple.Create("Buy:", CanPurchaseRightLabel));
+            }
+        }
+        return BaseList;
+
+    }
+
 
 }

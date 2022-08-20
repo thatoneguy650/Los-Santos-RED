@@ -117,6 +117,20 @@ public class Heads : IHeads
                     };
 
         RandomHeadDataLookup.Add(new HeadDataGroup("AllHeads", RandomHeadList));
+        List<RandomHeadData> MafiaHeadList = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),///white male
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("MafiaHeads", MafiaHeadList));
+
 
         Serialization.SerializeParams(RandomHeadDataLookup, ConfigFileName);
 

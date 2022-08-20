@@ -218,11 +218,43 @@ public class GameSaves : IGameSaves
         SawyerGameSave.SpeechSkill = 80;
 
 
+        PedVariation TestVar1 = new PedVariation(new List<PedComponent>() { new PedComponent(3, 4, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 21, 2, 0), new PedComponent(8, 10, 0, 0), new PedComponent(11, 4, 0, 0) }, new List<PedPropComponent>() { });
+
+        GameSave TestGameSave = new GameSave("Michael Jones", 950000, "MP_M_FREEMODE_01", true, TestVar1, SawyerWeapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
+                                                                                                                                                                });
+
+        TestGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
+        TestGameSave.PlayerHeading = 45f;
+        TestGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+
+        TestGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        TestGameSave.DriversLicense = new DriversLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
+        TestGameSave.CCWLicense = new CCWLicense() { IssueDate = SawyerGameSave.CurrentDateTime, ExpirationDate = SawyerGameSave.CurrentDateTime.AddMonths(12) };
+        TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = SawyerGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = SawyerGameSave.CurrentDateTime });
+        TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        TestGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        TestGameSave.HungerValue = 75.0f;
+        TestGameSave.ThirstValue = 75.0f;
+        TestGameSave.SleepValue = 75.0f;
+        TestGameSave.SpeechSkill = 80;
+
+
+
+
+
         GameSaveList = new List<GameSave>
         {
             AlexisGameSave,
             SawyerGameSave,
+            TestGameSave,
         };
+
+
+        
+
+
+
+
         //AddCopModels();
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }

@@ -15,6 +15,8 @@ public class BankAccounts
     private ISettingsProvideable Settings;
     private uint GameTimeLastChangedMoney;
     private int money = 0;
+    private int currentMoney;
+
     public int LastChangeMoneyAmount { get; set; }
     public bool RecentlyChangedMoney => GameTimeLastChangedMoney != 0 && Game.GameTime - GameTimeLastChangedMoney <= 7000;
     public int Money
@@ -65,7 +67,12 @@ public class BankAccounts
     }
     public void Update()
     {
-
+        if (currentMoney != Money)
+        {
+            LastChangeMoneyAmount = Money - currentMoney;
+            GameTimeLastChangedMoney = Game.GameTime;
+            currentMoney = Money;
+        }
     }
     public void GiveMoney(int Amount)
     {
@@ -112,6 +119,7 @@ public class BankAccounts
                 money += Amount;
             }
         }
+        //currentMoney = Money;
     }
     public void SetMoney(int Amount)
     {
@@ -134,6 +142,7 @@ public class BankAccounts
         {
             money = Amount;
         }
+        currentMoney = Money;
     }
 
 

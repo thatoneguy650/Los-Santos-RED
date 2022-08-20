@@ -33,8 +33,12 @@ public class CarDealership : InteractableLocation
 
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
-    public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
-    public float ItemDeliveryHeading { get; set; } = 0f;
+
+
+    public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
+
+    //public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
+    //public float ItemDeliveryHeading { get; set; } = 0f;
 
 
     public CarDealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -68,8 +72,11 @@ public class CarDealership : InteractableLocation
                 CreateInteractionMenu();
                 Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
 
-                Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
-                Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
+                //Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
+                //Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
+
+                Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+
                 Transaction.ItemPreviewPosition = ItemPreviewPosition;
                 Transaction.ItemPreviewHeading = ItemPreviewHeading;
 
