@@ -90,6 +90,40 @@ public class PedSwap : IPedSwap
             Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
     }
+
+    public void BecomeCustomPed2()
+    {
+        try
+        {
+
+            GameFiber.StartNew(delegate
+            {
+                ResetOffsetForCurrentModel();
+                Player.IsCustomizingPed = true;
+                MenuPool menuPool = new MenuPool();
+                PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings);
+                PedCustomizer.Setup();
+                PedCustomizer.Start();
+                GameFiber.Yield();
+                while (menuPool.IsAnyMenuOpen())
+                {
+                    PedCustomizer.Update();
+                    GameFiber.Yield();
+                }
+                PedCustomizer.Dispose();
+                if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                {
+                    AddOffset();
+                }
+                Player.IsCustomizingPed = false;
+            }, "Custom Ped Loop 2");
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: BecomeCustomPed2; " + ex.Message + " " + ex.StackTrace, 0);
+        }
+    }
+
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try

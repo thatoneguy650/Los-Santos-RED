@@ -20,7 +20,7 @@ public enum FoodType
     Snack = 1 << 8,
     Donut = 1 << 9,
     Sandwiches = 1 << 10,
-    Fish = 1 << 11,
+    Seafood = 1 << 11,
     Burger = 1 << 12,
     Pizza = 1 << 13,
     FastFood = 1 << 14,

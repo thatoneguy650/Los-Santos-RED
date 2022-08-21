@@ -257,16 +257,18 @@ public class BasicLocation
     }
     public virtual List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
-        return new List<Tuple<string, string>>       
+        List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+        if(Description != "")
         {
-        Tuple.Create("Currently:",IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~"),
-        Tuple.Create("Hours:", Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime-12}{(CloseTime <= 11 ? " am" : " pm")}"),
-        Tuple.Create("Address:" ,StreetAddress),
-        Tuple.Create("Location:","~p~" + ZoneName + "~s~"),
-        Tuple.Create("Distance:",Math.Round(distanceTo * 0.000621371,2).ToString() + " Miles away"),
-        //Tuple.Create("~s~~s~", FullName),//need a key to look these up, cant store anything in here
+            toreturn.Add(Tuple.Create(Description, ""));
+        }
+        toreturn.Add(Tuple.Create("Currently:", IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~"));
+        toreturn.Add(Tuple.Create("Hours:", Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}"));
+        toreturn.Add(Tuple.Create("Address:", StreetAddress));
+        toreturn.Add(Tuple.Create("Location:", "~p~" + ZoneName + "~s~"));
+        toreturn.Add(Tuple.Create("Distance:", Math.Round(distanceTo * 0.000621371, 2).ToString() + " Miles away"));
+        return toreturn;
 
-        };
     }
 
 }

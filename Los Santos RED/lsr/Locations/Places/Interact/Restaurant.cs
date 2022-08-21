@@ -98,7 +98,6 @@ public class Restaurant : InteractableLocation
         List<Tuple<string, string>> BaseList = base.DirectoryInfo(currentHour, distanceTo).ToList();
         BaseList.Add(Tuple.Create("Type: ", FoodType.ToString()));
         return BaseList;
-
     }
 }
 

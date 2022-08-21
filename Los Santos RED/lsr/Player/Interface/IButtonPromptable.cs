@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCop { get; }
         bool IsGettingIntoAVehicle { get; }
         bool IsBreakingIntoCar { get; }
+        SurrenderActivity Surrendering { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

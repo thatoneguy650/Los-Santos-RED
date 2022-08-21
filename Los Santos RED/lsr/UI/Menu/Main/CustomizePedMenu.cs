@@ -264,11 +264,7 @@ public class CustomizePedMenu : Menu
         }
         if (selectedItem == ChangeMoney)
         {
-            if (int.TryParse(NativeHelper.GetKeyboardInput(WorkingMoney.ToString()), out int BribeAmount))
-            {
-                WorkingMoney = BribeAmount;
-                ChangeMoney.Description = "Current: " + WorkingMoney.ToString("C0");
-            }
+
         }
     }
     private void HeadMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)

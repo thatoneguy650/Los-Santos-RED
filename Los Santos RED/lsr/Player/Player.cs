@@ -958,9 +958,6 @@ namespace Mod
                 }
                 UpdateCurrentVehicle();
                 //GameFiber.Yield();//TR Yield RemovedTest 2
-
-
-
                 if (CurrentVehicle != null)
                 {
                     Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
@@ -1259,6 +1256,10 @@ namespace Mod
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
+
+
+
+     
 
         //Crimes
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)

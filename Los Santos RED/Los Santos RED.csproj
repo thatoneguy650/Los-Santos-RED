@@ -350,6 +350,16 @@
     <Compile Include="lsr\Tasker\Gang\Tasks\GangFlee.cs" />
     <Compile Include="lsr\Tasker\Gang\GangTasker.cs" />
     <Compile Include="lsr\UI\BarDisplay.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHeadMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\ColorLookup.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeDemographicsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeModelMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\OverlayMenuGroup.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\PedCustomizer.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionComponent.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionProp.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\HeadLookup.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\PedCustomizerMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\SettingsMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />

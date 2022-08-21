@@ -23,6 +23,8 @@ public class PedSwapMenu : Menu
 
     private IPedSwap PedSwap;
     private IGangs Gangs;
+    private UIMenuItem BecomeCustomPed2;
+
     public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap, IGangs gangs)
     {
         MenuPool = menuPool;
@@ -109,6 +111,16 @@ public class PedSwapMenu : Menu
         };
         PedSwapUIMenu.AddItem(SetAsGangMember);
 
+
+        BecomeCustomPed2 = new UIMenuItem("Become Custom Pedestrian 2", "Becomes a customized ped from user input.");
+        BecomeCustomPed2.Activated += (menu, item) =>
+        {
+            PedSwap.BecomeCustomPed2();
+            PedSwapUIMenu.Visible = false;
+        };
+        PedSwapUIMenu.AddItem(BecomeCustomPed2);
+
+
         SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
         SetAsCop.Activated += (menu, item) =>
         {
@@ -123,5 +135,7 @@ public class PedSwapMenu : Menu
             PedSwap.TreatAsCivilian();
             PedSwapUIMenu.Visible = false;
         };
+
+
     }
 }

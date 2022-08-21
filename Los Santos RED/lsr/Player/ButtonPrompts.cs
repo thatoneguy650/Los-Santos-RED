@@ -36,7 +36,6 @@ public class ButtonPrompts
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
-        AttemptAddVehiclePrompts();
     }
     public void Dispose()
     {
@@ -173,41 +172,6 @@ public class ButtonPrompts
             AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999);
         }
     }
-    private void VehicleInteractPrompts()
-    {
-        if(Player.CurrentLookedAtVehicle.Vehicle.Exists())
-        {
-            bool hasDriver = Player.CurrentLookedAtVehicle.Vehicle.HasDriver;
-            if (hasDriver && !Player.IsCop && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar)
-            {
-                if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeaponCategory != WeaponCategory.Melee)
-                {
-                    if (!HasPrompt($"Carjack {Player.CurrentLookedAtVehicle?.Handle}"))
-                    {
-                        RemovePrompts("VehicleInteract");
-                        AddPrompt("VehicleInteract", $"Armed Carjack (Tap)", $"Carjack {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
-                    }
-                }
-                else
-                {
-                    RemovePrompts("VehicleInteract");
-                }
-            }
-            else if(!hasDriver && !Player.CurrentLookedAtVehicle.HasBeenEnteredByPlayer && !Player.IsCop && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar)
-            {
-                if (!HasPrompt($"Enter {Player.CurrentLookedAtVehicle?.Handle}"))
-                {
-                    RemovePrompts("VehicleInteract");
-                    AddPrompt("VehicleInteract", $"Stealth Enter (Tap)", $"Enter {Player.CurrentLookedAtVehicle?.Handle}", GameControl.Enter, 999);
-                }
-            }
-        }
-        else
-        {
-            RemovePrompts("VehicleInteract");
-        }
-
-    }
     private void LocationInteractingPrompts()
     {
         RemovePrompts("StartConversation");
@@ -294,10 +258,7 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlPause");
         }
     }
-    private void AttemptAddPrompt(string v1, object continueCurrentActivityPrompt, string v2, Keys interactNegativeOrNo, int v3)
-    {
-        throw new NotImplementedException();
-    }
+
     private void AttemptRemoveMenuPrompts()
     {
         if(!Player.IsDead)
@@ -357,7 +318,7 @@ public class ButtonPrompts
         }
 
 
-        if(!Player.IsMovingFast && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree)
+        if(Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender (Hold)", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -389,17 +350,6 @@ public class ButtonPrompts
         else
         {
             Prompts.RemoveAll(x => x.Group == "StartScenario");
-        }
-    }
-    private void AttemptAddVehiclePrompts()
-    {
-        if(!Player.IsInVehicle && !Player.IsMovingFast && Player.CurrentLookedAtVehicle != null && Player.CurrentLookedAtVehicle.Vehicle.Exists() && Player.IsAliveAndFree && !Player.IsIncapacitated)
-        {
-            VehicleInteractPrompts();   
-        }
-        else
-        {
-            RemovePrompts("VehicleInteract");
         }
     }
 
