@@ -3947,6 +3947,15 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Advanced Scope", 1400),
                     new MenuItemExtra("Suppressor", 1900),} },
 
+
+                //new MenuItem("Shrewsbury BFD Dragmeout",1500, 1000) { Extras = new List<MenuItemExtra>() {
+                //    new MenuItemExtra("Default Clip", 0),
+                //    new MenuItemExtra("Extended Clip", 60),
+                //    new MenuItemExtra("Scope", 500),
+                //    new MenuItemExtra("Flashlight", 600),
+                //    new MenuItemExtra("Suppressor", 700),} },
+
+
                 //OTHER
                 new MenuItem("RPG-7",12550){ SubAmount = 1,SubPrice = 500 },
                 new MenuItem("M61 Grenade",800) { SubAmount = 1,SubPrice = 800 },

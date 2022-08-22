@@ -37,7 +37,6 @@ namespace LosSantosRED.lsr
             DeadlyChase = 3,
             ArrestedWait = 4,
         }
-
         public string DebugText => $"Have Desc {PoliceHaveDescription} CurrentPoliceState {CurrentPoliceState} IsWeaponsFree {IsWeaponsFree}";
         public uint GameTimeWantedStarted { get; private set; }
         public uint HasBeenAtCurrentPoliceStateFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimePoliceStateStart;
@@ -62,11 +61,7 @@ namespace LosSantosRED.lsr
         public bool HasHurtPolice => InstancesOfCrime("KillingPolice") > 0 || InstancesOfCrime("HurtingPolice") > 0;
         public int PoliceKilled => InstancesOfCrime("KillingPolice");
         public int PoliceHurt => InstancesOfCrime("HurtingPolice");
-
         public int CiviliansKilled => InstancesOfCrime("KillingCivilians");
-
-
-
         public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
         public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
         private ResponsePriority CurrentResponse
@@ -108,9 +103,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
         public bool PlayerSeenInVehicleDuringWanted { get; set; }
-
         private uint CurrentWantedLevelIncreaseTime
         {
             get
@@ -141,7 +134,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
         public PoliceResponse(IPoliceRespondable player, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
         {
             Player = player;
@@ -221,7 +213,6 @@ namespace LosSantosRED.lsr
                 LastSeenLocationBlip.Delete();
             }
         }
-
         public CrimeSceneDescription AddCrime(Crime CrimeInstance, CrimeSceneDescription crimeSceneDescription, bool isForPlayer)
         {
             //this is a fucking mess of references and isnt working properly at all
@@ -294,7 +285,6 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-
         public int InstancesOfCrime(string CrimeID)
         {
             CrimeEvent MyStuff = CrimesObserved.Where(x => x.AssociatedCrime.ID == CrimeID).FirstOrDefault();
@@ -366,8 +356,6 @@ namespace LosSantosRED.lsr
             CrimesObserved.Clear();
             CrimesReported.Clear();
         }
-
-
         private void AssignCops()
         {
             int RespondingPolice = 0;

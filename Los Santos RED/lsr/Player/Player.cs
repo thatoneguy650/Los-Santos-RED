@@ -181,6 +181,8 @@ namespace Mod
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
+
+        public bool AnyPoliceKnowInteriorLocation { get; set; }
         public Rage.Object AttachedProp { get; set; }
         public bool BeingArrested { get; private set; }
         public bool CanConverse => !IsIncapacitated && !IsVisiblyArmed && IsAliveAndFree && !IsMovingDynamically && ((IsInVehicle && VehicleSpeedMPH <= 5f) || !IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
@@ -419,6 +421,7 @@ namespace Mod
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public bool WasDangerouslyArmedWhenBusted { get; private set; }
+
 
         //Required
         public void Setup()

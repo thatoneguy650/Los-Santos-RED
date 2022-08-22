@@ -57,6 +57,11 @@ namespace LosSantosRED.lsr
                     IsInActiveMode = true;
                     IsInSearchMode = false;
                 }
+                else if (Player.AnyPoliceKnowInteriorLocation)
+                {
+                    IsInActiveMode = true;
+                    IsInSearchMode = false;
+                }
                 else
                 {
                     if (IsInSearchMode && TimeInSearchMode >= CurrentSearchTime)

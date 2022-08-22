@@ -18,6 +18,7 @@ namespace LosSantosRED.lsr
         private int TotalChecked;
         private IItemEquipable ItemEquipablePlayer;
         private uint GameTimeLastUpdatedSearchLocation;
+        private bool PrevAnyPoliceKnowInteriorLocation;
 
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer)
         {
@@ -180,15 +181,34 @@ namespace LosSantosRED.lsr
                 }
             }
 
+            if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
+            {
+                Player.AnyPoliceKnowInteriorLocation = true;
+            }
+            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000)
+            {
+                Player.AnyPoliceKnowInteriorLocation = false;
+            }
+
+
+            if(PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
+            {
+                EntryPoint.WriteToConsole($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
+                PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
+            }
 
 
 
-            if(Player.IsWanted)
+            if (Player.IsWanted)
             {
                 if (Player.AnyPoliceRecentlySeenPlayer)
                 {
                     Player.PlacePoliceLastSeenPlayer = Player.Position;
-                }     
+                }  
+                else if (Player.AnyPoliceKnowInteriorLocation)
+                {
+                    Player.PlacePoliceLastSeenPlayer = Player.Position;
+                }
                 else
                 {
                     if (Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero && Player.PoliceResponse.PlaceLastReportedCrime != Player.PlacePoliceLastSeenPlayer && Player.Position.DistanceTo2D(Player.PoliceResponse.PlaceLastReportedCrime) <= Player.Position.DistanceTo2D(Player.PlacePoliceLastSeenPlayer))//They called in a place closer than your position, maybe go with time instead ot be more fair?

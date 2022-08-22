@@ -193,6 +193,7 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Percentage of search mode that cops will be able to use their sixth sense. A value of 0.7 means they would be able to use their sixth sense powers for the first 30% of search mode (1.0 is none, 0.0 is the entire search mode).")]
     public float SixthSenseSearchModeLimitPercentage { get; set; }
     public bool AllowDriveBySight { get; set; }
+    public bool AllowSiegeMode { get; set; }
 
     public PoliceSettings()
     {
@@ -347,6 +348,8 @@ public class PoliceSettings : ISettingsDefaultable
         ShowVanillaBlips = false;
 #else
 #endif
+
+        AllowSiegeMode = true;
 
 
     }

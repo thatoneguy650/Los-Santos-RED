@@ -765,9 +765,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","ToolMenu"),
             new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","ToolMenu"),
         };
-        List<Stadium> Stadiums = new List<Stadium>()
+        List<Landmark> Stadiums = new List<Landmark>()
         {
-            new Stadium(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+
+            new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","") {OpenTime = 0,CloseTime = 24, InteriorID = 31746 },
+            new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
+            new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
         };
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {

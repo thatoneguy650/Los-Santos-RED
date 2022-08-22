@@ -13,12 +13,13 @@ namespace LosSantosRED.lsr.Locations
     public class LocationData
     {
         private Vector3 ClosestNode;
-        
+
         private IStreets Streets;
         private IZones Zones;
         private Zone PreviousZone;
         private uint GameTimeEnteredZone;
         private int InteriorID;
+        private int PrevInteriorID = -1;
         private IInteriors Interiors;
         private uint GameTimeGotOnFreeway;
         private uint GameTimeGotOffFreeway;
@@ -29,6 +30,9 @@ namespace LosSantosRED.lsr.Locations
         private uint GameTimeGotOffRoad;
         private uint GameTimeGotOnRoad;
 
+
+        private uint GameTimeWentInside;
+        private uint GameTimeWentOutside;
         public LocationData(Entity characterToLocate, IStreets streets, IZones zones, IInteriors interiors)
         {
             Streets = streets;
@@ -43,32 +47,32 @@ namespace LosSantosRED.lsr.Locations
         public Street CurrentCrossStreet { get; private set; }
         public Zone CurrentZone { get; private set; }
         public bool IsOffroad { get; private set; }
-        public bool IsInside => CurrentInterior != null && CurrentInterior.ID != 0;
+        public bool IsInside => InteriorID != 0 &&  CurrentInterior != null;
         public uint GameTimeInZone => GameTimeEnteredZone == 0 ? 0 : Game.GameTime - GameTimeEnteredZone;
         public bool IsOnFreeway => CurrentStreet != null && CurrentStreet.IsHighway;
         public Vector3 ClosestRoadNode => ClosestNode;
         public int ClosestRoadNodeID => ClosestNodeID;
         public string NodeString { get; set; }
-
+        public uint TimeInside => IsInside && GameTimeWentInside != 0 ? Game.GameTime - GameTimeWentInside : 0;
+        public uint TimeOutside => !IsInside && GameTimeWentOutside != 0 ? Game.GameTime - GameTimeWentOutside : 0;
         public bool HasBeenOffRoad => isCurrentlyOffroad && GameTimeGotOffRoad != 0 && Game.GameTime - GameTimeGotOffRoad >= 15000;
-
         public bool HasBeenOnHighway => CurrentStreetIsHighway && GameTimeGotOnFreeway != 0 && Game.GameTime - GameTimeGotOnFreeway >= 5000;
         public bool HasBeenOffHighway => !CurrentStreetIsHighway && GameTimeGotOffFreeway != 0 && Game.GameTime - GameTimeGotOffFreeway >= 5000 && !HasThrownGotOffFreeway;
         public void Update(Entity entityToLocate)
         {
-            if(entityToLocate.Exists())
+            if (entityToLocate.Exists())
             {
                 EntityToLocate = entityToLocate;
             }
             if (EntityToLocate.Exists())
             {
-                GetZone();
+                UpdateZone();
                 GameFiber.Yield();
-                GetInterior();
+                UpdateInterior();
                 GameFiber.Yield();
-                GetNode();
+                UpdateNode();
                 GameFiber.Yield();
-                GetStreets();
+                UpdateStreets();
                 GameFiber.Yield();
             }
             else
@@ -77,11 +81,15 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreet = null;
                 CurrentCrossStreet = null;
                 CurrentInterior = null;
+                InteriorID = 0;
+                PrevInteriorID = -1;
                 GameTimeGotOffFreeway = 0;
                 GameTimeGotOnFreeway = 0;
                 GameTimeGotOffRoad = 0;
                 GameTimeGotOnRoad = 0;
-                if(isCurrentlyOffroad)
+                GameTimeWentInside = 0;
+                GameTimeWentOutside = 0;
+                if (isCurrentlyOffroad)
                 {
                     GameTimeGotOffRoad = Game.GameTime;
                     isCurrentlyOffroad = false;
@@ -93,42 +101,36 @@ namespace LosSantosRED.lsr.Locations
                 }
             }
         }
-        public string GetStreetAndZoneString()
-        {
-            string streetName = "";
-            string zoneName = "";
-
-            if (CurrentStreet != null)
-            {
-                streetName = $"~HUD_COLOUR_YELLOWLIGHT~{CurrentStreet.Name}~s~";
-                if (CurrentCrossStreet != null)
-                {
-                    streetName += " at ~HUD_COLOUR_YELLOWLIGHT~" + CurrentCrossStreet.Name + "~s~ ";
-                }
-                else
-                {
-                    streetName += " ";
-                }
-            }
-            if (CurrentZone != null)
-            {
-                zoneName = CurrentZone.IsSpecificLocation ? "near ~p~" : "in ~p~" + CurrentZone.DisplayName + "~s~";
-            }
-            return streetName + zoneName;
-        }
-        private void GetZone()
+        private void UpdateZone()
         {
             if (EntityToLocate.Exists())
             {
                 CurrentZone = Zones.GetZone(EntityToLocate.Position);
-                if(PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
+                if (PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
                     PreviousZone = CurrentZone;
                 }
             }
         }
-        private void GetNode()
+        private void UpdateInterior()
+        {
+            InteriorID = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(EntityToLocate);
+            if (PrevInteriorID != InteriorID)
+            {
+                GetInteriorFromID();
+                if (PrevInteriorID == 0 && InteriorID != 0)
+                {
+                    OnWentInside();
+                }
+                else if (PrevInteriorID != 0 && InteriorID == 0)
+                {
+                    OnWentOutside();
+                }
+                PrevInteriorID = InteriorID;
+            }
+        }
+        private void UpdateNode()
         {
             if (EntityToLocate.Exists() && !IsInside)
             {
@@ -136,7 +138,7 @@ namespace LosSantosRED.lsr.Locations
                 Vector3 outPos;
                 bool hasNode = false;
 
-                hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f ,0f);
+                hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out outPos, 0, 3.0f, 0f);
 
                 //hasNode = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, 1, out outPos, 1, 0x40400000, 0);//can still get the freeway offramp when you are driving near it, not sure what to do about it!
                 ClosestNode = outPos;
@@ -151,7 +153,7 @@ namespace LosSantosRED.lsr.Locations
                 //    hasProperties = NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES<bool>(ClosestNode.X, ClosestNode.Y, ClosestNode.Z, out busy, out flags);
                 //}
 
-                
+
                 //if(hasProperties)
                 //{
                 //    NodeString = $"busy {busy} flags {flags}";
@@ -161,7 +163,7 @@ namespace LosSantosRED.lsr.Locations
                 //    NodeString = "";
                 //}
                 //ClosestNode = Rage.World.GetNextPositionOnStreet(CharacterToLocate.Position);//seems to not get the z coordinate and puts me way down on whatever is lowest
-                if (!hasNode || ClosestNode == Vector3.Zero ||  ClosestNode.DistanceTo(EntityToLocate) >= 15f)//was 15f
+                if (!hasNode || ClosestNode == Vector3.Zero || ClosestNode.DistanceTo(EntityToLocate) >= 15f)//was 15f
                 {
                     IsOffroad = true;
                 }
@@ -175,9 +177,9 @@ namespace LosSantosRED.lsr.Locations
                 IsOffroad = true;
             }
 
-            if(isCurrentlyOffroad != IsOffroad)
+            if (isCurrentlyOffroad != IsOffroad)
             {
-                if(IsOffroad)
+                if (IsOffroad)
                 {
                     OnWentOffRoad();
                 }
@@ -187,23 +189,8 @@ namespace LosSantosRED.lsr.Locations
                 }
                 isCurrentlyOffroad = IsOffroad;
             }
-
-
         }
-
-        private void OnGotOnRoad()
-        {
-            GameTimeGotOffRoad = 0;
-            GameTimeGotOnRoad = Game.GameTime;
-        }
-
-        private void OnWentOffRoad()
-        {
-            GameTimeGotOffRoad = Game.GameTime;
-            GameTimeGotOnRoad = 0;
-        }
-
-        private void GetStreets()
+        private void UpdateStreets()
         {
             if (IsOffroad || IsInside)
             {
@@ -263,7 +250,7 @@ namespace LosSantosRED.lsr.Locations
 
             if (CurrentStreetIsHighway != CurrentStreet.IsHighway)
             {
-                if(CurrentStreet.IsHighway)
+                if (CurrentStreet.IsHighway)
                 {
                     OnGotOnFreeway();
                 }
@@ -293,6 +280,39 @@ namespace LosSantosRED.lsr.Locations
             //}
 
         }
+        public string GetStreetAndZoneString()
+        {
+            string streetName = "";
+            string zoneName = "";
+
+            if (CurrentStreet != null)
+            {
+                streetName = $"~HUD_COLOUR_YELLOWLIGHT~{CurrentStreet.Name}~s~";
+                if (CurrentCrossStreet != null)
+                {
+                    streetName += " at ~HUD_COLOUR_YELLOWLIGHT~" + CurrentCrossStreet.Name + "~s~ ";
+                }
+                else
+                {
+                    streetName += " ";
+                }
+            }
+            if (CurrentZone != null)
+            {
+                zoneName = CurrentZone.IsSpecificLocation ? "near ~p~" : "in ~p~" + CurrentZone.DisplayName + "~s~";
+            }
+            return streetName + zoneName;
+        }
+        private void OnGotOnRoad()
+        {
+            GameTimeGotOffRoad = 0;
+            GameTimeGotOnRoad = Game.GameTime;
+        }
+        private void OnWentOffRoad()
+        {
+            GameTimeGotOffRoad = Game.GameTime;
+            GameTimeGotOnRoad = 0;
+        }
         private void OnGotOnFreeway()
         {
             GameTimeGotOnFreeway = Game.GameTime;
@@ -315,12 +335,23 @@ namespace LosSantosRED.lsr.Locations
                 CurrentStreetIsHighway = false;
             }
         }
-        private void GetInterior()
+        private void OnWentInside()
         {
-            InteriorID = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(EntityToLocate);
-            if(InteriorID == 0)
+            GameTimeWentInside = Game.GameTime;
+            GameTimeWentOutside = 0;
+            EntryPoint.WriteToConsole("PLAYER EVENT: WENT INSIDE");
+        }
+        private void OnWentOutside()
+        {
+            GameTimeWentInside = 0;
+            GameTimeWentOutside = Game.GameTime;
+            EntryPoint.WriteToConsole("PLAYER EVENT: WENT OUTSIDE");
+        }
+        private void GetInteriorFromID()
+        {
+            if (InteriorID == 0)
             {
-                CurrentInterior = new Interior(0,"");
+                CurrentInterior = new Interior(0, "");
             }
             else
             {

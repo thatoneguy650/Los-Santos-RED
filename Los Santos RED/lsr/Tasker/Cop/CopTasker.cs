@@ -294,7 +294,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Kill")
         {
             EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
-            Cop.CurrentTask = new Kill(Cop, Player);
+            Cop.CurrentTask = new Kill(Cop, Player, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

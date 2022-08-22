@@ -1201,6 +1201,11 @@ public class ModItems : IModItems
             new ModItem("Vom Feuer M23 DBS","Whether you're up close or a disconcertingly long way away, this weapon will get the job done. A multi-range tool for tools.", false, ItemType.Weapons) { ModelItemID = "weapon_marksmanrifle"},
             new ModItem("Vom Feuer M23 DBS Scout","Known in military circles as The Dislocator, this mod set will destroy both the target and your shoulder, in that order.", true, ItemType.Weapons) { ModelItemID = "weapon_marksmanrifle_mk2"},
 
+
+
+            //new ModItem("Shrewsbury BFD Dragmeout","Want to give the impression of accuracy while still having greater than 1 MOA? Dragmeout.", true, ItemType.Weapons) { ModelItemID = "weapon_russiansniper"},
+
+
             //OTHER
             new ModItem("RPG-7","A portable, shoulder-launched, anti-tank weapon that fires explosive warheads. Very effective for taking down vehicles or large groups of assailants.", false, ItemType.Weapons) { ModelItemID = "weapon_rpg"},
             new ModItem("Hawk & Little MGL","A compact, lightweight grenade launcher with semi-automatic functionality. Holds up to 10 rounds.", false, ItemType.Weapons) { ModelItemID = "weapon_grenadelauncher"},

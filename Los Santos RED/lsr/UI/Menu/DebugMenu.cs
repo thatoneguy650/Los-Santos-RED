@@ -356,14 +356,25 @@ public class DebugMenu : Menu
             Settings.SetRelease();
             menu.Visible = false;
         };
+        OtherItemsMenu.AddItem(GoToReleaseSettings);
         UIMenuItem GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
         GoToHardCoreSettings.Activated += (menu, item) =>
         {
             Settings.SetHard();
             menu.Visible = false;
         };
-        OtherItemsMenu.AddItem(GoToReleaseSettings);
-        OtherItemsMenu.AddItem(GoToHardCoreSettings);    
+        OtherItemsMenu.AddItem(GoToHardCoreSettings);
+
+
+        UIMenuItem PrintEntities = new UIMenuItem("Print Entities", "Prints a list of all entities to the log.");
+        PrintEntities.Activated += (menu, item) =>
+        {
+            PrintPersistentEntities();
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(PrintEntities);
+
+
     }
     private void CreateTimeMenu()
     {
@@ -734,6 +745,34 @@ public class DebugMenu : Menu
             }
 
         }, "Run Debug Logic");
+    }
+    private void PrintPersistentEntities()
+    {
+        int TotalEntities = 0;
+        EntryPoint.WriteToConsole($"SPAWNED ENTITIES ===============================", 0);
+        foreach (Entity ent in EntryPoint.SpawnedEntities)
+        {
+            if (ent.Exists())
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"SPAWNED ENTITY STILL EXISTS {ent.Handle} {ent.GetType()} {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 0);
+            }
+        }
+        EntryPoint.WriteToConsole($"SPAWNED ENTITIES =============================== TOTAL: {TotalEntities}", 0);
+
+        TotalEntities = 0;
+
+        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES ===============================", 0);
+        foreach (Entity ent in AllEntities)
+        {
+            if (ent.Exists() && ent.IsPersistent)
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"PERSISTENT ENTITY STILL EXISTS {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position}", 0);
+            }
+        }
+        EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 0);
     }
 
 }

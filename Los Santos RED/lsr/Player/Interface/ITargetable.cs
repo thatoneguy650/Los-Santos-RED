@@ -47,6 +47,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDangerouslyArmed { get; }
         Vector3 PlacePoliceShouldSearchForPlayer { get; }
         SearchMode SearchMode { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
+        bool AnyPoliceKnowInteriorLocation { get; }
 
 
         //bool IsHostile(Gang gang);

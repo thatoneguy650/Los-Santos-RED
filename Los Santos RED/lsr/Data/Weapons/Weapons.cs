@@ -949,6 +949,20 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle", 40, WeaponCategory.Sniper, 4, 3342088282, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleComponents });
 
 
+
+
+
+        //List<WeaponComponent> RussianSniperComponents = new List<WeaponComponent>
+        //{
+        //    new WeaponComponent("Default Clip", 0xD83B4141,ComponentSlot.Magazine),
+        //    new WeaponComponent("Extended Clip", 0xCCFD2AC5,ComponentSlot.Magazine),
+        //    new WeaponComponent("Scope", 0x1C221B1A, ComponentSlot.Optic),
+        //    new WeaponComponent("Flashlight", 0x7BC4CDDC,ComponentSlot.Light),
+        //    new WeaponComponent("Suppressor", 0xA73D4664,ComponentSlot.Muzzle),
+        //};
+        //WeaponsList.Add(new WeaponInformation("weapon_russiansniper", 40, WeaponCategory.Sniper, 4, 0xBE64A6AB, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = RussianSniperComponents });
+
+
         List<WeaponComponent> MarksmanRifleMK2Components = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x94E12DCE,ComponentSlot.Magazine),
