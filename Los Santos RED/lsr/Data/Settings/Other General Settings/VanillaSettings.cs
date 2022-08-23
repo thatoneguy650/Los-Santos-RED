@@ -19,6 +19,8 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateScenarioPeds { get; set; }
     public bool TerminateRandomEvents { get; set; }
     public bool BlockGangScenarios { get; set; }
+    public bool BlockVanillaPoliceCarGenerators { get; set; }
+
     public VanillaSettings()
     {
 
@@ -37,6 +39,7 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
         TerminateRandomEvents = false;
         BlockGangScenarios = true;
+        BlockVanillaPoliceCarGenerators = true;
     }
 
 }

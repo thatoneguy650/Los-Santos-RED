@@ -14,7 +14,7 @@ public class VanillaManager
     private VanillaGangManager VanillaGangManager;
     private VanillaCopManager VanillaCopManager;
     private VanillaWorldManager VanillaWorldManager;
-
+    private VanillaCarGeneratorManager VanillaCarGeneratorManager;
     private ISettingsProvideable Settings;
 
     public VanillaManager(ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
@@ -23,24 +23,28 @@ public class VanillaManager
         VanillaWorldManager = new VanillaWorldManager(Settings);
         VanillaCopManager = new VanillaCopManager(Settings);
         VanillaGangManager = new VanillaGangManager(Settings, placesOfInterest);
+        VanillaCarGeneratorManager = new VanillaCarGeneratorManager(Settings);
     }
     public void Setup()
     {
         VanillaWorldManager.Setup();
         VanillaCopManager.Setup();
         VanillaGangManager.Setup();
+        VanillaCarGeneratorManager.Setup();
     }
     public void Dispose()
     {
         VanillaWorldManager.Dispose();
         VanillaCopManager.Dispose();
         VanillaGangManager.Dispose();
+        VanillaCarGeneratorManager.Dispose();
     }
     public void Tick()
     {
         VanillaWorldManager.Tick();
         VanillaCopManager.Tick();
-        VanillaGangManager.Tick();        
+        VanillaGangManager.Tick();
+        VanillaCarGeneratorManager.Tick();
     }
 
 }

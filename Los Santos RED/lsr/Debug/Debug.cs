@@ -913,9 +913,9 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-
+        SpawnWithQuat();
         //HighlightProp();
-        SetFlags();
+        //SetFlags();
         //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         //{
         //    BusRide MyBusRide = new BusRide(Player, Player.CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
@@ -4322,6 +4322,117 @@ public class Debug
             }
 
         }
+    }
+
+    private void SpawnWithQuat()
+    {
+        Quaternion qt = new Quaternion(new Vector3(0f, 0f, 0.9473041f), 0.3203356f);
+        Vector3 tospawn = new Vector3(407.7554f, -984.2084f, 29.89806f);
+
+        tospawn = new Vector3(427.5909f, -1027.707f, 29.22805f);
+        qt = new Quaternion(tospawn + new Vector3(0f, 0f, -0.7058839f), 0.7083276f);
+        
+
+        EntryPoint.WriteToConsole($"Angle {qt.Angle}");
+
+       // qt.Normalize();
+        //qt.Invert();
+        //qt.Invert();
+
+
+        Vector3 Rotations = GetEulerAngles(qt);
+
+
+        float DegreeAngle = qt.Angle * 180f / (float)Math.PI;
+        EntryPoint.WriteToConsole($"Angle degree {DegreeAngle} Rotations {Rotations}");
+        Vehicle imcool = new Vehicle("police2", tospawn, Rotations.Z);
+
+        // imcool.Orientation = qt;
+
+
+        
+
+
+        GameFiber.Sleep(500);
+        if(imcool.Exists())
+        {
+            EntryPoint.WriteToConsole($"imcool {imcool.Heading}");
+        }
+
+
+        GameFiber.Sleep(10000);
+        if(imcool.Exists())
+        {
+            imcool.Delete();
+        }
+    }
+    private Vector3 GetEulerAngles(Quaternion q)
+    {
+        var x = q.X;
+        var y = q.Y;
+        var z = q.Z;
+        var w = q.W;
+        var xx = x * x;
+        var yy = y * y;
+        var zz = z * z;
+        var ww = w * w;
+        var ls = xx + yy + zz + ww;
+        var st = x * w - y * z;
+        var sv = ls * 0.499f;
+        var rd = 180.0f / (float)Math.PI;
+        if (st > sv)
+        {
+            return new Vector3(90, (float)Math.Atan2(y, x) * 2.0f * rd, 0);
+        }
+        else if (st < -sv)
+        {
+            return new Vector3(-90, (float)Math.Atan2(y, x) * -2.0f * rd, 0);
+        }
+        else
+        {
+            return new Vector3(
+                (float)Math.Asin(2.0f * st) * rd,
+                (float)Math.Atan2(2.0f * (y * w + x * z), 1.0f - 2.0f * (xx + yy)) * rd,
+                (float)Math.Atan2(2.0f * (x * y + z * w), 1.0f - 2.0f * (xx + zz)) * rd
+                );
+        }
+    }
+    public Vector3 ToEulerAngles(Quaternion q)
+    {
+        Vector3 angles = new Vector3();
+
+        // roll / x
+        double sinr_cosp = 2 * (q.W * q.X + q.Y * q.Z);
+        double cosr_cosp = 1 - 2 * (q.X * q.X + q.Y * q.Y);
+        angles.X = (float)Math.Atan2(sinr_cosp, cosr_cosp);
+
+        // pitch / y
+        double sinp = 2 * (q.W * q.Y - q.Z * q.X);
+        if (Math.Abs(sinp) >= 1)
+        {
+            if(sinp < 0)
+            {
+                angles.Y = -1.0f * (float)Math.PI / 2;
+            }
+            else
+            {
+                angles.Y = (float)Math.PI / 2;
+            }
+
+
+            //angles.Y = (float)Math.CopySign(Math.PI / 2, sinp);
+        }
+        else
+        {
+            angles.Y = (float)Math.Asin(sinp);
+        }
+
+        // yaw / z
+        double siny_cosp = 2 * (q.W * q.Z + q.X * q.Y);
+        double cosy_cosp = 1 - 2 * (q.Y * q.Y + q.Z * q.Z);
+        angles.Z = (float)Math.Atan2(siny_cosp, cosy_cosp);
+
+        return angles;
     }
 
 

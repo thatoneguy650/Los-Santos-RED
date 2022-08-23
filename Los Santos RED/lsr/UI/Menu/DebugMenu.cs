@@ -366,13 +366,21 @@ public class DebugMenu : Menu
         OtherItemsMenu.AddItem(GoToHardCoreSettings);
 
 
-        UIMenuItem PrintEntities = new UIMenuItem("Print Entities", "Prints a list of all entities to the log.");
+        UIMenuItem PrintEntities = new UIMenuItem("Print Persistent Entities", "Prints a list of all persistent and spawned entities to the log.");
         PrintEntities.Activated += (menu, item) =>
         {
             PrintPersistentEntities();
             menu.Visible = false;
         };
         OtherItemsMenu.AddItem(PrintEntities);
+
+        UIMenuItem PrintEntities2 = new UIMenuItem("Print Entities", "Prints a list of all entities to the log.");
+        PrintEntities2.Activated += (menu, item) =>
+        {
+            PrintAllEntities();
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(PrintEntities2);
 
 
     }
@@ -773,6 +781,21 @@ public class DebugMenu : Menu
             }
         }
         EntryPoint.WriteToConsole($"PERSISTENT ENTITIES =============================== TOTAL: {TotalEntities}", 0);
+    }
+    private void PrintAllEntities()
+    {
+        int TotalEntities = 0;
+        List<Entity> AllEntities = Rage.World.GetAllEntities().ToList();
+        EntryPoint.WriteToConsole($"ENTITIES ===============================", 0);
+        foreach (Entity ent in AllEntities)
+        {
+            if (ent.Exists())
+            {
+                TotalEntities++;
+                EntryPoint.WriteToConsole($"ENTITY {ent.Handle} {ent.GetType()}  {ent.Model.Name} Dead: {ent.IsDead} Position: {ent.Position} Heading {ent.Heading}", 0);
+            }
+        }
+        EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities}", 0);
     }
 
 }

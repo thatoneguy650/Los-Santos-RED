@@ -475,6 +475,7 @@
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuGroup.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuMap.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PositionMap.cs" />
+    <Compile Include="lsr\VanillaManager\VanillaCarGeneratorManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaCopManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaGangManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaWorldManager.cs" />
