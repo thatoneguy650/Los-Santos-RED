@@ -47,5 +47,6 @@ namespace LosSantosRED.lsr.Interface
         SearchMode SearchMode { get; }
         bool IsStill { get; }
         bool IsSitting { get; }
+        bool AnyPoliceKnowInteriorLocation { get; }
     }
 }

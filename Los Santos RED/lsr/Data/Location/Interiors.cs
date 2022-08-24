@@ -256,9 +256,31 @@ public class Interiors : IInteriors
             new Interior(3330,"Lifeinvader",new List<string>() { "facelobby","facelobby_lod" },new List<string>() { "facelobbyfake","facelobbyfake_lod" }),
 
             new Interior(119042,"Union Depository",new List<string>() { "FINBANK" },new List<string>() { }),
-            
+            new Interior(28162,"Clucking Bell Farms",new List<string>() { "CS1_02_cf_onmission1","CS1_02_cf_onmission2","CS1_02_cf_onmission3","CS1_02_cf_onmission4" },new List<string>() { "CS1_02_cf_offmission" }),
+            new Interior(35330,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }),
+            new Interior(67074,"Clucking Bell Farms",new List<string>() {  },new List<string>() {  }),
+            new Interior(75778,"Clucking Bell Farms",new List<string>() { },new List<string>() { }),
+
+
+
+
+
+          //  new Interior(92674,"Darnell Bros. Garments",new List<string>() { "id2_14_during1","id2_14_during_door" },new List<string>() {"id2_14_during_door","id2_14_during1","id2_14_during2","id2_14_on_fire","id2_14_post_no_int","id2_14_pre_no_int" }),//top floor works and doors are open, but no interiror>?
+
+           // new Interior(-103,"Rogers Salvage & Scrap",new List<string>() { "sp1_03_interior_v_recycle_milo_","sp1_03","sp1_03_critical_0","sp1_03_grass_0","sp1_03_long_0","sp1_03_strm_0","sp1_03_strm_1" },new List<string>() { }),//doesnt work at all, does nothing
+
+
             
             //
+
+            /*    RemoveIpl("id2_14_during_door")
+    RemoveIpl("id2_14_during1")
+    RemoveIpl("id2_14_during2")
+    RemoveIpl("id2_14_on_fire")
+    RemoveIpl("id2_14_post_no_int")
+    RemoveIpl("id2_14_pre_no_int")
+    RemoveIpl("id2_14_during_door")
+    RequestIpl("id2_14_during1")*/
 
 
             new Interior(50178,"Rob's Liquors",//San Andreas Ave Del Perro

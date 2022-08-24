@@ -489,6 +489,12 @@ namespace LosSantosRED.lsr
                     LastSeenLocationBlip.Alpha = 0.35f;
                     LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
                 }
+                else if (Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation)
+                {
+                    LastSeenLocationBlip.Color = Color.Black;
+                    LastSeenLocationBlip.Alpha = 0.25f;
+                    LastSeenLocationBlip.Scale = 200f;
+                }
                 else
                 {
                     LastSeenLocationBlip.Color = Color.Red;

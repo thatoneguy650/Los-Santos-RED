@@ -854,13 +854,19 @@ public class PlacesOfInterest : IPlacesOfInterest
             new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","ToolMenu"),
             new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","ToolMenu"),
         };
-        List<Landmark> Stadiums = new List<Landmark>()
+        List<Landmark> Landmarks = new List<Landmark>()
         {
             new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
 
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","") {OpenTime = 0,CloseTime = 24, InteriorID = 31746 },
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
             new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
+
+
+            new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","") {OpenTime = 0,CloseTime = 24, InteriorID = 28162 },
+            new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","") {OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
+            new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","") {OpenTime = 0,CloseTime = 24, InteriorID = -103 },
+
         };
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {
@@ -1192,7 +1198,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.HeadShops.AddRange(HeadShops);
         PossibleLocations.HardwareStores.AddRange(HardwareStores);
         PossibleLocations.PawnShops.AddRange(PawnShops);
-        PossibleLocations.Stadiums.AddRange(Stadiums);
+        PossibleLocations.Stadiums.AddRange(Landmarks);
         PossibleLocations.BeautyShops.AddRange(BeautyShops);
         PossibleLocations.Banks.AddRange(Banks);
         PossibleLocations.ConvenienceStores.AddRange(ConvenienceStores);
@@ -1393,7 +1399,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.HeadShops.AddRange(HeadShops);
         OldPossibleLocations.HardwareStores.AddRange(HardwareStores);
         OldPossibleLocations.PawnShops.AddRange(PawnShops);
-        OldPossibleLocations.Stadiums.AddRange(Stadiums);
+        OldPossibleLocations.Stadiums.AddRange(Landmarks);
         OldPossibleLocations.BeautyShops.AddRange(BeautyShops);
         OldPossibleLocations.Banks.AddRange(Banks);
         OldPossibleLocations.ConvenienceStores.AddRange(ConvenienceStores);

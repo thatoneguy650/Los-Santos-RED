@@ -588,7 +588,11 @@ public class UI : IMenuProvideable
             }
             else
             {
-                if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
+                if(DisplayablePlayer.CurrentLocation.IsInside && DisplayablePlayer.AnyPoliceKnowInteriorLocation)
+                {
+                    PlayerDisplay += $"~r~ Breaching";
+                }
+                else if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
                 {
                     PlayerDisplay += $"~r~ Weapons Free";
                 }
