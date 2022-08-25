@@ -58,7 +58,7 @@ public class StaticPlaces
                 }
                 zoneString = $"~p~{placeZone.DisplayName}~s~";
             }
-            string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition);
+            string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition, false);
             string StreetNumber = "";
             if (streetName == "")
             {

@@ -2788,207 +2788,207 @@
     }
     public class specific_location
     {
-        public static ScannerFile HASH000E7300 { get { return new ScannerFile("01_specific_location\\0x000E7300.wav", "0x000E7300", "specific_location"); } }
-        public static ScannerFile HASH0011827A { get { return new ScannerFile("01_specific_location\\0x0011827A.wav", "0x0011827A", "specific_location"); } }
-        public static ScannerFile HASH0044397F { get { return new ScannerFile("01_specific_location\\0x0044397F.wav", "0x0044397F", "specific_location"); } }
-        public static ScannerFile HASH005E5414 { get { return new ScannerFile("01_specific_location\\0x005E5414.wav", "0x005E5414", "specific_location"); } }
-        public static ScannerFile HASH007AC3FC { get { return new ScannerFile("01_specific_location\\0x007AC3FC.wav", "0x007AC3FC", "specific_location"); } }
-        public static ScannerFile HASH0092CBCB { get { return new ScannerFile("01_specific_location\\0x0092CBCB.wav", "0x0092CBCB", "specific_location"); } }
-        public static ScannerFile HASH00CA973E { get { return new ScannerFile("01_specific_location\\0x00CA973E.wav", "0x00CA973E", "specific_location"); } }
-        public static ScannerFile HASH00EF8558 { get { return new ScannerFile("01_specific_location\\0x00EF8558.wav", "0x00EF8558", "specific_location"); } }
-        public static ScannerFile HASH00FEFA6E { get { return new ScannerFile("01_specific_location\\0x00FEFA6E.wav", "0x00FEFA6E", "specific_location"); } }
-        public static ScannerFile HASH014AA746 { get { return new ScannerFile("01_specific_location\\0x014AA746.wav", "0x014AA746", "specific_location"); } }
-        public static ScannerFile HASH017D2BE2 { get { return new ScannerFile("01_specific_location\\0x017D2BE2.wav", "0x017D2BE2", "specific_location"); } }
-        public static ScannerFile HASH01800482 { get { return new ScannerFile("01_specific_location\\0x01800482.wav", "0x01800482", "specific_location"); } }
-        public static ScannerFile HASH01A84F28 { get { return new ScannerFile("01_specific_location\\0x01A84F28.wav", "0x01A84F28", "specific_location"); } }
-        public static ScannerFile HASH01CA4D77 { get { return new ScannerFile("01_specific_location\\0x01CA4D77.wav", "0x01CA4D77", "specific_location"); } }
-        public static ScannerFile HASH021501AD { get { return new ScannerFile("01_specific_location\\0x021501AD.wav", "0x021501AD", "specific_location"); } }
-        public static ScannerFile HASH02249C78 { get { return new ScannerFile("01_specific_location\\0x02249C78.wav", "0x02249C78", "specific_location"); } }
-        public static ScannerFile HASH02389919 { get { return new ScannerFile("01_specific_location\\0x02389919.wav", "0x02389919", "specific_location"); } }
-        public static ScannerFile HASH0289F802 { get { return new ScannerFile("01_specific_location\\0x0289F802.wav", "0x0289F802", "specific_location"); } }
-        public static ScannerFile HASH02967EFD { get { return new ScannerFile("01_specific_location\\0x02967EFD.wav", "0x02967EFD", "specific_location"); } }
-        public static ScannerFile HASH02A305DE { get { return new ScannerFile("01_specific_location\\0x02A305DE.wav", "0x02A305DE", "specific_location"); } }
-        public static ScannerFile HASH02A53146 { get { return new ScannerFile("01_specific_location\\0x02A53146.wav", "0x02A53146", "specific_location"); } }
-        public static ScannerFile HASH02C36B8B { get { return new ScannerFile("01_specific_location\\0x02C36B8B.wav", "0x02C36B8B", "specific_location"); } }
-        public static ScannerFile HASH02DEC59F { get { return new ScannerFile("01_specific_location\\0x02DEC59F.wav", "0x02DEC59F", "specific_location"); } }
-        public static ScannerFile HASH02EC9FB5 { get { return new ScannerFile("01_specific_location\\0x02EC9FB5.wav", "0x02EC9FB5", "specific_location"); } }
-        public static ScannerFile HASH035776E6 { get { return new ScannerFile("01_specific_location\\0x035776E6.wav", "0x035776E6", "specific_location"); } }
-        public static ScannerFile HASH03949A0F { get { return new ScannerFile("01_specific_location\\0x03949A0F.wav", "0x03949A0F", "specific_location"); } }
-        public static ScannerFile HASH03A2A34A { get { return new ScannerFile("01_specific_location\\0x03A2A34A.wav", "0x03A2A34A", "specific_location"); } }
-        public static ScannerFile HASH0431FE2B { get { return new ScannerFile("01_specific_location\\0x0431FE2B.wav", "0x0431FE2B", "specific_location"); } }
-        public static ScannerFile HASH04510C42 { get { return new ScannerFile("01_specific_location\\0x04510C42.wav", "0x04510C42", "specific_location"); } }
-        public static ScannerFile HASH045D23E3 { get { return new ScannerFile("01_specific_location\\0x045D23E3.wav", "0x045D23E3", "specific_location"); } }
-        public static ScannerFile HASH04817594 { get { return new ScannerFile("01_specific_location\\0x04817594.wav", "0x04817594", "specific_location"); } }
-        public static ScannerFile HASH04D70992 { get { return new ScannerFile("01_specific_location\\0x04D70992.wav", "0x04D70992", "specific_location"); } }
-        public static ScannerFile HASH04F66C50 { get { return new ScannerFile("01_specific_location\\0x04F66C50.wav", "0x04F66C50", "specific_location"); } }
-        public static ScannerFile HASH04F6FA01 { get { return new ScannerFile("01_specific_location\\0x04F6FA01.wav", "0x04F6FA01", "specific_location"); } }
-        public static ScannerFile HASH051C5D0C { get { return new ScannerFile("01_specific_location\\0x051C5D0C.wav", "0x051C5D0C", "specific_location"); } }
-        public static ScannerFile HASH05217FAC { get { return new ScannerFile("01_specific_location\\0x05217FAC.wav", "0x05217FAC", "specific_location"); } }
-        public static ScannerFile HASH053A9900 { get { return new ScannerFile("01_specific_location\\0x053A9900.wav", "0x053A9900", "specific_location"); } }
-        public static ScannerFile HASH05505BE8 { get { return new ScannerFile("01_specific_location\\0x05505BE8.wav", "0x05505BE8", "specific_location"); } }
-        public static ScannerFile HASH056AF0EC { get { return new ScannerFile("01_specific_location\\0x056AF0EC.wav", "0x056AF0EC", "specific_location"); } }
-        public static ScannerFile HASH059E6639 { get { return new ScannerFile("01_specific_location\\0x059E6639.wav", "0x059E6639", "specific_location"); } }
-        public static ScannerFile HASH05AB836E { get { return new ScannerFile("01_specific_location\\0x05AB836E.wav", "0x05AB836E", "specific_location"); } }
-        public static ScannerFile HASH068CED6A { get { return new ScannerFile("01_specific_location\\0x068CED6A.wav", "0x068CED6A", "specific_location"); } }
-        public static ScannerFile HASH06AD518B { get { return new ScannerFile("01_specific_location\\0x06AD518B.wav", "0x06AD518B", "specific_location"); } }
-        public static ScannerFile HASH06C75569 { get { return new ScannerFile("01_specific_location\\0x06C75569.wav", "0x06C75569", "specific_location"); } }
-        public static ScannerFile HASH06EEB5C2 { get { return new ScannerFile("01_specific_location\\0x06EEB5C2.wav", "0x06EEB5C2", "specific_location"); } }
-        public static ScannerFile HASH0723E151 { get { return new ScannerFile("01_specific_location\\0x0723E151.wav", "0x0723E151", "specific_location"); } }
-        public static ScannerFile HASH0761393B { get { return new ScannerFile("01_specific_location\\0x0761393B.wav", "0x0761393B", "specific_location"); } }
-        public static ScannerFile HASH076BF9A3 { get { return new ScannerFile("01_specific_location\\0x076BF9A3.wav", "0x076BF9A3", "specific_location"); } }
-        public static ScannerFile HASH076E01B0 { get { return new ScannerFile("01_specific_location\\0x076E01B0.wav", "0x076E01B0", "specific_location"); } }
-        public static ScannerFile HASH077E335F { get { return new ScannerFile("01_specific_location\\0x077E335F.wav", "0x077E335F", "specific_location"); } }
-        public static ScannerFile HASH078D31E5 { get { return new ScannerFile("01_specific_location\\0x078D31E5.wav", "0x078D31E5", "specific_location"); } }
-        public static ScannerFile HASH07910E35 { get { return new ScannerFile("01_specific_location\\0x07910E35.wav", "0x07910E35", "specific_location"); } }
-        public static ScannerFile HASH07DD9E5C { get { return new ScannerFile("01_specific_location\\0x07DD9E5C.wav", "0x07DD9E5C", "specific_location"); } }
-        public static ScannerFile HASH07FB062C { get { return new ScannerFile("01_specific_location\\0x07FB062C.wav", "0x07FB062C", "specific_location"); } }
-        public static ScannerFile HASH081BD374 { get { return new ScannerFile("01_specific_location\\0x081BD374.wav", "0x081BD374", "specific_location"); } }
-        public static ScannerFile HASH0868B699 { get { return new ScannerFile("01_specific_location\\0x0868B699.wav", "0x0868B699", "specific_location"); } }
-        public static ScannerFile HASH08AA4C64 { get { return new ScannerFile("01_specific_location\\0x08AA4C64.wav", "0x08AA4C64", "specific_location"); } }
-        public static ScannerFile HASH08D9D223 { get { return new ScannerFile("01_specific_location\\0x08D9D223.wav", "0x08D9D223", "specific_location"); } }
-        public static ScannerFile HASH08E0DB6C { get { return new ScannerFile("01_specific_location\\0x08E0DB6C.wav", "0x08E0DB6C", "specific_location"); } }
-        public static ScannerFile HASH096C35C1 { get { return new ScannerFile("01_specific_location\\0x096C35C1.wav", "0x096C35C1", "specific_location"); } }
-        public static ScannerFile HASH096CA882 { get { return new ScannerFile("01_specific_location\\0x096CA882.wav", "0x096CA882", "specific_location"); } }
-        public static ScannerFile HASH09A9666F { get { return new ScannerFile("01_specific_location\\0x09A9666F.wav", "0x09A9666F", "specific_location"); } }
-        public static ScannerFile HASH09E1E461 { get { return new ScannerFile("01_specific_location\\0x09E1E461.wav", "0x09E1E461", "specific_location"); } }
-        public static ScannerFile HASH09E4AAC8 { get { return new ScannerFile("01_specific_location\\0x09E4AAC8.wav", "0x09E4AAC8", "specific_location"); } }
-        public static ScannerFile HASH09E521B9 { get { return new ScannerFile("01_specific_location\\0x09E521B9.wav", "0x09E521B9", "specific_location"); } }
-        public static ScannerFile HASH09E57626 { get { return new ScannerFile("01_specific_location\\0x09E57626.wav", "0x09E57626", "specific_location"); } }
-        public static ScannerFile HASH09F6C27C { get { return new ScannerFile("01_specific_location\\0x09F6C27C.wav", "0x09F6C27C", "specific_location"); } }
-        public static ScannerFile HASH09FE57DE { get { return new ScannerFile("01_specific_location\\0x09FE57DE.wav", "0x09FE57DE", "specific_location"); } }
-        public static ScannerFile HASH0A158A5B { get { return new ScannerFile("01_specific_location\\0x0A158A5B.wav", "0x0A158A5B", "specific_location"); } }
-        public static ScannerFile HASH0A281CB4 { get { return new ScannerFile("01_specific_location\\0x0A281CB4.wav", "0x0A281CB4", "specific_location"); } }
-        public static ScannerFile HASH0A33D1E1 { get { return new ScannerFile("01_specific_location\\0x0A33D1E1.wav", "0x0A33D1E1", "specific_location"); } }
-        public static ScannerFile HASH0A4084AF { get { return new ScannerFile("01_specific_location\\0x0A4084AF.wav", "0x0A4084AF", "specific_location"); } }
-        public static ScannerFile HASH0A45FA8A { get { return new ScannerFile("01_specific_location\\0x0A45FA8A.wav", "0x0A45FA8A", "specific_location"); } }
-        public static ScannerFile HASH0A70FEFC { get { return new ScannerFile("01_specific_location\\0x0A70FEFC.wav", "0x0A70FEFC", "specific_location"); } }
-        public static ScannerFile HASH0A98BB4F { get { return new ScannerFile("01_specific_location\\0x0A98BB4F.wav", "0x0A98BB4F", "specific_location"); } }
-        public static ScannerFile HASH0AC416A0 { get { return new ScannerFile("01_specific_location\\0x0AC416A0.wav", "0x0AC416A0", "specific_location"); } }
-        public static ScannerFile HASH0B421414 { get { return new ScannerFile("01_specific_location\\0x0B421414.wav", "0x0B421414", "specific_location"); } }
-        public static ScannerFile HASH0B4EB13E { get { return new ScannerFile("01_specific_location\\0x0B4EB13E.wav", "0x0B4EB13E", "specific_location"); } }
-        public static ScannerFile HASH0BC6790E { get { return new ScannerFile("01_specific_location\\0x0BC6790E.wav", "0x0BC6790E", "specific_location"); } }
-        public static ScannerFile HASH0BCCFE7B { get { return new ScannerFile("01_specific_location\\0x0BCCFE7B.wav", "0x0BCCFE7B", "specific_location"); } }
-        public static ScannerFile HASH0C57ACE0 { get { return new ScannerFile("01_specific_location\\0x0C57ACE0.wav", "0x0C57ACE0", "specific_location"); } }
-        public static ScannerFile HASH0C5A4ECA { get { return new ScannerFile("01_specific_location\\0x0C5A4ECA.wav", "0x0C5A4ECA", "specific_location"); } }
-        public static ScannerFile HASH0CC13082 { get { return new ScannerFile("01_specific_location\\0x0CC13082.wav", "0x0CC13082", "specific_location"); } }
-        public static ScannerFile HASH0CC361AF { get { return new ScannerFile("01_specific_location\\0x0CC361AF.wav", "0x0CC361AF", "specific_location"); } }
-        public static ScannerFile HASH0CCADD03 { get { return new ScannerFile("01_specific_location\\0x0CCADD03.wav", "0x0CCADD03", "specific_location"); } }
-        public static ScannerFile HASH0D1B649D { get { return new ScannerFile("01_specific_location\\0x0D1B649D.wav", "0x0D1B649D", "specific_location"); } }
-        public static ScannerFile HASH0D40D5A4 { get { return new ScannerFile("01_specific_location\\0x0D40D5A4.wav", "0x0D40D5A4", "specific_location"); } }
-        public static ScannerFile HASH0D6F777B { get { return new ScannerFile("01_specific_location\\0x0D6F777B.wav", "0x0D6F777B", "specific_location"); } }
-        public static ScannerFile HASH0D8D06A1 { get { return new ScannerFile("01_specific_location\\0x0D8D06A1.wav", "0x0D8D06A1", "specific_location"); } }
-        public static ScannerFile HASH0D956322 { get { return new ScannerFile("01_specific_location\\0x0D956322.wav", "0x0D956322", "specific_location"); } }
-        public static ScannerFile HASH0D99B50F { get { return new ScannerFile("01_specific_location\\0x0D99B50F.wav", "0x0D99B50F", "specific_location"); } }
-        public static ScannerFile HASH0DA81BFE { get { return new ScannerFile("01_specific_location\\0x0DA81BFE.wav", "0x0DA81BFE", "specific_location"); } }
-        public static ScannerFile HASH0DAF6020 { get { return new ScannerFile("01_specific_location\\0x0DAF6020.wav", "0x0DAF6020", "specific_location"); } }
-        public static ScannerFile HASH0DB18443 { get { return new ScannerFile("01_specific_location\\0x0DB18443.wav", "0x0DB18443", "specific_location"); } }
-        public static ScannerFile HASH0DE50E66 { get { return new ScannerFile("01_specific_location\\0x0DE50E66.wav", "0x0DE50E66", "specific_location"); } }
-        public static ScannerFile HASH0E1F32BB { get { return new ScannerFile("01_specific_location\\0x0E1F32BB.wav", "0x0E1F32BB", "specific_location"); } }
-        public static ScannerFile HASH0E94FE38 { get { return new ScannerFile("01_specific_location\\0x0E94FE38.wav", "0x0E94FE38", "specific_location"); } }
-        public static ScannerFile HASH0EE35330 { get { return new ScannerFile("01_specific_location\\0x0EE35330.wav", "0x0EE35330", "specific_location"); } }
-        public static ScannerFile HASH0F7D8050 { get { return new ScannerFile("01_specific_location\\0x0F7D8050.wav", "0x0F7D8050", "specific_location"); } }
-        public static ScannerFile HASH105B95C3 { get { return new ScannerFile("01_specific_location\\0x105B95C3.wav", "0x105B95C3", "specific_location"); } }
-        public static ScannerFile HASH10E16467 { get { return new ScannerFile("01_specific_location\\0x10E16467.wav", "0x10E16467", "specific_location"); } }
-        public static ScannerFile HASH111BE082 { get { return new ScannerFile("01_specific_location\\0x111BE082.wav", "0x111BE082", "specific_location"); } }
-        public static ScannerFile HASH111BF88B { get { return new ScannerFile("01_specific_location\\0x111BF88B.wav", "0x111BF88B", "specific_location"); } }
-        public static ScannerFile HASH11358D45 { get { return new ScannerFile("01_specific_location\\0x11358D45.wav", "0x11358D45", "specific_location"); } }
-        public static ScannerFile HASH1139507A { get { return new ScannerFile("01_specific_location\\0x1139507A.wav", "0x1139507A", "specific_location"); } }
-        public static ScannerFile HASH1190C8A4 { get { return new ScannerFile("01_specific_location\\0x1190C8A4.wav", "0x1190C8A4", "specific_location"); } }
-        public static ScannerFile HASH11CCE448 { get { return new ScannerFile("01_specific_location\\0x11CCE448.wav", "0x11CCE448", "specific_location"); } }
-        public static ScannerFile HASH11F08287 { get { return new ScannerFile("01_specific_location\\0x11F08287.wav", "0x11F08287", "specific_location"); } }
-        public static ScannerFile HASH120B0B74 { get { return new ScannerFile("01_specific_location\\0x120B0B74.wav", "0x120B0B74", "specific_location"); } }
-        public static ScannerFile HASH1223E5D3 { get { return new ScannerFile("01_specific_location\\0x1223E5D3.wav", "0x1223E5D3", "specific_location"); } }
-        public static ScannerFile HASH122B5EFF { get { return new ScannerFile("01_specific_location\\0x122B5EFF.wav", "0x122B5EFF", "specific_location"); } }
-        public static ScannerFile HASH124A359B { get { return new ScannerFile("01_specific_location\\0x124A359B.wav", "0x124A359B", "specific_location"); } }
-        public static ScannerFile HASH126496AC { get { return new ScannerFile("01_specific_location\\0x126496AC.wav", "0x126496AC", "specific_location"); } }
-        public static ScannerFile HASH128B95B2 { get { return new ScannerFile("01_specific_location\\0x128B95B2.wav", "0x128B95B2", "specific_location"); } }
-        public static ScannerFile HASH12C1F74A { get { return new ScannerFile("01_specific_location\\0x12C1F74A.wav", "0x12C1F74A", "specific_location"); } }
-        public static ScannerFile HASH1337CFB1 { get { return new ScannerFile("01_specific_location\\0x1337CFB1.wav", "0x1337CFB1", "specific_location"); } }
-        public static ScannerFile HASH13583D6F { get { return new ScannerFile("01_specific_location\\0x13583D6F.wav", "0x13583D6F", "specific_location"); } }
-        public static ScannerFile HASH13A5966F { get { return new ScannerFile("01_specific_location\\0x13A5966F.wav", "0x13A5966F", "specific_location"); } }
-        public static ScannerFile HASH13B9D9F7 { get { return new ScannerFile("01_specific_location\\0x13B9D9F7.wav", "0x13B9D9F7", "specific_location"); } }
-        public static ScannerFile HASH13CBAB64 { get { return new ScannerFile("01_specific_location\\0x13CBAB64.wav", "0x13CBAB64", "specific_location"); } }
-        public static ScannerFile HASH141154C0 { get { return new ScannerFile("01_specific_location\\0x141154C0.wav", "0x141154C0", "specific_location"); } }
-        public static ScannerFile HASH143EDDDF { get { return new ScannerFile("01_specific_location\\0x143EDDDF.wav", "0x143EDDDF", "specific_location"); } }
-        public static ScannerFile HASH1457D3BB { get { return new ScannerFile("01_specific_location\\0x1457D3BB.wav", "0x1457D3BB", "specific_location"); } }
-        public static ScannerFile HASH147855FA { get { return new ScannerFile("01_specific_location\\0x147855FA.wav", "0x147855FA", "specific_location"); } }
-        public static ScannerFile HASH14A1C730 { get { return new ScannerFile("01_specific_location\\0x14A1C730.wav", "0x14A1C730", "specific_location"); } }
-        public static ScannerFile HASH14B8A4DB { get { return new ScannerFile("01_specific_location\\0x14B8A4DB.wav", "0x14B8A4DB", "specific_location"); } }
-        public static ScannerFile HASH14C89994 { get { return new ScannerFile("01_specific_location\\0x14C89994.wav", "0x14C89994", "specific_location"); } }
-        public static ScannerFile HASH14C9D45F { get { return new ScannerFile("01_specific_location\\0x14C9D45F.wav", "0x14C9D45F", "specific_location"); } }
-        public static ScannerFile HASH14F358CA { get { return new ScannerFile("01_specific_location\\0x14F358CA.wav", "0x14F358CA", "specific_location"); } }
-        public static ScannerFile HASH150D4A67 { get { return new ScannerFile("01_specific_location\\0x150D4A67.wav", "0x150D4A67", "specific_location"); } }
-        public static ScannerFile HASH15151AB5 { get { return new ScannerFile("01_specific_location\\0x15151AB5.wav", "0x15151AB5", "specific_location"); } }
-        public static ScannerFile HASH1549EDC8 { get { return new ScannerFile("01_specific_location\\0x1549EDC8.wav", "0x1549EDC8", "specific_location"); } }
-        public static ScannerFile HASH159C20B3 { get { return new ScannerFile("01_specific_location\\0x159C20B3.wav", "0x159C20B3", "specific_location"); } }
-        public static ScannerFile HASH159DC557 { get { return new ScannerFile("01_specific_location\\0x159DC557.wav", "0x159DC557", "specific_location"); } }
-        public static ScannerFile HASH15AD6A1C { get { return new ScannerFile("01_specific_location\\0x15AD6A1C.wav", "0x15AD6A1C", "specific_location"); } }
-        public static ScannerFile HASH15B15683 { get { return new ScannerFile("01_specific_location\\0x15B15683.wav", "0x15B15683", "specific_location"); } }
-        public static ScannerFile HASH15D35E76 { get { return new ScannerFile("01_specific_location\\0x15D35E76.wav", "0x15D35E76", "specific_location"); } }
-        public static ScannerFile HASH15D4147E { get { return new ScannerFile("01_specific_location\\0x15D4147E.wav", "0x15D4147E", "specific_location"); } }
-        public static ScannerFile HASH1639890D { get { return new ScannerFile("01_specific_location\\0x1639890D.wav", "0x1639890D", "specific_location"); } }
-        public static ScannerFile HASH165792C7 { get { return new ScannerFile("01_specific_location\\0x165792C7.wav", "0x165792C7", "specific_location"); } }
-        public static ScannerFile HASH16677E71 { get { return new ScannerFile("01_specific_location\\0x16677E71.wav", "0x16677E71", "specific_location"); } }
-        public static ScannerFile HASH1667D63F { get { return new ScannerFile("01_specific_location\\0x1667D63F.wav", "0x1667D63F", "specific_location"); } }
-        public static ScannerFile HASH166818B8 { get { return new ScannerFile("01_specific_location\\0x166818B8.wav", "0x166818B8", "specific_location"); } }
-        public static ScannerFile HASH1677E89E { get { return new ScannerFile("01_specific_location\\0x1677E89E.wav", "0x1677E89E", "specific_location"); } }
-        public static ScannerFile HASH168085D1 { get { return new ScannerFile("01_specific_location\\0x168085D1.wav", "0x168085D1", "specific_location"); } }
-        public static ScannerFile HASH16AAEFAC { get { return new ScannerFile("01_specific_location\\0x16AAEFAC.wav", "0x16AAEFAC", "specific_location"); } }
-        public static ScannerFile HASH16C620C3 { get { return new ScannerFile("01_specific_location\\0x16C620C3.wav", "0x16C620C3", "specific_location"); } }
-        public static ScannerFile HASH16F87D3A { get { return new ScannerFile("01_specific_location\\0x16F87D3A.wav", "0x16F87D3A", "specific_location"); } }
-        public static ScannerFile HASH17AE5C6D { get { return new ScannerFile("01_specific_location\\0x17AE5C6D.wav", "0x17AE5C6D", "specific_location"); } }
-        public static ScannerFile HASH17E65770 { get { return new ScannerFile("01_specific_location\\0x17E65770.wav", "0x17E65770", "specific_location"); } }
-        public static ScannerFile HASH18508E93 { get { return new ScannerFile("01_specific_location\\0x18508E93.wav", "0x18508E93", "specific_location"); } }
-        public static ScannerFile HASH1878923B { get { return new ScannerFile("01_specific_location\\0x1878923B.wav", "0x1878923B", "specific_location"); } }
-        public static ScannerFile HASH189ED18A { get { return new ScannerFile("01_specific_location\\0x189ED18A.wav", "0x189ED18A", "specific_location"); } }
-        public static ScannerFile HASH18C4124F { get { return new ScannerFile("01_specific_location\\0x18C4124F.wav", "0x18C4124F", "specific_location"); } }
-        public static ScannerFile HASH18C6F152 { get { return new ScannerFile("01_specific_location\\0x18C6F152.wav", "0x18C6F152", "specific_location"); } }
-        public static ScannerFile HASH18EA44DE { get { return new ScannerFile("01_specific_location\\0x18EA44DE.wav", "0x18EA44DE", "specific_location"); } }
-        public static ScannerFile HASH1907E32D { get { return new ScannerFile("01_specific_location\\0x1907E32D.wav", "0x1907E32D", "specific_location"); } }
-        public static ScannerFile HASH19532EA2 { get { return new ScannerFile("01_specific_location\\0x19532EA2.wav", "0x19532EA2", "specific_location"); } }
-        public static ScannerFile HASH19797B25 { get { return new ScannerFile("01_specific_location\\0x19797B25.wav", "0x19797B25", "specific_location"); } }
-        public static ScannerFile HASH197FDA82 { get { return new ScannerFile("01_specific_location\\0x197FDA82.wav", "0x197FDA82", "specific_location"); } }
-        public static ScannerFile HASH1980DD57 { get { return new ScannerFile("01_specific_location\\0x1980DD57.wav", "0x1980DD57", "specific_location"); } }
-        public static ScannerFile HASH1983B0D4 { get { return new ScannerFile("01_specific_location\\0x1983B0D4.wav", "0x1983B0D4", "specific_location"); } }
-        public static ScannerFile HASH19924D41 { get { return new ScannerFile("01_specific_location\\0x19924D41.wav", "0x19924D41", "specific_location"); } }
-        public static ScannerFile HASH19E069DE { get { return new ScannerFile("01_specific_location\\0x19E069DE.wav", "0x19E069DE", "specific_location"); } }
-        public static ScannerFile HASH19E4D5BD { get { return new ScannerFile("01_specific_location\\0x19E4D5BD.wav", "0x19E4D5BD", "specific_location"); } }
-        public static ScannerFile HASH1A23351D { get { return new ScannerFile("01_specific_location\\0x1A23351D.wav", "0x1A23351D", "specific_location"); } }
-        public static ScannerFile HASH1A2E04DF { get { return new ScannerFile("01_specific_location\\0x1A2E04DF.wav", "0x1A2E04DF", "specific_location"); } }
-        public static ScannerFile HASH1A3F7860 { get { return new ScannerFile("01_specific_location\\0x1A3F7860.wav", "0x1A3F7860", "specific_location"); } }
-        public static ScannerFile HASH1A67316D { get { return new ScannerFile("01_specific_location\\0x1A67316D.wav", "0x1A67316D", "specific_location"); } }
-        public static ScannerFile HASH1A91C6DE { get { return new ScannerFile("01_specific_location\\0x1A91C6DE.wav", "0x1A91C6DE", "specific_location"); } }
-        public static ScannerFile HASH1A94B384 { get { return new ScannerFile("01_specific_location\\0x1A94B384.wav", "0x1A94B384", "specific_location"); } }
-        public static ScannerFile HASH1AB17532 { get { return new ScannerFile("01_specific_location\\0x1AB17532.wav", "0x1AB17532", "specific_location"); } }
-        public static ScannerFile HASH1AB60F0D { get { return new ScannerFile("01_specific_location\\0x1AB60F0D.wav", "0x1AB60F0D", "specific_location"); } }
-        public static ScannerFile HASH1ABB2DE0 { get { return new ScannerFile("01_specific_location\\0x1ABB2DE0.wav", "0x1ABB2DE0", "specific_location"); } }
-        public static ScannerFile HASH1AF37109 { get { return new ScannerFile("01_specific_location\\0x1AF37109.wav", "0x1AF37109", "specific_location"); } }
-        public static ScannerFile HASH1AFC8E72 { get { return new ScannerFile("01_specific_location\\0x1AFC8E72.wav", "0x1AFC8E72", "specific_location"); } }
-        public static ScannerFile HASH1B133696 { get { return new ScannerFile("01_specific_location\\0x1B133696.wav", "0x1B133696", "specific_location"); } }
-        public static ScannerFile HASH1B1BCF62 { get { return new ScannerFile("01_specific_location\\0x1B1BCF62.wav", "0x1B1BCF62", "specific_location"); } }
-        public static ScannerFile HASH1B2852E9 { get { return new ScannerFile("01_specific_location\\0x1B2852E9.wav", "0x1B2852E9", "specific_location"); } }
-        public static ScannerFile HASH1B3FE498 { get { return new ScannerFile("01_specific_location\\0x1B3FE498.wav", "0x1B3FE498", "specific_location"); } }
-        public static ScannerFile HASH1B7B1F49 { get { return new ScannerFile("01_specific_location\\0x1B7B1F49.wav", "0x1B7B1F49", "specific_location"); } }
-        public static ScannerFile HASH1B81EF89 { get { return new ScannerFile("01_specific_location\\0x1B81EF89.wav", "0x1B81EF89", "specific_location"); } }
-        public static ScannerFile HASH1BB48F43 { get { return new ScannerFile("01_specific_location\\0x1BB48F43.wav", "0x1BB48F43", "specific_location"); } }
-        public static ScannerFile HASH1BC1EA80 { get { return new ScannerFile("01_specific_location\\0x1BC1EA80.wav", "0x1BC1EA80", "specific_location"); } }
-        public static ScannerFile HASH1C5D1678 { get { return new ScannerFile("01_specific_location\\0x1C5D1678.wav", "0x1C5D1678", "specific_location"); } }
-        public static ScannerFile HASH1C674794 { get { return new ScannerFile("01_specific_location\\0x1C674794.wav", "0x1C674794", "specific_location"); } }
-        public static ScannerFile HASH1CD25A01 { get { return new ScannerFile("01_specific_location\\0x1CD25A01.wav", "0x1CD25A01", "specific_location"); } }
-        public static ScannerFile HASH1D2407D2 { get { return new ScannerFile("01_specific_location\\0x1D2407D2.wav", "0x1D2407D2", "specific_location"); } }
-        public static ScannerFile HASH1D532F53 { get { return new ScannerFile("01_specific_location\\0x1D532F53.wav", "0x1D532F53", "specific_location"); } }
-        public static ScannerFile HASH1D6A83F9 { get { return new ScannerFile("01_specific_location\\0x1D6A83F9.wav", "0x1D6A83F9", "specific_location"); } }
-        public static ScannerFile HASH1DA6BA84 { get { return new ScannerFile("01_specific_location\\0x1DA6BA84.wav", "0x1DA6BA84", "specific_location"); } }
-        public static ScannerFile HASH1DB64CA3 { get { return new ScannerFile("01_specific_location\\0x1DB64CA3.wav", "0x1DB64CA3", "specific_location"); } }
-        public static ScannerFile HASH1DE8D28D { get { return new ScannerFile("01_specific_location\\0x1DE8D28D.wav", "0x1DE8D28D", "specific_location"); } }
-        public static ScannerFile HASH1DEC0BDE { get { return new ScannerFile("01_specific_location\\0x1DEC0BDE.wav", "0x1DEC0BDE", "specific_location"); } }
-        public static ScannerFile HASH1DF81DFF { get { return new ScannerFile("01_specific_location\\0x1DF81DFF.wav", "0x1DF81DFF", "specific_location"); } }
-        public static ScannerFile HASH1E2AE79B { get { return new ScannerFile("01_specific_location\\0x1E2AE79B.wav", "0x1E2AE79B", "specific_location"); } }
-        public static ScannerFile HASH1E74A249 { get { return new ScannerFile("01_specific_location\\0x1E74A249.wav", "0x1E74A249", "specific_location"); } }
-        public static ScannerFile HASH1E998193 { get { return new ScannerFile("01_specific_location\\0x1E998193.wav", "0x1E998193", "specific_location"); } }
-        public static ScannerFile HASH1F07D876 { get { return new ScannerFile("01_specific_location\\0x1F07D876.wav", "0x1F07D876", "specific_location"); } }
-        public static ScannerFile HASH1F0E27B7 { get { return new ScannerFile("01_specific_location\\0x1F0E27B7.wav", "0x1F0E27B7", "specific_location"); } }
-        public static ScannerFile HASH1FB449F8 { get { return new ScannerFile("01_specific_location\\0x1FB449F8.wav", "0x1FB449F8", "specific_location"); } }
+        public static ScannerFile Vinewood247Market { get { return new ScannerFile("01_specific_location\\0x000E7300.wav", "Vinewood 24/7 Market", "specific_location"); } }
+        public static ScannerFile CentralLaMesaRonStation { get { return new ScannerFile("01_specific_location\\0x0011827A.wav", "Central La Mesa Ron Station", "specific_location"); } }
+        public static ScannerFile SenoraRecyclingCenter { get { return new ScannerFile("01_specific_location\\0x0044397F.wav", "Senora Recycling Center", "specific_location"); } }
+        public static ScannerFile RockfordPlazaSubwayStation { get { return new ScannerFile("01_specific_location\\0x005E5414.wav", "Rockford Plaza Subway Station", "specific_location"); } }
+        public static ScannerFile BraddockPassGasStation { get { return new ScannerFile("01_specific_location\\0x007AC3FC.wav", "Braddock Pass Gas Station", "specific_location"); } }
+        public static ScannerFile RockfordHillsDiderSachs { get { return new ScannerFile("01_specific_location\\0x0092CBCB.wav", "Rockford Hills Dider Sachs", "specific_location"); } }
+        public static ScannerFile LosSantosRiver { get { return new ScannerFile("01_specific_location\\0x00CA973E.wav", "The Los Santos River", "specific_location"); } }
+        public static ScannerFile ChumashPier { get { return new ScannerFile("01_specific_location\\0x00EF8558.wav", "Chumash Pier", "specific_location"); } }
+        public static ScannerFile QueensburyBoxingClub { get { return new ScannerFile("01_specific_location\\0x00FEFA6E.wav", "Queensbury Boxing Club", "specific_location"); } }
+        public static ScannerFile CatonBankingGroupBuilding { get { return new ScannerFile("01_specific_location\\0x014AA746.wav", "Caton Banking Group Building", "specific_location"); } }
+        public static ScannerFile StrawberryDollarPills { get { return new ScannerFile("01_specific_location\\0x017D2BE2.wav", "The Dollar Pills Store in Strawberry", "specific_location"); } }
+        public static ScannerFile KhalafiaBridge2 { get { return new ScannerFile("01_specific_location\\0x01800482.wav", "Khalafia Bridge", "specific_location"); } }
+        public static ScannerFile SatelliteArray { get { return new ScannerFile("01_specific_location\\0x01A84F28.wav", "The Satellite Array", "specific_location"); } }
+        public static ScannerFile SandyShoresSatelliteArray { get { return new ScannerFile("01_specific_location\\0x01CA4D77.wav", "Sandy Shores Satellite Array", "specific_location"); } }
+        public static ScannerFile SilverLakeRonStation { get { return new ScannerFile("01_specific_location\\0x021501AD.wav", "Silver Lake Ron Station", "specific_location"); } }
+        public static ScannerFile TheFishNet { get { return new ScannerFile("01_specific_location\\0x02249C78.wav", "The Fish Net", "specific_location"); } }
+        public static ScannerFile VinewoodMovieLot { get { return new ScannerFile("01_specific_location\\0x02389919.wav", "Vinewood Movie Lot", "specific_location"); } }
+        public static ScannerFile PortollaDriverPosonbys { get { return new ScannerFile("01_specific_location\\0x0289F802.wav", "Portolla Drive Posonbys", "specific_location"); } }
+        public static ScannerFile PostOpHeadquarters { get { return new ScannerFile("01_specific_location\\0x02967EFD.wav", "The PostOp Headquarters", "specific_location"); } }
+        public static ScannerFile BolingbrokePenitentiary { get { return new ScannerFile("01_specific_location\\0x02A305DE.wav", "Bolingbroke Penitentiary", "specific_location"); } }
+        public static ScannerFile RonAlternatesWindFarm { get { return new ScannerFile("01_specific_location\\0x02A53146.wav", "The Ron Alternates Wind Farm", "specific_location"); } }
+        public static ScannerFile YellowJackInn { get { return new ScannerFile("01_specific_location\\0x02C36B8B.wav", "The Yellow Jack Inn", "specific_location"); } }
+        public static ScannerFile LosSantosRiverChannels { get { return new ScannerFile("01_specific_location\\0x02DEC59F.wav", "The Los Santos River Channels", "specific_location"); } }
+        public static ScannerFile LSDrainageChannel { get { return new ScannerFile("01_specific_location\\0x02EC9FB5.wav", "The LS Drainage Channel", "specific_location"); } }
+        public static ScannerFile UpNAtomDiner { get { return new ScannerFile("01_specific_location\\0x035776E6.wav", "The Up-n-Atom Diner", "specific_location"); } }
+        public static ScannerFile PillboxHillConstructionSite { get { return new ScannerFile("01_specific_location\\0x03949A0F.wav", "0x03949A0F", "specific_location"); } }
+        public static ScannerFile VinewoodBurgerShot { get { return new ScannerFile("01_specific_location\\0x03A2A34A.wav", "Vinewood Burger Shot", "specific_location"); } }
+        public static ScannerFile ChumashBeachClub { get { return new ScannerFile("01_specific_location\\0x0431FE2B.wav", "Chumash Beach Club", "specific_location"); } }
+        public static ScannerFile LittleSeoulXeroStation { get { return new ScannerFile("01_specific_location\\0x04510C42.wav", "Little Seoul Xero Station", "specific_location"); } }
+        public static ScannerFile ShamorshootasRanch { get { return new ScannerFile("01_specific_location\\0x045D23E3.wav", "Shamorshoota Ranch", "specific_location"); } }
+        public static ScannerFile AlamoSeaBikerCompound { get { return new ScannerFile("01_specific_location\\0x04817594.wav", "Alamo Sea Biker Compound", "specific_location"); } }
+        public static ScannerFile MirrorParkCluckingBell { get { return new ScannerFile("01_specific_location\\0x04D70992.wav", "Mirror Park Clucking Bell", "specific_location"); } }
+        public static ScannerFile StrawberryMorgue { get { return new ScannerFile("01_specific_location\\0x04F66C50.wav", "The Strawberry Morgue", "specific_location"); } }
+        public static ScannerFile VinewoodToursBuilding { get { return new ScannerFile("01_specific_location\\0x04F6FA01.wav", "The Vinewood Tours Building", "specific_location"); } }
+        public static ScannerFile TataviaMountains { get { return new ScannerFile("01_specific_location\\0x051C5D0C.wav", "Tatavia Mountains", "specific_location"); } }
+        public static ScannerFile ChilliadLoggingCamp { get { return new ScannerFile("01_specific_location\\0x05217FAC.wav", "Chilliad Logging Camp", "specific_location"); } }
+        public static ScannerFile RedoowdLightsMotocross2 { get { return new ScannerFile("01_specific_location\\0x053A9900.wav", "The Redwood Lights Motocross Track", "specific_location"); } }
+        public static ScannerFile LosSantosBagCompany { get { return new ScannerFile("01_specific_location\\0x05505BE8.wav", "Los Santos Bag Company", "specific_location"); } }
+        public static ScannerFile MorningwoodRonStation { get { return new ScannerFile("01_specific_location\\0x056AF0EC.wav", "Morningwood Ron Station", "specific_location"); } }
+        public static ScannerFile EastLSDiner69er { get { return new ScannerFile("01_specific_location\\0x059E6639.wav", "East LS Diner 69er", "specific_location"); } }
+        public static ScannerFile BJSmithRecCenter { get { return new ScannerFile("01_specific_location\\0x05AB836E.wav", "The BJ Smith Rec Center", "specific_location"); } }
+        public static ScannerFile LagoZancudoCauseway { get { return new ScannerFile("01_specific_location\\0x068CED6A.wav", "Lago Zancudo Causeway", "specific_location"); } }
+        public static ScannerFile RockfordHillsPumpNRun { get { return new ScannerFile("01_specific_location\\0x06AD518B.wav", "Rockford Hills Pump-N-Run", "specific_location"); } }
+        public static ScannerFile ZancudoRidgeFarm { get { return new ScannerFile("01_specific_location\\0x06C75569.wav", "Zancudo Ridge Farm", "specific_location"); } }
+        public static ScannerFile MarlowVineyard { get { return new ScannerFile("01_specific_location\\0x06EEB5C2.wav", "The Marlow VIneyard", "specific_location"); } }
+        public static ScannerFile SouthLaMesaRonStation2 { get { return new ScannerFile("01_specific_location\\0x0723E151.wav", "0x0723E151", "specific_location"); } }
+        public static ScannerFile ElGordoLighthouse2 { get { return new ScannerFile("01_specific_location\\0x0761393B.wav", "El Gordo Lighthouse", "specific_location"); } }
+        public static ScannerFile LittleSeoulRonStation { get { return new ScannerFile("01_specific_location\\0x076BF9A3.wav", "Little Seoul Ron Station", "specific_location"); } }
+        public static ScannerFile VangelicoJewelryStore2 { get { return new ScannerFile("01_specific_location\\0x076E01B0.wav", "The Vangelico Jewelry Store", "specific_location"); } }
+        public static ScannerFile DelPerroShoppingPromenade { get { return new ScannerFile("01_specific_location\\0x077E335F.wav", "Del Perro Shopping Promenade", "specific_location"); } }
+        public static ScannerFile VinewoodPlaza { get { return new ScannerFile("01_specific_location\\0x078D31E5.wav", "VinewoodPlaza", "specific_location"); } }
+        public static ScannerFile Galilee { get { return new ScannerFile("01_specific_location\\0x07910E35.wav", "Galilee", "specific_location"); } }
+        public static ScannerFile JetsamShippingTerminal { get { return new ScannerFile("01_specific_location\\0x07DD9E5C.wav", "The Jetsam Shipping Terminal", "specific_location"); } }
+        public static ScannerFile PaulaSpringsTramway { get { return new ScannerFile("01_specific_location\\0x07FB062C.wav", "The Paula Springs Tramway", "specific_location"); } }
+        public static ScannerFile PlanetVinewood { get { return new ScannerFile("01_specific_location\\0x081BD374.wav", "Planet Vinewood", "specific_location"); } }
+        public static ScannerFile StrawberryShoppingPlaza { get { return new ScannerFile("01_specific_location\\0x0868B699.wav", "Strawberry Shopping Plaza", "specific_location"); } }
+        public static ScannerFile PisswasserFactory { get { return new ScannerFile("01_specific_location\\0x08AA4C64.wav", "The Pisswasser Factory", "specific_location"); } }
+        public static ScannerFile DelPerroNewSakiRestaurant { get { return new ScannerFile("01_specific_location\\0x08D9D223.wav", "The Del Perro New Saki Restaurant", "specific_location"); } }
+        public static ScannerFile GentryManorHotel { get { return new ScannerFile("01_specific_location\\0x08E0DB6C.wav", "Gentry Manor Hotel", "specific_location"); } }
+        public static ScannerFile SenoraWindfarmTrailerPark { get { return new ScannerFile("01_specific_location\\0x096C35C1.wav", "Senora Windfarm Trailer Park", "specific_location"); } }
+        public static ScannerFile LSRiver2 { get { return new ScannerFile("01_specific_location\\0x096CA882.wav", "The LS River", "specific_location"); } }
+        public static ScannerFile TextileCityBusDepot { get { return new ScannerFile("01_specific_location\\0x09A9666F.wav", "Textile City Bus Depot", "specific_location"); } }
+        public static ScannerFile SubwayConstructionTunnels { get { return new ScannerFile("01_specific_location\\0x09E1E461.wav", "The Subway Construction Tunnels", "specific_location"); } }
+        public static ScannerFile VinewoodRonStation { get { return new ScannerFile("01_specific_location\\0x09E4AAC8.wav", "Vinewood Ron Station", "specific_location"); } }
+        public static ScannerFile CapeCatfish { get { return new ScannerFile("01_specific_location\\0x09E521B9.wav", "Cape Catfish", "specific_location"); } }
+        public static ScannerFile EarlsMiniMart { get { return new ScannerFile("01_specific_location\\0x09E57626.wav", "Earls Mini Mart", "specific_location"); } }
+        public static ScannerFile CassidyCreekBridge { get { return new ScannerFile("01_specific_location\\0x09F6C27C.wav", "The Cassidy Creek Bridge", "specific_location"); } }
+        public static ScannerFile MazeBankOfLosSantos { get { return new ScannerFile("01_specific_location\\0x09FE57DE.wav", "The Maze Bank of Los Santos", "specific_location"); } }
+        public static ScannerFile AirplaneRecyclingYard { get { return new ScannerFile("01_specific_location\\0x0A158A5B.wav", "The Airplane Recycling Yard", "specific_location"); } }
+        public static ScannerFile LSXFireDepartment { get { return new ScannerFile("01_specific_location\\0x0A281CB4.wav", "LSX Fire Department", "specific_location"); } }
+        public static ScannerFile RockfordHillsFD { get { return new ScannerFile("01_specific_location\\0x0A33D1E1.wav", "Rockford Hills Fire Department", "specific_location"); } }
+        public static ScannerFile GranadeSenoraDesert { get { return new ScannerFile("01_specific_location\\0x0A4084AF.wav", "The Grande Senora Desert", "specific_location"); } }
+        public static ScannerFile MissioRowPD { get { return new ScannerFile("01_specific_location\\0x0A45FA8A.wav", "Mission Row Police Department", "specific_location"); } }
+        public static ScannerFile MirrorParkAutoRepairs { get { return new ScannerFile("01_specific_location\\0x0A70FEFC.wav", "Mirror Park Auto Repairs", "specific_location"); } }
+        public static ScannerFile VangelicoJewelryStore { get { return new ScannerFile("01_specific_location\\0x0A98BB4F.wav", "The Vangelico Jewelry Store", "specific_location"); } }
+        public static ScannerFile DavisFireDepartment { get { return new ScannerFile("01_specific_location\\0x0AC416A0.wav", "Davis Fire Department", "specific_location"); } }
+        public static ScannerFile SilverLakeRonStation2 { get { return new ScannerFile("01_specific_location\\0x0B421414.wav", "Silver Lake Ron Station", "specific_location"); } }
+        public static ScannerFile EasternHarmonyMotel { get { return new ScannerFile("01_specific_location\\0x0B4EB13E.wav", "Eastern Harmony Hotel", "specific_location"); } }
+        public static ScannerFile NooseBuilding { get { return new ScannerFile("01_specific_location\\0x0BC6790E.wav", "The Noose Building", "specific_location"); } }
+        public static ScannerFile LSRiverChannels { get { return new ScannerFile("01_specific_location\\0x0BCCFE7B.wav", "The LS River Channels", "specific_location"); } }
+        public static ScannerFile VinewoodSign { get { return new ScannerFile("01_specific_location\\0x0C57ACE0.wav", "The Vinewood Sign", "specific_location"); } }
+        public static ScannerFile StabCity { get { return new ScannerFile("01_specific_location\\0x0C5A4ECA.wav", "Stab City", "specific_location"); } }
+        public static ScannerFile VinewoodRonStation1 { get { return new ScannerFile("01_specific_location\\0x0CC13082.wav", "Vinewood Ron Station", "specific_location"); } }
+        public static ScannerFile SouthLSHandsCarWash { get { return new ScannerFile("01_specific_location\\0x0CC361AF.wav", "South Los Santos Hand Car Wash", "specific_location"); } }
+        public static ScannerFile KhalafiaBridge { get { return new ScannerFile("01_specific_location\\0x0CCADD03.wav", "The Khalafia Bridge", "specific_location"); } }
+        public static ScannerFile VanillaUnicorn { get { return new ScannerFile("01_specific_location\\0x0D1B649D.wav", "The Vanilla Unicorn", "specific_location"); } }
+        public static ScannerFile LosSantosGunClub { get { return new ScannerFile("01_specific_location\\0x0D40D5A4.wav", "The Los Santos Gun Club", "specific_location"); } }
+        public static ScannerFile DavisRonStation { get { return new ScannerFile("01_specific_location\\0x0D6F777B.wav", "Davis Ron Station", "specific_location"); } }
+        public static ScannerFile CluckingBellFactory { get { return new ScannerFile("01_specific_location\\0x0D8D06A1.wav", "The Clucking Bell Factory", "specific_location"); } }
+        public static ScannerFile SurvivalistCamp { get { return new ScannerFile("01_specific_location\\0x0D956322.wav", "Survivalist Camp", "specific_location"); } }
+        public static ScannerFile LosSantosDrainageChannel { get { return new ScannerFile("01_specific_location\\0x0D99B50F.wav", "The Los Santos Drainage Channel", "specific_location"); } }
+        public static ScannerFile SouthLSRingOfFire2 { get { return new ScannerFile("01_specific_location\\0x0DA81BFE.wav", "South LS Ring of Fire", "specific_location"); } }
+        public static ScannerFile VespucciPier { get { return new ScannerFile("01_specific_location\\0x0DAF6020.wav", "Vespucci Pier", "specific_location"); } }
+        public static ScannerFile RichardsMajesticStudios { get { return new ScannerFile("01_specific_location\\0x0DB18443.wav", "The Richards Majestic Studios", "specific_location"); } }
+        public static ScannerFile DelPerroLadiStore { get { return new ScannerFile("01_specific_location\\0x0DE50E66.wav", "The Del Perro Ladi Store", "specific_location"); } }
+        public static ScannerFile RockfordHillsCountryClub { get { return new ScannerFile("01_specific_location\\0x0E1F32BB.wav", "Rockford Hills Country Club", "specific_location"); } }
+        public static ScannerFile PaletoBaySheriffStation { get { return new ScannerFile("01_specific_location\\0x0E94FE38.wav", "Paleto Bay Sheriff Station", "specific_location"); } }
+        public static ScannerFile ChilliadLogginCamp { get { return new ScannerFile("01_specific_location\\0x0EE35330.wav", "The Chilliad Logging Camp", "specific_location"); } }
+        public static ScannerFile ZancudoRiverAmmunation { get { return new ScannerFile("01_specific_location\\0x0F7D8050.wav", "Zancudo River Ammunation", "specific_location"); } }
+        public static ScannerFile GlassHerosAutoRepair { get { return new ScannerFile("01_specific_location\\0x105B95C3.wav", "Glass Heros Auto Repair", "specific_location"); } }
+        public static ScannerFile SandyShoresTractorRepair { get { return new ScannerFile("01_specific_location\\0x10E16467.wav", "Sandy Shores Tractor Repair", "specific_location"); } }
+        public static ScannerFile LandActReservoir { get { return new ScannerFile("01_specific_location\\0x111BE082.wav", "The Land Act Reservoir", "specific_location"); } }
+        public static ScannerFile PaletoBayDelta { get { return new ScannerFile("01_specific_location\\0x111BF88B.wav", "The Paleto Bay Delta", "specific_location"); } }
+        public static ScannerFile Vinewoodracetrack { get { return new ScannerFile("01_specific_location\\0x11358D45.wav", "Vinewood Racetrack", "specific_location"); } }
+        public static ScannerFile EastSenoraPowerStation { get { return new ScannerFile("01_specific_location\\0x1139507A.wav", "East Senora Power Station", "specific_location"); } }
+        public static ScannerFile MirrorParkCatedral { get { return new ScannerFile("01_specific_location\\0x1190C8A4.wav", "Mirror Park Cathedral", "specific_location"); } }
+        public static ScannerFile SouthLSRingOfFire { get { return new ScannerFile("01_specific_location\\0x11CCE448.wav", "South LS Ring of Fire", "specific_location"); } }
+        public static ScannerFile HumaneLabsAndResearch { get { return new ScannerFile("01_specific_location\\0x11F08287.wav", "Humane Labs and Research", "specific_location"); } }
+        public static ScannerFile CarsonSelfStorageSenoraFreeway { get { return new ScannerFile("01_specific_location\\0x120B0B74.wav", "Carson Self Storage off Senora Freeway", "specific_location"); } }
+        public static ScannerFile DowntownVinewoodBlazingTattoo { get { return new ScannerFile("01_specific_location\\0x1223E5D3.wav", "Downtown Vinewood Blazing Tattoo", "specific_location"); } }
+        public static ScannerFile PDXShowroom { get { return new ScannerFile("01_specific_location\\0x122B5EFF.wav", "The Premium Deluxe Showroom", "specific_location"); } }
+        public static ScannerFile SanAadreasStateOffice { get { return new ScannerFile("01_specific_location\\0x124A359B.wav", "San Andreas State Office", "specific_location"); } }
+        public static ScannerFile RedwoodStdium2 { get { return new ScannerFile("01_specific_location\\0x126496AC.wav", "Redwood Stadium", "specific_location"); } }
+        public static ScannerFile ZancudoRiver2 { get { return new ScannerFile("01_specific_location\\0x128B95B2.wav", "ZancudoRIver", "specific_location"); } }
+        public static ScannerFile RedwoodLightsTrack { get { return new ScannerFile("01_specific_location\\0x12C1F74A.wav", "Redwood Lights Track", "specific_location"); } }
+        public static ScannerFile RockfordHillsSubway { get { return new ScannerFile("01_specific_location\\0x1337CFB1.wav", "Rockford Hills Subway", "specific_location"); } }
+        public static ScannerFile DavisHospital { get { return new ScannerFile("01_specific_location\\0x13583D6F.wav", "Davis Hospital", "specific_location"); } }
+        public static ScannerFile BeaconTheater { get { return new ScannerFile("01_specific_location\\0x13A5966F.wav", "The Beacon Theater", "specific_location"); } }
+        public static ScannerFile LorenzosGasStation { get { return new ScannerFile("01_specific_location\\0x13B9D9F7.wav", "Lorenzos Gas Station", "specific_location"); } }
+        public static ScannerFile VespucciBeachPoliceStation { get { return new ScannerFile("01_specific_location\\0x13CBAB64.wav", "Vespucci Beach Police Station", "specific_location"); } }
+        public static ScannerFile SchlongbergSachsTower { get { return new ScannerFile("01_specific_location\\0x141154C0.wav", "The Schlongberg Sachs Tower", "specific_location"); } }
+        public static ScannerFile BobMulletSalon { get { return new ScannerFile("01_specific_location\\0x143EDDDF.wav", "Bob Mullet Salon", "specific_location"); } }
+        public static ScannerFile KRPRadioStation { get { return new ScannerFile("01_specific_location\\0x1457D3BB.wav", "The KRP Radio Station", "specific_location"); } }
+        public static ScannerFile AnimalArkPetStore { get { return new ScannerFile("01_specific_location\\0x147855FA.wav", "Animal Ark Pet Store", "specific_location"); } }
+        public static ScannerFile DepOfWaterAndPower { get { return new ScannerFile("01_specific_location\\0x14A1C730.wav", "The Department of Water and Power", "specific_location"); } }
+        public static ScannerFile LittleSeoulLuckyPlucker { get { return new ScannerFile("01_specific_location\\0x14B8A4DB.wav", "Little Seoul Lucky Plucker", "specific_location"); } }
+        public static ScannerFile VespucciBurgerShot { get { return new ScannerFile("01_specific_location\\0x14C89994.wav", "Vesucci Burger Shot", "specific_location"); } }
+        public static ScannerFile LittleSeoulRonStation1 { get { return new ScannerFile("01_specific_location\\0x14C9D45F.wav", "Little Seoul Ron Station", "specific_location"); } }
+        public static ScannerFile CarsonSelfStorageStrawberry { get { return new ScannerFile("01_specific_location\\0x14F358CA.wav", "Carson Self-Storage in Strawberry", "specific_location"); } }
+        public static ScannerFile LagoZancudoCauseway2 { get { return new ScannerFile("01_specific_location\\0x150D4A67.wav", "Lago Zancudo Causeway", "specific_location"); } }
+        public static ScannerFile VespucciWigwam { get { return new ScannerFile("01_specific_location\\0x15151AB5.wav", "Vespucci Wig-Wam Burger", "specific_location"); } }
+        public static ScannerFile KRP69BroadcastStation { get { return new ScannerFile("01_specific_location\\0x1549EDC8.wav", "KRP-69 Broadcast Station", "specific_location"); } }
+        public static ScannerFile ZelenskySupplyWarehouse { get { return new ScannerFile("01_specific_location\\0x159C20B3.wav", "Zelensky Supply Warehouse", "specific_location"); } }
+        public static ScannerFile HarmonyMotel { get { return new ScannerFile("01_specific_location\\0x159DC557.wav", "Harmony Motel", "specific_location"); } }
+        public static ScannerFile KortzCenter { get { return new ScannerFile("01_specific_location\\0x15AD6A1C.wav", "The Kortz Center", "specific_location"); } }
+        public static ScannerFile SouthVinewoodMovieLot { get { return new ScannerFile("01_specific_location\\0x15B15683.wav", "South Vinewood Movie Lot", "specific_location"); } }
+        public static ScannerFile DopplerTheater { get { return new ScannerFile("01_specific_location\\0x15D35E76.wav", "The Doppler Theater", "specific_location"); } }
+        public static ScannerFile AlamoSea { get { return new ScannerFile("01_specific_location\\0x15D4147E.wav", "The Alamo Sea", "specific_location"); } }
+        public static ScannerFile DavisRonStation2 { get { return new ScannerFile("01_specific_location\\0x1639890D.wav", "Davis Ron Station", "specific_location"); } }
+        public static ScannerFile MorningwoodRonStation2 { get { return new ScannerFile("01_specific_location\\0x165792C7.wav", "Morningwood Ron Station", "specific_location"); } }
+        public static ScannerFile SandersMotorcycles { get { return new ScannerFile("01_specific_location\\0x16677E71.wav", "Sanders Motorcycles", "specific_location"); } }
+        public static ScannerFile FIBTower { get { return new ScannerFile("01_specific_location\\0x1667D63F.wav", "FIB Tower", "specific_location"); } }
+        public static ScannerFile LaFuentaBlancaRanch { get { return new ScannerFile("01_specific_location\\0x166818B8.wav", "La Fluente Blanca Ranch", "specific_location"); } }
+        public static ScannerFile NOOSE { get { return new ScannerFile("01_specific_location\\0x1677E89E.wav", "National Office of Security Enforcement", "specific_location"); } }
+        public static ScannerFile BlaineCountySavingsBank { get { return new ScannerFile("01_specific_location\\0x168085D1.wav", "Blaine County Savings Bank", "specific_location"); } }
+        public static ScannerFile CentalLaMesaRonStation { get { return new ScannerFile("01_specific_location\\0x16AAEFAC.wav", "Central La Mesa Ron Station", "specific_location"); } }
+        public static ScannerFile LittleSeoulBeanMachine { get { return new ScannerFile("01_specific_location\\0x16C620C3.wav", "Little Seoul Bean Machine", "specific_location"); } }
+        public static ScannerFile VinewoodSubUrban { get { return new ScannerFile("01_specific_location\\0x16F87D3A.wav", "Vinewood Branch of Suburban", "specific_location"); } }
+        public static ScannerFile RockfordPlaza { get { return new ScannerFile("01_specific_location\\0x17AE5C6D.wav", "Rockford Plaza", "specific_location"); } }
+        public static ScannerFile CNTBuilding { get { return new ScannerFile("01_specific_location\\0x17E65770.wav", "The CNT Building", "specific_location"); } }
+        public static ScannerFile SilentProbeMountain { get { return new ScannerFile("01_specific_location\\0x18508E93.wav", "Silent Probe Mountain", "specific_location"); } }
+        public static ScannerFile LSXFuelStorageArea { get { return new ScannerFile("01_specific_location\\0x1878923B.wav", "LSX Fuel Storage Area", "specific_location"); } }
+        public static ScannerFile MotocrossTrack { get { return new ScannerFile("01_specific_location\\0x189ED18A.wav", "Motocross Track", "specific_location"); } }
+        public static ScannerFile HillValleyChurch { get { return new ScannerFile("01_specific_location\\0x18C4124F.wav", "Hill Valley Church", "specific_location"); } }
+        public static ScannerFile SenoraFreewayXero { get { return new ScannerFile("01_specific_location\\0x18C6F152.wav", "Senora Freeway Xero Station", "specific_location"); } }
+        public static ScannerFile SouthLaMesaRonStation { get { return new ScannerFile("01_specific_location\\0x18EA44DE.wav", "South La Mesa Ron Station", "specific_location"); } }
+        public static ScannerFile TikiLaLa { get { return new ScannerFile("01_specific_location\\0x1907E32D.wav", "Tiki La-La", "specific_location"); } }
+        public static ScannerFile LittleSeoulSnrBuns { get { return new ScannerFile("01_specific_location\\0x19532EA2.wav", "Little Seoul Snr Buns", "specific_location"); } }
+        public static ScannerFile SouthLSHandsOnCarWash { get { return new ScannerFile("01_specific_location\\0x19797B25.wav", "South LS Hands on Car-Wash", "specific_location"); } }
+        public static ScannerFile HumaneLabsFacility2 { get { return new ScannerFile("01_specific_location\\0x197FDA82.wav", "The Humane Labs Facility", "specific_location"); } }
+        public static ScannerFile LittleTeapot { get { return new ScannerFile("01_specific_location\\0x1980DD57.wav", "The Little Teapot", "specific_location"); } }
+        public static ScannerFile SandyShoresAirstrip { get { return new ScannerFile("01_specific_location\\0x1983B0D4.wav", "Sandy Shores Airstrip", "specific_location"); } }
+        public static ScannerFile MtChilliadSummit { get { return new ScannerFile("01_specific_location\\0x19924D41.wav", "The Summit of Mt Chilliad", "specific_location"); } }
+        public static ScannerFile HarmonyDollarPillsPharmacy { get { return new ScannerFile("01_specific_location\\0x19E069DE.wav", "Harmony Dollar Pills Pharmacy", "specific_location"); } }
+        public static ScannerFile ChumashMall { get { return new ScannerFile("01_specific_location\\0x19E4D5BD.wav", "ChumashMall", "specific_location"); } }
+        public static ScannerFile LiquorAce { get { return new ScannerFile("01_specific_location\\0x1A23351D.wav", "The Liquor Ace", "specific_location"); } }
+        public static ScannerFile StonerCementWorks { get { return new ScannerFile("01_specific_location\\0x1A2E04DF.wav", "Stoner Cement Works", "specific_location"); } }
+        public static ScannerFile MazeBankOfLS { get { return new ScannerFile("01_specific_location\\0x1A3F7860.wav", "The Maze Bank of LS", "specific_location"); } }
+        public static ScannerFile EugenicsIncLab { get { return new ScannerFile("01_specific_location\\0x1A67316D.wav", "The Eugenics Inc. Lab", "specific_location"); } }
+        public static ScannerFile UnionGrainsSilos { get { return new ScannerFile("01_specific_location\\0x1A91C6DE.wav", "The Union Grains Silos", "specific_location"); } }
+        public static ScannerFile RedwoodLightsMotocross { get { return new ScannerFile("01_specific_location\\0x1A94B384.wav", "The Redwood Lights Motocross Track", "specific_location"); } }
+        public static ScannerFile RedwoodLightsStadium { get { return new ScannerFile("01_specific_location\\0x1AB17532.wav", "The Redwood Lights Stadium", "specific_location"); } }
+        public static ScannerFile SouthLSATMDiscountStore { get { return new ScannerFile("01_specific_location\\0x1AB60F0D.wav", "South LS ATM Discount Store", "specific_location"); } }
+        public static ScannerFile SouthHoKoreanNoodleHouse { get { return new ScannerFile("01_specific_location\\0x1ABB2DE0.wav", "South Ho Korean Noodle House", "specific_location"); } }
+        public static ScannerFile TheLSGunClub { get { return new ScannerFile("01_specific_location\\0x1AF37109.wav", "The LS Gun Club", "specific_location"); } }
+        public static ScannerFile PacificBluffsXeroStation { get { return new ScannerFile("01_specific_location\\0x1AFC8E72.wav", "The Pacific Bluffs Xero Station", "specific_location"); } }
+        public static ScannerFile DelPerroNewSakiRestaurant1 { get { return new ScannerFile("01_specific_location\\0x1B133696.wav", "The Del Perro New Saki Restaurant", "specific_location"); } }
+        public static ScannerFile YellowJackBar { get { return new ScannerFile("01_specific_location\\0x1B1BCF62.wav", "The Yellow Jack Bar", "specific_location"); } }
+        public static ScannerFile SanChianskiMountains { get { return new ScannerFile("01_specific_location\\0x1B2852E9.wav", "The San Chiaski Mountains", "specific_location"); } }
+        public static ScannerFile SplitSides { get { return new ScannerFile("01_specific_location\\0x1B3FE498.wav", "Split Sides", "specific_location"); } }
+        public static ScannerFile ElGordoLighthouse { get { return new ScannerFile("01_specific_location\\0x1B7B1F49.wav", "The El Gordo Lighthouse", "specific_location"); } }
+        public static ScannerFile PaletoBayGasStation { get { return new ScannerFile("01_specific_location\\0x1B81EF89.wav", "Paleto Bay Gas Station", "specific_location"); } }
+        public static ScannerFile VinewoodBankOfLS { get { return new ScannerFile("01_specific_location\\0x1BB48F43.wav", "The Vinewood Bank of Los Santos", "specific_location"); } }
+        public static ScannerFile MillersFishingVillage { get { return new ScannerFile("01_specific_location\\0x1BC1EA80.wav", "Millers Fishing Village", "specific_location"); } }
+        public static ScannerFile PalmerTaylorPower { get { return new ScannerFile("01_specific_location\\0x1C5D1678.wav", "The Palmer-Taylor Power Station", "specific_location"); } }
+        public static ScannerFile LandActDam { get { return new ScannerFile("01_specific_location\\0x1C674794.wav", "The Land Act Dam", "specific_location"); } }
+        public static ScannerFile CassidyCreek { get { return new ScannerFile("01_specific_location\\0x1CD25A01.wav", "Cassidy Creek", "specific_location"); } }
+        public static ScannerFile TheCluckingBellFactory { get { return new ScannerFile("01_specific_location\\0x1D2407D2.wav", "The Clucking Bell Factory", "specific_location"); } }
+        public static ScannerFile RichmanGlofCourse { get { return new ScannerFile("01_specific_location\\0x1D532F53.wav", "Richman Golf Course", "specific_location"); } }
+        public static ScannerFile AltaConstructionSite { get { return new ScannerFile("01_specific_location\\0x1D6A83F9.wav", "The Construction Site in Alta", "specific_location"); } }
+        public static ScannerFile GrapeseedStorageFacility { get { return new ScannerFile("01_specific_location\\0x1DA6BA84.wav", "Grapeseed Storage Facility", "specific_location"); } }
+        public static ScannerFile HerrKutzBarberShop { get { return new ScannerFile("01_specific_location\\0x1DB64CA3.wav", "Herr Kutz Barber Shop", "specific_location"); } }
+        public static ScannerFile LSXCustomAutos { get { return new ScannerFile("01_specific_location\\0x1DE8D28D.wav", "LSX Custom Autos", "specific_location"); } }
+        public static ScannerFile GalileoParkObservatory { get { return new ScannerFile("01_specific_location\\0x1DEC0BDE.wav", "Galileo Park Observatory", "specific_location"); } }
+        public static ScannerFile LosSantosRecyclingCenter { get { return new ScannerFile("01_specific_location\\0x1DF81DFF.wav", "Los Santos Recycling Center", "specific_location"); } }
+        public static ScannerFile OneilFarm { get { return new ScannerFile("01_specific_location\\0x1E2AE79B.wav", "The ONeil Farm", "specific_location"); } }
+        public static ScannerFile LittleSeoulMuseum { get { return new ScannerFile("01_specific_location\\0x1E74A249.wav", "The Little Seoul Museum", "specific_location"); } }
+        public static ScannerFile WeazelPlaza { get { return new ScannerFile("01_specific_location\\0x1E998193.wav", "Weazel Plaza", "specific_location"); } }
+        public static ScannerFile DorsetDrivePillPharmacy { get { return new ScannerFile("01_specific_location\\0x1F07D876.wav", "Dorset Drive Pill Pharmacy", "specific_location"); } }
+        public static ScannerFile MirrorParkPoliceStation { get { return new ScannerFile("01_specific_location\\0x1F0E27B7.wav", "Mirror Park Police Station", "specific_location"); } }
+        public static ScannerFile HumaneLabsFacility { get { return new ScannerFile("01_specific_location\\0x1FB449F8.wav", "The Humane Labs Facility", "specific_location"); } }
     }
     public class stand_down
     {
@@ -4364,6 +4364,10 @@
 
     public class ScannerFile
     {
+        public ScannerFile()
+        {
+
+        }
         public ScannerFile(string _FileName, string _Quote, string _GroupName)
         {
             FileName = _FileName;

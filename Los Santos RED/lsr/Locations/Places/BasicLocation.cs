@@ -73,6 +73,10 @@ public class BasicLocation
     public bool RemoveBanner { get; set; } = false;
     public bool IsEnabled { get; set; } = true;
     public string Name { get; set; }
+    public string FullName { get; set; }
+
+
+
     public string Description { get; set; }
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
     public float EntranceHeading { get; set; }
@@ -114,7 +118,12 @@ public class BasicLocation
     public bool IsNearby { get; private set; } = false;
 
 
-    public string FullName => Name + " - " + StreetAddress;
+
+    public string ScannerFilePath { get; set; } = "";
+
+    [XmlIgnore]
+    public uint GameTimeLastMentioned { get; set; }
+    //public string FullName => Name + " - " + StreetAddress;
 
 
     public BasicLocation()
@@ -127,9 +136,22 @@ public class BasicLocation
         EntranceHeading = _EntranceHeading;
         Name = _Name;
         Description = _Description;
+        FullName = Name;
         //CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         //CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
+
+    public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _FullName)
+    {
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
+        Name = _Name;
+        Description = _Description;
+        FullName = _FullName;
+        //CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        //CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
+    }
+
     public float DistanceToPlayer => distanceToPlayer;
     public bool IsWalkup { get; set; } = false;
     public override string ToString()

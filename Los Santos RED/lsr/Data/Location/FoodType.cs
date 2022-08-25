@@ -26,6 +26,6 @@ public enum FoodType
     FastFood = 1 << 14,
     Bagels = 1 << 15,
     Coffee = 1 << 16,
-    Smoothies = 1 << 16,
-    Chicken = 1 << 16,
+    Smoothies = 1 << 17,
+    Chicken = 1 << 18,
 }

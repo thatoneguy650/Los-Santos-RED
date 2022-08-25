@@ -54,6 +54,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastMentionedStreet;
         private uint GameTimeLastMentionedUnits;
         private uint GameTimeLastMentionedZone;
+        private uint GameTimeLastMentionedLocation;
         private Dispatch GotOffFreeway;
         private Dispatch GotOnFreeway;
         private Dispatch GrandTheftAuto;
@@ -156,6 +157,9 @@ namespace LosSantosRED.lsr
         }
         public bool RecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000;
         public bool RecentlyMentionedStreet => GameTimeLastMentionedStreet != 0 && Game.GameTime - GameTimeLastMentionedStreet <= 10000;
+
+        public bool RecentlyMentionedLocation => GameTimeLastMentionedLocation != 0 && Game.GameTime - GameTimeLastMentionedLocation <= 15000;
+
         public bool RecentlyMentionedUnits => GameTimeLastMentionedUnits != 0 && Game.GameTime - GameTimeLastMentionedUnits <= 10000;
         public bool RecentlyMentionedZone => GameTimeLastMentionedZone != 0 && Game.GameTime - GameTimeLastMentionedZone <= 10000;
         public bool VeryRecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000;
@@ -472,6 +476,7 @@ namespace LosSantosRED.lsr
             GameTimeLastMentionedStreet = 0;
             GameTimeLastMentionedZone = 0;
             GameTimeLastMentionedUnits = 0;
+            GameTimeLastMentionedLocation = 0;
             //end newish
             DispatchQueue.Clear();
         }
@@ -688,18 +693,26 @@ namespace LosSantosRED.lsr
         }
         private void AddLocationDescription(DispatchEvent dispatchEvent, LocationSpecificity locationSpecificity)
         {
-            if (locationSpecificity == LocationSpecificity.HeadingAndStreet)
-            {
-                AddHeading(dispatchEvent);
-            }
+            BasicLocation NearbyLocation = World.Places.ActiveLocations.Where(x => !string.IsNullOrEmpty(x.ScannerFilePath) && x.DistanceToPlayer <= 100f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-            if (locationSpecificity == LocationSpecificity.Street || locationSpecificity == LocationSpecificity.HeadingAndStreet || locationSpecificity == LocationSpecificity.StreetAndZone)
+            if (NearbyLocation != null && !RecentlyMentionedLocation)
             {
-                AddStreet(dispatchEvent);
+                AddLocation(dispatchEvent, NearbyLocation);
             }
-            if (locationSpecificity == LocationSpecificity.Zone || locationSpecificity == LocationSpecificity.StreetAndZone)
+            else
             {
-                AddZone(dispatchEvent);
+                if (locationSpecificity == LocationSpecificity.HeadingAndStreet)
+                {
+                    AddHeading(dispatchEvent);
+                }
+                if (locationSpecificity == LocationSpecificity.Street || locationSpecificity == LocationSpecificity.HeadingAndStreet || locationSpecificity == LocationSpecificity.StreetAndZone)
+                {
+                    AddStreet(dispatchEvent);
+                }
+                if (locationSpecificity == LocationSpecificity.Zone || locationSpecificity == LocationSpecificity.StreetAndZone)
+                {
+                    AddZone(dispatchEvent);
+                }
             }
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
@@ -1089,6 +1102,35 @@ namespace LosSantosRED.lsr
                 AddAudioSet(dispatchEvent, new AudioSet(new List<string>() { custom_wanted_level_line.Suspectisarmedanddangerousweaponsfree.FileName }, "suspect is armed and dangerous, weapons free"));
                 dispatchEvent.NotificationText += "~n~~r~Weapons Free~s~";
                 ReportedWeaponsFree = true;
+            }
+        }
+        private void AddLocation(DispatchEvent dispatchEvent, BasicLocation location)
+        {
+            if (RecentlyMentionedLocation)
+            {
+                return;
+            }
+            if (location != null)
+            {
+                string ScannerAudio = location.ScannerFilePath;
+                if (ScannerAudio != "")
+                {
+                    //dispatchEvent.HasZoneAudio = true;
+                    //if (MyZone.IsSpecificLocation || Settings.SettingsManager.ScannerSettings.UseNearForLocations)
+                    //{
+                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
+                        dispatchEvent.Subtitles += " ~s~near ~p~" + location.Name + "~s~";
+                    //}
+                    //else
+                    //{
+                    //    dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.In.FileName }.PickRandom());
+                    //    dispatchEvent.Subtitles += " ~s~in ~p~" + location.Name + "~s~";
+                    //}
+                    dispatchEvent.SoundsToPlay.Add(ScannerAudio);
+                    dispatchEvent.NotificationText += "~n~~p~" + location.Name + "~s~";
+                    dispatchEvent.HasLocationAudio = true;
+                    location.GameTimeLastMentioned = Game.GameTime;
+                }
             }
         }
         private void AddZone(DispatchEvent dispatchEvent)
@@ -1566,6 +1608,10 @@ namespace LosSantosRED.lsr
                                 if (MyAudioEvent.HasUnitAudio)
                                 {
                                     GameTimeLastMentionedUnits = Game.GameTime;
+                                }
+                                if(MyAudioEvent.HasLocationAudio)
+                                {
+                                    GameTimeLastMentionedLocation = Game.GameTime;
                                 }
                                 GameFiber.Yield();
                                 if (AbortedAudio)
@@ -2108,6 +2154,7 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_suspect_threatening_an_officer_with_a_firearm.Asuspectthreateninganofficerwithafirearm.FileName},"a suspect threatening and officer with a firearm"),
+                new AudioSet(new List<string>() { crime_officer_in_danger.Anofficerindanger.FileName},"an officer in danger"),
             },
             };
             DealingDrugs = new Dispatch()
@@ -2123,6 +2170,9 @@ namespace LosSantosRED.lsr
                 new AudioSet(new List<string>() { crime_drug_deal.Narcoticstrafficking.FileName},"narcotics trafficing"),
             },
             };
+
+
+            //crime_road_blockade
 
             DealingGuns = new Dispatch()
             {
@@ -3126,6 +3176,7 @@ namespace LosSantosRED.lsr
             public bool CanInterrupt { get; set; } = true;
             public bool HasStreetAudio { get; set; }
             public bool HasUnitAudio { get; set; }
+            public bool HasLocationAudio { get; set; }
             public bool HasZoneAudio { get; set; }
             public string NotificationSubtitle { get; set; } = "Status";
             public string NotificationText { get; set; } = "~b~Scanner Audio";

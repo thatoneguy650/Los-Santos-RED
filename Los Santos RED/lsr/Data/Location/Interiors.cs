@@ -231,6 +231,10 @@ public class Interiors : IInteriors
             new Interior(74874,"LtD Gas"),
             new Interior(37890,"Los Santos Customs"),
             new Interior(22786,"Binco"),
+
+
+            new Interior(96266,"Suburban"),//suburban harmony
+
             new Interior(58882,"FIB Downtown",new List<string>() { "FIBlobby" },new List<string>() { "FIBlobbyfake" },new List<InteriorDoor>() { new InteriorDoor(-1517873911, new Vector3(106.3793f, -742.6982f, 46.51962f)),new InteriorDoor(-90456267, new Vector3(105.7607f, -746.646f, 46.18266f))}),
             new Interior(104450,"Liquor Ace"),
             new Interior(78338,"Maze Bank Arena",new List<string>() { "sp1_10_real_interior" },new List<string>() { "sp1_10_fake_interior" }),

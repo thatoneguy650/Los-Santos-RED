@@ -194,6 +194,9 @@ public class PoliceSettings : ISettingsDefaultable
     public float SixthSenseSearchModeLimitPercentage { get; set; }
     public bool AllowDriveBySight { get; set; }
     public bool AllowSiegeMode { get; set; }
+    public float SiegeGotoDistance { get; set; }
+    public float SiegeAimDistance { get; set; }
+    public float SiegePercentage { get; set; }
 
     public PoliceSettings()
     {
@@ -236,16 +239,16 @@ public class PoliceSettings : ISettingsDefaultable
         OverrideHealth = true;
         PedSpawnLimit_Default = 7;
         PedSpawnLimit_Investigation = 8;
-        PedSpawnLimit_Wanted1 = 9;//7;
-        PedSpawnLimit_Wanted2 = 10;//9;
-        PedSpawnLimit_Wanted3 = 16;//13;
+        PedSpawnLimit_Wanted1 = 9;
+        PedSpawnLimit_Wanted2 = 10;
+        PedSpawnLimit_Wanted3 = 16;
         PedSpawnLimit_Wanted4 = 20;
         PedSpawnLimit_Wanted5 = 24;
         PedSpawnLimit_Wanted6 = 26;
-        VehicleSpawnLimit_Default = 6;
-        VehicleSpawnLimit_Investigation = 7;
-        VehicleSpawnLimit_Wanted1 = 8;
-        VehicleSpawnLimit_Wanted2 = 9;
+        VehicleSpawnLimit_Default = 9;// 6;
+        VehicleSpawnLimit_Investigation = 10;// 7;
+        VehicleSpawnLimit_Wanted1 = 11;// 8;
+        VehicleSpawnLimit_Wanted2 = 12;// 9;
         VehicleSpawnLimit_Wanted3 = 13;
         VehicleSpawnLimit_Wanted4 = 15;
         VehicleSpawnLimit_Wanted5 = 16;
@@ -350,6 +353,9 @@ public class PoliceSettings : ISettingsDefaultable
 #endif
 
         AllowSiegeMode = true;
+        SiegeGotoDistance = 8f;
+        SiegeAimDistance = 15f;
+        SiegePercentage = 80f;
 
 
     }

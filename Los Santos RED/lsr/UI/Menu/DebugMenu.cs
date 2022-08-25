@@ -144,7 +144,7 @@ public class DebugMenu : Menu
         List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
-            UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"Teleport To {typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
+            UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
             myLocationType.Activated += (menu, item) =>
             {
                 BasicLocation toTele = myLocationType.SelectedItem;

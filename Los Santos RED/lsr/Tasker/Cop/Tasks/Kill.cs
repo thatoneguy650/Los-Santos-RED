@@ -14,7 +14,8 @@ public class Kill : ComplexTask
     private uint GametimeLastRetasked;
     private bool IsGoingToBeforeAttacking = false;
     private ISettingsProvideable Settings;
-    private bool ShouldGoToBeforeAttack => Settings.SettingsManager.PoliceSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer;
+    private bool CanSiege = false;
+    private bool ShouldGoToBeforeAttack => Settings.SettingsManager.PoliceSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege;
     public Kill(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Kill";
@@ -25,6 +26,17 @@ public class Kill : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            if(RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SiegePercentage))
+            {
+                CanSiege = true;
+            }
+            else
+            {
+                CanSiege = false;
+            }
+
+
+
             ClearTasks();
             //NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
@@ -38,6 +50,10 @@ public class Kill : ComplexTask
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
             //New
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_WillDragInjuredPedsToSafety, true);
+
+            NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+
+
             if (Ped.IsDriver)
             {
                 if (Ped.IsInHelicopter)
@@ -172,7 +188,7 @@ public class Kill : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, 3f, 15f);
+                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceSettings.SiegeAimDistance);
                 //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                 // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
                 NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);

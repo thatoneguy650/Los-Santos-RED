@@ -471,7 +471,7 @@ public class LEDispatcher
                                 Agency toSpawn = ps.AssignedAgency;
                                 if (toSpawn == null)
                                 {
-                                    Zone CurrentZone = Zones.GetZone(cl.Location);
+                                    Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
                                     Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
                                     if (ZoneAgency != null)
                                     {
@@ -491,7 +491,7 @@ public class LEDispatcher
                     {
                         foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                         {
-                            if (1==1)//RandomItems.RandomPercent(cl.Percentage))
+                            if (RandomItems.RandomPercent(cl.Percentage))
                             {
                                 HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);
@@ -501,7 +501,7 @@ public class LEDispatcher
                                 Agency toSpawn = ps.AssignedAgency;
                                 if (toSpawn == null)
                                 {
-                                    Zone CurrentZone = Zones.GetZone(cl.Location);
+                                    Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
                                     Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
                                     if (ZoneAgency != null)
                                     {

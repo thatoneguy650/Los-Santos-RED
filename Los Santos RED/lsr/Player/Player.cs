@@ -805,7 +805,7 @@ namespace Mod
         public void OnGotOffFreeway()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
+            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
             {
                 Scanner.OnGotOffFreeway();
             }
@@ -814,7 +814,7 @@ namespace Mod
         public void OnGotOnFreeway()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000)
+            if (IsWanted && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && IsAliveAndFree)
             {
                 Scanner.OnGotOnFreeway();
             }
@@ -862,7 +862,7 @@ namespace Mod
         public void OnVehicleCrashed()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
+            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
             {
                 GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
@@ -892,7 +892,7 @@ namespace Mod
         public void OnVehicleStartedFire()
         {
             GameFiber.Yield();
-            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000)
+            if (IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && TimeInCurrentVehicle >= 5000 && IsAliveAndFree)
             {
                 Scanner.OnVehicleStartedFire();
             }
@@ -933,7 +933,7 @@ namespace Mod
         private void OnExcessiveSpeed()
         {
             GameFiber.Yield();
-            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed)
+            if (IsWanted && VehicleSpeedMPH >= 75f && AnyPoliceCanSeePlayer && TimeInCurrentVehicle >= 10000 && !isCheckingExcessSpeed && IsAliveAndFree)
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
@@ -1066,7 +1066,7 @@ namespace Mod
             {
                 GameTimeGotInVehicle = Game.GameTime;
                 GameTimeGotOutOfVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer)
+                if (IsWanted && AnyPoliceCanSeePlayer && IsAliveAndFree)
                 {
                     Scanner.OnGotInVehicle();
                 }
@@ -1087,7 +1087,7 @@ namespace Mod
             {
                 GameTimeGotOutOfVehicle = Game.GameTime;
                 GameTimeGotInVehicle = 0;
-                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll)
+                if (IsWanted && AnyPoliceCanSeePlayer && !IsRagdoll && IsAliveAndFree)
                 {
                     Scanner.OnGotOutOfVehicle();
                 }

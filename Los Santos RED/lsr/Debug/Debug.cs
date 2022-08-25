@@ -913,7 +913,9 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        SpawnWithQuat();
+        Player.Scanner.DebugPlayDispatch();
+
+        //SpawnWithQuat();
         //HighlightProp();
         //SetFlags();
         //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())

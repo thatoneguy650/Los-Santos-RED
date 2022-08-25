@@ -36,7 +36,7 @@ public class Streets : IStreets
             DefaultConfig();
         }
     }
-    public string GetStreetNames(Vector3 Position)
+    public string GetStreetNames(Vector3 Position, bool withCross)
     {
         string StreetName = GetStreetName(Position);
         Street street = StreetsList.Where(x => x.Name == StreetName).FirstOrDefault();
@@ -44,7 +44,7 @@ public class Streets : IStreets
         Street crossStreet = StreetsList.Where(x => x.Name == CrossStreetName).FirstOrDefault();
         if(street != null)
         {
-            if(crossStreet != null)
+            if(crossStreet != null && withCross)
             {
                 return $"~y~{street?.Name}~s~ at ~y~{crossStreet?.Name}~s~".Trim();
             }
