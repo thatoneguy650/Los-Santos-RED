@@ -17,5 +17,7 @@ namespace LosSantosRED.lsr.Interface
         List<BasicLocation> GetAllBasicLocations();
         List<InteractableLocation> GetAllInteractableLocations();
         List<BasicLocation> GetAllLocations();
+        List<ILEDispatchable> LEDispatchableLocations();
+        List<IRespawnableLocation> BustedRespawnLocations();
     }
 }

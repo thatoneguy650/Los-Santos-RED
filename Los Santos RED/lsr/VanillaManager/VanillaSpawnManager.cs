@@ -9,20 +9,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class VanillaCarGeneratorManager
+public class VanillaSpawnManager
 {
     private bool isRandomEventsDisabled;
     private bool IsVanillaRespawnActive = true;
     private ISettingsProvideable Settings;
-    private List<Vector3> CarGenerators;
+    private List<Vector3> CarGeneratorsToDisable;
+    private List<Vector3> ScenariosToDisable;
 
-    public VanillaCarGeneratorManager(ISettingsProvideable settings)
+    public VanillaSpawnManager(ISettingsProvideable settings)
     {
         Settings = settings;
     }
     public void Setup()
     {
-        CarGenerators = new List<Vector3>()
+        CarGeneratorsToDisable = new List<Vector3>()
         {
         //POLICE
         //Mission Row
@@ -101,12 +102,17 @@ public class VanillaCarGeneratorManager
         new Vector3(859.8381f, -1388.58f, 26.21234f),
         new Vector3(857.2202f, -1393.802f, 26.21234f),
         new Vector3(854.2248f, -1398.952f, 26.21234f),
+
+
+        //Boilingbroke
+        new Vector3(1855.314f, 2578.854f, 46.42464f),
+        new Vector3(1799.826f, 2600.908f, 45.58898f),
         };
 
 
         if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
         {
-            foreach (Vector3 carGenSPot in CarGenerators)
+            foreach (Vector3 carGenSPot in CarGeneratorsToDisable)
             {
                 NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
 
@@ -117,8 +123,9 @@ public class VanillaCarGeneratorManager
 
 
 
-        List<Vector3> CarScenarios = new List<Vector3>()
+        ScenariosToDisable = new List<Vector3>()
         {
+            //Car Scenarios
             new Vector3(838.9286f, -1259.166f, 25.38143f),
             new Vector3(837.0612f, -1257.972f, 25.36833f),
             new Vector3(824.9189f, -1263.116f, 25.26017f),
@@ -145,13 +152,30 @@ public class VanillaCarGeneratorManager
             new Vector3(-479.5346f, 6028.117f, 30.34054f),
             new Vector3(-437.7312f, 6087.632f, 30.42623f),
             new Vector3(-431.8985f, 6032.511f, 30.34053f),
+            new Vector3(1803.225f, 2623.1f, 44.5028f),///prison
+            new Vector3(1727.828f, 2439.606f, 44.56514f),///prison
+            new Vector3(1799.826f, 2600.908f, 45.58898f),//prison
+
+            //Ped Scenarios
+            new Vector3(1846.473f, 2584.199f, 44.67195f),//prison
+            new Vector3(1848.088f, 2602.314f, 44.63724f),///prison
+            new Vector3(1848.083f, 2601.134f, 44.62651f),///prison
+            new Vector3(1847.456f, 2603.807f, 44.65017f),///prison
+            new Vector3(1955.374f, 2622.803f, 44.90855f),///prison
+            new Vector3(1787.849f, 2622.388f, 44.56556f),///prison
+            new Vector3(1774.152f, 2532.529f, 44.56549f),///prison
+            new Vector3(1899.234f, 2605.696f, 44.96621f),//prison
+            new Vector3(1847.575f, 2584.629f, 45.67206f),//prison
+
         };
+
+
 
 
         if(Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
         {
             float ScenarioBlockingDistance = 2f;
-            foreach (Vector3 carScenario in CarScenarios)
+            foreach (Vector3 carScenario in ScenariosToDisable)
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(carScenario.X - ScenarioBlockingDistance, carScenario.Y - ScenarioBlockingDistance, carScenario.Z - ScenarioBlockingDistance, carScenario.X + ScenarioBlockingDistance, carScenario.Y + ScenarioBlockingDistance, carScenario.Z + ScenarioBlockingDistance, false, true, true, true);
             }

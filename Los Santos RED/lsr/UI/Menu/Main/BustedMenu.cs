@@ -19,7 +19,7 @@ public class BustedMenu : Menu
     private UIMenuItem ResistArrest;
     private IRespawning Respawning;
     private ISettingsProvideable Settings;
-    private UIMenuListScrollerItem<PoliceStation> Surrender;
+    private UIMenuListScrollerItem<IRespawnableLocation> Surrender;
     private UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed;
     private ITimeReportable Time;
     private UIMenuItem TalkItOut;
@@ -137,7 +137,10 @@ public class BustedMenu : Menu
     }
     private void AddRespawningOptions()
     {
-        Surrender = new UIMenuListScrollerItem<PoliceStation>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+
+
+
+        Surrender = new UIMenuListScrollerItem<IRespawnableLocation>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         Surrender.Activated += (sender, selectedItem) =>
         {
             Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);

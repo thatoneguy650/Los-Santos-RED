@@ -443,7 +443,7 @@ public class LEDispatcher
             if (GetSpawnLocation() && GetSpawnTypes(false,false, null))
             {
                 LastAgencySpawned = Agency;
-                CallSpawnTask(false, true, false);
+                CallSpawnTask(false, true, false, false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -452,7 +452,7 @@ public class LEDispatcher
     {
         if (World.TotalWantedLevel <= 2)
         {
-            foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+            foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
             {
                 if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
                 {
@@ -481,7 +481,7 @@ public class LEDispatcher
                                 if (GetSpawnTypes(true, false, toSpawn))
                                 {
                                     LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true);
+                                    CallSpawnTask(true, false, true, false);
                                     spawnedsome = true;
                                 }
                             }
@@ -511,7 +511,7 @@ public class LEDispatcher
                                 if (GetSpawnTypes(false, true, toSpawn))
                                 {
                                     LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true);
+                                    CallSpawnTask(true, false, true, true);
                                     spawnedsome = true;
                                 }
                             }
@@ -525,7 +525,7 @@ public class LEDispatcher
                 }
             }
         }
-        foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
+        foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
         {
             ps.IsDispatchFilled = false;
         }
@@ -538,13 +538,14 @@ public class LEDispatcher
             SpawnRoadblock();
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
     {
         try
         {
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
+            spawnTask.ClearArea = clearArea;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
@@ -887,6 +888,6 @@ public class LEDispatcher
             }
             PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true, true, true);
+        CallSpawnTask(true, true, true, false);
     }
 }

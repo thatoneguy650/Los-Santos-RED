@@ -86,7 +86,7 @@ public class StaticPlaces
         {
             tl.Menu = ShopMenus.GetMenu(tl.MenuID);
         }
-        foreach (PoliceStation ps in PlacesOfInterest.PossibleLocations.PoliceStations)
+        foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations())
         {
             if (ps.AssignedAgencyID != null)
             {
@@ -203,6 +203,31 @@ public class StaticPlaces
             gl.Setup(Interiors, Settings, Crimes, Weapons);
             World.AddBlip(gl.Blip);
             GameFiber.Yield();
+        }
+    }
+    public void ActivateInteractableLocation(InteractableLocation gl)
+    {
+        if (!Places.ActiveInteractableLocations.Contains(gl))
+        {
+            Places.ActiveInteractableLocations.Add(gl);
+            gl.Setup(Interiors, Settings, Crimes, Weapons);
+            World.Pedestrians.AddEntity(gl.Merchant);
+            World.AddBlip(gl.Blip);
+            GameFiber.Yield();
+        }
+    }
+    public void ActivateLocation(IRespawnableLocation respawnableLocation)
+    {
+        BasicLocation basicToActivate = PlacesOfInterest.GetAllBasicLocations().Where(x => x.Name == respawnableLocation.Name && x.FullStreetAddress == respawnableLocation.FullStreetAddress).FirstOrDefault();
+        if(basicToActivate != null)
+        {
+            ActivateBasicLocation(basicToActivate);
+            return;
+        }
+        InteractableLocation interactableToActivate = PlacesOfInterest.GetAllInteractableLocations().Where(x => x.Name == respawnableLocation.Name && x.FullStreetAddress == respawnableLocation.FullStreetAddress).FirstOrDefault();
+        if (basicToActivate != null)
+        {
+            ActivateInteractableLocation(interactableToActivate);
         }
     }
     public void SetGangLocationActive(string iD, bool v)

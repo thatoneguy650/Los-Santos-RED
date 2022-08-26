@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class PoliceStation : BasicLocation
+public class PoliceStation : BasicLocation, ILEDispatchable, IRespawnableLocation
 {
     public PoliceStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -24,13 +24,9 @@ public class PoliceStation : BasicLocation
     public override float MapIconScale { get; set; } = 1.0f;
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
     public string AssignedAgencyID { get; set; }
-
     [XmlIgnore]
     public Agency AssignedAgency { get; set; }
-
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
 

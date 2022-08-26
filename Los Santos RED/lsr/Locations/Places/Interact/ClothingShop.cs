@@ -48,31 +48,32 @@ public class ClothingShop : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
-            CanInteract = false;
-            Player.IsTransacting = true;
-            GameFiber.StartNew(delegate
-            {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
+            Game.DisplayHelp("Closed for Renovations. Check back Later.");
+            //Player.IsInteractingWithLocation = true;
+            //CanInteract = false;
+            //Player.IsTransacting = true;
+            //GameFiber.StartNew(delegate
+            //{
+            //    StoreCamera = new LocationCamera(this, Player);
+            //    StoreCamera.Setup();
 
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+            //    CreateInteractionMenu();
+            //    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+            //    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
+            //    InteractionMenu.Visible = true;
+            //    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+            //    Transaction.ProcessTransactionMenu();
 
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
+            //    Transaction.DisposeTransactionMenu();
+            //    DisposeInteractionMenu();
 
-                StoreCamera.Dispose();
+            //    StoreCamera.Dispose();
 
-                Player.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
-            }, "BarInteract");
+            //    Player.IsInteractingWithLocation = false;
+            //    Player.IsTransacting = false;
+            //    CanInteract = true;
+            //}, "BarInteract");
         }
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)

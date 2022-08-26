@@ -171,9 +171,12 @@
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Inventory\PropAttachment.cs" />
+    <Compile Include="lsr\Locations\Places\Basic\Prison.cs" />
+    <Compile Include="lsr\Locations\Places\ILEDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\IRespawnableLocation.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
     <Compile Include="lsr\Locations\SpawnPlace.cs" />
@@ -475,7 +478,7 @@
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuGroup.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuMap.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PositionMap.cs" />
-    <Compile Include="lsr\VanillaManager\VanillaCarGeneratorManager.cs" />
+    <Compile Include="lsr\VanillaManager\VanillaSpawnManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaCopManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaGangManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaWorldManager.cs" />

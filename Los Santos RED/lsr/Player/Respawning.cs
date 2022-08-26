@@ -223,7 +223,7 @@ public class Respawning// : IRespawning
             GameTimeLastUndied = Game.GameTime;
         }
     }
-    public void RespawnAtHospital(Hospital PlaceToSpawn)
+    public void RespawnAtHospital(IRespawnableLocation respawnableLocation)
     {
         FadeOut();
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath)
@@ -233,11 +233,11 @@ public class Respawning// : IRespawning
         CalculateHospitalStay();
         Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true);//we are already removing the weapons above, done need to do it twice with the old bug
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
-        if (PlaceToSpawn == null)
+        if (respawnableLocation == null)
         {
-            PlaceToSpawn = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+            respawnableLocation = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
         }
-        SetPlayerAtLocation(PlaceToSpawn);
+        SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath)
         {
             RemoveIllicitInventoryItems();
@@ -249,11 +249,11 @@ public class Respawning// : IRespawning
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductHospitalFee)
         {
-            SetHospitalFee(PlaceToSpawn.Name);
+            SetHospitalFee(respawnableLocation.Name);
         }
         GameTimeLastDischargedFromHospital = Game.GameTime;
     }
-    public void SurrenderToPolice(PoliceStation PoliceStation)
+    public void SurrenderToPolice(IRespawnableLocation respawnableLocation)
     {
         FadeOut();
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
@@ -264,11 +264,14 @@ public class Respawning// : IRespawning
         CurrentPlayer.Surrendering.RaiseHands();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
-        if (PoliceStation == null)
+        if (respawnableLocation == null)
         {
-            PoliceStation = PlacesOfInterest.PossibleLocations.PoliceStations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+            List<IRespawnableLocation> PossibleLocations = new List<IRespawnableLocation>();
+            PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
+            PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
+            respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
         }
-        SetPlayerAtLocation(PoliceStation);
+        SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
         {
             RemoveIllicitInventoryItems();
@@ -280,7 +283,7 @@ public class Respawning// : IRespawning
         FadeIn();
         if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
         {
-            SetBailFee(PoliceStation.Name, BailFee);
+            SetBailFee(respawnableLocation.Name, BailFee);
         }
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
@@ -472,7 +475,7 @@ public class Respawning// : IRespawning
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
         CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
     }
-    private void SetPlayerAtLocation(BasicLocation ToSet)
+    private void SetPlayerAtLocation(IRespawnableLocation ToSet)
     {
         Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
@@ -480,7 +483,7 @@ public class Respawning// : IRespawning
         EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
         //if (ToSet.HasInterior)
         //{
-            World.Places.StaticPlaces.ActivateBasicLocation(ToSet);
+            World.Places.StaticPlaces.ActivateLocation(ToSet);
         //}
         GameTimeLastPlacedAtLocation = Game.GameTime;
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);

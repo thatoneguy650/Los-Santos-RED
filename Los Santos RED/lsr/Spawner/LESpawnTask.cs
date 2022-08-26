@@ -31,6 +31,9 @@ public class LESpawnTask : SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
+
+    public bool ClearArea { get; set; } = false;
+
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
@@ -197,6 +200,11 @@ public class LESpawnTask : SpawnTask
         try
         {
             EntryPoint.WriteToConsole($"LESpawn: Attempting to spawn {VehicleType.ModelName}", 3);
+            if (ClearArea)
+            {
+                NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
+            }
+
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

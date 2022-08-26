@@ -42,6 +42,7 @@ public class PossibleLocations
     public List<DriveThru> DriveThrus { get; private set; } = new List<DriveThru>();
     public List<ClothingShop> ClothingShops { get; private set; } = new List<ClothingShop>();
     public List<BusStop> BusStops { get; private set; } = new List<BusStop>();
+    public List<Prison> Prisons { get; private set; } = new List<Prison>();
 
 }
 

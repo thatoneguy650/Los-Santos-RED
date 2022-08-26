@@ -81,6 +81,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Banks);
         AllLocations.AddRange(PossibleLocations.BeautyShops);
         AllLocations.AddRange(PossibleLocations.Stadiums);
+        AllLocations.AddRange(PossibleLocations.Prisons);
         return AllLocations;
     }
     public List<BasicLocation> GetAllLocations()
@@ -89,6 +90,22 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         AllLocations.AddRange(GetAllBasicLocations());
         AllLocations.AddRange(GetAllInteractableLocations());
+        return AllLocations;
+    }
+    public List<ILEDispatchable> LEDispatchableLocations()
+    {
+        List<ILEDispatchable> AllLocations = new List<ILEDispatchable>();
+
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
+    }
+    public List<IRespawnableLocation> BustedRespawnLocations()
+    {
+        List<IRespawnableLocation> AllLocations = new List<IRespawnableLocation>();
+
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
         return AllLocations;
     }
     private void DefaultConfig()
@@ -611,6 +628,29 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 50f),
             } },
         };
+        List<Prison> Prisons = new List<Prison>()
+        {
+            new Prison(new Vector3(1846.258f, 2586.139f, 45.67202f), 269.2306f, "Bolingbroke Penitentiary","Where the scum of LS washes up")  { OpenTime = 0,CloseTime = 24,AssignedAgencyID = "SASPA",
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f),//guard facing towards entry
+
+                new ConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 75f),//front of prison
+                new ConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 75f),
+            },PossibleVehicleSpawns = new List<ConditionalLocation>() {
+
+                new ConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 75f),//facing towards prison
+                new ConditionalLocation(new Vector3(1869.82f, 2588.359f, 46.42464f), 269f, 75f),//facing away from prison
+                 new ConditionalLocation(new Vector3(1854.312f, 2620.756f, 46.42464f), 92f, 75f),//facing towards prison
+                 new ConditionalLocation( new Vector3(1869.65f, 2577.781f, 45.18463f), 269f, 75f),//facing away from prison
+
+
+                
+
+            }
+            },
+        };
+
+
 
 
         List<Hospital> Hospitals = new List<Hospital>()
@@ -680,11 +720,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-1389.63f, -744.4225f, 24.62544f), 127.01f, "Haute", "Bringing high-class dining to the lower class","FancyDeliMenu", FoodType.American),
             new Restaurant(new Vector3(-1392.125f, -732.2938f, 24.64698f), 37.13289f, "Les Bianco's", "Come take a whiff","FancyFishMenu", FoodType.Seafood),
             new Restaurant(new Vector3(-1420.425f, -709.2584f, 24.60311f), 126.5269f, "Pescado Rojo", "Overpriced fish served with a scowl","FancyFishMenu", FoodType.Seafood),
-            new Restaurant(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, "The Fish Net", "Straight from the polluted Los Santos River","FancyFishMenu", FoodType.Seafood),
+            new Restaurant(new Vector3(-1335.517f, -660.6063f, 26.51026f), 212.5534f, "The Fish Net", "Straight from the polluted Los Santos River","FancyFishMenu", FoodType.Seafood) { ScannerFilePath = "01_specific_location\\0x02249C78.wav"},
             new Restaurant(new Vector3(95.79929f, -1682.817f, 29.25364f), 138.4551f, "Yum Fish", "We love fish pie! and our fishermen love to fillet!","FancyFishMenu", FoodType.Seafood),
 
             new Restaurant(new Vector3(502.6628f, 113.1527f, 96.62571f), 164.3104f, "Jazz Desserts", "Come get your soul food","FancyGenericMenu", FoodType.American),
-            new Restaurant(new Vector3(16.29523f, -166.5288f, 55.82795f), 341.2336f, "The Fish Net", "What a catch","FancyFishMenu", FoodType.Seafood),
+            new Restaurant(new Vector3(16.29523f, -166.5288f, 55.82795f), 341.2336f, "The Fish Net", "What a catch","FancyFishMenu", FoodType.Seafood) { ScannerFilePath = "01_specific_location\\0x02249C78.wav"},
             new Restaurant(new Vector3(281.4706f, -800.5342f, 29.31682f), 227.4364f, "Pescado Azul", "From factory fish farm to plate","FancyFishMenu", FoodType.Seafood),
             new Restaurant(new Vector3(-630.0808f, -2266.577f, 5.933444f), 242.2394f, "Poppy House", "Don't lose your head","FancyGenericMenu", FoodType.American),
             new Restaurant(new Vector3(-122.6395f, 6389.315f, 32.17757f), 44.91608f, "Mojito Inn", "Famous burgers (and liquor)","FancyGenericMenu", FoodType.American),
@@ -816,7 +856,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<Pharmacy> Pharmacies = new List<Pharmacy>()
         {
             new Pharmacy(new Vector3(114.2954f, -4.942202f, 67.82149f), 195.4308f,  "Pop's Pills", "","PharmacyMenu"),
-            new Pharmacy(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, "Dollar Pills", "","PharmacyMenu"),
+            new Pharmacy(new Vector3(68.94705f, -1570.043f, 29.59777f), 50.85398f, "Dollar Pills", "","PharmacyMenu") {ScannerFilePath = "01_specific_location\\0x017D2BE2.wav" },
             new Pharmacy(new Vector3(326.7227f, -1074.448f, 29.47332f), 359.3641f, "Family Pharmacy", "","PharmacyMenu"),
             new Pharmacy(new Vector3(805.143f, -1063.586f, 28.42115f), 90.00111f, "Meltz's Pharmacy", "","PharmacyMenu"),
             new Pharmacy(new Vector3(1225.14f, -391.3563f, 68.68563f), 28.81875f, "Pharmacy", "","PharmacyMenu"),
@@ -868,13 +908,22 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","") {OpenTime = 0,CloseTime = 24, InteriorID = -103 },
 
 
-            new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","") { ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
+            new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
+            new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
+            new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0431FE2B.wav" },
+            new Landmark(new Vector3(105.46f, 252.27f, 109.01f), 162.7602f,"Vinewood Star Tours","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x04F6FA01.wav" },
+            new Landmark(new Vector3(-1261.62f, -347.33f, 37.22f), 53f,"Pump-N-Run Gym","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x06AD518B.wav" },
+            new Landmark(new Vector3(-247.62f, -1526.22f, 33.03f), 53f,"BJ Smith Rec Center","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x05AB836E.wav" },
+
+            new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
+            new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","") { OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
 
 
-            
-
-
-
+            new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
+            new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
+            new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.wav" },
+            new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0D1B649D.wav" },
+            //
         };
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {
@@ -902,9 +951,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new ConvenienceStore(new Vector3(2560f, 385f, 108f), 22.23846f,  "24/7","As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 62722, VendorPosition = new Vector3(2555.339f, 380.9034f, 108.6229f), VendorHeading = 347.3629f, },
             new ConvenienceStore(new Vector3(29.32254f, -1350.485f, 29.33319f), 170.9901f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 33282, VendorPosition = new Vector3(24.39647f, -1345.484f, 29.49702f), VendorHeading = 252.9084f, },
             new ConvenienceStore(new Vector3(-3037.729f, 589.7671f, 7.814812f), 289.0175f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 97538, VendorPosition = new Vector3(-3039.787f, 584.1979f, 7.908929f), VendorHeading = 12.80189f, },
-            new ConvenienceStore(new Vector3(376.3202f, 322.694f, 103.4389f), 162.5363f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 46850, VendorPosition = new Vector3(372.6485f, 327.0293f, 103.5664f), VendorHeading = 257.6475f, },
+            new ConvenienceStore(new Vector3(376.3202f, 322.694f, 103.4389f), 162.5363f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 46850, VendorPosition = new Vector3(372.6485f, 327.0293f, 103.5664f), VendorHeading = 257.6475f,ScannerFilePath = "01_specific_location\\0x000E7300.wav" },//Vinewood
             new ConvenienceStore(new Vector3(2682.938f, 3282.287f, 55.24056f), 243.885f,  "24/7", "As fast as you","TwentyFourSevenMenu") { OpenTime = 0, CloseTime = 24 ,BannerImagePath = "247.png", InteriorID = 13826, VendorPosition = new Vector3(2676.595f, 3280.101f, 55.24113f), VendorHeading = 325.0921f,},
-            new ConvenienceStore(new Vector3(1730.507f, 6410.014f, 35.00065f), 153.9039f,  "24/7","As fast as you","TwentyFourSevenMenu") {  OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 36354, VendorPosition = new Vector3(1728.436f, 6416.584f, 35.03722f), VendorHeading = 241.2023f, },
+            new ConvenienceStore(new Vector3(1730.507f, 6410.014f, 35.00065f), 153.9039f,  "24/7","As fast as you","TwentyFourSevenMenu") {  OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 36354, VendorPosition = new Vector3(1728.436f, 6416.584f, 35.03722f), VendorHeading = 241.2023f, },//Braddock pass
             new ConvenienceStore(new Vector3(1965.801f, 3739.945f, 32.322f), 207.564f,  "24/7","As fast as you","TwentyFourSevenMenu") { OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png", InteriorID = 55554, VendorPosition = new Vector3(1959.352f, 3741.18f, 32.34374f), VendorHeading = 303.8849f, },
             new ConvenienceStore(new Vector3(-53.5351f, -1757.196f, 29.43954f), 146.0623f,  "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",OpenTime = 0, CloseTime = 24, InteriorID = 80642, VendorPosition = new Vector3(-45.89098f, -1757.345f, 29.42101f), VendorHeading = 52.66933f, },
             new ConvenienceStore(new Vector3(-578.0112f, -1012.898f, 22.32503f), 359.4114f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
@@ -994,6 +1043,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GasStation(new Vector3(289.5112f, -1266.584f, 29.44076f), 92.24692f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "xero.png" },
             new GasStation(new Vector3(-92.79028f, 6409.667f, 31.64035f), 48.08112f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "xero.png", ScannerFilePath = "01_specific_location\\0x1B81EF89.wav" },
             new GasStation(new Vector3(46.75933f, 2789.635f, 58.10043f), 139.5097f, "Xero", "We have Xero gasoline","XeroMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "xero.png", ScannerFilePath = "01_specific_location\\0x18C6F152.wav" },
+
+            new GasStation(new Vector3(1705.88f, 6425.68f, 33.37f), 153.9039f, "Globe Oil", "Changing the Climate, Powering The Future","GasStationMenu") {ScannerFilePath = "01_specific_location\\0x007AC3FC.wav" },
+            
+
+
             new GasStation(new Vector3(160.4977f,6635.249f,31.61175f), 70.88637f, "Dons Country Store & Gas","Country Manners!","GasStationMenu"),
             new GasStation(new Vector3(266.2746f,2599.669f,44.7383f), 231.9223f, "Harmony General Store & Gas","Always in Harmony!","GasStationMenu"),
             new GasStation(new Vector3(1039.753f,2666.26f,39.55253f), 143.6208f, "Grande Senora Cafe & Gas","Extra Grande!","GasStationMenu"),
@@ -1154,27 +1208,21 @@ public class PlacesOfInterest : IPlacesOfInterest
         List<ClothingShop> ClothingShops = new List<ClothingShop>()
         {
                 new ClothingShop(new Vector3(430.0404f, -804.3267f, 29.49115f), 359.4608f, "Binco Textile City","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(430.0404f, -804.3267f, 29.49115f))
-
                 {
                     IsEnabled = false,
                     VendorModels = new List<string>() { "s_f_y_shop_low" }, VendorPosition = new Vector3(427.1392f, -806.624f, 29.49114f), VendorHeading = 78.23051f,
                     OpenTime = 4, CloseTime = 22,
                     InteriorID = 22786,
-
                 },
-
                 new ClothingShop(new Vector3(618.1533f, 2749.669f, 42.08868f), 181.2038f, "Suburban Harmony","Low-quality clothing at low prices.","LiquorStoreMenu",new Vector3(618.1533f, 2749.669f, 42.08868f))
-
                 {
                     IsEnabled = false,
                     //VendorModels = new List<string>() { "s_f_y_shop_low" }, VendorPosition = new Vector3(427.1392f, -806.624f, 29.49114f), VendorHeading = 78.23051f,
                     OpenTime = 4, CloseTime = 22,
                     InteriorID = 96258,
-
                 },
-
-
-
+                new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, ScannerFilePath = "01_specific_location\\0x0092CBCB.wav"},//rockford hills
+                new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, ScannerFilePath = "01_specific_location\\0x0289F802.wav"},//rockford hills
         };
         List<BusStop> BusStops = new List<BusStop>()
         {
@@ -1229,6 +1277,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
+        PossibleLocations.Prisons.AddRange(Prisons);
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
 
         PossibleLocations OldPossibleLocations = new PossibleLocations();
@@ -1430,6 +1479,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         OldPossibleLocations.DriveThrus.AddRange(DriveThrus);
         OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
         OldPossibleLocations.BusStops.AddRange(BusStops);
+        OldPossibleLocations.Prisons.AddRange(Prisons);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
     }

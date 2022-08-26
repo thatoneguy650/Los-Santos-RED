@@ -66,8 +66,14 @@ public class DispatchableVehicles : IDispatchableVehicles
 
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 4,MaxOccupants = 5 }};
         List<DispatchableVehicle> PrisonVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policet", 70, 70),
-            new DispatchableVehicle("police4", 30, 30) };
+            new DispatchableVehicle("policet", 0, 25),
+            new DispatchableVehicle("police", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
+            new DispatchableVehicle("sheriff2", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
+
+
+        };
         List<DispatchableVehicle> LSPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police3", 48,35) { RequiredLiveries = new List<int>() { 1 } },
