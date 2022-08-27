@@ -96,7 +96,7 @@ public class InteractableLocation : BasicLocation
             GameFiber.Yield();
         }
     }
-    public override void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    public override void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
         if (HasVendor)
         {
@@ -104,10 +104,13 @@ public class InteractableLocation : BasicLocation
             {
                 CanInteract = false;
             }
-            SpawnVendor(settings, crimes, weapons, InteractsWithVendor);
+            if (IsOpen(time.CurrentHour))
+            {
+                SpawnVendor(settings, crimes, weapons, InteractsWithVendor);
+            }
             GameFiber.Yield();
         }
-        base.Setup(interiors, settings, crimes, weapons);
+        base.Setup(interiors, settings, crimes, weapons, time);
     }
 
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
@@ -163,6 +166,10 @@ public class InteractableLocation : BasicLocation
         {
             ModelName = FallBackVendorModels.PickRandom();
         }
+
+
+        NativeFunction.Natives.CLEAR_AREA(VendorPosition.X, VendorPosition.Y, VendorPosition.Z, 2f, true, false, false, false);
+
         Model modelToCreate = new Model(Game.GetHashKey(ModelName));
         modelToCreate.LoadAndWait();
         ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
@@ -171,7 +178,11 @@ public class InteractableLocation : BasicLocation
         {
             ped.IsPersistent = true;//THIS IS ON FOR NOW!
             ped.RandomizeVariation();
-            ped.Tasks.StandStill(-1);
+
+            //
+
+            NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true);
+            //ped.Tasks.StandStill(-1);
             ped.KeepTasks = true;
             EntryPoint.SpawnedEntities.Add(ped);
             GameFiber.Yield();

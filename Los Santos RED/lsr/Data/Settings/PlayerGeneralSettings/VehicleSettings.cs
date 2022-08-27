@@ -25,8 +25,17 @@ public class VehicleSettings : ISettingsDefaultable
     public bool DisableAutoEngineStart { get; set; }
     [Description("Set a random amount of fuel on each vehicle and calculates consumption rates on use.")]
     public bool UseCustomFuelSystem { get; set; }
+    [Description("Minimum fuel in cars. 0 is minimum")]
+    public float CustomFuelSystemFuelMin { get; set; }
+    [Description("Maximum fuel in cars. 100 is maximum.")]
+    public float CustomFuelSystemFuelMax { get; set; }
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems")]
     public bool AllowSetEngineState { get; set; }
+
+
+    [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems, but only for cars (requires AllowSetEngineState)")]
+    public bool AllowSetEngineStateOnlyCars { get; set; }
+
     [Description("Add additional damage to the engine on collision.")]
     public bool ScaleEngineDamage { get; set; }
     [Description("Multiplier for the aditional damage. Ex. a 30 damage collision would be a 90 damamge collision at a ScaleEngineDamageMultiplier of 3.0")]
@@ -52,13 +61,10 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, the player light rendering (dynamic shadows, more emissive) will be applied to ALL vehicles in the world. Light won't do the weird transition when getting out of a vehicle. Only applies within about 75 meters.")]
     public bool UseBetterLightStateOnAI { get; set; }
 
+
     public VehicleSettings()
     {
         SetDefault();
-#if DEBUG
-        AutoTuneRadioStation = "RADIO_19_USER";
-        AutoTuneRadioOnEntry = true;
-#endif
     }
     public void SetDefault()
     {
@@ -71,7 +77,10 @@ public class VehicleSettings : ISettingsDefaultable
         AutoTuneRadioStation = "NONE";
         DisableAutoEngineStart = true;
         UseCustomFuelSystem = true;
+        CustomFuelSystemFuelMin = 10f;
+        CustomFuelSystemFuelMax = 100f;
         AllowSetEngineState = true;
+        AllowSetEngineStateOnlyCars = false;
         ScaleEngineDamage = true;
         ScaleEngineDamageMultiplier = 3.0f;
         AllowSetIndicatorState = true;

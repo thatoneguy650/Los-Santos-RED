@@ -19,8 +19,8 @@ public class Prison : BasicLocation, ILEDispatchable, IRespawnableLocation
 
     }
     public override string TypeName { get; set; } = "Prison";
-    public override int MapIcon { get; set; } = (int)BlipSprite.CriminalWanted;
-    public override Color MapIconColor { get; set; } = Color.Red;
+    public override int MapIcon { get; set; } = 188;
+    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }

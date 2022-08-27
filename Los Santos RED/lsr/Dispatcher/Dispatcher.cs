@@ -71,11 +71,12 @@ public class Dispatcher
             {
                 if(!FireDispatcher.Dispatch())
                 {
-                    GangDispatcher.Dispatch();
+                    
                 }
             }
         }
-        if(World.IsZombieApocalypse)
+        GangDispatcher.Dispatch();
+        if (World.IsZombieApocalypse)
         {
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();

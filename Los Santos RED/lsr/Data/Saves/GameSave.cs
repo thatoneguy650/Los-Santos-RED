@@ -198,6 +198,7 @@ namespace LosSantosRED.lsr.Data
                             if (MyVeh == null)
                             {
                                 MyVeh = new VehicleExt(NewVehicle, settings);
+                                MyVeh.Setup();
                                 MyVeh.HasUpdatedPlateType = true;
                                 World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                                 OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);

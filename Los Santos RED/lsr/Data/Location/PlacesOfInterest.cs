@@ -176,7 +176,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1666.244f, 4773.587f, 41.93539f), 215.5277f, 50f),
                 new ConditionalLocation(new Vector3(1665.208f, 4778.518f, 41.94879f), 271.264f, 50f),
 
-            } },//Grapeseed Shack
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(1669.677f, 4776.892f, 41.22393f), 4.480381f, 75f),
+                new ConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f), 
+            }
+            },//Grapeseed Shack
             new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 50f),
@@ -185,6 +190,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-212.6066f, 6443.875f, 31.2976f), 326.0233f, 50f),
                 new ConditionalLocation(new Vector3(-215.7044f, 6445.802f, 31.3135f), 270.9214f, 50f),
 
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(-226.1172f, 6435.622f, 30.51782f), 232.3148f, 75f),
+                new ConditionalLocation(new Vector3(-210.5319f, 6437.373f, 30.72163f), 327.138f, 75f),
             } },//Beachhouse in Paleto
             new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -194,6 +203,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1620.178f, 19.3019f, 62.54137f), 269.8025f, 50f),
                 new ConditionalLocation(new Vector3(-1639.313f, 16.93647f, 62.53671f), 122.0091f, 50f),
 
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(-1613.357f, 22.61485f, 61.48566f), 155.361f, 75f),
+                new ConditionalLocation(new Vector3(-1625.055f, 65.92033f, 61.15781f), 237.2095f, 75f),
             } },//mansion in richman
             new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -202,6 +215,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-3240.798f, 1081.971f, 7.396926f), 157.9129f, 50f),
                 new ConditionalLocation(new Vector3(-3242.731f, 1087.94f, 7.478574f), 115.9338f, 50f),
                 new ConditionalLocation(new Vector3(-3247.704f, 1098.255f, 2.835759f), 70.83805f, 50f),
+
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(-3226.144f, 1086.399f, 9.993718f), 162.1115f, 75f),
+                new ConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
 
             } },//beachhousein chumash
             new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -212,6 +230,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 50f),
                 new ConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 50f),
 
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(-1156.718f, -1462.597f, 3.70943f), 210.7057f, 75f),
+                new ConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
+
             } },//near shops on del perro beach
             new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -221,6 +244,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(285.892f, -3025.893f, 5.652033f), 304.8488f, 50f),
                 new ConditionalLocation(new Vector3(290.5836f, -3035.765f, 5.882213f), 174.9672f, 50f),
 
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(260.6703f, -3008.191f, 5.070713f), 87.13465f, 75f),
+                new ConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
             } },//shitty shack in elysian
 
             new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -233,6 +260,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(539.8316f, 241.9526f, 103.1213f), 324.5678f, 50f),
                 new ConditionalLocation(new Vector3(516.8485f, 250.2658f, 103.1146f), 350.7859f, 50f),
 
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(464.1385f, 226.9263f, 102.5122f), 67.93208f, 75f),
+                new ConditionalLocation(new Vector3(462.139f, 222.349f, 102.2742f), 245.8917f, 75f),
+
             } },//Downtown Vinewood
             new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -240,6 +272,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 50f),
                 new ConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 50f),
                 new ConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
+new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
             } },
             new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -248,6 +284,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-600.0588f, -1795.333f, 23.38985f), 155.3086f, 50f),
                 new ConditionalLocation(new Vector3(-622.9163f, -1792.963f, 23.80351f), 163.1899f, 50f),
                 new ConditionalLocation(new Vector3(-591.4926f, -1776.089f, 22.79006f), 214.9723f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
+new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
             } },
             new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -257,6 +297,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 50f),
                 new ConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 50f),
                 new ConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new ConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 75f),
+                new ConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 75f),
+                new ConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 75f),
+                new ConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
+
             } },//This is in Chamberlain Hills
             new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -264,6 +311,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
                 new ConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
                 new ConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 75f),
+new ConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 75f),
+new ConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
+new ConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
             } },//This is in DAVIS near Grove Street
             new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -271,6 +324,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
                 new ConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 50f),
                 new ConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 75f),
+new ConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 75f),
+new ConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 75f),
+new ConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 75f),
             } },
             new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -278,6 +337,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1189.079f, -1655.169f, 42.358f), 338.5124f, 50f),
                 new ConditionalLocation(new Vector3(1190.508f, -1648.968f, 41.43568f), 34.16187f, 50f),
                 new ConditionalLocation(new Vector3(1172.624f, -1645.602f, 36.78029f), 94.79508f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(1166.678f, -1647.833f, 36.23235f), 132.0248f, 75f),
+new ConditionalLocation(new Vector3(1157.749f, -1660.837f, 35.93925f), 205.3036f, 75f),
+new ConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f, 75f),
             } },
             new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -285,6 +349,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1293.167f, -1748.509f, 53.87848f), 200.1636f, 50f),
                 new ConditionalLocation(new Vector3(1313.939f, -1771.984f, 54.81713f), 113.8552f, 50f),
                 new ConditionalLocation(new Vector3(1319.703f, -1775.434f, 54.5059f), 215.1372f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(1322.044f, -1768.506f, 54.82401f), 195.1561f, 75f),
+new ConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f, 75f),
             } },
             new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
 
@@ -302,6 +370,11 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-581.7299f, -780.7718f, 25.01723f), 66.59444f, 50f),
                 new ConditionalLocation(new Vector3(-613.7438f, -782.4008f, 25.20246f), 42.77346f, 50f),
                 new ConditionalLocation(new Vector3(-622.1181f, -768.7686f, 25.95107f), 88.71659f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(-610.1835f, -756.0798f, 26.07551f), 266.9069f, 75f),
+new ConditionalLocation(new Vector3(-618.8381f, -761.884f, 25.46778f), 89.04613f, 75f),
+
             } },
 
             new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
@@ -309,6 +382,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),
                 new ConditionalLocation(new Vector3(959.2394f, 3612.307f, 32.75033f), 138.3261f, 50f),
                 new ConditionalLocation(new Vector3(969.4822f, 3626.386f, 32.33695f), 17.91204f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(950.5566f, 3618.955f, 31.88234f), 268.8919f, 75f),
+new ConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f, 75f),
+new ConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
+
             } },
             new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -317,6 +396,13 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 50f),
                 new ConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 50f),
                 new ConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 75f),
+new ConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 75f),
+new ConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 75f),
+new ConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
+
             } },
             new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -324,6 +410,12 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(108.1241f, -817.763f, 31.36724f), 273.9551f, 50f),
                 new ConditionalLocation(new Vector3(92.21131f, -817.7866f, 31.31864f), 55.81263f, 50f),
                 new ConditionalLocation(new Vector3(114.8412f, -819.1249f, 31.32478f), 342.2915f, 50f),
+            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+new ConditionalLocation(new Vector3(85.50445f, -818.2582f, 30.74365f), 155.5453f, 75f),
+new ConditionalLocation(new Vector3(59.77588f, -848.8732f, 30.33472f), 334.658f, 75f),
+new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f, 75f),
+
             } },
 
 
@@ -476,7 +568,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         List<PoliceStation> PoliceStations = new List<PoliceStation>()
         {
-            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Police Station","") {OpenTime = 0,CloseTime = 24, 
+            new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, 50f),
                 new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 50f),
@@ -489,7 +581,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             }
                 },
 
-            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(1858.19f, 3679.873f, 33.75724f), 218.3256f,  "Sandy Shores Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(1851.615f, 3679.759f, 34.26711f), 167.1253f, 50f),
                 new ConditionalLocation(new Vector3(1866.224f, 3684.685f, 33.78798f), 229.2713f, 50f),
             },PossibleVehicleSpawns = new List<ConditionalLocation>() {
@@ -498,7 +590,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1847.131f, 3672.587f, 33.92607f), 32f,50f),
             } },
 
-            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Police Station","") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842, ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-437.973f, 6021.403f, 31.49011f), 316.3756f, "Paleto Bay Sheriff's Office","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24 ,InteriorID = 3842, ScannerFilePath = "01_specific_location\\0x0E94FE38.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(-438.606f, 6021.66f, 31.49011f), 358.9023f, 30f),
                 new ConditionalLocation(new Vector3(-448.8453f, 6011.864f, 31.71639f), 310.0714f, 30f),
                 new ConditionalLocation(new Vector3(-444.1118f, 6011.967f, 31.71639f), 359.0966f, 30f),
@@ -512,7 +604,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-455.154f, 6001.894f, 31.17422f), 267f,50f),
             }},
 
-            new PoliceStation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, "Mission Row Police Station","") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(440.0835f, -982.3911f, 30.68966f), 47.88088f, "Mission Row Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x0A45FA8A.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(427.7032f, -982.3438f, 30.7101f), 46.43887f, 80f),
                 new ConditionalLocation(new Vector3(432.3652f, -973.1894f, 30.71074f), 60.75554f, 80f),
                 new ConditionalLocation(new Vector3(441.3313f, -977.6323f, 30.68966f), 167.8129f, 80f),
@@ -532,7 +624,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(496.3721f, -1016.798f, 28.687f), 178.4318f,50f),
             } },
 
-            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(815.8774f, -1290.531f, 26.28391f), 74.91704f, "La Mesa Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(823.9117f, -1288.765f, 28.24066f), 74.91795f, 30f),
                 new ConditionalLocation(new Vector3(823.3896f, -1291.954f, 28.24066f), 102.1528f, 30f),
                 new ConditionalLocation(new Vector3(821.5445f, -1275.796f, 26.38955f), 61.38755f, 30f),
@@ -560,7 +652,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(854.2248f, -1398.952f, 26.21234f), 216f,50f),
             } },
 
-            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(642.1356f, -3.134667f, 82.78872f), 215.299f,"Vinewood Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(641.4031f, 0.478787f, 82.78651f), 235.3406f, 50f),
                 new ConditionalLocation(new Vector3(647.2952f, -11.50604f, 82.60114f), 223.3047f, 50f),
                 new ConditionalLocation(new Vector3(624.8208f, 20.23717f, 87.97021f), 345.2158f, 50f),
@@ -574,7 +666,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(580.8351f, 38.85468f, 92.82274f), 193f,50f),
             } },
 
-            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-557.0687f, -134.7315f, 38.20231f), 214.5968f, "Rockford Hills Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(-560.6538f, -134.251f, 38.11069f), 180.7514f, 50f),
                 new ConditionalLocation(new Vector3(-563.0671f, -141.727f, 38.32593f), 192.5406f, 50f),
                 new ConditionalLocation(new Vector3(-541.8491f, -134.7859f, 38.55503f), 208.2207f, 50f),
@@ -587,7 +679,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-551.0397f, -144.0132f, 38.65663f), 58f,50f),
             } },
 
-            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1093.817f, -807.1993f, 19.28864f), 22.23846f, "Vespucci Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(-1114.355f, -822.5755f, 19.3168f), 14.61082f, 50f),
                 new ConditionalLocation(new Vector3(-1135.939f, -847.7239f, 19.34725f), 31.25465f, 50f),
                 new ConditionalLocation(new Vector3(-1056.813f, -820.9451f, 19.23504f), 300.4652f, 50f),
@@ -608,7 +700,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1138.613f, -845.7916f, 13.98058f), 220f,50f),
             } },
 
-            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1633.314f, -1010.025f, 13.08503f), 351.7007f, "Del Perro Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(-1629.069f, -1013.071f, 13.11924f), 298.982f, 50f),
                 new ConditionalLocation(new Vector3(-1639.286f, -1011.673f, 13.12066f), 24.4451f, 50f),
 
@@ -616,17 +708,26 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1625.343f, -1013.629f, 13.89048f), 0f,50f),
             } },
 
-            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(-1311.877f, -1528.808f, 4.410581f), 233.9121f, "Vespucci Beach Police Station","Obey and Survive") {OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x13CBAB64.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(-1314.879f, -1532.083f, 4.423616f), 190.5698f, 50f),
                 new ConditionalLocation(new Vector3(-1307.496f, -1526.527f, 4.359179f), 244.9207f, 50f),
 
             } },
 
-            new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Downtown","") { AssignedAgencyID = "FIB", InteriorID = 58882, OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x1667D63F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(102.9145f, -743.9487f, 45.75473f), 79.8266f, "FIB Downtown","We're corrupt in a good way") { AssignedAgencyID = "FIB", InteriorID = 58882, OpenTime = 0,CloseTime = 24, ScannerFilePath = "01_specific_location\\0x1667D63F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(101.3534f, -745.8216f, 45.75475f), 76.27069f, 50f),
                 new ConditionalLocation(new Vector3(117.8028f, -747.0616f, 45.75158f), 102.5501f, 50f),
                 new ConditionalLocation(new Vector3(113.9787f, -758.2271f, 45.75474f), 21.6145f, 50f),
             } },
+
+            new PoliceStation(new Vector3(387.16f, 789.96f, 188.23f), 178f, "Beaver Bush Ranger Station","You won't get this bush!") { AssignedAgencyID = "SAPR", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(391.3105f, 789.5917f, 186.6761f), 178f,75f),
+                new ConditionalLocation(new Vector3(381.8302f, 789.8931f, 186.6757f), 178f,75f),
+
+
+            },PossibleVehicleSpawns = new List<ConditionalLocation>()
+            { new ConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,100f), } },
+
         };
         List<Prison> Prisons = new List<Prison>()
         {
@@ -634,6 +735,10 @@ public class PlacesOfInterest : IPlacesOfInterest
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f),//guard facing towards entry
 
+                new ConditionalLocation(new Vector3(1830.171f, 2602.584f, 44.88912f), 0f, 100f),//guard facing towards entry second guard booth
+
+
+                //
                 new ConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 75f),//front of prison
                 new ConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 75f),
             },PossibleVehicleSpawns = new List<ConditionalLocation>() {
@@ -649,40 +754,56 @@ public class PlacesOfInterest : IPlacesOfInterest
             }
             },
         };
-
-
-
-
         List<Hospital> Hospitals = new List<Hospital>()
         {
-            new Hospital(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, "Pill Box Hill Hospital","") { OpenTime = 0,CloseTime = 24, InteriorID = 78338, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, "Pill Box Hill Medical Center","Some of the most famous people of LS have died here") { OpenTime = 0,CloseTime = 24, InteriorID = 78338, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(355.4031f, -598.8352f, 28.77448f), 250.9611f, 50f),
                 new ConditionalLocation(new Vector3(364.3289f, -579.7377f, 28.84095f), 227.9576f, 50f),
                 new ConditionalLocation(new Vector3(299.7511f, -579.8925f, 43.26084f), 72.9278f, 50f),
             } },
-            new Hospital(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, "Central Los Santos Hospital","") {OpenTime = 0,CloseTime = 24, ScannerFilePath= "01_specific_location\\0x13583D6F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, "Central Los Santos Medical Center","Gang Related Injury? We take Fleeca and Limit cards") {OpenTime = 0,CloseTime = 24, ScannerFilePath= "01_specific_location\\0x13583D6F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(333.7716f, -1381.868f, 32.50922f), 80.20363f, 50f),
                 new ConditionalLocation(new Vector3(327.9682f, -1393.585f, 32.50924f), 23.40009f, 50f),
                 new ConditionalLocation(new Vector3(297.9529f, -1448.031f, 29.96662f), 306.945f, 50f),
                 new ConditionalLocation(new Vector3(361.8272f, -1465.073f, 29.28194f), 178.0938f, 50f),
             } },
-            new Hospital(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, "Sandy Shores Hospital","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, "Sandy Shores Medical Center","Just as good as those REAL hospitals in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1835.39f, 3670.011f, 34.27673f), 172.621f, 50f),
                 new ConditionalLocation(new Vector3(1844.322f, 3672.015f, 33.67998f), 196.141f, 50f),
             } },
-            new Hospital(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, "Paleto Bay Hospital","") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, "The Bay Care Center","One stop shopping! Funeral Home and Crematorium on site") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-242.6317f, 6324.892f, 32.42618f), 318.8682f, 50f),
                 new ConditionalLocation(new Vector3(-238.915f, 6314.112f, 31.48628f), 227.0187f, 50f),
             } },
-            new Hospital(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, "St. Fiacre Hospital", "") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, "St. Fiacre Hospital", "Come see the most expensive specialists in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1150.269f, -1524.425f, 34.84344f), 316.4077f, 50f),
                 new ConditionalLocation(new Vector3(1137.925f, -1514.329f, 34.84341f), 327.5841f, 50f),
                 new ConditionalLocation(new Vector3(1171.36f, -1520.041f, 34.8434f), 319.8948f, 50f),
+            } },
+
+
+            new Hospital(new Vector3(-449.76f, -341.03f, 35.5f), 106f, "Mount Zonah Medical Center", "The hospital with the largest advertising budget") { OpenTime = 0,CloseTime = 24, 
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+                    new ConditionalLocation(new Vector3(-448.7528f, -334.6505f, 33.5019f), 161.25828389f, 50f),
+                    new ConditionalLocation(new Vector3(-447.4306f, -328.7594f, 33.50186f), 190.084495712696f,50f),
+                    new ConditionalLocation(new Vector3(-447.0008f, -329.9945f, 33.50186f), 27.4845562493075f,50f),
+                    new ConditionalLocation(new Vector3(-496.9766f, -331.2807f, 33.50167f), 223.606079066179f,50f),
+                    new ConditionalLocation(new Vector3(-464.4201f, -353.7608f, 33.39479f), 111.44917199877f,50f),
+            } },
+
+            new Hospital(new Vector3(-677.44f, 309.2f, 84.33f), 189.027617763797f, "Eclipse Medical Tower", "Not for emergencies") { OpenTime = 0,CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+
+            } },
+
+                        new Hospital(new Vector3(-874.43f, -307.64f, 40.41f), 343.800477779369f, "Portola Trinity Medical Center", "Bring Insurance") { OpenTime = 0,CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+
             } },
             //new Hospital(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
         };
@@ -734,6 +855,12 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-40.46507f, 228.3116f, 107.968f), 78.85908f, "Haute", "Bringing high-class dining to the lower class.","FancyFishMenu", FoodType.Seafood),
             new Restaurant(new Vector3(398.0291f, 175.6789f, 103.8558f), 71.74517f, "Clappers", "Clap On!","FancyGenericMenu", FoodType.American),
 
+
+            new Restaurant(new Vector3(-1608.83f, -985.9873f, 13.01739f), 51.95325f, "The Big Puffa", "Puffed up flavor","FancyFishMenu", FoodType.Seafood),       
+            new Restaurant(new Vector3(-1500.207f, -933.6969f, 10.17892f), 140.8582f, "Dune-O's Beach Cafe", "No bogeys about it","FancyGenericMenu", FoodType.American),
+            new Restaurant(new Vector3(-1830.564f, -1180.585f, 14.32305f), 335.8232f, "Pearls Seafood", "Get your pearls from us","FancyFishMenu", FoodType.Seafood),
+            new Restaurant(new Vector3(-1693.88f, -1084.884f, 13.15254f), 124.4757f, "Lagoons Diner", "Come on Over to My Plaice","FancyGenericMenu", FoodType.American),
+            new Restaurant(new Vector3(-1654.534f, -999.7692f, 13.01745f), 230.1636f, "Out of Towner", "Out of Towners Welcome","FancyGenericMenu", FoodType.American),
             new Restaurant(new Vector3(-661.5396f, -907.5895f, 24.60632f), 278.5222f, "Hwan Cafe", "Coffee with a scowl","CoffeeMenu", FoodType.Coffee),
 
             //Sandwiches
@@ -754,8 +881,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(272.8409f, -965.4847f, 29.31605f), 27.34526f, "Noodle Exchange", "You Won't Want To Share!","NoodleMenu", FoodType.Korean),
             new Restaurant(new Vector3(-655.6034f, -880.3672f, 24.67554f), 265.7094f, "Wook Noodle House", "Way better than pancakes","NoodleMenu", FoodType.Korean),
             new Restaurant(new Vector3(-680.4404f, -945.5441f, 20.93157f), 180.6927f, "Wook Noodle House", "Way better than pancakes","NoodleMenu", FoodType.Korean),
-            new Restaurant(new Vector3(-654.8373f, -885.7593f, 24.67703f), 273.4168f, "Park Jung Restaurant", "No parking available","GenericMenu", FoodType.Korean),
-            
+            new Restaurant(new Vector3(-654.8373f, -885.7593f, 24.67703f), 273.4168f, "Park Jung Restaurant", "No parking available","GenericMenu", FoodType.Korean),       
             new Restaurant(new Vector3(-163.0659f, -1440.267f, 31.42698f), 55.5593f, "Wok It Off", "Life got you down? Wok It Off!","GenericMenu", FoodType.Korean),
             new Restaurant(new Vector3(1894.635f, 3715.372f, 32.74969f), 119.2431f, "Chinese Food", "As generic as it gets","GenericMenu", FoodType.Chinese),
             //Italian
@@ -765,10 +891,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(215.2669f, -17.14256f, 74.98737f), 159.7144f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "pizzathis.png" },
             new Restaurant(new Vector3(538.3118f, 101.4798f, 96.52515f), 159.4801f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "pizzathis.png" },
             new Restaurant(new Vector3(287.5003f, -964.0207f, 29.41863f), 357.0406f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "pizzathis.png" },
+            new Restaurant(new Vector3(-1529.252f, -908.6689f, 10.16963f), 137.3273f, "Pizza This...", "Get stuffed","PizzaThisMenu", FoodType.Italian | FoodType.Pizza) {BannerImagePath = "pizzathis.png" },
             new Restaurant(new Vector3(443.7377f, 135.1464f, 100.0275f), 161.2897f, "Guidos Takeout 24/7", "For the night owls","PizzaMenu", FoodType.Italian | FoodType.Pizza),
             new Restaurant(new Vector3(-1320.907f, -1318.505f, 4.784881f), 106.5257f, "Pebble Dash Pizza", "Overpriced shitty pizza, but by the beach","PizzaMenu", FoodType.Italian | FoodType.Pizza),
             new Restaurant(new Vector3(-1334.007f, -1282.623f, 4.835985f), 115.3464f, "Slice N Dice Pizza","Slice UP!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood),
             new Restaurant(new Vector3(-1296.815f, -1387.3f, 4.544102f), 112.4694f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
+            new Restaurant(new Vector3(-1654.415f, -1037.579f, 13.15282f), 48.0925f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
+            new Restaurant(new Vector3(-1814.037f, -1213.353f, 13.01751f), 43.14338f, "Sharkies Bites","Take A Bite Today!","PizzaMenu", FoodType.Italian | FoodType.Pizza | FoodType.FastFood){ IsWalkup = true },
             new Restaurant(new Vector3(-1342.607f, -872.2929f, 16.87064f), 312.7196f, "Giovanni's Italian", "There are no pocket monsters here","PizzaMenu", FoodType.Italian | FoodType.Pizza),
             //Burger
             new Restaurant(new Vector3(-1535.117f, -454.0615f, 35.92439f), 319.1095f, "Wigwam", "No need for reservations","WigwamMenu", FoodType.Burger | FoodType.FastFood) {BannerImagePath = "wigwam.png"},
@@ -777,6 +906,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(81.31124f, 275.1125f, 110.2102f), 162.7602f, "Up-N-Atom", "Never Frozen, Often Microwaved","UpNAtomMenu", FoodType.Burger | FoodType.FastFood) {OpenTime = 0, CloseTime = 24,BannerImagePath = "upnatom.png"},
             new Restaurant(new Vector3(1591.054f, 6451.071f, 25.31714f), 158.0088f, "Up-N-Atom Diner", "Never Frozen, Often Microwaved","UpNAtomMenu", FoodType.Burger | FoodType.FastFood) {OpenTime = 0, CloseTime = 24,BannerImagePath = "upnatom.png", ScannerFilePath = "01_specific_location\\0x035776E6.wav"},
             new Restaurant(new Vector3(-1183.638f, -884.3126f, 13.79987f), 303.1936f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood) { ScannerFilePath = "01_specific_location\\0x14C89994.wav" },
+            new Restaurant(new Vector3(-1687.276f, -1091.789f, 13.15192f), 132.5498f, "Burger Shot", "Kill your hunger! It's bleedin' tasty","BurgerShotMenu", FoodType.Burger | FoodType.FastFood),
+
+
             new Restaurant(new Vector3(1241.453f, -366.7538f, 69.08221f), 164.3345f, "Horny's Burgers", "The beef with the bone!","BeefyBillsMenu", FoodType.Burger | FoodType.FastFood),
             new Restaurant(new Vector3(-512.6821f, -683.3517f, 33.18555f), 3.720508f, "Snr. Buns", "Don't be a chump, taste our rump!","GenericMenu", FoodType.Burger | FoodType.FastFood) {ScannerFilePath = "01_specific_location\\0x19532EA2.wav" },
             new Restaurant(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, "Snr. Muffin", "Don't be a chump, taste our rump!","GenericMenu", FoodType.Burger | FoodType.FastFood),//??? 
@@ -802,6 +934,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(127.9072f, -1028.778f, 29.43674f), 336.4557f, "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { BannerImagePath = "beanmachine.png" },
             new Restaurant(new Vector3(-627.6302f, 239.2284f, 81.88939f), 86.57707f, "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { BannerImagePath = "beanmachine.png" },
             new Restaurant(new Vector3(280.5522f, -964.0756f, 29.41863f), 357.4615f, "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { BannerImagePath = "beanmachine.png" },
+
+            new Restaurant(new Vector3(-1704.005f, -1101.831f, 13.15248f), 320.0907f, "Bean Machine Coffee", "Taking over the world one Gunkaccino at a time","BeanMachineMenu", FoodType.Coffee | FoodType.Bagels | FoodType.Donut) { BannerImagePath = "beanmachine.png" },
+
             new Restaurant(new Vector3(-1206.975f, -1135.029f, 7.693257f), 109.1408f, "Cool Beans Coffee Co", "Come flick our beans","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(-1278.833f, -876.438f, 11.9303f), 123.2498f, "Cool Beans Coffee Co", "Come flick our beans","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(1169.704f, -403.1992f, 72.24859f), 344.0863f, "Cool Beans Coffee Co", "Come flick our beans","CoffeeMenu", FoodType.Coffee),
@@ -825,9 +960,11 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, "Hearty Taco", "Eat your heart out!","TacoFarmerMenu", FoodType.Mexican),
             new Restaurant(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, "Mom's Tacos", "We love mom's taco!","TacoFarmerMenu", FoodType.Mexican),
             new Restaurant(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, "Mom's Tacos", "We love mom's taco!","TacoFarmerMenu", FoodType.Mexican),
-            //Ice Cream
-            new Restaurant(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, "The Sundae Post", "Come read up on our sludgies","DonutMenu", FoodType.Donut),
-            new Restaurant(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, "Icemaiden", "Chill Out and Grill Out","GenericMenu", FoodType.Generic) {IsWalkup = true },
+            //Dessert
+            new Restaurant(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, "The Sundae Post", "Come read up on our sludgies","DonutMenu", FoodType.Dessert),
+            new Restaurant(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, "Icemaiden", "Chill Out and Grill Out","GenericMenu", FoodType.Dessert) {IsWalkup = true },
+            new Restaurant(new Vector3(-1689.895f, -1076.626f, 13.15219f), 52.58161f, "Cream Pie", "I just love getting creampied!","FancyGenericMenu", FoodType.Dessert),
+            new Restaurant(new Vector3(-1698.04f, -1105.689f, 13.15277f), 326.1168f, "The Cherry Popper", "You'll always remember your first","FancyGenericMenu", FoodType.Dessert),
             //Juice and Smoothies
             new Restaurant(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, "Seaside Juice", "Allegedly healthy!","FruitMenu", FoodType.Smoothies) { FullName = "Vitamin Seaside Juice Bar" },
             new Restaurant(new Vector3(-1187.057f, -1536.73f, 4.379496f), 32.85152f, "Muscle Peach", "Come oggle something new","FruitMenu", FoodType.Smoothies) { FullName = "Muscle Peach Juice Bar" },
@@ -845,6 +982,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(133.0175f, -1462.702f, 29.35705f), 48.47223f, "Lucky Plucker", "Come be a real Lucky Plucker","GenericMenu", FoodType.Chicken | FoodType.FastFood),
             new Restaurant(new Vector3(-138.4921f, -256.509f, 43.59497f), 290.1001f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood),
             new Restaurant(new Vector3(-184.9376f, -1428.169f, 31.47968f), 33.8636f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood),
+            new Restaurant(new Vector3(-1681.603f, -1096.505f, 13.15227f), 180.3125f, "Cluckin' Bell", "Taste the cock","CluckinBellMenu", FoodType.Chicken | FoodType.FastFood),
             //General    
             new Restaurant(new Vector3(-1222.546f, -807.5845f, 16.59777f), 305.3918f, "Lettuce Be", "A real meat free experience","GenericMenu", FoodType.Generic),
             new Restaurant(new Vector3(-1196.705f, -1167.969f, 7.695099f), 108.4535f, "Lettuce Be", "A real meat free experience","GenericMenu", FoodType.Generic),
@@ -868,23 +1006,23 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Pharmacy(new Vector3(84.03228f, -810.2528f, 31.41642f), 350.9262f, "Family Pharmacy", "","PharmacyMenu"),
         };
         List<Dispensary> Dispensaries = new List<Dispensary>() {
-            new Dispensary(new Vector3(-1161.365f, -1427.646f, 4.623186f), 31.50553f, "Doctor Kush", "Doctor kush","WeedMenu"),
-            new Dispensary(new Vector3(-502.4879f, 32.92564f, 44.71512f), 179.9803f, "Serenity Wellness", "Serenity Wellness","WeedMenu"),
+            new Dispensary(new Vector3(-1161.365f, -1427.646f, 4.623186f), 31.50553f, "Doctor Kush", "","WeedMenu"),
+            new Dispensary(new Vector3(-502.4879f, 32.92564f, 44.71512f), 179.9803f, "Serenity Wellness", "","WeedMenu"),
             new Dispensary(new Vector3(169.5722f, -222.869f, 54.23643f), 342.0811f, "High Time", "","WeedMenu"),
             new Dispensary(new Vector3(-1381.142f, -941.0327f, 10.17387f), 126.4558f,"Seagrass Herbals", "Seagrass Herbals","WeedMenu"),
             new Dispensary(new Vector3(1175.02f, -437.1972f, 66.93162f), 259.358f, "Mile High Organics", "","WeedMenu"),
         };
         List<HeadShop> HeadShops = new List<HeadShop>() {
-            new HeadShop(new Vector3(-1191.582f, -1197.779f, 7.617113f), 146.801f, "Pipe Dreams", "Pipe Dreams","HeadShopMenu"),
+            new HeadShop(new Vector3(-1191.582f, -1197.779f, 7.617113f), 146.801f, "Pipe Dreams", "","HeadShopMenu"),
             new HeadShop(new Vector3(65.60603f, -137.4155f, 55.11251f), 214.0327f, "Pipe Dreams", "","HeadShopMenu"),
             new HeadShop(new Vector3(278.8327f, -1027.653f, 29.21136f), 184.1326f, "Pipe Down Cigars", "","HeadShopMenu"),
-            new HeadShop(new Vector3(-1154.942f, -1373.176f, 5.061489f), 305.589f, "Amnesiac Smoke Shop", "Amnesiac Smoke Shop","WeedAndCigMenu"),
+            new HeadShop(new Vector3(-1154.942f, -1373.176f, 5.061489f), 305.589f, "Amnesiac Smoke Shop", "","WeedAndCigMenu"),
             new HeadShop(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, "Pipe Down", "","HeadShopMenu"),
 
         };
         List<HardwareStore> HardwareStores = new List<HardwareStore>() {
-            new HardwareStore(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, "You Tool", "You Tool","ToolMenu") {BannerImagePath = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
-            new HardwareStore(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, "Krapea", "","ToolMenu"),
+            new HardwareStore(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, "You Tool", "Show your wife who the family tool is","ToolMenu") {BannerImagePath = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
+            new HardwareStore(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, "Krapea", "We fake it, you make it","ToolMenu"),
             new HardwareStore(new Vector3(-10.88182f, 6499.395f, 31.50508f), 44.30542f, "Bay Hardware", "","ToolMenu"),
             new HardwareStore(new Vector3(-3153.697f, 1053.398f, 20.88735f), 338.4756f, "Hardware", "","ToolMenu"),
             new HardwareStore(new Vector3(343.2759f, -1297.948f, 32.5097f), 164.2121f, "Bert's Tool Supply", "","ToolMenu"),
@@ -896,48 +1034,53 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         List<Landmark> Landmarks = new List<Landmark>()
         {
-            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
 
-            new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","") {OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },
-            new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
-            new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
-
-
-            new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","") {OpenTime = 0,CloseTime = 24, InteriorID = 28162, ScannerFilePath = "01_specific_location\\0x0D8D06A1.wav" },
-            new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","") {OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
-            new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","") {OpenTime = 0,CloseTime = 24, InteriorID = -103 },
+            new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },
+            new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
+            new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
 
 
-            new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
-            new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
-            new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0431FE2B.wav" },
-            new Landmark(new Vector3(105.46f, 252.27f, 109.01f), 162.7602f,"Vinewood Star Tours","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x04F6FA01.wav" },
-            new Landmark(new Vector3(-1261.62f, -347.33f, 37.22f), 53f,"Pump-N-Run Gym","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x06AD518B.wav" },
-            new Landmark(new Vector3(-247.62f, -1526.22f, 33.03f), 53f,"BJ Smith Rec Center","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x05AB836E.wav" },
-
-            new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
-            new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","") { OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
+            new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","Know the saying about seeing how sausage is made?") {OpenTime = 0,CloseTime = 24, InteriorID = 28162, ScannerFilePath = "01_specific_location\\0x0D8D06A1.wav" },
+            new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","We make more than just garments") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
+            new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","Taking your scrap since 1924") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = -103 },
 
 
-            new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
-            new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
-            new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.wav" },
-            new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0D1B649D.wav" },
+            new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","We have two of everything!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
+            new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","No longer just mail") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
+            new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","Members only") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0431FE2B.wav" },
+            new Landmark(new Vector3(105.46f, 252.27f, 109.01f), 162.7602f,"Vinewood Star Tours","Stalk celebrities from the comfort of a bus") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x04F6FA01.wav" },
+            new Landmark(new Vector3(-1261.62f, -347.33f, 37.22f), 53f,"Pump-N-Run Gym","Get ripped!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x06AD518B.wav" },
+            new Landmark(new Vector3(-247.62f, -1526.22f, 33.03f), 53f,"BJ Smith Rec Center","To win you have to annihilate everything in your path") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x05AB836E.wav" },
+
+            new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","Watch your step") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
+            new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","Check out the gift shop!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
+
+
+            new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","Come spend money like a rich person!") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
+            new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","You're In, For A Good Time") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
+            new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","Long journeys need short legs") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.wav" },
+            new Landmark(new Vector3(129.8f, -1300.28f, 30.05f), 0f,"Vanilla Unicorn","Seeing is relieving") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0D1B649D.wav" },
+
+            new Landmark(new Vector3(712.96f, 1204.1f, 329.3f), 0f,"Vinewood Sign","Or was it Vinewoodland?") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0C57ACE0.wav" },
+            new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.wav" },
+            new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.wav" },
+
             //
         };
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {
-            new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", "") { IsEnabled = false },
-            new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", "") { IsEnabled = false },
-            new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", "") { IsEnabled = false },
-            new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", "") { IsEnabled = false },
-            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "") { IsEnabled = false },
+            new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", "") { IsTemporarilyClosed = true },
+            new BeautyShop(new Vector3(442.8802f, -2044.086f, 23.73479f), 317.6541f, "Chantelle's Beauty Salon", "") { IsTemporarilyClosed = true },
+            new BeautyShop(new Vector3(-342.2452f, -1482.83f, 30.70707f), 269.4036f, "Discount Beauty Store", "") { IsTemporarilyClosed = true },
+            new BeautyShop(new Vector3(-3050.165f, 625.066f, 7.269026f), 290.7953f, "Belinda May's Beauty Salon", "") { IsTemporarilyClosed = true },
+            new BeautyShop(new Vector3(1705.34f, 3780.338f, 34.7582f), 214.8316f, "Aunt Tammy's Hair Salon", "") { IsTemporarilyClosed = true },
         };
         List<Bank> Banks = new List<Bank>()
         {
-            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "Fleeca Bank") { IsEnabled = false },
-            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "Fleeca Bank") { IsEnabled = false },
-            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "Maze Bank") { IsEnabled = false },
+            new Bank(new Vector3(-813.9924f, -1114.698f, 11.18181f), 297.7995f, "Fleeca Bank", "") { IsEnabled = false },
+            new Bank(new Vector3(-350.1604f, -45.84864f, 49.03682f), 337.4063f, "Fleeca Bank", "") { IsEnabled = false },
+            new Bank(new Vector3(-1318f, -831.5065f, 16.97263f), 125.3848f, "Maze Bank", "") { IsEnabled = false },
             new Bank(new Vector3(150.9058f, -1036.347f, 29.33961f), 340.9843f,  "Fleeca Bank", "") { IsEnabled = false },
             new Bank(new Vector3(315.2256f, -275.1059f, 53.92431f), 345.6797f,  "Fleeca Bank", "") { IsEnabled = false },
             new Bank(new Vector3(-3142.849f, 1131.727f, 20.84295f), 247.9002f, "Blaine County Savings", "") { IsEnabled = false },
@@ -967,13 +1110,13 @@ public class PlacesOfInterest : IPlacesOfInterest
             new ConvenienceStore(new Vector3(-144.3732f, -65.01408f, 54.60635f), 159.0404f,  "Fruit Of The Vine", "Not just for winos","FruitVineMenu") ,
             new ConvenienceStore(new Vector3(-1412.015f, -320.1292f, 44.37897f), 92.48502f,  "The Grain Of Truth", "Seek the truth","GrainOfTruthMenu"),
             new ConvenienceStore(new Vector3(-1370.819f, -684.5463f, 25.01069f), 214.6929f,  "The Grain Of Truth", "Seek the truth","GrainOfTruthMenu"),
-            new ConvenienceStore(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f,  "Supermarket", "Supermarket","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f,  "Supermarket", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,  "Del Perro Food Market","No Robberies Please!","ConvenienceStoreMenu"),
-            new ConvenienceStore(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f,  "A&R Market", "A&R Market","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f,  "A&R Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(53.28459f, -1478.863f, 29.28546f), 187.4217f,  "Gabriela's Market", "","ConvenienceStoreMenu"),
-            new ConvenienceStore(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f,  "Save-A-Cent", "Save-A-Cent","ConvenienceStoreMenu"),
-            new ConvenienceStore(new Vector3(-1312.64f, -1181.899f, 4.890057f), 271.5434f,  "Beach Buddie", "Beach Buddie","ConvenienceStoreMenu"),
-            new ConvenienceStore(new Vector3(-661.5522f, -915.5651f, 24.61216f), 260.1033f,  "Convenience Store", "Convenience Store","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f,  "Save-A-Cent", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1312.64f, -1181.899f, 4.890057f), 271.5434f,  "Beach Buddie", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-661.5522f, -915.5651f, 24.61216f), 260.1033f,  "Convenience Store", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(393.8511f, -804.2294f, 29.29397f), 272.0436f,  "Food Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(410.4163f, -1910.432f, 25.45381f), 88.30214f,  "Long Pig Mini Mart", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-170.9145f, -1449.77f, 31.64507f), 50.18372f,  "Cert-L Market", "","ConvenienceStoreMenu"),
@@ -986,6 +1129,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new ConvenienceStore(new Vector3(87.1592f, -1670.73f, 29.16286f), 75.61347f,  "Convenience Store", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(877.7466f, -132.4732f, 78.59199f), 322.8992f,  "B.J.'s Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-59.0772f, 6523.902f, 31.49085f), 314.5225f,  "Willie's Supermarket", "","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1478.208f, -949.8577f, 10.21891f), 187.2803f, "The Beachfront Market", "","ConvenienceStoreMenu"),
         };
         List<LiquorStore> LiquorStores = new List<LiquorStore>()
         {
@@ -993,19 +1137,19 @@ public class PlacesOfInterest : IPlacesOfInterest
             new LiquorStore(new Vector3(-2974.098f, 390.9085f, 15.03413f), 84.05217f, "Rob's Liquors", "Thats My Name, Don't Rob Me!","LiquorStoreMenu"){ VendorPosition = new Vector3(-2966.361f, 390.1463f, 15.04331f), VendorHeading = 88.73301f,OpenTime = 4, CloseTime = 22, InteriorID = 19202 },
             new LiquorStore(new Vector3(-1491.638f, -384.0242f, 40.08308f), 136.3043f, "Rob's Liquors", "Thats My Name, Don't Rob Me!","LiquorStoreMenu") { VendorPosition = new Vector3(-1486.196f, -377.7115f, 40.16343f), VendorHeading = 133.357f,OpenTime = 4, CloseTime = 22, InteriorID = 98818 },
             new LiquorStore(new Vector3(1141.463f, -980.9073f, 46.41084f), 275.826f,"Rob's Liquors", "Thats My Name, Don't Rob Me!","LiquorStoreMenu"){ VendorPosition = new Vector3(1133.534f, -983.1248f, 46.41584f), VendorHeading = 276.1162f,OpenTime = 4, CloseTime = 22, InteriorID = 73986 },
-            new LiquorStore(new Vector3(1166.318f, 2702.173f, 38.17925f), 175.7192f, "Scoops Liquor Barn", "","LiquorStoreMenu"){ VendorPosition = new Vector3(1165.581f, 2710.774f, 38.15771f), VendorHeading = 176.1093f,OpenTime = 4, CloseTime = 22, InteriorID = 33026 },
-            new LiquorStore(new Vector3(-596.1056f, 277.69f, 82.16035f), 170.2155f, "Eclipse Liquor.Deli", "","LiquorStoreMenu") ,
-            new LiquorStore(new Vector3(-239.7314f, 244.0006f, 92.03992f), 318.9458f, "Ellen's Liquor Lover", "","LiquorStoreMenu") ,
+            new LiquorStore(new Vector3(1166.318f, 2702.173f, 38.17925f), 175.7192f, "Scoops Liquor Barn", "We've got the scoop on booze","LiquorStoreMenu"){ VendorPosition = new Vector3(1165.581f, 2710.774f, 38.15771f), VendorHeading = 176.1093f,OpenTime = 4, CloseTime = 22, InteriorID = 33026 },
+            new LiquorStore(new Vector3(-596.1056f, 277.69f, 82.16035f), 170.2155f, "Eclipse Liquor.Deli", "You'll be seeing a real blackout","LiquorStoreMenu") ,
+            new LiquorStore(new Vector3(-239.7314f, 244.0006f, 92.03992f), 318.9458f, "Ellen's Liquor Lover", "Generous Liquor","LiquorStoreMenu") ,
             new LiquorStore(new Vector3(807.3504f, -1073.531f, 28.92093f), 134.3175f, "Liquor Market", "","LiquorStoreMenu") ,
             new LiquorStore(new Vector3(234.4411f, -1946.841f, 22.95617f), 3.404058f, "Liquor Store", "","LiquorStoreMenu"),
             new LiquorStore(new Vector3(1212.343f, -445.0079f, 66.96259f), 74.05521f, "Liquor", "","LiquorStoreMenu") ,
             new LiquorStore(new Vector3(-1208.469f, -1384.053f, 4.085135f), 68.08948f, "Steamboat Beers", "","LiquorStoreMenu") ,
             new LiquorStore(new Vector3(-1106.07f, -1287.686f, 5.421459f), 161.3398f, "Vespucci Liquor Market", "","LiquorStoreMenu") ,
             new LiquorStore(new Vector3(-697.8242f, -1182.286f, 10.71113f), 132.7831f, "Liquor Market", "","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22 },
-            new LiquorStore(new Vector3(-882.7062f, -1155.351f, 5.162508f), 215.8305f, "Liquor Hole", "","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22,BannerImagePath = "liquorhole.png" },
-            new LiquorStore(new Vector3(-601.9684f, 244.0188f, 82.3046f), 358.6468f, "Liquor Hole", "","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22,BannerImagePath = "liquorhole.png" },
+            new LiquorStore(new Vector3(-882.7062f, -1155.351f, 5.162508f), 215.8305f, "Liquor Hole", "You know you want it!","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22,BannerImagePath = "liquorhole.png" },
+            new LiquorStore(new Vector3(-601.9684f, 244.0188f, 82.3046f), 358.6468f, "Liquor Hole", "You know you want it!","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22,BannerImagePath = "liquorhole.png" },
             new LiquorStore(new Vector3(456.5478f, 130.5207f, 99.28537f), 162.9724f, "Vinewood Liquor", "","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22 },
-            new LiquorStore(new Vector3(1391.861f, 3606.275f, 34.98093f), 199.2899f, "Liquor Ace", "","LiquorStoreMenu") { VendorPosition = new Vector3(1391.861f, 3606.275f, 34.98093f), VendorHeading = 199.2899f, OpenTime = 4, CloseTime = 22, ScannerFilePath  = "01_specific_location\\0x1A23351D.wav" },
+            new LiquorStore(new Vector3(1391.861f, 3606.275f, 34.98093f), 199.2899f, "Liquor Ace", "Now socially acceptable", "LiquorStoreMenu") { VendorPosition = new Vector3(1391.861f, 3606.275f, 34.98093f), VendorHeading = 199.2899f, OpenTime = 4, CloseTime = 22, ScannerFilePath  = "01_specific_location\\0x1A23351D.wav" },
             new LiquorStore(new Vector3(1952.552f, 3840.833f, 32.17612f), 298.8575f, "Sandy Shores Liquor", "","LiquorStoreMenu") { OpenTime = 4, CloseTime = 22 },
             new LiquorStore(new Vector3(2455.443f, 4058.518f, 38.06472f), 250.6311f, "Liquor Market 24/7", "","LiquorStoreMenu"){ OpenTime = 0, CloseTime = 24 },
             new LiquorStore(new Vector3(2481.348f, 4100.31f, 38.13171f), 249.6295f, "Liquor Store", "","LiquorStoreMenu"){ OpenTime = 4, CloseTime = 22 },
@@ -1029,8 +1173,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                         new GasStation(new Vector3(-711.9264f, -917.7573f, 19.21472f), 180.3014f, "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(-705.7453f, -913.6598f, 19.21559f), VendorHeading = 83.75771f, OpenTime = 0, CloseTime = 24, InteriorID = 47874 },
             new GasStation(new Vector3(1698.097f, 4929.837f, 42.0781f), 48.2484f, "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1698.044f, 4922.526f, 42.06367f), VendorHeading = 314.3236f, OpenTime = 0, CloseTime = 24, InteriorID = 45570 },
             new GasStation(new Vector3(1159.861f, -327.4188f, 69.21286f), 188.791f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1164.927f, -323.7075f, 69.2051f), VendorHeading = 90.6181f, OpenTime = 0, CloseTime = 24, InteriorID = 2050 },
-            new GasStation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",OpenTime = 0, CloseTime = 24 },
-
+            new GasStation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",OpenTime = 0, CloseTime = 24, InteriorID = 82178, VendorPosition = new Vector3(-1819.707f, 794.1723f, 138.0823f),VendorHeading =  122.8981f },
+            //
             new GasStation(new Vector3(166.2001f, -1553.691f, 29.26175f), 218.9514f, "Ron", "Put RON in your tank","RonMenu") {  BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22, ScannerFilePath = "01_specific_location\\0x0D6F777B.wav", CameraPosition = new Vector3(175.2995f, -1593.878f, 39.27175f), CameraDirection = new Vector3(-0.1031758f, 0.9726905f, -0.2079136f), CameraRotation = new Rotator(-12.00011f, 0f, 6.054868f) },
             new GasStation(new Vector3(-1427.998f, -268.4702f, 46.2217f), 132.4002f, "Ron", "Put RON in your tank","RonMenu"){ BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22, ScannerFilePath = "01_specific_location\\0x056AF0EC.wav" },
             new GasStation(new Vector3(2559.112f, 373.5359f, 108.6211f), 265.8011f, "Ron", "Put RON in your tank","RonMenu") { BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22 },
@@ -1060,15 +1204,15 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         List<Bar> Bars = new List<Bar>()
         {
-            new Bar(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, "Pitchers", "Pitchers","BarMenu") ,
-            new Bar(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, "Singletons", "Singletons","BarMenu"),
-            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "Yellow Jacket Inn","BarMenu") { VendorPosition =new Vector3(1982.979f, 3053.596f, 47.21508f), VendorHeading = 226.3188f, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav"  },
+            new Bar(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, "Pitchers", "","BarMenu") ,
+            new Bar(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, "Singletons", "","BarMenu"),
+            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "","BarMenu") { VendorPosition =new Vector3(1982.979f, 3053.596f, 47.21508f), VendorHeading = 226.3188f, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav"  },
             new Bar(new Vector3(-262.8396f, 6291.08f, 31.49327f), 222.9271f, "The Bay Bar", "","BarMenu"),
             new Bar(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, "The Last Resort", "","BarMenu"),
             new Bar(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, "Shenanigan's Bar", "","BarMenu"),
             new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu"),
             new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778, TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },
-            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "Tequila-La","BarMenu") { VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
+            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
             
 
         };
@@ -1079,12 +1223,26 @@ public class PlacesOfInterest : IPlacesOfInterest
             new FoodStand(new Vector3(-1268.011f, -1432.715f, 4.353373f), 134.2259f, "Beefy Bills Burger Bar","Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(-1268.011f, -1432.715f, 4.353373f), VendorHeading =  134.2259f, BannerImagePath = "beefybills.png" },
             new FoodStand(new Vector3(-1232.426f, -1485.006f, 4.362638f), 137.5475f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(-1232.426f, -1485.006f, 4.362638f), VendorHeading = 137.5475f, BannerImagePath = "beefybills.png" },
             new FoodStand(new Vector3(821.2138f, -2977.05f, 6.02066f), 272.7679f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(821.2138f, -2977.05f, 6.02066f), VendorHeading = 272.7679f, BannerImagePath = "beefybills.png" },
+
+
+             new FoodStand(new Vector3(-1693.241f, -1073.102f, 13.25018f), 47.97861f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(-1693.241f, -1073.102f, 13.25018f), VendorHeading = 47.97861f, BannerImagePath = "beefybills.png" },
+              new FoodStand(new Vector3(-1784.236f, -1175.884f, 13.01774f), 55.52537f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(-1784.236f, -1175.884f, 13.01774f), VendorHeading = 55.52537f, BannerImagePath = "beefybills.png" },
+               new FoodStand(new Vector3(-1857.076f, -1225.12f, 13.01722f), 316.8728f, "Beefy Bills Burger Bar", "Extra BEEFY!","BeefyBillsMenu"){ VendorPosition = new Vector3(-1857.076f, -1225.12f, 13.01722f), VendorHeading = 316.8728f, BannerImagePath = "beefybills.png" },
+
             new FoodStand(new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(240.8329f, 167.2296f, 105.0605f), VendorHeading = 167.5996f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu") { VendorPosition = new Vector3(-1516.382f, -952.5892f, 9.278718f), VendorHeading = 317.7292f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(1604.818f, 3822.332f, 34.69806f), 200.7076f, "Chihuahua Hot Dog", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(1607.818f, 3822.332f, 34.69806f), VendorHeading = 200.7076f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1248.932f, -1474.449f, 4.277946f), VendorHeading = 306.3787f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(821.8197f, -2973.398f, 6.020657f), VendorHeading = 276.5136f , BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1219.656f, -1504.36f, 4.36032f), VendorHeading = 98.7149f, BannerImagePath = "chihuahuahotdogs.png" },
+            //new Vector3(-1857.076f, -1225.12f, 13.01722f), 316.8728f
+
+            new FoodStand(new Vector3(-1834.99f, -1234.289f, 13.01727f), 38.8311f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1834.99f, -1234.289f, 13.01727f), VendorHeading = 38.8311f, BannerImagePath = "chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(-1772.159f, -1160.8f, 13.01804f), 50.64023f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1772.159f, -1160.8f, 13.01804f), VendorHeading = 50.64023f, BannerImagePath = "chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(-1719.628f, -1103.968f, 13.01766f), 37.79702f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1719.628f, -1103.968f, 13.01766f), VendorHeading = 37.79702f, BannerImagePath = "chihuahuahotdogs.png" },
+
+
+
             //new FoodStand(new Vector3(821.7623f, -2973.566f, 6.020659f), 269.9576f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(821.7623f, -2973.566f, 6.020659f), VendorHeading = 269.9576f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(2106.954f, 4947.911f, 40.95187f), 319.9109f, "Attack-A-Taco", "Heavy Shelling!","TacoFarmerMenu") {VendorPosition = new Vector3(2106.954f, 4947.911f, 40.95187f), VendorHeading = 319.9109f, },
             new FoodStand(new Vector3(-1148.969f, -1601.963f, 4.390241f), 35.73399f, "Gyro Day", "Gyro Day","GenericMenu") { VendorPosition = new Vector3(-1145.969f, -1602.963f, 4.390241f), VendorHeading = 35.73399f, },
@@ -1221,8 +1379,8 @@ public class PlacesOfInterest : IPlacesOfInterest
                     OpenTime = 4, CloseTime = 22,
                     InteriorID = 96258,
                 },
-                new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, ScannerFilePath = "01_specific_location\\0x0092CBCB.wav"},//rockford hills
-                new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, ScannerFilePath = "01_specific_location\\0x0289F802.wav"},//rockford hills
+                new ClothingShop(new Vector3(-837.588f, -161.6364f, 37.90956f), 0f, "Didier Sachs","Fashion never cost so much","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0092CBCB.wav"},//rockford hills
+                new ClothingShop(new Vector3(-717.36f, -157.29f, 38.2f), 117.6851f, "Ponsonbys","Catering to the Elite","",Vector3.Zero) { OpenTime = 8, CloseTime = 20, IsTemporarilyClosed = true, ScannerFilePath = "01_specific_location\\0x0289F802.wav"},//rockford hills
         };
         List<BusStop> BusStops = new List<BusStop>()
         {

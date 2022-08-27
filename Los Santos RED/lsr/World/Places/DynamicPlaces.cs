@@ -17,6 +17,7 @@ public class DynamicPlaces
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
     private IWeapons Weapons;
+    private ITimeReportable Time;
 
     private List<VendingMachine> ActiveVendingMachines = new List<VendingMachine>();
     private List<string> VendingMachinesModelNames = new List<string>();
@@ -25,7 +26,7 @@ public class DynamicPlaces
     private List<string> GasPumpsModelNames = new List<string>();
     private List<uint> GasPumpsModelHashes = new List<uint>();
 
-    public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    public DynamicPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -35,6 +36,7 @@ public class DynamicPlaces
         Settings = settings;
         Crimes = crimes;
         Weapons = weapons;
+        Time = time;
     }
 
     public void Setup()
@@ -104,7 +106,7 @@ public class DynamicPlaces
                 ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
                 VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
                 newVend.CanInteractWhenWanted = true;
-                newVend.Setup(Interiors, Settings, Crimes, Weapons);
+                newVend.Setup(Interiors, Settings, Crimes, Weapons, Time);
                 World.AddBlip(newVend.Blip);
                 Places.ActiveInteractableLocations.Add(newVend);
                 ActiveVendingMachines.Add(newVend);
@@ -129,7 +131,7 @@ public class DynamicPlaces
                     newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { };
                 }
                 newGasPump.CanInteractWhenWanted = true;
-                newGasPump.Setup(Interiors, Settings, Crimes, Weapons);
+                newGasPump.Setup(Interiors, Settings, Crimes, Weapons, Time);
                 World.AddBlip(newGasPump.Blip);
                 Places.ActiveInteractableLocations.Add(newGasPump);
                 ActiveGasPumps.Add(newGasPump);

@@ -967,7 +967,7 @@ public class UI : IMenuProvideable
             {
                 CurrentSpeedDisplay += " ~y~(LI)";
             }
-            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
+            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && DisplayablePlayer.CurrentVehicle.RequiresFuel)
             {
                 CurrentSpeedDisplay += $"{CurrentDefaultTextColor} " + DisplayablePlayer.CurrentVehicle.FuelTank.UIText;
             }

@@ -452,7 +452,7 @@ public class LEDispatcher
     {
         if (World.TotalWantedLevel <= 2)
         {
-            foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+            foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations().Where(x => x.IsEnabled && x.DistanceToPlayer <= 200f && x.IsNearby && !x.IsDispatchFilled))
             {
                 if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
                 {

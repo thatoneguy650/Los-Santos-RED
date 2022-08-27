@@ -189,6 +189,7 @@ public class FireFighterSpawnTask : SpawnTask
                 if (CreatedVehicle == null)
                 {
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                    CreatedVehicle.Setup();
                 }
                 CreatedVehicle.WasModSpawned = true;
                 CreatedVehicle.IsFire = true;

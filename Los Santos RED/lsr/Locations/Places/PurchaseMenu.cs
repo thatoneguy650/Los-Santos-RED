@@ -1449,6 +1449,7 @@ public class PurchaseMenu : Menu
                 if (MyNewCar == null)
                 {
                     MyNewCar = new VehicleExt(NewVehicle, Settings);
+                    MyNewCar.Setup();
                     EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
                 }
                 World.Vehicles.AddEntity(MyNewCar, ResponseType.None);

@@ -127,7 +127,7 @@ public class GasPump : InteractableLocation
     private void GenerateGasMenu()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
-        if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel < 100f)
+        if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel < 100f && VehicleToFill.RequiresFuel)
         {
             GetVehicleData();
             string MenuString = $"~n~Price Per Gallon: ~r~${pricePerUnit}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~p~{UnitsOfFuelNeeded}~s~ Gallons";
@@ -155,6 +155,10 @@ public class GasPump : InteractableLocation
             if(VehicleToFill == null || (VehicleToFill != null && !VehicleToFill.Vehicle.Exists()))
             {
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"No vehicle found to fuel");
+            }
+            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.RequiresFuel)
+            {
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Incompatible Fueling");
             }
             else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && VehicleToFill.Vehicle.IsEngineOn)
             {
@@ -196,7 +200,7 @@ public class GasPump : InteractableLocation
             pricePerUnit = 3;
         }    
         PercentFuelNeeded = (100f - VehicleToFill.Vehicle.FuelLevel)/100f;
-        VehicleToFillFuelTankCapacity = VehicleToFill.FuelTankCapacity(VehicleToFillClassName);
+        VehicleToFillFuelTankCapacity = VehicleToFill.FuelTankCapacity;
         UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
 
         if (VehicleToFillFuelTankCapacity == 0)

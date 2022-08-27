@@ -81,10 +81,11 @@ public class DebugMenu : Menu
         CreateTimeMenu();
         CreateCrimeMenu();
         CreatePlayerStateMenu();
+        CreateLocationMenu();
         CreateTeleportMenu();
         CreateOtherItems();
     }
-    private void CreateTeleportMenu()
+    private void CreateLocationMenu()
     {
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -93,6 +94,12 @@ public class DebugMenu : Menu
         LogLocationMenu.Activated += (menu, item) =>
         {
             LogGameLocation();
+            menu.Visible = false;
+        };
+        UIMenuItem LogSpawnPositionMenu = new UIMenuItem("Log Ped or Vehicle Spawn", "Logs a point for spawning");
+        LogSpawnPositionMenu.Activated += (menu, item) =>
+        {
+            LogSpawnPosition();
             menu.Visible = false;
         };
         UIMenuItem LogLocationSimpleMenu = new UIMenuItem("Log Game Location (Simple)", "Location Type, Then Name");
@@ -132,6 +139,7 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
+        LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
         LocationItemsMenu.AddItem(LogLocationSimpleMenu);
         LocationItemsMenu.AddItem(LogInteriorMenu);
@@ -139,8 +147,12 @@ public class DebugMenu : Menu
         LocationItemsMenu.AddItem(FreeCamMenu);
         LocationItemsMenu.AddItem(LoadSPMap);
         LocationItemsMenu.AddItem(LoadMPMap);
-
-
+    }
+    private void CreateTeleportMenu()
+    {
+        UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Teleport Menu");
+        LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
@@ -148,7 +160,7 @@ public class DebugMenu : Menu
             myLocationType.Activated += (menu, item) =>
             {
                 BasicLocation toTele = myLocationType.SelectedItem;
-                if(toTele != null)
+                if (toTele != null)
                 {
                     Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
                     Game.LocalPlayer.Character.Heading = toTele.EntranceHeading;
@@ -624,6 +636,12 @@ public class DebugMenu : Menu
         string text2 = NativeHelper.GetKeyboardInput("Name");
         string text3 = NativeHelper.GetKeyboardInput("Description");
         WriteToLogLocations($"new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, \"{text2}\", \"{text3}\"),  //{text1}");
+    }
+    private void LogSpawnPosition()
+    {
+        Vector3 pos = Game.LocalPlayer.Character.Position;
+        float Heading = Game.LocalPlayer.Character.Heading;
+        WriteToLogLocations($"new ConditionalLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, 75f),");
     }
     private void LogCameraPosition()
     {

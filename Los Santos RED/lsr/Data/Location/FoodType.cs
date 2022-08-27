@@ -28,4 +28,5 @@ public enum FoodType
     Coffee = 1 << 16,
     Smoothies = 1 << 17,
     Chicken = 1 << 18,
+    Dessert = 1 << 19,
 }

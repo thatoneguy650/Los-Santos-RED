@@ -15,22 +15,17 @@ namespace LSR.Vehicles
 {
     public class VehicleExt
     {
+        private VehicleClass vehicleClass;
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
         private ISettingsProvideable Settings;
-        private int Health = 1000;
-
-        public string VehicleModelName { get; private set; }
-
+        private int Health = 1000;      
         private bool IsOnFire;
-
+        public string VehicleModelName { get; private set; }
         public bool HasShowHotwireLockPrompt { get; set; } = false;
-
         public bool IsPolice { get; set; } = false;
         public bool IsEMT { get; set; } = false;
         public bool IsFire { get; set; } = false;
-
-
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public Vehicle Vehicle { get; set; } = null;
@@ -42,7 +37,6 @@ namespace LSR.Vehicles
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
-
         public Gang AssociatedGang { get; set; }
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
         public uint GameTimeSpawned { get; set; }
@@ -56,6 +50,7 @@ namespace LSR.Vehicles
         public bool HasUpdatedPlateType { get; set; }
         public bool AreAllWindowsIntact { get; set; }
         public uint Handle { get; private set; }
+        public int FuelTankCapacity { get; private set; } = 20;
         public bool AddedToReportedStolenQueue { get; set; }
         public bool NeedsToBeReportedStolen
         {
@@ -108,101 +103,79 @@ namespace LSR.Vehicles
         {
             get
             {
-                VehicleClass CurrentClass = (VehicleClass)ClassInt();
-                if (CurrentClass == VehicleClass.Compact)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Coupe)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Muscle)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.OffRoad)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Sedan)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Sport)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.SportClassic)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Super)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.SUV)
-                {
-                    return true;
-                }
-                else if (CurrentClass == VehicleClass.Van)
+                if (vehicleClass == VehicleClass.Compact || vehicleClass == VehicleClass.Coupe || vehicleClass == VehicleClass.Muscle || vehicleClass == VehicleClass.OffRoad || vehicleClass == VehicleClass.Sedan || vehicleClass == VehicleClass.Sport
+                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van)
                 {
                     return true;
                 }
                 return false;
             }
         }
-        public int FuelTankCapacity(string vehicleClassName)
+        public bool RequiresFuel
         {
-            switch (vehicleClassName)
+            get
             {
-                case "Compact":
-                    return 18;
-                case "Sedan":
-                    return 20;
-                case "SUV":
-                    return 30;
-                case "Coupe":
-                    return 20;
-                case "Muscle":
-                    return 25;
-                case "Sports Classic":
-                    return 25;
-                case "Sports Car":
-                    return 20;
-                case "Super":
-                    return 20;
-                case "Motorcycle":
-                    return 5;
-                case "Off Road":
-                    return 35;
-                case "Industrial":
-                    return 50;
-                case "Utility":
-                    return 35;
-                case "Van":
-                    return 30;
-                case "Bicycle":
-                    return 0;
-                case "Boat":
-                    return 40;
-                case "Helicopter":
-                    return 100;
-                case "Plane":
-                    return 100;
-                case "Service":
-                    return 40;
-                case "Emergency":
-                    return 30;
-                case "Military":
-                    return 60;
-                case "Commercial":
-                    return 40;
-                case "Train":
-                    return 100;
-                default:
-                    return 20;
+                if (vehicleClass == VehicleClass.Compact || vehicleClass == VehicleClass.Coupe || vehicleClass == VehicleClass.Muscle || vehicleClass == VehicleClass.OffRoad || vehicleClass == VehicleClass.Sedan || vehicleClass == VehicleClass.Sport 
+                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle)
+                {
+                    return true;
+                }
+                return false;
             }
+        }
+        public bool IsCar { get; private set; }
+
+
+
+
+        private void GetFuelTankCapacity()
+        {
+            if (vehicleClass == VehicleClass.Compact) // "Compact":
+                FuelTankCapacity = 18;
+            else if (vehicleClass == VehicleClass.Sedan) // "Sedan":
+                FuelTankCapacity = 20;
+            else if (vehicleClass == VehicleClass.SUV) // "SUV":
+                FuelTankCapacity = 30;
+            else if (vehicleClass == VehicleClass.Coupe) //
+                FuelTankCapacity = 20;
+            else if (vehicleClass == VehicleClass.Muscle) //
+                FuelTankCapacity = 25;
+            else if (vehicleClass == VehicleClass.SportClassic) //
+                FuelTankCapacity = 25;
+            else if (vehicleClass == VehicleClass.Sport) //
+                FuelTankCapacity = 20;
+            else if (vehicleClass == VehicleClass.Super) //
+                FuelTankCapacity = 20;
+            else if (vehicleClass == VehicleClass.Motorcycle) //
+                FuelTankCapacity = 5;
+            else if (vehicleClass == VehicleClass.OffRoad) //
+                FuelTankCapacity = 35;
+            else if (vehicleClass == VehicleClass.Industrial) //
+                FuelTankCapacity = 50;
+            else if (vehicleClass == VehicleClass.Utility) //
+                FuelTankCapacity = 35;
+            else if (vehicleClass == VehicleClass.Van) //
+                FuelTankCapacity = 30;
+            else if (vehicleClass == VehicleClass.Cycle) //
+                FuelTankCapacity = 0;
+            else if (vehicleClass == VehicleClass.Boat) //
+                FuelTankCapacity = 40;
+            else if (vehicleClass == VehicleClass.Helicopter) //
+                FuelTankCapacity = 100;
+            else if (vehicleClass == VehicleClass.Plane) //
+                FuelTankCapacity = 100;
+            else if (vehicleClass == VehicleClass.Service) //
+                FuelTankCapacity = 40;
+            else if (vehicleClass == VehicleClass.Emergency) //
+                FuelTankCapacity = 30;
+            else if (vehicleClass == VehicleClass.Military) //
+                FuelTankCapacity = 60;
+            else if (vehicleClass == VehicleClass.Commercial) //
+                FuelTankCapacity = 40;
+            else if (vehicleClass == VehicleClass.Rail) //
+                FuelTankCapacity = 100;
+            else
+                FuelTankCapacity = 20;
         }
         public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
         public VehicleExt(Vehicle vehicle, ISettingsProvideable settings)
@@ -215,10 +188,7 @@ namespace LSR.Vehicles
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
-                {
-                    Vehicle.FuelLevel = (float)(8f + RandomItems.MyRand.NextDouble() * (100f - 8f));//RandomItems.MyRand.Next(8, 100);
-                }
+
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
                 GameTimeSpawned = Game.GameTime;
@@ -327,10 +297,46 @@ namespace LSR.Vehicles
         }
         public void Update(IDriveable driver)
         {
-            if (Vehicle.Exists() && IsCar)
+            if (Vehicle.Exists())
             {
-                Engine.Update(driver);
-                //GameFiber.Yield();//TR Removed 5
+                if (!Settings.SettingsManager.VehicleSettings.AllowSetEngineStateOnlyCars || IsCar)
+                {
+                    Engine.Update(driver);
+                }
+                if (IsCar)
+                {
+                    if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
+                    {
+                        Indicators.Update();
+                    }
+                    if (Vehicle.Exists())
+                    {
+                        if (Health > Vehicle.Health)
+                        {
+                            GameFiber.Yield();
+                            OnHealthDecreased(driver);
+                        }
+                        else
+                        {
+                            Health = Vehicle.Health;
+                        }
+                        bool onFire = Vehicle.IsOnFire;
+                        if (IsOnFire != onFire)
+                        {
+                            if (onFire)
+                            {
+                                GameFiber.Yield();
+                                driver.OnVehicleStartedFire();
+                            }
+                            IsOnFire = onFire;
+                        }
+                    }
+                }
+                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && RequiresFuel)
+                {
+                    FuelTank.Update();
+                    //GameFiber.Yield();//TR Removed 5
+                }
                 if (Settings.SettingsManager.VehicleSettings.KeepRadioAutoTuned)
                 {
                     Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
@@ -340,38 +346,6 @@ namespace LSR.Vehicles
                 {
                     Radio.Update(Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation);
                     //GameFiber.Yield();//TR Removed 5
-                }
-                if (Settings.SettingsManager.VehicleSettings.AllowSetIndicatorState)
-                {
-                    Indicators.Update();
-                    //GameFiber.Yield();//TR Removed 5
-                }
-                if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
-                {
-                    FuelTank.Update();
-                    //GameFiber.Yield();//TR Removed 5
-                }
-                if(Vehicle.Exists())
-                {
-                    if(Health > Vehicle.Health)
-                    {
-                        GameFiber.Yield();
-                        OnHealthDecreased(driver); 
-                    }
-                    else
-                    {
-                        Health = Vehicle.Health;
-                    }
-                    bool onFire = Vehicle.IsOnFire;
-                    if (IsOnFire != onFire)
-                    {
-                        if(onFire)
-                        {
-                            GameFiber.Yield();
-                            driver.OnVehicleStartedFire();
-                        }
-                        IsOnFire = onFire;
-                    }
                 }
                 GameFiber.Yield();//TR Added 5
             }
@@ -476,13 +450,7 @@ namespace LSR.Vehicles
             }
         }
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
-        public bool IsCar
-        {
-            get
-            {
-                return NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);//this appears to crash?
-            }
-        }
+
         public bool WasSpawnedEmpty { get; set; } = false;
         private int ClosestColor(List<Color> colors, Color target)
         {
@@ -609,6 +577,28 @@ namespace LSR.Vehicles
             driver.OnVehicleHealthDecreased(Damage, Collided);
             //EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
+        }
+
+        public void Setup()
+        {
+            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
+            {
+                if (RequiresFuel)
+                {
+                    Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);
+                }
+            }
+            vehicleClass = (VehicleClass)ClassInt();
+            if (Vehicle.Exists())
+            {
+                IsCar = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
+            }
+            else
+            {
+                IsCar = false;
+            }
+            GetFuelTankCapacity();
+
         }
     }
 }

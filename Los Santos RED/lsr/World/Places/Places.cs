@@ -41,7 +41,7 @@ public class Places
         GangTerritories = gangTerritories;
         Streets = streets;
         Agencies = agencies;
-        DynamicPlaces = new DynamicPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons);
+        DynamicPlaces = new DynamicPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Time);
         StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time);
     }
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();

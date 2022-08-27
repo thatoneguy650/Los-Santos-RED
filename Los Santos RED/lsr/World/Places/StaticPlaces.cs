@@ -113,12 +113,12 @@ public class StaticPlaces
         int LocationsCalculated = 0;
         foreach (InteractableLocation gl in PlacesOfInterest.GetAllInteractableLocations())
         {
-            if (gl.IsOpen(Time.CurrentHour) && gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
             {
                 if (!Places.ActiveInteractableLocations.Contains(gl))
                 {
                     Places.ActiveInteractableLocations.Add(gl);
-                    gl.Setup(Interiors, Settings, Crimes, Weapons);
+                    gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
                     World.Pedestrians.AddEntity(gl.Merchant);
                     World.AddBlip(gl.Blip);
                     GameFiber.Yield();
@@ -143,12 +143,12 @@ public class StaticPlaces
         LocationsCalculated = 0;
         foreach (BasicLocation gl in PlacesOfInterest.GetAllBasicLocations())
         {
-            if (gl.IsOpen(Time.CurrentHour) && gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
             {
                 if (!Places.ActiveBasicLocations.Contains(gl))
                 {
                     Places.ActiveBasicLocations.Add(gl);
-                    gl.Setup(Interiors, Settings, Crimes, Weapons);
+                    gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
                     World.AddBlip(gl.Blip);
                     GameFiber.Yield();
                 }
@@ -174,12 +174,12 @@ public class StaticPlaces
     {
         foreach (InteractableLocation gl in Places.ActiveInteractableLocations.ToList())
         {
-            gl.Update();
+            gl.Update(Time);
             GameFiber.Yield();
         }
         foreach (BasicLocation gl in Places.ActiveBasicLocations.ToList())
         {
-            gl.Update();
+            gl.Update(Time);
             GameFiber.Yield();
         }
     }
@@ -194,13 +194,12 @@ public class StaticPlaces
             loc.Dispose();
         }
     }
-
     public void ActivateBasicLocation(BasicLocation gl)
     {
         if (!Places.ActiveBasicLocations.Contains(gl))
         {
             Places.ActiveBasicLocations.Add(gl);
-            gl.Setup(Interiors, Settings, Crimes, Weapons);
+            gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
             World.AddBlip(gl.Blip);
             GameFiber.Yield();
         }
@@ -210,7 +209,7 @@ public class StaticPlaces
         if (!Places.ActiveInteractableLocations.Contains(gl))
         {
             Places.ActiveInteractableLocations.Add(gl);
-            gl.Setup(Interiors, Settings, Crimes, Weapons);
+            gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
             World.Pedestrians.AddEntity(gl.Merchant);
             World.AddBlip(gl.Blip);
             GameFiber.Yield();

@@ -1118,7 +1118,11 @@ namespace LosSantosRED.lsr
                     //dispatchEvent.HasZoneAudio = true;
                     //if (MyZone.IsSpecificLocation || Settings.SettingsManager.ScannerSettings.UseNearForLocations)
                     //{
-                        dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
+
+                    dispatchEvent.SoundsToPlay.Add(new List<string> { suspect_last_seen.TargetLastSeen.FileName, suspect_last_seen.TargetLastReported.FileName, suspect_last_seen.SuspectSpotted.FileName, suspect_last_seen.TargetIs.FileName, suspect_last_seen.TargetSpotted.FileName }.PickRandom());
+                    dispatchEvent.Subtitles += " ~s~suspect seen~s~";
+
+                    dispatchEvent.SoundsToPlay.Add(new List<string> { conjunctives.Nearumm.FileName, conjunctives.Closetoum.FileName, conjunctives.Closetouhh.FileName }.PickRandom());
                         dispatchEvent.Subtitles += " ~s~near ~p~" + location.Name + "~s~";
                     //}
                     //else

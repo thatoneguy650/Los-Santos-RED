@@ -212,6 +212,7 @@ public class GangSpawnTask : SpawnTask
                 if (CreatedVehicle == null)
                 {
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                    CreatedVehicle.Setup();
                 }
                 CreatedVehicle.WasModSpawned = true;
                 if (Gang != null)

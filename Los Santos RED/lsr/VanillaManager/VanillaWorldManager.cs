@@ -14,6 +14,8 @@ public class VanillaWorldManager
     private bool isRandomEventsDisabled;
     private bool IsVanillaRespawnActive = true;
     private ISettingsProvideable Settings;
+    private bool isVanillaShopsActive;
+
     public VanillaWorldManager(ISettingsProvideable settings)
     {
         Settings = settings;
@@ -72,8 +74,20 @@ public class VanillaWorldManager
         }
 
 
-
-
+        if(Settings.SettingsManager.VanillaSettings.TerminateVanillaShops)
+        {
+            if(isVanillaShopsActive)
+            {
+                TerminateShopController();
+            }
+        }
+        else
+        {
+            if (!isVanillaShopsActive)
+            {
+                ActivateShopController();
+            }
+        }
 
 
 
@@ -130,6 +144,16 @@ public class VanillaWorldManager
         Game.StartNewScript("respawn_controller");
         Game.StartNewScript("selector");
         IsVanillaRespawnActive = true;
+    }
+    private void TerminateShopController()
+    {
+        Game.TerminateAllScriptsWithName("shop_controller");
+        isVanillaShopsActive = false;
+    }
+    private void ActivateShopController()
+    {
+        Game.StartNewScript("shop_controller");
+        isVanillaShopsActive = true;
     }
 }
 

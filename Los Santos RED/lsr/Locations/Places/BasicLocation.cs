@@ -50,19 +50,19 @@ public class BasicLocation
         {
             if (CellsAway >= 20)
             {
-                return 8000;
+                return 2000;// 8000;
             }
             else if (CellsAway >= 10)
             {
-                return 4000;
+                return 1000;// 4000;
             }
             else if (CellsAway >= 6)
             {
-                return 2000;
+                return 500;// 2000;
             }
             else
             {
-                return 1000;
+                return 500;// 1000;
             }
         }
     }
@@ -75,7 +75,7 @@ public class BasicLocation
     public string Name { get; set; }
     public string FullName { get; set; }
 
-
+    public bool IsTemporarilyClosed { get; set; } = false;
 
     public string Description { get; set; }
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
@@ -160,9 +160,13 @@ public class BasicLocation
     }
     public bool IsOpen(int currentHour)
     {
+        if(IsTemporarilyClosed)
+        {
+            return false;
+        }
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
     }
-    public virtual void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons)
+    public virtual void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
         if (HasInterior)
         {
@@ -174,19 +178,31 @@ public class BasicLocation
         }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-            createdBlip = AddIconToMap();
+            createdBlip = AddIconToMap(time);
             GameFiber.Yield();
         }
         SetNearby();
-        Update();
+        Update(time);
     }
-    public void Update()
+    public void Update(ITimeReportable time)
     {
         if (IsNearby)
         {
             if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
             {
                 distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
+
+                if (Blip.Exists())
+                {
+                    if (IsOpen(time.CurrentHour))
+                    {
+                        Blip.Alpha = MapIconAlpha;
+                    }
+                    else
+                    {
+                        Blip.Alpha = 0.25f;
+                    }
+                }
                 GameTimeLastCheckedDistance = Game.GameTime;
             }
         }
@@ -207,8 +223,10 @@ public class BasicLocation
             interior.Unload();
         }
     }
-    private Blip AddIconToMap()
+    private Blip AddIconToMap(ITimeReportable time)
     {
+        bool iscurrentlyOpen = IsOpen(time.CurrentHour);
+
         if (MapIconRadius != 1.0f)
         {
             Blip MyLocationBlip = new Blip(EntrancePosition, MapIconRadius)
@@ -216,7 +234,16 @@ public class BasicLocation
                 Name = Name
             };
             MyLocationBlip.Color = Color.Blue;
-            MyLocationBlip.Alpha = MapIconAlpha;
+
+            if (iscurrentlyOpen)
+            {
+                MyLocationBlip.Alpha = MapIconAlpha;
+            }
+            else
+            {
+                MyLocationBlip.Alpha = 0.25f;
+            }
+            
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
@@ -246,7 +273,14 @@ public class BasicLocation
                 MyLocationBlip.Color = MapIconColor;
             }
             MyLocationBlip.Scale = MapIconScale;
-            MyLocationBlip.Alpha = MapIconAlpha;
+            if (iscurrentlyOpen)
+            {
+                MyLocationBlip.Alpha = MapIconAlpha;
+            }
+            else
+            {
+                MyLocationBlip.Alpha = 0.25f;
+            }
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
@@ -284,7 +318,7 @@ public class BasicLocation
         {
             toreturn.Add(Tuple.Create(Description, ""));
         }
-        toreturn.Add(Tuple.Create("Currently:", IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~"));
+        toreturn.Add(Tuple.Create("Currently:", IsTemporarilyClosed ? "~r~Temporarily Closed~s~" : IsOpen(currentHour) ? "~s~Open~s~" : "~m~Closed~s~"));
         toreturn.Add(Tuple.Create("Hours:", Is247 ? "~g~24/7~s~" : $"{OpenTime}{(OpenTime <= 11 ? " am" : " pm")}-{CloseTime - 12}{(CloseTime <= 11 ? " am" : " pm")}"));
         toreturn.Add(Tuple.Create("Address:", StreetAddress));
         toreturn.Add(Tuple.Create("Location:", "~p~" + ZoneName + "~s~"));

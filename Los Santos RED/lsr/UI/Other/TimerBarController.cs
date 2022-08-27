@@ -64,7 +64,7 @@ public class TimerBarController
     private void UpdateStamina()
     {
         StaminaBar.Percentage = Player.Sprinting.StaminaPercentage;
-        if (Player.IsAliveAndFree && Player.Sprinting.StaminaPercentage < 1.0f && Settings.SettingsManager.LSRHUDSettings.ShowStaminaDisplay)
+        if (Player.IsAliveAndFree && Player.Sprinting.StaminaPercentage < 1.0f && Settings.SettingsManager.LSRHUDSettings.ShowStaminaDisplay && Player.Sprinting.CanSprint && Player.Sprinting.CanRegainStamina)
         {
             itemsDisplaying++;
             SafeAdd(StaminaBar);

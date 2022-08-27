@@ -194,6 +194,7 @@ public class EMTSpawnTask :SpawnTask
                 if (CreatedVehicle == null)
                 {
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                    CreatedVehicle.Setup();
                 }
                 CreatedVehicle.WasModSpawned = true;
                 CreatedVehicle.IsEMT = true;

@@ -214,6 +214,7 @@ public class LESpawnTask : SpawnTask
                 if (CreatedVehicle == null)
                 {
                     CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                    CreatedVehicle.Setup();
                 }
                 CreatedVehicle.WasModSpawned = true;
                 CreatedVehicle.IsPolice = true;

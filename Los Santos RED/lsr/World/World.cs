@@ -78,10 +78,10 @@ namespace Mod
             Vehicles.Dispose();
             RemoveBlips();
         }
-        public void ClearSpawned()
+        public void ClearSpawned(bool includeCivilians)
         {
             Pedestrians.ClearSpawned();
-            Vehicles.ClearSpawned();
+            Vehicles.ClearSpawned(includeCivilians);
         }
         public void LoadMPMap()
         {

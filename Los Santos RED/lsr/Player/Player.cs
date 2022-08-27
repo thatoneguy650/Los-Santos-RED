@@ -2118,6 +2118,7 @@ namespace Mod
 
 
             //GameFiber.Yield();//TR Yield RemovedTest 1
+            ClosestInteractableLocation = null;
             if (!IsMovingFast && IsAliveAndFree && !IsConversing)
             {
                 float ClosestDistance = 999f;
@@ -2125,7 +2126,7 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
+                    if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
                     {
                         if (gl.DistanceToPlayer < ClosestDistance)
                         {
@@ -2514,6 +2515,7 @@ namespace Mod
                         if (existingVehicleExt == null)
                         {
                             VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
+                            createdVehicleExt.Setup();
                             World.Vehicles.AddEntity(createdVehicleExt, ResponseType.None);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;

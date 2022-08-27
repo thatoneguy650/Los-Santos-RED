@@ -113,7 +113,7 @@ public class VanillaGangManager
         ,0x5AA42C21//G_F_Y_Vagos_01
     };
     private IPlacesOfInterest PlacesOfInterest;
-    private float ScenarioBlockingDistance = 200f; //goes in both directions so within 400 meters, no scenarios will be spawned
+    private float ScenarioBlockingDistance => Settings.SettingsManager.VanillaSettings.BlockGangScenariosDistance; //goes in both directions so within 400 meters, no scenarios will be spawned
     private List<Vector3> GangBlockingAreas = new List<Vector3>();
     public VanillaGangManager(ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {

@@ -106,9 +106,9 @@ public class GangDispatcher
         if (Settings.SettingsManager.GangSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;//up here for now, might be better down low
-            if (GetSpawnLocation() && GetSpawnTypes(false, null))
+            if (GetSpawnLocation() && GetSpawnTypes(false,false, null))
             {
-                CallSpawnTask(false, true);
+                CallSpawnTask(false, true, false, false);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -117,28 +117,53 @@ public class GangDispatcher
     {
         if (!HasDispatchedThisTick && Settings.SettingsManager.GangSettings.ManageDispatching)
         {
-            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(Game.LocalPlayer.Character) <= 150f))
+            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(Game.LocalPlayer.Character) <= 200f))
             {
-                if (ps.PossiblePedSpawns != null)
+                if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
                 {
                     bool spawnedsome = false;
-                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                    if (ps.PossiblePedSpawns != null)
                     {
-                        if (RandomItems.RandomPercent(cl.Percentage))
+                        foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                         {
-                            HasDispatchedThisTick = true;
-                            SpawnLocation = new SpawnLocation(cl.Location);
-                            SpawnLocation.Heading = cl.Heading;
-                            SpawnLocation.StreetPosition = cl.Location;
-                            //SpawnLocation.SidewalkPosition = cl.Location;
-                            if (GetSpawnTypes(true, ps.AssociatedGang))
+                            if (RandomItems.RandomPercent(cl.Percentage))
                             {
-                                CallSpawnTask(true, false);
-                                spawnedsome = true;
                                 HasDispatchedThisTick = true;
+                                SpawnLocation = new SpawnLocation(cl.Location);
+                                SpawnLocation.Heading = cl.Heading;
+                                SpawnLocation.StreetPosition = cl.Location;
+                                if (GetSpawnTypes(true, false, ps.AssociatedGang))
+                                {
+                                    CallSpawnTask(true, false, true, false);
+                                    spawnedsome = true;
+                                    HasDispatchedThisTick = true;
+                                }
+                            }
+                        }
+                        
+                    }
+                    if (ps.PossibleVehicleSpawns != null)
+                    {
+                        foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
+                        {
+                            if (RandomItems.RandomPercent(cl.Percentage))
+                            {
+                                HasDispatchedThisTick = true;
+                                SpawnLocation = new SpawnLocation(cl.Location);
+                                SpawnLocation.Heading = cl.Heading;
+                                SpawnLocation.StreetPosition = cl.Location;
+                                SpawnLocation.SidewalkPosition = cl.Location;
+                                if (GetSpawnTypes(false, true, ps.AssociatedGang))
+                                {
+                                    CallSpawnTask(true, false, true, true);
+                                    spawnedsome = true;
+                                }
                             }
                         }
                     }
+
+
+
                     ps.IsDispatchFilled = true;
                 }
                 else
@@ -192,7 +217,7 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes(bool forcePed, Gang forceGang)
+    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Gang forceGang)
     {
         Gang = null;
         VehicleType = null;
@@ -210,52 +235,60 @@ public class GangDispatcher
         {
             Gang = GetRandomGang(SpawnLocation);
         }
+
+
+
+
         if (Gang != null)
         {
-            int TotalGangMembers = World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID);
-            if (TotalGangMembers >= Gang.SpawnLimit && !forcePed)
-            {
-                return true;
-            }
-            VehicleType = null;
-            bool SpawnVehicle = RandomItems.RandomPercent(Gang.VehicleSpawnPercentage);    
-            if (forcePed)
-            {
-                VehicleType = null;
-            }
-            else if (IsDenSpawn && RandomItems.RandomPercent(80))
-            {
-                VehicleType = null;
-            }
-            else if (!SpawnLocation.HasSidewalk || SpawnVehicle)
-            {
-                VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
-            }
-            if (forcePed)
+            if(forcePed)
             {
                 PersonType = Gang.GetRandomPed(Player.WantedLevel, "");
-                if (PersonType != null)
-                {
-                    return true;
-                }
+                VehicleType = null;
+                return PersonType != null;
             }
-            else if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
+            else if (forceVehicle)
             {
-                string RequiredGroup = "";
-                if (VehicleType != null)
+                PersonType = null;
+                VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                return VehicleType != null;
+            }
+            else
+            {
+                if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID) >= Gang.SpawnLimit)
                 {
-                    RequiredGroup = VehicleType.RequiredPedGroup;
+                    return false;
                 }
-                PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
-                if (PersonType != null)
+                else
                 {
-                    return true;
+                    if (IsDenSpawn && RandomItems.RandomPercent(80))
+                    {
+                        VehicleType = null;
+                    }
+                    else if (!SpawnLocation.HasSidewalk || RandomItems.RandomPercent(Gang.VehicleSpawnPercentage))
+                    {
+                        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true);
+                    }
+
+                    if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
+                    {
+                        string RequiredGroup = "";
+                        if (VehicleType != null)
+                        {
+                            RequiredGroup = VehicleType.RequiredPedGroup;
+                        }
+                        PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+                        if (PersonType != null)
+                        {
+                            return true;
+                        }
+                    }
                 }
             }
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
     {
         try
         {
@@ -431,7 +464,7 @@ public class GangDispatcher
             }
             PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true, true);
+        CallSpawnTask(true, true, false, false);
     }
     
 }

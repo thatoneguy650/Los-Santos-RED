@@ -55,7 +55,7 @@ public class Vehicles
     }
     public void Dispose()
     {
-        ClearSpawned();
+        ClearSpawned(true);
     }
     public void Prune()
     {
@@ -167,6 +167,7 @@ public class Vehicles
                 if (!PoliceVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
+                    Car.Setup();
                     Car.IsPolice = true;
                     PoliceVehicles.Add(Car);
                     return true;
@@ -177,6 +178,7 @@ public class Vehicles
                 if (!CivilianVehicles.Any(x => x.Handle == vehicle.Handle))
                 {
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
+                    Car.Setup();
                     CivilianVehicles.Add(Car);
                     return true;
                 }
@@ -222,7 +224,7 @@ public class Vehicles
             }
         }
     }
-    public void ClearSpawned()
+    public void ClearSpawned(bool includeCivilian)
     {
         foreach (VehicleExt vehicleExt in PoliceVehicles)
         {
@@ -251,12 +253,15 @@ public class Vehicles
             }
         }
         FireVehicles.Clear();
-        foreach (VehicleExt vehicleExt in CivilianVehicles.Where(x=> x.WasModSpawned))
+        if (includeCivilian)
         {
-            if (vehicleExt.Vehicle.Exists())
+            foreach (VehicleExt vehicleExt in CivilianVehicles.Where(x => x.WasModSpawned))
             {
-                vehicleExt.Vehicle.Delete();
-                EntryPoint.PersistentVehiclesDeleted++;
+                if (vehicleExt.Vehicle.Exists())
+                {
+                    vehicleExt.Vehicle.Delete();
+                    EntryPoint.PersistentVehiclesDeleted++;
+                }
             }
         }
     }

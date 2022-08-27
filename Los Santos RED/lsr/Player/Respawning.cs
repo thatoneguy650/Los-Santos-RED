@@ -242,7 +242,6 @@ public class Respawning// : IRespawning
         {
             RemoveIllicitInventoryItems();
         }
-        World.ClearSpawned();
         Time.SetDateTime(HospitalDischargeDate);
         GameFiber.Sleep(2000);
         CurrentPlayer.HumanState.SetRandom();
@@ -276,7 +275,6 @@ public class Respawning// : IRespawning
         {
             RemoveIllicitInventoryItems();
         }
-        World.ClearSpawned();
         Time.SetDateTime(BailPostingTime);
         GameFiber.Sleep(2000);
         CurrentPlayer.HumanState.SetRandom();
@@ -483,6 +481,9 @@ public class Respawning// : IRespawning
         EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
         //if (ToSet.HasInterior)
         //{
+
+        World.ClearSpawned(false);
+
             World.Places.StaticPlaces.ActivateLocation(ToSet);
         //}
         GameTimeLastPlacedAtLocation = Game.GameTime;

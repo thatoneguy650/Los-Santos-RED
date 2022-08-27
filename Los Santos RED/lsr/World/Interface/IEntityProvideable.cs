@@ -19,7 +19,7 @@ namespace LosSantosRED.lsr.Interface
         int TotalWantedLevel { get; set; }
         void LoadMPMap();
         void LoadSPMap();
-        void ClearSpawned();
+        void ClearSpawned(bool includeCivilians);
         void AddBlip(Blip myBlip);
     }
 }

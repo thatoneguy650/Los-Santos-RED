@@ -200,6 +200,15 @@ public class Interiors : IInteriors
                     new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
                     new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}),//right door   
 
+            new Interior(82178,"LtD Richman Glen",
+                new List<string>() {  },
+                new List<string>() {  },
+                new List<InteriorDoor>() {
+                    new InteriorDoor(3426294393, new Vector3(1158.364f,-326.8165f,69.35503f)),
+                    new InteriorDoor(2065277225, new Vector3(1160.925f,-326.3612f,69.35503f)),}),//right door  
+            
+
+
             new Interior(33026,"Scoops Liquor Barn"),
 
             //new Interior(-8888,"Lost M.C. Clubhouse",//only works with MP MAP
