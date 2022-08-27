@@ -28,6 +28,21 @@ public class NeedsSettings : ISettingsDefaultable
     public int ThirstDisplayDigits { get; set; }
     [Description("Changes the amount of digits seen on the sleep ui")]
     public int SleepDisplayDigits { get; set; }
+    [Description("Allows health regen when all needs are met (greater than 75%).")]
+    public bool AllowHealthRegen { get; set; }
+    [Description("Allows health drain when you have pressing needs (less than 25%) up to a set amount.")]
+    public bool AllowHealthDrain { get; set; }
+    [Description("Interval between adding health when all needs are met.")]
+    public uint HealthRegenInterval { get; set; }
+
+    [Description("Interval between draining health when you have pressing needs.")]
+    public uint HealthDrainInterval { get; set; }
+    [Description("Amount of health added each interval when all needs are met.")]
+    public int HealthRegenAmount { get; set; }
+    [Description("Amount of health drained each interval when you have pressing needs.")]
+    public int HealthDrainAmount { get; set; }
+    [Description("Minimum health value you can drain to.")]
+    public int HealthDrainMinHealth { get; set; }
     public NeedsSettings()
     {
         SetDefault();
@@ -45,7 +60,13 @@ public class NeedsSettings : ISettingsDefaultable
         ApplySleep = true;
         SleepChangeScalar = 1.0f;
         SleepDisplayDigits = 0;
-
+        AllowHealthRegen = true;
+        AllowHealthDrain = true;
+        HealthRegenInterval = 15000;
+        HealthDrainInterval = 20000;
+        HealthRegenAmount = 1;
+        HealthDrainAmount = 1;
+        HealthDrainMinHealth = 140;
 #if DEBUG
         ThirstDisplayDigits = 2;
         HungerDisplayDigits = 2;

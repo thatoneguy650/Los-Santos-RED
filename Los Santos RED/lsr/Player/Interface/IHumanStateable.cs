@@ -8,6 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IHumanStateable
     {
+        HealthManager HealthManager { get; }
         bool IsDead { get; }
         bool IsBusted { get; }
         bool IsInVehicle { get; }
@@ -23,7 +24,5 @@ namespace LosSantosRED.lsr.Interface
         bool IsSitting { get; }
         bool IsLayingDown { get; }
         Sprinting Sprinting { get; }
-
-        void ChangeHealth(int v);
     }
 }

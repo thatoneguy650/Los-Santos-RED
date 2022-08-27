@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 
 public class InteractableLocation : BasicLocation
 {
+    private IEntityProvideable World;
     private uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
     public virtual string ContactIcon { get; set; } = "CHAR_BLANK_ENTRY";
@@ -88,6 +89,12 @@ public class InteractableLocation : BasicLocation
         }
         CanInteract = true;
     }
+
+    public void StoreData(IShopMenus shopMenus)
+    {
+        Menu = shopMenus.GetMenu(MenuID);
+    }
+
     public void ProcessInteractionMenu()
     {
         while (IsAnyMenuVisible)
@@ -96,8 +103,9 @@ public class InteractableLocation : BasicLocation
             GameFiber.Yield();
         }
     }
-    public override void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
+    public override void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
+        World = world;
         if (HasVendor)
         {
             if (InteractsWithVendor)
@@ -110,9 +118,13 @@ public class InteractableLocation : BasicLocation
             }
             GameFiber.Yield();
         }
-        base.Setup(interiors, settings, crimes, weapons, time);
+        World.Pedestrians.AddEntity(Merchant);
+        if (!World.Places.ActiveInteractableLocations.Contains(this))
+        {
+            World.Places.ActiveInteractableLocations.Add(this);
+        }
+        base.Activate(interiors, settings, crimes, weapons, time, World);
     }
-
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
         if (modItem != null)
@@ -146,13 +158,17 @@ public class InteractableLocation : BasicLocation
         }
     }
 
-    public override void Dispose()
+    public override void Deactivate()
     {
         if (Merchant != null && Merchant.Pedestrian.Exists())
         {
             Merchant.Pedestrian.Delete();
         }
-        base.Dispose();
+        if (World.Places.ActiveInteractableLocations.Contains(this))
+        {
+            World.Places.ActiveInteractableLocations.Remove(this);
+        }
+        base.Deactivate();
     }
     private void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)
     {

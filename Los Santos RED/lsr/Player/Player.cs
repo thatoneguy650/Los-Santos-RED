@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
@@ -118,7 +118,7 @@ namespace Mod
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
-            Inventory = new Inventory(this);
+            Inventory = new Inventory(this, Settings);
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
@@ -140,6 +140,7 @@ namespace Mod
             VehicleOwnership = new VehicleOwnership(this,World);
             BankAccounts = new BankAccounts(this, Settings);
             ActivityManager = new ActivityManager(this);
+            HealthManager = new HealthManager(this, Settings);
         }
 
         public Destinations Destinations { get; private set; }
@@ -171,7 +172,7 @@ namespace Mod
         public VehicleOwnership VehicleOwnership { get; private set; }
         public BankAccounts BankAccounts { get; private set; }
         public ActivityManager ActivityManager { get; private set; }
-
+        public HealthManager HealthManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -444,7 +445,7 @@ namespace Mod
             VehicleOwnership.Setup();
 
             BankAccounts.Setup();
-
+            HealthManager.Setup();
 
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -614,6 +615,7 @@ namespace Mod
             Destinations.Dispose();
             VehicleOwnership.Dispose();
             BankAccounts.Dispose();
+            HealthManager.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -647,32 +649,7 @@ namespace Mod
         }
 
         //Needed
-        public void ChangeHealth(int ToAdd)
-        {
-            if (ToAdd > 0)
-            {
-                if (Character.Health < Character.MaxHealth)
-                {
-                    if (Character.MaxHealth - Character.Health < ToAdd)
-                    {
-                        ToAdd = Character.MaxHealth - Character.Health;
-                    }
-                    Character.Health += ToAdd;
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}", 5);
-                }
-            }
-            else if (ToAdd < 0)
-            {
-                if (Character.Health > 0 && Character.Health + ToAdd >= 0)
-                {
-                    Character.Health += ToAdd;
-                }
-                else
-                {
-                    Character.Health = 0;
-                }
-            }
-        }
+
         public void ChangeName(string newName)
         {
             GameSave mySave = GameSaves.GetSave(this);
@@ -1469,23 +1446,29 @@ namespace Mod
         {
             if (toAdd.CanConsume)
             {
-                if (toAdd.ChangesHealth)
+                if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                 {
-                    ChangeHealth(toAdd.HealthChangeAmount);
+                    if (toAdd.ChangesHunger)
+                    {
+                        HumanState.Hunger.Change(toAdd.HungerChangeAmount, true);
+                    }
+                    if (toAdd.ChangesSleep)
+                    {
+                        HumanState.Sleep.Change(toAdd.SleepChangeAmount, true);
+                    }
+                    if (toAdd.ChangesThirst)
+                    {
+                        HumanState.Thirst.Change(toAdd.ThirstChangeAmount, true);
+                    }
+                }
+                else
+                {
+                    if (toAdd.ChangesHealth)
+                    {
+                        HealthManager.ChangeHealth(toAdd.HealthChangeAmount);
+                    }
                 }
 
-                if (toAdd.ChangesHunger)
-                {
-                    HumanState.Hunger.Change(toAdd.HungerChangeAmount, true);
-                }
-                if (toAdd.ChangesSleep)
-                {
-                    HumanState.Sleep.Change(toAdd.SleepChangeAmount, true);
-                }
-                if (toAdd.ChangesThirst)
-                {
-                    HumanState.Thirst.Change(toAdd.ThirstChangeAmount, true);
-                }
             }
         }
         public void ContinueCurrentActivity()
@@ -2572,6 +2555,7 @@ namespace Mod
             GameFiber.Yield();//TR Yield RemovedTest 1
             HumanState.Update();
             BankAccounts.Update();
+            HealthManager.Update();
         }
         private void UpdateLookedAtPed()
         {

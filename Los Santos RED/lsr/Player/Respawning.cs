@@ -223,7 +223,7 @@ public class Respawning// : IRespawning
             GameTimeLastUndied = Game.GameTime;
         }
     }
-    public void RespawnAtHospital(IRespawnableLocation respawnableLocation)
+    public void RespawnAtHospital(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnDeath)
@@ -252,7 +252,7 @@ public class Respawning// : IRespawning
         }
         GameTimeLastDischargedFromHospital = Game.GameTime;
     }
-    public void SurrenderToPolice(IRespawnableLocation respawnableLocation)
+    public void SurrenderToPolice(ILocationRespawnable respawnableLocation)
     {
         FadeOut();
         if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
@@ -265,7 +265,7 @@ public class Respawning// : IRespawning
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (respawnableLocation == null)
         {
-            List<IRespawnableLocation> PossibleLocations = new List<IRespawnableLocation>();
+            List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
             PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
             PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
             respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
@@ -473,7 +473,7 @@ public class Respawning// : IRespawning
         Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
         CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
     }
-    private void SetPlayerAtLocation(IRespawnableLocation ToSet)
+    private void SetPlayerAtLocation(ILocationRespawnable ToSet)
     {
         Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
         Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;

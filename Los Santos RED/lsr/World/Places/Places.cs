@@ -45,57 +45,15 @@ public class Places
         StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time);
     }
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
-    public List<BasicLocation> ActiveBasicLocations { get; private set; } = new List<BasicLocation>();
-
-    public List<BasicLocation> ActiveLocations => ActiveBasicLocations.Concat(ActiveInteractableLocations).ToList();
-
+    public List<BasicLocation> ActiveLocations { get; private set; } = new List<BasicLocation>();
+    //public List<BasicLocation> ActiveALLLocations => ActiveLocations.Concat(ActiveInteractableLocations).ToList();
     public DynamicPlaces DynamicPlaces { get; private set; }
     public StaticPlaces StaticPlaces { get; private set; }
     public void Setup()
     {
         foreach (Zone zone in Zones.ZoneList)
         {
-            zone.Gangs = new List<Gang>();
-            List<Gang> GangStuff = GangTerritories.GetGangs(zone.InternalGameName, 0);
-            if (GangStuff != null)
-            {
-                zone.Gangs.AddRange(GangStuff);
-            }
-            zone.Agencies = new List<Agency>();
-            List<Agency> LEAgency = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.LawEnforcement);
-            if (LEAgency != null)
-            {
-                zone.Agencies.AddRange(LEAgency);
-            }
-            List<Agency> EMSAgencies = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.EMS);
-            if (EMSAgencies != null)
-            {
-                zone.Agencies.AddRange(EMSAgencies);
-            }
-            List<Agency> FireAgencies = Jurisdictions.GetAgencies(zone.InternalGameName, 0, ResponseType.Fire);
-            if (FireAgencies != null)
-            {
-                zone.Agencies.AddRange(FireAgencies);
-            }
-            zone.AssignedLEAgencyInitials = Jurisdictions.GetMainAgency(zone.InternalGameName, ResponseType.LawEnforcement)?.ColorInitials;
-            Gang mainGang = GangTerritories.GetMainGang(zone.InternalGameName);
-            if (mainGang != null)
-            {
-                zone.AssignedGangInitials = mainGang.ColorInitials;
-            }
-            else
-            {
-                zone.AssignedGangInitials = "";
-            }
-            Agency secondaryAgency = Jurisdictions.GetNthAgency(zone.InternalGameName, ResponseType.LawEnforcement, 2);
-            if (secondaryAgency != null)
-            {
-                zone.AssignedSecondLEAgencyInitials = secondaryAgency.ColorInitials;
-            }
-            else
-            {
-                zone.AssignedSecondLEAgencyInitials = "";
-            }
+            zone.StoreData(GangTerritories, Jurisdictions);
             GameFiber.Yield();
         }
         StaticPlaces.Setup();
@@ -114,6 +72,6 @@ public class Places
     }
     public void UpdateLocations()
     {
-        StaticPlaces.UpdateLocations();
+        StaticPlaces.Update();
     }
 }

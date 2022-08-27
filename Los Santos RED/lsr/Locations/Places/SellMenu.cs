@@ -355,11 +355,11 @@ public class SellMenu : Menu
             {
                 description += $"~n~~b~{((float)menuItem.SalesPrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
             }
-            if (modItem.ChangesHealth)
+            if (modItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
             {
                 description += $"~n~{modItem.HealthChangeDescription}";
             }
-            if (modItem.ChangesNeeds)
+            if (modItem.ChangesNeeds && Settings.SettingsManager.NeedsSettings.ApplyNeeds)
             {
                 description += $"~n~{modItem.NeedChangeDescription}";
             }

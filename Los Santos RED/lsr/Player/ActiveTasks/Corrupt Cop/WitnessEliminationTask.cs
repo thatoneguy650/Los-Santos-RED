@@ -144,7 +144,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Pharmacies);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Restaurants);
                 PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.ScrapYards);
-                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Stadiums);
+                PossibleSpots.AddRange(PlacesOfInterest.PossibleLocations.Landmarks);
 
                 WitnessLocation = PossibleSpots.PickRandom();
             }

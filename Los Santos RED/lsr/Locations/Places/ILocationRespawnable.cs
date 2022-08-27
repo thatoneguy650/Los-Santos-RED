@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,12 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public interface IRespawnableLocation
+public interface ILocationRespawnable
 {
     string Name { get; }
     Vector3 EntrancePosition { get; }
     float EntranceHeading { get; }
     string FullStreetAddress { get; }
     bool IsEnabled { get; }
+    bool IsActivated { get; }
+
+    void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world);
 }
 

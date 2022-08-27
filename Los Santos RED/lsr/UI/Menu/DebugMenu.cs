@@ -153,7 +153,7 @@ public class DebugMenu : Menu
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Teleport Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
-        List<BasicLocation> DirectoryLocations = PlacesOfInterest.GetAllLocations().ToList();
+        List<BasicLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));
@@ -283,6 +283,16 @@ public class DebugMenu : Menu
             Player.HumanState.Reset();
             menu.Visible = false;
         };
+
+        UIMenuNumericScrollerItem<int> SetHealth = new UIMenuNumericScrollerItem<int>("Set Health", "Sets the player health",0,Player.Character.MaxHealth,1);
+        SetHealth.Value = Player.Character.MaxHealth;
+        SetHealth.Activated += (menu, item) =>
+        {
+            Player.HealthManager.SetHealth(SetHealth.Value);
+            menu.Visible = false;
+        };
+
+
         UIMenuListScrollerItem<RadioStation> AutoSetRadioStation = new UIMenuListScrollerItem<RadioStation>("Auto-Set Station", "Will auto set the station any time the radio is on", RadioStations.RadioStationList);
         AutoSetRadioStation.Activated += (menu, item) =>
         {
@@ -303,6 +313,7 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(GetRandomWeapon);
         PlayerStateItemsMenu.AddItem(GetRandomUpgradedWeapon);
         PlayerStateItemsMenu.AddItem(SetRandomNeeds);
+        PlayerStateItemsMenu.AddItem(SetHealth);
         PlayerStateItemsMenu.AddItem(ResetNeeds);
         PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
     }

@@ -30,9 +30,9 @@ public class ModTask
         TickToRun = _TickToRun;
         RunOrder = _RunOrder;
     }
-    public bool MissedInterval => Interval != 0 && Game.GameTime - GameTimeLastRan >= IntervalMissLength;
-    public bool RunningBehind => Interval != 0 && Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2);
-    public bool ShouldRun => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan > Interval;
+    //public bool MissedInterval => Interval != 0 && Game.GameTime - GameTimeLastRan >= IntervalMissLength;
+    //public bool RunningBehind => Interval != 0 && Game.GameTime - GameTimeLastRan >= (IntervalMissLength * 2);
+    public bool ShouldRun => GameTimeLastRan == 0 || Game.GameTime - GameTimeLastRan > Interval; //public bool ShouldRun => GameTimeLastRan == 0 || Environment.TickCount - GameTimeLastRan > Interval;//CHANING IT TO TICKCOUNT WILL MURDER PERFORMANCE. IS THE TICK COUNT TOO HIGH?
     public void Run()
     {
         TickToRun();

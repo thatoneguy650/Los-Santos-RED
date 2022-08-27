@@ -21,12 +21,6 @@ public class Gangs : IGangs
     public List<Gang> AllGangs => GangsList;
     public void ReadConfig()
     {
-#if DEBUG
-        UseVanillaConfig = true;
-#else
-            UseVanillaConfig = true;
-#endif
-
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
         FileInfo ConfigFile = LSRDirectory.GetFiles("Gangs*.xml").OrderByDescending(x => x.Name).FirstOrDefault();
         if (ConfigFile != null)

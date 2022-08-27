@@ -292,19 +292,19 @@ namespace LosSantosRED.lsr.Player
         }
         private void UpdateHealthGain()
         {
-            if (Game.GameTime - GameTimeLastGivenHealth >= 15000)
+            if (Game.GameTime - GameTimeLastGivenHealth >= 15000 && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
             {
-                if (ModItem.ChangesHealth)
+                if (ModItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                 {
                     if (ModItem.HealthChangeAmount > 0 && HealthGiven < ModItem.HealthChangeAmount)
                     {
                         HealthGiven++;
-                        Player.ChangeHealth(1);
+                        Player.HealthManager.ChangeHealth(1);
                     }
                     else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
                     {
                         HealthGiven--;
-                        Player.ChangeHealth(-1);
+                        Player.HealthManager.ChangeHealth(-1);
                     }
                 }
                 GameTimeLastGivenHealth = Game.GameTime;

@@ -32,7 +32,8 @@ public abstract class HumanNeed
 
     public bool IsAboveQuarter => CurrentValue >= MaxValue * 0.25f;
     public bool IsBelowQuarter => CurrentValue <= MaxValue * 0.25f;
-
+    public bool IsBelowThreeQuarters => CurrentValue <= MaxValue * 0.75f;
+    public bool IsAboveThreeQuarters => CurrentValue >= MaxValue * 0.75f;
     public bool IsAboveHalf => CurrentValue >= MaxValue * 0.5f;
     public bool IsBelowHalf => CurrentValue <= MaxValue * 0.5f;
     public bool IsNearMax => CurrentValue >= 0.9f * MaxValue;

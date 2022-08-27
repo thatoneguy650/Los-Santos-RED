@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class PoliceStation : BasicLocation, ILEDispatchable, IRespawnableLocation
+public class PoliceStation : BasicLocation, ILocationDispatchable, ILocationRespawnable, ILocationAgencyAssignable
 {
     public PoliceStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -29,6 +29,13 @@ public class PoliceStation : BasicLocation, ILEDispatchable, IRespawnableLocatio
     public Agency AssignedAgency { get; set; }
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
+    public void StoreData(IAgencies agencies)
+    {
+        if (AssignedAgencyID != null)
+        {
+            AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+        }
+    }
 
 }
 

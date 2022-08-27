@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public interface ILEDispatchable
+public interface ILocationDispatchable
 {
     List<ConditionalLocation> PossiblePedSpawns { get; }
     List<ConditionalLocation> PossibleVehicleSpawns { get; }

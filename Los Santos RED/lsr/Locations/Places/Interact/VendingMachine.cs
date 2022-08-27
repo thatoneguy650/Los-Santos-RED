@@ -121,7 +121,7 @@ public class VendingMachine : InteractableLocation
     }
     private void FullDispose()
     {
-        Dispose();
+        Deactivate();
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
     }

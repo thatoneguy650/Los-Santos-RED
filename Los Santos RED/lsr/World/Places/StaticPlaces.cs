@@ -41,124 +41,41 @@ public class StaticPlaces
     }
     public void Setup()
     {
-        foreach (BasicLocation basicLocation in PlacesOfInterest.GetAllLocations())
+        foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
         {
-            Zone placeZone = Zones.GetZone(basicLocation.EntrancePosition);
-            string betweener = "";
-            string zoneString = "";
-            if (placeZone != null)
-            {
-                if (placeZone.IsSpecificLocation)
-                {
-                    betweener = $"near";
-                }
-                else
-                {
-                    betweener = $"in";
-                }
-                zoneString = $"~p~{placeZone.DisplayName}~s~";
-            }
-            string streetName = Streets.GetStreetNames(basicLocation.EntrancePosition, false);
-            string StreetNumber = "";
-            if (streetName == "")
-            {
-                betweener = "";
-            }
-            else
-            {
-                StreetNumber = NativeHelper.CellToStreetNumber(basicLocation.CellX, basicLocation.CellY);
-            }
-            string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
-            string ShortLocationName = $"{StreetNumber} {streetName}".Trim();
-            basicLocation.FullStreetAddress = LocationName;
-            basicLocation.StreetAddress = ShortLocationName;
-            basicLocation.ZoneName = zoneString;
-            basicLocation.CellX = (int)(basicLocation.EntrancePosition.X / EntryPoint.CellSize);
-            basicLocation.CellY = (int)(basicLocation.EntrancePosition.Y / EntryPoint.CellSize);
+            basicLocation.StoreData(Zones, Streets);
         }
-        foreach (GangDen tl in PlacesOfInterest.PossibleLocations.GangDens)
+        foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
-            tl.Menu = ShopMenus.GetMenu(tl.MenuID);
-            tl.AssociatedGang = Gangs.GetGang(tl.GangID);
-            tl.ButtonPromptText = $"Enter {tl.AssociatedGang?.ShortName} {tl.AssociatedGang?.DenName}";
+            tl.StoreData(Gangs,ShopMenus);
         }
-        foreach (InteractableLocation tl in PlacesOfInterest.GetAllInteractableLocations())
+        foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.Menu = ShopMenus.GetMenu(tl.MenuID);
+            tl.StoreData(ShopMenus);
         }
-        foreach (ILEDispatchable ps in PlacesOfInterest.LEDispatchableLocations())
+        foreach (ILocationAgencyAssignable ps in PlacesOfInterest.AgencyAssignableLocations())
         {
-            if (ps.AssignedAgencyID != null)
-            {
-                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
-            }
-        }
-        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals)
-        {
-            if (ps.AssignedAgencyID != null)
-            {
-                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
-            }
-        }
-        foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations)
-        {
-            if (ps.AssignedAgencyID != null)
-            {
-                ps.AssignedAgency = Agencies.GetAgency(ps.AssignedAgencyID);
-            }
+            ps.StoreData(Agencies);
         }
     }
     public void ActivateLocations()
     {
         int LocationsCalculated = 0;
-        foreach (InteractableLocation gl in PlacesOfInterest.GetAllInteractableLocations())
+        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
         {
-            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
+            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)
             {
-                if (!Places.ActiveInteractableLocations.Contains(gl))
+                if (!gl.IsActivated)
                 {
-                    Places.ActiveInteractableLocations.Add(gl);
-                    gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
-                    World.Pedestrians.AddEntity(gl.Merchant);
-                    World.AddBlip(gl.Blip);
+                    gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                     GameFiber.Yield();
                 }
             }
             else
             {
-                if (Places.ActiveInteractableLocations.Contains(gl))
+                if(gl.IsActivated)
                 {
-                    Places.ActiveInteractableLocations.Remove(gl);
-                    gl.Dispose();
-                    GameFiber.Yield();
-                }
-            }
-            LocationsCalculated++;
-            if (LocationsCalculated >= 20)//50//20//5
-            {
-                LocationsCalculated = 0;
-                GameFiber.Yield();
-            }
-        }
-        LocationsCalculated = 0;
-        foreach (BasicLocation gl in PlacesOfInterest.GetAllBasicLocations())
-        {
-            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)// && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.CellX, gl.CellY, 4))// gl.DistanceToPlayer <= 200f)//gl.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character) <= 200f)
-            {
-                if (!Places.ActiveBasicLocations.Contains(gl))
-                {
-                    Places.ActiveBasicLocations.Add(gl);
-                    gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
-                    World.AddBlip(gl.Blip);
-                    GameFiber.Yield();
-                }
-            }
-            else
-            {
-                if (Places.ActiveBasicLocations.Contains(gl))
-                {
-                    Places.ActiveBasicLocations.Remove(gl);
-                    gl.Dispose();
+                    gl.Deactivate();
                     GameFiber.Yield();
                 }
             }
@@ -170,14 +87,9 @@ public class StaticPlaces
             }
         }
     }
-    public void UpdateLocations()
+    public void Update()
     {
-        foreach (InteractableLocation gl in Places.ActiveInteractableLocations.ToList())
-        {
-            gl.Update(Time);
-            GameFiber.Yield();
-        }
-        foreach (BasicLocation gl in Places.ActiveBasicLocations.ToList())
+        foreach (BasicLocation gl in Places.ActiveLocations.ToList())
         {
             gl.Update(Time);
             GameFiber.Yield();
@@ -185,49 +97,17 @@ public class StaticPlaces
     }
     public void Dispose()
     {
-        foreach (InteractableLocation loc in Places.ActiveInteractableLocations)
+        foreach (BasicLocation loc in Places.ActiveLocations.ToList())
         {
-            loc.Dispose();
-        }
-        foreach (BasicLocation loc in Places.ActiveBasicLocations)
-        {
-            loc.Dispose();
+            loc.Deactivate();
         }
     }
-    public void ActivateBasicLocation(BasicLocation gl)
+    public void ActivateLocation(ILocationRespawnable respawnableLocation)
     {
-        if (!Places.ActiveBasicLocations.Contains(gl))
+        if (!respawnableLocation.IsActivated)
         {
-            Places.ActiveBasicLocations.Add(gl);
-            gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
-            World.AddBlip(gl.Blip);
-            GameFiber.Yield();
-        }
-    }
-    public void ActivateInteractableLocation(InteractableLocation gl)
-    {
-        if (!Places.ActiveInteractableLocations.Contains(gl))
-        {
-            Places.ActiveInteractableLocations.Add(gl);
-            gl.Setup(Interiors, Settings, Crimes, Weapons, Time);
-            World.Pedestrians.AddEntity(gl.Merchant);
-            World.AddBlip(gl.Blip);
-            GameFiber.Yield();
-        }
-    }
-    public void ActivateLocation(IRespawnableLocation respawnableLocation)
-    {
-        BasicLocation basicToActivate = PlacesOfInterest.GetAllBasicLocations().Where(x => x.Name == respawnableLocation.Name && x.FullStreetAddress == respawnableLocation.FullStreetAddress).FirstOrDefault();
-        if(basicToActivate != null)
-        {
-            ActivateBasicLocation(basicToActivate);
-            return;
-        }
-        InteractableLocation interactableToActivate = PlacesOfInterest.GetAllInteractableLocations().Where(x => x.Name == respawnableLocation.Name && x.FullStreetAddress == respawnableLocation.FullStreetAddress).FirstOrDefault();
-        if (basicToActivate != null)
-        {
-            ActivateInteractableLocation(interactableToActivate);
-        }
+            respawnableLocation.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+        }   
     }
     public void SetGangLocationActive(string iD, bool v)
     {

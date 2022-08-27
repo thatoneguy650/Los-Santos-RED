@@ -42,9 +42,7 @@ public class DynamicPlaces
     public void Setup()
     {
         VendingMachinesModelNames = new List<string>() { "prop_vend_soda_01","prop_vend_soda_02","prop_vend_coffe_01","prop_vend_condom_01","prop_vend_fags_01","prop_vend_snak_01","prop_vend_water_01"};
-
         VendingMachinessModelHashes = new List<uint>() {0x3b21c5e7,0x426a547c,0x418f055a};
-
         GasPumpsModelNames = new List<string>()
         { "prop_gas_pump_1a", //ron pump
         "prop_gas_pump_1b",// globe oil
@@ -106,9 +104,7 @@ public class DynamicPlaces
                 ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
                 VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
                 newVend.CanInteractWhenWanted = true;
-                newVend.Setup(Interiors, Settings, Crimes, Weapons, Time);
-                World.AddBlip(newVend.Blip);
-                Places.ActiveInteractableLocations.Add(newVend);
+                newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                 ActiveVendingMachines.Add(newVend);
             }
         }
@@ -120,7 +116,7 @@ public class DynamicPlaces
         {
             if (!ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
             {
-                GasStation ClosestStation = (GasStation)Places.ActiveInteractableLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+                GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
                 GasPump newGasPump;
                 if (ClosestStation != null)
                 {
@@ -131,9 +127,7 @@ public class DynamicPlaces
                     newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { };
                 }
                 newGasPump.CanInteractWhenWanted = true;
-                newGasPump.Setup(Interiors, Settings, Crimes, Weapons, Time);
-                World.AddBlip(newGasPump.Blip);
-                Places.ActiveInteractableLocations.Add(newGasPump);
+                newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                 ActiveGasPumps.Add(newGasPump);
             }
         }
@@ -145,14 +139,13 @@ public class DynamicPlaces
             VendingMachine gl = ActiveVendingMachines[i];
             if (gl.DistanceToPlayer >= 100f)
             {
-                if (Places.ActiveInteractableLocations.Contains(gl))
+                if(gl.IsActivated)
                 {
-                    Places.ActiveInteractableLocations.Remove(gl);
-                }
-                if (ActiveVendingMachines.Contains(gl))
-                {
-                    ActiveVendingMachines.Remove(gl);
-                    gl.Dispose();
+                    gl.Deactivate();
+                    if (ActiveVendingMachines.Contains(gl))
+                    {
+                        ActiveVendingMachines.Remove(gl);
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -165,14 +158,13 @@ public class DynamicPlaces
             GasPump gl = ActiveGasPumps[i];
             if (gl.DistanceToPlayer >= 100f)
             {
-                if (Places.ActiveInteractableLocations.Contains(gl))
+                if(gl.IsActivated)
                 {
-                    Places.ActiveInteractableLocations.Remove(gl);
-                }
-                if (ActiveGasPumps.Contains(gl))
-                {
-                    ActiveGasPumps.Remove(gl);
-                    gl.Dispose();
+                    gl.Deactivate();
+                    if (ActiveGasPumps.Contains(gl))
+                    {
+                        ActiveGasPumps.Remove(gl);
+                    }
                     GameFiber.Yield();
                 }
             }

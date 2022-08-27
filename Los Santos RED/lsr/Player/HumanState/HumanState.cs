@@ -11,8 +11,6 @@ public class HumanState
 {
     public IHumanStateable Player;
     private List<HumanNeed> HumanNeeds = new List<HumanNeed>();
-
-
     private ITimeReportable Time;
     private ISettingsProvideable Settings;
     private bool isApplyingNeeds = false;
@@ -21,6 +19,7 @@ public class HumanState
     public ThirstNeed Thirst { get; private set; }
     public SleepNeed Sleep { get; private set; }
     public bool HasPressingNeeds { get; private set; }
+    public bool HasNeedsManaged { get; private set; }
     public HumanState(IHumanStateable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
@@ -34,6 +33,7 @@ public class HumanState
         Hunger = new HungerNeed("Hunger", 0, 100f, Player, Time, Settings);
         Sleep = new SleepNeed("Sleep", 0, 100f, Player, Time, Settings);
         HumanNeeds = new List<HumanNeed>() { Thirst, Hunger, Sleep };
+
     }
     public void Update()
     {
@@ -45,6 +45,7 @@ public class HumanState
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
             bool IsBelowQuarter = false;
+            bool IsBelowThreeQuarters = false;
             foreach (HumanNeed humanNeed in HumanNeeds)
             {
                 humanNeed.Update();
@@ -52,11 +53,17 @@ public class HumanState
                 {
                     IsBelowQuarter = true;
                 }
+                if(humanNeed.IsBelowThreeQuarters)
+                {
+                    IsBelowThreeQuarters = true;
+                }
             }
+            HasNeedsManaged = !IsBelowThreeQuarters;
             HasPressingNeeds = IsBelowQuarter;
         }
         else
         {
+            HasNeedsManaged = true;
             HasPressingNeeds = false;
         }
     }
@@ -77,10 +84,6 @@ public class HumanState
     public void Dispose()
     {
         Reset();
-    }
-    public void IncrementalConsume(ModItem modItem)
-    {
-
     }
     public string DisplayString()
     {

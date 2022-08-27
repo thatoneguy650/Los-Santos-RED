@@ -10,14 +10,19 @@ namespace LosSantosRED.lsr.Interface
     public interface IPlacesOfInterest
     {
         PossibleLocations PossibleLocations { get; }
-
-        //GameLocation GetClosestLocation(Vector3 position, LocationType grave);
-        //List<GameLocation> GetAllPlaces();
-        //List<GameLocation> GetLocations(LocationType hospital);
-        List<BasicLocation> GetAllBasicLocations();
-        List<InteractableLocation> GetAllInteractableLocations();
-        List<BasicLocation> GetAllLocations();
-        List<ILEDispatchable> LEDispatchableLocations();
-        List<IRespawnableLocation> BustedRespawnLocations();
+        List<BasicLocation> BasicLocations();
+        List<InteractableLocation> InteractableLocations();
+        List<BasicLocation> AllLocations();
+        List<ILocationDispatchable> PoliceDispatchLocations();
+        List<ILocationRespawnable> BustedRespawnLocations();
+        List<ILocationAgencyAssignable> AgencyAssignableLocations();
+        List<ILocationGangAssignable> GangAssignableLocations();
+        //List<BasicLocation> BasicLocations { get; }
+        //List<InteractableLocation> InteractableLocations { get; }
+        //List<BasicLocation> AllLocations { get; }
+        //List<ILocationDispatchable> PoliceDispatchLocations { get; }
+        //List<ILocationRespawnable> BustedRespawnLocations { get; }
+        //List<ILocationAgencyAssignable> AgencyAssignableLocations { get; }
+        //List<ILocationGangAssignable> GangAssignableLocations { get; }
     }
 }

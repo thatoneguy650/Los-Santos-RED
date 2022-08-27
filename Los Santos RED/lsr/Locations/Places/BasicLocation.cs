@@ -16,6 +16,7 @@ using System.Xml.Serialization;
 [Serializable()]
 public class BasicLocation
 {
+    private IEntityProvideable World;
     private Blip createdBlip;
     private Interior interior;
     private float distanceToPlayer = 999f;
@@ -66,6 +67,43 @@ public class BasicLocation
             }
         }
     }
+
+    public void StoreData(IZones zones, IStreets streets)
+    {
+        Zone placeZone = zones.GetZone(EntrancePosition);
+        string betweener = "";
+        string zoneString = "";
+        if (placeZone != null)
+        {
+            if (placeZone.IsSpecificLocation)
+            {
+                betweener = $"near";
+            }
+            else
+            {
+                betweener = $"in";
+            }
+            zoneString = $"~p~{placeZone.DisplayName}~s~";
+        }
+        string streetName = streets.GetStreetNames(EntrancePosition, false);
+        string StreetNumber = "";
+        if (streetName == "")
+        {
+            betweener = "";
+        }
+        else
+        {
+            StreetNumber = NativeHelper.CellToStreetNumber(CellX, CellY);
+        }
+        string LocationName = $"{StreetNumber} {streetName} {betweener} {zoneString}".Trim();
+        string ShortLocationName = $"{StreetNumber} {streetName}".Trim();
+        FullStreetAddress = LocationName;
+        StreetAddress = ShortLocationName;
+        ZoneName = zoneString;
+        CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
+        CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
+    }
+
     public bool HasBannerImage => BannerImagePath != "";
     [XmlIgnore]
     public Texture BannerImage { get; set; }
@@ -103,6 +141,10 @@ public class BasicLocation
     public virtual float MapIconAlpha { get; set; } = 1.0f;
 
     public virtual int SortOrder { get; set; } = 999;
+
+
+    [XmlIgnore]
+    public bool IsActivated { get; set; } = false;
 
     [XmlIgnore]
     public int CellX { get; set; }
@@ -166,8 +208,10 @@ public class BasicLocation
         }
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
     }
-    public virtual void Setup(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
+    public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
+        IsActivated = true;
+        World = world;
         if (HasInterior)
         {
             interior = interiors.GetInterior(InteriorID);
@@ -183,6 +227,11 @@ public class BasicLocation
         }
         SetNearby();
         Update(time);
+        if (!World.Places.ActiveLocations.Contains(this))
+        {
+            World.Places.ActiveLocations.Add(this);
+        }
+        world.AddBlip(Blip);
     }
     public void Update(ITimeReportable time)
     {
@@ -212,8 +261,9 @@ public class BasicLocation
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
-    public virtual void Dispose()
+    public virtual void Deactivate()
     {
+        IsActivated = false;
         if (createdBlip.Exists())
         {
             createdBlip.Delete();
@@ -221,6 +271,10 @@ public class BasicLocation
         if (interior != null)
         {
             interior.Unload();
+        }
+        if (World.Places.ActiveLocations.Contains(this))
+        {
+            World.Places.ActiveLocations.Remove(this);
         }
     }
     private Blip AddIconToMap(ITimeReportable time)

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -86,7 +87,50 @@ public class Zone
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
     public eLocationType Type { get; set; } = eLocationType.Rural;
 
-
+    public void StoreData(IGangTerritories gangTerritories, IJurisdictions jurisdictions)
+    {
+        Gangs = new List<Gang>();
+        List<Gang> GangStuff = gangTerritories.GetGangs(InternalGameName, 0);
+        if (GangStuff != null)
+        {
+            Gangs.AddRange(GangStuff);
+        }
+        Agencies = new List<Agency>();
+        List<Agency> LEAgency = jurisdictions.GetAgencies(InternalGameName, 0, ResponseType.LawEnforcement);
+        if (LEAgency != null)
+        {
+            Agencies.AddRange(LEAgency);
+        }
+        List<Agency> EMSAgencies = jurisdictions.GetAgencies(InternalGameName, 0, ResponseType.EMS);
+        if (EMSAgencies != null)
+        {
+            Agencies.AddRange(EMSAgencies);
+        }
+        List<Agency> FireAgencies = jurisdictions.GetAgencies(InternalGameName, 0, ResponseType.Fire);
+        if (FireAgencies != null)
+        {
+            Agencies.AddRange(FireAgencies);
+        }
+        AssignedLEAgencyInitials = jurisdictions.GetMainAgency(InternalGameName, ResponseType.LawEnforcement)?.ColorInitials;
+        Gang mainGang = gangTerritories.GetMainGang(InternalGameName);
+        if (mainGang != null)
+        {
+            AssignedGangInitials = mainGang.ColorInitials;
+        }
+        else
+        {
+            AssignedGangInitials = "";
+        }
+        Agency secondaryAgency = jurisdictions.GetNthAgency(InternalGameName, ResponseType.LawEnforcement, 2);
+        if (secondaryAgency != null)
+        {
+            AssignedSecondLEAgencyInitials = secondaryAgency.ColorInitials;
+        }
+        else
+        {
+            AssignedSecondLEAgencyInitials = "";
+        }
+    }
 
 
 

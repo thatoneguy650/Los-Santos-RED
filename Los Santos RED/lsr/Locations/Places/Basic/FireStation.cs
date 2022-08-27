@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class FireStation : BasicLocation
+public class FireStation : BasicLocation, ILocationAgencyAssignable
 {
     public FireStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -35,5 +36,12 @@ public class FireStation : BasicLocation
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
 
+    public void StoreData(IAgencies agencies)
+    {
+        if (AssignedAgencyID != null)
+        {
+            AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+        }
+    }
 }
 

@@ -59,7 +59,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (DeadDrop != null)
             {
-                DeadDrop.Dispose();
+                DeadDrop.Deactivate();
             }
         }
         public void Start(Gang ActiveGang)

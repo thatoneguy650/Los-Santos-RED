@@ -10,15 +10,16 @@ namespace LosSantosRED.lsr.Player
     [Serializable()]
     public class Inventory
     {
+        private ISettingsProvideable Settings;
         private List<InventoryItem> ItemsList = new List<InventoryItem>();
         public List<InventoryItem> Items => ItemsList;
         public Inventory()
         {
 
         }
-        public Inventory(IInventoryable player)
+        public Inventory(IInventoryable player, ISettingsProvideable settings)
         {
-
+            Settings = settings;
         }
         public bool UseTool(ToolTypes tool)
         {
@@ -40,7 +41,7 @@ namespace LosSantosRED.lsr.Player
                 InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
                 if (ExistingItem == null)
                 {
-                    ItemsList.Add(new InventoryItem(modItem) { RemainingPercent = remainingPercent });
+                    ItemsList.Add(new InventoryItem(modItem, Settings) { RemainingPercent = remainingPercent });
                 }
                 else
                 {

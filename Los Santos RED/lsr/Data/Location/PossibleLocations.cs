@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 
 public class PossibleLocations
@@ -30,7 +26,7 @@ public class PossibleLocations
     public List<HeadShop> HeadShops { get; private set; } = new List<HeadShop>();
     public List<HardwareStore> HardwareStores { get; private set; } = new List<HardwareStore>();
     public List<PawnShop> PawnShops { get; private set; } = new List<PawnShop>();
-    public List<Landmark> Stadiums { get; private set; } = new List<Landmark>();
+    public List<Landmark> Landmarks { get; private set; } = new List<Landmark>();
     public List<BeautyShop> BeautyShops { get; private set; } = new List<BeautyShop>();
     public List<Bank> Banks { get; private set; } = new List<Bank>();
     public List<ConvenienceStore> ConvenienceStores { get; private set; } = new List<ConvenienceStore>();

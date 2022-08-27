@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IIntoxicatable : IActivityPerformable
     {
+        HealthManager HealthManager { get; }
         Scenario ClosestScenario { get; }
         bool IsSitting { get; set; }
         Rage.Object AttachedProp { get; set; }
@@ -20,6 +21,5 @@ namespace LosSantosRED.lsr.Interface
         string Gender { get; }
 
         void PauseCurrentActivity();
-        void ChangeHealth(int healthGained);
     }
 }

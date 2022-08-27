@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,22 +8,24 @@ using System.Threading.Tasks;
 [Serializable()]
 public class InventoryItem
 {
-    public InventoryItem(ModItem modItem)
+    private ISettingsProvideable Settings;
+    public InventoryItem(ModItem modItem, ISettingsProvideable settings)
     {
         ModItem = modItem;
+        Settings = settings;
     }
-    public InventoryItem(ModItem modItem, int amount)
-    {
-        ModItem = modItem;
-        RemainingPercent = amount;
-    }
+    //public InventoryItem(ModItem modItem, int amount)
+    //{
+    //    ModItem = modItem;
+    //    RemainingPercent = amount;
+    //}
     public InventoryItem()
     {
 
     }
     public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{ModItem.ItemType}~s~" + (ModItem.ItemSubType != ItemSubType.None ? $" - ~p~{ModItem.ItemSubType}~s~" : "") 
-                                                    + (ModItem.ChangesHealth ? $"~n~{ModItem.HealthChangeDescription}" : "")
-                                                    + (ModItem.ChangesNeeds ? $"~n~{ModItem.NeedChangeDescription}" : "")
+                                                    + (Settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ModItem.ChangesNeeds ? $"~n~{ModItem.NeedChangeDescription}" : "") : (ModItem.ChangesHealth ? $"~n~{ModItem.HealthChangeDescription}" : ""))
+                                                    
                                                     + $"~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent,0)}%~s~)" : "") 
                                                     + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "") 
                                                     + (ModItem.RequiresTool? $"~n~Requires: ~r~{ModItem.RequiredToolType}" : "");
