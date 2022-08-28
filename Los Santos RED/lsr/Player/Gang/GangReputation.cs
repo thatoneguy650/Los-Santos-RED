@@ -6,17 +6,13 @@ using System;
 [Serializable]
 public class GangReputation
 {
-
     private GangRespect PreviousGangRelationship = GangRespect.Neutral;
-
-
-
-
     private int reputationLevel = 200;
     public int DefaultRepAmount = 200;
     public int RepMaximum = 2000;
     public int RepMinimum = -2000;
-
+    private uint GameTimeLastAddedAmbientRep;
+    private uint GameTimeLastAttacked;
     public int NeutralRepLevel = 0;
     public int FriendlyRepLevel = 500;
 
@@ -184,8 +180,10 @@ public class GangReputation
             GameTimeLastAddedAmbientRep = Game.GameTime;
         }
     }
-    public uint GameTimeLastAddedAmbientRep { get; set; }
-    public uint GameTimeLastAttacked { get; set; }
+    public void SetAttacked()
+    {
+        GameTimeLastAttacked = Game.GameTime;
+    }
     private void OnReputationChanged(bool sendText)
     {
         if(PreviousGangRelationship != GangRelationship)

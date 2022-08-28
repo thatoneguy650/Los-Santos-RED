@@ -51,6 +51,7 @@ public class PedVariation
     public int PrimaryHairColor { get; set; } = -1;
     public int SecondaryHairColor { get; set; } = -1;
     public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
+    public int EyeColor { get; set; } = -1;
     public void ApplyToPed(Ped ped)
     {
         try

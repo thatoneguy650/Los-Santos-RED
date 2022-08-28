@@ -181,8 +181,8 @@ public class LESpawnTask : SpawnTask
                 {
                     return null;
                 }
-                PedExt Person = SetupAgencyPed(createdPed); 
-                SetPedVariation(createdPed, Agency.PossibleHeads);
+                PedExt Person = SetupAgencyPed(createdPed);
+                PersonType.SetPedVariation(createdPed, Agency.PossibleHeads);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;

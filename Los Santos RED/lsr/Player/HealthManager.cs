@@ -16,6 +16,8 @@ public class HealthManager
     private uint GameTimeLastDrainedHealth;
 
     private bool IsTimeToUpdate => Game.GameTime - GameTimeLastCheckedRegen >= 1000;
+    public bool RecentlyRegenedHealth => GameTimeLastRegenedHealth != 0 && Game.GameTime - GameTimeLastRegenedHealth <= 5000;
+    public bool RecentlyDrainedHealth => GameTimeLastDrainedHealth != 0 && Game.GameTime - GameTimeLastDrainedHealth <= 5000;
     public HealthManager(IHealthManageable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -33,9 +35,12 @@ public class HealthManager
             {
                 if (Game.GameTime - GameTimeLastRegenedHealth >= Settings.SettingsManager.NeedsSettings.HealthRegenInterval)
                 {
-                    ChangeHealth(Math.Abs(Settings.SettingsManager.NeedsSettings.HealthRegenAmount));
-                    EntryPoint.WriteToConsole($"Health Manager Added Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
-                    GameTimeLastRegenedHealth = Game.GameTime;
+                    if (Player.Character.Health < Player.Character.MaxHealth)
+                    {
+                        ChangeHealth(Math.Abs(Settings.SettingsManager.NeedsSettings.HealthRegenAmount));
+                        EntryPoint.WriteToConsole($"Health Manager Added Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
+                        GameTimeLastRegenedHealth = Game.GameTime;
+                    }
                 }
             }
             if (Settings.SettingsManager.NeedsSettings.AllowHealthDrain && Player.HumanState.HasPressingNeeds)
@@ -46,8 +51,8 @@ public class HealthManager
                     {
                         ChangeHealth(-1 * Math.Abs(Settings.SettingsManager.NeedsSettings.HealthDrainAmount));
                         EntryPoint.WriteToConsole($"Health Manager Drained Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
+                        GameTimeLastDrainedHealth = Game.GameTime;
                     }
-                    GameTimeLastDrainedHealth = Game.GameTime;
                 }
             }
             GameTimeLastCheckedRegen = Game.GameTime;
@@ -101,7 +106,7 @@ public class HealthManager
             }
             else
             {
-            Player.Character.Health = value;
+                Player.Character.Health = value;
             }
             
         }

@@ -113,6 +113,10 @@ public class Gang
     public List<string> EnemyGangs = new List<string>();
     public bool IsFedUpWithPlayer { get; set; } = false;
 
+    public int MemberKickUpDays { get; set; } = 7;
+    public int MemberKickUpAmount { get; set; } = 2000;
+    public int MemberKickUpMissLimit { get; set; } = 3;
+
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     public string HeadDataGroupID { get; set; }

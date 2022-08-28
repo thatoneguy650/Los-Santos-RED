@@ -435,6 +435,19 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
         TimeItems.AddItem(SetDateYear);
+
+
+
+        UIMenuNumericScrollerItem<int> AdvanceHours = new UIMenuNumericScrollerItem<int>("Advance Hours", "Moves the game time forwards by the set hours", 1, 48, 1);
+        AdvanceHours.Activated += (menu, item) =>
+        {
+            Time.SetDateTime(Time.CurrentDateTime.AddHours(AdvanceHours.Value));
+            Game.DisplayHelp($"Date Set to {Time.CurrentDateTime.AddHours(AdvanceHours.Value)}");
+            menu.Visible = false;
+        };
+        TimeItems.AddItem(AdvanceHours);
+
+
     }
     private void CreateGangItemsMenu()
     {

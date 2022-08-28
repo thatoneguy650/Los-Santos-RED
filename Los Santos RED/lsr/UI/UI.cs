@@ -94,7 +94,9 @@ public class UI : IMenuProvideable
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
     public bool IsDisplayingMenu => MenuPool.IsAnyMenuOpen();
-    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, IActivityPerformable activityPerformable)
+    public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, 
+        IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, 
+        IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, IActivityPerformable activityPerformable)
     {
         DisplayablePlayer = displayablePlayer;
         ActionablePlayer = actionablePlayer;
@@ -108,7 +110,7 @@ public class UI : IMenuProvideable
         TimerBarPool = new TimerBarPool();
         DeathMenu = new DeathMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, player, gameSaves);
         BustedMenu = new BustedMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
-        MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable);
+        MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable,agencies);
         DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems);
         MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         StreetFader = new Fader(Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.StreetDisplayTimeToFade, "StreetFader");
@@ -433,7 +435,7 @@ public class UI : IMenuProvideable
         bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.TopDisplayShowWeapon && (IsVanillaWeaponHUDVisible || IsDrawingWheelMenu) && DisplayablePlayer.WeaponEquipment.CurrentWeapon != null && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
-        bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
+        bool willShowNeeds = (IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
 
 
         float WeaponPosition = 0.0f;
@@ -499,13 +501,21 @@ public class UI : IMenuProvideable
         if (willShowNeeds)
         {
             string NeedsString = "";
-            if(IsDrawingWheelMenu || DisplayablePlayer.IsSleeping)
+            if(IsDrawingWheelMenu || DisplayablePlayer.IsSleeping || DisplayablePlayer.HealthManager.RecentlyDrainedHealth)
             {
                 NeedsString = DisplayablePlayer.HumanState.DisplayString();
             }
             else
             {
                 NeedsString = DisplayablePlayer.HumanState.RecentlyChangedString();
+            }
+            if (DisplayablePlayer.HealthManager.RecentlyDrainedHealth)
+            {
+                NeedsString += " ~r~-HP~s~";
+            }
+            else if (DisplayablePlayer.HealthManager.RecentlyRegenedHealth)
+            {
+                NeedsString += " ~g~+HP~s~";
             }
             DisplayTextOnScreen(NeedsString, NeedsPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
         }

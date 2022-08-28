@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
@@ -122,7 +122,7 @@ namespace Mod
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            GangRelationships = new GangRelationships(gangs, this, Settings, PlacesOfInterest);
+            GangRelationships = new GangRelationships(gangs, this, Settings, PlacesOfInterest, TimeControllable);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
@@ -141,6 +141,7 @@ namespace Mod
             BankAccounts = new BankAccounts(this, Settings);
             ActivityManager = new ActivityManager(this);
             HealthManager = new HealthManager(this, Settings);
+            GroupManager = new GroupManager(this, Settings, World, gangs);
         }
 
         public Destinations Destinations { get; private set; }
@@ -173,6 +174,7 @@ namespace Mod
         public BankAccounts BankAccounts { get; private set; }
         public ActivityManager ActivityManager { get; private set; }
         public HealthManager HealthManager { get; private set; }
+        public GroupManager GroupManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -191,12 +193,12 @@ namespace Mod
         public bool CanExitCurrentInterior { get; set; } = false;
         public bool CanGrabLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanTakeHostage && !CurrentLookedAtPed.IsInVehicle && !CurrentLookedAtPed.IsUnconscious && !CurrentLookedAtPed.IsDead && CurrentLookedAtPed.DistanceToPlayer <= 3.0f && CurrentLookedAtPed.Pedestrian.Exists() && CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Character) && !Character.IsThisPedInFrontOf(CurrentLookedAtPed.Pedestrian);
         public bool CanHoldUpTargettedPed => CurrentTargetedPed != null && !IsCop && CurrentTargetedPed.CanBeMugged && !IsGettingIntoAVehicle && !IsBreakingIntoCar && !IsStunned && !IsRagdoll && IsVisiblyArmed && IsAliveAndFree && CurrentTargetedPed.DistanceToPlayer <= 15f;
-        public bool CanLoot => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing && !IsDancing;
+        public bool CanLoot => !IsCop && !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsConversing && !IsDancing;
         public bool CanLootLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanLoot && !CurrentLookedAtPed.HasBeenLooted && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
         public bool CanDrag => !IsInVehicle && !IsIncapacitated && !IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsDancing;
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
-        public bool CanTakeHostage => !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && WeaponEquipment.CurrentWeapon != null && WeaponEquipment.CurrentWeapon.CanPistolSuicide;
+        public bool CanTakeHostage => !IsCop && !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && WeaponEquipment.CurrentWeapon != null && WeaponEquipment.CurrentWeapon.CanPistolSuicide;
         public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
         public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
         public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -446,6 +448,7 @@ namespace Mod
 
             BankAccounts.Setup();
             HealthManager.Setup();
+            GroupManager.Setup();
 
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -499,7 +502,25 @@ namespace Mod
         }
         public void Update()
         {
-            UpdateData();
+            UpdateVehicleData();
+            GameFiber.Yield();
+            UpdateWeaponData();
+            GameFiber.Yield();
+            UpdateStateData();
+            GameFiber.Yield();
+            bool IntoxicationIsPrimary = false;
+            if (Intoxication.CurrentIntensity > Injuries.CurrentIntensity)
+            {
+                IntoxicationIsPrimary = true;
+            }
+            Intoxication.Update(IntoxicationIsPrimary);
+            GameFiber.Yield();//TR Yield RemovedTest 1
+            Injuries.Update(!IntoxicationIsPrimary);
+            GameFiber.Yield();//TR Yield RemovedTest 1
+            HumanState.Update();
+            BankAccounts.Update();
+            HealthManager.Update();
+            GroupManager.Update();
             ButtonPrompts.Update();
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds)
@@ -616,6 +637,7 @@ namespace Mod
             VehicleOwnership.Dispose();
             BankAccounts.Dispose();
             HealthManager.Dispose();
+            GroupManager.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -649,7 +671,6 @@ namespace Mod
         }
 
         //Needed
-
         public void ChangeName(string newName)
         {
             GameSave mySave = GameSaves.GetSave(this);
@@ -1236,11 +1257,6 @@ namespace Mod
             EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
-
-
-
-     
-
         //Crimes
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
@@ -2536,27 +2552,6 @@ namespace Mod
                 CurrentVehicle.Update(this);
             }
         }
-        private void UpdateData()
-        {
-            UpdateVehicleData();
-            GameFiber.Yield();
-            UpdateWeaponData();
-            GameFiber.Yield();
-            UpdateStateData();
-            GameFiber.Yield();
-            bool IntoxicationIsPrimary = false;
-            if (Intoxication.CurrentIntensity > Injuries.CurrentIntensity)
-            {
-                IntoxicationIsPrimary = true;
-            }
-            Intoxication.Update(IntoxicationIsPrimary);
-            GameFiber.Yield();//TR Yield RemovedTest 1
-            Injuries.Update(!IntoxicationIsPrimary);
-            GameFiber.Yield();//TR Yield RemovedTest 1
-            HumanState.Update();
-            BankAccounts.Update();
-            HealthManager.Update();
-        }
         private void UpdateLookedAtPed()
         {
             if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)//750)//750
@@ -2635,6 +2630,5 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
-
     }
 }

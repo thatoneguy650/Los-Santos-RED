@@ -13,18 +13,22 @@ public class GangRelationships
     private IGangRelateable Player;
     private ISettingsProvideable Settings;
     private IPlacesOfInterest PlacesOfInterest;
+    private ITimeReportable Time;
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
     public Gang CurrentGang { get; private set; }
-    public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
+    public GangKickUp CurrentGangKickUp { get; private set; }
+    public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, ITimeReportable time)
     {
         Gangs = gangs;
         Player = player;
         Settings = settings;
         PlacesOfInterest = placesOfInterest;
+        Time = time;
     }
     public void Dispose()
     {
         Reset();
+        CurrentGangKickUp?.Dispose();
     }
     public void Setup()
     {
@@ -57,6 +61,7 @@ public class GangRelationships
                 }
             }
         }
+        CurrentGangKickUp?.Update();
     }
     public void ChangeReputation(Gang gang, int amount, bool sendNotification)
     {
@@ -89,8 +94,8 @@ public class GangRelationships
             gr = new GangReputation(gang, Player);
             GangReputations.Add(gr);
         }
-        gr.GameTimeLastAttacked = Game.GameTime;
-        EntryPoint.WriteToConsole($"GangRelationships AddAttacked {gang.FullName} GameTimeLastAttacked {gr.GameTimeLastAttacked} RecentlyAttacked {gr.RecentlyAttacked} current {gr.ReputationLevel}", 5);
+        gr.SetAttacked(); 
+        EntryPoint.WriteToConsole($"GangRelationships AddAttacked {gang.FullName} {gr.RecentlyAttacked} RecentlyAttacked {gr.RecentlyAttacked} current {gr.ReputationLevel}", 5);
     }
     public void SetReputation(Gang gang, int value, bool sendNotification)
     {
@@ -139,7 +144,7 @@ public class GangRelationships
         }
         gr.PlayerDebt = Math.Abs(amount);
     }
-    public void SetStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy)
+    public void SetRepStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy)
     {
         if (gang == null)
         {
@@ -160,6 +165,11 @@ public class GangRelationships
         gr.PlayerDebt = playerDebt;
         gr.IsMember = isMember;
         gr.IsEnemy = isEnemy;
+    }
+    public void SetKickStatus(Gang gang, DateTime kickDueDate, int kickMissedPeriods, int kickMissedAmount)
+    {
+        CurrentGangKickUp = new GangKickUp(Player, gang, Time);
+        CurrentGangKickUp.Restart(kickDueDate, kickMissedPeriods, kickMissedAmount);
     }
     public void Reset()
     {
@@ -308,6 +318,8 @@ public class GangRelationships
         if (gang != null)
         {
             CurrentGang = gang;
+            CurrentGangKickUp = new GangKickUp(Player, CurrentGang, Time);
+            CurrentGangKickUp.Start(true);
             foreach (GangReputation rg in GangReputations)
             {
                 if (rg.Gang?.ID == gang.ID)
@@ -326,13 +338,11 @@ public class GangRelationships
                     rg.Reset(false);
                     rg.IsEnemy = true;
                     rg.SetReputation(rg.RepMinimum, false);
-                    
                 }
                 else
                 {
                     rg.IsEnemy = false;
                 }
-
             }
             if (showNotification)
             {
@@ -344,6 +354,8 @@ public class GangRelationships
     {
         if (CurrentGang != null)
         {
+            CurrentGangKickUp.Dispose();
+            CurrentGangKickUp = null;
             foreach (GangReputation rg in GangReputations)
             {
                 if (rg.Gang?.ID == CurrentGang.ID)

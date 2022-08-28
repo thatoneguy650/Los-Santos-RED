@@ -101,19 +101,32 @@ public class VehicleVariation
             {
                 NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, vehicleMod.ID, vehicleMod.Output);
             }
-            int customWheelID = 23;
-            if (vehicleExt.Vehicle.IsBike)
-            {
-                customWheelID = 24;
-            }
-            if (HasCustomWheels)
-            {
-                NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, true);
-            }
-            else
-            {
-                NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, false);
-            }
+
+
+
+
+
+
+
+            //int customWheelID = 23;
+            //if (vehicleExt.Vehicle.IsBike)
+            //{
+            //    customWheelID = 24;
+            //}
+            //if (HasCustomWheels)
+            //{
+            //    NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, true);
+            //}
+            //else
+            //{
+            //    NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, false);
+            //}
+
+
+
+
+
+
 
             if (Livery != -1)
             {

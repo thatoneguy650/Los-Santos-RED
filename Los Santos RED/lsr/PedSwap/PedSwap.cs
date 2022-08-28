@@ -153,7 +153,7 @@ public class PedSwap : IPedSwap
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
 
-            GiveHistory();
+            GiveHistory(false);
         }
         catch (Exception e3)
         {
@@ -182,7 +182,7 @@ public class PedSwap : IPedSwap
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
 
-            GiveHistory();
+            GiveHistory(false);
             Player.DisplayPlayerNotification();
         }
         catch (Exception e3)
@@ -243,13 +243,87 @@ public class PedSwap : IPedSwap
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
 
-            GiveHistory();
+            GiveHistory(false);
         }
         catch (Exception e3)
         {
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
+
+
+    public void BecomeCop(Agency agency)
+    {
+        try
+        {
+            if (agency != null)
+            {
+                DispatchablePerson toBecome = agency.Personnel.PickRandom();
+                if (toBecome != null)
+                {
+                    Game.FadeScreenOut(500, true);
+                    ResetOffsetForCurrentModel();
+                    Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+                    EntryPoint.SpawnedEntities.Add(TargetPed);
+                    GameFiber.Yield();
+                    if (!TargetPed.Exists())
+                    {
+                        Game.FadeScreenIn(0);
+                        return;
+                    }
+                    TargetPed.RandomizeVariation();
+                    StoreTargetPedData(TargetPed);
+                    NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+                    Player.IsCop = false;
+                    HandlePreviousPed(false, TargetPed);
+                    PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+
+                    if (toBecome != null)
+                    {
+                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads);
+                    }
+
+
+                    // Player.GangRelationships.SetGang(agency, false);
+                    Player.IsCop = true;
+
+
+
+
+                    IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons),agency.GetRandomWeapon(false, Weapons));
+                    if (RandomItems.RandomPercent(100f))
+                    {
+                        SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
+                        vehicleSpawn.GetClosestStreet();
+                        if (vehicleSpawn.HasSpawns)
+                        {
+                            SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, World);
+                            carSpawn.AllowAnySpawn = true;
+                            carSpawn.AttemptSpawn();
+                            carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                            VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
+                            if (createdVehicle != null && createdVehicle.Vehicle.Exists())
+                            {
+                                Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                                Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
+                            }
+                        }
+                    }
+
+
+
+                    GameFiber.Sleep(500);
+                    Game.FadeScreenIn(500, true);
+                    GiveHistory(true);
+                }
+            }
+        }
+        catch (Exception e3)
+        {
+            EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
+        }
+    }
+
     public void BecomeGangMember(Gang gang)
     {
         try
@@ -275,6 +349,11 @@ public class PedSwap : IPedSwap
                     Player.IsCop = false;
                     HandlePreviousPed(false, TargetPed);
                     PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+
+                    if (toBecome != null)
+                    {
+                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads);
+                    }
 
 
                     Player.GangRelationships.SetGang(gang, false);
@@ -302,7 +381,7 @@ public class PedSwap : IPedSwap
 
                     GameFiber.Sleep(500);
                     Game.FadeScreenIn(500, true);
-                    GiveHistory();
+                    GiveHistory(false);
                 }
             }
         }
@@ -501,9 +580,9 @@ public class PedSwap : IPedSwap
             return PedToReturn;
         }
     }
-    private void GiveHistory()
+    private void GiveHistory(bool legalOnly)
     {
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomWeapon))
+        if (!legalOnly && RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomWeapon))
         {
             WeaponInformation myGun = Weapons.GetRandomRegularWeapon();
             if (myGun != null)
@@ -511,7 +590,7 @@ public class PedSwap : IPedSwap
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, false);
             }
         }
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
+        if (!legalOnly && RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory))
         {
             Player.CriminalHistory.AddCrime(Crimes.CrimeList.PickRandom());
         }
@@ -526,12 +605,12 @@ public class PedSwap : IPedSwap
                 }
             }
         }
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetDriversLicense))
+        if (legalOnly || RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetDriversLicense))
         {
             Player.Licenses.DriversLicense = new DriversLicense();
             Player.Licenses.DriversLicense.IssueLicense(Time, 12);
         }
-        if (RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCCWLicense))
+        if (legalOnly || RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetCCWLicense))
         {
             Player.Licenses.CCWLicense = new CCWLicense();
             Player.Licenses.CCWLicense.IssueLicense(Time, 12);

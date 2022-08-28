@@ -23,12 +23,10 @@ namespace LosSantosRED.lsr.Helper
             }
 
         }
-
         internal static uint CashHash(object p)
         {
             throw new NotImplementedException();
         }
-
         public static void StartScript(string scriptName, int buffer)
         {
             NativeFunction.Natives.REQUEST_SCRIPT(scriptName);
@@ -42,9 +40,6 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.START_NEW_SCRIPT(scriptName, buffer);
             NativeFunction.Natives.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
         }
-
-
-
         public static string FormatControls(Keys modifier, Keys key)
         {
             string KeyString = $"~o~{KeyHandyName(key)}~s~";
@@ -204,7 +199,6 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_THEFEED_POST("STRING");
             NativeFunction.Natives.END_TEXT_COMMAND_THEFEED_POST_MESSAGETEXT(textureDictionaryName, textureName, flash, (int)iconID, title, subtitle);
         }
-
         public static string GetSimpleCompassHeading(float Heading)
         {
             //float Heading = Game.LocalPlayer.Character.Heading;
@@ -318,18 +312,42 @@ namespace LosSantosRED.lsr.Helper
                     myPedVariation.Props.Add(new PedPropComponent(PropNumber, NativeFunction.Natives.GET_PED_PROP_INDEX<int>(myPed, PropNumber), NativeFunction.Natives.GET_PED_PROP_TEXTURE_INDEX<int>(myPed, PropNumber)));
                 }
 
-                    try
+                try
+                {
+                    NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
+                    if (structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
                     {
-                        NativeFunction.Natives.GET_PED_HEAD_BLEND_DATA(myPed, out HeadBlendDataStruct structout);
-                        if (structout.shapeMix != 0.0f || structout.skinMix != 0.0f || structout.thirdMix != 0.0f || structout.shapeFirstID != 0 || structout.shapeSecondID != 0 || structout.shapeThirdID != 0)//has some mix?
-                        {
-                            myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
-                        }
+                        myPedVariation.HeadBlendData = new HeadBlendData(structout.shapeFirstID, structout.shapeSecondID, structout.shapeThirdID, structout.skinFirstID, structout.skinSecondID, structout.skinThirdID, structout.shapeMix, structout.skinMix, structout.thirdMix);
                     }
-                    catch (Exception e)//started throwing an error after a gta update
-                    {
-                        //EntryPoint.WriteToConsole($"GetPedVariation GET_PED_HEAD_BLEND_DATA Error: {e.Message} {e.StackTrace}", 5);
-                    }
+
+                List<HeadOverlayData> HeadOverlays = new List<HeadOverlayData>() {
+                    new HeadOverlayData(0, "Blemishes") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(1, "Facial Hair") { ColorType = 1, Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(2, "Eyebrows") { ColorType = 1, Index = 3, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(3, "Ageing") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(4, "Makeup") { Index = 12, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(5, "Blush") { ColorType = 2, Index = 3, Opacity = 0.4f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(6, "Complexion") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(7, "Sun Damage") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = 2, Opacity = 0.6f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(9, "Moles/Freckles") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(10, "Chest Hair") { ColorType = 1, Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(11, "Body Blemishes") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+                    new HeadOverlayData(12, "Add Body Blemishes") { Index = 255, Opacity = 1.0f, PrimaryColor = 0, SecondaryColor = 0 },
+
+                };
+                    myPedVariation.HeadOverlays = new List<HeadOverlayData>();
+                foreach(HeadOverlayData headOverlayData in HeadOverlays)
+                {
+                    int index = NativeFunction.Natives.xA60EF3B6461A4D43<int>(myPed, headOverlayData.OverlayID);
+
+                        myPedVariation.HeadOverlays.Add(new HeadOverlayData(headOverlayData.OverlayID, headOverlayData.Part) { Index = index });
+                }
+                }
+                catch (Exception e)//started throwing an error after a gta update
+                {
+                    //EntryPoint.WriteToConsole($"GetPedVariation GET_PED_HEAD_BLEND_DATA Error: {e.Message} {e.StackTrace}", 5);
+                }
                 
                 return myPedVariation;
             }
@@ -339,9 +357,6 @@ namespace LosSantosRED.lsr.Helper
                 return null;
             }
         }
-
-
-
 
         public static VehicleVariation GetVehicleVariation(Vehicle vehicle)
         {
@@ -440,7 +455,7 @@ namespace LosSantosRED.lsr.Helper
                 }
                 vehicleVariation.HasCustomWheels = NativeFunction.Natives.GET_VEHICLE_MOD_VARIATION<bool>(vehicle, customWheelID);
                 vehicleVariation.VehicleExtras = new List<VehicleExtra>();
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i <= 15; i++)
                 {
                     if (!NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(vehicle, i))
                     {
@@ -453,7 +468,7 @@ namespace LosSantosRED.lsr.Helper
                 }
                 vehicleVariation.VehicleToggles = new List<VehicleToggle>();
                 vehicleVariation.VehicleMods = new List<VehicleMod>();
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i <= 50; i++)
                 {
                     if (i >= 17 && i <= 22)
                     {
@@ -463,10 +478,10 @@ namespace LosSantosRED.lsr.Helper
                     else
                     {
                         int vehicleMod = NativeFunction.Natives.GET_VEHICLE_MOD<int>(vehicle, i);
-                        if(vehicleMod != -1)
-                        {
+                        //if(vehicleMod != -1)
+                        //{
                             vehicleVariation.VehicleMods.Add(new VehicleMod(i, vehicleMod));
-                        }
+                        //}
                     }
                 }
                 return vehicleVariation;

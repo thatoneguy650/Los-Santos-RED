@@ -135,6 +135,7 @@
     <Compile Include="lsr\Data\Peds\HeadDataGroup.cs" />
     <Compile Include="lsr\Data\Peds\Heads.cs" />
     <Compile Include="lsr\Data\Peds\Speeches.cs" />
+    <Compile Include="lsr\Data\Saves\GangKickSave.cs" />
     <Compile Include="lsr\Data\Saves\GangRepSave.cs" />
     <Compile Include="lsr\Data\Saves\InventorySave.cs" />
     <Compile Include="lsr\Data\Saves\SavedContact.cs" />
@@ -265,6 +266,8 @@
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\PhoneText.cs" />
     <Compile Include="lsr\Player\Destinations.cs" />
+    <Compile Include="lsr\Player\Gang\GangKickUp.cs" />
+    <Compile Include="lsr\Player\GroupManager\GroupManager.cs" />
     <Compile Include="lsr\Player\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\HealthManager.cs" />
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />
@@ -284,6 +287,7 @@
     <Compile Include="lsr\Player\Interface\IButtonPromptable.cs" />
     <Compile Include="lsr\Player\Interface\IContactInteractable.cs" />
     <Compile Include="lsr\Player\Interface\IDestinateable.cs" />
+    <Compile Include="lsr\Player\Interface\IGroupManageable.cs" />
     <Compile Include="lsr\Player\Interface\IGunDealerRelateable.cs" />
     <Compile Include="lsr\Player\Interface\IHealthManageable.cs" />
     <Compile Include="lsr\Player\Interface\IHumanStateable.cs" />

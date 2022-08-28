@@ -57,6 +57,8 @@ namespace LosSantosRED.lsr.Data
         public float ThirstValue { get; set; }
         public float SleepValue { get; set; }
         public int SpeechSkill { get; set; }
+        public GangKickSave GangKickSave { get; set; }
+        public bool IsCop { get; set; }
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             PlayerName = player.PlayerName;
@@ -105,6 +107,11 @@ namespace LosSantosRED.lsr.Data
                 GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
             }
 
+            if(player.GangRelationships.CurrentGangKickUp != null)
+            {
+                GangKickSave = new GangKickSave(player.GangRelationships.CurrentGang.ID, player.GangRelationships.CurrentGangKickUp.DueDate, player.GangRelationships.CurrentGangKickUp.MissedPeriods, player.GangRelationships.CurrentGangKickUp.MissedAmount);
+            }
+
             Contacts = new List<SavedContact>();
             foreach (PhoneContact ifc in player.CellPhone.ContactList)
             {
@@ -150,6 +157,7 @@ namespace LosSantosRED.lsr.Data
                 }
             }
             SpeechSkill = player.SpeechSkill;
+            IsCop = player.IsCop;
         }
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable World, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -218,8 +226,17 @@ namespace LosSantosRED.lsr.Data
                     if (myGang != null)
                     {
                         player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
-                        player.GangRelationships.SetStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember, tuple.IsEnemy);
+                        player.GangRelationships.SetRepStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember, tuple.IsEnemy);
                     }
+                }
+
+                if(GangKickSave != null)
+                {
+                    Gang myGang = gangs.GetGang(GangKickSave.GangID);
+                    if (myGang != null)
+                    {
+                        player.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
+                    }      
                 }
                 foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
                 {
@@ -280,6 +297,9 @@ namespace LosSantosRED.lsr.Data
                 player.HumanState.Thirst.Set(ThirstValue);
                 player.HumanState.Hunger.Set(HungerValue);
                 player.HumanState.Sleep.Set(SleepValue);
+                player.IsCop = IsCop;
+
+
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
             }

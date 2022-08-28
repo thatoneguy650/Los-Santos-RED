@@ -26,6 +26,8 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     private UIMenuNumericScrollerItem<int> RestMenuItem;
     private bool KeepInteractionGoing;
     private UIMenuItem LayLowMenuItem;
+    private UIMenuItem dropoffKick;
+
     public GangDen() : base()
     {
 
@@ -71,6 +73,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
 
         if (CanInteract)
         {
+            bool isPlayerMember = player.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
             GameFiber.StartNew(delegate
@@ -121,6 +124,16 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                         InteractionMenu.AddItem(completeTask);
                     }
                     RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+
+
+                    if(isPlayerMember && player.GangRelationships.CurrentGangKickUp != null)
+                    {
+                        dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                        InteractionMenu.AddItem(dropoffKick);
+                    }
+
+
+
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                     while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
@@ -198,6 +211,23 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         else if (selectedItem == LayLowMenuItem)
         {
             LayLow();
+        }
+        else if (selectedItem == dropoffKick)
+        {
+            if(Player.GangRelationships.CurrentGangKickUp != null)
+            {
+                if(Player.BankAccounts.Money >= Player.GangRelationships.CurrentGangKickUp.DueAmount)
+                {
+                    Player.BankAccounts.GiveMoney(-1 * Player.GangRelationships.CurrentGangKickUp.DueAmount);
+                    Player.GangRelationships.CurrentGangKickUp.PayDue();
+                    InteractionMenu.Visible = false;
+                }
+                else
+                {
+                    Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", "Come back when you actually have the cash.");
+                }
+            }
+            
         }
     }
     public void Reset()

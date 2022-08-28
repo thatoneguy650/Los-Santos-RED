@@ -16,21 +16,23 @@ public class PedSwapMenu : Menu
     private UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed;
     private UIMenuItem BecomeRandomPed;
     private UIMenuItem BecomeCustomPed;
-    private UIMenuItem SetAsCop;
+    private UIMenuListScrollerItem<Agency> SetAsCop;
     private UIMenuItem SetAsCivilian;
     private UIMenuListScrollerItem<Gang> SetAsGangMember;
     private List<DistanceSelect> Distances;
 
     private IPedSwap PedSwap;
     private IGangs Gangs;
+    private IAgencies Agencies;
     private UIMenuItem BecomeCustomPed2;
 
-    public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap, IGangs gangs)
+    public PedSwapMenu(MenuPool menuPool, UIMenu parentMenu, IPedSwap pedSwap, IGangs gangs, IAgencies agencies)
     {
         MenuPool = menuPool;
         ParentMenu = parentMenu;
         PedSwap = pedSwap;
         Gangs = gangs;
+        Agencies = agencies;
     }
     public void Setup()
     {
@@ -112,6 +114,15 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(SetAsGangMember);
 
 
+        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a cop from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
+        SetAsCop.Activated += (menu, item) =>
+        {
+            PedSwap.BecomeCop(SetAsCop.SelectedItem);
+            PedSwapUIMenu.Visible = false;
+        };
+        PedSwapUIMenu.AddItem(SetAsCop);
+
+
         BecomeCustomPed2 = new UIMenuItem("Become Custom Pedestrian 2", "Becomes a customized ped from user input.");
         BecomeCustomPed2.Activated += (menu, item) =>
         {
@@ -121,20 +132,20 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(BecomeCustomPed2);
 
 
-        SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
-        SetAsCop.Activated += (menu, item) =>
-        {
-            PedSwap.TreatAsCop();
-            PedSwapUIMenu.Visible = false;
-        };
+        //SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
+        //SetAsCop.Activated += (menu, item) =>
+        //{
+        //    PedSwap.TreatAsCop();
+        //    PedSwapUIMenu.Visible = false;
+        //};
 
 
-        SetAsCivilian = new UIMenuItem("Set as Civilian", "Treat the current player model as a civilian without any changes.");
-        SetAsCivilian.Activated += (menu, item) =>
-        {
-            PedSwap.TreatAsCivilian();
-            PedSwapUIMenu.Visible = false;
-        };
+        //SetAsCivilian = new UIMenuItem("Set as Civilian", "Treat the current player model as a civilian without any changes.");
+        //SetAsCivilian.Activated += (menu, item) =>
+        //{
+        //    PedSwap.TreatAsCivilian();
+        //    PedSwapUIMenu.Visible = false;
+        //};
 
 
     }

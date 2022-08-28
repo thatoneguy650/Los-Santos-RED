@@ -194,6 +194,11 @@ public class GangTab
             string debtstring = gr.PlayerDebt.ToString("C0");
             DescriptionText += $"~n~~r~Debt~s~: ~r~{debtstring}~s~";
         }
+
+        if(gr.IsMember && Player.GangRelationships.CurrentGangKickUp != null)
+        {
+            DescriptionText += $"~n~{Player.GangRelationships.CurrentGangKickUp}";
+        }
     }
 }
 

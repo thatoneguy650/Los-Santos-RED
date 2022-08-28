@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public class Fader
 {
-    private int GameTimeDisplayChanged;
+    private uint GameTimeDisplayChanged;
     private uint TimeToShow;
     private uint TimeToFade;
     private bool FadeIsInverse = false;
@@ -101,7 +101,7 @@ public class Fader
             CurrentDisplay = incomingDisplay;
             FadeIsInverse = false;
         }
-        GameTimeDisplayChanged = Environment.TickCount;
+        GameTimeDisplayChanged = Game.GameTime;//Environment.TickCount;
         TextChangedLastUpdate = true;
         //if (DebugName == "StreetFader")
         //{
@@ -114,16 +114,16 @@ public class Fader
     }
     public void UpdateTimeChanged()
     {
-        GameTimeDisplayChanged = Environment.TickCount;// Game.GameTime;
+        GameTimeDisplayChanged = Game.GameTime;// Environment.TickCount;// Game.GameTime;
     }
     private void OnFullyFadedIn()
     {
         FadeIsInverse = false;
         //EntryPoint.WriteToConsole($"Fader {DebugName} OnFullyFadedIn ", 2);
     }
-    private int CalculateAlpha(int GameTimeLastChanged, uint timeToShow, uint fadeTime)
+    private int CalculateAlpha(uint GameTimeLastChanged, uint timeToShow, uint fadeTime)
     {
-        int TimeSinceChanged = Environment.TickCount - GameTimeLastChanged;
+        uint TimeSinceChanged = Game.GameTime - GameTimeLastChanged;// Environment.TickCount - GameTimeLastChanged;
         if (TimeSinceChanged < timeToShow)
         {
             return 255;

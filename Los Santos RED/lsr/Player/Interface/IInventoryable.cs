@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         bool IsPerformingActivity { get; }
         Ped Character { get; }
+        bool IsCop { get; set; }
+
         void DisplayPlayerNotification();
     }
 }

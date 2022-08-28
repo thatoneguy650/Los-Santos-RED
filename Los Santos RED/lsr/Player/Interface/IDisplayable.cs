@@ -48,5 +48,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsStill { get; }
         bool IsSitting { get; }
         bool AnyPoliceKnowInteriorLocation { get; }
+        HealthManager HealthManager { get; }
     }
 }
