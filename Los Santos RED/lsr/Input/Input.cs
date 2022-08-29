@@ -152,6 +152,16 @@ namespace LosSantosRED.lsr
                 Player.StartScenario();
             }
 
+
+            if (Player.ButtonPrompts.IsGroupPressed("Recruit"))
+            {
+                Player.GroupManager.TryRecruitLookedAtPed();
+            }
+            if (Player.ButtonPrompts.IsGroupPressed("Sit"))
+            {
+                Player.StartSittingDown(true, true);
+            }
+
             if (!Player.IsInVehicle)
             {
                 if (IsPressingSprint)

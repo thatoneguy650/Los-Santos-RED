@@ -686,7 +686,7 @@ public class PersonTransaction : Interaction
                 {
                     SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_WHATEVER" }, true);
                 }
-                Ped.HasSpokenWithPlayer = true;
+                Ped.PlayerKnownsName = true;
             }
             IsActivelyConversing = false;
         }

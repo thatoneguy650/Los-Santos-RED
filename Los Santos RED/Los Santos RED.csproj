@@ -115,6 +115,7 @@
     <Compile Include="lsr\Data\Interface\IIntoxicants.cs" />
     <Compile Include="lsr\Data\Interface\IIssuableWeapons.cs" />
     <Compile Include="lsr\Data\Interface\IPropItems.cs" />
+    <Compile Include="lsr\Data\Interface\ISeats.cs" />
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="lsr\Data\Location\PossibleLocations.cs" />
     <Compile Include="lsr\Data\Items\ShopMenus.cs" />
     <Compile Include="lsr\Data\Items\ModItems.cs" />
+    <Compile Include="lsr\Data\Location\Seats.cs" />
     <Compile Include="lsr\Data\Peds\Dances.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePersonGroup.cs" />
     <Compile Include="lsr\Data\Peds\Gestures.cs" />
@@ -253,6 +255,8 @@
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Sitting\SeatModel.cs" />
+    <Compile Include="lsr\Player\Activity\Sitting\TableModel.cs" />
     <Compile Include="lsr\Player\BankAccounts.cs" />
     <Compile Include="lsr\Player\ButtonPrompts.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone.cs" />
@@ -294,6 +298,7 @@
     <Compile Include="lsr\Player\Interface\IItemEquipable.cs" />
     <Compile Include="lsr\Player\Interface\ILicenseable.cs" />
     <Compile Include="lsr\Player\Interface\ILocationInteractable.cs" />
+    <Compile Include="lsr\Player\Interface\IMeleeManageable.cs" />
     <Compile Include="lsr\Player\Interface\IPropertyOwnable.cs" />
     <Compile Include="lsr\Player\Interface\IStanceable.cs" />
     <Compile Include="lsr\Player\Interface\IVehicleOwnable.cs" />
@@ -302,6 +307,7 @@
     <Compile Include="lsr\Player\Licenses\DriversLicense.cs" />
     <Compile Include="lsr\Player\Licenses\License.cs" />
     <Compile Include="lsr\Player\Licenses\Licenses.cs" />
+    <Compile Include="lsr\Player\MeleeManager.cs" />
     <Compile Include="lsr\Player\OfficerFriendlyRelationship.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
@@ -313,7 +319,7 @@
     <Compile Include="lsr\Player\Activity\GestureActivity.cs" />
     <Compile Include="lsr\Player\Activity\IngestActivity.cs" />
     <Compile Include="lsr\Player\Activity\SleepingActivity.cs" />
-    <Compile Include="lsr\Player\Activity\SittingActivity.cs" />
+    <Compile Include="lsr\Player\Activity\Sitting\SittingActivity.cs" />
     <Compile Include="lsr\Player\CellPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\NotificationIconTypes.cs" />
     <Compile Include="lsr\Player\Cellphone\PhoneResponse.cs" />

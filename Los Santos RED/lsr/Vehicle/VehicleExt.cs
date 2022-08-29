@@ -116,7 +116,9 @@ namespace LSR.Vehicles
             get
             {
                 if (vehicleClass == VehicleClass.Compact || vehicleClass == VehicleClass.Coupe || vehicleClass == VehicleClass.Muscle || vehicleClass == VehicleClass.OffRoad || vehicleClass == VehicleClass.Sedan || vehicleClass == VehicleClass.Sport 
-                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle)
+                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle 
+                    || vehicleClass == VehicleClass.Emergency || vehicleClass == VehicleClass.Industrial || vehicleClass == VehicleClass.Utility || vehicleClass == VehicleClass.Boat || vehicleClass == VehicleClass.Helicopter 
+                    || vehicleClass == VehicleClass.Plane || vehicleClass == VehicleClass.Service || vehicleClass == VehicleClass.Military || vehicleClass == VehicleClass.Commercial)
                 {
                     return true;
                 }
@@ -124,10 +126,6 @@ namespace LSR.Vehicles
             }
         }
         public bool IsCar { get; private set; }
-
-
-
-
         private void GetFuelTankCapacity()
         {
             if (vehicleClass == VehicleClass.Compact) // "Compact":

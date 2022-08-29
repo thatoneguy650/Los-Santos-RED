@@ -37,6 +37,7 @@ public class ModDataFileManager
     public Gestures GestureList;
     public Speeches SpeechList;
     private PhysicalItems PhysicalItems;
+    public Seats Seats;
 
     public ModDataFileManager()
     {
@@ -131,6 +132,10 @@ public class ModDataFileManager
         GameFiber.Yield();
         SpeechList = new Speeches();
         SpeechList.ReadConfig();
+
+
+        Seats = new Seats();
+        Seats.ReadConfig();
 
     }
     private void SetupAlternateConfigs()

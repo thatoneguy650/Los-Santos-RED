@@ -110,7 +110,7 @@ public class PedExt : IComplexTaskable
 
 
 
-    public string FormattedName => (HasSpokenWithPlayer ? Name : GroupName);
+    public string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public string GroupName { get; set; } = "Person";
 
 
@@ -128,7 +128,7 @@ public class PedExt : IComplexTaskable
     public bool HasBeenTreatedByEMTs { get; set; }
     public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x=> x.AngersCivilians || x.ScaresCivilians);
     public bool HasSeenPlayerCommitTrafficCrime => PlayerPerception.CrimesWitnessed.Any(x => x.IsTrafficViolation);
-    public bool HasSpokenWithPlayer { get; set; }
+    public bool PlayerKnownsName { get; set; }
     public bool HatesPlayer { get; set; } = false;
     public int Health { get; set; }
     public int InsultLimit => IsGangMember || IsCop ? 2 : 3;

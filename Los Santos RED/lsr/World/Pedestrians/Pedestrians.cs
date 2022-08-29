@@ -262,6 +262,15 @@ public class Pedestrians
        // return Civilians.FirstOrDefault(x => x.Handle == Handle);
 
     }
+    public GangMember GetGangMember(uint Handle)
+    {
+        GangMember pedExt = GangMembers.FirstOrDefault(x => x.Handle == Handle);
+        if (pedExt != null)
+        {
+            return pedExt;
+        }
+        return null;
+    }
     public void Prune()
     {
         PruneServicePeds();

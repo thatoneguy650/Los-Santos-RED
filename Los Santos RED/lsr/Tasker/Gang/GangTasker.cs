@@ -54,6 +54,12 @@ public class GangTasker
                             UpdateCurrentTask(gangMember);//has yields if it does anything
                         }
                     }
+
+                    if(gangMember.CurrentTask?.Name != "GetArrested" && !gangMember.CanBeAmbientTasked)
+                    {
+                        gangMember.CurrentTask = null;
+                    }
+
                     if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
                     {
                         gangMember.UpdateTask(null);

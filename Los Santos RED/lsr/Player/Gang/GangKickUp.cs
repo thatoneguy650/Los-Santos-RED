@@ -128,7 +128,9 @@ public class GangKickUp
     {
         List<string> StartMessages = new List<string>() { 
             $"Thanks for the donation. See you in {Gang.MemberKickUpDays} days for ${DueAmount}.",
-            $"Good work, next time is ${DueAmount} in {Gang.MemberKickUpDays} days.",
+            $"Good work, remember ${DueAmount} in {Gang.MemberKickUpDays} days.",
+            $"Good work, see you in {Gang.MemberKickUpDays} days with ${DueAmount}.",
+            $"Always good to get some respect from you. Next up is ${DueAmount} in {Gang.MemberKickUpDays} days.",
         };
         NativeHelper.DisplayNotificationCustom(Gang.ContactIcon, Gang.ContactIcon, Gang.ContactName, "~g~Response", StartMessages.PickRandom(), NotificationIconTypes.DollarSign, false);
         //Player.CellPhone.AddPhoneResponse(Gang.ContactName, Gang.ContactIcon, StartMessages.PickRandom());
@@ -148,11 +150,14 @@ public class GangKickUp
     }
     private void SendMissedMessage()
     {
-        List<string> MissedMessages = new List<string>() { $"You trying to hide money from me prick? DO NOT MISS THE KICK UP. Expecting ${DueAmount} by {DueDate:g}.",
-        $"${DueAmount} by {DueDate:g}. Miss it and they won't miss you.",
-        $"You are playing a dangerous game. I better get ${DueAmount} by {DueDate:g}.",
-        $"Owing people like me money isn't a good idea. I better get ${DueAmount} by {DueDate:g}.",
-
+        List<string> MissedMessages = new List<string>() { 
+        $"You trying to hide money from me prick? DO NOT MISS THE KICK UP. Expecting ${DueAmount} by {DueDate:g}.",
+        $"You're gonna make up for this mistake right? ${DueAmount} by {DueDate:g}.",
+        $"Where's my kick up? It accumulates buddy. ${DueAmount} by {DueDate:g}.",
+        $"Don't forget your responsibilities. Now I'm expecting ${DueAmount} by {DueDate:g}.",
+        $"Are you stupid or something? I better get ${DueAmount} by {DueDate:g}.",
+        $"Missing the kick up can be hazardous to your health. Now its ${DueAmount} by {DueDate:g}. Don't forget.",
+        $"Fuck you, pay me ${DueAmount} by {DueDate:g}.",
         };
         Player.CellPhone.AddScheduledText(Gang.ContactName, Gang.ContactIcon, MissedMessages.PickRandom());
     }

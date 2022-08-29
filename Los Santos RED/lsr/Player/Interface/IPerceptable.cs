@@ -11,6 +11,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IPerceptable
     {
         WeaponEquipment WeaponEquipment { get; }
+        GangRelationships GangRelationships { get; }
         Violations Violations { get; }
         Ped Character { get; }
         VehicleExt CurrentSeenVehicle { get; }

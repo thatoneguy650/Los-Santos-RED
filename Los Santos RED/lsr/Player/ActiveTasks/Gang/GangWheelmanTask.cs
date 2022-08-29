@@ -526,9 +526,15 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         //}
                         RobberAccomplice.Pedestrian.RelationshipGroup = RobberRelationshipGroup;
                         NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(RobberAccomplice.Pedestrian, 500000, 0);//TR
-                        PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-                        NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(RobberAccomplice.Pedestrian, PlayerGroup);
-                        NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
+
+                        Player.GroupManager.Add(RobberAccomplice);
+
+
+
+
+                        //PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
+                        //NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(RobberAccomplice.Pedestrian, PlayerGroup);
+                        //NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
                         RobberAccomplice.Pedestrian.KeepTasks = true;
                         return true;
                     }
@@ -577,10 +583,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     RobberAccomplice.ResetPlayerCrimes();
                     RobberAccomplice.CanBeTasked = true;
                     RobberAccomplice.CanBeAmbientTasked = true;
-                    if(NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(RobberAccomplice.Pedestrian, PlayerGroup))
-                    {
-                        NativeFunction.Natives.REMOVE_PED_FROM_GROUP(RobberAccomplice.Pedestrian);
-                    }
+
+                    Player.GroupManager.Remove(RobberAccomplice);
+
+
+                    //if(NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(RobberAccomplice.Pedestrian, PlayerGroup))
+                    //{
+                    //    NativeFunction.Natives.REMOVE_PED_FROM_GROUP(RobberAccomplice.Pedestrian);
+                    //}
 
                 }
             }

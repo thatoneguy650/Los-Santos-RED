@@ -258,7 +258,6 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlPause");
         }
     }
-
     private void AttemptRemoveMenuPrompts()
     {
         if(!Player.IsDead)
@@ -285,6 +284,35 @@ public class ButtonPrompts
     }
     private void AttemptAddAdvancedInteractionPrompts()
     {
+
+            if(Player.CanRecruitLookedAtGangMember && !Player.IsConversing)
+            {
+                PersonRecruitingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Prompts.RemoveAll(x => x.Group == "Recruit");
+            }
+
+
+        if (!addedPromptGroup)
+        {
+            if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.CanPerformActivities && !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)
+            {
+                SittingPrompts();
+                addedPromptGroup = true;
+            }
+            else
+            {
+                Prompts.RemoveAll(x => x.Group == "Sit");
+            }
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "Sit");
+        }
+
         if (!addedPromptGroup)
         {
             if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
@@ -328,6 +356,27 @@ public class ButtonPrompts
         }
 
     }
+
+    private void SittingPrompts()
+    {
+        RemovePrompts("InteractableLocation");
+        RemovePrompts("StartScenario");
+        if (!HasPrompt($"Sit"))
+        {
+            RemovePrompts("Sit");
+            AttemptAddPrompt("Sit", $"Sit", $"Sit", Settings.SettingsManager.KeySettings.InteractCancel, 9);
+        }
+    }
+
+    private void PersonRecruitingPrompts()
+    {
+        if (!HasPrompt($"Recruit {Player.CurrentLookedAtGangMember.Handle}"))
+        {
+            RemovePrompts("Recruit");
+            AttemptAddPrompt("Recruit", $"Recruit {Player.CurrentLookedAtGangMember.FormattedName}", $"Recruit {Player.CurrentLookedAtGangMember.Handle}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 3);
+        }
+    }
+
     private void AttemptAddLocationPrompts()
     {
         if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
@@ -352,6 +401,5 @@ public class ButtonPrompts
             Prompts.RemoveAll(x => x.Group == "StartScenario");
         }
     }
-
 }
 

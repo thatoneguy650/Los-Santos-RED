@@ -50,7 +50,7 @@ public class HoldUp : Interaction
     {
         EntryPoint.WriteToConsole($"Hold Up Started Target.IsInVehicle {Target.IsInVehicle}");
         Target.CanBeTasked = false;     
-        Target.HasSpokenWithPlayer = true;
+        Target.PlayerKnownsName = true;
         Target.Pedestrian.BlockPermanentEvents = true;
         AnimationDictionary.RequestAnimationDictionay("ped");
         AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");

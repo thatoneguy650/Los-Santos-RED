@@ -43,6 +43,9 @@ public class NeedsSettings : ISettingsDefaultable
     public int HealthDrainAmount { get; set; }
     [Description("Minimum health value you can drain to.")]
     public int HealthDrainMinHealth { get; set; }
+    [Description("Allows a melee damage decrease when you have pressing needs (less than 25%) up to a set amount.")]
+    public bool AllowMeleeDamageDecrease { get; set; }
+
     public NeedsSettings()
     {
         SetDefault();
@@ -62,11 +65,12 @@ public class NeedsSettings : ISettingsDefaultable
         SleepDisplayDigits = 0;
         AllowHealthRegen = true;
         AllowHealthDrain = true;
-        HealthRegenInterval = 15000;
-        HealthDrainInterval = 20000;
+        HealthRegenInterval = 35000;
+        HealthDrainInterval = 65000;
         HealthRegenAmount = 1;
         HealthDrainAmount = 1;
         HealthDrainMinHealth = 140;
+        AllowMeleeDamageDecrease = true;
 #if DEBUG
         ThirstDisplayDigits = 2;
         HungerDisplayDigits = 2;

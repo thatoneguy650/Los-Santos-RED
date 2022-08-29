@@ -34,7 +34,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     }
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gang Den";
-    public override int MapIcon { get; set; } = (int)BlipSprite.Shrink;
+    public override int MapIcon { get; set; } = (int)BlipSprite.Snitch;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }

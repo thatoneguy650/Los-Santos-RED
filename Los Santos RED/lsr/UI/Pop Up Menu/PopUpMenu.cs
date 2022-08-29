@@ -66,6 +66,10 @@ public class PopUpMenu
             new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
+
+            new PopUpMenuMap(5,"Group","GroupSubMenu","Open Group Sub Menu"){ ClosesMenu = false },
+
+
         };
         List<PopUpMenuMap> InVehicleMenuMaps = new List<PopUpMenuMap>()
         {
@@ -74,6 +78,8 @@ public class PopUpMenu
             new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
             new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
+
+            new PopUpMenuMap(5,"Group","GroupSubMenu","Open Group Sub Menu"){ ClosesMenu = false },
         };
         List<PopUpMenuMap> InfoSubMenu = new List<PopUpMenuMap>()
         {
@@ -244,7 +250,22 @@ public class PopUpMenu
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionInSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
         CurrentPopUpMenuGroup = "DefaultOnFoot";
         UpdateInventoryMenuGroups();
+        UpdateGroupMembers();
     }
+
+    private void UpdateGroupMembers()
+    {
+        PopUpMenuGroups.RemoveAll(x => x.Group == "Group");
+        int ID = 0;
+        List<PopUpMenuMap> GroupMembersSubMenu = new List<PopUpMenuMap>();
+        foreach (PedExt mi in Player.GroupManager.CurrentGroupMembers)
+        {
+            GroupMembersSubMenu.Add(new PopUpMenuMap(ID, mi.Name, new Action(() => Player.GroupManager.Remove(mi)), "Remove the Member"));
+            ID++;
+        }
+        PopUpMenuGroups.Add(new PopUpMenuGroup("GroupSubMenu", GroupMembersSubMenu) { IsChild = true, Group = "Group" });
+    }
+
     private void DisplayTextBoxOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, int alpha, bool addBackground, Color BackGroundColor)
     {
         try

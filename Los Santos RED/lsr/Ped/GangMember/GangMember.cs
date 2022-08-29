@@ -40,4 +40,7 @@ public class GangMember : PedExt, IWeaponIssuable
     //public bool WasModSpawned { get; private set; }
 
     public bool HasTaser { get; set; } = false;
+
+
+    public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
 }

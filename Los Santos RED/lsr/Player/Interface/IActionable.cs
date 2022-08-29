@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSleeping { get; set; }
         VehicleExt CurrentLookedAtVehicle { get; }
         HealthManager HealthManager { get; }
+        GroupManager GroupManager { get; }
 
         void Gesture();
         void Dance(DanceData selectedItem);

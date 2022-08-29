@@ -171,6 +171,9 @@ public class Civilians
     private void UpdateGangMembers()
     {
         int localRan = 0;
+
+        string playerGangID = Perceptable.GangRelationships.CurrentGang?.ID;
+
         foreach (GangMember ped in World.Pedestrians.GangMemberList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
@@ -195,6 +198,13 @@ public class Civilians
                     ped.WillFight = true;
                     ped.WasEverSetPersistent = true;
                 }
+
+                if(ped.Gang?.ID == playerGangID)
+                {
+                    ped.PlayerKnownsName = true;
+                    ped.IsTrustingOfPlayer = true;
+                }
+
                 if (yield && localRan == Settings.SettingsManager.DebugSettings.GangUpdateBatch)//1
                 {
                     GameFiber.Yield();

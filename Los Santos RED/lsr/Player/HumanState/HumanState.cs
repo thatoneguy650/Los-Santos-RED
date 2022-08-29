@@ -20,6 +20,7 @@ public class HumanState
     public SleepNeed Sleep { get; private set; }
     public bool HasPressingNeeds { get; private set; }
     public bool HasNeedsManaged { get; private set; }
+    public float MinimumNeedPercent { get; private set; }
     public HumanState(IHumanStateable player, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
@@ -44,6 +45,7 @@ public class HumanState
         }
         if (Settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
+            float MinNeed = 100f;
             bool IsBelowQuarter = false;
             bool IsBelowThreeQuarters = false;
             foreach (HumanNeed humanNeed in HumanNeeds)
@@ -57,7 +59,12 @@ public class HumanState
                 {
                     IsBelowThreeQuarters = true;
                 }
+                if(humanNeed.CurrentValue < MinNeed)
+                {
+                    MinNeed = humanNeed.CurrentValue;
+                }
             }
+            MinimumNeedPercent = MinNeed;
             HasNeedsManaged = !IsBelowThreeQuarters;
             HasPressingNeeds = IsBelowQuarter;
         }

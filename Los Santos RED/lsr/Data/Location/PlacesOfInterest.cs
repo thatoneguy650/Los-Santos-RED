@@ -290,7 +290,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         List<GangDen> GangDens = new List<GangDen>()
         {
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { MapIcon = 267, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 50f),
                 new ConditionalLocation(new Vector3(1662.094f, 4778.333f, 42.00935f), 259.006f, 50f),
@@ -304,7 +304,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f), 
             }
             },//Grapeseed Shack
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { MapIcon = 77, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 50f),
                 new ConditionalLocation(new Vector3(-227.5764f, 6442.54f, 31.19769f), 141.2697f, 50f),
@@ -317,7 +317,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-226.1172f, 6435.622f, 30.51782f), 232.3148f, 75f),
                 new ConditionalLocation(new Vector3(-210.5319f, 6437.373f, 30.72163f), 327.138f, 75f),
             } },//Beachhouse in Paleto
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { MapIcon = 78, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 50f),
                 new ConditionalLocation(new Vector3(-1626.534f, 37.39336f, 62.54136f), 342.5028f, 50f),
@@ -330,7 +330,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1613.357f, 22.61485f, 61.48566f), 155.361f, 75f),
                 new ConditionalLocation(new Vector3(-1625.055f, 65.92033f, 61.15781f), 237.2095f, 75f),
             } },//mansion in richman
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { MapIcon = 76, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 50f),
                 new ConditionalLocation(new Vector3(-3226.294f, 1095.004f, 10.69816f), 260.7955f, 50f),
@@ -344,7 +344,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
 
             } },//beachhousein chumash
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { MapIcon = 140, MapIconColor = Color.Green, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 50f),
                 new ConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 50f),
@@ -358,7 +358,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
 
             } },//near shops on del perro beach
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { MapIcon = 355, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 50f),
                 new ConditionalLocation(new Vector3(274.2913f, -3010.913f, 5.70001f), 105.1246f, 50f),
@@ -372,7 +372,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
             } },//shitty shack in elysian
 
-            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { MapIcon = 541, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, 50f),
                 new ConditionalLocation(new Vector3(504.8874f, 201.7501f, 104.7445f), 334.6481f, 50f),
@@ -388,7 +388,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(462.139f, 222.349f, 102.2742f), 245.8917f, 75f),
 
             } },//Downtown Vinewood
-            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { MapIcon = 78, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 50f),
                 new ConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 50f),
@@ -399,7 +399,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 new ConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
 new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
             } },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { MapIcon = 76, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 50f),
                 new ConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 50f),
@@ -411,7 +411,7 @@ new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f,
 new ConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
 new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
             } },
-            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { MapIcon = 86, BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),
                 new ConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 50f),
@@ -427,7 +427,7 @@ new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f
                 new ConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
 
             } },//This is in Chamberlain Hills
-            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { MapIcon = 106, BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
                 new ConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
@@ -440,7 +440,7 @@ new ConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f
 new ConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
 new ConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
             } },//This is in DAVIS near Grove Street
-            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") { BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") {  BannerImagePath = "",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 50f),
                 new ConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
@@ -465,7 +465,7 @@ new ConditionalLocation(new Vector3(1166.678f, -1647.833f, 36.23235f), 132.0248f
 new ConditionalLocation(new Vector3(1157.749f, -1660.837f, 35.93925f), 205.3036f, 75f),
 new ConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f, 75f),
             } },
-            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabute Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { MapIcon = 78, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
                 new ConditionalLocation(new Vector3(1293.167f, -1748.509f, 53.87848f), 200.1636f, 50f),
@@ -476,7 +476,7 @@ new ConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f
 new ConditionalLocation(new Vector3(1322.044f, -1768.506f, 54.82401f), 195.1561f, 75f),
 new ConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f, 75f),
             } },
-            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
+            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { MapIcon = 76, BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
 
             //new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -511,7 +511,7 @@ new ConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f,
 new ConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
 
             } },
-            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 50f),
                 new ConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 50f),
@@ -669,7 +669,24 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
             new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 375000, RentalDays = 28, RentalFee = 1570  },
             new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },
 
-
+new Residence(new Vector3(1683.038f, 4689.635f, 43.06602f), 269.7168f, "330E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000, RentalFee = 1200, RentalDays = 28,},
+new Residence(new Vector3(1674.201f, 4658.228f, 43.37114f), 270.4372f, "335E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000, RentalFee = 1200, RentalDays = 28,},
+new Residence(new Vector3(1725.289f, 4642.35f, 43.87548f), 115.7792f, "340E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 250000, RentalFee = 1350, RentalDays = 28,},
+new Residence(new Vector3(1881.219f, 3810.713f, 32.77882f), 301.1151f, "370E Niland ", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 150000, RentalFee = 950, RentalDays = 28,},
+new Residence(new Vector3(1899.071f, 3781.417f, 32.8769f), 299.5774f, "380E Niland", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 175000, RentalFee = 1000, RentalDays = 28,},
+new Residence(new Vector3(-3186.93f, 1274.122f, 12.66124f), 257.7415f, "630W Barbareno", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 750000, RentalFee = 3000, RentalDays = 28,},
+new Residence(new Vector3(-3194.785f, 1179.539f, 9.659509f), 258.9255f, "632W Barbareno", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 650000, RentalFee = 2700, RentalDays = 28,},
+new Residence(new Vector3(-3238.444f, 952.556f, 13.34334f), 281.2452f, "642W Barbareno", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 670000, RentalFee = 2800, RentalDays = 28,},
+new Residence(new Vector3(-3093.812f, 349.4576f, 7.544847f), 258.988f, "611W Ineseno", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 1200000, RentalFee = 4000, RentalDays = 28,},
+new Residence(new Vector3(312.721f, -1956.719f, 24.42436f), 229.223f, "61E Jamestown ", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 330000, RentalFee = 1400, RentalDays = 28,},
+new Residence(new Vector3(256.5888f, -2023.559f, 19.26631f), 227.9232f, "50E Jamestown", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 400000, RentalFee = 1800, RentalDays = 28,},
+new Residence(new Vector3(165.2183f, -1944.738f, 20.23543f), 228.8544f, "30E Roy Lowenstein", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 425000, RentalFee = 1870, RentalDays = 28,},
+new Residence(new Vector3(150.2098f, -1864.915f, 24.59134f), 153.5939f, "20E Covenant", ""){OpenTime = 0,CloseTime = 24, PurchasePrice = 250000, RentalFee = 1300, RentalDays = 28,},
+new Residence(new Vector3(114.7368f, -1887.42f, 23.92823f), 333.4948f, "21E Covenant", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 275000, RentalFee = 1000, RentalDays = 28,},
+new Residence(new Vector3(54.01227f, -1873.436f, 22.80583f), 128.9813f, "10E Grove Street", ""){OpenTime = 0,CloseTime = 24, PurchasePrice = 225000, RentalFee = 1200, RentalDays = 28,},
+new Residence(new Vector3(-5.184085f, -1871.247f, 24.15101f), 317.3572f, "3E Grove St", ""){OpenTime = 0,CloseTime = 24, PurchasePrice = 325000, RentalFee = 1500, RentalDays = 28,},
+new Residence(new Vector3(-131.3305f, -1665.597f, 32.56437f), 316.4919f, "20W Strawberry Apt 2", ""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,},
+new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W Strawberry Apt 1", ""){ OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},
 
 
         };

@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         bool ReleasedFireWeapon { get; set; }
         int WantedLevel { get; }
+        GroupManager GroupManager { get; }
 
         void CancelCurrentActivity();
         void CloseDriverDoor();
@@ -61,5 +62,6 @@ namespace LosSantosRED.lsr.Interface
         void StartScenario();
         void StartSimpleCellphoneActivity();
         void StartTransaction();
+        void StartSittingDown(bool v1, bool v2);
     }
 }

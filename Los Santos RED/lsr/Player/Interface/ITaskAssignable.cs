@@ -29,6 +29,8 @@ namespace LosSantosRED.lsr.Interface
         Vehicle LastFriendlyVehicle { get; set; }
         bool RecentlyShot { get; }
         int WantedLevel { get; }
+        GroupManager GroupManager { get; }
+
         void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer);
     }
 }

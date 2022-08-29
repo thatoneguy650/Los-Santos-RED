@@ -231,7 +231,7 @@ public class Conversation_Simple : Interaction
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
             }
-            Ped.HasSpokenWithPlayer = true;
+            Ped.PlayerKnownsName = true;
         }
         IsActivelyConversing = false;
 

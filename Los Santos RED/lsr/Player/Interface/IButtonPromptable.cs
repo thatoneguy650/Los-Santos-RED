@@ -47,6 +47,12 @@ namespace LosSantosRED.lsr.Interface
         bool IsGettingIntoAVehicle { get; }
         bool IsBreakingIntoCar { get; }
         SurrenderActivity Surrendering { get; }
+        GangMember CurrentLookedAtGangMember { get; }
+        bool CanRecruitLookedAtGangMember { get; }
+        Rage.Object CurrentLookedAtObject { get; }
+        bool CanSitOnCurrentLookedAtObject { get; }
+        bool IsSitting { get; }
+        bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

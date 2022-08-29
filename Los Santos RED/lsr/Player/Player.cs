@@ -20,21 +20,17 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
         private uint GameTimeGotOutOfVehicle;
         private uint GameTimeLastBusted;
-
-
-
         private uint GameTimeLastCrashedVehicle;
         private uint GameTimeLastDied;
         private uint GameTimeLastFedUpCop;
         private uint GameTimeLastMoved;
-        private uint GameTimeLastMovedFast;
-        private uint GameTimeLastSetMeleeModifier;
+        private uint GameTimeLastMovedFast;   
         private uint GameTimeLastSetWanted;
         private uint GameTimeLastShot;
         private uint GameTimeLastUpdatedLookedAtPed;
@@ -64,6 +60,8 @@ namespace Mod
         private uint GameTimeLastClosedDoor;
         private bool isCheckingExcessSpeed;
         private bool isShooting;
+
+        private uint prevCurrentLookedAtObjectHandle;
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
 
@@ -83,9 +81,11 @@ namespace Mod
         private ICrimes Crimes;
         private IGangTerritories GangTerritories;
         private IGameSaves GameSaves;
+        private ISeats Seats;
+
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups, IDances dances, ISpeeches speeches)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -105,6 +105,7 @@ namespace Mod
             Zones = zones;
             GameSaves = gameSaves;
             Names = names;
+            Seats = seats;
             Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person"), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -142,6 +143,7 @@ namespace Mod
             ActivityManager = new ActivityManager(this);
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, Settings, World, gangs);
+            MeleeManager = new MeleeManager(this, Settings);
         }
 
         public Destinations Destinations { get; private set; }
@@ -175,6 +177,7 @@ namespace Mod
         public ActivityManager ActivityManager { get; private set; }
         public HealthManager HealthManager { get; private set; }
         public GroupManager GroupManager { get; private set; }
+        public MeleeManager MeleeManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -199,6 +202,12 @@ namespace Mod
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
         public bool CanTakeHostage => !IsCop && !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && WeaponEquipment.CurrentWeapon != null && WeaponEquipment.CurrentWeapon.CanPistolSuicide;
+
+
+        public bool CanRecruitLookedAtGangMember => CurrentLookedAtGangMember != null && CurrentTargetedPed == null && GangRelationships.CurrentGang != null && CurrentLookedAtGangMember.Gang != null && GangRelationships.CurrentGang.ID == CurrentLookedAtGangMember.Gang.ID && !GroupManager.IsMember(CurrentLookedAtGangMember);
+
+
+
         public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
         public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
         public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -215,6 +224,9 @@ namespace Mod
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public Scenario ClosestScenario { get; private set; }
         public PedExt CurrentLookedAtPed { get; private set; }
+        public Rage.Object CurrentLookedAtObject { get; private set; }
+        public bool CanSitOnCurrentLookedAtObject { get; private set; }
+        public GangMember CurrentLookedAtGangMember { get; private set; }
         public PedVariation CurrentModelVariation { get; set; }
         public VehicleExt CurrentSeenVehicle => CurrentVehicle ?? VehicleGettingInto;
         public PedExt CurrentTargetedPed { get; private set; }
@@ -449,6 +461,7 @@ namespace Mod
             BankAccounts.Setup();
             HealthManager.Setup();
             GroupManager.Setup();
+            MeleeManager.Setup();
 
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -522,6 +535,7 @@ namespace Mod
             HealthManager.Update();
             GroupManager.Update();
             ButtonPrompts.Update();
+            MeleeManager.Update();
         }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds)
         {
@@ -638,6 +652,7 @@ namespace Mod
             BankAccounts.Dispose();
             HealthManager.Dispose();
             GroupManager.Dispose();
+            MeleeManager.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -1923,7 +1938,7 @@ namespace Mod
                 {
                     LowerBodyActivity.Cancel();
                 }
-                LowerBodyActivity = new SittingActivity(this, Settings, findSittingProp, enterForward);
+                LowerBodyActivity = new SittingActivity(this, Settings, findSittingProp, enterForward, Seats);
                 LowerBodyActivity.Start();
             }
         }
@@ -2044,7 +2059,7 @@ namespace Mod
                         {
                             SetWantedLevel(realWantedLevel, "Something Else Set, Allowed by settings (1)", true);
                             PlacePoliceLastSeenPlayer = Position;
-                            
+
                         }
                     }
                     else//or is they want my mod to just accept any wanted level generated
@@ -2222,6 +2237,32 @@ namespace Mod
                 }
             }
             PlayerTasks.Update();
+
+
+
+
+            if (CurrentLookedAtObject != null && CurrentLookedAtObject.Exists())
+            {
+                if(CurrentLookedAtObject.Handle != prevCurrentLookedAtObjectHandle)
+                {
+                    if(Seats.CanSit(CurrentLookedAtObject))
+                    {
+                        CanSitOnCurrentLookedAtObject = true;
+                    }
+                    else
+                    {
+                        CanSitOnCurrentLookedAtObject = false;
+                    }
+                    prevCurrentLookedAtObjectHandle = CurrentLookedAtObject.Handle;
+                }
+            }
+            else
+            {
+                CanSitOnCurrentLookedAtObject = false;
+                prevCurrentLookedAtObjectHandle = 0;
+            }
+
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
         }
         public void UpdateVehicleData()
@@ -2461,11 +2502,7 @@ namespace Mod
             }
             IsAiming = Game.LocalPlayer.IsFreeAiming;
             IsAimingInVehicle = IsInVehicle && IsAiming;
-            if (Settings.SettingsManager.PlayerOtherSettings.MeleeDamageModifier != 1.0f && (GameTimeLastSetMeleeModifier == 0 || Game.GameTime - GameTimeLastSetMeleeModifier >= 5000))
-            {
-                NativeFunction.Natives.SET_PLAYER_MELEE_WEAPON_DAMAGE_MODIFIER(Game.LocalPlayer, Settings.SettingsManager.PlayerOtherSettings.MeleeDamageModifier, true);
-                GameTimeLastSetMeleeModifier = Game.GameTime;
-            }
+
             WeaponEquipment.Update();
             UpdateTargetedPed();
             GameFiber.Yield();
@@ -2559,14 +2596,32 @@ namespace Mod
                 GameFiber.Yield();
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
                 Vector3 RayEnd = RayStart + NativeHelper.GetGameplayCameraDirection() * 6.0f;
-                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPeds, Game.LocalPlayer.Character);
-                if (result.Hit && result.HitEntity is Ped)
+                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPeds | TraceFlags.IntersectObjects, Game.LocalPlayer.Character);
+                if(result.Hit && result.HitEntity is Rage.Object)
                 {
+                    Rage.Object objectHit = (Rage.Object)result.HitEntity;
+                    CurrentLookedAtObject = objectHit;
+                    CurrentLookedAtVehicle = null;
+                    CurrentLookedAtPed = null;
+                    CurrentLookedAtGangMember = null;
+                }
+                else if (result.Hit && result.HitEntity is Ped)
+                {
+                    CurrentLookedAtObject = null;
                     CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
+                    if (CurrentLookedAtPed?.IsGangMember == true)
+                    {
+                        CurrentLookedAtGangMember = World.Pedestrians.GetGangMember(result.HitEntity.Handle);
+                    }
+                    else
+                    {
+                        CurrentLookedAtGangMember = null;
+                    }
                     CurrentLookedAtVehicle = null;
                 }
                 else if (result.Hit && result.HitEntity is Vehicle)
                 {
+                    CurrentLookedAtObject = null;
                     Vehicle myCar = (Vehicle)result.HitEntity;
                     if (myCar.Exists())
                     {
@@ -2595,17 +2650,28 @@ namespace Mod
                         if (closestPed.Exists())
                         {
                             CurrentLookedAtPed = World.Pedestrians.GetPedExt(closestPed.Handle);
+                            if (CurrentLookedAtPed?.IsGangMember == true)
+                            {
+                                CurrentLookedAtGangMember = World.Pedestrians.GetGangMember(closestPed.Handle);
+                            }
+                            else
+                            {
+                                CurrentLookedAtGangMember = null;
+                            }
                         }
                     }
                     else
                     {
                         CurrentLookedAtPed = null;
+                        CurrentLookedAtGangMember = null;
                     }
                 }
                 else
                 {
                     CurrentLookedAtVehicle = null;
                     CurrentLookedAtPed = null;
+                    CurrentLookedAtGangMember = null;
+                    CurrentLookedAtObject = null;
                 }
                 GameTimeLastUpdatedLookedAtPed = Game.GameTime;
                 GameFiber.Yield();
