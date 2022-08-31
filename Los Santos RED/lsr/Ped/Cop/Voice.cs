@@ -231,7 +231,7 @@ public class Voice
                 Cop.Pedestrian.PlayAmbientSpeech(AmbientSpeech, useMegaphone);
             }
             GameFiber.Sleep(300);//100
-            if (Cop.Pedestrian.IsAnySpeechPlaying)
+            if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAnySpeechPlaying)
             {
                 Spoke = true;
             }

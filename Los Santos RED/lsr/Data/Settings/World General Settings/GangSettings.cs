@@ -39,6 +39,8 @@ public class GangSettings : ISettingsDefaultable
     public int PercentageSpawnNearDen { get; set; }
     [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
     public bool RemoveVanillaSpawnedPedsOnFoot { get; set; }
+    public bool AllowFightingOtherCriminals { get; set; }
+
     //public bool MakeVanillaSpawnedGangMembersPersistent { get; set; }
 
     public GangSettings()
@@ -73,7 +75,8 @@ public class GangSettings : ISettingsDefaultable
         OverrideHealth = true;
         OverrideAccuracy = true;
         PercentageSpawnNearDen = 10;
-       // MakeVanillaSpawnedGangMembersPersistent = false;
+        // MakeVanillaSpawnedGangMembersPersistent = false;
+        AllowFightingOtherCriminals = false;
 
 
     }

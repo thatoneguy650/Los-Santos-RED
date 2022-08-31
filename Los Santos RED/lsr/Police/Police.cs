@@ -260,6 +260,10 @@ namespace LosSantosRED.lsr
                 }
                 
             }
+            else if(World.TotalWantedLevel > 0)
+            {
+
+            }
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
         }
     }

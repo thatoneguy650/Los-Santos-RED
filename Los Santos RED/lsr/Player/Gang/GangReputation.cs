@@ -102,7 +102,7 @@ public class GangReputation
             }
         }
     }
-    public bool RecentlyAttacked => GameTimeLastAttacked > 0 && Game.GameTime - GameTimeLastAttacked <= 30000;
+    public bool RecentlyAttacked => GameTimeLastAttacked > 0 && Game.GameTime - GameTimeLastAttacked <= 90000;
     public int MembersHurt { get; set; }
     public int MembersKilled { get; set; }
     public int MembersCarJacked { get; set; }
@@ -115,8 +115,8 @@ public class GangReputation
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         if (GangRelationship == GangRespect.Hostile)
         {
-            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Dislike);//changed from hate, lets tone them down
-            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Dislike);
+            rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);//changed from hate, lets tone them down
+            RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
         }
         else if (GangRelationship == GangRespect.Friendly)
         {
@@ -193,8 +193,8 @@ public class GangReputation
             {
                 if (Player.IsNotWanted)//handled on the became/lost wanted events
                 {
-                    rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Hate);
-                    RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Hate);
+                    rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+                    RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
                 }
                 Player.SetDenStatus(Gang, false);
 

@@ -121,9 +121,7 @@ namespace LosSantosRED.lsr
         private Dispatch VehicleHitAndRun;
         private VehicleScannerAudio VehicleScannerAudio;
         private Dispatch VehicleStartedFire;
-
         private Dispatch PublicVagrancy;
-
         private Dispatch WantedSuspectSpotted;
         private Dispatch WeaponsFree;
         private IEntityProvideable World;
@@ -136,33 +134,99 @@ namespace LosSantosRED.lsr
             Settings = settings;
             Time = time;
             VehicleScannerAudio = new VehicleScannerAudio();
-            VehicleScannerAudio.ReadConfig();
             StreetScannerAudio = new StreetScannerAudio();
-            StreetScannerAudio.ReadConfig();
             ZoneScannerAudio = new ZoneScannerAudio();
-            ZoneScannerAudio.ReadConfig();
-
             CallsignScannerAudio = new CallsignScannerAudio();
-            CallsignScannerAudio.ReadConfig();
-
-            DefaultConfig();
-        }
-        private enum LocationSpecificity
-        {
-            Nothing = 0,
-            Zone = 1,
-            HeadingAndStreet = 3,
-            StreetAndZone = 5,
-            Street = 6,
         }
         public bool RecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000;
         public bool RecentlyMentionedStreet => GameTimeLastMentionedStreet != 0 && Game.GameTime - GameTimeLastMentionedStreet <= 10000;
-
         public bool RecentlyMentionedLocation => GameTimeLastMentionedLocation != 0 && Game.GameTime - GameTimeLastMentionedLocation <= 15000;
-
         public bool RecentlyMentionedUnits => GameTimeLastMentionedUnits != 0 && Game.GameTime - GameTimeLastMentionedUnits <= 10000;
         public bool RecentlyMentionedZone => GameTimeLastMentionedZone != 0 && Game.GameTime - GameTimeLastMentionedZone <= 10000;
         public bool VeryRecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000;
+        public void Setup()
+        {
+            VehicleScannerAudio.ReadConfig();
+            StreetScannerAudio.ReadConfig();
+            ZoneScannerAudio.ReadConfig();
+            CallsignScannerAudio.ReadConfig();
+            DefaultConfig();
+        }
+        public void Update()
+        {
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled)
+            {
+                CheckDispatch();
+                if (DispatchQueue.Count > 0 && !ExecutingQueue)
+                {
+                    EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, starting execution", 5);
+                    ExecutingQueue = true;
+                    GameFiber.Yield();
+                    GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
+                    {
+                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                        if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
+                        {
+                            DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
+                        }
+                        if (DispatchQueue.Count() > 1)
+                        {
+                            Dispatch HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
+                            DispatchQueue.Clear();
+                            if (HighestItem != null)
+                            {
+                                DispatchQueue.Add(HighestItem);
+                            }
+                        }
+                        while (DispatchQueue.Count > 0)
+                        {
+                            Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
+                            bool AddToPlayed = true;
+                            if (Player.IsNotWanted && Item.LatestInformation.SeenByOfficers)
+                            {
+                                AddToPlayed = false;
+                            }
+                            BuildDispatch(Item, AddToPlayed);
+                            if (DispatchQueue.Contains(Item))
+                            {
+                                DispatchQueue.Remove(Item);
+                            }
+                            GameFiber.Yield();
+                        }
+                        ExecutingQueue = false;
+                        EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, finishing execution, DONE", 5);
+                    }, "PlayDispatchQueue");
+                }
+            }
+        }
+        public void Reset()
+        {
+            DispatchQueue.Clear();
+            ReportedLethalForceAuthorized = false;
+            ReportedWeaponsFree = false;
+            ReportedRequestAirSupport = false;
+            HighestCivilianReportedPriority = 99;
+            HighestOfficerReportedPriority = 99;
+            foreach (Dispatch ToReset in DispatchList)
+            {
+                ToReset.HasBeenPlayedThisWanted = false;
+                ToReset.LatestInformation = new CrimeSceneDescription();
+                ToReset.TimesPlayed = 0;
+            }
+            //newish
+            GameTimeLastAnnouncedDispatch = 0;
+            GameTimeLastDisplayedSubtitle = 0;
+            GameTimeLastMentionedStreet = 0;
+            GameTimeLastMentionedZone = 0;
+            GameTimeLastMentionedUnits = 0;
+            GameTimeLastMentionedLocation = 0;
+            //end newish
+            DispatchQueue.Clear();
+        }
+        public void Dispose()
+        {
+            Abort();
+        }
         public void Abort()
         {
             AudioPlayer.Abort();
@@ -200,6 +264,7 @@ namespace LosSantosRED.lsr
             Reset();
             AddToQueue(DispatchList.PickRandom());
         }
+        //Events
         public void OnAppliedWantedStats(int wantedLevel)
         {
             if (!WantedSuspectSpotted.HasRecentlyBeenPlayed)
@@ -456,77 +521,7 @@ namespace LosSantosRED.lsr
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
         }
-        public void Reset()
-        {
-            DispatchQueue.Clear();
-            ReportedLethalForceAuthorized = false;
-            ReportedWeaponsFree = false;
-            ReportedRequestAirSupport = false;
-            HighestCivilianReportedPriority = 99;
-            HighestOfficerReportedPriority = 99;
-            foreach (Dispatch ToReset in DispatchList)
-            {
-                ToReset.HasBeenPlayedThisWanted = false;
-                ToReset.LatestInformation = new CrimeSceneDescription();
-                ToReset.TimesPlayed = 0;
-            }
-            //newish
-            GameTimeLastAnnouncedDispatch = 0;
-            GameTimeLastDisplayedSubtitle = 0;
-            GameTimeLastMentionedStreet = 0;
-            GameTimeLastMentionedZone = 0;
-            GameTimeLastMentionedUnits = 0;
-            GameTimeLastMentionedLocation = 0;
-            //end newish
-            DispatchQueue.Clear();
-        }
-        public void Update()
-        {
-            if (Settings.SettingsManager.ScannerSettings.IsEnabled)
-            {
-                CheckDispatch();
-                if (DispatchQueue.Count > 0 && !ExecutingQueue)
-                {
-                    EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, starting execution", 5);
-                    ExecutingQueue = true;
-                    GameFiber.Yield();
-                    GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
-                    {
-                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
-                        if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
-                        {
-                            DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
-                        }
-                        if (DispatchQueue.Count() > 1)
-                        {
-                            Dispatch HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
-                            DispatchQueue.Clear();
-                            if (HighestItem != null)
-                            {
-                                DispatchQueue.Add(HighestItem);
-                            }
-                        }
-                        while (DispatchQueue.Count > 0)
-                        {
-                            Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
-                            bool AddToPlayed = true;
-                            if (Player.IsNotWanted && Item.LatestInformation.SeenByOfficers)
-                            {
-                                AddToPlayed = false;
-                            }
-                            BuildDispatch(Item, AddToPlayed);
-                            if (DispatchQueue.Contains(Item))
-                            {
-                                DispatchQueue.Remove(Item);
-                            }
-                            GameFiber.Yield();
-                        }
-                        ExecutingQueue = false;
-                        EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, finishing execution, DONE", 5);
-                    }, "PlayDispatchQueue");
-                }
-            }
-        }
+        //Builder
         private void AddAttentionRandomUnit(DispatchEvent dispatchEvent)
         {
             dispatchEvent.SoundsToPlay.Add(RadioStart.PickRandom());
@@ -1346,8 +1341,13 @@ namespace LosSantosRED.lsr
             {
                 EventToPlay.CanInterrupt = true;
             }
+            if(DispatchToPlay.AnyDispatchInterrupts)
+            {
+                EventToPlay.AnyDispatchInterrupts = true;
+            }
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
         }
+        //Other
         private void CheckDispatch()
         {
             if (Player.RecentlyStartedPlaying)
@@ -1547,6 +1547,15 @@ namespace LosSantosRED.lsr
                 AbortedAudio = true;
                 Abort();
             }
+
+            if (CurrentlyPlaying != null && CurrentlyPlaying.AnyDispatchInterrupts)
+            {
+                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                AbortedAudio = true;
+                Abort();
+            }
+
+
             GameFiber.Yield();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
@@ -2808,6 +2817,8 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysBeInterrupted = true,
+                AnyDispatchInterrupts = true,
+
                 NotificationTitle = "Emergency Scanner",
                 MainAudioSet = new List<AudioSet>()
             {
@@ -2832,6 +2843,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
+                AnyDispatchInterrupts = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crook_arrested.Officershaveapprehendedsuspect.FileName },"officers have apprehended suspect"),
@@ -2844,6 +2856,7 @@ namespace LosSantosRED.lsr
                 IsStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
+                AnyDispatchInterrupts = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crook_killed.Criminaldown.FileName },"criminal down"),
@@ -2973,6 +2986,7 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.Zone,
                 CanAlwaysInterrupt = false,
                 CanAlwaysBeInterrupted = true,
+                AnyDispatchInterrupts = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_1.SuspectEvadedPursuingOfficiers.FileName },"suspect evaded pursuing officers"),
@@ -3003,6 +3017,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
+                AnyDispatchInterrupts = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { suspect_eluded_pt_2.AllUnitsStayInTheArea.FileName },"all units stay in the area"),
@@ -3021,6 +3036,7 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.Zone,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
+                AnyDispatchInterrupts = true,
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { attempt_to_find.AllunitsATonsuspects20.FileName },"all units ATL on suspects 20"),
@@ -3054,6 +3070,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
+                AnyDispatchInterrupts = true,
                 NotificationTitle = "Emergency Scanner",
                 MainAudioSet = new List<AudioSet>()
             {
@@ -3069,127 +3086,6 @@ namespace LosSantosRED.lsr
                 //    new AudioSet(new List<string>() { officer_begin_patrol.Beginpatrol.FileName },"begin patrol"),
                 //}
             };
-        }
-        private class CrimeDispatch
-        {
-            public CrimeDispatch(string crimeID, Dispatch dispatchToPlay)
-            {
-                CrimeID = crimeID;
-                Dispatch = dispatchToPlay;
-            }
-            public string CrimeID { get; set; }
-            public Dispatch Dispatch { get; set; }
-        }
-        private class Dispatch
-        {
-            private uint GameTimeLastPlayed;
-            public Dispatch()
-            {
-            }
-            public bool CanAddExtras { get; set; } = true;
-            public bool CanAlwaysBeInterrupted { get; set; }
-            public bool CanAlwaysInterrupt { get; set; }
-            public bool CanBeReportedMultipleTimes { get; set; } = true;
-            public bool HasBeenPlayedThisWanted { get; set; }
-            public bool HasPreamble
-            {
-                get
-                {
-                    if (PreambleAudioSet.Any())
-                        return true;
-                    else
-                        return false;
-                }
-            }
-            public bool HasRecentlyBeenPlayed
-            {
-                get
-                {
-                    uint TimeBetween = 25000;
-                    if (TimesPlayed > 0)
-                    {
-                        TimeBetween = 60000;
-                    }
-                    if (Game.GameTime - GameTimeLastPlayed <= TimeBetween)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            public bool HasVeryRecentlyBeenPlayed
-            {
-                get
-                {
-                    if (Game.GameTime - GameTimeLastPlayed <= 15000)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
-                }
-            }
-            public bool HasntBeenPlayedForAWhile => Game.GameTime - GameTimeLastPlayed <= 180000;
-            public bool IncludeAttentionAllUnits { get; set; }
-            public bool IncludeCarryingWeapon { get; set; }
-            public bool IncludeDrivingSpeed { get; set; }
-            public bool IncludeDrivingVehicle { get; set; }
-            public bool IncludeLicensePlate { get; set; }
-            public bool IncludeRapSheet { get; set; }
-            public bool IncludeReportedBy { get; set; } = true;
-            public bool IsStatus { get; set; }
-            public CrimeSceneDescription LatestInformation { get; set; } = new CrimeSceneDescription();
-            public LocationSpecificity LocationDescription { get; set; } = LocationSpecificity.Nothing;
-            public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();
-            public List<AudioSet> MainMultiAudioSet { get; set; } = new List<AudioSet>();
-            public bool MarkVehicleAsStolen { get; set; }
-            public string Name { get; set; } = "Unknown";
-            public string NotificationSubtitle { get; set; } = "";
-            public string NotificationText
-            {
-                get
-                {
-                    return Name;
-                }
-            }
-            public string NotificationTitle { get; set; } = "Police Scanner";
-            public List<AudioSet> PreambleAudioSet { get; set; } = new List<AudioSet>();
-            public int Priority { get; set; } = 99;
-            public bool ResultsInLethalForce { get; set; }
-            public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
-            public int TimesPlayed { get; set; }
-            public bool VehicleIncludesIn { get; set; }
-            public void SetPlayed()
-            {
-                GameTimeLastPlayed = Game.GameTime;
-                HasBeenPlayedThisWanted = true;
-                TimesPlayed++;
-            }
-        }
-        private class DispatchEvent
-        {
-            public DispatchEvent()
-            {
-            }
-            public bool CanBeInterrupted { get; set; } = true;
-            public bool CanInterrupt { get; set; } = true;
-            public bool HasStreetAudio { get; set; }
-            public bool HasUnitAudio { get; set; }
-            public bool HasLocationAudio { get; set; }
-            public bool HasZoneAudio { get; set; }
-            public string NotificationSubtitle { get; set; } = "Status";
-            public string NotificationText { get; set; } = "~b~Scanner Audio";
-            public string NotificationTitle { get; set; } = "Police Scanner";
-            public Vector3 PositionToReport { get; set; }
-            public int Priority { get; set; } = 99;
-            public List<string> SoundsToPlay { get; set; } = new List<string>();
-            public string Subtitles { get; set; }
-            public int UnitAudioAmount { get; set; }
         }
     }
 }

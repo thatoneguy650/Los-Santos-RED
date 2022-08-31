@@ -7,7 +7,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IViolateable
     {
         LocationData CurrentLocation { get; set; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         WeaponEquipment WeaponEquipment { get; }
         Investigation Investigation { get; }
         PoliceResponse PoliceResponse { get; }

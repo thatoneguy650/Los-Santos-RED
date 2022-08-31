@@ -99,9 +99,9 @@ public class GangKickUp
         {
             int test = DueAmount;
             Reset();
-            Player.GangRelationships.ResetGang(false);
-            Player.GangRelationships.SetDebt(Gang, test);
-            Player.GangRelationships.SetReputation(Gang, -500, true);
+            Player.RelationshipManager.GangRelationships.ResetGang(false);
+            Player.RelationshipManager.GangRelationships.SetDebt(Gang, test);
+            Player.RelationshipManager.GangRelationships.SetReputation(Gang, -500, true);
         }
         else
         {

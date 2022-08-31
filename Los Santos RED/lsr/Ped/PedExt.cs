@@ -292,7 +292,7 @@ public class PedExt : IComplexTaskable
             if (this.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)this;
-                PlayerToCheck.GangRelationships.ChangeReputation(gm.Gang, 100, true);
+                PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, 100, true);
             }
         }
     }
@@ -357,7 +357,7 @@ public class PedExt : IComplexTaskable
             if (this.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)this;
-                PlayerToCheck.GangRelationships.ChangeReputation(gm.Gang, -100, true);
+                PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, -100, true);
             }
         }
     }

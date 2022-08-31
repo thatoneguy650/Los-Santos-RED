@@ -272,7 +272,7 @@
     <Compile Include="lsr\Player\Destinations.cs" />
     <Compile Include="lsr\Player\Gang\GangKickUp.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupManager.cs" />
-    <Compile Include="lsr\Player\GunDealerRelationship.cs" />
+    <Compile Include="lsr\Player\Relationships\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\HealthManager.cs" />
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />
     <Compile Include="lsr\Player\HumanState\HumanNeed.cs" />
@@ -308,7 +308,7 @@
     <Compile Include="lsr\Player\Licenses\License.cs" />
     <Compile Include="lsr\Player\Licenses\Licenses.cs" />
     <Compile Include="lsr\Player\MeleeManager.cs" />
-    <Compile Include="lsr\Player\OfficerFriendlyRelationship.cs" />
+    <Compile Include="lsr\Player\Relationships\OfficerFriendlyRelationship.cs" />
     <Compile Include="lsr\Player\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
@@ -324,7 +324,7 @@
     <Compile Include="lsr\Player\Cellphone\NotificationIconTypes.cs" />
     <Compile Include="lsr\Player\Cellphone\PhoneResponse.cs" />
     <Compile Include="lsr\Player\eSelectorSetting.cs" />
-    <Compile Include="lsr\Player\Gang\GangRelationships.cs" />
+    <Compile Include="lsr\Player\Relationships\GangRelationships.cs" />
     <Compile Include="lsr\Player\Gang\GangReputation.cs" />
     <Compile Include="lsr\Player\Interface\ICellPhoneable.cs" />
     <Compile Include="lsr\Player\Interface\IBusRideable.cs" />
@@ -340,6 +340,11 @@
     <Compile Include="lsr\Player\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Properties\Properties.cs" />
+    <Compile Include="lsr\Player\Relationships\RelationshipManager.cs" />
+    <Compile Include="lsr\Player\Scanner\CrimeDispatch.cs" />
+    <Compile Include="lsr\Player\Scanner\Dispatch.cs" />
+    <Compile Include="lsr\Player\Scanner\DispatchEvent.cs" />
+    <Compile Include="lsr\Player\Scanner\LocationSpecificitycs.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\Player\Stance\Stance.cs" />
     <Compile Include="lsr\Player\Equipment\WeaponEquipment.cs" />
@@ -353,6 +358,7 @@
     <Compile Include="lsr\Spawner\LESpawnTask.cs" />
     <Compile Include="lsr\Spawner\SpawnTask.cs" />
     <Compile Include="lsr\Tasker\Civilian\Tasks\GetArrestedSimple.cs" />
+    <Compile Include="lsr\Tasker\Gang\Tasks\GangIdle2.cs" />
     <Compile Include="lsr\Tasker\Other\SeatAssigner.cs" />
     <Compile Include="lsr\Tasker\Cop\SubTasks\FootChase.cs" />
     <Compile Include="lsr\Tasker\EMT\Tasks\EMTFlee.cs" />

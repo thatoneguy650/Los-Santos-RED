@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -181,7 +182,7 @@ public class Seats : ISeats
         {
             SeatModel seatModel = GetSeatModel(obj);
             string modelName = obj.Model.Name.ToLower();
-            if (seatModel != null || modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
+            if (seatModel != null || NativeHelper.IsSittableModel(modelName))
             {
                 return true;
             }

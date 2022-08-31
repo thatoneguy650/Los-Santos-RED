@@ -102,14 +102,14 @@ namespace LosSantosRED.lsr.Data
                 }
             }
             GangReputations = new List<GangRepSave>();
-            foreach (GangReputation gr in player.GangRelationships.GangReputations)
+            foreach (GangReputation gr in player.RelationshipManager.GangRelationships.GangReputations)
             {
                 GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
             }
 
-            if(player.GangRelationships.CurrentGangKickUp != null)
+            if(player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
-                GangKickSave = new GangKickSave(player.GangRelationships.CurrentGang.ID, player.GangRelationships.CurrentGangKickUp.DueDate, player.GangRelationships.CurrentGangKickUp.MissedPeriods, player.GangRelationships.CurrentGangKickUp.MissedAmount);
+                GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
 
             Contacts = new List<SavedContact>();
@@ -123,12 +123,12 @@ namespace LosSantosRED.lsr.Data
                 TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, ifc.Index, ""));
             }
             CurrentDateTime = time.CurrentDateTime;
-            UndergroundGunsMoneySpent = player.GunDealerRelationship.TotalMoneySpentAtShops;
-            UndergroundGunsDebt = player.GunDealerRelationship.PlayerDebt;
-            UndergroundGunsReputation = player.GunDealerRelationship.ReputationLevel;
-            OfficerFriendlyMoneySpent = player.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
-            OfficerFriendlyDebt = player.OfficerFriendlyRelationship.PlayerDebt;
-            OfficerFriendlyReputation = player.OfficerFriendlyRelationship.ReputationLevel;
+            UndergroundGunsMoneySpent = player.RelationshipManager.GunDealerRelationship.TotalMoneySpentAtShops;
+            UndergroundGunsDebt = player.RelationshipManager.GunDealerRelationship.PlayerDebt;
+            UndergroundGunsReputation = player.RelationshipManager.GunDealerRelationship.ReputationLevel;
+            OfficerFriendlyMoneySpent = player.RelationshipManager.OfficerFriendlyRelationship.TotalMoneySpentOnBribes;
+            OfficerFriendlyDebt = player.RelationshipManager.OfficerFriendlyRelationship.PlayerDebt;
+            OfficerFriendlyReputation = player.RelationshipManager.OfficerFriendlyRelationship.ReputationLevel;
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
             HungerValue = player.HumanState.Hunger.CurrentValue;
@@ -225,8 +225,8 @@ namespace LosSantosRED.lsr.Data
                     Gang myGang = gangs.GetGang(tuple.GangID);
                     if (myGang != null)
                     {
-                        player.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
-                        player.GangRelationships.SetRepStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember, tuple.IsEnemy);
+                        player.RelationshipManager.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
+                        player.RelationshipManager.GangRelationships.SetRepStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember, tuple.IsEnemy);
                     }
                 }
 
@@ -235,7 +235,7 @@ namespace LosSantosRED.lsr.Data
                     Gang myGang = gangs.GetGang(GangKickSave.GangID);
                     if (myGang != null)
                     {
-                        player.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
+                        player.RelationshipManager.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
                     }      
                 }
                 foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
@@ -264,12 +264,12 @@ namespace LosSantosRED.lsr.Data
                     player.Character.Position = PlayerPosition;
                     player.Character.Heading = PlayerHeading;
                 }
-                player.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
-                player.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
-                player.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
-                player.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
-                player.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
-                player.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
+                player.RelationshipManager.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
+                player.RelationshipManager.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
+                player.RelationshipManager.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
+                player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
+                player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
+                player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
                 if (DriversLicense != null)
                 {
                     player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };

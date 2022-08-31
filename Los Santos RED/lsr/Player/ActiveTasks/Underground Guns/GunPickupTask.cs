@@ -210,7 +210,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private void AddComplications()
         {
-            GangReputation gr = Player.GangRelationships.GangReputations.Where(x => x.GangRelationship == GangRespect.Hostile).PickRandom();
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GangReputations.Where(x => x.GangRelationship == GangRespect.Hostile).PickRandom();
             if (gr != null && gr.Gang != null && SpawnedVehicleExt != null)
             {
                 SendGangSabotageMessage(gr.Gang);

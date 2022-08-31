@@ -33,7 +33,7 @@ public class ContactsTab
             Gang myGang = Gangs.GetGangByContact(contact.Name);
             if (myGang != null)
             {
-                GangReputation gr = Player.GangRelationships.GangReputations.FirstOrDefault(x => x.Gang.ID == myGang.ID);
+                GangReputation gr = Player.RelationshipManager.GangRelationships.GangReputations.FirstOrDefault(x => x.Gang.ID == myGang.ID);
                 if (gr != null)
                 {
                     Title = $"{contact.Name} {gr.ToBlip()}~s~";

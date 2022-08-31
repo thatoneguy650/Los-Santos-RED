@@ -108,25 +108,25 @@ public class PlayerTasks
             {
                 if (myTask.RepAmountOnCompletion != 0)
                 {
-                    Player.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnCompletion, false);
+                    Player.RelationshipManager.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnCompletion, false);
                 }
-                Player.GangRelationships.SetDebt(myGang, 0);
+                Player.RelationshipManager.GangRelationships.SetDebt(myGang, 0);
             }
             else if (contactName == EntryPoint.UndergroundGunsContactName)
             {
                 if (myTask.RepAmountOnCompletion != 0)
                 {
-                    Player.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
+                    Player.RelationshipManager.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
                 }
-                Player.GunDealerRelationship.SetDebt(0);
+                Player.RelationshipManager.GunDealerRelationship.SetDebt(0);
             }
             else if (contactName == EntryPoint.OfficerFriendlyContactName)
             {
                 if (myTask.RepAmountOnCompletion != 0)
                 {
-                    Player.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
+                    Player.RelationshipManager.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
                 }
-                Player.OfficerFriendlyRelationship.SetDebt(0);
+                Player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(0);
             }
 
 
@@ -159,33 +159,33 @@ public class PlayerTasks
             {
                 if (myTask.RepAmountOnFail != 0)
                 {
-                    Player.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnFail, false);
+                    Player.RelationshipManager.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnFail, false);
                 }
                 if (myTask.DebtAmountOnFail != 0)
                 {
-                    Player.GangRelationships.AddDebt(myGang, myTask.DebtAmountOnFail);
+                    Player.RelationshipManager.GangRelationships.AddDebt(myGang, myTask.DebtAmountOnFail);
                 }
             }
             else if(contactName == EntryPoint.UndergroundGunsContactName)
             {
                 if (myTask.RepAmountOnFail != 0)
                 {
-                    Player.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
+                    Player.RelationshipManager.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
                 }
                 if (myTask.DebtAmountOnFail != 0)
                 {
-                    Player.GunDealerRelationship.AddDebt(myTask.DebtAmountOnFail);
+                    Player.RelationshipManager.GunDealerRelationship.AddDebt(myTask.DebtAmountOnFail);
                 } 
             }
             else if (contactName == EntryPoint.OfficerFriendlyContactName)
             {
                 if (myTask.RepAmountOnFail != 0)
                 {
-                    Player.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
+                    Player.RelationshipManager.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
                 }
                 if (myTask.DebtAmountOnFail != 0)
                 {
-                    Player.OfficerFriendlyRelationship.AddDebt(myTask.DebtAmountOnFail);
+                    Player.RelationshipManager.OfficerFriendlyRelationship.AddDebt(myTask.DebtAmountOnFail);
                 }
             }
             myTask.IsActive = false;

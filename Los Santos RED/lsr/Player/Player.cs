@@ -60,8 +60,8 @@ namespace Mod
         private uint GameTimeLastClosedDoor;
         private bool isCheckingExcessSpeed;
         private bool isShooting;
-
         private uint prevCurrentLookedAtObjectHandle;
+
         private DynamicActivity LowerBodyActivity;
         private DynamicActivity UpperBodyActivity;
 
@@ -85,7 +85,8 @@ namespace Mod
 
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
-            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus, IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats)
+            , IAudioPlayable audio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -123,11 +124,9 @@ namespace Mod
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
-            GangRelationships = new GangRelationships(gangs, this, Settings, PlacesOfInterest, TimeControllable);
+            RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
-            GunDealerRelationship = new GunDealerRelationship(this, PlacesOfInterest);
-            OfficerFriendlyRelationship = new OfficerFriendlyRelationship(this, PlacesOfInterest);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
             ButtonPrompts = new ButtonPrompts(this, Settings);
@@ -142,10 +141,10 @@ namespace Mod
             BankAccounts = new BankAccounts(this, Settings);
             ActivityManager = new ActivityManager(this);
             HealthManager = new HealthManager(this, Settings);
-            GroupManager = new GroupManager(this, Settings, World, gangs);
+            GroupManager = new GroupManager(this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
         }
-
+        public RelationshipManager RelationshipManager { get; private set; }
         public Destinations Destinations { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
         public PlayerTasks PlayerTasks { get; private set; }
@@ -154,8 +153,6 @@ namespace Mod
         public CellPhone CellPhone { get; private set; }
         public LocationData CurrentLocation { get; set; }
         public WeaponEquipment WeaponEquipment { get; private set; }
-        public GangRelationships GangRelationships { get; private set; }
-        public GunDealerRelationship GunDealerRelationship { get; private set; }
         public HumanState HumanState { get; set; }
         public HealthState HealthState { get; private set; }
         public Injuries Injuries { get; private set; }
@@ -163,7 +160,6 @@ namespace Mod
         public Inventory Inventory { get; set; }
         public Investigation Investigation { get; private set; }
         public Licenses Licenses { get; private set; }
-        public OfficerFriendlyRelationship OfficerFriendlyRelationship { get; private set; }
         public Properties Properties { get; private set; }
         public Sprinting Sprinting { get; private set; }
         public Stance Stance { get; private set; }
@@ -187,7 +183,6 @@ namespace Mod
         public bool AnyPoliceCanRecognizePlayer { get; set; }
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
-
         public bool AnyPoliceKnowInteriorLocation { get; set; }
         public Rage.Object AttachedProp { get; set; }
         public bool BeingArrested { get; private set; }
@@ -202,12 +197,7 @@ namespace Mod
         public bool CanDragLookedAtPed => CurrentLookedAtPed != null && CurrentTargetedPed == null && CanDrag && !CurrentLookedAtPed.IsInVehicle && (CurrentLookedAtPed.IsUnconscious || CurrentLookedAtPed.IsDead);
         public bool CanPerformActivities => (!IsMovingFast || IsInVehicle) && !IsIncapacitated && !IsDead && !IsBusted && !IsGettingIntoAVehicle && !IsMovingDynamically && !RecentlyGotOutOfVehicle;
         public bool CanTakeHostage => !IsCop && !IsInVehicle && !IsIncapacitated && !IsLootingBody && !IsDancing && WeaponEquipment.CurrentWeapon != null && WeaponEquipment.CurrentWeapon.CanPistolSuicide;
-
-
-        public bool CanRecruitLookedAtGangMember => CurrentLookedAtGangMember != null && CurrentTargetedPed == null && GangRelationships.CurrentGang != null && CurrentLookedAtGangMember.Gang != null && GangRelationships.CurrentGang.ID == CurrentLookedAtGangMember.Gang.ID && !GroupManager.IsMember(CurrentLookedAtGangMember);
-
-
-
+        public bool CanRecruitLookedAtGangMember => CurrentLookedAtGangMember != null && CurrentTargetedPed == null && RelationshipManager.GangRelationships.CurrentGang != null && CurrentLookedAtGangMember.Gang != null && RelationshipManager.GangRelationships.CurrentGang.ID == CurrentLookedAtGangMember.Gang.ID && !GroupManager.IsMember(CurrentLookedAtGangMember);
         public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
         public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
         public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -436,18 +426,15 @@ namespace Mod
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public bool WasDangerouslyArmedWhenBusted { get; private set; }
-
-
         //Required
         public void Setup()
         {
             Violations.Setup();
             Respawning.Setup();
-            GangRelationships.Setup();
+            Scanner.Setup();
+            RelationshipManager.Setup();
             CellPhone.Setup();
             PlayerTasks.Setup();
-            GunDealerRelationship.Setup();
-            OfficerFriendlyRelationship.Setup();
             Properties.Setup();
             ButtonPrompts.Setup();
             HumanState.Setup();
@@ -455,9 +442,7 @@ namespace Mod
             SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             WeaponEquipment.SetUnarmed();
-
             VehicleOwnership.Setup();
-
             BankAccounts.Setup();
             HealthManager.Setup();
             GroupManager.Setup();
@@ -537,25 +522,18 @@ namespace Mod
             ButtonPrompts.Update();
             MeleeManager.Update();
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup)
         {
             IsDead = false;
             IsBusted = false;
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             HealthState.Reset();
-            
-            IsPerformingActivity = false;
-            
-            
+            IsPerformingActivity = false; 
             CurrentVehicle = null;
-
             Destinations.Reset();
-
             NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
             IsMobileRadioEnabled = false;
-
-
             if (resetWanted)
             {
                 GameTimeStartedPlaying = Game.GameTime;
@@ -565,46 +543,34 @@ namespace Mod
                 Scanner.Reset();
                 Update();
             }
-
-
             if (resetTimesDied)
             {
                 Respawning.Reset();
             }
-
             if (resetWeapons)
             {
                 WeaponEquipment.Reset();           
             }
-
-
             if (resetCriminalHistory)
             {
                 CriminalHistory.Reset();
             }
-
             if (resetInventory)
             {
                 Inventory.Reset();
             }
-
             if (resetIntoxication)
             {
                 Intoxication.Reset();
             }
-
             if (resetRelationships)
             {
-                GangRelationships.Reset();
-                OfficerFriendlyRelationship.Reset(false);
-                GunDealerRelationship.Reset(false);
+                RelationshipManager.Reset(false);
             }
-
             if (resetOwnedVehicles)
             {
                 VehicleOwnership.Reset();
             }
-
             if (resetCellphone)
             {
                 CellPhone.Reset();
@@ -617,34 +583,35 @@ namespace Mod
             {
                 Properties.Reset();
             }
-
             if (resetHealth)
             {
                 Injuries.Reset();
             }
-
             if (resetNeeds)
             {
                 HumanState.Reset();
+            }
+            if(resetGroup)
+            {
+                GroupManager.Reset();
             }
         }
         public void Dispose()
         {
             isActive = false;
+            Scanner.Dispose();
             Investigation.Dispose(); //remove blip
             CriminalHistory.Dispose(); //remove blip
             PoliceResponse.Dispose(); //same ^
             Interaction?.Dispose();
             SearchMode.Dispose();
-            GangRelationships.Dispose();
+            RelationshipManager.Dispose();
             CellPhone.Dispose();
             PlayerTasks.Dispose();
             Properties.Dispose();
             ButtonPrompts.Dispose();
             Intoxication.Dispose();
             Injuries.Dispose();
-            GunDealerRelationship.Dispose();
-            OfficerFriendlyRelationship.Dispose();
             HumanState.Dispose();
             WeaponEquipment.Dispose();
             Destinations.Dispose();
@@ -684,7 +651,6 @@ namespace Mod
                 Game.FadeScreenIn(0, false);
             }
         }
-
         //Needed
         public void ChangeName(string newName)
         {
@@ -737,7 +703,6 @@ namespace Mod
                 HasThrownGotOffFreeway = true;
             }
         }
-
         //Maybe?
         public int FineAmount()
         {
@@ -812,7 +777,6 @@ namespace Mod
                 }
             }
         }
-
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
         public void OnGotOffFreeway()
@@ -1233,7 +1197,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnLostWanted();
                     GameFiber.Yield();
-                    GangRelationships.OnLostWanted();
+                    RelationshipManager.GangRelationships.OnLostWanted();
                     World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
                 }
@@ -1254,7 +1218,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
-                    GangRelationships.OnBecameWanted();
+                    RelationshipManager.GangRelationships.OnBecameWanted();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
             }
@@ -1348,7 +1312,6 @@ namespace Mod
                 }
             }
         }
-
         //Vehicle Stuff
         public void ChangePlate(int Index)
         {
@@ -1458,8 +1421,7 @@ namespace Mod
                 CurrentVehicle.SetDriverWindow(!CurrentVehicle.ManuallyRolledDriverWindowDown);
             }
         }
-
-        //ACtions
+        //Actions
         public void CommitSuicide()
         {
             if (!IsPerformingActivity && CanPerformActivities && !IsSitting && !IsInVehicle)
@@ -1998,7 +1960,6 @@ namespace Mod
                 GameTimeLastYelled = Game.GameTime;
             }
         }
-
         //Interactions
         public void StartTransaction()
         {
@@ -2024,7 +1985,6 @@ namespace Mod
                 }
             }
         }
-
         //Update Data
         public void UpdateStateData()
         {

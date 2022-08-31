@@ -14,7 +14,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
         WeaponEquipment WeaponEquipment { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         Inventory Inventory { get; }
         VehicleOwnership VehicleOwnership { get; }
         BankAccounts BankAccounts { get; }

@@ -47,6 +47,7 @@ public class Cop : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
+    public bool RecentlyUpdatedTarget => GameTimeLastUpdatedTarget != 0 && Game.GameTime - GameTimeLastUpdatedTarget >= 1000;
     //public bool WasModSpawned { get; private set; }
     public string ModelName { get; set; }
     public int ShootRate { get; set; } = 500;
@@ -65,6 +66,10 @@ public class Cop : PedExt, IWeaponIssuable
     public int Division { get; set; } = -1;
     public string UnityType { get; set; } = "Lincoln";
     public int BeatNumber { get; set; } = 1;
+
+
+    public uint GameTimeLastUpdatedTarget { get; set; }
+
 
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {

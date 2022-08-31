@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
         Respawning Respawning { get; }
         LocationData CurrentLocation { get; set; }
         WeaponEquipment WeaponEquipment { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         Investigation Investigation { get; }
         Licenses Licenses { get; }
         PoliceResponse PoliceResponse { get; }

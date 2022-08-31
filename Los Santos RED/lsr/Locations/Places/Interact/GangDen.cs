@@ -73,7 +73,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
 
         if (CanInteract)
         {
-            bool isPlayerMember = player.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
+            bool isPlayerMember = player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
             Player.IsInteractingWithLocation = true;
             CanInteract = false;
             GameFiber.StartNew(delegate
@@ -126,9 +126,9 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                     RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
 
 
-                    if(isPlayerMember && player.GangRelationships.CurrentGangKickUp != null)
+                    if(isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
                     {
-                        dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                        dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
                         InteractionMenu.AddItem(dropoffKick);
                     }
 
@@ -214,12 +214,12 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         }
         else if (selectedItem == dropoffKick)
         {
-            if(Player.GangRelationships.CurrentGangKickUp != null)
+            if(Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
-                if(Player.BankAccounts.Money >= Player.GangRelationships.CurrentGangKickUp.DueAmount)
+                if(Player.BankAccounts.Money >= Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount)
                 {
-                    Player.BankAccounts.GiveMoney(-1 * Player.GangRelationships.CurrentGangKickUp.DueAmount);
-                    Player.GangRelationships.CurrentGangKickUp.PayDue();
+                    Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount);
+                    Player.RelationshipManager.GangRelationships.CurrentGangKickUp.PayDue();
                     InteractionMenu.Visible = false;
                 }
                 else
@@ -261,7 +261,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                     {
                         Game.LocalPlayer.Character.Health++;
                     }
-                    Player.GangRelationships.ChangeReputation(AssociatedGang, 2, false);
+                    Player.RelationshipManager.GangRelationships.ChangeReputation(AssociatedGang, 2, false);
                     TimeLastAddedItems = TimeLastAddedItems.AddMinutes(30);
                 }
                 GameFiber.Yield();

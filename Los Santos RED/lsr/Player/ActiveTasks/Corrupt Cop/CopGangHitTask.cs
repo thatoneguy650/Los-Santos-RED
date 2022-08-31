@@ -94,7 +94,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
                     break;
                 }
-                if (Player.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
+                if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
                 {
                     CurrentTask.IsReadyForPayment = true;
                     Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Ready for Payment");
@@ -147,7 +147,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }   
         private void AddTask()
         {
-            CurrentGangReputation = Player.GangRelationships.GetReputation(TargetGang);
+            CurrentGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = CurrentGangReputation.MembersKilled;
             EntryPoint.WriteToConsole($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
             PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");

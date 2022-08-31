@@ -14,7 +14,7 @@ namespace LosSantosRED.lsr.Interface
         VehicleOwnership VehicleOwnership { get; }
         PoliceResponse PoliceResponse { get; }
         CellPhone CellPhone { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         PlayerTasks PlayerTasks { get; }
         Licenses Licenses { get; }
         BankAccounts BankAccounts { get; }

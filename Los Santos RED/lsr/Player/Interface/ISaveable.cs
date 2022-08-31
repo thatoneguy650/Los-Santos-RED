@@ -12,9 +12,7 @@ namespace LosSantosRED.lsr.Interface
     public interface ISaveable
     {
         CellPhone CellPhone { get; }
-        GangRelationships GangRelationships { get; }
-        GunDealerRelationship GunDealerRelationship { get; }
-        OfficerFriendlyRelationship OfficerFriendlyRelationship { get; }
+        RelationshipManager RelationshipManager { get; }
         Licenses Licenses { get; }
         Properties Properties { get; }
         HumanState HumanState { get; }

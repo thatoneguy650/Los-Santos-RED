@@ -117,6 +117,15 @@ public class CopTasker
     }
     private PedExt PedToAttack(Cop Cop)
     {
+        //if (Cop.RecentlyUpdatedTarget)
+        //{
+        //    return Cop.CurrentTask?.OtherTarget;
+        //}
+        //else
+        //{
+        //    Cop.GameTimeLastUpdatedTarget = Game.GameTime;
+        //}
+
         if (!PossibleTargets.Any(x => x.IsWanted))
         {
             return null;

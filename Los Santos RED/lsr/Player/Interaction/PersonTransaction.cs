@@ -324,7 +324,7 @@ public class PersonTransaction : Interaction
             if (Ped.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)Ped;
-                Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.PurchasePrice * totalItems, true);
+                Player.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, menuItem.PurchasePrice * totalItems, true);
             }
             Transaction.PurchaseMenu?.Show();
         }
@@ -338,7 +338,7 @@ public class PersonTransaction : Interaction
             if (Ped.GetType() == typeof(GangMember))
             {
                 GangMember gm = (GangMember)Ped;
-                Player.GangRelationships.ChangeReputation(gm.Gang, menuItem.SalesPrice * totalItems, true);
+                Player.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, menuItem.SalesPrice * totalItems, true);
             }
             Transaction.SellMenu?.Show();
         }

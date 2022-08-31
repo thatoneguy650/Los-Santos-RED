@@ -43,8 +43,8 @@ public class GangInteraction
     public void Start(Gang gang)
     {
         ActiveGang = gang;
-        GangReputation gr = Player.GangRelationships.GetReputation(ActiveGang);
-        int repLevel = Player.GangRelationships.GetRepuationLevel(ActiveGang);
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(ActiveGang);
+        int repLevel = Player.RelationshipManager.GangRelationships.GetRepuationLevel(ActiveGang);
 
         GangMenu = new UIMenu("", "Select an Option");
         GangMenu.RemoveBanner();

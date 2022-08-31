@@ -12,6 +12,8 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         PedExt CurrentLookedAtPed { get; }
         GangMember CurrentLookedAtGangMember { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
+        WeaponEquipment WeaponEquipment { get; }
+        int WantedLevel { get; }
     }
 }

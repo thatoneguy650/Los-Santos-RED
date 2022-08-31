@@ -31,12 +31,12 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; set; }
         Vector3 Position { get; }
         int WantedLevel { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         Licenses Licenses { get; }
         HumanState HumanState { get; }
 
         void DisplayPlayerNotification();
-        void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool v13);
+        void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool resetNeeds, bool resetGroup);
         void SetDemographics(string modelName, bool isMale, string v1, int v2, int speechSkill);
         void SetWantedLevel(int v1, string v2, bool v3);
         void UpdateVehicleData();

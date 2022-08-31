@@ -52,6 +52,10 @@ public class Civilians
         {
             World.TotalWantedLevel = PoliceRespondable.WantedLevel;
         }
+
+
+
+
         if(World.TotalWantedLevel > 0 && PoliceRespondable.IsNotWanted && !PoliceRespondable.Investigation.IsActive)
         {
             if (worstPed.Pedestrian.Exists())
@@ -172,7 +176,7 @@ public class Civilians
     {
         int localRan = 0;
 
-        string playerGangID = Perceptable.GangRelationships.CurrentGang?.ID;
+        string playerGangID = Perceptable.RelationshipManager.GangRelationships.CurrentGang?.ID;
 
         foreach (GangMember ped in World.Pedestrians.GangMemberList.OrderBy(x => x.GameTimeLastUpdated))
         {

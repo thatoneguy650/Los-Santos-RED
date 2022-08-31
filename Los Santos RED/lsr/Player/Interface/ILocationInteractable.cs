@@ -27,7 +27,7 @@ namespace LosSantosRED.lsr.Interface
         bool CanPerformActivities { get; }
         WeaponEquipment WeaponEquipment { get; }
         VehicleOwnership VehicleOwnership { get; }
-        GunDealerRelationship GunDealerRelationship { get; }
+        RelationshipManager RelationshipManager { get; }
         bool IsPerformingActivity { get; }
         Licenses Licenses { get; }
         string PlayerName { get; }
@@ -40,7 +40,6 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
-        GangRelationships GangRelationships { get; }
         bool IsDealingDrugs { get; set; }
         bool IsDealingIllegalGuns { get; set; }
         bool IsNotWanted { get; }

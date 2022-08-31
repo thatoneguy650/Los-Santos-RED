@@ -108,7 +108,7 @@ public class WeaponEquipment
             CurrentWeaponHash = PlayerCurrentWeapon.Hash;
             CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
             GameFiber.Yield();
-            if (CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee)
+            if (CurrentWeapon != null && PlayerCurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee)
             {
                 CurrentWeaponMagazineSize = PlayerCurrentWeapon.MagazineSize;
             }

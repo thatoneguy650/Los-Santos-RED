@@ -15,7 +15,7 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         Destinations Destinations { get; }
         LocationData CurrentLocation { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         PlayerTasks PlayerTasks { get; }
         CellPhone CellPhone { get; }
         PoliceResponse PoliceResponse { get; }

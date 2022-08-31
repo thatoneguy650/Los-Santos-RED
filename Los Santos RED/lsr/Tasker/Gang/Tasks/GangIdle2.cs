@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangIdle : ComplexTask
+public class GangIdle2 : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
@@ -27,8 +27,6 @@ public class GangIdle : ComplexTask
     private uint GameTimeLastStartedScenario;
     private uint GameTimeLastChangedWanderStuff;
     private uint GameTimeBetweenWanderDecision = 60000;
-    private uint GameTimeLastExitedVehicle;
-    private bool RecentlyExitedVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle >= 1000;
 
     private enum Task
     {
@@ -44,7 +42,7 @@ public class GangIdle : ComplexTask
             return Task.Wander;
         }
     }
-    public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GangIdle2(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "GangIdle";
         SubTaskName = "";
@@ -115,10 +113,6 @@ public class GangIdle : ComplexTask
                 ClearTasks(true);
                 WanderTask();
             }
-            else if (!RecentlyExitedVehicle && Ped.Pedestrian.IsInAnyVehicle(false) && !Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 0.2f)
-            {
-                ExitVehicleTask();
-            }
             else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
             {
                 WanderTask();
@@ -154,15 +148,7 @@ public class GangIdle : ComplexTask
             {
                 WanderDecisionTask();
             }
-            
-        }
-    }
-    private void ExitVehicleTask()
-    {
-        if (!RecentlyExitedVehicle && Ped.Pedestrian.IsInAnyVehicle(false) && !Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 0.2f)
-        {
-            NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
-            GameTimeLastExitedVehicle = Game.GameTime;
+
         }
     }
     private void WanderDecisionTask()
@@ -175,7 +161,7 @@ public class GangIdle : ComplexTask
             string Scenario;
             if (Ped.HasMenu)
             {
-                Scenario = new List<string>() { "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_DRUG_DEALER_HARD" }.PickRandom();
+                Scenario = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD" }.PickRandom();
             }
             else
             {

@@ -37,8 +37,6 @@ public class GangTasker
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
             Tasker.ExpireSeatAssignments();
-
-           //bool anyCopsNearPosition = PedProvider.Pedestrians.PoliceList.Any(x => NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, x.CellX, x.CellY, 4));
             foreach (GangMember gangMember in PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -54,12 +52,10 @@ public class GangTasker
                             UpdateCurrentTask(gangMember);//has yields if it does anything
                         }
                     }
-
                     if(gangMember.CurrentTask?.Name != "GetArrested" && !gangMember.CanBeAmbientTasked)
                     {
                         gangMember.CurrentTask = null;
                     }
-
                     if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
                     {
                         gangMember.UpdateTask(null);
@@ -76,7 +72,8 @@ public class GangTasker
     }
     private void UpdateCurrentTask(GangMember GangMember)//this should be moved out?
     {
-        GangReputation gr = Player.GangRelationships.GetReputation(GangMember.Gang);
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(GangMember.Gang);
+        bool isPlayerGang = Player.RelationshipManager.GangRelationships.CurrentGang?.ID == GangMember.Gang?.ID;
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
         bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 350f;
 
@@ -96,16 +93,14 @@ public class GangTasker
         }
         else if (GangMember.DistanceToPlayer <= 275f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
-            //WitnessedCrime HighestPriority = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            bool WillAttackPlayer = false;
+            bool WillFleeFromPlayer = false;
+
+
+
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
-
-
-
             WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-            //Crime HighestPriorityPlayer = Civilian.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-
-
             int PlayerCrimePriority = 99;
             foreach (Crime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.CanBeReportedByCivilians))
             {
@@ -123,25 +118,67 @@ public class GangTasker
                 HighestPriorityOtherCrime = null;
             }
 
-
-
-
-
-
-            if (SeenPlayerReactiveCrime)
+            if(isPlayerGang)
             {
-                if (GangMember.WillFight && !arePoliceNearby && ((isHostile && isNearHomeTerritory) || GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked)) //if (GangMember.WillFight && (!arePoliceNearby || (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))))
+                WillAttackPlayer = false;
+                WillFleeFromPlayer = false;
+            }
+            else
+            {
+            //if(isHostile && isNearHomeTerritory && GangMember.WillFight && !arePoliceNearby)
+            //{
+            //    WillAttackPlayer = true;
+            //}
+                if (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))
                 {
-                    SetFight(GangMember, HighestPriorityOtherCrime);
+                    if (GangMember.WillFight)
+                    {
+                        WillAttackPlayer = true;
+                    }
+                    else
+                    {
+                        WillFleeFromPlayer = true;
+                    }
+                }
+                else if (isHostile && GangMember.CanSeePlayer && isNearHomeTerritory && !arePoliceNearby && Player.IsNotWanted)
+                {
+                    if (GangMember.WillFight)
+                    {
+                        WillAttackPlayer = true;
+                    }
+                    else
+                    {
+                        WillFleeFromPlayer = true;
+                    }
+                }
+                if (SeenPlayerReactiveCrime)
+                {
+                    WillFleeFromPlayer = true;
+                }
+            }
+
+            if (GangMember.IsWanted)
+            {
+                if (GangMember.WillFight)
+                {
+                    SetFight(GangMember, null);
                 }
                 else
                 {
-                    SetFlee(GangMember, HighestPriorityOtherCrime);
+                    SetFlee(GangMember, null);
                 }
+            }
+            else if (WillAttackPlayer)
+            {
+                SetFight(GangMember, null);
+            }
+            else if (WillFleeFromPlayer)
+            {
+                SetFlee(GangMember, null);
             }
             else if (SeenOtherReactiveCrime)
             {
-                if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && !Player.Investigation.IsActive)
+                if (Settings.SettingsManager.GangSettings.AllowFightingOtherCriminals && GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted && !Player.Investigation.IsActive)
                 {
                     SetFight(GangMember, HighestPriorityOtherCrime);
                 }

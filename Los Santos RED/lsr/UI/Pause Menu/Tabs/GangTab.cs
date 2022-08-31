@@ -39,7 +39,7 @@ public class GangTab
     {
         items = new List<TabItem>();
         addedItems = false;
-        foreach (GangReputation gr in Player.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
+        foreach (GangReputation gr in Player.RelationshipManager.GangRelationships.GangReputations.OrderByDescending(x => x.GangRelationship == GangRespect.Hostile).ThenByDescending(x => x.GangRelationship == GangRespect.Friendly).ThenByDescending(x => Math.Abs(x.ReputationLevel)).ThenBy(x => x.Gang.ShortName))
         {
             AddItem(gr);
         }
@@ -136,10 +136,10 @@ public class GangTab
         {
             DescriptionText += $"~n~Drugs: {string.Join(", ", Drugs.OrderBy(x => x))}"; //+ gr.ToStringBare();
         }
-        if (Guns.Any())
-        {
-            DescriptionText += $"~n~Guns: {string.Join(", ", Guns.OrderBy(x => x))}"; //+ gr.ToStringBare();
-        }
+        //if (Guns.Any())
+        //{
+        //    DescriptionText += $"~n~Guns: {string.Join(", ", Guns.OrderBy(x => x))}"; //+ gr.ToStringBare();
+        //}
     }
     private void Addterritory(GangReputation gr)
     {
@@ -195,9 +195,9 @@ public class GangTab
             DescriptionText += $"~n~~r~Debt~s~: ~r~{debtstring}~s~";
         }
 
-        if(gr.IsMember && Player.GangRelationships.CurrentGangKickUp != null)
+        if(gr.IsMember && Player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
         {
-            DescriptionText += $"~n~{Player.GangRelationships.CurrentGangKickUp}";
+            DescriptionText += $"~n~{Player.RelationshipManager.GangRelationships.CurrentGangKickUp}";
         }
     }
 }

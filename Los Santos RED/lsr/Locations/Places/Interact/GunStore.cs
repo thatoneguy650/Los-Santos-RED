@@ -76,11 +76,11 @@ public class GunStore : InteractableLocation
 
                 if (ContactName == EntryPoint.UndergroundGunsContactName)
                 {
-                    Player.GunDealerRelationship.AddMoneySpent(Transaction.PurchaseMenu.MoneySpent);
-                    Player.GunDealerRelationship.AddMoneySpent(Transaction.SellMenu.MoneySpent);
+                    Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.PurchaseMenu.MoneySpent);
+                    Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.SellMenu.MoneySpent);
 
 
-                    player.GunDealerRelationship.SetReputation((Transaction.PurchaseMenu.MoneySpent + Transaction.SellMenu.MoneySpent) / 5, false);
+                    player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.PurchaseMenu.MoneySpent + Transaction.SellMenu.MoneySpent) / 5, false);
                 }
 
                 Transaction.DisposeTransactionMenu();

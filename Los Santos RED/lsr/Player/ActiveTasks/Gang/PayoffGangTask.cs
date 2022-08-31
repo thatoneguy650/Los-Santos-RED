@@ -123,7 +123,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetRequiredPayment()
         {
-            HiringGangReputation = Player.GangRelationships.GetReputation(HiringGang);
+            HiringGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(HiringGang);
             if(HiringGangReputation != null)
             {
                 if(HiringGangReputation.PlayerDebt > 0)
@@ -165,7 +165,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         "We are square",
                         };
             }
-            else if (Player.GangRelationships.IsHostile(HiringGang))// CurrentTask.RepAmountOnCompletion <= 0)
+            else if (Player.RelationshipManager.GangRelationships.IsHostile(HiringGang))// CurrentTask.RepAmountOnCompletion <= 0)
             {
                 Replies = new List<string>() {
                                 "I guess we can forget about that shit.",

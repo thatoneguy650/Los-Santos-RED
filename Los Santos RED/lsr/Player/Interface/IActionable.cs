@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         CellPhone CellPhone { get; }
         Investigation Investigation { get; }
-        GangRelationships GangRelationships { get; }
+        RelationshipManager RelationshipManager { get; }
         Inventory Inventory { get; }
         Intoxication Intoxication { get; }
         PoliceResponse PoliceResponse { get; }

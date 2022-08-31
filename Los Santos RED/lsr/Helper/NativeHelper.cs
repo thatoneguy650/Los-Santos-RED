@@ -493,7 +493,14 @@ namespace LosSantosRED.lsr.Helper
             }
         }
 
-
+        public static bool IsSittableModel(string modelName)
+        {
+            if(modelName.Contains("chair") || modelName.Contains("sofa") || modelName.Contains("couch") || modelName.Contains("bench") || modelName.Contains("seat") || modelName.Contains("chr"))
+            {
+                return true;
+            }
+            return false;
+        }
         public static void ChangeModel(string ModelRequested)
         {
             Model characterModel = new Model(ModelRequested);
