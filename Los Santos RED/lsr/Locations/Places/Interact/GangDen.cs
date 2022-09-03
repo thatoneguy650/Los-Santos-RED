@@ -218,9 +218,16 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             {
                 if(Player.BankAccounts.Money >= Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount)
                 {
-                    Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount);
-                    Player.RelationshipManager.GangRelationships.CurrentGangKickUp.PayDue();
-                    InteractionMenu.Visible = false;
+                    if (Player.RelationshipManager.GangRelationships.CurrentGangKickUp.CanPay)
+                    {
+                        Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount);
+                        Player.RelationshipManager.GangRelationships.CurrentGangKickUp.PayDue();
+                        InteractionMenu.Visible = false;
+                    }
+                    else
+                    {
+                        Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", "Not time yet, come back closer to the due date.");
+                    }
                 }
                 else
                 {
@@ -248,6 +255,9 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
         InteractionMenu.Visible = false;
         KeepInteractionGoing = true;
+
+        Player.ButtonPrompts.AddPrompt("GangDenRest", "Cancel Rest", "GangDenRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+
         DateTime TimeLastAddedItems = Time.CurrentDateTime;
         GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
         {
@@ -257,15 +267,20 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                 Player.IsSleeping = true;
                 if (DateTime.Compare(Time.CurrentDateTime, TimeLastAddedItems) >= 0)
                 {
-                    if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
+                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                     {
-                        Game.LocalPlayer.Character.Health++;
+                        Player.HealthManager.ChangeHealth(1);
                     }
                     Player.RelationshipManager.GangRelationships.ChangeReputation(AssociatedGang, 2, false);
                     TimeLastAddedItems = TimeLastAddedItems.AddMinutes(30);
                 }
+                if (Player.ButtonPrompts.IsPressed("GangDenRest"))
+                {
+                    Time.StopFastForwarding();
+                }
                 GameFiber.Yield();
             }
+            Player.ButtonPrompts.RemovePrompts("GangDenRest");
             Player.IsResting = false;
             Player.IsSleeping = false;
             InteractionMenu.Visible = true;

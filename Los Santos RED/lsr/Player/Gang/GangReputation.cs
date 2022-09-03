@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class GangReputation
@@ -320,4 +321,9 @@ public class GangReputation
         }
         return ending;
     }
+
+
+
+
+
 }

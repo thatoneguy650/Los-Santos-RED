@@ -44,9 +44,10 @@ public class PedExt : IComplexTaskable
         PlayerPerception = new PlayerPerception(this, null, settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
     {
         WillFight = _WillFight;
+        WillFightPolice = willFightPolice;
         WillCallPolice = _WillCallPolice;
         IsGangMember = _IsGangMember;
         IsMerchant = isMerchant;
@@ -188,6 +189,11 @@ public class PedExt : IComplexTaskable
     public bool WillCallPolice { get; set; } = false;//true;
     public bool WillCallPoliceIntense { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
+
+
+
+    public bool WillFightPolice { get; set; } = false;
+
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
     private int FullUpdateInterval//dont forget distance and LOS in here
@@ -288,8 +294,6 @@ public class PedExt : IComplexTaskable
             CurrentHealthState.Update(policeRespondable);
         }
     }
-    
-
     public virtual void OnBecameWanted()
     {
         if (Pedestrian.Exists())

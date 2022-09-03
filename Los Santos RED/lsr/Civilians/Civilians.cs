@@ -92,6 +92,7 @@ public class Civilians
                     ped.WillCallPolice = false;
                     ped.WillCallPoliceIntense = false;
                     ped.WillFight = false;
+                    ped.WillFightPolice = false;
                     ped.WasEverSetPersistent = true;
                 }
                 if (yield && localRan == Settings.SettingsManager.DebugSettings.CivilianUpdateBatch)//5
@@ -202,6 +203,7 @@ public class Civilians
                     ped.WillCallPolice = false;
                     ped.WillCallPoliceIntense = false;
                     ped.WillFight = true;
+                    ped.WillFightPolice = true;
                     ped.WasEverSetPersistent = true;
                 }
 

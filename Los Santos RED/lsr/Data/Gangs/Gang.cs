@@ -95,7 +95,8 @@ public class Gang
     public int DeliveryPaymentMax { get; set; } = 4000;
     public int WheelmanPaymentMin { get; set; } = 15000;
     public int WheelmanPaymentMax { get; set; } = 35000;
-    public float FightPercentage { get; set; } = 70f;
+    public float FightPercentage { get; set; } = 80f;
+    public float FightPolicePercentage { get; set; } = 50f;
     public float DrugDealerPercentage { get; set; } = 40f;
     public int AmbientMemberMoneyMin { get; set; } = 500;
     public int AmbientMemberMoneyMax { get; set; } = 5000;
@@ -312,6 +313,11 @@ public class Gang
     //    return null;
     //}
     public DispatchableVehicle GetVehicleInfo(Vehicle vehicle) => Vehicles.Where(x => x.ModelName.ToLower() == vehicle.Model.Name.ToLower()).FirstOrDefault();
+
+
+
+
+
 
     public override string ToString()
     {

@@ -60,6 +60,10 @@ public class PlayerInfoMenu
         {
             Game.IsPaused = false;
         };
+
+        Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
+
+
         LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView);
         VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView);
         LicensesTab = new LicensesTab(Player, Time, tabView);

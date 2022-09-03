@@ -30,7 +30,7 @@ public class GangFight : ComplexTask
             }
             else
             {
-                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 75f, 0);//TR
+                NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 500f, 0);//75f//TR
             }
             GameTimeLastRan = Game.GameTime;
         }

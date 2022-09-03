@@ -22,6 +22,7 @@ public class GangKickUp
     public int MissedAmount { get; private set; }
     private bool IsPassedDueDate => DateTime.Compare(Time.CurrentDateTime, DueDate) >= 0;//is past the due date
     private bool ShouldSendWarning => !HasSentWarning && DateTime.Compare(DueDate.AddDays(-1), Time.CurrentDateTime) < 0;//Is within 1 day 
+    public bool CanPay => DateTime.Compare(DueDate.AddDays(-4), Time.CurrentDateTime) < 0;
     public GangKickUp(IGangRelateable player, Gang gang, ITimeReportable time)
     {
         Player = player;

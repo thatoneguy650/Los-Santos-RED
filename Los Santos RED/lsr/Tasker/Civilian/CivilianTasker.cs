@@ -143,7 +143,7 @@ public class CivilianTasker
         }
         else if (Civilian.IsWanted)
         {
-            if(Civilian.WillFight)
+            if(Civilian.WillFightPolice)
             {
                 if (Civilian.CurrentTask?.Name != "Fight")
                 {

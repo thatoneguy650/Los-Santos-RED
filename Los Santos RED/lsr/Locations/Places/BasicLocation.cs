@@ -113,6 +113,12 @@ public class BasicLocation
     public string Name { get; set; }
     public string FullName { get; set; }
 
+
+
+
+
+
+
     public bool IsTemporarilyClosed { get; set; } = false;
 
     public string Description { get; set; }

@@ -287,18 +287,24 @@ public class Residence : InteractableLocation
         Time.FastForward(Time.CurrentDateTime.AddHours(Hours));//  new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay, 11, 0, 0));
         InteractionMenu.Visible = false;
         KeepInteractionGoing = true;
+        Player.IsResting = true;
+        Player.IsSleeping = true;
+        Player.ButtonPrompts.AddPrompt("ResidenceRest", "Cancel Rest", "ResidenceRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
         GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
         {
             while (Time.IsFastForwarding)
             {
-                Player.IsResting = true;
-                Player.IsSleeping = true;
-                if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
+                if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                 {
-                    Game.LocalPlayer.Character.Health++;
+                    Player.HealthManager.ChangeHealth(1);
+                }
+                if (Player.ButtonPrompts.IsPressed("ResidenceRest"))
+                {
+                    Time.StopFastForwarding();
                 }
                 GameFiber.Yield();
             }
+            Player.ButtonPrompts.RemovePrompts("ResidenceRest");
             Player.IsResting = false;
             Player.IsSleeping = false;
             if (RentDisplayItem != null)

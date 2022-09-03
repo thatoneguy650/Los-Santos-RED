@@ -113,14 +113,7 @@ public class Hotel : InteractableLocation
         if (Player.BankAccounts.Money >= Price)
         {
             Player.BankAccounts.GiveMoney(-1 * Price);
-            //if(Time.CurrentHour <= 10)
-            //{
-            //    Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights-1, 11, 0, 0));
-            //}
-            //else
-            //{
-                Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
-            //}
+            Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
             Player.IsResting = true;
             Player.IsSleeping = true;
             KeepInteractionGoing = true;
@@ -130,11 +123,11 @@ public class Hotel : InteractableLocation
             {
                 while (Time.IsFastForwarding)
                 {
-                    if (Game.LocalPlayer.Character.Health < Game.LocalPlayer.Character.MaxHealth - 1)
+                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                     {
-                        Game.LocalPlayer.Character.Health++;
+                        Player.HealthManager.ChangeHealth(1);
                     }
-                    if(Player.ButtonPrompts.IsPressed("CancelHotelStay"))
+                    if (Player.ButtonPrompts.IsPressed("CancelHotelStay"))
                     {
                         Time.StopFastForwarding();
                     }

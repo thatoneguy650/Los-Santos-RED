@@ -75,15 +75,12 @@ public class GangTasker
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(GangMember.Gang);
         bool isPlayerGang = Player.RelationshipManager.GangRelationships.CurrentGang?.ID == GangMember.Gang?.ID;
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
-        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 350f;
-
+        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 100f;
         bool isNearHomeTerritory = false;
         if(Player.CurrentLocation.CurrentZone?.Gangs?.Any(x=>x.ID == GangMember.Gang?.ID) == true)
         {
             isNearHomeTerritory = true;
-        }
-
-       
+        } 
         if (GangMember.IsBusted)
         {
             if (GangMember.DistanceToPlayer <= 275f)
@@ -93,7 +90,7 @@ public class GangTasker
         }
         else if (GangMember.IsWanted && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)
         {
-            if (GangMember.WillFight)
+            if (GangMember.WillFightPolice)
             {
                 SetFight(GangMember, null);
             }
@@ -106,9 +103,6 @@ public class GangTasker
         {
             bool WillAttackPlayer = false;
             bool WillFleeFromPlayer = false;
-
-
-
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
             WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
@@ -136,10 +130,6 @@ public class GangTasker
             }
             else
             {
-            //if(isHostile && isNearHomeTerritory && GangMember.WillFight && !arePoliceNearby)
-            //{
-            //    WillAttackPlayer = true;
-            //}
                 if (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))
                 {
                     if (GangMember.WillFight)
@@ -167,19 +157,7 @@ public class GangTasker
                     WillFleeFromPlayer = true;
                 }
             }
-
-            if (GangMember.IsWanted)
-            {
-                if (GangMember.WillFight)
-                {
-                    SetFight(GangMember, null);
-                }
-                else
-                {
-                    SetFlee(GangMember, null);
-                }
-            }
-            else if (WillAttackPlayer)
+            if (WillAttackPlayer)
             {
                 SetFight(GangMember, null);
             }

@@ -389,6 +389,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             Witness.WillCallPolice = true;
                             Witness.WillCallPoliceIntense = true;
                             Witness.WillFight = false;
+                            Witness.WillFightPolice = false;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFlee, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
                             EntryPoint.WriteToConsole("WITNESS ELIMINATION, THE WITNESS WITH FLEE FROM YOU");
@@ -398,6 +399,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             Witness.WillFight = true;
                             Witness.WillCallPolice = false;
                             Witness.WillCallPoliceIntense = false;
+                            Witness.WillFightPolice = true;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFight, true);
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 0, false);

@@ -156,13 +156,13 @@ namespace LosSantosRED.lsr
                             EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
                             if (isKilled)
                             {
-                                RepToRemove -= 1000;
+                                RepToRemove -= 4000;// 1000;
                                 gr.MembersKilledInTerritory++;
                                 EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
                             }
                             else
                             {
-                                RepToRemove -= 500;
+                                RepToRemove -= 2500;// 500;
                                 gr.MembersHurtInTerritory++;
                                 EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
                             }
@@ -180,7 +180,7 @@ namespace LosSantosRED.lsr
         }
         private void AddCarjackedGang(GangMember gm)
         {
-            int RepToRemove = -500;      
+            int RepToRemove = -2500;      
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
             if (gr != null)
             {
@@ -194,7 +194,7 @@ namespace LosSantosRED.lsr
                         List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
                         if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
                         {
-                            RepToRemove -= 500;
+                            RepToRemove -= 2500;
                             gr.MembersCarJackedInTerritory++;
                             EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
                         }

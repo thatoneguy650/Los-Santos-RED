@@ -733,11 +733,38 @@ public class Pedestrians
             return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
         }
     }
+    private float CivilianFightPolicePercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+        }
+    }
     private void AddAmbientCivilian(Ped Pedestrian)
     {  
         bool WillFight = false;
         bool WillCallPolice = false;
         bool WillCallPoliceIntense = false;
+        bool WillFightPolice = false;
         bool IsGangMember = false;
         bool canBeAmbientTasked = true;
         bool WasPersistentOnCreate = false;
@@ -748,6 +775,7 @@ public class Pedestrians
                 WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage);
                 WillCallPolice = false;
                 WillCallPoliceIntense = false;
+                WillFightPolice = false;
             }
             else
             {
@@ -755,6 +783,7 @@ public class Pedestrians
                 WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
                 WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
                 WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
+                WillFightPolice = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
             }
             if (Pedestrian.IsPersistent)
             {
@@ -765,6 +794,7 @@ public class Pedestrians
                 WillFight = false;
                 WillCallPolice = false;
                 WillCallPoliceIntense = false;
+                WillFightPolice = false;
                 canBeAmbientTasked = false;
             }
             PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
@@ -773,7 +803,7 @@ public class Pedestrians
                 myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
             }
             ShopMenu toAdd = GetIllicitMenu();
-            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd, WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
+            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd, WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
             Civilians.Add(toCreate);
             if (Pedestrian.Exists())
             {
@@ -812,7 +842,12 @@ public class Pedestrians
                 }
             }
             bool WillFight = RandomItems.RandomPercent(MyGang.FightPercentage);
+            bool WillFightPolice = RandomItems.RandomPercent(MyGang.FightPolicePercentage);
             bool canBeAmbientTasked = true;
+
+
+
+
             if (Pedestrian.IsPersistent)
             {
                 WasPersistentOnCreate = true;
@@ -820,6 +855,7 @@ public class Pedestrians
             if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && WasPersistentOnCreate)//must have been spawned by another mod?
             {
                 WillFight = false;
+                WillFightPolice = false;
                 canBeAmbientTasked = false;
             }
             ShopMenu toAdd = null;
@@ -831,7 +867,7 @@ public class Pedestrians
                     toAdd = ShopMenus.GetRandomDrugDealerMenu();
                 }
             }
-            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
+            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
             if (Pedestrian.Exists())
             {
                 gm.Money = gm.Money;

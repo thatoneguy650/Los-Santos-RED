@@ -204,7 +204,7 @@ public class InteractableLocation : BasicLocation
             GameFiber.Yield();
             if (ped.Exists())
             {
-                Merchant = new Merchant(ped, settings, false, false, false, "Vendor", crimes, weapons, World);
+                Merchant = new Merchant(ped, settings, false, true, false, "Vendor", crimes, weapons, World, false);
                 if (addMenu)
                 {
                     Merchant.ShopMenu = Menu;

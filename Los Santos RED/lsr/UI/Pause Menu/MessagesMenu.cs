@@ -53,6 +53,7 @@ public class MessagesMenu
             Player.StopDynamicActivity();
             Game.IsPaused = false;
         };
+        Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
         LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView);
         ContactsTab = new ContactsTab(Player, Gangs, tabView);
         MessagesTab = new MessagesTab(Player, tabView);

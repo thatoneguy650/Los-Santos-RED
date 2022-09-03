@@ -8,7 +8,7 @@ public class GangMember : PedExt, IWeaponIssuable
 {
     private uint GameTimeSpawned;
     
-    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName, world)
+    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world, bool willFightPolice) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName, world, willFightPolice)
     {
         Gang = gang;
         WasModSpawned = wasModSpawned;
