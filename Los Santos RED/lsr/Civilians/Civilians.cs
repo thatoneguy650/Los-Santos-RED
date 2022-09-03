@@ -13,15 +13,17 @@ public class Civilians
     private IPoliceRespondable PoliceRespondable;
     private IPerceptable Perceptable;
     private ISettingsProvideable Settings;
+    private IGangs Gangs;
     private uint GameTimeLastUpdatedPeds;
     private int TotalRan;
     private int TotalChecked;
-    public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings)
+    public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings, IGangs gangs)
     {
         World = world;
         PoliceRespondable = policeRespondable;
         Perceptable = perceptable;
         Settings = settings;
+        Gangs = gangs;
     }
     public int PersistentCount
     {
@@ -252,6 +254,19 @@ public class Civilians
         Perceptable.AnyGangMemberCanSeePlayer = anyGangMemberCanSeePlayer;
         Perceptable.AnyGangMemberCanHearPlayer = anyGangMemberCanHearPlayer;
         Perceptable.AnyGangMemberRecentlySeenPlayer = anyGangMemberRecentlySeenPlayer;
+
+        List<Gang> WantedGangs = World.Pedestrians.GangMemberList.Where(x => x.IsWanted && !x.IsBusted).GroupBy(x => x.Gang).Select(x => x.Key).ToList();
+        foreach (Gang gang in Gangs.AllGangs.Where(x=> x.HasWantedMembers))
+        {
+            RelationshipGroup gangRG = new RelationshipGroup(gang.ID);
+            if (!WantedGangs.Contains(gang))
+            {     
+                RelationshipGroup.Cop.SetRelationshipWith(gangRG, Relationship.Neutral);
+                gangRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
+                gang.HasWantedMembers = false;
+                EntryPoint.WriteToConsole($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
+            }
+        }
     }
     private void UpdateZombies()
     {

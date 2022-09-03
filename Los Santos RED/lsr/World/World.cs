@@ -46,7 +46,7 @@ namespace Mod
             Gangs = gangs;
             GangTerritories = gangTerritories;
             Streets = streets;
-            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories);
+            Pedestrians = new Pedestrians(agencies, zones, jurisdictions, settings, names, relationshipGroups, weapons, crimes, shopMenus, Gangs, GangTerritories, this);
             Vehicles = new Vehicles(agencies, zones, jurisdictions, settings, plateTypes);
             Places = new Places(this,zones,jurisdictions,settings,placesOfInterest,weapons,crimes,time,shopMenus,interiors,gangs,gangTerritories,streets, agencies);
         }

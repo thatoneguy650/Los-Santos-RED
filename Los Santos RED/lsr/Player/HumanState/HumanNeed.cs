@@ -96,9 +96,17 @@ public abstract class HumanNeed
             OnMaximum();
         }
     }
-    public void SetRandom()
+    public void SetRandom(bool allowLow)
     {
-        Set(RandomItems.GetRandomNumber(MinValue, MaxValue));
+        if(allowLow)
+        {
+            Set(RandomItems.GetRandomNumber(MinValue, MaxValue));
+        }
+        else
+        {
+            Set(RandomItems.GetRandomNumber(MaxValue * 0.25f, MaxValue));
+        }
+        
     }
     public abstract void OnMinimum();
     public abstract void OnMaximum();

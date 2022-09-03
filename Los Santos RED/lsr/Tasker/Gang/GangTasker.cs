@@ -91,6 +91,17 @@ public class GangTasker
                 SetArrested(GangMember);
             }
         }
+        else if (GangMember.IsWanted && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)
+        {
+            if (GangMember.WillFight)
+            {
+                SetFight(GangMember, null);
+            }
+            else
+            {
+                SetFlee(GangMember, null);
+            }
+        }
         else if (GangMember.DistanceToPlayer <= 275f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
             bool WillAttackPlayer = false;

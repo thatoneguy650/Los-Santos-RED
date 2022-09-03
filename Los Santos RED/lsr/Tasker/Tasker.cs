@@ -93,21 +93,15 @@ public class Tasker : ITaskerable, ITaskerReportable
         }
         CivilianTasker.Update();
         GangTasker.Update();
-
-
         EMTTasker.Update();
-
-
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);
         }
-
         if(CurrentCriminal != null && CurrentCriminal.CurrentTask?.Name == "CommitCrime")
         {
             CurrentCriminal.CurrentTask?.Update();
         }
-
         GameTimeLastTaskedCivilians = Game.GameTime;
     }
     public void UpdatePolice()
@@ -121,10 +115,10 @@ public class Tasker : ITaskerable, ITaskerReportable
     }
     public void CreateCrime()
     {
-        PedExt Criminal = PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+        PedExt Criminal = PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeTasked && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         if (Criminal == null)
         {
-            Criminal = PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
+            Criminal = PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && x.DistanceToPlayer <= 200f && x.CanBeTasked && x.CanBeAmbientTasked && !x.IsInVehicle).FirstOrDefault();//85f//150f
         }
         if (Criminal != null && Criminal.Pedestrian.Exists())
         {
@@ -143,7 +137,12 @@ public class Tasker : ITaskerable, ITaskerReportable
             Criminal.WasSetCriminal = true;
             Criminal.WillCallPolice = false;
             Criminal.WillCallPoliceIntense = false;
-            Criminal.Pedestrian.RelationshipGroup = CriminalsRG;
+
+            if (!Criminal.IsGangMember)
+            {
+                Criminal.Pedestrian.RelationshipGroup = CriminalsRG;
+                Criminal.Pedestrian.IsPersistent = true;
+            }
             Criminal.CurrentTask = new CommitCrime(Criminal, Player, Weapons, PedProvider);
             Criminal.CurrentTask.Start();
             GameTimeLastGeneratedCrime = Game.GameTime;

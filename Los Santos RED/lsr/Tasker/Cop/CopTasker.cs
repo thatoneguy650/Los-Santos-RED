@@ -258,7 +258,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Investigate")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
             Cop.CurrentTask = new Investigate(Cop, Player, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -269,7 +269,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
+           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
             Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -280,7 +280,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Locate")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
+           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
             Cop.CurrentTask = new Locate(Cop, Player, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -291,7 +291,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Chase")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
             Cop.CurrentTask = new Chase(Cop, Player, PedProvider, Cop, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -302,7 +302,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Kill")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Kill", 3);
             Cop.CurrentTask = new Kill(Cop, Player, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -313,7 +313,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "AIApprehend")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
+           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
             Cop.CurrentTask = new AIApprehend(Cop, Player, Cop) { OtherTarget = MainTarget };
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4

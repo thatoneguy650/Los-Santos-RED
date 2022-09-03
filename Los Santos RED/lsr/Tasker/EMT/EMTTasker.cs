@@ -163,7 +163,7 @@ public class EMTTasker
     {
         if (emt.CurrentTask?.Name != "EMTIdle")// && Cop.IsIdleTaskable)
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTIdle", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTIdle", 3);
             emt.CurrentTask = new EMTIdle(emt, Player, PedProvider, Tasker, PlacesOfInterest, emt);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();
@@ -173,7 +173,7 @@ public class EMTTasker
     {
         if (emt.CurrentTask?.Name != "EMTRespond")// && Cop.IsIdleTaskable)
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
             emt.CurrentTask = new EMTRespond(emt, Player, PedProvider, Tasker, PlacesOfInterest, emt);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();
@@ -183,7 +183,7 @@ public class EMTTasker
     {
         if (emt.CurrentTask?.Name != "EMTTreat" || (targetPed != null && emt.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTTreat", 3);
+           // EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTTreat", 3);
             emt.CurrentTask = new EMTTreat(emt, Player, targetPed, Settings);
             GameFiber.Yield();//TR Added back 4
             emt.CurrentTask.Start();

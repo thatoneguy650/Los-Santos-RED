@@ -246,7 +246,7 @@ public class AIApprehend : ComplexTask
             {
                 if (OtherTarget != null && OtherTarget.Pedestrian.Exists() && OtherTarget.Handle != CurrentlyChasingHandle)
                 {
-                    EntryPoint.WriteToConsole($"TASKER: Target Changed From: {CurrentlyChasingHandle} to {OtherTarget.Handle}", 5);
+                   // EntryPoint.WriteToConsole($"TASKER: Target Changed From: {CurrentlyChasingHandle} to {OtherTarget.Handle}", 5);
                     CurrentlyChasingHandle = OtherTarget.Handle;
                     TargetChanged = true;
                 }

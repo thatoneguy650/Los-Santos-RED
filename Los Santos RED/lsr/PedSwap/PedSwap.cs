@@ -666,7 +666,7 @@ public class PedSwap : IPedSwap
             PedExt toCreate = Entities.Pedestrians.GetPedExt(previousPed.Handle);
             if (toCreate == null)
             {
-                toCreate = new PedExt(previousPed, Settings, Crimes, Weapons, CurrentPedName, "Person");
+                toCreate = new PedExt(previousPed, Settings, Crimes, Weapons, CurrentPedName, "Person", World);
             }
             int WantedToSet = Player.WantedLevel;
             if (Player.WantedLevel == 3)

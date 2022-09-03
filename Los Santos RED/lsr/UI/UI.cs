@@ -241,6 +241,11 @@ public class UI : IMenuProvideable
                     }
                 }
             }
+
+
+
+
+
             debugString1 = $"Heading: {Math.Round(DisplayablePlayer.Character.Heading, 1)}";
         }
 
@@ -255,7 +260,6 @@ public class UI : IMenuProvideable
         NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
     }
-
     private void DisplayTextOnScreen(string TextToShow, float X, float Y, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
     {
         DisplayTextOnScreen(TextToShow, X, Y, Scale, TextColor, Font, Justification, outline, 255);
@@ -305,29 +309,6 @@ public class UI : IMenuProvideable
         }
         //return;
     }
-    //private void DrawSprites(object sender, GraphicsEventArgs args)
-    //{
-    //    try
-    //    {
-
-    //        if (!TimeOutSprite && DrawSpeedLimitTexture && Game.Resolution != null && !Game.IsPaused && DisplayablePlayer.IsAliveAndFree && !MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !Game.IsScreenFadingOut && !Game.IsScreenFadedOut)
-    //        {
-    //            if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
-    //            {
-    //                float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-    //                float Scale = Settings.SettingsManager.LSRHUDSettings.SpeedLimitScale * ConsistencyScale;
-    //                float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.LSRHUDSettings.SpeedLimitPositionX;
-    //                float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.LSRHUDSettings.SpeedLimitPositionY;
-    //                args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
-    //            }
-    //        }
-    //    }
-    //    catch (Exception ex)
-    //    {
-    //        EntryPoint.WriteToConsole($"UI: Draw ERROR {ex.Message} {ex.StackTrace} ", 0);
-    //    }
-    //}
-
     private void DisplayCurrentCrimes()
     {
         if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
@@ -342,7 +323,6 @@ public class UI : IMenuProvideable
             DisplayTextOnScreen(lastVehicleStatusDisplay, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionX - lowerRightHeighSpace, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.VehicleDisplayJustificationID, false);
         }
     }
-
     private void DisplayPlayerInfo()
     {
         if (Settings.SettingsManager.LSRHUDSettings.ShowPlayerDisplay)
@@ -388,7 +368,6 @@ public class UI : IMenuProvideable
             }
         }
     }
-
     private void DisplayLowerRightMenu()
     {
         GameTimeLastDrawnUI = Game.GameTime;
@@ -524,9 +503,6 @@ public class UI : IMenuProvideable
         //DisplayTextOnScreen(debugText, 0.6f, 0.6f, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, true);
 
     }
-
- 
-
     private void DisplayButtonPrompts()
     {
         if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts)
@@ -1062,7 +1038,7 @@ public class UI : IMenuProvideable
             if (IsDrawingWheelMenu)
             {
                 ActionPopUpMenu.OnStopDisplaying();
-                ActionPopUpMenu.Dispose();
+                ActionPopUpMenu.OnMenuClosed();
                 IsDrawingWheelMenu = false;
             }
             ActionPopUpMenu.Reset();

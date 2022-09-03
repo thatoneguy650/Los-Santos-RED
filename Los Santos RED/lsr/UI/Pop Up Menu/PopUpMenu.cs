@@ -28,6 +28,9 @@ public class PopUpMenu
     private int TransitionOutSound;
     private string PrevPopUpMenuGroup;
     private string CurrentPopUpMenuGroup;
+
+
+
     private IGestures Gestures;
     private IDances Dances;
     private int CurrentPage = 0;
@@ -39,10 +42,27 @@ public class PopUpMenu
     private PopUpMenuMap NextPageMenuMap;
 
     private PopUpMenuMap PrevPageMenuMap;
+    private Texture Sign10;
+    private Texture Sign15;
+    private Texture Sign20;
+    private Texture Sign25;
+    private Texture Sign30;
+    private Texture Sign35;
+    private Texture Sign40;
+    private Texture Sign45;
+    private Texture Sign50;
+    private Texture Sign55;
+    private Texture Sign60;
+    private Texture Sign65;
+    private Texture Sign70;
+    private Texture Sign75;
+    private Texture Sign80;
+    private Texture SpeedLimitToDraw;
 
     private bool IsCurrentPopUpMenuGroupDefault => CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot";
 
     public bool HasRanItem { get; private set; }
+    public bool IsActive { get; private set; }
     private enum GTATextJustification
     {
         Center = 0,
@@ -168,6 +188,26 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpMenuGroup("IndicatorsSubMenu", IndicatorsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpMenuGroup("SitSubMenu", SitSubMenu) { IsChild = true });
 
+
+
+        Game.RawFrameRender += DrawSprites;
+        Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
+        Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
+        Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
+        Sign25 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\25mph.png");
+        Sign30 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\30mph.png");
+        Sign35 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\35mph.png");
+        Sign40 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\40mph.png");
+        Sign45 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\45mph.png");
+        Sign50 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\50mph.png");
+        Sign55 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\55mph.png");
+        Sign60 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\60mph.png");
+        Sign65 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\65mph.png");
+        Sign70 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\70mph.png");
+        Sign75 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\75mph.png");
+        Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
+
+
         //UpdateInventoryMenuGroups();
     }
     public void Draw()
@@ -180,6 +220,13 @@ public class PopUpMenu
     }
     public void Dispose()
     {
+        IsActive = false;
+        Game.TimeScale = 1.0f;
+        Game.RawFrameRender -= DrawSprites;
+    }
+    public void OnMenuClosed()
+    {
+        IsActive = false;
         Game.TimeScale = 1.0f;
     }
     public void Reset()
@@ -226,13 +273,18 @@ public class PopUpMenu
         NativeFunction.Natives.RELEASE_SOUND_ID(TransitionInSound);
         CurrentPopUpMenuGroup = "DefaultOnFoot";
 
+        IsActive = false;
+
         //TransitionOutSound = NativeFunction.Natives.GET_SOUND_ID<int>();
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionOutSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
 
     }
     public void OnStartDisplaying()
-    {      
+    {
         //SelectionSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
+        IsActive = true;
+
+
         ActionSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
         Game.TimeScale = 0.2f;
@@ -300,7 +352,6 @@ public class PopUpMenu
             EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
         }
     }
-
     private float GetTextBoxWidth(string TextToShow, float Scale, float X, GTAFont Font)
     {
         NativeFunction.Natives.x54CE8AC98E120CAB("jamyfafi");
@@ -361,7 +412,7 @@ public class PopUpMenu
                     {
                         if (popUpMenuMap.ClosesMenu)
                         {
-                            Dispose();
+                            OnMenuClosed();
                             HasRanItem = true;
                         }
                         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
@@ -481,6 +532,7 @@ public class PopUpMenu
             }
         }
         DrawMessages();
+        DrawSpeedLimit();
     }
     private void DrawSingle(int ID, float CurrentPositionX, float CurrentPositionY)
     {
@@ -597,6 +649,112 @@ public class PopUpMenu
                 DisplayTextBoxOnScreen("~h~" + phoneText.ContactName + "~h~ - " + phoneText.TimeReceived.ToString("HH:mm") + "~n~~s~" + phoneText.Message, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionX, Settings.SettingsManager.ActionWheelSettings.MessageStartingPositionY + (YMessageSpacing * MessagesDisplayed), Settings.SettingsManager.ActionWheelSettings.MessageScale, Color.FromName(Settings.SettingsManager.ActionWheelSettings.MessageTextColor), Settings.SettingsManager.ActionWheelSettings.MessageFont, 255, true, Color.Black); ;
                 MessagesDisplayed++;
             }
+        }
+    }
+
+
+    private void DrawSpeedLimit()
+    {
+        if (Settings.SettingsManager.ActionWheelSettings.ShowSpeedLimitIcon && Player.IsInVehicle && Player.CurrentLocation.CurrentStreet != null)
+        {
+            float speedLimit = 60f;
+            if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "MPH")
+            {
+                speedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitMPH;
+            }
+            else if (Settings.SettingsManager.LSRHUDSettings.SpeedDisplayUnits == "KM/H")
+            {
+                speedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitKMH;
+            }
+            if (speedLimit <= 10f)
+            {
+                SpeedLimitToDraw = Sign10;
+            }
+            else if (speedLimit <= 15f)
+            {
+                SpeedLimitToDraw = Sign15;
+            }
+            else if (speedLimit <= 20f)
+            {
+                SpeedLimitToDraw = Sign20;
+            }
+            else if (speedLimit <= 25f)
+            {
+                SpeedLimitToDraw = Sign25;
+            }
+            else if (speedLimit <= 30f)
+            {
+                SpeedLimitToDraw = Sign30;
+            }
+            else if (speedLimit <= 35f)
+            {
+                SpeedLimitToDraw = Sign35;
+            }
+            else if (speedLimit <= 40f)
+            {
+                SpeedLimitToDraw = Sign40;
+            }
+            else if (speedLimit <= 45f)
+            {
+                SpeedLimitToDraw = Sign45;
+            }
+            else if (speedLimit <= 50f)
+            {
+                SpeedLimitToDraw = Sign50;
+            }
+            else if (speedLimit <= 55f)
+            {
+                SpeedLimitToDraw = Sign55;
+            }
+            else if (speedLimit <= 60f)
+            {
+                SpeedLimitToDraw = Sign60;
+            }
+            else if (speedLimit <= 65f)
+            {
+                SpeedLimitToDraw = Sign65;
+            }
+            else if (speedLimit <= 70f)
+            {
+                SpeedLimitToDraw = Sign70;
+            }
+            else if (speedLimit <= 75f)
+            {
+                SpeedLimitToDraw = Sign75;
+            }
+            else if (speedLimit <= 80f)
+            {
+                SpeedLimitToDraw = Sign80;
+            }
+            else
+            {
+                SpeedLimitToDraw = null;
+            }
+        }
+        else
+        {
+            SpeedLimitToDraw = null;
+        }
+    }
+    private void DrawSprites(object sender, GraphicsEventArgs args)
+    {
+        try
+        {
+            if (IsActive && Settings.SettingsManager.ActionWheelSettings.ShowSpeedLimitIcon &&  SpeedLimitToDraw != null)
+            {
+                if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
+                {
+                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+                    float Scale = Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconScale * ConsistencyScale;
+                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconX;
+                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconY;
+                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI: Draw ERROR {ex.Message} {ex.StackTrace} ", 0);
         }
     }
 

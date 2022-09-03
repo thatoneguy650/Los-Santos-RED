@@ -71,7 +71,7 @@ public class EMTSpawnTask :SpawnTask
     }
     private void AddPassengers()
     {
-        EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -286,7 +286,7 @@ public class EMTSpawnTask :SpawnTask
         {
             isMale = ped.IsMale;
         }
-        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale));
+        EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
         if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {

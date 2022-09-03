@@ -426,17 +426,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (gm.Pedestrian.Exists() && gm.DistanceToPlayer <= 20f)
                 {
-                    if(gm.WantedLevel > Player.WantedLevel && gm.WorstObservedCrime != null)
+                    if(gm.WantedLevel > Player.WantedLevel && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        EntryPoint.WriteToConsole($"WANTED LEVEL Adding Crime {gm.WorstObservedCrime.Name}!");
-                        Player.AddCrime(gm.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, null, true, true, true);
+                        EntryPoint.WriteToConsole($"WANTED LEVEL Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
+                        Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, null, true, true, true);
                     }
-                    else if(gm.IsDeadlyChase && !Player.PoliceResponse.IsDeadlyChase && gm.WorstObservedCrime != null)
+                    else if(gm.IsDeadlyChase && !Player.PoliceResponse.IsDeadlyChase && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        EntryPoint.WriteToConsole($"DEADLY CHASE Adding Crime {gm.WorstObservedCrime.Name}!");
-                        Player.AddCrime(gm.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
+                        EntryPoint.WriteToConsole($"DEADLY CHASE Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
+                        Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
                     }
-                    else if(gm.WorstObservedCrime == null)
+                    else if(gm.PedViolations.WorstObservedCrime == null)
                     {
                         EntryPoint.WriteToConsole($"WHEELMAN NO CRIMES!!!!");
                     }

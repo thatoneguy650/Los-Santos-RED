@@ -66,7 +66,7 @@ public class FireFighterSpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
-        EntryPoint.WriteToConsole($"SPAWN TASK: OccupantsToAdd {OccupantsToAdd}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -280,7 +280,7 @@ public class FireFighterSpawnTask : SpawnTask
         {
             isMale = ped.IsMale;
         }
-        Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale));
+        Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryFirefighter);
         if (PrimaryFirefighter != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {

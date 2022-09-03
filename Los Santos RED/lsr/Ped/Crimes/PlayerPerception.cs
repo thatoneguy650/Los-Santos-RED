@@ -49,10 +49,7 @@ public class PlayerPerception
     public bool CanSeeTarget { get; private set; } = false;
     public float ClosestDistanceToTarget { get; private set; } = 2000f;
     public float DistanceToTarget { get; private set; } = 999f;
-
-
     public float HeightToTarget { get; private set; } = 999f;
-
     public float DistanceToTargetLastSeen { get; private set; } = 999f;
     public bool EverSeenTarget => CanSeeTarget || GameTimeLastSeenTarget > 0;
     public bool HasSpokenWithTarget { get; set; }
@@ -108,8 +105,6 @@ public class PlayerPerception
     public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
     public bool HasSeenTargetCommitCrime => CrimesWitnessed.Any();
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
-
-
     private int DistanceUpdate//also need to change the full update interval for this to work
     {
         get
@@ -233,7 +228,6 @@ public class PlayerPerception
     //        }
     //    }
     //}
-
     public bool NeedsUpdate
     {
         get

@@ -118,6 +118,10 @@ public class Gang
     public int MemberKickUpMissLimit { get; set; } = 3;
 
     [XmlIgnore]
+    public bool HasWantedMembers { get; set; }
+
+
+    [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
     public string HeadDataGroupID { get; set; }
     [XmlIgnore]

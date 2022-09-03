@@ -88,7 +88,7 @@ public class CommitCrime : ComplexTask
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                     NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Target, 0, 16);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
@@ -101,6 +101,7 @@ public class CommitCrime : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && Target.Exists())
         {
+            Target.Tasks.StandStill(10000);
             GameTimeTimeStartedDealingDrugs = Game.GameTime;
             Ped.IsDealingDrugs = true;
             unsafe
@@ -128,7 +129,7 @@ public class CommitCrime : ComplexTask
             }
             else
             {
-                PossibleCrimes.AddRange(new List<string>() { "AssaultingCivilians", "BrandishingWeapon", "FiringWeapon", "AssaultingWithDeadlyWeapon", "PublicIntoxication", "GrandTheftAuto", "Harassment", "SuspiciousActivity", "AttemptingSuicide", "KillingCivilians", "TerroristActivity", "DealingDrugs" });
+                PossibleCrimes.AddRange(new List<string>() { "AssaultingCivilians", "BrandishingWeapon", "FiringWeapon", "AssaultingWithDeadlyWeapon", "PublicIntoxication", "GrandTheftAuto", "Harassment", "AttemptingSuicide", "KillingCivilians", "TerroristActivity", "DealingDrugs" });
             }
         }
         SelectedCrime = PossibleCrimes.PickRandom();
@@ -154,6 +155,13 @@ public class CommitCrime : ComplexTask
             {
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.Code3, 10f);
             }
+        }
+    }
+    private void DriveRecklessly()
+    {
+        if (Ped.Pedestrian.CurrentVehicle.Exists())
+        {
+            NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 20f, (int)eCustomDrivingStyles.Code3, 10f);
         }
     }
     private void GetNewVictim()
@@ -200,6 +208,7 @@ public class CommitCrime : ComplexTask
         {
             GameTimeTimeStartedHarassing = Game.GameTime;
             Ped.IsSuspicious = true;
+            Target.Tasks.StandStill(10000);
             unsafe
             {
                 int lol = 0;
@@ -305,6 +314,11 @@ public class CommitCrime : ComplexTask
             {
                 EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DrunkDriving Ran", 5);
                 DriveAroundDrunk();
+            }
+            else if (SelectedCrime == "HitCarWithCar" || SelectedCrime == "FelonySpeeding")
+            {
+                EntryPoint.WriteToConsole($"CommitCrime: {Ped.Pedestrian} Crime Picked {SelectedCrime} DriveRecklessly Ran", 5);
+                DriveRecklessly();
             }
             else if (SelectedCrime == "AttemptingSuicide")
             {

@@ -65,7 +65,7 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
-                    else if (civilian.IsBusted)
+                    else if (civilian.IsBusted || civilian.IsWanted)
                     {
                         UpdateCurrentTask(civilian);
                         if (civilian.CurrentTask != null && civilian.CurrentTask.ShouldUpdate)
@@ -109,7 +109,7 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
-                    else if (merchant.IsBusted)
+                    else if (merchant.IsBusted || merchant.IsWanted)
                     {
                         UpdateCurrentTask(merchant);
                         if (merchant.CurrentTask != null && merchant.CurrentTask.ShouldUpdate)
@@ -141,11 +141,32 @@ public class CivilianTasker
                 }
             }
         }
+        else if (Civilian.IsWanted)
+        {
+            if(Civilian.WillFight)
+            {
+                if (Civilian.CurrentTask?.Name != "Fight")
+                {
+                    Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember));
+                    GameFiber.Yield();//TR Added back 7
+                    Civilian.CurrentTask.Start();
+                }
+            }
+            else
+            {
+                if (Civilian.CurrentTask?.Name != "Flee")
+                {
+                    Civilian.CurrentTask = new Flee(Civilian, Player);
+                    GameFiber.Yield();//TR Added back 7
+                    Civilian.CurrentTask.Start();
+                }
+            }
+        }
         else if (Civilian.DistanceToPlayer <= 75f)//50f
         {
 
 
-            WitnessedCrime HighestPriorityOtherCrime = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            
             //Crime HighestPriorityPlayer = Civilian.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
 
 
@@ -158,6 +179,23 @@ public class CivilianTasker
             bool SeenMundaneCrime = false;
             int PlayerCrimePriority = 99;
             int PlayerCrimeWantedLevel = 0;
+            WitnessedCrime HighestPriorityOtherCrime = Civilian.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+            if (HighestPriorityOtherCrime != null && HighestPriorityOtherCrime.Crime != null)
+            {
+                if (HighestPriorityOtherCrime.Crime.CanBeReportedByCivilians && HighestPriorityOtherCrime.Crime.AngersCivilians)
+                {
+                    SeenAngryCrime = true;
+                }
+                if (HighestPriorityOtherCrime.Crime.CanBeReportedByCivilians && HighestPriorityOtherCrime.Crime.ScaresCivilians)
+                {
+                    SeenScaryCrime = true;
+                }
+                if (HighestPriorityOtherCrime.Crime.CanBeReportedByCivilians && !HighestPriorityOtherCrime.Crime.AngersCivilians && !HighestPriorityOtherCrime.Crime.ScaresCivilians)
+                {
+                    SeenMundaneCrime = true;
+                }
+            }
+
             foreach (Crime crime in Civilian.PlayerCrimesWitnessed.Where(x=> x.CanBeReportedByCivilians))
             {
                 if(crime.AngersCivilians)
@@ -181,6 +219,10 @@ public class CivilianTasker
                     PlayerCrimeWantedLevel = crime.ResultingWantedLevel;
                 }
             }
+
+
+
+
             if(PlayerCrimePriority < HighestPriorityOtherCrime?.Crime?.Priority)
             {
                 HighestPriorityOtherCrime = null;
@@ -295,7 +337,7 @@ public class CivilianTasker
     {
         if (ped.CurrentTask?.Name != "GangIdle")
         {
-            EntryPoint.WriteToConsole($"TASKER: gm {ped.Pedestrian.Handle} Task Changed from {ped.CurrentTask?.Name} to Idle", 3);
+            //EntryPoint.WriteToConsole($"TASKER: gm {ped.Pedestrian.Handle} Task Changed from {ped.CurrentTask?.Name} to Idle", 3);
             ped.CurrentTask = new GangIdle(ped, Player, PedProvider, Tasker, PlacesOfInterest);
             GameFiber.Yield();//TR Added back 4
             ped.CurrentTask.Start();

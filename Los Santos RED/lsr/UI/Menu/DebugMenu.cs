@@ -362,11 +362,23 @@ public class DebugMenu : Menu
             Tasker.CreateCrime();
             menu.Visible = false;
         };
+
+
+        UIMenuItem GiveClosesetGun = new UIMenuItem("Give Gun", "Give a gun to the closest ped");
+        GiveClosesetGun.Activated += (menu, item) =>
+        {
+            GiveClosestGun();
+            menu.Visible = false;
+        };
+
+
+
         CrimeItemsMenu.AddItem(SetWantedLevel);
         CrimeItemsMenu.AddItem(ToggleInvestigation);
         CrimeItemsMenu.AddItem(SpawnGunAttackersMenu);
         CrimeItemsMenu.AddItem(SpawnNoGunAttackersMenu);
         CrimeItemsMenu.AddItem(StartRandomCrime);
+        CrimeItemsMenu.AddItem(GiveClosesetGun);
     }
     private void CreateOtherItems()
     {
@@ -754,6 +766,19 @@ public class DebugMenu : Menu
             }
         }, "Run Debug Logic");
     }
+
+
+    private void GiveClosestGun()
+    {
+        PedExt toChoose = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(toChoose != null && toChoose.Pedestrian.Exists())
+        {
+            toChoose.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+            EntryPoint.WriteToConsole($"Gave {toChoose.Pedestrian.Handle} Weapon");
+        }
+
+    }
+
     private void SpawnNoGunAttackers()
     {
         GameFiber.StartNew(delegate

@@ -54,7 +54,7 @@ public class GangSpawnTask : SpawnTask
             }
             if (!HasGang)
             {
-                EntryPoint.WriteToConsole($"GangSpawn: Task No Agency Supplied");
+                EntryPoint.WriteToConsole($"GangSpawn: Task No GANG Supplied");
                 return;
             }
             Setup();
@@ -75,7 +75,7 @@ public class GangSpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
-        EntryPoint.WriteToConsole($"SPAWN TASK: OccupantsToAdd {OccupantsToAdd}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -202,7 +202,7 @@ public class GangSpawnTask : SpawnTask
     {
         try
         {
-            EntryPoint.WriteToConsole($"GangSpawn: Attempting to spawn {VehicleType.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"GangSpawn: Attempting to spawn {VehicleType.ModelName}", 3);
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
@@ -242,7 +242,7 @@ public class GangSpawnTask : SpawnTask
                         }
                     }
 
-                    EntryPoint.WriteToConsole($"GangSpawn: SPAWNED {VehicleType.ModelName}", 3);
+                    //EntryPoint.WriteToConsole($"GangSpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;
                 }
@@ -308,7 +308,7 @@ public class GangSpawnTask : SpawnTask
                 toAdd = ShopMenus.GetRandomDrugDealerMenu();
             }
         }
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons) { ShopMenu = toAdd };
+        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons, World) { ShopMenu = toAdd };
         World.Pedestrians.AddEntity(GangMember);
         if (GangMember.Pedestrian.Exists())
         {

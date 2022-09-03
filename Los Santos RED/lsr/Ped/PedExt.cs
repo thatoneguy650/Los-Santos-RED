@@ -10,7 +10,8 @@ using System.Linq;
 
 public class PedExt : IComplexTaskable
 {
-    private HealthState CurrentHealthState;
+    private IPoliceRespondable PlayerToCheck;
+    private ISettingsProvideable Settings;
     private uint GameTimeCreated = 0;
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastExitedVehicle;
@@ -20,19 +21,14 @@ public class PedExt : IComplexTaskable
     private Entity Killer;
     private uint KillerHandle;
     private Entity LastHurtBy;
-    private PedCrimes PedCrimes;
-    private PlayerPerception PlayerPerception;
-    private IPoliceRespondable PlayerToCheck;
     private Vector3 position;
-    private ISettingsProvideable Settings;
     private Vector3 SpawnPosition;
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
-    
-
+   
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
     {
         Pedestrian = _Pedestrian;
         Handle = Pedestrian.Handle;
@@ -41,29 +37,27 @@ public class PedExt : IComplexTaskable
         Name = _Name;
         GameTimeCreated = Game.GameTime;
         GroupName = groupName;
-        //if (PedGroup == null)
-        //{
-        //    PedGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
-        //}
         CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
-        PedCrimes = new PedCrimes(this, crimes, settings, weapons);
+        PedViolations = new PedViolations(this, crimes, settings, weapons, world);
+        PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
-
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
-
-
-
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName)
+    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
     {
         WillFight = _WillFight;
         WillCallPolice = _WillCallPolice;
         IsGangMember = _IsGangMember;
-       // PedGroup = gameGroup;
         IsMerchant = isMerchant;
         Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
     }
+    public PedViolations PedViolations { get; private set; }
+    public PedPerception PedPerception { get; private set; }
+    public PlayerPerception PlayerPerception { get; private set; }
+    public HealthState CurrentHealthState { get; private set; }
+
+
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
@@ -89,32 +83,21 @@ public class PedExt : IComplexTaskable
             return false;
         }
     }
-
     public bool IsTrustingOfPlayer { get; set; } = true;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
     public float ClosestDistanceToPlayer => PlayerPerception.ClosestDistanceToTarget;
-    public List<Crime> CrimesCurrentlyViolating => PedCrimes.CrimesCurrentlyViolating;
-    public int CurrentlyViolatingWantedLevel => PedCrimes.CurrentlyViolatingWantedLevel;
+    public List<Crime> CrimesCurrentlyViolating => PedViolations.CrimesCurrentlyViolating;
+    public int CurrentlyViolatingWantedLevel => PedViolations.CurrentlyViolatingWantedLevel;
     public ComplexTask CurrentTask { get; set; }
     public string DebugString => $"Handle: {Pedestrian.Handle} Distance {PlayerPerception.DistanceToTarget} See {PlayerPerception.CanSeeTarget} Md: {Pedestrian.Model.Name} Task: {CurrentTask?.Name} SubTask: {CurrentTask?.SubTaskName} InVeh {IsInVehicle}";
     public float DistanceToPlayer => PlayerPerception.DistanceToTarget;
-
     public float HeightToPlayer => PlayerPerception.HeightToTarget;
-
-
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
-
-
-
-
     public string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public string GroupName { get; set; } = "Person";
-
-
-
     public uint GameTimeLastUpdated { get; private set; }
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
@@ -135,12 +118,7 @@ public class PedExt : IComplexTaskable
     public bool IsArrested { get; set; }
     public bool IsBusted { get; set; } = false;
     public bool IsCop { get; set; } = false;
-    public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
-    public bool IsCurrentlyViolatingAnyCrimes => PedCrimes.IsCurrentlyViolatingAnyCrimes;
-
-
-    public Crime WorstObservedCrime => PedCrimes.CrimesObservedViolating.OrderBy(x=> x.Priority).FirstOrDefault();
-    public bool IsDeadlyChase => PedCrimes.IsDeadlyChase;
+    public bool IsDeadlyChase => PedViolations.IsDeadlyChase;
     public bool IsDealingDrugs { get; set; } = false;
     public bool IsDealingIllegalGuns { get; set; } = false;
     public bool IsDriver { get; private set; } = false;
@@ -160,14 +138,11 @@ public class PedExt : IComplexTaskable
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
     public bool IsSuicidal { get; set; } = false;
-
     public bool IsUnconscious { get; set; }
-
     public bool IsAmbientSpawn { get; set; } = false;
-
     public bool IsSuspicious { get; set; } = false;
-    public bool IsWanted => PedCrimes.IsWanted;
-    public bool IsNotWanted => PedCrimes.IsNotWanted;
+    public bool IsWanted => PedViolations.IsWanted;
+    public bool IsNotWanted => PedViolations.IsNotWanted;
     public bool IsZombie { get; set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
@@ -191,9 +166,8 @@ public class PedExt : IComplexTaskable
         }
     }
     public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.DebugSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
-    public List<WitnessedCrime> OtherCrimesWitnessed => PedCrimes.OtherCrimesWitnessed;
+    public List<WitnessedCrime> OtherCrimesWitnessed => PedPerception.OtherCrimesWitnessed;
     public Ped Pedestrian { get; set; }
-   // public PedGroup PedGroup { get; private set; }
     public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
     public Vector3 PositionLastSeenCrime => PlayerPerception.PositionLastSeenCrime;
     public bool RecentlyGotInVehicle => GameTimeLastEnteredVehicle != 0 && Game.GameTime - GameTimeLastEnteredVehicle <= 4000;//was 1000
@@ -203,15 +177,10 @@ public class PedExt : IComplexTaskable
     public int RelationShipToPlayer { get; set; } = 255;
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
-    //public List<MenuItem> TransactionMenu { get; set; }
-
     public Vector3 PositionLastSeenDistressedPed { get; set; }
-
     public ShopMenu ShopMenu { get; set; }
-
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
-    public string ViolationWantedLevelReason => PedCrimes.CurrentlyViolatingWantedLevelReason;
-    public int WantedLevel => PedCrimes.WantedLevel;
+    public int WantedLevel => PedViolations.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
     public bool WasPersistentOnCreate { get; set; } = false;
     public bool WasSetCriminal { get; set; } = false;
@@ -271,17 +240,84 @@ public class PedExt : IComplexTaskable
     }
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
-
     public bool HasSeenDistressedPed { get; set; } = false;
     public bool HasBeenSeenInDistress { get; set; } = false;
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
-
     public bool WasModSpawned { get; set; } = false;
-
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
+    public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    {
+        PlayerToCheck = policeRespondable;
+        if (Pedestrian.Exists())
+        {
+            if (Pedestrian.IsAlive)
+            {
+                if (NeedsFullUpdate)
+                {
+                    IsInWrithe = Pedestrian.IsInWrithe;
+                    UpdatePositionData();
+                    PlayerPerception.Update(perceptable, placeLastSeen);
+                    UpdateVehicleState();
+                    if (!IsCop && !IsUnconscious)
+                    {
+                        if (PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                        {
+                            PedViolations.Update(policeRespondable);//possible yield in here!
+                            PedPerception.Update();
+                        }
+                        if (Pedestrian.Exists() && policeRespondable.IsCop)
+                        {
+                            CheckPlayerBusted();
+                        }
+                    }
+                    if (Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        LookForDistressedPeds(world);
+                    }
+                    if (IsCop && HasSeenDistressedPed)
+                    {
+                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+                        HasSeenDistressedPed = false;
+                    }
 
+                    GameTimeLastUpdated = Game.GameTime;
+                }
+            }
+            CurrentHealthState.Update(policeRespondable);
+        }
+    }
+    
+
+    public virtual void OnBecameWanted()
+    {
+        if (Pedestrian.Exists())
+        {
+            if (!Pedestrian.IsPersistent)
+            {
+                Pedestrian.IsPersistent = true;
+            }
+            RelationshipGroup CriminalsRG = new RelationshipGroup("CRIMINALS");
+            Pedestrian.RelationshipGroup = CriminalsRG;
+            RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
+            CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Pedestrian, (int)eCustomDrivingStyles.Code3);
+
+
+            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");
+        }
+        //Vector3 pedPos = Pedestrian.Position;
+        //if (WillFight && RandomItems.RandomPercent(90f))
+        //{
+        //    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Pedestrian, 300f, 0);
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.TASK_SMART_FLEE_COORD(Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 9999f, -1, false, false);
+        //}
+    }
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()
     {
@@ -393,9 +429,9 @@ public class PedExt : IComplexTaskable
     public bool SeenPlayerWithin(int msSince) => PlayerPerception.SeenTargetWithin(msSince);
     public void SetWantedLevel(int toSet)
     {
-        if (PedCrimes.WantedLevel < toSet)
+        if (PedViolations.WantedLevel < toSet)
         {
-            PedCrimes.WantedLevel = toSet;
+            PedViolations.WantedLevel = toSet;
         }
         //if (toSet == 0)
         //{
@@ -408,46 +444,6 @@ public class PedExt : IComplexTaskable
         IsBusted = true;
         CanBeAmbientTasked = false;
         CanBeTasked = false;
-    }
-    public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
-    {
-        PlayerToCheck = policeRespondable;
-        if (Pedestrian.Exists())
-        {
-            if (Pedestrian.IsAlive)
-            {
-                if (NeedsFullUpdate)
-                {
-                    IsInWrithe = Pedestrian.IsInWrithe;
-                    UpdatePositionData();
-                    PlayerPerception.Update(perceptable, placeLastSeen);
-                    UpdateVehicleState();
-                    if (!IsCop && !IsUnconscious)
-                    {
-                        if (PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                        {
-                            PedCrimes.Update(world, policeRespondable);//possible yield in here!
-                        }
-                        if (Pedestrian.Exists() && policeRespondable.IsCop)
-                        {
-                            CheckPlayerBusted();
-                        }
-                    }
-                    if(Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                    {
-                        LookForDistressedPeds(world);
-                    }
-                    if(IsCop && HasSeenDistressedPed)
-                    {
-                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                        HasSeenDistressedPed = false;
-                    }
-
-                    GameTimeLastUpdated = Game.GameTime;
-                }
-            }
-            CurrentHealthState.Update(policeRespondable);
-        }
     }
     public void UpdateTask(PedExt otherTarget)
     {
@@ -577,7 +573,8 @@ public class PedExt : IComplexTaskable
     }
     public void ResetCrimes()
     {
-        PedCrimes.Reset();
+        PedViolations.Reset();
+        PedPerception.Reset();
     }
     private void PlaySpeech(string speechName, bool useMegaphone)
     {

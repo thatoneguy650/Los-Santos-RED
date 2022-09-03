@@ -8,7 +8,7 @@ public class GangMember : PedExt, IWeaponIssuable
 {
     private uint GameTimeSpawned;
     
-    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName)
+    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName, world)
     {
         Gang = gang;
         WasModSpawned = wasModSpawned;
@@ -27,20 +27,30 @@ public class GangMember : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 100;
-
-
-
-
     public WeaponInventory WeaponInventory { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
-   // public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun) => WeaponInventory.IssueWeapons(weapons, issueMelee, issueSidearm, issueLongGun);
     public Gang Gang { get; set; } = new Gang();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    //public bool WasModSpawned { get; private set; }
-
     public bool HasTaser { get; set; } = false;
-
-
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
+    public override void OnBecameWanted()
+    {
+        if (Pedestrian.Exists())
+        {
+            if (Gang != null)
+            {
+                RelationshipGroup gangRG = new RelationshipGroup(Gang.ID);
+                Pedestrian.RelationshipGroup = gangRG;
+                RelationshipGroup.Cop.SetRelationshipWith(gangRG, Relationship.Hate);
+                gangRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+                Gang.HasWantedMembers = true;
+                EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
+            }
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Pedestrian, (int)eCustomDrivingStyles.Code3);
+            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER)");
+        }
+    }
+
+
 }

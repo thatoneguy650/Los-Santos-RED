@@ -246,7 +246,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         GroupName = "Woman";
                     }
-                    TargetCop = new PedExt(ped, Settings, Crimes, null, TargetCopName, GroupName);
+                    TargetCop = new PedExt(ped, Settings, Crimes, null, TargetCopName, GroupName, World);
                     World.Pedestrians.AddEntity(TargetCop);
                     TargetCop.WasEverSetPersistent = true;
                     TargetCop.CanBeAmbientTasked = true;

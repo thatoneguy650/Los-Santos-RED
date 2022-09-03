@@ -24,7 +24,8 @@ public class Pedestrians
     private IGangs Gangs;
     private uint GameTimeLastCreatedPeds = 0;
     private IGangTerritories GangTerritories;
-    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories)
+    private IEntityProvideable World;
+    public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories, IEntityProvideable world)
     {
         Agencies = agencies;
         Zones = zones;
@@ -37,6 +38,7 @@ public class Pedestrians
         ShopMenus = shopMenus;
         Gangs = gangs;
         GangTerritories = gangTerritories;
+        World = world;
     }
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
@@ -392,7 +394,8 @@ public class Pedestrians
             EntryPoint.PersistentPedsNonPersistent++;
         }
         RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
-        RelationshipGroup hatesCops = new RelationshipGroup("HATESCOPS");
+        RelationshipGroup criminalsRG = new RelationshipGroup("CRIMINALS");
+        RelationshipGroup hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
         foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
@@ -425,7 +428,7 @@ public class Pedestrians
         DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
         foreach (PedExt Civilian in DeadPeds.Where(x => NativeHelper.MaxCellsAway(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY) >= 3 && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == hatesCops)
+            if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == criminalsRG || Civilian.Pedestrian.RelationshipGroup == hatesPlayerRG)
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
@@ -770,7 +773,7 @@ public class Pedestrians
                 myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
             }
             ShopMenu toAdd = GetIllicitMenu();
-            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd, WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
+            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd, WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
             Civilians.Add(toCreate);
             if (Pedestrian.Exists())
             {
@@ -828,7 +831,7 @@ public class Pedestrians
                     toAdd = ShopMenus.GetRandomDrugDealerMenu();
                 }
             }
-            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
+            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
             if (Pedestrian.Exists())
             {
                 gm.Money = gm.Money;
@@ -894,7 +897,7 @@ public class Pedestrians
                 Pedestrian.Armor = armor;
             }
 
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name);
+            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
             myCop.WeaponInventory.IssueWeapons(Weapons, true,true,true, AssignedPerson.EmptyHolster,AssignedPerson.FullHolster);
 
 

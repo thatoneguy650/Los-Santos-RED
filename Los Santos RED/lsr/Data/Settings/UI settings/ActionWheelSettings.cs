@@ -43,6 +43,12 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float NextPageCenterY { get; set; }
     public int ItemsPerPage { get; set; }
 
+
+    public bool ShowSpeedLimitIcon { get; set; }
+    public float SpeedLimitIconScale { get; set; }
+    public float SpeedLimitIconX { get; set; }
+    public float SpeedLimitIconY { get; set; }
+
     public ActionWheelSettings()
     {
         SetDefault();
@@ -87,5 +93,12 @@ public class ActionWheelSettings : ISettingsDefaultable
 
 
         ItemsPerPage = 10;
+
+
+        ShowSpeedLimitIcon = true;
+        SpeedLimitIconScale = 0.35f;
+        SpeedLimitIconX = 0.6f;
+        SpeedLimitIconY = 0.98f;
+
     }
 }

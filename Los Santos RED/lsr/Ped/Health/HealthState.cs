@@ -119,7 +119,7 @@ public class HealthState
                 {
                     SetUnconscious();
                 }
-                else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
+                else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.PedViolations.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
                 {
                     SetUnconscious();
                 }

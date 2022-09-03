@@ -226,6 +226,7 @@
     <Compile Include="lsr\Locations\ShopMenu.cs" />
     <Compile Include="lsr\ModController\ModTaskGroup.cs" />
     <Compile Include="lsr\Other\DependencyChecker.cs" />
+    <Compile Include="lsr\Ped\Crimes\PedPerception.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
@@ -472,9 +473,9 @@
     <Compile Include="lsr\Inventory\PhysicalItem.cs" />
     <Compile Include="lsr\Locations\Interior.cs" />
     <Compile Include="lsr\Ped\Merchant\Merchant.cs" />
-    <Compile Include="lsr\Ped\Perception and Crimes\PedCrimes.cs" />
-    <Compile Include="lsr\Ped\Perception and Crimes\PlayerPerception.cs" />
-    <Compile Include="lsr\Ped\Perception and Crimes\WitnessedCrime.cs" />
+    <Compile Include="lsr\Ped\Crimes\PedViolations.cs" />
+    <Compile Include="lsr\Ped\Crimes\PlayerPerception.cs" />
+    <Compile Include="lsr\Ped\Crimes\WitnessedCrime.cs" />
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />

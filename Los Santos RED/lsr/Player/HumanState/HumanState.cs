@@ -85,7 +85,7 @@ public class HumanState
     {
         foreach (HumanNeed humanNeed in HumanNeeds)
         {
-            humanNeed.SetRandom();
+            humanNeed.SetRandom(false);
         }
     }
     public void Dispose()

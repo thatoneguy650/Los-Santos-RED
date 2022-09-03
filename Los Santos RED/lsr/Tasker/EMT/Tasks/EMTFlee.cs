@@ -21,7 +21,7 @@ public class EMTFlee : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"TASKER: EMTFlee Start: {Ped.Pedestrian.Handle}", 3);
+           // EntryPoint.WriteToConsole($"TASKER: EMTFlee Start: {Ped.Pedestrian.Handle}", 3);
 
             if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(Ped.Pedestrian))
             {

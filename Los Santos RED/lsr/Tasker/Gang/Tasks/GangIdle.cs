@@ -115,7 +115,7 @@ public class GangIdle : ComplexTask
                 ClearTasks(true);
                 WanderTask();
             }
-            else if (!RecentlyExitedVehicle && Ped.Pedestrian.IsInAnyVehicle(false) && !Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 0.2f)
+            else if (!RecentlyExitedVehicle && Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists() && Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.Handle == Ped.Pedestrian.CurrentVehicle.Handle && !Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed <= 0.2f)
             {
                 ExitVehicleTask();
             }

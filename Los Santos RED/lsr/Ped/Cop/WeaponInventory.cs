@@ -530,7 +530,7 @@ public class WeaponInventory
 
     private void HolsterPistol()
     {
-        EntryPoint.WriteToConsole($"Holster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
+        //EntryPoint.WriteToConsole($"Holster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
 
         if (!IsHolsterFull)
         {
@@ -549,7 +549,7 @@ public class WeaponInventory
     }
     private void UnHolsterPistol()
     {
-        EntryPoint.WriteToConsole($"UnHolster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
+        //EntryPoint.WriteToConsole($"UnHolster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");
         if (IsHolsterFull)
         {
             if(EmptyHolster != null)

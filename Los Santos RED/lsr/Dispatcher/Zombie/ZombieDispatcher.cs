@@ -72,7 +72,7 @@ public class ZombieDispatcher
                 if (zombie.Exists())
                 {
                     SetZombieStats(zombie);
-                    Zombie myZombie = new Zombie(zombie, Settings, zombie.Health, true, Crimes, Weapons, "Unknown","Zombie");
+                    Zombie myZombie = new Zombie(zombie, Settings, zombie.Health, true, Crimes, Weapons, "Unknown","Zombie", World);
                     World.Pedestrians.AddEntity(myZombie);
                 }
             }

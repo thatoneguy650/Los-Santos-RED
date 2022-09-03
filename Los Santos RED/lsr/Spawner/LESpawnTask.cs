@@ -72,7 +72,7 @@ public class LESpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
-        EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -90,7 +90,7 @@ public class LESpawnTask : SpawnTask
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
-                    EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
+                    //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
                 }
                 else
                 {
@@ -199,7 +199,7 @@ public class LESpawnTask : SpawnTask
     {
         try
         {
-            EntryPoint.WriteToConsole($"LESpawn: Attempting to spawn {VehicleType.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"LESpawn: Attempting to spawn {VehicleType.ModelName}", 3);
             if (ClearArea)
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
@@ -257,7 +257,7 @@ public class LESpawnTask : SpawnTask
                     {
                         NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
                     }
-                    EntryPoint.WriteToConsole($"LESpawn: SPAWNED {VehicleType.ModelName}", 3);
+                    //EntryPoint.WriteToConsole($"LESpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;
                 }
@@ -317,7 +317,7 @@ public class LESpawnTask : SpawnTask
         {
             isMale = ped.IsMale;
         }
-        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName);
+        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         if (PrimaryCop != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {

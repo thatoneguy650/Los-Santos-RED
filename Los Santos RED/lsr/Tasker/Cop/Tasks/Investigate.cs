@@ -167,18 +167,18 @@ public class Investigate : ComplexTask
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;
                 UpdateGoTo(true);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 HasReachedReportedPosition = true;
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo(true);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }
@@ -192,18 +192,18 @@ public class Investigate : ComplexTask
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;
                 UpdateGoTo(false);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 HasReachedReportedPosition = true;
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo(false);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }
@@ -264,7 +264,7 @@ public class Investigate : ComplexTask
                         }
                     }
 
-                    EntryPoint.WriteToConsole(string.Format("TASKER: Investigation UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
+                    //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
                 }
             }
             else

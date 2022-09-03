@@ -359,7 +359,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         GroupName = "Woman";
                     }  
-                    Witness = new PedExt(ped, Settings, Crimes, null, WitnessName, GroupName);
+                    Witness = new PedExt(ped, Settings, Crimes, null, WitnessName, GroupName, World);
                     World.Pedestrians.AddEntity(Witness);
                     Witness.WasEverSetPersistent = true;
                     Witness.CanBeAmbientTasked = true;
