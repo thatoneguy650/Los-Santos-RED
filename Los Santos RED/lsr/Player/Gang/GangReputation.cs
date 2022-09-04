@@ -171,7 +171,8 @@ public class GangReputation
         MembersHurtInTerritory = 0;
         MembersKilledInTerritory = 0;
         MembersCarJackedInTerritory = 0;
-        PlayerDebt = 0; 
+        PlayerDebt = 0;
+        Player.SetDenStatus(Gang, false);
     }
     public void AddembientRep()
     {
@@ -299,6 +300,31 @@ public class GangReputation
             ending = "~r~Hostile~s~";
         }
         return ending + repLevel;
+    }
+    public string ToStringSimple()
+    {
+        string ending = "";
+        if (GangRelationship == GangRespect.Member)
+        {
+            ending = "~g~Member~s~";
+        }
+        else if (IsEnemy)
+        {
+            ending = "~r~Enemy~s~";
+        }
+        else if (GangRelationship == GangRespect.Friendly)
+        {
+            ending = "~g~Friendly~s~";
+        }
+        else if (GangRelationship == GangRespect.Neutral)
+        {
+            ending = "~s~Neutral~s~";
+        }
+        else if (GangRelationship == GangRespect.Hostile)
+        {
+            ending = "~r~Hostile~s~";
+        }
+        return ending;
     }
     public string ToBlip()
     {

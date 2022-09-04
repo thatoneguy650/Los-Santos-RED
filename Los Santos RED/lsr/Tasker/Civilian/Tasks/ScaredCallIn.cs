@@ -58,6 +58,7 @@ public class ScaredCallIn : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
             if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
                 ReportCrime();

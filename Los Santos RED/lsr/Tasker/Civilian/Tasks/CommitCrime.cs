@@ -31,6 +31,7 @@ public class CommitCrime : ComplexTask
         DetermineCrime();
         IssueWeapon();
         StartCrimeTask();
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
     {
@@ -51,6 +52,7 @@ public class CommitCrime : ComplexTask
             Ped.IsSuspicious = false;
             GameTimeTimeStartedHarassing = 0;
         }
+        GameTimeLastRan = Game.GameTime;
     }
     public override void ReTask()
     {

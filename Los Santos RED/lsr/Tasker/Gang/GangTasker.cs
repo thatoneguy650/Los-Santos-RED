@@ -190,7 +190,7 @@ public class GangTasker
     {
         if (GangMember.CurrentTask?.Name != "GangFlee")
         {
-            GangMember.CurrentTask = new GangFlee(GangMember, Player) { OtherTarget = HighestPriority?.Perpetrator };
+            GangMember.CurrentTask = new GangFlee(GangMember, Player, Settings) { OtherTarget = HighestPriority?.Perpetrator };
             GameFiber.Yield();//TR Added back 7
             GangMember.CurrentTask.Start();
         }

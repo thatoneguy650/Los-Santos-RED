@@ -25,7 +25,39 @@ public class PedExt : IComplexTaskable
     private Vector3 SpawnPosition;
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
-   
+
+
+    private bool ShouldCheckCrimes
+    {
+        get
+        {
+            if (Pedestrian.Exists())
+            {
+                string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
+                if (RelationshipGroupName == string.Empty)
+                {
+                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
+                    RelationshipGroupName = RelationshipGroupName.ToUpper();
+                }
+                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
+                {
+                    return false;
+                }
+                else if (RelationshipGroupName == "")
+                {
+                    return true;
+                }
+                else if (RelationshipGroupName == "ZOMBIE")
+                {
+                    return true;
+                }
+                return true;
+            }
+            return false;
+            // return PedExt != null && (PedExt.PedGroup == null || PedExt.PedGroup?.InternalName.ToUpper() == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName.ToUpper() != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName.ToUpper() != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName.ToUpper() != "FIREMAN" && PedExt.PedGroup?.InternalName.ToUpper() != "MEDIC"));
+        }
+    }
+
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
@@ -268,7 +300,7 @@ public class PedExt : IComplexTaskable
                     UpdateVehicleState();
                     if (!IsCop && !IsUnconscious)
                     {
-                        if (PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                        if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
                             PedViolations.Update(policeRespondable);//possible yield in here!
                             PedPerception.Update();
@@ -307,7 +339,7 @@ public class PedExt : IComplexTaskable
             RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
             CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
 
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Pedestrian, (int)eCustomDrivingStyles.Code3);
+            
 
 
             EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");

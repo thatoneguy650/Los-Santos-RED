@@ -77,7 +77,7 @@ public class PedViolations
     public List<Crime> CrimesObservedViolating => CrimesObserved;
     public void Update(IPoliceRespondable player)
     {
-        if (ShouldCheck && Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes)
+        if (Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes)
         {
             CrimesViolating.Clear();
             if (!PedExt.IsArrested)

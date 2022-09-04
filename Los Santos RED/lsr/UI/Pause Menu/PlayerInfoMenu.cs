@@ -31,7 +31,7 @@ public class PlayerInfoMenu
     private VehiclesTab VehiclesTab;
     private LicensesTab LicensesTab;
     private CrimesTab CrimesTab;
-    private GangTab GangTab;
+    private DynamicGangTab GangTab;
 
     private ISettingsProvideable Settings;
 
@@ -68,7 +68,7 @@ public class PlayerInfoMenu
         VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView);
         LicensesTab = new LicensesTab(Player, Time, tabView);
         CrimesTab = new CrimesTab(Player, tabView);
-        GangTab = new GangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView);
+        GangTab = new DynamicGangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView, Time);
     }
     public void Toggle()
     {

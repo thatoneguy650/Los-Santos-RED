@@ -300,6 +300,7 @@ public class GangDispatcher
             {
                 World.Pedestrians.AddEntity(created);
             }
+            gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
             gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
             HasDispatchedThisTick = true;
         }

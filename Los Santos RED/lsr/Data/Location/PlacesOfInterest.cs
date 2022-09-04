@@ -867,6 +867,18 @@ new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W St
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
             { new ConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,100f), } },
 
+
+
+
+            new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { AssignedAgencyID = "NOOSE", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 75f),
+                new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 75f),
+                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 75f),
+
+
+            },PossibleVehicleSpawns = new List<ConditionalLocation>()
+            { new ConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 75f), } },
+
         };
         List<Prison> Prisons = new List<Prison>()
         {

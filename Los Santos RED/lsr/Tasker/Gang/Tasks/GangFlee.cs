@@ -11,11 +11,13 @@ using System.Threading.Tasks;
 public class GangFlee : ComplexTask
 {
     private ITargetable Target;
-    public GangFlee(IComplexTaskable ped, ITargetable player) : base(player, ped, 5000)
+    private ISettingsProvideable Settings;
+    public GangFlee(IComplexTaskable ped, ITargetable player, ISettingsProvideable settings) : base(player, ped, 5000)
     {
         Name = "GangFlee";
         SubTaskName = "";
         Target = player;
+        Settings = settings;
     }
     public override void Start()
     {
@@ -23,8 +25,14 @@ public class GangFlee : ComplexTask
         {
             
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
-            //Ped.Pedestrian.BlockPermanentEvents = true;
-            //Ped.Pedestrian.KeepTasks = true;
+
+
+            if (Settings.SettingsManager.GangSettings.ForceFlee)
+            {
+
+                Ped.Pedestrian.BlockPermanentEvents = true;
+                Ped.Pedestrian.KeepTasks = true;
+            }
 
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Ped.Pedestrian, (uint)2725352035, true);//set unarmed
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
@@ -56,7 +64,11 @@ public class GangFlee : ComplexTask
     }
     public override void Update()
     {
-
+        if (Ped.Pedestrian.Exists() && Ped.IsDriver)
+        {
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+        }
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
     {

@@ -128,6 +128,121 @@ public class Pedestrians
     }
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public void Setup()
+    {
+        foreach (Gang gang in Gangs.AllGangs)
+        {
+            RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
+            RelationshipGroup policeGroup = new RelationshipGroup("COP");
+            foreach (Gang otherGang in Gangs.AllGangs)
+            {
+                if (otherGang.ID != gang.ID)
+                {
+                    if (gang.EnemyGangs.Contains(otherGang.ID))
+                    {
+                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Dislike);
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Dislike);
+                    }
+                    else
+                    {
+                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
+                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
+                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);//was like
+                    }
+                }
+            }
+            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);//was like
+            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
+        }
+        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
+    }
+    public void Dispose()
+    {
+        ClearSpawned();
+        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(true);
+    }
+    public void CreateNew()
+    {
+        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
+        GameFiber.Yield();
+        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
+        {
+            string modelName = Pedestrian.Model.Name.ToLower();
+            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+            {
+                Delete(Pedestrian);
+                continue;
+            }
+            uint localHandle = Pedestrian.Handle;
+
+            if (DeadPeds.Any(x => x.Handle == localHandle))
+            {
+                continue;
+            }
+            else if (Pedestrian.IsPoliceArmy())
+            {
+                if (Police.Any(x => x.Handle == localHandle))
+                {
+                    continue;
+                }
+                if (Settings.SettingsManager.PoliceSettings.RemoveVanillaSpawnedPeds)
+                {
+                    Delete(Pedestrian);
+                    continue;
+                }
+                AddAmbientCop(Pedestrian);
+                GameFiber.Yield();
+            }
+            else
+            {
+                //if(Pedestrian.IsGangMember())
+                //{
+                //    Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
+                //}
+
+
+                if (Pedestrian.IsGangMember())
+                {
+
+
+                    if (GangMembers.Any(x => x.Handle == localHandle))
+                    {
+                        continue;
+                    }
+                    if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+                    {
+                        Delete(Pedestrian);
+                        continue;
+                    }
+                    else if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
+                    {
+                        Delete(Pedestrian);
+                        continue;
+                    }
+                    AddAmbientGangMember(Pedestrian);
+                    GameFiber.Yield();
+                }
+                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x => x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x => x.Handle == localHandle) && !Police.Any(x => x.Handle == localHandle))
+                {
+                    AddAmbientCivilian(Pedestrian);
+                    GameFiber.Yield();
+                }
+            }
+        }
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
+        }
+        GameTimeLastCreatedPeds = Game.GameTime;
+    }
+    public void Prune()
+    {
+        PruneServicePeds();
+        PruneGangMembers();
+        PruneCivilians();
+        DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
+    }
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
     {
         if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
@@ -272,13 +387,6 @@ public class Pedestrians
             return pedExt;
         }
         return null;
-    }
-    public void Prune()
-    {
-        PruneServicePeds();
-        PruneGangMembers();
-        PruneCivilians();
-        DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
     }
     private void PruneServicePeds()
     {
@@ -440,40 +548,6 @@ public class Pedestrians
             }
         }
     }
-    public void Setup()
-    {
-        foreach (Gang gang in Gangs.AllGangs)
-        {
-            RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
-            RelationshipGroup policeGroup = new RelationshipGroup("COP");
-            foreach (Gang otherGang in Gangs.AllGangs)
-            {
-                if (otherGang.ID != gang.ID)
-                {
-                    if(gang.EnemyGangs.Contains(otherGang.ID))
-                    {
-                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);
-                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Neutral);
-                    }
-                    else
-                    {
-                        RelationshipGroup otherGangGroup = new RelationshipGroup(otherGang.ID);
-                        otherGangGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
-                        thisGangGroup.SetRelationshipWith(otherGangGroup, Relationship.Like);
-                    }
-                }
-            }
-            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Like);
-            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Like);
-        }
-        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
-    }
-    public void Dispose()
-    {
-        ClearSpawned();
-        NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(true);
-    }
     public void AddEntity(PedExt pedExt)
     {
         if (pedExt != null)
@@ -528,72 +602,6 @@ public class Pedestrians
                 }
             }
         }
-    }
-    public void CreateNew()
-    {
-        WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
-        GameFiber.Yield();
-        foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
-        {
-            string modelName = Pedestrian.Model.Name.ToLower();
-            if (Settings.SettingsManager.WorldSettings.ReplaceVanillaShopKeepers && (modelName == "mp_m_shopkeep_01"))// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
-            {
-                Delete(Pedestrian);
-                continue;
-            }
-            uint localHandle = Pedestrian.Handle;
-
-            if (DeadPeds.Any(x => x.Handle == localHandle))
-            {
-                continue;
-            }
-            else if (Pedestrian.IsPoliceArmy())
-            {
-                if (Police.Any(x => x.Handle == localHandle))
-                {
-                    continue;
-                }
-                if (Settings.SettingsManager.PoliceSettings.RemoveVanillaSpawnedPeds)
-                {
-                    Delete(Pedestrian);
-                    continue;
-                }
-                AddAmbientCop(Pedestrian);
-                GameFiber.Yield();
-            }
-            else
-            {
-                if(Pedestrian.IsGangMember())
-                {
-                    if(GangMembers.Any(x => x.Handle == localHandle))
-                    {
-                        continue;
-                    }
-                    if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
-                    {
-                        Delete(Pedestrian);
-                        continue;
-                    }
-                    else if(Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
-                    {
-                        Delete(Pedestrian);
-                        continue;
-                    }
-                    AddAmbientGangMember(Pedestrian);
-                    GameFiber.Yield();
-                }
-                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x=> x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x=> x.Handle == localHandle) && !Police.Any(x => x.Handle == localHandle))
-                {
-                    AddAmbientCivilian(Pedestrian);
-                    GameFiber.Yield();
-                }
-            }
-        }
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
-        {
-            EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
-        }
-        GameTimeLastCreatedPeds = Game.GameTime;
     }
     public void MarkPedAsRevived(PedExt pedExt)
     {
@@ -845,6 +853,14 @@ public class Pedestrians
             bool WillFightPolice = RandomItems.RandomPercent(MyGang.FightPolicePercentage);
             bool canBeAmbientTasked = true;
 
+
+
+            if (Settings.SettingsManager.GangSettings.ShowSpawnedBlip && Pedestrian.Exists())
+            {
+                Blip myBlip = Pedestrian.AttachBlip();
+                myBlip.Color = MyGang.Color;
+                myBlip.Scale = 0.3f;
+            }
 
 
 

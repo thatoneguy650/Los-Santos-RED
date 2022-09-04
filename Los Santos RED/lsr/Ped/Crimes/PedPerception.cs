@@ -24,38 +24,6 @@ public class PedPerception
     private VehicleExt WitnessedVehicle;
     private WeaponInformation WitnessedWeapon;
 
-    private bool ShouldCheck
-    {
-        get
-        {
-            if (PedExt != null && PedExt.Pedestrian.Exists())
-            {
-                string RelationshipGroupName = PedExt.Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
-                if (RelationshipGroupName == string.Empty)
-                {
-                    //EntryPoint.WriteToConsole($" PedExt.Pedestrian {PedExt.Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
-                    RelationshipGroupName = RelationshipGroupName.ToUpper();
-                }
-
-                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
-                {
-                    return false;
-                }
-                else if (RelationshipGroupName == "")
-                {
-                    return true;
-                }
-                else if (RelationshipGroupName == "ZOMBIE")
-                {
-                    return true;
-                }
-
-                return true;
-            }
-            return false;
-            // return PedExt != null && (PedExt.PedGroup == null || PedExt.PedGroup?.InternalName.ToUpper() == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName.ToUpper() != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName.ToUpper() != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName.ToUpper() != "FIREMAN" && PedExt.PedGroup?.InternalName.ToUpper() != "MEDIC"));
-        }
-    }
     private bool IsNonCriminal => PedExt.PedViolations.IsNotWanted && !PedExt.PedViolations.IsCurrentlyViolatingAnyCrimes;
     public PedPerception(PedExt pedExt, ICrimes crimes, ISettingsProvideable settings, IWeapons weapons, IEntityProvideable world)
     {
@@ -72,7 +40,7 @@ public class PedPerception
     }
     public void Update()
     {
-        if (ShouldCheck && Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes && !PedExt.IsArrested && PedExt.PedViolations.WantedLevel == 0 && PedExt.PedViolations.CurrentlyViolatingWantedLevel == 0 && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)//used to have player.isnotwanted here
+        if (Settings.SettingsManager.CivilianSettings.CheckCivilianCrimes && !PedExt.IsArrested && PedExt.PedViolations.WantedLevel == 0 && PedExt.PedViolations.CurrentlyViolatingWantedLevel == 0 && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnOtherCivilians)//used to have player.isnotwanted here
         {
             CheckOtherPedCrimes();
         }

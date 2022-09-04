@@ -483,6 +483,7 @@
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\CrimesTab.cs" />
+    <Compile Include="lsr\UI\Pause Menu\Tabs\DynamicGangTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\GangTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\LicensesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\LocationsTab.cs" />
@@ -674,6 +675,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lsr\Old\" />
+    <Folder Include="lsr\UI\Pause Menu\Tabs\GangTab\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

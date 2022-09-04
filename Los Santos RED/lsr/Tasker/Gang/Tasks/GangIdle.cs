@@ -24,10 +24,18 @@ public class GangIdle : ComplexTask
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
     private Vector3 taskedPosition;
+    private uint GameTimeBetweenScenarios;
     private uint GameTimeLastStartedScenario;
     private uint GameTimeLastChangedWanderStuff;
     private uint GameTimeBetweenWanderDecision = 60000;
     private uint GameTimeLastExitedVehicle;
+
+
+    private bool ForceGuard = false;
+    private bool hasBeenVehiclePatrolTasked;
+    private uint GameTimeLastStartedFootPatrol;
+    private uint GameTimeBetweenFootPatrols;
+
     private bool RecentlyExitedVehicle => GameTimeLastExitedVehicle != 0 && Game.GameTime - GameTimeLastExitedVehicle >= 1000;
 
     private enum Task
@@ -36,12 +44,34 @@ public class GangIdle : ComplexTask
         Wander,
         Nothing,
         OtherTarget,
+        VehiclePatrol,
+        GuardArea,
+        FootPatrol,
     }
     private Task CurrentTaskDynamic
     {
         get
         {
-            return Task.Wander;
+
+            if (ForceGuard)
+            {
+                if (Ped.Pedestrian.IsInAnyVehicle(false))
+                {
+                    return Task.VehiclePatrol;
+                }
+                else
+                {
+                    return Task.GuardArea;
+                }
+            }
+            else if (Ped.Pedestrian.IsInAnyVehicle(false))
+            {
+                return Task.VehiclePatrol;
+            }
+            else
+            {
+                return Task.FootPatrol;
+            }
         }
     }
     public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
@@ -56,6 +86,16 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            if (Ped.IsAmbientSpawn)
+            {
+                ForceGuard = true;
+            }
+            else
+            {
+                ForceGuard = false;
+            }
+
+
             ClearTasks(true);
             Update();
         }
@@ -91,6 +131,19 @@ public class GangIdle : ComplexTask
             SubTaskName = "Wander";
             Wander(IsFirstRun);
         }
+        else if (CurrentTask == Task.VehiclePatrol)
+        {
+            RunInterval = 1500;
+            SubTaskName = "VehiclePatrol";
+            VehiclePatrol(IsFirstRun);
+        }
+        else if (CurrentTask == Task.GuardArea)
+        {
+            RunInterval = 1500;
+            SubTaskName = "GuardArea";
+            GuardArea(IsFirstRun);
+        }
+
         else if (CurrentTask == Task.GetInCar)
         {
             RunInterval = 500;
@@ -102,6 +155,12 @@ public class GangIdle : ComplexTask
             RunInterval = 1500;
             SubTaskName = "Nothing";
             Nothing(IsFirstRun);
+        }
+        else if (CurrentTask == Task.FootPatrol)
+        {
+            RunInterval = 1500;
+            SubTaskName = "FootPatrol";
+            FootPatrol(IsFirstRun);
         }
         GameTimeLastRan = Game.GameTime;
     }
@@ -130,6 +189,134 @@ public class GangIdle : ComplexTask
             }
         }
     }
+
+
+    private void VehiclePatrol(bool IsFirstRun)
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            if (IsFirstRun)
+            {
+                NeedsUpdates = true;
+                ClearTasks(true);
+                VehiclePatrolTask();
+            }
+            if (!hasBeenVehiclePatrolTasked)
+            {
+                VehiclePatrolTask();
+            }
+        }
+    }
+    private void VehiclePatrolTask()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            if ((Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) && Ped.Pedestrian.CurrentVehicle.Exists())
+            {
+                hasBeenVehiclePatrolTasked = true;
+                if (Ped.IsInHelicopter)
+                {
+                    NativeFunction.CallByName<bool>("TASK_HELI_MISSION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+                }
+                else
+                {
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                        NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+
+            }
+        }
+    }
+
+
+    private void GuardArea(bool IsFirstRun)
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            if (IsFirstRun)
+            {
+                NeedsUpdates = true;
+                ClearTasks(true);
+                GuardAreaTask();
+            }
+            else
+            {
+                if (GameTimeLastStartedScenario > 0 && Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios)
+                {
+                    if (RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
+                    {
+                        ForceGuard = false;
+                    }
+                    else
+                    {
+                        GuardAreaTask();
+                    }
+                }
+            }
+        }
+    }
+    private void GuardAreaTask()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
+            string ScenarioChosen = PossibleScenarios.PickRandom();
+            NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
+            GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
+            GameTimeLastStartedScenario = Game.GameTime;
+        }
+    }
+
+
+    private void FootPatrol(bool IsFirstRun)
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            if (IsFirstRun)
+            {
+                NeedsUpdates = true;
+                ClearTasks(true);
+                FootPatrolTask();
+            }
+            else
+            {
+                if (GameTimeLastStartedFootPatrol > 0 && Game.GameTime - GameTimeLastStartedFootPatrol >= GameTimeBetweenFootPatrols)
+                {
+                    if (Ped.IsAmbientSpawn && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
+                    {
+                        ForceGuard = true;
+                    }
+                }
+            }
+        }
+    }
+    private void FootPatrolTask()
+    {
+        if (Ped.Pedestrian.Exists())
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
+            NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+            //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
+            GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(30000, 90000);
+            GameTimeLastStartedFootPatrol = Game.GameTime;
+        }
+    }
+
+
     private void WanderTask()
     {
         if (Ped.Pedestrian.Exists())

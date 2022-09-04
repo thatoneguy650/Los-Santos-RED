@@ -21,7 +21,7 @@ public class VanillaSettings : ISettingsDefaultable
     public bool BlockGangScenarios { get; set; }
     public bool BlockVanillaPoliceCarGenerators { get; set; }
     public bool BlockVanillaPoliceScenarios { get; set; }
-    public float BlockGangScenariosDistance { get; set; }
+    public float BlockGangScenariosAroundDensDistance { get; set; }
     [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines) and allows DLC vehicles to be spawned without an external trailer. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaShops { get; set; }
 
@@ -40,9 +40,9 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateScenarioCops = true;
         SuppressVanillaGangPeds = false;
         TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
-        TerminateRandomEvents = false;
+        TerminateRandomEvents = true;
         BlockGangScenarios = true;
-        BlockGangScenariosDistance = 200f;
+        BlockGangScenariosAroundDensDistance = 200f;
         BlockVanillaPoliceCarGenerators = true;
         BlockVanillaPoliceScenarios = true;
         TerminateVanillaShops = false;

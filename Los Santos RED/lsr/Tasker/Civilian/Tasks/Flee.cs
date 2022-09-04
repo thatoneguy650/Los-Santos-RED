@@ -34,7 +34,11 @@ public class Flee : ComplexTask
     }
     public override void Update()
     {
-
+        if (Ped.Pedestrian.Exists() && Ped.IsDriver)
+        {
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
+        }
+        GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()
     {
