@@ -300,22 +300,22 @@ public class PoliceSettings : ISettingsDefaultable
         LikelyHoodOfAnySpawn_Default = 5;
         LikelyHoodOfCountySpawn_Default = 5;
 
-        LikelyHoodOfAnySpawn_Wanted1 = 5;
+        LikelyHoodOfAnySpawn_Wanted1 = 5;// 5;
         LikelyHoodOfCountySpawn_Wanted1 = 5;
 
         LikelyHoodOfAnySpawn_Wanted2 = 5;
         LikelyHoodOfCountySpawn_Wanted2 = 5;
 
-        LikelyHoodOfAnySpawn_Wanted3 = 10;
+        LikelyHoodOfAnySpawn_Wanted3 = 5;// 10;
         LikelyHoodOfCountySpawn_Wanted3 = 10;
 
-        LikelyHoodOfAnySpawn_Wanted4 = 20;
+        LikelyHoodOfAnySpawn_Wanted4 = 5;//20;
         LikelyHoodOfCountySpawn_Wanted4 = 20;
 
-        LikelyHoodOfAnySpawn_Wanted5 = 20;
+        LikelyHoodOfAnySpawn_Wanted5 = 5;//20;
         LikelyHoodOfCountySpawn_Wanted5 = 20;
 
-        LikelyHoodOfAnySpawn_Wanted6 = 20;
+        LikelyHoodOfAnySpawn_Wanted6 = 5;//20;
         LikelyHoodOfCountySpawn_Wanted6 = 20;
 
         RemoveVanillaSpawnedPeds = false;

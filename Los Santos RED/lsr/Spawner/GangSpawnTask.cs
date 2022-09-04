@@ -300,7 +300,8 @@ public class GangSpawnTask : SpawnTask
             isMale = ped.IsMale;
         }
         ShopMenu toAdd = null;
-        if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
+        bool isDrugDealer = RandomItems.RandomPercent(Gang.DrugDealerPercentage);
+        if (isDrugDealer)
         {
             toAdd = ShopMenus.GetRandomMenu(Gang.DealerMenuGroup);
             if (toAdd == null)
@@ -313,6 +314,11 @@ public class GangSpawnTask : SpawnTask
         if (GangMember.Pedestrian.Exists())
         {
             GangMember.Pedestrian.Money = 0;// GangMember.Money;
+        
+        }
+        if (isDrugDealer)
+        {
+            GangMember.Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
         GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), PersonType.EmptyHolster,PersonType.FullHolster);
         GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);

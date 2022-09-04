@@ -13,6 +13,8 @@ public class GangSettings : ISettingsDefaultable
     public bool ManageTasking { get; set; }
     [Description("Attach a blip to any spawned gang member pedestrian.")]
     public bool ShowSpawnedBlip { get; set; }
+    [Description("Attach a blip to any ambient gang member pedestrian.")]
+    public bool ShowAmbientBlips { get; set; }
     [Description("Allows settings custom armor values on gang members.")]
     public bool OverrideArmor { get; set; }
     [Description("Allows settings custom health values on gang members.")]
@@ -41,27 +43,18 @@ public class GangSettings : ISettingsDefaultable
     public bool RemoveVanillaSpawnedPedsOnFoot { get; set; }
     public bool AllowFightingOtherCriminals { get; set; }
     public bool ForceFlee { get; set; }
-
-    //public bool MakeVanillaSpawnedGangMembersPersistent { get; set; }
+    public bool ForceAmbientCarDocile { get; set; }
 
     public GangSettings()
     {
         SetDefault();
-#if DEBUG
-        ShowSpawnedBlip = true;
-        RemoveVanillaSpawnedPedsOutsideTerritory = false;
-        //ManageDispatching = false;
-        RemoveVanillaSpawnedPedsOnFoot = false;
-      //  MakeVanillaSpawnedGangMembersPersistent = true;
-#else
-               // ShowSpawnedBlips = false;
-#endif
     }
     public void SetDefault()
     {
         ManageTasking = true;
         CheckCrimes = true;
         ShowSpawnedBlip = false;
+        ShowAmbientBlips = false;
         RemoveVanillaSpawnedPeds = false;
         RemoveVanillaSpawnedPedsOutsideTerritory = false;
         RemoveVanillaSpawnedPedsOnFoot = false;
@@ -79,6 +72,19 @@ public class GangSettings : ISettingsDefaultable
         // MakeVanillaSpawnedGangMembersPersistent = false;
         AllowFightingOtherCriminals = false;
         ForceFlee = false;
+        ForceAmbientCarDocile = true;
+
+
+#if DEBUG
+        ShowSpawnedBlip = true;
+        RemoveVanillaSpawnedPedsOutsideTerritory = false;
+        //ManageDispatching = false;
+        RemoveVanillaSpawnedPedsOnFoot = false;
+        ShowAmbientBlips = true;
+        //  MakeVanillaSpawnedGangMembersPersistent = true;
+#else
+               // ShowSpawnedBlips = false;
+#endif
 
     }
 

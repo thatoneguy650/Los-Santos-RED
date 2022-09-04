@@ -272,8 +272,21 @@ public class GangIdle : ComplexTask
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
-            string ScenarioChosen = PossibleScenarios.PickRandom();
+            //List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
+            //string ScenarioChosen = PossibleScenarios.PickRandom();
+
+            string ScenarioChosen;
+            if (Ped.HasMenu)
+            {
+                ScenarioChosen = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD" }.PickRandom();
+            }
+            else
+            {
+                ScenarioChosen = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" }.PickRandom();
+            }
+
+
+
             NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
             GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
             GameTimeLastStartedScenario = Game.GameTime;

@@ -824,6 +824,9 @@ public class Pedestrians
     {
         if (Pedestrian.Exists())
         {
+            bool isCarSpawn = Pedestrian.IsInAnyVehicle(false);
+
+
             bool WasPersistentOnCreate = false;
             string relationshipGroupName = Pedestrian.RelationshipGroup.Name;
             Gang MyGang = Gangs.GetGang(relationshipGroupName);
@@ -852,10 +855,12 @@ public class Pedestrians
             bool WillFight = RandomItems.RandomPercent(MyGang.FightPercentage);
             bool WillFightPolice = RandomItems.RandomPercent(MyGang.FightPolicePercentage);
             bool canBeAmbientTasked = true;
+            bool isDrugDealer = RandomItems.RandomPercent(MyGang.DrugDealerPercentage);
+            bool IssueMelee = RandomItems.RandomPercent(MyGang.PercentageWithMelee);
+            bool IssueSidearm = RandomItems.RandomPercent(MyGang.PercentageWithSidearms);
+            bool IssueHeavy = RandomItems.RandomPercent(MyGang.PercentageWithLongGuns);
 
-
-
-            if (Settings.SettingsManager.GangSettings.ShowSpawnedBlip && Pedestrian.Exists())
+            if (Settings.SettingsManager.GangSettings.ShowAmbientBlips && Pedestrian.Exists())
             {
                 Blip myBlip = Pedestrian.AttachBlip();
                 myBlip.Color = MyGang.Color;
@@ -873,9 +878,26 @@ public class Pedestrians
                 WillFight = false;
                 WillFightPolice = false;
                 canBeAmbientTasked = false;
+                isDrugDealer = false;
             }
-            ShopMenu toAdd = null;
-            if (RandomItems.RandomPercent(MyGang.DrugDealerPercentage))
+
+
+
+            if(isCarSpawn && Settings.SettingsManager.GangSettings.ForceAmbientCarDocile)
+            {
+                WillFight = false;
+                WillFightPolice = false;
+                isDrugDealer = false;
+                IssueMelee = false;
+                IssueSidearm = false;
+                IssueHeavy = false;
+                NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
+            }
+
+
+
+            ShopMenu toAdd = null;         
+            if (isDrugDealer)
             {
                 toAdd = ShopMenus.GetRandomMenu(MyGang.DealerMenuGroup);
                 if (toAdd == null)
@@ -886,10 +908,13 @@ public class Pedestrians
             GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
             if (Pedestrian.Exists())
             {
-                gm.Money = gm.Money;
+                if(isDrugDealer)
+                {
+                    gm.Money = RandomItems.GetRandomNumberInt(MyGang.DealerMemberMoneyMin, MyGang.DealerMemberMoneyMax);
+                }
                 gm.Pedestrian.Money = 0;// gm.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-                gm.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(MyGang.PercentageWithMelee), RandomItems.RandomPercent(MyGang.PercentageWithSidearms), RandomItems.RandomPercent(MyGang.PercentageWithLongGuns), gangPerson?.EmptyHolster, gangPerson?.FullHolster);
+                gm.WeaponInventory.IssueWeapons(Weapons, IssueMelee, IssueSidearm, IssueHeavy, gangPerson?.EmptyHolster, gangPerson?.FullHolster);
             }
             bool withPerson = false;
             if (gangPerson != null)
