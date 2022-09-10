@@ -405,19 +405,48 @@ namespace LosSantosRED.lsr.Player
 
 
             }
-            if (Player.IsSitting || Player.IsInVehicle)
+            if (Player.IsSitting)
             {
                 HasLightingAnimation = false;
-                AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
                 AnimBase = "enter";
-                AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
                 AnimIdle = new List<string> { "idle_a" };//"idle_a", "idle_b", these are kinda bad
-                AnimEnterDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                AnimEnterDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
                 AnimEnter = "enter";
-                AnimExitDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
+                AnimExitDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
                 AnimExit = "exit";
                 HasLightingAnimation = false;
 
+            }
+            else if (Player.IsInVehicle)
+            {
+                if (Player.IsDriver)
+                {
+                    HasLightingAnimation = false;
+                    AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                    AnimBase = "enter";
+                    AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                    AnimIdle = new List<string> { "idle_a" };//"idle_a", "idle_b", these are kinda bad
+                    AnimEnterDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";
+                    AnimEnter = "enter";
+                    AnimExitDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ds@base";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
+                    AnimExit = "exit";
+                    HasLightingAnimation = false;
+                }
+                else
+                {
+                    HasLightingAnimation = false;
+                    AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
+                    AnimBase = "enter";
+                    AnimIdleDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
+                    AnimIdle = new List<string> { "idle_a" };//"idle_a", "idle_b", these are kinda bad
+                    AnimEnterDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
+                    AnimEnter = "enter";
+                    AnimExitDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";///amb@code_human_in_car_mp_actions@smoke@std@ps@base idle_c
+                    AnimExit = "exit";
+                    HasLightingAnimation = false;
+                }
             }
 
 

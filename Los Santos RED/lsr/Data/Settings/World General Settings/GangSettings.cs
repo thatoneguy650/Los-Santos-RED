@@ -41,8 +41,11 @@ public class GangSettings : ISettingsDefaultable
     public int PercentageSpawnNearDen { get; set; }
     [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
     public bool RemoveVanillaSpawnedPedsOnFoot { get; set; }
+    [Description("Enable or disable the ability for gangs to fight each other over crimes observed in the world.")]
     public bool AllowFightingOtherCriminals { get; set; }
+    [Description("If enabled, peds will be forced to flee and all tasking will be blocked. If disabled, they will be tasked to flee, but let vanilla AI decide what to do.")]
     public bool ForceFlee { get; set; }
+    [Description("If enabled, vanilla spaned gangsters in cars will always run from fights, police, and the player.")]
     public bool ForceAmbientCarDocile { get; set; }
 
     public GangSettings()
@@ -77,13 +80,8 @@ public class GangSettings : ISettingsDefaultable
 
 #if DEBUG
         ShowSpawnedBlip = true;
-        RemoveVanillaSpawnedPedsOutsideTerritory = false;
-        //ManageDispatching = false;
-        RemoveVanillaSpawnedPedsOnFoot = false;
-        ShowAmbientBlips = true;
-        //  MakeVanillaSpawnedGangMembersPersistent = true;
 #else
-               // ShowSpawnedBlips = false;
+
 #endif
 
     }

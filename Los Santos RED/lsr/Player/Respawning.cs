@@ -139,7 +139,7 @@ public class Respawning// : IRespawning
         TimesTalked++;
         List<string> AttemptTalkOut = new List<string>()
                 {
-                    $"It wasn't me officer, it was the one-armed man!.",
+                    $"It wasn't me officer, it was the one-armed man!",
                     $"I pay your salary just so you know.",
                     $"I don't know what you are talking about.",
                     $"I plead the fifth.",

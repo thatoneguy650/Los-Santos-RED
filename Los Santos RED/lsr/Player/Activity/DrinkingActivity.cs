@@ -402,7 +402,7 @@ namespace LosSantosRED.lsr.Player
                 }
             }
 
-            if (Player.IsInVehicle)
+            if (Player.IsInVehicle || Player.IsSitting)
             {
                 if (Player.IsDriver)
                 {

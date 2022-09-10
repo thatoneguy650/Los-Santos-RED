@@ -79,7 +79,7 @@ public class BustedMenu : Menu
         {
             CreateHighLevelItems();
         }
-        AddRespawningOptions();
+        AddRespawningOptions();    
     }
     private void AddGeneralItems()
     {
@@ -94,9 +94,6 @@ public class BustedMenu : Menu
     }
     private void CreateLowLevelItems()
     {
-
-
-
         TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket.");
         TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         TalkItOut.Activated += (sender, selectedItem) =>
@@ -133,13 +130,6 @@ public class BustedMenu : Menu
             Menu.Visible = false;
         };
         Menu.AddItem(Bribe);
-        
-    }
-    private void AddRespawningOptions()
-    {
-
-
-
         Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         Surrender.Activated += (sender, selectedItem) =>
         {
@@ -147,6 +137,9 @@ public class BustedMenu : Menu
             Menu.Visible = false;
         };
         Menu.AddItem(Surrender);
+    }
+    private void AddRespawningOptions()
+    {
         TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
         TakeoverRandomPed.Activated += (sender, selectedItem) =>
         {

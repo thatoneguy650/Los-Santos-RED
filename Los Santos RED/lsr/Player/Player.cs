@@ -714,6 +714,11 @@ namespace Mod
                     InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
                 }
             }
+
+            if(Respawning.TimesTalked > 0)
+            {
+                InitialAmount += Settings.SettingsManager.PoliceSettings.TalkFailFineAmount;
+            }
             return InitialAmount;
         }
         public void SetDenStatus(Gang gang, bool v)

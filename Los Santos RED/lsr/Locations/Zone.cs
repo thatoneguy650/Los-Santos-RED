@@ -82,7 +82,7 @@ public class Zone
     public List<Agency> Agencies { get; set; }
 
 
-
+    public bool IsLowPop => Type == eLocationType.Rural || Type == eLocationType.Wilderness;
     public bool IsSpecificLocation { get; set; } = false;
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
     public eLocationType Type { get; set; } = eLocationType.Rural;

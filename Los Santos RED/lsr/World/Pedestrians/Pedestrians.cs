@@ -186,7 +186,12 @@ public class Pedestrians
                 {
                     continue;
                 }
-                if (Settings.SettingsManager.PoliceSettings.RemoveVanillaSpawnedPeds)
+                if (Settings.SettingsManager.PoliceSettings.RemoveNonSpawnedPolice)
+                {
+                    Delete(Pedestrian);
+                    continue;
+                }
+                else if (Settings.SettingsManager.PoliceSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent)
                 {
                     Delete(Pedestrian);
                     continue;

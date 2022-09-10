@@ -65,10 +65,6 @@ public class RespawnSettings : ISettingsDefaultable
     [Description("Remove weapons from player after respawning at a hostpital")]
     public bool RemoveWeaponsOnDeath { get; set; }
 
-
-
-
-
     public RespawnSettings()
     {
         SetDefault();
@@ -120,5 +116,8 @@ public class RespawnSettings : ISettingsDefaultable
         PermanentDeathMode = false;
         ClearIllicitInventoryOnDeath = true;
         ClearIllicitInventoryOnSurrender = true;
+
+
+
     }
 }

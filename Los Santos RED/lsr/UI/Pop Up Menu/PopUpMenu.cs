@@ -190,7 +190,7 @@ public class PopUpMenu
 
 
 
-        Game.RawFrameRender += DrawSprites;
+        //Game.RawFrameRender += DrawSprites;
         Sign10 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\10mph.png");
         Sign15 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\15mph.png");
         Sign20 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\20mph.png");
@@ -274,6 +274,7 @@ public class PopUpMenu
         CurrentPopUpMenuGroup = "DefaultOnFoot";
 
         IsActive = false;
+        Game.RawFrameRender -= DrawSprites;
 
         //TransitionOutSound = NativeFunction.Natives.GET_SOUND_ID<int>();
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionOutSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
@@ -281,9 +282,14 @@ public class PopUpMenu
     }
     public void OnStartDisplaying()
     {
+
+
+
+
         //SelectionSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         IsActive = true;
 
+        Game.RawFrameRender += DrawSprites;
 
         ActionSoundID = NativeFunction.Natives.GET_SOUND_ID<int>();
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
@@ -740,7 +746,7 @@ public class PopUpMenu
     {
         try
         {
-            if (IsActive && Settings.SettingsManager.ActionWheelSettings.ShowSpeedLimitIcon &&  SpeedLimitToDraw != null)
+            if (Settings.SettingsManager.ActionWheelSettings.ShowSpeedLimitIcon && IsActive &&  SpeedLimitToDraw != null)
             {
                 if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
                 {
