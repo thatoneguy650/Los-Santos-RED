@@ -134,7 +134,7 @@ namespace LosSantosRED.lsr
                 new ModTask(250, "Player.Investigation.Update", Player.Investigation.Update, 2),
                 new ModTask(250, "Player.SearchModeUpdate", Player.SearchMode.Update, 3),
 
-                new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.UpdateTraffic, 4),
+                new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
                 new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                 new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
             }));

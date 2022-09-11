@@ -31,6 +31,10 @@ public class Crimes : ICrimes
             DefaultConfig();
         }
     }
+    public Crime GetCrime(string crimeID)
+    {
+        return CrimeList.FirstOrDefault(x => x.ID == crimeID);
+    }
     private void DefaultConfig()
     {
         CrimeList = new List<Crime>()

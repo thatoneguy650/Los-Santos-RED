@@ -9,14 +9,14 @@ using System.Threading.Tasks;
 
 public class AssignedSeat
 {
-    public AssignedSeat(IComplexTaskable ped, VehicleExt vehicle, int seat)
+    public AssignedSeat(ISeatAssignable ped, VehicleExt vehicle, int seat)
     {
         Ped = ped;
         Vehicle = vehicle;
         Seat = seat;
     }
 
-    public IComplexTaskable Ped { get; set; }
+    public ISeatAssignable Ped { get; set; }
     public VehicleExt Vehicle { get; set; }
     public int Seat { get; set; }
 }

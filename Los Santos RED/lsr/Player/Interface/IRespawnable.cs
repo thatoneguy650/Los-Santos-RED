@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IRespawnable
     {
         BankAccounts BankAccounts { get; }
+        bool IsBusted { get; }
         PoliceResponse PoliceResponse { get; }
         Inventory Inventory { get; }
         CellPhone CellPhone { get; }
@@ -24,10 +25,16 @@ namespace LosSantosRED.lsr.Interface
         string PlayerName { get; }
         string ModelName { get; }
         Scanner Scanner { get; }
+        Vehicle LastFriendlyVehicle { get; set; }
         int SpeechSkill { get; }
         ButtonPrompts ButtonPrompts { get; }
         Ped Character { get; }
         HumanState HumanState { get; }
+        bool IsMoveControlPressed { get; }
+        bool IsAliveAndFree { get; }
+        bool IsIncapacitated { get; }
+        bool IsInVehicle { get; }
+        bool IsAlive { get; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds, bool resetGroup);
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);

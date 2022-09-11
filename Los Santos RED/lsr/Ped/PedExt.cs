@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class PedExt : IComplexTaskable
+public class PedExt : IComplexTaskable, ISeatAssignable
 {
     private IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;

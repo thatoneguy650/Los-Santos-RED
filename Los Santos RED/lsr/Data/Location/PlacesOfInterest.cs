@@ -692,6 +692,9 @@ new Residence(new Vector3(-114.5114f, -1660.003f, 32.56433f), 52.34958f, "20W St
 
 new Residence(new Vector3(-64.19335f, -1450.097f, 32.52492f), 188.7294f, "280S Forum Dr No 1",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},//lamar house
 new Residence(new Vector3(863.4708f, -1585.503f, 31.4171f), 89.42107f, "310S Popular Street",""){ OpenTime = 0,CloseTime = 24,RentalFee = 950, RentalDays = 28,},//lamar house
+
+new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
+
         };
         List<CityHall> CityHalls = new List<CityHall>()
         {

@@ -23,7 +23,6 @@ public class EMTRespond : ComplexTask
     private int SeatTaskedToEnter;
     private EMT EMT;
     private IEntityProvideable World;
-    private ITaskerReportable Tasker;
     private IPlacesOfInterest PlacesOfInterest;
 
     private enum Task
@@ -61,12 +60,11 @@ public class EMTRespond : ComplexTask
             return Task.GoTo;
         }
     }
-    public EMTRespond(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest, EMT emt) : base(player, cop, 1000)
+    public EMTRespond(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, EMT emt) : base(player, cop, 1000)
     {
         Name = "EMTRespond";
         SubTaskName = "";
         World = world;
-        Tasker = tasker;
         EMT = emt;
         PlacesOfInterest = placesOfInterest;
     }
@@ -288,7 +286,7 @@ public class EMTRespond : ComplexTask
             VehicleExt ClosestAvailableEMSVehicle = null;
             int OpenSeatInClosestAvailableEMSVehicle = 9;
             float ClosestAvailableEMSVehicleDistance = 999f;
-            if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(Ped.AssignedSeat) && !Tasker.IsSeatAssigned(Ped, Ped.AssignedVehicle, Ped.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, Ped.AssignedSeat, false, true))
+            if (Ped.AssignedVehicle != null && Ped.AssignedVehicle.Vehicle.Exists() && Ped.AssignedVehicle.Vehicle.IsSeatFree(Ped.AssignedSeat) && !World.Pedestrians.IsSeatAssigned(Ped, Ped.AssignedVehicle, Ped.AssignedSeat) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, Ped.AssignedVehicle.Vehicle, Ped.AssignedSeat, false, true))
             {
                 OpenSeatInClosestAvailableEMSVehicle = Ped.AssignedSeat;
                 ClosestAvailableEMSVehicle = Ped.AssignedVehicle;
@@ -296,7 +294,7 @@ public class EMTRespond : ComplexTask
             else if (Ped.Pedestrian.LastVehicle.Exists())// && Ped.Pedestrian.LastVehicle.IsPoliceVehicle)
             {
                 VehicleExt myCopCar = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
-                if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !Tasker.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
+                if (myCopCar != null && myCopCar.Vehicle.Exists() && myCopCar.Vehicle.IsSeatFree(Ped.LastSeatIndex) && !World.Pedestrians.IsSeatAssigned(Ped, myCopCar, Ped.LastSeatIndex) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, myCopCar.Vehicle, Ped.LastSeatIndex, false, true))
                 {
                     OpenSeatInClosestAvailableEMSVehicle = Ped.LastSeatIndex;
                     ClosestAvailableEMSVehicle = myCopCar;
@@ -306,8 +304,8 @@ public class EMTRespond : ComplexTask
             SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
             if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
             {
-                Tasker.RemoveSeatAssignment(Ped);
-                Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
+                World.Pedestrians.RemoveSeatAssignment(Ped);
+                World.Pedestrians.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
                 //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
             }
             else
@@ -319,7 +317,7 @@ public class EMTRespond : ComplexTask
                         float DistanceTo = ambulance.Vehicle.DistanceTo2D(Ped.Pedestrian);
                         if (DistanceTo <= 50f)
                         {
-                            if (ambulance.Vehicle.IsSeatFree(-1) && !Tasker.IsSeatAssigned(Ped, ambulance, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, -1, false, true))
+                            if (ambulance.Vehicle.IsSeatFree(-1) && !World.Pedestrians.IsSeatAssigned(Ped, ambulance, -1) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, -1, false, true))
                             {
                                 if (DistanceTo < ClosestAvailableEMSVehicleDistance)
                                 {
@@ -329,7 +327,7 @@ public class EMTRespond : ComplexTask
                                 }
 
                             }
-                            else if (ambulance.Vehicle.IsSeatFree(0) && !Tasker.IsSeatAssigned(Ped, ambulance, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, 0, false, true))
+                            else if (ambulance.Vehicle.IsSeatFree(0) && !World.Pedestrians.IsSeatAssigned(Ped, ambulance, 0) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, ambulance.Vehicle, 0, false, true))
                             {
                                 if (DistanceTo < ClosestAvailableEMSVehicleDistance)
                                 {
@@ -345,8 +343,8 @@ public class EMTRespond : ComplexTask
                 SeatTryingToEnter = OpenSeatInClosestAvailableEMSVehicle;
                 if (ClosestAvailableEMSVehicle != null && ClosestAvailableEMSVehicle.Vehicle.Exists())
                 {
-                    Tasker.RemoveSeatAssignment(Ped);
-                    Tasker.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
+                    World.Pedestrians.RemoveSeatAssignment(Ped);
+                    World.Pedestrians.AddSeatAssignment(Ped, ClosestAvailableEMSVehicle, OpenSeatInClosestAvailableEMSVehicle);
                     //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Seat Assigned Vehicle {VehicleTryingToEnter.Vehicle.Handle} Seat {SeatTryingToEnter}", 3);
                 }
                 else

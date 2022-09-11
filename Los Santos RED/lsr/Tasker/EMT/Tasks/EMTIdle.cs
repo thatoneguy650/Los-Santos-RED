@@ -20,7 +20,6 @@ public class EMTIdle : ComplexTask
     private int SeatTryingToEnter;
     private VehicleExt VehicleTryingToEnter;
     private IEntityProvideable World;
-    private ITaskerReportable Tasker;
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
@@ -66,15 +65,14 @@ public class EMTIdle : ComplexTask
             }
         }
     }
-    public EMTIdle(IComplexTaskable ped, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest, EMT emt) : base(player, ped, 1500)//1500
+    public EMTIdle(IComplexTaskable ped, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, EMT emt) : base(player, ped, 1500)//1500
     {
         Name = "EMTIdle";
         SubTaskName = "";
         World = world;
-        Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
         EMT = emt;
-        SeatAssigner = new SeatAssigner(Ped, Tasker, World, new List<VehicleExt>());
+        SeatAssigner = new SeatAssigner(Ped, World, new List<VehicleExt>());
     }
     public override void Start()
     {

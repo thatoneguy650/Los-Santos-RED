@@ -16,16 +16,17 @@ public class EMSSettings : ISettingsDefaultable
     [Description("Percent of pedestrians that are revived from unconsciousness. Max of 100")]
     public float RevivePercentage { get; set; }
 
+
+
+    [Description("Enable or disable ambient spawns around hospitals.")]
+    public bool AllowStationSpawning { get; set; }
+    [Description("If enabled, hospital ambient spawns ignore the ped and vehicle spawn limits.")]
+    public bool StationSpawningIgnoresLimits { get; set; }
+
+
     public EMSSettings()
     {
         SetDefault();
-        #if DEBUG
-            ShowSpawnedBlips =  true;
-            ManageDispatching = true;
-            ManageTasking = true;
-        #else
-            ShowSpawnedBlips = false;
-        #endif
     }
     public void SetDefault()
     {
@@ -33,5 +34,12 @@ public class EMSSettings : ISettingsDefaultable
         ManageTasking = true;
         ShowSpawnedBlips = false;
         RevivePercentage = 40f;
+        AllowStationSpawning = true;
+        StationSpawningIgnoresLimits = true;
+
+#if DEBUG
+        ShowSpawnedBlips = true;
+#endif
+
     }
 }

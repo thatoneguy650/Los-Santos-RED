@@ -89,7 +89,7 @@ public class CityHall : InteractableLocation
     private string DriversLicenseDescription()
     {
         string DriversLicenseDescription;
-        if (Player.Licenses.HasDriversLicense && Player.Licenses.DriversLicense.IsValid(Time))
+        if (Player.Licenses.HasValidDriversLicense(Time))
         {
             DriversLicenseDescription = $"Extend ~p~Drivers License~s~~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: ~g~{Player.Licenses.DriversLicense.ExpirationDate:d}~s~";
         }
@@ -109,7 +109,7 @@ public class CityHall : InteractableLocation
     private string CCWLicenseDescription()
     {
         string CCWLicenseDescription;
-        if (Player.Licenses.HasCCWLicense && Player.Licenses.CCWLicense.IsValid(Time))
+        if (Player.Licenses.HasValidCCWLicense(Time))
         {
             CCWLicenseDescription = $"Extend ~p~CCW License~s~~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: ~g~{Player.Licenses.CCWLicense.ExpirationDate:d}~s~";
         }
@@ -158,7 +158,7 @@ public class CityHall : InteractableLocation
         {
             if(Player.BankAccounts.Money >= DriversLicenseFee)
             {
-                if (Player.Licenses.HasDriversLicense && Player.Licenses.DriversLicense.IsValid(Time))
+                if (Player.Licenses.HasValidDriversLicense(Time))
                 {
                     Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);

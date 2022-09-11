@@ -127,10 +127,12 @@ public class GameSaves : IGameSaves
 
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("asterope", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
-                                                                                                                                                                ,new VehicleSaveStatus("furoregt", new Vector3(-382.2991f, -301.4909f, 32.56747f), 287.2352f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } } });
-        AlexisGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
-        AlexisGameSave.PlayerHeading = 45f;
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() { 
+            new VehicleSaveStatus("furoregt", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } } });
+
+
+        AlexisGameSave.PlayerPosition = new Vector3(-380.8266f, -192.3129f, 36.84449f);
+        AlexisGameSave.PlayerHeading = 281.9426f;
         AlexisGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
 
         AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
@@ -148,8 +150,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
-        AlexisGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
-        AlexisGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
 
         GameSaveList.Add(AlexisGameSave);

@@ -54,8 +54,8 @@ public class RespawnSettings : ISettingsDefaultable
     public bool RemoveWeaponsOnSurrender { get; set; }
     [Description("Deduct money on respawn at hospital")]
     public bool DeductHospitalFee { get; set; }
-    [Description("Amount to deduct when you respawn in the hospital")]
-    public int HospitalFee { get; set; }
+    [Description("Amount to deduct per day spent in the hospital")]
+    public int HospitalStayDailyFee { get; set; }
     [Description("Minimum Days to stay in the hospital")]
     public int HospitalStayMinDays { get; set; }
     [Description("Maximum Days to stay in the hospital")]
@@ -77,8 +77,9 @@ public class RespawnSettings : ISettingsDefaultable
 
 
         DeductHospitalFee = true;
-        HospitalStayMinDays = 2;
-        HospitalStayMaxDays = 10;
+        HospitalStayDailyFee = 10000;
+        HospitalStayMinDays = 4;
+        HospitalStayMaxDays = 14;
 
 
 
@@ -112,7 +113,7 @@ public class RespawnSettings : ISettingsDefaultable
         PoliceBailDurationCiviliansKilledMultiplier = 2;
 
 
-        HospitalFee = 5000;
+
         PermanentDeathMode = false;
         ClearIllicitInventoryOnDeath = true;
         ClearIllicitInventoryOnSurrender = true;

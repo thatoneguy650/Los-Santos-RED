@@ -463,6 +463,7 @@ public class LEDispatcher
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
+
                     GameFiber.Yield();
                     Delete(DeleteableCop);
 
@@ -700,10 +701,13 @@ public class LEDispatcher
                 {
                     foreach (Ped Passenger in Cop.Pedestrian.CurrentVehicle.Passengers)
                     {
-                        RemoveBlip(Passenger);
-                        Passenger.Delete();
-                        EntryPoint.PersistentPedsDeleted++;
-                        GameFiber.Yield();
+                        if (Passenger.Handle != Game.LocalPlayer.Character.Handle)
+                        {
+                            RemoveBlip(Passenger);
+                            Passenger.Delete();
+                            EntryPoint.PersistentPedsDeleted++;
+                            GameFiber.Yield();
+                        }
                     }
                 }
                 if (Cop.Pedestrian.Exists() && Cop.Pedestrian.CurrentVehicle.Exists() && Cop.Pedestrian.CurrentVehicle != null)
@@ -827,22 +831,27 @@ public class LEDispatcher
     {
         if (!cop.AssignedAgency.CanSpawn(World.TotalWantedLevel))
         {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CANNOT SPAWN AGENCY");
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
             return true;
         }
         else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
             return true;
         }
         else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.Pedestrians.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
         {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
             return true;
         }
         return false;

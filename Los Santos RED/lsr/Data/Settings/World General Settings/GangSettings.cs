@@ -47,6 +47,14 @@ public class GangSettings : ISettingsDefaultable
     public bool ForceFlee { get; set; }
     [Description("If enabled, vanilla spaned gangsters in cars will always run from fights, police, and the player.")]
     public bool ForceAmbientCarDocile { get; set; }
+    [Description("If enabled, ambient spawns will happen regardless of the player wanted level. If disabled, gangs will not have ambient spawns when you are wanted.")]
+    public bool AllowAmbientSpawningWhenPlayerWanted { get; set; }
+    [Description("Enable or disable ambient spawns around dens.")]
+    public bool AllowDenSpawning { get; set; }
+    [Description("If enabled, den ambient spawns ignore the ped and vehicle spawn limits.")]
+    public bool DenSpawningIgnoresLimits { get; set; }
+    [Description("If enabled, den ambient spawns will happen regardless of the player wanted level. If disabled, dens will not have ambient spawns when you are wanted.")]
+    public bool AllowDenSpawningWhenPlayerWanted { get; set; }
 
     public GangSettings()
     {
@@ -76,6 +84,13 @@ public class GangSettings : ISettingsDefaultable
         AllowFightingOtherCriminals = false;
         ForceFlee = false;
         ForceAmbientCarDocile = true;
+
+
+        AllowAmbientSpawningWhenPlayerWanted = true;
+
+        AllowDenSpawning = true;
+        DenSpawningIgnoresLimits = true;
+        AllowDenSpawningWhenPlayerWanted = true;
 
 
 #if DEBUG

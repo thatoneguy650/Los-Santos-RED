@@ -49,6 +49,7 @@ public class EMSDispatcher
     private float DistanceToDelete => Player.IsWanted ? 600f : 800f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 500f;
     private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedEMTs == 0;
+    private bool HasNeedToDispatchToStations => Settings.SettingsManager.EMSSettings.AllowStationSpawning;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => 650f;
@@ -106,42 +107,45 @@ public class EMSDispatcher
     }
     private void HandleStationSpawns()
     {
-        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+        if (HasNeedToDispatchToStations)
         {
-            if (ps.PossiblePedSpawns != null)
+            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
             {
-                bool spawnedsome = false;
-                foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
+                if (ps.PossiblePedSpawns != null)
                 {
-                    if (RandomItems.RandomPercent(cl.Percentage))
+                    bool spawnedsome = false;
+                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                     {
-                        HasDispatchedThisTick = true;
-                        SpawnLocation = new SpawnLocation(cl.Location);
-                        SpawnLocation.Heading = cl.Heading;
-                        SpawnLocation.StreetPosition = cl.Location;
-                        SpawnLocation.SidewalkPosition = cl.Location;
-                        Agency toSpawn = ps.AssignedAgency;
-                        if (toSpawn == null)
+                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.EMSSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
                         {
-                            Zone CurrentZone = Zones.GetZone(cl.Location);
-                            Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.EMS);
-                            if (ZoneAgency != null)
+                            HasDispatchedThisTick = true;
+                            SpawnLocation = new SpawnLocation(cl.Location);
+                            SpawnLocation.Heading = cl.Heading;
+                            SpawnLocation.StreetPosition = cl.Location;
+                            SpawnLocation.SidewalkPosition = cl.Location;
+                            Agency toSpawn = ps.AssignedAgency;
+                            if (toSpawn == null)
                             {
-                                toSpawn = ZoneAgency;
+                                Zone CurrentZone = Zones.GetZone(cl.Location);
+                                Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.EMS);
+                                if (ZoneAgency != null)
+                                {
+                                    toSpawn = ZoneAgency;
+                                }
+                            }
+                            if (GetSpawnTypes(true, toSpawn))
+                            {
+                                CallSpawnTask(true, false);
+                                spawnedsome = true;
                             }
                         }
-                        if (GetSpawnTypes(true, toSpawn))
-                        {
-                            CallSpawnTask(true, false);
-                            spawnedsome = true;
-                        }
                     }
+                    ps.IsDispatchFilled = true;
                 }
-                ps.IsDispatchFilled = true;
-            }
-            else
-            {
-                ps.IsDispatchFilled = true;
+                else
+                {
+                    ps.IsDispatchFilled = true;
+                }
             }
         }
         foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))

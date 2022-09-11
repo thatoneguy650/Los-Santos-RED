@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IComplexTaskable
+    public interface IComplexTaskable: ISeatAssignable
     {
         bool IsBusted { get; set; }
         bool IsInVehicle { get; }
@@ -17,9 +17,9 @@ namespace LosSantosRED.lsr.Interface
         float DistanceToPlayer { get; }
         bool IsDriver { get; }
         bool IsStill { get; }
-        Ped Pedestrian { get; }
+        //Ped Pedestrian { get; }
         bool IsSuspicious { get; set; }
-        int LastSeatIndex { get; }
+        //int LastSeatIndex { get; }
         List<Crime> PlayerCrimesWitnessed { get; }
         List<WitnessedCrime> OtherCrimesWitnessed { get; }
         VehicleExt VehicleLastSeenPlayerIn { get; }
@@ -35,11 +35,11 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyGotOutOfVehicle { get; }
         bool RecentlyGotInVehicle { get; }
         bool IsArrested { get; set; }
-        uint Handle { get; }
+        //uint Handle { get; }
         bool IsDrunk { get; set; }
         bool IsSuicidal { get; set; }
         VehicleExt AssignedVehicle { get; }
-        int AssignedSeat { get; }
+        //int AssignedSeat { get; }
         bool IsGangMember { get; }
         bool IsDealingDrugs { get; set; }
         bool HasMenu { get; }
@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr.Interface
         bool HasSeenDistressedPed { get; set; }
         Vector3 PositionLastSeenDistressedPed { get; }
         bool IsOnBike { get; }
-        List<uint> BlackListedVehicles { get; }
+        //List<uint> BlackListedVehicles { get; }
         bool RecentlySeenPlayer { get; }
         bool IsAmbientSpawn { get; }
 

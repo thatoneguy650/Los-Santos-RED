@@ -23,6 +23,7 @@ public class BustedMenu : Menu
     private UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed;
     private ITimeReportable Time;
     private UIMenuItem TalkItOut;
+    private UIMenuListScrollerItem<ILocationRespawnable> GetBooked;
 
     public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
@@ -137,6 +138,17 @@ public class BustedMenu : Menu
             Menu.Visible = false;
         };
         Menu.AddItem(Surrender);
+
+
+        GetBooked = new UIMenuListScrollerItem<ILocationRespawnable>("Get Booked", "Get Booked, Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+        GetBooked.Activated += (sender, selectedItem) =>
+        {
+            Respawning.Respawning.GetBooked(GetBooked.SelectedItem);
+            //Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+            Menu.Visible = false;
+        };
+        Menu.AddItem(GetBooked);
+
     }
     private void AddRespawningOptions()
     {

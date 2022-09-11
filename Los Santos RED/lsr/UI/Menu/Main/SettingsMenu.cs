@@ -100,6 +100,14 @@ public class SettingsMenu : Menu//needs lots of cleanup still
             string strippedPropertyName = property.Name;//.Replace("Settings","");
             UIMenu subMenu;
             System.ComponentModel.CategoryAttribute propertyCategory = (System.ComponentModel.CategoryAttribute)property.GetCustomAttribute(typeof(CategoryAttribute), true);
+
+            System.ComponentModel.DescriptionAttribute propertyNameAlt = (System.ComponentModel.DescriptionAttribute)property.GetCustomAttribute(typeof(DescriptionAttribute), true);
+            if (propertyNameAlt != null)
+            {
+                strippedPropertyName = propertyNameAlt.Description;
+            }
+
+
             if (propertyCategory != null)
             {
                 if (propertyCategory.Category == "Player")
@@ -127,6 +135,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
             subMenu.SetBannerType(EntryPoint.LSRedColor);
             subMenu.OnItemSelect += OnNewSettingsSelect;
             subMenu.OnCheckboxChange += OnNewCheckboxChange;
+            subMenu.Width = 0.5f;
 
             object SubSettings = property.GetValue(SettingsProvider.SettingsManager);
             PropertyInfo[] subSettings = property.PropertyType.GetProperties();
@@ -185,7 +194,11 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         PropertyInfo[] properties = SettingsProvider.SettingsManager.GetType().GetProperties();
         foreach (PropertyInfo property in properties)
         {
-            if (property.Name == sender.SubtitleText)
+            DescriptionAttribute coolio = (DescriptionAttribute)property.GetCustomAttribute(typeof(DescriptionAttribute), true);
+
+
+
+            if (property.Name == sender.SubtitleText || coolio?.Description == sender.SubtitleText)
             {
                 object SubSettings = property.GetValue(SettingsProvider.SettingsManager);
                 PropertyInfo[] subSettings = property.PropertyType.GetProperties();
@@ -194,7 +207,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 int colonIndex = propertyName.IndexOf(":");
                 propertyName = (colonIndex > 0 ? propertyName.Substring(0, colonIndex) : propertyName);
 
-                //EntryPoint.WriteToConsole($"OnNewSettingsSelect property.Name {property} propertyName {propertyName}", 5);
+                EntryPoint.WriteToConsole($"OnNewCheckboxChange property.Name {property} propertyName {propertyName}", 5);
                 foreach (PropertyInfo fi in subSettings)
                 {
                     if (propertyName == fi.Name)
@@ -213,7 +226,10 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         PropertyInfo[] properties = SettingsProvider.SettingsManager.GetType().GetProperties();
         foreach (PropertyInfo property in properties)
         {
-            if (property.Name == sender.SubtitleText)
+            DescriptionAttribute coolio = (DescriptionAttribute)property.GetCustomAttribute(typeof(DescriptionAttribute), true);
+
+
+            if (property.Name == sender.SubtitleText || coolio?.Description == sender.SubtitleText)
             {
                 object SubSettings = property.GetValue(SettingsProvider.SettingsManager);
                 PropertyInfo[] subSettings = property.PropertyType.GetProperties();
@@ -222,7 +238,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 int colonIndex = propertyName.IndexOf(":");
                 propertyName = (colonIndex > 0 ? propertyName.Substring(0, colonIndex) : propertyName);
 
-                //EntryPoint.WriteToConsole($"OnNewSettingsSelect property.Name {property} propertyName {propertyName}", 5);
+                EntryPoint.WriteToConsole($"OnNewSettingsSelect property.Name {property} propertyName {propertyName}", 5);
                 foreach (PropertyInfo fi in subSettings)
                 {
                     if (propertyName == fi.Name)

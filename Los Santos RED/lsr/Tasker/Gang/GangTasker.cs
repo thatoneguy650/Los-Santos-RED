@@ -36,7 +36,7 @@ public class GangTasker
     {
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
-            Tasker.ExpireSeatAssignments();
+            PedProvider.Pedestrians.ExpireSeatAssignments();
             foreach (GangMember gangMember in PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -209,7 +209,7 @@ public class GangTasker
         if (GangMember.CurrentTask?.Name != "GangIdle")
         {
             EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
-            GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, Tasker, PlacesOfInterest);
+            GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
             GameFiber.Yield();//TR Added back 4
             GangMember.CurrentTask.Start();
         }
@@ -218,7 +218,7 @@ public class GangTasker
     {
         if (GangMember.CurrentTask?.Name != "GetArrested")
         {
-            GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider, Tasker);
+            GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider);
             GameFiber.Yield();//TR Added back 7
             GangMember.CurrentTask.Start();
         }

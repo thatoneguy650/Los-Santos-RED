@@ -228,6 +228,7 @@
     <Compile Include="lsr\Other\DependencyChecker.cs" />
     <Compile Include="lsr\Ped\Crimes\PedPerception.cs" />
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
+    <Compile Include="lsr\Ped\ISeatAssignable.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
     <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
@@ -342,6 +343,7 @@
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Properties\Properties.cs" />
     <Compile Include="lsr\Player\Relationships\RelationshipManager.cs" />
+    <Compile Include="lsr\Player\Respawning\BookingActivity.cs" />
     <Compile Include="lsr\Player\Scanner\CrimeDispatch.cs" />
     <Compile Include="lsr\Player\Scanner\Dispatch.cs" />
     <Compile Include="lsr\Player\Scanner\DispatchEvent.cs" />
@@ -350,6 +352,11 @@
     <Compile Include="lsr\Player\Stance\Stance.cs" />
     <Compile Include="lsr\Player\Equipment\WeaponEquipment.cs" />
     <Compile Include="lsr\Player\VehicleOwnership.cs" />
+    <Compile Include="lsr\Player\Violations\DamageViolations.cs" />
+    <Compile Include="lsr\Player\Violations\OtherViolations.cs" />
+    <Compile Include="lsr\Player\Violations\TheftViolations.cs" />
+    <Compile Include="lsr\Player\Violations\TrafficViolations.cs" />
+    <Compile Include="lsr\Player\Violations\WeaponViolations.cs" />
     <Compile Include="lsr\Player\WeaponRecoil.cs" />
     <Compile Include="lsr\Player\WeaponSelector.cs" />
     <Compile Include="lsr\Player\WeaponSway.cs" />
@@ -579,7 +586,7 @@
     <Compile Include="lsr\Ped\Health\InjuryType.cs" />
     <Compile Include="lsr\Ped\Health\HealthState.cs" />
     <Compile Include="lsr\Locations\LocationData.cs" />
-    <Compile Include="lsr\Player\Violations.cs" />
+    <Compile Include="lsr\Player\Violations\Violations.cs" />
     <Compile Include="lsr\Helper\RandomItems.cs" />
     <Compile Include="lsr\Input\Input.cs" />
     <Compile Include="lsr\Locations\MapBlip.cs" />
@@ -614,7 +621,7 @@
     <Compile Include="lsr\World\Pedestrians\Pedestrians.cs" />
     <Compile Include="lsr\Time\Time.cs" />
     <Compile Include="lsr\PedSwap\PedSwap.cs" />
-    <Compile Include="lsr\Player\Respawning.cs" />
+    <Compile Include="lsr\Player\Respawning\Respawning.cs" />
     <Compile Include="lsr\Player\Activity\SurrenderActivity.cs" />
     <Compile Include="lsr\Player\Activity\WeaponDropping.cs" />
     <Compile Include="lsr\Crimes\Crime.cs" />

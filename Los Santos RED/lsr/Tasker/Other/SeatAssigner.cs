@@ -10,15 +10,13 @@ using System.Threading.Tasks;
 
 public class SeatAssigner
 {
-    private IComplexTaskable Ped;
-    private ITaskerReportable Tasker;
+    private ISeatAssignable Ped;
     private IEntityProvideable World;
     private List<VehicleExt> VehiclesToTest = new List<VehicleExt>();
 
-    public SeatAssigner(IComplexTaskable ped, ITaskerReportable tasker, IEntityProvideable world, List<VehicleExt> vehiclesToTest)
+    public SeatAssigner(ISeatAssignable ped, IEntityProvideable world, List<VehicleExt> vehiclesToTest)
     {
         Ped = ped;
-        Tasker = tasker;
         World = world;
         VehiclesToTest = vehiclesToTest;
     }
@@ -95,7 +93,7 @@ public class SeatAssigner
         }
         if(VehicleTryingToEnter != null && SeatTryingToEnter != -1)
         {
-            if(!Tasker.IsSeatAssignedToAnyone(VehicleTryingToEnter, -1) && IsSeatAvailable(VehicleTryingToEnter, -1))
+            if(!World.Pedestrians.IsSeatAssignedToAnyone(VehicleTryingToEnter, -1) && IsSeatAvailable(VehicleTryingToEnter, -1))
             {
                 VehicleTryingToEnter = VehicleTryingToEnter;
                 SeatTryingToEnter = -1;
@@ -103,8 +101,8 @@ public class SeatAssigner
         }
         if(VehicleTryingToEnter != null && SeatTryingToEnter != -99)
         {
-            Tasker.RemoveSeatAssignment(Ped);
-            Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
+            World.Pedestrians.RemoveSeatAssignment(Ped);
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
             if (VehicleTryingToEnter.Vehicle.Exists())
             {
                 VehicleTryingToEnter.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
@@ -112,6 +110,8 @@ public class SeatAssigner
             }
         }
     }
+
+
     public void AssignPrisonerSeat()
     {
         VehicleTryingToEnter = null;
@@ -138,13 +138,13 @@ public class SeatAssigner
         }
         if (VehicleTryingToEnter != null && SeatTryingToEnter != -99)
         {
-            Tasker.RemoveSeatAssignment(Ped);
-            Tasker.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
+            World.Pedestrians.RemoveSeatAssignment(Ped);
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
         }
     }
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
     {
-        if (vehicleToCheck != null && vehicleToCheck.Vehicle.Exists() && vehicleToCheck.Vehicle.IsSeatFree(seatToCheck) && !Tasker.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
+        if (vehicleToCheck != null && vehicleToCheck.Vehicle.Exists() && vehicleToCheck.Vehicle.IsSeatFree(seatToCheck) && !World.Pedestrians.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck) && NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
         {
             return true;
         }

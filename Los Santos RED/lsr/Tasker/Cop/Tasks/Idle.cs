@@ -20,7 +20,6 @@ public class Idle : ComplexTask
     private int SeatTryingToEnter;
     private VehicleExt VehicleTryingToEnter;
     private IEntityProvideable World;
-    private ITaskerReportable Tasker;
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
@@ -84,15 +83,14 @@ public class Idle : ComplexTask
             }
         }
     }
-    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest, Cop actualCop) : base(player, cop, 1500)//1500
+    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, Cop actualCop) : base(player, cop, 1500)//1500
     {
         Name = "Idle";
         SubTaskName = "";
         World = world;
-        Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
         Cop = actualCop;
-        SeatAssigner = new SeatAssigner(Ped, Tasker, World, World.Vehicles.PoliceVehicleList);
+        SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.PoliceVehicleList);
     }
     public override void Start()
     {

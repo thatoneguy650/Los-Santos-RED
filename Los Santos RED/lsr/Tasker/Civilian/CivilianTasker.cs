@@ -36,7 +36,7 @@ public class CivilianTasker
     {
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
-            Tasker.ExpireSeatAssignments();
+            PedProvider.Pedestrians.ExpireSeatAssignments();
             foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -135,7 +135,7 @@ public class CivilianTasker
             {
                 if (Civilian.CurrentTask?.Name != "GetArrested")
                 {
-                    Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider, Tasker);
+                    Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider);
                     GameFiber.Yield();//TR Added back 7
                     Civilian.CurrentTask.Start();
                 }
@@ -343,7 +343,7 @@ public class CivilianTasker
         if (ped.CurrentTask?.Name != "GangIdle")
         {
             //EntryPoint.WriteToConsole($"TASKER: gm {ped.Pedestrian.Handle} Task Changed from {ped.CurrentTask?.Name} to Idle", 3);
-            ped.CurrentTask = new GangIdle(ped, Player, PedProvider, Tasker, PlacesOfInterest);
+            ped.CurrentTask = new GangIdle(ped, Player, PedProvider, PlacesOfInterest);
             GameFiber.Yield();//TR Added back 4
             ped.CurrentTask.Start();
         }

@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 public interface ITaskerReportable
 {
     bool IsSeatAssignedToAnyone(VehicleExt copCar, int seat);
-    bool IsSeatAssigned(IComplexTaskable ped,VehicleExt copCar, int seat);
-    void RemoveSeatAssignment(IComplexTaskable ped);
-    bool AddSeatAssignment(IComplexTaskable ped, VehicleExt vehicle, int seat);
+    bool IsSeatAssigned(ISeatAssignable ped,VehicleExt copCar, int seat);
+    void RemoveSeatAssignment(ISeatAssignable ped);
+    bool AddSeatAssignment(ISeatAssignable ped, VehicleExt vehicle, int seat);
 }
 
 

@@ -13,14 +13,14 @@ public class SleepNeed : HumanNeed
     private bool ShouldRecover => Player.IsResting || Player.IsSleeping;
     private bool ShouldChange => Player.IsAlive;
     private bool ShouldSlowDrain => Player.IsResting || Player.IsSitting || Player.IsLayingDown;
-    public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time, settings.SettingsManager.NeedsSettings.SleepDisplayDigits)
+    public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
     {
         Player = humanStateable;
         Time = time;
         TimeLastUpdatedValue = Time.CurrentDateTime;
         Settings = settings;
     }
-
+    public override int Digits => Settings.SettingsManager.NeedsSettings.SleepDisplayDigits;
     public override void OnMaximum()
     {
 

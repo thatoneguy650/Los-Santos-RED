@@ -18,5 +18,7 @@ public class Licenses
     public CCWLicense CCWLicense { get; set; }
     public bool HasDriversLicense => DriversLicense != null;
     public bool HasCCWLicense => CCWLicense != null;
+    public bool HasValidCCWLicense(ITimeReportable time) => HasCCWLicense && CCWLicense.IsValid(time);
+    public bool HasValidDriversLicense(ITimeReportable time) => HasDriversLicense && DriversLicense.IsValid(time);
 }
 

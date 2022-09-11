@@ -16,7 +16,6 @@ public class GetArrested : ComplexTask
     private bool PlayedUnArrestAnimation = false;
     private uint GameTimeStartedBeingArrested;
     private IEntityProvideable World;
-    private ITaskerReportable Tasker;
     private SeatAssigner SeatAssigner;
     private int SeatTryingToEnter;
     private VehicleExt VehicleTryingToEnter;
@@ -61,13 +60,12 @@ public class GetArrested : ComplexTask
             }
         }
     }
-    public GetArrested(IComplexTaskable ped, ITargetable player, IEntityProvideable world, ITaskerReportable tasker) : base(player, ped, 500)
+    public GetArrested(IComplexTaskable ped, ITargetable player, IEntityProvideable world) : base(player, ped, 500)
     {
         Name = "GetArrested";
         SubTaskName = "";
         World = world;
-        Tasker = tasker;
-        SeatAssigner = new SeatAssigner(Ped, Tasker, World, World.Vehicles.PoliceVehicleList);
+        SeatAssigner = new SeatAssigner(Ped,World, World.Vehicles.PoliceVehicleList);
     }
     public override void Start()
     {

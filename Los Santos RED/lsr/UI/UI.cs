@@ -878,7 +878,7 @@ public class UI : IMenuProvideable
             else
             {
                 string ColorPrefx = CurrentDefaultTextColor;
-                if (DisplayablePlayer.Violations.IsSpeeding)
+                if (DisplayablePlayer.Violations.TrafficViolations.IsSpeeding)
                 {
                     ColorPrefx = "~r~";
                 }
@@ -937,7 +937,7 @@ public class UI : IMenuProvideable
                     }
                 }
             }
-            if (DisplayablePlayer.Violations.IsViolatingAnyTrafficLaws)
+            if (DisplayablePlayer.Violations.TrafficViolations.IsViolatingAnyTrafficLaws)
             {
                 CurrentSpeedDisplay += " ~r~!";
             }

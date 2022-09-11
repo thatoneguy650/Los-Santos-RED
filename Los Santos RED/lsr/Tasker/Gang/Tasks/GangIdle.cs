@@ -19,7 +19,6 @@ public class GangIdle : ComplexTask
     private int SeatTryingToEnter;
     private VehicleExt VehicleTryingToEnter;
     private IEntityProvideable World;
-    private ITaskerReportable Tasker;
     private Vehicle VehicleTaskedToEnter;
     private int SeatTaskedToEnter;
     private IPlacesOfInterest PlacesOfInterest;
@@ -74,12 +73,11 @@ public class GangIdle : ComplexTask
             }
         }
     }
-    public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, ITaskerReportable tasker, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "GangIdle";
         SubTaskName = "";
         World = world;
-        Tasker = tasker;
         PlacesOfInterest = placesOfInterest;
     }
     public override void Start()

@@ -39,7 +39,7 @@ public class CopTasker
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
             SetPossibleTargets();
-            Tasker.ExpireSeatAssignments();
+            PedProvider.Pedestrians.ExpireSeatAssignments();
             foreach (Cop cop in PedProvider.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked))
             {
                 try
@@ -270,7 +270,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
         {
            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-            Cop.CurrentTask = new Idle(Cop, Player, PedProvider, Tasker, PlacesOfInterest, Cop);
+            Cop.CurrentTask = new Idle(Cop, Player, PedProvider, PlacesOfInterest, Cop);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

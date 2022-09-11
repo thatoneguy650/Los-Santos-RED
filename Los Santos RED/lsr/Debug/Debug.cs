@@ -1271,7 +1271,16 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        SetIndex();
+        //Player.SetWantedLevel(2, "Test", true);
+        //Player.Arrest();
+        //GameFiber.Sleep(4000);
+
+        //BookingActivity bookingActivity = new BookingActivity(Player, World, Player, null);
+        //bookingActivity.Setup();
+        //bookingActivity.Start();
+
+
+       // SetIndex();
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime} with a very long string, so long it will be cut off i am sure, but how many characters will i see? I am unsusre, but this is gettting pretty long, how much do i need in here?", Time.CurrentDateTime.AddMinutes(0));
 

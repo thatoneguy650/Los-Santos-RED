@@ -11,18 +11,11 @@ public class FireSettings : ISettingsDefaultable
     public bool ManageDispatching { get; set; }
     [Description("Allows tasking of firefighter pedestrians in the world. (Currently Disabled)")]
     public bool ManageTasking { get; set; }
-    [Description("Attach a blip to any spawned firefighter pedestrian")]
+    [Description("Attach a blip to any spawned firefighter pedestrian. (Currently Disabled)")]
     public bool ShowSpawnedBlips { get; set; }
     public FireSettings()
     {
         SetDefault();
-        #if DEBUG
-           // ShowSpawnedBlips = true;
-            ManageDispatching = false;
-            ManageTasking = false;
-        #else
-          ShowSpawnedBlips = false;
-        #endif
     }
     public void SetDefault()
     {

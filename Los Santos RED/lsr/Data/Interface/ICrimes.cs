@@ -7,5 +7,6 @@ namespace LosSantosRED.lsr.Interface
     {
         List<Crime> CrimeList { get; }
 
+        Crime GetCrime(string v);
     }
 }

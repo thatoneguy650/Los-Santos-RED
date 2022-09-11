@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
@@ -123,7 +123,7 @@ namespace Mod
             Inventory = new Inventory(this, Settings);
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
-            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings);
+            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
@@ -426,6 +426,24 @@ namespace Mod
         public VehicleExt CurrentLookedAtVehicle { get; private set; }
         public float FootSpeed { get; set; }
         public bool WasDangerouslyArmedWhenBusted { get; private set; }
+
+
+
+
+
+        public int AssignedSeat => -1;
+        public List<uint> BlackListedVehicles => new List<uint>();
+        public Ped Pedestrian => Game.LocalPlayer.Character;
+        public int LastSeatIndex => -1;
+        public uint Handle => Game.LocalPlayer.Character.Handle;
+
+        public VehicleExt AssignedVehicle => null;
+
+
+
+
+
+
         //Required
         public void Setup()
         {
@@ -620,6 +638,7 @@ namespace Mod
             HealthManager.Dispose();
             GroupManager.Dispose();
             MeleeManager.Dispose();
+            Violations.Dispose();
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -709,7 +728,7 @@ namespace Mod
             int InitialAmount = Settings.SettingsManager.PoliceSettings.GeneralFineAmount;
             if (PoliceResponse.PlayerSeenInVehicleDuringWanted)
             {
-                if (!Licenses.HasDriversLicense || !Licenses.DriversLicense.IsValid(TimeControllable))
+                if (!Licenses.HasValidDriversLicense(TimeControllable))
                 {
                     InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
                 }
@@ -1005,7 +1024,7 @@ namespace Mod
                         {
                             EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
                             PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
-                            Violations.AddCarJacked(jackedPed);
+                            Violations.TheftViolations.AddCarJacked(jackedPed);
                             CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, WeaponEquipment.CurrentWeapon);
                             MyJack.Start();
                         }

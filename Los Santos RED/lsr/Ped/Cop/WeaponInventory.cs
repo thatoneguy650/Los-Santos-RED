@@ -96,12 +96,10 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
     }
-
     public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer)
     {
         Player = policeRespondablePlayer;
-
-        if (WeaponOwner.Pedestrian.Exists())
+        if (WeaponOwner.Pedestrian.Exists() && Player != null)
         {
             GetVehicleWeapon();
             if (hasVehicleWeapon && currentVehicleWeapon == 3450622333)//searchlight
@@ -232,6 +230,7 @@ public class WeaponInventory
                 }
             }
         }
+        
     }
     private void AutoSetWeapons_Other()
     {
@@ -316,6 +315,9 @@ public class WeaponInventory
                 HolsterPistol();
             }
 
+
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEFAULT");
+
             DebugWeaponState = "Set Default";
             GameTimeLastWeaponCheck = Game.GameTime;
         }
@@ -399,7 +401,7 @@ public class WeaponInventory
             IsSetDefault = false;
 
 
-
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Pedestrian.Handle} SET DEADLY");
 
             DebugWeaponState = "Set Deadly";
             GameTimeLastWeaponCheck = Game.GameTime;
@@ -414,6 +416,7 @@ public class WeaponInventory
             {
                 NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(WeaponOwner.Pedestrian, false);
             }
+            bool hasMelee = false;
             if (Melee != null)
             {
                 if (!NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))
@@ -422,12 +425,13 @@ public class WeaponInventory
                 }
                 uint currentWeapon;
                 NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(WeaponOwner.Pedestrian, out currentWeapon, true);
-                if (currentWeapon != (uint)Melee.GetHash())
-                {
+                //if (currentWeapon != (uint)Melee.GetHash())
+                //{
                     NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), true);
-                }
+               // }
                 NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, false);
                 NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, false);//cant do drivebys
+                hasMelee = true;
             }
             else
             {
@@ -451,6 +455,9 @@ public class WeaponInventory
             IsSetDeadly = false;
             IsSetDefault = false;
 
+
+
+        //    EntryPoint.WriteToConsole($"{WeaponOwner.Pedestrian.Handle} SET LESS LETHAL hasMelee {hasMelee}");
 
             DebugWeaponState = "Set Less Lethal";
             GameTimeLastWeaponCheck = Game.GameTime;
@@ -480,7 +487,7 @@ public class WeaponInventory
             IsSetDeadly = false;
             IsSetDefault = false;
 
-
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Pedestrian.Handle} SET UNARMED");
 
             DebugWeaponState = "Set Unarmed";
             GameTimeLastWeaponCheck = Game.GameTime;
@@ -510,7 +517,7 @@ public class WeaponInventory
             IsSetUnarmed = true;
             IsSetDeadly = false;
             IsSetDefault = false;
-
+           // EntryPoint.WriteToConsole($"{WeaponOwner.Pedestrian.Handle} SET COMPLETELY UNARMED");
 
 
             DebugWeaponState = "Set Unarmed";
@@ -524,9 +531,13 @@ public class WeaponInventory
         IsSetUnarmed = false;
         IsSetDefault = false;
         ShouldAutoSetWeaponState = true;
+        GameTimeLastWeaponCheck = 0;
     }
 
-
+    public void RemoveHeavyWeapon()
+    {
+        HasHeavyWeaponOnPerson = false;
+    }
 
     private void HolsterPistol()
     {

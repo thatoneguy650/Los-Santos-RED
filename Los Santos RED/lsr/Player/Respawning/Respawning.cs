@@ -40,8 +40,9 @@ public class Respawning// : IRespawning
     private string HospitalStayReport;
     private int HospitalFee;
     private uint GameTimeLastPlacedAtLocation;
-
-    public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    private IPoliceRespondable PoliceRespondable;
+    private ISeatAssignable SeatAssignable;
+    public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable)
     {
         Time = time;
         World = world;
@@ -49,10 +50,11 @@ public class Respawning// : IRespawning
         Weapons = weapons;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        PoliceRespondable = policeRespondable;
+        SeatAssignable = seatAssignable;
     }
     public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= Settings.SettingsManager.RespawnSettings.RecentlyRespawnedTime;
     public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
-
     public bool WasRecentlyTeleported => GameTimeLastPlacedAtLocation != 0 && Game.GameTime - GameTimeLastPlacedAtLocation <= 5000;
     public bool RecentlyBribedPolice => GameTimeLastBribedPolice != 0 && Game.GameTime - GameTimeLastBribedPolice <= 30000;
     public bool RecentlyPaidFine => GameTimeLastPaidFine != 0 && Game.GameTime - GameTimeLastPaidFine <= 30000;
@@ -134,6 +136,14 @@ public class Respawning// : IRespawning
             return true;
         }
     }
+
+    public void GetBooked(ILocationRespawnable respawnableLocation)
+    {
+        BookingActivity bookingActivity = new BookingActivity(CurrentPlayer, World, PoliceRespondable, respawnableLocation, SeatAssignable);
+        bookingActivity.Setup();
+        bookingActivity.Start();
+    }
+
     public bool TalkOutOfTicket()
     {
         TimesTalked++;
@@ -285,9 +295,33 @@ public class Respawning// : IRespawning
         }
         GameTimeLastSurrenderedToPolice = Game.GameTime;
     }
+    public void GetSearched()
+    {
+        //Check Items
+        List<InventoryItem> IllegalItems = new List<InventoryItem>();
+        foreach (InventoryItem ii in CurrentPlayer.Inventory.Items.ToList())
+        {
+            if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
+            {
+                IllegalItems.Add(ii);
+            }
+        }
+        bool hasIllegalITems = IllegalItems.Any();
+        //Check Weapons
+        List<WeaponInformation> IllegalGuns = new List<WeaponInformation>();
+        foreach (WeaponDescriptor weaponDescriptor in Game.LocalPlayer.Character.Inventory.Weapons.ToList())
+        {
+            WeaponInformation weaponInformation = Weapons.GetWeapon((uint)weaponDescriptor.Hash);
+            if(weaponInformation != null && !weaponInformation.IsLegal)
+            {
+                IllegalGuns.Add(weaponInformation);
+            }        
+        }
+        bool hasIllegalWeapons = IllegalGuns.Any();
+    }
     private void CheckWeapons()
     {
-        if (CurrentPlayer.Licenses.HasCCWLicense && CurrentPlayer.Licenses.CCWLicense.IsValid(Time))//need to add something like this back
+        if (CurrentPlayer.Licenses.HasValidCCWLicense(Time))//need to add something like this back
         {
             RemoveIllegalWeapons();
         }
@@ -319,8 +353,8 @@ public class Respawning// : IRespawning
     private void CalculateHospitalStay()
     {
         int HighestWantedLevel = CurrentPlayer.WantedLevel;
-        HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalFee * (1 + HighestWantedLevel);
         int DaysToStay = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
+        HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalStayDailyFee * DaysToStay;
         HospitalDischargeDate = Time.CurrentDateTime.AddDays(DaysToStay);
         HospitalStayReport = $"~s~Hospitalized Days: ~g~{DaysToStay}~s~~n~Released: {HospitalDischargeDate:g}~s~";
         EntryPoint.WriteToConsole($"CalculateHospitalStay(): HighestWantedLevel {HighestWantedLevel} HospitalFee {HospitalFee} HospitalDischargeDate {HospitalDischargeDate:g}");

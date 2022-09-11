@@ -17,13 +17,14 @@ public class HungerNeed : HumanNeed
 
     private bool ShouldSlowDrain => Player.IsResting || Player.IsSleeping || Player.IsSitting || Player.IsLayingDown;
     private bool ShouldChange => Player.IsAlive && !RecentlyChanged;
-    public HungerNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time, settings.SettingsManager.NeedsSettings.HungerDisplayDigits)
+    public HungerNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
     {
         Player = humanStateable;
         Time = time;
         TimeLastUpdatedValue = Time.CurrentDateTime;
         Settings = settings;
     }
+    public override int Digits => Settings.SettingsManager.NeedsSettings.HungerDisplayDigits;
     public override void OnMaximum()
     {
 

@@ -17,9 +17,9 @@ public abstract class HumanNeed
     private uint GameTimeBetweenResultUpdates = 15000;
     private ITimeReportable Time;
     private uint GameTimeLastChangedNeed;
-    private int Digits;
+    //private int Digits;
     private string ColorPrefix => CurrentValue <= MaxValue * 0.25f ? "~r~" : CurrentValue <= MaxValue * 0.5f ? "~o~" : CurrentValue <= MaxValue * 0.75f ? "~y~" : "~s~";
-    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, int digits)
+    public HumanNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time)
     {
         Name = name;
         MaxValue = maxValue;
@@ -27,9 +27,8 @@ public abstract class HumanNeed
         Player = humanStateable;
         CurrentValue = maxValue;
         Time = time;
-        Digits = digits;
     }
-
+    public virtual int Digits { get; set; } = 0;
     public bool IsAboveQuarter => CurrentValue >= MaxValue * 0.25f;
     public bool IsBelowQuarter => CurrentValue <= MaxValue * 0.25f;
     public bool IsBelowThreeQuarters => CurrentValue <= MaxValue * 0.75f;

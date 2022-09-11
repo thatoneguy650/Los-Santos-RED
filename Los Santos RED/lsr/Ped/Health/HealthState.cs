@@ -213,7 +213,7 @@ public class HealthState
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
                 MyPed.HasBeenHurtByPlayer = true;
-                CurrentPlayer.Violations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+                CurrentPlayer.Violations.DamageViolations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
             }
         }
         else
@@ -223,7 +223,7 @@ public class HealthState
                 if (Health - CurrentHealth + Armor - CurrentArmor > 5)
                 {
                     MyPed.HasBeenHurtByPlayer = true;
-                    CurrentPlayer.Violations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
+                    CurrentPlayer.Violations.DamageViolations.AddInjured(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
                 }
             }
         }

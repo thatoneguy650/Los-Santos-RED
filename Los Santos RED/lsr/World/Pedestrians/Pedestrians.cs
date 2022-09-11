@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 
-public class Pedestrians
+public class Pedestrians : ITaskerReportable
 {
     private IAgencies Agencies;
     private IJurisdictions Jurisdictions;
@@ -25,6 +26,9 @@ public class Pedestrians
     private uint GameTimeLastCreatedPeds = 0;
     private IGangTerritories GangTerritories;
     private IEntityProvideable World;
+
+    private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
+
     public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories, IEntityProvideable world)
     {
         Agencies = agencies;
@@ -1143,4 +1147,35 @@ public class Pedestrians
             }
         }
     }
+
+
+
+
+    public bool IsSeatAssignedToAnyone(VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null);
+    public bool IsSeatAssigned(ISeatAssignable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);
+    public bool AddSeatAssignment(ISeatAssignable ped, VehicleExt vehicle, int seat)
+    {
+        if (ped == null || !ped.Pedestrian.Exists() || vehicle == null || !vehicle.Vehicle.Exists())
+        {
+            return false;
+        }
+        if (SeatAssignments.Any(x => x.Vehicle != null && x.Vehicle.Handle == vehicle.Handle && x.Seat == seat))
+        {
+            return false;
+        }
+        SeatAssignments.Add(new AssignedSeat(ped, vehicle, seat));
+        return true;
+    }
+    public void RemoveSeatAssignment(ISeatAssignable ped)
+    {
+        if (ped != null)
+        {
+            SeatAssignments.RemoveAll(x => x.Ped != null && x.Ped.Handle == ped.Handle);
+        }
+    }
+    public void ExpireSeatAssignments()
+    {
+        SeatAssignments.RemoveAll(x => x.Vehicle == null || x.Ped == null || !x.Vehicle.Vehicle.Exists() || !x.Ped.Pedestrian.Exists() || x.Ped.Pedestrian.IsDead);
+    }
+
 }
