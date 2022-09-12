@@ -114,7 +114,7 @@ public class SettingsManager
     public ActionWheelSettings ActionWheelSettings { get; set; } = new ActionWheelSettings();
     [Description("Vanilla Settings")]
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
-    [Description("Debug & Performance Settings")]
+    [Description("Debug Settings")]
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
     public void Setup()
     {

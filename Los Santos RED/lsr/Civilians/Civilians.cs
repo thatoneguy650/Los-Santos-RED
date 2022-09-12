@@ -41,10 +41,15 @@ public class Civilians
         TotalRan = 0;
         TotalChecked = 0;
         UpdateCivilians();
+        GameFiber.Yield();
         UpdateMerchants();
+        GameFiber.Yield();
         UpdateZombies();
+        GameFiber.Yield();
         UpdateGangMembers();
+        GameFiber.Yield();
         UpdateEMTs();
+        GameFiber.Yield();
         PedExt worstPed = World.Pedestrians.Citizens.Where(x=>!x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
         {
@@ -86,6 +91,9 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+
+                //GameFiber.Yield();
+
                 if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
@@ -124,6 +132,8 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                //GameFiber.Yield();
+
                 if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
@@ -161,6 +171,7 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                //GameFiber.Yield();
                 if (yield && localRan == Settings.SettingsManager.DebugSettings.MerchantsUpdateBatch)
                 {
                     GameFiber.Yield();
@@ -193,6 +204,8 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                //GameFiber.Yield();
+
                 if (yield)
                 {
                     ped.WeaponInventory.UpdateSettings();
@@ -256,7 +269,7 @@ public class Civilians
         Perceptable.AnyGangMemberCanSeePlayer = anyGangMemberCanSeePlayer;
         Perceptable.AnyGangMemberCanHearPlayer = anyGangMemberCanHearPlayer;
         Perceptable.AnyGangMemberRecentlySeenPlayer = anyGangMemberRecentlySeenPlayer;
-
+        GameFiber.Yield();
         List<Gang> WantedGangs = World.Pedestrians.GangMemberList.Where(x => x.IsWanted && !x.IsBusted).GroupBy(x => x.Gang).Select(x => x.Key).ToList();
         foreach (Gang gang in Gangs.AllGangs.Where(x=> x.HasWantedMembers))
         {

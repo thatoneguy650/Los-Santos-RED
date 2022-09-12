@@ -43,10 +43,10 @@ public class VanillaCopManager
     {
         if (Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
-            //if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
-            //{
-            TerminateDispatch();
-            //}
+            if (IsVanillaDispatchActive || IsTimeToTerminatedVanillaDispatch)
+            {
+                TerminateDispatch();
+            }
         }
         else if (!Settings.SettingsManager.VanillaSettings.TerminateDispatch)
         {
@@ -57,10 +57,10 @@ public class VanillaCopManager
         }
         if (Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
-            //if (IsVanillaScenarioCopsActive)
-            //{
-            TerminateScenarioCops();
-            // }
+            if (IsVanillaScenarioCopsActive)
+            {
+                TerminateScenarioCops();
+             }
         }
         else if (!Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
@@ -116,10 +116,10 @@ public class VanillaCopManager
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
-        foreach (string scenario in CopScenarios)
-        {
-            NativeFunction.Natives.SET_SCENARIO_TYPE_ENABLED(scenario, Enabled);
-        }
+        //foreach (string scenario in CopScenarios)
+        //{
+        //    NativeFunction.Natives.SET_SCENARIO_TYPE_ENABLED(scenario, Enabled);
+        //}
 
     }
 }

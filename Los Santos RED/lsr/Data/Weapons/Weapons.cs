@@ -101,7 +101,7 @@ public class Weapons : IWeapons
             return null;
         ulong myHash = (ulong)Pedestrian.Inventory.EquippedWeapon.Hash;
         WeaponInformation CurrentGun = GetWeapon(myHash);
-        if (CurrentGun != null)
+        if (CurrentGun != null && CurrentGun.Hash != (ulong)2725352035)//is not unarmed weapon
             return CurrentGun;
         else
             return null;

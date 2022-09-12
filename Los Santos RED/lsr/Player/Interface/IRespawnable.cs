@@ -35,6 +35,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsIncapacitated { get; }
         bool IsInVehicle { get; }
         bool IsAlive { get; }
+        bool IsBeingBooked { get; set; }
+        bool IsArrested { get; set; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds, bool resetGroup);
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);

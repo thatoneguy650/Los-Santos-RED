@@ -144,7 +144,11 @@ public class SurrenderActivity : DynamicActivity
             {
                 return;
             }
-            Player.WeaponEquipment.SetUnarmed();
+
+
+           // Player.WeaponEquipment.SetUnarmed();
+
+
             if (Player.Character.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = Player.Character.CurrentVehicle;
@@ -161,31 +165,63 @@ public class SurrenderActivity : DynamicActivity
                     }
                 }
             }
+
+
             if (StayStanding)
             {
                 //Player.Equipment.SetUnarmed();
-                if (!NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") == 0f)
+                if (IsNotPlayingAnimation("ped", "handsup_enter"))
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-                    //GameFiber.Wait(1000);
-                    //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
+
+                    GameFiber.Wait(500);
+                    if(Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                    {
+                        DropWeapon(false);
+                    }
                 }
             }
             else
             {
-                if (!NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_a", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_a") == 0f
-                 || !NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_2_hands_up", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_2_hands_up") == 0f)
+                if (IsNotPlayingAnimation("busted", "idle_a") && IsNotPlayingAnimation("busted", "idle_2_hands_up") && IsNotPlayingAnimation("busted", "idle_2_hands_up_2h"))
                 {
-                    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-                    GameFiber.Wait(1000);
-                    //if (!Player.Character.Exists() || !Player.IsBusted)
-                    //{
-                    //    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                    //    return;
-                    //}
+                    bool isOneHanded = false;
+                    if(Player.WeaponEquipment.CurrentWeapon != null && !Player.WeaponEquipment.CurrentWeaponIsOneHanded)
+                    {
+                        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up_2h", 2.0f, -2.0f, -1, 2, 0, false, false, false);
 
-                    //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
-                    GameFiber.Wait(5000);//was just 6000 here
+                    }
+                    else
+                    {
+                        isOneHanded = true;
+                        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                    }
+                    GameFiber.Wait(1000);
+                    if (!Player.Character.Exists() || !Player.IsBusted)
+                    {
+                        if (Player.Character.Exists())
+                        {
+                            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        }
+                        return;
+                    }
+                    if (isOneHanded)
+                    {
+                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                        {
+                            DropWeapon(false);
+                        }
+                        GameFiber.Wait(5000);//was just 6000 here
+                    }
+                    else
+                    {
+                        GameFiber.Wait(2000);//was just 6000 here
+                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                        {
+                            DropWeapon(true);
+                        }
+                        GameFiber.Wait(3000);//was just 6000 here
+                    }
                     if (!Player.Character.Exists() || !Player.IsBusted)
                     {
                         if(Player.Character.Exists())
@@ -202,6 +238,44 @@ public class SurrenderActivity : DynamicActivity
             //Player.Character.KeepTasks = true;
         }, "SetArrestedAnimation");
     }
+
+
+
+
+
+    private void DropWeapon(bool isLow)
+    {
+        //NativeFunction.Natives.x616093EC6B139DD9(Game.LocalPlayer, NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
+
+        //NativeFunction.Natives.x88EAEC617CD26926(NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
+        //NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 186, false);
+        Vector3 HandPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
+        Vector3 RootPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0));
+        Vector3 ResultPosition = HandPosition - RootPosition;
+
+
+        ResultPosition = new Vector3(ResultPosition.X - 0.2f, ResultPosition.Y + 0.2f, ResultPosition.Z -0.2f);
+        ResultPosition = new Vector3(0.6f, 0.6f, 0.6f);
+
+
+        if(isLow)
+        {
+            ResultPosition = new Vector3(0.75f, 0.75f, -0.3f);
+        }
+
+        NativeFunction.Natives.SET_PED_DROPS_INVENTORY_WEAPON(Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, ResultPosition.X, ResultPosition.Y, ResultPosition.Z, -1);
+
+
+
+
+        if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, (uint)2725352035, true);
+        }
+        //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
+    }
+
+
     public void UnSetArrestedAnimation()
     {
         GameFiber UnSetArrestedAnimationGF = GameFiber.StartNew(delegate
@@ -210,13 +284,11 @@ public class SurrenderActivity : DynamicActivity
             AnimationDictionary.RequestAnimationDictionay("random@arrests");
             AnimationDictionary.RequestAnimationDictionay("busted");
             AnimationDictionary.RequestAnimationDictionay("ped");
-            if (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_a", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_a") > 0f 
-              || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, "busted", "idle_2_hands_up", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "busted", "idle_2_hands_up") > 0f)//do both to cover my bases, is for player anysways so can be expensive to be right
+            if (IsPlayingAnimation("busted", "idle_a") || IsPlayingAnimation("busted", "idle_2_hands_up") || IsPlayingAnimation("busted", "idle_2_hands_up_2h"))
             {
+                EntryPoint.WriteToConsole("UnsetArrestedRan Playing Kneeling");
 
-                EntryPoint.WriteToConsole("UnsetArrestedRan FIRST IF");
-
-                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 2.0f, -2.0f, -1, 4096, 0, 0, 1, 0);
                 GameFiber.Wait(1500);//1250
                 if (!Player.Character.Exists() || !Player.IsBusted)
                 {
@@ -231,19 +303,25 @@ public class SurrenderActivity : DynamicActivity
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 }
             }
-            else if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
+            else if (IsPlayingAnimation("ped", "handsup_enter"))// NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
             {
-                EntryPoint.WriteToConsole("UnsetArrestedRan SECOND IF");
-
+                EntryPoint.WriteToConsole("UnsetArrestedRan Playing HandsUp");
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
             else
             {
-                EntryPoint.WriteToConsole("UnsetArrestedRan THIRD IF");
-
+                EntryPoint.WriteToConsole("UnsetArrestedRan No Animation Detected, Clearing Tasks");
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
         }, "UnSetArrestedAnimation");
+    }
+    private bool IsPlayingAnimation(string dictionary, string animation)
+    {
+        return NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, dictionary, animation, 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, dictionary, animation) > 0f;
+    }
+    private bool IsNotPlayingAnimation(string dictionary, string animation)
+    {
+        return !NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, dictionary, animation, 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, dictionary, animation) == 0f;
     }
 
     public void OnPlayerBusted()
@@ -255,7 +333,6 @@ public class SurrenderActivity : DynamicActivity
             SetArrestedAnimation(Player.WantedLevel <= 2);//needs to move
         }
     }
-
     public void ToggleSurrender()
     {
         
@@ -294,7 +371,4 @@ public class SurrenderActivity : DynamicActivity
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
-
-
-
 }

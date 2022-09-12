@@ -201,11 +201,14 @@ public class Roadblock
             position = new Vector3(position.X, position.Y, GroundZ);
         }
         Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
-        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
-        SpikeStrip.IsPersistent = true;
-        SpikeStrip.IsGravityDisabled = false;
-        SpikeStrip.IsPositionFrozen = true;
-        CreatedProps.Add(SpikeStrip);
+        if (SpikeStrip.Exists())
+        {
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
+            SpikeStrip.IsPersistent = true;
+            SpikeStrip.IsGravityDisabled = false;
+            SpikeStrip.IsPositionFrozen = true;
+            CreatedProps.Add(SpikeStrip);
+        }
         return SpikeStrip.Exists();
     }
     private bool CreateVehicle(Vector3 position, float heading, bool addPed)

@@ -23,7 +23,7 @@ public class BustedMenu : Menu
     private UIMenuListScrollerItem<DistanceSelect> TakeoverRandomPed;
     private ITimeReportable Time;
     private UIMenuItem TalkItOut;
-    private UIMenuListScrollerItem<ILocationRespawnable> GetBooked;
+    private UIMenuItem GetBooked;
 
     public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
@@ -131,23 +131,41 @@ public class BustedMenu : Menu
             Menu.Visible = false;
         };
         Menu.AddItem(Bribe);
-        Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
-        Surrender.Activated += (sender, selectedItem) =>
-        {
-            Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
-            Menu.Visible = false;
-        };
-        Menu.AddItem(Surrender);
 
 
-        GetBooked = new UIMenuListScrollerItem<ILocationRespawnable>("Get Booked", "Get Booked, Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
-        GetBooked.Activated += (sender, selectedItem) =>
+        if (Settings.SettingsManager.RespawnSettings.ForceBooking)
         {
-            Respawning.Respawning.GetBooked(GetBooked.SelectedItem);
-            //Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
-            Menu.Visible = false;
-        };
-        Menu.AddItem(GetBooked);
+            if (Player.IsBeingBooked)
+            {
+                Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
+                Surrender.Activated += (sender, selectedItem) =>
+                {
+                    Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+                    Menu.Visible = false;
+                };
+                Menu.AddItem(Surrender);
+            }
+            else
+            {
+                GetBooked = new UIMenuItem("Get Booked", "Get Booked. Lose bail money and your guns.");
+                GetBooked.Activated += (sender, selectedItem) =>
+                {
+                    Respawning.Respawning.GetBooked(PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).FirstOrDefault());
+                    Menu.Visible = false;
+                };
+                Menu.AddItem(GetBooked);
+            }
+        }
+        else
+        {
+            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+            Surrender.Activated += (sender, selectedItem) =>
+            {
+                Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
+                Menu.Visible = false;
+            };
+            Menu.AddItem(Surrender);
+        }
 
     }
     private void AddRespawningOptions()

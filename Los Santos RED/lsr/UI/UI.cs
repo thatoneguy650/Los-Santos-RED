@@ -137,7 +137,19 @@ public class UI : IMenuProvideable
         AboutMenu.Setup();
         ActionPopUpMenu.Setup();
         TimerBarController.Setup();
+
+
+        
     }
+    public void SetupDebugMenu()
+    {
+        DebugMenu.Setup();
+    }
+    public void MenuOnly()
+    {
+        MenuPool.ProcessMenus();
+    }
+
     public void Tick1()
     {
         if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)

@@ -530,6 +530,7 @@ public class LEDispatcher
                                     spawnedsome = true;
                                 }
                             }
+                            GameFiber.Yield();
                         }
                     }
                     if (ps.PossibleVehicleSpawns != null)
@@ -560,6 +561,7 @@ public class LEDispatcher
                                     spawnedsome = true;
                                 }
                             }
+                            GameFiber.Yield();
                         }
                     }
                     ps.IsDispatchFilled = true;

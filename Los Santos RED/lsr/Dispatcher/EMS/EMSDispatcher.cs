@@ -139,6 +139,7 @@ public class EMSDispatcher
                                 spawnedsome = true;
                             }
                         }
+                        GameFiber.Yield();
                     }
                     ps.IsDispatchFilled = true;
                 }

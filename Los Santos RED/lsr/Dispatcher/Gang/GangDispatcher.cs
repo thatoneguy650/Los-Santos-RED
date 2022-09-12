@@ -143,6 +143,7 @@ public class GangDispatcher
                                     HasDispatchedThisTick = true;
                                 }
                             }
+                            GameFiber.Yield();
                         }
                         
                     }
@@ -163,6 +164,7 @@ public class GangDispatcher
                                     spawnedsome = true;
                                 }
                             }
+                            GameFiber.Yield();
                         }
                     }
 

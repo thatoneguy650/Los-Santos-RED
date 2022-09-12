@@ -67,7 +67,7 @@ public class WeaponDropping
         {
             WeaponInventoryChanged(WeaponCount);
         }
-        
+
     }
     private void DropWeaponAnimation()
     {

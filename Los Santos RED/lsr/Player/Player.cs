@@ -260,6 +260,8 @@ namespace Mod
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
         public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !Surrendering.IsCommitingSuicide && !IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
         public bool IsBusted { get; private set; }
+        public bool IsArrested { get; set; }
+        public bool IsBeingBooked { get; set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCommitingSuicide { get; set; }
@@ -544,6 +546,12 @@ namespace Mod
         {
             IsDead = false;
             IsBusted = false;
+
+
+            IsArrested = false;
+            IsBeingBooked = false;
+
+
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             HealthState.Reset();
@@ -639,6 +647,10 @@ namespace Mod
             GroupManager.Dispose();
             MeleeManager.Dispose();
             Violations.Dispose();
+
+
+            NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
+
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, true);
             NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, false);
             NativeFunction.Natives.SET_PED_IS_DRUNK<bool>(Game.LocalPlayer.Character, false);
@@ -1127,6 +1139,7 @@ namespace Mod
             Scanner.OnPlayerBusted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
         }
+
         private void OnPlayerDied()
         {
             GameFiber.Yield();

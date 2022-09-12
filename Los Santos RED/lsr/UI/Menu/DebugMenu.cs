@@ -50,7 +50,7 @@ public class DebugMenu : Menu
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
-        CreateDebugMenu();
+        
     }
     public override void Hide()
     {
@@ -317,6 +317,12 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(ResetNeeds);
         PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
     }
+
+    public void Setup()
+    {
+        CreateDebugMenu();
+    }
+
     private void CreateCrimeMenu()
     {
         UIMenu CrimeItemsMenu = MenuPool.AddSubMenu(Debug, "Crime Menu");
@@ -418,7 +424,91 @@ public class DebugMenu : Menu
         OtherItemsMenu.AddItem(PrintEntities2);
 
 
+
+        UIMenuListScrollerItem<string> SetArrested = new UIMenuListScrollerItem<string>("Set Arrested", "Set the player ped as arrested.", new List<string>() { "Stay Standing", "Kneeling" });
+        SetArrested.Activated += (menu, item) =>
+        {
+            bool stayStanding = SetArrested.SelectedItem == "Stay Standing";
+            Player.Arrest();
+            Game.TimeScale = 1.0f;
+            Player.Surrendering.SetArrestedAnimation(stayStanding);
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(SetArrested);
+
+        UIMenuItem UnSetArrested = new UIMenuItem("UnSet Arrested", "Release the player from an arrest.");
+        UnSetArrested.Activated += (menu, item) =>
+        {
+            Game.TimeScale = 1.0f;
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false);
+            Player.Surrendering.UnSetArrestedAnimation();
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(UnSetArrested);
+
+
+        UIMenuListScrollerItem<ModTaskGroup> taskGroups = new UIMenuListScrollerItem<ModTaskGroup>("Enable Task Groups", "Enable or disable task groups.", EntryPoint.ModController.TaskGroups);
+        taskGroups.Activated += (menu, item) =>
+        {
+            taskGroups.SelectedItem.IsRunning = !taskGroups.SelectedItem.IsRunning;
+            Game.DisplaySubtitle($"{taskGroups.SelectedItem.ToString()}");
+            //menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(taskGroups);
+
+        //TaskGroups
+
+
+
+        UIMenuCheckboxItem runUI = new UIMenuCheckboxItem("Run UI", EntryPoint.ModController.RunUI);
+        runUI.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.ModController.RunUI = Checked;
+            Game.DisplaySubtitle($"UI Running: {EntryPoint.ModController.RunUI}");
+        };
+        OtherItemsMenu.AddItem(runUI);
+
+        UIMenuCheckboxItem runMenuOnly = new UIMenuCheckboxItem("Run Menu", EntryPoint.ModController.RunMenuOnly);
+        runMenuOnly.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.ModController.RunMenuOnly = Checked;
+            Game.DisplaySubtitle($"UI Running: {EntryPoint.ModController.RunMenuOnly}");
+        };
+        OtherItemsMenu.AddItem(runMenuOnly);
+
+
+        UIMenuCheckboxItem runVanilla = new UIMenuCheckboxItem("Run Vanilla", EntryPoint.ModController.RunVanilla);
+        runVanilla.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.ModController.RunVanilla = Checked;
+            Game.DisplaySubtitle($"Vanilla Running: {EntryPoint.ModController.RunVanilla}");
+        };
+        OtherItemsMenu.AddItem(runVanilla);
+
+        UIMenuCheckboxItem runInput = new UIMenuCheckboxItem("Run Input", EntryPoint.ModController.RunInput);
+        runInput.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.ModController.RunInput = Checked;
+            Game.DisplaySubtitle($"Input Running: {EntryPoint.ModController.RunInput}");
+        };
+        OtherItemsMenu.AddItem(runInput);
+
+        UIMenuCheckboxItem runOther = new UIMenuCheckboxItem("Run Other", EntryPoint.ModController.RunOther);
+        runOther.CheckboxEvent += (sender, Checked) =>
+        {
+            EntryPoint.ModController.RunOther = Checked;
+            Game.DisplaySubtitle($"Other Running: {EntryPoint.ModController.RunOther}");
+        };
+        OtherItemsMenu.AddItem(runOther);
+
+
     }
+
+    private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
+    {
+        throw new NotImplementedException();
+    }
+
     private void CreateTimeMenu()
     {
         UIMenu TimeItems = MenuPool.AddSubMenu(Debug, "Time Menu");

@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr
 {
     public class ModController
     {
-        private List<ModTaskGroup> TaskGroups;
+        public List<ModTaskGroup> TaskGroups { get; private set; } = new List<ModTaskGroup>();
         private Civilians Civilians;
         private Debug Debug;
         private Dispatcher Dispatcher;
@@ -34,6 +34,14 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
         }
         public bool IsRunning { get; private set; }
+
+
+        public bool RunUI { get; set; } = true;
+        public bool RunInput { get; set; } = true;
+        public bool RunOther { get; set; } = true;
+        public bool RunVanilla { get; set; } = true;
+        public bool RunMenuOnly { get; set; } = true;
+
         public void Setup()
         {
             IsRunning = true;
@@ -101,6 +109,9 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             GameFiber.Yield();
 #endif
+
+            UI.SetupDebugMenu();
+
             DisplayLoadSuccessfulMessage();
         }
         public void Dispose()
@@ -213,7 +224,7 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning)
+                    while (IsRunning && RunInput)
                     {
                         Input.Tick();
                         GameFiber.Yield();
@@ -232,7 +243,7 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning)
+                    while (IsRunning && RunVanilla)
                     {
                         VanillaManager.Tick();
                         GameFiber.Yield();
@@ -254,8 +265,14 @@ namespace LosSantosRED.lsr
                 {
                     while (IsRunning)
                     {
-
-                        UI.Tick1();
+                        if (RunUI)
+                        {
+                            UI.Tick1();
+                        }
+                        else if(RunMenuOnly)
+                        {
+                            UI.MenuOnly();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -270,7 +287,7 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning)
+                    while (IsRunning && RunUI)
                     {
                         UI.Tick2();
                         GameFiber.Yield();
@@ -287,7 +304,7 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning)
+                    while (IsRunning && RunUI)
                     {
                         UI.Tick3();
                         GameFiber.Yield();
@@ -309,7 +326,7 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning)
+                    while (IsRunning && RunOther)
                     {
                         Debug.Update();
                         GameFiber.Yield();

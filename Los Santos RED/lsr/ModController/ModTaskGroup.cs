@@ -36,5 +36,9 @@ public class ModTaskGroup
             }
         }
     }
+    public override string ToString()
+    {
+        return $"{Name} Run: {IsRunning}";
+    }
 
 }
