@@ -63,7 +63,7 @@ namespace LosSantosRED.lsr
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !heldVehicleEnter;//!Game.IsControlPressed(2, GameControl.Enter);
         private bool IsPressingVehicleAccelerate => Game.IsControlPressed(0, GameControl.VehicleAccelerate);
-        private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 50;
+        private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 250;
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;

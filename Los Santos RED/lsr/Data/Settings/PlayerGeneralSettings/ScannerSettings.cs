@@ -33,9 +33,6 @@ public class ScannerSettings : ISettingsDefaultable
     public ScannerSettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

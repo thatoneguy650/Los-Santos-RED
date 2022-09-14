@@ -28,15 +28,7 @@ public class WeatherReportingSettings : ISettingsDefaultable
     public bool ShowWeatherNotifications { get; set; }
     public WeatherReportingSettings()
     {
-
         SetDefault();
-
-//#if DEBUG
-//        ReportWeather = false;
-//#else
-
-
-//#endif
     }
     public void SetDefault()
     {

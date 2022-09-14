@@ -20,9 +20,6 @@ public class InvestigationSettings : ISettingsDefaultable
     public InvestigationSettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

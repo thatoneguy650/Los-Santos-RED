@@ -320,6 +320,8 @@ public class PoliceSettings : ISettingsDefaultable
     public int StationSpawning_MaxWanted { get; set; }
     [Description("If enabled, police stations ambient spawns ignore the ped and vehicle spawn limits. Use with StationSpawning_MaxWanted of 1 or 2 to allow ambient spawning, but not overload ped limits when in a serious chase.")]
     public bool StationSpawningIgnoresLimits { get; set; }
+    [Description("Enable or disable dropping your current weapon when busted and armed.")]
+    public bool DropWeaponWhenBusted { get; set; }
 
     public PoliceSettings()
     {
@@ -473,7 +475,6 @@ public class PoliceSettings : ISettingsDefaultable
 
 #if DEBUG
         ShowSpawnedBlips = true;
-        ShowVanillaBlips = false;
 #else
 #endif
 
@@ -486,6 +487,8 @@ public class PoliceSettings : ISettingsDefaultable
         StationSpawning_MaxWanted = 2;
 
         StationSpawningIgnoresLimits = true;
+
+        DropWeaponWhenBusted = true;
 
 
     }

@@ -65,15 +65,6 @@ public class TaskSettings : ISettingsDefaultable
     public TaskSettings()
     {
         SetDefault();
-#if DEBUG
-        OfficerFriendlyGangHitComplicationsPercentage = 100f;
-        OfficerFriendlyCopHitComplicationsPercentage = 100f;
-        OfficerFriendlyWitnessEliminationComplicationsPercentage = 100f;
-        UndergroundGunsGunPickupComplicationsPercentage = 100f;
-        ShowEntityBlips = true;
-#else
-
-#endif
     }
     public void SetDefault()
     {

@@ -122,11 +122,6 @@ public class DamageSettings : ISettingsDefaultable
     public DamageSettings()
     {
         SetDefault();
-
-
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

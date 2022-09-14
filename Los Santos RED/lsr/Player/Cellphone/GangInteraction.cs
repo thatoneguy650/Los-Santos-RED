@@ -50,10 +50,8 @@ public class GangInteraction
         GangMenu.RemoveBanner();
         MenuPool.Add(GangMenu);
         GangMenu.OnItemSelect += OnGangItemSelect;
-
         if (!gr.IsEnemy)
         {
-
             if (gr != null && gr.PlayerDebt > 0)
             {
                 PayoffDebt = new UIMenuItem("Payoff Debt", "Payoff your current debt to the gang") { RightLabel = "~r~" + gr.PlayerDebt.ToString("C0") + "~s~" };
@@ -66,7 +64,7 @@ public class GangInteraction
                 GangMenu.AddItem(PayoffGangNeutral);
                 GangMenu.AddItem(ApoligizeToGang);
             }
-            else if (repLevel >= 500)
+            else if (repLevel >= gr.FriendlyRepLevel)
             {
                 if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
                 {

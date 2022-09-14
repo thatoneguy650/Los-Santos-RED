@@ -36,9 +36,6 @@ public class ViolationSettings : ISettingsDefaultable
     public ViolationSettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

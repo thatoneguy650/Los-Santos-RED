@@ -10,14 +10,16 @@ public class SurrenderActivity : DynamicActivity
 {
     private IInputable Player;
     private IEntityProvideable World;
+    private ISettingsProvideable Settings;
     private uint GameTimeLastYelled;
     private uint GameTimeLastToggledSurrender;
     private bool IsToggled;
 
-    public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world)
+    public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = currentPlayer;
         World = world;
+        Settings = settings;
     }
     public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
     public bool CanWaveHands => !HandsAreUp && !IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
@@ -146,7 +148,11 @@ public class SurrenderActivity : DynamicActivity
             }
 
 
-           // Player.WeaponEquipment.SetUnarmed();
+            if (!Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
+            {
+
+                Player.WeaponEquipment.SetUnarmed();
+            }
 
 
             if (Player.Character.IsInAnyVehicle(false))
@@ -175,7 +181,7 @@ public class SurrenderActivity : DynamicActivity
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
 
                     GameFiber.Wait(500);
-                    if(Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                    if(Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
                     {
                         DropWeapon(false);
                     }
@@ -207,7 +213,7 @@ public class SurrenderActivity : DynamicActivity
                     }
                     if (isOneHanded)
                     {
-                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
                         {
                             DropWeapon(false);
                         }
@@ -216,7 +222,7 @@ public class SurrenderActivity : DynamicActivity
                     else
                     {
                         GameFiber.Wait(2000);//was just 6000 here
-                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null)
+                        if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
                         {
                             DropWeapon(true);
                         }

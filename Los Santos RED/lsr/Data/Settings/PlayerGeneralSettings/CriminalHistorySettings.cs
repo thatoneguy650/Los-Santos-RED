@@ -20,9 +20,6 @@ public class CriminalHistorySettings : ISettingsDefaultable
     public CriminalHistorySettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

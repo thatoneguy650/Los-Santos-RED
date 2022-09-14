@@ -71,11 +71,6 @@ public class NeedsSettings : ISettingsDefaultable
         HealthDrainAmount = 1;
         HealthDrainMinHealth = 140;
         AllowMeleeDamageDecrease = true;
-#if DEBUG
-        ThirstDisplayDigits = 2;
-        HungerDisplayDigits = 2;
-        SleepDisplayDigits = 2;
-#endif
     }
 
 }

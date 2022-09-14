@@ -259,6 +259,11 @@ public class BookingActivity
         if (Player.IsInVehicle)
         {
             Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false);
+
+            Game.LocalPlayer.HasControl = false;
+            GameFiber.Sleep(20000);
+            Player.Respawning.SurrenderToPolice(Location);
+
         }
     }
     private bool IsPlayingAnimation(Ped ped, string dictionary, string animation)

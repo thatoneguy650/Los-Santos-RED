@@ -13,9 +13,6 @@ public class SelectorSettings : ISettingsDefaultable
     public SelectorSettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

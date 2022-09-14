@@ -114,7 +114,7 @@ namespace Mod
                 HealthState.MyPed.VoiceName = FreeModeVoice;
             }
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
-            Surrendering = new SurrenderActivity(this, World);
+            Surrendering = new SurrenderActivity(this, World, Settings);
             Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);

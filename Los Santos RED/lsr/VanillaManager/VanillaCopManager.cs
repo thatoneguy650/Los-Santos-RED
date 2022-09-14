@@ -14,9 +14,11 @@ public class VanillaCopManager
     private bool IsVanillaScenarioCopsActive = true;
 
     private uint GameTimeLastTerminatedVanillaDispatch;
+    private uint GameTimeLastTerminatedScenarioCops;
     private ISettingsProvideable Settings;
     private List<string> CopScenarios;
     private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
+    private bool IsTimeToTerminateScenarioCops => GameTimeLastTerminatedScenarioCops == 0 || Game.GameTime - GameTimeLastTerminatedScenarioCops >= 5000;
     public VanillaCopManager(ISettingsProvideable settings)
     {
         Settings = settings;
@@ -57,7 +59,7 @@ public class VanillaCopManager
         }
         if (Settings.SettingsManager.VanillaSettings.TerminateScenarioCops)
         {
-            if (IsVanillaScenarioCopsActive)
+            if (IsVanillaScenarioCopsActive || IsTimeToTerminateScenarioCops)
             {
                 TerminateScenarioCops();
              }
@@ -80,6 +82,7 @@ public class VanillaCopManager
     {
         IsVanillaScenarioCopsActive = false;
         SetScenarioCops(false);
+        GameTimeLastTerminatedScenarioCops = Game.GameTime;
     }
     private void ActivateDispatch()
     {

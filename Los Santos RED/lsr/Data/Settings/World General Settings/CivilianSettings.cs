@@ -125,11 +125,6 @@ public class CivilianSettings : ISettingsDefaultable
     public CivilianSettings()
     {
         SetDefault();
-#if DEBUG
-        ShowRandomCriminalBlips = true;
-#else
-
-#endif
     }
     public void SetDefault()
     {
@@ -144,11 +139,11 @@ public class CivilianSettings : ISettingsDefaultable
         GunshotHearingDistance = 125f;//100f
         TaskMissionPeds = false;
         AllowMissionPedsToInteract = false;
-        AllowRandomCrimes = false;
+        AllowRandomCrimes = true;
         MinimumTimeBetweenRandomCrimes = 1200000;
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
-        ShowRandomCriminalBlips = false;
+        ShowRandomCriminalBlips = true;
         DrugDealerPercentageRichZones = 1f;
         DrugDealerPercentageMiddleZones = 2f;
         DrugDealerPercentagePoorZones = 5f;

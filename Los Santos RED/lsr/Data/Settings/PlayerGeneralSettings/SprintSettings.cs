@@ -16,9 +16,6 @@ public class SprintSettings : ISettingsDefaultable
     public SprintSettings()
     {
         SetDefault();
-#if DEBUG
-
-#endif
     }
     public void SetDefault()
     {

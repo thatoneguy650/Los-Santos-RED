@@ -294,6 +294,9 @@ namespace LosSantosRED.lsr.Data
                         }
                     }
                 }
+
+                player.HumanState.Reset();
+
                 player.HumanState.Thirst.Set(ThirstValue);
                 player.HumanState.Hunger.Set(HungerValue);
                 player.HumanState.Sleep.Set(SleepValue);
