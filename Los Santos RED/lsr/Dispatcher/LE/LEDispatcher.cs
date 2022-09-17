@@ -35,6 +35,14 @@ public class LEDispatcher
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
 
+
+
+    private Vector3 RoadblockInitialPosition;
+    private Vector3 RoadblockAwayPosition;
+    private Street RoadblockInitialPositionStreet;
+    private Vector3 RoadblockFinalPosition;
+    private float RoadblockFinalHeading;
+
     public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -582,7 +590,7 @@ public class LEDispatcher
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
             GameFiber.Yield();
-            SpawnRoadblock();
+            SpawnRoadblock(false);
         }
     }
     private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
@@ -614,7 +622,7 @@ public class LEDispatcher
         do
         {
             SpawnLocation.InitialPosition = GetPositionAroundPlayer();    
-            SpawnLocation.GetClosestStreet();
+            SpawnLocation.GetClosestStreet(Player.IsWanted);
             SpawnLocation.GetClosestSidewalk();
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);
@@ -858,53 +866,94 @@ public class LEDispatcher
         }
         return false;
     }
-    public void SpawnRoadblock()//temp public
+    public void SpawnRoadblock(bool force)//temp public
     {
-        Vector3 Position = Player.Character.GetOffsetPositionFront(300f);//400f 400 is mostly far enough to not see it
-        Street ForwardStreet = Streets.GetStreet(Position);
+        GetRoadblockLocation(force);
         GameFiber.Yield();
-        if (ForwardStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name)
-        {      
-            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(Position.X, Position.Y, Position.Z, out Vector3 CenterPosition, out float Heading, 0, 3.0f, 0))
+        if(GetRoadblockNode(force))
+        {
+            Agency ToSpawn = GetRandomAgency(RoadblockFinalPosition);
+            GameFiber.Yield();
+            if (ToSpawn != null)
             {
-                Agency ToSpawn = GetRandomAgency(CenterPosition);
+                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false);
                 GameFiber.Yield();
-                if (ToSpawn != null)
+                if (VehicleToUse != null)
                 {
-                    DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false);
-                    GameFiber.Yield();
+                    string RequiredGroup = "";
                     if (VehicleToUse != null)
                     {
-                        string RequiredGroup = "";
-                        if (VehicleToUse != null)
+                        RequiredGroup = VehicleToUse.RequiredPedGroup;
+                    }
+                    DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+                    GameFiber.Yield();
+                    if (OfficerType != null)
+                    {
+                        if (Roadblock != null)
                         {
-                            RequiredGroup = VehicleToUse.RequiredPedGroup;
-                        }
-                        DispatchablePerson OfficerType = ToSpawn.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                        GameFiber.Yield();
-                        if (OfficerType != null)
-                        {
-                            if (Roadblock != null)
-                            {
-                                Roadblock.Dispose();
-                                GameFiber.Yield();
-                            }
-                            Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, CenterPosition, Settings, Weapons, Names);
-                            Roadblock.SpawnRoadblock();
+                            Roadblock.Dispose();
                             GameFiber.Yield();
-                            GameTimeLastSpawnedRoadblock = Game.GameTime;
                         }
+                        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force);
+                        Roadblock.SpawnRoadblock();
+                        GameFiber.Yield();
+                        GameTimeLastSpawnedRoadblock = Game.GameTime;
                     }
                 }
             }
         }
+
     }
+    private void GetRoadblockLocation(bool force)
+    {
+        float distance = 300f;
+        if(force)
+        {
+            distance = 100f;
+        }    
+        RoadblockInitialPosition = Player.Character.GetOffsetPositionFront(distance);//400f 400 is mostly far enough to not see it
+        RoadblockAwayPosition = Player.Character.GetOffsetPositionFront(distance + 100f);
+        RoadblockInitialPositionStreet = Streets.GetStreet(RoadblockInitialPosition);
+        RoadblockFinalPosition = Vector3.Zero;
+        RoadblockFinalHeading = 0f;
+    }
+    private bool GetRoadblockNode(bool force)
+    {
+        if (RoadblockInitialPositionStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name || force)
+        {
+            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 3.0f, 0))
+            {
+
+
+                //if (NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, RoadblockAwayPosition.X, RoadblockAwayPosition.Y, RoadblockAwayPosition.Z
+                //    , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, Settings.SettingsManager.PoliceSettings.RoadblockNodeType, 0x40400000, 0))
+                //    { 
+
+
+
+                int StreetHash = 0;
+                int CrossingHash = 0;
+                unsafe
+                {
+                    NativeFunction.Natives.GET_STREET_NAME_AT_COORD(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out StreetHash, out CrossingHash);
+                }
+                if(CrossingHash != 0)
+                {
+                    EntryPoint.WriteToConsole("Roadblock location is near another road, failing");
+                    return false;
+                }
+                return true;
+            }
+        }
+        return false;
+     }
     public void RemoveRoadblock()//temp public
     {
         if (Roadblock != null)
         {
             Roadblock.Dispose();
             Roadblock = null;
+
         }
     }
     public void DebugSpawnCop(string agencyID, bool onFoot)

@@ -102,6 +102,20 @@ public class PoliceSettings : ISettingsDefaultable
     public int RoadblockMinWantedLevel { get; set; }
     [Description("Maximum level that dynamic roadblocks can spawn at.")]
     public int RoadblockMaxWantedLevel { get; set; }
+
+
+    [Description("Vehicles to add in front of the initial vehicle.")]
+    public int Roadblock_VehiclesToAddFront { get; set; }
+    [Description("Vehicles to add behind the initial vehicle.")]
+    public int Roadblock_VehiclesToAddRear { get; set; }
+    [Description("Barriers to add in front of the initial barrier.")]
+    public int Roadblock_BarriersToAddFront { get; set; }
+    [Description("Barriers to add behind the initial barrier.")]
+    public int Roadblock_BarriersToAddRear { get; set; }
+
+
+
+
     [Description("Time (in ms) between roadblocks when you are not actively seen by police.")]
     public int TimeBetweenRoadblock_Unseen { get; set; }
     [Description("Minimum time (in ms) between roadblocks.")]
@@ -323,6 +337,7 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Enable or disable dropping your current weapon when busted and armed.")]
     public bool DropWeaponWhenBusted { get; set; }
 
+
     public PoliceSettings()
     {
         SetDefault();
@@ -336,6 +351,13 @@ public class PoliceSettings : ISettingsDefaultable
         DrivingWithoutLicenseFineAmount = 1000;
         RoadblockEnabled = true;
         RoadblockSpikeStripsEnabled = true;
+
+        Roadblock_VehiclesToAddFront = 2;
+        Roadblock_VehiclesToAddRear = 2;
+        Roadblock_BarriersToAddFront = 3;
+        Roadblock_BarriersToAddRear = 3;
+
+
         RoadblockMinWantedLevel = 3;
         RoadblockMaxWantedLevel = 5;
         TimeBetweenRoadblock_Unseen = 999999;

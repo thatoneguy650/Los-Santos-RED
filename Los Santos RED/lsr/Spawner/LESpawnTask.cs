@@ -298,12 +298,7 @@ public class LESpawnTask : SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
+
         RelationshipGroup rg = new RelationshipGroup("COP");
         ped.RelationshipGroup = rg;
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
@@ -354,6 +349,19 @@ public class LESpawnTask : SpawnTask
             int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
             ped.Armor = armor;
         }
+
+        if (AddBlip && ped.Exists())
+        {
+            Blip myBlip = ped.AttachBlip();
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryCop.GroupName);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            myBlip.Color = Agency.Color;
+            myBlip.Scale = 0.6f;
+        }
+
+
+
         return PrimaryCop;
     }
     private void SetupCallSigns()

@@ -676,14 +676,26 @@ public class DebugMenu : Menu
         UIMenuItem SpawnRockblock = new UIMenuItem("Spawn Roadblock", "Spawn roadblock");
         SpawnRockblock.Activated += (menu, item) =>
         {
-            Dispatcher.SpawnRoadblock();
+            Dispatcher.DebugSpawnRoadblock();
             menu.Visible = false;
         };
+
+        UIMenuItem DespawnRockblock = new UIMenuItem("Despawn Roadblock", "Despawn roadblock");
+        DespawnRockblock.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugRemoveRoadblock();
+            menu.Visible = false;
+        };
+
+
+        
+
         DispatcherMenu.AddItem(SpawnAgencyFoot);
         DispatcherMenu.AddItem(SpawnAgencyVehicle);
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnRockblock);
+        DispatcherMenu.AddItem(DespawnRockblock);
     }
     private void Frecam()
     {

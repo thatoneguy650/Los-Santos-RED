@@ -61,6 +61,8 @@ public class Debug
     private Vector3 Offset;
     private Rotator Rotation;
     private bool isPrecise;
+    private bool IsDisplaying;
+    private bool isClearingPeds;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus)
     {
@@ -968,6 +970,23 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        string model = NativeHelper.GetKeyboardInput("");
+        model = model.ToLower();
+
+        Rage.Object Barrier = new Rage.Object(model, Game.LocalPlayer.Character.GetOffsetPositionFront(5f), 0f);
+        if (Barrier.Exists())
+        {
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Barrier);
+            Barrier.IsPersistent = true;
+        }
+        GameFiber.Sleep(15000);
+        if(Barrier.Exists())
+        {
+            Barrier.Delete();
+        }
+
+
+
         //Game.LocalPlayer.Character.KeepTasks = true;
         //NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
         //Game.LocalPlayer.Character.KeepTasks = true;
@@ -1019,154 +1038,154 @@ public class Debug
         //}
 
 
-        PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //PedExt myPed = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
 
-        if (myPed != null)
-        {
+        //if (myPed != null)
+        //{
 
-            //myPed.Pedestrian.BlockPermanentEvents = true;
-            //NativeFunction.Natives.CLEAR_PED_TASKS(myPed.Pedestrian);
-            //myPed.Pedestrian.BlockPermanentEvents = true;
-            //myPed.Pedestrian.KeepTasks = true;
-            NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", myPed.Pedestrian, 10000, 2*10000, 0, true, true, true);
-
-
-
-           // myPed.IsDealingDrugs = true;
-            //if(myPed.Pedestrian.Exists())
-            //{
-            //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
-            //}
-            Game.DisplaySubtitle("RAGDOLLLLLLL");
-        }
+        //    //myPed.Pedestrian.BlockPermanentEvents = true;
+        //    //NativeFunction.Natives.CLEAR_PED_TASKS(myPed.Pedestrian);
+        //    //myPed.Pedestrian.BlockPermanentEvents = true;
+        //    //myPed.Pedestrian.KeepTasks = true;
+        //    NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", myPed.Pedestrian, 10000, 2*10000, 0, true, true, true);
 
 
 
-        int LeftBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND");
-        int RightBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_R_PH_HAND");
-        int MouthBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_HEAD");
+        //   // myPed.IsDealingDrugs = true;
+        //    //if(myPed.Pedestrian.Exists())
+        //    //{
+        //    //    NativeFunction.Natives.TASK_SMART_FLEE_PED(myPed.Pedestrian, Player.Character, 1000f, -1, false, false);
+        //    //}
+        //    Game.DisplaySubtitle("RAGDOLLLLLLL");
+        //}
 
-        EntryPoint.WriteToConsole($"WANTED BONES: LHand {LeftBoneIndex} RHand {RightBoneIndex} Head {MouthBoneIndex}");
 
 
+        //int LeftBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_L_PH_HAND");
+        //int RightBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_R_PH_HAND");
+        //int MouthBoneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_HEAD");
 
-
-
-        List<Bone> PedBones = new List<Bone>
-        {
-            new Bone("SKEL_ROOT", 4215, 0, BodyLocation.LowerTorso),
-            new Bone("SKEL_Pelvis", 4103, 11816, BodyLocation.LowerTorso),
-            new Bone("SKEL_L_Thigh", 4103, 58271, BodyLocation.LeftLeg),
-            new Bone("SKEL_L_Calf", 4103, 63931, BodyLocation.LeftLeg),
-            new Bone("SKEL_L_Foot", 4103, 14201, BodyLocation.LeftLeg),
-            new Bone("SKEL_L_Toe0", 7, 2108, BodyLocation.LeftLeg),
-            new Bone("IK_L_Foot", 119, 65245, BodyLocation.LeftLeg),
-            new Bone("PH_L_Foot", 119, 57717, BodyLocation.LeftLeg),
-            new Bone("MH_L_Knee", 119, 46078, BodyLocation.LeftLeg),
-            new Bone("SKEL_R_Thigh", 4103, 51826, BodyLocation.RightLeg),
-            new Bone("SKEL_R_Calf", 4103, 36864, BodyLocation.RightLeg),
-            new Bone("SKEL_R_Foot", 4103, 52301, BodyLocation.RightLeg),
-            new Bone("SKEL_R_Toe0", 7, 20781, BodyLocation.RightLeg),
-            new Bone("IK_R_Foot", 119, 35502, BodyLocation.RightLeg),
-            new Bone("PH_R_Foot", 119, 24806, BodyLocation.RightLeg),
-            new Bone("MH_R_Knee", 119, 16335, BodyLocation.RightLeg),
-            new Bone("RB_L_ThighRoll", 7, 23639, BodyLocation.LeftLeg),
-            new Bone("RB_R_ThighRoll", 7, 6442, BodyLocation.RightLeg),
-            new Bone("SKEL_Spine_Root", 4103, 57597, BodyLocation.LowerTorso),
-            new Bone("SKEL_Spine0", 4103, 23553, BodyLocation.LowerTorso),
-            new Bone("SKEL_Spine1", 4103, 24816, BodyLocation.LowerTorso),
-            new Bone("SKEL_Spine2", 4103, 24817, BodyLocation.UpperTorso),
-            new Bone("SKEL_Spine3", 4103, 24818, BodyLocation.UpperTorso),
-            new Bone("SKEL_L_Clavicle", 4103, 64729, BodyLocation.LeftArm),
-            new Bone("SKEL_L_UpperArm", 4103, 45509, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Forearm", 4215, 61163, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Hand", 4215, 18905, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger00", 4103, 26610, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger01", 4103, 4089, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger02", 7, 4090, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger10", 4103, 26611, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger11", 4103, 4169, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger12", 7, 4170, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger20", 4103, 26612, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger21", 4103, 4185, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger22", 7, 4186, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger30", 4103, 26613, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger31", 4103, 4137, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger32", 7, 4138, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger40", 4103, 26614, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger41", 4103, 4153, BodyLocation.LeftArm),
-            new Bone("SKEL_L_Finger42", 7, 4154, BodyLocation.LeftArm),
-            new Bone("PH_L_Hand", 119, 60309, BodyLocation.LeftArm),
-            new Bone("IK_L_Hand", 119, 36029, BodyLocation.LeftArm),
-            new Bone("RB_L_ForeArmRoll", 7, 61007, BodyLocation.LeftArm),
-            new Bone("RB_L_ArmRoll", 7, 5232, BodyLocation.LeftArm),
-            new Bone("MH_L_Elbow", 119, 22711, BodyLocation.LeftArm),
-            new Bone("SKEL_R_Clavicle", 4103, 10706, BodyLocation.RightArm),
-            new Bone("SKEL_R_UpperArm", 4103, 40269, BodyLocation.RightArm),
-            new Bone("SKEL_R_Forearm", 4215, 28252, BodyLocation.RightArm),
-            new Bone("SKEL_R_Hand", 4215, 57005, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger00", 4103, 58866, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger01", 4103, 64016, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger02", 7, 64017, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger10", 4103, 58867, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger11", 4103, 64096, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger12", 7, 64097, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger20", 4103, 58868, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger21", 4103, 64112, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger22", 7, 64113, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger30", 4103, 58869, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger31", 4103, 64064, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger32", 7, 64065, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger40", 4103, 58870, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger41", 4103, 64080, BodyLocation.RightArm),
-            new Bone("SKEL_R_Finger42", 7, 64081, BodyLocation.RightArm),
-            new Bone("PH_R_Hand", 119, 28422, BodyLocation.RightArm),
-            new Bone("IK_R_Hand", 119, 6286, BodyLocation.RightArm),
-            new Bone("RB_R_ForeArmRoll", 7, 43810, BodyLocation.RightArm),
-            new Bone("RB_R_ArmRoll", 7, 37119, BodyLocation.RightArm),
-            new Bone("MH_R_Elbow", 119, 2992, BodyLocation.RightArm),
-            new Bone("SKEL_Neck_1", 4103, 39317, BodyLocation.Neck),
-            new Bone("SKEL_Head", 4103, 31086, BodyLocation.Head),
-            new Bone("IK_Head", 119, 12844, BodyLocation.Head),
-            new Bone("FACIAL_facialRoot", 4103, 65068, BodyLocation.Head),
-            new Bone("FB_L_Brow_Out_000", 1799, 58331, BodyLocation.Head),
-            new Bone("FB_L_Lid_Upper_000", 1911, 45750, BodyLocation.Head),
-            new Bone("FB_L_Eye_000", 1799, 25260, BodyLocation.Head),
-            new Bone("FB_L_CheekBone_000", 1799, 21550, BodyLocation.Head),
-            new Bone("FB_L_Lip_Corner_000", 1911, 29868, BodyLocation.Head),
-            new Bone("FB_R_Lid_Upper_000", 1911, 43536, BodyLocation.Head),
-            new Bone("FB_R_Eye_000", 1799, 27474, BodyLocation.Head),
-            new Bone("FB_R_CheekBone_000", 1799, 19336, BodyLocation.Head),
-            new Bone("FB_R_Brow_Out_000", 1799, 1356, BodyLocation.Head),
-            new Bone("FB_R_Lip_Corner_000", 1911, 11174, BodyLocation.Head),
-            new Bone("FB_Brow_Centre_000", 1799, 37193, BodyLocation.Head),
-            new Bone("FB_UpperLipRoot_000", 5895, 20178, BodyLocation.Head),
-            new Bone("FB_UpperLip_000", 6007, 61839, BodyLocation.Head),
-            new Bone("FB_L_Lip_Top_000", 1911, 20279, BodyLocation.Head),
-            new Bone("FB_R_Lip_Top_000", 1911, 17719, BodyLocation.Head),
-            new Bone("FB_Jaw_000", 5895, 46240, BodyLocation.Head),
-            new Bone("FB_LowerLipRoot_000", 5895, 17188, BodyLocation.Head),
-            new Bone("FB_LowerLip_000", 6007, 20623, BodyLocation.Head),
-            new Bone("FB_L_Lip_Bot_000", 1911, 47419, BodyLocation.Head),
-            new Bone("FB_R_Lip_Bot_000", 1911, 49979, BodyLocation.Head),
-            new Bone("FB_Tongue_000", 1911, 47495, BodyLocation.Head),
-            new Bone("RB_Neck_1", 7, 35731, BodyLocation.Neck),
+        //EntryPoint.WriteToConsole($"WANTED BONES: LHand {LeftBoneIndex} RHand {RightBoneIndex} Head {MouthBoneIndex}");
 
 
 
 
 
-            new Bone("IK_Root", 119, 56604, BodyLocation.LowerTorso)
+        //List<Bone> PedBones = new List<Bone>
+        //{
+        //    new Bone("SKEL_ROOT", 4215, 0, BodyLocation.LowerTorso),
+        //    new Bone("SKEL_Pelvis", 4103, 11816, BodyLocation.LowerTorso),
+        //    new Bone("SKEL_L_Thigh", 4103, 58271, BodyLocation.LeftLeg),
+        //    new Bone("SKEL_L_Calf", 4103, 63931, BodyLocation.LeftLeg),
+        //    new Bone("SKEL_L_Foot", 4103, 14201, BodyLocation.LeftLeg),
+        //    new Bone("SKEL_L_Toe0", 7, 2108, BodyLocation.LeftLeg),
+        //    new Bone("IK_L_Foot", 119, 65245, BodyLocation.LeftLeg),
+        //    new Bone("PH_L_Foot", 119, 57717, BodyLocation.LeftLeg),
+        //    new Bone("MH_L_Knee", 119, 46078, BodyLocation.LeftLeg),
+        //    new Bone("SKEL_R_Thigh", 4103, 51826, BodyLocation.RightLeg),
+        //    new Bone("SKEL_R_Calf", 4103, 36864, BodyLocation.RightLeg),
+        //    new Bone("SKEL_R_Foot", 4103, 52301, BodyLocation.RightLeg),
+        //    new Bone("SKEL_R_Toe0", 7, 20781, BodyLocation.RightLeg),
+        //    new Bone("IK_R_Foot", 119, 35502, BodyLocation.RightLeg),
+        //    new Bone("PH_R_Foot", 119, 24806, BodyLocation.RightLeg),
+        //    new Bone("MH_R_Knee", 119, 16335, BodyLocation.RightLeg),
+        //    new Bone("RB_L_ThighRoll", 7, 23639, BodyLocation.LeftLeg),
+        //    new Bone("RB_R_ThighRoll", 7, 6442, BodyLocation.RightLeg),
+        //    new Bone("SKEL_Spine_Root", 4103, 57597, BodyLocation.LowerTorso),
+        //    new Bone("SKEL_Spine0", 4103, 23553, BodyLocation.LowerTorso),
+        //    new Bone("SKEL_Spine1", 4103, 24816, BodyLocation.LowerTorso),
+        //    new Bone("SKEL_Spine2", 4103, 24817, BodyLocation.UpperTorso),
+        //    new Bone("SKEL_Spine3", 4103, 24818, BodyLocation.UpperTorso),
+        //    new Bone("SKEL_L_Clavicle", 4103, 64729, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_UpperArm", 4103, 45509, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Forearm", 4215, 61163, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Hand", 4215, 18905, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger00", 4103, 26610, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger01", 4103, 4089, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger02", 7, 4090, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger10", 4103, 26611, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger11", 4103, 4169, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger12", 7, 4170, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger20", 4103, 26612, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger21", 4103, 4185, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger22", 7, 4186, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger30", 4103, 26613, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger31", 4103, 4137, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger32", 7, 4138, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger40", 4103, 26614, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger41", 4103, 4153, BodyLocation.LeftArm),
+        //    new Bone("SKEL_L_Finger42", 7, 4154, BodyLocation.LeftArm),
+        //    new Bone("PH_L_Hand", 119, 60309, BodyLocation.LeftArm),
+        //    new Bone("IK_L_Hand", 119, 36029, BodyLocation.LeftArm),
+        //    new Bone("RB_L_ForeArmRoll", 7, 61007, BodyLocation.LeftArm),
+        //    new Bone("RB_L_ArmRoll", 7, 5232, BodyLocation.LeftArm),
+        //    new Bone("MH_L_Elbow", 119, 22711, BodyLocation.LeftArm),
+        //    new Bone("SKEL_R_Clavicle", 4103, 10706, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_UpperArm", 4103, 40269, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Forearm", 4215, 28252, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Hand", 4215, 57005, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger00", 4103, 58866, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger01", 4103, 64016, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger02", 7, 64017, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger10", 4103, 58867, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger11", 4103, 64096, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger12", 7, 64097, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger20", 4103, 58868, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger21", 4103, 64112, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger22", 7, 64113, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger30", 4103, 58869, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger31", 4103, 64064, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger32", 7, 64065, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger40", 4103, 58870, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger41", 4103, 64080, BodyLocation.RightArm),
+        //    new Bone("SKEL_R_Finger42", 7, 64081, BodyLocation.RightArm),
+        //    new Bone("PH_R_Hand", 119, 28422, BodyLocation.RightArm),
+        //    new Bone("IK_R_Hand", 119, 6286, BodyLocation.RightArm),
+        //    new Bone("RB_R_ForeArmRoll", 7, 43810, BodyLocation.RightArm),
+        //    new Bone("RB_R_ArmRoll", 7, 37119, BodyLocation.RightArm),
+        //    new Bone("MH_R_Elbow", 119, 2992, BodyLocation.RightArm),
+        //    new Bone("SKEL_Neck_1", 4103, 39317, BodyLocation.Neck),
+        //    new Bone("SKEL_Head", 4103, 31086, BodyLocation.Head),
+        //    new Bone("IK_Head", 119, 12844, BodyLocation.Head),
+        //    new Bone("FACIAL_facialRoot", 4103, 65068, BodyLocation.Head),
+        //    new Bone("FB_L_Brow_Out_000", 1799, 58331, BodyLocation.Head),
+        //    new Bone("FB_L_Lid_Upper_000", 1911, 45750, BodyLocation.Head),
+        //    new Bone("FB_L_Eye_000", 1799, 25260, BodyLocation.Head),
+        //    new Bone("FB_L_CheekBone_000", 1799, 21550, BodyLocation.Head),
+        //    new Bone("FB_L_Lip_Corner_000", 1911, 29868, BodyLocation.Head),
+        //    new Bone("FB_R_Lid_Upper_000", 1911, 43536, BodyLocation.Head),
+        //    new Bone("FB_R_Eye_000", 1799, 27474, BodyLocation.Head),
+        //    new Bone("FB_R_CheekBone_000", 1799, 19336, BodyLocation.Head),
+        //    new Bone("FB_R_Brow_Out_000", 1799, 1356, BodyLocation.Head),
+        //    new Bone("FB_R_Lip_Corner_000", 1911, 11174, BodyLocation.Head),
+        //    new Bone("FB_Brow_Centre_000", 1799, 37193, BodyLocation.Head),
+        //    new Bone("FB_UpperLipRoot_000", 5895, 20178, BodyLocation.Head),
+        //    new Bone("FB_UpperLip_000", 6007, 61839, BodyLocation.Head),
+        //    new Bone("FB_L_Lip_Top_000", 1911, 20279, BodyLocation.Head),
+        //    new Bone("FB_R_Lip_Top_000", 1911, 17719, BodyLocation.Head),
+        //    new Bone("FB_Jaw_000", 5895, 46240, BodyLocation.Head),
+        //    new Bone("FB_LowerLipRoot_000", 5895, 17188, BodyLocation.Head),
+        //    new Bone("FB_LowerLip_000", 6007, 20623, BodyLocation.Head),
+        //    new Bone("FB_L_Lip_Bot_000", 1911, 47419, BodyLocation.Head),
+        //    new Bone("FB_R_Lip_Bot_000", 1911, 49979, BodyLocation.Head),
+        //    new Bone("FB_Tongue_000", 1911, 47495, BodyLocation.Head),
+        //    new Bone("RB_Neck_1", 7, 35731, BodyLocation.Neck),
 
 
-        };
 
-        foreach(Bone bone in PedBones)
-        {
-            int boneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, bone.Name);
 
-            EntryPoint.WriteToConsole($"BONES:    Name {bone.Name} Tag {bone.Tag} Index {boneIndex}");
-        }
+
+        //    new Bone("IK_Root", 119, 56604, BodyLocation.LowerTorso)
+
+
+        //};
+
+        //foreach(Bone bone in PedBones)
+        //{
+        //    int boneIndex = NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, bone.Name);
+
+        //    EntryPoint.WriteToConsole($"BONES:    Name {bone.Name} Tag {bone.Tag} Index {boneIndex}");
+        //}
 
         //foreach (ModItem modItem in ModItems.Items)
         //{
@@ -1271,6 +1290,44 @@ public class Debug
     }
     public void DebugNumpad8()
     {
+        Settings.SettingsManager.PoliceSettings.ManageDispatching = false;
+        Settings.SettingsManager.GangSettings.ManageDispatching = false;
+        Settings.SettingsManager.EMSSettings.ManageDispatching = false;
+
+        Settings.SettingsManager.PoliceSettings.ManageTasking = false;
+        Settings.SettingsManager.GangSettings.ManageTasking = false;
+        Settings.SettingsManager.EMSSettings.ManageTasking = false;
+
+
+
+        isClearingPeds = false;
+        GameFiber.Yield();
+
+        GameFiber.StartNew(delegate
+        {
+            if(!isClearingPeds)
+            {
+                isClearingPeds = true;
+            }
+            float CurrentSpawnMultiplier = 0f;
+            while (isClearingPeds && ModController.IsRunning)
+            {
+
+                NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+
+
+                GameFiber.Yield();
+            }
+        }, "Run Debug Logic");
+
+
+
+
+
         //Player.SetWantedLevel(2, "Test", true);
         //Player.Arrest();
         //GameFiber.Sleep(4000);
@@ -1280,7 +1337,7 @@ public class Debug
         //bookingActivity.Start();
 
 
-       // SetIndex();
+        // SetIndex();
         //Gang myGang = Gangs.AllGangs.PickRandom();
         //Player.CellPhone.AddScheduledText(myGang.ContactName, myGang.ContactIcon, $"This is the gang {myGang.ColorInitials}~s~ doing an example thing  {Game.GameTime} with a very long string, so long it will be cut off i am sure, but how many characters will i see? I am unsusre, but this is gettting pretty long, how much do i need in here?", Time.CurrentDateTime.AddMinutes(0));
 
@@ -1472,9 +1529,9 @@ public class Debug
         //        Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
         //        GameFiber.Yield();
         //    }
-        Player.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
+        //Player.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
 
-        Player.CellPhone.AddScheduledContact(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
+        //Player.CellPhone.AddScheduledContact(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(0));
 
         //}
         //if (RandomItems.RandomPercent(50))
@@ -1525,106 +1582,104 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        IsDisplaying = false;
+        GameFiber.Sleep(200);
 
 
-
-        //GameFiber.StartNew(delegate
-        //{
-        //    float multiplier = 0.01f;
-
-        //    while (!Game.IsKeyDownRightNow(Keys.Space))
-        //    {
-        //        if(Game.IsKeyDownRightNow(Keys.Right))
-        //        {
-        //            multiplier *= 1.2f;
-        //        }
-        //        if (Game.IsKeyDownRightNow(Keys.Left))
-        //        {
-        //            multiplier *= 0.8f;
-        //        }
-        //        float CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-        //        NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + (50f * multiplier));
-        //        GameFiber.Yield();
-        //    }
-        //}, "Run Debug Logic");
+        Vector3 RoadblockInitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        Vector3 RoadblockFinalPosition = Vector3.Zero;
+        float RoadblockFinalHeading = 0f;
+        int density = -1;
+        int flags = -1;
+        if (NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
+            , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 0x40400000, 0))//if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 0, 3.0f, 0))
+        {
+            NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out density, out flags);
 
 
-
-
-        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        //{
-
-            PedExt myPed = World.Pedestrians.PedExts.Where(x=> x.DistanceToPlayer <= 50f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-            if(myPed != null && myPed.Pedestrian.Exists())
+            string d = "";
+            foreach (int flag in Enum.GetValues(typeof(PathnodeFlags)).Cast<PathnodeFlags>())
             {
-                //if (int.TryParse(NativeHelper.GetKeyboardInput("0"), out int item1))
-                //{
-                    if (int.TryParse(NativeHelper.GetKeyboardInput("0"), out int item2))
-                    {
-                    myPed.Pedestrian.BlockPermanentEvents = false;
-                    myPed.Pedestrian.Tasks.Clear();
+                
+                if ((flag & flags) != 0) d += " " + (PathnodeFlags)flag;
 
 
-                    myPed.Pedestrian.BlockPermanentEvents = true;
-                        myPed.Pedestrian.KeepTasks = true;
-                        EntryPoint.WriteToConsole($"Cop {myPed.Pedestrian.Handle} Tasked");
-                        //NativeFunction.Natives.CREATE_MOBILE_PHONE(4);
-                        NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE", myPed.Pedestrian, 1, item2);
-                        GameFiber.Sleep(4000);
-                        if(myPed.Pedestrian.Exists())
-                        {
-                        //myPed.Pedestrian.BlockPermanentEvents = false;
-                        //myPed.Pedestrian.Tasks.Clear();
-                        }
-                    }
-               //}
+
+
             }
-
-            
-
-
-      //  }
-
-        //NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Game.LocalPlayer.Character, "WORLD_HUMAN_COP_IDLES", 0, true);
-
-        //Player.ScannerPlayDebug();
-
-        //if (RandomItems.RandomPercent(50))
-        //{
-        //    Game.DisplaySubtitle("Text Sound");
-        //    PlayTextReceivedSound();
-
-
-        //    GameFiber.Sleep(1000);
-        //}
-        //else
-        //{
-        //    Game.DisplaySubtitle("Response Sound");
-        //    PlayPhoneResponseSound();
-
-
-
-        //}
+            EntryPoint.WriteToConsole($"{RoadblockFinalPosition} {RoadblockFinalHeading} density {density} flags {flags} d {d}");
 
 
 
 
 
-        //ModController.DebugNonPriorityRunning = !ModController.DebugNonPriorityRunning;
-        //Game.DisplayNotification($"ModController.DebugNonPriorityRunning {ModController.DebugNonPriorityRunning}");
-        //GameFiber.Sleep(500);
 
-        //Dispatcher.DebugSpawnCop();
-        // Dispatcher.DebugSpawnGang();
-        //int CurrentWanted = Player.WantedLevel;
-        //if (CurrentWanted <= 5)
-        //{
-        //    CurrentWanted++;
-        //    Player.SetWantedLevel(CurrentWanted, "Increase Wanted", true);
-        //}
+            IsDisplaying = true;
+            GameFiber.StartNew(delegate
+            {
+                uint GameTimeStarted = Game.GameTime;
+                while (Game.GameTime - GameTimeStarted <= 10000 && ModController.IsRunning && IsDisplaying)
+                {
+                    Rage.Debug.DrawArrowDebug(RoadblockInitialPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+                    Rage.Debug.DrawArrowDebug(RoadblockFinalPosition + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+                    GameFiber.Yield();
+                }
+            }, "Run Debug Logic");
+        }
     }
 
+    public enum PathnodeFlags
+    {
+        Slow = 1,
+        Two = 2,
+        Intersection = 4,
+        Eight = 8, SlowTraffic = 12, ThirtyTwo = 32, Freeway = 64, FourWayIntersection = 128, BigIntersectionLeft = 512
+    }
+    [Flags]
+    public enum ENodeFlag
+    {
+        None = 0,
 
+        // 0000 0001
+        // not sure for what this bit stands 
+        Unknown = 1,
+
+        // 0000 0010
+        Unused = 2,
+
+        // 0000 0100
+        IsAlley = 4,
+
+        // 0000 1000
+        IsGravelRoad = 8,
+
+        // 0001 0000
+        IsBackroad = 16,
+
+        // 0010 0000
+        IsOnWater = 32,
+
+        // 0100 0000
+        IsPedCrossway = 64,
+
+        // 1000 0000
+        IsJunction = 128,
+
+        // 0001 0000 0000
+        LeftTurnNoReturn = 256,
+
+        // 0010 0000 0000
+        RightTurnNoReturn = 512,
+
+        // 0000 0001 0000 0000 0000
+        IsOffRoad = 4096,
+
+        // 0000 0010 0000 0000 0000
+        NoRightTurn = 8192,
+
+        // 0000 0100 0000 0000 0000
+        NoBigVehicles = 16384,
+    }
     private void SetPropAttachment()
     {
         string PropName = NativeHelper.GetKeyboardInput("prop_cigar_02");

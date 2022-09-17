@@ -15,6 +15,7 @@ public class VanillaWorldManager
     private bool IsVanillaRespawnActive = true;
     private ISettingsProvideable Settings;
     private bool isVanillaShopsActive;
+    private bool isVanillaBlipsActive;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {
@@ -89,7 +90,20 @@ public class VanillaWorldManager
             }
         }
 
-
+        if (Settings.SettingsManager.VanillaSettings.TerminateVanillaBlips)
+        {
+            if (isVanillaBlipsActive)
+            {
+                TerminateBlipController();
+            }
+        }
+        else
+        {
+            if (!isVanillaBlipsActive)
+            {
+                ActivateBlipController();
+            }
+        }
 
         TerminateAudio();
     }
@@ -155,5 +169,18 @@ public class VanillaWorldManager
         Game.StartNewScript("shop_controller");
         isVanillaShopsActive = true;
     }
+
+
+    private void TerminateBlipController()
+    {
+        Game.TerminateAllScriptsWithName("blip_controller");
+        isVanillaBlipsActive = false;
+    }
+    private void ActivateBlipController()
+    {
+        Game.StartNewScript("blip_controller");
+        isVanillaBlipsActive = true;
+    }
+
 }
 

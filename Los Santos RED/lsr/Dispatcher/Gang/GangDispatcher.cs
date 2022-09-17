@@ -214,7 +214,7 @@ public class GangDispatcher
             {
                 SpawnLocation.InitialPosition = GetPositionAroundPlayer();
             }
-            SpawnLocation.GetClosestStreet();
+            SpawnLocation.GetClosestStreet(false);
             SpawnLocation.GetClosestSidewalk();
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);

@@ -21,6 +21,8 @@ public class Roadblock
     private Vector3 NodeCenter;
     private float NodeHeading;
     private Vector3 NodeOffset;
+    private Vector3 BarrierOffset;
+    private Vector3 ConeOffset;
     private float PedHeading;
     private Vector3 PedPosition;
     private DispatchablePerson Person;
@@ -33,7 +35,18 @@ public class Roadblock
     private Model VehicleModel;
     private IWeapons Weapons;
     private IEntityProvideable World;
-    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, ISettingsProvideable settings, IWeapons weapons, INameProvideable names)
+    private float InitialHeading;
+    private bool AllowAnySpawn;
+    private dynamic roadblockSpeedZoneID1;
+    private dynamic roadblockSpeedZoneID2;
+
+    private enum LocationCreate
+    {
+        Middle = 0,
+        Front = 1,
+        Back = 2,
+    }
+    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool allowAnySpawn)
     {
         Player = player;
         World = world;
@@ -41,11 +54,13 @@ public class Roadblock
         Vehicle = vehicle;
         Person = person;
         InitialPosition = initialPosition;
+        InitialHeading = initialHeading;
         Settings = settings;
         VehicleModel = new Model(Vehicle.ModelName);
         SpikeStripModel = new Model(SpikeStripName);
         Weapons = weapons;
         Names = names;
+        AllowAnySpawn = allowAnySpawn;
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -53,9 +68,17 @@ public class Roadblock
     {
         IsDisposed = true;
         RemoveItems();
+
+        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID1);
+        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID2);
+
     }
     public void SpawnRoadblock()
     {
+
+        AnimationDictionary.RequestAnimationDictionay("p_ld_stinger_s");
+
+
         VehicleModel.LoadAndWait();
         SpikeStripModel.LoadAndWait();
         if (GetPosition())
@@ -67,46 +90,20 @@ public class Roadblock
             CheckSpikeStrips();
         }
     }
-    private void AddSpikeStrips(bool InFront)
-    {
-        int StripsAdded = 1;
-        float Spacing = GetPositionBetweenSpikeStrips(0.25f);
-        bool Created;
-        do
-        {
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeOffset, NodeHeading, (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing);
-            Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
-            if (Created)
-            {
-                Vector3 ConePosition = NativeHelper.GetOffsetPosition(SpawnPosition, NodeHeading, 5.0f);
-                CreateCone(ConePosition, 0f);//heading doesnt matter on a cone (big brain time)...
-                ConePosition = NativeHelper.GetOffsetPosition(ConePosition, NodeHeading, 5.0f);
-                CreateBarrier(ConePosition, NodeHeading);
-                StripsAdded++;
-            }
-        } while (Created && StripsAdded < 3);
-    }
-    private void AddVehicles(bool InFront)
-    {
-        int CarsAdded = 1;
-        float Spacing = GetPositionBetweenVehicles(1.0f);//0.5f
-        bool Created;
-        do
-        {
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, (InFront ? 1.0f : -1.0f) * CarsAdded * Spacing);
-            Created = CreateVehicle(SpawnPosition, RotatedNodeHeading, false);
-            if (Created)
-            {
-                CarsAdded++;
-            }
-        } while (Created && CarsAdded < 2);//5
-    }
     private void CheckSpikeStrips()
     {
         GameFiber.StartNew(delegate
         {
             try
             {
+
+
+                roadblockSpeedZoneID1 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(CenterPosition.X, CenterPosition.Y, CenterPosition.Z, 15f, 0f, false);
+                roadblockSpeedZoneID2 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, 15f, 0f, false);
+
+
+                
+
                 GameFiber.Yield();
                 foreach (Rage.Object obj in CreatedProps)
                 {
@@ -162,54 +159,71 @@ public class Roadblock
             }
         }
     }
-    private bool CreateBarrier(Vector3 position, float heading)
+    private void DeterminePositions()
     {
-        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 15f);
+        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 15f);
+        if (Player.Position.DistanceTo2D(RightSide) <= Player.Position.DistanceTo2D(LeftSide))
         {
-            position = new Vector3(position.X, position.Y, GroundZ);
+            NodeOffset = RightSide;
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 17f);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 19f);
+            PedPosition = LeftSide;
+            PedHeading = NodeHeading + 180f;
         }
-        Rage.Object Cone = new Rage.Object("prop_barrier_work05", position, heading);
-        if (Cone.Exists())
+        else
         {
-            Cone.IsPersistent = true;
-            CreatedProps.Add(Cone);
+            NodeOffset = LeftSide;
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 17f);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 19f);
+            PedPosition = RightSide;
+            PedHeading = NodeHeading;
         }
-        return Cone.Exists();
     }
-    private bool CreateCone(Vector3 position, float heading)
+    private void FillInBlockade()
     {
-        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        DeterminePositions();
+        GameFiber.Yield();
+        if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?
         {
-            position = new Vector3(position.X, position.Y, GroundZ);
+            GameFiber.Yield();
+            AddVehicles(LocationCreate.Front, Settings.SettingsManager.PoliceSettings.Roadblock_VehiclesToAddFront);
+            GameFiber.Yield();
+            AddVehicles(LocationCreate.Back, Settings.SettingsManager.PoliceSettings.Roadblock_VehiclesToAddRear);
+            GameFiber.Yield();
+            if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+            {
+                AddSpikeStrips(LocationCreate.Middle, 1);
+                GameFiber.Yield();
+                AddSpikeStrips(LocationCreate.Front, Settings.SettingsManager.PoliceSettings.Roadblock_BarriersToAddFront);
+                GameFiber.Yield();
+                AddSpikeStrips(LocationCreate.Back, Settings.SettingsManager.PoliceSettings.Roadblock_BarriersToAddRear);
+                GameFiber.Yield();
+            }
         }
-        Rage.Object Cone = new Rage.Object(ConeTypes.PickRandom(), position, heading);
-
-        if (Cone.Exists())
-        {
-            Cone.IsPersistent = true;
-            CreatedProps.Add(Cone);
-        }
-        return Cone.Exists();
     }
-    private bool CreateSpikeStrip(Vector3 position, float heading)
+    private bool AddVehicles(LocationCreate locationCreate, int toAdd)
     {
-        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        int CarsAdded = 1;
+        float Spacing = GetPositionBetweenVehicles(1.0f);//0.5f
+        bool Created;
+        do
         {
-            position = new Vector3(position.X, position.Y, GroundZ);
-        }
-        Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
-        if (SpikeStrip.Exists())
-        {
-            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
-            SpikeStrip.IsPersistent = true;
-            SpikeStrip.IsGravityDisabled = false;
-            SpikeStrip.IsPositionFrozen = true;
-            CreatedProps.Add(SpikeStrip);
-        }
-        return SpikeStrip.Exists();
+            float Offset = 0f;// (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing;
+            bool addPed = true;
+            if (locationCreate != LocationCreate.Middle)
+            {
+                Offset = (locationCreate == LocationCreate.Front ? 1.0f : -1.0f) * CarsAdded * Spacing;
+                addPed = false;
+            }
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
+            Created = CreateVehicle(SpawnPosition, RotatedNodeHeading, addPed);
+            if (Created)
+            {
+                CarsAdded++;
+            }
+        } while (Created && CarsAdded <= toAdd);//5
+        return Created;
     }
     private bool CreateVehicle(Vector3 position, float heading, bool addPed)
     {
@@ -218,38 +232,40 @@ public class Roadblock
         Vector3 RearRight = new Vector3(position.X + VehicleModel.Dimensions.X / 2, position.Y - VehicleModel.Dimensions.Y / 2, position.Z);
         Vector3 RearLeft = new Vector3(position.X - VehicleModel.Dimensions.X / 2, position.Y - VehicleModel.Dimensions.Y / 2, position.Z);
         float GroundZ;
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontRight.X, FrontRight.Y, FrontRight.Z, out GroundZ, true, false))
-        {
-            if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-            {
-                return false;
-            }
-        }
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontLeft.X, FrontLeft.Y, FrontLeft.Z, out GroundZ, true, false))
-        {
-            if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-            {
-                return false;
-            }
-        }
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearRight.X, RearRight.Y, RearRight.Z, out GroundZ, true, false))
-        {
-            if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-            {
-                return false;
-            }
-        }
-        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearLeft.X, RearLeft.Y, RearLeft.Z, out GroundZ, true, false))
-        {
-            if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-            {
-                return false;
-            }
-        }
+        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontRight.X, FrontRight.Y, FrontRight.Z, out GroundZ, true, false))
+        //{
+        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
+        //    {
+        //        return false;
+        //    }
+        //}
+        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontLeft.X, FrontLeft.Y, FrontLeft.Z, out GroundZ, true, false))
+        //{
+        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
+        //    {
+        //        return false;
+        //    }
+        //}
+        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearRight.X, RearRight.Y, RearRight.Z, out GroundZ, true, false))
+        //{
+        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
+        //    {
+        //        return false;
+        //    }
+        //}
+        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearLeft.X, RearLeft.Y, RearLeft.Z, out GroundZ, true, false))
+        //{
+        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
+        //    {
+        //        return false;
+        //    }
+        //}
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
+        pos1.Heading = heading;
 
         LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World);
+        spawnTask.AllowAnySpawn = AllowAnySpawn;
         spawnTask.AttemptSpawn();
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
         {
@@ -260,6 +276,7 @@ public class Roadblock
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
             LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
+            pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.AttemptSpawn();
             foreach (PedExt person in pedSpawn.CreatedPeople)
             {
@@ -290,44 +307,79 @@ public class Roadblock
         }
         return spawnTask.CreatedVehicles.Any();
     }
-    private void DeterminSpikeStripPositions()
+    private void AddSpikeStrips(LocationCreate locationCreate, int toAdd)
     {
-        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 15f);
-        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 15f);
-        if (Player.Position.DistanceTo2D(RightSide) <= Player.Position.DistanceTo2D(LeftSide))
+        int StripsAdded = 1;
+        float Spacing = GetPositionBetweenSpikeStrips(0.25f);
+        bool Created;
+        do
         {
-            NodeOffset = RightSide;
-            PedPosition = LeftSide;
-            PedHeading = NodeHeading + 180f;
-        }
-        else
-        {
-            NodeOffset = LeftSide;
-            PedPosition = RightSide;
-            PedHeading = NodeHeading;
-        }
+            float Offset = 0f;// (InFront ? 1.0f : -1.0f) * StripsAdded * Spacing;
+            if (locationCreate != LocationCreate.Middle)
+            {
+                Offset = (locationCreate == LocationCreate.Front ? 1.0f : -1.0f) * StripsAdded * Spacing;
+            }
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeOffset, NodeHeading, Offset);
+            Created = CreateSpikeStrip(SpawnPosition, RotatedNodeHeading);
+            if (Created)
+            {
+                CreateCone(NativeHelper.GetOffsetPosition(ConeOffset, NodeHeading, Offset), NodeHeading);
+                CreateBarrier(NativeHelper.GetOffsetPosition(BarrierOffset, NodeHeading, Offset), NodeHeading);
+                StripsAdded++;
+            }
+        } while (Created && StripsAdded <= toAdd);
     }
-    private void FillInBlockade()
+    private bool CreateSpikeStrip(Vector3 position, float heading)
     {
-        DeterminSpikeStripPositions();
-        GameFiber.Yield();
-        if (!CreateVehicle(NodeCenter, RotatedNodeHeading, true))
+        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
+        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
         {
-            return;
+            position = new Vector3(position.X, position.Y, GroundZ);
         }
-        AddVehicles(true);
-        GameFiber.Yield();
-        AddVehicles(false);
-        GameFiber.Yield();
-        if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+        Rage.Object SpikeStrip = new Rage.Object("p_ld_stinger_s", position, heading);
+        if (SpikeStrip.Exists())
         {
-            CreateSpikeStrip(NodeOffset, RotatedNodeHeading);
-            GameFiber.Yield();
-            AddSpikeStrips(true);
-            GameFiber.Yield();
-            AddSpikeStrips(false);
-            GameFiber.Yield();
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(SpikeStrip);
+            SpikeStrip.IsPersistent = true;
+            SpikeStrip.IsGravityDisabled = false;
+            SpikeStrip.IsPositionFrozen = true;
+            NativeFunction.Natives.PLAY_ENTITY_ANIM(SpikeStrip,"p_ld_stinger_s","p_stinger_s_deploy",1000,false,true,false,0.0f,0);
+            CreatedProps.Add(SpikeStrip);
         }
+        return SpikeStrip.Exists();
+    }
+    private bool CreateBarrier(Vector3 position, float heading)
+    {
+        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
+        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        {
+            position = new Vector3(position.X, position.Y, GroundZ);
+        }
+        Rage.Object Barrier = new Rage.Object("prop_barrier_work05", position, heading);
+        if (Barrier.Exists())
+        {
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Barrier);
+            Barrier.IsPersistent = true;
+            CreatedProps.Add(Barrier);
+        }
+        return Barrier.Exists();
+    }
+    private bool CreateCone(Vector3 position, float heading)
+    {
+        position = new Vector3(position.X, position.Y, position.Z + 1.0f);
+        if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(position.X, position.Y, position.Z, out float GroundZ, true, false))
+        {
+            position = new Vector3(position.X, position.Y, GroundZ);
+        }
+        Rage.Object Cone = new Rage.Object(ConeTypes.PickRandom(), position, heading);
+
+        if (Cone.Exists())
+        {
+            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Cone);
+            Cone.IsPersistent = true;
+            CreatedProps.Add(Cone);
+        }
+        return Cone.Exists();
     }
     private bool GetPosition()
     {

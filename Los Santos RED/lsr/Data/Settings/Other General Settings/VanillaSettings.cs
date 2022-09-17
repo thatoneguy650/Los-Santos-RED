@@ -24,7 +24,8 @@ public class VanillaSettings : ISettingsDefaultable
     public float BlockGangScenariosAroundDensDistance { get; set; }
     [Description("Terminates all vanilla shops (LS Customs, Ammunation, Tattoo, Vending Machines) and allows DLC vehicles to be spawned without an external trailer. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
     public bool TerminateVanillaShops { get; set; }
-
+    [Description("Terminates all vanilla blips. CANNOT BE RE-ENABLED, REQUIRES GAME RESTART.")]
+    public bool TerminateVanillaBlips { get; set; }
     public VanillaSettings()
     {
 
@@ -46,6 +47,7 @@ public class VanillaSettings : ISettingsDefaultable
         BlockVanillaPoliceCarGenerators = true;
         BlockVanillaPoliceScenarios = true;
         TerminateVanillaShops = false;
+        TerminateVanillaBlips = false;
     }
 
 }

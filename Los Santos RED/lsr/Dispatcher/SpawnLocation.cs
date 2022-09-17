@@ -31,9 +31,22 @@ public class SpawnLocation
         }
         return height;
     }
-    public void GetClosestStreet()
+    public void GetClosestStreet(bool favorPlayer)
     {
-        NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out Vector3 streetPosition, out float streetHeading, 0, 3, 0);
+        Vector3 streetPosition;
+        float streetHeading;
+        if (favorPlayer)
+        {
+            NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
+                , 0, out streetPosition, out streetHeading, 0, 0x40400000, 0);
+        }
+        else
+        {
+            NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out streetPosition, out streetHeading, 0, 3, 0);
+        }
+
+
+
         StreetPosition = streetPosition;
         Heading = streetHeading;
     }

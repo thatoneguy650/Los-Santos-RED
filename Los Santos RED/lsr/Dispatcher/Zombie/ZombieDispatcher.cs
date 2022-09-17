@@ -60,7 +60,7 @@ public class ZombieDispatcher
             do
             {
                 spawnLocation.InitialPosition = GetPositionAroundPlayer();
-                spawnLocation.GetClosestStreet();
+                spawnLocation.GetClosestStreet(false);
                 isValidSpawn = IsValidSpawn(spawnLocation);
                 timesTried++;
             }

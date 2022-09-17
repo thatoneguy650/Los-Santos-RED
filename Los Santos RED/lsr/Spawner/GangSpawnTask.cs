@@ -282,12 +282,7 @@ public class GangSpawnTask : SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            myBlip.Color = Gang.Color;
-            myBlip.Scale = 0.3f;
-        }
+
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         ped.RelationshipGroup = rg;
         bool isMale;
@@ -348,6 +343,15 @@ public class GangSpawnTask : SpawnTask
         if (GangMember != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
             GangMember.VoiceName = PersonType.OverrideVoice.PickRandom();
+        }
+        if (AddBlip && ped.Exists())
+        {
+            Blip myBlip = ped.AttachBlip();
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GangMember.GroupName);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            myBlip.Color = Gang.Color;
+            myBlip.Scale = 0.3f;
         }
         return GangMember;
     }

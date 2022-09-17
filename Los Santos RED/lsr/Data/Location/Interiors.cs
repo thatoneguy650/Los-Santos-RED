@@ -278,6 +278,18 @@ public class Interiors : IInteriors
             new Interior(113410,"Del Perro Canal Access"),
 
 
+            new Interior(108802,"Raton Canyon Rail Tunnel"),
+            new Interior(112898,"Raton Canyon Rail Tunnel"),
+            new Interior(20994,"Raton Canyon Rail Tunnel"),
+            new Interior(29442,"Raton Canyon Rail Tunnel"),
+            new Interior(12034,"Raton Canyon Rail Tunnel"),
+            new Interior(16130,"Raton Canyon Rail Tunnel"),
+            new Interior(117762,"Raton Canyon Rail Tunnel"),
+            new Interior(5890,"Raton Canyon Rail Tunnel"),
+            new Interior(97026,"Raton Canyon Rail Tunnel"),
+            new Interior(71170,"Raton Canyon Rail Tunnel"),
+
+
 
             new Interior(14082,"Downtown LS Sewer"),
             new Interior(42242,"Downtown LS Sewer"),

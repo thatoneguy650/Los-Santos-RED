@@ -294,7 +294,7 @@ public class PedSwap : IPedSwap
                     if (RandomItems.RandomPercent(100f))
                     {
                         SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
-                        vehicleSpawn.GetClosestStreet();
+                        vehicleSpawn.GetClosestStreet(false);
                         if (vehicleSpawn.HasSpawns)
                         {
                             SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, World);
@@ -361,7 +361,7 @@ public class PedSwap : IPedSwap
                     if (RandomItems.RandomPercent(gang.VehicleSpawnPercentage))
                     {
                         SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
-                        vehicleSpawn.GetClosestStreet();
+                        vehicleSpawn.GetClosestStreet(false);
                         if (vehicleSpawn.HasSpawns)
                         {
                             SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);

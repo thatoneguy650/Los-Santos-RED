@@ -269,12 +269,7 @@ public class EMTSpawnTask :SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
+
         RelationshipGroup rg = new RelationshipGroup("MEDIC");
         ped.RelationshipGroup = rg;
         bool isMale;
@@ -291,6 +286,15 @@ public class EMTSpawnTask :SpawnTask
         if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
             PrimaryEmt.VoiceName = PersonType.OverrideVoice.PickRandom();
+        }
+        if (AddBlip && ped.Exists())
+        {
+            Blip myBlip = ped.AttachBlip();
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryEmt.GroupName);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            myBlip.Color = Agency.Color;
+            myBlip.Scale = 0.6f;
         }
         return PrimaryEmt;
     }

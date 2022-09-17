@@ -163,7 +163,7 @@ public class EMSDispatcher
         do
         {
             SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-            SpawnLocation.GetClosestStreet();
+            SpawnLocation.GetClosestStreet(false);
             isValidSpawn = IsValidSpawn(SpawnLocation);
             timesTried++;
         }

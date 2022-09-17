@@ -263,12 +263,7 @@ public class FireFighterSpawnTask : SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
+
         RelationshipGroup rg = new RelationshipGroup("FIREMAN");
         ped.RelationshipGroup = rg;
         bool isMale;
@@ -285,6 +280,15 @@ public class FireFighterSpawnTask : SpawnTask
         if (PrimaryFirefighter != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
         {
             PrimaryFirefighter.VoiceName = PersonType.OverrideVoice.PickRandom();
+        }
+        if (AddBlip && ped.Exists())
+        {
+            Blip myBlip = ped.AttachBlip();
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryFirefighter.GroupName);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            myBlip.Color = Agency.Color;
+            myBlip.Scale = 0.6f;
         }
         return PrimaryFirefighter;
     }

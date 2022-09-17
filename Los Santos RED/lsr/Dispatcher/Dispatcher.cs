@@ -118,13 +118,16 @@ public class Dispatcher
     {
         LEDispatcher.Dispose();
     }
-    public void SpawnRoadblock()
+    public void DebugSpawnRoadblock()
     {
-        LEDispatcher.SpawnRoadblock();
+        LEDispatcher.SpawnRoadblock(true);
     }
-    public void RemoveRoadblock()
+    public void DebugRemoveRoadblock()
     {
         LEDispatcher.RemoveRoadblock();
+
+        World.Vehicles.ClearSpawned(true);
+        World.Pedestrians.ClearSpawned();
     }
     public void DebugSpawnCop()
     {
