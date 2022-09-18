@@ -25,9 +25,9 @@ public class Seats : ISeats
 
         SeatModels = new List<SeatModel>() {
                 new SeatModel(0x6ba514ac,-0.45f) {Name = "Iron Bench" }, //sometime float a bit above it
-                new SeatModel(0x7facd66f,-0.15f) {Name = "Bus Bench" },
+                new SeatModel(0x7facd66f,-0.2f) {Name = "Bus Bench" },//new SeatModel(0x7facd66f,-0.15f) {Name = "Bus Bench" },
                 new SeatModel(0xc0a6cbcd),
-                new SeatModel(0x534bc1bc),
+                //new SeatModel(0x534bc1bc), actyually garbage
                 new SeatModel(0xa55359b8),
                 new SeatModel(0xe7ed1a59),
 
@@ -38,15 +38,23 @@ public class Seats : ISeats
 
 
 
-
+                new SeatModel(0x708bb82d, -0.45f) { Name = "Green Bus Bench" },
 
 
 
 
 
                 new SeatModel(0xd3c6d323){Name = "Plastic Chair" },
-                new SeatModel(0x3c67ba3f,-0.45f){Name = "Iron Bench" },
-                new SeatModel(0xda867f80,-0.45f){Name = "Iron Bench" },
+                //new SeatModel(0x3c67ba3f,-0.45f){Name = "Iron Bench" },//actually a bag of chips?
+
+
+
+                new SeatModel(0xda867f80,-0.5f){Name = "Iron Bench" },
+
+
+
+
+
                 new SeatModel(0x643d1f90,-0.25f) {Name = "Maze Bus Bench" },
 
 

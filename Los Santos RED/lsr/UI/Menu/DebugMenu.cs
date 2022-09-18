@@ -6,6 +6,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -408,6 +409,29 @@ public class DebugMenu : Menu
         UIMenu OtherItemsMenu = MenuPool.AddSubMenu(Debug, "Other Menu");
         OtherItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various time items.";
+
+
+
+
+
+
+
+
+        UIMenuItem highlightProp = new UIMenuItem("Highlight Prop", "Get some info about the nearest prop.");
+        highlightProp.Activated += (menu, item) =>
+        {
+            HighlightProp();
+            menu.Visible = false;
+        };
+        OtherItemsMenu.AddItem(highlightProp);
+
+
+
+
+
+
+
+
         UIMenuItem GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
         GoToReleaseSettings.Activated += (menu, item) =>
         {
@@ -517,6 +541,10 @@ public class DebugMenu : Menu
             Game.DisplaySubtitle($"Other Running: {EntryPoint.ModController.RunOther}");
         };
         OtherItemsMenu.AddItem(runOther);
+
+
+
+        //HighlightProp()
 
 
     }
@@ -982,6 +1010,24 @@ public class DebugMenu : Menu
             }
         }
         EntryPoint.WriteToConsole($"ENTITIES =============================== TOTAL: {TotalEntities}", 0);
+    }
+    private void HighlightProp()
+    {
+
+        Entity ClosestEntity = Rage.World.GetClosestEntity(Game.LocalPlayer.Character.GetOffsetPositionFront(2f), 2f, GetEntitiesFlags.ConsiderAllObjects | GetEntitiesFlags.ExcludePlayerPed);
+        if (ClosestEntity.Exists())
+        {
+            Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
+            EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
+            EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+            uint GameTimeStartedDisplaying = Game.GameTime;
+            while (Game.GameTime - GameTimeStartedDisplaying <= 5000)
+            {
+                Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
+                GameFiber.Yield();
+            }
+
+        }
     }
 
 }
