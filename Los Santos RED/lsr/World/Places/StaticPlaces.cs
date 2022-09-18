@@ -85,6 +85,23 @@ public class StaticPlaces
                 LocationsCalculated = 0;
                 GameFiber.Yield();
             }
+
+            if(Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
+            {
+                if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists())
+                {
+                    gl.ActivateBlip(Time, World);
+                }
+            }
+            else
+            {
+                if (!gl.IsActivated && gl.Blip.Exists())
+                {
+                    gl.DeactivateBlip();
+                }
+            }
+            
+
         }
     }
     public void Update()
@@ -116,6 +133,15 @@ public class StaticPlaces
             gl.IsEnabled = v;
         }
     }
-
+    public void AddAllBlips()
+    {
+        foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
+        {
+            if(!basicLocation.IsActivated && basicLocation.IsEnabled)
+            {
+                basicLocation.ActivateBlip(Time, World);
+            }
+        }
+    }
 }
 

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI.Elements;
 using System;
@@ -11,7 +12,7 @@ using System.Xml.Serialization;
 
 public class Hotel : InteractableLocation
 {
-    private LocationCamera StoreCamera;
+    private LocationCamera HotelCamera;
 
     private ILocationInteractable Player;
     private IModItems ModItems;
@@ -33,6 +34,10 @@ public class Hotel : InteractableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
+
+
+    public List<HotelRoom> HotelRooms { get; set; } = new List<HotelRoom>();
+
     public Hotel(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -52,8 +57,8 @@ public class Hotel : InteractableLocation
             CanInteract = false;
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
+                HotelCamera = new LocationCamera(this, Player);
+                HotelCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
@@ -64,7 +69,7 @@ public class Hotel : InteractableLocation
                     GameFiber.Yield();
                 }
                 DisposeInteractionMenu();
-                StoreCamera.Dispose();
+                HotelCamera.Dispose();
                 Player.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "HotelInteract");
@@ -118,6 +123,21 @@ public class Hotel : InteractableLocation
             Player.IsSleeping = true;
             KeepInteractionGoing = true;
             InteractionMenu.Visible = false;
+
+            bool isInRoom = false;
+
+            if(HotelRooms.Any() && Settings.SettingsManager.WorldSettings.HotelsUsesRooms)
+            {
+                
+                HotelRoom hotelRoom = HotelRooms.PickRandom();
+                if(hotelRoom != null)
+                {
+                    isInRoom = true;
+                    HotelCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation);
+                }
+
+            }
+
             Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
@@ -139,6 +159,14 @@ public class Hotel : InteractableLocation
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for staying at {Name}");
                 InteractionMenu.Visible = true;
                 KeepInteractionGoing = false;
+
+
+                if(isInRoom)
+                {
+                    isInRoom = false;
+                    HotelCamera.ReHighlightStoreWithCamera();
+                }
+
             }, "FastForwardWatcher");
         }
         else

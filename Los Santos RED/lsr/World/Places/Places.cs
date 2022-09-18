@@ -74,4 +74,5 @@ public class Places
     {
         StaticPlaces.Update();
     }
+
 }

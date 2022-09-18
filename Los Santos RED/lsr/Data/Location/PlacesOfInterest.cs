@@ -85,7 +85,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             AllLocations.AddRange(PossibleLocations.BeautyShops);
             AllLocations.AddRange(PossibleLocations.Landmarks);
             AllLocations.AddRange(PossibleLocations.Prisons);
-            return AllLocations;
+            AllLocations.AddRange(PossibleLocations.SubwayStations);
+        return AllLocations;
         
     }
     public List<BasicLocation> AllLocations()
@@ -609,7 +610,19 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
 
             new Hotel(new Vector3(-1356.452f, -791.2153f, 20.24218f), 129.4868f, "Hedera", "Climb to new heights","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },//needs zoom out
             new Hotel(new Vector3(-2007.835f, -314.862f, 32.09708f), 46.05545f, "The Jetty", "Stick out","ExpensiveHotelMenu") {OpenTime = 0, CloseTime = 24 },//needs zoome out
-            new Hotel(new Vector3(-823.0718f, -1223.552f, 7.365416f), 54.09635f, "The Viceroy", "Demand a great experience","ViceroyMenu"){BannerImagePath = "viceroy.png",OpenTime = 0, CloseTime = 24, CameraPosition = new Vector3(-847.939f, -1207.791f, 7.15155f), CameraDirection = new Vector3(0.9588153f, -0.1468293f, 0.2431342f), CameraRotation = new Rotator(14.0716f, 0f, -98.70642f) },//needs zoome out
+            new Hotel(new Vector3(-823.0718f, -1223.552f, 7.365416f), 54.09635f, "The Viceroy", "Demand a great experience","ViceroyMenu"){BannerImagePath = "viceroy.png",OpenTime = 0, CloseTime = 24,
+                CameraPosition = new Vector3(-847.939f, -1207.791f, 7.15155f), CameraDirection = new Vector3(0.9588153f, -0.1468293f, 0.2431342f), CameraRotation = new Rotator(14.0716f, 0f, -98.70642f) 
+            
+            ,HotelRooms = new List<HotelRoom>() { 
+                new HotelRoom("Test1", new Vector3(-816.1378f, -1190.457f, 47.3128f), new Vector3(-0.5813852f, -0.7932132f, -0.1811189f), new Rotator(-10.43494f, -5.642855E-06f, 143.7605f)),
+                new HotelRoom("Test1", new Vector3(-808.8917f, -1196.301f, 40.57087f), new Vector3(-0.5952156f, -0.7941399f, -0.1227201f), new Rotator(-7.049112f, -7.097279E-06f, 143.1481f)),
+                new HotelRoom("Test1", new Vector3(-754.9518f, -1220.714f, 31.45628f), new Vector3(0.7947346f, -0.5947848f, -0.1209462f), new Rotator(-6.946714f, 1.720175E-06f, -126.8114f)),
+                new HotelRoom("Test1", new Vector3(-778.7416f, -1187.476f, 25.2662f), new Vector3(0.6681148f, 0.73847f, -0.09102001f), new Rotator(-5.22229f, -2.143331E-07f, -42.13654f)),
+
+            }
+            
+            
+            },//needs zoome out
 
             new Hotel(new Vector3(313.3858f, -225.0208f, 54.22117f), 160.1122f, "Pink Cage", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24 },
             new Hotel(new Vector3(307.3867f, -727.7486f, 29.31678f), 254.8814f, "Alesandro", "","CheapHotelMenu"){OpenTime = 0, CloseTime = 24, FullName = "The Alesandro Hotel" },
@@ -1197,11 +1210,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
             new Landmark(new Vector3(2.69f, -667.01f, 16.13f), 0f,"Union Depository","") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 119042 },
 
-
             new Landmark(new Vector3(-34.58836f, 6287.814f, 31.38976f), 28.21855f,"Clucking Bell Farms","Know the saying about seeing how sausage is made?") {OpenTime = 0,CloseTime = 24, InteriorID = 28162, ScannerFilePath = "01_specific_location\\0x0D8D06A1.wav" },
             new Landmark(new Vector3(718.2269f, -976.7165f, 24.71099f), 181.558f,"Darnell Bros. Garments","We make more than just garments") {IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = 92674 },
             new Landmark(new Vector3(-598.1064f, -1610.67f, 26.01035f), 0f,"Rogers Salvage & Scrap","Taking your scrap since 1924") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24, InteriorID = -103 },
-
 
             new Landmark(new Vector3(562.8467f, 2741.614f, 42.86892f), 184.4624f,"Animal Ark","We have two of everything!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x147855FA.wav" },
             new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","No longer just mail") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
@@ -1213,7 +1224,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","Watch your step") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
             new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","Check out the gift shop!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
 
-
             new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","Come spend money like a rich person!") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
             new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","You're In, For A Good Time") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
             new Landmark(new Vector3(436.0983f, -645.8003f, 27.75121f), 100f,"Dashound Bus Center","Long journeys need short legs") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x09A9666F.wav" },
@@ -1222,16 +1232,18 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(712.96f, 1204.1f, 329.3f), 0f,"Vinewood Sign","Or was it Vinewoodland?") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0C57ACE0.wav" },
             new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.wav" },
             new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.wav" },
-
-            new Landmark(new Vector3(-245.8754f, -335.3599f, 29.97557f), 184.3399f, "Burton Subway Station","") { MapIcon= 777,OpenTime = 0,CloseTime = 24 },
-            new Landmark(new Vector3(-490.9833f, -697.8607f, 33.24188f), 358.6056f, "Little Seoul Subway Station","") { MapIcon= 777,OpenTime = 0,CloseTime = 24 },
-            new Landmark(new Vector3(-1368.768f, -528.9166f, 30.30007f), 125.7357f, "Del Perro Subway Station","") { MapIcon= 777,OpenTime = 0,CloseTime = 24 },
-            new Landmark(new Vector3(-800.5429f, -101.6647f, 37.56856f), 294.5015f, "Portola Drive Subway Station","") { MapIcon= 777,OpenTime = 0,CloseTime = 24 },
-
-            new Landmark(new Vector3(-1040.5f, -2742.292f, 13.92607f), 329.527f, "LSIA Terminal 4 Subway Station","") { MapIcon= 777,OpenTime = 0,CloseTime = 24 },
-            new Landmark(new Vector3(-946.489f, -2329.504f, 6.763008f), 331.0874f, "LSIA Parking Subway Station","") { MapIcon= 777, OpenTime = 0,CloseTime = 24 },
-            //
         };
+
+        List<SubwayStation> SubwayStations = new List<SubwayStation>()
+        {
+            new SubwayStation(new Vector3(-245.8754f, -335.3599f, 29.97557f), 184.3399f, "Burton Subway Station",""),
+            new SubwayStation(new Vector3(-490.9833f, -697.8607f, 33.24188f), 358.6056f, "Little Seoul Subway Station",""),
+            new SubwayStation(new Vector3(-1368.768f, -528.9166f, 30.30007f), 125.7357f, "Del Perro Subway Station",""),
+            new SubwayStation(new Vector3(-800.5429f, -101.6647f, 37.56856f), 294.5015f, "Portola Drive Subway Station",""),
+            new SubwayStation(new Vector3(-1040.5f, -2742.292f, 13.92607f), 329.527f, "LSIA Terminal 4 Subway Station",""),
+            new SubwayStation(new Vector3(-946.489f, -2329.504f, 6.763008f), 331.0874f, "LSIA Parking Subway Station",""),
+        };
+
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {
             new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", "") { IsTemporarilyClosed = true },
@@ -1600,6 +1612,10 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
         PossibleLocations.Prisons.AddRange(Prisons);
+
+        PossibleLocations.SubwayStations.AddRange(SubwayStations);
+
+
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
 
         PossibleLocations OldPossibleLocations = new PossibleLocations();
@@ -1664,6 +1680,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
         OldPossibleLocations.BusStops.AddRange(BusStops);
         OldPossibleLocations.Prisons.AddRange(Prisons);
+        OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
     }

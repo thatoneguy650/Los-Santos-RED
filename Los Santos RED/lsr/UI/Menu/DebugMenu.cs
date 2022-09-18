@@ -138,6 +138,21 @@ public class DebugMenu : Menu
             World.LoadMPMap();
             menu.Visible = false;
         };
+        UIMenuItem AddAllBlips = new UIMenuItem("Add All Blips", "Add all blips to the map");
+        AddAllBlips.Activated += (menu, item) =>
+        {
+            World.Places.StaticPlaces.AddAllBlips();
+            menu.Visible = false;
+        };
+        UIMenuItem RemoveAllBlips = new UIMenuItem("Remove All Blips", "Remove all blips from the map");
+        RemoveAllBlips.Activated += (menu, item) =>
+        {
+            World.RemoveBlips();
+            menu.Visible = false;
+        };
+
+
+
 
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
@@ -147,6 +162,8 @@ public class DebugMenu : Menu
         LocationItemsMenu.AddItem(FreeCamMenu);
         LocationItemsMenu.AddItem(LoadSPMap);
         LocationItemsMenu.AddItem(LoadMPMap);
+        LocationItemsMenu.AddItem(AddAllBlips);
+        LocationItemsMenu.AddItem(RemoveAllBlips);
     }
     private void CreateTeleportMenu()
     {

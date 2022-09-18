@@ -13,6 +13,9 @@ using System.Windows.Forms;
 
 public class UI : IMenuProvideable
 {
+
+    private MarkerManager MarkerManager;
+
     private AboutMenu AboutMenu;
    // private BarDisplay BarDisplay;
     private BigMessageThread BigMessage;
@@ -124,6 +127,7 @@ public class UI : IMenuProvideable
        // BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
         TimerBarController = new TimerBarController(displayablePlayer, TimerBarPool, Settings);
+        MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
     }
     public void Setup()
     {
@@ -137,9 +141,10 @@ public class UI : IMenuProvideable
         AboutMenu.Setup();
         ActionPopUpMenu.Setup();
         TimerBarController.Setup();
+        MarkerManager.Setup();
 
 
-        
+
     }
     public void SetupDebugMenu()
     {
@@ -173,6 +178,8 @@ public class UI : IMenuProvideable
         }
         DisplayTopMenu();
         MenuUpdate();
+
+        MarkerManager.Update();
     }
     public void Tick2()
     {
@@ -269,6 +276,7 @@ public class UI : IMenuProvideable
         IsDisposed = true;
         ActionPopUpMenu.Dispose();
         TimerBarController.Dispose();
+        MarkerManager.Dispose();
         NativeFunction.CallByName<bool>("DISPLAY_RADAR", true);
         NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
     }

@@ -64,6 +64,8 @@ public class VehicleVariation
     public List<VehicleMod> VehicleMods { get; set; } = new List<VehicleMod>();
 
 
+    public int DirtLevel { get; set; } = 0;
+
     public void Apply(VehicleExt vehicleExt)
     {
 
@@ -156,6 +158,19 @@ public class VehicleVariation
             {
                 NativeFunction.Natives.SET_VEHICLE_MOD_COLOR_2(vehicleExt.Vehicle, Mod2PaintType, Mod2Color);
             }
+
+            if(DirtLevel < 0)
+            {
+                DirtLevel = 0;
+            }
+            if (DirtLevel > 15)
+            {
+                DirtLevel = 15;
+            }
+            NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, DirtLevel);
+
+
+
         }
     }
 

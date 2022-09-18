@@ -253,10 +253,18 @@ public class LESpawnTask : SpawnTask
                         }
                     }
                     CreatedVehicles.Add(CreatedVehicle);
-                    if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
+                    if (SpawnedVehicle.Exists())
                     {
-                        NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
+                        if (VehicleType.RequiredPrimaryColorID != -1)
+                        {
+                            NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
+                        }
+                        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
                     }
+
+
+
+
                     //EntryPoint.WriteToConsole($"LESpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;

@@ -72,7 +72,7 @@ public abstract class HumanNeed
         }
     }
 
-    public virtual void Set(float value)
+    public virtual void Set(float value, bool updateRecent)
     {
         if (value < MinValue)
         {
@@ -94,16 +94,20 @@ public abstract class HumanNeed
         {
             OnMaximum();
         }
+        if (updateRecent)
+        {
+            GameTimeLastChangedNeed = Game.GameTime;
+        }
     }
     public void SetRandom(bool allowLow)
     {
         if(allowLow)
         {
-            Set(RandomItems.GetRandomNumber(MinValue, MaxValue));
+            Set(RandomItems.GetRandomNumber(MinValue, MaxValue), true);
         }
         else
         {
-            Set(RandomItems.GetRandomNumber(MaxValue * 0.25f, MaxValue));
+            Set(RandomItems.GetRandomNumber(MaxValue * 0.25f, MaxValue), true);
         }
         
     }

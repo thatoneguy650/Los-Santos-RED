@@ -1052,8 +1052,6 @@ public class PedSwap : IPedSwap
     }
 
 
-
-
     public void NewPlayer(string modelName, bool isMale)//gotta go
     {
         Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true);

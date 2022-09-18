@@ -74,6 +74,12 @@ public class ThirstNeed : HumanNeed
         RealTimeScalar = 1.0f;
         TimeSpan TimeDifference = Time.CurrentDateTime - TimeLastUpdatedValue;
         RealTimeScalar = (float)TimeDifference.TotalSeconds;
+
+
+        if(RealTimeScalar >= 10f)
+        {
+            EntryPoint.WriteToConsole($"THIRST NEED EXCESSIVE REAL TIME SCALAR AMOUNT {RealTimeScalar} CurrentValue {CurrentValue}");
+        }
         TimeLastUpdatedValue = Time.CurrentDateTime;
     }
 }

@@ -319,9 +319,9 @@ public class GameSaves : IGameSaves
 
 
         };
-        ClaudeGameSave.HungerValue = 75.0f;
-        ClaudeGameSave.ThirstValue = 75.0f;
-        ClaudeGameSave.SleepValue = 75.0f;
+        ClaudeGameSave.HungerValue = 85.0f;
+        ClaudeGameSave.ThirstValue = 85.0f;
+        ClaudeGameSave.SleepValue = 85.0f;
         ClaudeGameSave.SpeechSkill = 0;
 
         GameSaveList.Add(ClaudeGameSave);

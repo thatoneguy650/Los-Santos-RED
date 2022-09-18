@@ -166,6 +166,7 @@ namespace LosSantosRED.lsr.Data
                 Game.FadeScreenOut(1500, true);
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+
                 WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
                 foreach (StoredWeapon MyOldGuns in WeaponInventory)
                 {
@@ -295,12 +296,18 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
 
+                EntryPoint.WriteToConsole($"PRE LOAD {player.HumanState.DisplayString()} ThirstValue {ThirstValue} HungerValue {HungerValue} SleepValue {SleepValue}");
+
+
                 player.HumanState.Reset();
 
-                player.HumanState.Thirst.Set(ThirstValue);
-                player.HumanState.Hunger.Set(HungerValue);
-                player.HumanState.Sleep.Set(SleepValue);
+                player.HumanState.Thirst.Set(ThirstValue, true);
+                player.HumanState.Hunger.Set(HungerValue, true);
+                player.HumanState.Sleep.Set(SleepValue, true);
                 player.IsCop = IsCop;
+
+
+                EntryPoint.WriteToConsole($"POST LOAD {player.HumanState.DisplayString()}");
 
 
                 Game.FadeScreenIn(1500, true);

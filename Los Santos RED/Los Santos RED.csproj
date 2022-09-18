@@ -176,12 +176,14 @@
     <Compile Include="lsr\Inventory\PropAttachment.cs" />
     <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
     <Compile Include="lsr\Locations\Places\Basic\Prison.cs" />
+    <Compile Include="lsr\Locations\Places\Basic\Subway Station.cs" />
     <Compile Include="lsr\Locations\Places\ILocationAgencyAssignable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationRespawnable.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Hotel\HotelRoom.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
     <Compile Include="lsr\Locations\SpawnPlace.cs" />
@@ -486,6 +488,7 @@
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
+    <Compile Include="lsr\UI\Other\MarkerManager.cs" />
     <Compile Include="lsr\UI\Other\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />

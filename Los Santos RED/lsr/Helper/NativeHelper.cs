@@ -484,6 +484,11 @@ namespace LosSantosRED.lsr.Helper
                         //}
                     }
                 }
+
+
+                vehicleVariation.DirtLevel = NativeFunction.Natives.GET_VEHICLE_DIRT_LEVEL<int>(vehicle);
+
+
                 return vehicleVariation;
             }
             catch (Exception e)

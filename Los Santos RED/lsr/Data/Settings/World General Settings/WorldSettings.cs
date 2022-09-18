@@ -35,6 +35,14 @@ public class WorldSettings : ISettingsDefaultable
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier { get; set; }
     [Description("Civilian ped density multiplier at 6 stars.")]
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier { get; set; }
+
+
+
+
+    public bool ShowAllBlipsOnMap { get; set; }
+    public bool ShowMarkersOnLocationEntrances { get; set; }
+    public bool HotelsUsesRooms { get; set; }
+
     public WorldSettings()
     {
         SetDefault();
@@ -58,7 +66,9 @@ public class WorldSettings : ISettingsDefaultable
         RandomVehiclePlatesPercent = 15f;
         RandomVehicleVanityPlatesPercent = 10f;
 #endif
-
+        ShowAllBlipsOnMap = false;
+        ShowMarkersOnLocationEntrances = false;
+        HotelsUsesRooms = false;
     }
 
 }

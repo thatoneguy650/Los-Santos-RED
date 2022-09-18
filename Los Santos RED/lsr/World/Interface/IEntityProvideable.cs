@@ -21,5 +21,6 @@ namespace LosSantosRED.lsr.Interface
         void LoadSPMap();
         void ClearSpawned(bool includeCivilians);
         void AddBlip(Blip myBlip);
+        void RemoveBlips();
     }
 }

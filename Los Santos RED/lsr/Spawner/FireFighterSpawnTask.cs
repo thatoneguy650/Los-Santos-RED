@@ -223,6 +223,7 @@ public class FireFighterSpawnTask : SpawnTask
                             }
                         }
                     }
+                    NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
                     EntryPoint.WriteToConsole($"FireFighterSpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;

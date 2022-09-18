@@ -114,50 +114,6 @@ public class LocationCamera
         }
         Game.LocalPlayer.Character.Tasks.Clear();
     }
-    public void HighlightEntity_Old(Entity toHighlight)
-    {
-        if (toHighlight.Exists() && 1==0)//will freeze on the second camera movement
-        {
-            if (!CameraTo.Exists())
-            {
-                CameraTo = new Camera(false);
-            }
-            Vector3 ToLookAtPos = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
-            EntityCamPosition = toHighlight.GetOffsetPosition(new Vector3(7f, 7f, 2f));
-            _direction = (ToLookAtPos - EntityCamPosition).ToNormalized();
-            CameraTo.FOV = EntityCamFOV;
-            CameraTo.Position = EntityCamPosition;
-            CameraTo.Rotation = Store.CameraRotation;
-            CameraTo.Direction = _direction;
-            //CameraTo.Active = true;
-            NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
-            GameFiber.Sleep(1500);
-            StoreCam = CameraTo;
-            //InterpolationCamera.Active = false;
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //StoreCam.Active = true;
-            //Camera CamTo = new Camera(false);
-            //CamTo.Position = toHighlight.GetOffsetPosition(new Vector3(0f, 5f, 5f));
-            //Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 2f);
-            //_direction = (ToLookAt - CamTo.Position).ToNormalized();
-            //CamTo.Direction = _direction;
-            //CamTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-            //NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CamTo, StoreCam, 1500, true, true);
-            //GameFiber.Sleep(1500);
-        }
-    }
     public void HighlightEntity(Entity toHighlight)
     {
         if (toHighlight.Exists())//will freeze on the second camera movement
@@ -193,6 +149,30 @@ public class LocationCamera
             NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
             GameFiber.Sleep(1500);
         }
+    }
+    public void MoveToPosition(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation)
+    {
+        if (!StoreCam.Exists())
+        {
+            StoreCam = new Camera(false);
+        }
+        StoreCam.Position = Camera.RenderingCamera.Position;
+        StoreCam.FOV = Camera.RenderingCamera.FOV;
+        StoreCam.Rotation = Camera.RenderingCamera.Rotation;
+        StoreCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+
+        if (!CameraTo.Exists())
+        {
+            CameraTo = new Camera(false);
+        }
+        CameraTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+        CameraTo.Position = desiredPosition;
+        CameraTo.Rotation = desiredRotation;
+        CameraTo.Direction = desiredDirection;
+        CameraTo.Active = true;
+
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(CameraTo, StoreCam, 1500, true, true);
+        GameFiber.Sleep(1500);
     }
     private void DisableControl()
     {
@@ -362,7 +342,6 @@ public class LocationCamera
         NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(StoreCam.Position.X, StoreCam.Position.Y, StoreCam.Position.Z, 0f, 0f, 0f);
         GameFiber.Sleep(1500);
     }
-
     public void ReHighlightStoreWithCamera()
     {
         if (!StoreCam.Exists())
@@ -416,12 +395,10 @@ public class LocationCamera
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
         GameFiber.Sleep(1500);
     }
-
     private void RemovePedsAroundEntrance()
     {
         
     }
-
     private void HighlightLocationWithCamera()
     {
         if (!StoreCam.Exists())
@@ -443,8 +420,6 @@ public class LocationCamera
             Game.FadeScreenIn(1500, true);
         }
     }
-
-
     private void ReturnToGameplay()
     {
         if (!CameraTo.Exists())

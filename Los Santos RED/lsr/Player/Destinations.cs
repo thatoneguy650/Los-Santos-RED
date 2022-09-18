@@ -27,22 +27,22 @@ public class Destinations
     }
     public void Update()
     {
-        if (CurrentGPSBlip.Exists())
-        {
-            if (CurrentGPSBlip.DistanceTo2D(Player.Position) <= 30f)
-            {
-                NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-                CurrentGPSBlip.Delete();
-            }
-            else
-            {
-                if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 10000)
-                {
-                    NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, true);
-                    GameTimeLastCheckedRouteBlip = Game.GameTime;
-                }
-            }
-        }
+        //if (CurrentGPSBlip.Exists())
+        //{
+        //    if (CurrentGPSBlip.DistanceTo2D(Player.Position) <= 30f)
+        //    {
+        //        NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+        //        CurrentGPSBlip.Delete();
+        //    }
+        //    else
+        //    {
+        //        if (GameTimeLastCheckedRouteBlip == 0 || Game.GameTime - GameTimeLastCheckedRouteBlip >= 10000)
+        //        {
+        //            NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, true);
+        //            GameTimeLastCheckedRouteBlip = Game.GameTime;
+        //        }
+        //    }
+        //}
     }
     public void Dispose()
     {
@@ -54,40 +54,57 @@ public class Destinations
     }
     public void AddGPSRoute(string Name, Vector3 position)
     {
-        if (CurrentGPSBlip.Exists())
+
+
+       if(NativeFunction.Natives.IS_WAYPOINT_ACTIVE<bool>())
         {
-            NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-            CurrentGPSBlip.Delete();
+            NativeFunction.Natives.xD8E694757BCEA8E9();//_DELETE_WAYPOINT
         }
-        if (position != Vector3.Zero)
-        {
-            Blip MyLocationBlip = new Blip(position)
-            {
-                Name = Name
-            };
-            if (MyLocationBlip.Exists())
-            {
-                MyLocationBlip.Color = Color.LightYellow;
-                NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE(MyLocationBlip, false);
-                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
-                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
-                NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
-                CurrentGPSBlip = MyLocationBlip;
-                World.AddBlip(MyLocationBlip);
-                Game.DisplaySubtitle($"Adding GPS To {Name}");
-                GameTimeLastCheckedRouteBlip = Game.GameTime;
-            }
-        }
+        NativeFunction.Natives.SET_NEW_WAYPOINT(position.X, position.Y);
+        Game.DisplaySubtitle($"Adding Waypoint To {Name}");
+
+
+        //if (CurrentGPSBlip.Exists())
+        //{
+        //    NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+        //    CurrentGPSBlip.Delete();
+        //}
+        //if (position != Vector3.Zero)
+        //{
+        //    Blip MyLocationBlip = new Blip(position)
+        //    {
+        //        Name = Name
+        //    };
+        //    if (MyLocationBlip.Exists())
+        //    {
+        //        MyLocationBlip.Color = Color.LightYellow;
+        //        NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE(MyLocationBlip, false);
+        //        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+        //        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+        //        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
+        //        NativeFunction.Natives.SET_BLIP_ROUTE(MyLocationBlip, true);
+        //        CurrentGPSBlip = MyLocationBlip;
+        //        World.AddBlip(MyLocationBlip);
+        //        Game.DisplaySubtitle($"Adding GPS To {Name}");
+        //        GameTimeLastCheckedRouteBlip = Game.GameTime;
+        //    }
+        //}
     }
     public void RemoveGPSRoute()
     {
-        if (CurrentGPSBlip.Exists())
+        if (NativeFunction.Natives.IS_WAYPOINT_ACTIVE<bool>())
         {
-            NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
-            CurrentGPSBlip.Delete();
-            Game.DisplaySubtitle("GPS Route Removed");
+            NativeFunction.Natives.xD8E694757BCEA8E9();//_DELETE_WAYPOINT
+            Game.DisplaySubtitle("Waypoint Removed");
         }
+
+
+        //if (CurrentGPSBlip.Exists())
+        //{
+        //    NativeFunction.Natives.SET_BLIP_ROUTE(CurrentGPSBlip, false);
+        //    CurrentGPSBlip.Delete();
+        //    Game.DisplaySubtitle("GPS Route Removed");
+        //}
     }
 
 }

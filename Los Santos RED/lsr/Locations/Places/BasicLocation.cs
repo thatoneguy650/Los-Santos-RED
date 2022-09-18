@@ -228,7 +228,7 @@ public class BasicLocation
         }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-            createdBlip = AddIconToMap(time);
+            createdBlip = AddIconToMap(time, true);
             GameFiber.Yield();
         }
         SetNearby();
@@ -238,6 +238,21 @@ public class BasicLocation
             World.Places.ActiveLocations.Add(this);
         }
         world.AddBlip(Blip);
+    }
+    public void ActivateBlip(ITimeReportable time, IEntityProvideable world)
+    {
+        if (!createdBlip.Exists())
+        {
+            createdBlip = AddIconToMap(time, true);
+            world.AddBlip(Blip);
+        }
+    }
+    public void DeactivateBlip()
+    {
+        if (createdBlip.Exists())
+        {
+            createdBlip.Delete();
+        }
     }
     public void Update(ITimeReportable time)
     {
@@ -283,7 +298,7 @@ public class BasicLocation
             World.Places.ActiveLocations.Remove(this);
         }
     }
-    private Blip AddIconToMap(ITimeReportable time)
+    private Blip AddIconToMap(ITimeReportable time, bool isShortRange)
     {
         bool iscurrentlyOpen = IsOpen(time.CurrentHour);
 
@@ -303,8 +318,10 @@ public class BasicLocation
             {
                 MyLocationBlip.Alpha = 0.25f;
             }
-            
-            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            if (isShortRange)
+            {
+                NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            }
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
             NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
@@ -332,7 +349,16 @@ public class BasicLocation
             {
                 MyLocationBlip.Color = MapIconColor;
             }
+
+
+
+
             MyLocationBlip.Scale = MapIconScale;
+
+
+
+
+
             if (iscurrentlyOpen)
             {
                 MyLocationBlip.Alpha = MapIconAlpha;
@@ -341,7 +367,10 @@ public class BasicLocation
             {
                 MyLocationBlip.Alpha = 0.25f;
             }
-            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            if (isShortRange)
+            {
+                NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
+            }
             NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
             NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
             NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
