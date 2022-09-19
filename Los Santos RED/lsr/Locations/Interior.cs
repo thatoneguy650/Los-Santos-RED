@@ -53,6 +53,8 @@ public class Interior
     public bool IsMPOnly { get; set; } = false;
     public bool IsSPOnly { get; set; } = false;
 
+    public bool IsTeleportEntry { get; set; } = false;
+
     public Vector3 DisabledInteriorCoords = Vector3.Zero;
     public List<InteriorDoor> Doors { get; set; } = new List<InteriorDoor>();
 
@@ -60,6 +62,9 @@ public class Interior
     public List<string> RemoveIPLs { get; set; } = new List<string>();
     public List<string> InteriorSets { get; set; } = new List<string>();
     public bool IsActive { get; set; } = false;
+    public Vector3 InteriorEgressPosition { get; set; }
+    public float InteriorEgressHeading { get; set; }
+
     public void Load()
     {
         GameFiber.StartNew(delegate

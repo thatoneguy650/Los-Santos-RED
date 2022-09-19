@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class ActivitySettings : ISettingsDefaultable
 {
+
     [Description("Will teleport to the sitting entry point instead of walking. Useful when there are objects in the way like a large table you dont want to hit.")]
     public bool TeleportWhenSitting { get; set; }
     [Description("Allow the player to start converstaions with random peds.")]
@@ -29,6 +30,10 @@ public class ActivitySettings : ISettingsDefaultable
     public bool CrouchingAdjustsMovementSpeed { get; set; }
     [Description("Amount of override player movement when crouching.")]
     public float CrouchMovementSpeedOverride { get; set; }
+
+
+
+    public bool UseAltCameraWhenSitting { get; set; }
 
     public ActivitySettings()
     {
@@ -53,5 +58,8 @@ public class ActivitySettings : ISettingsDefaultable
 #if DEBUG
         AllowTakingOtherPedsHostage = true;
 #endif
+
+
+        UseAltCameraWhenSitting = true;
     }
 }

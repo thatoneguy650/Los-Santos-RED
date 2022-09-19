@@ -32,15 +32,18 @@ namespace LosSantosRED.lsr.Player
         private float SeatEntryHeading;
         private ISeats Seats;
         private float SeatOffset;
+        private CameraControl CameraControl;
+        private ICameraControllable CameraControllable;
 
         private bool UseMaleAnimations => Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale;
-        public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp, bool enterForward, ISeats seats) : base()
+        public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp, bool enterForward, ISeats seats, ICameraControllable cameraControllable) : base()
         {
             Player = player;
             Settings = settings;
             FindSittingProp = findSittingProp;
             EnterForward = enterForward;
             Seats = seats;
+            CameraControllable = cameraControllable;
         }
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
@@ -93,6 +96,19 @@ namespace LosSantosRED.lsr.Player
                 SeatEntryHeading = Player.Character.Heading;
             }
             //GetPossibleBlockingProp();
+
+
+
+            if (Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting && !Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
+            {
+                CameraControl = new CameraControl(CameraControllable);
+                CameraControl.Setup();
+                CameraControl.HighlightEntity(Player.Character, false);
+            }
+
+
+
+
             SitDown();
             if (IsActivelySitting)
             {
@@ -136,11 +152,25 @@ namespace LosSantosRED.lsr.Player
                 Player.Character.Position = StoredPlayerPosition;
                 Player.Character.Heading = StoredPlayerHeading;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+                //if(Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting)
+                //{
+                //    CameraControl.Dispose();
+                //}
+
+
                 Game.FadeScreenIn(500, true);
                 Player.IsSitting = false;         
             }
             else
             {
+                if (Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting)
+                {
+                    CameraControl.ReturnToGameplay(false);
+                }
+
+
+
                 if (IsActivelySitting)
                 {
                     PlayingDict = Data.AnimExitDictionary;
@@ -167,6 +197,10 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+
+
+
                 Player.IsSitting = false;
                 GameFiber.Sleep(5000);
                 if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)

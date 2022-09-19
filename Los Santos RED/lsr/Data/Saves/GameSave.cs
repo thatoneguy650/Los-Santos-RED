@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Data
         public DateTime CurrentDateTime { get; set; }
         public DriversLicense DriversLicense { get; set; }
         public CCWLicense CCWLicense { get; set; }
+        public PilotsLicense PilotsLicense { get; set; }
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
         public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
         public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
@@ -115,12 +116,12 @@ namespace LosSantosRED.lsr.Data
             Contacts = new List<SavedContact>();
             foreach (PhoneContact ifc in player.CellPhone.ContactList)
             {
-                Contacts.Add(new SavedContact(ifc.Name, ifc.Index, ""));
+                Contacts.Add(new SavedContact(ifc.Name, ifc.Index, ifc.IconName));
             }
             TextMessages = new List<SavedTextMessage>();
             foreach (PhoneText ifc in player.CellPhone.TextList)
             {
-                TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, ifc.Index, ""));
+                TextMessages.Add(new SavedTextMessage(ifc.ContactName, ifc.Message, ifc.HourSent, ifc.MinuteSent, ifc.IsRead, ifc.Index, ifc.IconName));
             }
             CurrentDateTime = time.CurrentDateTime;
             UndergroundGunsMoneySpent = player.RelationshipManager.GunDealerRelationship.TotalMoneySpentAtShops;
@@ -142,6 +143,13 @@ namespace LosSantosRED.lsr.Data
             {
                 CCWLicense = new CCWLicense() { ExpirationDate = player.Licenses.CCWLicense.ExpirationDate, IssueDate = player.Licenses.CCWLicense.IssueDate };
             }
+            if (player.Licenses.HasPilotsLicense)
+            {
+                PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
+            }
+
+
+
             SavedResidences.Clear();
             foreach (Residence res in player.Properties.Residences)//placesOfInterest.PossibleLocations.Residences)
             {
@@ -246,6 +254,10 @@ namespace LosSantosRED.lsr.Data
                     {
                         player.CellPhone.AddGunDealerContact(false);
                     }
+                    else if (ifc.Name == EntryPoint.OfficerFriendlyContactName)
+                    {
+                        player.CellPhone.AddCopContact(false);
+                    }
                     else if (gang != null)
                     {
                         player.CellPhone.AddContact(gang, false);
@@ -278,6 +290,10 @@ namespace LosSantosRED.lsr.Data
                 if (CCWLicense != null)
                 {
                     player.Licenses.CCWLicense = new CCWLicense() { ExpirationDate = CCWLicense.ExpirationDate, IssueDate = CCWLicense.IssueDate };
+                }
+                if (PilotsLicense != null)
+                {
+                    player.Licenses.PilotsLicense = new PilotsLicense() { ExpirationDate = PilotsLicense.ExpirationDate, IssueDate = PilotsLicense.IssueDate, IsFixedWingEndorsed = PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = PilotsLicense.IsLighterThanAirEndorsed };
                 }
                 foreach (SavedResidence res in SavedResidences)
                 {

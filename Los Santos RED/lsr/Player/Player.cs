@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
@@ -542,7 +542,7 @@ namespace Mod
             ButtonPrompts.Update();
             MeleeManager.Update();
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses)
         {
             IsDead = false;
             IsBusted = false;
@@ -620,6 +620,10 @@ namespace Mod
             if(resetGroup)
             {
                 GroupManager.Reset();
+            }
+            if(resetLicenses)
+            {
+                Licenses.Reset();
             }
         }
         public void Dispose()
@@ -1938,7 +1942,7 @@ namespace Mod
                 {
                     LowerBodyActivity.Cancel();
                 }
-                LowerBodyActivity = new SittingActivity(this, Settings, findSittingProp, enterForward, Seats);
+                LowerBodyActivity = new SittingActivity(this, Settings, findSittingProp, enterForward, Seats, this);
                 LowerBodyActivity.Start();
             }
         }
@@ -2562,6 +2566,17 @@ namespace Mod
                         if (IsInVehicle && !existingVehicleExt.HasBeenEnteredByPlayer)
                         {
                             existingVehicleExt.SetAsEntered();
+                        }
+                        if(existingVehicleExt.IsAircraft)
+                        {
+                            if(Licenses.HasPilotsLicense && Licenses.PilotsLicense.CanFlyType(existingVehicleExt.VehicleClass))
+                            {
+                                existingVehicleExt.IsDisabled = false;
+                            }
+                            else
+                            {
+                                existingVehicleExt.IsDisabled = true;
+                            }
                         }
                         existingVehicleExt.Engine.Synchronize();
                         existingVehicleExt.Update(this);

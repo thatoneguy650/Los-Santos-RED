@@ -321,6 +321,36 @@ public class DebugMenu : Menu
         {
             Settings.SettingsManager.VehicleSettings.AutoTuneRadioStation = AutoSetRadioStation.SelectedItem.InternalName;
         };
+
+
+
+        UIMenuItem GetDriversLicense = new UIMenuItem("Get Drivers License", "Get a drivers license");
+        GetDriversLicense.Activated += (menu, item) =>
+        {
+            Player.Licenses.DriversLicense = new DriversLicense();
+            Player.Licenses.DriversLicense.IssueLicense(Time, 12);
+            menu.Visible = false;
+        };
+        UIMenuItem GetCCWLicense = new UIMenuItem("Get CCW License", "Get a ccw license");
+        GetCCWLicense.Activated += (menu, item) =>
+        {
+            Player.Licenses.CCWLicense = new CCWLicense();
+            Player.Licenses.CCWLicense.IssueLicense(Time, 12);
+            menu.Visible = false;
+        };
+
+        UIMenuItem GetPilotsLicense = new UIMenuItem("Get Pilots License", "Get a pilots license");
+        GetPilotsLicense.Activated += (menu, item) =>
+        {
+            Player.Licenses.PilotsLicense = new PilotsLicense();
+            Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+            Player.Licenses.PilotsLicense.IsFixedWingEndorsed = true;
+            Player.Licenses.PilotsLicense.IsRotaryEndorsed = true;
+            Player.Licenses.PilotsLicense.IsLighterThanAirEndorsed = true;
+            menu.Visible = false;
+        };
+
+
         PlayerStateItemsMenu.AddItem(KillPlayer);
         PlayerStateItemsMenu.AddItem(GiveMoney);
         PlayerStateItemsMenu.AddItem(SetMoney);
@@ -334,6 +364,12 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(SetHealth);
         PlayerStateItemsMenu.AddItem(ResetNeeds);
         PlayerStateItemsMenu.AddItem(AutoSetRadioStation);
+
+
+        PlayerStateItemsMenu.AddItem(GetDriversLicense);
+        PlayerStateItemsMenu.AddItem(GetCCWLicense);
+        PlayerStateItemsMenu.AddItem(GetPilotsLicense);
+
     }
 
     public void Setup()
@@ -481,7 +517,7 @@ public class DebugMenu : Menu
         UnSetArrested.Activated += (menu, item) =>
         {
             Game.TimeScale = 1.0f;
-            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false);
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false);
             Player.Surrendering.UnSetArrestedAnimation();
             menu.Visible = false;
         };
@@ -732,8 +768,17 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
+        UIMenuItem PlayScanner = new UIMenuItem("Play Scanner", "Play some random scanner audio");
+        PlayScanner.Activated += (menu, item) =>
+        {
+            Player.Scanner.DebugPlayDispatch();
+            menu.Visible = false;
+        };
 
-        
+
+
+
+
 
         DispatcherMenu.AddItem(SpawnAgencyFoot);
         DispatcherMenu.AddItem(SpawnAgencyVehicle);
@@ -741,6 +786,7 @@ public class DebugMenu : Menu
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnRockblock);
         DispatcherMenu.AddItem(DespawnRockblock);
+        DispatcherMenu.AddItem(PlayScanner);
     }
     private void Frecam()
     {

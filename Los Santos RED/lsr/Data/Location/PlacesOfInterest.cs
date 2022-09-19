@@ -71,7 +71,8 @@ public class PlacesOfInterest : IPlacesOfInterest
             AllLocations.AddRange(PossibleLocations.DriveThrus);
             AllLocations.AddRange(PossibleLocations.ClothingShops);
             AllLocations.AddRange(PossibleLocations.BusStops);
-            return AllLocations;
+            AllLocations.AddRange(PossibleLocations.Morgues);
+        return AllLocations;
         
     }
     public List<BasicLocation> BasicLocations()
@@ -1222,7 +1223,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(-247.62f, -1526.22f, 33.03f), 53f,"BJ Smith Rec Center","To win you have to annihilate everything in your path") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x05AB836E.wav" },
 
             new Landmark(new Vector3(3425.02f, 5174.67f, 8.13f), 0f,"El Gordo Lighthouse","Watch your step") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0761393B.wav" },
-            new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","Check out the gift shop!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
+            //new Landmark(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office","Check out the gift shop!") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
 
             new Landmark(new Vector3(-1234.788f, -768.6721f, 17.95432f), 0f,"Prosperity Street Promenade","Come spend money like a rich person!") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x077E335F.wav" },
             new Landmark(new Vector3(847.05f, -1992.77f, 30.11f), 0f,"Pisswasser Factory","You're In, For A Good Time") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x08AA4C64.wav" },
@@ -1581,6 +1582,10 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 new BusStop(new Vector3(-1421.381f, -87.43785f, 51.512f), 298.6868f, "Richman Bus Stop 1","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
                 new BusStop(new Vector3(-645.8302f, -139.4489f, 36.86523f), 31.0542f, "Rockford Hills Bus Stop 2","") { OpenTime = 0, CloseTime = 24,IsEnabled = false },
         };
+        List<Morgue> Morgues = new List<Morgue>()
+        {
+            new Morgue(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office", "","") {OpenTime = 0,CloseTime = 24, InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
+        };
 
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
@@ -1614,7 +1619,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         PossibleLocations.Prisons.AddRange(Prisons);
 
         PossibleLocations.SubwayStations.AddRange(SubwayStations);
-
+        PossibleLocations.Morgues.AddRange(Morgues);
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
 
@@ -1681,6 +1686,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.BusStops.AddRange(BusStops);
         OldPossibleLocations.Prisons.AddRange(Prisons);
         OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
+        OldPossibleLocations.Morgues.AddRange(Morgues);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
     }

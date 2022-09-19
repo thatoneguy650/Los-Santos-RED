@@ -97,6 +97,15 @@ public class Engine
                 return;
             }
 
+            if(VehicleToMonitor.IsDisabled && Settings.SettingsManager.VehicleSettings.DisableAircraftWithoutLicense)
+            {
+                VehicleToMonitor.Vehicle.MustBeHotwired = false;
+                VehicleToMonitor.Vehicle.IsDriveable = false;
+                VehicleToMonitor.Vehicle.IsEngineOn = false;
+                IsRunning = false;
+                return;
+            }
+
 
 
             if (VehicleToMonitor.Vehicle.IsEngineStarting)

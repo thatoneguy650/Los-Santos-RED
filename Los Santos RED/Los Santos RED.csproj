@@ -76,6 +76,7 @@
     <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
       <Private>False</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
@@ -100,6 +101,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
@@ -184,8 +186,10 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationRespawnable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hotel\HotelRoom.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Morgue.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
+    <Compile Include="lsr\Locations\Places\Other\LocationTeleporter.cs" />
     <Compile Include="lsr\Locations\SpawnPlace.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />
@@ -276,6 +280,8 @@
     <Compile Include="lsr\Player\Destinations.cs" />
     <Compile Include="lsr\Player\Gang\GangKickUp.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupManager.cs" />
+    <Compile Include="lsr\Player\Interface\ICameraControllable.cs" />
+    <Compile Include="lsr\Player\Licenses\PilotsLicense.cs" />
     <Compile Include="lsr\Player\Relationships\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\HealthManager.cs" />
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />

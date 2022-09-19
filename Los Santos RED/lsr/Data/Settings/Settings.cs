@@ -108,6 +108,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.WeatherReportingSettings.ReportWeather = false;
         SettingsManager.WeatherReportingSettings.ShowWeatherNotifications = false;
 
+        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
+
     }
     public void SetHard()
     {
@@ -236,6 +238,9 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted = 200f;
         SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen = 500f;
         SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedUnseen = 300f;
+
+
+        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
 
 
     }

@@ -30,6 +30,11 @@ public class ScannerSettings : ISettingsDefaultable
 
     [Description("Number of units to include attention audio for during a citizen reported crime. Requires Call Signs.")]
     public int NumberOfUnitsToAnnounce { get; set; }
+
+
+    [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
+    public bool ApplyFilter { get; set; }
+
     public ScannerSettings()
     {
         SetDefault();
@@ -38,8 +43,8 @@ public class ScannerSettings : ISettingsDefaultable
     {
         IsEnabled = true;
         EnableAudio = true;
-        SetVolume = false;
-        AudioVolume = 5;
+        SetVolume = true;
+        AudioVolume = 7;
         EnableSubtitles = false;
         EnableNotifications = true;
         DelayMinTime = 1500;
@@ -47,6 +52,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
+        ApplyFilter = true;
     }
 
 }

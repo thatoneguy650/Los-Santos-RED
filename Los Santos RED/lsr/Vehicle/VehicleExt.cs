@@ -21,6 +21,9 @@ namespace LSR.Vehicles
         private ISettingsProvideable Settings;
         private int Health = 1000;      
         private bool IsOnFire;
+
+
+        public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
         public bool HasShowHotwireLockPrompt { get; set; } = false;
         public bool IsPolice { get; set; } = false;
@@ -28,6 +31,10 @@ namespace LSR.Vehicles
         public bool IsFire { get; set; } = false;
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
+
+
+        public bool IsDisabled { get; set; } = false;
+
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -119,6 +126,17 @@ namespace LSR.Vehicles
                     || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle 
                     || vehicleClass == VehicleClass.Emergency || vehicleClass == VehicleClass.Industrial || vehicleClass == VehicleClass.Utility || vehicleClass == VehicleClass.Boat || vehicleClass == VehicleClass.Helicopter 
                     || vehicleClass == VehicleClass.Plane || vehicleClass == VehicleClass.Service || vehicleClass == VehicleClass.Military || vehicleClass == VehicleClass.Commercial)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public bool IsAircraft
+        {
+            get
+            {
+                if (vehicleClass == VehicleClass.Helicopter || vehicleClass == VehicleClass.Plane)
                 {
                     return true;
                 }

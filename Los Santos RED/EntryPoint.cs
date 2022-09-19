@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Windows.Forms;
 
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk")]
@@ -33,7 +34,6 @@ public static class EntryPoint
     public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
     public static string UndergroundGunsContactName => "Underground Guns";//these have gotta go, but where?
     public static string EmergencyServicesContactName => "911 - Emergency Services";//these have gotta go, but where?
-
     public static void Main()
     {
         #if DEBUG
@@ -43,10 +43,10 @@ public static class EntryPoint
         {
             GameFiber.Yield();
         }
+
         Startup();
         Loop();
     }
-
     private static void Startup()
     {
         GetVersionInfo();

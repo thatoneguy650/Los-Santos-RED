@@ -288,9 +288,13 @@ public class CellPhone
                         {
                             AddContact(relatedGang, true);
                         }
+                        else if (sc.ContactName == EntryPoint.UndergroundGunsContactName)
+                        {
+                            AddGunDealerContact(true);
+                        }
                         else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
                         {
-                            AddCopContact(sc.ContactName, sc.IconName, true);
+                            AddCopContact(true);
                         }
                         else
                         {
@@ -321,7 +325,7 @@ public class CellPhone
                     }
                     else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
                     {
-                        AddCopContact(sc.ContactName,sc.IconName, true);
+                        AddCopContact(true);
                     }
                     else if (sc.ContactName == EntryPoint.UndergroundGunsContactName)
                     {
@@ -390,8 +394,10 @@ public class CellPhone
             }
         }
     }
-    public void AddCopContact(string Name, string IconName, bool displayNotification)
+    public void AddCopContact(bool displayNotification)
     {
+        string Name = EntryPoint.OfficerFriendlyContactName;
+        string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == Name))
         {
             PhoneContact contactA = new PhoneContact(Name, ContactIndex);

@@ -26,6 +26,7 @@ public class LicensesTab
         List<TabItem> items = new List<TabItem>();
         string dldesc = "";
         string ccwdesc = "";
+        string pilotdesc = "";
 
         if (Player.Licenses.HasDriversLicense)
         {
@@ -47,14 +48,44 @@ public class LicensesTab
         {
             ccwdesc = "~r~No CCW Issued~s~";
         }
+
+
+        if (Player.Licenses.HasPilotsLicense)
+        {
+            pilotdesc = "Endorsements:";
+
+            if(Player.Licenses.PilotsLicense.IsRotaryEndorsed)
+            {
+                pilotdesc += " ~y~Rotary Wing Aircraft~s~";
+            }
+            if (Player.Licenses.PilotsLicense.IsFixedWingEndorsed)
+            {
+                pilotdesc += " ~y~Fixed Wing Aircraft~s~";
+            }
+            if (Player.Licenses.PilotsLicense.IsLighterThanAirEndorsed)
+            {
+                pilotdesc += " ~y~Lighter Than Air~s~";
+            }
+            pilotdesc += $"~n~Status: " + (Player.Licenses.CCWLicense.IsValid(Time) ? "~g~Valid~s~" : "~r~Expired~s~");
+            pilotdesc += Player.Licenses.CCWLicense.ExpirationDescription(Time);
+        }
+        else
+        {
+            pilotdesc = "~r~No Pilots License Issued~s~";
+        }
+
+
         dldesc += "~n~~n~Description: A legal authorization for a specific individual to operate one or more types of motorized vehicles such as motorcycles, cars, trucks, or buses—on a public road. Vehicle Operators caught without one will be fined.";
         ccwdesc += "~n~~n~Description: Allows Carrying a weapon (such as a handgun) in public in a concealed manner, either on one's person or in close proximity. Legal weapons are returned to owners after medical/bail services.";
-
+        pilotdesc += "~n~~n~Description: Allows flying of fixed wing, lighter than air, and rotary aircraft.";
         TabItem dl = new TabTextItem("Drivers License", "Drivers License", dldesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
         items.Add(dl);
 
         TabItem ccw = new TabTextItem("CCW License", "CCW License", ccwdesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
         items.Add(ccw);
+
+        TabItem pilots = new TabTextItem("Pilots License", "Pilots License", pilotdesc);//TabItem tabItem = new TabTextItem($"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~ {gr.ToBlip()}~s~", $"{gr.Gang.ColorPrefix}{gr.Gang.FullName}~s~", DescriptionText);
+        items.Add(pilots);
 
         TabView.AddTab(new TabSubmenuItem("Info", items));
     }

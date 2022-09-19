@@ -970,21 +970,24 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        string model = NativeHelper.GetKeyboardInput("");
-        model = model.ToLower();
+        //string model = NativeHelper.GetKeyboardInput("");
+        //model = model.ToLower();
 
-        Rage.Object Barrier = new Rage.Object(model, Game.LocalPlayer.Character.GetOffsetPositionFront(5f), 0f);
-        if (Barrier.Exists())
+        //Rage.Object Barrier = new Rage.Object(model, Game.LocalPlayer.Character.GetOffsetPositionFront(5f), 0f);
+        //if (Barrier.Exists())
+        //{
+        //    NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Barrier);
+        //    Barrier.IsPersistent = true;
+        //}
+        //GameFiber.Sleep(15000);
+        //if(Barrier.Exists())
+        //{
+        //    Barrier.Delete();
+        //}
+        if(Player.CurrentVehicle != null)
         {
-            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(Barrier);
-            Barrier.IsPersistent = true;
+            EntryPoint.WriteToConsole($"Current Class {Player.CurrentVehicle.VehicleClass} IsAircraft: {Player.CurrentVehicle.IsAircraft}");
         }
-        GameFiber.Sleep(15000);
-        if(Barrier.Exists())
-        {
-            Barrier.Delete();
-        }
-
 
 
         //Game.LocalPlayer.Character.KeepTasks = true;
