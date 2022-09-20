@@ -338,6 +338,9 @@ public class PoliceSettings : ISettingsDefaultable
     public bool DropWeaponWhenBusted { get; set; }
 
 
+
+    public bool AllowRespondingWithoutCallIn { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -511,6 +514,8 @@ public class PoliceSettings : ISettingsDefaultable
         StationSpawningIgnoresLimits = true;
 
         DropWeaponWhenBusted = true;
+
+        AllowRespondingWithoutCallIn = true;
 
 
     }

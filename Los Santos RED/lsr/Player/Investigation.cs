@@ -151,7 +151,7 @@ public class Investigation
         if (IsActive && Player.IsNotWanted)
         {
             AssignCops();
-            if ((IsTimedOut && (!RequiresPolice || !World.Pedestrians.AnyWantedPeopleNearPlayer) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
+            if (World.CitizenWantedLevel == 0 && (IsTimedOut && (!RequiresPolice || World.TotalWantedLevel > 0) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
             {
                 Expire();
             }
@@ -172,7 +172,12 @@ public class Investigation
         if (RequiresPolice)
         {
             CrimeEvent HighestCrimeEvent = Player.PoliceResponse.CrimesReported.OrderBy(x => x.AssociatedCrime?.Priority).FirstOrDefault();
-            if (HighestCrimeEvent != null)
+            if (World.TotalWantedLevel > 0)
+            {
+                InvestigationWantedLevel = World.TotalWantedLevel;
+                RespondingPolice = PoliceToRespond(World.TotalWantedLevel);
+            }    
+            else if (HighestCrimeEvent != null)
             {
                 InvestigationWantedLevel = HighestCrimeEvent.AssociatedCrime.ResultingWantedLevel;
                 RespondingPolice = PoliceToRespond(HighestCrimeEvent.AssociatedCrime.ResultingWantedLevel);

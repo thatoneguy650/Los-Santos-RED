@@ -800,7 +800,7 @@ public class Pedestrians : ITaskerReportable
                 WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
                 WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
                 WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
-                WillFightPolice = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
+                WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
             }
             if (Pedestrian.IsPersistent)
             {

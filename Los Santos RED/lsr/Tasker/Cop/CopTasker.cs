@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 public class CopTasker
 {
-    private IEntityProvideable PedProvider;
+    private IEntityProvideable World;
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
@@ -24,7 +24,7 @@ public class CopTasker
     public CopTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
-        PedProvider = pedProvider;
+        World = pedProvider;
         Player = player;
         Weapons = weapons;
         Settings = settings;
@@ -39,8 +39,8 @@ public class CopTasker
         if (Settings.SettingsManager.PoliceSettings.ManageTasking)
         {
             SetPossibleTargets();
-            PedProvider.Pedestrians.ExpireSeatAssignments();
-            foreach (Cop cop in PedProvider.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked))
+            World.Pedestrians.ExpireSeatAssignments();
+            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked))
             {
                 try
                 {
@@ -103,6 +103,10 @@ public class CopTasker
                 {
                     SetInvestigate(Cop);
                 }
+                else if (World.CitizenWantedLevel > 0 && Cop.IsRespondingToCitizenWanted)
+                {
+                    SetInvestigate(Cop);
+                }
                 else
                 {
                     SetIdle(Cop);
@@ -137,7 +141,7 @@ public class CopTasker
             bool anyDeadlyChase = false;
             foreach (PedExt possibleTarget in PossibleTargets)
             {
-                int TotalOtherAssignedCops = PedProvider.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && x.CurrentTask.OtherTarget != null && x.CurrentTask.OtherTarget.Handle == possibleTarget.Handle);
+                int TotalOtherAssignedCops = World.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && x.CurrentTask.OtherTarget != null && x.CurrentTask.OtherTarget.Handle == possibleTarget.Handle);
                 //EntryPoint.WriteToConsole($"TASKER: {possibleTarget.Handle} TotalOtherAssignedCops {TotalOtherAssignedCops} WantedLevel {possibleTarget.WantedLevel}", 3);
                 if (possibleTarget.Pedestrian.Exists() && possibleTarget.IsWanted && !possibleTarget.IsArrested && NativeHelper.IsNearby(Cop.CellX, Cop.CellY, possibleTarget.CellX, possibleTarget.CellY, 3))
                 {
@@ -148,7 +152,7 @@ public class CopTasker
                     copsPossibleTargets.Add(new CopTarget(possibleTarget, possibleTarget.Pedestrian.DistanceTo2D(Cop.Pedestrian)) { TotalAssignedCops = TotalOtherAssignedCops});
                 }
             }
-            int PlayerCops = PedProvider.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && (x.CurrentTask.Name == "Kill" || x.CurrentTask.Name == "Chase"));
+            int PlayerCops = World.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && (x.CurrentTask.Name == "Kill" || x.CurrentTask.Name == "Chase"));
 
 
 
@@ -222,7 +226,7 @@ public class CopTasker
             }
 
 
-            if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && PedProvider.Pedestrians.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
+            if (MainTarget != null && MainTarget.IsBusted && MainTarget.Handle != Cop.CurrentTask?.OtherTarget?.Handle && World.Pedestrians.PoliceList.Any(x => x.Handle != Cop.Handle && x.CurrentTask?.OtherTarget?.Handle == MainTarget.Handle))
             {
                 //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} SET TARGET: Too many police already on busted person, sending away", 3);
                 MainTarget = null;
@@ -237,29 +241,29 @@ public class CopTasker
     }
     private void SetPossibleTargets()
     {
-        if (PedProvider.IsZombieApocalypse)
+        if (World.IsZombieApocalypse)
         {
             List<PedExt> TotalList = new List<PedExt>();
-            TotalList.AddRange(PedProvider.Pedestrians.CivilianList);
-            TotalList.AddRange(PedProvider.Pedestrians.GangMemberList);
-            TotalList.AddRange(PedProvider.Pedestrians.ZombieList);
+            TotalList.AddRange(World.Pedestrians.CivilianList);
+            TotalList.AddRange(World.Pedestrians.GangMemberList);
+            TotalList.AddRange(World.Pedestrians.ZombieList);
             PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
         else
         {
             List<PedExt> TotalList = new List<PedExt>();
-            TotalList.AddRange(PedProvider.Pedestrians.CivilianList);
-            TotalList.AddRange(PedProvider.Pedestrians.GangMemberList);
+            TotalList.AddRange(World.Pedestrians.CivilianList);
+            TotalList.AddRange(World.Pedestrians.GangMemberList);
             PossibleTargets = TotalList.Where(x => x.Pedestrian.Exists() && x.Pedestrian.IsAlive && !x.IsUnconscious && (x.IsWanted || (x.IsBusted && !x.IsArrested)) && x.DistanceToPlayer <= 200f).ToList();//150f
         }
-        ClosestCopToPlayer = PedProvider.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        ClosestCopToPlayer = World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && !x.IsInVehicle && x.DistanceToPlayer <= 30f && x.Pedestrian.IsAlive).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
     }
     private void SetInvestigate(Cop Cop)
     {
         if (Cop.CurrentTask?.Name != "Investigate")
         {
            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
-            Cop.CurrentTask = new Investigate(Cop, Player, Settings);
+            Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();
@@ -270,7 +274,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Idle")// && Cop.IsIdleTaskable)
         {
            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
-            Cop.CurrentTask = new Idle(Cop, Player, PedProvider, PlacesOfInterest, Cop);
+            Cop.CurrentTask = new Idle(Cop, Player, World, PlacesOfInterest, Cop);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();
@@ -292,7 +296,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "Chase")
         {
             //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
-            Cop.CurrentTask = new Chase(Cop, Player, PedProvider, Cop, Settings);
+            Cop.CurrentTask = new Chase(Cop, Player, World, Cop, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

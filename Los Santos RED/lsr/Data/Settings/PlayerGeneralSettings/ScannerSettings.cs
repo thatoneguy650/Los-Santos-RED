@@ -32,8 +32,8 @@ public class ScannerSettings : ISettingsDefaultable
     public int NumberOfUnitsToAnnounce { get; set; }
 
 
-    [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
-    public bool ApplyFilter { get; set; }
+    //[Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
+    //public bool ApplyFilter { get; set; }
 
     public ScannerSettings()
     {
@@ -43,8 +43,8 @@ public class ScannerSettings : ISettingsDefaultable
     {
         IsEnabled = true;
         EnableAudio = true;
-        SetVolume = true;
-        AudioVolume = 7;
+        SetVolume = false;
+        AudioVolume = 5;
         EnableSubtitles = false;
         EnableNotifications = true;
         DelayMinTime = 1500;
@@ -52,7 +52,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
-        ApplyFilter = true;
+        //ApplyFilter = false;
     }
 
 }

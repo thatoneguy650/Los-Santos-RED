@@ -17,6 +17,9 @@ namespace LosSantosRED.lsr.Interface
         string DebugString { get; }
         bool IsZombieApocalypse { get; }
         int TotalWantedLevel { get; set; }
+        Vector3 PoliceBackupPoint { get; set; }
+        int CitizenWantedLevel { get; set; }
+
         void LoadMPMap();
         void LoadSPMap();
         void ClearSpawned(bool includeCivilians);

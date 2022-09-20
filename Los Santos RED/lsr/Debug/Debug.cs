@@ -3039,7 +3039,7 @@ public class Debug
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WillFightPolice {ped.WillFightPolice} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
         }
         EntryPoint.WriteToConsole($"============================================ CIVIES END", 5);
         EntryPoint.WriteToConsole($"============================================ EMT START", 5);
@@ -3125,7 +3125,7 @@ public class Debug
 
 
 
-        foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
+        foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()).OrderBy(x=>x.DistanceToPlayer))
         {
             string VehString = "";
             string combat = "";
@@ -3151,13 +3151,17 @@ public class Debug
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
+                    $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} " +
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
 
             }
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
+                    $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned}", 5);
             }
             
         }

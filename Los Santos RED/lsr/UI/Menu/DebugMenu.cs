@@ -31,9 +31,10 @@ public class DebugMenu : Menu
     private Dispatcher Dispatcher;
     private IAgencies Agencies;
     private IGangs Gangs;
-    private IModItems ModItems;  
+    private IModItems ModItems;
+    private ICrimes Crimes;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems)
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -48,6 +49,7 @@ public class DebugMenu : Menu
         World = world;
         Tasker = tasker;
         ModItems = modItems;
+        Crimes = crimes;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
@@ -922,6 +924,7 @@ public class DebugMenu : Menu
     {
         GameFiber.StartNew(delegate
         {
+            bool isInvince = true;
             Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
             GameFiber.Yield();
             if (coolguy.Exists())
@@ -930,7 +933,7 @@ public class DebugMenu : Menu
                 coolguy.KeepTasks = true;
 
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-
+                coolguy.IsInvincible = true;
                 //if (RandomItems.RandomPercent(30))
                 //{
                 //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
@@ -939,13 +942,20 @@ public class DebugMenu : Menu
                 //{
                 //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
                 //}
-                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                coolguy.Tasks.FightAgainstClosestHatedTarget(250f,-1);
+                PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINA", World, true);
+                pedExt.WasEverSetPersistent = true;
+                World.Pedestrians.AddEntity(pedExt);
             }
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {
-                Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
-
-
+                Game.DisplayHelp($"Attackers Spawned! ~n~P to Delete ~n~O to Flee~n~L to Toggle Invincible");
+                if (Game.IsKeyDownRightNow(Keys.L))
+                {
+                    isInvince = !isInvince;
+                    coolguy.IsInvincible = isInvince;
+                    Game.DisplaySubtitle($"isInvince {isInvince}");
+                }
                 if (Game.IsKeyDownRightNow(Keys.O))
                 {
                     coolguy.Tasks.Clear();
@@ -982,6 +992,10 @@ public class DebugMenu : Menu
             {
                 coolguy.BlockPermanentEvents = true;
                 coolguy.KeepTasks = true;
+                coolguy.IsInvincible = true;
+                PedExt pedExt = new PedExt(coolguy, Settings,true,false,false,false,"Test1", Crimes, Weapons, "CRIMINA", World, true);
+                pedExt.WasEverSetPersistent = true;
+                World.Pedestrians.AddEntity(pedExt);
                 NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe
                 NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", coolguy, false);
 
@@ -993,7 +1007,8 @@ public class DebugMenu : Menu
                 {
                     coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
                 }
-                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
+                //coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             }
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {

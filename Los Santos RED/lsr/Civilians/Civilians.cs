@@ -17,6 +17,10 @@ public class Civilians
     private uint GameTimeLastUpdatedPeds;
     private int TotalRan;
     private int TotalChecked;
+    private int RespondingPolice;
+    private int CurrentRespondingPoliceCount;
+    private int prevCitizenWantedLevel;
+
     public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings, IGangs gangs)
     {
         World = world;
@@ -50,26 +54,8 @@ public class Civilians
         GameFiber.Yield();
         UpdateEMTs();
         GameFiber.Yield();
-        PedExt worstPed = World.Pedestrians.Citizens.Where(x=>!x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
-        if (worstPed != null && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
-        {
-            World.TotalWantedLevel = worstPed.WantedLevel;
-        }
-        else
-        {
-            World.TotalWantedLevel = PoliceRespondable.WantedLevel;
-        }
 
-
-
-
-        if(World.TotalWantedLevel > 0 && PoliceRespondable.IsNotWanted && !PoliceRespondable.Investigation.IsActive)
-        {
-            if (worstPed.Pedestrian.Exists())
-            {
-                PoliceRespondable.Investigation.Start(worstPed.Pedestrian.Position, false, true, false, false);
-            }
-        }
+        UpdateTotalWanted();
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
@@ -312,4 +298,151 @@ public class Civilians
             }
         }
     }
+    private void UpdateTotalWanted()
+    {
+        PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        Vector3 PoliceInterestPoint;
+        if (worstPed != null && worstPed.Pedestrian.Exists() && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
+        {
+            World.TotalWantedLevel = worstPed.WantedLevel;
+            PoliceInterestPoint = worstPed.Pedestrian.Position;
+        }
+        else
+        {
+            World.TotalWantedLevel = PoliceRespondable.WantedLevel;
+            PoliceInterestPoint = Vector3.Zero;
+        }
+
+        if(PoliceInterestPoint == Vector3.Zero)
+        {
+            World.PoliceBackupPoint = PoliceInterestPoint;
+        }
+        else if(World.PoliceBackupPoint == Vector3.Zero || PoliceInterestPoint.DistanceTo2D(World.PoliceBackupPoint) >= 25f)
+        {
+            World.PoliceBackupPoint = PoliceInterestPoint;
+            EntryPoint.WriteToConsole("Police Interest Point Changed by 25");
+        }
+
+
+        if(worstPed != null)
+        {
+            World.CitizenWantedLevel = worstPed.WantedLevel;
+        }
+        else
+        {
+            World.CitizenWantedLevel = 0;
+        }
+
+
+        if(prevCitizenWantedLevel != World.CitizenWantedLevel)
+        {
+            if(World.CitizenWantedLevel > 1 && !PoliceRespondable.Investigation.IsActive && PoliceRespondable.IsNotWanted)
+            {
+                PoliceRespondable.Scanner.OnRequestedBackUpSimple();
+            }
+            else
+            {
+
+            }
+            EntryPoint.WriteToConsole($"Citizen Wanted Level Changed from {prevCitizenWantedLevel} to {World.CitizenWantedLevel}");
+            prevCitizenWantedLevel = World.CitizenWantedLevel;
+        }
+
+
+        if (Settings.SettingsManager.PoliceSettings.AllowRespondingWithoutCallIn)
+        {
+            if (World.CitizenWantedLevel > 0 && World.PoliceBackupPoint != Vector3.Zero)
+            {
+                AssignCops();
+                GameFiber.Yield();
+            }
+            else
+            {
+                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToCitizenWanted))
+                {
+                    cop.IsRespondingToCitizenWanted = false;
+                }
+            }
+        }
+    }
+
+    private void AssignCops()
+    {
+        if (World.CitizenWantedLevel > 0)
+        {
+            RespondingPolice = PoliceToRespond(World.CitizenWantedLevel);    
+            int tasked = 0;
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && (World.CitizenWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))//first pass, only want my police and whatever units?
+            {
+                if(!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(World.PoliceBackupPoint) >= 150f)
+                {
+                    cop.IsRespondingToCitizenWanted = false;
+                }
+                else if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                {
+                    cop.IsRespondingToCitizenWanted = true;
+                    tasked++;
+                }
+                else
+                {
+                    cop.IsRespondingToCitizenWanted = false;
+                }
+            }
+            if(tasked < RespondingPolice)
+            {
+                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToCitizenWanted && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))
+                {
+                    if (!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(World.PoliceBackupPoint) >= 150f)
+                    {
+                        cop.IsRespondingToCitizenWanted = false;
+                    }
+                    else if (!cop.IsDead && !cop.IsUnconscious && tasked < RespondingPolice)
+                    {
+                        cop.IsRespondingToCitizenWanted = true;
+                        tasked++;
+                    }
+                }
+            }
+            CurrentRespondingPoliceCount = tasked;
+        }
+        else
+        {
+            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToCitizenWanted))
+            {
+                cop.IsRespondingToCitizenWanted = false;
+            }
+            CurrentRespondingPoliceCount = 0;
+        }
+    }
+
+    private int PoliceToRespond(int wantedLevel)
+    {
+        {
+            if (wantedLevel >= 6)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted6;
+            }
+            if (wantedLevel >= 5)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted5;
+            }
+            else if (wantedLevel >= 4)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted4;
+            }
+            else if (wantedLevel >= 3)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted3;
+            }
+            else if (wantedLevel >= 2)
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted2;
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted1;
+            }
+        }
+    }
+
 }

@@ -73,11 +73,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
-      <Private>False</Private>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
       <HintPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>

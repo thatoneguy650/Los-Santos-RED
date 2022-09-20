@@ -17,8 +17,10 @@ public class Investigate : ComplexTask
     private bool isSetCode3Close;
     private bool isSetCode2;
     private ISettingsProvideable Settings;
+    private IEntityProvideable World;
 
-    private bool IsRespondingCode3 => Player.Investigation.InvestigationWantedLevel > 1;
+    private Vector3 InvestigationPosition => Player.Investigation.IsActive ? Player.Investigation.Position : World.PoliceBackupPoint;
+    private bool IsRespondingCode3 => Player.Investigation.IsActive ? Player.Investigation.InvestigationWantedLevel > 1 : World.CitizenWantedLevel > 1;
     private enum Task
     {
         WanderCode3,
@@ -52,11 +54,12 @@ public class Investigate : ComplexTask
             }
         }
     }
-    public Investigate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
+    public Investigate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings, IEntityProvideable world) : base(player, cop, 1000)
     {
         Name = "Investigate";
         SubTaskName = "";
         Settings = settings;
+        World = world;
     }
     public override void Start()
     {
@@ -82,10 +85,10 @@ public class Investigate : ComplexTask
             SetSiren();
         }
 
-        if(CurrentTaskedPosition != Vector3.Zero && CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
-        {
+        //if(CurrentTaskedPosition != Vector3.Zero && CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+        //{
 
-        }
+        //}
 
     }
     public override void ReTask()
@@ -162,10 +165,10 @@ public class Investigate : ComplexTask
         {
             NeedsUpdates = true;
 
-            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(InvestigationPosition/*Player.Investigation.Position*/) >= 5f)
             {
                 HasReachedReportedPosition = false;
-                CurrentTaskedPosition = Player.Investigation.Position;
+                CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(true);
                 //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
@@ -187,10 +190,10 @@ public class Investigate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NeedsUpdates = true;
-            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
+            if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(InvestigationPosition/*Player.Investigation.Position*/) >= 5f)
             {
                 HasReachedReportedPosition = false;
-                CurrentTaskedPosition = Player.Investigation.Position;
+                CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(false);
                 //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }

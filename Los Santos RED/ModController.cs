@@ -23,8 +23,8 @@ namespace LosSantosRED.lsr
         private Mod.Time Time;
         private UI UI;
         private VanillaManager VanillaManager;
-       // private WavAudioPlayer WavAudioPlayer;
-        private NAudioPlayer NAudioPlayer;
+       private WavAudioPlayer WavAudioPlayer;
+       // private NAudioPlayer NAudioPlayer;
         private Weather Weather;
         private Mod.World World;
         
@@ -52,17 +52,18 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
 
-            //WavAudioPlayer = new WavAudioPlayer();
-            NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
+            WavAudioPlayer = new WavAudioPlayer();
+            //NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
             GameFiber.Yield();
             Time = new Mod.Time(ModDataFileManager.Settings);
             Time.Setup();
             GameFiber.Yield();
-            World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets);
+            World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
+                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, WavAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
-                ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
+                ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, WavAudioPlayer, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
                 ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, 
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats);
             Player.Setup();
@@ -71,15 +72,25 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Civilians = new Civilians(World, Player, Player, ModDataFileManager.Settings, ModDataFileManager.Gangs);
             GameFiber.Yield();
+
+
+
+
+
+
+
             PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems, World, ModDataFileManager.RelationshipGroups, ModDataFileManager.ShopMenus);
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
             GameFiber.Yield();
-            Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest);
+            Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, 
+                ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest);
             Dispatcher.Setup();
             GameFiber.Yield();
-            UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList, ModDataFileManager.ShopMenus, Player);
+            UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, 
+                ModDataFileManager.ModItems, Time, Player, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Zones, ModDataFileManager.Streets, ModDataFileManager.Interiors, Dispatcher, ModDataFileManager.Agencies, Player, ModDataFileManager.DanceList, ModDataFileManager.GestureList, 
+                ModDataFileManager.ShopMenus, Player, ModDataFileManager.Crimes);
             UI.Setup();
             GameFiber.Yield();
             Input = new Input(Player, ModDataFileManager.Settings, UI, PedSwap);
@@ -87,10 +98,11 @@ namespace LosSantosRED.lsr
             VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             VanillaManager.Setup();
             GameFiber.Yield();
-            Weather = new Weather(NAudioPlayer, ModDataFileManager.Settings, Time, Player);
+            Weather = new Weather(WavAudioPlayer, ModDataFileManager.Settings, Time, Player);
             Weather.Setup();
             GameFiber.Yield();
-            Debug = new Debug(ModDataFileManager.PlateTypes, World, Player, ModDataFileManager.Streets, Dispatcher, ModDataFileManager.Zones, ModDataFileManager.Crimes, this, ModDataFileManager.Settings, Tasker, Time, ModDataFileManager.Agencies, ModDataFileManager.Weapons, ModDataFileManager.ModItems, Weather, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus);
+            Debug = new Debug(ModDataFileManager.PlateTypes, World, Player, ModDataFileManager.Streets, Dispatcher, ModDataFileManager.Zones, ModDataFileManager.Crimes, this, ModDataFileManager.Settings, Tasker, Time, ModDataFileManager.Agencies, ModDataFileManager.Weapons, ModDataFileManager.ModItems, Weather, 
+                ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus);
             Debug.Setup();
             GameFiber.Yield();
             World.Setup();

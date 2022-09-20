@@ -29,6 +29,7 @@ namespace Mod
         private IStreets Streets;
         private IPlacesOfInterest PlacesOfInterest;
         private List<Blip> CreatedBlips = new List<Blip>();
+        private Blip TotalWantedBlip;
         private float CurrentSpawnMultiplier;
         private bool isSettingDensity;
 
@@ -55,7 +56,15 @@ namespace Mod
         public Vehicles Vehicles { get; private set; }
         public Pedestrians Pedestrians { get; private set; }
         public Places Places { get; private set; }
+
+
+        public int CitizenWantedLevel { get; set; }
         public int TotalWantedLevel { get; set; }
+        public Vector3 PoliceBackupPoint { get; set; }
+
+
+
+
         public string DebugString => "";
         public void Setup()
         {
@@ -69,6 +78,36 @@ namespace Mod
             if(Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels)
             {
                 SetDensity();
+            }
+
+            if (Settings.SettingsManager.WorldSettings.AllowPoliceBackupBlip)
+            {
+                if (PoliceBackupPoint == Vector3.Zero)
+                {
+                    if (TotalWantedBlip.Exists())
+                    {
+                        TotalWantedBlip.Delete();
+                    }
+                }
+                else
+                {
+
+                    if (!TotalWantedBlip.Exists())
+                    {
+                        CreateTotalWantedBlip();
+                    }
+                    else
+                    {
+                        TotalWantedBlip.Position = PoliceBackupPoint;
+                    }
+                }
+            }
+            else
+            {
+                if (TotalWantedBlip.Exists())
+                {
+                    TotalWantedBlip.Delete();
+                }
             }
         }
         public void Dispose()
@@ -125,8 +164,13 @@ namespace Mod
                     MyBlip.Delete();
                 }
             }
-        }
 
+            if (TotalWantedBlip.Exists())
+            {
+                TotalWantedBlip.Delete();
+            }
+
+        }
         public void SetDensity()
         {
             CurrentSpawnMultiplier = 1.0f;
@@ -165,7 +209,22 @@ namespace Mod
             }
 
         }
-
+        private void CreateTotalWantedBlip()
+        {
+            TotalWantedBlip = new Blip(PoliceBackupPoint, 50f)
+            {
+                Name = "Police Requesting Assistance",
+                Color = Color.Purple,
+                Alpha = 0.25f
+            };
+            if (TotalWantedBlip.Exists())
+            {
+                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Police Requesting Assistance");
+                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(TotalWantedBlip);
+                NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)TotalWantedBlip.Handle, true);
+            }
+        }
 
     }
 }

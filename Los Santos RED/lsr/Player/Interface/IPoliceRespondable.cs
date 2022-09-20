@@ -61,6 +61,7 @@ namespace LosSantosRED.lsr.Interface
         ButtonPrompts ButtonPrompts { get; }
         bool AnyPoliceKnowInteriorLocation { get; set; }
         bool IsBeingBooked { get; }
+        Scanner Scanner { get; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void Arrest();

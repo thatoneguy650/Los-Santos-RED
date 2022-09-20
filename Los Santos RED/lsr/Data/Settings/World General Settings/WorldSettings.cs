@@ -42,6 +42,7 @@ public class WorldSettings : ISettingsDefaultable
     public bool ShowAllBlipsOnMap { get; set; }
     public bool ShowMarkersOnLocationEntrances { get; set; }
     public bool HotelsUsesRooms { get; set; }
+    public bool AllowPoliceBackupBlip { get; set; }
 
     public WorldSettings()
     {
@@ -69,6 +70,7 @@ public class WorldSettings : ISettingsDefaultable
         ShowAllBlipsOnMap = false;
         ShowMarkersOnLocationEntrances = false;
         HotelsUsesRooms = false;
+        AllowPoliceBackupBlip = true;
     }
 
 }

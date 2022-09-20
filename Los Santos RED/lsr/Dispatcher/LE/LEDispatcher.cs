@@ -26,7 +26,7 @@ public class LEDispatcher
     private Roadblock Roadblock;
     private Agency LastAgencySpawned;
     private IWeapons Weapons;
-    private bool TotalIsWanted;
+    private bool TotalIsWanted => World.TotalWantedLevel > 0;
     private INameProvideable Names;
     private PoliceStation PoliceStation;
     private SpawnLocation SpawnLocation;
@@ -144,7 +144,12 @@ public class LEDispatcher
             float MaxWantedSeen = Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen;
             float MaxNotWanted = Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_NotWanted;
 
-            if (TotalIsWanted)
+
+            if(World.TotalWantedLevel > Player.WantedLevel)
+            {
+                return MaxWantedUnseen;
+            }
+            else if (TotalIsWanted)
             {
                 if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
@@ -173,7 +178,12 @@ public class LEDispatcher
             float MinWantedSeen = Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_WantedSeen;
             float MinNotWanted = Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_NotWanted;
 
-            if (TotalIsWanted)
+
+            if (World.TotalWantedLevel > Player.WantedLevel)
+            {
+                return MinWantedUnseen;
+            }
+            else if (TotalIsWanted)
             {
                 if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
@@ -388,12 +398,16 @@ public class LEDispatcher
             int SeenScalarTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;
 
-            if (Player.CurrentLocation.CurrentZone?.IsLowPop == true)
+            //if (Player.CurrentLocation.CurrentZone?.IsLowPop == true)
+            //{
+
+            //}
+
+            if (World.TotalWantedLevel > Player.WantedLevel)
             {
-
+                return UnseenTime;
             }
-
-            if (!Player.AnyPoliceRecentlySeenPlayer)
+            else if (!Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -411,7 +425,11 @@ public class LEDispatcher
             int SeenScalarTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_Min;
 
-            if (!Player.AnyPoliceRecentlySeenPlayer)
+            if (World.TotalWantedLevel > Player.WantedLevel)
+            {
+                return UnseenTime;
+            }
+            else if (!Player.AnyPoliceRecentlySeenPlayer)
             {
                 return UnseenTime;
             }
@@ -442,7 +460,6 @@ public class LEDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        TotalIsWanted = World.TotalWantedLevel > 0;
         if (Settings.SettingsManager.PoliceSettings.ManageDispatching)
         {
             HandleAmbientSpawns();
@@ -621,7 +638,7 @@ public class LEDispatcher
         SpawnLocation = new SpawnLocation();
         do
         {
-            SpawnLocation.InitialPosition = GetPositionAroundPlayer();    
+            SpawnLocation.InitialPosition = GetSpawnPosition();    
             SpawnLocation.GetClosestStreet(Player.IsWanted);
             SpawnLocation.GetClosestSidewalk();
             GameFiber.Yield();
@@ -632,69 +649,36 @@ public class LEDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes(bool forcePed,bool forceVehicle, Agency forceAgency)
+    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Agency forceAgency)
     {
         Agency = null;
         VehicleType = null;
         PersonType = null;
-        if (forceAgency != null)
-        {
-            Agency = forceAgency;
-        }
-        else
-        {
-            Agency = GetRandomAgency(SpawnLocation);
-        }
+        Agency = forceAgency != null ? forceAgency : GetRandomAgency(SpawnLocation);   
         if (Agency != null)
         {
-            bool SpawnVehicle = !forcePed && ( Player.IsWanted || RandomItems.RandomPercent(80));
-
-            if(forceVehicle)
+            if (forcePed)
             {
-                SpawnVehicle = true;
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+                return PersonType != null;
             }
-
-            if (Player.IsNotWanted && RandomItems.RandomPercent(5) && !forceVehicle)
-            {
-                VehicleType = null;
-            }
-            else if (!SpawnLocation.HasSidewalk || SpawnVehicle)
+            else if (forceVehicle)
             {
                 VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
+                return VehicleType != null;        
             }
-
-            if(forcePed)
+            else
             {
-                VehicleType = null;
-            }
-            if(forceVehicle)
-            {
-                PersonType = null;
-            }
-
-            if (VehicleType != null)
-            {
-                if(forceVehicle)
-                {
-                    return true;
-                }
-                string RequiredGroup = "";
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
                 if (VehicleType != null)
                 {
-                    RequiredGroup = VehicleType.RequiredPedGroup;
-                }
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                if (PersonType != null)
-                {
-                    return true;
-                }
-            }
-            else if (!forceVehicle && (Player.IsNotWanted || forcePed))
-            {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel,"");
-                if (PersonType != null)
-                {
-                    return true;
+                    string RequiredGroup = "";
+                    if (VehicleType != null)
+                    {
+                        RequiredGroup = VehicleType.RequiredPedGroup;
+                    }
+                    PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+                    return PersonType != null;
                 }
             }
         }
@@ -777,21 +761,41 @@ public class LEDispatcher
         }
         return ToReturn;
     }
-    private Vector3 GetPositionAroundPlayer()
+    private Vector3 GetSpawnPosition()
     {
         Vector3 Position;
-        if (World.TotalWantedLevel > 0 && Player.IsInVehicle)
+
+        if(World.TotalWantedLevel > 0 && (World.TotalWantedLevel > Player.WantedLevel || Player.IsNotWanted))//someone else is the priority
         {
-            Position = Player.Character.GetOffsetPositionFront(250f);//350f
+            Position = World.PoliceBackupPoint;
         }
-        else if (Player.Investigation.IsActive)
+        else//player is priority
         {
-            Position = Player.Investigation.Position;
+            if(Player.IsWanted && Player.IsInVehicle)//if you are wanted and in a car, put it out front to better get it
+            {
+                Position = Player.Character.GetOffsetPositionFront(250f);//350f
+            }
+            else if (Player.Investigation.IsActive)//investigations mode takes over too?
+            {
+                Position = Player.Investigation.Position;
+            }
+            else
+            {
+                Position = Player.Position;
+            }
         }
-        else
-        {
-            Position = Player.Position;
-        }
+        //if (World.TotalWantedLevel > 0 && Player.IsInVehicle)
+        //{
+        //    Position = Player.Character.GetOffsetPositionFront(250f);//350f
+        //}
+        //else if (Player.Investigation.IsActive)
+        //{
+        //    Position = Player.Investigation.Position;
+        //}
+        //else
+        //{
+        //    Position = Player.Position;
+        //}
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }
