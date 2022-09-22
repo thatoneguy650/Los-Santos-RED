@@ -24,7 +24,8 @@ namespace LosSantosRED.lsr
         private UI UI;
         private VanillaManager VanillaManager;
        private WavAudioPlayer WavAudioPlayer;
-       // private NAudioPlayer NAudioPlayer;
+        // private NAudioPlayer NAudioPlayer;
+       // private MediaPlayerAudio MediaPlayerAudio;
         private Weather Weather;
         private Mod.World World;
         
@@ -54,6 +55,7 @@ namespace LosSantosRED.lsr
 
             WavAudioPlayer = new WavAudioPlayer();
             //NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
+            //MediaPlayerAudio = new MediaPlayerAudio(ModDataFileManager.Settings);
             GameFiber.Yield();
             Time = new Mod.Time(ModDataFileManager.Settings);
             Time.Setup();
