@@ -46,14 +46,27 @@ public class EMTTasker
             {
                 try
                 {
-                    if (emt.NeedsTaskAssignmentCheck)
+                    if (emt.CanBeTasked)
                     {
-                        ReAssignTask(emt);//has yields if it does anything
+                        if (emt.HasBeenSpawnedFor >= 2000)
+                        {
+                            if (emt.NeedsTaskAssignmentCheck)
+                            {
+                                ReAssignTask(emt);//has yields if it does anything
+                            }
+                            if (emt.CurrentTask != null && emt.CurrentTask.ShouldUpdate)
+                            {
+                                emt.UpdateTask(PedToGoTo(emt));
+                                GameFiber.Yield();
+                            }
+                        }
                     }
-                    if (emt.CurrentTask != null && emt.CurrentTask.ShouldUpdate)
+                    else
                     {
-                        emt.UpdateTask(PedToGoTo(emt));
-                        GameFiber.Yield();
+                        if (emt.CurrentTask != null)
+                        {
+                            emt.CurrentTask = null;
+                        }
                     }
                 }
                 catch (Exception e)
@@ -147,7 +160,7 @@ public class EMTTasker
         {
             emt.CurrentTask = new CalmCallIn(emt, Player);//oither target not needed, they just call in all crimes
             GameFiber.Yield();//TR Added back 7
-            emt.CurrentTask.Start();
+            emt.CurrentTask?.Start();
         }
     }
     private void SetScaredTask(EMT emt, WitnessedCrime HighestPriority)
@@ -156,7 +169,7 @@ public class EMTTasker
         {
             emt.CurrentTask = new ScaredCallIn(emt, Player) { OtherTarget = HighestPriority?.Perpetrator };
             GameFiber.Yield();//TR Added back 7
-            emt.CurrentTask.Start();
+            emt.CurrentTask?.Start();
         }
     }
     private void SetIdleTask(EMT emt)
@@ -166,7 +179,7 @@ public class EMTTasker
             //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTIdle", 3);
             emt.CurrentTask = new EMTIdle(emt, Player, PedProvider, PlacesOfInterest, emt);
             GameFiber.Yield();//TR Added back 4
-            emt.CurrentTask.Start();
+            emt.CurrentTask?.Start();
         }
     }
     private void SetRespondTask(EMT emt)
@@ -176,7 +189,7 @@ public class EMTTasker
             //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
             emt.CurrentTask = new EMTRespond(emt, Player, PedProvider, PlacesOfInterest, emt);
             GameFiber.Yield();//TR Added back 4
-            emt.CurrentTask.Start();
+            emt.CurrentTask?.Start();
         }
     }
     private void SetTreatTask(EMT emt, PedExt targetPed)
@@ -186,7 +199,7 @@ public class EMTTasker
            // EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTTreat", 3);
             emt.CurrentTask = new EMTTreat(emt, Player, targetPed, Settings);
             GameFiber.Yield();//TR Added back 4
-            emt.CurrentTask.Start();
+            emt.CurrentTask?.Start();
         }
     }
     private PedExt PedToGoTo(EMT emt)

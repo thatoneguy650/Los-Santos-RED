@@ -40,18 +40,31 @@ public class CopTasker
         {
             SetPossibleTargets();
             World.Pedestrians.ExpireSeatAssignments();
-            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists() && x.HasBeenSpawnedFor >= 2000 && x.CanBeTasked))
+            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
             {
                 try
                 {
-                    if (cop.NeedsTaskAssignmentCheck)
+                    if (cop.CanBeTasked)
                     {
-                        UpdateCurrentTask(cop);//has yields if it does anything
+                        if (cop.HasBeenSpawnedFor >= 2000)
+                        {
+                            if (cop.NeedsTaskAssignmentCheck)
+                            {
+                                UpdateCurrentTask(cop);//has yields if it does anything
+                            }
+                            if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)
+                            {
+                                cop.UpdateTask(PedToAttack(cop));
+                                GameFiber.Yield();
+                            }
+                        }
                     }
-                    if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)
+                    else
                     {
-                        cop.UpdateTask(PedToAttack(cop));
-                        GameFiber.Yield();
+                        if (cop.CurrentTask != null)
+                        {
+                            cop.CurrentTask = null;
+                        }
                     }
                 }
                 catch (Exception e)

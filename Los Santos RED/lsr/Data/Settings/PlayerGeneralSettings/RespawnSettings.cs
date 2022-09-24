@@ -66,6 +66,7 @@ public class RespawnSettings : ISettingsDefaultable
     public bool RemoveWeaponsOnDeath { get; set; }
     [Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable.")]
     public bool ForceBooking { get; set; }
+    public bool UseCustomCameraWhenBooking { get; set; }
 
     public RespawnSettings()
     {
@@ -122,7 +123,7 @@ public class RespawnSettings : ISettingsDefaultable
 
         ForceBooking = false;
 
-
+        UseCustomCameraWhenBooking = true;
 
     }
 }

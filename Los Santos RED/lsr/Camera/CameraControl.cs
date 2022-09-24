@@ -39,7 +39,7 @@ public class CameraControl
     }
     public void Dispose()
     {
-        ReturnToGameplay(false);
+        TransitionToGameplayCam(false);
         //EnableControl();
         //if (camTo.Exists())
         //{
@@ -51,7 +51,7 @@ public class CameraControl
         //}
         //Game.LocalPlayer.Character.Tasks.Clear();
     }
-    public void HighlightEntity(Entity toHighlight, bool wait)
+    public void TransitionHighlightEntity(Entity toHighlight, bool wait)
     {
         if (toHighlight.Exists())//will freeze on the second camera movement
         {
@@ -89,6 +89,40 @@ public class CameraControl
             }
         }
     }
+    public void HighlightEntity(Entity toHighlight)
+    {
+        if (toHighlight.Exists())//will freeze on the second camera movement
+        {
+            if (!camTo.Exists())
+            {
+                camTo = new Camera(false);
+            }
+            float XOffset = RandomItems.RandomPercent(50) ? -2f : 2f;//  RandomItems.GetRandomNumber(-3f, 3f);
+            float YOffset = 2f;// RandomItems.GetRandomNumber(1f, 3f);
+            float ZOffset = 1f;//;RandomItems.GetRandomNumber(1f, 2f);
+            Vector3 InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(XOffset, YOffset, ZOffset));
+            Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
+            Vector3 _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
+            camTo.Position = InitialCameraPosition;
+            camTo.Direction = _direction;
+            camTo.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+            camTo.Active = true;
+        }
+    }
+    public void ReturnToGameplayCam()
+    {  
+        if (camTo.Exists())
+        {
+            camTo.Active = false;
+            camTo.Delete();
+        }
+        if (camFrom.Exists())
+        {
+            camFrom.Active = false;
+            camFrom.Delete();
+        }
+        EnableControl();
+    }
     public void SetCameraAt(Vector3 desiredPosition, Vector3 desiredDirection, Rotator desiredRotation, bool wait)
     {
         if (!camFrom.Exists())
@@ -118,7 +152,7 @@ public class CameraControl
             GameFiber.Sleep(2500);
         }    
     }
-    public void ReturnToGameplay(bool wait)
+    public void TransitionToGameplayCam(bool wait)
     {
         if (!camFrom.Exists())
         {

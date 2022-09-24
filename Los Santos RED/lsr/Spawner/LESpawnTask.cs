@@ -326,7 +326,7 @@ public class LESpawnTask : SpawnTask
         {
             PrimaryCop.VoiceName = PersonType.OverrideVoice.PickRandom();
         }
-        PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true, PersonType.EmptyHolster,PersonType.FullHolster);
+        PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true, PersonType.EmptyHolster, PersonType.FullHolster);
         PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
         PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
         PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
@@ -366,6 +366,12 @@ public class LESpawnTask : SpawnTask
             NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
+        }
+
+        if (ped.Exists() && Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
+        {
+            //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Gang1H"));
+            NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Default"));
         }
 
 

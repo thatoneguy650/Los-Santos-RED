@@ -103,7 +103,7 @@ namespace LosSantosRED.lsr.Player
             {
                 CameraControl = new CameraControl(CameraControllable);
                 CameraControl.Setup();
-                CameraControl.HighlightEntity(Player.Character, false);
+                CameraControl.TransitionHighlightEntity(Player.Character, false);
             }
 
 
@@ -166,7 +166,7 @@ namespace LosSantosRED.lsr.Player
             {
                 if (Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting)
                 {
-                    CameraControl.ReturnToGameplay(false);
+                    CameraControl.TransitionToGameplayCam(false);
                 }
 
 

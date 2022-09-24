@@ -61,6 +61,13 @@ public class GangTasker
                         gangMember.UpdateTask(null);
                         GameFiber.Yield();
                     }
+                    if(!gangMember.CanBeTasked)
+                    {
+                        if (gangMember.CurrentTask != null)
+                        {
+                            gangMember.CurrentTask = null;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -192,7 +199,7 @@ public class GangTasker
         {
             GangMember.CurrentTask = new GangFlee(GangMember, Player, Settings) { OtherTarget = HighestPriority?.Perpetrator };
             GameFiber.Yield();//TR Added back 7
-            GangMember.CurrentTask.Start();
+            GangMember.CurrentTask?.Start();
         }
     }
     private void SetFight(GangMember GangMember, WitnessedCrime HighestPriority)
@@ -201,7 +208,7 @@ public class GangTasker
         {
             GangMember.CurrentTask = new GangFight(GangMember, Player, null) { OtherTarget = HighestPriority?.Perpetrator };
             GameFiber.Yield();//TR Added back 7
-            GangMember.CurrentTask.Start();
+            GangMember.CurrentTask?.Start();
         }
     }
     private void SetIdle(GangMember GangMember)
@@ -211,7 +218,7 @@ public class GangTasker
             EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
             GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
             GameFiber.Yield();//TR Added back 4
-            GangMember.CurrentTask.Start();
+            GangMember.CurrentTask?.Start();
         }
     }
     private void SetArrested(GangMember GangMember)
@@ -220,7 +227,7 @@ public class GangTasker
         {
             GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider);
             GameFiber.Yield();//TR Added back 7
-            GangMember.CurrentTask.Start();
+            GangMember.CurrentTask?.Start();
         }
     }
 }

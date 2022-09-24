@@ -452,16 +452,19 @@ namespace LosSantosRED.lsr
                 AddToQueue(RequestBackup, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUp", 3);
+
+            //MILITARY
         }
 
 
         public void OnRequestedBackUpSimple()
         {
-            if (!RequestBackupSimple.HasRecentlyBeenPlayed)
+            if (!RequestBackupSimple.HasRecentlyBeenPlayed && !DispatchQueue.Any(x=> x.Name == RequestBackupSimple.Name))
             {
                 AddToQueue(RequestBackupSimple, new CrimeSceneDescription(true, true, World.PoliceBackupPoint));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUpSimple", 3);
+            //MILITARY
         }
 
         public void OnSuspectEluded()
@@ -519,6 +522,7 @@ namespace LosSantosRED.lsr
                 AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsActive", 3);
+            //MILITARY
         }
         public void OnWantedSearchMode()
         {
@@ -527,6 +531,7 @@ namespace LosSantosRED.lsr
                 AddToQueue(SuspectEvaded, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
+            //MILITARY
         }
         public void OnWeaponsFree()
         {
@@ -535,6 +540,7 @@ namespace LosSantosRED.lsr
                 AddToQueue(WeaponsFree);
             }
             EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
+            //MILITARY
         }
         //Builder
         private void AddAttentionRandomUnit(DispatchEvent dispatchEvent)

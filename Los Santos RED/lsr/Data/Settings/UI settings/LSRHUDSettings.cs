@@ -145,7 +145,7 @@
         PlayerStatusScale = 0.52f;
         PlayerStatusJustificationID = 2;
         PlayerStatusFont = GTAFont.FontHouseScript;
-        PlayerStatusIncludeTime = true;
+        PlayerStatusIncludeTime = false;
         PlayerStatusSimpleTime = true;
         ShowStreetDisplay = true;
         FadeStreetDisplay = true;

@@ -340,6 +340,7 @@ public class PoliceSettings : ISettingsDefaultable
 
 
     public bool AllowRespondingWithoutCallIn { get; set; }
+    public bool ForceDefaultWeaponAnimations { get; set; }
 
     public PoliceSettings()
     {
@@ -516,6 +517,9 @@ public class PoliceSettings : ISettingsDefaultable
         DropWeaponWhenBusted = true;
 
         AllowRespondingWithoutCallIn = true;
+
+
+        ForceDefaultWeaponAnimations = true;
 
 
     }

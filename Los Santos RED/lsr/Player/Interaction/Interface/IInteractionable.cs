@@ -39,6 +39,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsPerformingActivity { get; }
         bool IsSitting { get; }
         bool IsTransacting { get; set; }
+        Stance Stance { get; }
+
         void SetAngeredCop();
     }
 }

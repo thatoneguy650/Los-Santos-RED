@@ -25,5 +25,22 @@ public static class AnimationDictionary
             }
         }
     }
+    public static bool RequestAnimationDictionayResult(string sDict)
+    {
+        if (sDict != "")
+        {
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
+            uint GameTimeStartedRequesting = Game.GameTime;
+            while (!NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict) && Game.GameTime - GameTimeStartedRequesting <= 100)
+            {
+                if(NativeFunction.CallByName<bool>("HAS_ANIM_DICT_LOADED", sDict))
+                {
+                    return true;
+                }
+                GameFiber.Yield();
+            }
+        }
+        return false;
+    }
 
 }

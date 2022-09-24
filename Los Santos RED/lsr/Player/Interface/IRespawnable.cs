@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IRespawnable
+    public interface IRespawnable : ICameraControllable
     {
         BankAccounts BankAccounts { get; }
         bool IsBusted { get; }

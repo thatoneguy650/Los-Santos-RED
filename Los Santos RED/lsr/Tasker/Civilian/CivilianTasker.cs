@@ -74,6 +74,13 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
+                    else if (!civilian.CanBeTasked)
+                    {
+                        if(civilian.CurrentTask != null)
+                        {
+                            civilian.CurrentTask = null;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -118,6 +125,13 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
+                    else if (!merchant.CanBeTasked)
+                    {
+                        if (merchant.CurrentTask != null)
+                        {
+                            merchant.CurrentTask = null;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
@@ -137,7 +151,7 @@ public class CivilianTasker
                 {
                     Civilian.CurrentTask = new GetArrested(Civilian, Player, PedProvider);
                     GameFiber.Yield();//TR Added back 7
-                    Civilian.CurrentTask.Start();
+                    Civilian.CurrentTask?.Start();
                 }
             }
         }
@@ -154,7 +168,7 @@ public class CivilianTasker
                 {
                     Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember));
                     GameFiber.Yield();//TR Added back 7
-                    Civilian.CurrentTask.Start();
+                    Civilian.CurrentTask?.Start();
                 }
             }
             else
@@ -163,7 +177,7 @@ public class CivilianTasker
                 {
                     Civilian.CurrentTask = new Flee(Civilian, Player);
                     GameFiber.Yield();//TR Added back 7
-                    Civilian.CurrentTask.Start();
+                    Civilian.CurrentTask?.Start();
                 }
             }
         }
@@ -264,7 +278,7 @@ public class CivilianTasker
                     {
                         Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
-                        Civilian.CurrentTask.Start();
+                        Civilian.CurrentTask?.Start();
 
                     }
                 }
@@ -274,7 +288,7 @@ public class CivilianTasker
                     {
                         Civilian.CurrentTask = new ScaredCallIn(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
-                        Civilian.CurrentTask.Start();
+                        Civilian.CurrentTask?.Start();
 
                     }
                 }
@@ -286,7 +300,7 @@ public class CivilianTasker
                         {
                             Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                             GameFiber.Yield();//TR Added back 7
-                            Civilian.CurrentTask.Start();
+                            Civilian.CurrentTask?.Start();
                         }
                     }
                     else
@@ -295,7 +309,7 @@ public class CivilianTasker
                         {
                             Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                             GameFiber.Yield();//TR Added back 7
-                            Civilian.CurrentTask.Start();
+                            Civilian.CurrentTask?.Start();
                         }
                     }
                 }
@@ -305,7 +319,7 @@ public class CivilianTasker
                     {
                         Civilian.CurrentTask = new Flee(Civilian, Player) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };
                         GameFiber.Yield();//TR Added back 7
-                        Civilian.CurrentTask.Start();
+                        Civilian.CurrentTask?.Start();
                     }
                 }
             }
@@ -315,7 +329,7 @@ public class CivilianTasker
                 {
                     Civilian.CurrentTask = new Fight(Civilian, Player, GetWeaponToIssue(Civilian.IsGangMember)) { OtherTarget = HighestPriorityOtherCrime?.Perpetrator };//gang memebrs already have guns
                     GameFiber.Yield();//TR Added back 7
-                    Civilian.CurrentTask.Start();
+                    Civilian.CurrentTask?.Start();
                 }
             }
             else if (SeenMundaneCrime)
@@ -326,7 +340,7 @@ public class CivilianTasker
                     {
                         Civilian.CurrentTask = new CalmCallIn(Civilian, Player);//oither target not needed, they just call in all crimes
                         GameFiber.Yield();//TR Added back 7
-                        Civilian.CurrentTask.Start();
+                        Civilian.CurrentTask?.Start();
                     }
                 }
             }

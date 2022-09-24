@@ -139,7 +139,7 @@ public class Respawning// : IRespawning
 
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
-        BookingActivity bookingActivity = new BookingActivity(CurrentPlayer, World, PoliceRespondable, respawnableLocation, SeatAssignable);
+        BookingActivity bookingActivity = new BookingActivity(CurrentPlayer, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
         bookingActivity.Setup();
         bookingActivity.Start();
     }

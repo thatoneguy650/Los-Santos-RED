@@ -108,7 +108,7 @@ namespace LosSantosRED.lsr.Data
                 GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
             }
 
-            if(player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
+            if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
             {
                 GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
@@ -229,7 +229,14 @@ namespace LosSantosRED.lsr.Data
                         }
                     }
                 }
-                foreach(GangRepSave tuple in GangReputations)
+
+
+
+
+
+
+
+                foreach (GangRepSave tuple in GangReputations)
                 {
                     Gang myGang = gangs.GetGang(tuple.GangID);
                     if (myGang != null)
@@ -239,14 +246,26 @@ namespace LosSantosRED.lsr.Data
                     }
                 }
 
-                if(GangKickSave != null)
+
+                if (GangKickSave != null)
                 {
                     Gang myGang = gangs.GetGang(GangKickSave.GangID);
                     if (myGang != null)
                     {
                         player.RelationshipManager.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
-                    }      
+                    }
+                    else
+                    {
+                        player.RelationshipManager.GangRelationships.ResetGang(false);
+                    }
                 }
+                else
+                {
+                    player.RelationshipManager.GangRelationships.ResetGang(false);
+                }
+
+
+
                 foreach (SavedContact ifc in Contacts.OrderBy(x=> x.Index))
                 {
                     Gang gang = gangs.GetGangByContact(ifc.Name);
@@ -256,7 +275,7 @@ namespace LosSantosRED.lsr.Data
                     }
                     else if (ifc.Name == EntryPoint.OfficerFriendlyContactName)
                     {
-                        player.CellPhone.AddCopContact(false);
+                        player.CellPhone.AddCopContact(false);//mess with this and need to test contacts after loading
                     }
                     else if (gang != null)
                     {

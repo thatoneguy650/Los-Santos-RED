@@ -70,5 +70,9 @@ public class Stance
         bool isUsingStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Player.Character);
         NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, !isUsingStealthMode, "DEFAULT_ACTION");
     }
+    public void SetStealthMode(bool enabled)
+    {
+        NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, enabled, "DEFAULT_ACTION");
+    }
 }
 

@@ -46,7 +46,7 @@ public class ActivitySettings : ISettingsDefaultable
         AllowPedConversations = true;
         AllowPedLooting = true;
         AllowDraggingOtherPeds = true;
-        AllowTakingOtherPedsHostage = false;
+        AllowTakingOtherPedsHostage = true;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
         PlayDraggingPedAnimation = false;
@@ -55,11 +55,9 @@ public class ActivitySettings : ISettingsDefaultable
         CrouchMovementSpeedOverride = 5.0f;
 
 
-#if DEBUG
-        AllowTakingOtherPedsHostage = true;
-#endif
 
 
-        UseAltCameraWhenSitting = true;
+
+        UseAltCameraWhenSitting = false;
     }
 }

@@ -16,6 +16,7 @@ public class BookingActivity
     private IEntityProvideable World;
     private IPoliceRespondable PoliceRespondable;
     private ILocationRespawnable Location;
+    private ISettingsProvideable Settings;
 
     private Cop Ped;
     private string PlayerGetCuffedAnimation;
@@ -39,12 +40,13 @@ public class BookingActivity
     private bool hasEnteredVehicle;
 
     private bool CanContinueBooking => EntryPoint.ModController.IsRunning && Player.IsBusted && !Player.IsIncapacitated && Player.IsAlive && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsDead && !Ped.IsInWrithe && !Ped.IsUnconscious;
-    public BookingActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ILocationRespawnable location, ISeatAssignable seatAssignable)
+    public BookingActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ILocationRespawnable location, ISeatAssignable seatAssignable, ISettingsProvideable settings)
     {
         Player = player;
         World = world;
         PoliceRespondable = policeRespondable;
         Location = location;
+        Settings = settings;
         SeatAssigner = new SeatAssigner(seatAssignable, World, World.Vehicles.PoliceVehicleList);
     }
     public void Setup()
@@ -180,6 +182,16 @@ public class BookingActivity
     }
     private void PlayCuffAnimation()
     {
+        CameraControl cameraControl = new CameraControl(Player);
+
+        if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
+        {
+
+            cameraControl.Setup();
+            cameraControl.HighlightEntity(Player.Character);
+        }
+
+
         isPlayerCuffed = false;
         Ped.WeaponInventory.ShouldAutoSetWeaponState = false;
         Ped.WeaponInventory.SetUnarmed();
@@ -223,6 +235,12 @@ public class BookingActivity
                 isPlayerCuffed = true;
             }
         }
+
+        if (Settings.SettingsManager.RespawnSettings.UseCustomCameraWhenBooking)
+        {
+            cameraControl.ReturnToGameplayCam();
+        }
+
     }
     private void TaskPlayerIntoVehicle()
     {
