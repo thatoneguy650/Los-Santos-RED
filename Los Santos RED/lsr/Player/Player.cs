@@ -542,6 +542,11 @@ namespace Mod
             ButtonPrompts.Update();
             MeleeManager.Update();
         }
+        public void SetNotBusted()
+        {
+            BeingArrested = false;
+            IsBusted = false;
+        }
         public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses)
         {
             IsDead = false;

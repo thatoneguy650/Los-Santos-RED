@@ -139,11 +139,54 @@ public class Respawning// : IRespawning
 
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
+        CalculateBail();
+
         BookingActivity bookingActivity = new BookingActivity(CurrentPlayer, World, PoliceRespondable, respawnableLocation, SeatAssignable, Settings);
         bookingActivity.Setup();
         bookingActivity.Start();
-    }
+        GameFiber.StartNew(delegate
+        {
+            while(bookingActivity.IsActive)
+            {
+                GameFiber.Yield();
+            }
 
+            if (CurrentPlayer.IsArrested && EntryPoint.ModController.IsRunning)//if you are still arrested after the booking, do the standard police station respawn
+            {
+                FadeOut();
+                if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
+                {
+                    CheckWeapons();
+                }
+                ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false);//if you pass clear weapons here it will just remover everything anwyays
+                CurrentPlayer.PlayerTasks.OnStandardRespawn();
+                if (respawnableLocation == null)
+                {
+                    List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
+                    PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
+                    PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
+                    respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+                }
+                SetPlayerAtLocation(respawnableLocation);
+                if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
+                {
+                    RemoveIllicitInventoryItems();
+                }
+                Time.SetDateTime(BailPostingTime);
+                GameFiber.Sleep(2000);
+                CurrentPlayer.HumanState.SetRandom();
+                FadeIn();
+                if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
+                {
+                    SetBailFee(respawnableLocation.Name, BailFee);
+                }
+                GameTimeLastSurrenderedToPolice = Game.GameTime;
+
+            }
+
+
+        }, "Booking");
+    }
     public bool TalkOutOfTicket()
     {
         TimesTalked++;
@@ -422,7 +465,10 @@ public class Respawning// : IRespawning
     private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses)
     {
         CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds, resetGroup, resetLicenses);
-       // CurrentPlayer.UnSetArrestedAnimation();
+        // CurrentPlayer.UnSetArrestedAnimation();
+
+        NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Game.LocalPlayer.Character, false);
+
         NativeFunction.CallByName<bool>("NETWORK_REQUEST_CONTROL_OF_ENTITY", Game.LocalPlayer.Character);
         NativeFunction.CallByName<uint>("RESET_PLAYER_ARREST_STATE", Game.LocalPlayer);
         NativeFunction.Natives.xC0AA53F866B3134D();//FORCE_GAME_STATE_PLAYING

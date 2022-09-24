@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -69,23 +70,22 @@ public class SeatAssigner
             }
             else
             {
-                foreach (VehicleExt possibleVehicle in VehiclesToTest)
+                foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
                 {
-                    if (possibleVehicle.Vehicle.Exists() && possibleVehicle.Vehicle.Speed < 0.5f)
+                    float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
+                    if (DistanceTo <= 125f)
                     {
-                        float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
-                        if (DistanceTo <= 125f)
+                        if(IsSeatAvailable(possibleVehicle, -1))
                         {
-                            if(IsSeatAvailable(possibleVehicle, -1))
-                            {
-                                VehicleTryingToEnter = possibleVehicle;
-                                SeatTryingToEnter = -1;
-                            }
-                            else if (IsSeatAvailable(possibleVehicle, 0))
-                            {
-                                VehicleTryingToEnter = possibleVehicle;
-                                SeatTryingToEnter = 0;
-                            }
+                            VehicleTryingToEnter = possibleVehicle;
+                            SeatTryingToEnter = -1;
+                            break;
+                        }
+                        else if (IsSeatAvailable(possibleVehicle, 0))
+                        {
+                            VehicleTryingToEnter = possibleVehicle;
+                            SeatTryingToEnter = 0;
+                            break;
                         }
                     }
                 }
@@ -116,23 +116,25 @@ public class SeatAssigner
     {
         VehicleTryingToEnter = null;
         SeatTryingToEnter = -99;
-        foreach (VehicleExt possibleVehicle in VehiclesToTest)
+        foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x=> x.Vehicle.Exists() && x.Vehicle.Model.NumberOfSeats >= 4 && x.Vehicle.Speed < 0.5f).OrderBy(x=> x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
         {
-            if (possibleVehicle.Vehicle.Exists() && possibleVehicle.Vehicle.Model.NumberOfSeats >= 4 && possibleVehicle.Vehicle.Speed < 0.5f)
+            float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
+            if (DistanceTo <= 75f)
             {
-                float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
-                if (DistanceTo <= 75f)
+                if (IsSeatAvailable(possibleVehicle, 1))
                 {
-                    if (IsSeatAvailable(possibleVehicle, 1))
-                    {
-                        VehicleTryingToEnter = possibleVehicle;
-                        SeatTryingToEnter = 1;
-                    }
-                    else if (IsSeatAvailable(possibleVehicle, 2))
-                    {
-                        VehicleTryingToEnter = possibleVehicle;
-                        SeatTryingToEnter = 2;
-                    }
+                    VehicleTryingToEnter = possibleVehicle;
+                    SeatTryingToEnter = 1;
+                    
+                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 1 Distance: {DistanceTo} Seat: {SeatTryingToEnter}");
+                    break;
+                }
+                else if (IsSeatAvailable(possibleVehicle, 2))
+                {
+                    VehicleTryingToEnter = possibleVehicle;
+                    SeatTryingToEnter = 2;
+                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 2 Distance: {DistanceTo} Seat: {SeatTryingToEnter}");
+                    break;
                 }
             }
         }
@@ -148,7 +150,50 @@ public class SeatAssigner
         {
             return true;
         }
+        //IS_ENTRY_POINT_FOR_SEAT_CLEAR
+        //GET_ENTRY_POINT_POSITION
         return false;
+    }
+    public Vector3 GetEntryPosition(VehicleExt vehicleToCheck, int seatToCheck)
+    {
+        Vector3 EntryPoint = Vector3.Zero;
+        if (vehicleToCheck != null && vehicleToCheck.Vehicle.Exists())
+        {
+            int doorID = GetDoorFromSeat(seatToCheck);
+            if (doorID != -1)
+            {
+                EntryPoint = NativeFunction.Natives.GET_ENTRY_POINT_POSITION<Vector3>(vehicleToCheck.Vehicle, doorID);
+            }
+        }
+        return EntryPoint;
+    }
+    public int GetDoorFromSeat(int seatToCheck)
+    {
+        if(seatToCheck == -1)//driver
+        {
+            return 0;
+        }
+        else if (seatToCheck == 0)//passenger
+        {
+            return 2;
+        }
+        else if (seatToCheck == 1)//left rear
+        {
+            return 1;
+        }
+        else if (seatToCheck == 2)//right rear
+        {
+            return 3;
+        }
+        else if (seatToCheck == 3)//outside left
+        {
+            return 4;
+        }
+        else if (seatToCheck == 4)//outside right
+        {
+            return 5;
+        }
+        return -1;
     }
 }
 

@@ -48,7 +48,7 @@ public class CopTasker
                     {
                         if (cop.HasBeenSpawnedFor >= 2000)
                         {
-                            if (cop.NeedsTaskAssignmentCheck)
+                            if (cop.NeedsTaskAssignmentCheck && cop.CanBeAmbientTasked)
                             {
                                 UpdateCurrentTask(cop);//has yields if it does anything
                             }

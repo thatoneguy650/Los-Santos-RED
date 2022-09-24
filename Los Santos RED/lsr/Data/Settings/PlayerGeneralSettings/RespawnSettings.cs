@@ -67,6 +67,8 @@ public class RespawnSettings : ISettingsDefaultable
     [Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable.")]
     public bool ForceBooking { get; set; }
     public bool UseCustomCameraWhenBooking { get; set; }
+    public float OffsetX { get; set; }
+    public float OffsetY { get; set; }
 
     public RespawnSettings()
     {
@@ -125,5 +127,12 @@ public class RespawnSettings : ISettingsDefaultable
 
         UseCustomCameraWhenBooking = true;
 
+
+#if DEBUG
+        ForceBooking = true;
+#endif
+
+        OffsetX = 0.5f;
+        OffsetY = 0.4f;
     }
 }

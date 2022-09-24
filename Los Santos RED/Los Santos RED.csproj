@@ -348,6 +348,7 @@
     <Compile Include="lsr\Player\Properties\Properties.cs" />
     <Compile Include="lsr\Player\Relationships\RelationshipManager.cs" />
     <Compile Include="lsr\Player\Respawning\BookingActivity.cs" />
+    <Compile Include="lsr\Player\Respawning\BookingVehicleManager.cs" />
     <Compile Include="lsr\Player\Scanner\CrimeDispatch.cs" />
     <Compile Include="lsr\Player\Scanner\Dispatch.cs" />
     <Compile Include="lsr\Player\Scanner\DispatchEvent.cs" />
