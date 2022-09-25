@@ -132,7 +132,7 @@ public class RespawnSettings : ISettingsDefaultable
         ForceBooking = true;
 #endif
 
-        OffsetX = 0.5f;
-        OffsetY = 0.4f;
+        OffsetX = 0.7f;
+        OffsetY = 0.5f;
     }
 }

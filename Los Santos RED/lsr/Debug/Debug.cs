@@ -1585,50 +1585,65 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        IsDisplaying = false;
-        GameFiber.Sleep(200);
-
-
-        Vector3 RoadblockInitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
-        Vector3 RoadblockFinalPosition = Vector3.Zero;
-        float RoadblockFinalHeading = 0f;
-        int density = -1;
-        int flags = -1;
-        if (NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
-            , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 0x40400000, 0))//if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 0, 3.0f, 0))
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
-            NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out density, out flags);
+            float doorAngleDriver = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 0);
+            float doorAngleDriverRear = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 1);
+            float doorAnglePassenger = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 2);
+            float doorAnglePAssengerRear = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(Player.CurrentVehicle.Vehicle, 3);
 
-
-            string d = "";
-            foreach (int flag in Enum.GetValues(typeof(PathnodeFlags)).Cast<PathnodeFlags>())
-            {
-                
-                if ((flag & flags) != 0) d += " " + (PathnodeFlags)flag;
-
-
-
-
-            }
-            EntryPoint.WriteToConsole($"{RoadblockFinalPosition} {RoadblockFinalHeading} density {density} flags {flags} d {d}");
-
-
-
-
-
-
-            IsDisplaying = true;
-            GameFiber.StartNew(delegate
-            {
-                uint GameTimeStarted = Game.GameTime;
-                while (Game.GameTime - GameTimeStarted <= 10000 && ModController.IsRunning && IsDisplaying)
-                {
-                    Rage.Debug.DrawArrowDebug(RoadblockInitialPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-                    Rage.Debug.DrawArrowDebug(RoadblockFinalPosition + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-                    GameFiber.Yield();
-                }
-            }, "Run Debug Logic");
+            Game.DisplaySubtitle($"Driver {doorAngleDriver} DriverR {doorAngleDriverRear} Passenger {doorAnglePassenger} Passenger Rear {doorAnglePAssengerRear}");
+            EntryPoint.WriteToConsole($"Driver {doorAngleDriver} DriverR {doorAngleDriverRear} Passenger {doorAnglePassenger} Passenger Rear {doorAnglePAssengerRear}");
         }
+        
+       
+
+
+
+        //IsDisplaying = false;
+        //GameFiber.Sleep(200);
+
+
+        //Vector3 RoadblockInitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(25f);
+        //Vector3 RoadblockFinalPosition = Vector3.Zero;
+        //float RoadblockFinalHeading = 0f;
+        //int density = -1;
+        //int flags = -1;
+        //if (NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
+        //    , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 0x40400000, 0))//if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 0, 3.0f, 0))
+        //{
+        //    NativeFunction.Natives.GET_VEHICLE_NODE_PROPERTIES(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out density, out flags);
+
+
+        //    string d = "";
+        //    foreach (int flag in Enum.GetValues(typeof(PathnodeFlags)).Cast<PathnodeFlags>())
+        //    {
+
+        //        if ((flag & flags) != 0) d += " " + (PathnodeFlags)flag;
+
+
+
+
+        //    }
+        //    EntryPoint.WriteToConsole($"{RoadblockFinalPosition} {RoadblockFinalHeading} density {density} flags {flags} d {d}");
+
+
+
+
+
+
+        //    IsDisplaying = true;
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        uint GameTimeStarted = Game.GameTime;
+        //        while (Game.GameTime - GameTimeStarted <= 10000 && ModController.IsRunning && IsDisplaying)
+        //        {
+        //            Rage.Debug.DrawArrowDebug(RoadblockInitialPosition + new Vector3(0f, 0f, 2f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+        //            Rage.Debug.DrawArrowDebug(RoadblockFinalPosition + new Vector3(0f,0f,2f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
+        //            GameFiber.Yield();
+        //        }
+        //    }, "Run Debug Logic");
+        //}
     }
 
     public enum PathnodeFlags

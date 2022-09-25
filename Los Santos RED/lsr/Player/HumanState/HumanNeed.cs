@@ -15,6 +15,7 @@ public abstract class HumanNeed
     private uint GameTimeLastUpdated;
     private uint GameTimeBetweenValueUpdates = 1000;
     private uint GameTimeBetweenResultUpdates = 15000;
+    private uint GameTimeLastSetNeed;
     private ITimeReportable Time;
     private uint GameTimeLastChangedNeed;
     //private int Digits;
@@ -28,6 +29,7 @@ public abstract class HumanNeed
         CurrentValue = maxValue;
         Time = time;
     }
+    public DateTime TimeLastUpdatedValue;
     public virtual int Digits { get; set; } = 0;
     public bool IsAboveQuarter => CurrentValue >= MaxValue * 0.25f;
     public bool IsBelowQuarter => CurrentValue <= MaxValue * 0.25f;
@@ -97,6 +99,7 @@ public abstract class HumanNeed
         if (updateRecent)
         {
             GameTimeLastChangedNeed = Game.GameTime;
+            TimeLastUpdatedValue = Time.CurrentDateTime;
         }
     }
     public void SetRandom(bool allowLow)
@@ -117,6 +120,7 @@ public abstract class HumanNeed
     {
         CurrentValue = MaxValue;
         GameTimeLastUpdated = Game.GameTime;
+        TimeLastUpdatedValue = Time.CurrentDateTime;
     }
 
 

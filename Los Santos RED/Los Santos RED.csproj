@@ -353,6 +353,9 @@
     <Compile Include="lsr\Player\Scanner\Dispatch.cs" />
     <Compile Include="lsr\Player\Scanner\DispatchEvent.cs" />
     <Compile Include="lsr\Player\Scanner\LocationSpecificitycs.cs" />
+    <Compile Include="lsr\Player\Scanner\New\PoliceScannerNew.cs" />
+    <Compile Include="lsr\Player\Scanner\New\PoliceScannerDispatchesNew.cs" />
+    <Compile Include="lsr\Player\Scanner\New\ScannerNew.cs" />
     <Compile Include="lsr\Player\Sprinting.cs" />
     <Compile Include="lsr\Player\Stance\Stance.cs" />
     <Compile Include="lsr\Player\Equipment\WeaponEquipment.cs" />

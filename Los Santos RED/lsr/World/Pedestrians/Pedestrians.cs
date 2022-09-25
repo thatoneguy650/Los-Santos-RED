@@ -1030,7 +1030,10 @@ public class Pedestrians : ITaskerReportable
             {
                 EntryPoint.PersistentPedsDeleted++;
             }
-            Pedestrian.Delete();
+
+            Delete(Pedestrian);
+
+            //Pedestrian.Delete();
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL, DELETING", 2);
         }
     }

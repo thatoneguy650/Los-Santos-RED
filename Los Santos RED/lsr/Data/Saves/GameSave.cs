@@ -132,9 +132,12 @@ namespace LosSantosRED.lsr.Data
             OfficerFriendlyReputation = player.RelationshipManager.OfficerFriendlyRelationship.ReputationLevel;
             PlayerPosition = player.Character.Position;
             PlayerHeading = player.Character.Heading;
+
+
             HungerValue = player.HumanState.Hunger.CurrentValue;
             SleepValue = player.HumanState.Sleep.CurrentValue;
             ThirstValue = player.HumanState.Thirst.CurrentValue;
+
             if (player.Licenses.HasDriversLicense)
             {
                 DriversLicense = new DriversLicense() { ExpirationDate = player.Licenses.DriversLicense.ExpirationDate, IssueDate = player.Licenses.DriversLicense.IssueDate };

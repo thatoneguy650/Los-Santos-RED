@@ -35,6 +35,8 @@ public class BookingVehicleManager
     private bool isWalking;
     private string PlayerCuffedDictionary;
     private string PlayerCuffedAnimation;
+    private bool canEnterCar;
+    private bool isAttached;
 
     public bool IsActive { get; private set; }
     public BookingVehicleManager(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ILocationRespawnable location, ISeatAssignable seatAssignable, ISettingsProvideable settings, BookingActivity bookingActivity, Cop cop)
@@ -60,40 +62,69 @@ public class BookingVehicleManager
     public void Start()
     {
         GetClosesetPoliceVehicle();
+        SetupPeds();
+        //NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(Player.Character, Cop.Pedestrian, -0.5f, -0.5f, 0f, 1.0f, -1, 10.0f, true);
+        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 1.0f, -1.0f, -1, 1 | 16, 0, 0, 1, 0);
+        Cop.Pedestrian.Tasks.PlayAnimation("doors@", "door_sweep_r_hand_medium", 9f, AnimationFlags.StayInEndFrame | AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly).WaitForCompletion(1000);
+        AttachPeds();
+        ReTaskCarLoop();
+        canEnterCar = false;
+        while (!Player.IsInVehicle && BookingActivity.CanContinueBooking && !Game.IsKeyDown(System.Windows.Forms.Keys.I))
+        {
+            HandlePlayerDistance();
+            PlayerEnterCarLoop();
+            if(VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() )
+            {
+                float doorAngle = NativeFunction.Natives.GET_VEHICLE_DOOR_ANGLE_RATIO<float>(VehicleTryingToEnter.Vehicle, DoorTryingToEnter);//VehicleTryingToEnter.Vehicle.GetDoors()[DoorTryingToEnter].IsOpen;
+                bool isOpen = doorAngle > 0;
+                float distanceTo = VehicleTryingToEnter.Vehicle.DistanceTo(Game.LocalPlayer.Character);
+
+                if(distanceTo <= 2f)
+                {
+                    if (Cop.Pedestrian.Exists())
+                    {
+                        Game.LocalPlayer.Character.Detach();
+                        Cop.Pedestrian.Detach();
+                        isAttached = false;
+                        NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Cop.Pedestrian);
+                    }
+                }
+
+                if (isOpen && distanceTo <= 5f)
+                {
+                    canEnterCar = true;
+                    break;
+                }
+                Game.DisplaySubtitle($"Seat {SeatTryingToEnter} Door {DoorTryingToEnter} doorAngle {doorAngle} Open {isOpen} Dist {distanceTo}");
+            }
+            GameFiber.Yield();
+        }
+        ReleasePeds();
+        EnterVehicle();
+    }
+    private void EnterVehicle()
+    {
+        if (canEnterCar && VehicleTryingToEnter.Vehicle.Exists())
+        {
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Game.LocalPlayer.Character, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
+            GameFiber.Sleep(5000);
+        }
+        else
+        {
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        }
+    }
+    private void SetupPeds()
+    {
         Cop.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
         Game.LocalPlayer.Character.CollisionIgnoredEntity = Cop.Pedestrian;
 
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Cop.Pedestrian, 225, false);//CPED_CONFIG_FLAG_DisablePotentialToBeWalkedIntoResponse 
         NativeFunction.Natives.SET_PED_CONFIG_FLAG(Cop.Pedestrian, 226, false);//CPED_CONFIG_FLAG_DisablePedAvoidance  
-
-        NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, PlayerCuffedDictionary, PlayerCuffedAnimation, 1.0f, -1.0f, -1, 1 | 16, 0, 0, 1, 0);
-
-        //NativeFunction.Natives.TASK_FOLLOW_TO_OFFSET_OF_ENTITY(Player.Character, Cop.Pedestrian, -0.5f, -0.5f, 0f, 1.0f, -1, 10.0f, true);
-        NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, true);
-
-       Cop.Pedestrian.Tasks.PlayAnimation("doors@", "door_sweep_r_hand_medium", 9f, AnimationFlags.StayInEndFrame | AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly).WaitForCompletion(1000);
-
-        AttachPeds();
-       // NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Game.LocalPlayer.Character, Cop.Pedestrian, (int)PedBoneId.RightHand, 0.2f, 0.4f, 0f, 0f, 0f, 0f, true, true, false, false, 2, true);
-        //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Game.LocalPlayer.Character, Cop.Pedestrian,(int)PedBoneId.RightHand, 0.2f, 0.4f, 0f, 0f, 0f, 0f, true, true, false, false, 2, true);
-
-        Game.LocalPlayer.Character.IsCollisionEnabled = false;
-
-        ReTaskCarLoop();
-        bool canEnterCar = false;
-        while (!Player.IsInVehicle && BookingActivity.CanContinueBooking)
-        {
-            HandlePlayerDistance();
-            PlayerEnterCarLoop();
-
-
-            if(VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists() && VehicleTryingToEnter.Vehicle.GetDoors()[DoorTryingToEnter].IsOpen && VehicleTryingToEnter.Vehicle.DistanceTo(Game.LocalPlayer.Character) <= 10f)
-            {
-                canEnterCar = true;
-                break;
-            }
-            GameFiber.Yield();
-        }
+    }
+    private void ReleasePeds()
+    {
         if (Cop.Pedestrian.Exists())
         {
             Game.LocalPlayer.Character.Detach();
@@ -109,24 +140,15 @@ public class BookingVehicleManager
         {
             Game.LocalPlayer.Character.Detach();
         }
+        isAttached = false;
         Game.LocalPlayer.Character.IsCollisionEnabled = true;
         Game.LocalPlayer.Character.CollisionIgnoredEntity = null;
 
         NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, false);
-        if (canEnterCar && VehicleTryingToEnter.Vehicle.Exists())
-        {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Game.LocalPlayer.Character, VehicleTryingToEnter.Vehicle, -1, SeatTryingToEnter, 1f, 9);
-            GameFiber.Sleep(5000);
-        }
-        else
-        {
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        }
-
     }
     private void AttachPeds()
     {
+        isAttached = true;
         NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Game.LocalPlayer.Character, Cop.Pedestrian, (int)PedBoneId.RightHand, Settings.SettingsManager.RespawnSettings.OffsetX, Settings.SettingsManager.RespawnSettings.OffsetY, 0f, 0f, 0f, 0f, true, true, false, false, 2, true);
         //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Game.LocalPlayer.Character, Cop.Pedestrian, (int)PedBoneId.RightHand, 0.2f, 0.4f, 0f, 0f, 0f, 0f, true, true, false, false, 2, true);
     }
@@ -135,10 +157,7 @@ public class BookingVehicleManager
         if (Cop.Pedestrian.Exists())
         {
             //AttachPeds();
-            //Player.Character.Position = Cop.Pedestrian.GetOffsetPosition(AttachOffset);
-            //Game.LocalPlayer.Character.Heading = Cop.Pedestrian.Heading;
-
-            if (Cop.Pedestrian.IsWalking)
+            if (Cop.Pedestrian.IsWalking && isAttached)
             {
                 if (!isWalking)
                 {
@@ -234,6 +253,8 @@ public class BookingVehicleManager
         VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
         SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
         DoorTryingToEnter = SeatAssigner.GetDoorFromSeat(SeatTryingToEnter);
+
+        EntryPoint.WriteToConsole($"GetClosesetPoliceVehicle Booking: SeatTryingToEnter {SeatTryingToEnter} DoorTryingToEnter {DoorTryingToEnter}");
         //SeatTryingToEnterEntryPosition = SeatAssigner.GetEntryPosition(VehicleTryingToEnter, SeatTryingToEnter);
     }
 }

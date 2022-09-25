@@ -169,31 +169,52 @@ public class SeatAssigner
     }
     public int GetDoorFromSeat(int seatToCheck)
     {
-        if(seatToCheck == -1)//driver
-        {
-            return 0;
-        }
-        else if (seatToCheck == 0)//passenger
-        {
-            return 2;
-        }
-        else if (seatToCheck == 1)//left rear
-        {
-            return 1;
-        }
-        else if (seatToCheck == 2)//right rear
-        {
-            return 3;
-        }
-        else if (seatToCheck == 3)//outside left
-        {
-            return 4;
-        }
-        else if (seatToCheck == 4)//outside right
-        {
-            return 5;
-        }
-        return -1;
+        return seatToCheck + 1;
+
+
+        //if(seatToCheck == -1)//driver
+        //{
+        //    return 0;
+        //}
+        //else if (seatToCheck == 0)//passenger
+        //{
+        //    return 2;
+        //}
+        //else if (seatToCheck == 1)//left rear
+        //{
+        //    return 1;
+        //}
+        //else if (seatToCheck == 2)//right rear
+        //{
+        //    return 3;
+        //}
+        //else if (seatToCheck == 3)//outside left
+        //{
+        //    return 4;
+        //}
+        //else if (seatToCheck == 4)//outside right
+        //{
+        //    return 5;
+        //}
+        //return -1;
     }
+
+
+    //enum eDoorId//THIS IS BULLSHIT
+    //{
+    //    VEH_EXT_DOOR_INVALID_ID = -1,
+    //    VEH_EXT_DOOR_DSIDE_F,//driver
+    //    VEH_EXT_DOOR_DSIDE_R,//passenger front
+    //    VEH_EXT_DOOR_PSIDE_F,
+    //    VEH_EXT_DOOR_PSIDE_R,
+    //    VEH_EXT_BONNET,
+    //    VEH_EXT_BOOT
+    //};
+
+    /*Moreinfo of Seat Index
+DriverSeat = -1
+Passenger = 0
+Left Rear = 1
+RightRear = 2*/
 }
 

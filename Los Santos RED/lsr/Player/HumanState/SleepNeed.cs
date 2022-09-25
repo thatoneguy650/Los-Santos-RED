@@ -6,12 +6,11 @@ public class SleepNeed : HumanNeed
 {
     private IHumanStateable Player;
     private float MinChangeValue = -0.002f;
-    private DateTime TimeLastUpdatedValue;
     private ITimeReportable Time;
     private float RealTimeScalar;
     private ISettingsProvideable Settings;
     private bool ShouldRecover => Player.IsResting || Player.IsSleeping;
-    private bool ShouldChange => Player.IsAlive;
+    private bool ShouldChange => Player.IsAlive && !RecentlyChanged;
     private bool ShouldSlowDrain => Player.IsResting || Player.IsSitting || Player.IsLayingDown;
     public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
     {
@@ -51,23 +50,9 @@ public class SleepNeed : HumanNeed
                 }
                 
             }
-            if(NeedsResultUpdate)
-            {
-                UpdateResults();
-            }
         }
     }
-    private void UpdateResults()
-    {
-        if(IsAboveHalf)
-        {
-            //Player.ChangeHealth(1);
-        }
-        else if (IsBelowQuarter)
-        {
 
-        }
-    }
     private void UpdateRealTimeScalar()//move this into the base class?
     {
         RealTimeScalar = 1.0f;

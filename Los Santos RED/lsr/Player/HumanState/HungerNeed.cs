@@ -10,7 +10,6 @@ public class HungerNeed : HumanNeed
 {
     private IHumanStateable Player;
     private float MinChangeValue = -0.003f;
-    private DateTime TimeLastUpdatedValue;
     private ITimeReportable Time;
     private float RealTimeScalar;
     private ISettingsProvideable Settings;

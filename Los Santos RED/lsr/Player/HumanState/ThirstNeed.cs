@@ -10,7 +10,6 @@ public class ThirstNeed : HumanNeed
 {
     private IHumanStateable Player;
     private float MinChangeValue = -0.004f;
-    private DateTime TimeLastUpdatedValue;
     private ITimeReportable Time;
     private float RealTimeScalar;
     private ISettingsProvideable Settings;
