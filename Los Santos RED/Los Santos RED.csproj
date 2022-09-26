@@ -374,7 +374,14 @@
     <Compile Include="lsr\Spawner\LESpawnTask.cs" />
     <Compile Include="lsr\Spawner\SpawnTask.cs" />
     <Compile Include="lsr\Tasker\Civilian\Tasks\GetArrestedSimple.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\GeneralIdle.cs" />
     <Compile Include="lsr\Tasker\Gang\Tasks\GangIdle2.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\GetInVehicleTaskState.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\ReturnToStationVehicleTaskState.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\TaskState.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\WaitInVehicleTaskState.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\WanderInVehicleTaskState.cs" />
+    <Compile Include="lsr\Tasker\Other\Experiement\WanderOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\SeatAssigner.cs" />
     <Compile Include="lsr\Tasker\Cop\SubTasks\FootChase.cs" />
     <Compile Include="lsr\Tasker\EMT\Tasks\EMTFlee.cs" />

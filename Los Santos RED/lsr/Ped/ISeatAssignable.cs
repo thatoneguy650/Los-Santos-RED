@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ISeatAssignable
     {
+        bool IsInVehicle { get; }
         int AssignedSeat { get; }
         List<uint> BlackListedVehicles { get; }
         Ped Pedestrian { get; }

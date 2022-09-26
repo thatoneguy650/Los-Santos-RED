@@ -723,11 +723,11 @@ public class DebugMenu : Menu
         {
             if (SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
             {
-                Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true);
+                Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
             else
             {
-                Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true);
+                Dispatcher.DebugSpawnCop(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
             menu.Visible = false;
         };
@@ -736,11 +736,24 @@ public class DebugMenu : Menu
         {
             if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
             {
-                Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false);
+                Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
             else
             {
-                Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false);
+                Dispatcher.DebugSpawnCop(SpawnAgencyVehicle.SelectedItem.ID, false, false);
+            }
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Agency> SpawnEmptyAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Empty Vehicle Spawn", "Spawn a random agency empty vehicle", Agencies.GetAgencies());
+        SpawnEmptyAgencyVehicle.Activated += (menu, item) =>
+        {
+            if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.EMS)
+            {
+                Dispatcher.DebugSpawnEMT(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
+            }
+            else
+            {
+                Dispatcher.DebugSpawnCop(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }
             menu.Visible = false;
         };
@@ -784,6 +797,7 @@ public class DebugMenu : Menu
 
         DispatcherMenu.AddItem(SpawnAgencyFoot);
         DispatcherMenu.AddItem(SpawnAgencyVehicle);
+        DispatcherMenu.AddItem(SpawnEmptyAgencyVehicle);
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnRockblock);
@@ -933,7 +947,7 @@ public class DebugMenu : Menu
                 coolguy.KeepTasks = true;
 
                 coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-                coolguy.IsInvincible = true;
+                //coolguy.IsInvincible = true;
                 //if (RandomItems.RandomPercent(30))
                 //{
                 //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
@@ -992,7 +1006,7 @@ public class DebugMenu : Menu
             {
                 coolguy.BlockPermanentEvents = true;
                 coolguy.KeepTasks = true;
-                coolguy.IsInvincible = true;
+                //coolguy.IsInvincible = true;
                 PedExt pedExt = new PedExt(coolguy, Settings,true,false,false,false,"Test1", Crimes, Weapons, "CRIMINA", World, true);
                 pedExt.WasEverSetPersistent = true;
                 World.Pedestrians.AddEntity(pedExt);
@@ -1007,8 +1021,8 @@ public class DebugMenu : Menu
                 {
                     coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
                 }
-                coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
-                //coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                //coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
+                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
             }
             while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
             {

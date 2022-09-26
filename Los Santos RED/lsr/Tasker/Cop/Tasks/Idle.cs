@@ -512,9 +512,9 @@ public class Idle : ComplexTask
     }
     private void GetClosesetPoliceVehicle()
     {
-        SeatAssigner.AssignFrontSeat();
-        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
-        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
+        SeatAssigner.AssignFrontSeat(true);
+        VehicleTryingToEnter = SeatAssigner.VehicleAssigned;
+        SeatTryingToEnter = SeatAssigner.SeatAssigned;
     }
     private void ClearTasks(bool resetAlertness)//temp public
     {

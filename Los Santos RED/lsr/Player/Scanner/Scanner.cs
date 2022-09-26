@@ -2559,7 +2559,7 @@ namespace LosSantosRED.lsr
                 Name = "Suspect Spotted",
                 IsStatus = true,
                 IncludeReportedBy = false,
-                LocationDescription = LocationSpecificity.Zone,
+                LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,

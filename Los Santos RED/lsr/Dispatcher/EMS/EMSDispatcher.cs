@@ -344,7 +344,7 @@ public class EMSDispatcher
         }
         return true;
     }
-    public void DebugSpawnEMT(string agencyID, bool onFoot)
+    public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
@@ -373,6 +373,10 @@ public class EMSDispatcher
                 RequiredGroup = VehicleType.RequiredPedGroup;
             }
             PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        }
+        if(isEmpty)
+        {
+            PersonType = null;
         }
         CallSpawnTask(true, false);
     }

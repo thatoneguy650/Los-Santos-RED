@@ -1180,5 +1180,8 @@ public class Pedestrians : ITaskerReportable
     {
         SeatAssignments.RemoveAll(x => x.Vehicle == null || x.Ped == null || !x.Vehicle.Vehicle.Exists() || !x.Ped.Pedestrian.Exists() || x.Ped.Pedestrian.IsDead);
     }
-
+    public List<AssignedSeat> GetPedsAssignedToVehicle(VehicleExt vehicleToCheck)
+    {
+        return SeatAssignments.Where(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle).ToList();
+    }
 }

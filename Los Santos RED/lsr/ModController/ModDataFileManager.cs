@@ -171,13 +171,17 @@ public class ModDataFileManager
             "Stanier (police) - Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\x64e.rpf\\levels\\gta5\\vehicles.rpf'" + Environment.NewLine +
             "Buffalo (police2) - Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
             "Interceptor (police3) - Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-            "Granger (sheriff2) - Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
+            "Granger (sheriff2) - Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
+            "Gresley (police5) - Copy police5_hi.yft, police5.ytd, and police5.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'." + Environment.NewLine + 
+            "Gresley Continued (police5) - Copy vehicles.meta from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\common\\data\\levels\\gta5\\' and replace the existing entry." + Environment.NewLine + 
+            "Gresley Continued (police5) - Copy carvariations.meta from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\common\\data\\ and replace the existing entry'." + Environment.NewLine + Environment.NewLine +
             "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
             "Model Credits:" + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" + Environment.NewLine +
             "Buffalo - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." + Environment.NewLine +
             "Interceptor - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues." + Environment.NewLine +
             "Granger - Base GTAV vehicle model made by Rockstar Games and modified by Lt.Caine. Vehicle body remapped by Lt.Caine. Yard1 for fixing vehicle glass collision issues" + Environment.NewLine +
+            "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
     }

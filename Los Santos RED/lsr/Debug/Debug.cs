@@ -970,6 +970,9 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        Player.CellPhone.AddScheduledText("American Auto Assistance", "CHAR_BLANK_ENTRY", "We've been trying to reach you concerning your vehicle's ~r~extended warranty~s~. You should've received a notice in the mail about your car's extended warranty eligibility. Since we've not gotten a response, we're giving you a ~r~final~s~ courtesy call before we close out your file.");
+
+
         //string model = NativeHelper.GetKeyboardInput("");
         //model = model.ToLower();
 
@@ -983,11 +986,11 @@ public class Debug
         //if(Barrier.Exists())
         //{
         //    Barrier.Delete();
+        ////}
+        //if(Player.CurrentVehicle != null)
+        //{
+        //    EntryPoint.WriteToConsole($"Current Class {Player.CurrentVehicle.VehicleClass} IsAircraft: {Player.CurrentVehicle.IsAircraft}");
         //}
-        if(Player.CurrentVehicle != null)
-        {
-            EntryPoint.WriteToConsole($"Current Class {Player.CurrentVehicle.VehicleClass} IsAircraft: {Player.CurrentVehicle.IsAircraft}");
-        }
 
 
         //Game.LocalPlayer.Character.KeepTasks = true;

@@ -250,8 +250,8 @@ public class BookingVehicleManager
     private void GetClosesetPoliceVehicle()
     {
         SeatAssigner.AssignPrisonerSeat();
-        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
-        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
+        VehicleTryingToEnter = SeatAssigner.VehicleAssigned;
+        SeatTryingToEnter = SeatAssigner.SeatAssigned;
         DoorTryingToEnter = SeatAssigner.GetDoorFromSeat(SeatTryingToEnter);
 
         EntryPoint.WriteToConsole($"GetClosesetPoliceVehicle Booking: SeatTryingToEnter {SeatTryingToEnter} DoorTryingToEnter {DoorTryingToEnter}");

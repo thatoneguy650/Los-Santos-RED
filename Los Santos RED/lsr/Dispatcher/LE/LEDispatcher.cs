@@ -960,7 +960,7 @@ public class LEDispatcher
 
         }
     }
-    public void DebugSpawnCop(string agencyID, bool onFoot)
+    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty)
     {
         VehicleType = null;
         PersonType = null;
@@ -995,6 +995,11 @@ public class LEDispatcher
             }
             PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
         }
+        if(isEmpty)
+        {
+            PersonType = null;
+        }
+
         CallSpawnTask(true, true, true, false);
     }
 }

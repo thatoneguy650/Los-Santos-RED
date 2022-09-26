@@ -265,8 +265,8 @@ public class GetArrested : ComplexTask
     {
 
         SeatAssigner.AssignPrisonerSeat();
-        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
-        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
+        VehicleTryingToEnter = SeatAssigner.VehicleAssigned;
+        SeatTryingToEnter = SeatAssigner.SeatAssigned;
     }
     private void SetArrestedAnimation(Ped PedToArrest)
     {
@@ -310,7 +310,7 @@ public class GetArrested : ComplexTask
             if (!NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_2_hands_up", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "busted", "idle_a", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_enter", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup", 3) && !NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_base", 3))
             {
                // EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up", 3);
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);//2
                 GameFiber.Wait(1000);
                 if (PedToArrest.Exists())
                 {
@@ -322,7 +322,7 @@ public class GetArrested : ComplexTask
                         return;
                     }
                     //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Up Idle", 3);
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_base", 2.0f, -2.0f, -1, 1, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_base", 2.0f, -2.0f, -1, 1, 0, false, false, false);//1
                 }
             }
             if(PedToArrest.Exists())
@@ -410,22 +410,29 @@ public class GetArrested : ComplexTask
         {
             //AnimationDictionary.RequestAnimationDictionay("random@arrests");
             //AnimationDictionary.RequestAnimationDictionay("busted");
-            //AnimationDictionary.RequestAnimationDictionay("ped");
+            AnimationDictionary.RequestAnimationDictionay("ped");
             AnimationDictionary.RequestAnimationDictionay("mp_arresting");
             if (PedToArrest.Exists())
             {
-                
-                //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start UnSet", 3);
-               // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
-                GameFiber.Wait(1500);
-                if (PedToArrest.Exists())
-                {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
-                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
-                    GameFiber.Wait(2000);
-                    PlayedUnArrestAnimation = true;
-                }
+                //if (NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", PedToArrest, "ped", "handsup_base", 3))
+                //{
+                //    PlayedUnArrestAnimation = true;
+                //}
+                //else
+                //{
+                    //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start UnSet", 3);
+                    // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "busted", "hands_up_2_idle", 4.0f, -4.0f, -1, 4096, 0, 0, 1, 0);
+                    GameFiber.Wait(1500);
+                    if (PedToArrest.Exists())
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
+                        //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
+                        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
+                        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_base", 2.0f, -2.0f, -1, 49, 0, false, false, false);
+                        GameFiber.Wait(2000);
+                        PlayedUnArrestAnimation = true;
+                    }
+             //   }
             }
             if (PedToArrest.Exists())
             {
@@ -452,7 +459,8 @@ public class GetArrested : ComplexTask
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(PedToArrest);
                     //EntryPoint.WriteToConsole($"TASKER: {Ped.Pedestrian.Handle}                 GetArrested Start Hands Behind Back", 3);
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "ped", "handsup_base", 2.0f, -2.0f, -1, 49, 0, false, false, false);
+                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", PedToArrest, "mp_arresting", "idle", 1.0f, -1.0f, -1, 49, 0, 0, 1, 0);
                     GameFiber.Wait(2000);
                     PlayedUnArrestAnimation = true;
                 }

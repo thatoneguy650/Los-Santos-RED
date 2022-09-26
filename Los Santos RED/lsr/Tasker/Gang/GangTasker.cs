@@ -61,7 +61,7 @@ public class GangTasker
                         gangMember.UpdateTask(null);
                         GameFiber.Yield();
                     }
-                    if(!gangMember.CanBeTasked)
+                    if(!gangMember.IsBusted && !gangMember.CanBeTasked)
                     {
                         if (gangMember.CurrentTask != null)
                         {

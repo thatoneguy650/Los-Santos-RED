@@ -180,6 +180,12 @@ public class EMTIdle : ComplexTask
             {
                 if ((Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) && Ped.Pedestrian.CurrentVehicle.Exists())
                 {
+                    //if(SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle),Ped.Pedestrian.SeatIndex))
+                    //{
+
+                    //}
+                    //else 
+                    
                     if (IsReturningToStation)
                     {
                         BasicLocation closestHospital = PlacesOfInterest.PossibleLocations.Hospitals.OrderBy(x => Ped.Pedestrian.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
@@ -322,9 +328,9 @@ public class EMTIdle : ComplexTask
     }
     private void GetClosesetAmbulanceVehicle()
     {
-        SeatAssigner.AssignFrontSeat();
-        VehicleTryingToEnter = SeatAssigner.VehicleTryingToEnter;
-        SeatTryingToEnter = SeatAssigner.SeatTryingToEnter;
+        SeatAssigner.AssignFrontSeat(true);
+        VehicleTryingToEnter = SeatAssigner.VehicleAssigned;
+        SeatTryingToEnter = SeatAssigner.SeatAssigned;
     }
     private void ClearTasks(bool resetAlertness)//temp public
     {

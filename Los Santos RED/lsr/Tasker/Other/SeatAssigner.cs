@@ -22,26 +22,26 @@ public class SeatAssigner
         VehiclesToTest = vehiclesToTest;
     }
 
-    public VehicleExt VehicleTryingToEnter { get; set; }
-    public int SeatTryingToEnter { get; set; }
-    public void AssignFrontSeat()
+    public VehicleExt VehicleAssigned { get; set; }
+    public int SeatAssigned { get; set; }
+    public void AssignFrontSeat(bool includeNonAssigned)
     {
-        VehicleTryingToEnter = null;
-        SeatTryingToEnter = -99;
+        VehicleAssigned = null;
+        SeatAssigned = -99;
         if (IsSeatAvailable(Ped.AssignedVehicle, Ped.AssignedSeat))
         {
-            VehicleTryingToEnter = Ped.AssignedVehicle;
-            SeatTryingToEnter = Ped.AssignedSeat;
+            VehicleAssigned = Ped.AssignedVehicle;
+            SeatAssigned = Ped.AssignedSeat;
         }
         else if (IsSeatAvailable(Ped.AssignedVehicle, -1))
         {
-            VehicleTryingToEnter = Ped.AssignedVehicle;
-            SeatTryingToEnter = -1;
+            VehicleAssigned = Ped.AssignedVehicle;
+            SeatAssigned = -1;
         }
         else if (IsSeatAvailable(Ped.AssignedVehicle, 0))
         {
-            VehicleTryingToEnter = Ped.AssignedVehicle;
-            SeatTryingToEnter = 0;
+            VehicleAssigned = Ped.AssignedVehicle;
+            SeatAssigned = 0;
         }
         else 
         {
@@ -55,20 +55,20 @@ public class SeatAssigner
             }
             if(LastVehicle != null && IsSeatAvailable(LastVehicle, Ped.LastSeatIndex))
             {
-                VehicleTryingToEnter = LastVehicle;
-                SeatTryingToEnter = Ped.LastSeatIndex;
+                VehicleAssigned = LastVehicle;
+                SeatAssigned = Ped.LastSeatIndex;
             }
             else if (LastVehicle != null && IsSeatAvailable(LastVehicle, -1))
             {
-                VehicleTryingToEnter = LastVehicle;
-                SeatTryingToEnter = -1;
+                VehicleAssigned = LastVehicle;
+                SeatAssigned = -1;
             }
             else if (LastVehicle != null && IsSeatAvailable(LastVehicle, 0))
             {
-                VehicleTryingToEnter = LastVehicle;
-                SeatTryingToEnter = 0;
+                VehicleAssigned = LastVehicle;
+                SeatAssigned = 0;
             }
-            else
+            else if(includeNonAssigned)
             {
                 foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
                 {
@@ -77,45 +77,43 @@ public class SeatAssigner
                     {
                         if(IsSeatAvailable(possibleVehicle, -1))
                         {
-                            VehicleTryingToEnter = possibleVehicle;
-                            SeatTryingToEnter = -1;
+                            VehicleAssigned = possibleVehicle;
+                            SeatAssigned = -1;
                             break;
                         }
                         else if (IsSeatAvailable(possibleVehicle, 0))
                         {
-                            VehicleTryingToEnter = possibleVehicle;
-                            SeatTryingToEnter = 0;
+                            VehicleAssigned = possibleVehicle;
+                            SeatAssigned = 0;
                             break;
                         }
                     }
                 }
             }
         }
-        if(VehicleTryingToEnter != null && SeatTryingToEnter != -1)
+        if(VehicleAssigned != null && SeatAssigned != -1)
         {
-            if(!World.Pedestrians.IsSeatAssignedToAnyone(VehicleTryingToEnter, -1) && IsSeatAvailable(VehicleTryingToEnter, -1))
+            if(!World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned, -1) && IsSeatAvailable(VehicleAssigned, -1))
             {
-                VehicleTryingToEnter = VehicleTryingToEnter;
-                SeatTryingToEnter = -1;
+                VehicleAssigned = VehicleAssigned;
+                SeatAssigned = -1;
             }
         }
-        if(VehicleTryingToEnter != null && SeatTryingToEnter != -99)
+        if(VehicleAssigned != null && SeatAssigned != -99)
         {
             World.Pedestrians.RemoveSeatAssignment(Ped);
-            World.Pedestrians.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
-            if (VehicleTryingToEnter.Vehicle.Exists())
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleAssigned, SeatAssigned);
+            if (VehicleAssigned.Vehicle.Exists())
             {
-                VehicleTryingToEnter.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
-                VehicleTryingToEnter.Vehicle.MustBeHotwired = false;
+                VehicleAssigned.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
+                VehicleAssigned.Vehicle.MustBeHotwired = false;
             }
         }
     }
-
-
     public void AssignPrisonerSeat()
     {
-        VehicleTryingToEnter = null;
-        SeatTryingToEnter = -99;
+        VehicleAssigned = null;
+        SeatAssigned = -99;
         foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x=> x.Vehicle.Exists() && x.Vehicle.Model.NumberOfSeats >= 4 && x.Vehicle.Speed < 0.5f).OrderBy(x=> x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
         {
             float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
@@ -123,25 +121,25 @@ public class SeatAssigner
             {
                 if (IsSeatAvailable(possibleVehicle, 1))
                 {
-                    VehicleTryingToEnter = possibleVehicle;
-                    SeatTryingToEnter = 1;
+                    VehicleAssigned = possibleVehicle;
+                    SeatAssigned = 1;
                     
-                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 1 Distance: {DistanceTo} Seat: {SeatTryingToEnter}");
+                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 1 Distance: {DistanceTo} Seat: {SeatAssigned}");
                     break;
                 }
                 else if (IsSeatAvailable(possibleVehicle, 2))
                 {
-                    VehicleTryingToEnter = possibleVehicle;
-                    SeatTryingToEnter = 2;
-                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 2 Distance: {DistanceTo} Seat: {SeatTryingToEnter}");
+                    VehicleAssigned = possibleVehicle;
+                    SeatAssigned = 2;
+                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 2 Distance: {DistanceTo} Seat: {SeatAssigned}");
                     break;
                 }
             }
         }
-        if (VehicleTryingToEnter != null && SeatTryingToEnter != -99)
+        if (VehicleAssigned != null && SeatAssigned != -99)
         {
             World.Pedestrians.RemoveSeatAssignment(Ped);
-            World.Pedestrians.AddSeatAssignment(Ped, VehicleTryingToEnter, SeatTryingToEnter);
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleAssigned, SeatAssigned);
         }
     }
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
@@ -152,6 +150,23 @@ public class SeatAssigner
         }
         //IS_ENTRY_POINT_FOR_SEAT_CLEAR
         //GET_ENTRY_POINT_POSITION
+        return false;
+    }
+    public bool HasPedsWaitingToEnter(VehicleExt vehicleToCheck, int seatToExclude)
+    {
+        if (vehicleToCheck != null && vehicleToCheck.Vehicle.Exists())
+        {
+            foreach(AssignedSeat assignedSeat in World.Pedestrians.GetPedsAssignedToVehicle(vehicleToCheck))
+            {
+                if(assignedSeat.Seat != seatToExclude)
+                {
+                    if(!assignedSeat.Ped.IsInVehicle)
+                    {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
     public Vector3 GetEntryPosition(VehicleExt vehicleToCheck, int seatToCheck)
@@ -199,6 +214,28 @@ public class SeatAssigner
         //return -1;
     }
 
+    public bool IsAssignmentValid()
+    {
+        if(VehicleAssigned != null && SeatAssigned != -99 && VehicleAssigned.Vehicle.Exists() && Ped.Pedestrian.Exists())
+        {
+            if(VehicleAssigned.Vehicle.Speed >= 1.0f)
+            {
+                return false;
+            }
+            //if(VehicleAssigned.Vehicle.IsSeatFree(SeatAssigned))
+            //{
+
+            //}
+
+            Ped onSeat = VehicleAssigned.Vehicle.GetPedOnSeat(SeatAssigned);
+            if (onSeat.Exists() && onSeat.Handle != Ped.Pedestrian.Handle)
+            {
+                return false;
+            }
+            return true;
+        }
+        return false;
+    }
 
     //enum eDoorId//THIS IS BULLSHIT
     //{

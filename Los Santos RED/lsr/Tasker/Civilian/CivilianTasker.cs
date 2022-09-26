@@ -74,7 +74,7 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
-                    else if (!civilian.CanBeTasked)
+                    else if (!civilian.IsBusted && !civilian.CanBeTasked)
                     {
                         if(civilian.CurrentTask != null)
                         {
@@ -125,7 +125,7 @@ public class CivilianTasker
                             GameFiber.Yield();
                         }
                     }
-                    else if (!merchant.CanBeTasked)
+                    else if (!merchant.IsBusted && !merchant.CanBeTasked)
                     {
                         if (merchant.CurrentTask != null)
                         {
