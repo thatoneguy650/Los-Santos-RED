@@ -63,7 +63,7 @@ public class GeneralIdle : ComplexTask
         {
             if(Ped.IsDriver)
             {
-                if (SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
+                if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                 {
                     CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, World, SeatAssigner);
                 }

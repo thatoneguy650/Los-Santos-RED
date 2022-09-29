@@ -569,11 +569,11 @@ public class PoliceScannerNew
                 EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                 if (Settings.SettingsManager.ScannerSettings.SetVolume)
                 {
-                    AudioPlayer.Play(PoliceScannerDispatches.RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false);
+                    AudioPlayer.Play(PoliceScannerDispatches.RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                 }
                 else
                 {
-                    AudioPlayer.Play(PoliceScannerDispatches.RadioEnd.PickRandom(), false);
+                    AudioPlayer.Play(PoliceScannerDispatches.RadioEnd.PickRandom(), false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                 }
                 AbortedAudio = false;
                 GameFiber.Sleep(1000);
@@ -600,11 +600,11 @@ public class PoliceScannerNew
                     {
                         if (Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
-                            AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);
+                            AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                         }
                         else
                         {
-                            AudioPlayer.Play(audioname, false);
+                            AudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                         }
                         while (AudioPlayer.IsAudioPlaying)
                         {

@@ -37,7 +37,15 @@ public class CellphoneSettings : ISettingsDefaultable
     public int BurnerCellThemeID { get; set; }
     [Description("Choose burner phone background (0-17)")]
     public int BurnerCellBackgroundID { get; set; }
+    [Description("Enable or disable custom ringtones.")]
+    public bool UseCustomRingtone { get; set; }
+    [Description("Set the custom ringtone filename. Use the filename from the LosSantosRED\audio\ringtones folder. Ex. STTHOMAS.wav")]
+    public string CustomRingtoneName { get; set; }
 
+    [Description("Enable or disable custom ringtones volume control")]
+    public bool SetCustomRingtoneVolume { get; set; }
+    [Description("Set volume of custom ringtones. Min 0.0 Max 1.0")]
+    public float CustomRingtoneVolume { get; set; }
     public CellphoneSettings()
     {
         SetDefault();
@@ -63,5 +71,9 @@ public class CellphoneSettings : ISettingsDefaultable
         TerminateVanillaCellphone = false;
         BurnerCellThemeID = 1;
         BurnerCellBackgroundID = 0;
+        UseCustomRingtone = true;
+        CustomRingtoneName = "GTA5TONE7.wav";
+        SetCustomRingtoneVolume = true;
+        CustomRingtoneVolume = 0.3f;
     }
 }

@@ -329,12 +329,12 @@ public class Weather
                 if (Settings.SettingsManager.ScannerSettings.SetVolume)
                 {
                     isPlayingAudio = true;
-                    AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, true);
+                    AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, true, false);
                 }
                 else
                 {
                     isPlayingAudio = true;
-                    AudioPlayer.Play(audioname, true);
+                    AudioPlayer.Play(audioname, true, false);
                 }
                 while (AudioPlayer.IsAudioPlaying)
                 {

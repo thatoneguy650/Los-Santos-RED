@@ -87,6 +87,7 @@ public class DebugMenu : Menu
         CreateLocationMenu();
         CreateTeleportMenu();
         CreateOtherItems();
+        CreateRelationshipsMenu();
     }
     private void CreateLocationMenu()
     {
@@ -353,6 +354,10 @@ public class DebugMenu : Menu
         };
 
 
+
+
+
+
         PlayerStateItemsMenu.AddItem(KillPlayer);
         PlayerStateItemsMenu.AddItem(GiveMoney);
         PlayerStateItemsMenu.AddItem(SetMoney);
@@ -373,12 +378,44 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
 
     }
+    private void CreateRelationshipsMenu()
+    {
+        UIMenu PlayerStateItemsMenu = MenuPool.AddSubMenu(Debug, "Relationships Menu");
+        PlayerStateItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various relationship items.";
 
+
+        UIMenuItem AddOfficerFriendly = new UIMenuItem("Add Officer Friendly", "Add officer friendly contact and set relationship to friendly");
+        AddOfficerFriendly.Activated += (menu, item) =>
+        {
+            Player.RelationshipManager.OfficerFriendlyRelationship.Reset(false);
+            Player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(Player.RelationshipManager.OfficerFriendlyRelationship.RepMaximum,false);
+            Player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(90000,false);
+            Player.CellPhone.AddCopContact(false);
+            menu.Visible = false;
+        };
+        UIMenuItem AddUndergroundGuns = new UIMenuItem("Add Underground Guns", "Add underground guns contact and set relationship to friendly");
+        AddUndergroundGuns.Activated += (menu, item) =>
+        {
+            Player.RelationshipManager.GunDealerRelationship.Reset(false);
+            Player.RelationshipManager.GunDealerRelationship.SetReputation(Player.RelationshipManager.GunDealerRelationship.RepMaximum, false);
+            Player.RelationshipManager.GunDealerRelationship.SetMoneySpent(90000, false);
+            Player.CellPhone.AddGunDealerContact(false);
+            menu.Visible = false;
+        };
+        
+     
+
+
+        PlayerStateItemsMenu.AddItem(AddOfficerFriendly);
+        PlayerStateItemsMenu.AddItem(AddUndergroundGuns);
+
+
+    }
     public void Setup()
     {
         CreateDebugMenu();
     }
-
     private void CreateCrimeMenu()
     {
         UIMenu CrimeItemsMenu = MenuPool.AddSubMenu(Debug, "Crime Menu");
@@ -586,12 +623,10 @@ public class DebugMenu : Menu
 
 
     }
-
     private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
     {
         throw new NotImplementedException();
     }
-
     private void CreateTimeMenu()
     {
         UIMenu TimeItems = MenuPool.AddSubMenu(Debug, "Time Menu");
@@ -983,8 +1018,6 @@ public class DebugMenu : Menu
             }
         }, "Run Debug Logic");
     }
-
-
     private void GiveClosestGun()
     {
         PedExt toChoose = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
@@ -995,7 +1028,6 @@ public class DebugMenu : Menu
         }
 
     }
-
     private void SpawnNoGunAttackers()
     {
         GameFiber.StartNew(delegate

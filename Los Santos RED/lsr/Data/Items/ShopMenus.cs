@@ -899,8 +899,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Weeny Issi Sport",35000),
                 new MenuItem("Western Bagger",12000),
                 new MenuItem("Western Cliffhanger",12000),
+                new MenuItem("Western Daemon LOST",12000),
                 new MenuItem("Western Daemon",12000),
-                new MenuItem("Western Daemon 2",12000),
                 new MenuItem("Western Apocalypse Deathbike",12000),
                 new MenuItem("Western Future Shock Deathbike",12000),
                 new MenuItem("Western Nightmare Deathbike",12000),
@@ -1362,6 +1362,17 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Principe Lectro",18000,12400),
                 new MenuItem("Nagasaki Carbon RS",40000,22500),
                 new MenuItem("Nagasaki BF400",12000,6200),
+
+                //NEW
+                new MenuItem("LCC Hexer",37000,23000),
+                new MenuItem("LCC Innovation",35000,21000),
+
+                new MenuItem("Western Zombie Bobber",40000,26000),
+                new MenuItem("Western Zombie Chopper",35000,23000),
+                new MenuItem("Western Daemon",26000,19000),
+                new MenuItem("Western Daemon LOST",29000,20000),
+                new MenuItem("Western Bagger",19000,9500),
+
             }),
             new ShopMenu("LuxuryAutosMenu","Luxury Autos",new List<MenuItem>() {//pegassi/grotti/enus/buckingham/pfiuster
                 new MenuItem("Enus Huntley S",119000,65000),

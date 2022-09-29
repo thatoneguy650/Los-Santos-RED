@@ -13,8 +13,17 @@ public class ScannerSettings : ISettingsDefaultable
     public bool EnableAudio { get; set; }
     [Description("Enable or disable changing audio volume with the scanner. Not recommened unless you have issues.")]
     public bool SetVolume { get; set; }
-    [Description("Volume setting to use with the SetVolume setting. Min 0 Max 10")]
-    public int AudioVolume { get; set; }
+
+    [Description("Volume setting to use with the SetVolume setting. Min 0.0 Max 1.0")]
+    public float AudioVolume { get; set; }
+
+
+    //[Description("Volume setting to use with the SetVolume setting. Min 0 Max 10")]
+    //public int AudioVolume_Old { get; set; }
+
+
+
+
     [Description("Enable or disable subtitles from the scanner.")]
     public bool EnableSubtitles { get; set; }
     [Description("Enable or disable notifications from the scanner.")]
@@ -27,13 +36,10 @@ public class ScannerSettings : ISettingsDefaultable
     public bool AllowStatusAnnouncements { get; set; }
     [Description("Changes the grammer of the dispatcher a bit to be more realstic in some places. Disable to be more consistent.")]
     public bool UseNearForLocations { get; set; }
-
     [Description("Number of units to include attention audio for during a citizen reported crime. Requires Call Signs.")]
     public int NumberOfUnitsToAnnounce { get; set; }
-
-
-    //[Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
-    //public bool ApplyFilter { get; set; }
+    [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
+    public bool ApplyFilter { get; set; }
 
     public ScannerSettings()
     {
@@ -43,8 +49,9 @@ public class ScannerSettings : ISettingsDefaultable
     {
         IsEnabled = true;
         EnableAudio = true;
-        SetVolume = false;
-        AudioVolume = 5;
+        SetVolume = true;
+        AudioVolume = 0.3f;
+        ApplyFilter = false;
         EnableSubtitles = false;
         EnableNotifications = true;
         DelayMinTime = 1500;
@@ -52,7 +59,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
-        //ApplyFilter = false;
+
     }
 
 }

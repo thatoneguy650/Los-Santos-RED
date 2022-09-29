@@ -4340,6 +4340,33 @@
         public static ScannerFile Radio_End_2 { get { return new ScannerFile("01_radio_beep\\Radio_End_2.wav", "Radio_End_2", "Radio_End_2"); } }
     }
 
+
+    public class Ringtones
+    {
+        public static ScannerFile CELLPHONE_RING { get { return new ScannerFile("ringtones\\CELLPHONE_RING.wav", "CELLPHONE_RING", "CELLPHONE_RING"); } }
+        public static ScannerFile OneZeroNine { get { return new ScannerFile("ringtones\\109.wav", "109", "109"); } }
+        public static ScannerFile BASSMATIC { get { return new ScannerFile("ringtones\\BASSMATIC.wav", "BASSMATIC", "BASSMATIC"); } }
+        public static ScannerFile CELLPHONE_SMS_LOOP { get { return new ScannerFile("ringtones\\CELLPHONE_SMS_LOOP.wav", "CELLPHONE_SMS_LOOP", "CELLPHONE_SMS_LOOP"); } }
+        public static ScannerFile COOLROOM { get { return new ScannerFile("ringtones\\COOLROOM.wav", "COOLROOM", "COOLROOM"); } }
+        public static ScannerFile CREDITCHECK { get { return new ScannerFile("ringtones\\CREDITCHECK.wav", "CREDITCHECK", "CREDITCHECK"); } }
+        public static ScannerFile DRIVE { get { return new ScannerFile("ringtones\\DRIVE.wav", "DRIVE", "DRIVE"); } }
+        public static ScannerFile FOURTHSRINGTONE { get { return new ScannerFile("ringtones\\FOURTHSRINGTONE.wav", "FOURTHSRINGTONE", "FOURTHSRINGTONE"); } }
+        public static ScannerFile FUNKINTIME { get { return new ScannerFile("ringtones\\FUNKINTIME.wav", "FUNKINTIME", "FUNKINTIME"); } }
+        public static ScannerFile GETDOWN { get { return new ScannerFile("ringtones\\GETDOWN.wav", "GETDOWN", "GETDOWN"); } }
+        public static ScannerFile INTOSOMETHING { get { return new ScannerFile("ringtones\\INTOSOMETHING.wav", "INTOSOMETHING", "INTOSOMETHING"); } }
+        public static ScannerFile KATJASWALTZ { get { return new ScannerFile("ringtones\\KATJASWALTZ.wav", "KATJASWALTZ", "KATJASWALTZ"); } }
+        public static ScannerFile LAIDBACK { get { return new ScannerFile("ringtones\\LAIDBACK.wav", "LAIDBACK", "LAIDBACK"); } }
+        public static ScannerFile MINEUNTILMONDAY { get { return new ScannerFile("ringtones\\MINEUNTILMONDAY.wav", "MINEUNTILMONDAY", "MINEUNTILMONDAY"); } }
+        public static ScannerFile SOLO { get { return new ScannerFile("ringtones\\SOLO.wav", "SOLO", "SOLO"); } }
+        public static ScannerFile SWINGIT { get { return new ScannerFile("ringtones\\SWINGIT.wav", "SWINGIT", "SWINGIT"); } }
+        public static ScannerFile TAKETHEPAIN { get { return new ScannerFile("ringtones\\TAKETHEPAIN.wav", "TAKETHEPAIN", "TAKETHEPAIN"); } }
+        public static ScannerFile THEONEFORME { get { return new ScannerFile("ringtones\\THEONEFORME.wav", "THEONEFORME", "THEONEFORME"); } }
+        public static ScannerFile TONIGHT { get { return new ScannerFile("ringtones\\TONIGHT.wav", "TONIGHT", "TONIGHT"); } }
+        public static ScannerFile STTHOMAS { get { return new ScannerFile("ringtones\\STTHOMAS.wav", "STTHOMAS", "STTHOMAS"); } }
+
+    }
+
+
     public class SWAT3
     {
         public static ScannerFile airsupportimmediateinsertion { get { return new ScannerFile("03_swat\\airsupportimmediateinsertion.wav", "Radio_Start_1", "Radio_Start_1"); } }

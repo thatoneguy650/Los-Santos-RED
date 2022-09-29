@@ -38,7 +38,8 @@ public static class EntryPoint
     {
         #if DEBUG
                 LogLevel = 5;
-        #endif
+#endif
+
         while (Game.IsLoading)
         {
             GameFiber.Yield();

@@ -649,6 +649,9 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
             new Residence(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578, PurchasePrice = 550000, RentalDays = 28, RentalFee = 2250 },
             //new Residence(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
             
+           
+
+
             //House
             new Residence(new Vector3(983.7811f, 2718.655f, 39.50342f), 175.7726f, "345 Route 68", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 234000, RentalDays = 28, RentalFee = 1400  },
             new Residence(new Vector3(980.1745f, 2666.563f, 40.04342f), 1.699184f, "140 Route 68", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 225000, RentalDays = 28, RentalFee = 1250  },
@@ -682,6 +685,23 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
             new Residence(new Vector3(-37.54279f, 170.3245f, 95.35922f), 303.8834f, "Elgin House Apartment 23E", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 404000, RentalDays = 28, RentalFee = 1650  },
             new Residence(new Vector3(9.063264f, 52.93087f, 71.64354f), 344.3057f, "0605 Apartment 4F", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 375000, RentalDays = 28, RentalFee = 1570  },
             new Residence(new Vector3(76.05615f, -86.96131f, 63.00647f), 249.8842f, "1144 Apartment 2B", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },
+
+
+
+            //NEW
+            new Residence(new Vector3(-1035.18f, -1146.53f, 2.16f), 32.45f, "68 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, RentalDays = 28, RentalFee = 2400  },
+            new Residence(new Vector3(-1061.66f, -1099.24f, 2.19f), 31.68f, "23 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },
+            new Residence(new Vector3(988.85f, -527.58f, 60.48f), 213.97f, "114 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 390000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(975.40f, -578.95f, 35.89f), 35.89f, "115 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 360000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-960.14f, -1109.21f, 2.15f), 33.94f, "87 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-951.51f, -1078.93f, 2.15f), 207.97f, "88 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 490000, RentalDays = 28, RentalFee = 2500  },
+            new Residence(new Vector3(-1183.19f, -1064.55f, 2.15f), 114.64f, "42 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-983.25f, -1065.88f, 2.15f), 30.08f, "86 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 440000, RentalDays = 28, RentalFee = 2300  },
+            new Residence(new Vector3(-1064.27f, -1159.15f, 2.16f), 31.65f, "65 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(1061.45f, -378.89f, 63.00647f), 222.31f, "763 Bridge St", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 350000, RentalDays = 28, RentalFee = 2000  },
+            
+
+
 
 new Residence(new Vector3(1683.038f, 4689.635f, 43.06602f), 269.7168f, "330E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000, RentalFee = 1200, RentalDays = 28,},
 new Residence(new Vector3(1674.201f, 4658.228f, 43.37114f), 270.4372f, "335E Grapeseed", ""){ OpenTime = 0,CloseTime = 24,PurchasePrice = 200000, RentalFee = 1200, RentalDays = 28,},

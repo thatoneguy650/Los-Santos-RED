@@ -26,9 +26,9 @@ public class MediaPlayerAudio : IAudioPlayable
             System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); IsPlayingLowPriority = false; });//seems to take 500 ms or so to do it? will lock the game thread
         }
     }
-    public void Play(string FileName, int volume, bool isLowPriority)
+    public void Play(string FileName, int volume, bool isLowPriority, bool applyFilter)
     {
-        Play(FileName, isLowPriority);
+        Play(FileName, isLowPriority, applyFilter);
     }
 
     private void AudioDevice_MediaEnded(object sender, EventArgs e)
@@ -38,7 +38,7 @@ public class MediaPlayerAudio : IAudioPlayable
         IsPlayingLowPriority = false;
     }
 
-    public void Play(string FileName, bool isLowPriority)
+    public void Play(string FileName, bool isLowPriority, bool applyFilter)
     {
         try
         {
@@ -92,5 +92,10 @@ public class MediaPlayerAudio : IAudioPlayable
             AudioDevice = new MediaPlayer();
             AudioDevice.MediaEnded += AudioDevice_MediaEnded;
         }
+    }
+
+    public void Play(string fileName, float volume, bool isLowPriority, bool applyFilter)
+    {
+
     }
 }

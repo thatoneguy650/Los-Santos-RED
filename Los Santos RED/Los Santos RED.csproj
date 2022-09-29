@@ -73,6 +73,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
       <HintPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
@@ -97,6 +101,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Audio\MediaPlayerAudio.cs" />
+    <Compile Include="lsr\Audio\MusicPlayerOld.cs" />
     <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />

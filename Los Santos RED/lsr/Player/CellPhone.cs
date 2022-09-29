@@ -7,6 +7,7 @@ using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static DispatchScannerFiles;
 
 public class CellPhone
 {
@@ -41,6 +42,7 @@ public class CellPhone
     private ICrimes Crimes;
     private uint GameTimeLastCheckedScheduledItems;
     private uint GameTimeBetweenCheckScheduledItems = 15000;
+    private NAudioPlayer phoneAudioPlayer;
 
     private bool ShouldCheckScheduledItems => GameTimeLastCheckedScheduledItems == 0 || Game.GameTime - GameTimeLastCheckedScheduledItems >= GameTimeBetweenCheckScheduledItems;
     public bool IsActive => BurnerPhone?.IsActive == true;
@@ -64,11 +66,15 @@ public class CellPhone
         Crimes = crimes;
         World = world;
         BurnerPhone = new BurnerPhone(Player, Time, Settings);
+        phoneAudioPlayer = new NAudioPlayer(Settings);
     }
     public void Setup()
     {
         AddEmergencyServicesCustomContact(false);
         BurnerPhone.Setup();
+
+        
+
     }
     public void ContactAnswered(PhoneContact contact)
     {
@@ -206,7 +212,6 @@ public class CellPhone
             BurnerPhone.ClosePhone();
         }
     }
-
     public void CallEMS()
     {
         if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1)
@@ -253,6 +258,32 @@ public class CellPhone
     }
 
 
+    public void AddScamText()
+    {
+        List<string> ScammerNames = new List<string>() {
+        "American Freedom Institute",
+        "Lifestyle Unlimited",
+        "NAMB Products",
+        "Turner Investments",
+        "L.F. Fields",
+        "Jambog Ltd.",
+
+
+        };
+        List<string> ScammerMessages = new List<string>() {
+        "Beautiful weekend coming up. Wanna go out? Sophie gave me your number. Check out my profile here: virus.link/safe",
+        "Your IBS tax refund is pending acceptance. Must accept within 24 hours http://asdas.sdf.sdf//asdasd",
+        "We've been trying to reach you concerning your vehicle's ~r~extended warranty~s~. You should've received a notice in the mail about your car's extended warranty eligibility.",
+        "Verify your Lifeinvader ID. Use Code: DVWB@55",
+        "You've won a prize! Go to securelink.safe.biz.ug to claim your ~r~$500~s~ gift card.",
+        "Dear customer, Fleeca Bank is closing your bank accounts. Please confirm your pin at fleecascam.ytmd/theft to keep your account activated",
+        "URGENT! Your grandson was arrested last night in New Armadillo. Need bail money immediately! Wire Eastern Confederacy at econfed.utg/legit",
+
+        };
+
+        Player.CellPhone.AddScheduledText(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY", ScammerMessages.PickRandom(),0);
+        CheckScheduledTexts();
+    }
 
     private void CheckScheduledItems()
     {
@@ -604,7 +635,27 @@ public class CellPhone
     }
     private void PlayTextReceivedSound()
     {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+
+        if (Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
+        {
+            string AudioPath = $"ringtones\\{Settings.SettingsManager.CellphoneSettings.CustomRingtoneName}";
+            if (!phoneAudioPlayer.IsAudioPlaying)
+            {
+                if (Settings.SettingsManager.CellphoneSettings.SetCustomRingtoneVolume)
+                {
+                    phoneAudioPlayer.Play(AudioPath, Settings.SettingsManager.CellphoneSettings.CustomRingtoneVolume, false, false);
+                }
+                else
+                {
+                    phoneAudioPlayer.Play(AudioPath, 0.5f, false, false);
+                }
+            }
+            //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+        }
+        else
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+        }
     }
     private void PlayPhoneResponseSound()
     {
@@ -623,7 +674,7 @@ public class CellPhone
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
-        public string IconName { get; set; } = "CHAR_DEFAULT";
+        public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
     }
     private class ScheduledText
     {
@@ -637,7 +688,7 @@ public class CellPhone
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
-        public string IconName { get; set; } = "CHAR_DEFAULT";
+        public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
     }
 
 }

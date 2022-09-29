@@ -11,7 +11,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsAudioPlaying { get; }
         bool IsPlayingLowPriority { get; }
         void Abort();
-        void Play(string fileName, bool isLowPriority);
-        void Play(string fileName, int volume, bool isLowPriority);
+        void Play(string fileName, bool isLowPriority, bool applyFilter);
+        void Play(string fileName, int volume, bool isLowPriority, bool applyFilter);
+        void Play(string fileName, float volume, bool isLowPriority, bool applyFilter);
     }
 }

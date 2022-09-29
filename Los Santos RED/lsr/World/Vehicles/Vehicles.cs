@@ -308,10 +308,14 @@ public class Vehicles
     }
     public VehicleExt GetVehicleExt(Vehicle vehicle)
     {
-        VehicleExt ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
-        if(ToReturn == null)
+        VehicleExt ToReturn = null;
+        if (vehicle.Exists())
         {
-            ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
+            ToReturn = PoliceVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
+            if (ToReturn == null)
+            {
+                ToReturn = CivilianVehicles.FirstOrDefault(x => x.Vehicle.Handle == vehicle.Handle);
+            }
         }
         return ToReturn;
     }

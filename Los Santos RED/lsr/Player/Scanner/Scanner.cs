@@ -1607,11 +1607,11 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                     if (Settings.SettingsManager.ScannerSettings.SetVolume)
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                     }
                     else
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), false);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                     }
                     AbortedAudio = false;
                     GameFiber.Sleep(1000);
@@ -1634,17 +1634,17 @@ namespace LosSantosRED.lsr
                     foreach (string audioname in soundsToPlayer)
                     {
                         EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
-                        if (audioname != "" && audioname != null && audioname.Length > 2)
+                        if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
                         {
                             if (Settings.SettingsManager.ScannerSettings.SetVolume)
                             {
-                                AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false);
+                                AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                             }
                             else
                             {
-                                AudioPlayer.Play(audioname, false);
+                                AudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                             }
-                            while (AudioPlayer.IsAudioPlaying)
+                            while (AudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
                             {
                                 if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
                                 {

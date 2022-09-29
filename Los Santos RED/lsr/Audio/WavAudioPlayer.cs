@@ -20,7 +20,7 @@ public class WavAudioPlayer : IAudioPlayable
             System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.Stop(); IsPlayingLowPriority = false; });//seems to take 500 ms or so to do it? will lock the game thread
         }
     }
-    public void Play(string FileName, int volume, bool isLowPriority)
+    public void Play(string FileName, int volume, bool isLowPriority, bool applyFilter)
     {
         if (FileName == "")
         {
@@ -41,13 +41,13 @@ public class WavAudioPlayer : IAudioPlayable
             volume = 1;
         }
         IsPlayingLowPriority = isLowPriority;
-        SetVolume(volume);
+       //SetVolume(volume);
         string AudioFilePath = string.Format("Plugins\\LosSantosRED\\audio\\{0}", FileName);
         AudioDevice.SoundLocation = AudioFilePath;
         IsAudioPlaying = true;
         System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsPlayingLowPriority = false; });
     }
-    public void Play(string FileName, bool isLowPriority)
+    public void Play(string FileName, bool isLowPriority, bool applyFilter)
     {
         if (FileName == "")
         {
@@ -64,18 +64,25 @@ public class WavAudioPlayer : IAudioPlayable
         IsAudioPlaying = true;
         System.Threading.Tasks.Task.Factory.StartNew(() => { AudioDevice.PlaySync(); IsAudioPlaying = false; IsPlayingLowPriority = false; });
     }
+
+    public void Play(string fileName, float volume, bool isLowPriority, bool applyFilter)
+    {
+        Play(fileName, isLowPriority, applyFilter);
+    }
+
     private int GetVolume()
     {
-        uint CurrVol;
-        waveOutGetVolume(IntPtr.Zero, out CurrVol);
-        ushort CalcVol = (ushort)(CurrVol & 0x0000ffff);
-        return (ushort)(CalcVol / (ushort.MaxValue / 10));
+        return -1;
+        //uint CurrVol;
+        //waveOutGetVolume(IntPtr.Zero, out CurrVol);
+        //ushort CalcVol = (ushort)(CurrVol & 0x0000ffff);
+        //return (ushort)(CalcVol / (ushort.MaxValue / 10));
     }
-    private void SetVolume(int VolumeToSet)
+    public void SetVolume(int VolumeToSet)
     {
-        int NewVolume = ((ushort.MaxValue / 10) * VolumeToSet);
-        uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
-        waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
-        GetVolume();
+        //int NewVolume = ((ushort.MaxValue / 10) * VolumeToSet);
+        //uint NewVolumeAllChannels = (((uint)NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
+        //waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+        //GetVolume();
     }
 }
