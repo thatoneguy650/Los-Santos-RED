@@ -239,51 +239,51 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         List<DeadDrop> DeadDrops = new List<DeadDrop>() {
 
-            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "the Daily Rag newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "the Las Mietras newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(76.75777f,-605.3703f,43.22094f), 68.89698f, "Dead Drop", "the trash can by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-174.7691f,-674.9272f,33.27862f), 249.5148f, "Dead Drop", "the phone booth by the Arcadius Center" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-223.6883f,-703.9772f,32.59268f), 70.00474f, "Dead Drop", "the mailbox by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-251.0725f,-739.3169f,31.99848f), 187.8322f, "Dead Drop", "the Daily Rag newspaper stand by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-263.7065f,-850.4099f,30.48533f), 160.0125f, "Dead Drop", "the Daily Rag newspaper stand by Go Postal" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1460.144f,-627.849f,29.69636f), 209.8004f, "Dead Drop", "the dumpster by Swallow" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1438.361f,-722.1968f,22.61556f), 171.4681f, "Dead Drop", "the daily rag newspaper stand by Pescado Rojo" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1364.685f,-795.9746f,18.32434f), 140.7789f, "Dead Drop", "the trash can in front of the Hedera Hotel" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1183.647f,-1257.851f,5.911644f), 260.6368f, "Dead Drop", "the trash can by Taco Libre" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1205.34f,-1377.286f,3.174809f), 76.95641f, "Dead Drop", "the trash can by Steamboat Beers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(803.5943f,-2052.02f,28.30254f), 275.8022f, "Dead Drop", "the trash can by the PiBwasser Plant" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1047.76f,-2464.003f,27.51101f), 44.61864f, "Dead Drop", "the dumpster by the gun dealers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1382.768f,-2042.507f,51.00203f), 30.00222f, "Dead Drop", "the dumpster by Covington Engineering" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1316.705f,-1657.766f,50.23988f), 309.4677f, "Dead Drop", "the dumpster behind Los Santos Tattoos" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(373.6489f, 351.1104f, 102.8209f), 257.8268f,"Dead Drop", "the dumpster behind 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(207.6413f, 337.0614f, 105.5466f), 164.1638f, "Dead Drop", "the dumpster behind Pitchers") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(98.17767f, 298.2877f, 110.0032f), 162.2623f, "Dead Drop", "the dumpster behind Up-N-Atom") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-69.79692f, 282.6463f, 105.0663f), 329.5786f, "Dead Drop", "the trash can outside The Gentry Manor Hotel") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-391.8292f, 294.4202f, 84.89133f), 86.40096f, "Dead Drop", "the dumpster behind The Last Train Diner") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-515.2796f, 26.77622f, 44.57598f), 85.66344f, "Dead Drop", "the Daily Rag newspaper stand by Serentiy Wellness") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-480.7322f, -12.00511f, 45.27599f), 358.5777f, "Dead Drop", "the mailbox in front of Fruit Machine") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-514.0649f, -40.31401f, 44.51626f), 353.1382f, "Dead Drop", "the dumpster behind The Little Teapot") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-792.2766f, -250.7747f, 37.20045f), 121.051f, "Dead Drop", "the mailbox in front of Luxury Autos") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1237.857f, -554.2683f, 28.91684f), 127.322f, "Dead Drop", "the mailbox in front of City Hall") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1323.729f, -675.4391f, 26.51783f), 36.19815f, "Dead Drop", "the Los Santos Meteor newspaper stand in front of Astro Theater") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-1125.012f, -1616.193f, 4.398425f), 197.6703f, "Dead Drop", "the dumpster behind Vitamin Seaside Juice Bar") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(2544.616f, 378.9412f, 108.6173f), 264.3849f, "Dead Drop", "the boxes behind the 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(2569.69f, 2727.281f, 43.17296f), 300.3225f, "Dead Drop", "the port-o-potty at Davis Quartz") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1532.096f, 3797.162f, 33.51709f), 203.1575f, "Dead Drop", "the back of the Boathouse") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1987.924f, 3789.832f, 32.18082f), 128.6473f, "Dead Drop", "the toolbox behind Sandy's Gas") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(923.066f, 3652.77f, 32.59369f), 91.28005f, "Dead Drop", "the dumpster behind the Liquor Market") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-678.5425f, 5833.054f, 17.33131f), 310.8695f, "Dead Drop", "the mailbox in front of The BayviewLodge") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-125.5132f, 6345.283f, 31.49037f), 231.2274f, "Dead Drop", "the dumpster behind the Dream View Motel") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1725.162f, 4732.389f, 42.1343f), 103.1211f, "Dead Drop", "the boxes behind The Feed Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1731.202f, 4758.293f, 41.89993f), 265.2589f, "Dead Drop", "the dumpster behind the supermarket") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(1692.661f, 6431.451f, 32.76194f), 336.9627f, "Dead Drop", "the payphone by 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-3165.1f, 1114.949f, 20.79292f), 334.1037f, "Dead Drop", "the dumpster behind Nelsons General Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(-2297.884f, 248.9572f, 169.6021f), 213.5057f, "Dead Drop", "the trash can near the parking lot of the Kortz Center") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
-            new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false },
+            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "the Daily Rag newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "the Las Mietras newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(76.75777f,-605.3703f,43.22094f), 68.89698f, "Dead Drop", "the trash can by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-174.7691f,-674.9272f,33.27862f), 249.5148f, "Dead Drop", "the phone booth by the Arcadius Center" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-223.6883f,-703.9772f,32.59268f), 70.00474f, "Dead Drop", "the mailbox by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-251.0725f,-739.3169f,31.99848f), 187.8322f, "Dead Drop", "the Daily Rag newspaper stand by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-263.7065f,-850.4099f,30.48533f), 160.0125f, "Dead Drop", "the Daily Rag newspaper stand by Go Postal" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1460.144f,-627.849f,29.69636f), 209.8004f, "Dead Drop", "the dumpster by Swallow" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1438.361f,-722.1968f,22.61556f), 171.4681f, "Dead Drop", "the daily rag newspaper stand by Pescado Rojo" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1364.685f,-795.9746f,18.32434f), 140.7789f, "Dead Drop", "the trash can in front of the Hedera Hotel" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1183.647f,-1257.851f,5.911644f), 260.6368f, "Dead Drop", "the trash can by Taco Libre" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1205.34f,-1377.286f,3.174809f), 76.95641f, "Dead Drop", "the trash can by Steamboat Beers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(803.5943f,-2052.02f,28.30254f), 275.8022f, "Dead Drop", "the trash can by the PiBwasser Plant" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1047.76f,-2464.003f,27.51101f), 44.61864f, "Dead Drop", "the dumpster by the gun dealers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1382.768f,-2042.507f,51.00203f), 30.00222f, "Dead Drop", "the dumpster by Covington Engineering" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1316.705f,-1657.766f,50.23988f), 309.4677f, "Dead Drop", "the dumpster behind Los Santos Tattoos" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(373.6489f, 351.1104f, 102.8209f), 257.8268f,"Dead Drop", "the dumpster behind 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(207.6413f, 337.0614f, 105.5466f), 164.1638f, "Dead Drop", "the dumpster behind Pitchers") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(98.17767f, 298.2877f, 110.0032f), 162.2623f, "Dead Drop", "the dumpster behind Up-N-Atom") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-69.79692f, 282.6463f, 105.0663f), 329.5786f, "Dead Drop", "the trash can outside The Gentry Manor Hotel") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-391.8292f, 294.4202f, 84.89133f), 86.40096f, "Dead Drop", "the dumpster behind The Last Train Diner") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-515.2796f, 26.77622f, 44.57598f), 85.66344f, "Dead Drop", "the Daily Rag newspaper stand by Serentiy Wellness") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-480.7322f, -12.00511f, 45.27599f), 358.5777f, "Dead Drop", "the mailbox in front of Fruit Machine") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-514.0649f, -40.31401f, 44.51626f), 353.1382f, "Dead Drop", "the dumpster behind The Little Teapot") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-792.2766f, -250.7747f, 37.20045f), 121.051f, "Dead Drop", "the mailbox in front of Luxury Autos") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1237.857f, -554.2683f, 28.91684f), 127.322f, "Dead Drop", "the mailbox in front of City Hall") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1323.729f, -675.4391f, 26.51783f), 36.19815f, "Dead Drop", "the Los Santos Meteor newspaper stand in front of Astro Theater") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-1125.012f, -1616.193f, 4.398425f), 197.6703f, "Dead Drop", "the dumpster behind Vitamin Seaside Juice Bar") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(2544.616f, 378.9412f, 108.6173f), 264.3849f, "Dead Drop", "the boxes behind the 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(2569.69f, 2727.281f, 43.17296f), 300.3225f, "Dead Drop", "the port-o-potty at Davis Quartz") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1532.096f, 3797.162f, 33.51709f), 203.1575f, "Dead Drop", "the back of the Boathouse") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1987.924f, 3789.832f, 32.18082f), 128.6473f, "Dead Drop", "the toolbox behind Sandy's Gas") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(923.066f, 3652.77f, 32.59369f), 91.28005f, "Dead Drop", "the dumpster behind the Liquor Market") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-678.5425f, 5833.054f, 17.33131f), 310.8695f, "Dead Drop", "the mailbox in front of The BayviewLodge") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-125.5132f, 6345.283f, 31.49037f), 231.2274f, "Dead Drop", "the dumpster behind the Dream View Motel") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1725.162f, 4732.389f, 42.1343f), 103.1211f, "Dead Drop", "the boxes behind The Feed Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1731.202f, 4758.293f, 41.89993f), 265.2589f, "Dead Drop", "the dumpster behind the supermarket") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1692.661f, 6431.451f, 32.76194f), 336.9627f, "Dead Drop", "the payphone by 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-3165.1f, 1114.949f, 20.79292f), 334.1037f, "Dead Drop", "the dumpster behind Nelsons General Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(-2297.884f, 248.9572f, 169.6021f), 213.5057f, "Dead Drop", "the trash can near the parking lot of the Kortz Center") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
         };
         List<ScrapYard> ScrapYards = new List<ScrapYard>() {
             new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
@@ -292,7 +292,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         List<GangDen> GangDens = new List<GangDen>()
         {
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { MapIcon = 267, BannerImagePath = "pavano.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { CanInteractWhenWanted = true, MapIcon = 267, BannerImagePath = "pavano.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 50f),
                 new ConditionalLocation(new Vector3(1662.094f, 4778.333f, 42.00935f), 259.006f, 50f),
@@ -306,7 +306,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f), 
             }
             },//Grapeseed Shack
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { MapIcon = 77, BannerImagePath = "lupisella.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { CanInteractWhenWanted = true, MapIcon = 77, BannerImagePath = "lupisella.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 50f),
                 new ConditionalLocation(new Vector3(-227.5764f, 6442.54f, 31.19769f), 141.2697f, 50f),
@@ -319,7 +319,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-226.1172f, 6435.622f, 30.51782f), 232.3148f, 75f),
                 new ConditionalLocation(new Vector3(-210.5319f, 6437.373f, 30.72163f), 327.138f, 75f),
             } },//Beachhouse in Paleto
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { MapIcon = 78, BannerImagePath = "messina.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "messina.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 50f),
                 new ConditionalLocation(new Vector3(-1626.534f, 37.39336f, 62.54136f), 342.5028f, 50f),
@@ -332,7 +332,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1613.357f, 22.61485f, 61.48566f), 155.361f, 75f),
                 new ConditionalLocation(new Vector3(-1625.055f, 65.92033f, 61.15781f), 237.2095f, 75f),
             } },//mansion in richman
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { MapIcon = 76, BannerImagePath = "ancelotti.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath = "ancelotti.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 50f),
                 new ConditionalLocation(new Vector3(-3226.294f, 1095.004f, 10.69816f), 260.7955f, 50f),
@@ -346,7 +346,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
 
             } },//beachhousein chumash
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { BannerImagePath = "yardies.png", MapIconColor = Color.Green, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { CanInteractWhenWanted = true, BannerImagePath = "yardies.png", MapIconColor = Color.Green, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 50f),
                 new ConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 50f),
@@ -360,7 +360,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
 
             } },//near shops on del perro beach
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { MapIcon = 355, BannerImagePath = "diablos.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { CanInteractWhenWanted = true, MapIcon = 355, BannerImagePath = "diablos.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 50f),
                 new ConditionalLocation(new Vector3(274.2913f, -3010.913f, 5.70001f), 105.1246f, 50f),
@@ -374,7 +374,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
             } },//shitty shack in elysian
 
-            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { MapIcon = 541, BannerImagePath = "gambetti.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { CanInteractWhenWanted = true, MapIcon = 541, BannerImagePath = "gambetti.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, 50f),
                 new ConditionalLocation(new Vector3(504.8874f, 201.7501f, 104.7445f), 334.6481f, 50f),
@@ -390,7 +390,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(462.139f, 222.349f, 102.2742f), 245.8917f, 75f),
 
             } },//Downtown Vinewood
-            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { MapIcon = 78, BannerImagePath = "madrazo.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "madrazo.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 50f),
                 new ConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 50f),
@@ -401,7 +401,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 new ConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
 new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
             } },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { MapIcon = 76, BannerImagePath ="armenian.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath ="armenian.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 50f),
                 new ConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 50f),
@@ -413,7 +413,7 @@ new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f,
 new ConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
 new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
             } },
-            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { MapIcon = 86, BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { CanInteractWhenWanted = true, MapIcon = 86, BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),
                 new ConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 50f),
@@ -429,7 +429,7 @@ new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f
                 new ConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
 
             } },//This is in Chamberlain Hills
-            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { MapIcon = 106, BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { CanInteractWhenWanted = true, MapIcon = 106, BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
                 new ConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
@@ -442,7 +442,7 @@ new ConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f
 new ConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
 new ConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
             } },//This is in DAVIS near Grove Street
-            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") {  BannerImagePath = "vagos.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") {  CanInteractWhenWanted = true, BannerImagePath = "vagos.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 50f),
                 new ConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
@@ -455,7 +455,7 @@ new ConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f
 new ConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 75f),
 new ConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 75f),
             } },
-            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { CanInteractWhenWanted = true, BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 50f),
                 new ConditionalLocation(new Vector3(1189.079f, -1655.169f, 42.358f), 338.5124f, 50f),
@@ -467,7 +467,7 @@ new ConditionalLocation(new Vector3(1166.678f, -1647.833f, 36.23235f), 132.0248f
 new ConditionalLocation(new Vector3(1157.749f, -1660.837f, 35.93925f), 205.3036f, 75f),
 new ConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f, 75f),
             } },
-            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabunta Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { MapIcon = 78, BannerImagePath = "marabunta.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabunta Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "marabunta.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
                 new ConditionalLocation(new Vector3(1293.167f, -1748.509f, 53.87848f), 200.1636f, 50f),
@@ -478,7 +478,7 @@ new ConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f
 new ConditionalLocation(new Vector3(1322.044f, -1768.506f, 54.82401f), 195.1561f, 75f),
 new ConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f, 75f),
             } },
-            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { MapIcon = 76, BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
+            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") { CanInteractWhenWanted = true,MapIcon = 76, BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, },
 
             //new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
@@ -488,7 +488,7 @@ new ConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f
             //    new ConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
             //} },
 
-            new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") { BannerImagePath = "kkangpae.png",  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") { CanInteractWhenWanted = true, BannerImagePath = "kkangpae.png",  OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 50f),
                 new ConditionalLocation(new Vector3(-581.7299f, -780.7718f, 25.01723f), 66.59444f, 50f),
@@ -501,7 +501,7 @@ new ConditionalLocation(new Vector3(-618.8381f, -761.884f, 25.46778f), 89.04613f
 
             } },
 
-            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { BannerImagePath = "rednecks.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { CanInteractWhenWanted = true, BannerImagePath = "rednecks.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),
                 new ConditionalLocation(new Vector3(959.2394f, 3612.307f, 32.75033f), 138.3261f, 50f),
@@ -513,7 +513,7 @@ new ConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f,
 new ConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
 
             } },
-            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { CanInteractWhenWanted = true, MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 50f),
                 new ConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 50f),
@@ -528,7 +528,7 @@ new ConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f
 new ConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
 
             } },
-            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { CanInteractWhenWanted = true, BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 50f),
                 new ConditionalLocation(new Vector3(108.1241f, -817.763f, 31.36724f), 273.9551f, 50f),
@@ -645,6 +645,31 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
         };
         List<Residence> Residences = new List<Residence>()
         {
+            //NEW
+            //Vespucci
+            new Residence(new Vector3(-1035.18f, -1146.53f, 2.16f), 32.45f, "68 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, RentalDays = 28, RentalFee = 2400  },
+            //new Residence(new Vector3(-1061.66f, -1099.24f, 2.19f), 31.68f, "23 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },//is a houseboat?
+            new Residence(new Vector3(-960.14f, -1109.21f, 2.15f), 33.94f, "87 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-951.51f, -1078.93f, 2.15f), 207.97f, "88 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 490000, RentalDays = 28, RentalFee = 2500  },
+            new Residence(new Vector3(-1183.19f, -1064.55f, 2.15f), 114.64f, "42 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(-983.25f, -1065.88f, 2.15f), 30.08f, "86 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 440000, RentalDays = 28, RentalFee = 2300  },
+            new Residence(new Vector3(-1064.27f, -1159.15f, 2.16f), 31.65f, "65 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
+            
+
+            //Mirror Park
+            new Residence(new Vector3(987.9448f, -525.9558f, 60.69062f), 208.7025f, "114 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 390000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(976.0329f, -579.8205f, 59.63558f), 30.60654f, "115 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 360000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(1323.468f, -583.0522f, 73.24638f), 334.7151f, "104 East Mirror Dr", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 480000, RentalDays = 28, RentalFee = 2500  },
+            new Residence(new Vector3(1372.544f, -555.1687f, 74.68565f), 153.1011f, "107 East Mirror Dr", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 500000, RentalDays = 28, RentalFee = 2600  },
+            new Residence(new Vector3(999.5336f, -593.9052f, 59.63857f), 259.7758f, "93 Mirror Pl", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 270000, RentalDays = 28, RentalFee = 1500  },
+            new Residence(new Vector3(979.8713f, -627.104f, 59.23589f), 124.2795f, "218 West Mirror Dr", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 3000  },
+
+            new Residence(new Vector3(1060.462f, -378.1198f, 68.23125f), 229.2095f, "112 Bridge St", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 350000, RentalDays = 28, RentalFee = 2000  },
+            new Residence(new Vector3(1051.598f, -470.5955f, 63.91349f), 257.9751f, "118 Bridge St", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 335000, RentalDays = 28, RentalFee = 1700  },
+            new Residence(new Vector3(1090.538f, -484.3305f, 65.66045f), 76.35575f, "117 Bridge St", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 3000  },
+
+
+
             //Apartments
             new Residence(new Vector3(-1150.072f, -1521.705f, 10.62806f), 225.8192f, "7611 Goma St", "") { OpenTime = 0,CloseTime = 24, InteriorID = 24578, PurchasePrice = 550000, RentalDays = 28, RentalFee = 2250 },
             //new Residence(new Vector3(-1221.032f, -1232.806f, 11.02771f), 12.79515f, "Del Pierro Apartments", "") {OpenTime = 0,CloseTime = 24, InteriorID = -1, TeleportEnterPosition = new Vector3(266.1081f, -1007.534f, -101.0086f), TeleportEnterHeading = 358.3953f},
@@ -688,18 +713,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
 
 
 
-            //NEW
-            new Residence(new Vector3(-1035.18f, -1146.53f, 2.16f), 32.45f, "68 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 450000, RentalDays = 28, RentalFee = 2400  },
-            new Residence(new Vector3(-1061.66f, -1099.24f, 2.19f), 31.68f, "23 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 1660  },
-            new Residence(new Vector3(988.85f, -527.58f, 60.48f), 213.97f, "114 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 390000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(975.40f, -578.95f, 35.89f), 35.89f, "115 Nikola Ave", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 360000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(-960.14f, -1109.21f, 2.15f), 33.94f, "87 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 380000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(-951.51f, -1078.93f, 2.15f), 207.97f, "88 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 490000, RentalDays = 28, RentalFee = 2500  },
-            new Residence(new Vector3(-1183.19f, -1064.55f, 2.15f), 114.64f, "42 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(-983.25f, -1065.88f, 2.15f), 30.08f, "86 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 440000, RentalDays = 28, RentalFee = 2300  },
-            new Residence(new Vector3(-1064.27f, -1159.15f, 2.16f), 31.65f, "65 Vespucci Canals", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 400000, RentalDays = 28, RentalFee = 2000  },
-            new Residence(new Vector3(1061.45f, -378.89f, 63.00647f), 222.31f, "763 Bridge St", "") {OpenTime = 0,CloseTime = 24, PurchasePrice = 350000, RentalDays = 28, RentalFee = 2000  },
-            
+
 
 
 
@@ -1367,11 +1381,18 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<GasStation> GasStations = new List<GasStation>()
         {
-                        new GasStation(new Vector3(-711.9264f, -917.7573f, 19.21472f), 180.3014f, "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(-705.7453f, -913.6598f, 19.21559f), VendorHeading = 83.75771f, OpenTime = 0, CloseTime = 24, InteriorID = 47874 },
+            new GasStation(new Vector3(-711.9264f, -917.7573f, 19.21472f), 180.3014f, "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(-705.7453f, -913.6598f, 19.21559f), VendorHeading = 83.75771f, OpenTime = 0, CloseTime = 24, InteriorID = 47874 },
             new GasStation(new Vector3(1698.097f, 4929.837f, 42.0781f), 48.2484f, "LtD", "unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1698.044f, 4922.526f, 42.06367f), VendorHeading = 314.3236f, OpenTime = 0, CloseTime = 24, InteriorID = 45570 },
-            new GasStation(new Vector3(1159.861f, -327.4188f, 69.21286f), 188.791f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1164.927f, -323.7075f, 69.2051f), VendorHeading = 90.6181f, OpenTime = 0, CloseTime = 24, InteriorID = 2050 },
+
+
+
+            //BROKEN VENDOR POS?//new GasStation(new Vector3(1159.861f, -327.4188f, 69.21286f), 188.791f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1164.927f, -323.7075f, 69.2051f), VendorHeading = 90.6181f, OpenTime = 0, CloseTime = 24, InteriorID = 2050 },
+            new GasStation(new Vector3(1159.861f, -327.4188f, 69.21286f), 188.791f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",VendorPosition = new Vector3(1165.12f, -322.5843f, 68.80514f), VendorHeading = 98.88105f, OpenTime = 0, CloseTime = 24, InteriorID = 2050,VendorModels = new List<string>() { "a_m_y_yoga_01" } },
+
+
+
             new GasStation(new Vector3(-1817.871f,787.0063f,137.917f), 89.38248f, "LtD","unLTD great prices!","LTDMenu"){ BannerImagePath = "ltd.png",OpenTime = 0, CloseTime = 24, InteriorID = 82178, VendorPosition = new Vector3(-1819.707f, 794.1723f, 138.0823f),VendorHeading =  122.8981f },
-            //
+            //new Vector3(1165.405f, -323.4462f, 69.20515f)
             new GasStation(new Vector3(166.2001f, -1553.691f, 29.26175f), 218.9514f, "Ron", "Put RON in your tank","RonMenu") {  BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22, ScannerFilePath = "01_specific_location\\0x0D6F777B.wav", CameraPosition = new Vector3(175.2995f, -1593.878f, 39.27175f), CameraDirection = new Vector3(-0.1031758f, 0.9726905f, -0.2079136f), CameraRotation = new Rotator(-12.00011f, 0f, 6.054868f) },
             new GasStation(new Vector3(-1427.998f, -268.4702f, 46.2217f), 132.4002f, "Ron", "Put RON in your tank","RonMenu"){ BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22, ScannerFilePath = "01_specific_location\\0x056AF0EC.wav" },
             new GasStation(new Vector3(2559.112f, 373.5359f, 108.6211f), 265.8011f, "Ron", "Put RON in your tank","RonMenu") { BannerImagePath = "ron.png",OpenTime = 4, CloseTime = 22 },
@@ -1408,7 +1429,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Bar(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, "The Last Resort", "","BarMenu"),
             new Bar(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, "Shenanigan's Bar", "","BarMenu"),
             new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu"),
-            new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778, TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },
+            new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778,  VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
             new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
             
 
@@ -1450,9 +1471,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new FoodStand(new Vector3(1675.873f, 4883.532f, 42.06379f), 57.34329f, "Grapeseed Fruit", "Grapeseed Fruit","FruitMenu") { VendorPosition = new Vector3(1675.873f, 4883.532f, 42.06379f), VendorHeading = 57.34329f, },
             new FoodStand(new Vector3(-462.6676f, 2861.85f, 34.90421f), 162.4888f, "Roadside Fruit", "Roadside Fruit","FruitMenu") { VendorPosition = new Vector3(-462.6676f, 2861.85f, 34.90421f), VendorHeading = 162.4888f, },
         };
-        List<CarDealership> CarDealerships = new List<CarDealership>()
+        List<Dealership> Dealerships = new List<Dealership>()
         {
-            new CarDealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "Take control","BenefactorGallavanterMenu") { BannerImagePath = "benefactorgallivanter.png",
+            new Dealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "Take control","BenefactorGallavanterMenu") { BannerImagePath = "benefactorgallivanter.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1470,7 +1491,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-62.50578f, 88.61669f, 72.6437f), 247.8105f),
                 } },
 
-            new CarDealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { BannerImagePath = "vapid.png"
+            new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { BannerImagePath = "vapid.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1481,7 +1502,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-224.3428f, -1177.964f, 22.16829f), 13.04972f),
                 } },
 
-            new CarDealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { BannerImagePath = "sanders.png", ScannerFilePath = "01_specific_location\\0x16677E71.wav"
+            new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { BannerImagePath = "sanders.png", ScannerFilePath = "01_specific_location\\0x16677E71.wav"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1496,7 +1517,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(247.0185f, -1162.408f, 28.32439f), 175.2579f),
                 } },
 
-            new CarDealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { BannerImagePath = "helmut.png"
+            new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { BannerImagePath = "helmut.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1509,7 +1530,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-204.6075f, 6204.576f, 30.65833f), 312.9748f),
                 } },
 
-            new CarDealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { BannerImagePath = "pdx.png", ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
+            new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { BannerImagePath = "pdx.png", ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
                 CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
                 ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,InteriorID = 7170,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1524,7 +1545,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-15.29717f, -1094.516f, 25.84302f), 173.1287f),
                 } },
 
-            new CarDealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {BannerImagePath = "luxuryautos.png",
+            new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {BannerImagePath = "luxuryautos.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1536,7 +1557,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-760.1515f, -232.0841f, 36.45313f), 204.9191f),
                 } },
 
-            new CarDealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){BannerImagePath = "larrysrv.png",
+            new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){BannerImagePath = "larrysrv.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
@@ -1632,7 +1653,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         PossibleLocations.GasStations.AddRange(GasStations);
         PossibleLocations.Bars.AddRange(Bars);
         PossibleLocations.FoodStands.AddRange(FoodStands);
-        PossibleLocations.CarDealerships.AddRange(CarDealerships);
+        PossibleLocations.CarDealerships.AddRange(Dealerships);
         PossibleLocations.DriveThrus.AddRange(DriveThrus);
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
@@ -1652,7 +1673,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 GangDens2008.Add(gd);
             }
         }
-        GangDens2008.Add(new GangDen(new Vector3(393.403f, -782.4543f, 29.28772f), 269.1115f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS") { BannerImagePath = "ballas.png", OpenTime = 0, CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+        GangDens2008.Add(new GangDen(new Vector3(393.403f, -782.4543f, 29.28772f), 269.1115f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS") { CanInteractWhenWanted = true, BannerImagePath = "ballas.png", OpenTime = 0, CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(395.0874f, -779.8005f, 29.29059f), 295.3088f, 50f),
                 new ConditionalLocation(new Vector3(395.585f, -786.7841f, 29.28836f), 236.7289f, 50f),
@@ -1660,14 +1681,14 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 new ConditionalLocation(new Vector3(385.2623f, -771.7565f, 29.2923f), 356.8999f, 50f),
                 new ConditionalLocation(new Vector3(398.6558f, -788.6539f, 29.28695f), 214.5293f, 50f),
             } });
-        GangDens2008.Add(new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { BannerImagePath = "families.png", OpenTime = 0, CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+        GangDens2008.Add(new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { CanInteractWhenWanted = true,BannerImagePath = "families.png", OpenTime = 0, CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
                 new ConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
                 new ConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
                 new ConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
             } });//This is in DAVIS near Grove Street
-        GangDens2008.Add(new GangDen(new Vector3(511.4065f, -1790.909f, 28.50743f), 90.88252f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+        GangDens2008.Add(new GangDen(new Vector3(511.4065f, -1790.909f, 28.50743f), 90.88252f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { CanInteractWhenWanted = true,BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(511.2142f, -1794.088f, 28.50298f), 102.9549f, 50f),
                 new ConditionalLocation(new Vector3(507.1f, -1787.592f, 28.4884f), 82.19876f, 50f),
@@ -1700,7 +1721,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.GasStations.AddRange(GasStations);
         OldPossibleLocations.Bars.AddRange(Bars);
         OldPossibleLocations.FoodStands.AddRange(FoodStands);
-        OldPossibleLocations.CarDealerships.AddRange(CarDealerships);
+        OldPossibleLocations.CarDealerships.AddRange(Dealerships);
         OldPossibleLocations.DriveThrus.AddRange(DriveThrus);
         OldPossibleLocations.ClothingShops.AddRange(ClothingShops);
         OldPossibleLocations.BusStops.AddRange(BusStops);

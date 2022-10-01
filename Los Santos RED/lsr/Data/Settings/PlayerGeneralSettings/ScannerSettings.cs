@@ -51,7 +51,7 @@ public class ScannerSettings : ISettingsDefaultable
         EnableAudio = true;
         SetVolume = true;
         AudioVolume = 0.3f;
-        ApplyFilter = false;
+        ApplyFilter = true;
         EnableSubtitles = false;
         EnableNotifications = true;
         DelayMinTime = 1500;

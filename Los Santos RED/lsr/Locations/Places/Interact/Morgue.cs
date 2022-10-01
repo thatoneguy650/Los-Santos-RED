@@ -32,7 +32,11 @@ public class Morgue : InteractableLocation
     public Morgue(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
         ButtonPromptText = $"Enter {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

@@ -74,6 +74,6 @@ public class CellphoneSettings : ISettingsDefaultable
         UseCustomRingtone = true;
         CustomRingtoneName = "GTA5TONE7.wav";
         SetCustomRingtoneVolume = true;
-        CustomRingtoneVolume = 0.3f;
+        CustomRingtoneVolume = 0.25f;
     }
 }

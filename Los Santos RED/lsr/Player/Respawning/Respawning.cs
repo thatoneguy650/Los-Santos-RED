@@ -102,7 +102,20 @@ public class Respawning// : IRespawning
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
-            CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
+
+            List<string> OfficerFriendlyResponses = new List<string>() { 
+            "Thanks for the donation, give me a call if you are in a jam with the cops.",
+            "Pleasure doing business. Hit me up when you've got issues with johnny law.",
+            "Thanks for the cash. Give me a ring when the cops are crawling up your ass.",
+            "Always nice to help out a friend. Remember this number if you've got cop problems in the future.",
+            "As long as you've got the cash, I can take care of the cops.",
+
+            };
+
+            CurrentPlayer.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", OfficerFriendlyResponses.PickRandom(), 2);
+
+
+            //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
             CurrentPlayer.Scanner.OnBribedPolice();
             return true;
         }

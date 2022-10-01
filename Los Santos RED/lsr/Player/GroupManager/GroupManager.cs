@@ -37,12 +37,22 @@ public class GroupManager
     {
         CurrentGroupMembers.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
 
-        foreach(PedExt groupMember in CurrentGroupMembers)
+        if (Settings.SettingsManager.PlayerOtherSettings.GroupMembersGetPlayerWantedLevel)
         {
-            if(Player.WantedLevel > groupMember.WantedLevel)
+            foreach (PedExt groupMember in CurrentGroupMembers)
             {
-                groupMember.SetWantedLevel(Player.WantedLevel);
-                EntryPoint.WriteToConsole($"GROUP MANAGER SET GROUP MEMBER WANTED LEVEL TO MATCH PLAYER {groupMember.Handle} {groupMember.WantedLevel}");
+                if (Player.WantedLevel > groupMember.WantedLevel)
+                {
+                    groupMember.SetWantedLevel(Player.WantedLevel);
+                    EntryPoint.WriteToConsole($"GROUP MANAGER SET GROUP MEMBER WANTED LEVEL TO MATCH PLAYER {groupMember.Handle} {groupMember.WantedLevel}");
+                }
+
+
+                //if(groupMember.Pedestrian.Exists())
+                //{
+                //    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 500f, 0);//TR
+                //    groupMember.Pedestrian.KeepTasks = true;
+                //}
             }
         }
     }
@@ -133,17 +143,30 @@ public class GroupManager
     }
     private void OnBecameGroupMember(PedExt groupMember)
     {
+        
         groupMember.CanBeTasked = false;
         groupMember.CanBeAmbientTasked = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
-        groupMember.Pedestrian.KeepTasks = true;
+        //groupMember.Pedestrian.KeepTasks = true;
+        groupMember.Pedestrian.BlockPermanentEvents = false;
+        //groupMember.Pedestrian.IsInvincible = true;
         NativeFunction.Natives.SET_PED_ALERTNESS(groupMember.Pedestrian, 3);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
         NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
         NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
-        NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 5000000, 0);//TR
+        //groupMember.Pedestrian.KeepTasks = true;
+
+
+        NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
+
+        NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
+
+       // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
+
+
+        groupMember.Pedestrian.KeepTasks = true;
     }
     private void OnLeftGroup(PedExt groupMember)
     {

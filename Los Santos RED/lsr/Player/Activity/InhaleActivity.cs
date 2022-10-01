@@ -76,9 +76,9 @@ namespace LosSantosRED.lsr.Player
                 {
                     Item = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (Item.Exists())
                 {

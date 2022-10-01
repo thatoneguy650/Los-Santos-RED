@@ -176,7 +176,8 @@ public class LocationCamera
     }
     private void DisableControl()
     {
-        Game.LocalPlayer.HasControl = false;
+        NativeHelper.DisablePlayerControl();
+        //Game.LocalPlayer.HasControl = false;
         NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
         Game.DisableControlAction(0, GameControl.LookLeftRight, false);
         Game.DisableControlAction(0, GameControl.LookUpDown, false);

@@ -294,9 +294,7 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-
-            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(10000, 25000);
-
+            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 15000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }

@@ -224,7 +224,7 @@ public class Vehicles
             }
         }
     }
-    public void ClearSpawned(bool includeCivilian)
+    public void ClearPolice()
     {
         foreach (VehicleExt vehicleExt in PoliceVehicles)
         {
@@ -235,6 +235,10 @@ public class Vehicles
             }
         }
         PoliceVehicles.Clear();
+    }
+    public void ClearSpawned(bool includeCivilian)
+    {
+        ClearPolice();
         foreach (VehicleExt vehicleExt in EMSVehicles)
         {
             if (vehicleExt.Vehicle.Exists())

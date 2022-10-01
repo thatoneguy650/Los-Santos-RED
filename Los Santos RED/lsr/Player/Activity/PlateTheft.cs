@@ -76,7 +76,15 @@ public class PlateTheft : DynamicActivity
     }
     private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
-        Rage.Object LicensePlate = new Rage.Object("p_num_plate_01", Pedestrian.GetOffsetPositionUp(55f));
+        Rage.Object LicensePlate = null;
+        try
+        {
+            LicensePlate = new Rage.Object("p_num_plate_01", Pedestrian.GetOffsetPositionUp(55f));
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+        }
         LicensePlate.IsVisible = true;
         int BoneIndexLeftHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 18905);
         LicensePlate.AttachTo(Player.Character, BoneIndexLeftHand, new Vector3(0.19f, 0.08f, 0.0f), new Rotator(-57.2f, 90f, -173f));
@@ -85,7 +93,15 @@ public class PlateTheft : DynamicActivity
     }
     private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
     {
-        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        Rage.Object Screwdriver = null;
+        try
+        {
+           Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+        }
         if (!Screwdriver.Exists())
             return null;
         int BoneIndexRightHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Pedestrian, 57005);

@@ -41,10 +41,16 @@ public class GunStore : InteractableLocation
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public int MoneyToUnlock { get; set; } = 0;
+    public string ContactName { get; set; } = "";
+
     public GunStore(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
         ButtonPromptText = $"Shop at {Name}";
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

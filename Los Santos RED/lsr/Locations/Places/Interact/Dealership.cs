@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class CarDealership : InteractableLocation
+public class Dealership : InteractableLocation
 {
     private LocationCamera StoreCamera;
     private ILocationInteractable Player;
@@ -20,11 +20,11 @@ public class CarDealership : InteractableLocation
     private IWeapons Weapons;
     private ITimeControllable Time;
     private Transaction Transaction;
-    public CarDealership() : base()
+    public Dealership() : base()
     {
 
     }
-    public override string TypeName { get; set; } = "Car Dealership";
+    public override string TypeName { get; set; } = "Dealership";
     public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
@@ -37,14 +37,14 @@ public class CarDealership : InteractableLocation
 
     public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
 
-    //public Vector3 ItemDeliveryPosition { get; set; } = Vector3.Zero;
-    //public float ItemDeliveryHeading { get; set; } = 0f;
-
-
-    public CarDealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
-        ButtonPromptText = $"Shop at {Name}";
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Shop At {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

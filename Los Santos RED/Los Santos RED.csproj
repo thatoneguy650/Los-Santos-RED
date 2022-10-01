@@ -203,7 +203,7 @@
     <Compile Include="lsr\Locations\Places\Basic\Hospital.cs" />
     <Compile Include="lsr\Locations\Places\Basic\Landmark.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Bar.cs" />
-    <Compile Include="lsr\Locations\Places\Interact\CarDealership.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Dealership.cs" />
     <Compile Include="lsr\Locations\Places\Interact\CityHall.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ConvenienceStore.cs" />
     <Compile Include="lsr\Locations\Places\Interact\DeadDrop.cs" />

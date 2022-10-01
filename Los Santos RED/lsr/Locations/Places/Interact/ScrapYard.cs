@@ -37,7 +37,12 @@ public class ScrapYard : InteractableLocation
     public override string ButtonPromptText { get; set; }
     public ScrapYard(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
+
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
         ButtonPromptText = $"Scrap Vehicle At {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

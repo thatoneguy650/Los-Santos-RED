@@ -49,9 +49,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int PlayerSpeechSkill_Min { get; set; }
     [Description("Maximum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Max { get; set; }
-
-
-
+    public bool GroupMembersGetPlayerWantedLevel { get; set; }
 
     public PlayerOtherSettings()
     {
@@ -81,7 +79,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         PlayerSpeechSkill_Min = 15;
         PlayerSpeechSkill_Max = 55;
 
-
+        GroupMembersGetPlayerWantedLevel = true;
 
     }
 

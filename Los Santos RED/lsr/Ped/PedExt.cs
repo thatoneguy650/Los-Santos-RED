@@ -22,7 +22,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint KillerHandle;
     private Entity LastHurtBy;
     private Vector3 position;
-    private Vector3 SpawnPosition;
+    public Vector3 SpawnPosition { get; set; }
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
 
@@ -166,7 +166,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInWrithe { get; private set; } = false;
     public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;
+    public bool IsNearSpawnPosition =>  Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;//15f
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }

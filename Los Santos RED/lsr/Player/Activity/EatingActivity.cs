@@ -89,19 +89,30 @@ namespace LosSantosRED.lsr.Player
                 try
                 {
                     Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
-                    if (Food.Exists())
-                    {
-                        Food.IsGravityDisabled = false;
-                    }
-                    else
-                    {
-                        IsCancelled = true;
-                    }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
+                if(!Food.Exists())
+                {
+                    IsCancelled = true;
+                }
+                //try
+                //{
+                //    if (Food.Exists())
+                //    {
+                //        Food.IsGravityDisabled = false;
+                //    }
+                //    else
+                //    {
+                //        IsCancelled = true;
+                //    }
+                //}
+                //catch (Exception ex)
+                //{
+                //    EntryPoint.WriteToConsole($"Error Setting Model Gravity {ex.Message} {ex.StackTrace}");
+                //}
             }
         }
         private void Enter()
@@ -178,12 +189,16 @@ namespace LosSantosRED.lsr.Player
         }
         private bool IsAnimationRunning(float AnimationTime)
         {
-            return true;
+            //return NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, PlayingDict, PlayingAnim, 3);
+
+
+
+            //return true;
             if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
             {
                 if (PrevAnimationTime == AnimationTime)
                 {
-                    EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
+                    //EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
                     return false;
                 }
                 PrevAnimationTime = AnimationTime;

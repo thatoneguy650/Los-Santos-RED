@@ -825,7 +825,13 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
-
+        UIMenuItem RemoveCops = new UIMenuItem("Remove Cops", "Removes all the police");
+        RemoveCops.Activated += (menu, item) =>
+        {
+            World.Pedestrians.ClearPolice();
+            World.Vehicles.ClearPolice();
+            menu.Visible = false;
+        };
 
 
 
@@ -838,6 +844,7 @@ public class DebugMenu : Menu
         DispatcherMenu.AddItem(SpawnRockblock);
         DispatcherMenu.AddItem(DespawnRockblock);
         DispatcherMenu.AddItem(PlayScanner);
+        DispatcherMenu.AddItem(RemoveCops);
     }
     private void Frecam()
     {

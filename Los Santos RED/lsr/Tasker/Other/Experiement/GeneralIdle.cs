@@ -114,7 +114,7 @@ public class GeneralIdle : ComplexTask
     }
     public bool HasArrestedPassengers()
     {
-        if (PedGeneral.IsDriver && PedGeneral.Pedestrian.CurrentVehicle.Exists())
+        if (PedGeneral.IsDriver && PedGeneral.Pedestrian.IsInAnyVehicle(false) && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
             foreach (Ped ped in PedGeneral.Pedestrian.CurrentVehicle.Passengers)
             {

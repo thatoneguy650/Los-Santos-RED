@@ -284,7 +284,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     myBlip.Scale = 0.3f;
                     Player.LastFriendlyVehicle = null;
                     Player.LastFriendlyVehicle = SpawnedVehicle;
-                    GunProp = new Rage.Object("gr_prop_gr_gunsmithsupl_03a", PickUpStore.EntrancePosition);
+                    try
+                    {
+                        GunProp = new Rage.Object("gr_prop_gr_gunsmithsupl_03a", PickUpStore.EntrancePosition);
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    }
                     if (GunProp.Exists())
                     {
                         GunProp.AttachTo(SpawnedVehicle, SpawnedVehicle.GetBoneIndex("chassis_dummy"), new Vector3(0f, -1f, -0.3f), new Rotator(0f, 0f, 0f));

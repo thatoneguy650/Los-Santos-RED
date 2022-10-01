@@ -657,8 +657,14 @@ public class SellMenu : Menu
 
             if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
             {
-                SellingProp = new Rage.Object(ModelToSpawn, Position);
-
+                try
+                {
+                    SellingProp = new Rage.Object(ModelToSpawn, Position);
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                }
                 //if (useClose)
                 //{
                 //    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);

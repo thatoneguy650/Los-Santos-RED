@@ -28,11 +28,21 @@ public class DeadDrop : InteractableLocation
     public override float MapIconRadius { get; set; } = 55.0f;
     public override float MapIconAlpha { get; set; } = 0.35f;
 
+
     [XmlIgnore]
     public bool InteractionComplete { get; set; } = false;
-
+    [XmlIgnore]
     public bool IsDropOff { get; set; } = true;
+    [XmlIgnore]
     public int MoneyAmount { get; set; } = 500;
+
+
+
+
+
+
+
+
   //  public Gang AssociatedGang { get; set; }
     public DeadDrop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

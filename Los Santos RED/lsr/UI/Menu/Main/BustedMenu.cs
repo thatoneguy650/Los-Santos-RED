@@ -133,7 +133,7 @@ public class BustedMenu : Menu
         Menu.AddItem(Bribe);
 
 
-        if (Settings.SettingsManager.RespawnSettings.ForceBooking)
+        if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1==0)
         {
             if (Player.IsBeingBooked)
             {

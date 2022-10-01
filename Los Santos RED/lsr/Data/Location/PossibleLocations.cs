@@ -33,7 +33,7 @@ public class PossibleLocations
     public List<GasStation> GasStations { get; private set; } = new List<GasStation>();
     public List<LiquorStore> LiquorStores { get; private set; } = new List<LiquorStore>();
     public List<FoodStand> FoodStands { get; private set; } = new List<FoodStand>();
-    public List<CarDealership> CarDealerships { get; private set; } = new List<CarDealership>();
+    public List<Dealership> CarDealerships { get; private set; } = new List<Dealership>();
     public List<Bar> Bars { get; private set; } = new List<Bar>();
     public List<DriveThru> DriveThrus { get; private set; } = new List<DriveThru>();
     public List<ClothingShop> ClothingShops { get; private set; } = new List<ClothingShop>();

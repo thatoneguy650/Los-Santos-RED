@@ -23,14 +23,7 @@ public class Restaurant : InteractableLocation
     {
 
     }
-
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
-
-
     public FoodType FoodType { get; set; } = FoodType.Generic;
-
     public override string TypeName { get; set; } = "Restaurant";
     public override int MapIcon { get; set; } = 621;
     public override Color MapIconColor { get; set; } = Color.White;
@@ -40,7 +33,11 @@ public class Restaurant : InteractableLocation
     {
         MenuID = menuID;
         FoodType = foodType;
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
         ButtonPromptText = $"Dine at {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

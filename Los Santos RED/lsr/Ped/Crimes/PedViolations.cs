@@ -83,6 +83,26 @@ public class PedViolations
             if (!PedExt.IsArrested)
             {
                 CheckCrimes(player);
+
+                if (IsWanted && !PedExt.IsBusted && !PedExt.IsDead && !PedExt.IsArrested)
+                {
+                    bool hasCloseCops = false;
+                    foreach (Cop cop in World.Pedestrians.PoliceList)
+                    {
+                        if (NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, cop.CellX, cop.CellY, 4)) 
+                        {
+                            hasCloseCops = true;
+                            break;
+                        }
+                    }
+                    if(!hasCloseCops)
+                    {
+                        Reset();
+                        EntryPoint.WriteToConsole($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
+                    }
+                }
+
+
                 if (prevIsWanted != IsWanted)
                 {
                     if (IsWanted)

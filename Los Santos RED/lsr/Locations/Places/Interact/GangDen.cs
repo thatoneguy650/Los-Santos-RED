@@ -40,9 +40,6 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public override string ButtonPromptText { get; set; }
     public string GangID { get; set; }
 
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -55,12 +52,15 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public bool IsDispatchFilled { get; set; } = false;
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
+        return true;
+    }
     public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         GangID = _gangID;
         MenuID = menuID;
-        ButtonPromptText = $"Enter {Name}";
-        CanInteractWhenWanted = true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

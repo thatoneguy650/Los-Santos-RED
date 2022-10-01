@@ -186,7 +186,15 @@ public class CarLockPick
         //Model modelToCreate = new Model(Game.GetHashKey("prop_tool_screwdvr01"));
         //modelToCreate.LoadAndWait();
         //Rage.Object Screwdriver = NativeFunction.Natives.CREATE_OBJECT<Rage.Object>(Game.GetHashKey("prop_tool_screwdvr01"), position.X, position.Y, position.Z, 0f);//
-        Rage.Object Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        Rage.Object Screwdriver = null;
+        try
+        {
+            Screwdriver = new Rage.Object("prop_tool_screwdvr01", Pedestrian.GetOffsetPositionUp(50f));
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+        }
         if (!Screwdriver.Exists())
         {
             return null;

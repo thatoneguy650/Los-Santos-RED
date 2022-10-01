@@ -17,55 +17,85 @@ public class InteractableLocation : BasicLocation
     private IEntityProvideable World;
     private uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
-    public virtual string ContactIcon { get; set; } = "CHAR_BLANK_ENTRY";
-    public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
 
+    public string MenuID { get; set; }
+    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
+    public float VendorHeading { get; set; } = 0f;
+    public List<string> VendorModels { get; set; }
+    public Vector3 CameraPosition { get; set; } = Vector3.Zero;
+    public Vector3 CameraDirection { get; set; } = Vector3.Zero;
+    public Rotator CameraRotation { get; set; }
+    public bool CanInteractWhenWanted { get; set; } = false;
+   // public virtual bool InteractsWithVendor { get; set; } = true;
+
+    public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
+    public bool HasCustomCamera => CameraPosition != Vector3.Zero;
+    [XmlIgnore]
+    public virtual string ButtonPromptText { get; set; }
     [XmlIgnore]
     public Merchant Merchant { get; set; }
     [XmlIgnore]
     public bool HasVendor => VendorPosition != Vector3.Zero;
-
-    public Vector3 VendorPosition { get; set; } = Vector3.Zero;
-    public float VendorHeading { get; set; } = 0f;
-    public List<string> VendorModels { get; set; }
-    public bool HasCustomCamera => CameraPosition != Vector3.Zero;
-    public Vector3 CameraPosition { get; set; } = Vector3.Zero;
-    public Vector3 CameraDirection { get; set; } = Vector3.Zero;
-    public Rotator CameraRotation { get; set; }
-    public string ContactName { get; set; } = "";
-    public bool CanInteractWhenWanted { get; set; } = false;
-
     [XmlIgnore]
     public ShopMenu Menu { get; set; }
-    public string MenuID { get; set; }
-
-    public virtual bool InteractsWithVendor { get; set; } = true;
-
     [XmlIgnore]
     public bool CanInteract { get; set; } = true;
     [XmlIgnore]
     public UIMenu InteractionMenu { get; private set; }
     [XmlIgnore]
     public MenuPool MenuPool { get; private set; }
-
-    public virtual string ButtonPromptText { get; set; }
     [XmlIgnore]
     public bool VendorAbandoned { get; set; } = false;
 
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-        ButtonPromptText = $"Interact with {_Name}";
+        
     }
     public InteractableLocation() : base()
     {
+
     }
     public virtual void OnInteract(ILocationInteractable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
-        //CreateInteractionMenu();
-        //InteractionMenu.Visible = true;
-        //EntryPoint.WriteToConsole("InteractableLocation OnInteract 2");
-    }
 
+    }
+    public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
+    {
+        if (modItem != null)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            Game.RemoveNotification(NotificationHandle);
+            if (modItem.MeasurementName == "Item")
+            {
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
+            }
+            else
+            {
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+        }
+    }
+    public virtual bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Interact with {Name}";
+        return true;
+    }
+    public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
+    {
+        if (modItem != null)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            Game.RemoveNotification(NotificationHandle);
+            if (modItem.MeasurementName == "Item")
+            {
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
+            }
+            else
+            {
+                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+            }
+        }
+    }
     public void CreateInteractionMenu()
     {
         MenuPool = new MenuPool();
@@ -89,12 +119,10 @@ public class InteractableLocation : BasicLocation
         }
         CanInteract = true;
     }
-
     public void StoreData(IShopMenus shopMenus)
     {
         Menu = shopMenus.GetMenu(MenuID);
     }
-
     public void ProcessInteractionMenu()
     {
         while (IsAnyMenuVisible)
@@ -108,13 +136,13 @@ public class InteractableLocation : BasicLocation
         World = world;
         if (HasVendor)
         {
-            if (InteractsWithVendor)
+            if (1==1)//InteractsWithVendor)
             {
                 CanInteract = false;
             }
             if (IsOpen(time.CurrentHour))
             {
-                SpawnVendor(settings, crimes, weapons, InteractsWithVendor);
+                SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
             }
             GameFiber.Yield();
         }
@@ -125,39 +153,6 @@ public class InteractableLocation : BasicLocation
         }
         base.Activate(interiors, settings, crimes, weapons, time, World);
     }
-    public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
-    {
-        if (modItem != null)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.RemoveNotification(NotificationHandle);
-            if (modItem.MeasurementName == "Item")
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
-            }
-            else
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
-        }
-    }
-    public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
-    {
-        if (modItem != null)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.RemoveNotification(NotificationHandle);
-            if (modItem.MeasurementName == "Item")
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
-            }
-            else
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
-        }
-    }
-
     public override void Deactivate()
     {
         if (Merchant != null && Merchant.Pedestrian.Exists())
@@ -188,7 +183,7 @@ public class InteractableLocation : BasicLocation
 
         Model modelToCreate = new Model(Game.GetHashKey(ModelName));
         modelToCreate.LoadAndWait();
-        ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
+        ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z, VendorHeading, false, false);//ped = NativeFunction.Natives.CREATE_PED<Ped>(26, Game.GetHashKey(ModelName), VendorPosition.X, VendorPosition.Y, VendorPosition.Z + 1f, VendorHeading, false, false);
         GameFiber.Yield();
         if (ped.Exists())
         {
@@ -210,7 +205,18 @@ public class InteractableLocation : BasicLocation
                     Merchant.ShopMenu = Menu;
                 }
                 Merchant.AssociatedStore = this;
+                Merchant.SpawnPosition = VendorPosition;
                 EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
+
+
+                //if (1 == 1)//PlacePedOnGround)
+                //{
+                //    float resultArg = ped.Position.Z;
+                //    NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD(ped.Position.X, ped.Position.Y, ped.Position.Z, out resultArg, false);
+                //    ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+                //}
+
+
             }
         }
     }

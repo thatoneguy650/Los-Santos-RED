@@ -30,7 +30,12 @@ public class BusStop : InteractableLocation
     public override string ButtonPromptText { get; set; }
     public BusStop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-        ButtonPromptText = $"Wait at {Name}";
+
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Wait At {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

@@ -49,41 +49,28 @@ public class GasPump : InteractableLocation
     private GasStation AssociatedStation;
     private bool KeepInteractionGoing;
     private bool IsFueling;
-
-    private enum eSetPlayerControlFlag
-    {
-        SPC_AMBIENT_SCRIPT = (1 << 1),
-        SPC_CLEAR_TASKS = (1 << 2),
-        SPC_REMOVE_FIRES = (1 << 3),
-        SPC_REMOVE_EXPLOSIONS = (1 << 4),
-        SPC_REMOVE_PROJECTILES = (1 << 5),
-        SPC_DEACTIVATE_GADGETS = (1 << 6),
-        SPC_REENABLE_CONTROL_ON_DEATH = (1 << 7),
-        SPC_LEAVE_CAMERA_CONTROL_ON = (1 << 8),
-        SPC_ALLOW_PLAYER_DAMAGE = (1 << 9),
-        SPC_DONT_STOP_OTHER_CARS_AROUND_PLAYER = (1 << 10),
-        SPC_PREVENT_EVERYBODY_BACKOFF = (1 << 11),
-        SPC_ALLOW_PAD_SHAKE = (1 << 12)
-    };
-
+    private Rage.Object PumpProp = null;
     public GasPump() : base()
     {
 
     }
-    [XmlIgnore]
-    public Rage.Object PumpProp { get; set; }
+
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gas Pump";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;
     public override string ButtonPromptText { get; set; }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Get Gas at {Name}";
+        return PumpProp.Exists() && player.CurrentLookedAtObject.Exists() && PumpProp.Handle == player.CurrentLookedAtObject.Handle;
+    }
     public GasPump(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp, GasStation gasStation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
         PumpProp = machineProp;
         AssociatedStation = gasStation;
-        ButtonPromptText = $"Get Gas at {Name}";
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
@@ -123,7 +110,6 @@ public class GasPump : InteractableLocation
             }, "Gas Station Interact");
         }
     }
-
     private void GenerateGasMenu()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
@@ -171,7 +157,6 @@ public class GasPump : InteractableLocation
             InteractionMenu.Visible = false;
         }
     }
-
     private void GetVehicleData()
     {
         VehicleToFillMakeName = NativeHelper.VehicleMakeName(VehicleToFill.Vehicle.Model.Hash);
@@ -233,7 +218,7 @@ public class GasPump : InteractableLocation
         StartMachineBuyAnimation();
         base.OnItemPurchased(modItem, menuItem, totalItems);
     }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
+    private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == FillMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
@@ -249,21 +234,6 @@ public class GasPump : InteractableLocation
             sender.Visible = false;
             FuelVehicle(AddSomeMenuItem.Value);
         }
-    }
-    private void DisableControl()
-    {
-        Game.LocalPlayer.HasControl = false;
-        NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, false);
-        Game.DisableControlAction(0, GameControl.LookLeftRight, true);
-        Game.DisableControlAction(0, GameControl.LookUpDown, true);
-        Game.DisableControlAction(0, GameControl.LookUpDown, true);
-    }
-    private void EnableControl()
-    {
-        Game.DisableControlAction(0, GameControl.LookLeftRight, false);
-        Game.DisableControlAction(0, GameControl.LookUpDown, false);
-        Game.LocalPlayer.HasControl = true;
-        NativeFunction.Natives.SET_PLAYER_CONTROL(Game.LocalPlayer, (int)eSetPlayerControlFlag.SPC_LEAVE_CAMERA_CONTROL_ON, true);
     }
     private void FuelVehicle(int UnitsToAdd)
     {
@@ -303,7 +273,8 @@ public class GasPump : InteractableLocation
                 {
                     string tabs = new string('.', dotsAdded);
                     Game.DisplayHelp($"Fueling Progress {UnitsAdded}/{UnitsToAdd}");
-                    Game.LocalPlayer.HasControl = false;
+                    NativeHelper.DisablePlayerControl();
+                    //Game.LocalPlayer.HasControl = false;
                     if (Game.GameTime - GameTimeAddedUnit >= GameTimeBetweenUnits)
                     {
                         UnitsAdded++;
@@ -334,7 +305,8 @@ public class GasPump : InteractableLocation
                 }
 
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                Game.LocalPlayer.HasControl = true;
+                // Game.LocalPlayer.HasControl = true;
+                NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);
                 KeepInteractionGoing = false;
                 Player.ButtonPrompts.RemovePrompts("Fueling");
                 IsFueling = false;

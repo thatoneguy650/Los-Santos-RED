@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Interface
         PlayerTasks PlayerTasks { get; }
         string Gender { get; }
         HealthManager HealthManager { get; }
+        Rage.Object CurrentLookedAtObject { get; }
 
         void StopDynamicActivity();
         void StartConsumingActivity(ModItem modItem, bool v);

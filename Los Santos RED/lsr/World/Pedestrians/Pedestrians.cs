@@ -288,7 +288,7 @@ public class Pedestrians : ITaskerReportable
         }
         return false; 
     }
-    public void ClearSpawned()
+    public void ClearPolice()
     {
         foreach (Cop Cop in Police)
         {
@@ -299,6 +299,10 @@ public class Pedestrians : ITaskerReportable
             }
         }
         Police.Clear();
+    }
+    public void ClearSpawned()
+    {
+        ClearPolice();
         foreach (EMT EMT in EMTs)
         {
             if (EMT.Pedestrian.Exists() && EMT.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)

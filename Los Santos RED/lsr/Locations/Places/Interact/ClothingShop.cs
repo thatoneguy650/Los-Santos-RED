@@ -29,13 +29,17 @@ public class ClothingShop : InteractableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public override bool InteractsWithVendor { get; set; } = false;
+   // public override bool InteractsWithVendor { get; set; } = false;
     public Vector3 ChangingRoomLocation { get; set; }
     public ClothingShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Vector3 changingRoomLocation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
-        ButtonPromptText = $"Shop at {Name}";
         ChangingRoomLocation = changingRoomLocation;
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Shop At {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

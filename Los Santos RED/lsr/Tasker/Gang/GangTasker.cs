@@ -41,6 +41,14 @@ public class GangTasker
             {
                 try
                 {
+                    if (!gangMember.IsBusted && !gangMember.CanBeTasked)
+                    {
+                        if (gangMember.CurrentTask != null)
+                        {
+                            gangMember.CurrentTask = null;
+                        }
+                        continue;
+                    }
                     if (gangMember.DistanceToPlayer >= 230f)
                     {
                         continue;
@@ -61,13 +69,7 @@ public class GangTasker
                         gangMember.UpdateTask(null);
                         GameFiber.Yield();
                     }
-                    if(!gangMember.IsBusted && !gangMember.CanBeTasked)
-                    {
-                        if (gangMember.CurrentTask != null)
-                        {
-                            gangMember.CurrentTask = null;
-                        }
-                    }
+
                 }
                 catch (Exception e)
                 {

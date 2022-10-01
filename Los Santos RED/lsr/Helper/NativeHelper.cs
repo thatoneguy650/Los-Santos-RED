@@ -242,6 +242,19 @@ namespace LosSantosRED.lsr.Helper
 
             return Abbreviation;
         }
+
+
+        public static void DisablePlayerControl()
+        {
+            Game.DisableControlAction(0, GameControl.LookLeftRight, true);
+            Game.DisableControlAction(0, GameControl.LookUpDown, true);
+            Game.DisableControlAction(0, GameControl.MoveUpDown, true);
+            Game.DisableControlAction(0, GameControl.MoveLeftRight, true);
+            Game.DisableControlAction(0, GameControl.VehicleAccelerate, true);
+            Game.DisableControlAction(0, GameControl.VehicleBrake, true);
+            Game.DisableControlAction(0, GameControl.Jump, true);
+        }
+
         public static bool IsNearby(int cellX, int cellY, int targetCellX, int targetCellY, int distance) => cellX >= targetCellX - distance && cellX <= targetCellX + distance && cellY >= targetCellY - distance && cellY <= targetCellY + distance;
         public static int MaxCellsAway(int cellX, int cellY, int targetCellX, int targetCellY) => Math.Max(Math.Abs(cellX - targetCellX),Math.Abs(cellY - targetCellY));
         public static void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading, bool MainRoadsOnly)

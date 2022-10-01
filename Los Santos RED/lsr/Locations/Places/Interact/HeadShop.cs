@@ -23,10 +23,6 @@ public class HeadShop : InteractableLocation
     {
 
     }
-
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
     public override string TypeName { get; set; } = "Head Shop";
     public override int MapIcon { get; set; } = 96;
     public override Color MapIconColor { get; set; } = Color.White;
@@ -35,7 +31,11 @@ public class HeadShop : InteractableLocation
     public HeadShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
-        ButtonPromptText = $"Shop at {Name}";
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Shop At {Name}";
+        return true;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

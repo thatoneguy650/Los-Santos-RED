@@ -97,15 +97,11 @@ namespace LosSantosRED.lsr.Player
                 {
                     Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    Game.DisplayNotification($"Could Not Spawn Prop {Data.PropModelName}");
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
-                if (Bottle.Exists())
-                {
-                    //Bottle.IsGravityDisabled = false;
-                }
-                else
+                if (!Bottle.Exists())
                 {
                     IsCancelled = true;
                 }
@@ -161,7 +157,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 1.0f)
+                if (AnimationTime >= 1.0f || IsFinishedWithSip)
                 {
                     if(!IsFinishedWithSip)
                     {
@@ -184,10 +180,15 @@ namespace LosSantosRED.lsr.Player
                         EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
                 }
-                if (!IsAnimationRunning(AnimationTime))
+                bool isAnimRunning = IsAnimationRunning(AnimationTime);
+                if (!isAnimRunning && !IsFinishedWithSip)
                 {
                     IsCancelled = true;
                 }
+                //if(IsFinishedWithSip && !isAnimRunning)
+                //{
+                //    IsFinishedWithSip = true;
+                //}
                 UpdateHealthGain();
                 UpdateNeeds();
                 GameFiber.Yield();
@@ -196,12 +197,11 @@ namespace LosSantosRED.lsr.Player
         }
         private bool IsAnimationRunning(float AnimationTime)
         {
-            return true;
             if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
             {
                 if (PrevAnimationTime == AnimationTime)
                 {
-                    EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
+                    //EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
                     return false;
                 }
                 PrevAnimationTime = AnimationTime;
@@ -241,7 +241,7 @@ namespace LosSantosRED.lsr.Player
             PrevAnimationTime = 0.0f;
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, 50, 0, false, false, false);
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false); 
         }
 
         private void UpdateHealthGain()

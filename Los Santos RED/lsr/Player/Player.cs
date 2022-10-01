@@ -1141,7 +1141,8 @@ namespace Mod
             {
                 Game.TimeScale = 0.4f;
             }
-            Game.LocalPlayer.HasControl = false;
+            NativeHelper.DisablePlayerControl();
+            //Game.LocalPlayer.HasControl = false;
 
 
 
@@ -1902,6 +1903,10 @@ namespace Mod
                 {
                     Interaction.Dispose();
                 }
+                if(IsPerformingActivity)
+                {
+                    UpperBodyActivity?.Cancel();
+                }
                 ClosestInteractableLocation.OnInteract(this, ModItems, World, Settings, Weapons, TimeControllable);
             }
         }
@@ -2147,7 +2152,7 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation)
+                    if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     {
                         if (gl.DistanceToPlayer < ClosestDistance)
                         {
@@ -2614,16 +2619,8 @@ namespace Mod
                 GameFiber.Yield();
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
                 Vector3 RayEnd = RayStart + NativeHelper.GetGameplayCameraDirection() * 6.0f;
-                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 1f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPeds | TraceFlags.IntersectObjects, Game.LocalPlayer.Character);
-                if(result.Hit && result.HitEntity is Rage.Object)
-                {
-                    Rage.Object objectHit = (Rage.Object)result.HitEntity;
-                    CurrentLookedAtObject = objectHit;
-                    CurrentLookedAtVehicle = null;
-                    CurrentLookedAtPed = null;
-                    CurrentLookedAtGangMember = null;
-                }
-                else if (result.Hit && result.HitEntity is Ped)
+                HitResult result = Rage.World.TraceCapsule(RayStart, RayEnd, 0.25f, TraceFlags.IntersectVehicles | TraceFlags.IntersectPeds, Game.LocalPlayer.Character);
+                if (result.Hit && result.HitEntity is Ped)
                 {
                     CurrentLookedAtObject = null;
                     CurrentLookedAtPed = World.Pedestrians.GetPedExt(result.HitEntity.Handle);
@@ -2636,6 +2633,7 @@ namespace Mod
                         CurrentLookedAtGangMember = null;
                     }
                     CurrentLookedAtVehicle = null;
+                    //EntryPoint.WriteToConsole("HIT PED");
                 }
                 else if (result.Hit && result.HitEntity is Vehicle)
                 {
@@ -2649,48 +2647,97 @@ namespace Mod
                     {
                         CurrentLookedAtVehicle = null;
                     }
-                    if (myCar.Exists() && myCar.Driver.Exists())
+
+
+                    if (myCar.Exists() && Character.CurrentVehicle.Exists() && myCar.Handle == Character.CurrentVehicle.Handle)
                     {
-                        Ped closestPed = null;
-                        float ClosestDistance = 999f;
-                        foreach (Ped occupant in myCar.Occupants)
-                        {
-                            if (occupant.Exists())
-                            {
-                                float distanceTo = occupant.DistanceTo2D(Character);
-                                if (distanceTo <= ClosestDistance)
-                                {
-                                    closestPed = occupant;
-                                    ClosestDistance = distanceTo;
-                                }
-                            }
-                        }
-                        if (closestPed.Exists())
-                        {
-                            CurrentLookedAtPed = World.Pedestrians.GetPedExt(closestPed.Handle);
-                            if (CurrentLookedAtPed?.IsGangMember == true)
-                            {
-                                CurrentLookedAtGangMember = World.Pedestrians.GetGangMember(closestPed.Handle);
-                            }
-                            else
-                            {
-                                CurrentLookedAtGangMember = null;
-                            }
-                        }
+                        CurrentLookedAtObject = null;
+                        CurrentLookedAtVehicle = null;
+                        CurrentLookedAtPed = null;
+                        CurrentLookedAtGangMember = null;
                     }
                     else
                     {
-                        CurrentLookedAtPed = null;
-                        CurrentLookedAtGangMember = null;
+
+                        if (myCar.Exists() && myCar.Driver.Exists())
+                        {
+                            Ped closestPed = null;
+                            float ClosestDistance = 999f;
+                            foreach (Ped occupant in myCar.Occupants)
+                            {
+                                if (occupant.Exists())
+                                {
+                                    float distanceTo = occupant.GetBonePosition(0).DistanceTo2D(Character);
+                                    if (distanceTo <= ClosestDistance)
+                                    {
+                                        closestPed = occupant;
+                                        ClosestDistance = distanceTo;
+                                    }
+                                }
+                            }
+                            if (closestPed.Exists())
+                            {
+                                CurrentLookedAtPed = World.Pedestrians.GetPedExt(closestPed.Handle);
+                                if (CurrentLookedAtPed?.IsGangMember == true)
+                                {
+                                    CurrentLookedAtGangMember = World.Pedestrians.GetGangMember(closestPed.Handle);
+                                }
+                                else
+                                {
+                                    CurrentLookedAtGangMember = null;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            CurrentLookedAtVehicle = null;
+                            CurrentLookedAtPed = null;
+                            CurrentLookedAtGangMember = null;
+                            CurrentLookedAtObject = null;
+                        }
                     }
                 }
                 else
                 {
-                    CurrentLookedAtVehicle = null;
-                    CurrentLookedAtPed = null;
-                    CurrentLookedAtGangMember = null;
-                    CurrentLookedAtObject = null;
+                    GameFiber.Yield();
+                    result = Rage.World.TraceCapsule(RayStart, RayEnd, 0.25f, TraceFlags.IntersectObjects, Game.LocalPlayer.Character);
+                    if (result.Hit && result.HitEntity is Rage.Object)
+                    {
+                        Rage.Object objectHit = (Rage.Object)result.HitEntity;
+                        CurrentLookedAtObject = objectHit;
+                        CurrentLookedAtVehicle = null;
+                        CurrentLookedAtPed = null;
+                        CurrentLookedAtGangMember = null;
+                        //EntryPoint.WriteToConsole("HIT OBJECT");
+                    }
+                    else
+                    {
+                        CurrentLookedAtVehicle = null;
+                        CurrentLookedAtPed = null;
+                        CurrentLookedAtGangMember = null;
+                        CurrentLookedAtObject = null;
+                    }
                 }
+
+
+
+
+                //else if (result.Hit && result.HitEntity is Rage.Object)
+                //{
+                //    Rage.Object objectHit = (Rage.Object)result.HitEntity;
+                //    CurrentLookedAtObject = objectHit;
+                //    CurrentLookedAtVehicle = null;
+                //    CurrentLookedAtPed = null;
+                //    CurrentLookedAtGangMember = null;
+                //    //EntryPoint.WriteToConsole("HIT OBJECT");
+                //}
+                //else
+                //{
+                //    CurrentLookedAtVehicle = null;
+                //    CurrentLookedAtPed = null;
+                //    CurrentLookedAtGangMember = null;
+                //    CurrentLookedAtObject = null;
+                //}
                 GameTimeLastUpdatedLookedAtPed = Game.GameTime;
                 GameFiber.Yield();
             }

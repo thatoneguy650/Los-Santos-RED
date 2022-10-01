@@ -762,7 +762,14 @@ public class PersonTransaction : Interaction
 
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
-            SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            try
+            {
+                SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            }
             GameFiber.Yield();
             if (SellingProp.Exists())
             {
@@ -892,7 +899,14 @@ public class PersonTransaction : Interaction
         }
         if (!isWeapon && Ped.Pedestrian.Exists() && HasProp && modelName != "")
         {
-            SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            try
+            {
+                SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            }
             GameFiber.Yield();
             if (SellingProp.Exists())
             {

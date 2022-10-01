@@ -45,11 +45,15 @@ public class VendingMachine : InteractableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.25f;
     public override string ButtonPromptText { get; set; }
+    public override bool CanCurrentlyInteract(ILocationInteractable player) 
+    {
+        ButtonPromptText = $"Shop at {Name}";
+        return MachineProp.Exists() && player.CurrentLookedAtObject.Exists() && MachineProp.Handle == player.CurrentLookedAtObject.Handle;
+    }
     public VendingMachine(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Rage.Object machineProp) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
-        MachineProp = machineProp;
-        ButtonPromptText = $"Shop at {Name}";
+        MachineProp = machineProp;     
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
@@ -253,9 +257,16 @@ public class VendingMachine : InteractableLocation
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
             if (AnimationTime >= 0.5f)
             {
-                if (HasProp && modelName != "" && !hasAttachedProp)
+                if (HasProp && modelName != "" && !hasAttachedProp && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(modelName)))
                 {
-                    SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+                    try
+                    {
+                        SellingProp = new Rage.Object(modelName, Player.Character.GetOffsetPositionUp(50f));
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    }
                     GameFiber.Yield();                  
                     if (SellingProp.Exists())
                     {

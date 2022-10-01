@@ -67,7 +67,6 @@ public class BasicLocation
             }
         }
     }
-
     public void StoreData(IZones zones, IStreets streets)
     {
         Zone placeZone = zones.GetZone(EntrancePosition);
@@ -103,30 +102,19 @@ public class BasicLocation
         CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
-
     public bool HasBannerImage => BannerImagePath != "";
-    [XmlIgnore]
-    public Texture BannerImage { get; set; }
     public string BannerImagePath { get; set; } = "";
     public bool RemoveBanner { get; set; } = false;
     public bool IsEnabled { get; set; } = true;
     public string Name { get; set; }
     public string FullName { get; set; }
-
-
-
-
-
-
-
     public bool IsTemporarilyClosed { get; set; } = false;
-
     public string Description { get; set; }
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
     public float EntranceHeading { get; set; }
-    public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
-    public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
-    public float TeleportEnterHeading { get; set; } = 0f;
+    //public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
+    //public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
+    //public float TeleportEnterHeading { get; set; } = 0f;
     public Blip Blip => createdBlip;
     public bool ShouldAlwaysHaveBlip => false;
     public bool IsBlipEnabled { get; set; } = true;
@@ -136,8 +124,9 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public int InteriorID { get; set; } = -1;
     public Interior Interior => interior;
-    [XmlIgnore]
-    public bool IsPlayerInterestedInLocation { get; set; } = false;
+    public string ScannerFilePath { get; set; } = "";
+    public bool IsWalkup { get; set; } = false;
+
     public virtual string TypeName { get; set; } = "Location";
     public virtual bool ShowsOnDirectory { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
@@ -145,13 +134,16 @@ public class BasicLocation
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapIconAlpha { get; set; } = 1.0f;
-
     public virtual int SortOrder { get; set; } = 999;
 
+    public float DistanceToPlayer => distanceToPlayer;
 
     [XmlIgnore]
+    public Texture BannerImage { get; set; }
+    [XmlIgnore]
+    public bool IsPlayerInterestedInLocation { get; set; } = false;
+    [XmlIgnore]
     public bool IsActivated { get; set; } = false;
-
     [XmlIgnore]
     public int CellX { get; set; }
     [XmlIgnore]
@@ -164,16 +156,8 @@ public class BasicLocation
     public string ZoneName { get; set; }
     [XmlIgnore]
     public bool IsNearby { get; private set; } = false;
-
-
-
-    public string ScannerFilePath { get; set; } = "";
-
     [XmlIgnore]
     public uint GameTimeLastMentioned { get; set; }
-    //public string FullName => Name + " - " + StreetAddress;
-
-
     public BasicLocation()
     {
 
@@ -185,8 +169,6 @@ public class BasicLocation
         Name = _Name;
         Description = _Description;
         FullName = Name;
-        //CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
-        //CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
 
     public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _FullName)
@@ -196,15 +178,10 @@ public class BasicLocation
         Name = _Name;
         Description = _Description;
         FullName = _FullName;
-        //CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
-        //CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
-
-    public float DistanceToPlayer => distanceToPlayer;
-    public bool IsWalkup { get; set; } = false;
     public override string ToString()
     {
-        return Name.ToString();
+        return Name;
     }
     public bool IsOpen(int currentHour)
     {

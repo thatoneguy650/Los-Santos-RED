@@ -514,7 +514,7 @@ public class PoliceSettings : ISettingsDefaultable
 
         StationSpawningIgnoresLimits = true;
 
-        DropWeaponWhenBusted = true;
+        DropWeaponWhenBusted = false;
 
         AllowRespondingWithoutCallIn = true;
 

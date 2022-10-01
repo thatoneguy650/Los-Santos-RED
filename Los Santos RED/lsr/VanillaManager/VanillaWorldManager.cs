@@ -50,7 +50,10 @@ public class VanillaWorldManager
         {
             TerminateRespawnScripts();
         }
-
+        if (Settings.SettingsManager.VanillaSettings.TerminateSelector)
+        {
+            TerminateSelectorScripts();
+        }
 
         if (Settings.SettingsManager.VanillaSettings.TerminateHealthRecharge)
         {
@@ -147,9 +150,13 @@ public class VanillaWorldManager
     {
         Game.DisableAutomaticRespawn = true;
         Game.FadeScreenOutOnDeath = false;
-        Game.TerminateAllScriptsWithName("selector");
+        //Game.TerminateAllScriptsWithName("selector");
         NativeFunction.Natives.x1E0B4DC0D990A4E7(false);
         NativeFunction.Natives.x21FFB63D8C615361(true);
+    }
+    private void TerminateSelectorScripts()
+    {
+        Game.TerminateAllScriptsWithName("selector");
     }
     private void ActivateRespawn()
     {
