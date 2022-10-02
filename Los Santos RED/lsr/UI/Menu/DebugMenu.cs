@@ -470,7 +470,12 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
-
+        UIMenuItem SetNearestWanted = new UIMenuItem("Set Nearest Wanted", "Set the nearest ped wanted");
+        SetNearestWanted.Activated += (menu, item) =>
+        {
+            SetNearestPedWanted();
+            menu.Visible = false;
+        };
 
         CrimeItemsMenu.AddItem(SetWantedLevel);
         CrimeItemsMenu.AddItem(ToggleInvestigation);
@@ -478,6 +483,7 @@ public class DebugMenu : Menu
         CrimeItemsMenu.AddItem(SpawnNoGunAttackersMenu);
         CrimeItemsMenu.AddItem(StartRandomCrime);
         CrimeItemsMenu.AddItem(GiveClosesetGun);
+        CrimeItemsMenu.AddItem(SetNearestWanted);
     }
     private void CreateOtherItems()
     {
@@ -1031,6 +1037,16 @@ public class DebugMenu : Menu
         if(toChoose != null && toChoose.Pedestrian.Exists())
         {
             toChoose.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+            EntryPoint.WriteToConsole($"Gave {toChoose.Pedestrian.Handle} Weapon");
+        }
+
+    }
+    private void SetNearestPedWanted()
+    {
+        PedExt toChoose = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if (toChoose != null && toChoose.Pedestrian.Exists())
+        {
+            toChoose.SetWantedLevel(3);
             EntryPoint.WriteToConsole($"Gave {toChoose.Pedestrian.Handle} Weapon");
         }
 

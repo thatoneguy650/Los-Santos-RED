@@ -360,37 +360,6 @@ public class Pedestrians : ITaskerReportable
     public PedExt GetPedExt(uint Handle)
     {
         return PedExts.FirstOrDefault(x => x.Handle == Handle);
-
-
-
-
-       // PedExt pedExt = Police.FirstOrDefault(x => x.Handle == Handle);
-       // if (pedExt != null)
-       // {
-       //     return pedExt;
-       //}
-       // pedExt = EMTs.FirstOrDefault(x => x.Handle == Handle);
-       // if (pedExt != null)
-       // {
-       //     return pedExt;
-       // }
-       // pedExt = Firefighters.FirstOrDefault(x => x.Handle == Handle);
-       // if (pedExt != null)
-       // {
-       //     return pedExt;
-       // }
-       // pedExt = Merchants.FirstOrDefault(x => x.Handle == Handle);
-       // if (pedExt != null)
-       // {
-       //     return pedExt;
-       // }
-       // pedExt = GangMembers.FirstOrDefault(x => x.Handle == Handle);
-       // if (pedExt != null)
-       // {
-       //     return pedExt;
-       // }
-       // return Civilians.FirstOrDefault(x => x.Handle == Handle);
-
     }
     public GangMember GetGangMember(uint Handle)
     {

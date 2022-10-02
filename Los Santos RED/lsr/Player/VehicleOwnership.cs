@@ -97,6 +97,8 @@ public class VehicleOwnership
             }
 
             toOwn.Vehicle.IsPersistent = false;
+            toOwn.OwnedByPlayer = false;
+            
         }
         if (OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
         {
@@ -133,6 +135,7 @@ public class VehicleOwnership
             toOwn.SetNotWanted();
             toOwn.Vehicle.IsStolen = false;
             toOwn.Vehicle.IsPersistent = true;
+            toOwn.OwnedByPlayer = true;
 
             OwnedVehicles.Add(toOwn);
             UpdateOwnedBlips();

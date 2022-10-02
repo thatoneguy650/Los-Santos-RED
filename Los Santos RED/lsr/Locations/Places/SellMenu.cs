@@ -47,6 +47,8 @@ public class SellMenu : Menu
 
     public int MoneySpent { get; private set; } = 0;
 
+
+
     public SellMenu(MenuPool menuPool, UIMenu parentMenu, ShopMenu shopMenu, Transaction transaction, IModItems modItems, ILocationInteractable player, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, Texture bannerImage, bool hasBannerImage, bool removeBanner, string storeName)
     {
         ModItems = modItems;

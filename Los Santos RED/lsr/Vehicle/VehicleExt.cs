@@ -468,6 +468,8 @@ namespace LSR.Vehicles
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
 
         public bool WasSpawnedEmpty { get; set; } = false;
+        public bool OwnedByPlayer { get; internal set; }
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);

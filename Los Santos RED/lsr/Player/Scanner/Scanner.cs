@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr
         private Dispatch ExcessiveSpeed;
         private bool ExecutingQueue;
         private Dispatch FelonySpeeding;
+        private Dispatch Speeding;
         private Dispatch FirefightingServicesRequired;
         private bool Flipper = false;
         private uint GameTimeLastAnnouncedDispatch;
@@ -110,6 +111,10 @@ namespace LosSantosRED.lsr
         private Dispatch SuspectEvaded;
         private Dispatch SuspectEvadedSimple;
         private Dispatch SuspectSpotted;
+
+
+        private Dispatch CivilianReportUpdate;
+
         private Dispatch SuspectWasted;
         private Dispatch SuspiciousActivity;
         private Dispatch SuspiciousVehicle;
@@ -257,6 +262,10 @@ namespace LosSantosRED.lsr
                             if (ToAnnounce.Priority < HighestCivilianReportedPriority || (ToAnnounce.Priority == HighestCivilianReportedPriority && !ToAnnounce.HasRecentlyBeenPlayed))
                             {
                                 AddToQueue(ToAnnounce, reportInformation);
+                            }
+                            else if(!RecentlyAnnouncedDispatch)
+                            {
+                                AddToQueue(CivilianReportUpdate, reportInformation);
                             }
                         }
                     }
@@ -1466,7 +1475,7 @@ namespace LosSantosRED.lsr
             new CrimeDispatch("AimingWeaponAtPolice",AimingWeaponAtPolice),
             new CrimeDispatch("ArmedRobbery",ArmedRobbery),
             new CrimeDispatch("PublicNuisance",PublicNuisance),
-
+            new CrimeDispatch("Speeding",Speeding),
             new CrimeDispatch("PublicVagrancy",PublicVagrancy),
 
         };
@@ -1493,6 +1502,7 @@ namespace LosSantosRED.lsr
             ,ResistingArrest
             ,AttemptingSuicide
             ,FelonySpeeding
+            ,Speeding
             ,PedHitAndRun
             ,VehicleHitAndRun
             ,RecklessDriving
@@ -1546,7 +1556,7 @@ namespace LosSantosRED.lsr
         ,FirefightingServicesRequired
         ,PublicNuisance
 
-
+        ,CivilianReportUpdate
         ,ShotsFiredStatus
     };
         }
@@ -2135,9 +2145,26 @@ namespace LosSantosRED.lsr
                 MainAudioSet = new List<AudioSet>()
             {
                 new AudioSet(new List<string>() { crime_speeding_felony.Aspeedingfelony.FileName },"a speeding felony"),
+                //new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
+            },
+            };
+
+            Speeding = new Dispatch()
+            {
+                Name = "Speeding",
+                IncludeDrivingVehicle = true,
+                VehicleIncludesIn = true,
+                IncludeDrivingSpeed = true,
+                LocationDescription = LocationSpecificity.Street,
+                CanAlwaysBeInterrupted = true,
+                MainAudioSet = new List<AudioSet>()
+            {
+                new AudioSet(new List<string>() { crime_speeding.Speeding.FileName },"speeding"),
+                 new AudioSet(new List<string>() { crime_speeding_incident.Aspeedingincident.FileName },"a speeding incident"),
                 new AudioSet(new List<string>() { crime_5_10.A510.FileName,crime_5_10.Speedingvehicle.FileName },"a 5-10, speeding vehicle"),
             },
             };
+
             PedHitAndRun = new Dispatch()
             {
                 Name = "Pedestrian Hit-and-Run",
@@ -2494,6 +2521,18 @@ namespace LosSantosRED.lsr
 
 
 
+
+
+            CivilianReportUpdate = new Dispatch()
+            {
+                Name = "Report Updated",
+                IncludeReportedBy = true,
+                LocationDescription = LocationSpecificity.HeadingAndStreet,
+                IncludeDrivingVehicle = true,
+                IncludeCarryingWeapon = true,
+                CanAlwaysInterrupt = true,
+                CanAlwaysBeInterrupted = true,
+            };
 
 
 

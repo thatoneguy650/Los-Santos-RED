@@ -79,7 +79,7 @@ public class NAudioPlayer : IAudioPlayable
 
             if (applyFilter)
             {
-                MyWaveProvider filter = new MyWaveProvider(audioFile, 2000);
+                MyWaveProvider filter = new MyWaveProvider(audioFile, 1400);
                 //MyWaveProvider filter = new MyWaveProvider(audioFile, 2000, Settings);
                 outputDevice.Init(filter);
             }

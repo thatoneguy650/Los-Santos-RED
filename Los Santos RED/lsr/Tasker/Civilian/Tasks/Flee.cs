@@ -28,7 +28,7 @@ public class Flee : ComplexTask
                 NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
             }
             Vector3 CurrentPos = Ped.Pedestrian.Position;
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 1500f, -1, false, false);         
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);         
             GameTimeLastRan = Game.GameTime;
         }
     }

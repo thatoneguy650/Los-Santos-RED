@@ -116,6 +116,14 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                     KeepInteractionGoing = false;
                     Player.IsTransacting = true;
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+
+
+                    if(Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == GangID)
+                    {
+                        Transaction.IsFreeVehicles = true;
+                        Transaction.IsFreeWeapons = true;
+                    }
+
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
                     Transaction.ItemDeliveryLocations = ItemDeliveryLocations;

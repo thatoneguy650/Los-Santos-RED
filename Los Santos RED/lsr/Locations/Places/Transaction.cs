@@ -26,6 +26,12 @@ public class Transaction
     public bool PreviewItems { get; set; } = true;
     public PersonTransaction PersonTransaction;
 
+
+    public bool IsFreeVehicles { get; set; } = false;
+    public bool IsFreeWeapons { get; set; } = false;
+    public bool IsFreeItems { get; set; } = false;
+
+
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
     {
         MenuPool = menuPool;
@@ -38,6 +44,19 @@ public class Transaction
     }
     public void CreateTransactionMenu(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
+        foreach(MenuItem mi in ShopMenu.Items)
+        {
+            ModItem modItem = modItems.Get(mi.ModItemName);
+            if ((IsFreeVehicles && modItem.ModelItem?.Type == ePhysicalItemType.Vehicle) || (IsFreeWeapons && modItem.ModelItem?.Type == ePhysicalItemType.Weapon) || (IsFreeItems && modItem.ModelItem?.Type != ePhysicalItemType.Weapon && modItem.ModelItem?.Type != ePhysicalItemType.Vehicle))
+            {
+                mi.SetFree();
+            }
+            else
+            {
+                mi.ResetPrice();
+            }
+        }
+
         if (ShopMenu != null && ShopMenu.Items.Any(x => x.Purchaseable))
         {
             if (Store != null)

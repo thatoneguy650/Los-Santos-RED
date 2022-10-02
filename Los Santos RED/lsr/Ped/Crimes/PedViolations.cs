@@ -26,6 +26,8 @@ public class PedViolations
     private uint GameTimeLastCommittedGTA;
     private bool prevIsWanted;
     private IEntityProvideable World;
+    private uint GameTimeLastNearCops;
+
     private bool ShouldCheck
     {
         get
@@ -86,23 +88,8 @@ public class PedViolations
 
                 if (IsWanted && !PedExt.IsBusted && !PedExt.IsDead && !PedExt.IsArrested)
                 {
-                    bool hasCloseCops = false;
-                    foreach (Cop cop in World.Pedestrians.PoliceList)
-                    {
-                        if (NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, cop.CellX, cop.CellY, 4)) 
-                        {
-                            hasCloseCops = true;
-                            break;
-                        }
-                    }
-                    if(!hasCloseCops)
-                    {
-                        Reset();
-                        EntryPoint.WriteToConsole($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
-                    }
+                    CheckLostWanted();
                 }
-
-
                 if (prevIsWanted != IsWanted)
                 {
                     if (IsWanted)
@@ -127,6 +114,27 @@ public class PedViolations
                     }
                 }
             }
+        }
+    }
+    private void CheckLostWanted()
+    {
+        bool hasCloseCops = false;
+        foreach (Cop cop in World.Pedestrians.PoliceList)
+        {
+            if (NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, cop.CellX, cop.CellY, 4))
+            {
+                hasCloseCops = true;
+                break;
+            }
+        }
+        if (hasCloseCops)
+        {
+            GameTimeLastNearCops = Game.GameTime;
+        }
+        if (!hasCloseCops && Game.GameTime - GameTimeLastNearCops >= 80000)
+        {
+            Reset();
+            EntryPoint.WriteToConsole($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
         }
     }
     private void CheckCrimes(IPoliceRespondable player)

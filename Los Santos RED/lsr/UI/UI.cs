@@ -909,7 +909,7 @@ public class UI : IMenuProvideable
             else
             {
                 string ColorPrefx = CurrentDefaultTextColor;
-                if (DisplayablePlayer.Violations.TrafficViolations.IsSpeeding)
+                if (DisplayablePlayer.Violations.TrafficViolations.IsFelonySpeeding)
                 {
                     ColorPrefx = "~r~";
                 }
@@ -970,19 +970,19 @@ public class UI : IMenuProvideable
             }
             if (DisplayablePlayer.Violations.TrafficViolations.IsViolatingAnyTrafficLaws)
             {
-                CurrentSpeedDisplay += " ~r~!";
+                CurrentSpeedDisplay += " ~r~!~s~";
             }
             if (DisplayablePlayer.CurrentVehicle.Indicators.HazardsOn)
             {
-                CurrentSpeedDisplay += " ~o~(HAZ)";
+                CurrentSpeedDisplay += " ~o~(HAZ)~s~";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.RightBlinkerOn)
             {
-                CurrentSpeedDisplay += " ~y~(RI)";
+                CurrentSpeedDisplay += " ~y~(RI)~s~";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.LeftBlinkerOn)
             {
-                CurrentSpeedDisplay += " ~y~(LI)";
+                CurrentSpeedDisplay += " ~y~(LI)~s~";
             }
             if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && DisplayablePlayer.CurrentVehicle.RequiresFuel)
             {

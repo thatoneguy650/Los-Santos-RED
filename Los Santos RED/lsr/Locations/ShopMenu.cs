@@ -55,5 +55,19 @@ public class ShopMenu
             }
         }
     }
+    public void SetFree()
+    {
+        foreach (MenuItem mi in Items)
+        {
+            mi.SetFree();
+        }
+    }
+    public void ResetPrice()
+    {
+        foreach (MenuItem mi in Items)
+        {
+            mi.ResetPrice();
+        }
+    }
 }
 

@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -88,6 +89,11 @@ public class PurchaseMenu : Menu
     public bool HasBannerImage { get; set; } = false;
     public Texture BannerImage { get; set; }
     public bool RemoveBanner { get; set; } = false;
+
+
+
+
+
 
 
     public string StoreName { get; set; } = "";
@@ -355,15 +361,29 @@ public class PurchaseMenu : Menu
     }
 
 
+
     private void AddPropEntry(MenuItem menuItem, ModItem modItem)
     {
-        UIMenuNumericScrollerItem<int> myscroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 99, 1) { Formatter = v => $"{(v == 1 && modItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}{(modItem.MeasurementName != "Item" || v > 1 ? modItem.MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(modItem.MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.PurchasePrice)}", Value = 1 };
+        UIMenuNumericScrollerItem<int> myscroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 99, 1) 
+        { 
+            Formatter = v => $"{(v == 1 && modItem.MeasurementName == "Item" ? "" : v.ToString() + " ")}" +
+            $"{(modItem.MeasurementName != "Item" || v > 1 ? modItem.MeasurementName : "")}" +
+            $"{(v > 1 ? "(s)" : "")}" +
+            $"{(modItem.MeasurementName != "Item" || v > 1 ? " - " : "")}" +
+
+            $"{(menuItem.PurchasePrice == 0 ? "FREE" : $"${(v * menuItem.PurchasePrice)}")}", 
+            Value = 1 
+        };
         UpdatePropEntryData(modItem, menuItem, myscroller);
         purchaseMenu.AddItem(myscroller);
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
         string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
+        if (cii.PurchasePrice == 0)
+        {
+            formattedPurchasePrice = "FREE";
+        }
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
         string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
@@ -457,6 +477,12 @@ public class PurchaseMenu : Menu
             description += $"~n~~b~DLC Weapon";
         }
         string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
+
+        if(cii.PurchasePrice == 0)
+        {
+            formattedPurchasePrice = "FREE";
+        }
+
         WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
         UIMenu WeaponMenu = null;
         bool FoundCategoryMenu = false;
@@ -677,6 +703,8 @@ public class PurchaseMenu : Menu
         }
     }
 
+
+
     private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
     {
         if (modItem != null && menuItem != null && scrollerItem != null)
@@ -694,6 +722,10 @@ public class PurchaseMenu : Menu
 
 
             if(IsStealing)
+            {
+                formattedPurchasePrice = "FREE";
+            }
+            if (menuItem.PurchasePrice == 0)
             {
                 formattedPurchasePrice = "FREE";
             }
@@ -1432,9 +1464,9 @@ public class PurchaseMenu : Menu
 
         bool ItemInDeliveryBay = true;
         SpawnPlace ChosenSpawn = null;
-        foreach(SpawnPlace sp in Transaction.ItemDeliveryLocations)
+        foreach (SpawnPlace sp in Transaction.ItemDeliveryLocations.OrderBy(x => RandomItems.GetRandomNumber(0f,1f)))
         {
-            ItemInDeliveryBay = Rage.World.GetEntities(sp.Position, 10f, GetEntitiesFlags.ConsiderAllVehicles).Any();
+            ItemInDeliveryBay = Rage.World.GetEntities(sp.Position, 7f, GetEntitiesFlags.ConsiderAllVehicles).Any();
             if (!ItemInDeliveryBay)
             {
                 ChosenSpawn = sp;

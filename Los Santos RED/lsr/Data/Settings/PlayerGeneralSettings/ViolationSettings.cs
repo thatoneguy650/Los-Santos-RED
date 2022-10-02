@@ -33,6 +33,15 @@ public class ViolationSettings : ISettingsDefaultable
     public uint ResistingArrestSlowTriggerTime { get; set; }
     [Description("If enabled, the game will assume you are a cop and not trigger violations for anything besides murding or hurting other cops")]
     public bool TreatAsCop { get; set; }
+
+
+    [Description("Minimum speed required (MPH) to trigger some traffic violations (driving against traffic, driving on pavement, running a red light)")]
+    public float MinTrafficViolationSpeed { get; set; }
+    [Description("Speed required (MPH) over the speed limit to trigger felong speeding")]
+    public float OverLimitFelonySpeedingAmount { get; set; }
+    [Description("Speed required (MPH) over the speed limit to trigger speeding")]
+    public float OverLimitSpeedingAmount { get; set; }
+
     public ViolationSettings()
     {
         SetDefault();
@@ -51,5 +60,9 @@ public class ViolationSettings : ISettingsDefaultable
         ResistingArrestFastTriggerTime = 2000;
         ResistingArrestMediumTriggerTime = 10000;
         ResistingArrestSlowTriggerTime = 25000;
+
+        MinTrafficViolationSpeed = 20f;
+        OverLimitFelonySpeedingAmount = 25f;
+        OverLimitSpeedingAmount = 5f;
     }
 }

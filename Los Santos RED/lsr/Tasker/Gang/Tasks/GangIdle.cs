@@ -209,8 +209,8 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
             if ((Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
                 hasBeenVehiclePatrolTasked = true;
@@ -268,8 +268,8 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
             //List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
             //string ScenarioChosen = PossibleScenarios.PickRandom();
 
@@ -318,8 +318,8 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
             GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(30000, 90000);
@@ -421,8 +421,8 @@ public class GangIdle : ComplexTask
     {
         if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //Ped.Pedestrian.BlockPermanentEvents = true;
+            //Ped.Pedestrian.KeepTasks = true;
             VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
             SeatTaskedToEnter = SeatTryingToEnter;
             unsafe

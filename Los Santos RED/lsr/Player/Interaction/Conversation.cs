@@ -150,7 +150,7 @@ public class Conversation : Interaction
         bool Spoke = false;
         if (CanContinueConversation)
         {
-            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+            foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(3))
             {
                 string voiceName = null;
                 bool IsOverWrittingVoice = false;

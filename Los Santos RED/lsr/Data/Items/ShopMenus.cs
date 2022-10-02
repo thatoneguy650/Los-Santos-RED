@@ -3212,8 +3212,13 @@ public class ShopMenus : IShopMenus
                 new MenuItem("M61 Grenade",340) { SubAmount = 1,SubPrice = 340 },
                 new MenuItem("Improvised Incendiary",30) { SubAmount = 1,SubPrice = 30 },
                 new MenuItem("BZ Gas Grenade",100) { SubAmount = 1,SubPrice = 100 },
+
+
+                new MenuItem("Benefactor Schafter",10000,5000),
+                new MenuItem("Benefactor Serrano",8000,5000),
+                new MenuItem("Karin Futo",3000,1000),
                     }),
-        });
+        });;
     }
     private void MadrazoDenMenu()
     {

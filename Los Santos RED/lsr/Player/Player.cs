@@ -630,6 +630,21 @@ namespace Mod
             {
                 Licenses.Reset();
             }
+
+            if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
+            }
+            if (Settings.SettingsManager.VehicleSettings.DisableAutoHelmet)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_PUT_ON_MOTORCYCLE_HELMET, false);
+            }
+            if (Settings.SettingsManager.PlayerOtherSettings.AllowAttackingFriendlyPeds)
+            {
+                NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Game.LocalPlayer.Character, true, false);
+            }
+
+
         }
         public void Dispose()
         {

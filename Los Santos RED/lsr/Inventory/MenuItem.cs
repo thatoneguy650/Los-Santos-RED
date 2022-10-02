@@ -8,6 +8,9 @@ using System.Xml.Serialization;
 
 public class MenuItem
 {
+    private int originalPurchasePrice;
+    private int originalSalesPrice;
+    private bool isSetFree = false;
     public MenuItem()
     {
 
@@ -25,7 +28,7 @@ public class MenuItem
         SalesPrice = salesPrice;
     }
     public string ModItemName { get; set; }
-    public bool Purchaseable => PurchasePrice > 0;
+    public bool Purchaseable => PurchasePrice > 0 || isSetFree;
     public bool Sellable => SalesPrice > 0;
     public int PurchasePrice { get; set;} = 5;
     public int SalesPrice { get; set; } = -1;
@@ -33,23 +36,34 @@ public class MenuItem
     public List<MenuItemExtra> Extras { get; set; } = new List<MenuItemExtra>();
     public int SubPrice { get; set; } = 1;
     public int SubAmount { get; set; } = 30;
-
     public int NumberOfItemsToSellToPlayer { get; set; } = -1;
+    public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
+
+
     [XmlIgnore]
     public int ItemsSoldToPlayer { get; set; } = 0;
-
-
-
-
-    public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
     [XmlIgnore]
     public int ItemsBoughtFromPlayer { get; set; } = 0;
 
-
-
-
-
-
-
+    public void SetFree()
+    {
+        if (!isSetFree)
+        {
+            originalPurchasePrice = PurchasePrice;
+            originalSalesPrice = SalesPrice;
+            isSetFree = true;
+            PurchasePrice = 0;
+            SalesPrice = 0;
+        }
+    }
+    public void ResetPrice()
+    {
+        if (isSetFree)
+        {
+            PurchasePrice = originalPurchasePrice;
+            SalesPrice = originalSalesPrice;
+            isSetFree = false;
+        }
+    }
 }
 

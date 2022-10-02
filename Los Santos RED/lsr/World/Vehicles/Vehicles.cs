@@ -98,7 +98,7 @@ public class Vehicles
     {
         try
         {
-            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
                 {
@@ -117,20 +117,20 @@ public class Vehicles
                     }  
                 }
             }
-            foreach (VehicleExt PoliceCar in CivilianVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
             {
-                if (PoliceCar.Vehicle.Exists())
+                if (civilianCar.Vehicle.Exists())
                 {
-                    if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                    if (!civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                     {
-                        if (PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                        if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
                         {
-                            if (PoliceCar.Vehicle.IsPersistent)
+                            if (civilianCar.Vehicle.IsPersistent)
                             {
                                 EntryPoint.PersistentVehiclesDeleted++;
                             }
-                            EntryPoint.WriteToConsole($"RemoveAbandonedGangVehicles {PoliceCar.Vehicle.Handle}", 5);
-                            PoliceCar.Vehicle.Delete();
+                            EntryPoint.WriteToConsole($"RemoveAbandonedGangVehicles {civilianCar.Vehicle.Handle}", 5);
+                            civilianCar.Vehicle.Delete();
                             GameFiber.Yield();
                         }
                         GameFiber.Yield();
@@ -145,7 +145,7 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
-        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
+        foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
         {
             if (PoliceCar.Vehicle.Exists())
             {

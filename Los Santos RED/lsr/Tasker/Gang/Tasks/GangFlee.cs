@@ -46,7 +46,7 @@ public class GangFlee : ComplexTask
 
 
             Vector3 CurrentPos = Ped.Pedestrian.Position;
-            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 500f, -1, false, false);
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
 
 
 

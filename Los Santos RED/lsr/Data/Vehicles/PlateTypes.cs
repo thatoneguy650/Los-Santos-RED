@@ -112,6 +112,22 @@ public class PlateTypes : IPlateTypes
         PlateTypeManager.VanityPlates.Add("NVRMYND");
         PlateTypeManager.VanityPlates.Add("LEDFOOT");
 
+
+        PlateTypeManager.VanityPlates.Add("ECTO 1A");
+        PlateTypeManager.VanityPlates.Add("KITT");
+        PlateTypeManager.VanityPlates.Add("RNO 263");
+        PlateTypeManager.VanityPlates.Add("LYN 274");
+        PlateTypeManager.VanityPlates.Add("BAN ONE");
+        PlateTypeManager.VanityPlates.Add("BDR529");
+        PlateTypeManager.VanityPlates.Add("CQB241");
+        PlateTypeManager.VanityPlates.Add("STYN CLSY");
+
+        PlateTypeManager.VanityPlates.Add("FCK IT");
+        PlateTypeManager.VanityPlates.Add("ORP 967");
+        PlateTypeManager.VanityPlates.Add("NTGUILTY");
+        PlateTypeManager.VanityPlates.Add("GRAYMTR");
+        PlateTypeManager.VanityPlates.Add("PLAYUH");
+
         Serialization.SerializeParam(PlateTypeManager, ConfigFileName);
     }
     private void DefaultConfig_Full()

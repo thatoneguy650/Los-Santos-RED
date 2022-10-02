@@ -400,18 +400,37 @@ public class PlacesOfInterest : IPlacesOfInterest
 new ConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
 new ConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
             } },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath ="armenian.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath ="armenian.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, 
+                PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 50f),
                 new ConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 50f),
                 new ConditionalLocation(new Vector3(-600.0588f, -1795.333f, 23.38985f), 155.3086f, 50f),
                 new ConditionalLocation(new Vector3(-622.9163f, -1792.963f, 23.80351f), 163.1899f, 50f),
                 new ConditionalLocation(new Vector3(-591.4926f, -1776.089f, 22.79006f), 214.9723f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            }, 
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
 new ConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
 new ConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
-            } },
+            },
+                CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f), 
+                CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f), 
+                CameraRotation = new Rotator(-21.2234f, -7.327146E-06f, -38.98296f),
+                ItemPreviewPosition = new Vector3(-585.7418f, -1792.97f, 22.85472f),
+                ItemPreviewHeading = 53.11781f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-581.0074f, -1797.569f, 22.8803f), 322.0219f),
+                    new SpawnPlace(new Vector3(-584.7271f, -1780.009f, 22.66464f), 144.9928f),
+                    new SpawnPlace(new Vector3(-586.3314f, -1804.048f, 22.58966f), 115.4426f),
+
+
+
+                } },
+
+            
+
+
             new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { CanInteractWhenWanted = true, MapIcon = 86, BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),

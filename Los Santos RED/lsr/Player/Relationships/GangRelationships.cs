@@ -309,7 +309,10 @@ public class GangRelationships
     {
         foreach (GangReputation gangRep in GangReputations)
         {
-            gangRep.SetRelationshipGroupNeutral();
+            if(!gangRep.IsMember)
+            {
+                gangRep.SetRelationshipGroupNeutral();
+            }
         }      
     }
     public void SetGang(Gang gang, bool showNotification)
