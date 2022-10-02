@@ -9,6 +9,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowPoliceTaskArrows { get; set; }
     public bool ShowCivilianTaskArrows { get; set; }
     public bool ShowCivilianPerceptionArrows { get; set; }
+    public bool ShowTrafficArrows { get; set; }
     public bool PrintUpdateTimes { get; set; }
 
 
@@ -30,6 +31,7 @@ public class DebugSettings : ISettingsDefaultable
     public int OtherUpdateIntervalFar { get; set; }
     public int OtherUpdateIntervalVeryFar { get; set; }
 
+
     public DebugSettings()
     {
         SetDefault();
@@ -39,6 +41,7 @@ public class DebugSettings : ISettingsDefaultable
         ShowPoliceTaskArrows = false;
         ShowCivilianTaskArrows = false;
         ShowCivilianPerceptionArrows = false;
+        ShowTrafficArrows = false;
         PrintUpdateTimes = false;
 
         CivilianUpdateBatch = 10;

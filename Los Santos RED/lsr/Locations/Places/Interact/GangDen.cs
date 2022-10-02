@@ -40,6 +40,12 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public override string ButtonPromptText { get; set; }
     public string GangID { get; set; }
 
+
+    public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
+    public float ItemPreviewHeading { get; set; } = 0f;
+    public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
+
+
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -80,6 +86,10 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             {
                 StoreCamera = new LocationCamera(this, Player);
                 StoreCamera.SayGreeting = false;
+
+                StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
+                StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
+
                 StoreCamera.Setup();
 
 
@@ -107,6 +117,11 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                     Player.IsTransacting = true;
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
                     Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                    Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+                    Transaction.ItemPreviewPosition = ItemPreviewPosition;
+                    Transaction.ItemPreviewHeading = ItemPreviewHeading;
+
                     PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
                     if (ExpectedMoney > 0 && pt.IsReadyForPayment)
                     {

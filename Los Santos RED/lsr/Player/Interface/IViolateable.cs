@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         int GroupID { get; }
         bool HasBeenMoving { get; }
         bool HasBeenMovingFast { get; }
+        string DebugString { get; set; }
         bool IsAliveAndFree { get; }
         bool IsBeingANuisance { get; set; }
         bool IsBreakingIntoCar { get; }

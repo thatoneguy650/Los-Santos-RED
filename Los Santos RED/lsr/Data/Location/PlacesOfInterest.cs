@@ -373,7 +373,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(260.6703f, -3008.191f, 5.070713f), 87.13465f, 75f),
                 new ConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
             } },//shitty shack in elysian
-
             new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { CanInteractWhenWanted = true, MapIcon = 541, BannerImagePath = "gambetti.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, 50f),
@@ -500,7 +499,6 @@ new ConditionalLocation(new Vector3(-610.1835f, -756.0798f, 26.07551f), 266.9069
 new ConditionalLocation(new Vector3(-618.8381f, -761.884f, 25.46778f), 89.04613f, 75f),
 
             } },
-
             new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { CanInteractWhenWanted = true, BannerImagePath = "rednecks.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),
@@ -513,21 +511,37 @@ new ConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f,
 new ConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
 
             } },
-            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { CanInteractWhenWanted = true, MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { CanInteractWhenWanted = true, MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = false, 
+                PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 50f),
                 new ConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 50f),
                 new ConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 50f),
                 new ConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 50f),
                 new ConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            }, 
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-new ConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 75f),
-new ConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 75f),
-new ConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 75f),
-new ConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
+                new ConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 75f),
+                new ConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 75f),
+                new ConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 75f),
+                new ConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
 
-            } },
+            },
+                CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f), 
+                CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f), 
+                CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
+                ItemPreviewPosition = new Vector3(955.3662f, -127.888f, 74.37495f), 
+                ItemPreviewHeading = 150.3339f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(955.2133f, -133.7419f, 74.44804f),239.5793f),
+                    new SpawnPlace(new Vector3(967.6667f, -141.4849f, 74.39858f), 239.8698f),
+                    new SpawnPlace(new Vector3(986.6042f, -138.3367f, 73.09078f), 59.13091f),
+                    new SpawnPlace(new Vector3(968.5606f, -122.4432f, 74.35313f), 153.9187f),
+                } }, 
+
+
+
             new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") { CanInteractWhenWanted = true, BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 50f),
@@ -1268,7 +1282,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(-200.26f, -1380.72f, 32.83f), 0f,"Glass Heroes Auto Repairs","We never crack under pressure") { IsTemporarilyClosed = true, OpenTime = 8,CloseTime = 17,ScannerFilePath = "01_specific_location\\0x105B95C3.wav" },
             new Landmark(new Vector3(-2.34f, -1400.51f, 30.22f), 0f,"South LS Hand Car Wash","Let us give you a hand") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0CC361AF.wav" },
         };
-
         List<SubwayStation> SubwayStations = new List<SubwayStation>()
         {
             new SubwayStation(new Vector3(-245.8754f, -335.3599f, 29.97557f), 184.3399f, "Burton Subway Station",""),
@@ -1278,7 +1291,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new SubwayStation(new Vector3(-1040.5f, -2742.292f, 13.92607f), 329.527f, "LSIA Terminal 4 Subway Station",""),
             new SubwayStation(new Vector3(-946.489f, -2329.504f, 6.763008f), 331.0874f, "LSIA Parking Subway Station",""),
         };
-
         List<BeautyShop> BeautyShops = new List<BeautyShop>()
         {
             new BeautyShop(new Vector3(187.7006f, -1812.874f, 28.94536f), 323.7488f, "Carson's Beauty Supply", "") { IsTemporarilyClosed = true },

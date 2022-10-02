@@ -11,7 +11,7 @@ public class ScannerSettings : ISettingsDefaultable
     public bool IsEnabled { get; set; }
     [Description("Enable or disable audio alerts from the scanner")]
     public bool EnableAudio { get; set; }
-    [Description("Enable or disable changing audio volume with the scanner. Not recommened unless you have issues.")]
+    [Description("Enable or disable changing audio volume with the scanner.")]
     public bool SetVolume { get; set; }
 
     [Description("Volume setting to use with the SetVolume setting. Min 0.0 Max 1.0")]
@@ -40,6 +40,11 @@ public class ScannerSettings : ISettingsDefaultable
     public int NumberOfUnitsToAnnounce { get; set; }
     [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
     public bool ApplyFilter { get; set; }
+    //public int LowCutoffFrequency { get; set; }
+    //public int HighCutoffFrequency { get; set; }
+    //public bool ApplyEQFilter { get; set; }
+    //public bool ApplyLowFilter { get; set; }
+    //public bool ApplyHighFilter { get; set; }
 
     public ScannerSettings()
     {
@@ -50,7 +55,7 @@ public class ScannerSettings : ISettingsDefaultable
         IsEnabled = true;
         EnableAudio = true;
         SetVolume = true;
-        AudioVolume = 0.3f;
+        AudioVolume = 0.45f;
         ApplyFilter = true;
         EnableSubtitles = false;
         EnableNotifications = true;
@@ -59,6 +64,13 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
+
+        //LowCutoffFrequency = 400;
+        //HighCutoffFrequency = 2500;
+
+        //ApplyEQFilter = false;
+        //ApplyLowFilter = true;
+        //ApplyHighFilter = true;
 
     }
 

@@ -53,6 +53,7 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
 
+
             //WavAudioPlayer = new WavAudioPlayer();
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
             //MediaPlayerAudio = new MediaPlayerAudio(ModDataFileManager.Settings);

@@ -329,6 +329,13 @@ public class UI : IMenuProvideable
         }
         //return;
     }
+    private void DisplayDebug()
+    {
+        if (DisplayablePlayer.DebugString != "" && Settings.SettingsManager.UIGeneralSettings.ShowDebug)
+        {
+            DisplayTextOnScreen(DisplayablePlayer.DebugString, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionX - lowerRightHeighSpace - 0.35f, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayScale, Color.White, Settings.SettingsManager.LSRHUDSettings.CrimesDisplayFont, (GTATextJustification)Settings.SettingsManager.LSRHUDSettings.CrimesDisplayJustificationID, false);
+        }
+    }
     private void DisplayCurrentCrimes()
     {
         if (Settings.SettingsManager.LSRHUDSettings.CrimesDisplayEnabled)
@@ -406,6 +413,10 @@ public class UI : IMenuProvideable
                     lowerRightHeighSpace = Settings.SettingsManager.LSRHUDSettings.LowerDisplayNoItemSpacing;
                 }
 
+#if DEBUG
+
+                DisplayDebug();
+#endif
                 DisplayCurrentCrimes();
                 DisplayVehicleStatus();
                 DisplayPlayerInfo();

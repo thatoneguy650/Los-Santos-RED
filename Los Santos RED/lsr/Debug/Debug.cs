@@ -228,6 +228,23 @@ public class Debug
                 Rage.Debug.DrawArrowDebug(cop.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color4);
             }
         }
+
+
+        if (Settings.SettingsManager.DebugSettings.ShowTrafficArrows)
+        {
+            foreach (PedExt ped in World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && x.IsInVehicle))/// && x.DistanceToPlayer <= 250f))// && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
+            {
+                Color Color3 = Color.Yellow;
+                if (ped.IsWaitingAtTrafficLight)
+                {
+                    Color3 = Color.Purple;
+                }
+                Rage.Debug.DrawArrowDebug(ped.Pedestrian.Position + new Vector3(0f, 0f, 3f), Vector3.Zero, Rotator.Zero, 1f, Color3);
+            }
+
+        }
+
+
         //foreach (Cop cop in World.PoliceList.Where(x => x.Pedestrian.Exists()))
         //{
         //    Color Color3 = Color.Yellow;

@@ -34,10 +34,6 @@ public class MenuItem
     public int SubPrice { get; set; } = 1;
     public int SubAmount { get; set; } = 30;
 
-
-
-
-
     public int NumberOfItemsToSellToPlayer { get; set; } = -1;
     [XmlIgnore]
     public int ItemsSoldToPlayer { get; set; } = 0;

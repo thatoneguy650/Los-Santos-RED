@@ -7,6 +7,7 @@ using NAudio.Wave.SampleProviders;
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections.Generic;
 
 public class NAudioPlayer : IAudioPlayable
 {
@@ -79,6 +80,7 @@ public class NAudioPlayer : IAudioPlayable
             if (applyFilter)
             {
                 MyWaveProvider filter = new MyWaveProvider(audioFile, 2000);
+                //MyWaveProvider filter = new MyWaveProvider(audioFile, 2000, Settings);
                 outputDevice.Init(filter);
             }
             else
@@ -126,6 +128,104 @@ public class NAudioPlayer : IAudioPlayable
         Play(fileName, realVolume, isScannerPlaying, applyFilter);
     }
 
+    //class MyWaveProvider_New : ISampleProvider
+    //{
+    //    private ISampleProvider sourceProvider;
+    //    private float cutOffFreq;
+    //    private int channels;
+    //    private BiQuadFilter[] filters;
+    //    private ISettingsProvideable Settings;
+    //    public List<EqualizerBand> EqualizerBands { get; }
+
+    //    public MyWaveProvider_New(ISampleProvider sourceProvider, int cutOffFreq, ISettingsProvideable settings)
+    //    {
+    //        Settings = settings;
+    //        this.sourceProvider = sourceProvider;
+    //        this.cutOffFreq = cutOffFreq;
+
+    //        channels = sourceProvider.WaveFormat.Channels;
+    //        filters = new BiQuadFilter[channels];
+
+    //        EqualizerBands = new List<EqualizerBand>() 
+    //           {
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 100, Gain = -30f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 200, Gain = -30f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 300, Gain = -30f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 400, Gain = 0f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 500, Gain = 0f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 600, Gain = 3f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 700, Gain = 4f},
+    //                    new EqualizerBand {Bandwidth = 3.0f, Frequency = 1000, Gain = 9f},
+    //                    new EqualizerBand {Bandwidth = 3.0f, Frequency = 2000, Gain = 18f},
+    //                    new EqualizerBand {Bandwidth = 3.0f, Frequency = 3000, Gain = 24f},
+    //                    new EqualizerBand {Bandwidth = 3.0f, Frequency = 4000, Gain = 9f},
+    //                    new EqualizerBand {Bandwidth = 1.0f, Frequency = 5000, Gain = -3f}
+    //                };
+
+    //        if (Settings.SettingsManager.ScannerSettings.ApplyEQFilter)
+    //        {
+    //            CreateEQFilters();
+    //        }
+    //        if (Settings.SettingsManager.ScannerSettings.ApplyLowFilter)
+    //        {
+    //            CreateLowFilters();
+    //        }
+    //        if (Settings.SettingsManager.ScannerSettings.ApplyHighFilter)
+    //        {
+    //            CreateHighFilters();
+    //        }
+
+    //    }
+    //    private void CreateEQFilters()
+    //    {
+    //        foreach (EqualizerBand eb in EqualizerBands)
+    //        {
+    //            for (int n = 0; n < channels; n++)
+    //                if (filters[n] == null)
+    //                    filters[n] = BiQuadFilter.PeakingEQ(44100, eb.Frequency, eb.Bandwidth, eb.Gain);
+    //                else
+    //                    filters[n].SetPeakingEq(44100, eb.Frequency,eb.Bandwidth,eb.Gain);
+    //        }
+    //    }
+    //    private void CreateLowFilters()
+    //    {
+    //        int Cutoff = Settings.SettingsManager.ScannerSettings.LowCutoffFrequency;
+
+    //        for (int n = 0; n < channels; n++)
+    //            if (filters[n] == null)
+    //                filters[n] = BiQuadFilter.LowPassFilter(44100, Cutoff, 1);
+    //            else
+    //                filters[n].SetLowPassFilter(44100, Cutoff, 1);
+    //    }
+    //    private void CreateHighFilters()
+    //    {
+    //        int Cutoff = Settings.SettingsManager.ScannerSettings.HighCutoffFrequency;
+    //        for (int n = 0; n < channels; n++)
+    //            if (filters[n] == null)
+    //                filters[n] = BiQuadFilter.HighPassFilter(44100, Cutoff, 1);
+    //            else
+    //                filters[n].SetHighPassFilter(44100, Cutoff, 1);
+    //    }
+
+    //    public WaveFormat WaveFormat { get { return sourceProvider.WaveFormat; } }
+
+    //    public int Read(float[] buffer, int offset, int count)
+    //    {
+    //        int samplesRead = sourceProvider.Read(buffer, offset, count);
+
+    //        for (int i = 0; i < samplesRead; i++)
+    //            buffer[offset + i] = filters[(i % channels)].Transform(buffer[offset + i]);
+
+    //        return samplesRead;
+    //    }
+    //}
+
+    class EqualizerBand
+    {
+        public float Frequency { get; set; }
+        public float Gain { get; set; }
+        public float Bandwidth { get; set; }
+    }
     class MyWaveProvider : ISampleProvider
     {
         private ISampleProvider sourceProvider;

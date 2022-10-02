@@ -115,7 +115,7 @@ namespace Mod
             }
             CurrentLocation = new LocationData(Game.LocalPlayer.Character, streets, zones, interiors);
             Surrendering = new SurrenderActivity(this, World, Settings);
-            Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories);
+            Violations = new Violations(this, TimeControllable, Crimes, Settings, Zones, GangTerritories, World);
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
@@ -443,7 +443,7 @@ namespace Mod
 
 
 
-
+        public string DebugString { get; set; }
 
 
         //Required

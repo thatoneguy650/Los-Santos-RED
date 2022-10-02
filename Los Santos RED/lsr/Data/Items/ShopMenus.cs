@@ -2253,9 +2253,18 @@ public class ShopMenus : IShopMenus
                 new MenuItem("M61 Grenade",400) { SubAmount = 1,SubPrice = 400 },
                 new MenuItem("Improvised Incendiary",120) { SubAmount = 1,SubPrice = 120 },
                 new MenuItem("BZ Gas Grenade",200) { SubAmount = 1,SubPrice = 200 },
+
+
+                new MenuItem("Western Zombie Bobber",7000,5000),
+                new MenuItem("Western Zombie Chopper",6200,4200),
+                new MenuItem("Western Daemon",5500,3975),
+                new MenuItem("Western Daemon LOST",6000,4000),
+                new MenuItem("Western Bagger",3000,2000),
+                new MenuItem("Vapid Lost Slamvan",12000,8000),
+                new MenuItem("Declasse Gang Burrito",9000,7000),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
-        });
+        });;
 
     }
     private void FamiliesDenMenu()

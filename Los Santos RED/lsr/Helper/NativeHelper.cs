@@ -242,8 +242,6 @@ namespace LosSantosRED.lsr.Helper
 
             return Abbreviation;
         }
-
-
         public static void DisablePlayerControl()
         {
             Game.DisableControlAction(0, GameControl.LookLeftRight, true);

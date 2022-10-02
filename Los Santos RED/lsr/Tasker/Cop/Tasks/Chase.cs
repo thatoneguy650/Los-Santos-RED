@@ -419,7 +419,7 @@ public class Chase : ComplexTask
         Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = true;
 
-        if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        if (Ped.Pedestrian.Exists() && Player.IsInVehicle && Player.Character.IsInAnyVehicle(false) && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
             if (CurrentSubTask != SubTask.CarJackPlayer)
             {

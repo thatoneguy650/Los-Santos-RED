@@ -161,6 +161,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsGangMember { get; set; } = false;
     public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
+    public bool IsWaitingAtTrafficLight { get; set; }
+    public bool IsTurningLeftAtTrafficLight { get; set; }
+    public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsInWrithe { get; private set; } = false;
@@ -309,6 +312,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                         {
                             CheckPlayerBusted();
                         }
+
+                       
+
+
                     }
                     if (Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                     {
@@ -544,6 +551,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             LastSeatIndex = Pedestrian.SeatIndex;
             IsInHelicopter = Pedestrian.IsInHelicopter;
             IsInBoat = Pedestrian.IsInBoat;
+
+            IsWaitingAtTrafficLight = NativeFunction.Natives.IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS<bool>(Pedestrian.CurrentVehicle);
+            IsTurningLeftAtTrafficLight = false;
+            IsTurningRightAtTrafficLight = false;
             if (Pedestrian.CurrentVehicle.Model.Name.ToLower() == "rhino")
             {
                 IsInAPC = true;
@@ -572,6 +583,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             IsDriver = false;
             IsInBoat = false;
             IsInAPC = false;
+            IsWaitingAtTrafficLight = false;
+            IsTurningLeftAtTrafficLight = false;
+            IsTurningRightAtTrafficLight = false;
             if (Pedestrian.Exists() && Pedestrian.Speed >= 7.0f)
             {
                 GameTimeLastMovedFast = Game.GameTime;

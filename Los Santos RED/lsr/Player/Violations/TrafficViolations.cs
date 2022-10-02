@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
@@ -16,10 +17,12 @@ public class TrafficViolations
     private Violations Violations;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
+    private IEntityProvideable World;
 
     private uint GameTimeStartedDrivingAgainstTraffic;
     private uint GameTimeStartedDrivingOnPavement;
-    private bool IsRunningRedLight;
+    private uint GameTimeLastRanRed;
+   // private bool IsRunningRedLight;
     
     private int TimeSincePlayerHitPed;
     private int TimeSincePlayerHitVehicle;
@@ -30,14 +33,15 @@ public class TrafficViolations
     private bool SentRecentCrash = false;
 
 
-    public TrafficViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time)
+    public TrafficViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time, IEntityProvideable world)
     {
         Player = player;
         Violations = violations;
         Settings = settings;
         Time = time;
+        World = world;
     }
-
+    public bool IsRunningRedLight => GameTimeLastRanRed != 0 && Game.GameTime - GameTimeLastRanRed <= 2000;
     public bool IsSpeeding { get; set; }
     public bool IsViolatingAnyTrafficLaws => HasBeenDrivingAgainstTraffic || HasBeenDrivingOnPavement || IsRunningRedLight || IsSpeeding || VehicleIsSuspicious;
     private bool HasBeenDrivingAgainstTraffic => GameTimeStartedDrivingAgainstTraffic != 0 && Game.GameTime - GameTimeStartedDrivingAgainstTraffic >= Settings.SettingsManager.ViolationSettings.RecentlyDrivingAgainstTrafficTime;
@@ -57,7 +61,8 @@ public class TrafficViolations
     {
         IsSpeeding = false;
         VehicleIsSuspicious = false;
-        IsRunningRedLight = false;
+        GameTimeLastRanRed = 0;
+        //IsRunningRedLight = false;
         TimeSincePlayerHitPed = 0;
         TimeSincePlayerHitVehicle = 0;
         Violations.CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
@@ -68,11 +73,13 @@ public class TrafficViolations
         VehicleIsSuspicious = false;
         TreatAsCop = false;
         IsSpeeding = false;
-        IsRunningRedLight = false;
+
+        //IsRunningRedLight = false;
         if (Player.IsAliveAndFree && Player.ShouldCheckViolations && ShouldCheckTrafficViolations)
         {
             CheckTrafficViolations();
         }
+        Player.DebugString = $"RedLight {IsRunningRedLight} Speed {IsSpeeding} Sus {VehicleIsSuspicious} Against {HasBeenDrivingAgainstTraffic} Pave {HasBeenDrivingOnPavement}";
     }
     private void CheckTrafficViolations()
     {
@@ -123,6 +130,11 @@ public class TrafficViolations
                 isDrivingSuspiciously = true;
                 Violations.AddViolating("FelonySpeeding");
             }
+            if (IsRunningRedLight)
+            {
+                isDrivingSuspiciously = true;
+                Violations.AddViolating("RunningARedLight");
+            }
         }
         if (Player.Intoxication.IsIntoxicated && isDrivingSuspiciously)// DrivingAgainstTraffic.IsCurrentlyViolating || DrivingOnPavement.IsCurrentlyViolating || FelonySpeeding.IsCurrentlyViolating || RunningARedLight.IsCurrentlyViolating || HitPedWithCar.IsCurrentlyViolating || HitCarWithCar.IsCurrentlyViolating))
         {
@@ -149,30 +161,31 @@ public class TrafficViolations
             //        TreatAsCop = true;//Cops dont have to do traffic laws stuff if ur running code3?
             //    }
             //}
-            IsRunningRedLight = false;
-            //foreach (PedExt Civilian in World.Pedestrians.Civilians.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
-            //{
-            //    Civilian.IsWaitingAtTrafficLight = false;
-            //    Civilian.IsFirstWaitingAtTrafficLight = false;
-            //    Civilian.PlaceCheckingInfront = Vector3.Zero;
-            //    if (Civilian.DistanceToPlayer <= 250f && Civilian.IsInVehicle)
-            //    {
-            //        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
-            //        {
-            //            Vehicle PedCar = Civilian.Pedestrian.CurrentVehicle;
-            //            if (NativeFunction.CallByName<bool>("IS_VEHICLE_STOPPED_AT_TRAFFIC_LIGHTS", PedCar))
-            //            {
-            //                Civilian.IsWaitingAtTrafficLight = true;
+            //IsRunningRedLight = false;
 
-            //                if (Extensions.FacingSameOrOppositeDirection(Civilian.Pedestrian, Game.LocalPlayer.Character) && Game.LocalPlayer.Character.InFront(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 10f && Game.LocalPlayer.Character.Speed >= 3f)
-            //                {
-            //                    GameTimeLastRanRed = Game.GameTime;
-            //                    PlayerIsRunningRedLight = true;
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
+            if (Player.CurrentVehicle?.Indicators.LeftBlinkerOn == true || Player.CurrentVehicle?.Indicators.RightBlinkerOn == true)
+            {
+
+            }
+            else
+            {
+                foreach (PedExt Civilian in World.Pedestrians.Citizens.Where(x => x.Pedestrian.Exists() && x.IsWaitingAtTrafficLight).OrderBy(x => x.DistanceToPlayer))
+                {
+                    if (Civilian.DistanceToPlayer <= 100f && Civilian.IsInVehicle)
+                    {
+                        if (Civilian.Pedestrian.IsInAnyVehicle(false) && Civilian.Pedestrian.CurrentVehicle != null)
+                        {
+                            float HeadingDiff = Math.Abs(Extensions.GetHeadingDifference(Game.LocalPlayer.Character.Heading, Civilian.Pedestrian.Heading));
+                            if ((HeadingDiff <= 35f) && Game.LocalPlayer.Character.IsThisPedInFrontOf(Civilian.Pedestrian) && Civilian.DistanceToPlayer <= 20f && Game.LocalPlayer.Character.Speed >= 3f)
+                            {
+                                GameTimeLastRanRed = Game.GameTime;
+                                //IsRunningRedLight = true;
+                            }
+                            //EntryPoint.WriteToConsole($"{Civilian.DistanceToPlayer} HeadingDiff {HeadingDiff} IsRunningRedLight {IsRunningRedLight}");
+                        }
+                    }
+                }
+            }
             if (Game.LocalPlayer.IsDrivingOnPavement && GameTimeStartedDrivingOnPavement == 0)
             {
                 GameTimeStartedDrivingOnPavement = Game.GameTime;
@@ -197,6 +210,9 @@ public class TrafficViolations
                 SpeedLimit = Player.CurrentLocation.CurrentStreet.SpeedLimitMPH;
             }
             IsSpeeding = Player.VehicleSpeedMPH > SpeedLimit + 25f;
+
+
+            
         }
     }
     private bool IsDamaged(VehicleExt myCar)
