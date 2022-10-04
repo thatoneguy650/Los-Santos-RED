@@ -145,6 +145,7 @@ public class ModDataFileManager
         SetupEUP();
         SetupFullExpandedJurisdiction();
         SetupLosSantos2008();
+        SetupLibertyCity();
     }
     private void SetupAddonPlatesConfig()
     {
@@ -199,6 +200,11 @@ public class ModDataFileManager
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
 
-
+    private void SetupLibertyCity()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
+        string Description = "";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
+    }
 }
 

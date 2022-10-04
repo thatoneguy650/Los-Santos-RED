@@ -41,6 +41,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         else
         {
             EntryPoint.WriteToConsole($"No Locations config found, creating default", 0);
+            DefaultConfig_LibertyCity();
             DefaultConfig();
         }
     }
@@ -1761,5 +1762,20 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.Morgues.AddRange(Morgues);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        PossibleLocations LibertyCityLocations = new PossibleLocations();
+        List<PoliceStation> PoliceStations = new List<PoliceStation>()
+        {
+            new PoliceStation(new Vector3(0f, 0f, 0f), 323.5287f, "LCPD Station", "LCPD") {OpenTime = 0,CloseTime = 24 } 
+        };
+        List<Hospital> Hospitals = new List<Hospital>() 
+        {
+            new Hospital(new Vector3(25f, 25f, 25f), 280.637f, "LC Hospital","LC Hosptial") { OpenTime = 0,CloseTime = 24 }, 
+        };
+        LibertyCityLocations.PoliceStations.AddRange(PoliceStations);
+        LibertyCityLocations.Hospitals.AddRange(Hospitals);
+        Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
     }
 }

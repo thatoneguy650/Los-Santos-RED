@@ -33,6 +33,7 @@ public class Streets : IStreets
         else
         {
             EntryPoint.WriteToConsole($"No Streets config found, creating default", 0);
+            DefaultConfig_LibertyCity();
             DefaultConfig();
         }
     }
@@ -324,6 +325,14 @@ public class Streets : IStreets
             new Street("Mt Haan Dr", 40f, "MPH")
         };
         Serialization.SerializeParams(StreetsList, ConfigFileName);
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        List<Street> LCStreetsList = new List<Street>
+        {
+            new Street("Unknwon", 40f, "MPH")
+        };
+        Serialization.SerializeParams(LCStreetsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Streets_LibertyCity.xml");
     }
 }
 

@@ -120,7 +120,7 @@ public class PlateTypes : IPlateTypes
         PlateTypeManager.VanityPlates.Add("BAN ONE");
         PlateTypeManager.VanityPlates.Add("BDR529");
         PlateTypeManager.VanityPlates.Add("CQB241");
-        PlateTypeManager.VanityPlates.Add("STYN CLSY");
+        PlateTypeManager.VanityPlates.Add("STYNCLSY");
 
         PlateTypeManager.VanityPlates.Add("FCK IT");
         PlateTypeManager.VanityPlates.Add("ORP 967");

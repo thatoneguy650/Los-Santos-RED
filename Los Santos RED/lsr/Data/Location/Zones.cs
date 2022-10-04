@@ -32,6 +32,7 @@ public class Zones : IZones
         {
             EntryPoint.WriteToConsole($"No Zones config found, creating default", 0);
             DefaultConfig();
+            DefaultConfig_LibertyCity();
         }
     }
     public string GetZoneName(Vector3 ZonePosition)
@@ -244,6 +245,81 @@ public class Zones : IZones
 
             };
         Serialization.SerializeParams(ZoneList, ConfigFileName);
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        List<Zone> LibertyCityZones = new List<Zone>
+        {
+            new Zone("ACTRR", "Acter", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("ALDCI", "Alderney State Correctional Facility", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("ACTIP", "Acter Industrial Park", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BERCH", "Berchem", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOAB", "BOAB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOULE", "Boulevard", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRALG", "BRALG", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRDBB", "BRDBB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BREBB", "BREBB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRBRO", "BRBRO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BEECW", "BEECW", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOTU", "BOTU", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHITO", "CHITO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CITH", "CITH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("COISL", "COISL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHISL", "CHISL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CASGR", "CASGR", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHAPO", "CHAPO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CASGC", "CASGC", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CERHE", "CERHE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("DOWTW", "Downtown", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("EAHOL", "EAHOL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("EISLC", "EISLC", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FISSO", "FISSO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FRANI", "Francis International", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FISSN", "FISSN", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FIREP", "FIREP", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FORSI", "FORSI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("HATGA", "HATGA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("HOBEH", "HOBEH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("INSTI", "INSTI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LANCE", "LANCE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LEFWO", "Leftwood", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LTBAY", "Little Bay", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LANCA", "LANCA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LOWEA", "Lower Easton", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LITAL", "LITAL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPE", "MIDPE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPA", "MIDPA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPW", "MIDPW", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MEADP", "Meadows Park", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MEADH", "Meadow Hills", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NOHOL", "NOHOL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NORWO", "NORWO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NRTGA", "NRTGA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NOWOB", "NOWOB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("OCEANA", "OCEANA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("OUTL", "OUTL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("PUGAT", "PUGAT", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("PORTU", "Port Tudor", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SANAND", "SANAND", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SUTHS", "SUTHS", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SCHOL", "Schlotter", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STARJ", "Star Junction", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STEIN", "Steinway", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STHBO", "South Bohan", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SUFFO", "SUFFO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("TUDOR", "Tudor", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THPRES", "THPRES", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THXCH", "THXCH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THTRI", "THTRI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("TMEQU", "TMEQU", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("VASIH", "VASIH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESMI", "WESMI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESDI", "WESDI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESDY", "WESDY", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+
+
+            };
+        Serialization.SerializeParams(LibertyCityZones, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Zones_LibertyCity.xml");
     }
     private bool IsPointInPolygon(Vector2 point, Vector2[] polygon)
     {

@@ -47,7 +47,7 @@ public class Zone
     {
         get
         {
-            string CountyName = "San Andreas";
+            string CountyName = ZoneCounty.ToString();
             if (ZoneCounty == County.BlaineCounty)
                 CountyName = "Blaine County";
             else if (ZoneCounty == County.VenturaCounty)
@@ -64,6 +64,10 @@ public class Zone
                 CountyName = "North Yankton";
             else if (ZoneCounty == County.Vice)
                 CountyName = "Vice County";
+            else if (ZoneCounty == County.Alderney)
+                CountyName = "Alderney";
+            else if (ZoneCounty == County.LibertyCity)
+                CountyName = "Liberty City";
             return DisplayName + ", " + CountyName;
         }
     }

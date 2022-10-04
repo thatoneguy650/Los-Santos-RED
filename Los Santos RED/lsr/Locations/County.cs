@@ -16,4 +16,6 @@ public enum County
     Vice = 7,
     VenturaCounty = 8,
     MajesticCounty = 9,
+    LibertyCity = 10,
+    Alderney = 11,
 }

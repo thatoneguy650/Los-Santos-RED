@@ -37,6 +37,7 @@ public class Agencies : IAgencies
             EntryPoint.WriteToConsole($"No Agencies config found, creating default", 0);
             DefaultConfig_FullExpanded();
             DefaultConfig_LosSantos2008();
+            DefaultConfig_LibertyCity();
             DefaultConfig();
         }
     }
@@ -176,6 +177,25 @@ public class Agencies : IAgencies
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Agencies_LosSantos2008.xml");
     }
+    private void DefaultConfig_LibertyCity()
+    {
+        List<Agency> SimpleAgenicesList = new List<Agency>
+        {
+            new Agency("~b~", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LC ","Tasers","AllSidearms","AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
+            new Agency("~b~", "ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LSSDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
+            new Agency("~b~", "LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
+            new Agency("~r~", "NOOSE", "National Office of Security Enforcement", "DarkSlateGray", Classification.Federal, "NOOSEPeds", "NOOSEVehicles", "","Tasers","BestSidearms","BestLongGuns", "NOOSE Officer") { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" },
+            new Agency("~p~", "FIB", "Federal Investigation Bureau", "Purple", Classification.Federal, "FIBPeds", "FIBVehicles", "FIB ","Tasers","BestSidearms","BestLongGuns", "FIB Agent") { MaxWantedLevelSpawn = 5, SpawnLimit = 6,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~p~", "DOA", "Drug Observation Agency", "Purple", Classification.Federal, "DOAPeds", "UnmarkedVehicles", "DOA ","Tasers","AllSidearms","AllLongGuns", "DOA Agent")  {MaxWantedLevelSpawn = 3, SpawnLimit = 4,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~u~", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "",null,"MilitarySidearms","MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6,CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~r~", "FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ",null,null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~w~", "LCMC", "Liberty City Medical Center", "White", Classification.EMS, "EMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
+            new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
+        };
+        Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Agencies_LibertyCity.xml");
+    }
+
+
     public void Setup(IHeads heads, IDispatchableVehicles dispatchableVehicles, IDispatchablePeople dispatchablePeople, IIssuableWeapons issuableWeapons)
     {
         foreach(Agency agency in AgenciesList)
