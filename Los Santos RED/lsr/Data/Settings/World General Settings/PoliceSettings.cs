@@ -57,8 +57,31 @@ public class PoliceSettings : ISettingsDefaultable
     public int RecentlySeenTime { get; set; }
     [Description("Distance (in meters) police need to be within to bust the player.")]
     public float BustDistance { get; set; }
+    //[Description("Allow cops to use the drive by sight driving flag when chasing.")]
+    //public bool AllowDriveBySight { get; set; }
+
+
+
+    [Description("Allow cops to use the drive by sight driving flag when locating.")]
+    public bool AllowDriveBySightDuringLocate { get; set; }
+    [Description("Distance to allow drive by sight during locate.")]
+    public float DriveBySightDuringLocateDistance { get; set; }
+    [Description("Allow cops to use the drive by sight driving flag when investigating.")]
+    public bool AllowDriveBySightDuringInvestigate { get; set; }
+    [Description("Distance to allow drive by sight during investigate.")]
+    public float DriveBySightDuringInvestigateDistance { get; set; }
+
     [Description("Allow cops to use the drive by sight driving flag when chasing.")]
-    public bool AllowDriveBySight { get; set; }
+    public bool AllowDriveBySightDuringChase{ get; set; }
+    [Description("Distance to allow drive by sight during chase.")]
+    public float DriveBySightDuringChaseDistance { get; set; }
+
+
+
+
+
+
+
 
 
 
@@ -115,6 +138,9 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
+    public float Roadblock_PedDistance { get; set; }
+    public float Roadblock_BarrierDistance { get; set; }
+    public float Roadblock_ConeDistance { get; set; }
 
     [Description("Time (in ms) between roadblocks when you are not actively seen by police.")]
     public int TimeBetweenRoadblock_Unseen { get; set; }
@@ -342,6 +368,7 @@ public class PoliceSettings : ISettingsDefaultable
     public bool AllowRespondingWithoutCallIn { get; set; }
     public bool ForceDefaultWeaponAnimations { get; set; }
 
+
     public PoliceSettings()
     {
         SetDefault();
@@ -364,6 +391,13 @@ public class PoliceSettings : ISettingsDefaultable
 
         RoadblockMinWantedLevel = 3;
         RoadblockMaxWantedLevel = 5;
+
+
+        Roadblock_PedDistance = 5f;// 15f;
+        Roadblock_BarrierDistance = 10f;// 17f;
+        Roadblock_ConeDistance = 12f;// 19f;
+
+
         TimeBetweenRoadblock_Unseen = 999999;
         TimeBetweenRoadblock_Seen_Min = 120000;
         TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 30000;
@@ -381,10 +415,14 @@ public class PoliceSettings : ISettingsDefaultable
         AllowChaseAssists = true;
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
-        AllowPowerAssist = true;
+        AllowPowerAssist = false;
 
-
-
+        AllowDriveBySightDuringChase = false;
+        DriveBySightDuringChaseDistance = 150f;
+        AllowDriveBySightDuringInvestigate = false;
+        DriveBySightDuringInvestigateDistance = 150f;
+        AllowDriveBySightDuringLocate = false;
+        DriveBySightDuringLocateDistance = 150f;
 
         ManageLoadout = true;
         BustDistance = 4f;//5f;
@@ -495,8 +533,11 @@ public class PoliceSettings : ISettingsDefaultable
         SixthSenseHelicopterPercentage = 90f;
         SixthSenseSearchModeLimitPercentage = 0.7f;
 
-        AllowDriveBySight = false;
-        AllowPowerAssist = false;
+        // AllowDriveBySight = false;
+
+
+     
+
 
 
 #if DEBUG

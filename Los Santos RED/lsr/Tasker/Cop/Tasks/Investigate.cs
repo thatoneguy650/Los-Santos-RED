@@ -240,7 +240,7 @@ public class Investigate : ComplexTask
 
                     if (isCode3)
                     {
-                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 150f && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
+                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringInvestigateDistance && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringInvestigate)
                         {
                             if (!isSetCode3Close)
                             {

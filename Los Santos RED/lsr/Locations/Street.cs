@@ -13,7 +13,6 @@ public class Street
     public float SpeedLimitKMH => SpeedLimitUnits == "KM/H" ? SpeedLimit : SpeedLimit * 1.60933f;
     public float SpeedLimitMPH => SpeedLimitUnits == "MPH" ? SpeedLimit : SpeedLimit * 0.621371f;
     public bool IsHighway = false;
-    public List<string> DirectionsStopped = new List<string>();
     public Street()
     {
 

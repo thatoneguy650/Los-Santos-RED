@@ -14,8 +14,8 @@ public class VanillaWorldManager
     private bool isRandomEventsDisabled;
     private bool IsVanillaRespawnActive = true;
     private ISettingsProvideable Settings;
-    private bool isVanillaShopsActive;
-    private bool isVanillaBlipsActive;
+    private bool isVanillaShopsActive = true;
+    private bool isVanillaBlipsActive = true;
 
     public VanillaWorldManager(ISettingsProvideable settings)
     {

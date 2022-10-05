@@ -810,10 +810,10 @@ public class DebugMenu : Menu
             Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
             menu.Visible = false;
         };
-        UIMenuItem SpawnRockblock = new UIMenuItem("Spawn Roadblock", "Spawn roadblock");
+        UIMenuNumericScrollerItem<float> SpawnRockblock = new UIMenuNumericScrollerItem<float>("Spawn Roadblock", "Spawn roadblock",10f,200f,10f);
         SpawnRockblock.Activated += (menu, item) =>
         {
-            Dispatcher.DebugSpawnRoadblock();
+            Dispatcher.DebugSpawnRoadblock(SpawnRockblock.Value);
             menu.Visible = false;
         };
 
@@ -1041,6 +1041,7 @@ public class DebugMenu : Menu
         }
 
     }
+
     private void SetNearestPedWanted()
     {
         PedExt toChoose = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();

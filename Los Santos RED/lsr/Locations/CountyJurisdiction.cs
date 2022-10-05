@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 public class CountyJurisdiction
 {
     public string AgencyInitials { get; set; } = "";
-    public County County { get; set; }
+    public string CountyID { get; set; }
     public int Priority { get; set; } = 99;
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
@@ -39,10 +39,10 @@ public class CountyJurisdiction
     {
 
     }
-    public CountyJurisdiction(string agencyInitials, County county, int priority, int ambientSpawnChance, int wantedSpawnChance)
+    public CountyJurisdiction(string agencyInitials, string countyID, int priority, int ambientSpawnChance, int wantedSpawnChance)
     {
         AgencyInitials = agencyInitials;
-        County = county;
+        CountyID = countyID;
         Priority = priority;
         AmbientSpawnChance = ambientSpawnChance;
         WantedSpawnChance = wantedSpawnChance;

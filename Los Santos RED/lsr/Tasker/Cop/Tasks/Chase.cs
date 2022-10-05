@@ -579,7 +579,7 @@ public class Chase : ComplexTask
 
 
 
-            if (Ped.RecentlySeenPlayer && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
+            if ((Ped.RecentlySeenPlayer || Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringChaseDistance) && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringChase)
             {
                 NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
             }

@@ -107,6 +107,7 @@
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\ICounties.cs" />
     <Compile Include="lsr\Data\Interface\IDances.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchablePeople.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchableVehicles.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
+    <Compile Include="lsr\Data\Location\Counties.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\FoodType.cs" />
@@ -177,6 +179,7 @@
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Inventory\PropAttachment.cs" />
+    <Compile Include="lsr\Locations\GameCounty.cs" />
     <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
     <Compile Include="lsr\Locations\Places\Basic\Prison.cs" />
     <Compile Include="lsr\Locations\Places\Basic\Subway Station.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
     <Compile Include="lsr\Locations\Places\Other\LocationTeleporter.cs" />
+    <Compile Include="lsr\Locations\RoadNode.cs" />
     <Compile Include="lsr\Locations\SpawnPlace.cs" />
     <Compile Include="lsr\ModController\ModDataFileManager.cs" />
     <Compile Include="lsr\Inventory\MenuItemExtra.cs" />

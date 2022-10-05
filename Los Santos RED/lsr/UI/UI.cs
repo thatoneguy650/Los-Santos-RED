@@ -94,12 +94,13 @@ public class UI : IMenuProvideable
     private bool IsVanillaStarsHUDVisible;
     private bool IsVanillaCashHUDVisible;
     private float lowerRightHeighSpace;
+    private ICounties Counties;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
     public bool IsDisplayingMenu => MenuPool.IsAnyMenuOpen();
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, 
         IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, 
-        IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, IActivityPerformable activityPerformable, ICrimes crimes)
+        IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, IActivityPerformable activityPerformable, ICrimes crimes, ICounties counties)
     {
         DisplayablePlayer = displayablePlayer;
         ActionablePlayer = actionablePlayer;
@@ -108,6 +109,7 @@ public class UI : IMenuProvideable
         Time = time;
         Tasker = tasker;
         World = world;
+        Counties = counties;
         BigMessage = new BigMessageThread(true);
         MenuPool = new MenuPool();
         TimerBarPool = new TimerBarPool();
@@ -121,7 +123,7 @@ public class UI : IMenuProvideable
         VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
         //WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
-        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings);
+        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, Counties);
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
        // BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
@@ -1026,7 +1028,7 @@ public class UI : IMenuProvideable
         string toDisplay = "";
         if (DisplayablePlayer.CurrentLocation.CurrentZone != null)
         {
-            toDisplay = $"{CurrentDefaultTextColor}" + DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName;
+            toDisplay = $"{CurrentDefaultTextColor}" + DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName(Counties);
             if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
             {
                 toDisplay += $"{CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;

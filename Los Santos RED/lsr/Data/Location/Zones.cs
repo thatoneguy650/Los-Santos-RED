@@ -35,25 +35,6 @@ public class Zones : IZones
             DefaultConfig_LibertyCity();
         }
     }
-    public string GetZoneName(Vector3 ZonePosition)
-    {
-        Zone ListResult = null;
-        string zoneName = "UNK";
-        //ListResult = ZoneList.Where(x => x.Boundaries != null && IsPointInPolygon(new Vector2(ZonePosition.X, ZonePosition.Y), x.Boundaries)).FirstOrDefault();
-        if (ListResult == null)
-        {
-            zoneName = GetInternalZoneString(ZonePosition);
-            ListResult = ZoneList.Where(x => x.InternalGameName.ToUpper() == zoneName.ToUpper()).FirstOrDefault();
-        }
-        if (ListResult == null)
-        {
-            return "";
-        }
-        else
-        {
-            return ListResult.FullDisplayName;
-        }
-    }
     public Zone GetZone(Vector3 ZonePosition)
     {
         Zone ListResult = null;
@@ -66,7 +47,7 @@ public class Zones : IZones
         }
         if (ListResult == null)
         {
-            return new Zone(zoneName, "Unknown", County.Unknown, "Unknown", false, eLocationEconomy.Middle, eLocationType.Rural);
+            return new Zone(zoneName, "Unknown", "Unknown", "Unknown", false, eLocationEconomy.Middle, eLocationType.Rural);
         }
         else
         {
@@ -88,7 +69,7 @@ public class Zones : IZones
         ZoneList = new List<Zone>
         {
             //One Off
-            new Zone("OCEANA", "Pacific Ocean", County.PacificOcean, "Unknown", false, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("OCEANA", "Pacific Ocean", "PacificOcean", "Unknown", false, eLocationEconomy.Poor, eLocationType.Wilderness),
 
             ////Ventura County?
             //new Zone("PROCOB", "Procopio Beach", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
@@ -105,125 +86,125 @@ public class Zones : IZones
             //new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             //new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             //Ventura County is now blaine county
-            new Zone("PROCOB", "Procopio Beach", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTCHIL", "Mount Chiliad", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("PALETO", "Paleto Bay", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("PALCOV", "Paleto Cove", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("PALFOR", "Paleto Forest", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CMSW", "Chiliad Mountain State Wilderness", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CCREAK", "Cassidy Creek", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("CALAFB", "Calafia Bridge", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("GALFISH", "Galilee", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("BRADP", "Braddock Pass", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("BRADT", "Braddock Tunnel", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("ELGORL", "El Gordo Lighthouse", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTGORDO", "Mount Gordo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PROCOB", "Procopio Beach", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTCHIL", "Mount Chiliad", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PALETO", "Paleto Bay", "BlaineCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("PALCOV", "Paleto Cove", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PALFOR", "Paleto Forest", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CMSW", "Chiliad Mountain State Wilderness", "BlaineCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CCREAK", "Cassidy Creek", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("CALAFB", "Calafia Bridge", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("GALFISH", "Galilee", "BlaineCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADP", "Braddock Pass", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("BRADT", "Braddock Tunnel", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("ELGORL", "El Gordo Lighthouse", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTGORDO", "Mount Gordo", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
             
             //Majestic County
-            new Zone("GRAPES", "Grapeseed", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),//has own PD
+            new Zone("GRAPES", "Grapeseed", "MajesticCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),//has own PD
 
-            new Zone("SANCHIA", "San Chianski Mountain Range", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("ALAMO", "Alamo Sea", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
-            new Zone("DESRT", "Grand Senora Desert", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("SANDY", "Sandy Shores", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("HUMLAB", "Humane Labs and Research", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
-            new Zone("JAIL", "Bolingbroke Penitentiary", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
-            new Zone("ZQ_UAR", "Davis Quartz", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
-            new Zone("HARMO", "Harmony", County.MajesticCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("RTRAK", "Redwood Lights Track", County.MajesticCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("SANCHIA", "San Chianski Mountain Range", "MajesticCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("ALAMO", "Alamo Sea", "MajesticCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("DESRT", "Grand Senora Desert", "MajesticCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("SANDY", "Sandy Shores", "MajesticCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("HUMLAB", "Humane Labs and Research", "MajesticCounty", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
+            new Zone("JAIL", "Bolingbroke Penitentiary", "MajesticCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
+            new Zone("ZQ_UAR", "Davis Quartz", "MajesticCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("HARMO", "Harmony", "MajesticCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("RTRAK", "Redwood Lights Track", "MajesticCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
 
             //Blaine
-            new Zone("ARMYB", "Fort Zancudo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
-            new Zone("CANNY", "Raton Canyon", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("LAGO", "Lago Zancudo", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("MTJOSE", "Mount Josiah", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("NCHU", "North Chumash", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("SLAB", "Slab City", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("ZANCUDO", "Zancudo River", County.BlaineCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("ARMYB", "Fort Zancudo", "BlaineCounty", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial),
+            new Zone("CANNY", "Raton Canyon", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("LAGO", "Lago Zancudo", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("MTJOSE", "Mount Josiah", "BlaineCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("NCHU", "North Chumash", "BlaineCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("SLAB", "Slab City", "BlaineCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("ZANCUDO", "Zancudo River", "BlaineCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
             //Vespucci
-            new Zone("BEACH", "Vespucci Beach", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("DELBE", "Del Perro Beach", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("DELPE", "Del Perro", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("VCANA", "Vespucci Canals", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("VESP", "Vespucci Metro", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("LOSPUER", "La Puerta", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("PBLUFF", "Pacific Bluffs", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
-            new Zone("DELSOL", "Puerto Del Sol", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("BEACH", "Vespucci Beach", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("DELBE", "Del Perro Beach", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("DELPE", "Del Perro", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("VCANA", "Vespucci Canals", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("VESP", "Vespucci Metro", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("LOSPUER", "La Puerta", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("PBLUFF", "Pacific Bluffs", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
+            new Zone("DELSOL", "Puerto Del Sol", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
 
             //Central
-            new Zone("BANNING", "Banning", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("CHAMH", "Chamberlain Hills", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("DAVIS", "Davis", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("DOWNT", "Downtown", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("PBOX", "Pillbox Hill", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("RANCHO", "Rancho", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("SKID", "Mission Row", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("STAD", "Maze Bank Arena", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial),
-            new Zone("STRAW", "Strawberry", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("TEXTI", "Textile City", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("LEGSQU", "Legion Square", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("BANNING", "Banning", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("CHAMH", "Chamberlain Hills", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("DAVIS", "Davis", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("DOWNT", "Downtown", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("PBOX", "Pillbox Hill", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("RANCHO", "Rancho", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("SKID", "Mission Row", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("STAD", "Maze Bank Arena", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial),
+            new Zone("STRAW", "Strawberry", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("TEXTI", "Textile City", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("LEGSQU", "Legion Square", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Downtown),
 
             //East LS
-            new Zone("CYPRE", "Cypress Flats", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("LMESA", "La Mesa", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("MIRR", "Mirror Park", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Suburb),
-            new Zone("MURRI", "Murrieta Heights", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("EBURO", "El Burro Heights", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("CYPRE", "Cypress Flats", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("LMESA", "La Mesa", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("MIRR", "Mirror Park", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Suburb),
+            new Zone("MURRI", "Murrieta Heights", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("EBURO", "El Burro Heights", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
 
             //Vinewood
-            new Zone("ALTA", "Alta", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("DTVINE", "Downtown Vinewood", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("EAST_V", "East Vinewood", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Suburb),
-            new Zone("HAWICK", "Hawick", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("HORS", "Vinewood Racetrack", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("VINE", "Vinewood", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("WVINE", "West Vinewood", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
+            new Zone("ALTA", "Alta", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("DTVINE", "Downtown Vinewood", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("EAST_V", "East Vinewood", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Suburb),
+            new Zone("HAWICK", "Hawick", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("HORS", "Vinewood Racetrack", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("VINE", "Vinewood", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WVINE", "West Vinewood", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
 
             //PortOfLosSantos
-            new Zone("ELYSIAN", "Elysian Island", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("ZP_ORT", "Port of South Los Santos", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("TERMINA", "Terminal", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("AIRP", "Los Santos International Airport", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
+            new Zone("ELYSIAN", "Elysian Island", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("ZP_ORT", "Port of South Los Santos", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("TERMINA", "Terminal", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("AIRP", "Los Santos International Airport", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
 
             //Rockford Hills
-            new Zone("BURTON", "Burton", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("GOLF", "GWC and Golfing Society", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("KOREAT", "Little Seoul", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MORN", "Morningwood", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MOVIE", "Richards Majestic", County.CityOfLosSantos, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("RICHM", "Richman", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
-            new Zone("ROCKF", "Rockford Hills", County.CityOfLosSantos, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),     
+            new Zone("BURTON", "Burton", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("GOLF", "GWC and Golfing Society", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("KOREAT", "Little Seoul", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MORN", "Morningwood", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MOVIE", "Richards Majestic", "CityOfLosSantos", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("RICHM", "Richman", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
+            new Zone("ROCKF", "Rockford Hills", "CityOfLosSantos", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Downtown),     
 
             //Vinewood Hills
-            new Zone("CHIL", "Vinewood Hills", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
-            new Zone("GREATC", "Great Chaparral", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("BAYTRE", "Baytree Canyon", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("RGLEN", "Richman Glen", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("TONGVAV", "Tongva Valley", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("CHIL", "Vinewood Hills", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Rich, eLocationType.Suburb),
+            new Zone("GREATC", "Great Chaparral", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("BAYTRE", "Baytree Canyon", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("RGLEN", "Richman Glen", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("TONGVAV", "Tongva Valley", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
 
 
            
             //Chumash
-            new Zone("BANHAMC", "Banham Canyon Dr", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("BHAMCA", "Banham Canyon", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("CHU", "Chumash", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("TONGVAH", "Tongva Hills", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("BANHAMC", "Banham Canyon Dr", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("BHAMCA", "Banham Canyon", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("CHU", "Chumash", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
+            new Zone("TONGVAH", "Tongva Hills", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Middle, eLocationType.Rural),
            
             //Tataviam 
-            new Zone("LACT", "Land Act Reservoir", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("LDAM", "Land Act Dam", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("NOOSE", "N.O.O.S.E", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
-            new Zone("PALHIGH", "Palomino Highlands", County.LosSantosCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("PALMPOW", "Palmer - Taylor Power Station", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
-            new Zone("SANAND", "San Andreas", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            new Zone("TATAMO", "Tataviam Mountains", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
-            new Zone("WINDF", "Ron Alternates Wind Farm", County.LosSantosCounty, "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("LACT", "Land Act Reservoir", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("LDAM", "Land Act Dam", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("NOOSE", "N.O.O.S.E", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Rich, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
+            new Zone("PALHIGH", "Palomino Highlands", "LosSantosCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("PALMPOW", "Palmer - Taylor Power Station", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("SANAND", "San Andreas", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("TATAMO", "Tataviam Mountains", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
+            new Zone("WINDF", "Ron Alternates Wind Farm", "LosSantosCounty", "San Andreas", true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
 
 
             //UNKNWON 
-            new Zone("GALLI", "Galilee", County.BlaineCounty, "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("GALLI", "Galilee", "BlaineCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
 
             //Other
             //new Zone("LUDEN", "Ludendorff", County.NorthYankton, new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },
@@ -250,72 +231,72 @@ public class Zones : IZones
     {
         List<Zone> LibertyCityZones = new List<Zone>
         {
-            new Zone("ACTRR", "Acter", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("ALDCI", "Alderney State Correctional Facility", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("ACTIP", "Acter Industrial Park", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BERCH", "Berchem", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BOAB", "BOAB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BOULE", "Boulevard", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BRALG", "BRALG", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BRDBB", "BRDBB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BREBB", "BREBB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BRBRO", "BRBRO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BEECW", "BEECW", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BOTU", "BOTU", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CHITO", "CHITO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CITH", "CITH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("COISL", "COISL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CHISL", "CHISL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CASGR", "CASGR", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CHAPO", "CHAPO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CASGC", "CASGC", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("CERHE", "CERHE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("DOWTW", "Downtown", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("EAHOL", "EAHOL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("EISLC", "EISLC", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("FISSO", "FISSO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("FRANI", "Francis International", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("FISSN", "FISSN", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("FIREP", "FIREP", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("FORSI", "FORSI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("HATGA", "HATGA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("HOBEH", "HOBEH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("INSTI", "INSTI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LANCE", "LANCE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LEFWO", "Leftwood", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LTBAY", "Little Bay", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LANCA", "LANCA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LOWEA", "Lower Easton", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("LITAL", "LITAL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MIDPE", "MIDPE", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MIDPA", "MIDPA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MIDPW", "MIDPW", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MEADP", "Meadows Park", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("MEADH", "Meadow Hills", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("NOHOL", "NOHOL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("NORWO", "NORWO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("NRTGA", "NRTGA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("NOWOB", "NOWOB", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("OCEANA", "OCEANA", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("OUTL", "OUTL", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("PUGAT", "PUGAT", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("PORTU", "Port Tudor", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("SANAND", "SANAND", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("SUTHS", "SUTHS", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("SCHOL", "Schlotter", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("STARJ", "Star Junction", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("STEIN", "Steinway", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("STHBO", "South Bohan", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("SUFFO", "SUFFO", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("TUDOR", "Tudor", County.Alderney, "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("THPRES", "THPRES", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("THXCH", "THXCH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("THTRI", "THTRI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("TMEQU", "TMEQU", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("VASIH", "VASIH", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("WESMI", "WESMI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("WESDI", "WESDI", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("WESDY", "WESDY", County.LibertyCity, "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("ACTRR", "Acter", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("ALDCI", "Alderney State Correctional Facility", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("ACTIP", "Acter Industrial Park", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BERCH", "Berchem", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOAB", "BOAB", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOULE", "Boulevard", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRALG", "BRALG", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRDBB", "BRDBB", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BREBB", "BREBB", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRBRO", "BRBRO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BEECW", "BEECW", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOTU", "BOTU", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHITO", "CHITO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CITH", "CITH", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("COISL", "COISL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHISL", "CHISL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CASGR", "CASGR", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CHAPO", "CHAPO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CASGC", "CASGC", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("CERHE", "CERHE", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("DOWTW", "Downtown", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("EAHOL", "EAHOL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("EISLC", "EISLC", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FISSO", "FISSO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FRANI", "Francis International", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FISSN", "FISSN", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FIREP", "FIREP", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("FORSI", "FORSI", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("HATGA", "HATGA", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("HOBEH", "HOBEH", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("INSTI", "INSTI", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LANCE", "LANCE", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LEFWO", "Leftwood", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LTBAY", "Little Bay", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LANCA", "LANCA", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LOWEA", "Lower Easton", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("LITAL", "LITAL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPE", "MIDPE", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPA", "MIDPA", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MIDPW", "MIDPW", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MEADP", "Meadows Park", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("MEADH", "Meadow Hills", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NOHOL", "NOHOL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NORWO", "NORWO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NRTGA", "NRTGA", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NOWOB", "NOWOB", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("OCEANA", "OCEANA", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("OUTL", "OUTL", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("PUGAT", "PUGAT", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("PORTU", "Port Tudor", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SANAND", "SANAND", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SUTHS", "SUTHS", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SCHOL", "Schlotter", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STARJ", "Star Junction", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STEIN", "Steinway", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("STHBO", "South Bohan", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("SUFFO", "SUFFO", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("TUDOR", "Tudor", "Alderney", "Alderney", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THPRES", "THPRES", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THXCH", "THXCH", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("THTRI", "THTRI", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("TMEQU", "TMEQU", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("VASIH", "VASIH", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESMI", "WESMI", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESDI", "WESDI", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("WESDY", "WESDY", "LibertyCity", "Liberty", false, eLocationEconomy.Middle, eLocationType.Downtown),
 
 
             };

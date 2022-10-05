@@ -111,6 +111,8 @@ public class LESpawnTask : SpawnTask
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
                 if (PersonType != null)
                 {
+                    SpawnLocation.InitialPosition = Position.Around2D(1f);
+                    SpawnLocation.SidewalkPosition = Vector3.Zero;
                     PedExt Buddy = CreatePerson();
                     EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To LE Spawn", 5);
                 }

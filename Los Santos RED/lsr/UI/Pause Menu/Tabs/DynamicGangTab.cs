@@ -18,6 +18,7 @@ public class DynamicGangTab
     private IGangTerritories GangTerritories;
     private IZones Zones;
     private ITimeReportable Time;
+    private ISettingsProvideable Settings;
 
     private string DescriptionText;
 
@@ -25,7 +26,7 @@ public class DynamicGangTab
     private List<TabItem> items;
     private bool addedItems;
 
-    public DynamicGangTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeReportable time)
+    public DynamicGangTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeReportable time, ISettingsProvideable settings)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
@@ -36,6 +37,7 @@ public class DynamicGangTab
         Zones = zones;
         TabView = tabView;
         Time = time;
+        Settings = settings;
     }
     public void AddItems()
     {

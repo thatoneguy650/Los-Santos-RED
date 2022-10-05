@@ -607,7 +607,7 @@ public class LEDispatcher
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
         {
             GameFiber.Yield();
-            SpawnRoadblock(false);
+            SpawnRoadblock(false,300f);
         }
     }
     private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
@@ -753,7 +753,7 @@ public class LEDispatcher
         }
         if (!ToReturn.Any() || RandomItems.RandomPercent(LikelyHoodOfCountySpawn))
         {
-            Agency CountyAgency = Jurisdictions.GetRandomAgency(CurrentZone.ZoneCounty, WantedLevel, ResponseType.LawEnforcement);
+            Agency CountyAgency = Jurisdictions.GetRandomCountyAgency(CurrentZone.CountyID, WantedLevel, ResponseType.LawEnforcement);
             if (CountyAgency != null)//randomly spawn the county agency
             {
                 ToReturn.Add(CountyAgency); //Zone Jurisdiciton Random
@@ -870,9 +870,9 @@ public class LEDispatcher
         }
         return false;
     }
-    public void SpawnRoadblock(bool force)//temp public
+    public void SpawnRoadblock(bool force, float distance)//temp public
     {
-        GetRoadblockLocation(force);
+        GetRoadblockLocation(force, distance);
         GameFiber.Yield();
         if(GetRoadblockNode(force))
         {
@@ -908,12 +908,12 @@ public class LEDispatcher
         }
 
     }
-    private void GetRoadblockLocation(bool force)
+    private void GetRoadblockLocation(bool force, float forceDistance)
     {
         float distance = 300f;
         if(force)
         {
-            distance = 100f;
+            distance = forceDistance;
         }    
         RoadblockInitialPosition = Player.Character.GetOffsetPositionFront(distance);//400f 400 is mostly far enough to not see it
         RoadblockAwayPosition = Player.Character.GetOffsetPositionFront(distance + 100f);

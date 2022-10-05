@@ -38,6 +38,7 @@ public class ModDataFileManager
     public Speeches SpeechList;
     private PhysicalItems PhysicalItems;
     public Seats Seats;
+    public Counties Counties;
 
     public ModDataFileManager()
     {
@@ -61,6 +62,10 @@ public class ModDataFileManager
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();
         GameFiber.Yield();
+        Counties = new Counties();
+        Counties.ReadConfig();
+        GameFiber.Yield();
+
         Zones = new Zones();
         Zones.ReadConfig();
         GameFiber.Yield();
@@ -136,6 +141,8 @@ public class ModDataFileManager
 
         Seats = new Seats();
         Seats.ReadConfig();
+
+
 
     }
     private void SetupAlternateConfigs()

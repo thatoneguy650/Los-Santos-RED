@@ -1004,9 +1004,59 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
-        NAudioPlayer nAudio = new NAudioPlayer(Settings);
-        nAudio.Play(AudioFilePath, false, false);
+
+
+        try
+        {
+
+            Vector3 position = Game.LocalPlayer.Character.Position;//Game.LocalPlayer.Character.Position;
+            Vector3 outPos;
+            float outHeading;
+
+
+            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 1, 3.0f, 0))
+            {
+                RoadNode rn = new RoadNode(outPos, outHeading);
+                rn.GetRodeNodeProperties();
+                if (rn.HasRoad)
+                {
+                    EntryPoint.WriteToConsole($"Road Node Properties {rn.Position} {rn.Heading} FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} WIDTH: {rn.Width} POS: {rn.RoadPosition}");
+                    GameFiber.StartNew(delegate
+                    {
+                        while (!Game.IsKeyDownRightNow(Keys.P))
+                        {
+                            Rage.Debug.DrawArrowDebug(outPos + new Vector3(0f, 0f, 0.5f), new Vector3(rn.Heading,0f,0f), Rotator.Zero, 1f, Color.White);
+                            Game.DisplayHelp($"Press P to Stop~n~FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} ~n~WIDTH: {rn.Width} POS: {rn.RoadPosition}");
+                            GameFiber.Yield();
+                        }
+                    }, "Run Debug Logic");
+                }
+                else
+                {
+                    Game.DisplayHelp($"No Road FOund");
+                }
+
+            }
+
+
+
+        }
+        catch (Exception ex)
+        {
+            Game.DisplayNotification("Shit CRASHES!!!");
+        }
+
+
+
+
+
+
+
+
+
+        //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
+        //NAudioPlayer nAudio = new NAudioPlayer(Settings);
+        //nAudio.Play(AudioFilePath, false, false);
 
         //string AudioFilePath = Ringtones.STTHOMAS.FileName;//string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
         //NAudioPlayer nAudio = new NAudioPlayer(Settings);
@@ -1017,15 +1067,54 @@ public class Debug
         //}
         //Game.DisplaySubtitle("Audio Finished");
 
-        
+
 
 
 
     }
     private void DebugNumpad9()
     {
-        Player.CellPhone.AddScamText();
+        DisableAllSpawning();
+        //Player.CellPhone.AddScamText();
     }
+
+    private void DisableAllSpawning()
+    {
+        Settings.SettingsManager.PoliceSettings.ManageDispatching = false;
+        Settings.SettingsManager.GangSettings.ManageDispatching = false;
+        Settings.SettingsManager.EMSSettings.ManageDispatching = false;
+
+        Settings.SettingsManager.PoliceSettings.ManageTasking = false;
+        Settings.SettingsManager.GangSettings.ManageTasking = false;
+        Settings.SettingsManager.EMSSettings.ManageTasking = false;
+
+
+
+        bool isClearingPeds = false;
+        GameFiber.Yield();
+
+        GameFiber.StartNew(delegate
+        {
+            if (!isClearingPeds)
+            {
+                isClearingPeds = true;
+            }
+            float CurrentSpawnMultiplier = 0f;
+            while (isClearingPeds && ModController.IsRunning && !Game.IsKeyDownRightNow(Keys.O))
+            {
+
+                NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                NativeFunction.Natives.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+
+
+                GameFiber.Yield();
+            }
+        }, "Run Debug Logic");
+    }
+
 
     public enum PathnodeFlags
     {

@@ -37,8 +37,17 @@ public class Roadblock
     private IEntityProvideable World;
     private float InitialHeading;
     private bool AllowAnySpawn;
+    private RoadNode RoadNode;
     private dynamic roadblockSpeedZoneID1;
     private dynamic roadblockSpeedZoneID2;
+
+
+    private int VehiclesToAddFront = 0;
+    private int VehiclesToAddRear = 0;
+    private int BarriersToAddFront = 0;
+    private int BarriersToAddRear = 0;
+
+    private Vector3 VehicleNodeCenter;
 
     private enum LocationCreate
     {
@@ -61,6 +70,7 @@ public class Roadblock
         Weapons = weapons;
         Names = names;
         AllowAnySpawn = allowAnySpawn;
+        
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -161,47 +171,159 @@ public class Roadblock
     }
     private void DeterminePositions()
     {
-        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 15f);
-        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 15f);
+        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_PedDistance);
+        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_PedDistance);
         if (Player.Position.DistanceTo2D(RightSide) <= Player.Position.DistanceTo2D(LeftSide))
         {
             NodeOffset = RightSide;
-            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 17f);
-            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, 19f);
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_BarrierDistance);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_ConeDistance);
             PedPosition = LeftSide;
             PedHeading = NodeHeading + 180f;
         }
         else
         {
             NodeOffset = LeftSide;
-            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 17f);
-            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, 19f);
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_BarrierDistance);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_ConeDistance);
             PedPosition = RightSide;
             PedHeading = NodeHeading;
         }
+
     }
     private void FillInBlockade()
     {
+        RoadNode = new RoadNode(NodeCenter, NodeHeading);
+        RoadNode.GetRodeNodeProperties();
+        if(RoadNode.HasRoad)
+        {
+            NodeCenter = RoadNode.RoadPosition;
+        }
+
+        DetermineVehiclesToAdd();
+
+
         DeterminePositions();
         GameFiber.Yield();
         if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?
         {
+
+            
+            EntryPoint.WriteToConsole($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
+            EntryPoint.WriteToConsole($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
+
+
             GameFiber.Yield();
-            AddVehicles(LocationCreate.Front, Settings.SettingsManager.PoliceSettings.Roadblock_VehiclesToAddFront);
+            if (VehiclesToAddFront > 0)
+            {
+                AddVehicles(LocationCreate.Front, VehiclesToAddFront);
+            }
             GameFiber.Yield();
-            AddVehicles(LocationCreate.Back, Settings.SettingsManager.PoliceSettings.Roadblock_VehiclesToAddRear);
+            if (VehiclesToAddRear > 0)
+            {
+                AddVehicles(LocationCreate.Back, VehiclesToAddRear);
+            }
             GameFiber.Yield();
             if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
             {
                 AddSpikeStrips(LocationCreate.Middle, 1);
                 GameFiber.Yield();
-                AddSpikeStrips(LocationCreate.Front, Settings.SettingsManager.PoliceSettings.Roadblock_BarriersToAddFront);
+                if (BarriersToAddFront > 0)
+                {
+                    AddSpikeStrips(LocationCreate.Front, BarriersToAddFront);
+                }
                 GameFiber.Yield();
-                AddSpikeStrips(LocationCreate.Back, Settings.SettingsManager.PoliceSettings.Roadblock_BarriersToAddRear);
+                if (BarriersToAddRear > 0)
+                {
+                    AddSpikeStrips(LocationCreate.Back, BarriersToAddRear);
+                }
                 GameFiber.Yield();
             }
         }
     }
+
+    private void DetermineVehiclesToAdd()
+    {
+        VehicleNodeCenter = NodeCenter;
+        if (RoadNode.HasRoad)
+        {
+            VehiclesToAddFront = RoadNode.TotalLanes / 2;
+            VehiclesToAddRear = RoadNode.TotalLanes / 2;
+            BarriersToAddFront = (RoadNode.TotalLanes / 2) + 1;
+            BarriersToAddRear = (RoadNode.TotalLanes / 2) + 1;
+            float Offset = (VehicleModel.Dimensions.Y / 2.0f) + 1.0f;
+            if (RoadNode.TotalLanes == 6)
+            {
+                VehiclesToAddFront = 2;
+                VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
+                VehiclesToAddRear = 3;
+                BarriersToAddFront = 3;
+                BarriersToAddRear = 3;
+            }
+            else if (RoadNode.TotalLanes == 4)
+            {
+                VehiclesToAddFront = 1;
+                VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
+                VehiclesToAddRear = 2;
+                BarriersToAddFront = 2;
+                BarriersToAddRear = 2;
+            }
+            else if(RoadNode.TotalLanes == 2)
+            {
+                VehiclesToAddFront = 0;
+                VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
+                VehiclesToAddRear = 1;
+                BarriersToAddFront = 1;
+                BarriersToAddRear = 1;
+            }
+
+
+            if (VehiclesToAddFront < 0)
+            {
+                VehiclesToAddFront = 0;
+            }
+            if(VehiclesToAddRear < 0)
+            {
+                VehiclesToAddRear = 0;
+            }
+            //if (RoadNode.TotalLanes >= 6)
+            //{
+            //    VehiclesToAddFront = 2;
+            //    VehiclesToAddRear = 2;
+            //    BarriersToAddFront = 2;
+            //    BarriersToAddRear = 2;
+            //}
+            //else if(RoadNode.TotalLanes >= 4)
+            //{
+            //    VehiclesToAddFront = 1;
+            //    VehiclesToAddRear = 1;
+            //    BarriersToAddFront = 2;
+            //    BarriersToAddRear = 2;
+            //}
+            //else if (RoadNode.TotalLanes >= 2)
+            //{
+            //    VehiclesToAddFront = 0;
+            //    VehiclesToAddRear = 0;
+            //    BarriersToAddFront = 1;
+            //    BarriersToAddRear = 1;
+            //}
+            //else
+            //{
+            //    VehiclesToAddFront = 0;
+            //    VehiclesToAddRear = 0;
+            //    BarriersToAddFront = 0;
+            //    BarriersToAddRear = 0;
+            //}
+        }
+        else
+        {
+            VehiclesToAddFront = 0;
+            VehiclesToAddRear = 0;
+            BarriersToAddFront = 0;
+            BarriersToAddRear = 0;
+        }
+    }
+
     private bool AddVehicles(LocationCreate locationCreate, int toAdd)
     {
         int CarsAdded = 1;
@@ -216,7 +338,7 @@ public class Roadblock
                 Offset = (locationCreate == LocationCreate.Front ? 1.0f : -1.0f) * CarsAdded * Spacing;
                 addPed = false;
             }
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(VehicleNodeCenter, NodeHeading, Offset);
             Created = CreateVehicle(SpawnPosition, RotatedNodeHeading, addPed);
             if (Created)
             {

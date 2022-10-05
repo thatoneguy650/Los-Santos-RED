@@ -8,12 +8,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IZones
+    public interface ICounties
     {
-        List<Zone> ZoneList { get; }
-
-        Zone GetZone(Vector3 ZonePosition);
-        Zone GetZone(string InternalGameName);
-        //string GetZoneName(Vector3 entrancePosition);
+        List<GameCounty> CountyList { get; }
+        GameCounty GetCounty(string InternalGameName);
     }
 }

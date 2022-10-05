@@ -183,7 +183,7 @@ public class Locate : ComplexTask
                 
                 EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
-            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= 150f && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySight)
+            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringLocateDistance && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringLocate)
             {
                 if (!isSetCode3Close)
                 {
