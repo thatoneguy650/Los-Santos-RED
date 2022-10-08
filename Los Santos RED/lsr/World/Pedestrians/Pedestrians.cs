@@ -288,6 +288,32 @@ public class Pedestrians : ITaskerReportable
         }
         return false; 
     }
+    public int TotalCopsNearCop(Cop cop, int CellsAway)
+    {
+        int total = 0;
+        if (cop != null && cop.Pedestrian.Exists())
+        {
+            Vehicle copVehicle = cop.Pedestrian.CurrentVehicle;
+            foreach (Cop targetCop in Police)
+            {
+                if (targetCop.Pedestrian.Exists())
+                {
+                    if (cop.Pedestrian.Handle != targetCop.Pedestrian.Handle && NativeHelper.IsNearby(cop.CellX, cop.CellY, targetCop.CellX, targetCop.CellY, CellsAway))
+                    {
+                        if (!targetCop.IsInVehicle)
+                        {
+                            total++;
+                        }
+                        else if (copVehicle.Exists() && targetCop.Pedestrian.CurrentVehicle.Exists() && copVehicle.Handle != targetCop.Pedestrian.CurrentVehicle.Handle)
+                        {
+                            total++;
+                        }
+                    }
+                }
+            }
+        }
+        return total;
+    }
     public void ClearPolice()
     {
         foreach (Cop Cop in Police)

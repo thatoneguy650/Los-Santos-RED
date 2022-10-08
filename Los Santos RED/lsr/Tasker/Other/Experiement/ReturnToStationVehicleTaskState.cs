@@ -18,12 +18,14 @@ class ReturnToStationVehicleTaskState : TaskState
     private IPlacesOfInterest PlacesOfInterest;
     private bool HasArrivedAtStation;
     private Vector3 taskedPosition;
+    private ISettingsProvideable Settings;
 
-    public ReturnToStationVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, IPlacesOfInterest placesOfInterest)
+    public ReturnToStationVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
         World = world;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && HasArrestedPassengers() && !HasArrivedAtStation;
@@ -61,7 +63,14 @@ class ReturnToStationVehicleTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            if(Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = false;
+            }
             PedGeneral.Pedestrian.KeepTasks = true;
             if ((PedGeneral.IsDriver || PedGeneral.Pedestrian.SeatIndex == -1) && PedGeneral.Pedestrian.CurrentVehicle.Exists())
             {

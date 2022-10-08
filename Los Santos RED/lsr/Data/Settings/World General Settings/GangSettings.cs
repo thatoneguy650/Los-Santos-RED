@@ -44,7 +44,7 @@ public class GangSettings : ISettingsDefaultable
     [Description("Enable or disable the ability for gangs to fight each other over crimes observed in the world.")]
     public bool AllowFightingOtherCriminals { get; set; }
     [Description("If enabled, peds will be forced to flee and all tasking will be blocked. If disabled, they will be tasked to flee, but let vanilla AI decide what to do.")]
-    public bool ForceFlee { get; set; }
+    public bool BlockEventsDuringFlee { get; set; }
     [Description("If enabled, vanilla spaned gangsters in cars will always run from fights, police, and the player.")]
     public bool ForceAmbientCarDocile { get; set; }
     [Description("If enabled, ambient spawns will happen regardless of the player wanted level. If disabled, gangs will not have ambient spawns when you are wanted.")]
@@ -82,7 +82,7 @@ public class GangSettings : ISettingsDefaultable
         PercentageSpawnNearDen = 10;
         // MakeVanillaSpawnedGangMembersPersistent = false;
         AllowFightingOtherCriminals = false;
-        ForceFlee = false;
+        BlockEventsDuringFlee = false;
         ForceAmbientCarDocile = true;
 
 

@@ -289,7 +289,7 @@ public class CopTasker
             // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
             //Cop.CurrentTask = new Idle(Cop, Player, World, PlacesOfInterest, Cop);
 
-            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest);
+            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest, Settings);
 
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -334,7 +334,7 @@ public class CopTasker
         if (Cop.CurrentTask?.Name != "AIApprehend")
         {
            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to AIApprehend", 3);
-            Cop.CurrentTask = new AIApprehend(Cop, Player, Cop) { OtherTarget = MainTarget };
+            Cop.CurrentTask = new AIApprehend(Cop, Player, Cop, Settings) { OtherTarget = MainTarget };
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

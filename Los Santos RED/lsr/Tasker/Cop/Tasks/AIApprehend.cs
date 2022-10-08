@@ -36,6 +36,7 @@ public class AIApprehend : ComplexTask
     private float LocalDistance;
     private Cop Cop;
     private float GoToDistance;
+    private ISettingsProvideable Settings;
 
     private enum Task
     {
@@ -210,19 +211,21 @@ public class AIApprehend : ComplexTask
             return Task.Nothing;
         }
     }
-    public AIApprehend(IComplexTaskable taskable, ITargetable player, Cop cop) : base(player, taskable, 500)//was 500
+    public AIApprehend(IComplexTaskable taskable, ITargetable player, Cop cop, ISettingsProvideable settings) : base(player, taskable, 500)//was 500
     {
         Name = "AIApprehend";
         SubTaskName = "";
         Cop = cop;
+        Settings = settings;
     }
-    public AIApprehend(IComplexTaskable taskable, ITargetable player, float chaseDistance, int vehicleMissionFlag, Cop cop) : base(player, taskable, 500)//was 500
+    public AIApprehend(IComplexTaskable taskable, ITargetable player, float chaseDistance, int vehicleMissionFlag, Cop cop, ISettingsProvideable settings) : base(player, taskable, 500)//was 500
     {
         Name = "AIApprehend";
         SubTaskName = "";
         ChaseDistance = chaseDistance;
         VehicleMissionFlag = vehicleMissionFlag;
         Cop = cop;
+        Settings = settings;
     }
     public override void Start()
     {
@@ -638,7 +641,14 @@ public class AIApprehend : ComplexTask
         if (IsFirstRun)
         {
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             if (Ped.IsInHelicopter)
             {
@@ -749,7 +759,14 @@ public class AIApprehend : ComplexTask
             return;
 
         }
-        Ped.Pedestrian.BlockPermanentEvents = true;
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = true;
         float Speed = 30f;
         if (DistanceToTarget <= 10f)
@@ -785,7 +802,14 @@ public class AIApprehend : ComplexTask
         if (Ped.Pedestrian.CurrentVehicle.Exists())
         {
             NeedsUpdates = false;
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, 2000);
             EntryPoint.WriteToConsole($"AIApprehend Stop Car: {Ped.Pedestrian.Handle}", 5);
@@ -824,7 +848,14 @@ public class AIApprehend : ComplexTask
             while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
             {
                 FootChaseUpdateParameters();
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
                 if (OtherTarget.IsBusted)

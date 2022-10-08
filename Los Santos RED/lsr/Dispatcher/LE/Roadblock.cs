@@ -194,6 +194,7 @@ public class Roadblock
     private void FillInBlockade()
     {
         RoadNode = new RoadNode(NodeCenter, NodeHeading);
+        RoadNode.MajorRoadsOnly = true;
         RoadNode.GetRodeNodeProperties();
         if(RoadNode.HasRoad)
         {

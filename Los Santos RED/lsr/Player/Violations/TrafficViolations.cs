@@ -82,7 +82,7 @@ public class TrafficViolations
         {
             CheckTrafficViolations();
         }
-        Player.DebugString = $"RedLight {IsRunningRedLight} Speed {IsFelonySpeeding} Sus {VehicleIsSuspicious} Against {HasBeenDrivingAgainstTraffic} Pave {HasBeenDrivingOnPavement}";
+        //Player.DebugString = $"RedLight {IsRunningRedLight} Speed {IsFelonySpeeding} Sus {VehicleIsSuspicious} Against {HasBeenDrivingAgainstTraffic} Pave {HasBeenDrivingOnPavement}";
     }
     private void CheckTrafficViolations()
     {

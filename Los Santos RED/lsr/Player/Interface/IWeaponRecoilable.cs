@@ -16,5 +16,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInVehicle { get; }
         bool IsRagdoll { get; }
         bool IsStunned { get; }
+        bool IsInFirstPerson { get; }
+        string DebugString { get; set; }
     }
 }

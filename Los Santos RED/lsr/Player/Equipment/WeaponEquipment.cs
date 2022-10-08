@@ -49,7 +49,7 @@ public class WeaponEquipment
                     WeaponRecoil.Update();
                     Player.SetShot();
                 }
-                else if (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming)
+                else if (!Player.VeryRecentlyShot &&( Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
                 {
                     WeaponSway.Update();
                 }
@@ -107,7 +107,7 @@ public class WeaponEquipment
         {
             CurrentWeaponHash = PlayerCurrentWeapon.Hash;
             CurrentWeapon = Weapons.GetCurrentWeapon(Game.LocalPlayer.Character);
-            GameFiber.Yield();
+           // GameFiber.Yield();
             if (CurrentWeapon != null && PlayerCurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee)
             {
                 CurrentWeaponMagazineSize = PlayerCurrentWeapon.MagazineSize;

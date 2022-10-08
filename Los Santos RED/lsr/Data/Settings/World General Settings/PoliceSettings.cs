@@ -125,22 +125,17 @@ public class PoliceSettings : ISettingsDefaultable
     public int RoadblockMinWantedLevel { get; set; }
     [Description("Maximum level that dynamic roadblocks can spawn at.")]
     public int RoadblockMaxWantedLevel { get; set; }
-
-
-    [Description("Vehicles to add in front of the initial vehicle.")]
-    public int Roadblock_VehiclesToAddFront { get; set; }
-    [Description("Vehicles to add behind the initial vehicle.")]
-    public int Roadblock_VehiclesToAddRear { get; set; }
-    [Description("Barriers to add in front of the initial barrier.")]
-    public int Roadblock_BarriersToAddFront { get; set; }
-    [Description("Barriers to add behind the initial barrier.")]
-    public int Roadblock_BarriersToAddRear { get; set; }
-
-
-
+    [Description("Distance from center the peds will spawn behind.")]
     public float Roadblock_PedDistance { get; set; }
+    [Description("Distance from center the barriers.")]
     public float Roadblock_BarrierDistance { get; set; }
+    [Description("Distance from center the cones will spawn at.")]
     public float Roadblock_ConeDistance { get; set; }
+
+
+
+
+
 
     [Description("Time (in ms) between roadblocks when you are not actively seen by police.")]
     public int TimeBetweenRoadblock_Unseen { get; set; }
@@ -347,7 +342,7 @@ public class PoliceSettings : ISettingsDefaultable
     public float SiegeGotoDistance { get; set; }
     [Description("When in siege mode, how close the entry team will attempt to get before aiming at the player.")]
     public float SiegeAimDistance { get; set; }
-    [Description("Percentage of cops that will be set to siege mode. IF in siege mode, the cop will be forced to attempt entry. If not in siege mode cops may or may not attempt entry depending on vanilla AI.")]
+    [Description("Percentage of cops that will be set to siege mode. If in siege mode, the cop will be forced to attempt entry. If not in siege mode cops may or may not attempt entry depending on vanilla AI.")]
     public float SiegePercentage { get; set; }
 
 
@@ -363,11 +358,26 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Enable or disable dropping your current weapon when busted and armed.")]
     public bool DropWeaponWhenBusted { get; set; }
 
+    //NEW?
 
 
     public bool AllowRespondingWithoutCallIn { get; set; }
     public bool ForceDefaultWeaponAnimations { get; set; }
 
+
+
+    public bool AllowSettingSirenState { get; set; }
+
+
+    public bool BlockEventsDuringVehicleChase { get; set; }
+    public bool BlockEventsDuringChase { get; set; }
+    public bool BlockEventsDuringInvestigate { get; set; }
+    public bool BlockEventsDuringVehicleInvestigate { get; set; }
+    public bool BlockEventsDuringLocate { get; set; }
+    public bool BlockEventsDuringVehicleLocate { get; set; }
+    public bool BlockEventsDuringKill { get; set; }
+    public bool BlockEventsDuringIdle { get; set; }
+    public bool BlockEventsDuringAIChase { get; set; }
 
     public PoliceSettings()
     {
@@ -383,10 +393,10 @@ public class PoliceSettings : ISettingsDefaultable
         RoadblockEnabled = true;
         RoadblockSpikeStripsEnabled = true;
 
-        Roadblock_VehiclesToAddFront = 2;
-        Roadblock_VehiclesToAddRear = 2;
-        Roadblock_BarriersToAddFront = 3;
-        Roadblock_BarriersToAddRear = 3;
+        //Roadblock_VehiclesToAddFront = 2;
+        //Roadblock_VehiclesToAddRear = 2;
+        //Roadblock_BarriersToAddFront = 3;
+        //Roadblock_BarriersToAddRear = 3;
 
 
         RoadblockMinWantedLevel = 3;
@@ -399,8 +409,8 @@ public class PoliceSettings : ISettingsDefaultable
 
 
         TimeBetweenRoadblock_Unseen = 999999;
-        TimeBetweenRoadblock_Seen_Min = 120000;
-        TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 30000;
+        TimeBetweenRoadblock_Seen_Min = 90000;
+        TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 25000;
         ManageDispatching = true;
         ManageTasking = true;
         TakeExclusiveControlOverWantedLevel = true;
@@ -419,9 +429,9 @@ public class PoliceSettings : ISettingsDefaultable
 
         AllowDriveBySightDuringChase = false;
         DriveBySightDuringChaseDistance = 150f;
-        AllowDriveBySightDuringInvestigate = false;
+        AllowDriveBySightDuringInvestigate = true;
         DriveBySightDuringInvestigateDistance = 150f;
-        AllowDriveBySightDuringLocate = false;
+        AllowDriveBySightDuringLocate = true;
         DriveBySightDuringLocateDistance = 150f;
 
         ManageLoadout = true;
@@ -562,6 +572,17 @@ public class PoliceSettings : ISettingsDefaultable
 
         ForceDefaultWeaponAnimations = true;
 
+        AllowSettingSirenState = true;
 
-    }
+        BlockEventsDuringVehicleChase = true;
+        BlockEventsDuringChase = true;
+        BlockEventsDuringInvestigate = true;
+        BlockEventsDuringVehicleInvestigate = true;
+        BlockEventsDuringLocate = true;
+        BlockEventsDuringVehicleLocate = true;
+        BlockEventsDuringKill = true;
+        BlockEventsDuringIdle = true;
+        BlockEventsDuringAIChase = true;
+
+}
 }

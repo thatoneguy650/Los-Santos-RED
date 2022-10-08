@@ -54,8 +54,15 @@ public class Locate : ComplexTask
             //Ped.Pedestrian.BlockPermanentEvents = false;
 
 
-            Ped.Pedestrian.BlockPermanentEvents = true;
-            Ped.Pedestrian.KeepTasks = true;
+            //if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringLocate)
+            //{
+            //    Ped.Pedestrian.BlockPermanentEvents = true;
+            //}
+            //else
+            //{
+            //    Ped.Pedestrian.BlockPermanentEvents = false;
+            //}
+            //Ped.Pedestrian.KeepTasks = true;
 
 
             hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
@@ -112,12 +119,30 @@ public class Locate : ComplexTask
             {
                 if (Ped.IsDriver)
                 {
+                    if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleLocate)
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = true;
+                    }
+                    else
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                    }
+                    Ped.Pedestrian.KeepTasks = true;
                     NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 30f, (int)eCustomDrivingStyles.Code3, 10f);
                 }
             }
             else
             {
                 //Ped.Pedestrian.Tasks.Wander();
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringLocate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
+                Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
             }
             //EntryPoint.WriteToConsole(string.Format("Locate Began SearchingPosition: {0}", Ped.Pedestrian.Handle),5);
@@ -136,6 +161,15 @@ public class Locate : ComplexTask
                 {
                     if (Ped.IsDriver)
                     {
+                        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleLocate)
+                        {
+                            Ped.Pedestrian.BlockPermanentEvents = true;
+                        }
+                        else
+                        {
+                            Ped.Pedestrian.BlockPermanentEvents = false;
+                        }
+                        Ped.Pedestrian.KeepTasks = true;
                         if (Ped.IsInHelicopter)
                         {
                             NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
@@ -153,6 +187,15 @@ public class Locate : ComplexTask
                 else
                 {
                     //Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
+                    if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringLocate)
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = true;
+                    }
+                    else
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                    }
+                    Ped.Pedestrian.KeepTasks = true;
                     NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, -1, 0f, 0f);
                 }
                 //EntryPoint.WriteToConsole(string.Format("Locate Position Updated: {0}", Ped.Pedestrian.Handle),5);
@@ -183,7 +226,7 @@ public class Locate : ComplexTask
                 
                 EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
-            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringLocateDistance && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringLocate)
+            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
             {
                 if (!isSetCode3Close)
                 {

@@ -44,7 +44,14 @@ public class Kill : ComplexTask
            // NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
           //  NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
@@ -117,7 +124,14 @@ public class Kill : ComplexTask
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
                 NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
 
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
 
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);

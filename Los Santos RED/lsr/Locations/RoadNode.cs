@@ -30,6 +30,7 @@ public class RoadNode
     public bool HasRoad { get; private set; }
 	public bool IsOneWay { get; private set; }
 	public int TotalLanes => ForwardLanes + BackwardsLanes;
+	public bool MajorRoadsOnly { get; set; } = false;
 
 	//Mostly from Fish from the Codewalker Discord 
 	public void GetRodeNodeProperties()
@@ -39,7 +40,7 @@ public class RoadNode
 		int forwardLanes;
 		int backwardsLanes;
 		float width;
-		HasRoad = NativeFunction.Natives.GET_CLOSEST_ROAD<bool>(Position.X, Position.Y, Position.Z, 1.0f, 1, out startingPos, out finalPos, out forwardLanes, out backwardsLanes, out width, false);
+		HasRoad = NativeFunction.Natives.GET_CLOSEST_ROAD<bool>(Position.X, Position.Y, Position.Z, 1.0f, 1, out startingPos, out finalPos, out forwardLanes, out backwardsLanes, out width, MajorRoadsOnly);
 		if (HasRoad)
 		{
 			RoadPosition = finalPos;

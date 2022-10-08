@@ -21,6 +21,7 @@ public class FootChase
     private float GoToDistance;
     private float prevRunSpeed;
     private float CloseDistance;
+    private ISettingsProvideable Settings;
 
     private enum SubTask
     {
@@ -34,12 +35,13 @@ public class FootChase
     }
     private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide && !Player.IsDangerouslyArmed;
     private bool ShouldAimTaser => Player.WantedLevel > 1;
-    public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop)
+    public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings)
     {
         World = world;
         Ped = ped;
         Player = player;
         Cop = cop;
+        Settings = settings;
     }
     public void Setup()
     {
@@ -58,7 +60,14 @@ public class FootChase
     public void Update()
     {
         SetRunSpeed();
-        Ped.Pedestrian.BlockPermanentEvents = true;
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = false;
         UpdateDistances();
         UpdateTasking();

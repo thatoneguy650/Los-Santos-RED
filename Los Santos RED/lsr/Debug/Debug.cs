@@ -1017,6 +1017,7 @@ public class Debug
             if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 1, 3.0f, 0))
             {
                 RoadNode rn = new RoadNode(outPos, outHeading);
+                rn.MajorRoadsOnly = true;
                 rn.GetRodeNodeProperties();
                 if (rn.HasRoad)
                 {
@@ -1114,7 +1115,28 @@ public class Debug
             }
         }, "Run Debug Logic");
     }
+    private void Something()
+    {
 
+        GameFiber.StartNew(delegate
+        {
+            if (!isClearingPeds)
+            {
+                isClearingPeds = true;
+            }
+            float CurrentSpawnMultiplier = 0f;
+            while (isClearingPeds && ModController.IsRunning && !Game.IsKeyDownRightNow(Keys.O))
+            {
+
+                NativeFunction.Natives.SET_LAW_PEDS_CAN_ATTACK_NON_WANTED_PLAYER_THIS_FRAME(Game.LocalPlayer);
+
+
+                GameFiber.Yield();
+            }
+        }, "Run Debug Logic");
+
+        
+    }
 
     public enum PathnodeFlags
     {

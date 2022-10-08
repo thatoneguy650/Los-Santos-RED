@@ -65,7 +65,22 @@ public class WeaponSway
             {
                 return;
             }
+            if(Player.IsInFirstPerson && !Game.LocalPlayer.IsFreeAiming)
+            {
+                return;
+            }
+            if(Player.IsInFirstPerson && Game.LocalPlayer.Character.IsReloading)
+            {
+                return;
+            }
+            if(Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Sniper && !Settings.SettingsManager.SwaySettings.ApplySwayToSnipers)
+            {
+                return;
+            }
             ApplySway();
+
+            Player.DebugString = $"P: {Math.Round(CurrentPitch,4)} AdjP: {Math.Round(AdjustedPitch,4)} H: {Math.Round(CurrentHeading,4)} AdjH: {Math.Round(AdjustedHeading,4)} HD: {HorizontalSwayDirection} VD: {VerticalSwayDirection} ~n~HC: {GameTimeLastHorizontalChangedSwayDirection}  VC: {GameTimeLastVerticalChangedSwayDirection} FA:{Game.LocalPlayer.IsFreeAiming} A: {Game.LocalPlayer.Character.IsAiming}";
+
         }
     }
     private void ApplySway()
@@ -75,21 +90,34 @@ public class WeaponSway
 
         CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
         AdjustPitch();
-        if (Player.IsInVehicle && !VerticalSwayDirection)
+
+
+        if (Player.IsInVehicle)
         {
-            CurrentPitch *= -1.0f;//weird shit needed for in the car for some reason....
+            AdjustedPitch *= -1.0f;
         }
-        if (Math.Abs(AdjustedPitch) > 0f)
+
+
+        if (Player.IsInVehicle && !Player.IsInFirstPerson)
         {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.SwaySettings.VeritcalInVehicleSwayScaler);
         }
-        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        else
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
+        }
+       
+
+        if(Player.IsInVehicle)
+        {
+            CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        }
+        else
+        {
+            CurrentHeading = 0f;
+        }
+
         AdjustHeading();
-
-
-
-
-
         if (Math.Abs(AdjustedHeading) > 0f)
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
@@ -148,7 +176,7 @@ public class WeaponSway
     private void AdjustPitch()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticaSway, Player.WeaponEquipment.CurrentWeapon.MaxVerticaSway);
-        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 2.0f * 1.25f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!VerticalSwayDirection)
         {
             AdjustedPitch *= -1.0f;
@@ -156,7 +184,7 @@ public class WeaponSway
 
         if(Player.IsInFirstPerson)
         {
-            AdjustedPitch *= 0.000000001f;
+            //AdjustedPitch *= 0.000000001f;
             AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalFirstPersonSwayAdjuster;
         }
 
@@ -197,7 +225,7 @@ public class WeaponSway
     private void AdjustHeading()
     {
         AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalSway, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalSway);
-        AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalSwayAdjuster * 0.0075f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalSwayAdjuster * 0.0075f * 2.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!HorizontalSwayDirection)
         {
             AdjustedHeading *= -1.0f;
@@ -205,7 +233,7 @@ public class WeaponSway
 
         if(Player.IsInFirstPerson)
         {
-            AdjustedHeading *= 0.000000001f;
+            //AdjustedHeading *= 0.000000001f;
             AdjustedHeading *= Settings.SettingsManager.SwaySettings.HorizontalFirstPersonSwayAdjuster;
         }
 

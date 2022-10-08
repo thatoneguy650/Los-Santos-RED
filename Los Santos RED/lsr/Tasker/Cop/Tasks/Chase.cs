@@ -86,7 +86,7 @@ public class Chase : ComplexTask
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ShouldExitPlayersVehicle => Ped.Pedestrian.CurrentVehicle.Exists() && TaskedEnterVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == TaskedEnterVehicle.Handle;
-    private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 30f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
+    private bool ShouldGetBackInCar => !Ped.RecentlyGotOutOfVehicle && Ped.Pedestrian.Exists() && CopsVehicle.Exists() && Ped.Pedestrian.DistanceTo2D(CopsVehicle) <= 35f && CopsVehicle.IsDriveable && CopsVehicle.FreeSeatsCount > 0;
     private bool VehicleIsStopped => GameTimeVehicleStoppedMoving != 0 && Game.GameTime - GameTimeVehicleStoppedMoving >= 500;//20000
     public override void Start()
     {
@@ -94,7 +94,14 @@ public class Chase : ComplexTask
         {
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
             GameTimeChaseStarted = Game.GameTime;
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@enter");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@idle_a");
@@ -337,7 +344,14 @@ public class Chase : ComplexTask
 
     private void EnterVehicle()
     {
-        Ped.Pedestrian.BlockPermanentEvents = true;
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = false;
         if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
@@ -351,7 +365,14 @@ public class Chase : ComplexTask
     private void ExitVehicle()
     {
         NeedsUpdates = false;
-        Ped.Pedestrian.BlockPermanentEvents = true;
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = true;
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists())
         {
@@ -399,7 +420,7 @@ public class Chase : ComplexTask
         hasOwnFiber = true;
         Ped.IsRunningOwnFiber = true;
         CurrentSubTask = SubTask.None;
-        FootChase footChase = new FootChase(Ped, Player, World, Cop);
+        FootChase footChase = new FootChase(Ped, Player, World, Cop, Settings);
         footChase.Setup();
         GameFiber.StartNew(delegate
         {
@@ -415,7 +436,14 @@ public class Chase : ComplexTask
 
     private void GoToPlayersCar()
     {
-        Ped.Pedestrian.BlockPermanentEvents = true;
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = true;
         NeedsUpdates = true;
 
@@ -470,7 +498,14 @@ public class Chase : ComplexTask
         if (Ped.Pedestrian.CurrentVehicle.Exists())
         {
             NeedsUpdates = false;
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, 2000);
             //EntryPoint.WriteToConsole($"CHASE Stop Car: {Ped.Pedestrian.Handle}", 5);
@@ -496,7 +531,15 @@ public class Chase : ComplexTask
     }
     private void VehicleChase_AssignTask()
     {
-        Ped.Pedestrian.BlockPermanentEvents = true;
+
+        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleChase)
+        {
+            Ped.Pedestrian.BlockPermanentEvents = true;
+        }
+        else
+        {
+            Ped.Pedestrian.BlockPermanentEvents = false;
+        }
         Ped.Pedestrian.KeepTasks = true;
         NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1000f);
         NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 100.0f);
@@ -626,7 +669,14 @@ public class Chase : ComplexTask
                 NeedsUpdates = true;
                 return;
             }
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             float Speed = 30f;
             if (Ped.DistanceToPlayer <= 10f)

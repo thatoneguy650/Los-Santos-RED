@@ -16,11 +16,13 @@ class GetInVehicleTaskState : TaskState
 
     private VehicleExt TaskedVehicle;
     private int TaskedSeat;
-    public GetInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner)
+    private ISettingsProvideable Settings;
+    public GetInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
         World = world;
         SeatAssigner = seatAssigner;
+        Settings = settings;
     }
 
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid();

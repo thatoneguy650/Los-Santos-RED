@@ -27,13 +27,13 @@ public class GangFlee : ComplexTask
             EntryPoint.WriteToConsole($"TASKER: Flee Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
 
 
-            if (Settings.SettingsManager.GangSettings.ForceFlee)
+            if (Settings.SettingsManager.GangSettings.BlockEventsDuringFlee)
             {
 
                 Ped.Pedestrian.BlockPermanentEvents = true;
-                Ped.Pedestrian.KeepTasks = true;
+                
             }
-
+            Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Ped.Pedestrian, (uint)2725352035, true);//set unarmed
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
 

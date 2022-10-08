@@ -23,12 +23,13 @@ class WanderOnFootTaskState : TaskState
 
     private bool isGuarding = false;
     private bool isPatrolling = false;
-    public WanderOnFootTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner)
+    private ISettingsProvideable Settings;
+    public WanderOnFootTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
         World = world;
         SeatAssigner = seatAssigner;
-
+        Settings = settings;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && !PedGeneral.IsInVehicle;
@@ -92,7 +93,14 @@ class WanderOnFootTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = false;
+            }
             PedGeneral.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.TASK_WANDER_IN_AREA(PedGeneral.Pedestrian, PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 100f, 0f, 0f);
             GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(30000, 90000);
@@ -132,7 +140,14 @@ class WanderOnFootTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                PedGeneral.Pedestrian.BlockPermanentEvents = false;
+            }
             PedGeneral.Pedestrian.KeepTasks = true;
             List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_COP_IDLES", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
             string ScenarioChosen = PossibleScenarios.PickRandom();

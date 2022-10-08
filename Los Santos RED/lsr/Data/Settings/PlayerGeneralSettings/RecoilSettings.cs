@@ -31,9 +31,7 @@ public class RecoilSettings : ISettingsDefaultable
     public float VerticalFirstPersonRecoilAdjuster { get; set; }
     [Description("Global vertical recoil adjuster. Multiplier for the horizontal intensity of the recoil. 1.0 is default, 2.0f would be double the felt recoil, 0.5 would be 1/2 of the felt recoil")]
     public float HorizontalFirstPersonRecoilAdjuster { get; set; }
-
-
-
+    public bool ApplyRecoilToSnipers { get; set; }
 
     public RecoilSettings()
     {
@@ -51,8 +49,14 @@ public class RecoilSettings : ISettingsDefaultable
         VerticalInVehicleRecoilAdjuster = 1.0f;
         HorizontalInVehicleRecoilAdjuster = 1.0f;
 
-        ApplyRecoilInFirstPerson = false;
-        VerticalFirstPersonRecoilAdjuster = 0.25f;
-        HorizontalFirstPersonRecoilAdjuster = 0.25f;
+        ApplyRecoilInFirstPerson = true;
+        VerticalFirstPersonRecoilAdjuster = 1.0f;
+        HorizontalFirstPersonRecoilAdjuster = 1.0f;
+
+//#if DEBUG
+//        ApplyRecoilInFirstPerson = true;
+//        ApplyRecoilInVehicle = true;
+//#endif
+        ApplyRecoilToSnipers = true;
     }
 }

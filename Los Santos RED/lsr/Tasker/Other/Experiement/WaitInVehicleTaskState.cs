@@ -13,12 +13,14 @@ class WaitInVehicleTaskState : TaskState
     private PedExt PedGeneral;
     private IEntityProvideable World;
     private SeatAssigner SeatAssigner;
+    private ISettingsProvideable Settings;
 
-    public WaitInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner)
+    public WaitInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
         World = world;
         SeatAssigner = seatAssigner;
+        Settings = settings;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.CurrentVehicle.Exists() && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(PedGeneral.Pedestrian.CurrentVehicle), PedGeneral.Pedestrian.SeatIndex);

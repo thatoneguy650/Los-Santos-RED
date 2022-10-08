@@ -126,13 +126,27 @@ public class Investigate : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleInvestigate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code3, 10f);
             }
             else
             {
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleInvestigate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 Vector3 Pos = Ped.Pedestrian.Position;
                 NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Pos.X, Pos.Y, Pos.Z, 45f, 0f, 0f);
@@ -146,13 +160,27 @@ public class Investigate : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleInvestigate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code2, 10f);
             }
             else
             {
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleInvestigate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 Vector3 Pos = Ped.Pedestrian.Position;
                 NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Pos.X, Pos.Y, Pos.Z, 45f, 0f, 0f);
@@ -225,7 +253,14 @@ public class Investigate : ComplexTask
                         DrivingStyle = (int)eCustomDrivingStyles.Code3;
                         DrivingSpeed = 20f;
                     }
-                    Ped.Pedestrian.BlockPermanentEvents = true;
+                    if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleInvestigate)
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = true;
+                    }
+                    else
+                    {
+                        Ped.Pedestrian.BlockPermanentEvents = false;
+                    }
                     Ped.Pedestrian.KeepTasks = true;
                     if (Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition) >= 50f)
                     {
@@ -240,7 +275,7 @@ public class Investigate : ComplexTask
 
                     if (isCode3)
                     {
-                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringInvestigateDistance && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringInvestigate)
+                        if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringInvestigateDistance && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringInvestigate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
                         {
                             if (!isSetCode3Close)
                             {
@@ -272,7 +307,14 @@ public class Investigate : ComplexTask
             }
             else
             {
-                Ped.Pedestrian.BlockPermanentEvents = true;
+                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringInvestigate)
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = true;
+                }
+                else
+                {
+                    Ped.Pedestrian.BlockPermanentEvents = false;
+                }
                 Ped.Pedestrian.KeepTasks = true;
                 NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 2.0f, -1, 5f, true, 0f);
             }

@@ -74,6 +74,8 @@ public class UIGeneralSettings : ISettingsDefaultable
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
         HideLSRUIUnlessActionWheelActive = false;
         HideRadarUnlessActionWheelActive = false;
-        
+#if DEBUG
+        ShowDebug = true;
+#endif
     }
 }

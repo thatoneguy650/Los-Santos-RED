@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -843,6 +844,8 @@ public class LEDispatcher
     }
     private bool ShouldCopBeRecalled(Cop cop)
     {
+        int totalCopsNearCop = World.Pedestrians.TotalCopsNearCop(cop, 3);
+        bool anyCopsNearCop = totalCopsNearCop > 0;
         if (!cop.AssignedAgency.CanSpawn(World.TotalWantedLevel))
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CANNOT SPAWN AGENCY");
@@ -863,9 +866,14 @@ public class LEDispatcher
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
             return true;
         }
-        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && World.Pedestrians.AnyCopsNearCop(cop,3) && !cop.Pedestrian.IsOnScreen)
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
         {
             EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
+            return true;
+        }
+        else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
+        {
+            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST total COPS");
             return true;
         }
         return false;
@@ -925,28 +933,45 @@ public class LEDispatcher
     {
         if (RoadblockInitialPositionStreet?.Name == Player.CurrentLocation.CurrentStreet?.Name || force)
         {
-            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 3.0f, 0))
+            bool hasNode = false;
+
+            Vector3 desiredHeadingPos = RoadblockAwayPosition;// Game.LocalPlayer.Character.Position;
+                hasNode = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, desiredHeadingPos.X, desiredHeadingPos.Y, desiredHeadingPos.Z
+                    , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, 0, 0x40400000, 0);
+            //}
+            //else
+            //{
+            //    hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 0, 3, 0);
+            //}
+
+
+
+            if (hasNode)//NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, out RoadblockFinalPosition, out RoadblockFinalHeading, 1, 3.0f, 0))
             {
 
 
                 //if (NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(RoadblockInitialPosition.X, RoadblockInitialPosition.Y, RoadblockInitialPosition.Z, RoadblockAwayPosition.X, RoadblockAwayPosition.Y, RoadblockAwayPosition.Z
                 //    , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, Settings.SettingsManager.PoliceSettings.RoadblockNodeType, 0x40400000, 0))
                 //    { 
-
-
-
-                int StreetHash = 0;
-                int CrossingHash = 0;
-                unsafe
+                float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Game.LocalPlayer.Character.Heading, RoadblockFinalHeading));
+                EntryPoint.WriteToConsole($"Roadblock RoadblockFinalPosition {RoadblockFinalPosition} RoadblockFinalHeading {RoadblockFinalHeading} PlayerHeading: {Game.LocalPlayer.Character.Heading} {headingDiff}");
+                if (headingDiff > 50f)
                 {
-                    NativeFunction.Natives.GET_STREET_NAME_AT_COORD(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out StreetHash, out CrossingHash);
-                }
-                if(CrossingHash != 0)
-                {
-                    EntryPoint.WriteToConsole("Roadblock location is near another road, failing");
                     return false;
                 }
-                return true;
+
+                //int StreetHash = 0;
+                //int CrossingHash = 0;
+                //unsafe
+                //{
+                //    NativeFunction.Natives.GET_STREET_NAME_AT_COORD(RoadblockFinalPosition.X, RoadblockFinalPosition.Y, RoadblockFinalPosition.Z, out StreetHash, out CrossingHash);
+                //}
+                //if(CrossingHash != 0)
+                //{
+                //    EntryPoint.WriteToConsole("Roadblock location is near another road, failing");
+                //    return false;
+                //}
+                    return true;
             }
         }
         return false;

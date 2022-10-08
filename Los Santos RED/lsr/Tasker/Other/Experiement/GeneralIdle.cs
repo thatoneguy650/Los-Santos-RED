@@ -15,14 +15,16 @@ public class GeneralIdle : ComplexTask
     private IPlacesOfInterest PlacesOfInterest;
     private SeatAssigner SeatAssigner;
     private TaskState CurrentTaskState;
+    private ISettingsProvideable Settings;
     private bool AllowEnteringVehicle => !Ped.IsAmbientSpawn || PedGeneral.HasExistedFor >= 10000;
-    public GeneralIdle(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world,List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest) : base(player, ped, 1500)//1500
+    public GeneralIdle(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world,List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings) : base(player, ped, 1500)//1500
     {
         PedGeneral = pedGeneral;
         Name = "Idle";
         SubTaskName = "";
         World = world;
         PlacesOfInterest = placesOfInterest;
+        Settings = settings;
         SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
     }
     public override void ReTask()
@@ -65,31 +67,31 @@ public class GeneralIdle : ComplexTask
             {
                 if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                 {
-                    CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, World, SeatAssigner);
+                    CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings);
                 }
                 else if(HasArrestedPassengers())
                 {
-                    CurrentTaskState = new ReturnToStationVehicleTaskState(PedGeneral, World, PlacesOfInterest);
+                    CurrentTaskState = new ReturnToStationVehicleTaskState(PedGeneral, World, PlacesOfInterest, Settings);
                 }
                 else
                 {
-                    CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest);
+                    CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings);
                 }
             }
             else
             {
-                CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest);//Maybe Get Out
+                CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings);//Maybe Get Out
             }
         }
         else
         {
             if (SeatAssigner.IsAssignmentValid())//Ped.ShouldGetInVehicle)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral,World,SeatAssigner);
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral,World,SeatAssigner, Settings);
             }
             else
             {
-                CurrentTaskState = new WanderOnFootTaskState(PedGeneral, World, SeatAssigner);
+                CurrentTaskState = new WanderOnFootTaskState(PedGeneral, World, SeatAssigner, Settings);
             }
         }
 
@@ -106,7 +108,7 @@ public class GeneralIdle : ComplexTask
     }
     private void SetSiren()
     {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Settings.SettingsManager.PoliceSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;

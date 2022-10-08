@@ -14,8 +14,8 @@ public class WeaponRecoil
     private float CurrentPitch;
     private float AdjustedPitch;
     private float AdjustedHeading;
-    private dynamic CurrentHeading;
-
+    private float CurrentHeading;
+    private int TotalShots = 0;
     public WeaponRecoil(IWeaponRecoilable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -41,23 +41,47 @@ public class WeaponRecoil
             {
                 return;
             }
+            if (Player.IsInFirstPerson && !Settings.SettingsManager.RecoilSettings.ApplyRecoilInFirstPerson)
+            {
+                return;
+            }
+            if (Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Sniper && !Settings.SettingsManager.RecoilSettings.ApplyRecoilToSnipers)
+            {
+                return;
+            }
             ApplyRecoil();
+            TotalShots++;
         } 
+        Player.DebugString = $"R P: {Math.Round(CurrentPitch,6)} AdjP: {Math.Round(AdjustedPitch,6)} H: {Math.Round(CurrentHeading,6)} AdjH: {Math.Round(AdjustedHeading,6)} TS: {TotalShots}";
+
     }
     private void ApplyRecoil()
     {
         CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
         AdjustPitch();
-        if (Player.IsInVehicle)
+
+        if(Player.IsInVehicle)
         {
-            CurrentPitch *= -1.0f;
-        }
-        if (Math.Abs(AdjustedPitch) > 0)
-        {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+            AdjustedPitch *= -1.0f;
         }
 
-        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        if (Player.IsInFirstPerson)
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
+        }
+        else
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch)); 
+        }
+
+        if (Player.IsInVehicle)
+        {
+            CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        }
+        else
+        {
+            CurrentHeading = 0f;
+        }
         AdjustHeading();
         if (Math.Abs(AdjustedHeading) > 0)
         {
@@ -67,6 +91,7 @@ public class WeaponRecoil
     private void AdjustPitch()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
+        AdjustedPitch *= 2.0f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (Player.IsInVehicle)
         {
             AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
@@ -76,11 +101,16 @@ public class WeaponRecoil
         {
             AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalOnFootRecoilAdjuster;
         }
+        if(Player.IsInFirstPerson)
+        {
+            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalFirstPersonRecoilAdjuster;
+        }
         AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalRecoilAdjuster;
     }
     private void AdjustHeading()
     {
         AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalRecoil);
+        AdjustedHeading *= 1.5f;
         if (RandomItems.RandomPercent(50))
         {
             AdjustedHeading *= -1.0f;
@@ -94,6 +124,11 @@ public class WeaponRecoil
         {
             AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalOnFootRecoilAdjuster;
         }
+        if(Player.IsInFirstPerson)
+        {
+            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalFirstPersonRecoilAdjuster;
+        }
+
         AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalRecoilAdjuster;
     }
 }

@@ -36,6 +36,7 @@ public class Idle : ComplexTask
     private bool ForceScenario;
     private bool ForceGuard = false;
     private bool hasBeenVehiclePatrolTasked;
+    private ISettingsProvideable Settings;
 
     private enum Task
     {
@@ -83,13 +84,14 @@ public class Idle : ComplexTask
             }
         }
     }
-    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, Cop actualCop) : base(player, cop, 1500)//1500
+    public Idle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest, Cop actualCop, ISettingsProvideable settings) : base(player, cop, 1500)//1500
     {
         Name = "Idle";
         SubTaskName = "";
         World = world;
         PlacesOfInterest = placesOfInterest;
         Cop = actualCop;
+        Settings = settings;
         SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.PoliceVehicleList);
     }
     public override void Start()
@@ -217,7 +219,14 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             if (Ped.Pedestrian.IsInAnyVehicle(false))
             {
@@ -312,7 +321,14 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
             GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(30000, 90000);
@@ -346,7 +362,14 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             if ((Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) && Ped.Pedestrian.CurrentVehicle.Exists())
             {
@@ -446,7 +469,14 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_COP_IDLES", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
             string ScenarioChosen = PossibleScenarios.PickRandom();
@@ -489,7 +519,14 @@ public class Idle : ComplexTask
         if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
             //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Get in Car TASK START", 3);
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
             Ped.Pedestrian.KeepTasks = true;
             VehicleTaskedToEnter = VehicleTryingToEnter.Vehicle;
             SeatTaskedToEnter = SeatTryingToEnter;
