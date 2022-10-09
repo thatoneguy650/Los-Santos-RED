@@ -305,26 +305,26 @@ public class Civilians
         if (worstPed != null && worstPed.Pedestrian.Exists() && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
         {
             World.TotalWantedLevel = worstPed.WantedLevel;
-            PoliceInterestPoint = worstPed.Pedestrian.Position;
+            PoliceInterestPoint = worstPed.PedViolations.PlacePoliceLastSeen;
         }
         else
         {
             World.TotalWantedLevel = PoliceRespondable.WantedLevel;
             PoliceInterestPoint = Vector3.Zero;
         }
+        World.PoliceBackupPoint = PoliceInterestPoint;
+        //if(PoliceInterestPoint == Vector3.Zero)
+        //{
+        //    World.PoliceBackupPoint = PoliceInterestPoint;
+        //}
+        //else if(World.PoliceBackupPoint == Vector3.Zero || PoliceInterestPoint.DistanceTo2D(World.PoliceBackupPoint) >= 25f)
+        //{
+        //    World.PoliceBackupPoint = PoliceInterestPoint;
+        //    EntryPoint.WriteToConsole("Police Interest Point Changed by 25");
+        //}
 
-        if(PoliceInterestPoint == Vector3.Zero)
-        {
-            World.PoliceBackupPoint = PoliceInterestPoint;
-        }
-        else if(World.PoliceBackupPoint == Vector3.Zero || PoliceInterestPoint.DistanceTo2D(World.PoliceBackupPoint) >= 25f)
-        {
-            World.PoliceBackupPoint = PoliceInterestPoint;
-            EntryPoint.WriteToConsole("Police Interest Point Changed by 25");
-        }
 
-
-        if(worstPed != null)
+        if (worstPed != null)
         {
             World.CitizenWantedLevel = worstPed.WantedLevel;
         }

@@ -22,6 +22,20 @@ public class SpeechData
         IsGeneric = isGeneric;
     }
 
+
+    public SpeechData(string name, string description, string groupName, bool isPlayerOnly, bool isCopOnly)
+    {
+        Name = name;
+        Description = description;
+        GroupName = groupName;
+        SimpleName = name;
+        SubName = name;
+        IsPlayerOnly = isPlayerOnly;
+        IsCopOnly = isCopOnly;
+    }
+
+
+
     public string Name { get; set; }
     public string Description { get; set; }
     public bool IsInsult { get; set; } = false;
@@ -30,6 +44,7 @@ public class SpeechData
     public string SubName { get; set; }
     public bool IsGeneric { get; set; } = false;
 
-
+    public bool IsPlayerOnly { get; set; } = false;
+    public bool IsCopOnly { get; set; } = false;
 }
 

@@ -36,8 +36,8 @@ public class Cop : PedExt, IWeaponIssuable
             VoiceName = "S_F_Y_COP_01_WHITE_FULL_01";// "S_F_Y_COP_01";
         }
         WeaponInventory = new WeaponInventory(this, Settings);
-        Voice = new Voice(this, ModelName, Settings);
-        AssistManager = new AssistManager(this);
+        Voice = new CopVoice(this, ModelName, Settings);
+        AssistManager = new CopAssistManager(this);
 
     }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
@@ -57,8 +57,8 @@ public class Cop : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 20;
-    public AssistManager AssistManager { get; private set;}
-    public Voice Voice { get; private set; }
+    public CopAssistManager AssistManager { get; private set;}
+    public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }

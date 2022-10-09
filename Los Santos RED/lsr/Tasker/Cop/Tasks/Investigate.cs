@@ -82,7 +82,7 @@ public class Investigate : ComplexTask
             {
                 ExecuteCurrentSubTask();
             }
-            SetSiren();
+            SetVehicle();
         }
 
         //if(CurrentTaskedPosition != Vector3.Zero && CurrentTaskedPosition.DistanceTo2D(Player.Investigation.Position) >= 5f)
@@ -135,6 +135,9 @@ public class Investigate : ComplexTask
                     Ped.Pedestrian.BlockPermanentEvents = false;
                 }
                 Ped.Pedestrian.KeepTasks = true;
+
+
+
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code3, 10f);
             }
             else
@@ -192,7 +195,6 @@ public class Investigate : ComplexTask
         if (Ped.Pedestrian.Exists())
         {
             NeedsUpdates = true;
-
             if (CurrentTaskedPosition == Vector3.Zero || CurrentTaskedPosition.DistanceTo2D(InvestigationPosition/*Player.Investigation.Position*/) >= 5f)
             {
                 HasReachedReportedPosition = false;
@@ -320,7 +322,7 @@ public class Investigate : ComplexTask
             }
         }
     }
-    private void SetSiren()
+    private void SetVehicle()
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren)
         {
@@ -341,6 +343,15 @@ public class Investigate : ComplexTask
                 }
             }
 
+        }
+        if (Ped.IsInVehicle)
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+            if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+            {
+                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+            }
         }
     }
     public override void Stop()

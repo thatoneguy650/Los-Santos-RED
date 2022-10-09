@@ -69,6 +69,10 @@ public class PedViolations
     public int WantedLevel { get; set; } = 0;
     public bool IsWanted => WantedLevel > 0;
     public bool IsNotWanted => WantedLevel == 0;
+    public bool HasCopsAround { get; private set; }
+    public Vector3 PlacePoliceLastSeen { get; private set; }
+    public bool CanPoliceSee { get; private set; }
+    public bool CanPoliceHear { get; private set; }
     public bool IsDeadlyChase => CrimesObserved.Any(x => x.ResultsInLethalForce);
     public int CurrentlyViolatingWantedLevel => CrimesViolating.Any() ? CrimesViolating.Max(x => x.ResultingWantedLevel) : 0;
     public string CurrentlyViolatingWantedLevelReason => CrimesViolating.OrderBy(x=> x.Priority).FirstOrDefault()?.Name;
@@ -88,7 +92,7 @@ public class PedViolations
 
                 if (IsWanted && !PedExt.IsBusted && !PedExt.IsDead && !PedExt.IsArrested)
                 {
-                    CheckLostWanted();
+                    CheckWantedStatus();
                 }
                 if (prevIsWanted != IsWanted)
                 {
@@ -98,30 +102,42 @@ public class PedViolations
                     }
                     prevIsWanted = IsWanted;
                 }
+                if(CurrentlyViolatingWantedLevel > 0 || WantedLevel > 0)
+                {
+                    CheckPoliceSight();
+                    if (player.IsCop)
+                    {
+                        CheckPlayerSight(player);
+                    }
+                }
+
+
+
+
                 if (WantedLevel > 0)
                 {
                     OnPedSeenByPolice();
                 }
-                else
-                {
-                    if (CurrentlyViolatingWantedLevel > 0)
-                    {
-                        CheckPoliceSight();
-                        if (player.IsCop)
-                        {
-                            CheckPlayerSight(player);
-                        }
-                    }
-                }
+                //else
+                //{
+                //    if (CurrentlyViolatingWantedLevel > 0)
+                //    {
+                //        CheckPoliceSight();
+                //        if (player.IsCop)
+                //        {
+                //            CheckPlayerSight(player);
+                //        }
+                //    }
+                //}
             }
         }
     }
-    private void CheckLostWanted()
+    private void CheckWantedStatus()
     {
         bool hasCloseCops = false;
         foreach (Cop cop in World.Pedestrians.PoliceList)
         {
-            if (NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, cop.CellX, cop.CellY, 4))
+            if (NativeHelper.IsNearby(PedExt.CellX, PedExt.CellY, cop.CellX, cop.CellY, 3))
             {
                 hasCloseCops = true;
                 break;
@@ -131,6 +147,15 @@ public class PedViolations
         {
             GameTimeLastNearCops = Game.GameTime;
         }
+
+        HasCopsAround = hasCloseCops;
+
+
+        if(CanPoliceSee && IsWanted && PedExt != null && PedExt.Pedestrian.Exists())
+        {
+            PlacePoliceLastSeen = PedExt.Pedestrian.Position;
+        }
+
         if (!hasCloseCops && Game.GameTime - GameTimeLastNearCops >= 80000)
         {
             Reset();
@@ -354,6 +379,8 @@ public class PedViolations
     }
     private void CheckPoliceSight()
     {
+        bool CanSeePed = false;
+        bool CanHearPed = false;
         if (PedExt.Pedestrian.Exists())
         {
             foreach (Cop cop in World.Pedestrians.PoliceList)
@@ -373,27 +400,36 @@ public class PedViolations
                             {
                                 OnPedSeenByPolice();
                                 OnPedHeardByPolice();
-                                return;
+                                CanSeePed = true;
+                                CanHearPed = true;
+                                break;
                             }
                             GameFiber.Yield();//TR THIS IS ADDED WITH THE REDUCED CALLS, IF THERE ARE TONS OF CRIMINALS, ITS OK THAT THIS IS SLOW?
                             if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(cop.Pedestrian) && !cop.IsUnconscious && !cop.Pedestrian.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", cop.Pedestrian, PedExt.Pedestrian))//55f
                             {
                                 OnPedSeenByPolice();
                                 OnPedHeardByPolice();
-                                return;
+                                CanSeePed = true;
+                                CanHearPed = true;
+                                break;
                             }
                             if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
                             {
                                 OnPedHeardByPolice();
+                                CanHearPed = true;
                             }
                         }
                     }
                 }
             }
         }
+        CanPoliceSee = CanSeePed;
+        CanPoliceHear = CanHearPed;
     }
     private void CheckPlayerSight(IPoliceRespondable player)
     {
+        bool CanSeePed = false;
+        bool CanHearPed = false;
         float DistanceTo = PedExt.DistanceToPlayer;
         if (DistanceTo <= 0.1f)
         {
@@ -403,18 +439,25 @@ public class PedViolations
         {
             OnPedSeenByPolice();
             OnPedHeardByPolice();
+            CanSeePed = true;
+            CanHearPed = true;
             return;
         }
         if (DistanceTo <= Settings.SettingsManager.PoliceSettings.SightDistance && IsThisPedInFrontOf(player.Character) && !player.Character.IsDead && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", player.Character, PedExt.Pedestrian))//55f
         {
             OnPedSeenByPolice();
             OnPedHeardByPolice();
+            CanSeePed = true;
+            CanPoliceHear = true;
             return;
         }
         if (DistanceTo <= Settings.SettingsManager.PoliceSettings.GunshotHearingDistance)
         {
             OnPedHeardByPolice();
+            CanHearPed = true;
         }
+        CanPoliceSee = CanSeePed;
+        CanPoliceHear = CanHearPed;
     }
     private bool IsThisPedInFrontOf(Ped ToCheck)
     {

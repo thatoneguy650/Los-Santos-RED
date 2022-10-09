@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -49,10 +50,14 @@ public class WeaponRecoil
             {
                 return;
             }
+            if (Game.LocalPlayer.Character.IsReloading)
+            {
+                return;
+            }
             ApplyRecoil();
             TotalShots++;
         } 
-        Player.DebugString = $"R P: {Math.Round(CurrentPitch,6)} AdjP: {Math.Round(AdjustedPitch,6)} H: {Math.Round(CurrentHeading,6)} AdjH: {Math.Round(AdjustedHeading,6)} TS: {TotalShots}";
+       // Player.DebugString = $"R P: {Math.Round(CurrentPitch,6)} AdjP: {Math.Round(AdjustedPitch,6)} H: {Math.Round(CurrentHeading,6)} AdjH: {Math.Round(AdjustedHeading,6)} TS: {TotalShots}";
 
     }
     private void ApplyRecoil()

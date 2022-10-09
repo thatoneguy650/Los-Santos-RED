@@ -378,6 +378,9 @@ public class PoliceSettings : ISettingsDefaultable
     public bool BlockEventsDuringKill { get; set; }
     public bool BlockEventsDuringIdle { get; set; }
     public bool BlockEventsDuringAIChase { get; set; }
+    public float DriverAggressiveness { get; set; }
+    public float DriverAbility { get; set; }
+    public float DriverRacing { get; set; }
 
     public PoliceSettings()
     {
@@ -427,7 +430,7 @@ public class PoliceSettings : ISettingsDefaultable
         AllowReducedCollisionPenaltyAssist = true;
         AllowPowerAssist = false;
 
-        AllowDriveBySightDuringChase = false;
+        AllowDriveBySightDuringChase = true;
         DriveBySightDuringChaseDistance = 150f;
         AllowDriveBySightDuringInvestigate = true;
         DriveBySightDuringInvestigateDistance = 150f;
@@ -584,5 +587,8 @@ public class PoliceSettings : ISettingsDefaultable
         BlockEventsDuringIdle = true;
         BlockEventsDuringAIChase = true;
 
+        DriverAggressiveness = 1.0f;
+        DriverAbility = 1.0f;
+        DriverRacing = 1.0f;
 }
 }

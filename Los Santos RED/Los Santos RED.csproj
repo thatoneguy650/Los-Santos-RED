@@ -286,7 +286,9 @@
     <Compile Include="lsr\Player\Gang\GangKickUp.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupManager.cs" />
     <Compile Include="lsr\Player\Interface\ICameraControllable.cs" />
+    <Compile Include="lsr\Player\Interface\IPlayerVoiceable.cs" />
     <Compile Include="lsr\Player\Licenses\PilotsLicense.cs" />
+    <Compile Include="lsr\Player\PlayerVoice.cs" />
     <Compile Include="lsr\Player\Relationships\GunDealerRelationship.cs" />
     <Compile Include="lsr\Player\HealthManager.cs" />
     <Compile Include="lsr\Player\HumanState\HungerNeed.cs" />
@@ -479,9 +481,9 @@
     <Compile Include="lsr\Player\Interface\IDispatchable.cs" />
     <Compile Include="lsr\Player\Interface\ISaveable.cs" />
     <Compile Include="lsr\Player\Scanner\Scanner.cs" />
-    <Compile Include="lsr\Ped\Cop\AssistManager.cs" />
+    <Compile Include="lsr\Ped\Cop\CopAssistManager.cs" />
     <Compile Include="lsr\Dispatcher\LE\Roadblock.cs" />
-    <Compile Include="lsr\Ped\Cop\Voice.cs" />
+    <Compile Include="lsr\Ped\Cop\CopVoice.cs" />
     <Compile Include="lsr\Ped\EMT\EMT.cs" />
     <Compile Include="lsr\Ped\Fire\Firefighter.cs" />
     <Compile Include="lsr\Tasker\Other\AssignedSeat.cs" />

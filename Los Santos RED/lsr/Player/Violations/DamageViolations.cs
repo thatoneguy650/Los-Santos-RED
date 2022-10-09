@@ -102,6 +102,7 @@ public class DamageViolations
             GameTimeLastKilledCop = Game.GameTime;
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime("KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.OnKilledCop();
             EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
@@ -115,6 +116,7 @@ public class DamageViolations
                 }
             }
             PlayerKilledCivilians.Add(myPed);
+            Player.OnKilledCivilian();
             GameTimeLastKilledCivilian = Game.GameTime;
             GameTimeLastHurtCivilian = Game.GameTime;
         }

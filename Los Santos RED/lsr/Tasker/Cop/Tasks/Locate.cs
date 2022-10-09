@@ -89,7 +89,7 @@ public class Locate : ComplexTask
             {
                 ExecuteCurrentSubTask();
             }
-            SetSiren();
+            SetVehicle();
         }
     }
     public override void ReTask()
@@ -244,12 +244,21 @@ public class Locate : ComplexTask
             }
         }
     }
-    private void SetSiren()
+    private void SetVehicle()
     {
         if (Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+        }
+        if (Ped.IsInVehicle)
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+            if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+            {
+                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+            }
         }
     }
     public override void Stop()

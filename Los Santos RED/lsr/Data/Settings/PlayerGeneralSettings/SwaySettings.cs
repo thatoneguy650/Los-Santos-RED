@@ -34,6 +34,7 @@ public class SwaySettings : ISettingsDefaultable
     public float HorizontalFirstPersonSwayAdjuster { get; set; }
     public bool ApplySwayToSnipers { get; set; }
     public float VeritcalInVehicleSwayScaler { get; set; }
+    public int FramesBetweenRecoil { get; set; }
 
     public SwaySettings()
     {
@@ -63,6 +64,8 @@ public class SwaySettings : ISettingsDefaultable
 
         ApplySwayToSnipers = false;
         VeritcalInVehicleSwayScaler = 0.0075f;
+
+        FramesBetweenRecoil = 90;
 
     }
 

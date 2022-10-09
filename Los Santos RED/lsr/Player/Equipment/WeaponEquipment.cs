@@ -18,6 +18,7 @@ public class WeaponEquipment
     private WeaponSelector WeaponSelector;
     private WeaponSway WeaponSway;
     private WeaponRecoil WeaponRecoil;
+    private int FramesSinceShot = 0;
     public SelectorOptions CurrentSelectorSetting => WeaponSelector.CurrentSelectorSetting;
     public WeaponInformation CurrentWeapon { get; private set; }
     public WeaponCategory CurrentWeaponCategory => CurrentWeapon != null ? CurrentWeapon.Category : WeaponCategory.Unknown;
@@ -46,10 +47,22 @@ public class WeaponEquipment
             {
                 if (Game.LocalPlayer.Character.IsShooting)
                 {
+                    FramesSinceShot = 0;
                     WeaponRecoil.Update();
                     Player.SetShot();
                 }
-                else if (!Player.VeryRecentlyShot &&( Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
+                else
+                {
+                    if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                    {
+                        FramesSinceShot++;
+                    }
+                    if(FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                    {
+                        WeaponSway.Reset();
+                    }
+                }
+                if (FramesSinceShot >= Settings.SettingsManager.SwaySettings.FramesBetweenRecoil && (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
                 {
                     WeaponSway.Update();
                 }

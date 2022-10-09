@@ -307,6 +307,16 @@ public class AIApprehend : ComplexTask
                             GameTimeVehicleStoppedMoving = 0;
                         }
                     }
+
+
+                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+                    NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+                    if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                    {
+                        NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                    }
+                    
+
                 }
                 GameTimeLastRan = Game.GameTime;
             }

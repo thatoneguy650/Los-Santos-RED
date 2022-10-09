@@ -59,5 +59,7 @@ namespace LosSantosRED.lsr.Interface
 
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
         void OnVehicleCrashed();
+        void OnKilledCop();
+        void OnKilledCivilian();
     }
 }

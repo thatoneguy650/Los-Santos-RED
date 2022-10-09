@@ -541,9 +541,12 @@ public class Chase : ComplexTask
             Ped.Pedestrian.BlockPermanentEvents = false;
         }
         Ped.Pedestrian.KeepTasks = true;
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1000f);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 100.0f);
-
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+        if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+        {
+            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+        }
         if (Ped.IsInHelicopter)
         {
             NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
@@ -563,9 +566,12 @@ public class Chase : ComplexTask
     }
     private void UpdateVehicleChase()
     {
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1000f);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 100.0f);
-
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+        if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+        {
+            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+        }
         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.FastEmergency);
         //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
         //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableCruiseInFrontDuringBlockDuringVehicleChase, false);

@@ -8,13 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class AssistManager
+public class CopAssistManager
 {
     private bool IsSetNoCollision = false;//this is new
     private Cop Cop;
     private bool IsCheatFiberRunning = false;
 
-    public AssistManager(Cop cop)
+    public CopAssistManager(Cop cop)
     {
         Cop = cop;
     }

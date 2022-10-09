@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable
     {
         public int UpdateState = 0;
         private uint GameTimeGotInVehicle;
@@ -143,6 +143,7 @@ namespace Mod
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
+            PlayerVoice = new PlayerVoice(this, Settings, Speeches);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public Destinations Destinations { get; private set; }
@@ -174,6 +175,7 @@ namespace Mod
         public HealthManager HealthManager { get; private set; }
         public GroupManager GroupManager { get; private set; }
         public MeleeManager MeleeManager { get; private set; }
+        public PlayerVoice PlayerVoice { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -372,7 +374,7 @@ namespace Mod
         public bool RecentlySetWanted => GameTimeLastSetWanted != 0 && Game.GameTime - GameTimeLastSetWanted <= 5000;
         public bool RecentlyShot => GameTimeLastShot != 0 && !RecentlyStartedPlaying && Game.GameTime - GameTimeLastShot <= 3000;
 
-       public bool VeryRecentlyShot => GameTimeLastShot != 0 && Game.GameTime - GameTimeLastShot <= 300;
+       public bool VeryRecentlyShot => GameTimeLastShot != 0 && Game.GameTime - GameTimeLastShot <= 500;
 
         public bool RecentlyStartedPlaying => GameTimeStartedPlaying != 0 && Game.GameTime - GameTimeStartedPlaying <= 3000;
         public bool RecentlyGotOutOfVehicle => GameTimeGotOutOfVehicle != 0 && Game.GameTime - GameTimeGotOutOfVehicle <= 1000;
@@ -470,6 +472,7 @@ namespace Mod
             HealthManager.Setup();
             GroupManager.Setup();
             MeleeManager.Setup();
+            PlayerVoice.Setup();
 
             SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
@@ -544,6 +547,7 @@ namespace Mod
             GroupManager.Update();
             ButtonPrompts.Update();
             MeleeManager.Update();
+            PlayerVoice.Update();
         }
         public void SetNotBusted()
         {
@@ -674,7 +678,7 @@ namespace Mod
             GroupManager.Dispose();
             MeleeManager.Dispose();
             Violations.Dispose();
-
+            PlayerVoice.Dispose();
 
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
 
@@ -867,6 +871,15 @@ namespace Mod
             Scanner.OnInvestigationExpire();
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnInvestigationExpire", 3);
         }
+        public void OnKilledCop()
+        {
+            PlayerVoice.OnKilledCop();
+        }
+
+        public void OnKilledCivilian()
+        {
+            PlayerVoice.OnKilledCivilian();
+        }
         public void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType)
         {
             GameFiber.Yield();
@@ -898,6 +911,7 @@ namespace Mod
             GameFiber.Yield();
             CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x => x.AssociatedCrime).ToList(), PlacePoliceLastSeenPlayer);
             Scanner.OnSuspectEluded();
+            PlayerVoice.OnSuspectEluded();
         }
         public void OnVehicleCrashed()
         {
@@ -907,6 +921,9 @@ namespace Mod
                 GameTimeLastCrashedVehicle = Game.GameTime;
                 Scanner.OnVehicleCrashed();
             }
+
+            PlayerVoice.OnCrashedCar();
+
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
         }
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
@@ -938,8 +955,16 @@ namespace Mod
             }
             //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleStartedFire", 5);
         }
-        public void OnWantedActiveMode() => Scanner.OnWantedActiveMode();
-        public void OnWantedSearchMode() => Scanner.OnWantedSearchMode();
+        public void OnWantedActiveMode()
+        {
+            Scanner.OnWantedActiveMode();
+            PlayerVoice.OnWantedActiveMode();
+        }
+        public void OnWantedSearchMode()
+        {
+            Scanner.OnWantedSearchMode();
+            PlayerVoice.OnWantedSearchMode();
+        }
         public void OnWeaponsFree() => Scanner.OnWeaponsFree();
         private void OnAimingChanged()
         {
@@ -1193,6 +1218,7 @@ namespace Mod
                 {
                     Scanner.OnSuspectShooting();
                 }
+                PlayerVoice.OnShotGun();
                 EntryPoint.WriteToConsole("PLAYER EVENT: Starting Shooting");
             }
             else
@@ -1262,6 +1288,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnLostWanted();
                     GameFiber.Yield();
+                    PlayerVoice.OnLostWanted();
                     RelationshipManager.GangRelationships.OnLostWanted();
                     World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
@@ -1283,6 +1310,7 @@ namespace Mod
                     GameFiber.Yield();
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
+                    PlayerVoice.OnBecameWanted();
                     RelationshipManager.GangRelationships.OnBecameWanted();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
@@ -2779,5 +2807,7 @@ namespace Mod
                 TargettingHandle = NativeHelper.GetTargettingHandle();
             }
         }
+
+
     }
 }

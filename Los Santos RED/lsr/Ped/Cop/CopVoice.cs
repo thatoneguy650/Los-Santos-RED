@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Voice
+public class CopVoice
 {
     private Cop Cop;
     private bool IsInFiber = false;
@@ -40,7 +40,7 @@ public class Voice
     private uint GameTimeLastForcedRadioSpeech;
     private bool Spoke;
 
-    public Voice(Cop cop, string modelName, ISettingsProvideable settings)
+    public CopVoice(Cop cop, string modelName, ISettingsProvideable settings)
     {
         Cop = cop;
         Settings = settings;

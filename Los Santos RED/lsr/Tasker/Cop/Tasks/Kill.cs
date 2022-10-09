@@ -40,10 +40,18 @@ public class Kill : ComplexTask
             ClearTasks();
             //NativeFunction.Natives.SET_PED_SHOOT_RATE(Ped.Pedestrian, 100);//30
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
-           // NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
-           // NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
-          //  NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
-            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+                                                                        // NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Ped.Pedestrian, 2);//professional
+                                                                        // NativeFunction.Natives.SET_PED_COMBAT_RANGE(Ped.Pedestrian, 2);//far
+                                                                        //  NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
+            if (Ped.IsInVehicle)
+            {
+                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+                if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                {
+                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                }
+            }
             if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
@@ -117,12 +125,19 @@ public class Kill : ComplexTask
             {
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+
+                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
+                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
+                if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                {
+                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                }
+                
             }
             if(!Ped.IsDriver && Ped.DistanceToPlayer <= 100f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask && Game.GameTime - GametimeLastRetasked >= 1000)
             {
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
+                //NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
 
                 if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
                 {
