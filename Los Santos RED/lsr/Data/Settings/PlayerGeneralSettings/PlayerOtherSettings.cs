@@ -21,6 +21,12 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool SetSlowMoOnBusted { get; set; }
     [Description("Allow the weapon dropping system to drop weapons.")]
     public bool AllowWeaponDropping { get; set; }
+    [Description("If enabled, recently dropped weapons will be uncollectable until the WeaponDroppingTimeToSuppress has elapsed.")]
+    public bool WeaponDroppingSupressPickups { get; set; }
+
+    [Description("Time to disable pickups after dropping weapon.")]
+    public uint WeaponDroppingTimeToSuppress { get; set; }
+
     [Description("Ped voice to use as your own when you are playing as the male freemode ped.")]
     public string MaleFreeModeVoice { get; set; }
     [Description("Ped voice to use as your own when you are playing as the female freemode ped.")]
@@ -55,6 +61,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public int PlayerSpeechSkill_Max { get; set; }
     public bool GroupMembersGetPlayerWantedLevel { get; set; }
 
+
     public PlayerOtherSettings()
     {
         SetDefault();
@@ -68,6 +75,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         SetSlowMoOnDeath = true;
         SetSlowMoOnBusted = true;
         AllowWeaponDropping = true;
+        WeaponDroppingSupressPickups = true;
+        WeaponDroppingTimeToSuppress = 15000;
         MaleFreeModeVoice = "A_M_M_BEVHILLS_01_WHITE_FULL_01";
         FemaleFreeModeVoice = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GenerateStoreItemPreviews = true;

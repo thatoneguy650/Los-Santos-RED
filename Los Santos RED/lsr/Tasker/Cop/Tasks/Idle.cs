@@ -219,7 +219,7 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -321,7 +321,7 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -362,7 +362,7 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -469,7 +469,7 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -519,7 +519,7 @@ public class Idle : ComplexTask
         if (Ped.Pedestrian.Exists() && VehicleTryingToEnter != null && VehicleTryingToEnter.Vehicle.Exists())
         {
             //EntryPoint.WriteToConsole($"Idle {Ped.Pedestrian.Handle}: Get in Car TASK START", 3);
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }

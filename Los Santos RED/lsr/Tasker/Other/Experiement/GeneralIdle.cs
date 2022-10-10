@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,15 @@ public class GeneralIdle : ComplexTask
     }
     public override void Start()
     {
+        if (Settings.SettingsManager.PoliceTaskSettings.SetSteerAround)
+        {
+            NativeFunction.Natives.SET_PED_STEERS_AROUND_OBJECTS(Ped.Pedestrian, false);
+            NativeFunction.Natives.SET_PED_STEERS_AROUND_PEDS(Ped.Pedestrian, false);
+            NativeFunction.Natives.SET_PED_STEERS_AROUND_VEHICLES(Ped.Pedestrian, false);
+        }
+
+
+
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
@@ -108,7 +118,7 @@ public class GeneralIdle : ComplexTask
     }
     private void SetSiren()
     {
-        if (Settings.SettingsManager.PoliceSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = false;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;

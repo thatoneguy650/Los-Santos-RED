@@ -80,6 +80,7 @@ public class WeaponEquipment
     }
     public void Dispose()
     {
+        WeaponDropping.Dispose();
         isActive = false;
     }
     public void Update()
@@ -96,6 +97,7 @@ public class WeaponEquipment
         Game.LocalPlayer.Character.Inventory.Weapons.Clear();
     }
     public void DropWeapon() => WeaponDropping.DropWeapon();
+    public void DisableWeaponPickup(uint weaponHash) => WeaponDropping.DisableWeaponPickup(weaponHash);
     public void SetUnarmed()
     {
         if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))

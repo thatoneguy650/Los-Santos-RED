@@ -57,22 +57,45 @@ public class SettingsManager
     [Category("Player")]
     [Description("Key Settings")]
     public KeySettings KeySettings { get; set; } = new KeySettings();
-
-
     [Category("Player")]
     [Description("Needs Settings")]
     public NeedsSettings NeedsSettings { get; set; } = new NeedsSettings();
-
-
     [Category("Player")]
     [Description("Other Settings")]
     public PlayerOtherSettings PlayerOtherSettings { get; set; } = new PlayerOtherSettings();
     [Category("Player")]
     [Description("Cellphone Settings")]
     public CellphoneSettings CellphoneSettings { get; set; } = new CellphoneSettings();
+
+
+    [Category("Player")]
+    [Description("Player Speech Settings")]
+    public PlayerSpeechSettings PlayerSpeechSettings { get; set; } = new PlayerSpeechSettings();
+
+
+
+
+
+
+
+
     [Category("World")]
-    [Description("Police Settings")]
+    [Description("Police General Settings")]
     public PoliceSettings PoliceSettings { get; set; } = new PoliceSettings();
+    [Category("World")]
+    [Description("Police Spawn Settings")]
+    public PoliceSpawnSettings PoliceSpawnSettings { get; set; } = new PoliceSpawnSettings();
+    [Category("World")]
+    [Description("Police Task Settings")]
+    public PoliceTaskSettings PoliceTaskSettings { get; set; } = new PoliceTaskSettings();
+    [Category("World")]
+    [Description("Police Speech Settings")]
+    public PoliceSpeechSettings PoliceSpeechSettings { get; set; } = new PoliceSpeechSettings();
+    [Category("World")]
+    [Description("Roadblock Settings")]
+    public RoadblockSettings RoadblockSettings { get; set; } = new RoadblockSettings();
+
+
     [Category("World")]
     [Description("Gang Settings")]
     public GangSettings GangSettings { get; set; } = new GangSettings();
@@ -100,6 +123,9 @@ public class SettingsManager
     [Category("World")]
     [Description("Weather Reporting Settings")]
     public WeatherReportingSettings WeatherReportingSettings { get; set; } = new WeatherReportingSettings();
+
+
+
     [Category("UI")]
     [Description("General Settings")]
     public UIGeneralSettings UIGeneralSettings { get; set; } = new UIGeneralSettings();
@@ -112,6 +138,9 @@ public class SettingsManager
     [Category("UI")]
     [Description("Action Wheel Settings")]
     public ActionWheelSettings ActionWheelSettings { get; set; } = new ActionWheelSettings();
+
+
+
     [Description("Vanilla Settings")]
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
     [Description("Debug Settings")]
@@ -122,7 +151,7 @@ public class SettingsManager
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
-            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings
+            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings
 
         };
 

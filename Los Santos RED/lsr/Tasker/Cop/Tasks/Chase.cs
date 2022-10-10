@@ -94,7 +94,7 @@ public class Chase : ComplexTask
         {
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
             GameTimeChaseStarted = Game.GameTime;
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -108,6 +108,13 @@ public class Chase : ComplexTask
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
+
+            if (Settings.SettingsManager.PoliceTaskSettings.SetSteerAround)
+            {
+                NativeFunction.Natives.SET_PED_STEERS_AROUND_OBJECTS(Ped.Pedestrian, true);
+                NativeFunction.Natives.SET_PED_STEERS_AROUND_PEDS(Ped.Pedestrian, true);
+                NativeFunction.Natives.SET_PED_STEERS_AROUND_VEHICLES(Ped.Pedestrian, true);
+            }
             Update();
         }
     }
@@ -344,7 +351,7 @@ public class Chase : ComplexTask
 
     private void EnterVehicle()
     {
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }
@@ -365,7 +372,7 @@ public class Chase : ComplexTask
     private void ExitVehicle()
     {
         NeedsUpdates = false;
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }
@@ -436,7 +443,7 @@ public class Chase : ComplexTask
 
     private void GoToPlayersCar()
     {
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }
@@ -498,7 +505,7 @@ public class Chase : ComplexTask
         if (Ped.Pedestrian.CurrentVehicle.Exists())
         {
             NeedsUpdates = false;
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -532,7 +539,7 @@ public class Chase : ComplexTask
     private void VehicleChase_AssignTask()
     {
 
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }
@@ -541,11 +548,11 @@ public class Chase : ComplexTask
             Ped.Pedestrian.BlockPermanentEvents = false;
         }
         Ped.Pedestrian.KeepTasks = true;
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-        if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+        if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
         {
-            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
         }
         if (Ped.IsInHelicopter)
         {
@@ -566,11 +573,11 @@ public class Chase : ComplexTask
     }
     private void UpdateVehicleChase()
     {
-        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-        if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+        NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+        NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+        if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
         {
-            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+            NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
         }
         //NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.FastEmergency);
         //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_DisableBlockFromPursueDuringVehicleChase, true);
@@ -628,7 +635,7 @@ public class Chase : ComplexTask
 
 
 
-            if ((Ped.RecentlySeenPlayer || Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringChaseDistance) && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringChase)
+            if ((Ped.RecentlySeenPlayer || Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringChaseDistance) && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringChase)
             {
                 NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
             }
@@ -675,7 +682,7 @@ public class Chase : ComplexTask
                 NeedsUpdates = true;
                 return;
             }
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleChase)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }

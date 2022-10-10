@@ -65,8 +65,8 @@ public class Locate : ComplexTask
             //Ped.Pedestrian.KeepTasks = true;
 
 
-            hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceSettings.SixthSensePercentage);
-            if (!hasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SixthSensePercentageClose))
+            hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
+            if (!hasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentageClose))
             {
                 hasSixthSense = true;
             }
@@ -119,7 +119,7 @@ public class Locate : ComplexTask
             {
                 if (Ped.IsDriver)
                 {
-                    if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleLocate)
+                    if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleLocate)
                     {
                         Ped.Pedestrian.BlockPermanentEvents = true;
                     }
@@ -134,7 +134,7 @@ public class Locate : ComplexTask
             else
             {
                 //Ped.Pedestrian.Tasks.Wander();
-                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringLocate)
+                if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate)
                 {
                     Ped.Pedestrian.BlockPermanentEvents = true;
                 }
@@ -161,7 +161,7 @@ public class Locate : ComplexTask
                 {
                     if (Ped.IsDriver)
                     {
-                        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringVehicleLocate)
+                        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleLocate)
                         {
                             Ped.Pedestrian.BlockPermanentEvents = true;
                         }
@@ -187,7 +187,7 @@ public class Locate : ComplexTask
                 else
                 {
                     //Ped.Pedestrian.Tasks.GoStraightToPosition(CurrentTaskedPosition, 15f, 0f, 2f, 0);
-                    if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringLocate)
+                    if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate)
                     {
                         Ped.Pedestrian.BlockPermanentEvents = true;
                     }
@@ -226,7 +226,7 @@ public class Locate : ComplexTask
                 
                 EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
-            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
+            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
             {
                 if (!isSetCode3Close)
                 {
@@ -253,11 +253,11 @@ public class Locate : ComplexTask
         }
         if (Ped.IsInVehicle)
         {
-            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-            if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+            if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
             {
-                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
             }
         }
     }

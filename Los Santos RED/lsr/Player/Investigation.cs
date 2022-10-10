@@ -22,27 +22,27 @@ public class Investigation
         {
             if(wantedLevel >= 6)
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted6;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted6;
             }
             if(wantedLevel >= 5)
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted5;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted5;
             }
             else if (wantedLevel >= 4)
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted4;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted4;
             }
             else if (wantedLevel >= 3)
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted3;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted3;
             }
             else if (wantedLevel >= 2)
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted2;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted2;
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.InvestigationRespondingOfficers_Wanted1;
+                return Settings.SettingsManager.PoliceTaskSettings.InvestigationRespondingOfficers_Wanted1;
             }
         }
     }

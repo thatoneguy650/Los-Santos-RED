@@ -36,7 +36,7 @@ public class CopTasker
     }
     public void Update()
     {
-        if (Settings.SettingsManager.PoliceSettings.ManageTasking)
+        if (Settings.SettingsManager.PoliceTaskSettings.ManageTasking)
         {
             SetPossibleTargets();
             World.Pedestrians.ExpireSeatAssignments();

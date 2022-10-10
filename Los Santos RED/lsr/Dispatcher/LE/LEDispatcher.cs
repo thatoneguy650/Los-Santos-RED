@@ -63,31 +63,31 @@ public class LEDispatcher
         {
             if (World.TotalWantedLevel == 1)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted1;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted1;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted2;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted2;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted3;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted3;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted4;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted4;
             }
             else if (World.TotalWantedLevel == 5)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted5;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted5;
             }
             else if (World.TotalWantedLevel == 6)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Wanted6;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted6;
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfAnySpawn_Default;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Default;
             }
         }
     }
@@ -97,31 +97,31 @@ public class LEDispatcher
         {
             if(World.TotalWantedLevel == 1)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted1;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted1;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted2;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted2;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted3;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted3;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted4;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted4;
             }
             else if (World.TotalWantedLevel == 5)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted5;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted5;
             }
             else if (World.TotalWantedLevel == 6)
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Wanted6;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted6;
             }
             else
             {
-                return Settings.SettingsManager.PoliceSettings.LikelyHoodOfCountySpawn_Default;
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Default;
             }
         }
     }
@@ -131,19 +131,19 @@ public class LEDispatcher
     private float DistanceToDelete => 1000f;// TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 300f;
     private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedPolice < SpawnedCopLimit && World.Vehicles.SpawnedPoliceVehiclesCount < SpawnedCopVehicleLimit;
-    private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.PoliceSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
-    private bool HasNeedToDispatchToStations => Settings.SettingsManager.PoliceSettings.AllowStationSpawning && World.TotalWantedLevel <= Settings.SettingsManager.PoliceSettings.StationSpawning_MaxWanted;
+    private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.RoadblockSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.RoadblockSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.RoadblockSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
+    private bool HasNeedToDispatchToStations => Settings.SettingsManager.PoliceSpawnSettings.AllowStationSpawning && World.TotalWantedLevel <= Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
-    public int LikelyHoodOfStationFootSpawnWhenNear => Settings.SettingsManager.PoliceSettings.PercentageSpawnOnFootNearStation;
+    public int LikelyHoodOfStationFootSpawnWhenNear => Settings.SettingsManager.PoliceSpawnSettings.PercentageSpawnOnFootNearStation;
     private float MaxDistanceToSpawn
     {
         get
         {//setup to do rural dispatch, but do i want to add ALL those settings?
-            float MaxWantedUnseen = Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedUnseen;
-            float MaxWantedSeen = Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen;
-            float MaxNotWanted = Settings.SettingsManager.PoliceSettings.MaxDistanceToSpawn_NotWanted;
+            float MaxWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen;
+            float MaxWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen;
+            float MaxNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted;
 
 
             if(World.TotalWantedLevel > Player.WantedLevel)
@@ -175,9 +175,9 @@ public class LEDispatcher
     {
         get
         {
-            float MinWantedUnseen = Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_WantedUnseen;
-            float MinWantedSeen = Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_WantedSeen;
-            float MinNotWanted = Settings.SettingsManager.PoliceSettings.MinDistanceToSpawn_NotWanted;
+            float MinWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseen;
+            float MinWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeen;
+            float MinNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWanted;
 
 
             if (World.TotalWantedLevel > Player.WantedLevel)
@@ -209,14 +209,14 @@ public class LEDispatcher
     {
         get
         {
-            int Limit6 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted6;
-            int Limit5 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted5;
-            int Limit4 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted4;
-            int Limit3 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted3;
-            int Limit2 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted2;
-            int Limit1 = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Wanted1;
-            int LimitInvestigation = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Investigation;
-            int LimitDefault = Settings.SettingsManager.PoliceSettings.PedSpawnLimit_Default;
+            int Limit6 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted6;
+            int Limit5 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted5;
+            int Limit4 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted4;
+            int Limit3 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3;
+            int Limit2 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted2;
+            int Limit1 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted1;
+            int LimitInvestigation = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Investigation;
+            int LimitDefault = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
 
             if (World.TotalWantedLevel == 6)
             {
@@ -344,14 +344,14 @@ public class LEDispatcher
     {
         get
         {
-            int Limit6 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted6;
-            int Limit5 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted5;
-            int Limit4 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted4;
-            int Limit3 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted3;
-            int Limit2 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted2;
-            int Limit1 = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Wanted1;
-            int LimitInvestigation = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Investigation;
-            int LimitDefault = Settings.SettingsManager.PoliceSettings.VehicleSpawnLimit_Default;
+            int Limit6 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted6;
+            int Limit5 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted5;
+            int Limit4 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted4;
+            int Limit3 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted3;
+            int Limit2 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted2;
+            int Limit1 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted1;
+            int LimitInvestigation = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Investigation;
+            int LimitDefault = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
 
             if (World.TotalWantedLevel == 6)
             {
@@ -395,9 +395,9 @@ public class LEDispatcher
     {
         get
         {
-            int UnseenTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpawn_Seen_Min;
+            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
 
             //if (Player.CurrentLocation.CurrentZone?.IsLowPop == true)
             //{
@@ -422,9 +422,9 @@ public class LEDispatcher
     {
         get
         {
-            int UnseenTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSettings.TimeBetweenCopDespawn_Seen_Min;
+            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_Min;
 
             if (World.TotalWantedLevel > Player.WantedLevel)
             {
@@ -444,9 +444,9 @@ public class LEDispatcher
     {
         get
         {
-            int UnseenTime = Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSettings.TimeBetweenRoadblock_Seen_Min;
+            int UnseenTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min;
 
             if (!Player.AnyPoliceRecentlySeenPlayer)
             {
@@ -461,7 +461,7 @@ public class LEDispatcher
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.PoliceSettings.ManageDispatching)
+        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
             HandleAmbientSpawns();
             HandleStationSpawns();
@@ -471,7 +471,7 @@ public class LEDispatcher
     }
     public void LocationDispatch()
     {
-        if (Settings.SettingsManager.PoliceSettings.ManageDispatching)
+        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
             HandleStationSpawns();
         }
@@ -482,7 +482,7 @@ public class LEDispatcher
     }
     public void Recall()
     {
-        if (Settings.SettingsManager.PoliceSettings.ManageDispatching && IsTimeToRecall)
+        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching && IsTimeToRecall)
         {
             GameFiber.Yield();
             foreach (Cop DeleteableCop in DeletableCops)
@@ -532,7 +532,7 @@ public class LEDispatcher
                     {
                         foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                         {
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
+                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
                             {
                                 HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);
@@ -563,7 +563,7 @@ public class LEDispatcher
                     {
                         foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                         {
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
+                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
                             {
                                 HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);
@@ -615,7 +615,7 @@ public class LEDispatcher
     {
         try
         {
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.AddOptionalPassengerPercentage), World);
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;

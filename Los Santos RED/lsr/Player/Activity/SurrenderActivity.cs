@@ -269,6 +269,11 @@ public class SurrenderActivity : DynamicActivity
             ResultPosition = new Vector3(0.75f, 0.75f, -0.3f);
         }
 
+
+
+        Player.WeaponEquipment.DisableWeaponPickup((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+
+
         NativeFunction.Natives.SET_PED_DROPS_INVENTORY_WEAPON(Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, ResultPosition.X, ResultPosition.Y, ResultPosition.Z, -1);
 
 

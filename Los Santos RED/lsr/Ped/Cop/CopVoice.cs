@@ -80,19 +80,19 @@ public class CopVoice
         {
             if(currentPlayer.IsDangerouslyArmed && Cop.DistanceToPlayer <= 50f)
             {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Armed_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Armed_Randomizer_Min, Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Armed_Randomizer_Max);
+                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Max);
             }
             else if (currentPlayer.WantedLevel <= 3)
             {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
+                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
             }
             else if (currentPlayer.PoliceResponse.IsWeaponsFree)
             {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_WeaponsFree_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min, Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max);
+                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max);
             }
             else if (currentPlayer.PoliceResponse.IsDeadlyChase)
             {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Deadly_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Min, Settings.SettingsManager.PoliceSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Max);
+                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Max);
             }
             if (currentPlayer.IsWanted && Cop.CanSeePlayer)
             {

@@ -542,7 +542,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            PedToReturn = Entities.Pedestrians.PoliceList.Where(x => x.DistanceToPlayer <= Radius && x.WasModSpawned && (!x.IsInVehicle || x.IsDriver)).PickRandom();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.PoliceList.Where(x => x.DistanceToPlayer <= Radius && x.WasModSpawned && (!x.IsInVehicle || x.IsDriver) && x.Pedestrian.Exists() && x.Pedestrian.DistanceTo(Game.LocalPlayer.Character) <= Radius).PickRandom();//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         }
         return PedToReturn;
     }
@@ -555,7 +555,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            PedToReturn = Entities.Pedestrians.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian) && x.DistanceToPlayer <= Radius).PickRandom()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
+            PedToReturn = Entities.Pedestrians.CivilianList.Where(x => CanTakeoverPed(x.Pedestrian) && x.DistanceToPlayer <= Radius && x.Pedestrian.Exists() && x.Pedestrian.DistanceTo(Game.LocalPlayer.Character) <= Radius).PickRandom()?.Pedestrian;//closestPed.Where(s => CanTakeoverPed(s)).OrderBy(s => RandomItems.MyRand.Next()).FirstOrDefault();
         }
         if (PedToReturn == null && !PedToReturn.Exists())
         {

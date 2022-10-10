@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-public class ActionWheelSettings : ISettingsDefaultable
+﻿public class ActionWheelSettings : ISettingsDefaultable
 {
     public float ItemWidth { get; set; }
     public float ItemHeight { get; set; }
@@ -42,7 +33,6 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float NextPageCenterX { get; set; }
     public float NextPageCenterY { get; set; }
     public int ItemsPerPage { get; set; }
-
 
     public bool ShowSpeedLimitIcon { get; set; }
     public float SpeedLimitIconScale { get; set; }
@@ -87,18 +77,14 @@ public class ActionWheelSettings : ISettingsDefaultable
         NextPageCenterX = 0.875f;
         NextPageCenterY = 0.8f;
 
-
         PrevPageCenterX = 0.8f;
         PrevPageCenterY = 0.8f;
 
-
         ItemsPerPage = 10;
-
 
         ShowSpeedLimitIcon = true;
         SpeedLimitIconScale = 0.35f;
         SpeedLimitIconX = 0.6f;
         SpeedLimitIconY = 0.98f;
-
     }
 }

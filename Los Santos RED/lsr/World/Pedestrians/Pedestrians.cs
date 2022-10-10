@@ -190,12 +190,12 @@ public class Pedestrians : ITaskerReportable
                 {
                     continue;
                 }
-                if (Settings.SettingsManager.PoliceSettings.RemoveNonSpawnedPolice)
+                if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice)
                 {
                     Delete(Pedestrian);
                     continue;
                 }
-                else if (Settings.SettingsManager.PoliceSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent)
+                else if (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent)
                 {
                     Delete(Pedestrian);
                     continue;

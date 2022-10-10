@@ -60,7 +60,7 @@ public class FootChase
     public void Update()
     {
         SetRunSpeed();
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }

@@ -155,6 +155,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\InvestigationSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\NeedsSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\PlayerSpeechSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\RecoilSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SelectorSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\SprintSettings.cs" />
@@ -166,6 +167,10 @@
     <Compile Include="lsr\Data\Settings\World General Settings\GangSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\VehicleSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ScannerSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\PoliceSpawnSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\PoliceSpeechSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\PoliceTaskSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\Roadblock Settings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherReportingSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicleExtra.cs" />

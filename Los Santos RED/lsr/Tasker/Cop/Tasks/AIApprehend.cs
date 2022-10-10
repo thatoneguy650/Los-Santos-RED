@@ -309,11 +309,11 @@ public class AIApprehend : ComplexTask
                     }
 
 
-                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-                    NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-                    if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+                    NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+                    if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
                     {
-                        NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                        NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
                     }
                     
 
@@ -651,7 +651,7 @@ public class AIApprehend : ComplexTask
         if (IsFirstRun)
         {
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -769,7 +769,7 @@ public class AIApprehend : ComplexTask
             return;
 
         }
-        if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
         }
@@ -812,7 +812,7 @@ public class AIApprehend : ComplexTask
         if (Ped.Pedestrian.CurrentVehicle.Exists())
         {
             NeedsUpdates = false;
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -858,7 +858,7 @@ public class AIApprehend : ComplexTask
             while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
             {
                 FootChaseUpdateParameters();
-                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringAIChase)
+                if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
                 {
                     Ped.Pedestrian.BlockPermanentEvents = true;
                 }

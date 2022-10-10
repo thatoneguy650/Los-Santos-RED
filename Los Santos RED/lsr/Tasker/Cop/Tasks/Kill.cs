@@ -15,7 +15,7 @@ public class Kill : ComplexTask
     private bool IsGoingToBeforeAttacking = false;
     private ISettingsProvideable Settings;
     private bool CanSiege = false;
-    private bool ShouldGoToBeforeAttack => Settings.SettingsManager.PoliceSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege;
+    private bool ShouldGoToBeforeAttack => Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege;
     public Kill(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Kill";
@@ -26,7 +26,7 @@ public class Kill : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if(RandomItems.RandomPercent(Settings.SettingsManager.PoliceSettings.SiegePercentage))
+            if(RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SiegePercentage))
             {
                 CanSiege = true;
             }
@@ -45,14 +45,14 @@ public class Kill : ComplexTask
                                                                         //  NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Ped.Pedestrian, 2);//offensinve
             if (Ped.IsInVehicle)
             {
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-                if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+                if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
                 {
-                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
                 }
             }
-            if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringKill)
             {
                 Ped.Pedestrian.BlockPermanentEvents = true;
             }
@@ -126,11 +126,11 @@ public class Kill : ComplexTask
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.FullContact, true);
                 NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
 
-                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAbility);
-                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverAggressiveness);
-                if (Settings.SettingsManager.PoliceSettings.DriverRacing > 0f)
+                NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+                NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+                if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
                 {
-                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceSettings.DriverRacing);
+                    NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
                 }
                 
             }
@@ -139,7 +139,7 @@ public class Kill : ComplexTask
                 NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 3);//very altert
                 //NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 100f);
 
-                if (Settings.SettingsManager.PoliceSettings.BlockEventsDuringKill)
+                if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringKill)
                 {
                     Ped.Pedestrian.BlockPermanentEvents = true;
                 }
@@ -217,7 +217,7 @@ public class Kill : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceSettings.SiegeAimDistance);
+                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceTaskSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceTaskSettings.SiegeAimDistance);
                 //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                 // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
                 NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);

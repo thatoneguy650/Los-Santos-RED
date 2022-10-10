@@ -2,6 +2,7 @@
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
+using System.Linq;
 
 //need some rethinking
 public class WeaponDropping
@@ -14,6 +15,10 @@ public class WeaponDropping
     private int WeaponCount = 1;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
+
+
+    private List<SuppressedPickup> Suppressed = new List<SuppressedPickup>();
+   // private uint GameTimeLastDroppedWeapon;
     public WeaponDropping(IWeaponDroppable currentPlayer, IWeapons weapons, ISettingsProvideable settings)
     {
         Player = currentPlayer;
@@ -36,6 +41,10 @@ public class WeaponDropping
         }
     }
     public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed && Player.CanPerformActivities;
+    public void Dispose()
+    {
+        Suppressed.ForEach(x => x.Unsuppress());
+    }
     public void DropWeapon()
     {
         if (CanDropWeapon)
@@ -46,10 +55,36 @@ public class WeaponDropping
                 DropWeaponAnimation();
                 if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
                 {
-                    NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
-                    WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
-                    DroppedWeapons.Add(new StoredWeapon((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), DroppedGunVariation, AmmoToDrop));
+
+
+                   // NativeFunction.Natives.SET_PED_AMMO(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0, false);
+                   
+                    
+                    
+                    NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, -1 * Game.LocalPlayer.Character.Inventory.EquippedWeapon.MagazineSize);
+
+
+
+
+                   // NativeFunction.CallByName<bool>("SET_PED_AMMO", Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, CurrentWeaponAmmo - AmmoToDrop);
+
+
+
+
+
+                    DroppedWeapons.Add(new StoredWeapon((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, Game.LocalPlayer.Character.GetOffsetPosition(new Vector3(0f, 0.5f, 0f)), Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), Game.LocalPlayer.Character.Inventory.EquippedWeapon.MagazineSize));
+
+
+                    DisableWeaponPickup((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+                 
+
                     NativeFunction.CallByName<bool>("SET_PED_DROPS_INVENTORY_WEAPON", Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, 0.0f, 0.5f, 0.0f, -1);
+                    //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Game.LocalPlayer.Character);
+
+
+
+
+
                     if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
                     {
                         NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)2725352035, true);
@@ -60,6 +95,23 @@ public class WeaponDropping
             }, "DropWeapon");
         }
     }
+    public void DisableWeaponPickup(uint weaponHash)
+    {
+        if (Settings.SettingsManager.PlayerOtherSettings.WeaponDroppingSupressPickups)
+        {
+            uint modelHash = NativeFunction.Natives.GET_WEAPONTYPE_MODEL<uint>((uint)weaponHash);
+            if (modelHash != 0 && !Suppressed.Any(x => x.ModelHash == modelHash))
+            {
+                SuppressedPickup sp = new SuppressedPickup(modelHash, Game.GameTime, Settings);
+                if (!Suppressed.Any(x => x.ModelHash == sp.ModelHash))
+                {
+                    Suppressed.Add(sp);
+                    sp.Supress();
+                    EntryPoint.WriteToConsole($"Started Supressing");
+                }
+            }
+        }
+    }
     public void Update()
     {
         WeaponCount = Game.LocalPlayer.Character.Inventory.Weapons.Count;
@@ -67,7 +119,18 @@ public class WeaponDropping
         {
             WeaponInventoryChanged(WeaponCount);
         }
-
+        if (Player.IsAliveAndFree && !Player.IsIncapacitated)
+        {
+            foreach (SuppressedPickup sp in Suppressed)
+            {
+                if (sp.ShouldUnsupress)
+                {
+                    sp.Unsuppress();
+                    EntryPoint.WriteToConsole($"Stopped Supressing {sp.ModelHash}");
+                }
+            }
+            Suppressed.RemoveAll(x => x.ShouldUnsupress);
+        }
     }
     private void DropWeaponAnimation()
     {
@@ -99,11 +162,38 @@ public class WeaponDropping
                     {
                         Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
                     }
-                    NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
+                    // NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
+
+                    NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo + 1);
+
+
                 }
             }
             DroppedWeapons.RemoveAll(x => PlayerWeapons.Contains(x.WeaponHash) && Game.LocalPlayer.Character.Position.DistanceTo2D(x.CoordinatedDropped) <= 2f);
         }
         PrevCountWeapons = weaponCount;
+    }
+
+    private class SuppressedPickup
+    {
+        private ISettingsProvideable Settings;
+        public SuppressedPickup(uint modelHash, uint gameTimeDropped, ISettingsProvideable settings)
+        {
+            ModelHash = modelHash;
+            GameTimeDropped = gameTimeDropped;
+            Settings = settings;
+        }
+
+        public uint GameTimeDropped { get; set; }
+        public uint ModelHash { get; set; }
+        public bool ShouldUnsupress => Game.GameTime - GameTimeDropped >= Settings.SettingsManager.PlayerOtherSettings.WeaponDroppingTimeToSuppress;
+        public void Unsuppress()
+        {
+            NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(ModelHash, true);
+        }
+        public void Supress()
+        {
+            NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(ModelHash, false);
+        }
     }
 }

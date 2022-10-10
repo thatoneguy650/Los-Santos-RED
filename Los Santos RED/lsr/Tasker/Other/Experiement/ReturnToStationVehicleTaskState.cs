@@ -63,7 +63,7 @@ class ReturnToStationVehicleTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-            if(Settings.SettingsManager.PoliceSettings.BlockEventsDuringIdle)
+            if(Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
             {
                 PedGeneral.Pedestrian.BlockPermanentEvents = true;
             }

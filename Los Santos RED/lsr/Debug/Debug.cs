@@ -1004,40 +1004,63 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-
-
         try
         {
-
-            Vector3 position = Game.LocalPlayer.Character.Position;//Game.LocalPlayer.Character.Position;
-            Vector3 outPos;
-            float outHeading;
+            string pickupName = "PICKUP_WEAPON_PISTOL";
 
 
-            if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 1, 3.0f, 0))
+
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+            foreach (Rage.Object obj in Objects)
             {
-                RoadNode rn = new RoadNode(outPos, outHeading);
-                rn.MajorRoadsOnly = true;
-                rn.GetRodeNodeProperties();
-                if (rn.HasRoad)
+                if (obj.Exists() && obj.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
                 {
-                    EntryPoint.WriteToConsole($"Road Node Properties {rn.Position} {rn.Heading} FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} WIDTH: {rn.Width} POS: {rn.RoadPosition}");
-                    GameFiber.StartNew(delegate
-                    {
-                        while (!Game.IsKeyDownRightNow(Keys.P))
-                        {
-                            Rage.Debug.DrawArrowDebug(outPos + new Vector3(0f, 0f, 0.5f), new Vector3(rn.Heading,0f,0f), Rotator.Zero, 1f, Color.White);
-                            Game.DisplayHelp($"Press P to Stop~n~FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} ~n~WIDTH: {rn.Width} POS: {rn.RoadPosition}");
-                            GameFiber.Yield();
-                        }
-                    }, "Run Debug Logic");
+
+                    bool isPickup = false;// NativeFunction.Natives.xFC481C641EBBD27D<bool>(obj);
+
+                    EntryPoint.WriteToConsole($"{obj.Model.Name} {obj.Model.Hash} isPickup {isPickup}");
+
+
+
                 }
-                else
+            }
+
+            //W_PI_PISTOL
+            NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(false);
+
+            //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, false);
+            GameFiber.StartNew(delegate
+            {
+                while (!Game.IsKeyDownRightNow(Keys.P))
                 {
-                    Game.DisplayHelp($"No Road FOund");
+                    NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, false);
+
+                    NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, false);
+                   // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, false);
+
+
+                    bool hasStuff = false;
+                    if(NativeFunction.Natives.DOES_PICKUP_OF_TYPE_EXIST_IN_AREA<bool>(4189041807,Game.LocalPlayer.Character.Position.X,Game.LocalPlayer.Character.Position.Y,Game.LocalPlayer.Character.Position.Z,10f))
+                    {
+                        hasStuff = true;
+                    }
+
+
+                    Game.DisplayHelp($"Press P to Stop Does Pickup Exist {hasStuff}");
+
+                    GameFiber.Yield();
                 }
 
-            }
+                NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, true);
+                NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(true);
+                //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, true);
+
+                NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, true);
+               // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, true);
+
+            }, "Run Debug Logic");
+
+
 
 
 
@@ -1045,7 +1068,82 @@ public class Debug
         catch (Exception ex)
         {
             Game.DisplayNotification("Shit CRASHES!!!");
+            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}");
         }
+
+        //PICKUP_WEAPON_PISTOL
+        //try
+        //{
+
+
+        //            GameFiber.StartNew(delegate
+        //            {
+        //                while (!Game.IsKeyDownRightNow(Keys.P))
+        //                {
+        //                    bool highway = NativeFunction.Natives.GET_IS_PLAYER_DRIVING_ON_HIGHWAY<bool>(Game.LocalPlayer);
+        //                    bool wreckless = NativeFunction.Natives.GET_IS_PLAYER_DRIVING_WRECKLESS<bool>(Game.LocalPlayer,2);
+        //                    //Game.DisplayHelp($"Press P to Stop~n~FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} ~n~WIDTH: {rn.Width} POS: {rn.RoadPosition}");
+
+
+        //                        Game.DisplayHelp($"Press P to Stop~n~Hi:{highway}~n~Wr:{wreckless}");
+
+        //                    GameFiber.Yield();
+        //                }
+        //            }, "Run Debug Logic");
+
+
+
+
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplayNotification("Shit CRASHES!!!");
+        //}
+
+
+
+
+        //try
+        //{
+
+        //    Vector3 position = Game.LocalPlayer.Character.Position;//Game.LocalPlayer.Character.Position;
+        //    Vector3 outPos;
+        //    float outHeading;
+
+
+        //    if (NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(position.X, position.Y, position.Z, out outPos, out outHeading, 1, 3.0f, 0))
+        //    {
+        //        RoadNode rn = new RoadNode(outPos, outHeading);
+        //        rn.MajorRoadsOnly = true;
+        //        rn.GetRodeNodeProperties();
+        //        if (rn.HasRoad)
+        //        {
+        //            EntryPoint.WriteToConsole($"Road Node Properties {rn.Position} {rn.Heading} FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} WIDTH: {rn.Width} POS: {rn.RoadPosition}");
+        //            GameFiber.StartNew(delegate
+        //            {
+        //                while (!Game.IsKeyDownRightNow(Keys.P))
+        //                {
+        //                    Rage.Debug.DrawArrowDebug(outPos + new Vector3(0f, 0f, 0.5f), new Vector3(rn.Heading,0f,0f), Rotator.Zero, 1f, Color.White);
+        //                    Game.DisplayHelp($"Press P to Stop~n~FW: {rn.ForwardLanes} BW: {rn.BackwardsLanes} ~n~WIDTH: {rn.Width} POS: {rn.RoadPosition}");
+        //                    GameFiber.Yield();
+        //                }
+        //            }, "Run Debug Logic");
+        //        }
+        //        else
+        //        {
+        //            Game.DisplayHelp($"No Road FOund");
+        //        }
+
+        //    }
+
+
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplayNotification("Shit CRASHES!!!");
+        //}
 
 
 
@@ -1081,11 +1179,11 @@ public class Debug
 
     private void DisableAllSpawning()
     {
-        Settings.SettingsManager.PoliceSettings.ManageDispatching = false;
+        Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
         Settings.SettingsManager.GangSettings.ManageDispatching = false;
         Settings.SettingsManager.EMSSettings.ManageDispatching = false;
 
-        Settings.SettingsManager.PoliceSettings.ManageTasking = false;
+        Settings.SettingsManager.PoliceTaskSettings.ManageTasking = false;
         Settings.SettingsManager.GangSettings.ManageTasking = false;
         Settings.SettingsManager.EMSSettings.ManageTasking = false;
 

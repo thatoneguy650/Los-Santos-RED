@@ -14,5 +14,7 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         bool IsAliveAndFree { get; }
         bool IsIncapacitated { get; }
+        bool IsWanted { get; }
+        int WantedLevel { get; }
     }
 }

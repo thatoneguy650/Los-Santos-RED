@@ -95,7 +95,7 @@ public class Roadblock
         {
             FillInBlockade();
         }
-        if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+        if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
         {
             CheckSpikeStrips();
         }
@@ -171,21 +171,21 @@ public class Roadblock
     }
     private void DeterminePositions()
     {
-        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_PedDistance);
-        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_PedDistance);
+        Vector3 LeftSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_PedDistance);
+        Vector3 RightSide = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_PedDistance);
         if (Player.Position.DistanceTo2D(RightSide) <= Player.Position.DistanceTo2D(LeftSide))
         {
             NodeOffset = RightSide;
-            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_BarrierDistance);
-            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.PoliceSettings.Roadblock_ConeDistance);
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_BarrierDistance);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading - 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_ConeDistance);
             PedPosition = LeftSide;
             PedHeading = NodeHeading + 180f;
         }
         else
         {
             NodeOffset = LeftSide;
-            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_BarrierDistance);
-            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.PoliceSettings.Roadblock_ConeDistance);
+            BarrierOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_BarrierDistance);
+            ConeOffset = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading + 90f, Settings.SettingsManager.RoadblockSettings.Roadblock_ConeDistance);
             PedPosition = RightSide;
             PedHeading = NodeHeading;
         }
@@ -225,7 +225,7 @@ public class Roadblock
                 AddVehicles(LocationCreate.Back, VehiclesToAddRear);
             }
             GameFiber.Yield();
-            if (Settings.SettingsManager.PoliceSettings.RoadblockSpikeStripsEnabled)
+            if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
             {
                 AddSpikeStrips(LocationCreate.Middle, 1);
                 GameFiber.Yield();
@@ -250,32 +250,32 @@ public class Roadblock
         {
             VehiclesToAddFront = RoadNode.TotalLanes / 2;
             VehiclesToAddRear = RoadNode.TotalLanes / 2;
-            BarriersToAddFront = (RoadNode.TotalLanes / 2) + 1;
-            BarriersToAddRear = (RoadNode.TotalLanes / 2) + 1;
+            BarriersToAddFront = (RoadNode.TotalLanes / 2) + 2;
+            BarriersToAddRear = (RoadNode.TotalLanes / 2) + 2;
             float Offset = (VehicleModel.Dimensions.Y / 2.0f) + 1.0f;
             if (RoadNode.TotalLanes == 6)
             {
                 VehiclesToAddFront = 2;
                 VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
                 VehiclesToAddRear = 3;
-                BarriersToAddFront = 3;
-                BarriersToAddRear = 3;
+                BarriersToAddFront = 4;
+                BarriersToAddRear = 4;
             }
             else if (RoadNode.TotalLanes == 4)
             {
                 VehiclesToAddFront = 1;
                 VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
                 VehiclesToAddRear = 2;
-                BarriersToAddFront = 2;
-                BarriersToAddRear = 2;
+                BarriersToAddFront = 3;
+                BarriersToAddRear = 3;
             }
             else if(RoadNode.TotalLanes == 2)
             {
                 VehiclesToAddFront = 0;
                 VehicleNodeCenter = NativeHelper.GetOffsetPosition(NodeCenter, NodeHeading, Offset);
                 VehiclesToAddRear = 1;
-                BarriersToAddFront = 1;
-                BarriersToAddRear = 1;
+                BarriersToAddFront = 2;
+                BarriersToAddRear = 2;
             }
 
 
@@ -344,6 +344,7 @@ public class Roadblock
             if (Created)
             {
                 CarsAdded++;
+                GameFiber.Yield();
             }
         } while (Created && CarsAdded <= toAdd);//5
         return Created;
@@ -398,7 +399,7 @@ public class Roadblock
         {
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
-            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
+            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.AttemptSpawn();
             foreach (PedExt person in pedSpawn.CreatedPeople)
@@ -449,6 +450,7 @@ public class Roadblock
                 CreateCone(NativeHelper.GetOffsetPosition(ConeOffset, NodeHeading, Offset), NodeHeading);
                 CreateBarrier(NativeHelper.GetOffsetPosition(BarrierOffset, NodeHeading, Offset), NodeHeading);
                 StripsAdded++;
+                GameFiber.Yield();
             }
         } while (Created && StripsAdded <= toAdd);
     }

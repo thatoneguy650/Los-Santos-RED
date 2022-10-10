@@ -679,6 +679,7 @@ namespace Mod
             MeleeManager.Dispose();
             Violations.Dispose();
             PlayerVoice.Dispose();
+            
 
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
 

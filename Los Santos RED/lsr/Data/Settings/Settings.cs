@@ -43,7 +43,7 @@ public class Settings : ISettingsProvideable
     public void SetRelease()
     {
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
-        SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
+        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
         SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
@@ -54,7 +54,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.SetDefault();
 
         SettingsManager.GangSettings.ShowSpawnedBlip = true;
-        SettingsManager.PoliceSettings.ShowSpawnedBlips = true;
+        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
         SettingsManager.EMSSettings.ShowSpawnedBlips = true;
     }
     public void SetDefault()
@@ -66,7 +66,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.SetDefault();
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
-        SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
+        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
         SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
@@ -117,7 +117,7 @@ public class Settings : ISettingsProvideable
 
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
-        SettingsManager.PoliceSettings.ShowSpawnedBlips = false;
+        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
         SettingsManager.UIGeneralSettings.ShowDebug = false;
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
@@ -236,8 +236,8 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime = true;
 
         SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted = 200f;
-        SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedSeen = 500f;
-        SettingsManager.PoliceSettings.MaxDistanceToSpawn_WantedUnseen = 300f;
+        SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen = 500f;
+        SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen = 300f;
 
 
         SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;

@@ -12,5 +12,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsVisiblyArmed { get; }
         bool IsBusted { get; }
         bool CanPerformActivities { get; }
+        bool IsAliveAndFree { get; }
+        bool IsIncapacitated { get; }
     }
 }

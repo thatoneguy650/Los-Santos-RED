@@ -74,21 +74,21 @@ namespace LosSantosRED.lsr
                         {
                             Cop.WeaponInventory.UpdateLoadout(Player);
                         }
-                        if (Settings.SettingsManager.PoliceSettings.AllowAmbientSpeech)
+                        if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                         {
                             Cop.UpdateSpeech(Player);
                         }
-                        if (Settings.SettingsManager.PoliceSettings.AllowChaseAssists)
+                        if (Settings.SettingsManager.PoliceTaskSettings.AllowChaseAssists)
                         {
-                            if (Settings.SettingsManager.PoliceSettings.AllowReducedCollisionPenaltyAssist)
+                            if (Settings.SettingsManager.PoliceTaskSettings.AllowReducedCollisionPenaltyAssist)
                             {
                                 Cop.AssistManager.UpdateCollision(Player.IsWanted);
                             }
-                            if (Settings.SettingsManager.PoliceSettings.AllowFrontVehicleClearAssist)
+                            if (Settings.SettingsManager.PoliceTaskSettings.AllowFrontVehicleClearAssist)
                             {
                                 Cop.AssistManager.ClearFront(Player.IsWanted);
                             }
-                            if (Settings.SettingsManager.PoliceSettings.AllowPowerAssist)
+                            if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
                             {
                                 Cop.AssistManager.PowerAssist(Player.IsWanted);
                             }
