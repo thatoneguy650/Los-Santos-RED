@@ -18,6 +18,7 @@ public static class EntryPoint
     private static System.Diagnostics.FileVersionInfo LSRInstalledVersionInfo;
     private static string PreStartMessage;
     private static DependencyChecker RageNativeUIChecker;
+    private static DependencyChecker NaudioChecker;
     public static int PersistentPedsCreated { get; set; } = 0;
     public static int PersistentPedsNonPersistent { get; set; } = 0;
     public static int PersistentPedsDeleted { get; set; } = 0;
@@ -29,7 +30,7 @@ public static class EntryPoint
     public static int FocusCellY { get; set; } = 0;
     public static Zone FocusZone { get; set; } = null;
     public static ModController ModController { get; set; }
-    public static List<Entity> SpawnedEntities = new List<Entity>();
+    public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
     public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
@@ -87,6 +88,17 @@ public static class EntryPoint
             PreStartMessage = $"{PreStartMessage} ~n~~n~{RageNativeUIChecker.GameMessage}~s~";
         }
         WriteToConsole($"{RageNativeUIChecker.LogMessage}",0);
+
+
+
+        NaudioChecker = new DependencyChecker("NAudio.dll", "1.9.0.0");
+        NaudioChecker.Verify();
+        if (!NaudioChecker.IsValid)
+        {
+            PreStartMessage = $"{PreStartMessage} ~n~~n~{NaudioChecker.GameMessage}~s~";
+        }
+        WriteToConsole($"{NaudioChecker.LogMessage}", 0);
+
     }
     public static void WriteToConsole(string Message) => WriteToConsole(Message, 5);
     public static void WriteToConsole(string Message, int level)

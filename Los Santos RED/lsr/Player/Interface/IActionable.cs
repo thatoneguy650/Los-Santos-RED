@@ -58,6 +58,7 @@ namespace LosSantosRED.lsr.Interface
         GroupManager GroupManager { get; }
         Scanner Scanner { get; }
         Licenses Licenses { get; }
+        Rage.Object CurrentLookedAtObject { get; }
 
         void Gesture();
         void Dance(DanceData selectedItem);

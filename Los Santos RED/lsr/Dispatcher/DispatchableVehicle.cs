@@ -1,8 +1,9 @@
 ﻿using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
-
+[Serializable]
 public class DispatchableVehicle
 {
     public DispatchableVehicle()

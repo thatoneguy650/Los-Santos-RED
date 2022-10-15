@@ -42,18 +42,16 @@ public class ModDataFileManager
 
     public ModDataFileManager()
     {
+
     }
 
     public void Setup()
     {
         SetupAlternateConfigs();
-
         Settings = new Settings();
         Settings.ReadConfig();
-
         PhysicalItems = new PhysicalItems();
         PhysicalItems.ReadConfig();
-
         GameFiber.Yield();
         ModItems = new ModItems();
         ModItems.ReadConfig();
@@ -65,7 +63,6 @@ public class ModDataFileManager
         Counties = new Counties();
         Counties.ReadConfig();
         GameFiber.Yield();
-
         Zones = new Zones();
         Zones.ReadConfig();
         GameFiber.Yield();
@@ -137,13 +134,8 @@ public class ModDataFileManager
         GameFiber.Yield();
         SpeechList = new Speeches();
         SpeechList.ReadConfig();
-
-
         Seats = new Seats();
         Seats.ReadConfig();
-
-
-
     }
     private void SetupAlternateConfigs()
     {
@@ -153,6 +145,7 @@ public class ModDataFileManager
         SetupFullExpandedJurisdiction();
         SetupLosSantos2008();
         SetupLibertyCity();
+        SetupSimple();
     }
     private void SetupAddonPlatesConfig()
     {
@@ -193,8 +186,6 @@ public class ModDataFileManager
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
     }
-
-
     private void SetupLosSantos2008()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
@@ -206,12 +197,19 @@ public class ModDataFileManager
         "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\readme.txt", Description);
     }
-
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        string Description = "";
+        string Description = "For use with liberty city (centered)";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
+    }
+    private void SetupSimple()
+    {
+        Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\Simple");
+        string Description = "Simple and basic jurisdiction config" + Environment.NewLine + Environment.NewLine +
+        "To use, copy all of the .xml files from the AlternateConfigs\\Simple folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
+        "";
+        File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\readme.txt", Description);
     }
 }
 

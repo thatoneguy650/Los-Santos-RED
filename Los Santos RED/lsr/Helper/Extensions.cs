@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -219,7 +220,16 @@ namespace ExtensionsMethods
         }
 
 
-
+        public static T DeepCopy<T>(T other)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+                formatter.Serialize(ms, other);
+                ms.Position = 0;
+                return (T)formatter.Deserialize(ms);
+            }
+        }
         public static bool PointIsInFrontOfPed(this Ped myPed, Vector3 position) => GetDotVectorResult(myPed, position) > 0;
         public static bool PointIsDirectlyInFrontOfPed(this Ped myPed, Vector3 position) => GetDotVectorResult(myPed, position) > 0.7f;
 

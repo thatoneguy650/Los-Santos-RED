@@ -34,6 +34,7 @@ namespace LosSantosRED.lsr.Player
         private float SeatOffset;
         private CameraControl CameraControl;
         private ICameraControllable CameraControllable;
+        private List<Rage.Object> CollisionObjects = new List<Rage.Object>();
 
         private bool UseMaleAnimations => Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale;
         public SittingActivity(IActionable player, ISettingsProvideable settings, bool findSittingProp, bool enterForward, ISeats seats, ICameraControllable cameraControllable) : base()
@@ -71,7 +72,9 @@ namespace LosSantosRED.lsr.Player
             Setup();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
+                EntryPoint.WriteToConsole("Sitting Activity Enter");
                 Enter();
+                EntryPoint.WriteToConsole("Sitting Activity Final");
             }, "Sitting");
         }
         private void Enter()
@@ -121,6 +124,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            EntryPoint.WriteToConsole("Sitting Activity Idle Start");
             StartNewBaseScene();
             float AnimationTime;
             while (Player.CanPerformActivities && !IsCancelled)
@@ -135,16 +139,14 @@ namespace LosSantosRED.lsr.Player
                     IsCancelled = true;
                 }
                 Player.WeaponEquipment.SetUnarmed();
-                if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
-                {
-                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Player.Character, PossibleCollisionTable, true);
-                }
                 GameFiber.Yield();
             }
+            EntryPoint.WriteToConsole("Sitting Activity Idle End");
             Exit();
         }
         private void Exit()
         {
+            EntryPoint.WriteToConsole("Sitting Activity Exit Start");
             Player.PauseCurrentActivity();
             if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
@@ -152,13 +154,6 @@ namespace LosSantosRED.lsr.Player
                 Player.Character.Position = StoredPlayerPosition;
                 Player.Character.Heading = StoredPlayerHeading;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-
-                //if(Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting)
-                //{
-                //    CameraControl.Dispose();
-                //}
-
-
                 Game.FadeScreenIn(500, true);
                 Player.IsSitting = false;         
             }
@@ -166,11 +161,8 @@ namespace LosSantosRED.lsr.Player
             {
                 if (Settings.SettingsManager.ActivitySettings.UseAltCameraWhenSitting)
                 {
-                    CameraControl.TransitionToGameplayCam(false);
+                    CameraControl?.TransitionToGameplayCam(false);
                 }
-
-
-
                 if (IsActivelySitting)
                 {
                     PlayingDict = Data.AnimExitDictionary;
@@ -197,17 +189,22 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-
-
-
-
                 Player.IsSitting = false;
                 GameFiber.Sleep(5000);
-                if (PossibleCollisionTable.Exists() && ClosestSittableEntity.Exists() && PossibleCollisionTable.Handle != ClosestSittableEntity.Handle)
+            }
+
+            foreach(Rage.Object obj in CollisionObjects)
+            {
+                if (obj.Exists())
                 {
-                    PossibleCollisionTable.IsPositionFrozen = false;
+                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(obj, obj, false);
+                    //obj.CollisionIgnoredEntity = null;
+                    //obj.IsCollisionEnabled = true;
+                    //obj.NeedsCollision = true;
+                    EntryPoint.WriteToConsole("RESET COLLISION FOR ONE PROP, SITTING");
                 }
             }
+            EntryPoint.WriteToConsole("Sitting Activity Exit End");
         }
         private void SitDown()
         {
@@ -237,8 +234,25 @@ namespace LosSantosRED.lsr.Player
         }
         private bool GetSittableProp()
         {
-            List<Rage.Object> Objects = World.GetAllObjects().ToList();
             float ClosestDistance = 999f;
+            if (Player.CurrentLookedAtObject.Exists())
+            {
+                string modelName = Player.CurrentLookedAtObject.Model.Name.ToLower();
+                SeatModel seatModel = Seats.GetSeatModel(Player.CurrentLookedAtObject);
+                if (seatModel != null || NativeHelper.IsSittableModel(modelName))
+                {
+                    float DistanceToObject = Player.CurrentLookedAtObject.DistanceTo(Game.LocalPlayer.Character.Position);
+                    if (DistanceToObject <= 5f && DistanceToObject >= 0.5f && DistanceToObject <= ClosestDistance)//
+                    {
+                        ClosestSittableEntity = Player.CurrentLookedAtObject;
+                        ClosestDistance = DistanceToObject;
+                        return ClosestSittableEntity.Exists();
+                    }
+                }
+            }
+
+
+            List<Rage.Object> Objects = World.GetAllObjects().ToList();
             foreach (Rage.Object obj in Objects)
             {
                 if (obj.Exists())
@@ -376,7 +390,7 @@ namespace LosSantosRED.lsr.Player
                 //                }
                 bool IsFacingDirection = false;
                 bool IsCloseEnough = false;
-                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, SeatEntryHeading, 0.1f);
+                NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Game.LocalPlayer.Character, SeatEntryPosition.X, SeatEntryPosition.Y, SeatEntryPosition.Z, 1.0f, -1, SeatEntryHeading, Settings.SettingsManager.ActivitySettings.SittingSlideDistance);
                 uint SeatHash = 0;
                 string SeatName = "";
                 if(ClosestSittableEntity.Exists())
@@ -385,6 +399,11 @@ namespace LosSantosRED.lsr.Player
                     SeatName = ClosestSittableEntity.Model.Name;
                 }
                 EntryPoint.WriteToConsole($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName}");
+                uint GameTimeGotClose = 0;
+
+
+                SetCollisionDisabled();
+
                 while (!IsCancelled)
                 {
                     float SeatDistance = Game.LocalPlayer.Character.DistanceTo2D(SeatEntryPosition);
@@ -399,6 +418,19 @@ namespace LosSantosRED.lsr.Player
                     {
                         IsCancelled = true;
                     }
+                    if(SeatDistance <= Settings.SettingsManager.ActivitySettings.ForceSitDistance && GameTimeGotClose == 0)
+                    {
+                        GameTimeGotClose = Game.GameTime;
+                    }
+                    if(GameTimeGotClose != 0 && Game.GameTime - GameTimeGotClose >= Settings.SettingsManager.ActivitySettings.ForceSitTimeOut && !IsCloseEnough && Settings.SettingsManager.ActivitySettings.ForceSitWhenClose)
+                    {
+                        Game.LocalPlayer.Character.Position = SeatEntryPosition;
+                        Game.LocalPlayer.Character.Heading = SeatEntryHeading;
+                    }
+
+
+                    
+
 
 #if DEBUG
                     Game.DisplaySubtitle($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName} SeatDistance {SeatDistance} HeadingDifference {HeadingDifference} ");
@@ -418,6 +450,32 @@ namespace LosSantosRED.lsr.Player
                 }
             }
         }
+
+        private void SetCollisionDisabled()
+        {
+           CollisionObjects = new List<Rage.Object>();
+            List<Rage.Object> Objects = World.GetAllObjects().ToList();
+            foreach (Rage.Object obj in Objects)
+            {
+                if (obj.Exists() && ClosestSittableEntity.Exists())
+                {
+                    string modelName = obj.Model.Name.ToLower();
+                    uint hash = obj.Model.Hash;
+                    if (obj.Handle != ClosestSittableEntity.Handle)
+                    {
+                        float DistanceToObject = obj.DistanceTo(SeatEntryPosition);
+                        if (DistanceToObject <= 3f)//
+                        {
+                            CollisionObjects.Add(obj);
+                            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(obj, Player.Character, true);
+
+                            //obj.CollisionIgnoredEntity = Game.LocalPlayer.Character;
+                        }
+                    }
+                }
+            }
+        }
+
         private void StartNewIdleScene()
         {
             if (RandomItems.RandomPercent(50))

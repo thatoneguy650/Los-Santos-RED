@@ -1,9 +1,11 @@
 ﻿using ExtensionsMethods;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
+[Serializable]
 public class DispatchablePerson
 {
     public string ModelName { get; set; }

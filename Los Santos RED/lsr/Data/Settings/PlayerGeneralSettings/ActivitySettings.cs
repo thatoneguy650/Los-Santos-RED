@@ -34,6 +34,10 @@ public class ActivitySettings : ISettingsDefaultable
 
 
     public bool UseAltCameraWhenSitting { get; set; }
+    public bool ForceSitWhenClose { get; set; }
+    public uint ForceSitTimeOut { get; set; }
+    public float ForceSitDistance { get; set; }
+    public float SittingSlideDistance { get; set; }
 
     public ActivitySettings()
     {
@@ -59,5 +63,10 @@ public class ActivitySettings : ISettingsDefaultable
 
 
         UseAltCameraWhenSitting = false;
+
+        ForceSitWhenClose = true;
+        ForceSitTimeOut = 3000;
+        ForceSitDistance = 0.7f;
+        SittingSlideDistance = 0.5f;//0.1f
     }
 }

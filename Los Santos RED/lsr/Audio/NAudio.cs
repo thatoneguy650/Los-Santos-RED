@@ -97,21 +97,35 @@ public class NAudioPlayer : IAudioPlayable
     }
     public void Abort()
     {
-        if (IsAudioPlaying)
+        try
+        { 
+            if (IsAudioPlaying)
+            {
+                outputDevice.Stop();
+            }
+        }
+        catch (Exception e)
         {
-            outputDevice.Stop();
+            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message, 0);
         }
     }
     private void OnPlaybackStopped(object sender, StoppedEventArgs args)
     {
-        outputDevice.Dispose();
-        outputDevice = null;
-        if (audioFile != null)
-        {
-            audioFile.Dispose();
+        try
+        { 
+            outputDevice.Dispose();
+            outputDevice = null;
+            if (audioFile != null)
+            {
+                audioFile.Dispose();
+            }
+            audioFile = null;
+            IsPlayingLowPriority = false;
         }
-        audioFile = null;
-        IsPlayingLowPriority = false;
+        catch (Exception e)
+        {
+            EntryPoint.WriteToConsole("NAudio: " + e.StackTrace + e.Message, 0);
+        }
     }
 
     public void Play(string fileName, int volume, bool isScannerPlaying, bool applyFilter)
