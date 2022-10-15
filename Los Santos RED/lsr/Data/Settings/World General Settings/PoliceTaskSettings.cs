@@ -113,7 +113,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowChaseAssists = true;
         AllowFrontVehicleClearAssist = true;
         AllowReducedCollisionPenaltyAssist = true;
-        AllowPowerAssist = false;
+        AllowPowerAssist = true;
 
         AllowDriveBySightDuringChase = true;
         DriveBySightDuringChaseDistance = 150f;
@@ -166,9 +166,9 @@ public class PoliceTaskSettings : ISettingsDefaultable
         BlockEventsDuringIdle = true;
         BlockEventsDuringAIChase = true;
 
-        DriverAggressiveness = 0.5f;
+        DriverAggressiveness = 0.75f;
         DriverAbility = 1.0f;
-        DriverRacing = 1.0f;
+        DriverRacing = 0.0f;
 
         SetSteerAround = false;
     }

@@ -40,15 +40,9 @@ public class Settings : ISettingsProvideable
     {
         Serialization.SerializeParam(SettingsManager == null ? new SettingsManager() : SettingsManager, ConfigFileName);
     }
-    public void SetRelease()
-    {
-        SettingsManager.GangSettings.ShowSpawnedBlip = false;
-        SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
-        SettingsManager.UIGeneralSettings.ShowDebug = false;
-        SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
-        SettingsManager.EMSSettings.ShowSpawnedBlips = false;
-        SettingsManager.FireSettings.ShowSpawnedBlips = false;
-    }
+
+
+
     public void SetEasy()
     {
         SettingsManager.SetDefault();

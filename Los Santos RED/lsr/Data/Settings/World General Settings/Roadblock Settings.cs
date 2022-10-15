@@ -22,6 +22,17 @@ public class RoadblockSettings : ISettingsDefaultable
     public int TimeBetweenRoadblock_Seen_Min { get; set; }
     [Description("Decreased time (in ms) scalar between roadblocks as wanted level increases. Formula: ((6 - WantedLevel) * TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + TimeBetweenRoadblock_Seen_Min")]
     public int TimeBetweenRoadblock_Seen_AdditionalTimeScaler { get; set; }
+
+
+
+    public bool RemoveGeneratedVehiclesAroundRoadblock { get; set; }
+
+    public float RemoveGeneratedVehiclesAroundRoadblockDistance { get; set; }
+
+
+    public bool DisableVehicleGenerationAroundRoadblock { get; set; }
+    public float DisableVehicleGenerationAroundRoadblockDistance { get; set; }
+
     public RoadblockSettings()
     {
         SetDefault();
@@ -48,5 +59,12 @@ public class RoadblockSettings : ISettingsDefaultable
         TimeBetweenRoadblock_Unseen = 999999;
         TimeBetweenRoadblock_Seen_Min = 90000;
         TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 25000;
+
+
+        RemoveGeneratedVehiclesAroundRoadblock = true;
+        RemoveGeneratedVehiclesAroundRoadblockDistance = 15f;
+
+        DisableVehicleGenerationAroundRoadblock = true;
+        DisableVehicleGenerationAroundRoadblockDistance = 15f;
     }
 }

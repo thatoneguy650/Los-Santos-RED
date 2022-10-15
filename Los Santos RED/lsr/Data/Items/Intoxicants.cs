@@ -37,6 +37,10 @@ public class Intoxicants : IIntoxicants
             DefaultConfig();
         }
     }
+    public void SerializeAllSettings()
+    {
+        Serialization.SerializeParams(IntoxicantList == null ? new List<Intoxicant>() : IntoxicantList, ConfigFileName);
+    }
     private void DefaultConfig()
     {
         IntoxicantList = new List<Intoxicant>

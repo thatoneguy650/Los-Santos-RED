@@ -44,6 +44,10 @@ public class Intoxicant//THIS IS THE OBJECT, THX, ALOCOHL, ETC
     public float EffectIntoxicationLimit { get; set; } = 0.25f;
     public bool ContinuesWithoutCurrentUse { get; set; } = false;
     public IntoxicationEffect Effects { get; set; }
+    public override string ToString()
+    {
+        return Name;
+    }
 
 }
 

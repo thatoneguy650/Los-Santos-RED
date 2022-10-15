@@ -513,20 +513,21 @@ public class DebugMenu : Menu
 
 
 
-        UIMenuItem GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
-        GoToReleaseSettings.Activated += (menu, item) =>
-        {
-            Settings.SetRelease();
-            menu.Visible = false;
-        };
-        OtherItemsMenu.AddItem(GoToReleaseSettings);
-        UIMenuItem GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
-        GoToHardCoreSettings.Activated += (menu, item) =>
-        {
-            Settings.SetHard();
-            menu.Visible = false;
-        };
-        OtherItemsMenu.AddItem(GoToHardCoreSettings);
+        //UIMenuItem GoToReleaseSettings = new UIMenuItem("Quick Set Release Settings", "Set some release settings quickly.");
+        //GoToReleaseSettings.Activated += (menu, item) =>
+        //{
+        //    Settings.SetRelease();
+
+        //    menu.Visible = false;
+        //};
+        ////OtherItemsMenu.AddItem(GoToReleaseSettings);
+        //UIMenuItem GoToHardCoreSettings = new UIMenuItem("Quick Set Hardcore Settings", "Set the very difficult settings.");
+        //GoToHardCoreSettings.Activated += (menu, item) =>
+        //{
+        //    Settings.SetHard();
+        //    menu.Visible = false;
+        //};
+        ////OtherItemsMenu.AddItem(GoToHardCoreSettings);
 
 
         UIMenuItem PrintEntities = new UIMenuItem("Print Persistent Entities", "Prints a list of all persistent and spawned entities to the log.");

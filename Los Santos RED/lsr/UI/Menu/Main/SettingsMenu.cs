@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
@@ -22,12 +23,15 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private UIMenuItem MySettings;
 
     private ISettingsProvideable SettingsProvider;
-
-    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable)
+    private ICrimes Crimes;
+    private IIntoxicants Intoxicants;
+    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable, ICrimes crimes, IIntoxicants intoxicants)
     {
         MenuPool = menuPool;
         ParentMenu = parentMenu;
         SettingsProvider = settingsProvideable;
+        Crimes = crimes;
+        Intoxicants = intoxicants;
     }
     public void Setup()
     {
@@ -36,13 +40,21 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Art;
         SettingsUIMenu.SetBannerType(EntryPoint.LSRedColor);
         CreateSettingsMenu();
+        SettingsUIMenu.OnMenuOpen += SettingsUIMenu_OnMenuOpen;
     }
+
+    private void SettingsUIMenu_OnMenuOpen(UIMenu sender)
+    {
+        Update();
+    }
+
     public override void Hide()
     {
         SettingsUIMenu.Visible = false;
     }
     public override void Show()
     {
+        Update();
         SettingsUIMenu.Visible = true;
     }
     public override void Toggle()
@@ -160,28 +172,39 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 }
             }
         }
+
+
+        //CreateCrimesSubMenu();
+        CreateItemSubMenu("Change Crimes SubMenu", Crimes.CrimeList);
+        //CreateItemSubMenu("Change Intoxicants SubMenu", Intoxicants.Items);
+
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem == SaveSettingsToFile)
         {
             SettingsProvider.SerializeAllSettings();
+            Crimes.SerializeAllSettings();
         }
         else if (selectedItem == EasySettings)
         {
             SettingsProvider.SetEasy();
+            Crimes.SetEasy();
         }
         else if (selectedItem == DefaultSettings)
         {
             SettingsProvider.SetDefault();
+            Crimes.SetDefault();
         }
         else if (selectedItem == HardSettings)
         {
             SettingsProvider.SetHard();
+            Crimes.SetHard();
         }
         else if (selectedItem == MySettings)
         {
             SettingsProvider.SetPreferred();
+            Crimes.SetPreferred();
         }
         SettingsUIMenu.Visible = false;
     }
@@ -298,4 +321,87 @@ public class SettingsMenu : Menu//needs lots of cleanup still
         }
         MenuPool.ProcessMenus();
     }
+
+    private void CreateCrimesSubMenu()
+    {
+        UIMenu crimesSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Crimes SubMenu");
+        crimesSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        crimesSubMenu.Width = 0.5f;
+        foreach (Crime crime in Crimes.CrimeList)
+        {
+            UIMenu crimeMenu = MenuPool.AddSubMenu(crimesSubMenu, crime.Name);
+            crimeMenu.SetBannerType(EntryPoint.LSRedColor);
+            crimeMenu.Width = 0.5f;
+            PropertyInfo[] properties = crime.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                string strippedPropertyName = property.Name;
+                CategoryAttribute propertyCategory = (CategoryAttribute)property.GetCustomAttribute(typeof(CategoryAttribute), true);
+                DescriptionAttribute propertyNameAlt = (DescriptionAttribute)property.GetCustomAttribute(typeof(DescriptionAttribute), true);
+                if (propertyNameAlt != null)
+                {
+                    strippedPropertyName = propertyNameAlt.Description;
+                }
+                string Description = property.Name;
+                Description = Description.Substring(0, Math.Min(800, Description.Length));
+                if (property.PropertyType == typeof(bool))
+                {
+                    UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(property.Name, (bool)property.GetValue(crime), Description);
+                    MySetting.CheckboxEvent += (sender, Checked) =>
+                    {
+                        property.SetValue(crime, Checked);
+                        //crimeMenu.Visible = false;
+                    };
+                    crimeMenu.AddItem(MySetting);
+                }
+                else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(string) || property.PropertyType == typeof(float) || property.PropertyType == typeof(uint) || property.PropertyType == typeof(Keys))
+                {
+                    UIMenuItem MySetting = new UIMenuItem($"{property.Name}: {property.GetValue(crime)}", Description);
+                    MySetting.Activated += (sender, selectedItem) =>
+                    {
+                        UpdateSettings(sender, selectedItem, 0, crime.GetType().GetProperties(), crime);
+                        //sender.Visible = false;
+                    };
+                    crimeMenu.AddItem(MySetting);
+                }
+            }
+        }
+    }
+    private void CreateItemSubMenu<T>(string name, List<T> list)
+    {
+        UIMenu genericSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, name);
+        genericSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        genericSubMenu.Width = 0.5f;
+        foreach (T genericItem in list)
+        {
+            UIMenu genericMenu = MenuPool.AddSubMenu(genericSubMenu, genericItem.ToString());
+            genericMenu.SetBannerType(EntryPoint.LSRedColor);
+            genericMenu.Width = 0.5f;
+            PropertyInfo[] properties = genericItem.GetType().GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                string Description = property.Name;
+                Description = Description.Substring(0, Math.Min(800, Description.Length));
+                if (property.PropertyType == typeof(bool))
+                {
+                    UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(property.Name, (bool)property.GetValue(genericItem), Description);
+                    MySetting.CheckboxEvent += (sender, Checked) =>
+                    {
+                        property.SetValue(genericItem, Checked);
+                    };
+                    genericMenu.AddItem(MySetting);
+                }
+                else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(string) || property.PropertyType == typeof(float) || property.PropertyType == typeof(uint) || property.PropertyType == typeof(Keys))
+                {
+                    UIMenuItem MySetting = new UIMenuItem($"{property.Name}: {property.GetValue(genericItem)}", Description);
+                    MySetting.Activated += (sender, selectedItem) =>
+                    {
+                        UpdateSettings(sender, selectedItem, 0, genericItem.GetType().GetProperties(), genericItem);
+                    };
+                    genericMenu.AddItem(MySetting);
+                }
+            }
+        }
+    }
+
 }

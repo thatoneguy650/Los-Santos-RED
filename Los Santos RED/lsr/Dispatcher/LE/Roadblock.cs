@@ -38,8 +38,8 @@ public class Roadblock
     private float InitialHeading;
     private bool AllowAnySpawn;
     private RoadNode RoadNode;
-    private dynamic roadblockSpeedZoneID1;
-    private dynamic roadblockSpeedZoneID2;
+    private int roadblockSpeedZoneID1;
+    private int roadblockSpeedZoneID2;
 
 
     private int VehiclesToAddFront = 0;
@@ -78,21 +78,17 @@ public class Roadblock
     {
         IsDisposed = true;
         RemoveItems();
-
-        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID1);
-        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID2);
-
+        UnSetSpeedZone();
+        UnSetRoadGenerators();
     }
     public void SpawnRoadblock()
     {
-
         AnimationDictionary.RequestAnimationDictionay("p_ld_stinger_s");
-
-
         VehicleModel.LoadAndWait();
         SpikeStripModel.LoadAndWait();
         if (GetPosition())
         {
+            ClearArea();
             FillInBlockade();
         }
         if (Settings.SettingsManager.RoadblockSettings.RoadblockSpikeStripsEnabled)
@@ -100,24 +96,28 @@ public class Roadblock
             CheckSpikeStrips();
         }
     }
+
+    private void ClearArea()
+    {
+        if (Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblock)
+        {
+            NativeFunction.Natives.CLEAR_AREA(CenterPosition.X, CenterPosition.Y, CenterPosition.Z, Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance, true, false, false, false);
+            NativeFunction.Natives.CLEAR_AREA(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance, true, false, false, false);
+        }
+    }
+
     private void CheckSpikeStrips()
     {
         GameFiber.StartNew(delegate
         {
             try
             {
-
-
-                roadblockSpeedZoneID1 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(CenterPosition.X, CenterPosition.Y, CenterPosition.Z, 15f, 0f, false);
-                roadblockSpeedZoneID2 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, 15f, 0f, false);
-
-
-                
-
-                GameFiber.Yield();
                 foreach (Rage.Object obj in CreatedProps)
                 {
-                    NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                    if (obj.Exists())
+                    {
+                        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                    }
                 }
                 float DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
                 while (!IsDisposed && DistanceToRoadblock >= 125f)
@@ -125,7 +125,11 @@ public class Roadblock
                     DistanceToRoadblock = Player.Position.DistanceTo2D(CenterPosition);
                     foreach (Rage.Object obj in CreatedProps)
                     {
-                        NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                        if (obj.Exists())
+                        {
+                            NativeFunction.Natives.PLACE_OBJECT_ON_GROUND_PROPERLY(obj);
+                        }
+                        GameFiber.Yield();
                     }
                     GameFiber.Sleep(500);
                 }
@@ -159,6 +163,48 @@ public class Roadblock
             }
         }, "SpikeStripTireChecker2");
     }
+
+    private void SetSpeedZone()
+    {
+        roadblockSpeedZoneID1 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(CenterPosition.X, CenterPosition.Y, CenterPosition.Z, 15f, 0f, false);
+        roadblockSpeedZoneID2 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, 15f, 0f, false);
+    }
+    private void UnSetSpeedZone()
+    {
+        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID1);
+        NativeFunction.Natives.REMOVE_ROAD_NODE_SPEED_ZONE(roadblockSpeedZoneID2);
+    }
+    private void SetRoadGenerators()
+    {
+        
+        if (Settings.SettingsManager.RoadblockSettings.DisableVehicleGenerationAroundRoadblock)
+        {
+            float extendedDistance = Settings.SettingsManager.RoadblockSettings.DisableVehicleGenerationAroundRoadblockDistance;
+            NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(CenterPosition.X - extendedDistance, CenterPosition.Y - extendedDistance, CenterPosition.Z - extendedDistance, CenterPosition.X + extendedDistance, CenterPosition.Y + extendedDistance, CenterPosition.Z + extendedDistance, false, false);
+            NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, false, false);
+        }
+        if (Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblock)
+        {
+
+            
+
+            float extendedDistance = Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance;
+            NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(CenterPosition.X - extendedDistance, CenterPosition.Y - extendedDistance, CenterPosition.Z - extendedDistance, CenterPosition.X + extendedDistance, CenterPosition.Y + extendedDistance, CenterPosition.Z + extendedDistance, false);
+         
+            NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, false);
+            
+        }
+    }
+    private void UnSetRoadGenerators()
+    {
+        float extendedDistance = 15f;
+        if (Settings.SettingsManager.RoadblockSettings.DisableVehicleGenerationAroundRoadblock)
+        {
+            NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(CenterPosition.X - extendedDistance, CenterPosition.Y - extendedDistance, CenterPosition.Z - extendedDistance, CenterPosition.X + extendedDistance, CenterPosition.Y + extendedDistance, CenterPosition.Z + extendedDistance, true, false);
+            NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, true, false);
+        }
+    }
+
     private void CheckTireForCollision(Rage.VehicleWheel wheel)
     {
         if (wheel.TireHealth != 0)
@@ -200,20 +246,13 @@ public class Roadblock
         {
             NodeCenter = RoadNode.RoadPosition;
         }
-
         DetermineVehiclesToAdd();
-
-
         DeterminePositions();
         GameFiber.Yield();
         if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?
-        {
-
-            
+        {    
             EntryPoint.WriteToConsole($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
             EntryPoint.WriteToConsole($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
-
-
             GameFiber.Yield();
             if (VehiclesToAddFront > 0)
             {
@@ -240,9 +279,12 @@ public class Roadblock
                 }
                 GameFiber.Yield();
             }
+            SetSpeedZone();
+            GameFiber.Yield();
+            SetRoadGenerators();
+            GameFiber.Yield();
         }
     }
-
     private void DetermineVehiclesToAdd()
     {
         VehicleNodeCenter = NodeCenter;
@@ -324,7 +366,6 @@ public class Roadblock
             BarriersToAddRear = 0;
         }
     }
-
     private bool AddVehicles(LocationCreate locationCreate, int toAdd)
     {
         int CarsAdded = 1;
