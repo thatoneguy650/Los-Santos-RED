@@ -123,6 +123,7 @@
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
+    <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
@@ -172,7 +173,7 @@
     <Compile Include="lsr\Data\Settings\World General Settings\PoliceTaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\Roadblock Settings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
-    <Compile Include="lsr\Data\Settings\World General Settings\WeatherReportingSettings.cs" />
+    <Compile Include="lsr\Data\Settings\World General Settings\WeatherSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
     <Compile Include="lsr\Data\Weapons\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
+    <Compile Include="lsr\Data\Weather\WeatherForecasts.cs" />
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
@@ -612,6 +614,8 @@
     <Compile Include="lsr\Player\Activity\CarBreakIn.cs" />
     <Compile Include="lsr\Vehicle\RadioStation.cs" />
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
+    <Compile Include="lsr\Weather\eWeatherTypeHash.cs" />
+    <Compile Include="lsr\Weather\WeatherForecast.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
     <Compile Include="lsr\Time\ITimeControllable.cs" />
     <Compile Include="lsr\World\Interface\IEntityLoggable.cs" />
@@ -705,6 +709,7 @@
     <Compile Include="lsr\Vehicle\Radio.cs" />
     <Compile Include="lsr\Vehicle\FuelTank.cs" />
     <Compile Include="lsr\Vehicle\Indicators.cs" />
+    <Compile Include="lsr\Weather\WeatherManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">

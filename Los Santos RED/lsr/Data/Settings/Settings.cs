@@ -99,8 +99,8 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.VehicleSettings.AutoTuneRadioOnEntry = false;
         SettingsManager.VehicleSettings.KeepRadioAutoTuned = false;
-        SettingsManager.WeatherReportingSettings.ReportWeather = false;
-        SettingsManager.WeatherReportingSettings.ShowWeatherNotifications = false;
+        SettingsManager.WeatherSettings.ReportWeather = false;
+        SettingsManager.WeatherSettings.ShowWeatherNotifications = false;
 
         SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
 

@@ -65,8 +65,9 @@ public class Debug
     private bool IsDisplaying;
     private bool isClearingPeds;
     private MusicGuru.MusicPlayerOld MusicPlayerOld;
+    private ModDataFileManager ModDataFileManager;
 
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -89,7 +90,7 @@ public class Debug
         Input = input;
         ShopMenus = shopMenus;
 
-        
+        ModDataFileManager = modDataFileManager;
 
     }
     public void Dispose()
@@ -937,7 +938,15 @@ public class Debug
     }
     private void DebugNumpad6()
     {
-        Player.Scanner.DebugPlayDispatch();
+        DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
+        WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
+        if (closestForecast != null)
+        {
+            Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
+        }
+
+
+        //Player.Scanner.DebugPlayDispatch();
 
         //SpawnWithQuat();
         //HighlightProp();

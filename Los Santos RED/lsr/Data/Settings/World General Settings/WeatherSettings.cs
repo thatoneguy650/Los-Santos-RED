@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class WeatherReportingSettings : ISettingsDefaultable
+public class WeatherSettings : ISettingsDefaultable
 {
     [Description("Allows displaying a notification and or audio when the weather changes.")]
     public bool ReportWeather { get; set; }
@@ -26,7 +26,11 @@ public class WeatherReportingSettings : ISettingsDefaultable
     public float ReportWindyWeather_MinimumSpeed { get; set; }
     [Description("Show a notification when the weather changes.")]
     public bool ShowWeatherNotifications { get; set; }
-    public WeatherReportingSettings()
+    public bool ChangeWeatherByForecast { get; set; }
+    public float StartChangeWeatherPrcentage { get; set; }
+    public float ChangeWeatherPrcentage { get; set; }
+
+    public WeatherSettings()
     {
         SetDefault();
     }
@@ -41,6 +45,11 @@ public class WeatherReportingSettings : ISettingsDefaultable
         ReportWindyWeather_MinimumTimeBetweenAudioReports = 180000;
         ReportWindyWeather_MinimumSpeed = 11.5f;
         ShowWeatherNotifications = true;
+        ChangeWeatherByForecast = false;
+        StartChangeWeatherPrcentage = 0.01f;
+        ChangeWeatherPrcentage = 0.03f;
+
+
     }
 }
 

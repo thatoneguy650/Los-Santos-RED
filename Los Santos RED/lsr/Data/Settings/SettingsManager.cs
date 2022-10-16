@@ -121,8 +121,8 @@ public class SettingsManager
     [Description("Time Settings")]
     public TimeSettings TimeSettings { get; set; } = new TimeSettings();
     [Category("World")]
-    [Description("Weather Reporting Settings")]
-    public WeatherReportingSettings WeatherReportingSettings { get; set; } = new WeatherReportingSettings();
+    [Description("Weather Settings")]
+    public WeatherSettings WeatherSettings { get; set; } = new WeatherSettings();
 
 
 
@@ -150,7 +150,7 @@ public class SettingsManager
         AllDefaultableSettings = new List<ISettingsDefaultable>()
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
-            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherReportingSettings, VanillaSettings,DebugSettings,
+            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings
 
         };

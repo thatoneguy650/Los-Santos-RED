@@ -13,6 +13,7 @@ public class TimeSettings : ISettingsDefaultable
     public int FastForwardMultiplier { get; set; }
     [Description("Fast forward speed interval. A value of 10 means each 10 ms the FastForwardMultiplier will be added to the current time.")]
     public int FastForwardInterval { get; set; }
+    public bool SetRealTime { get; set; }
 
     public TimeSettings()
     {
@@ -23,6 +24,12 @@ public class TimeSettings : ISettingsDefaultable
         ScaleTime = true;
         FastForwardMultiplier = 25;//300
         FastForwardInterval = 10;
+        SetRealTime = false;
+
+#if DEBUG
+        ScaleTime = false;
+        SetRealTime = true;
+#endif
     }
 
 }

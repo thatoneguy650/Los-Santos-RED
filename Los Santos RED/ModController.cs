@@ -30,6 +30,8 @@ namespace LosSantosRED.lsr
         private Mod.World World;
         
         private ModDataFileManager ModDataFileManager;
+        private WeatherManager WeatherManager;
+
         public ModController()
         {
             ModDataFileManager = new ModDataFileManager();
@@ -103,9 +105,15 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Weather = new Weather(NAudioPlayer, ModDataFileManager.Settings, Time, Player);
             Weather.Setup();
+
+            GameFiber.Yield();
+            WeatherManager = new WeatherManager(ModDataFileManager.Settings, Time, ModDataFileManager.WeatherForecasts);
+            WeatherManager.Setup();
+
+
             GameFiber.Yield();
             Debug = new Debug(ModDataFileManager.PlateTypes, World, Player, ModDataFileManager.Streets, Dispatcher, ModDataFileManager.Zones, ModDataFileManager.Crimes, this, ModDataFileManager.Settings, Tasker, Time, ModDataFileManager.Agencies, ModDataFileManager.Weapons, ModDataFileManager.ModItems, Weather, 
-                ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus);
+                ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus, ModDataFileManager);
             Debug.Setup();
             GameFiber.Yield();
             World.Setup();
@@ -142,6 +150,7 @@ namespace LosSantosRED.lsr
             Time.Dispose();
             Weather.Dispose();
             Debug.Dispose();
+            WeatherManager.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
             EntryPoint.WriteToConsole($"Has Been Deactivated",0);
         }
@@ -194,12 +203,13 @@ namespace LosSantosRED.lsr
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
+                new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
 
-                new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 2),//1000
-                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 3),//might become a priority...
-                new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 4),//might become a priority...
+                new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 3),//1000
+                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
+                new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
 
-                new ModTask(1000, "World.Update", World.Update, 5),
+                new ModTask(1000, "World.Update", World.Update, 6),
 
             }));
             TaskGroups.Add(new ModTaskGroup("Group8", new List<ModTask>()

@@ -40,9 +40,9 @@ namespace Mod
 
         private DateTime TimeToStopFastForwarding;
         private bool isClockPaused = false;
-        private dynamic StoredClockDay;
-        private dynamic StoredClockMonth;
-        private dynamic StoredClockYear;
+        private int StoredClockDay;
+        private int StoredClockMonth;
+        private int StoredClockYear;
 
         public Time(ISettingsProvideable settings)
         {
@@ -100,7 +100,7 @@ namespace Mod
             }
             else
             {
-                if (Settings.SettingsManager.TimeSettings.ScaleTime)
+                if (Settings.SettingsManager.TimeSettings.ScaleTime || Settings.SettingsManager.TimeSettings.SetRealTime)
                 {
                     if(!isClockPaused)
                     {
@@ -232,7 +232,6 @@ namespace Mod
                 GameTimeLastSetClock = Game.GameTime;
             }
         }
-
         public void Setup()
         {
             try
@@ -251,13 +250,12 @@ namespace Mod
                 SetDateToToday();
             }
         }
-
         private void GetIntervalAndMultiplier()
         {
             if (!IsFastForwarding)
             {
                 float Speed = Game.LocalPlayer.Character.Speed;
-                if (Speed <= 4.0f)
+                if (Speed <= 4.0f || Settings.SettingsManager.TimeSettings.SetRealTime)
                 {
                     Interval = DefaultInterval;
                     ClockMultiplier = 1;
@@ -298,6 +296,10 @@ namespace Mod
         {
             NativeFunction.Natives.SET_CLOCK_DATE(StoredClockDay, StoredClockMonth - 1, StoredClockYear);
             NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
+
+
+  
+
         }
         private void StoreTime()
         {

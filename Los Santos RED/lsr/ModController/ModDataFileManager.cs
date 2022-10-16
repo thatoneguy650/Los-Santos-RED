@@ -39,6 +39,7 @@ public class ModDataFileManager
     private PhysicalItems PhysicalItems;
     public Seats Seats;
     public Counties Counties;
+    public WeatherForecasts WeatherForecasts;
 
     public ModDataFileManager()
     {
@@ -136,6 +137,10 @@ public class ModDataFileManager
         SpeechList.ReadConfig();
         Seats = new Seats();
         Seats.ReadConfig();
+
+        WeatherForecasts = new WeatherForecasts();
+        WeatherForecasts.ReadConfig();
+
     }
     private void SetupAlternateConfigs()
     {
