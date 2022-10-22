@@ -308,7 +308,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                             PedViolations.Update(policeRespondable);//possible yield in here!
                             PedPerception.Update();
                         }
-                        if (Pedestrian.Exists() && policeRespondable.IsCop)
+                        if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
                         {
                             CheckPlayerBusted();
                         }
@@ -513,7 +513,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     private void CheckPlayerBusted()
     {
-        if (PlayerPerception.DistanceToTarget <= 5f)
+        if (PlayerPerception.DistanceToTarget <= Settings.SettingsManager.PoliceSettings.BustDistance)
         {
             if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
             {

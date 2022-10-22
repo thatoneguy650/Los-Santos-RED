@@ -80,7 +80,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         if (CanInteract)
         {
             bool isPlayerMember = player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             GameFiber.StartNew(delegate
             {
@@ -171,7 +171,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                 }
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "GangDenInteract");       
         }

@@ -66,7 +66,7 @@ public class VendingMachine : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -99,7 +99,7 @@ public class VendingMachine : InteractableLocation
                 //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
                 //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "GangDenInteract");
@@ -251,7 +251,7 @@ public class VendingMachine : InteractableLocation
             HandRotator = pa.Rotation;
             HandBoneName = pa.BoneName;
         }
-        while (Player.CanPerformActivities && !IsCancelled)
+        while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

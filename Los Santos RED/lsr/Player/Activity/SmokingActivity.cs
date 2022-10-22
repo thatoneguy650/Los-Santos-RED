@@ -67,12 +67,12 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
-            if (Player.CanPerformActivities)
+            if (Player.ActivityManager.CanPerformActivities)
             {
                 Setup();
                 ShouldContinue = true;
@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr.Player
         public override void Pause()
         {
             isPaused = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         public override bool IsPaused() => isPaused;
         public override void Start()
@@ -139,10 +139,10 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
-            while (Player.CanPerformActivities && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
+            while (Player.ActivityManager.CanPerformActivities && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 UpdatePosition();
@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Exit();//drop the cigarette (with animation if possible)
             }
-            else if (!Player.CanPerformActivities || isPaused)
+            else if (!Player.ActivityManager.CanPerformActivities || isPaused)
             {
                 if (IsSmokedItemLit && IsSmokedItemNearMouth)
                 {
@@ -197,12 +197,12 @@ namespace LosSantosRED.lsr.Player
         private void Exit()
         {
             EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
-            if (IsActivelySmoking && Player.CanPerformActivities && !IsCancelled)
+            if (IsActivelySmoking && Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimExitDictionary} {Data.AnimExit}", 5);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimExitDictionary, Data.AnimExit, 1.0f, -1.0f, -1, 50, 0, false, false, false);
                 uint GameTimeStartedExitAnimation = Game.GameTime;
-                while (Game.GameTime - GameTimeStartedExitAnimation <= 5000 && Player.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
+                while (Game.GameTime - GameTimeStartedExitAnimation <= 5000 && Player.ActivityManager.CanPerformActivities && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) < 1.0f)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimExitDictionary, Data.AnimExit) >= 0.8f && SmokedItem.Exists())
@@ -217,7 +217,7 @@ namespace LosSantosRED.lsr.Player
                 SmokedItem.Detach();
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             isPaused = false;
             IsCancelled = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
@@ -235,7 +235,7 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
-            while (Player.CanPerformActivities && !IsCancelled && !isPaused)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && !isPaused)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
@@ -282,7 +282,7 @@ namespace LosSantosRED.lsr.Player
                 ShouldContinue = false;
                 IsActivelySmoking = true;
                 isPaused = false;
-                Player.IsPerformingActivity = true;
+                Player.ActivityManager.IsPerformingActivity = true;
                 Idle();
             }
             else
@@ -405,7 +405,7 @@ namespace LosSantosRED.lsr.Player
 
 
             }
-            if (Player.IsSitting)
+            if (Player.ActivityManager.IsSitting)
             {
                 HasLightingAnimation = false;
                 AnimBaseDictionary = "amb@code_human_in_car_mp_actions@smoke@std@ps@base";
@@ -513,7 +513,7 @@ namespace LosSantosRED.lsr.Player
                     MinDistanceBetweenSmokedItemAndFace = DistanceBetweenSmokedItemAndFace;
                 }
             }
-            if (Player.IsSitting || Player.IsInVehicle)
+            if (Player.ActivityManager.IsSitting || Player.IsInVehicle)
             {
                 if (DistanceBetweenSmokedItemAndFace <= 0.19f && SmokedItem.Exists())
                 {
@@ -535,7 +535,7 @@ namespace LosSantosRED.lsr.Player
                     IsSmokedItemNearMouth = false;
                 }
             }
-            if (Player.IsSitting || Player.IsInVehicle)
+            if (Player.ActivityManager.IsSitting || Player.IsInVehicle)
             {
                 if (DistanceBetweenHandAndFace <= 0.27f)//0.2f
                 {

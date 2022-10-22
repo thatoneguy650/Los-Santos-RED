@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsLayingDown = false;
+            Player.ActivityManager.IsLayingDown = false;
         }
         public override void Pause()
         {
@@ -70,7 +70,7 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("Sleeping Activity Enter", 5);
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsLayingDown = true;
+            Player.ActivityManager.IsLayingDown = true;
             if(IsUsingVehicleAnimations)
             {
                 LayDown_Vehicle();
@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, Data.AnimEnterFlag, 0, false, false, false);//-1
             float AnimationTime = 0.0f;
             uint GameTimeStarted = Game.GameTime;
-            while (Player.CanPerformActivities && Game.GameTime - GameTimeStarted <= 3000 && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && Game.GameTime - GameTimeStarted <= 3000 && !IsCancelled)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("Laying Activity Idle", 5);
 
-            if (Player.CanPerformActivities && !IsCancelled)
+            if (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 PlayingDict = Data.AnimBaseDictionary;
                 PlayingAnim = Data.AnimBase;
@@ -119,7 +119,7 @@ namespace LosSantosRED.lsr.Player
 
                 Player.IsResting = true;
                 Player.IsSleeping = true;
-                while (Player.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     if (Player.HumanState.Sleep.IsMax)
                     {
@@ -135,14 +135,14 @@ namespace LosSantosRED.lsr.Player
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
-            Player.IsLayingDown = false;
+            Player.ActivityManager.IsLayingDown = false;
             Exit_Vehicle();
         }
         private void Exit_Vehicle()
         {
             EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle)", 5);
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            Player.IsLayingDown = false;
+            Player.ActivityManager.IsLayingDown = false;
             EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle) 1", 5);
         }
 
@@ -184,7 +184,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle_Foot()
         {
-            if (Player.CanPerformActivities && !IsCancelled)
+            if (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 IsActivelyLayingDown = true;
                 PlayingAnim = "base";
@@ -195,7 +195,7 @@ namespace LosSantosRED.lsr.Player
                 Player.IsResting = true;
                 Player.IsSleeping = true;
 
-                while (Player.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     if (Player.IsMoveControlPressed)
                     {
@@ -211,7 +211,7 @@ namespace LosSantosRED.lsr.Player
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
-            Player.IsLayingDown = false;
+            Player.ActivityManager.IsLayingDown = false;
             Exit_Foot();
 
         }
@@ -258,7 +258,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                Player.IsLayingDown = false;
+                Player.ActivityManager.IsLayingDown = false;
             }
         }
 

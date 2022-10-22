@@ -45,6 +45,8 @@ public class Fight : ComplexTask
                     NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
                 }
             }
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
             GameTimeLastRan = Game.GameTime;
         }
     }

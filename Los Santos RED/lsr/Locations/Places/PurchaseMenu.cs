@@ -100,7 +100,7 @@ public class PurchaseMenu : Menu
 
 
     public int MoneySpent { get; private set; } = 0;
-    private bool CanContinueConversation => Player.CanConverse;
+    private bool CanContinueConversation => Player.ActivityManager.CanConverse;
 
     public bool IsStealing { get; set; }
 
@@ -1442,7 +1442,7 @@ public class PurchaseMenu : Menu
             menuItem.ItemsSoldToPlayer += TotalItems;
             if (modItem.ConsumeOnPurchase)
             {
-                Player.StartConsumingActivity(modItem, false);
+                Player.ActivityManager.StartConsumingActivity(modItem, false);
             }
             else
             {

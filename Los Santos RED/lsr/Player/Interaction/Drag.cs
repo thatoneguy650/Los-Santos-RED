@@ -76,7 +76,7 @@ public class Drag : DynamicActivity
         }
 
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.IsDraggingBody = false;
+        Player.ActivityManager.IsDraggingBody = false;
     }
     public override void Pause()
     {
@@ -88,7 +88,7 @@ public class Drag : DynamicActivity
         if (Ped.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole($"Drag Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
-            Player.IsDraggingBody = true;
+            Player.ActivityManager.IsDraggingBody = true;
             PedCanBeTasked = Ped.CanBeTasked;
             PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
 

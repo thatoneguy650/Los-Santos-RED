@@ -75,7 +75,7 @@ public class ActionMenu : Menu
     }
     public void Update()
     {
-        if (Player.HasCurrentActivity)
+        if (Player.ActivityManager.HasCurrentActivity)
         {
             CurrentActivityMenu.Enabled = true;
         }
@@ -101,19 +101,19 @@ public class ActionMenu : Menu
         Suicide = new UIMenuItem("Suicide", "Commit Suicide");
         Suicide.Activated += (sender, selectedItem) =>
         {
-            Player.CommitSuicide();
+            Player.ActivityManager.CommitSuicide();
             Actions.Visible = false;
         };
         ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
         ChangePlate.Activated += (sender, selectedItem) =>
         {
-            Player.ChangePlate(ChangePlate.SelectedItem);
+            Player.ActivityManager.ChangePlate(ChangePlate.SelectedItem);
             Actions.Visible = false;
         };       
         RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
         RemovePlate.Activated += (sender, selectedItem) =>
         {
-            Player.RemovePlate();
+            Player.ActivityManager.RemovePlate();
             Actions.Visible = false;
         };
         SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
@@ -121,17 +121,17 @@ public class ActionMenu : Menu
         {
             if (SitDown.SelectedItem == "At Closest Seat")
             {
-                Player.StartSittingDown(true, true);
+                Player.ActivityManager.StartSittingDown(true, true);
             }
             else
             {
                 if (SitDown.SelectedItem == "Here Backwards")
                 {
-                    Player.StartSittingDown(false, false);
+                    Player.ActivityManager.StartSittingDown(false, false);
                 }
                 else
                 {
-                    Player.StartSittingDown(false, true);
+                    Player.ActivityManager.StartSittingDown(false, true);
                 }
             }
             Actions.Visible = false;
@@ -141,24 +141,24 @@ public class ActionMenu : Menu
         {
             if (LayDown.SelectedItem == "At Closest Bed")
             {
-                Player.StartSleeping(true);
+                Player.ActivityManager.StartSleeping(true);
             }
             else
             {
-                Player.StartSleeping(false);
+                Player.ActivityManager.StartSleeping(false);
             }
             Actions.Visible = false;
         };
         GestureMenu = new UIMenuListScrollerItem<GestureData>("Gesture", "Perform the selected gesture", Gestures.GestureLookups);
         GestureMenu.Activated += (sender, selectedItem) =>
         {
-            Player.Gesture(GestureMenu.SelectedItem);
+            Player.ActivityManager.Gesture(GestureMenu.SelectedItem);
             Actions.Visible = false;
         };
         DanceMenu = new UIMenuListScrollerItem<DanceData>("Dance", "Perform the selected dance", Dances.DanceLookups);
         DanceMenu.Activated += (sender, selectedItem) =>
         {
-            Player.Dance(DanceMenu.SelectedItem);
+            Player.ActivityManager.Dance(DanceMenu.SelectedItem);
             Actions.Visible = false;
         };
         CurrentActivityMenu = new UIMenuListScrollerItem<string>("Current Activity", "Continue, Pause, or Stop the Current Activity", new List<string>() { "Continue", "Pause", "Stop" });
@@ -166,40 +166,40 @@ public class ActionMenu : Menu
         {
             if (CurrentActivityMenu.SelectedItem == "Continue")
             {
-                Player.ContinueCurrentActivity();
+                Player.ActivityManager.ContinueCurrentActivity();
             }
             else if (CurrentActivityMenu.SelectedItem == "Pause")
             {
-                Player.PauseCurrentActivity();
+                Player.ActivityManager.PauseCurrentActivity();
             }
             else if (CurrentActivityMenu.SelectedItem == "Stop")
             {
-                Player.StopDynamicActivity();
+                Player.ActivityManager.StopDynamicActivity();
             }
             Actions.Visible = false;
         };
         EnterAsPassenger = new UIMenuItem("Enter as Passenger", "Enter nearest vehicle as a passenger");
         EnterAsPassenger.Activated += (sender, selectedItem) =>
         {
-            Player.EnterVehicleAsPassenger(false);
+            Player.ActivityManager.EnterVehicleAsPassenger(false);
             Actions.Visible = false;
         };
         ShuffleSeat = new UIMenuItem("Shuffle Seat", "Shuffles your current seat");
         ShuffleSeat.Activated += (sender, selectedItem) =>
         {
-            Player.ShuffleToNextSeat();
+            Player.ActivityManager.ShuffleToNextSeat();
             Actions.Visible = false;
         };
         IntimidateDriver = new UIMenuItem("Intimidate Driver", "Force driver to flee in the vehicle");
         IntimidateDriver.Activated += (sender, selectedItem) =>
         {
-            Player.ForceErraticDriver();
+            Player.ActivityManager.ForceErraticDriver();
             Actions.Visible = false;
         };
         HotwireVehicle = new UIMenuItem("Hotwire Vehicle", "Hotwire current vehicle");
         HotwireVehicle.Activated += (sender, selectedItem) =>
         {
-            Player.StartHotwiring();
+            Player.ActivityManager.StartHotwiring();
             Actions.Visible = false;
         };
         ToggleActionMode = new UIMenuItem("Toggle Action Mode", "Toggle action mode on or off");

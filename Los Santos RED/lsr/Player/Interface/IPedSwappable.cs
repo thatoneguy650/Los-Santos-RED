@@ -40,5 +40,6 @@ namespace LosSantosRED.lsr.Interface
         void SetDemographics(string modelName, bool isMale, string v1, int v2, int speechSkill);
         void SetWantedLevel(int v1, string v2, bool v3);
         void UpdateVehicleData();
+        void SetCopStatus(bool v, Agency agency);
     }
 }

@@ -49,7 +49,7 @@ public class Bar : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
 
@@ -71,7 +71,7 @@ public class Bar : InteractableLocation
 
                 StoreCamera.Dispose();
                 Player.IsTransacting = false;
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "BarInteract");
         }

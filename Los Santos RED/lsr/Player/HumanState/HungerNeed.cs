@@ -14,7 +14,7 @@ public class HungerNeed : HumanNeed
     private float RealTimeScalar;
     private ISettingsProvideable Settings;
 
-    private bool ShouldSlowDrain => Player.IsResting || Player.IsSleeping || Player.IsSitting || Player.IsLayingDown;
+    private bool ShouldSlowDrain => Player.IsResting || Player.IsSleeping || Player.ActivityManager.IsSitting || Player.ActivityManager.IsLayingDown;
     private bool ShouldChange => Player.IsAlive && !RecentlyChanged;
     public HungerNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
     {

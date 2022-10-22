@@ -60,7 +60,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Pause()
@@ -111,9 +111,9 @@ namespace LosSantosRED.lsr.Player
         {
             Player.WeaponEquipment.SetUnarmed();
             AttachBottleToHand();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
             StartNewEnterAnimation();
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -136,7 +136,7 @@ namespace LosSantosRED.lsr.Player
                 Bottle.Detach();
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
             if(ModItem?.CleanupItemImmediately == false)
             {
@@ -153,7 +153,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -402,7 +402,7 @@ namespace LosSantosRED.lsr.Player
                 }
             }
 
-            if (Player.IsInVehicle || Player.IsSitting)
+            if (Player.IsInVehicle || Player.ActivityManager.IsSitting)
             {
                 if (Player.IsDriver)
                 {

@@ -33,7 +33,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         public override void Pause()
         {
@@ -56,7 +56,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsPerformingActivity = true;       
+            Player.ActivityManager.IsPerformingActivity = true;       
             if(GestureData.IsInsulting)
             {
                 Player.IsMakingInsultingGesture = true;
@@ -66,7 +66,7 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"Gesture Enter: {GestureData.AnimationEnter}", 5);
                 GameTimeStartedGesturing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter);
@@ -90,7 +90,7 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"Gesture Idle: {GestureData.AnimationName}", 5);
                 GameTimeStartedGesturing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName);
@@ -116,7 +116,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"Gesture Exit: {GestureData.AnimationExit}", 5);
                     GameTimeStartedGesturing = Game.GameTime;
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                    while (Player.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                    while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                     {
                         Player.WeaponEquipment.SetUnarmed();
                         float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit);
@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Game.DisplayNotification("FAIL");
             }
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         private void Setup()
         {
@@ -163,7 +163,7 @@ namespace LosSantosRED.lsr.Player
                     }
                     else
                     {
-                        if (Player.IsSitting)
+                        if (Player.ActivityManager.IsSitting)
                         {
                             GestureData.AnimationDictionary = "gestures@m@sitting@generic@casual";
                         }
@@ -181,7 +181,7 @@ namespace LosSantosRED.lsr.Player
                     }
                     else
                     {
-                        if (Player.IsSitting)
+                        if (Player.ActivityManager.IsSitting)
                         {
                             GestureData.AnimationDictionary = "gestures@m@sitting@generic@casual";
                         }

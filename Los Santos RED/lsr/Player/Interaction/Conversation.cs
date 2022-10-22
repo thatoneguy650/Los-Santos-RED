@@ -33,11 +33,11 @@ public class Conversation : Interaction
         Speeches = speeches;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
-    private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.CanConverse;
+    private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.ActivityManager.CanConverse;
     public override void Dispose()
     {
         Player.ButtonPrompts.RemovePrompts("Conversation");
-        Player.IsConversing = false;
+        Player.ActivityManager.IsConversing = false;
         if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
         {
             Ped.Pedestrian.BlockPermanentEvents = false;
@@ -61,7 +61,7 @@ public class Conversation : Interaction
         if (Ped.Pedestrian.Exists())
         {
             CreateMenu();
-            Player.IsConversing = true;
+            Player.ActivityManager.IsConversing = true;
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             GameFiber.StartNew(delegate
             {

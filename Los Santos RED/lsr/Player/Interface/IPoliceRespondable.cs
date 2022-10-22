@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         Licenses Licenses { get; }
         PoliceResponse PoliceResponse { get; }
         Violations Violations { get; }
+        ActivityManager ActivityManager { get; }
         bool AnyPoliceCanHearPlayer { get; set; }
         bool AnyPoliceCanRecognizePlayer { get; set; }
         bool AnyPoliceCanSeePlayer { get; set; }
@@ -76,6 +77,6 @@ namespace LosSantosRED.lsr.Interface
         void OnWantedSearchMode();
         void OnWeaponsFree();
         void SetWantedLevel(int resultingWantedLevel, string name, bool v);
-        void YellInPain();
+        //void YellInPain();
     }
 }

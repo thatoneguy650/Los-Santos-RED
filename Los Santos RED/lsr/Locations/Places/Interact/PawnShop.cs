@@ -50,7 +50,7 @@ public class PawnShop : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -71,7 +71,7 @@ public class PawnShop : InteractableLocation
 
                 StoreCamera.Dispose();
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "RestaurantInteract");

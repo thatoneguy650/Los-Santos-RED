@@ -421,6 +421,18 @@ public class DebugMenu : Menu
         UIMenu CrimeItemsMenu = MenuPool.AddSubMenu(Debug, "Crime Menu");
         CrimeItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various crime items.";
+
+
+
+
+
+
+
+
+
+
+
+
         UIMenuListScrollerItem<int>  SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
         SetWantedLevel.Activated += (menu, item) =>
         {
@@ -477,6 +489,16 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
+
+        UIMenuItem ToggleCopTasking = new UIMenuItem("Toggle Cop Tasking", "Toggle player cop as taskable or not");
+        ToggleCopTasking.Activated += (menu, item) =>
+        {
+            Player.ToggleCopTaskable();
+            menu.Visible = false;
+        };
+
+
+
         CrimeItemsMenu.AddItem(SetWantedLevel);
         CrimeItemsMenu.AddItem(ToggleInvestigation);
         CrimeItemsMenu.AddItem(SpawnGunAttackersMenu);
@@ -484,6 +506,7 @@ public class DebugMenu : Menu
         CrimeItemsMenu.AddItem(StartRandomCrime);
         CrimeItemsMenu.AddItem(GiveClosesetGun);
         CrimeItemsMenu.AddItem(SetNearestWanted);
+        CrimeItemsMenu.AddItem(ToggleCopTasking);
     }
     private void CreateOtherItems()
     {
@@ -1006,7 +1029,7 @@ public class DebugMenu : Menu
                 //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
                 //}
                 coolguy.Tasks.FightAgainstClosestHatedTarget(250f,-1);
-                PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINA", World, true);
+                PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
                 pedExt.WasEverSetPersistent = true;
                 World.Pedestrians.AddEntity(pedExt);
             }
@@ -1045,7 +1068,7 @@ public class DebugMenu : Menu
 
     private void SetNearestPedWanted()
     {
-        PedExt toChoose = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        PedExt toChoose = World.Pedestrians.PedExts.Where(x=> x.Handle != Player.Handle).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         if (toChoose != null && toChoose.Pedestrian.Exists())
         {
             toChoose.SetWantedLevel(3);
@@ -1064,7 +1087,7 @@ public class DebugMenu : Menu
                 coolguy.BlockPermanentEvents = true;
                 coolguy.KeepTasks = true;
                 //coolguy.IsInvincible = true;
-                PedExt pedExt = new PedExt(coolguy, Settings,true,false,false,false,"Test1", Crimes, Weapons, "CRIMINA", World, true);
+                PedExt pedExt = new PedExt(coolguy, Settings,true,false,false,false,"Test1", Crimes, Weapons, "CRIMINAL", World, true);
                 pedExt.WasEverSetPersistent = true;
                 World.Pedestrians.AddEntity(pedExt);
                 NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe

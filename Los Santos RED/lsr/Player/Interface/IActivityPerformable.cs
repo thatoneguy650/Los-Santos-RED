@@ -22,24 +22,24 @@ namespace LosSantosRED.lsr.Interface
         Violations Violations { get; }
         VehicleOwnership VehicleOwnership { get; }
         BankAccounts BankAccounts { get; }
-        bool CanConverse { get; }
-        bool CanPerformActivities { get; }
+      //  bool CanConverse { get; }
+       // bool CanPerformActivities { get; }
         Ped Character { get; }
         bool CharacterModelIsFreeMode { get; }
         VehicleExt CurrentVehicle { get; }
         string FreeModeVoice { get; }
         bool IsAliveAndFree { get; }
-        bool IsConversing { get; set; }
+      //  bool IsConversing { get; set; }
         bool IsDealingDrugs { get; set; }
         bool IsDealingIllegalGuns { get; set; }
         bool IsDoingSuspiciousActivity { get; set; }
         bool IsDriver { get; }
-        bool IsInteractingWithLocation { get; set; }
+     //   bool IsInteractingWithLocation { get; set; }
         bool IsInVehicle { get; }
         bool IsMale { get; }
         bool IsMoveControlPressed { get; }
         bool IsNotWanted { get; }
-        bool IsPerformingActivity { get; set; }
+       // bool IsPerformingActivity { get; set; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
         bool IsTransacting { get; set; }
@@ -51,13 +51,13 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlyCrashedVehicle { get; }
         float VehicleSpeedMPH { get; }
 
-
+        ActivityManager ActivityManager { get; }
 
         void ChangeName(string newName);
-        void EnterVehicleAsPassenger(bool withBlocking);
+       // void EnterVehicleAsPassenger(bool withBlocking);
         void SetWantedLevel(int v1, string v2, bool v3);
-        void StartConsumingActivity(ModItem modItem, bool v);
-        void StopDynamicActivity();
+      //  void StartConsumingActivity(ModItem modItem, bool v);
+      //  void StopDynamicActivity();
 
     }
 }

@@ -49,7 +49,7 @@ public class Dispensary : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -70,7 +70,7 @@ public class Dispensary : InteractableLocation
 
                 StoreCamera.Dispose();
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "RestaurantInteract");

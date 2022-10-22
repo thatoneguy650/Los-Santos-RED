@@ -50,14 +50,14 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
-            Player.IsDancing = false;
+            Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsDancing = false;
         }
         public override void Pause()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
-            Player.IsDancing = false;
+            Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsDancing = false;
         }
         public override bool IsPaused() => false;
         public override void Continue()
@@ -94,7 +94,7 @@ namespace LosSantosRED.lsr.Player
                 //{
                 //    NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationEnter, DanceData.AnimationDictionary);
                 //}
-                while (Player.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter);
@@ -141,7 +141,7 @@ namespace LosSantosRED.lsr.Player
                         NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationIdle, DanceData.AnimationDictionary);
                     }
                 }
-                while (Player.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle);
@@ -206,7 +206,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, DanceData.FacialAnimationExit, DanceData.AnimationDictionary);
                 }
-                while (Player.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit);
@@ -252,8 +252,8 @@ namespace LosSantosRED.lsr.Player
             }
 
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsPerformingActivity = true;
-            Player.IsDancing = true;
+            Player.ActivityManager.IsPerformingActivity = true;
+            Player.ActivityManager.IsDancing = true;
 
             if (DanceData.IsInsulting)
             {
@@ -269,8 +269,8 @@ namespace LosSantosRED.lsr.Player
             }
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
-            Player.IsPerformingActivity = false;
-            Player.IsDancing = false;
+            Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.IsDancing = false;
 
 
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

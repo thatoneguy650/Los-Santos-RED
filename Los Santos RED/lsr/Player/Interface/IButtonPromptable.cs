@@ -9,30 +9,31 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IButtonPromptable
     {
+        ActivityManager ActivityManager { get; }
         PedExt CurrentLookedAtPed { get; }
 
-        bool CanConverseWithLookedAtPed { get; }
-        bool IsInteracting { get; }
-        bool IsInteractingWithLocation { get; }
+        //bool CanConverseWithLookedAtPed { get; }
+       // bool IsInteracting { get; }
+     //   bool IsInteractingWithLocation { get; }
         InteractableLocation ClosestInteractableLocation { get; }
-        bool CanExitCurrentInterior { get; }
-        bool CanPerformActivities { get; }
+      //  bool CanExitCurrentInterior { get; }
+      //  bool CanPerformActivities { get; }
         bool IsNearScenario { get; }
         Scenario ClosestScenario { get; }
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
-        bool CanLootLookedAtPed { get; }
-        bool CanGrabLookedAtPed { get; }
+      //  bool CanLootLookedAtPed { get; }
+      //  bool CanGrabLookedAtPed { get; }
         float ClosestPoliceDistanceToPlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
-        bool CanDragLookedAtPed { get; }
-        bool CanPauseCurrentActivity { get; }
-        bool CanCancelCurrentActivity { get; }
-        bool IsPerformingActivity { get; }
-        bool IsCurrentActivityPaused { get; }
-        string PauseCurrentActivityPrompt { get; }
-        string CancelCurrentActivityPrompt { get; }
-        string ContinueCurrentActivityPrompt { get; }
+      //  bool CanDragLookedAtPed { get; }
+     //   bool CanPauseCurrentActivity { get; }
+       // bool CanCancelCurrentActivity { get; }
+       // bool IsPerformingActivity { get; }
+      //  bool IsCurrentActivityPaused { get; }
+      //  string PauseCurrentActivityPrompt { get; }
+      //  string CancelCurrentActivityPrompt { get; }
+      //  string ContinueCurrentActivityPrompt { get; }
         bool IsDead { get; }
         bool IsBusted { get; }
         VehicleExt CurrentLookedAtVehicle { get; }
@@ -48,11 +49,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsBreakingIntoCar { get; }
         SurrenderActivity Surrendering { get; }
         GangMember CurrentLookedAtGangMember { get; }
-        bool CanRecruitLookedAtGangMember { get; }
+      //  bool CanRecruitLookedAtGangMember { get; }
         Rage.Object CurrentLookedAtObject { get; }
         bool CanSitOnCurrentLookedAtObject { get; }
-        bool IsSitting { get; }
-        bool IsConversing { get; }
+       // bool IsSitting { get; }
+      //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

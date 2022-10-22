@@ -15,11 +15,11 @@ public class SuicideActivity : DynamicActivity
 {
     private uint GameTimeStartedSuicide;
     private bool IsCancelled;
-    private Mod.Player Player;
+    private IActionable Player;
     private int SuicideScene;
     private float ScenePhase;
     private ISettingsProvideable Settings;
-    public SuicideActivity(Mod.Player player, ISettingsProvideable settings)
+    public SuicideActivity(IActionable player, ISettingsProvideable settings)
     {
         Player = player;
         Settings = settings;
@@ -54,8 +54,8 @@ public class SuicideActivity : DynamicActivity
     }
     private void Enter()
     {
-        Player.IsCommitingSuicide = true;
-        Player.IsPerformingActivity = true;
+        Player.ActivityManager.IsCommitingSuicide = true;
+        Player.ActivityManager.IsPerformingActivity = true;
         if (Player.WeaponEquipment.CurrentWeaponIsOneHanded)//Player.CurrentWeaponCategory == WeaponCategory.Pistol || CurrentWeaponIsOneHanded)//Shoot YOurself
         {
             Enter("pistol");
@@ -81,7 +81,7 @@ public class SuicideActivity : DynamicActivity
     {
         bool SwallowedPills = false;
         bool AddedPrompts = false;
-        while (Player.CanPerformActivities && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
+        while (Player.ActivityManager.CanPerformActivities && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
         {
             Player.WeaponEquipment.SetUnarmed();
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
@@ -120,7 +120,7 @@ public class SuicideActivity : DynamicActivity
     private void IdlePistol()
     {
         bool AddedPrompts = false;
-        while (Player.CanPerformActivities && !IsCancelled)
+        while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
         {
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
             if (ScenePhase >= 0.3f)
@@ -154,8 +154,8 @@ public class SuicideActivity : DynamicActivity
         Player.ButtonPrompts.RemovePrompts("Suicide");
         //Player.Character.Tasks.Clear();
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.IsPerformingActivity = false;
-        Player.IsCommitingSuicide = false;
+        Player.ActivityManager.IsPerformingActivity = false;
+        Player.ActivityManager.IsCommitingSuicide = false;
     }
     private void Setup()
     {

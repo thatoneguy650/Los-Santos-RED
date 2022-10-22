@@ -76,6 +76,11 @@ public class GameSaves : IGameSaves
         AddClaude();
         //AddMichaelJones();
         AddLamar();
+        AddBrad();
+#if DEBUG
+        AddDaveNorton();
+        AddKarenDaniels();
+#endif
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     private void AddAlexis()
@@ -257,12 +262,12 @@ public class GameSaves : IGameSaves
                     new VehicleMod(14,-1),
                     new VehicleMod(15,3),
                     new VehicleMod(16,-1),
-                    //new VehicleMod(17,-1),
-                    //new VehicleMod(18,-1),
-                    //new VehicleMod(19,-1),
-                    //new VehicleMod(20,-1),
-                    //new VehicleMod(21,-1),
-                    //new VehicleMod(22,-1),
+                    new VehicleMod(17,-1),
+                    new VehicleMod(18,-1),
+                    new VehicleMod(19,-1),
+                    new VehicleMod(20,-1),
+                    new VehicleMod(21,-1),
+                    new VehicleMod(22,-1),
                     new VehicleMod(23,2),
                     new VehicleMod(24,-1),
                     new VehicleMod(25,-1),
@@ -355,8 +360,6 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(TestGameSave);
     }
-
-
     private void AddGenericMale()
     {
         List<StoredWeapon> Weapons = new List<StoredWeapon>
@@ -405,7 +408,6 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(ExampleGameSave);
     }
-
     private void AddLamar()
     {
         List<StoredWeapon> Weapons = new List<StoredWeapon>
@@ -465,5 +467,60 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(ExampleGameSave);
     }
+    private void AddBrad()
+    {
+        GameSave gameSave = new GameSave("Bradley Snider", 250, "ig_brad", true, new PedVariation(new List<PedComponent>() { },new List<PedPropComponent>() { }), new List<StoredWeapon>{ }, new List<VehicleSaveStatus>() { });
+        SetDefault(gameSave);
+        GameSaveList.Add(gameSave);
+    }
+    private void AddDaveNorton()
+    {
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() 
+        {
+            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } } 
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 48),
+        };
+        GameSave gameSave = new GameSave("Dave Norton", 455000, "ig_davenorton", true, new PedVariation(new List<PedComponent>() { }, new List<PedPropComponent>() { }), Weapons, Vehicles);
+        SetDefault(gameSave);
+        gameSave.IsCop = true;
+        GameSaveList.Add(gameSave);
+    }
+    private void AddKarenDaniels()
+    {
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() 
+        {
+            new VehicleSaveStatus("zion", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("1RCT244", 0, false) } } 
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(1593441988, Vector3.Zero, new WeaponVariation(), 36),//combat pistol
+        };
+        GameSave gameSave = new GameSave("Karen Daniels", 867000, "ig_karen_daniels", true, new PedVariation(new List<PedComponent>() { }, new List<PedPropComponent>() { }), Weapons, Vehicles);
+        SetDefault(gameSave);
+        gameSave.IsCop = true;
+        GameSaveList.Add(gameSave);
+    }
+    private void SetDefault(GameSave ExampleGameSave)
+    {
+        //Position
+        ExampleGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
+        ExampleGameSave.PlayerHeading = 45f;
+        //Date
+        ExampleGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+        //Licenses
+        ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
+        ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
+        //Needs
+        ExampleGameSave.HungerValue = 95.0f;
+        ExampleGameSave.ThirstValue = 95.0f;
+        ExampleGameSave.SleepValue = 95.0f;
+        //Speech
+        ExampleGameSave.SpeechSkill = 35;
+    }
+
+
 }
 

@@ -76,7 +76,7 @@ public class PersonTransaction : Interaction
         }
         else
         {
-            Player.IsConversing = false;
+            Player.ActivityManager.IsConversing = false;
             Player.IsTransacting = false;
         }
 
@@ -90,7 +90,7 @@ public class PersonTransaction : Interaction
 
 
                 //Ped.Pedestrian.IsPersistent = true;
-                Player.IsConversing = true;
+                Player.ActivityManager.IsConversing = true;
                 Player.IsTransacting = true;
 
                 PedCanBeTasked = Ped.CanBeTasked;
@@ -182,7 +182,7 @@ public class PersonTransaction : Interaction
         if (!IsDisposed)
         {
             IsDisposed = true;
-            Player.IsConversing = false;
+            Player.ActivityManager.IsConversing = false;
             Player.IsTransacting = false;
             Transaction?.DisposeTransactionMenu();
             DisposeInteractionMenu();

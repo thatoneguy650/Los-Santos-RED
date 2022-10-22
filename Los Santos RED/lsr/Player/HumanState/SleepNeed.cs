@@ -11,7 +11,7 @@ public class SleepNeed : HumanNeed
     private ISettingsProvideable Settings;
     private bool ShouldRecover => Player.IsResting || Player.IsSleeping;
     private bool ShouldChange => Player.IsAlive && !RecentlyChanged;
-    private bool ShouldSlowDrain => Player.IsResting || Player.IsSitting || Player.IsLayingDown;
+    private bool ShouldSlowDrain => Player.IsResting || Player.ActivityManager.IsSitting || Player.ActivityManager.IsLayingDown;
     public SleepNeed(string name, float minValue, float maxValue, IHumanStateable humanStateable, ITimeReportable time, ISettingsProvideable settings) : base(name, minValue, maxValue, humanStateable, time)
     {
         Player = humanStateable;

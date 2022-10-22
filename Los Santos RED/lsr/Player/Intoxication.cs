@@ -348,7 +348,7 @@ public class Intoxication
         IsIntoxicated = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
+        if (CurrentClipset != "NONE" && !Player.ActivityManager.IsSitting && !Player.IsInVehicle && PrimaryIntoxicator.Intoxicant.Effects.HasFlag(IntoxicationEffect.ImparesWalking))
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {

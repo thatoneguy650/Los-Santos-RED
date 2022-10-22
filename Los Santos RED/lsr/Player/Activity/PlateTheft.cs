@@ -51,7 +51,7 @@ public class PlateTheft : DynamicActivity
     }
     public override void Cancel()
     {
-        Player.IsPerformingActivity = false;
+        Player.ActivityManager.IsPerformingActivity = false;
     }
     public override void Continue()
     {
@@ -70,7 +70,7 @@ public class PlateTheft : DynamicActivity
             GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
             {
                 Enter();
-                Player.IsPerformingActivity = false;
+                Player.ActivityManager.IsPerformingActivity = false;
             }, "PlayDispatchQueue");
         }
     }
@@ -115,7 +115,7 @@ public class PlateTheft : DynamicActivity
             Player.WeaponEquipment.SetUnarmed();
             if (!MovePedToCarPosition(TargetVehicle.Vehicle, Player.Character, TargetVehicle.Vehicle.Heading, ChangeSpot, true))
             {
-                Player.IsPerformingActivity = false;
+                Player.ActivityManager.IsPerformingActivity = false;
                 return;
             }
             Player.IsChangingLicensePlates = true;
@@ -155,7 +155,7 @@ public class PlateTheft : DynamicActivity
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         catch (Exception e)
         {
@@ -167,7 +167,7 @@ public class PlateTheft : DynamicActivity
             LicensePlateModel = null;
             ScrewdriverModel = null;
             Player.IsChangingLicensePlates = false;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             //EntryPoint.WriteToConsole("ChangeLicensePlate" + e.Message + e.StackTrace);
         }
     }

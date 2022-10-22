@@ -8,10 +8,11 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWeaponDroppable
     {
+        ActivityManager ActivityManager { get; }
         bool IsInVehicle { get; }
         bool IsVisiblyArmed { get; }
         bool IsBusted { get; }
-        bool CanPerformActivities { get; }
+        //bool CanPerformActivities { get; }
         bool IsAliveAndFree { get; }
         bool IsIncapacitated { get; }
     }

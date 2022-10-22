@@ -52,7 +52,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
@@ -119,7 +119,7 @@ namespace LosSantosRED.lsr.Player
         {
             Player.WeaponEquipment.SetUnarmed();
             AttachFoodToHand();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
             Idle();
         }
 
@@ -127,7 +127,7 @@ namespace LosSantosRED.lsr.Player
         {
             StartNewIdleAnimation();
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -167,7 +167,7 @@ namespace LosSantosRED.lsr.Player
                 Food.Detach();
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
             if (ModItem?.CleanupItemImmediately == false)
             {

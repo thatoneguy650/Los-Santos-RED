@@ -50,7 +50,7 @@ public class MessagesMenu
         tabView.ScrollTabs = true;
         tabView.OnMenuClose += (s, e) =>
         {
-            Player.StopDynamicActivity();
+            Player.ActivityManager.StopDynamicActivity();
             Game.IsPaused = false;
         };
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);

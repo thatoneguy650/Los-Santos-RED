@@ -455,7 +455,7 @@ public class LocationCamera
     private bool PlayerSayAvailableAmbient(List<string> Possibilities, bool WaitForComplete)
     {
         bool Spoke = false;
-        if (Player.CanConverse)
+        if (Player.ActivityManager.CanConverse)
         {
             foreach (string AmbientSpeech in Possibilities)
             {
@@ -479,7 +479,7 @@ public class LocationCamera
                 }
             }
             GameFiber.Sleep(100);
-            while (Player.Character.Exists() && Player.Character.IsAnySpeechPlaying && WaitForComplete && Player.CanConverse)
+            while (Player.Character.Exists() && Player.Character.IsAnySpeechPlaying && WaitForComplete && Player.ActivityManager.CanConverse)
             {
                 Spoke = true;
                 GameFiber.Yield();

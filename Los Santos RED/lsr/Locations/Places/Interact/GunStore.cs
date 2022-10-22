@@ -63,7 +63,7 @@ public class GunStore : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -94,7 +94,7 @@ public class GunStore : InteractableLocation
 
                 StoreCamera.Dispose();
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "GangDenInteract");

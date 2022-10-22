@@ -465,6 +465,11 @@ namespace LosSantosRED.lsr.Helper
                     customWheelID = 24;
                 }
                 vehicleVariation.HasCustomWheels = NativeFunction.Natives.GET_VEHICLE_MOD_VARIATION<bool>(vehicle, customWheelID);
+
+
+
+
+
                 vehicleVariation.VehicleExtras = new List<VehicleExtra>();
                 for (int i = 0; i <= 15; i++)
                 {

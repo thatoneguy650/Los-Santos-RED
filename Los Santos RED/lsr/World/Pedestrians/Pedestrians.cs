@@ -59,6 +59,20 @@ public class Pedestrians : ITaskerReportable
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
     public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
+    public List<PedExt> LivingPeople
+    {
+        get
+        {
+            List<PedExt> myList = new List<PedExt>();
+            myList.AddRange(CivilianList);
+            myList.AddRange(GangMemberList);
+            myList.AddRange(MerchantList);
+            myList.AddRange(EMTList);
+            myList.AddRange(PoliceList);
+            myList.AddRange(FirefighterList);
+            return myList;
+        }
+    }
     public List<PedExt> Citizens
     {
         get
@@ -460,7 +474,7 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Civilian);
             }
         }
-        Police.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        Police.RemoveAll(x => x.CanRemove);// || x.Handle == Game.LocalPlayer.Character.Handle);
         EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Merchants.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);

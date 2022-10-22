@@ -111,7 +111,7 @@ public class InventoryMenu : Menu
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (ActionablePlayer.CanPerformActivities)
+        if (ActionablePlayer.ActivityManager.CanPerformActivities)
         {
             EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
             ModItem selectedModItem = ModItems.Get(selectedItem.Text);
@@ -121,12 +121,12 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        ActionablePlayer.StartConsumingActivity(selectedModItem, false);
+                        ActionablePlayer.ActivityManager.StartConsumingActivity(selectedModItem, false);
 
                     }
                     else
                     {
-                        ActionablePlayer.StartConsumingActivity(selectedModItem, true);
+                        ActionablePlayer.ActivityManager.StartConsumingActivity(selectedModItem, true);
                     }
                     InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
                     if (ii != null)

@@ -39,7 +39,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
@@ -94,7 +94,7 @@ namespace LosSantosRED.lsr.Player
         {
             Player.WeaponEquipment.SetUnarmed();
             AttachItemToHand();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
@@ -114,7 +114,7 @@ namespace LosSantosRED.lsr.Player
             }
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             if (!CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
                 EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion", 5);
@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

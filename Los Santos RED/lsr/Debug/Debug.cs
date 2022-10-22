@@ -67,7 +67,7 @@ public class Debug
     private MusicGuru.MusicPlayerOld MusicPlayerOld;
     private ModDataFileManager ModDataFileManager;
 
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time,Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs,Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -450,12 +450,12 @@ public class Debug
 
 
         VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
-        if(myCar != null && myCar.Vehicle.Exists())
+        if (myCar != null && myCar.Vehicle.Exists())
         {
             NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(myCar.Vehicle, true);
             Game.DisplayHelp("Set Light State");
         }
-       // return;
+        // return;
         // Player.ResetScannerDebug();
         //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
@@ -494,7 +494,7 @@ public class Debug
 
         //    //}
         //}
-            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
         {
             Player.CurrentVehicle.HasUpdatedPlateType = true;
 
@@ -720,7 +720,7 @@ public class Debug
     {
         Player.CellPhone.CloseBurner();
         GameFiber.Sleep(1000);
-     //   SpawnGunAttackers();
+        //   SpawnGunAttackers();
 
         //GameFiber.StartNew(delegate
         //{
@@ -1009,7 +1009,7 @@ public class Debug
         //    GameFiber.Yield();
         //}
         Game.DisplaySubtitle("Audio Finished");
-     
+
     }
     public void DebugNumpad8()
     {
@@ -1045,11 +1045,11 @@ public class Debug
                     NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, false);
 
                     NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, false);
-                   // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, false);
+                    // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, false);
 
 
                     bool hasStuff = false;
-                    if(NativeFunction.Natives.DOES_PICKUP_OF_TYPE_EXIST_IN_AREA<bool>(4189041807,Game.LocalPlayer.Character.Position.X,Game.LocalPlayer.Character.Position.Y,Game.LocalPlayer.Character.Position.Z,10f))
+                    if (NativeFunction.Natives.DOES_PICKUP_OF_TYPE_EXIST_IN_AREA<bool>(4189041807, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 10f))
                     {
                         hasStuff = true;
                     }
@@ -1065,7 +1065,7 @@ public class Debug
                 //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, true);
 
                 NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, true);
-               // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, true);
+                // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, true);
 
             }, "Run Debug Logic");
 
@@ -1182,7 +1182,10 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        DisableAllSpawning();
+
+        SetPropAttachment();
+        //DisplaySprite();
+        //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
     }
 
@@ -1242,9 +1245,50 @@ public class Debug
             }
         }, "Run Debug Logic");
 
-        
-    }
 
+    }
+    private void DisplaySprite()
+    {
+
+
+
+        string dictionaryName = NativeHelper.GetKeyboardInput("shared");
+        if (dictionaryName != "")
+        {
+            NativeFunction.Natives.REQUEST_STREAMED_TEXTURE_DICT(dictionaryName, false);
+
+            string textureName = NativeHelper.GetKeyboardInput("newstar_32");
+
+            if (textureName != "")
+            {
+                GameFiber.StartNew(delegate
+                {
+                    uint GameTimeStarted = Game.GameTime;
+                    while (!NativeFunction.Natives.HAS_STREAMED_TEXTURE_DICT_LOADED<bool>(dictionaryName) || Game.GameTime - GameTimeStarted <= 500)
+                    {
+                        GameFiber.Yield();
+                    }
+
+                    if (NativeFunction.Natives.HAS_STREAMED_TEXTURE_DICT_LOADED<bool>(dictionaryName))
+                    {
+                        while (Game.GameTime - GameTimeStarted <= 3000)
+                        {
+
+                            NativeFunction.Natives.DRAW_SPRITE(dictionaryName, textureName, 0.5f, 0.5f, 0.3f, 0.3f, 0f, 255, 255, 255, 255, false, false);
+                            NativeFunction.Natives.DRAW_SPRITE(dictionaryName, textureName, 0.7f, 0.7f, 0.3f, 0.3f, 0f, 255, 255, 255, 100, false, false);
+                            GameFiber.Yield();
+                        }
+                    }
+
+                }, "Run Debug Logic");
+
+                GameFiber.Sleep(1000);//so it doesnt start another
+            }
+
+        }
+
+
+    }
     public enum PathnodeFlags
     {
         Slow = 1,
@@ -1299,7 +1343,7 @@ public class Debug
     }
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("prop_cigar_02");
+        string PropName = NativeHelper.GetKeyboardInput("prop_cs_police_torch");
         Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
         GameFiber.Yield();
 
@@ -1311,7 +1355,7 @@ public class Debug
 
 
         string wantedBone = NativeHelper.GetKeyboardInput("Head");
-        if(wantedBone == "RHand")
+        if (wantedBone == "RHand")
         {
             boneName = handRBoneName;
         }
@@ -1326,19 +1370,34 @@ public class Debug
         isPrecise = false;
         if (SmokedItem.Exists())
         {
-            AttachItem(SmokedItem, boneName, Offset, Rotation);
+            //Specific for umbrella
+
+            //AnimationDictionary.RequestAnimationDictionay("doors@");
+            // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+
+            AnimationDictionary.RequestAnimationDictionay("anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base");
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base", "base", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+
+
+
+            AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+
+
+
             GameFiber.StartNew(delegate
             {
                 while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
                 {
-                    if(Game.GameTime - GameTimeLastAttached >= 100 &&  CheckAttachmentkeys())
+                    if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
                     {
                         AttachItem(SmokedItem, boneName, Offset, Rotation);
                         GameTimeLastAttached = Game.GameTime;
                     }
 
 
-                    if(Game.IsKeyDown(Keys.B))
+                    if (Game.IsKeyDown(Keys.B))
                     {
                         EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                     }
@@ -1351,7 +1410,7 @@ public class Debug
                     GameFiber.Yield();
                 }
 
-                if(SmokedItem.Exists())
+                if (SmokedItem.Exists())
                 {
                     SmokedItem.Delete();
                 }
@@ -1363,7 +1422,7 @@ public class Debug
         if (SmokedItem.Exists())
         {
             SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, boneName), offset, rotator);
-            
+
         }
     }
     private bool CheckAttachmentkeys()
@@ -1417,7 +1476,7 @@ public class Debug
             Rotation = new Rotator(Rotation.Pitch, Rotation.Roll + rotatorOFfset, Rotation.Yaw);
             return true;
         }
-        else if (Game.IsKeyDownRightNow(Keys.L))//YR Down?
+        else if (Game.IsKeyDownRightNow(Keys.L) || Game.IsKeyDownRightNow(Keys.OemPeriod))//YR Down?
         {
             Rotation = new Rotator(Rotation.Pitch, Rotation.Roll - rotatorOFfset, Rotation.Yaw);
             return true;

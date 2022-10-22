@@ -15,23 +15,24 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         Inventory Inventory { get; }
         Properties Properties { get; }
-        bool IsInteractingWithLocation { get; set; }
+        ActivityManager ActivityManager { get; }
+     //   bool IsInteractingWithLocation { get; set; }
         Ped Character { get; }
         bool CharacterModelIsFreeMode { get; }
-        bool CanConverse { get; }
+     //   bool CanConverse { get; }
         string FreeModeVoice { get; }
         Vector3 Position { get; }
         bool IsTransacting { get; set; }
         bool IsMoveControlPressed { get; }
         bool IsDoingSuspiciousActivity { get; set; }
-        bool CanPerformActivities { get; }
+     //   bool CanPerformActivities { get; }
         WeaponEquipment WeaponEquipment { get; }
         VehicleOwnership VehicleOwnership { get; }
         RelationshipManager RelationshipManager { get; }
-        bool IsPerformingActivity { get; }
+      //  bool IsPerformingActivity { get; }
         Licenses Licenses { get; }
         string PlayerName { get; }
-        bool IsConversing { get; set; }
+     //   bool IsConversing { get; set; }
         bool IsAliveAndFree { get; }
         bool IsInVehicle { get; }
         float VehicleSpeedMPH { get; }
@@ -49,8 +50,8 @@ namespace LosSantosRED.lsr.Interface
         HealthManager HealthManager { get; }
         Rage.Object CurrentLookedAtObject { get; }
 
-        void StopDynamicActivity();
-        void StartConsumingActivity(ModItem modItem, bool v);
+      //  void StopDynamicActivity();
+     //   void StartConsumingActivity(ModItem modItem, bool v);
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);
     }

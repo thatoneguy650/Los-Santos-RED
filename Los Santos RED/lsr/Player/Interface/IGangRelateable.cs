@@ -19,14 +19,15 @@ namespace LosSantosRED.lsr.Interface
         Licenses Licenses { get; }
         BankAccounts BankAccounts { get; }
         LocationData CurrentLocation { get; }
+        ActivityManager ActivityManager { get; }
+        Destinations Destinations { get; }
+        CriminalHistory CriminalHistory { get; }
+
         bool IsWanted { get; }
         int WantedLevel { get; }
         string PlayerName { get; }
-        List<Crime> WantedCrimes { get; }
         Ped Character { get; }
         bool IsNotWanted { get; }
-        Destinations Destinations { get; }
         void SetDenStatus(Gang gang, bool v);
-        void StopDynamicActivity();
     }
 }

@@ -39,6 +39,11 @@
     public float SpeedLimitIconX { get; set; }
     public float SpeedLimitIconY { get; set; }
 
+
+
+    public float AffiliationCenterX { get; set; }
+    public float AffiliationCenterY { get; set; }
+
     public ActionWheelSettings()
     {
         SetDefault();
@@ -86,5 +91,8 @@
         SpeedLimitIconScale = 0.35f;
         SpeedLimitIconX = 0.6f;
         SpeedLimitIconY = 0.98f;
+
+        AffiliationCenterX = 0.92f;
+        AffiliationCenterY = 0.55f;
     }
 }

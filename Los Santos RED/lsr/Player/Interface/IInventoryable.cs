@@ -19,10 +19,12 @@ namespace LosSantosRED.lsr.Interface
         VehicleOwnership VehicleOwnership { get; }
         Inventory Inventory { get; }
         BankAccounts BankAccounts { get; }
-        bool IsPerformingActivity { get; }
+        ActivityManager ActivityManager { get; }
+        //bool IsPerformingActivity { get; }
         Ped Character { get; }
         bool IsCop { get; set; }
 
         void DisplayPlayerNotification();
+        void SetCopStatus(bool isCop, Agency toset);
     }
 }

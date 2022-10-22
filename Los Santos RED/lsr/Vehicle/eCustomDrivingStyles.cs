@@ -18,6 +18,8 @@ public enum eCustomDrivingStyles
 
     Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight,
 
+
+    Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay,
     //8 = avoid empty vehicles
     //256 use blinkers
     //AllowMedianCrossing is mostly called take shortest path

@@ -71,12 +71,12 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
         }
         public override void Continue()
         {
-            if (Player.CanPerformActivities)
+            if (Player.ActivityManager.CanPerformActivities)
             {
                 Setup();
                 ShouldContinue = true;
@@ -85,7 +85,7 @@ namespace LosSantosRED.lsr.Player
         public override void Pause()
         {
             isPaused = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         public override bool IsPaused() => isPaused;
         public override void Start()
@@ -151,7 +151,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
             Idle();
         }
         private void Exit()
@@ -166,7 +166,7 @@ namespace LosSantosRED.lsr.Player
                 LighterItem.Detach();
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
             EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
             GameFiber.Sleep(5000);
@@ -188,7 +188,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
-            while (Player.CanPerformActivities && !IsCancelled && !isPaused)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && !isPaused)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)

@@ -59,7 +59,7 @@ public class HoldUp : Interaction
     private void EnterHandsUp()
     {
         SayAvailableAmbient(Player.Character, new List<string>() { "GUN_DRAW", "CHALLENGE_THREATEN", "CHALLENGE_ACCEPTED_GENERIC" }, false);
-        Player.IsHoldingUp = true;
+        Player.ActivityManager.IsHoldingUp = true;
         GameTimeStartedHoldingUp = Game.GameTime;
         if (Target.IsInVehicle && Target.Pedestrian.CurrentVehicle.Exists())
         {
@@ -188,7 +188,7 @@ public class HoldUp : Interaction
             }
             GameFiber.Yield();
         }
-        Player.IsHoldingUp = false;
+        Player.ActivityManager.IsHoldingUp = false;
         Player.IsCarJacking = false;
         CleanUp();
     }
@@ -201,7 +201,7 @@ public class HoldUp : Interaction
             Target.CanBeTasked = true;
             NativeFunction.Natives.CLEAR_PED_TASKS(Target.Pedestrian);
         }
-        Player.IsHoldingUp = false;
+        Player.ActivityManager.IsHoldingUp = false;
         Player.IsCarJacking = false;
     }
     private void CreateMoneyDrop()

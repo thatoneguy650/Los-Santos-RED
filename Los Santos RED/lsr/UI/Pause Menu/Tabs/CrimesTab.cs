@@ -36,9 +36,9 @@ public class CrimesTab
             TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("Crimes", menuItems2);
            TabView.AddTab(interactiveListItem2);
         }
-        else if (Player.WantedCrimes != null)
+        else if (Player.CriminalHistory.WantedCrimes != null)
         {
-            foreach (Crime crime in Player.WantedCrimes.OrderByDescending(x => x.ResultingWantedLevel))
+            foreach (Crime crime in Player.CriminalHistory.WantedCrimes.OrderByDescending(x => x.ResultingWantedLevel))
             {
                 menuItems2.Add(new UIMenuItem(crime.Name, "") { RightLabel = $"Wanted Level: {crime.ResultingWantedLevel}" });
                 addedItems = true;

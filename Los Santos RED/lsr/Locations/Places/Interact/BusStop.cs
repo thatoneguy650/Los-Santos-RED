@@ -48,7 +48,7 @@ public class BusStop : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
 
             GameFiber.StartNew(delegate
@@ -64,7 +64,7 @@ public class BusStop : InteractableLocation
                 ProcessInteractionMenu();
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "HotelInteract");
         }

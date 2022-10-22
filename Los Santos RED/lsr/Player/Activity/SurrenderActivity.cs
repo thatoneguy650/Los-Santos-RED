@@ -30,7 +30,7 @@ public class SurrenderActivity : DynamicActivity
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
-    public bool IsCommitingSuicide { get; set; }
+    //public bool IsCommitingSuicide { get; set; }
 
     public bool IsWavingHands { get; private set; }
     public bool HandsAreUp { get; private set; }
@@ -61,7 +61,7 @@ public class SurrenderActivity : DynamicActivity
             HandsAreUp = false; // You put your hands down
             IsWavingHands = false;
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
     }
     public void RaiseHands()

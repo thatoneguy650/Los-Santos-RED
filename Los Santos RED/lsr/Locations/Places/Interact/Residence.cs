@@ -88,7 +88,7 @@ public class Residence : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
 
             GameFiber.StartNew(delegate
@@ -120,7 +120,7 @@ public class Residence : InteractableLocation
                 StoreCamera.Dispose();
 
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "ResidenceInteract");
         }

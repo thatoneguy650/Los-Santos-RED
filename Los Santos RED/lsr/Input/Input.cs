@@ -93,26 +93,26 @@ namespace LosSantosRED.lsr
         }
         private void GeneralControlCheck()
         {
-            if (Player.IsPerformingActivity)
+            if (Player.ActivityManager.IsPerformingActivity)
             {
                 if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
                 {
-                    Player.CancelCurrentActivity();
+                    Player.ActivityManager.CancelCurrentActivity();
                 }
                 else if (Player.ButtonPrompts.IsPressed("ActivityControlPause"))
                 {
-                    Player.PauseCurrentActivity();
+                    Player.ActivityManager.PauseCurrentActivity();
                 }
             }
             else
             {
                 if (Player.ButtonPrompts.IsPressed("ActivityControlContinue"))
                 {
-                    Player.ContinueCurrentActivity();
+                    Player.ActivityManager.ContinueCurrentActivity();
                 }
                 if (Player.ButtonPrompts.IsPressed("ActivityControlCancel"))
                 {
-                    Player.CancelCurrentActivity();
+                    Player.ActivityManager.CancelCurrentActivity();
                 }
             }
 
@@ -124,32 +124,32 @@ namespace LosSantosRED.lsr
 
             if (Player.ButtonPrompts.IsGroupPressed("StartConversation"))//Player.ButtonPromptList.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
             {
-                Player.StartConversation();
+                Player.ActivityManager.StartConversation();
             }
             else if (Player.ButtonPrompts.IsGroupPressed("StartTransaction"))//Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
             {
-                Player.StartTransaction();
+                Player.ActivityManager.StartTransaction();
             }
             else if (Player.ButtonPrompts.IsGroupPressed("InteractableLocation"))//Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
             {
-                Player.StartLocationInteraction();
+                Player.ActivityManager.StartLocationInteraction();
             }
             else if (Player.ButtonPrompts.IsGroupPressed("Search"))//Player.ButtonPromptList.Any(x => x.Group == "Search" && x.IsPressedNow))//string for now...
             {
-                Player.LootPed();
+                Player.ActivityManager.LootPed();
             }
             else if (Player.ButtonPrompts.IsGroupPressed("Drag"))//Player.ButtonPromptList.Any(x => x.Group == "Drag" && x.IsPressedNow))//string for now...
             {
-                Player.DragPed();
+                Player.ActivityManager.DragPed();
             }
             else if (Player.ButtonPrompts.IsGroupPressed("Grab"))//Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
             {
-                Player.GrabPed();
+                Player.ActivityManager.GrabPed();
             }
 
             if (Player.ButtonPrompts.IsGroupPressed("StartScenario"))//Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
-                Player.StartScenario();
+                Player.ActivityManager.StartScenario();
             }
 
 
@@ -159,7 +159,7 @@ namespace LosSantosRED.lsr
             }
             if (Player.ButtonPrompts.IsGroupPressed("Sit"))
             {
-                Player.StartSittingDown(true, true);
+                Player.ActivityManager.StartSittingDown(true, true);
             }
 
             if (!Player.IsInVehicle)
@@ -215,7 +215,7 @@ namespace LosSantosRED.lsr
             if (IsPressingGesture)
             {
                 EntryPoint.WriteToConsole("Gesture Start Hotkey");
-                Player.Gesture();
+                Player.ActivityManager.Gesture();
             }
         } 
         private void VehicleControlCheck()
@@ -261,7 +261,7 @@ namespace LosSantosRED.lsr
                 {
                     if (IsPressingDoorClose)
                     {
-                        Player.CloseDriverDoor();
+                        Player.ActivityManager.CloseDriverDoor();
                         GameTimeLastPressedDoorClose = Game.GameTime;
                     }
                 }

@@ -49,7 +49,7 @@ public class Morgue : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
 
             LocationTeleporter locationTeleporter = null;
@@ -74,7 +74,7 @@ public class Morgue : InteractableLocation
                 }
 
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "Interact");
         }

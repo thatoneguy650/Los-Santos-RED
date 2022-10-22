@@ -126,7 +126,7 @@ public class HumanShield : DynamicActivity
     }
     private void SetupPlayer()
     {
-        Player.IsHoldingHostage = true;
+        Player.ActivityManager.IsHoldingHostage = true;
     }
     private void SetupHostage()
     {
@@ -489,7 +489,7 @@ public class HumanShield : DynamicActivity
     private void ResetPlayer()
     {
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.IsHoldingHostage = false;
+        Player.ActivityManager.IsHoldingHostage = false;
 
         Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(HostageRG, Relationship.Neutral);
         HostageRG.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Neutral);

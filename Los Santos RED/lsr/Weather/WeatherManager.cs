@@ -13,6 +13,7 @@ using System.Windows.Forms;
 
 public class WeatherManager 
 {
+    private bool EverSetWeather = false;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IWeatherForecasts WeatherForecasts;
@@ -54,11 +55,15 @@ public class WeatherManager
     public void Dispose()
     {
         IsTransitioningWeather = false;
-        NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
-        NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
-        NativeFunction.Natives.x643E26EA6E024D92(-1.0f);
-        NativeFunction.Natives.SET_WIND_SPEED(-1.0f);
-        NativeFunction.Natives.SET_WIND_DIRECTION(1.0f);
+        if (EverSetWeather)
+        {
+            NativeFunction.Natives.CLEAR_WEATHER_TYPE_PERSIST();
+            NativeFunction.Natives.SET_RANDOM_WEATHER_TYPE();
+            NativeFunction.Natives.x643E26EA6E024D92(-1.0f);
+            NativeFunction.Natives.SET_WIND_SPEED(-1.0f);
+            NativeFunction.Natives.SET_WIND_DIRECTION(1.0f);
+        }
+        EverSetWeather = false;
     }      
     public void Update()
     {
@@ -77,6 +82,7 @@ public class WeatherManager
     }
     private void UpdateWeather()
     {
+        EverSetWeather = true;
         if (CurrentSetWeather != closestForecast.GTAWeather)
         {
             EntryPoint.WriteToConsole($"Updating Weather to {closestForecast.GTAWeather} from {CurrentSetWeather}");

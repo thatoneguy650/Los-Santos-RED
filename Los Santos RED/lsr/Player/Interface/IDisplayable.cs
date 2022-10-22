@@ -12,6 +12,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IDisplayable
     {
+        ActivityManager ActivityManager { get; }
         BankAccounts BankAccounts { get; }
         CriminalHistory CriminalHistory { get; }
         ButtonPrompts ButtonPrompts { get; }
@@ -24,7 +25,7 @@ namespace LosSantosRED.lsr.Interface
         Sprinting Sprinting { get; }
         Violations Violations { get; }
         Intoxication Intoxication { get; }
-        bool CanConverseWithLookedAtPed { get; }
+        //bool CanConverseWithLookedAtPed { get; }
         int CellX { get; }
         int CellY { get; }
         Ped Character { get; }
@@ -33,12 +34,12 @@ namespace LosSantosRED.lsr.Interface
         VehicleExt CurrentVehicle { get; }
         bool IsAliveAndFree { get; }
         bool IsBusted { get; }
-        bool IsConversing { get; }
+      //  bool IsConversing { get; }
         bool IsDead { get; }
         bool IsInSearchMode { get; }
         bool IsInVehicle { get; }
         bool IsNotWanted { get; }
-        bool IsPerformingActivity { get; }
+     //   bool IsPerformingActivity { get; }
         bool IsSleeping { get; }
         bool IsTransacting { get; }
         bool IsWanted { get; }
@@ -46,7 +47,7 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedMPH { get; }
         SearchMode SearchMode { get; }
         bool IsStill { get; }
-        bool IsSitting { get; }
+    //   bool IsSitting { get; }
         bool AnyPoliceKnowInteriorLocation { get; }
         HealthManager HealthManager { get; }
         string DebugString { get; }

@@ -35,8 +35,8 @@ namespace LosSantosRED.lsr.Interface
         RelationshipManager RelationshipManager { get; }
         bool RecentlyShot { get; }
         float ClosestPoliceDistanceToPlayer { get; }
-        bool IsHoldingHostage { get; }
-        bool IsCommitingSuicide { get; }
+       // bool IsHoldingHostage { get; }
+      //  bool IsCommitingSuicide { get; }
         Cop ClosestCopToPlayer { get; }
 
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
@@ -50,7 +50,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; }
         bool AnyPoliceKnowInteriorLocation { get; }
 
-
+        ActivityManager ActivityManager { get; }
         //bool IsHostile(Gang gang);
     }
 }

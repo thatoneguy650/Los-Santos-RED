@@ -56,7 +56,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsSitting = false;
+            Player.ActivityManager.IsSitting = false;
             //Player.IsPerformingActivity = false;
         }
         public override void Pause()
@@ -80,12 +80,12 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsSitting = true;
+            Player.ActivityManager.IsSitting = true;
             if (FindSittingProp)
             {
                 if (!GetSittableProp() || !GetSeatCoordinates() || !MoveToSeatCoordinates())
                 {
-                    Player.IsSitting = false;
+                    Player.ActivityManager.IsSitting = false;
                     if (ClosestSittableEntity.Exists())
                     {
                         ClosestSittableEntity.IsPositionFrozen = false;
@@ -127,10 +127,10 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole("Sitting Activity Idle Start");
             StartNewBaseScene();
             float AnimationTime;
-            while (Player.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
-                if(AnimationTime >= 1.0f && !Player.IsPerformingActivity)
+                if(AnimationTime >= 1.0f && !Player.ActivityManager.IsPerformingActivity)
                 {
                     StartNewIdleScene();
                 }
@@ -147,7 +147,7 @@ namespace LosSantosRED.lsr.Player
         private void Exit()
         {
             EntryPoint.WriteToConsole("Sitting Activity Exit Start");
-            Player.PauseCurrentActivity();
+            Player.ActivityManager.PauseCurrentActivity();
             if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
                 Game.FadeScreenOut(500, true);
@@ -155,7 +155,7 @@ namespace LosSantosRED.lsr.Player
                 Player.Character.Heading = StoredPlayerHeading;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Game.FadeScreenIn(500, true);
-                Player.IsSitting = false;         
+                Player.ActivityManager.IsSitting = false;         
             }
             else
             {
@@ -189,7 +189,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                Player.IsSitting = false;
+                Player.ActivityManager.IsSitting = false;
                 GameFiber.Sleep(5000);
             }
 
@@ -217,7 +217,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Data.AnimEnterDictionary, Data.AnimEnter, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
             NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
             float AnimationTime = 0f;
-            while (Player.CanPerformActivities && !IsCancelled && AnimationTime < 1.0f)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && AnimationTime < 1.0f)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 if (Player.IsMoveControlPressed)

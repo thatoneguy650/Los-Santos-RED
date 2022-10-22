@@ -45,7 +45,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
 
     private void SettingsUIMenu_OnMenuOpen(UIMenu sender)
     {
-        Update();
+       // Update();
     }
 
     public override void Hide()

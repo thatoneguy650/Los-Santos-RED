@@ -171,7 +171,7 @@ public class HealthState
             }
             if (Settings.SettingsManager.DamageSettings.AllowPlayerPainYells && Health - prevHealth >= Settings.SettingsManager.DamageSettings.PlayerPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
             {
-                CurrentPlayer.YellInPain();
+                CurrentPlayer.ActivityManager.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;
                 //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
             }

@@ -145,7 +145,7 @@ public class PedSwap : IPedSwap
             }
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.IsCop = false;
+            Player.SetCopStatus(false, null);
             HandlePreviousPed(deleteOld, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
 
@@ -175,7 +175,7 @@ public class PedSwap : IPedSwap
             CurrentPed = Game.LocalPlayer.Character;
             CurrentModelPlayerIs = TargetPed.Model;
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.IsCop = false;
+            Player.SetCopStatus(false, null);
             HandlePreviousPed(true, TargetPed);
             PostLoad(modelName, false, fullName, money, variation, speechSkill);
 
@@ -209,7 +209,8 @@ public class PedSwap : IPedSwap
         NativeFunction.Natives.SET_PED_AS_COP(Player.Character, true);//causes old ped to be deleted!
         //EntryPoint.WriteToConsole($"BecomeRandomCop3: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         //EntryPoint.WriteToConsole($"BecomeRandomCop3: TargetPed ModelName: {TargetPed.Model.Name}", 2);
-        Player.IsCop = true;
+        Player.SetCopStatus(true, toSwapWith.AssignedAgency);
+
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         HandlePreviousPed(false, TargetPed);
@@ -237,7 +238,7 @@ public class PedSwap : IPedSwap
             TargetPed.RandomizeVariation();
             StoreTargetPedData(TargetPed);
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-            Player.IsCop = false;
+            Player.SetCopStatus(false, null);
             HandlePreviousPed(false, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
             GameFiber.Sleep(500);
@@ -274,7 +275,7 @@ public class PedSwap : IPedSwap
                     TargetPed.RandomizeVariation();
                     StoreTargetPedData(TargetPed);
                     NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-                    Player.IsCop = false;
+                    
                     HandlePreviousPed(false, TargetPed);
                     PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
 
@@ -285,10 +286,7 @@ public class PedSwap : IPedSwap
 
 
                     // Player.GangRelationships.SetGang(agency, false);
-                    Player.IsCop = true;
-
-
-
+                    Player.SetCopStatus(true, agency);
 
                     IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons),agency.GetRandomWeapon(false, Weapons));
                     if (RandomItems.RandomPercent(100f))
@@ -346,7 +344,7 @@ public class PedSwap : IPedSwap
                     TargetPed.RandomizeVariation();
                     StoreTargetPedData(TargetPed);
                     NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-                    Player.IsCop = false;
+                    Player.SetCopStatus(false, null);
                     HandlePreviousPed(false, TargetPed);
                     PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
 
@@ -394,7 +392,7 @@ public class PedSwap : IPedSwap
     {
         try
         {
-            Player.IsCop = false;
+            Player.SetCopStatus(false, null);
             Player.ModelName = modelName;
             Player.CurrentModelVariation = variation.Copy();
             Player.PlayerName = fullName;
@@ -436,7 +434,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, false, false);
             Game.LocalPlayer.Character.Position = MyPos;
             Game.LocalPlayer.Character.Heading = MyHeading;
-            Player.IsCop = false;
+            Player.SetCopStatus(false, null);
             HandlePreviousPed(true, TargetPed);
             PostLoad(modelName, false, playerName, money, variation, speechSkill);
         }
@@ -490,11 +488,11 @@ public class PedSwap : IPedSwap
     }
     public void TreatAsCivilian()
     {
-        Player.IsCop = false;
+        Player.SetCopStatus(false, null);
     }
     public void TreatAsCop()
     {
-        Player.IsCop = true;
+        Player.SetCopStatus(true, null);
     }
     private void ActivatePreviousScenarios()
     {

@@ -71,11 +71,11 @@ public class DeadDrop : InteractableLocation
     {
         if (Player.BankAccounts.Money >= Math.Abs(MoneyAmount))
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
             {
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
                 return;
             }
@@ -91,7 +91,7 @@ public class DeadDrop : InteractableLocation
             Deactivate();
             ButtonPromptText = "";
             //ClearActiveGangTasks(Player);
-            Player.IsInteractingWithLocation = false;
+            Player.ActivityManager.IsInteractingWithLocation = false;
         }
         else
         {
@@ -101,10 +101,10 @@ public class DeadDrop : InteractableLocation
     private void DoPickup(ILocationInteractable Player)
     {
         CanInteract = false;
-        Player.IsInteractingWithLocation = true;
+        Player.ActivityManager.IsInteractingWithLocation = true;
         if (!MoveToDrop(Player) || !PlayMoneyAnimation(Player))
         {
-            Player.IsInteractingWithLocation = false;
+            Player.ActivityManager.IsInteractingWithLocation = false;
             CanInteract = true;
             return;
         }
@@ -119,12 +119,12 @@ public class DeadDrop : InteractableLocation
        // SendMessageOnLeaveArea(Player);
         ButtonPromptText = "";
         Deactivate();
-        Player.IsInteractingWithLocation = false;
+        Player.ActivityManager.IsInteractingWithLocation = false;
         //ClearActiveGangTasks(Player);
     }
     private bool PlayMoneyAnimation(ILocationInteractable Player)
     {
-        Player.StopDynamicActivity();
+        Player.ActivityManager.StopDynamicActivity();
         AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
 
         NativeFunction.CallByName<bool>("TASK_PLAY_ANIM", Player.Character, "mp_safehousevagos@", "package_dropoff", 4.0f, -4.0f, 2000, 0, 0, false, false, false);
@@ -134,7 +134,7 @@ public class DeadDrop : InteractableLocation
 
         Player.IsDoingSuspiciousActivity = true;
 
-        while (Player.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
+        while (Player.ActivityManager.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_safehousevagos@", "package_dropoff");

@@ -57,7 +57,7 @@ public class Dealership : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -91,7 +91,7 @@ public class Dealership : InteractableLocation
 
                 StoreCamera.Dispose();
 
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "CarDealershipInteract");

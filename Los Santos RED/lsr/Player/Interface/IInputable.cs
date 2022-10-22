@@ -17,11 +17,11 @@ namespace LosSantosRED.lsr.Interface
         Sprinting Sprinting { get; }
         Stance Stance { get; }  
         SurrenderActivity Surrendering { get; }
-        bool CanCancelCurrentActivity { get; }
-        bool CanConverseWithLookedAtPed { get; }
-        bool CanHoldUpTargettedPed { get; }
-        bool CanPauseCurrentActivity { get; }
-        bool CanPerformActivities { get; }
+       // bool CanCancelCurrentActivity { get; }
+      //  bool CanConverseWithLookedAtPed { get; }
+      //  bool CanHoldUpTargettedPed { get; }
+      //  bool CanPauseCurrentActivity { get; }
+      //  bool CanPerformActivities { get; }
 
         Ped Character { get; }
         VehicleExt CurrentVehicle { get; }
@@ -31,37 +31,37 @@ namespace LosSantosRED.lsr.Interface
         bool IsAiming { get; }
         bool IsAliveAndFree { get; }
         bool IsBusted { get; }
-        bool IsConversing { get; }
+      //  bool IsConversing { get; }
         bool IsCustomizingPed { get; }
         bool IsDisplayingCustomMenus { get; }
-        bool IsInteracting { get; }
+       // bool IsInteracting { get; }
         bool IsInVehicle { get; }
         bool IsMale { get; }
         bool IsMoveControlPressed { get; set; }
         bool IsMoving { get; }
         bool IsNotHoldingEnter { get; set; }
         bool IsNotWanted { get; }
-        bool IsPerformingActivity { get; set; }
+      //  bool IsPerformingActivity { get; set; }
         bool IsPressingFireWeapon { get; set; }
         bool IsWanted { get; }
         bool ReleasedFireWeapon { get; set; }
         int WantedLevel { get; }
         GroupManager GroupManager { get; }
-
-        void CancelCurrentActivity();
-        void CloseDriverDoor();
-        void ContinueCurrentActivity();
-        void DragPed();
-        void Gesture();
-        void GrabPed();
-        void LootPed();
-        void PauseCurrentActivity();
+        ActivityManager ActivityManager { get; }
+     //   void CancelCurrentActivity();
+      //  void CloseDriverDoor();
+        //void ContinueCurrentActivity();
+       // void DragPed();
+      //  void Gesture();
+       // void GrabPed();
+      //  void LootPed();
+       // void PauseCurrentActivity();
         void PlaySpeech(string player, bool v);
-        void StartConversation();
-        void StartLocationInteraction();
-        void StartScenario();
-        void StartSimpleCellphoneActivity();
-        void StartTransaction();
-        void StartSittingDown(bool v1, bool v2);
+     //   void StartConversation();
+     //   void StartLocationInteraction();
+     //   void StartScenario();
+     //   void StartSimpleCellphoneActivity();
+      //  void StartTransaction();
+    //    void StartSittingDown(bool v1, bool v2);
     }
 }

@@ -40,7 +40,7 @@ public class WeaponDropping
                 return CurrentWeaponAmmo;
         }
     }
-    public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed && Player.CanPerformActivities;
+    public bool CanDropWeapon => !DroppingWeapon && !Player.IsInVehicle && Player.IsVisiblyArmed && Player.ActivityManager.CanPerformActivities;
     public void Dispose()
     {
         Suppressed.ForEach(x => x.Unsuppress());

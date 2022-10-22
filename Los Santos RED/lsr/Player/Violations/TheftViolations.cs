@@ -53,7 +53,7 @@ public class TheftViolations
         {
             Violations.AddViolating("DrivingStolenVehicle");//.IsCurrentlyViolating = true;
         }
-        if (Player.IsHoldingUp)
+        if (Player.ActivityManager.IsHoldingUp)
         {
             Violations.AddViolating("Mugging");//.IsCurrentlyViolating = true;
         }

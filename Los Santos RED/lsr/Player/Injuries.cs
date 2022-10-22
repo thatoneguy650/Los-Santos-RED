@@ -296,7 +296,7 @@ public class Injuries
         IsInjured = true;
         CurrentClipset = ClipsetAtCurrentIntensity;
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
-        if (CurrentClipset != "NONE" && !Player.IsSitting && !Player.IsInVehicle)
+        if (CurrentClipset != "NONE" && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
         {
             if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
             {

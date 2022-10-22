@@ -13,6 +13,9 @@ namespace LosSantosRED.lsr.Interface
         PoliceResponse PoliceResponse { get; }
         Intoxication Intoxication { get; }
         SurrenderActivity Surrendering { get; }
+
+        ActivityManager ActivityManager { get; }
+
         bool AnyHumansNear { get; }
         bool AnyPoliceCanHearPlayer { get; }
         bool AnyPoliceCanRecognizePlayer { get; }
@@ -31,13 +34,13 @@ namespace LosSantosRED.lsr.Interface
         bool IsBeingANuisance { get; set; }
         bool IsBreakingIntoCar { get; }
         bool IsChangingLicensePlates { get; }
-        bool IsCommitingSuicide { get; }
+      //  bool IsCommitingSuicide { get; }
         bool IsDealingDrugs { get; }
         bool IsDealingIllegalGuns { get; }
         bool IsDoingSuspiciousActivity { get; }
         bool IsDriver { get; }
-        bool IsHoldingHostage { get; }
-        bool IsHoldingUp { get; }
+     //   bool IsHoldingHostage { get; }
+      //  bool IsHoldingUp { get; }
         bool IsInAirVehicle { get; }
         bool IsInAutomobile { get; }
         bool IsInVehicle { get; }
@@ -55,7 +58,7 @@ namespace LosSantosRED.lsr.Interface
         bool ShouldCheckViolations { get; }
         float VehicleSpeedMPH { get; }
         int WantedLevel { get; }
-        bool IsLootingBody { get; }
+      //  bool IsLootingBody { get; }
 
         void AddCrime(Crime violating, bool v1, Vector3 currentPosition, VehicleExt currentSeenVehicle, WeaponInformation currentSeenWeapon, bool v2, bool announceCrime, bool IsForPlayer);
         void OnVehicleCrashed();

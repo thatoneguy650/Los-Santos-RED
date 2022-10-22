@@ -101,34 +101,23 @@ public class VehicleVariation
 
             foreach(VehicleMod vehicleMod in VehicleMods)
             {
-                NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, vehicleMod.ID, vehicleMod.Output);
+                bool isCustomTires = false;
+                if(vehicleExt.Vehicle.IsBike)
+                {
+                    if (vehicleMod.ID == 24)
+                    {
+                        isCustomTires = true;
+                    }
+                }
+                else
+                {
+                    if (vehicleMod.ID == 23)
+                    {
+                        isCustomTires = true;
+                    }
+                }
+                NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, vehicleMod.ID, vehicleMod.Output, isCustomTires);
             }
-
-
-
-
-
-
-
-            //int customWheelID = 23;
-            //if (vehicleExt.Vehicle.IsBike)
-            //{
-            //    customWheelID = 24;
-            //}
-            //if (HasCustomWheels)
-            //{
-            //    NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, true);
-            //}
-            //else
-            //{
-            //    NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, customWheelID, false);
-            //}
-
-
-
-
-
-
 
             if (Livery != -1)
             {
@@ -147,9 +136,7 @@ public class VehicleVariation
                 NativeFunction.Natives.SET_VEHICLE_CUSTOM_SECONDARY_COLOUR(vehicleExt.Vehicle, CustomSecondaryColor.R, CustomSecondaryColor.G, CustomSecondaryColor.B);
             }
 
-
             NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOURS(vehicleExt.Vehicle, PearlescentColor, WheelColor);
-
             if (Mod1PaintType != 0 || Mod1Color != 0 || Mod1PearlescentColor != 0)
             {
                 NativeFunction.Natives.SET_VEHICLE_MOD_COLOR_1(vehicleExt.Vehicle, Mod1PaintType, Mod1Color, Mod1PearlescentColor);

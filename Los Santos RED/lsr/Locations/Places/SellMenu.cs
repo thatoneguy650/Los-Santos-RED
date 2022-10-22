@@ -553,7 +553,7 @@ public class SellMenu : Menu
             Transaction.OnAmountChanged(CurrentModItem);
             Transaction.OnItemSold(modItem, menuItem, TotalItems);
             //UpdatePropEntryData(modItem, menuItem, myItem);
-            while (Player.IsPerformingActivity)
+            while (Player.ActivityManager.IsPerformingActivity)
             {
                 GameFiber.Sleep(500);
             }

@@ -17,7 +17,7 @@ namespace LosSantosRED.lsr.Player
             Player = consumable;
         }
         public override ModItem ModItem { get; set; }
-        public override string DebugString => $"IsPerformingActivity: {Player.IsPerformingActivity}";
+        public override string DebugString => $"IsPerformingActivity: {Player.ActivityManager.IsPerformingActivity}";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Activity";
@@ -26,7 +26,7 @@ namespace LosSantosRED.lsr.Player
         public override void Cancel()
         {
             IsCancelled = true;
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         public override void Pause()
         {
@@ -47,7 +47,7 @@ namespace LosSantosRED.lsr.Player
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
-            Player.IsPerformingActivity = true;
+            Player.ActivityManager.IsPerformingActivity = true;
 
             if (Player.ClosestScenario != null && Player.ClosestScenario.InternalName.ToUpper().Contains("SEAT"))
             {
@@ -75,11 +75,11 @@ namespace LosSantosRED.lsr.Player
             {
                 Game.DisplayNotification("FAIL");
             }
-            Player.IsPerformingActivity = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         private void Idle()
         {
-            while (Player.CanPerformActivities && !IsCancelled && !Player.IsMoveControlPressed)
+            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && !Player.IsMoveControlPressed)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();

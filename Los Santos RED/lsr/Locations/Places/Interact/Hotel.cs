@@ -56,7 +56,7 @@ public class Hotel : InteractableLocation
         Time = time;
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             GameFiber.StartNew(delegate
             {
@@ -73,7 +73,7 @@ public class Hotel : InteractableLocation
                 }
                 DisposeInteractionMenu();
                 HotelCamera.Dispose();
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 CanInteract = true;
             }, "HotelInteract");
         }

@@ -47,7 +47,7 @@ public class Loot : DynamicActivity
         {
             EntryPoint.WriteToConsole($"Looting Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
 
-            Player.IsLootingBody = true;
+            Player.ActivityManager.IsLootingBody = true;
            // NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             GameFiber.StartNew(delegate
             {
@@ -306,7 +306,7 @@ public class Loot : DynamicActivity
        // Player.SetPlayerToLastWeapon();
 
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.IsLootingBody = false;
+        Player.ActivityManager.IsLootingBody = false;
         //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
     }
     public override void Pause()

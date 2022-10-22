@@ -353,7 +353,11 @@ namespace LosSantosRED.lsr.Data
                 player.HumanState.Thirst.Set(ThirstValue, true);
                 player.HumanState.Hunger.Set(HungerValue, true);
                 player.HumanState.Sleep.Set(SleepValue, true);
-                player.IsCop = IsCop;
+
+
+                player.SetCopStatus(IsCop, null);
+
+                //player.IsCop = IsCop;
 
 
                 EntryPoint.WriteToConsole($"POST LOAD {player.HumanState.DisplayString()}");

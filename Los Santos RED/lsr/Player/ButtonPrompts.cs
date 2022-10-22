@@ -15,7 +15,7 @@ public class ButtonPrompts
     private ISettingsProvideable Settings;
     private bool addedPromptGroup;
 
-    private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.IsInteractingWithLocation && !Player.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
+    private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.ActivityManager.IsInteractingWithLocation && !Player.ActivityManager.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
     {
@@ -216,19 +216,19 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlCancel");
         }
 
-        if (Player.IsPerformingActivity)
+        if (Player.ActivityManager.IsPerformingActivity)
         {
-            if (Player.CanPauseCurrentActivity && !Player.IsCurrentActivityPaused)
+            if (Player.ActivityManager.CanPauseCurrentActivity && !Player.ActivityManager.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlPause", Player.PauseCurrentActivityPrompt, "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                AttemptAddPrompt("ActivityControlPause", Player.ActivityManager.PauseCurrentActivityPrompt, "ActivityControlPause", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
             }
             else
             {
                 RemovePrompts("ActivityControlPause");
             }
-            if (Player.CanCancelCurrentActivity)
+            if (Player.ActivityManager.CanCancelCurrentActivity)
             {
-                AttemptAddPrompt("ActivityControlCancel", Player.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
             }
             else
             {
@@ -238,12 +238,12 @@ public class ButtonPrompts
         }
         else
         {
-            if (Player.CanPauseCurrentActivity && Player.IsCurrentActivityPaused)
+            if (Player.ActivityManager.CanPauseCurrentActivity && Player.ActivityManager.IsCurrentActivityPaused)
             {
-                AttemptAddPrompt("ActivityControlContinue", Player.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
-                if (Player.CanCancelCurrentActivity)
+                AttemptAddPrompt("ActivityControlContinue", Player.ActivityManager.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+                if (Player.ActivityManager.CanCancelCurrentActivity)
                 {
-                    AttemptAddPrompt("ActivityControlCancel", Player.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+                    AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
                 }
                 else
                 {
@@ -271,7 +271,7 @@ public class ButtonPrompts
     }
     private void AttemptAddInteractionPrompts()
     {
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
+        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
         {
             PersonInteractingPrompts();
             addedPromptGroup = true;
@@ -285,7 +285,7 @@ public class ButtonPrompts
     private void AttemptAddAdvancedInteractionPrompts()
     {
 
-            if(Player.CanRecruitLookedAtGangMember && !Player.IsConversing)
+            if(Player.ActivityManager.CanRecruitLookedAtGangMember && !Player.ActivityManager.IsConversing)
             {
                 PersonRecruitingPrompts();
                 addedPromptGroup = true;
@@ -298,7 +298,7 @@ public class ButtonPrompts
 
         if (!addedPromptGroup)
         {
-            if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.CanPerformActivities && !Player.IsPerformingActivity && Player.CanPerformActivities && !Player.IsSitting && !Player.IsInVehicle)
+            if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
             {
                 SittingPrompts();
                 addedPromptGroup = true;
@@ -315,7 +315,7 @@ public class ButtonPrompts
 
         if (!addedPromptGroup)
         {
-            if (Player.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
+            if (Player.ActivityManager.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
             {
                 PersonLootingPrompts();
                 addedPromptGroup = true;
@@ -324,7 +324,7 @@ public class ButtonPrompts
             {
                 Prompts.RemoveAll(x => x.Group == "Search");
             }
-            if (Player.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
+            if (Player.ActivityManager.CanDragLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowDraggingOtherPeds)
             {
                 PersonDraggingPrompts();
                 addedPromptGroup = true;
@@ -335,7 +335,7 @@ public class ButtonPrompts
             }
         }
 
-        if (Player.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        if (Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;
@@ -379,7 +379,7 @@ public class ButtonPrompts
 
     private void AttemptAddLocationPrompts()
     {
-        if (!addedPromptGroup && !Player.IsInteracting && CanInteractWithClosestLocation)//no cops around
+        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && CanInteractWithClosestLocation)//no cops around
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;
@@ -391,7 +391,7 @@ public class ButtonPrompts
 
 
 
-        if (!addedPromptGroup && !Player.IsInteracting && Player.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
+        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();
             addedPromptGroup = true;

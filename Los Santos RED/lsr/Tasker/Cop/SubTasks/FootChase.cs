@@ -33,7 +33,7 @@ public class FootChase
         WriteTicket,
         SimpleLook,
     }
-    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.IsHoldingHostage && !Player.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
     private bool ShouldAimTaser => Player.WantedLevel > 1;
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings)
     {
@@ -146,7 +146,7 @@ public class FootChase
     {
         LocalDistance = Ped.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character);
         GoToDistance = 4f;//4f;
-        if (Player.IsHoldingHostage || Player.IsCommitingSuicide)
+        if (Player.ActivityManager.IsHoldingHostage || Player.ActivityManager.IsCommitingSuicide)
         {
             GoToDistance = 10f;
         }

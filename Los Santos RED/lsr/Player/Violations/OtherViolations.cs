@@ -38,7 +38,7 @@ public class OtherViolations
     }
     public void Update()
     {
-        if (Player.IsCommitingSuicide)
+        if (Player.ActivityManager.IsCommitingSuicide)
         {
             Violations.AddViolating("AttemptingSuicide");
         }
@@ -121,7 +121,7 @@ public class OtherViolations
         {
             Violations.AddViolating("DealingGuns");
         }
-        if (Player.IsHoldingHostage)
+        if (Player.ActivityManager.IsHoldingHostage)
         {
             Violations.AddViolating("Kidnapping");
         }
@@ -133,7 +133,7 @@ public class OtherViolations
         {
             Violations.AddViolating("PublicVagrancy");
         }
-        if (Player.IsLootingBody)
+        if (Player.ActivityManager.IsLootingBody)
         {
             Violations.AddViolating("Mugging");
         }

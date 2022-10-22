@@ -83,7 +83,7 @@ public class GasPump : InteractableLocation
 
         if (CanInteract)
         {
-            Player.IsInteractingWithLocation = true;
+            Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
@@ -104,7 +104,7 @@ public class GasPump : InteractableLocation
                 }
                 DisposeInteractionMenu();
                 FullDispose();
-                Player.IsInteractingWithLocation = false;
+                Player.ActivityManager.IsInteractingWithLocation = false;
                 Player.IsTransacting = false;
                 CanInteract = true;
             }, "Gas Station Interact");
