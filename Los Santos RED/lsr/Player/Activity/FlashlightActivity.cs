@@ -342,5 +342,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(animIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(animExitDictionary);
         }
+
+
     }
 }

@@ -5,6 +5,7 @@ using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -376,6 +377,105 @@ namespace LosSantosRED.lsr.Data
         public override string ToString()
         {
             return $"{PlayerName}";//base.ToString();
+        }
+
+        public TabMissionSelectItem SaveTabInfo(ITimeReportable time, IGangs gangs)
+        {
+            List<MissionInformation> saveMissionInfos = new List<MissionInformation>();
+
+            MissionInformation demographicsSubTab = new MissionInformation("Demographics", "", DemographicsInfo());
+            saveMissionInfos.Add(demographicsSubTab);
+
+            MissionInformation affiliationsSubTab = new MissionInformation("Affiliations", "", AffiliationsInfo(gangs));
+            saveMissionInfos.Add(affiliationsSubTab);
+
+            MissionInformation needsSubTab = new MissionInformation("Human State", "", HumanStateInfo());
+            saveMissionInfos.Add(needsSubTab);
+
+            MissionInformation licensesSubTab = new MissionInformation("Licenses", "", LicenseInfo(time));
+            saveMissionInfos.Add(licensesSubTab);
+
+            MissionInformation vehiclesSubTab = new MissionInformation("Vehicles", "", VehicleInfo());
+            saveMissionInfos.Add(vehiclesSubTab);
+
+            MissionInformation weaponsSubTab = new MissionInformation("Weapons", "", WeaponInfo());
+            saveMissionInfos.Add(weaponsSubTab);
+
+            MissionInformation residenceSubTab = new MissionInformation("Residences", "", ResidenceInfo());
+            saveMissionInfos.Add(residenceSubTab);
+            MissionInformation loadSubTab = new MissionInformation("Load", "", new List<Tuple<string, string>>());
+            saveMissionInfos.Add(loadSubTab);
+
+            MissionInformation deleteSubTab = new MissionInformation("Delete", "", new List<Tuple<string, string>>());
+            saveMissionInfos.Add(deleteSubTab);
+
+            TabMissionSelectItem GameSaveEntry = new TabMissionSelectItem($"{PlayerName}~s~", saveMissionInfos);
+            return GameSaveEntry;
+        }
+
+
+
+        private List<Tuple<string, string>> DemographicsInfo()
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            toreturn.Add(Tuple.Create("Name:", PlayerName));
+            toreturn.Add(Tuple.Create("Money:", Money.ToString("C0")));
+            toreturn.Add(Tuple.Create("Model Name:", ModelName));       
+            return toreturn;
+        }
+        private List<Tuple<string, string>> AffiliationsInfo(IGangs gangs)
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));
+            //Gang myGang = gangs?.GetGang(GangKickSave?.GangID);
+            //if (myGang != null)
+            //{
+            //    toreturn.Add(Tuple.Create("Gang:", myGang.ColorInitials));
+            //}
+            return toreturn;
+        }
+        private List<Tuple<string, string>> HumanStateInfo()
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            toreturn.Add(Tuple.Create("Thirst:", $"{Math.Round(ThirstValue, 0)}%"));
+            toreturn.Add(Tuple.Create("Hunger:", $"{Math.Round(HungerValue, 0)}%"));
+            toreturn.Add(Tuple.Create("Sleep:", $"{Math.Round(SleepValue, 0)}%"));
+            return toreturn;
+        }
+        private List<Tuple<string, string>> LicenseInfo(ITimeReportable time)
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            toreturn.Add(Tuple.Create("Drivers License:", DriversLicense?.IsValid(time) == true ? "Valid" : "Not Available"));
+            toreturn.Add(Tuple.Create("CCW License:", CCWLicense?.IsValid(time) == true ? "Valid" : "Not Available"));
+            toreturn.Add(Tuple.Create("Pilots License:", PilotsLicense?.IsValid(time) == true ? "Valid" : "Not Available"));
+            return toreturn;
+        }
+        private List<Tuple<string, string>> VehicleInfo()
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            foreach (VehicleSaveStatus savedVehicles in OwnedVehicleVariations)
+            {
+                toreturn.Add(Tuple.Create("Vehicle:", savedVehicles.ModelName));
+            }
+            return toreturn;
+        }
+        private List<Tuple<string, string>> WeaponInfo()
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            foreach (StoredWeapon wi in WeaponInventory)
+            {
+                toreturn.Add(Tuple.Create("Weapon:", wi.WeaponHash.ToString()));
+            }
+            return toreturn;
+        }
+        private List<Tuple<string, string>> ResidenceInfo()
+        {
+            List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
+            foreach (SavedResidence wi in SavedResidences)
+            {
+                toreturn.Add(Tuple.Create("Residence:", wi.Name));
+            }
+            return toreturn;
         }
     }
 

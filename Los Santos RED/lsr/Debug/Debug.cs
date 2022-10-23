@@ -1183,7 +1183,8 @@ public class Debug
     private void DebugNumpad9()
     {
 
-        SetPropAttachment();
+        AlertMessage();
+        //SetPropAttachment();
         //DisplaySprite();
         //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
@@ -1513,6 +1514,61 @@ public class Debug
 
         NativeFunction.Natives.RELEASE_SOUND_ID(HangUpSoundID);
 
+    }
+
+    private void AlertMessage()
+    {
+        PopUpWarning popUpWarning = new PopUpWarning("exit to windows","Are you sure you want to exit to the desktop","",Player.ButtonPrompts, Settings);
+        popUpWarning.Setup();
+        popUpWarning.Show();
+        GameFiber.StartNew(delegate
+        {
+            while (!popUpWarning.IsAnswered)
+            {
+                GameFiber.Yield();
+            }
+            EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{popUpWarning.IsAccepted} IsRejected{popUpWarning.IsRejected}");
+        }, "Run Debug Logic");
+
+
+    }
+    private void ScriptedAnimation()
+    {
+        //unsafe
+        //{
+        //    long* Var31 = null;
+        //    long* Var32 = null;
+
+        //    Var31[4] = 1065353216;
+        //    Var31[5] = 1065353216;
+        //    Var31[9] = 1065353216;
+        //    Var31[10] = 1065353216;
+        //    Var31[14] = 1065353216;
+        //    Var31[17] = 1065353216;
+        //    Var31[18] = 1065353216;
+        //    Var31[19] = 1065353216;
+
+        //    Var32[4] = 1065353216;
+        //    Var32[5] = 1065353216;
+        //    Var32[9] = 1065353216;
+        //    Var32[10] = 1065353216;
+        //    Var32[14] = 1065353216;
+        //    Var32[15] = 1065353216;
+        //    Var32[17] = 1065353216;
+        //    Var32[18] = 1065353216;
+        //    Var32[19] = 1065353216;
+
+        //    Var31 = (long*)1L;
+        //    Var31[1] = "";
+        //    Var31[4] = 1065353216;
+        //    Var31[4] = 1065353216;
+        //    Var31[4] = 1065353216;
+        //    Var31[4] = 1065353216;
+
+
+        //    NativeFunction.CallByName<int>("TASK_SCRIPTED_ANIMATION", Game.LocalPlayer.Character, &Var31, &Var32, &Var32, 0.0f, 0.25f);
+        //    //NativeFunction.Natives.TASK_SCRIPTED_ANIMATION(Game.LocalPlayer.Character,);
+        //}
     }
 
     private void HighlightObject()

@@ -110,7 +110,22 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
+
+
+
+
         //The Submenus have already added their items
+        UIMenuItem ShowSaveMenu = new UIMenuItem("Game Saves", "Shows a list of the players saves.");
+        ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Barber;
+        ShowSaveMenu.Activated += (s, e) =>
+        {
+            UI.ToggleSavePauseMenu();
+            Main.Visible = false;
+        };
+        Main.AddItem(ShowSaveMenu);
+
+
+
         UIMenuItem AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         AboutMenu.Activated += (s, e) =>

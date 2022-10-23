@@ -522,8 +522,10 @@
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
     <Compile Include="lsr\UI\Other\MarkerManager.cs" />
+    <Compile Include="lsr\UI\Other\PopUpWarning.cs" />
     <Compile Include="lsr\UI\Other\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
+    <Compile Include="lsr\UI\Pause Menu\SavePauseMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\CrimesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\DynamicGangTab.cs" />
@@ -535,6 +537,7 @@
     <Compile Include="lsr\UI\Other\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\MessagesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\PhoneRepliesTab.cs" />
+    <Compile Include="lsr\UI\Pause Menu\Tabs\SaveGameTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\TextMessagesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\VehiclesTab.cs" />
     <Compile Include="lsr\UI\Other\Util.cs" />

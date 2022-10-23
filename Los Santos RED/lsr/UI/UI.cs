@@ -51,6 +51,7 @@ public class UI : IMenuProvideable
     private Fader PlayerFader;
     private bool playerIsInVehicle = false;
     private PlayerInfoMenu PlayerInfoMenu;
+    private SavePauseMenu SavePauseMenu;
     private ISettingsProvideable Settings;
     private Texture Sign10;
     private Texture Sign15;
@@ -124,6 +125,10 @@ public class UI : IMenuProvideable
         PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
         //WeaponFader = new Fader(Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.WeaponDisplayTimeToFade, "WeaponFader");
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, Counties);
+
+
+        SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, Counties, gameSaves, pedSwap,playerinventory, saveablePlayer);
+
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
        // BarDisplay = new BarDisplay(DisplayablePlayer, Settings);
@@ -139,6 +144,7 @@ public class UI : IMenuProvideable
 
         MainMenu.Setup();
         PlayerInfoMenu.Setup();
+        SavePauseMenu.Setup();
         MessagesMenu.Setup();
         AboutMenu.Setup();
         ActionPopUpMenu.Setup();
@@ -159,7 +165,7 @@ public class UI : IMenuProvideable
 
     public void Tick1()
     {
-        if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible)
+        if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen)
         {
             DisplayLowerRightMenu();
 
@@ -178,7 +184,10 @@ public class UI : IMenuProvideable
                 ActionPopUpMenu.Draw();
             }
         }
-        DisplayTopMenu();
+        if (!EntryPoint.ModController.IsDisplayingAlertScreen)
+        {
+            DisplayTopMenu();
+        }
         MenuUpdate();
 
         MarkerManager.Update();
@@ -1082,6 +1091,7 @@ public class UI : IMenuProvideable
         TimerBarPool.Draw();
         MenuPool.ProcessMenus();
         PlayerInfoMenu.Update();
+        SavePauseMenu.Update();
         MessagesMenu.Update();
         AboutMenu.Update();
     }
@@ -1338,6 +1348,11 @@ public class UI : IMenuProvideable
     {
         PlayerInfoMenu.Toggle();
     }
+    public void ToggleSavePauseMenu()
+    {
+        SavePauseMenu.Toggle();
+    }
+
     public void ToggleMessagesMenu()
     {
         MessagesMenu.Toggle();

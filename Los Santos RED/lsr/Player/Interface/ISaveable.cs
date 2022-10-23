@@ -28,5 +28,6 @@ namespace LosSantosRED.lsr.Interface
         Ped Character { get; }
         int SpeechSkill { get; }
         bool IsCop { get; }
+        ButtonPrompts ButtonPrompts { get; }
     }
 }

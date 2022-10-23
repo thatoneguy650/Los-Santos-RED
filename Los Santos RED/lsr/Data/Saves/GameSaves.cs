@@ -69,6 +69,14 @@ public class GameSaves : IGameSaves
         }
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
+    public void DeleteSave(GameSave toDelete)
+    {
+        if (toDelete != null)
+        {
+            GameSaveList.Remove(toDelete);
+        }
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    }
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();

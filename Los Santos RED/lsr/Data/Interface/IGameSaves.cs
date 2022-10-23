@@ -14,5 +14,6 @@ namespace LosSantosRED.lsr.Interface
         void Load(GameSave selectedItem, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerInvetory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
         GameSave GetSave(ISaveable player);
         void UpdateSave(GameSave mySave);
+        void DeleteSave(GameSave gs);
     }
 }

@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr
         public bool RunOther { get; set; } = true;
         public bool RunVanilla { get; set; } = true;
         public bool RunMenuOnly { get; set; } = true;
-
+        public bool IsDisplayingAlertScreen { get; set; } = false;
         public void Setup()
         {
             IsRunning = true;
