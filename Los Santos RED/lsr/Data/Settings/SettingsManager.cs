@@ -31,6 +31,9 @@ public class SettingsManager
     [Description("Activity Settings")]
     public ActivitySettings ActivitySettings { get; set; } = new ActivitySettings();
     [Category("Player")]
+    [Description("Flashlight Settings")]
+    public FlashlightSettings FlashlightSettings { get; set; } = new FlashlightSettings();
+    [Category("Player")]
     [Description("Sprint Settings")]
     public SprintSettings SprintSettings { get; set; } = new SprintSettings();
     [Category("Player")]
@@ -151,7 +154,7 @@ public class SettingsManager
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,
-            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings
+            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings
 
         };
 

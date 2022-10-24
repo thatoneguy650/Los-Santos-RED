@@ -1183,8 +1183,8 @@ public class Debug
     private void DebugNumpad9()
     {
 
-        AlertMessage();
-        //SetPropAttachment();
+        //AlertMessage();
+        SetPropAttachment();
         //DisplaySprite();
         //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
@@ -1377,8 +1377,8 @@ public class Debug
             // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
 
 
-            AnimationDictionary.RequestAnimationDictionay("anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base");
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base", "base", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+            AnimationDictionary.RequestAnimationDictionay("amb@world_human_security_shine_torch@male@base");
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "amb@world_human_security_shine_torch@male@base", "base", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
 
 
 

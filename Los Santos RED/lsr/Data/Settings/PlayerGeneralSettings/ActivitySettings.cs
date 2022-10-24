@@ -40,13 +40,7 @@ public class ActivitySettings : ISettingsDefaultable
     public float SittingSlideDistance { get; set; }
 
 
-    public bool FlashlightFollowCamera { get; set; }
-    public float FlashlightPitchMax { get; set; }
-    public float FlashlightPitchMin { get; set; }
-    public float FlashlightHeadingMax { get; set; }
-    public float FlashlightHeadingMin { get; set; }
-    public float FlashlightExtraDistanceX { get; set; }
-    public float FlashlightExtraDistanceY { get; set; }
+
 
     public ActivitySettings()
     {
@@ -77,12 +71,5 @@ public class ActivitySettings : ISettingsDefaultable
         ForceSitTimeOut = 3000;
         ForceSitDistance = 0.7f;
         SittingSlideDistance = 0.5f;//0.1f
-        FlashlightFollowCamera = true;
-        FlashlightPitchMax = 25f;
-        FlashlightPitchMin = -25f;
-        FlashlightHeadingMax = 60f;
-        FlashlightHeadingMin = -60f;
-        FlashlightExtraDistanceX = 0.0f;
-        FlashlightExtraDistanceY = -0.05f;
     }
 }

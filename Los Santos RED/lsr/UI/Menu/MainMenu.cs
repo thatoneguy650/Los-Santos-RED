@@ -62,10 +62,21 @@ public class MainMenu : Menu
         ActivityPerformable = activityPerformable;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants);
-        SaveMenu = new SaveMenu(MenuPool, Main, SaveablePlayer, GameSaves, Weapons, PedSwap, PlayerInventory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
+
+        if (Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
+        {
+            SaveMenu = new SaveMenu(MenuPool, Main, SaveablePlayer, GameSaves, Weapons, PedSwap, PlayerInventory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
+        }
         PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies);
-        ActionMenu = new ActionMenu(MenuPool, Main, ActionablePlayer, Settings, Dances, Gestures);
-        InventoryMenu = new InventoryMenu(MenuPool, Main, Player, ModItems, false);
+
+        if (Settings.SettingsManager.UIGeneralSettings.ShowLegacyActionMenu)
+        {
+            ActionMenu = new ActionMenu(MenuPool, Main, ActionablePlayer, Settings, Dances, Gestures);
+        }
+        if (Settings.SettingsManager.UIGeneralSettings.ShowLegacyInventoryMenu)
+        {
+            InventoryMenu = new InventoryMenu(MenuPool, Main, Player, ModItems, false);
+        }
     }
 
     public void Setup()
@@ -74,10 +85,10 @@ public class MainMenu : Menu
         MenuPool.Add(Main);
 
         SettingsMenu.Setup(); 
-        SaveMenu.Setup();     
+        SaveMenu?.Setup();     
         PedSwapMenu.Setup();    
-        ActionMenu.Setup();     
-        InventoryMenu.Setup();
+        ActionMenu?.Setup();     
+        InventoryMenu?.Setup();
 
         CreateMainMenu();
     }
@@ -90,8 +101,8 @@ public class MainMenu : Menu
     {
         if (!Main.Visible)
         {
-            ActionMenu.Update();
-            InventoryMenu.Update();
+            ActionMenu?.Update();
+            InventoryMenu?.Update();
             Main.Visible = true;
         }
     }
@@ -99,8 +110,8 @@ public class MainMenu : Menu
     {
         if (!Main.Visible)
         {
-            ActionMenu.Update();
-            InventoryMenu.Update();
+            ActionMenu?.Update();
+            InventoryMenu?.Update();
             Main.Visible = true;
         }
         else
@@ -115,14 +126,17 @@ public class MainMenu : Menu
 
 
         //The Submenus have already added their items
-        UIMenuItem ShowSaveMenu = new UIMenuItem("Game Saves", "Shows a list of the players saves.");
-        ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Barber;
-        ShowSaveMenu.Activated += (s, e) =>
+        if (!Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
         {
-            UI.ToggleSavePauseMenu();
-            Main.Visible = false;
-        };
-        Main.AddItem(ShowSaveMenu);
+            UIMenuItem ShowSaveMenu = new UIMenuItem("Game Saves", "Shows a list of the players saves.");
+            ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+            ShowSaveMenu.Activated += (s, e) =>
+            {
+                UI.ToggleSavePauseMenu();
+                Main.Visible = false;
+            };
+            Main.AddItem(ShowSaveMenu);
+        }
 
 
 

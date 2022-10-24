@@ -48,7 +48,7 @@ public class SaveMenu : Menu
     public void Setup()
     {
         Saves = MenuPool.AddSubMenu(ParentMenu, "Save/Load Player");
-        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Save and Load your player chracter including variation, vehicles, money, items, etc.";
+        ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].Description = "Save and Load your player character including variation, vehicles, money, items, etc.";
         ParentMenu.MenuItems[ParentMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
         Saves.SetBannerType(EntryPoint.LSRedColor);
         CreateSavesMenu();

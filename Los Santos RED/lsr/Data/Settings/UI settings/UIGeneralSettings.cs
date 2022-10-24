@@ -36,7 +36,9 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool AllowScreenEffectReset { get; set; }
     public bool DisplayButtonPrompts { get; set; }
     public bool ShowDebug { get; set; }
-
+    public bool UseLegacySaveMenu { get; set; }
+    public bool ShowLegacyActionMenu { get; set; }
+    public bool ShowLegacyInventoryMenu { get; set; }
 
     public UIGeneralSettings()
     {
@@ -77,5 +79,8 @@ public class UIGeneralSettings : ISettingsDefaultable
 #if DEBUG
         ShowDebug = true;
 #endif
+        UseLegacySaveMenu = false;
+        ShowLegacyActionMenu = false;
+        ShowLegacyInventoryMenu = false;
     }
 }

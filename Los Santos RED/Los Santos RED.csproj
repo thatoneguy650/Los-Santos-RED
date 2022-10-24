@@ -154,6 +154,7 @@
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CellPhoneSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\FlashlightSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\InvestigationSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\NeedsSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\PlayerSpeechSettings.cs" />

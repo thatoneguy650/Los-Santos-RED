@@ -51,6 +51,9 @@ public class ActivityManager
     public bool CanDrag => !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanDragLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanDrag && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
     public bool CanPerformActivities => (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !Player.IsMovingDynamically && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle;
+
+    public bool CanPerformMobileActivities => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle;
+
     public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
     public bool CanRecruitLookedAtGangMember => Player.CurrentLookedAtGangMember != null && Player.CurrentTargetedPed == null && Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.CurrentLookedAtGangMember.Gang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == Player.CurrentLookedAtGangMember.Gang.ID && !Player.GroupManager.IsMember(Player.CurrentLookedAtGangMember);
     public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
@@ -182,7 +185,7 @@ public class ActivityManager
                 UpperBodyActivity.Cancel();
             }
             IsPerformingActivity = true;
-            UpperBodyActivity = new FlashlightActivity(Actionable, Settings);
+            UpperBodyActivity = new FlashlightActivity(Actionable, Settings, RandomItems.RandomPercent(50) ? "prop_tool_torch" : "prop_cs_police_torch");//will pass in the actual mod item next
             UpperBodyActivity.Start();
         }
     }

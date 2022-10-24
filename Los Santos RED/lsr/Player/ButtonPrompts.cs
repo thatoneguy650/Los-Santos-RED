@@ -45,6 +45,10 @@ public class ButtonPrompts
     {
         Prompts.Clear();
     }
+    public void RemovePrompt(string identifier)
+    {
+        Prompts.RemoveAll(x => x.Identifier == identifier);
+    }
     public void RemovePrompts(string groupName)
     {
         Prompts.RemoveAll(x => x.Group == groupName);
