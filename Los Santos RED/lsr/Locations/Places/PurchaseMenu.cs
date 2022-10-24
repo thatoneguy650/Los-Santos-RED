@@ -1442,7 +1442,7 @@ public class PurchaseMenu : Menu
             menuItem.ItemsSoldToPlayer += TotalItems;
             if (modItem.ConsumeOnPurchase)
             {
-                Player.ActivityManager.StartConsumingActivity(modItem, false);
+                Player.ActivityManager.UseInventoryItem(modItem, false);
             }
             else
             {

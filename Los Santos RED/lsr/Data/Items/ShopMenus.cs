@@ -137,7 +137,32 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList.AddRange(new List<ShopMenu>{
             //Generic
-            new ShopMenu("ToolMenu","Tools",new List<MenuItem>() { new MenuItem("Screwdriver",19),new MenuItem("Hammer", 15),new MenuItem("Drill", 50),new MenuItem("Pliers", 20),new MenuItem("Shovel", 60),new MenuItem("Wrench", 24),}),
+            new ShopMenu("ToolMenu","Tools",new List<MenuItem>() {
+
+                new MenuItem("Flint Duct Tape", 4),
+
+                new MenuItem("Flint Flathead Screwdriver", 14),
+                new MenuItem("Flint Multi-Bit Screwdriver", 15),
+
+                new MenuItem("Hammer", 15),
+                new MenuItem("Flint Rubber Mallet", 26),
+
+                new MenuItem("Black Umbrella", 22),
+                new MenuItem("Blue Umbrella", 25),
+
+                new MenuItem("Pliers", 20),
+                new MenuItem("Wrench", 24),
+                new MenuItem("Shovel", 60),
+
+                new MenuItem("TAG-HARD Flashlight", 78),
+                new MenuItem("Flint Tools Handle Flashlight", 56),
+
+                new MenuItem("Power Metal Cordless Drill", 90),
+                new MenuItem("Power Metal Cordless Impact Driver", 150),
+            }),
+
+
+
             new ShopMenu("CheapHotelMenu","Cheap Hotel",new List<MenuItem>() { new MenuItem("Room: Single Twin",99),new MenuItem("Room: Single Queen", 130),new MenuItem("Room: Double Queen", 150),new MenuItem("Room: Single King", 160), }),
             new ShopMenu("ExpensiveHotelMenu","Expensive Hotel",new List<MenuItem>() { new MenuItem("Room: Single Queen", 189),new MenuItem("Room: Double Queen", 220),new MenuItem("Room: Single King", 250),new MenuItem("Room: Delux", 280), }),
             new ShopMenu("ConvenienceStoreMenu","Convenience Store",new List<MenuItem>() {

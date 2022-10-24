@@ -112,10 +112,10 @@ public class PopUpMenu
             new PopUpMenuMap(2,"Suicide",Player.ActivityManager.CommitSuicide,"Commit suicide") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)},
             new PopUpMenuMap(3,"Hands Up",Player.Surrendering.ToggleSurrender,"Toggle hands up mode"),
             new PopUpMenuMap(4,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)},
-            new PopUpMenuMap(5,"Sleep", new Action(() => Player.ActivityManager.StartSleeping(false)),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown)},
+            new PopUpMenuMap(5,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown)},
             new PopUpMenuMap(6,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && !Player.IsInVehicle && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown && Player.CurrentLookedAtVehicle != null)},
-            new PopUpMenuMap(7,"Umbrella",new Action(() => Player.ActivityManager.HoldUmbrella()),"Start Holding an Umbrella") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
-            new PopUpMenuMap(8,"Flashlight",new Action(() => Player.ActivityManager.HoldFlashlight()),"Start Holding a flashlight") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
+           // new PopUpMenuMap(7,"Umbrella",new Action(() => Player.ActivityManager.HoldUmbrella()),"Start Holding an Umbrella") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
+           // new PopUpMenuMap(8,"Flashlight",new Action(() => Player.ActivityManager.HoldFlashlight()),"Start Holding a flashlight") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
         };
 
 
@@ -251,7 +251,7 @@ public class PopUpMenu
             List<PopUpMenuMap> InventoryCategorySubMenu = new List<PopUpMenuMap>();
             foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
             {
-                InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.StartConsumingActivity(ii.ModItem,true)), ii.Description));
+                InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem,true)), ii.Description));
                 ID2++;
             }
 

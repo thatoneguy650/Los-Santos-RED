@@ -121,12 +121,12 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        ActionablePlayer.ActivityManager.StartConsumingActivity(selectedModItem, false);
+                        ActionablePlayer.ActivityManager.UseInventoryItem(selectedModItem, false);
 
                     }
                     else
                     {
-                        ActionablePlayer.ActivityManager.StartConsumingActivity(selectedModItem, true);
+                        ActionablePlayer.ActivityManager.UseInventoryItem(selectedModItem, true);
                     }
                     InventoryItem ii = ActionablePlayer.Inventory.Get(selectedModItem);
                     if (ii != null)

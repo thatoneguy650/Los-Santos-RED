@@ -26,20 +26,6 @@ public class PhysicalItem
         ModelName = modelName;
         Attachments = attachments;
     }
-    //public PhysicalItem(string modelName, Vector3 attachOffset, Rotator attachRotation)
-    //{
-    //    AttachOffsetOverride = attachOffset;
-    //    AttachRotationOverride = attachRotation;
-    //    ModelName = modelName;
-    //}
-    //public PhysicalItem(string modelName, Vector3 attachOffsetOverride, Rotator attachRotationOverride, Vector3 secondaryAttachOffsetOverride, Rotator secondaryAttachRotationOverride)
-    //{
-    //    AttachOffsetOverride = attachOffsetOverride;
-    //    AttachRotationOverride = attachRotationOverride;
-    //    SecondaryAttachOffsetOverride = secondaryAttachOffsetOverride;
-    //    SecondaryAttachRotationOverride = secondaryAttachRotationOverride;
-    //    ModelName = modelName;
-    //}
     public PhysicalItem(string modelName, uint modelHash, ePhysicalItemType type)
     {
         ModelName = modelName;
@@ -51,24 +37,7 @@ public class PhysicalItem
     public uint ModelHash { get; set; } = 0;
     public bool IsLarge { get; set; } = false;
     public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
-
-
-
-    //public Vector3 AttachOffsetOverride { get; set; } = Vector3.Zero;
-    //public Rotator AttachRotationOverride { get; set; } = Rotator.Zero;
-
-
-
-    //public Vector3 SecondaryAttachOffsetOverride { get; set; } = Vector3.Zero;
-    //public Rotator SecondaryAttachRotationOverride { get; set; } = Rotator.Zero;
-
-
-    //public Vector3 SecondaryAttachOffsetFemaleOverride { get; set; } = Vector3.Zero;
-    //public Rotator SecondaryAttachRotationFemaleOverride { get; set; } = Rotator.Zero;
-
-
     public List<PropAttachment> Attachments { get; set; }
-
 
 }
 

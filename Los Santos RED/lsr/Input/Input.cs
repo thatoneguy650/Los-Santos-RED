@@ -320,12 +320,19 @@ namespace LosSantosRED.lsr
                 {
                     bp.IsHeldNow = false;
                 }
+
+
+
                 if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
                 {
                     //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
                     bp.IsPressedNow = true;
                 }
                 else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
+                {
+                    bp.IsPressedNow = true;
+                }
+                else if (NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)bp.GameControl) && !bp.IsPressedNow)
                 {
                     bp.IsPressedNow = true;
                 }

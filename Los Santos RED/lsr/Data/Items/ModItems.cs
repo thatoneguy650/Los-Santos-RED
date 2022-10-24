@@ -520,6 +520,42 @@ public class ModItems : IModItems
                 ModelItemID = "ex_prop_exec_lighter_01", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
             new ModItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!", ItemType.Tools) {
                 ModelItemID = "lux_prop_lighter_luxe", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
+
+
+
+            new ModItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.", ItemType.Tools) {
+                ModelItemID = "prop_cs_police_torch", ToolType = ToolTypes.Flashlight },
+
+            new ModItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.", ItemType.Tools) {
+                ModelItemID = "prop_tool_torch", ToolType = ToolTypes.Flashlight },
+
+
+            new ModItem("Flint Rubber Mallet","Give it a whack", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_hammer_01", ToolType = ToolTypes.Hammer  },
+
+
+            new ModItem("Power Metal Cordless Drill","Not recommended for dentistry", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_drill_01a", ToolType = ToolTypes.Drill  },
+
+            new ModItem("Power Metal Cordless Impact Driver","DRIVE it right in!", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_driver_01a", ToolType = ToolTypes.Drill  },
+
+
+            new ModItem("Flint Flathead Screwdriver","Might get you into some locked things", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_sdriver_01", ToolType = ToolTypes.Screwdriver },
+            new ModItem("Flint Multi-Bit Screwdriver","Might get you into some locked things", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_sdriver_02", ToolType = ToolTypes.Screwdriver },
+
+            new ModItem("Flint Duct Tape","Sticks to anything! Ducts, wrists, windows, mouths, and more.", ItemType.Tools) {
+                ModelItemID = "gr_prop_gr_tape_01", ToolType = ToolTypes.None },
+
+
+            //Umbrella
+            new ModItem("Blue Umbrella","Let justice be done though the heavens fall, now in blue.", ItemType.Tools) {
+                ModelItemID = "p_amb_brolly_01", ToolType = ToolTypes.Umbrella },
+            new ModItem("Black Umbrella","Let justice be done though the heavens fall, in fashionable black.", ItemType.Tools) {
+                ModelItemID = "p_amb_brolly_01_s", ToolType = ToolTypes.Umbrella },
+
         });
     }
     private void DefaultConfig_Vehicles()

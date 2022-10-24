@@ -2,6 +2,7 @@
 using Rage;
 using Rage.Native;
 using System;
+using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
@@ -14,25 +15,27 @@ namespace LosSantosRED.lsr.Player
         private string animEnter;
         private string animIdle;
         private string animExit;
-        private int animEnterFlag = (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
+        private int animEnterFlag = (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
         private int animIdleFlag = (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
-        private int animExitFlag = (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
-        private float animEnterBlendIn = 4.0f;
-        private float animIdleBlendIn = 4.0f;
-        private float animExitBlendIn = 4.0f;
-        private float animEnterBlendOut = -4.0f;
-        private float animIdleBlendOut = -4.0f;
-        private bool SetEndFrame;
-        private float animExitBlendOut = -4.0f;
+        private int animExitFlag = (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
+        private float animEnterBlendIn = 1.0f;
+        private float animIdleBlendIn = 1.0f;
+        private float animExitBlendIn = 1.0f;
+        private float animEnterBlendOut = -1.0f;
+        private float animIdleBlendOut = -1.0f;
+        private float animExitBlendOut = -1.0f;
         private Rage.Object Umbrella;
         private bool IsAttachedToHand;
         private string HandBoneName = "BONETAG_L_PH_HAND";
         private Vector3 HandOffset = new Vector3();
         private Rotator HandRotator = new Rotator();
         private string PropModelName = "p_amb_brolly_01";
-        public UmbrellaActivity(IActionable player) : base()
+        private bool hasStartedAnimation;
+
+        public UmbrellaActivity(IActionable player, ModItem modItem) : base()
         {
             Player = player;
+            ModItem = modItem;
         }
 
         public override ModItem ModItem { get; set; }
@@ -40,7 +43,7 @@ namespace LosSantosRED.lsr.Player
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Umbrella";
-        public override string CancelPrompt { get; set; } = "Drop Umbrella";
+        public override string CancelPrompt { get; set; } = "Put Away Umbrella";
         public override string ContinuePrompt { get; set; } = "Continue Umbrella";
         public override void Cancel()
         {
@@ -61,7 +64,6 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Umbrella Start", 5);
             GameFiber UmbrellaWatcher = GameFiber.StartNew(delegate
             {
-                Player.ActivityManager.UmbrellaTimes++;
                 Setup();
                 Enter();
             }, "UmbrellaActivity");
@@ -73,13 +75,16 @@ namespace LosSantosRED.lsr.Player
             AttachUmbrellaToHand();
             if (animEnter != "")
             {
-                EntryPoint.WriteToConsole($"Umbrella Enter: {animEnter}", 5);
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animEnter, animEnterBlendIn, animEnterBlendOut, -1, animEnterFlag, 0, false, false, false);//-1
                 while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedHoldingUmbrella <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animEnter);
+                    if (AnimationTime >= 1.0f)
+                    {
+                        break;
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -89,63 +94,57 @@ namespace LosSantosRED.lsr.Player
         {
             if (animIdle != "")
             {
-                EntryPoint.WriteToConsole($"Umbrella Idle: {animIdle}", 5);
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
+                NativeFunction.Natives.SET_PED_CAN_PLAY_AMBIENT_ANIMS(Player.Character, false);
+
+
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animIdle, animIdleBlendIn, animIdleBlendOut, -1, animIdleFlag, 0, false, false, false);//-1
-
-
-                if(SetEndFrame)
-                {
-                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, animDictionary, animIdle, 0.99f);
-                }
-
                 while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animIdle);
+
+                    if(AnimationTime > 0.0f)
+                    {
+                        hasStartedAnimation = true;
+                    }
+                    if (AnimationTime == 0.0 && hasStartedAnimation)
+                    {
+                        IsCancelled = true;
+                    }
                     GameFiber.Yield();
+
+                   //Game.DisplaySubtitle(AnimationTime.ToString());
                 }
+
+                NativeFunction.Natives.SET_PED_CAN_PLAY_AMBIENT_ANIMS(Player.Character, true);
+
             }
             Exit();
         }
         private void Exit()
         {
-            try
+            if (animExit != "")
             {
-                if (animExit != "")
+                GameTimeStartedHoldingUmbrella = Game.GameTime;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animExit, animExitBlendIn, animExitBlendOut, -1, animExitFlag, 0, false, false, false);//-1
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
                 {
-                    EntryPoint.WriteToConsole($"Umbrella Exit: {animExit}", 5);
-                    GameTimeStartedHoldingUmbrella = Game.GameTime;
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animExit, animExitBlendIn, animExitBlendOut, -1, animExitFlag, 0, false, false, false);//-1
-                    while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                    Player.WeaponEquipment.SetUnarmed();
+                    float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animExit);
+                    if (AnimationTime >= 1.0f)
                     {
-                        Player.WeaponEquipment.SetUnarmed();
-                        float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animIdle);
-                        GameFiber.Yield();
+                        break;
                     }
+                    GameFiber.Yield();
                 }
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                //Need to Delete the umbrella too
-            }
-            catch
-            {
-                Game.DisplayNotification("FAIL");
-            }
-            if (Umbrella.Exists())
-            {
-                Umbrella.Detach();
-            }
-            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-            Player.ActivityManager.IsPerformingActivity = false;
-            if (1==1)
-            {
-                GameFiber.Sleep(5000);
             }
             if (Umbrella.Exists())
             {
                 Umbrella.Delete();
             }
-            
+            NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+            Player.ActivityManager.IsPerformingActivity = false;            
         }
 
         private void AttachUmbrellaToHand()
@@ -176,38 +175,33 @@ namespace LosSantosRED.lsr.Player
                 }
             }
         }
-
-
         private void Setup()
         {
-            if(Player.ActivityManager.UmbrellaTimes > 1)
-            {
-                Player.ActivityManager.UmbrellaTimes = 0;
-            }
             animDictionary = "";
             animEnter = "";
             animIdle = "";
             animExit = "";
-
             HandBoneName = "BONETAG_L_PH_HAND";
-            SetEndFrame = false;
             animIdleBlendIn = 4.0f;
             animIdleBlendOut = -4.0f;
             PropModelName = "p_amb_brolly_01_s";
             HandOffset = new Vector3(0.005f, 0.045f, 0f);
             HandRotator = new Rotator(0f, -180f, 0f);
-            //if (Player.ActivityManager.UmbrellaTimes == 0)
-            //{
-            //    animDictionary = "doors@";
-            //    animIdle = "door_sweep_l_hand_medium";
-            //}
-            //else if (Player.ActivityManager.UmbrellaTimes == 1)
-            //{
-                animDictionary = "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base";
-                animIdle = "base";
-                HandOffset = new Vector3(-0.01f, 0.01f, 0.05f);
-                HandRotator = new Rotator(0f, -40f, 0f);
-            //}
+            animDictionary = "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base";
+            animIdle = "base";
+            HandOffset = new Vector3(-0.01f, 0.01f, 0.05f);
+            HandRotator = new Rotator(0f, -40f, 0f);
+            if(ModItem != null)
+            {
+                PropModelName = ModItem.ModelItem.ModelName;
+                PropAttachment handAttachment = ModItem.ModelItem.Attachments.Where(x => x.Name == "LeftHand").FirstOrDefault();
+                if (handAttachment != null)
+                {
+                    HandBoneName = handAttachment.BoneName;
+                    HandOffset = handAttachment.Attachment;
+                    HandRotator = handAttachment.Rotation;
+                }
+            }
             AnimationDictionary.RequestAnimationDictionay(animDictionary);
         }
     }

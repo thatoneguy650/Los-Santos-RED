@@ -39,6 +39,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool UseLegacySaveMenu { get; set; }
     public bool ShowLegacyActionMenu { get; set; }
     public bool ShowLegacyInventoryMenu { get; set; }
+    public bool ShowFullscreenWarnings { get; set; }
 
     public UIGeneralSettings()
     {
@@ -82,5 +83,6 @@ public class UIGeneralSettings : ISettingsDefaultable
         UseLegacySaveMenu = false;
         ShowLegacyActionMenu = false;
         ShowLegacyInventoryMenu = false;
+        ShowFullscreenWarnings = true;
     }
 }

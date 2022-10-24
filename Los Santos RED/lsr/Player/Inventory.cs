@@ -10,6 +10,7 @@ namespace LosSantosRED.lsr.Player
     [Serializable()]
     public class Inventory
     {
+        private IInventoryable Player;
         private ISettingsProvideable Settings;
         private List<InventoryItem> ItemsList = new List<InventoryItem>();
         public List<InventoryItem> Items => ItemsList;
@@ -19,6 +20,7 @@ namespace LosSantosRED.lsr.Player
         }
         public Inventory(IInventoryable player, ISettingsProvideable settings)
         {
+            Player = player;
             Settings = settings;
         }
         public bool UseTool(ToolTypes tool)
@@ -170,6 +172,18 @@ namespace LosSantosRED.lsr.Player
         public void Clear()
         {
             ItemsList.Clear();
+        }
+
+        internal void SetUsed(ModItem modItem)
+        {
+            if (modItem.PercentLostOnUse > 0.0f)
+            {
+                Player.Inventory.Use(modItem);
+            }
+            else
+            {
+                Player.Inventory.Remove(modItem, 1);
+            }
         }
     }
 }

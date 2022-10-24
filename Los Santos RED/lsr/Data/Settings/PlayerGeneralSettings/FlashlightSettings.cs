@@ -40,7 +40,20 @@
     public float FakeEmissiveRadius { get; set; }
     public float FakeEmissiveFallOff { get; set; }
     public bool ShowDebugMarkerAtEmissiveTip { get; set; }
- //   public string PropName { get; set; }
+
+
+
+    public float DebugExtraDistanceX { get; set; }
+    public float DebugExtraDistanceY { get; set; }
+    public float DebugExtraDistanceZ { get; set; }
+
+
+    public float DebugFakeEmissiveExtraDistanceX { get; set; }
+    public float DebugFakeEmissiveExtraDistanceY { get; set; }
+    public float DebugFakeEmissiveExtraDistanceZ { get; set; }
+
+
+    //   public string PropName { get; set; }
 
 
     public FlashlightSettings()
@@ -83,8 +96,8 @@
 
 
 
-        FakeEmissiveDistance = 0.3f;
-        FakeEmissiveBrightness = 1.0f;
+        FakeEmissiveDistance = 0.4f;
+        FakeEmissiveBrightness = 5.0f;
         FakeEmissiveHardness = 0.0f;
         FakeEmissiveRadius = 100.0f;
         FakeEmissiveFallOff = 1.0f;

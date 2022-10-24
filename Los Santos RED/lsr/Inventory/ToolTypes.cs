@@ -16,4 +16,6 @@ public enum ToolTypes
     Drill = 7,
     Crowbar = 8,
     Bong = 9,
+    Flashlight = 10,
+    Umbrella = 11,
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using System;
 using System.Xml.Serialization;
 
 [Serializable()]
@@ -91,5 +92,36 @@ public class ModItem
     public ToolTypes RequiredToolType { get; set; } = ToolTypes.None;
     public float PercentLostOnUse { get; set; } = 0.0f;
     public bool IsPossessionIllicit { get; set; } = false;
+
+
+    public void ConsumeItem(IActivityManageable player, bool applyNeeds)
+    {
+        if (CanConsume)
+        {
+            if (applyNeeds)
+            {
+                if (ChangesHunger)
+                {
+                    player.HumanState.Hunger.Change(HungerChangeAmount, true);
+                }
+                if (ChangesSleep)
+                {
+                    player.HumanState.Sleep.Change(SleepChangeAmount, true);
+                }
+                if (ChangesThirst)
+                {
+                    player.HumanState.Thirst.Change(ThirstChangeAmount, true);
+                }
+            }
+            else
+            {
+                if (ChangesHealth)
+                {
+                    player.HealthManager.ChangeHealth(HealthChangeAmount);
+                }
+            }
+
+        }
+    }
 }
 

@@ -306,6 +306,7 @@ namespace Mod
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
         public bool IsNotWanted => wantedLevel == 0;
+        public bool IsOnFoot => !IsInVehicle;
         public bool IsOnMotorcycle { get; private set; }
         public bool IsOnMuscleRelaxants { get; set; }
         public bool IsPressingFireWeapon { get; set; }

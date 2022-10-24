@@ -65,16 +65,12 @@ public class SaveGameTab
         saveCharacter = new TabTextItem("Save Game", "Save Game", "Saves the Current Character");
         saveCharacter.Activated += (s, e) =>
         {
-            PopUpWarning popUpWarning = new PopUpWarning("Save", "Are you sure you want to save", "", Player.ButtonPrompts, Settings);
-            popUpWarning.Setup();
-            popUpWarning.Show();
-            TabView.Visible = false;
-            GameFiber.StartNew(delegate
+            if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
             {
-                while (!popUpWarning.IsAnswered)
-                {
-                    GameFiber.Yield();
-                }
+                TabView.Visible = false;
+                PopUpWarning popUpWarning = new PopUpWarning("Save", "Are you sure you want to save", "", Player.ButtonPrompts, Settings);
+                popUpWarning.Setup();
+                popUpWarning.ShowAndWait();
                 if (popUpWarning.IsAccepted)
                 {
                     TabView.Visible = false;
@@ -85,8 +81,13 @@ public class SaveGameTab
                 {
                     TabView.Visible = true;
                 }
-
-            }, "Run Debug Logic");
+            }
+            else
+            {
+                TabView.Visible = false;
+                Game.IsPaused = false;
+                GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest);
+            }
         };
         items.Add(saveCharacter);
         foreach (GameSave gs in GameSaves.GameSaveList)
@@ -106,16 +107,12 @@ public class SaveGameTab
         {
             if (selectedItem != null && selectedItem.Name == "Load")
             {
-                TabView.Visible = false;
-                PopUpWarning popUpWarning = new PopUpWarning("Load", "Are you sure you want to load this save", "", Player.ButtonPrompts, Settings);
-                popUpWarning.Setup();
-                popUpWarning.Show();
-                GameFiber.StartNew(delegate
+                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
                 {
-                    while (!popUpWarning.IsAnswered)
-                    {
-                        GameFiber.Yield();
-                    }
+                    TabView.Visible = false;
+                    PopUpWarning popUpWarning = new PopUpWarning("Load", "Are you sure you want to load this save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Setup();
+                    popUpWarning.ShowAndWait();
                     if (popUpWarning.IsAccepted)
                     {
                         TabView.Visible = false;
@@ -126,22 +123,23 @@ public class SaveGameTab
                     {
                         TabView.Visible = true;
                     }
-
-                }, "Run Debug Logic");
+                }
+                else
+                {
+                    TabView.Visible = false;
+                    Game.IsPaused = false;
+                    GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
+                }
             }
             if (selectedItem != null && selectedItem.Name == "Delete")
             {
-                TabView.Visible = false;
-                PopUpWarning popUpWarning = new PopUpWarning("Delete", "Are you sure you want to delete this save", "", Player.ButtonPrompts, Settings);
-                popUpWarning.Setup();
-                popUpWarning.Show();
-                GameFiber.StartNew(delegate
+                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
                 {
-                    while (!popUpWarning.IsAnswered)
-                    {
-                        GameFiber.Yield();
-                    }
-                    if(popUpWarning.IsAccepted)
+                    TabView.Visible = false;
+                    PopUpWarning popUpWarning = new PopUpWarning("Delete", "Are you sure you want to delete this save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Setup();
+                    popUpWarning.ShowAndWait();
+                    if (popUpWarning.IsAccepted)
                     {
                         TabView.Visible = false;
                         Game.IsPaused = false;
@@ -151,8 +149,13 @@ public class SaveGameTab
                     {
                         TabView.Visible = true;
                     }
-
-                }, "Run Debug Logic");
+                }
+                else
+                {
+                    TabView.Visible = false;
+                    Game.IsPaused = false;
+                    GameSaves.DeleteSave(gs);
+                }
             }
         };
         items.Add(MajorTabItem);

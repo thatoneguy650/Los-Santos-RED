@@ -339,7 +339,7 @@ public class ButtonPrompts
             }
         }
 
-        if (Player.ActivityManager.CanGrabLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        if (Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;

@@ -262,6 +262,35 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("v_res_tt_lighter", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.13f, 0.02f, 0.02f), new Rotator(-93f, 40f, 0f)) }),
             new PhysicalItem("ex_prop_exec_lighter_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.13f, 0.02f, 0.02f), new Rotator(-93f, 40f, 0f)) }),
             new PhysicalItem("lux_prop_lighter_luxe", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.13f, 0.02f, 0.02f), new Rotator(-93f, 40f, 0f)) }),
+
+            new PhysicalItem("p_amb_brolly_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }),//blue umbrella
+            new PhysicalItem("p_amb_brolly_01_s", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }),//black umbrellal
+
+            new PhysicalItem("gr_prop_gr_tape_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint duct tape
+            new PhysicalItem("gr_prop_gr_sdriver_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint flathead screwdriver
+            new PhysicalItem("gr_prop_gr_sdriver_02", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint multi bit screwdriver
+            new PhysicalItem("gr_prop_gr_hammer_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint rubber hammer
+            new PhysicalItem("gr_prop_gr_driver_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//power metal impact driver
+            new PhysicalItem("gr_prop_gr_drill_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//power metal cordless drill
+
+            new PhysicalItem("prop_cs_police_torch", new List<PropAttachment>() { ///police maglite
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0f, 0.002f, 0.002f), new Rotator(-180f, -130f, -100f)),
+                new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.0f, -0.12f, 0.0f), Rotator.Zero),//new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.0f, -0.07f, 0.0f), Rotator.Zero),//new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.0f, -0.05f, 0.0f), Rotator.Zero),
+                new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(-0.12f, -0.2f, 0.0f), Rotator.Zero),
+                new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(90f, -1.0f, -1.0f), Rotator.Zero),
+            }),
+
+            new PhysicalItem("prop_tool_torch", new List<PropAttachment>() {//flint tools handle flashlight
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.12f, -0.02f, -0.08f), new Rotator(0f, 0f, -100f)),
+                new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.1f, 0.35f, 0.0f), Rotator.Zero),
+                new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.1f, 0.0f), Rotator.Zero),
+                new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(-90f, 1.0f, 1.0f), Rotator.Zero),
+            }),
+
+
+
+
+
         });
     }
     private void DefaultConfig_Weapons()

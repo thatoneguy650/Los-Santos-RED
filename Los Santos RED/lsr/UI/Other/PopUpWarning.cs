@@ -62,6 +62,22 @@ public class PopUpWarning
             }
         }, "Run Debug Logic");
     }
+    public void ShowAndWait()
+    {
+        EntryPoint.ModController.IsDisplayingAlertScreen = true;
+        FramesSinceStarted = 0;
+        while (true)
+        {
+            Tick();
+            if (IsAnswered)
+            {
+                EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
+                break;
+            }
+            FramesSinceStarted++;
+            GameFiber.Yield();
+        }
+    }
     public void Tick()
     {
         Game.IsPaused = true;

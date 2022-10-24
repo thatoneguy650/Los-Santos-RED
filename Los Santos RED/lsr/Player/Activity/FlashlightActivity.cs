@@ -65,6 +65,7 @@ namespace LosSantosRED.lsr.Player
 
         private float ExtraDistanceX;
         private float ExtraDistanceY;
+        private float ExtraDistanceZ;
         private float FakeEmissiveExtraDistanceX;
         private float FakeEmissiveExtraDistanceY;
         private float FakeEmissiveExtraDistanceZ;
@@ -72,11 +73,14 @@ namespace LosSantosRED.lsr.Player
         private float NonCameraExtra;
         private float PitchModifier;
 
-        public FlashlightActivity(IActionable player, ISettingsProvideable settings, string propName) : base()
+        private ModItem FlashlightItem;
+        private bool hasStartedAnimation;
+
+        public FlashlightActivity(IActionable player, ISettingsProvideable settings, ModItem flashlightItem) : base()
         {
             Player = player;
             Settings = settings;
-            PropModelName = propName;
+            FlashlightItem = flashlightItem;
         }
 
         public override ModItem ModItem { get; set; }
@@ -143,10 +147,13 @@ namespace LosSantosRED.lsr.Player
 
                 PlayingDictionary = animBaseDictionary;
                 PlayingAnimation = animBase;
+                hasStartedAnimation = false;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animBaseDictionary, animBase, animBaseBlendIn, animBaseBlendOut, -1, animBaseFlag, 0, false, false, false);//-1
 
-                Player.ButtonPrompts.AddPrompt("Flashlight", "Toggle Light", "FlashlightToggle", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
-                Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                Player.ButtonPrompts.AddPrompt("Flashlight", "Toggle Light", "FlashlightToggle", GameControl.Attack, 10);
+                Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation",GameControl.Aim, 12);
+
+
 
                 while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
                 {
@@ -159,24 +166,44 @@ namespace LosSantosRED.lsr.Player
                         if (IsSearching)
                         {
                             Player.ButtonPrompts.RemovePrompt("FlashlightPlayAnimation");
-                            Player.ButtonPrompts.AddPrompt("Flashlight", "Stop Search", "FlashlightStopAnimation", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                            Player.ButtonPrompts.AddPrompt("Flashlight", "Stop Search", "FlashlightStopAnimation", GameControl.Aim, 12);
                         }
                         else
                         {
                             Player.ButtonPrompts.RemovePrompt("FlashlightStopAnimation");
-                            Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
+                            Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation", GameControl.Aim, 12);
                         }
                         isSearching = IsSearching;
                     }
+
+                    if(isLightOn != IsLightOn)
+                    {
+                        if (IsLightOn)
+                        {
+                            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Press", "DLC_SECURITY_BUTTON_PRESS_SOUNDS", 0);
+                        }
+                        else
+                        {
+                            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Press", "DLC_SECURITY_BUTTON_PRESS_SOUNDS", 0);
+                        }
+                        isLightOn = IsLightOn;
+                    }
+
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
                     if (AnimationTime >= 1.0f)
                     {
                         IsSearching = false;
                     }
-
+                    if (AnimationTime > 0.0f)
+                    {
+                        hasStartedAnimation = true;
+                    }
+                    if (AnimationTime == 0.0f && hasStartedAnimation)
+                    {
+                        IsCancelled = true;
+                    }
                     HandleLight();
                     HandleButtons();
-
                     GameFiber.Yield();
                 }
 
@@ -237,6 +264,20 @@ namespace LosSantosRED.lsr.Player
         }
         private void HandleButtons()
         {
+
+            Game.DisableControlAction(0, GameControl.Attack, false);
+            Game.DisableControlAction(0, GameControl.Attack2, false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
+
+
+            Game.DisableControlAction(0, GameControl.Aim, false);
+            Game.DisableControlAction(0, GameControl.VehicleAim, false);
+            Game.DisableControlAction(0, GameControl.AccurateAim, false);
+            Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
+
+
+
             if (Player.ButtonPrompts.IsPressed("FlashlightToggle"))
             {
                 IsLightOn = !IsLightOn;
@@ -266,6 +307,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void StartBaseAnimation()
         {
+            hasStartedAnimation = false;
             PlayingDictionary = animBaseDictionary;
             PlayingAnimation = animBase;
             EntryPoint.WriteToConsole($"FlashlightPlayAnimation SET BASE {PlayingDictionary} {PlayingAnimation}");
@@ -273,6 +315,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void StartIdleAnimation(string dict, string anim)
         {
+            hasStartedAnimation = false;
             PlayingDictionary = dict;
             PlayingAnimation = anim;
             EntryPoint.WriteToConsole($"FlashlightPlayAnimation New Idle {PlayingDictionary} {PlayingAnimation}");
@@ -350,7 +393,7 @@ namespace LosSantosRED.lsr.Player
             animEnterBlendIn = 1.0f;
             animEnterBlendOut = -1.0f;
 
-            //PropModelName = "prop_cs_police_torch";
+            PropModelName = "prop_cs_police_torch";
             HandOffset = new Vector3(0f, 0.002f, 0.002f);
             HandRotator = new Rotator(-180f, -130f, -100f);
             ExtraDistanceX = 0.0f;
@@ -362,6 +405,15 @@ namespace LosSantosRED.lsr.Player
             NonCameraExtra = -1.0f;
             PitchModifier = -1.0f;
 
+
+
+
+
+
+
+
+
+
             animIdles = new List<Tuple<string, string>>()
                 {
                     new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_a"),//Right to left above and below
@@ -371,13 +423,10 @@ namespace LosSantosRED.lsr.Player
                     new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_b","idle_e"),// right to left in middle
                 };
 
-            //PropModelName = Settings.SettingsManager.FlashlightSettings.PropName;
             if (PropModelName == "prop_tool_torch")
             {
                 HandOffset = new Vector3(0.12f, -0.02f, -0.08f);
                 HandRotator = new Rotator(0f, 0f, -100f);
-                //ExtraDistanceX = 0.1f;
-                //ExtraDistanceY = 0.3f;
 
                 ExtraDistanceX = 0.1f;
                 ExtraDistanceY = 0.35f;
@@ -391,6 +440,40 @@ namespace LosSantosRED.lsr.Player
             }
 
 
+            if (FlashlightItem != null && FlashlightItem.ModelItem != null)
+            {
+
+                PropModelName = FlashlightItem.ModelItem.ModelName;
+
+                PropAttachment handAttachment = FlashlightItem.ModelItem.Attachments.Where(x => x.Name == "LeftHand").FirstOrDefault();
+                if (handAttachment != null)
+                {
+                    HandBoneName = handAttachment.BoneName;
+                    HandOffset = handAttachment.Attachment;
+                    HandRotator = handAttachment.Rotation;
+                }
+                PropAttachment extraDistance = FlashlightItem.ModelItem.Attachments.Where(x => x.Name == "ExtraDistance").FirstOrDefault();
+                if (extraDistance != null)
+                {
+                    ExtraDistanceX = extraDistance.Attachment.X;
+                    ExtraDistanceY = extraDistance.Attachment.Y;
+                    ExtraDistanceZ = extraDistance.Attachment.Z;
+                }
+                PropAttachment emissiveExtraDistance = FlashlightItem.ModelItem.Attachments.Where(x => x.Name == "EmissiveExtraDistance").FirstOrDefault();
+                if (emissiveExtraDistance != null)
+                {
+                    FakeEmissiveExtraDistanceX = emissiveExtraDistance.Attachment.X;
+                    FakeEmissiveExtraDistanceY = emissiveExtraDistance.Attachment.Y;
+                    FakeEmissiveExtraDistanceZ = emissiveExtraDistance.Attachment.Z;
+                }
+                PropAttachment extraAttachment = FlashlightItem.ModelItem.Attachments.Where(x => x.Name == "FrontRotation").FirstOrDefault();
+                if (extraAttachment != null)
+                {
+                    ExtraRotation = extraAttachment.Attachment.X;
+                    PitchModifier = extraAttachment.Attachment.Y;
+                    NonCameraExtra = extraAttachment.Attachment.Z;
+                }
+            }
             AnimationDictionary.RequestAnimationDictionay(animEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(animBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(animExitDictionary);
@@ -429,9 +512,19 @@ namespace LosSantosRED.lsr.Player
                 {
                     directionRotator.Pitch = Settings.SettingsManager.FlashlightSettings.PitchMin;
                 }
-                float HeadingDiff = ExtensionsMethods.Extensions.GetHeadingDifference(playerRotator.Yaw, directionRotator.Yaw);
+                float HeadingDiff = Extensions.GetHeadingDifference(playerRotator.Yaw, directionRotator.Yaw);
+
+
+                if (HeadingDiff >= 120f || HeadingDiff <= -120f)
+                {
+                    LightDirection = new Vector3(Flashlight.Direction.X, Flashlight.Direction.Y, Flashlight.Direction.Z).ToNormalized() * NonCameraExtra;
+                    return;
+                }
+
+
                 if (HeadingDiff >= Settings.SettingsManager.FlashlightSettings.HeadingMax || HeadingDiff <= Settings.SettingsManager.FlashlightSettings.HeadingMin)
                 {
+
                     if (HeadingDiff >= Settings.SettingsManager.FlashlightSettings.HeadingMax)
                     {
                         directionRotator.Yaw = playerRotator.Yaw + Settings.SettingsManager.FlashlightSettings.HeadingMax;
@@ -458,16 +551,16 @@ namespace LosSantosRED.lsr.Player
         private void GetFlashlightOffsets()
         {
             Vector3 FlashlightFrontOffsetAmount = new Vector3(
-                                                                ExtraDistanceX - Flashlight.Model.Dimensions.X / 2,
-                                                                ExtraDistanceY - Flashlight.Model.Dimensions.Y / 2,
-                                                                0);
+                                                                Settings.SettingsManager.FlashlightSettings.DebugExtraDistanceX + ExtraDistanceX - Flashlight.Model.Dimensions.X / 2,
+                                                                Settings.SettingsManager.FlashlightSettings.DebugExtraDistanceY + ExtraDistanceY - Flashlight.Model.Dimensions.Y / 2,
+                                                                Settings.SettingsManager.FlashlightSettings.DebugExtraDistanceZ + ExtraDistanceZ - 0);
             FlashlightOrigin = Flashlight.GetOffsetPosition(FlashlightFrontOffsetAmount);
 
 
             Vector3 FlashlightFrontOffsetAmountExtended = new Vector3(
-                                                    FakeEmissiveExtraDistanceX + FlashlightFrontOffsetAmount.X,
-                                                    FakeEmissiveExtraDistanceY + FlashlightFrontOffsetAmount.Y,
-                                                    FakeEmissiveExtraDistanceZ + FlashlightFrontOffsetAmount.Z);
+                                                    Settings.SettingsManager.FlashlightSettings.DebugFakeEmissiveExtraDistanceX + FakeEmissiveExtraDistanceX + FlashlightFrontOffsetAmount.X,
+                                                    Settings.SettingsManager.FlashlightSettings.DebugFakeEmissiveExtraDistanceY + FakeEmissiveExtraDistanceY + FlashlightFrontOffsetAmount.Y,
+                                                    Settings.SettingsManager.FlashlightSettings.DebugFakeEmissiveExtraDistanceZ + FakeEmissiveExtraDistanceZ + FlashlightFrontOffsetAmount.Z);
             FlashlightOriginExtended = Flashlight.GetOffsetPosition(FlashlightFrontOffsetAmountExtended);
         }
         private void DrawLights()

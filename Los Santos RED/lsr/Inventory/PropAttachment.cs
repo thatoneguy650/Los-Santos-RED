@@ -19,6 +19,11 @@ public class PropAttachment
         Attachment = attachment;
         Rotation = rotation;
     }
+    public PropAttachment(string name, Vector3 attachment)
+    {
+        Name = name;
+        Attachment = attachment;
+    }
 
     public string Name { get; set; }
     public string BoneName { get; set; }
