@@ -41,7 +41,11 @@ public class ActivityManager
     private ICameraControllable CameraControllable;
 
 
+    private bool CanUseFlashlight => !IsResting && Player.IsOnFoot && CanUseItemsBase;
+    private bool CanUseUmbrella => !IsResting && Player.IsOnFoot && CanUseItemsBase;
+    private bool CanUseShovel => !IsResting && Player.IsOnFoot && CanUseItemsBase;
 
+    private bool CanUseItemsBase => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
 
     public bool CanPerformActivities => (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !Player.IsMovingDynamically && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle;
     public bool CanPerformMobileActivities => !Player.IsInVehicle && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
@@ -217,7 +221,13 @@ public class ActivityManager
         }
     }
 
-
+    public void StartUpperBodyActivity(DynamicActivity toStart)
+    {
+        ForceCancelUpperBody();
+        IsPerformingActivity = true;
+        UpperBodyActivity = toStart;
+        UpperBodyActivity.Start();
+    }
 
     //Dynamic Activites w/ IsPerforming
     public void ChangePlate(int Index)
@@ -316,6 +326,7 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
+    
     public void UseInventoryItem(ModItem modItem, bool performActivity)
     {
         if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) )// modItem.Type != eConsumableType.None)
@@ -370,19 +381,37 @@ public class ActivityManager
             }
             else if (modItem.ToolType == ToolTypes.Flashlight)
             {
-                ForceCancelUpperBody();
-                IsPerformingActivity = true;
-                UpperBodyActivity = new FlashlightActivity(Actionable, Settings, modItem);//will pass in the actual mod item next
-                UpperBodyActivity.Start();
+                if (CanUseFlashlight)
+                {
+                    modItem.UseItem(Actionable, Settings);
+
+
+                    //ForceCancelUpperBody();
+                    //IsPerformingActivity = true;
+                    //UpperBodyActivity = new FlashlightActivity(Actionable, Settings, modItem);//will pass in the actual mod item next
+                    //UpperBodyActivity.Start();
+                }
             }
             else if (modItem.ToolType == ToolTypes.Umbrella)
             {
-                ForceCancelUpperBody();
-                IsPerformingActivity = true;
-                UpperBodyActivity = new UmbrellaActivity(Actionable, modItem);
-                UpperBodyActivity.Start();
+                if (CanUseUmbrella)
+                {
+                    ForceCancelUpperBody();
+                    IsPerformingActivity = true;
+                    UpperBodyActivity = new UmbrellaActivity(Actionable, modItem);
+                    UpperBodyActivity.Start();
+                }
             }
-
+            else if (modItem.ToolType == ToolTypes.Shovel)
+            {
+                if (CanUseShovel)
+                {
+                    ForceCancelAll();
+                    IsPerformingActivity = true;
+                    LowerBodyActivity = new ShovelActivity(Actionable, modItem, Settings, CameraControllable);
+                    LowerBodyActivity.Start();
+                }
+            }
 
         }
 

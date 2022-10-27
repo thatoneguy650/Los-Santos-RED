@@ -99,7 +99,7 @@ public class EMTIdle : ComplexTask
             {
                 ExecuteCurrentSubTask(false);
             }
-            Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+            //Ped.Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             SetSiren();
         }
     }

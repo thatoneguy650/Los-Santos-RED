@@ -25,7 +25,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public Vector3 SpawnPosition { get; set; }
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
-
+    private RelationshipGroup originalGroup;
 
     private bool ShouldCheckCrimes
     {
@@ -74,6 +74,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
+        PedReactions = new PedReactions(this);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
@@ -90,7 +91,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PlayerPerception PlayerPerception { get; private set; }
     public HealthState CurrentHealthState { get; private set; }
 
-
+    public PedReactions PedReactions { get; set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
@@ -118,6 +119,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
+
+
+
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
@@ -226,7 +230,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WillFight { get; set; } = false;
 
 
-
+    public bool IsGroupMember { get; set; } = false;
     public bool WillFightPolice { get; set; } = false;
 
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
@@ -341,25 +345,23 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 Pedestrian.IsPersistent = true;
             }
+            originalGroup = Pedestrian.RelationshipGroup;
             RelationshipGroup CriminalsRG = new RelationshipGroup("CRIMINALS");
             Pedestrian.RelationshipGroup = CriminalsRG;
             RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
             CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-
-            
-
-
-            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");
+            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");     
         }
-        //Vector3 pedPos = Pedestrian.Position;
-        //if (WillFight && RandomItems.RandomPercent(90f))
-        //{
-        //    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Pedestrian, 300f, 0);
-        //}
-        //else
-        //{
-        //    NativeFunction.Natives.TASK_SMART_FLEE_COORD(Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 9999f, -1, false, false);
-        //}
+    }
+
+    public virtual void OnLostWanted()
+    {
+        if (Pedestrian.Exists())
+        {
+            Pedestrian.RelationshipGroup = originalGroup;
+            PedViolations.Reset();
+            EntryPoint.WriteToConsole($"{Pedestrian.Handle} LOST WANTED (CIVILIAN) SET TO ORIGINAL GROUP {originalGroup.Name}");
+        }   
     }
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
     public void ApolgizedToPlayer()

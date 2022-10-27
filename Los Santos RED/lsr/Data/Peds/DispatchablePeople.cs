@@ -436,7 +436,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("EMTs", EMTs));
 
         //Gangs
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
@@ -4552,20 +4552,20 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_FEJ));
 
         //Gangs
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("AltruistPeds", AltruistPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("VarriosPeds", VarriosPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("TriadsPeds", TriadsPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("KoreanPeds", KoreanPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("RedneckPeds", RedneckPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("AltruistPeds", AltruistPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("VarriosPeds", VarriosPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("TriadsPeds", TriadsPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("KoreanPeds", KoreanPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("RedneckPeds", RedneckPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
         Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\DispatchablePeople_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(PeopleConfig_EUP, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\DispatchablePeople_EUP.xml");
@@ -4606,7 +4606,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("EMTs", EMTs));
 
         //Gangs
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
@@ -4642,7 +4642,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("EMTs", EMTs));
 
         //Gangs
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LostMCPEds", LostMCPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));

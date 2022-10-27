@@ -193,13 +193,9 @@ public class GangReputation
             RelationshipGroup rg = new RelationshipGroup(Gang.ID);
             if (GangRelationship == GangRespect.Hostile || IsEnemy)
             {
-                if (Player.IsNotWanted)//handled on the became/lost wanted events
-                {
-                    rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
-                    RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
-                }
+                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
+                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral); 
                 Player.SetDenStatus(Gang, false);
-
                 if (!IsEnemy)
                 {
                     if (sendText)
@@ -214,8 +210,8 @@ public class GangReputation
             }
             else if (GangRelationship == GangRespect.Friendly)
             {
-                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
-                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
+                rg.SetRelationshipWith(RelationshipGroup.Player, Relationship.Like);
+                RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Like);
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
@@ -347,9 +343,4 @@ public class GangReputation
         }
         return ending;
     }
-
-
-
-
-
 }

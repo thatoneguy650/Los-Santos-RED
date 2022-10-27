@@ -73,8 +73,9 @@ public class SaveGameTab
                 popUpWarning.ShowAndWait();
                 if (popUpWarning.IsAccepted)
                 {
-                    TabView.Visible = false;
                     Game.IsPaused = false;
+                    TabView.Visible = false;
+                    GameFiber.Sleep(500);
                     GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest);
                 }
                 else
@@ -115,8 +116,9 @@ public class SaveGameTab
                     popUpWarning.ShowAndWait();
                     if (popUpWarning.IsAccepted)
                     {
-                        TabView.Visible = false;
                         Game.IsPaused = false;
+                        TabView.Visible = false;
+                        GameFiber.Sleep(500);
                         GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
                     }
                     else
@@ -141,8 +143,9 @@ public class SaveGameTab
                     popUpWarning.ShowAndWait();
                     if (popUpWarning.IsAccepted)
                     {
-                        TabView.Visible = false;
                         Game.IsPaused = false;
+                        TabView.Visible = false;
+                        GameFiber.Sleep(500);
                         GameSaves.DeleteSave(gs);
                     }
                     else

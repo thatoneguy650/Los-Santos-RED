@@ -98,14 +98,28 @@ public class WeaponSway
         }
 
 
-        if (Player.IsInVehicle && !Player.IsInFirstPerson)
-        {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.SwaySettings.VeritcalInVehicleSwayScaler);
-        }
-        else
+
+        if (Settings.SettingsManager.SwaySettings.UseAlternateCalculation)//Player.IsInFirstPerson)
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
         }
+        else
+        {
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
+        }
+
+
+        //if (Player.IsInVehicle && !Player.IsInFirstPerson)
+        //{
+        //    NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.SwaySettings.VeritcalInVehicleSwayScaler);
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
+        //}
+
+
+
 
 
 
@@ -188,7 +202,7 @@ public class WeaponSway
     private void AdjustPitch()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticaSway, Player.WeaponEquipment.CurrentWeapon.MaxVerticaSway);
-        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 2.0f * 1.25f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
         if (!VerticalSwayDirection)
         {
             AdjustedPitch *= -1.0f;
@@ -197,6 +211,7 @@ public class WeaponSway
         if(Player.IsInFirstPerson)
         {
             //AdjustedPitch *= 0.000000001f;
+            AdjustedPitch *= 0.1f;
             AdjustedPitch *= Settings.SettingsManager.SwaySettings.VeritcalFirstPersonSwayAdjuster;
         }
 

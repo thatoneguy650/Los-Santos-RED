@@ -99,7 +99,7 @@ public class Gangs : IGangs
     private void SetupDefaults()
     {
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang", "Unk", "White", null, null, "", null, null, null, "Gang Member") { MaxWantedLevelSpawn = 0 };
-        LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPEds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC President", "CHAR_MP_BIKER_BOSS", "LOST Member")
+        LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPeds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC President", "CHAR_MP_BIKER_BOSS", "LOST Member")
         {
             DenName = "Clubhouse",
             AmbientMemberMoneyMin = 100,

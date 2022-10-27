@@ -110,6 +110,8 @@ public class GangTasker
         }
         else if (GangMember.DistanceToPlayer <= 275f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
+            //GangMember.PedReactions.Update(); need a version for this?
+
             bool WillAttackPlayer = false;
             bool WillFleeFromPlayer = false;
             bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);

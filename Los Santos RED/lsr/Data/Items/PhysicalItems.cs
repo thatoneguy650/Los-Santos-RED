@@ -252,7 +252,10 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_tool_screwdvr01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
             new PhysicalItem("prop_tool_drill", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
             new PhysicalItem("prop_tool_pliers", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
-            new PhysicalItem("prop_tool_shovel", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
+            new PhysicalItem("prop_tool_shovel", new List<PropAttachment>() { new PropAttachment("RighHand", "BONETAG_R_PH_HAND", new Vector3(0.005f, 0.006f, -0.048f), new Rotator(3f, -183f, 0f)) }),
+
+
+
 
             new PhysicalItem("prop_bong_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
 
@@ -287,6 +290,27 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(-90f, 1.0f, 1.0f), Rotator.Zero),
             }),
 
+            new PhysicalItem("prop_phone_ing", new List<PropAttachment>() { 
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.04f,-0.05f,-0.01f), new Rotator(-20f, -290f, -60f)),
+                new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.01f, 0.1f, 0.0f), Rotator.Zero),
+                new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(-0.05f, 0.2f, -0.1f), Rotator.Zero),
+                new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(0f, 0.0f, 0.0f), Rotator.Zero),
+            }),
+
+
+            new PhysicalItem("prop_phone_ing_02", new List<PropAttachment>() {
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.04f,-0.05f,-0.01f), new Rotator(-20f, -290f, -60f)),
+                new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.01f, 0.1f, 0.0f), Rotator.Zero),
+                new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(-0.05f, 0.2f, -0.1f), Rotator.Zero),
+                new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(0f, 0.0f, 0.0f), Rotator.Zero),
+            }),
+
+            new PhysicalItem("prop_phone_ing_03", new List<PropAttachment>() {
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.04f,-0.05f,-0.01f), new Rotator(-20f, -290f, -60f)),
+                new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.01f, 0.1f, 0.0f), Rotator.Zero),
+                new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(-0.05f, 0.2f, -0.1f), Rotator.Zero),
+                new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(0f, 0.0f, 0.0f), Rotator.Zero),
+            }),
 
 
 

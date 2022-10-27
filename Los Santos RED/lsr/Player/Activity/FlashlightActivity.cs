@@ -24,6 +24,23 @@ namespace LosSantosRED.lsr.Player
         private string animBase;
         private string animExitDictionary;
         private string animExit;
+        private float FakeEmissiveRadius;
+        private float FakeEmissiveFallOff;
+        private float EmissiveDistance;
+        private float EmissiveBrightness;
+        private float EmissiveHardness;
+        private float EmissiveRadius;
+        private float EmissiveFallOff;
+        private bool LightFollowsCamera;
+        private bool AllowPropRotation;
+        private bool UseFakeEmissive;
+        private float PitchMax;
+        private float PitchMin;
+        private float HeadingMax;
+        private float HeadingMin;
+        private float FakeEmissiveDistance;
+        private float FakeEmissiveBrightness;
+        private float FakeEmissiveHardness;
         private List<Tuple<string,string>> animIdles;
         private int animEnterFlag = (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
         private int animBaseFlag = (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask);
@@ -73,10 +90,10 @@ namespace LosSantosRED.lsr.Player
         private float NonCameraExtra;
         private float PitchModifier;
 
-        private ModItem FlashlightItem;
+        private FlashlightItem FlashlightItem;
         private bool hasStartedAnimation;
 
-        public FlashlightActivity(IActionable player, ISettingsProvideable settings, ModItem flashlightItem) : base()
+        public FlashlightActivity(IActionable player, ISettingsProvideable settings, FlashlightItem flashlightItem) : base()
         {
             Player = player;
             Settings = settings;
@@ -151,8 +168,11 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animBaseDictionary, animBase, animBaseBlendIn, animBaseBlendOut, -1, animBaseFlag, 0, false, false, false);//-1
 
                 Player.ButtonPrompts.AddPrompt("Flashlight", "Toggle Light", "FlashlightToggle", GameControl.Attack, 10);
-                Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation",GameControl.Aim, 12);
 
+                if (FlashlightItem.CanSearch)
+                {
+                    Player.ButtonPrompts.AddPrompt("Flashlight", "Search", "FlashlightPlayAnimation", GameControl.Aim, 12);
+                }
 
 
                 while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
@@ -346,7 +366,7 @@ namespace LosSantosRED.lsr.Player
 
             if (Flashlight.Exists() && IsAttachedToHand)
             {
-                if (Settings.SettingsManager.FlashlightSettings.AllowPropRotation && Settings.SettingsManager.FlashlightSettings.LightFollowsCamera)
+                if (AllowPropRotation && LightFollowsCamera)
                 {
                     Flashlight.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, LightRotator);
                 }
@@ -376,10 +396,19 @@ namespace LosSantosRED.lsr.Player
 
             animEnterDictionary = "amb@world_human_security_shine_torch@male@enter";
             animEnter = "enter";
-            animExitDictionary = "amb@world_human_security_shine_torch@male@exit";
-            animExit = "exit";
             animBaseDictionary = "amb@world_human_security_shine_torch@male@base";
             animBase = "base";
+            animIdles = new List<Tuple<string, string>>()
+                {
+                    new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_a"),//Right to left above and below
+                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_b"),//does a box, faster
+                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_c"),//Does a right to left mostly down
+                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_b","idle_d"),//Does a box around, mostly above
+                    new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_b","idle_e"),// right to left in middle
+                };
+            animExitDictionary = "amb@world_human_security_shine_torch@male@exit";
+            animExit = "exit";
+
 
             animBaseBlendIn = 1.0f;
             animBaseBlendOut = -1.0f;
@@ -393,58 +422,34 @@ namespace LosSantosRED.lsr.Player
             animEnterBlendIn = 1.0f;
             animEnterBlendOut = -1.0f;
 
-            PropModelName = "prop_cs_police_torch";
-            HandOffset = new Vector3(0f, 0.002f, 0.002f);
-            HandRotator = new Rotator(-180f, -130f, -100f);
-            ExtraDistanceX = 0.0f;
-            ExtraDistanceY = -0.05f;
-            FakeEmissiveExtraDistanceX = -0.07f;
-            FakeEmissiveExtraDistanceY = -0.2f;
-            FakeEmissiveExtraDistanceZ = 0.0f;
-            ExtraRotation = 90f;
-            NonCameraExtra = -1.0f;
-            PitchModifier = -1.0f;
 
 
 
+            EmissiveDistance = Settings.SettingsManager.FlashlightSettings.EmissiveDistance;
+            EmissiveBrightness = Settings.SettingsManager.FlashlightSettings.EmissiveBrightness;
+            EmissiveHardness = Settings.SettingsManager.FlashlightSettings.EmissiveHardness;
+            EmissiveRadius = Settings.SettingsManager.FlashlightSettings.EmissiveRadius;
+            EmissiveFallOff = Settings.SettingsManager.FlashlightSettings.EmissiveFallOff;
+
+            LightFollowsCamera = Settings.SettingsManager.FlashlightSettings.LightFollowsCamera;
+            AllowPropRotation = Settings.SettingsManager.FlashlightSettings.AllowPropRotation;
+            UseFakeEmissive = Settings.SettingsManager.FlashlightSettings.UseFakeEmissive;
+            PitchMax = Settings.SettingsManager.FlashlightSettings.PitchMax;
+            PitchMin = Settings.SettingsManager.FlashlightSettings.PitchMin;
+            HeadingMax = Settings.SettingsManager.FlashlightSettings.HeadingMax;
+            HeadingMin = Settings.SettingsManager.FlashlightSettings.HeadingMin;
 
 
-
-
-
-
-
-            animIdles = new List<Tuple<string, string>>()
-                {
-                    new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_a"),//Right to left above and below
-                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_b"),//does a box, faster
-                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_a","idle_c"),//Does a right to left mostly down
-                    //new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_b","idle_d"),//Does a box around, mostly above
-                    new Tuple<string, string>("amb@world_human_security_shine_torch@male@idle_b","idle_e"),// right to left in middle
-                };
-
-            if (PropModelName == "prop_tool_torch")
-            {
-                HandOffset = new Vector3(0.12f, -0.02f, -0.08f);
-                HandRotator = new Rotator(0f, 0f, -100f);
-
-                ExtraDistanceX = 0.1f;
-                ExtraDistanceY = 0.35f;
-
-                FakeEmissiveExtraDistanceX = 0.0f;
-                FakeEmissiveExtraDistanceY = 0.1f;
-                FakeEmissiveExtraDistanceZ = 0.0f;
-                ExtraRotation = -90f;
-                PitchModifier = 1.0f;
-                NonCameraExtra = 1.0f;
-            }
+            FakeEmissiveDistance = Settings.SettingsManager.FlashlightSettings.FakeEmissiveDistance;
+            FakeEmissiveBrightness = Settings.SettingsManager.FlashlightSettings.FakeEmissiveBrightness;
+            FakeEmissiveHardness = Settings.SettingsManager.FlashlightSettings.FakeEmissiveHardness;
+            FakeEmissiveRadius = Settings.SettingsManager.FlashlightSettings.FakeEmissiveRadius;
+            FakeEmissiveFallOff = Settings.SettingsManager.FlashlightSettings.FakeEmissiveFallOff;
 
 
             if (FlashlightItem != null && FlashlightItem.ModelItem != null)
             {
-
                 PropModelName = FlashlightItem.ModelItem.ModelName;
-
                 PropAttachment handAttachment = FlashlightItem.ModelItem.Attachments.Where(x => x.Name == "LeftHand").FirstOrDefault();
                 if (handAttachment != null)
                 {
@@ -473,11 +478,102 @@ namespace LosSantosRED.lsr.Player
                     PitchModifier = extraAttachment.Attachment.Y;
                     NonCameraExtra = extraAttachment.Attachment.Z;
                 }
+
+
+                if(FlashlightItem.IsCellphone)
+                {
+                    animEnterDictionary = "cellphone@";
+                    animEnter = "cellphone_photo_ent";
+                    animBaseDictionary = "cellphone@";
+                    animBase = "cellphone_photo_idle";
+                    animIdles = new List<Tuple<string, string>>()
+                    {
+                        new Tuple<string, string>("cellphone@","cellphone_photo_idle"),//Right to left above and below
+                    };
+                    animExitDictionary = "cellphone@";
+                    animExit = "cellphone_photo_exit";
+                }
+
+
+
+                EmissiveDistance = FlashlightItem.EmissiveDistance;
+                EmissiveBrightness = FlashlightItem.EmissiveBrightness;
+                EmissiveHardness = FlashlightItem.EmissiveHardness;
+                EmissiveRadius = FlashlightItem.EmissiveRadius;
+                EmissiveFallOff = FlashlightItem.EmissiveFallOff;
+
+                LightFollowsCamera = FlashlightItem.LightFollowsCamera;
+                AllowPropRotation = FlashlightItem.AllowPropRotation;
+                UseFakeEmissive = FlashlightItem.UseFakeEmissive;
+                PitchMax = FlashlightItem.PitchMax;
+                PitchMin = FlashlightItem.PitchMin;
+                HeadingMax = FlashlightItem.HeadingMax;
+                HeadingMin = FlashlightItem.HeadingMin;
+
+
+                FakeEmissiveDistance = FlashlightItem.FakeEmissiveDistance;
+                FakeEmissiveBrightness = FlashlightItem.FakeEmissiveBrightness;
+                FakeEmissiveHardness = FlashlightItem.FakeEmissiveHardness;
+                FakeEmissiveRadius = FlashlightItem.FakeEmissiveRadius;
+                FakeEmissiveFallOff = FlashlightItem.FakeEmissiveFallOff;
+
+
+
+
             }
+            else
+            {
+                if (PropModelName == "prop_tool_torch")
+                {
+                    HandOffset = new Vector3(0.12f, -0.02f, -0.08f);
+                    HandRotator = new Rotator(0f, 0f, -100f);
+
+                    ExtraDistanceX = 0.1f;
+                    ExtraDistanceY = 0.35f;
+
+                    FakeEmissiveExtraDistanceX = 0.0f;
+                    FakeEmissiveExtraDistanceY = 0.1f;
+                    FakeEmissiveExtraDistanceZ = 0.0f;
+                    ExtraRotation = -90f;
+                    PitchModifier = 1.0f;
+                    NonCameraExtra = 1.0f;
+                }
+                else
+                {
+                    PropModelName = "prop_cs_police_torch";
+                    HandOffset = new Vector3(0f, 0.002f, 0.002f);
+                    HandRotator = new Rotator(-180f, -130f, -100f);
+
+                    ExtraDistanceX = 0.0f;
+                    ExtraDistanceY = -0.05f;
+
+                    FakeEmissiveExtraDistanceX = -0.07f;
+                    FakeEmissiveExtraDistanceY = -0.2f;
+                    FakeEmissiveExtraDistanceZ = 0.0f;
+                    ExtraRotation = 90f;
+                    NonCameraExtra = -1.0f;
+                    PitchModifier = -1.0f;
+                }
+            }
+
+
+
+
+
+
+            /*
+             * 
+             * prop_phone_ing == michael (iphgone)
+             * prop_phone_ing_02 == trevor (windows phone)
+             * prop_phone_ing_03 == franklin (android)
+             * cellphone@ cellphone_photo_ent
+cellphone@ cellphone_photo_exit
+cellphone@ cellphone_photo_idle*/
+
+
             AnimationDictionary.RequestAnimationDictionay(animEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(animBaseDictionary);
             AnimationDictionary.RequestAnimationDictionay(animExitDictionary);
-
             foreach(string idleDict in animIdles.GroupBy(x=> x.Item1).Select(y=> y.Key))
             {
                 AnimationDictionary.RequestAnimationDictionay(idleDict);
@@ -493,7 +589,7 @@ namespace LosSantosRED.lsr.Player
             GameplayCameraCurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
 
 
-            bool FollowCamera = Settings.SettingsManager.FlashlightSettings.LightFollowsCamera;
+            bool FollowCamera = LightFollowsCamera;
             if(Settings.SettingsManager.FlashlightSettings.LightFollowsPropDuringSearch && IsSearching)
             {
                 FollowCamera = false;
@@ -504,13 +600,13 @@ namespace LosSantosRED.lsr.Player
                 LightDirection = new Vector3(LightDirection.X, LightDirection.Y, LightDirection.Z).ToNormalized();
                 Rotator directionRotator = LightDirection.ToRotator();
                 Rotator playerRotator = Game.LocalPlayer.Character.Direction.ToRotator();
-                if (directionRotator.Pitch >= Settings.SettingsManager.FlashlightSettings.PitchMax)
+                if (directionRotator.Pitch >= PitchMax)
                 {
-                    directionRotator.Pitch = Settings.SettingsManager.FlashlightSettings.PitchMax;
+                    directionRotator.Pitch = PitchMax;
                 }
-                if (directionRotator.Pitch <= Settings.SettingsManager.FlashlightSettings.PitchMin)
+                if (directionRotator.Pitch <= PitchMin)
                 {
-                    directionRotator.Pitch = Settings.SettingsManager.FlashlightSettings.PitchMin;
+                    directionRotator.Pitch = PitchMin;
                 }
                 float HeadingDiff = Extensions.GetHeadingDifference(playerRotator.Yaw, directionRotator.Yaw);
 
@@ -522,20 +618,20 @@ namespace LosSantosRED.lsr.Player
                 }
 
 
-                if (HeadingDiff >= Settings.SettingsManager.FlashlightSettings.HeadingMax || HeadingDiff <= Settings.SettingsManager.FlashlightSettings.HeadingMin)
+                if (HeadingDiff >= HeadingMax || HeadingDiff <= HeadingMin)
                 {
 
-                    if (HeadingDiff >= Settings.SettingsManager.FlashlightSettings.HeadingMax)
+                    if (HeadingDiff >= HeadingMax)
                     {
-                        directionRotator.Yaw = playerRotator.Yaw + Settings.SettingsManager.FlashlightSettings.HeadingMax;
+                        directionRotator.Yaw = playerRotator.Yaw + HeadingMax;
                     }
-                    else if (HeadingDiff <= Settings.SettingsManager.FlashlightSettings.HeadingMin)
+                    else if (HeadingDiff <= HeadingMin)
                     {
-                        directionRotator.Yaw = playerRotator.Yaw + Settings.SettingsManager.FlashlightSettings.HeadingMin;
+                        directionRotator.Yaw = playerRotator.Yaw + HeadingMin;
                     }
                 }
                 LightRotator = new Rotator(directionRotator.Pitch * PitchModifier, directionRotator.Roll, directionRotator.Yaw - playerRotator.Yaw + ExtraRotation).ToNormalized();
-                //LightRotator = new Rotator(directionRotator.Pitch * -1.0f,directionRotator.Roll,directionRotator.Yaw - playerRotator.Yaw + Settings.SettingsManager.FlashlightSettings.FlashlightHeadingMax + Settings.SettingsManager.FlashlightSettings.FlashlightRotationExtra).ToNormalized();
+                //LightRotator = new Rotator(directionRotator.Pitch * -1.0f,directionRotator.Roll,directionRotator.Yaw - playerRotator.Yaw + FlashlightHeadingMax + FlashlightRotationExtra).ToNormalized();
                 LightDirection = directionRotator.ToVector();
 
             }
@@ -569,15 +665,15 @@ namespace LosSantosRED.lsr.Player
             {
 
                 NativeFunction.Natives.DRAW_SHADOWED_SPOT_LIGHT(FlashlightOrigin.X, FlashlightOrigin.Y, FlashlightOrigin.Z, LightDirection.X, LightDirection.Y, LightDirection.Z, 255, 255, 255,
-                        Settings.SettingsManager.FlashlightSettings.EmissiveDistance,
-                        Settings.SettingsManager.FlashlightSettings.EmissiveBrightness,
-                        Settings.SettingsManager.FlashlightSettings.EmissiveHardness,
-                        Settings.SettingsManager.FlashlightSettings.EmissiveRadius,
-                        Settings.SettingsManager.FlashlightSettings.EmissiveFallOff
+                        EmissiveDistance,
+                        EmissiveBrightness,
+                        EmissiveHardness,
+                        EmissiveRadius,
+                        EmissiveFallOff
                     );
                 
                 //NativeFunction.Natives.DRAW_SHADOWED_SPOT_LIGHT(FlashlightOrigin.X, FlashlightOrigin.Y, FlashlightOrigin.Z, LightDirection.X, LightDirection.Y, LightDirection.Z, 255, 255, 255, 100f, 1.0f, 0.0f, 13.0f, 1.0f);
-                if (Settings.SettingsManager.FlashlightSettings.UseFakeEmissive)
+                if (UseFakeEmissive)
                 {
                     if (Settings.SettingsManager.FlashlightSettings.ShowDebugMarkerAtEmissiveTip)
                     {
@@ -587,11 +683,11 @@ namespace LosSantosRED.lsr.Player
 
                     FakeEmissiveDirection = (FlashlightOrigin - FlashlightOriginExtended).ToNormalized();
                     NativeFunction.Natives.DRAW_SHADOWED_SPOT_LIGHT(FlashlightOriginExtended.X, FlashlightOriginExtended.Y, FlashlightOriginExtended.Z, FakeEmissiveDirection.X, FakeEmissiveDirection.Y, FakeEmissiveDirection.Z, 255, 255, 255, 
-                        Settings.SettingsManager.FlashlightSettings.FakeEmissiveDistance, 
-                        Settings.SettingsManager.FlashlightSettings.FakeEmissiveBrightness, 
-                        Settings.SettingsManager.FlashlightSettings.FakeEmissiveHardness,
-                        Settings.SettingsManager.FlashlightSettings.FakeEmissiveRadius,
-                        Settings.SettingsManager.FlashlightSettings.FakeEmissiveFallOff
+                        FakeEmissiveDistance, 
+                        FakeEmissiveBrightness,
+                        FakeEmissiveHardness,
+                        FakeEmissiveRadius,
+                        FakeEmissiveFallOff
                         );
                     //NativeFunction.Natives.DRAW_SPOT_LIGHT(LightDirection.X, LightDirection.Y, LightDirection.Z, FlashlightOrigin.X, FlashlightOrigin.Y, FlashlightOrigin.Z, 255, 255, 255, Settings.SettingsManager.FlashlightSettings.FlashlightFakeEmissiveDistance, 1.0f, 0.0f, 13.0f, 1.0f);
                 }

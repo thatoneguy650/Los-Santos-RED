@@ -112,9 +112,6 @@ public class BasicLocation
     public string Description { get; set; }
     public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
     public float EntranceHeading { get; set; }
-    //public bool HasTeleportEnter => TeleportEnterPosition != Vector3.Zero;
-    //public Vector3 TeleportEnterPosition { get; set; } = Vector3.Zero;
-    //public float TeleportEnterHeading { get; set; } = 0f;
     public Blip Blip => createdBlip;
     public bool ShouldAlwaysHaveBlip => false;
     public bool IsBlipEnabled { get; set; } = true;
@@ -133,7 +130,8 @@ public class BasicLocation
     public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
-    public virtual float MapIconAlpha { get; set; } = 1.0f;
+    public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
+    public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
     public virtual int SortOrder { get; set; } = 999;
 
     public float DistanceToPlayer => distanceToPlayer;
@@ -205,7 +203,7 @@ public class BasicLocation
         }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-            createdBlip = AddIconToMap(time, true);
+            createdBlip = CreateBlip(time, true);
             GameFiber.Yield();
         }
         SetNearby();
@@ -220,7 +218,7 @@ public class BasicLocation
     {
         if (!createdBlip.Exists())
         {
-            createdBlip = AddIconToMap(time, true);
+            createdBlip = CreateBlip(time, true);
             world.AddBlip(Blip);
         }
     }
@@ -238,18 +236,7 @@ public class BasicLocation
             if (GameTimeLastCheckedDistance == 0 || Game.GameTime - GameTimeLastCheckedDistance >= DistanceUpdateIntervalTime)
             {
                 distanceToPlayer = EntrancePosition.DistanceTo(Game.LocalPlayer.Character);
-
-                if (Blip.Exists())
-                {
-                    if (IsOpen(time.CurrentHour))
-                    {
-                        Blip.Alpha = MapIconAlpha;
-                    }
-                    else
-                    {
-                        Blip.Alpha = 0.25f;
-                    }
-                }
+                UpdateBlip(time);
                 GameTimeLastCheckedDistance = Game.GameTime;
             }
         }
@@ -259,6 +246,31 @@ public class BasicLocation
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
+
+
+    public void UpdateBlip(ITimeReportable time)
+    {
+        if (Blip.Exists())
+        {
+            if (IsOpen(time.CurrentHour))
+            {
+                Blip.Alpha = MapOpenIconAlpha;
+            }
+            else
+            {
+                Blip.Alpha = MapClosedIconAlpha;
+            }
+            if (IsPlayerInterestedInLocation)
+            {
+                Blip.Color = Color.Blue;
+            }
+            else
+            {
+                Blip.Color = MapIconColor;
+            }
+        }
+    }
+
     public virtual void Deactivate()
     {
         IsActivated = false;
@@ -275,87 +287,41 @@ public class BasicLocation
             World.Places.ActiveLocations.Remove(this);
         }
     }
-    private Blip AddIconToMap(ITimeReportable time, bool isShortRange)
+    private Blip CreateBlip(ITimeReportable time, bool isShortRange)
     {
-        bool iscurrentlyOpen = IsOpen(time.CurrentHour);
-
+        Blip locationBlip;
         if (MapIconRadius != 1.0f)
         {
-            Blip MyLocationBlip = new Blip(EntrancePosition, MapIconRadius)
-            {
-                Name = Name
-            };
-            MyLocationBlip.Color = Color.Blue;
-
-            if (iscurrentlyOpen)
-            {
-                MyLocationBlip.Alpha = MapIconAlpha;
-            }
-            else
-            {
-                MyLocationBlip.Alpha = 0.25f;
-            }
-            if (isShortRange)
-            {
-                NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-            }
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
-
-            //EntryPoint.WriteToConsole($"CREATE LOCATION {Name} as a stupid fuck blip");
-
-
-            return MyLocationBlip;
+            locationBlip = new Blip(EntrancePosition, MapIconRadius){ Name = Name };
         }
         else
         {
-            Blip MyLocationBlip = new Blip(EntrancePosition)
-            {
-                Name = Name
-            };
+            locationBlip = new Blip(EntrancePosition){ Name = Name};
             if ((BlipSprite)MapIcon != BlipSprite.Destination)
             {
-                MyLocationBlip.Sprite = (BlipSprite)MapIcon;
+                locationBlip.Sprite = (BlipSprite)MapIcon;
             }
-            if(IsPlayerInterestedInLocation)
-            {
-                MyLocationBlip.Color = Color.Blue;
-            }
-            else
-            {
-                MyLocationBlip.Color = MapIconColor;
-            }
-
-
-
-
-            MyLocationBlip.Scale = MapIconScale;
-
-
-
-
-
-            if (iscurrentlyOpen)
-            {
-                MyLocationBlip.Alpha = MapIconAlpha;
-            }
-            else
-            {
-                MyLocationBlip.Alpha = 0.25f;
-            }
-            if (isShortRange)
-            {
-                NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)MyLocationBlip.Handle, true);
-            }
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(MyLocationBlip);
-            return MyLocationBlip;
+            locationBlip.Scale = MapIconScale;
         }
-
+        locationBlip.Color = IsPlayerInterestedInLocation? Color.Blue : MapIconColor;
+        locationBlip.Alpha = IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
+        if (isShortRange)
+        {
+            NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);
+        }
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Name);
+        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(locationBlip);
+        return locationBlip;
 
     }
+
+
+
+
+
+
+
     public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {
         if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)

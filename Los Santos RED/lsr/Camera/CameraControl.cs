@@ -40,18 +40,8 @@ public class CameraControl
     public void Dispose()
     {
         TransitionToGameplayCam(false);
-        //EnableControl();
-        //if (camTo.Exists())
-        //{
-        //    camTo.Delete();
-        //}
-        //if (camFrom.Exists())
-        //{
-        //    camFrom.Delete();
-        //}
-        //Game.LocalPlayer.Character.Tasks.Clear();
     }
-    public void TransitionHighlightEntity(Entity toHighlight, bool wait)
+    public void TransitionHighlightEntity(Entity toHighlight, bool wait, float XOffset, float YOffset,float ZOffset)
     {
         if (toHighlight.Exists())//will freeze on the second camera movement
         {
@@ -68,9 +58,6 @@ public class CameraControl
             {
                 camTo = new Camera(false);
             }
-            float XOffset = RandomItems.RandomPercent(50) ? -2f : 2f;//  RandomItems.GetRandomNumber(-3f, 3f);
-            float YOffset = 2f;// RandomItems.GetRandomNumber(1f, 3f);
-            float ZOffset = 1f;//;RandomItems.GetRandomNumber(1f, 2f);
 
             Vector3 InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(XOffset, YOffset, ZOffset));
             Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
@@ -88,6 +75,13 @@ public class CameraControl
                 GameFiber.Sleep(2500);
             }
         }
+    }
+    public void TransitionHighlightEntity(Entity toHighlight, bool wait)
+    {
+        float XOffset = RandomItems.RandomPercent(50) ? -2f : 2f;//  RandomItems.GetRandomNumber(-3f, 3f);
+        float YOffset = 2f;// RandomItems.GetRandomNumber(1f, 3f);
+        float ZOffset = 1f;//;RandomItems.GetRandomNumber(1f, 2f);
+        TransitionHighlightEntity(toHighlight, wait, XOffset, YOffset, ZOffset);
     }
     public void HighlightEntity(Entity toHighlight)
     {
@@ -184,7 +178,6 @@ public class CameraControl
 
         camFrom.Active = true;
 
-
         NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(camTo, camFrom, 2500, true, true);
         if (wait)
         {
@@ -212,8 +205,6 @@ public class CameraControl
             camFrom.Delete();
         }
         EnableControl();
-
-
         //NativeFunction.Natives.CLEAR_FOCUS();
     }
     private void DisableControl()

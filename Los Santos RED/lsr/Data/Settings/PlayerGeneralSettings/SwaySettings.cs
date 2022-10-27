@@ -32,9 +32,10 @@ public class SwaySettings : ISettingsDefaultable
     public float VeritcalFirstPersonSwayAdjuster { get; set; }
     [Description("First person horizonal sway adjuster. Multiplier for the horizontal intensity of the sway. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
     public float HorizontalFirstPersonSwayAdjuster { get; set; }
+
     public bool ApplySwayToSnipers { get; set; }
-    public float VeritcalInVehicleSwayScaler { get; set; }
     public int FramesBetweenRecoil { get; set; }
+    public bool UseAlternateCalculation { get; set; }
 
     public SwaySettings()
     {
@@ -53,19 +54,21 @@ public class SwaySettings : ISettingsDefaultable
         HorizontalInVehicleSwayAdjuster = 1.0f;
 
 
-        ApplySwayInFirstPerson = true;
+        ApplySwayInFirstPerson = false;
         VeritcalFirstPersonSwayAdjuster = 1.0f;
         HorizontalFirstPersonSwayAdjuster = 1.0f;
 
-//#if DEBUG
-//        ApplySwayInFirstPerson = true;
-//        ApplySwayInVehicle = true;
-//#endif
+#if DEBUG
+        ApplySwayInFirstPerson = true;
+        ApplySwayInVehicle = true;
+#endif
 
         ApplySwayToSnipers = false;
-        VeritcalInVehicleSwayScaler = 0.0075f;
 
-        FramesBetweenRecoil = 90;
+
+        FramesBetweenRecoil = 30;
+
+        UseAlternateCalculation = false;
 
     }
 

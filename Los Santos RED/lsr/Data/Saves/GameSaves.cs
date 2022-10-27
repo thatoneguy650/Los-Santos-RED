@@ -164,7 +164,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
-        AlexisGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
 
         GameSaveList.Add(AlexisGameSave);
     }
@@ -320,7 +320,7 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
         ClaudeGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         ClaudeGameSave.SavedResidences.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = ClaudeGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ClaudeGameSave.CurrentDateTime });
-        ClaudeGameSave.GangReputations = new List<GangRepSave>() { 
+        ClaudeGameSave.GangReputationsSave = new List<GangRepSave>() { 
             
             
             
@@ -360,7 +360,7 @@ public class GameSaves : IGameSaves
         TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
         TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
         TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        TestGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
         TestGameSave.HungerValue = 75.0f;
         TestGameSave.ThirstValue = 75.0f;
         TestGameSave.SleepValue = 75.0f;
@@ -405,7 +405,7 @@ public class GameSaves : IGameSaves
         ExampleGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
         ExampleGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
         //Gang Items
-        ExampleGameSave.GangReputations = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
         //Needs
         ExampleGameSave.HungerValue = 75.0f;
         ExampleGameSave.ThirstValue = 75.0f;
@@ -458,7 +458,7 @@ public class GameSaves : IGameSaves
         //Residences
         ExampleGameSave.SavedResidences.Add(new SavedResidence("280S Forum Dr No 1", true, false) { });
         //Gang Items
-        ExampleGameSave.GangReputations = new List<GangRepSave>() { 
+        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { 
             new GangRepSave("AMBIENT_GANG_FAMILY", 5000, 0, 0, 0, 0, 0, 0, 0, false, false), 
             new GangRepSave("AMBIENT_GANG_BALLAS", -5000, 5, 1, 0, 0, 0, 0, 0, false, false),
             new GangRepSave("AMBIENT_GANG_WEICHENG", 5000, 0, 0, 0, 0, 0, 0, 0, false, false),

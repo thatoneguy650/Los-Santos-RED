@@ -62,15 +62,16 @@ public class WorldSettings : ISettingsDefaultable
         LowerPedSpawnsAtHigherWantedLevels_Wanted4Multiplier = 0.5f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;
-#if DEBUG
-        RandomVehiclePlatesPercent = 15f;
-        RandomVehicleVanityPlatesPercent = 10f;
-#endif
+
         ShowAllBlipsOnMap = false;
         ShowMarkersOnLocationEntrances = false;
         HotelsUsesRooms = false;
         AllowPoliceBackupBlip = true;
-
+#if DEBUG
+        RandomVehiclePlatesPercent = 15f;
+        RandomVehicleVanityPlatesPercent = 10f;
+        ShowAllBlipsOnMap = true;
+#endif
     }
 
 }

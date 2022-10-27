@@ -151,7 +151,7 @@ public class Pedestrians : ITaskerReportable
         foreach (Gang gang in Gangs.AllGangs)
         {
             RelationshipGroup thisGangGroup = new RelationshipGroup(gang.ID);
-            RelationshipGroup policeGroup = new RelationshipGroup("COP");
+           // RelationshipGroup policeGroup = new RelationshipGroup("COP");
             foreach (Gang otherGang in Gangs.AllGangs)
             {
                 if (otherGang.ID != gang.ID)
@@ -170,8 +170,8 @@ public class Pedestrians : ITaskerReportable
                     }
                 }
             }
-            thisGangGroup.SetRelationshipWith(policeGroup, Relationship.Neutral);//was like
-            policeGroup.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
+            thisGangGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);//was like
+            RelationshipGroup.Cop.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
         }
         NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
     }

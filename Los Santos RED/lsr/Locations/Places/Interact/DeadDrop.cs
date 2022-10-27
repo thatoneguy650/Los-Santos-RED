@@ -26,7 +26,7 @@ public class DeadDrop : InteractableLocation
     public override string ButtonPromptText { get; set; }
     public override float MapIconScale { get; set; } = 1.0f;
     public override float MapIconRadius { get; set; } = 55.0f;
-    public override float MapIconAlpha { get; set; } = 0.35f;
+    public override float MapOpenIconAlpha { get; set; } = 0.35f;
 
 
     [XmlIgnore]

@@ -37,24 +37,24 @@ public class GroupManager
     {
         CurrentGroupMembers.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
 
-        if (Settings.SettingsManager.PlayerOtherSettings.GroupMembersGetPlayerWantedLevel)
-        {
-            foreach (PedExt groupMember in CurrentGroupMembers)
-            {
-                if (Player.WantedLevel > groupMember.WantedLevel)
-                {
-                    groupMember.SetWantedLevel(Player.WantedLevel);
-                    EntryPoint.WriteToConsole($"GROUP MANAGER SET GROUP MEMBER WANTED LEVEL TO MATCH PLAYER {groupMember.Handle} {groupMember.WantedLevel}");
-                }
+        //if (Settings.SettingsManager.PlayerOtherSettings.GroupMembersGetPlayerWantedLevel)
+        //{
+        //    foreach (PedExt groupMember in CurrentGroupMembers)
+        //    {
+        //        if (Player.WantedLevel > groupMember.WantedLevel)
+        //        {
+        //            groupMember.SetWantedLevel(Player.WantedLevel);
+        //            EntryPoint.WriteToConsole($"GROUP MANAGER SET GROUP MEMBER WANTED LEVEL TO MATCH PLAYER {groupMember.Handle} {groupMember.WantedLevel}");
+        //        }
 
 
-                //if(groupMember.Pedestrian.Exists())
-                //{
-                //    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 500f, 0);//TR
-                //    groupMember.Pedestrian.KeepTasks = true;
-                //}
-            }
-        }
+        //        //if(groupMember.Pedestrian.Exists())
+        //        //{
+        //        //    NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 500f, 0);//TR
+        //        //    groupMember.Pedestrian.KeepTasks = true;
+        //        //}
+        //    }
+        //}
     }
     public void Dispose()
     {
@@ -114,7 +114,7 @@ public class GroupManager
     }
     public void GiveCurrentWeapon(PedExt groupMember)
     {
-        if(Player.WeaponEquipment.CurrentWeapon != null)
+        if(Player.WeaponEquipment.CurrentWeapon != null && groupMember.Pedestrian.Exists())
         {
             WeaponVariation WeaponToTransferVariations = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
             uint WeaponToTransferHash = (uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash;
@@ -130,6 +130,16 @@ public class GroupManager
             }
         }
     }
+
+
+    public void ResetStatus(PedExt groupMember)
+    {
+        if (groupMember.Pedestrian.Exists())
+        {
+            NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
+        }
+    }
+
     public void TryRecruitLookedAtPed()
     {
         if(Add(Player.CurrentLookedAtPed))
@@ -143,7 +153,7 @@ public class GroupManager
     }
     private void OnBecameGroupMember(PedExt groupMember)
     {
-        
+        groupMember.IsGroupMember = true;
         groupMember.CanBeTasked = false;
         groupMember.CanBeAmbientTasked = false;
         NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
@@ -161,15 +171,16 @@ public class GroupManager
 
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
 
-        NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
+       // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
 
        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
 
 
-        groupMember.Pedestrian.KeepTasks = true;
+       // groupMember.Pedestrian.KeepTasks = true;
     }
     private void OnLeftGroup(PedExt groupMember)
     {
+        groupMember.IsGroupMember = false;
         groupMember.CanBeTasked = true;
         groupMember.CanBeAmbientTasked = true;
     }

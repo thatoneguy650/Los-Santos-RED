@@ -66,6 +66,7 @@ public class Debug
     private bool isClearingPeds;
     private MusicGuru.MusicPlayerOld MusicPlayerOld;
     private ModDataFileManager ModDataFileManager;
+    private bool isRunning;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -437,6 +438,7 @@ public class Debug
     private void DebugNumpad3()
     {
         WriteCivilianAndCopState();
+
     }
     private void DebugNumpad4()
     {
@@ -1182,14 +1184,45 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-
+        //PrintRelationships();
         //AlertMessage();
         SetPropAttachment();
         //DisplaySprite();
         //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
     }
+    private void PrintRelationships()
+    {
+        foreach (PedExt ped in World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))
+        {
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
 
+
+            if (currentWeapon != 0 && currentWeapon != 2725352035)
+            {
+
+                uint coolTest = NativeFunction.Natives.GET_CURRENT_PED_WEAPON_ENTITY_INDEX<uint>(ped.Pedestrian, 0);
+                bool EntityIndexIsValid = false;
+                if (coolTest != 0)
+                {
+                    EntityIndexIsValid = true;
+                }
+
+                bool isWeaponReadyToShoot = NativeFunction.Natives.IS_PED_WEAPON_READY_TO_SHOOT<bool>(ped.Pedestrian);
+
+                EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} Weapon {currentWeapon} EntityIndexIsValid {EntityIndexIsValid} isWeaponReadyToShoot {isWeaponReadyToShoot}", 5);
+
+
+
+
+            }
+
+
+
+
+        }
+    }
     private void DisableAllSpawning()
     {
         Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
@@ -1344,78 +1377,101 @@ public class Debug
     }
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("prop_cs_police_torch");
-        Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
-        GameFiber.Yield();
-
-        string headBoneName = "BONETAG_HEAD";
-        string handRBoneName = "BONETAG_R_PH_HAND";
-        string handLBoneName = "BONETAG_L_PH_HAND";
-
-        string boneName = headBoneName;
-
-
-        string wantedBone = NativeHelper.GetKeyboardInput("Head");
-        if (wantedBone == "RHand")
+        string PropName = NativeHelper.GetKeyboardInput("p_amb_phone_01");
+        try
         {
-            boneName = handRBoneName;
-        }
-        else if (wantedBone == "LHand")
-        {
-            boneName = handLBoneName;
-        }
+            Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
+            GameFiber.Yield();
 
-        uint GameTimeLastAttached = 0;
-        Offset = new Vector3();
-        Rotation = new Rotator();
-        isPrecise = false;
-        if (SmokedItem.Exists())
-        {
-            //Specific for umbrella
+            string headBoneName = "BONETAG_HEAD";
+            string handRBoneName = "BONETAG_R_PH_HAND";
+            string handLBoneName = "BONETAG_L_PH_HAND";
 
-            //AnimationDictionary.RequestAnimationDictionay("doors@");
-            // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+            string boneName = headBoneName;
 
 
-            AnimationDictionary.RequestAnimationDictionay("amb@world_human_security_shine_torch@male@base");
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "amb@world_human_security_shine_torch@male@base", "base", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
-
-
-
-
-            AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
-
-
-
-            GameFiber.StartNew(delegate
+            string wantedBone = NativeHelper.GetKeyboardInput("Head");
+            if (wantedBone == "RHand")
             {
-                while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
+                boneName = handRBoneName;
+            }
+            else if (wantedBone == "LHand")
+            {
+                boneName = handLBoneName;
+            }
+
+            uint GameTimeLastAttached = 0;
+            Offset = new Vector3();
+            Rotation = new Rotator();
+            isPrecise = false;
+            if (SmokedItem.Exists())
+            {
+                //Specific for umbrella
+
+                //AnimationDictionary.RequestAnimationDictionay("doors@");
+                // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+                string dictionary = "switch@trevor@digging";
+                string animation = "001433_01_trvs_26_digging_exit";
+
+
+
+                dictionary = NativeHelper.GetKeyboardInput("cellphone@");
+                animation = NativeHelper.GetKeyboardInput("cellphone_text_read_base");
+
+                AnimationDictionary.RequestAnimationDictionay(dictionary);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+
+                isRunning = true;
+
+                AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+
+
+
+                GameFiber.StartNew(delegate
                 {
-                    if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                    while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
                     {
-                        AttachItem(SmokedItem, boneName, Offset, Rotation);
-                        GameTimeLastAttached = Game.GameTime;
+                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        {
+                            AttachItem(SmokedItem, boneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                        }
+
+
+                        if (Game.IsKeyDown(Keys.B))
+                        {
+                            EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.N))
+                        {
+                            isPrecise = !isPrecise;
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.D0))
+                        {
+                            isRunning = !isRunning;
+                            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+                            GameFiber.Sleep(500);
+                        }
+                        float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, dictionary, animation);
+                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise} ~n~Press 0 Pause{isRunning}");
+                        Game.DisplaySubtitle($"Current Animation Time {AnimationTime}");
+                        GameFiber.Yield();
                     }
 
-
-                    if (Game.IsKeyDown(Keys.B))
+                    if (SmokedItem.Exists())
                     {
-                        EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                        SmokedItem.Delete();
                     }
-                    if (Game.IsKeyDown(Keys.N))
-                    {
-                        isPrecise = !isPrecise;
-                    }
-
-                    Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
-                    GameFiber.Yield();
-                }
-
-                if (SmokedItem.Exists())
-                {
-                    SmokedItem.Delete();
-                }
-            }, "Run Debug Logic");
+                }, "Run Debug Logic");
+            }
+        }
+        catch(Exception e)
+        {
+            Game.DisplayNotification("ERROR DEBUG");
         }
     }
     private void AttachItem(Rage.Object SmokedItem, string boneName, Vector3 offset, Rotator rotator)
@@ -2755,7 +2811,7 @@ public class Debug
     }
     private void WriteCivilianAndCopState()
     {
-        EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle}", 5);
+        EntryPoint.WriteToConsole($"============================================ PLAYER HANDLE {Game.LocalPlayer.Character.Handle} {Game.LocalPlayer.Character.Model.Name} RG: {Game.LocalPlayer.Character.RelationshipGroup.Name} DRG: {RelationshipGroup.Player.Name}", 5);
         //EntryPoint.WriteToConsole($"============================================ VEHICLES START", 5);
         //foreach (VehicleExt veh in World.Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists()).OrderBy(x => x.Vehicle.DistanceTo2D(Game.LocalPlayer.Character)))
         //{
@@ -2804,8 +2860,8 @@ public class Debug
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
-            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
-            EntryPoint.WriteToConsole($"        WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
+            EntryPoint.WriteToConsole($"        WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
 
 
 

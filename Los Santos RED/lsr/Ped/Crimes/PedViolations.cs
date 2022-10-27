@@ -158,7 +158,8 @@ public class PedViolations
 
         if (!hasCloseCops && Game.GameTime - GameTimeLastNearCops >= 80000)
         {
-            Reset();
+            PedExt.OnLostWanted();
+           // Reset();
             EntryPoint.WriteToConsole($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
         }
     }
@@ -505,7 +506,17 @@ public class PedViolations
         }
         else
         {
-            return true;
+
+            uint coolTest = NativeFunction.Natives.GET_CURRENT_PED_WEAPON_ENTITY_INDEX<uint>(PedExt.Pedestrian, 0);//new stuffo?
+            if (coolTest != 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
     }
     private void AddViolating(Crime crime)

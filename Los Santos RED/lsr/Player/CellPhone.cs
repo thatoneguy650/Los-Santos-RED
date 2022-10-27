@@ -49,7 +49,7 @@ public class CellPhone
     public List<PhoneText> TextList => AddedTexts;
     public List<PhoneContact> ContactList => AddedContacts;
     public List<PhoneResponse> PhoneResponseList => PhoneResponses;
-    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world)
+    public CellPhone(ICellPhoneable player, IContactInteractable gangInteractable, IJurisdictions jurisdictions, ISettingsProvideable settings, ITimeReportable time, IGangs gangs, IPlacesOfInterest placesOfInterest, IZones zones, IStreets streets, IGangTerritories gangTerritories, ICrimes crimes, IEntityProvideable world, IModItems modItems)
     {
         Player = player;
         MenuPool = new MenuPool();
@@ -65,7 +65,7 @@ public class CellPhone
         ContactInteractable = gangInteractable;
         Crimes = crimes;
         World = world;
-        BurnerPhone = new BurnerPhone(Player, Time, Settings);
+        BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems);
         phoneAudioPlayer = new NAudioPlayer(Settings);
     }
     public void Setup()

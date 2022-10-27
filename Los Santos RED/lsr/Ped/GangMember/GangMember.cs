@@ -27,6 +27,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 100;
+
     public WeaponInventory WeaponInventory { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
@@ -40,17 +41,20 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             if (Gang != null)
             {
-                RelationshipGroup gangRG = new RelationshipGroup(Gang.ID);
-                Pedestrian.RelationshipGroup = gangRG;
-                RelationshipGroup.Cop.SetRelationshipWith(gangRG, Relationship.Hate);
-                gangRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
+                RelationshipGroup.Cop.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
+                Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
                 Gang.HasWantedMembers = true;
                 EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
             }
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Pedestrian, (int)eCustomDrivingStyles.Code3);
             EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER)");
         }
     }
-
-
+    public override void OnLostWanted()
+    {
+        if(Pedestrian.Exists())
+        {
+            PedViolations.Reset();
+            EntryPoint.WriteToConsole($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
+        }
+    }
 }

@@ -10,16 +10,21 @@ using System.Linq;
 public class ModItems : IModItems
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ModItems.xml";
-    private List<ModItem> ModItemsList;
-    public List<ModItem> Items => ModItemsList;
+
+    public ModItems()
+    {
+        PossibleItems = new PossibleItems();
+    }
+    public PossibleItems PossibleItems { get; private set; }
     public ModItem Get(string name)
     {
-        return ModItemsList.FirstOrDefault(x => x.Name == name);
+        return AllItems().FirstOrDefault(x => x.Name == name);
     }
     public ModItem GetRandomItem()
     {
-        return ModItemsList.Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped && !x.ConsumeOnPurchase).PickRandom();
+        return AllItems().Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped && !x.ConsumeOnPurchase).PickRandom();
     }
+    
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -27,12 +32,12 @@ public class ModItems : IModItems
         if (ConfigFile != null)
         {
             EntryPoint.WriteToConsole($"Loaded Mod Items config: {ConfigFile.FullName}",0);
-            ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFile.FullName);
+            PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFile.FullName);
         }
         else if (File.Exists(ConfigFileName))
         {
             EntryPoint.WriteToConsole($"Loaded Mod Items config  {ConfigFileName}",0);
-            ModItemsList = Serialization.DeserializeParams<ModItem>(ConfigFileName);
+            PossibleItems = Serialization.DeserializeParam<PossibleItems>(ConfigFileName);
         }
         else
         {
@@ -40,10 +45,23 @@ public class ModItems : IModItems
             DefaultConfig();
         }
     }
+    public List<ModItem> BasicItems()
+    {
+        List<ModItem> basicItems = new List<ModItem>();
+        basicItems.AddRange(PossibleItems.ModItems);
+        return basicItems;
 
+    }
+    public List<ModItem> AllItems()
+    {
+        List<ModItem> AllLocations = new List<ModItem>();
+        AllLocations.AddRange(BasicItems());
+        AllLocations.AddRange(PossibleItems.FlashlightItems);
+        return AllLocations;
+    }
     public void Setup(PhysicalItems propItems)
     {
-        foreach (ModItem mi in ModItemsList)
+        foreach (ModItem mi in AllItems())
         {
             if (mi.ItemType == ItemType.Vehicles)
             {
@@ -66,10 +84,8 @@ public class ModItems : IModItems
             }
         }
     }
-
     private void DefaultConfig()
     {
-        ModItemsList = new List<ModItem> { };
         DefaultConfig_Drinks();
         DefaultConfig_Food();
         DefaultConfig_Drugs();
@@ -77,12 +93,11 @@ public class ModItems : IModItems
         DefaultConfig_Tools();
         DefaultConfig_Vehicles();
         DefaultConfig_Services();
-        Serialization.SerializeParams(ModItemsList, ConfigFileName);
+        Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
-
     private void DefaultConfig_Drinks()
     {
-        ModItemsList.AddRange(new List<ModItem> {
+        PossibleItems.ModItems.AddRange(new List<ModItem> {
             //Drinks
             //Bottles
             new ModItem("Bottle of Raine Water", "The water that rich people drink, and the main reason why there are now entire continents of plastic bottles floating in the ocean", eConsumableType.Drink, ItemType.Drinks) { 
@@ -168,7 +183,7 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Drugs()
     {
-        ModItemsList.AddRange(new List<ModItem>
+        PossibleItems.ModItems.AddRange(new List<ModItem>
         {
             //Cigarettes/Cigars
             new ModItem("Redwood Regular", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda",eConsumableType.Smoke, ItemType.Drugs) {
@@ -252,7 +267,7 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Food()
     {
-        ModItemsList.AddRange(new List<ModItem>
+        PossibleItems.ModItems.AddRange(new List<ModItem>
         {
             //Generic Food
             new ModItem("Hot Dog","Your favorite mystery meat sold on street corners everywhere. Niko would be proud",eConsumableType.Eat, ItemType.Food) {
@@ -478,7 +493,7 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Services()
     {
-        ModItemsList.AddRange(new List<ModItem>
+        PossibleItems.ModItems.AddRange(new List<ModItem>
         {
             //Generic Hotel
             new ModItem("Room: Single Twin","Cheapest room for the most discerning client",eConsumableType.Service, ItemType.Services) {ConsumeOnPurchase = true, MeasurementName = "Night" },
@@ -497,7 +512,7 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Tools()
     {
-        ModItemsList.AddRange(new List<ModItem>
+        PossibleItems.ModItems.AddRange(new List<ModItem>
         {
             //Generic Tools
             new ModItem("Screwdriver","Might get you into some locked things", ItemType.Tools) {
@@ -523,11 +538,7 @@ public class ModItems : IModItems
 
 
 
-            new ModItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.", ItemType.Tools) {
-                ModelItemID = "prop_cs_police_torch", ToolType = ToolTypes.Flashlight },
 
-            new ModItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.", ItemType.Tools) {
-                ModelItemID = "prop_tool_torch", ToolType = ToolTypes.Flashlight },
 
 
             new ModItem("Flint Rubber Mallet","Give it a whack", ItemType.Tools) {
@@ -556,11 +567,55 @@ public class ModItems : IModItems
             new ModItem("Black Umbrella","Let justice be done though the heavens fall, in fashionable black.", ItemType.Tools) {
                 ModelItemID = "p_amb_brolly_01_s", ToolType = ToolTypes.Umbrella },
 
+
+
+
+
+
+            //new ModItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.", ItemType.Tools) {
+            //    ModelItemID = "prop_cs_police_torch", ToolType = ToolTypes.Flashlight },
+            //new ModItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.", ItemType.Tools) {
+            //    ModelItemID = "prop_tool_torch", ToolType = ToolTypes.Flashlight },
+
+            //new ModItem("iFruit Cellphone","All of the price, none of the features.", ItemType.Tools) {
+            //    ModelItemID = "prop_phone_ing", ToolType = ToolTypes.Flashlight },
+            //new ModItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.", ItemType.Tools) {
+            //    ModelItemID = "prop_phone_ing_02", ToolType = ToolTypes.Flashlight },
+            //new ModItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.", ItemType.Tools) {
+            //    ModelItemID = "prop_phone_ing_03", ToolType = ToolTypes.Flashlight },
+
+    });
+
+
+       PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
+            new FlashlightItem("iFruit Cellphone","All of the price, none of the features.", ItemType.Tools) {
+                ModelItemID = "prop_phone_ing", ToolType = ToolTypes.Flashlight,
+                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,
+            },
+            new FlashlightItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.", ItemType.Tools) {
+                ModelItemID = "prop_phone_ing_02", ToolType = ToolTypes.Flashlight,
+                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,
+            },
+            new FlashlightItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.", ItemType.Tools) {
+                ModelItemID = "prop_phone_ing_03", ToolType = ToolTypes.Flashlight,
+                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,
+            },
+
+
+            new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.", ItemType.Tools) {
+                ModelItemID = "prop_cs_police_torch", ToolType = ToolTypes.Flashlight,
+                EmissiveRadius = 10f, EmissiveDistance = 75f,EmissiveBrightness = 0.75f, },
+            new FlashlightItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.", ItemType.Tools) {
+                ModelItemID = "prop_tool_torch", ToolType = ToolTypes.Flashlight,
+                EmissiveRadius = 15f, EmissiveDistance = 100f,EmissiveBrightness = 1.0f, },
+
         });
+
+
     }
     private void DefaultConfig_Vehicles()
     {
-        ModItemsList.AddRange(new List<ModItem> {
+        PossibleItems.ModItems.AddRange(new List<ModItem> {
             //Cars & Motorcycles
             new ModItem("Albany Alpha", "Blending modern performance and design with the classic luxury styling of a stately car, the Alpha is sleek, sexy and handles so well you'll forget you're driving it. Which could be a problem at 150 mph...", true, ItemType.Vehicles) { ModelItemID = "alpha" },
             new ModItem("Albany Roosevelt","Party like it's the Prohibition era in this armored 1920s limousine. Perfect for a gangster and his moll on their first date or their last. Let the Valentine's Day massacres commence.", true, ItemType.Vehicles) { ModelItemID = "btype" },
@@ -1159,7 +1214,7 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Weapons()
     {
-        ModItemsList.AddRange(new List<ModItem>
+        PossibleItems.ModItems.AddRange(new List<ModItem>
         {
             //Melee
             new ModItem("Baseball Bat","Aluminum baseball bat with leather grip. Lightweight yet powerful for all you big hitters out there.", false, ItemType.Weapons) { ModelItemID = "weapon_bat"},

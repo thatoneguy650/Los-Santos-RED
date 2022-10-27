@@ -228,6 +228,7 @@ public class Civilians
         bool anyGangMemberCanSeePlayer = false;
         bool anyGangMemberCanHearPlayer = false;
         bool anyGangMemberRecentlySeenPlayer = false;
+
         foreach (GangMember gangBanger in World.Pedestrians.GangMemberList)
         {
             if (gangBanger.Pedestrian.Exists() && gangBanger.Pedestrian.IsAlive)
@@ -268,6 +269,8 @@ public class Civilians
                 EntryPoint.WriteToConsole($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
             }
         }
+
+
     }
     private void UpdateZombies()
     {
@@ -365,7 +368,6 @@ public class Civilians
             }
         }
     }
-
     private void AssignCops()
     {
         if (World.CitizenWantedLevel > 0)
@@ -414,7 +416,6 @@ public class Civilians
             CurrentRespondingPoliceCount = 0;
         }
     }
-
     private int PoliceToRespond(int wantedLevel)
     {
         {

@@ -43,7 +43,7 @@ namespace LosSantosRED.lsr.Data
         public PilotsLicense PilotsLicense { get; set; }
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
         public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
-        public List<GangRepSave> GangReputations { get; set; } = new List<GangRepSave>();
+        public List<GangRepSave> GangReputationsSave { get; set; } = new List<GangRepSave>();
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
@@ -103,10 +103,10 @@ namespace LosSantosRED.lsr.Data
                     OwnedVehicleVariations.Add(vss);
                 }
             }
-            GangReputations = new List<GangRepSave>();
+            GangReputationsSave = new List<GangRepSave>();
             foreach (GangReputation gr in player.RelationshipManager.GangRelationships.GangReputations)
             {
-                GangReputations.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
+                GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
             }
 
             if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
@@ -251,7 +251,7 @@ namespace LosSantosRED.lsr.Data
 
 
 
-                foreach (GangRepSave tuple in GangReputations)
+                foreach (GangRepSave tuple in GangReputationsSave)
                 {
                     Gang myGang = gangs.GetGang(tuple.GangID);
                     if (myGang != null)

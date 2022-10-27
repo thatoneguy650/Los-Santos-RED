@@ -488,7 +488,7 @@ public class SellMenu : Menu
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        ModItem ToAdd = ModItems.Items.Where(x => x.Name == selectedItem.Text).FirstOrDefault();
+        ModItem ToAdd = ModItems.AllItems().Where(x => x.Name == selectedItem.Text).FirstOrDefault();
         MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == selectedItem.Text).FirstOrDefault();
         bool ExitAfterPurchase = false;
         if (ToAdd != null && menuItem != null)
@@ -569,7 +569,7 @@ public class SellMenu : Menu
         if (myItem != null && Transaction.PreviewItems && Settings.SettingsManager.PlayerOtherSettings.GenerateStoreItemPreviews)
         {
             EntryPoint.WriteToConsole($"SIMPLE TRANSACTION OnIndexChange Text: {myItem.Text}", 5);
-            ModItem itemToShow = ModItems.Items.Where(x => x.Name == myItem.Text).FirstOrDefault();
+            ModItem itemToShow = ModItems.AllItems().Where(x => x.Name == myItem.Text).FirstOrDefault();
             if (itemToShow != null)
             {
                 if (itemToShow.PackageItem?.Type == ePhysicalItemType.Prop || itemToShow.ModelItem?.Type == ePhysicalItemType.Prop)
@@ -815,7 +815,7 @@ public class SellMenu : Menu
             {
                 if (menuItem.Sellable)
                 {
-                    ModItem myItem = ModItems.Items.Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
+                    ModItem myItem = ModItems.AllItems().Where(x => x.Name == menuItem.ModItemName).FirstOrDefault();
                     if (myItem != null)
                     {
                         if (myItem.ModelItem != null && myItem.ModelItem.Type == ePhysicalItemType.Weapon && myItem.ModelItem.ModelName != "")

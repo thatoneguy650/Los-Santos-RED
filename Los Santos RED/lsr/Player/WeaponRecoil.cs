@@ -70,7 +70,7 @@ public class WeaponRecoil
             AdjustedPitch *= -1.0f;
         }
 
-        if (Player.IsInFirstPerson)
+        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)//Player.IsInFirstPerson)
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
         }
@@ -96,7 +96,10 @@ public class WeaponRecoil
     private void AdjustPitch()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
-        AdjustedPitch *= 2.0f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
+        {
+            AdjustedPitch *= 2.0f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        }
         if (Player.IsInVehicle)
         {
             AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
@@ -115,7 +118,10 @@ public class WeaponRecoil
     private void AdjustHeading()
     {
         AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalRecoil);
-        AdjustedHeading *= 1.5f;
+        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
+        {
+            AdjustedHeading *= 1.5f;
+        }
         if (RandomItems.RandomPercent(50))
         {
             AdjustedHeading *= -1.0f;

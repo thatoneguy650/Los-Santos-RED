@@ -37,12 +37,14 @@ public class BurnerPhone
     private ISettingsProvideable Settings;
     private bool IsDisplayingCall;
     private PhoneContact LastCalledContact;
+    private IModItems ModItems;
     public bool IsActive => isPhoneActive;
-    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings)
+    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
         Time = time;
         Settings = settings;
+        ModItems = modItems;
     }
     public void Setup()
     {
@@ -119,6 +121,8 @@ public class BurnerPhone
         SetHomeScreen();
         SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
         SetHomeMenuApp(globalScaleformID, 1, 5, "Contacts", 0, 100);
+        SetHomeMenuApp(globalScaleformID, 2, 0, "Flashlight", 0, 100);
+
 
         isPhoneActive = true;
         CurrentApp = 1;
@@ -136,6 +140,22 @@ public class BurnerPhone
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Pull_Out", "Phone_SoundSet_Michael", 0);
         isVanillaPhoneDisabled = true;
+    }
+
+    public void ActivateFlashlight()
+    {
+        ClosePhone();
+        GameFiber.Sleep(500);
+        string modItemName = "iFruit Cellphone";
+        if(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID == 1)
+        {
+            modItemName = "Facade Cellphone";
+        }
+        else if (Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID == 2)
+        {
+            modItemName = "Badger Cellphone";
+        }
+        Player.ActivityManager.UseInventoryItem(ModItems.Get(modItemName), true);
     }
     private void UpdatePhone()
     {
@@ -215,6 +235,11 @@ public class BurnerPhone
             IsDisplayingTextMessage = false;
             HandleContactsInput();
         }
+        else if (CurrentApp == 4)
+        {
+            IsDisplayingCall = false;
+            IsDisplayingTextMessage = false;
+        }
     }
     private void DisabledVanillaControls()
     {
@@ -261,8 +286,10 @@ public class BurnerPhone
             CurrentColumn = CurrentColumn + 1;
             //CurrentIndex = GetSelectedIndex();
         }
-        CurrentColumn = CurrentColumn % 2;
-        CurrentRow = CurrentRow % 1;
+
+
+        CurrentColumn = CurrentColumn > 2 ? 0 : CurrentColumn;// CurrentColumn % 2;
+        CurrentRow = 0;// CurrentRow % 1;
         CurrentIndex = GetCurrentIndex(CurrentColumn + 1, CurrentRow + 1);
 
 
@@ -274,6 +301,11 @@ public class BurnerPhone
 
         SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
         SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
+
+
+
+
+        EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT CurrentIndex {CurrentIndex} OpenApp {CurrentIndex + 1}");
 
 
         //CurrentIndex = GetSelectedIndex();
@@ -301,6 +333,10 @@ public class BurnerPhone
         else if (Index == 3)//Contacts
         {
             OpenContactsApp();
+        }
+        else if (Index == 4)//Contacts
+        {
+            ActivateFlashlight();
         }
     }
     private void UpdateMessagesApp()
@@ -602,6 +638,9 @@ public class BurnerPhone
         SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
         SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
     }
+
+
+   
     private void SetSoftKeys()
     {
         SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
@@ -756,8 +795,8 @@ public class BurnerPhone
             return 1;
         else if(row == 1 && column == 2)
             return 2;
-        //else if(row == 1 && column == 3)
-        //    return 3;
+        else if (row == 1 && column == 3)
+            return 3;
         //else if(row == 2 && column == 1)
         //    return 4;
         //else if(row == 2 && column == 2)

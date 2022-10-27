@@ -128,6 +128,7 @@
     <Compile Include="lsr\Data\Items\ItemSubType.cs" />
     <Compile Include="lsr\Data\Items\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
+    <Compile Include="lsr\Data\Items\PossibleItems.cs" />
     <Compile Include="lsr\Data\Location\Counties.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
@@ -186,6 +187,7 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\Inventory\FlashlightItem.cs" />
     <Compile Include="lsr\Inventory\PropAttachment.cs" />
     <Compile Include="lsr\Locations\GameCounty.cs" />
     <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
@@ -249,6 +251,7 @@
     <Compile Include="lsr\Ped\GangMember\GangMember.cs" />
     <Compile Include="lsr\Ped\ISeatAssignable.cs" />
     <Compile Include="lsr\Ped\IWeaponIssuable.cs" />
+    <Compile Include="lsr\Ped\PedReactions.cs" />
     <Compile Include="lsr\Ped\Variation\FaceFeature.cs" />
     <Compile Include="lsr\Ped\Variation\HeadOverlayData.cs" />
     <Compile Include="lsr\Ped\Variation\RandomHeadData.cs" />
@@ -277,6 +280,7 @@
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
+    <Compile Include="lsr\Player\Activity\ShovelActivity.cs" />
     <Compile Include="lsr\Player\Activity\Sitting\SeatModel.cs" />
     <Compile Include="lsr\Player\Activity\Sitting\TableModel.cs" />
     <Compile Include="lsr\Player\Activity\UmbrellaActivity.cs" />

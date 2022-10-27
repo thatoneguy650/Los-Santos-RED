@@ -93,7 +93,10 @@ public class ModItem
     public float PercentLostOnUse { get; set; } = 0.0f;
     public bool IsPossessionIllicit { get; set; } = false;
 
+    public virtual void UseItem(IActionable actionable, ISettingsProvideable settings)
+    {
 
+    }
     public void ConsumeItem(IActivityManageable player, bool applyNeeds)
     {
         if (CanConsume)

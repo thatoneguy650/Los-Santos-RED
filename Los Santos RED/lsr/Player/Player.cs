@@ -121,7 +121,7 @@ namespace Mod
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
-            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World);
+            CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);
             Licenses = new Licenses(this);
             Properties = new Properties(this, PlacesOfInterest, TimeControllable);
@@ -495,8 +495,10 @@ namespace Mod
             BankAccounts.Update();
             HealthManager.Update();
             GroupManager.Update();
+            GameFiber.Yield();//TR Yield RemovedTest 1
             ButtonPrompts.Update();
             MeleeManager.Update();
+            GameFiber.Yield();//TR Yield RemovedTest 1
             PlayerVoice.Update();
         }
         public void SetNotBusted()
@@ -1530,7 +1532,7 @@ namespace Mod
                 }
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
-
+            GameFiber.Yield();
             Stance.Update();
 
             Sprinting.Update();
@@ -1857,6 +1859,7 @@ namespace Mod
                 }
                 isJacking = Character.IsJacking;
             }
+            GameFiber.Yield();
             TrackedVehicles.RemoveAll(x => !x.Vehicle.Exists());
             bool isDuckingInVehicle = NativeFunction.Natives.GET_PED_CONFIG_FLAG<bool>(Character, 359, 1);
             if (IsDuckingInVehicle != isDuckingInVehicle)

@@ -583,15 +583,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     RobberAccomplice.ResetPlayerCrimes();
                     RobberAccomplice.CanBeTasked = true;
                     RobberAccomplice.CanBeAmbientTasked = true;
-
                     Player.GroupManager.Remove(RobberAccomplice);
-
-
-                    //if(NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(RobberAccomplice.Pedestrian, PlayerGroup))
-                    //{
-                    //    NativeFunction.Natives.REMOVE_PED_FROM_GROUP(RobberAccomplice.Pedestrian);
-                    //}
-
                 }
             }
         }

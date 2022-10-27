@@ -309,7 +309,7 @@ public class GangRelationships
     {
         foreach (GangReputation gangRep in GangReputations)
         {
-            if(!gangRep.IsMember)
+            if(gangRep.GangRelationship == GangRespect.Hostile)
             {
                 gangRep.SetRelationshipGroupNeutral();
             }
