@@ -269,7 +269,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Flashlight.Delete();
             }
-
+            Player.ButtonPrompts.RemovePrompts("Flashlight");
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
 
