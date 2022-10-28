@@ -46,15 +46,14 @@ public class Civilians
         TotalChecked = 0;
         UpdateCivilians();
         GameFiber.Yield();
-        UpdateMerchants();
-        GameFiber.Yield();
-        UpdateZombies();
-        GameFiber.Yield();
-        UpdateGangMembers();
-        GameFiber.Yield();
-        UpdateEMTs();
-        GameFiber.Yield();
-
+        //UpdateMerchants();
+        //GameFiber.Yield();
+        ////UpdateZombies();
+        ////GameFiber.Yield();
+        //UpdateGangMembers();
+        //GameFiber.Yield();
+        //UpdateEMTs();
+        //GameFiber.Yield();
         UpdateTotalWanted();
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
@@ -70,16 +69,13 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-
-                //GameFiber.Yield();
-
                 if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
@@ -103,7 +99,7 @@ public class Civilians
             }
         }
     }
-    private void UpdateEMTs()
+    public void UpdateEMTs()
     {
         int localRan = 0;
         foreach (EMT ped in World.Pedestrians.EMTList.OrderBy(x => x.GameTimeLastUpdated))
@@ -111,15 +107,13 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                //GameFiber.Yield();
-
                 if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
@@ -142,7 +136,7 @@ public class Civilians
             }
         }
     }
-    private void UpdateMerchants()
+    public void UpdateMerchants()
     {
         int localRan = 0;
         foreach (PedExt ped in World.Pedestrians.MerchantList.OrderBy(x => x.GameTimeLastUpdated))
@@ -150,14 +144,13 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                //GameFiber.Yield();
                 if (yield && localRan == Settings.SettingsManager.DebugSettings.MerchantsUpdateBatch)
                 {
                     GameFiber.Yield();
@@ -172,7 +165,7 @@ public class Civilians
             }
         }
     }
-    private void UpdateGangMembers()
+    public void UpdateGangMembers()
     {
         int localRan = 0;
 
@@ -183,15 +176,13 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                //GameFiber.Yield();
-
                 if (yield)
                 {
                     ped.WeaponInventory.UpdateSettings();
@@ -205,13 +196,11 @@ public class Civilians
                     ped.WillFightPolice = true;
                     ped.WasEverSetPersistent = true;
                 }
-
                 if(ped.Gang?.ID == playerGangID)
                 {
                     ped.PlayerKnownsName = true;
                     ped.IsTrustingOfPlayer = true;
                 }
-
                 if (yield && localRan == Settings.SettingsManager.DebugSettings.GangUpdateBatch)//1
                 {
                     GameFiber.Yield();
@@ -225,6 +214,8 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating GangMember Data");
             }
         }
+        GameFiber.Yield();
+
         bool anyGangMemberCanSeePlayer = false;
         bool anyGangMemberCanHearPlayer = false;
         bool anyGangMemberRecentlySeenPlayer = false;
@@ -272,35 +263,35 @@ public class Civilians
 
 
     }
-    private void UpdateZombies()
-    {
-        int localRan = 0;
-        foreach (PedExt ped in World.Pedestrians.ZombieList.OrderBy(x => x.GameTimeLastUpdated))
-        {
-            try
-            {
-                bool yield = false;
-                if (ped.NeedsFullUpdate)
-                {
-                    yield = true;
-                    TotalRan++;
-                    localRan++;
-                }
-                ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (yield && localRan == 5)
-                {
-                    GameFiber.Yield();
-                    localRan = 0;
-                }
-                TotalChecked++;
-            }
-            catch (Exception e)
-            {
-                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Zombie Data");
-            }
-        }
-    }
+    //private void UpdateZombies()
+    //{
+    //    int localRan = 0;
+    //    foreach (PedExt ped in World.Pedestrians.ZombieList.OrderBy(x => x.GameTimeLastUpdated))
+    //    {
+    //        try
+    //        {
+    //            bool yield = false;
+    //            if (ped.NeedsFullUpdate)
+    //            {
+    //                yield = true;
+    //                TotalRan++;
+    //                localRan++;
+    //            }
+    //            ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+    //            if (yield && localRan == 5)
+    //            {
+    //                GameFiber.Yield();
+    //                localRan = 0;
+    //            }
+    //            TotalChecked++;
+    //        }
+    //        catch (Exception e)
+    //        {
+    //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+    //            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Zombie Data");
+    //        }
+    //    }
+    //}
     private void UpdateTotalWanted()
     {
         PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();

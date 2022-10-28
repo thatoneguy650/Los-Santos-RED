@@ -193,13 +193,29 @@ namespace LosSantosRED.lsr
             }));
             TaskGroups.Add(new ModTaskGroup("Group5", new List<ModTask>()
             {
-                new ModTask(250, "Police.Update", Police.Update,0),
+                new ModTask(50, "Police.Update", Police.Update,0),//250
             }));
             TaskGroups.Add(new ModTaskGroup("Group6", new List<ModTask>()
             {
-                new ModTask(250, "Civilians.Update", Civilians.Update, 0),//500//250
+                new ModTask(50, "Civilians.Update", Civilians.Update, 0),//500//250
             }));
+
             TaskGroups.Add(new ModTaskGroup("Group7", new List<ModTask>()
+            {
+                new ModTask(50, "Civilians.UpdateGangMembers", Civilians.UpdateGangMembers, 0),//500//250
+            }));
+            TaskGroups.Add(new ModTaskGroup("Group8", new List<ModTask>()
+            {
+                new ModTask(50, "Civilians.UpdateMerchants", Civilians.UpdateMerchants, 0),//500//250
+            }));
+            TaskGroups.Add(new ModTaskGroup("Group9", new List<ModTask>()
+            {
+                new ModTask(50, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
+            }));
+
+
+
+            TaskGroups.Add(new ModTaskGroup("Group10", new List<ModTask>()
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
@@ -212,7 +228,7 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.Update", World.Update, 6),
 
             }));
-            TaskGroups.Add(new ModTaskGroup("Group8", new List<ModTask>()
+            TaskGroups.Add(new ModTaskGroup("Group11", new List<ModTask>()
             {
                 new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
                 new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),

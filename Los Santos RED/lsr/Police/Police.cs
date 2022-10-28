@@ -63,15 +63,16 @@ namespace LosSantosRED.lsr
                     if (Cop.Pedestrian.Exists())
                     {
                         bool yield = false;
-                        if (Cop.NeedsFullUpdate)
-                        {
-                            yield = true;
-                            TotalRan++;
-                            localRan++;
-                        }
+                        //if (Cop.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryCopUpdate)
+                        //{
+                        //    yield = true;
+                        //    TotalRan++;
+                        //    localRan++;
+                        //}
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
+                            GameFiber.Yield();//TR TEST 28
                             Cop.WeaponInventory.UpdateLoadout(Player);
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
@@ -86,6 +87,7 @@ namespace LosSantosRED.lsr
                             }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowFrontVehicleClearAssist)
                             {
+                                GameFiber.Yield();//TR TEST 28
                                 Cop.AssistManager.ClearFront(Player.IsWanted);
                             }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
@@ -102,12 +104,12 @@ namespace LosSantosRED.lsr
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
                         }
-                        if (yield && localRan == Settings.SettingsManager.DebugSettings.PoliceUpdateBatch)//1
-                        {
-                            GameFiber.Yield();
-                            localRan = 0;
-                        }
-                        TotalChecked++;
+                        //if (yield && localRan == Settings.SettingsManager.DebugSettings.PoliceUpdateBatch)//1
+                        //{
+                        //    GameFiber.Yield();
+                        //    localRan = 0;
+                        //}
+                        //TotalChecked++;
                     }
                 }
                 catch (Exception e)
@@ -166,6 +168,7 @@ namespace LosSantosRED.lsr
                 }
                 //GameFiber.Yield();
             }
+            GameFiber.Yield();//TR TEST 28
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;

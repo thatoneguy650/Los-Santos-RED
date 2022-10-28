@@ -104,31 +104,17 @@ public class PedViolations
                 }
                 if(CurrentlyViolatingWantedLevel > 0 || WantedLevel > 0)
                 {
+                    GameFiber.Yield();//TR TEST 28
                     CheckPoliceSight();
                     if (player.IsCop)
                     {
                         CheckPlayerSight(player);
                     }
                 }
-
-
-
-
                 if (WantedLevel > 0)
                 {
                     OnPedSeenByPolice();
                 }
-                //else
-                //{
-                //    if (CurrentlyViolatingWantedLevel > 0)
-                //    {
-                //        CheckPoliceSight();
-                //        if (player.IsCop)
-                //        {
-                //            CheckPlayerSight(player);
-                //        }
-                //    }
-                //}
             }
         }
     }

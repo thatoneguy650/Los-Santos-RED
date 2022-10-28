@@ -252,24 +252,12 @@ public class PlayerPerception
         {
             bool distanceRan = UpdateTargetDistance(placeLastSeen, target.Position);
             bool losRan = UpdateTargetLineOfSight(Target.IsWanted);
-            //if(distanceRan || losRan)
-            //{
-            //   // GameFiber.Yield();//TR, 2 was getting rid of both running, this is just running one if either are done, maybe just do vision?
-            //}
-
-            //if(losRan && Originator.IsCop)
-            //{
-            //    GameFiber.Yield();//TR//TR New 8 Test 1, REMOVE SINCE IM DOING IT ALREADY IN THE OTHER ONE
-            //}
-
             UpdateWitnessedCrimes();
-            //GameFiber.Yield();
         }
         else
         {
             SetTargetUnseen();// SetTargetSeen();//maybe unseen here? not sure....
         }
-        //UpdateWitnessedCrimes();
     }
     private float GetDotVectorResult(Entity source, Entity target)
     {
@@ -358,11 +346,7 @@ public class PlayerPerception
             //    DistanceToTarget = maxCellsAway * 70f;
             //}
         }
-
         HeightToTarget = Math.Abs(Originator.Pedestrian.Position.Z - PositionToCheck.Z);//is new
-
-
-
         if (Originator.IsCop && Originator.Pedestrian.Exists())
         {
             DistanceToTargetLastSeen = Originator.Pedestrian.DistanceTo2D(placeLastSeen);
@@ -398,7 +382,6 @@ public class PlayerPerception
             WithinWeaponsAudioRange = false;
         }
         GameTimeLastDistanceCheck = Game.GameTime;
-        //GameFiber.Yield();//TR Yield RemovedTest 2
         return true;
     }
     private bool UpdateTargetLineOfSight(bool IsWanted)
@@ -413,18 +396,7 @@ public class PlayerPerception
             bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
             Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
 
-            bool isInFront = IsInFrontOf(Target.Character);
-
-            //if (TargetInVehicle && DistanceToTarget <= 20f)//this is new...., cops should be able to see behind themselves a short distance
-            //{
-            //    SetTargetSeen();
-            //}
-            //else if (!TargetInVehicle && DistanceToTarget <= 8f)//this is new...., cops should be able to see behind themselves a short distance
-            //{
-            //    SetTargetSeen();
-            //}
-            //else 
-               
+            bool isInFront = IsInFrontOf(Target.Character); 
             if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
             {
                 if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && isInFront)//55f
@@ -437,7 +409,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR TEST 28
                 }
                 else
                 {
@@ -475,7 +447,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR TEST 28
                 }
                 else
                 {
@@ -494,7 +466,7 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR New 8 Test 1
+                    GameFiber.Yield();//TR TEST 28
                 }
                 else
                 {
@@ -516,7 +488,6 @@ public class PlayerPerception
                 }
             }
             GameTimeLastLOSCheck = Game.GameTime;
-            //GameFiber.Yield();//TR Yield RemovedTest 2
             return true;
         }
         return false;
@@ -615,7 +586,6 @@ public class PlayerPerception
             CrimesWitnessed.Add(CrimeToAdd);
             PositionLastSeenCrime = PositionToReport;
             GameTimeLastSeenTargetCommitCrime = Game.GameTime;
-            //EntryPoint.WriteToConsole($"AddWitnessedCrime Handle {Originator.Pedestrian.Handle} GameTimeLastReactedToCrime {GameTimeLastSeenTargetCommitCrime}, CrimeToAdd.Name {CrimeToAdd.Name}", 5);
         }
     }
     public void UpdateWitnessedCrimes()

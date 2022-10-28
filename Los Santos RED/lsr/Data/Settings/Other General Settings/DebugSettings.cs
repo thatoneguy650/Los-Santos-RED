@@ -14,10 +14,12 @@ public class DebugSettings : ISettingsDefaultable
 
 
     public int CivilianUpdateBatch { get; set; }
-    public int PoliceUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
     public int MerchantsUpdateBatch { get; set; }
+
+    public bool YieldAfterEveryPedExtUpdate { get; set; }
+
     public uint TaskAssignmentCheckFrequency { get; set; }
 
     public int CopUpdateIntervalClose { get; set; }
@@ -44,11 +46,10 @@ public class DebugSettings : ISettingsDefaultable
         ShowTrafficArrows = false;
         PrintUpdateTimes = false;
 
-        CivilianUpdateBatch = 4;// 10;
-        PoliceUpdateBatch = 4;//10;
-        GangUpdateBatch = 4;//10;
-        MerchantsUpdateBatch = 4;//10;
-        EMTsUpdateBatch = 4;//10;
+        CivilianUpdateBatch = 1;// 10;
+        GangUpdateBatch = 1;//10;
+        MerchantsUpdateBatch = 1;//10;
+        EMTsUpdateBatch = 1;//10;
         TaskAssignmentCheckFrequency = 500;
 
 
@@ -63,6 +64,8 @@ public class DebugSettings : ISettingsDefaultable
         OtherUpdateIntervalMedium = 750;
         OtherUpdateIntervalFar = 2000;
         OtherUpdateIntervalVeryFar = 300;
+
+        YieldAfterEveryPedExtUpdate = true;
 
 
 

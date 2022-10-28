@@ -192,20 +192,7 @@ public class Debug
             foreach (PedExt ped in AllPeds.Where(x => x.Pedestrian.Exists()))/// && x.DistanceToPlayer <= 250f))// && NativeHelper.IsNearby(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY,4)))// x.DistanceToPlayer <= 150f))
             {
                 Color Color3 = Color.Yellow;
-
-                if (!ped.CanBeTasked)
-                {
-                    Color3 = Color.Purple;
-                }
-                else if (ped.CurrentTask != null)
-                {
-                    Color3 = Color.Black;
-                }
-                else if (ped.HasSeenPlayerCommitCrime)
-                {
-                    Color3 = Color.Red;
-                }
-                else if (ped.CanRecognizePlayer)
+                if (ped.CanRecognizePlayer)
                 {
                     Color3 = Color.Orange;
                 }

@@ -309,17 +309,18 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     {
                         if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
-                            PedViolations.Update(policeRespondable);//possible yield in here!
+                            GameFiber.Yield();//TR TEST 28
+                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                            if(IsGangMember)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
                             PedPerception.Update();
                         }
                         if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
                         {
                             CheckPlayerBusted();
                         }
-
-                       
-
-
                     }
                     if (Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                     {
@@ -330,11 +331,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                         perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
                         HasSeenDistressedPed = false;
                     }
-
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }
-            CurrentHealthState.Update(policeRespondable);
+            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         }
     }
     public virtual void OnBecameWanted()
@@ -509,8 +509,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 HasSeenDistressedPed = true;
                 distressedPed.HasBeenSeenInDistress = true;
                 break;
-            }
-                
+            }   
         }
     }
     private void CheckPlayerBusted()

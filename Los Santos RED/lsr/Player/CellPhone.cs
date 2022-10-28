@@ -569,7 +569,7 @@ public class CellPhone
     }
     public void AddScheduledText(string Name, string IconName, string MessageToSend)
     {
-        AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(1));
+        AddScheduledText(Name, IconName, MessageToSend, 0);
     }
     public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
     {

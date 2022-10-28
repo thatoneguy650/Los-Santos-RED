@@ -112,7 +112,7 @@ public class Respawning// : IRespawning
 
             };
 
-            CurrentPlayer.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", OfficerFriendlyResponses.PickRandom(), 2);
+            CurrentPlayer.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", OfficerFriendlyResponses.PickRandom(), 1);
 
 
             //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));

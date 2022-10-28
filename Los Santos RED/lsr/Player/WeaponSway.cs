@@ -132,16 +132,16 @@ public class WeaponSway
         //    NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch));
         //}
 
+        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
 
-
-        if (Player.IsInVehicle)
-        {
-            CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-        }
-        else
-        {
-            CurrentHeading = 0f;
-        }
+        //if (Player.IsInVehicle)
+        //{
+        //    CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        //}
+        //else
+        //{
+        //    CurrentHeading = 0f;
+        //}
 
         AdjustHeading();
         if (Math.Abs(AdjustedHeading) > 0f)
