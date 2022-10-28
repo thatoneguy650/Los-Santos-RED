@@ -44,11 +44,11 @@ public class DebugSettings : ISettingsDefaultable
         ShowTrafficArrows = false;
         PrintUpdateTimes = false;
 
-        CivilianUpdateBatch = 10;
-        PoliceUpdateBatch = 10;
-        GangUpdateBatch = 10;
-        MerchantsUpdateBatch = 10;
-        EMTsUpdateBatch = 10;
+        CivilianUpdateBatch = 4;// 10;
+        PoliceUpdateBatch = 4;//10;
+        GangUpdateBatch = 4;//10;
+        MerchantsUpdateBatch = 4;//10;
+        EMTsUpdateBatch = 4;//10;
         TaskAssignmentCheckFrequency = 500;
 
 
