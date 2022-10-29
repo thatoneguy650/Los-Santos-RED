@@ -17,9 +17,21 @@ public class Civilians
     private uint GameTimeLastUpdatedPeds;
     private int TotalRan;
     private int TotalChecked;
+
+
+    private int TotalMerchantsRan;
+    private int TotalMerchantsChecked;
+    private int TotalGangMembersRan;
+    private int TotalGangMembersChecked;
+    private int TotalEMTsRan;
+    private int TotalEMTsChecked;
+
     private int RespondingPolice;
     private int CurrentRespondingPoliceCount;
     private int prevCitizenWantedLevel;
+    private uint GameTimeLastUpdatedEMTPeds;
+    private uint GameTimeLastUpdatedMerchantPeds;
+    private uint GameTimeLastUpdatedGangMemberPeds;
 
     public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings, IGangs gangs)
     {
@@ -40,29 +52,10 @@ public class Civilians
     {
         World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
     }
-    public void Update()
+    public void UpdateCivilians()
     {
         TotalRan = 0;
         TotalChecked = 0;
-        UpdateCivilians();
-        GameFiber.Yield();
-        //UpdateMerchants();
-        //GameFiber.Yield();
-        ////UpdateZombies();
-        ////GameFiber.Yield();
-        //UpdateGangMembers();
-        //GameFiber.Yield();
-        //UpdateEMTs();
-        //GameFiber.Yield();
-        UpdateTotalWanted();
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
-        {
-            EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
-        }
-        GameTimeLastUpdatedPeds = Game.GameTime;
-    }
-    private void UpdateCivilians()
-    {
         int localRan = 0;
         foreach (PedExt ped in World.Pedestrians.CivilianList.OrderBy(x => x.GameTimeLastUpdated))
         {
@@ -98,10 +91,17 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianOnlyUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
+        }
+        GameTimeLastUpdatedPeds = Game.GameTime;
     }
     public void UpdateEMTs()
     {
         int localRan = 0;
+        TotalEMTsRan = 0;
+        TotalEMTsChecked = 0;
         foreach (EMT ped in World.Pedestrians.EMTList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
@@ -110,7 +110,7 @@ public class Civilians
                 if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
-                    TotalRan++;
+                    TotalEMTsRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
@@ -127,7 +127,7 @@ public class Civilians
                     GameFiber.Yield();
                     localRan = 0;
                 }
-                TotalChecked++;
+                TotalEMTsChecked++;
             }
             catch (Exception e)
             {
@@ -135,10 +135,21 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
+
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.UpdateEMTs Ran Time Since {Game.GameTime - GameTimeLastUpdatedEMTPeds} TotalRan: {TotalEMTsRan} TotalChecked: {TotalEMTsChecked}", 5);
+        }
+        GameTimeLastUpdatedEMTPeds = Game.GameTime;
+
+
+
     }
     public void UpdateMerchants()
     {
         int localRan = 0;
+        TotalMerchantsRan = 0;
+        TotalMerchantsChecked = 0;
         foreach (PedExt ped in World.Pedestrians.MerchantList.OrderBy(x => x.GameTimeLastUpdated))
         {
             try
@@ -147,7 +158,7 @@ public class Civilians
                 if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
-                    TotalRan++;
+                    TotalMerchantsRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
@@ -156,7 +167,7 @@ public class Civilians
                     GameFiber.Yield();
                     localRan = 0;
                 }
-                TotalChecked++;
+                TotalMerchantsChecked++;
             }
             catch (Exception e)
             {
@@ -164,10 +175,18 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Merchant Data");
             }
         }
+
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.UpdateMerchants Ran Time Since {Game.GameTime - GameTimeLastUpdatedMerchantPeds} TotalRan: {TotalMerchantsRan} TotalChecked: {TotalMerchantsChecked}", 5);
+        }
+        GameTimeLastUpdatedMerchantPeds = Game.GameTime;
     }
     public void UpdateGangMembers()
     {
         int localRan = 0;
+        TotalGangMembersRan = 0;
+        TotalGangMembersChecked = 0;
 
         string playerGangID = Perceptable.RelationshipManager.GangRelationships.CurrentGang?.ID;
 
@@ -179,7 +198,7 @@ public class Civilians
                 if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
-                    TotalRan++;
+                    TotalGangMembersRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
@@ -206,7 +225,7 @@ public class Civilians
                     GameFiber.Yield();
                     localRan = 0;
                 }
-                TotalChecked++;
+                TotalGangMembersChecked++;
             }
             catch (Exception e)
             {
@@ -260,39 +279,17 @@ public class Civilians
                 EntryPoint.WriteToConsole($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
             }
         }
-
+        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.UpdateGangMembers Ran Time Since {Game.GameTime - GameTimeLastUpdatedGangMemberPeds} TotalRan: {TotalGangMembersRan} TotalChecked: {TotalGangMembersChecked}", 5);
+        }
+        GameTimeLastUpdatedGangMemberPeds = Game.GameTime;
 
     }
-    //private void UpdateZombies()
-    //{
-    //    int localRan = 0;
-    //    foreach (PedExt ped in World.Pedestrians.ZombieList.OrderBy(x => x.GameTimeLastUpdated))
-    //    {
-    //        try
-    //        {
-    //            bool yield = false;
-    //            if (ped.NeedsFullUpdate)
-    //            {
-    //                yield = true;
-    //                TotalRan++;
-    //                localRan++;
-    //            }
-    //            ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-    //            if (yield && localRan == 5)
-    //            {
-    //                GameFiber.Yield();
-    //                localRan = 0;
-    //            }
-    //            TotalChecked++;
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-    //            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Zombie Data");
-    //        }
-    //    }
-    //}
-    private void UpdateTotalWanted()
+
+
+
+    public void UpdateTotalWanted()
     {
         PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         Vector3 PoliceInterestPoint;
@@ -438,3 +435,34 @@ public class Civilians
     }
 
 }
+
+
+//private void UpdateZombies()
+//{
+//    int localRan = 0;
+//    foreach (PedExt ped in World.Pedestrians.ZombieList.OrderBy(x => x.GameTimeLastUpdated))
+//    {
+//        try
+//        {
+//            bool yield = false;
+//            if (ped.NeedsFullUpdate)
+//            {
+//                yield = true;
+//                TotalRan++;
+//                localRan++;
+//            }
+//            ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+//            if (yield && localRan == 5)
+//            {
+//                GameFiber.Yield();
+//                localRan = 0;
+//            }
+//            TotalChecked++;
+//        }
+//        catch (Exception e)
+//        {
+//            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+//            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Zombie Data");
+//        }
+//    }
+//}

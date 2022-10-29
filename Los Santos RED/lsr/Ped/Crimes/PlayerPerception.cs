@@ -243,10 +243,14 @@ public class PlayerPerception
         }
 
     }
-   // private int LosUpdate => 750;
+
+    public bool RanSightThisUpdate { get; private set; }
+
+    // private int LosUpdate => 750;
     public bool SeenTargetWithin(int msSince) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= msSince;
     public void Update(IPerceptable target, Vector3 placeLastSeen)
     {
+        RanSightThisUpdate = false;
         Target = target;
         if (Originator != null && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
@@ -410,6 +414,7 @@ public class PlayerPerception
                         SetTargetUnseen();
                     }
                     GameFiber.Yield();//TR TEST 28
+                    RanSightThisUpdate = true;
                 }
                 else
                 {
@@ -428,6 +433,8 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
+                    GameFiber.Yield();//TR TEST 28
+                    RanSightThisUpdate = true;
                 }
             }
             else if (Originator.Pedestrian.IsInHelicopter)
@@ -448,6 +455,7 @@ public class PlayerPerception
                         SetTargetUnseen();
                     }
                     GameFiber.Yield();//TR TEST 28
+                    RanSightThisUpdate = true;
                 }
                 else
                 {
@@ -467,6 +475,7 @@ public class PlayerPerception
                         SetTargetUnseen();
                     }
                     GameFiber.Yield();//TR TEST 28
+                    RanSightThisUpdate = true;
                 }
                 else
                 {
@@ -485,6 +494,8 @@ public class PlayerPerception
                     {
                         SetTargetUnseen();
                     }
+                    GameFiber.Yield();//TR TEST 28
+                    RanSightThisUpdate = true;
                 }
             }
             GameTimeLastLOSCheck = Game.GameTime;

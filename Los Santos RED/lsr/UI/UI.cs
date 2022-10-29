@@ -168,17 +168,6 @@ public class UI : IMenuProvideable
         if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen)
         {
             DisplayLowerRightMenu();
-
-
-
-            //if (ShowRadar || DisplayablePlayer.Sprinting.StaminaPercentage < 1.0f || DisplayablePlayer.Intoxication.CurrentIntensityPercent > 0.0f)
-            //{
-            //    BarDisplay.Draw(DisplayablePlayer.Sprinting.StaminaPercentage, DisplayablePlayer.Intoxication.CurrentIntensityPercent, 0.0f);
-            //}
-
-            
-
-
             if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree && IsDrawingWheelMenu)
             {
                 ActionPopUpMenu.Draw();
@@ -189,7 +178,6 @@ public class UI : IMenuProvideable
             DisplayTopMenu();
         }
         MenuUpdate();
-
         MarkerManager.Update();
     }
     public void Tick2()
@@ -418,12 +406,10 @@ public class UI : IMenuProvideable
                 {
                     lowerRightHeighSpace += Settings.SettingsManager.LSRHUDSettings.LowerDisplayButtonPromptSpacing;
                 }
-
                 if (lowerRightHeighSpace == 0.0f)
                 {
                     lowerRightHeighSpace = Settings.SettingsManager.LSRHUDSettings.LowerDisplayNoItemSpacing;
                 }
-
 #if DEBUG
 
                 DisplayDebug();

@@ -11,6 +11,12 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowCivilianPerceptionArrows { get; set; }
     public bool ShowTrafficArrows { get; set; }
     public bool PrintUpdateTimes { get; set; }
+    public bool PrintCivilianOnlyUpdateTimes { get; set; }
+    public bool PrintCivilianUpdateTimes { get; set; }
+
+    public bool YieldAfterEveryPedExtUpdate { get; set; }
+    public bool PedUpdatePerformanceMode { get; set; }
+    public bool PedUpdatePerformanceMode2 { get; set; }
 
 
     public int CivilianUpdateBatch { get; set; }
@@ -18,7 +24,7 @@ public class DebugSettings : ISettingsDefaultable
     public int EMTsUpdateBatch { get; set; }
     public int MerchantsUpdateBatch { get; set; }
 
-    public bool YieldAfterEveryPedExtUpdate { get; set; }
+
 
     public uint TaskAssignmentCheckFrequency { get; set; }
 
@@ -45,7 +51,8 @@ public class DebugSettings : ISettingsDefaultable
         ShowCivilianPerceptionArrows = false;
         ShowTrafficArrows = false;
         PrintUpdateTimes = false;
-
+        PrintCivilianUpdateTimes = false;
+        PrintCivilianOnlyUpdateTimes = false;
         CivilianUpdateBatch = 1;// 10;
         GangUpdateBatch = 1;//10;
         MerchantsUpdateBatch = 1;//10;
@@ -59,13 +66,16 @@ public class DebugSettings : ISettingsDefaultable
         CopUpdateIntervalVeryFar = 2000;
 
 
-        OtherUpdateIntervalWanted = 250;
-        OtherUpdateIntervalClose = 250;
-        OtherUpdateIntervalMedium = 750;
-        OtherUpdateIntervalFar = 2000;
-        OtherUpdateIntervalVeryFar = 300;
+        OtherUpdateIntervalWanted = 500;
+        OtherUpdateIntervalClose = 500;//250;
+        OtherUpdateIntervalMedium = 500;//750;
+        OtherUpdateIntervalFar = 1000;
+        OtherUpdateIntervalVeryFar = 2000;
 
-        YieldAfterEveryPedExtUpdate = true;
+        YieldAfterEveryPedExtUpdate = false;
+
+        PedUpdatePerformanceMode = true;
+        PedUpdatePerformanceMode2 = false;
 
 
 

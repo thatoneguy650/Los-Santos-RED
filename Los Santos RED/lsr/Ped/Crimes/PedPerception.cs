@@ -56,7 +56,7 @@ public class PedPerception
             {
                 return;
             }
-            GameFiber.Yield();//TR TEST 28
+           // GameFiber.Yield();//TR TEST 28
             if (CurrentCriminal == null || !CurrentCriminal.Pedestrian.Exists() || !PedExt.Pedestrian.Exists())
             {
                 return;
@@ -99,7 +99,7 @@ public class PedPerception
                 }
                 WitnessedVehicle = World.Vehicles.GetVehicleExt(VehicleWitnessed);
                 WitnessedWeapon = Weapons.GetWeapon((ulong)WeaponWitnessed);
-                GameFiber.Yield();//TR TEST 28
+                //GameFiber.Yield();//TR TEST 28
             }
         }
     }

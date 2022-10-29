@@ -197,7 +197,7 @@ namespace LosSantosRED.lsr
             }));
             TaskGroups.Add(new ModTaskGroup("Group6", new List<ModTask>()
             {
-                new ModTask(50, "Civilians.Update", Civilians.Update, 0),//500//250
+                new ModTask(50, "Civilians.Update", Civilians.UpdateCivilians, 0),//500//250
             }));
 
             TaskGroups.Add(new ModTaskGroup("Group7", new List<ModTask>()
@@ -211,6 +211,7 @@ namespace LosSantosRED.lsr
             TaskGroups.Add(new ModTaskGroup("Group9", new List<ModTask>()
             {
                 new ModTask(50, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
+                new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
             }));
 
 
@@ -265,9 +266,12 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning && RunInput)
+                    while (IsRunning)
                     {
-                        Input.Tick();
+                        if(RunInput)
+                        {
+                            Input.Tick();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -279,14 +283,16 @@ namespace LosSantosRED.lsr
                 }
             }, "Run Input Logic");
 
-
             GameFiber.StartNew(delegate
             {
                 try
                 {
-                    while (IsRunning && RunVanilla)
+                    while (IsRunning)
                     {
-                        VanillaManager.Tick();
+                        if (RunVanilla)
+                        {
+                            VanillaManager.Tick();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -328,9 +334,12 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning && RunUI)
+                    while (IsRunning)
                     {
-                        UI.Tick2();
+                        if (RunUI)
+                        {
+                            UI.Tick2();
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -345,11 +354,14 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning && RunUI)
+                    while (IsRunning)
                     {
-                        UI.Tick3();
-                        GameFiber.Yield();
-                        Time.Tick();//this was below before, but shouldnt be any different
+                        if (RunUI)
+                        {
+                            UI.Tick3();
+                            GameFiber.Yield();
+                            Time.Tick();//this was below before, but shouldnt be any different
+                        }
                         GameFiber.Yield();
                     }
                 }
@@ -367,9 +379,12 @@ namespace LosSantosRED.lsr
             {
                 try
                 {
-                    while (IsRunning && RunOther)
+                    while (IsRunning)
                     {
-                        Debug.Update();
+                        if (RunOther)
+                        {
+                            Debug.Update();
+                        }
                         GameFiber.Yield();
                     }
                 }

@@ -22,6 +22,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint KillerHandle;
     private Entity LastHurtBy;
     private Vector3 position;
+
+    private uint UpdateJitter;
+
     public Vector3 SpawnPosition { get; set; }
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
@@ -76,6 +79,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PlayerPerception = new PlayerPerception(this, null, settings);
         PedReactions = new PedReactions(this);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
+
+
+        UpdateJitter = RandomItems.GetRandomNumber(100, 200);
+
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
     {
@@ -195,7 +202,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 return true;
             }
-            else if (Game.GameTime > GameTimeLastUpdated + FullUpdateInterval)
+            else if (Game.GameTime > GameTimeLastUpdated + FullUpdateInterval)// + UpdateJitter)
             {
                 return true;
             }
@@ -260,11 +267,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
             else
             {
-                if (PlayerPerception?.DistanceToTarget >= 300)
+                if (PlayerPerception?.DistanceToTarget >= 100f)//300
                 {
                     return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalVeryFar;
                 }
-                else if (PlayerPerception?.DistanceToTarget >= 200)
+                else if (PlayerPerception?.DistanceToTarget >= 50f)//200
                 {
                     return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalFar;
                 }
@@ -272,7 +279,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 {
                     return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalWanted;
                 }
-                else if (PlayerPerception?.DistanceToTarget >= 50f)
+                else if (PlayerPerception?.DistanceToTarget >= 25f)//50f
                 {
                     return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalMedium;//2000
                 }
@@ -309,20 +316,34 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     {
                         if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
-                            GameFiber.Yield();//TR TEST 28
-                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            if(IsGangMember)
+                            // if (IsGangMember)
+                            //{
+
+
+                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
+
                                 GameFiber.Yield();//TR TEST 28
                             }
+                            //}
+                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                            //if(IsGangMember)
+                            //{
+                              //  GameFiber.Yield();//TR TEST 28
+                            //}
                             PedPerception.Update();
+                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            {
+
+                                GameFiber.Yield();//TR TEST 28
+                            }
                         }
                         if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
                         {
                             CheckPlayerBusted();
                         }
                     }
-                    if (Pedestrian.Exists() && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                    if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                     {
                         LookForDistressedPeds(world);
                     }
