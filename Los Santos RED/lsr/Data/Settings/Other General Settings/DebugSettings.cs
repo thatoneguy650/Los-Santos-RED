@@ -19,6 +19,13 @@ public class DebugSettings : ISettingsDefaultable
     public bool PedUpdatePerformanceMode2 { get; set; }
 
 
+
+    public bool IsCivilianYield1Active { get; set; }
+    public bool IsCivilianYield2Active { get; set; }
+    public bool IsCivilianYield3Active { get; set; }
+    public bool IsCivilianYield4Active { get; set; }
+
+
     public int CivilianUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
@@ -77,7 +84,10 @@ public class DebugSettings : ISettingsDefaultable
         PedUpdatePerformanceMode = true;
         PedUpdatePerformanceMode2 = false;
 
-
+        IsCivilianYield1Active = false;
+        IsCivilianYield2Active = false;
+        IsCivilianYield3Active = false;
+        IsCivilianYield4Active = false;
 
         /*
          *         CivilianUpdateBatch = 10;

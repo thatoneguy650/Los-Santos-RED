@@ -30,18 +30,19 @@ public class PlateController
             try
             {
                 int VehiclesUpdated = 0;
-                foreach (VehicleExt MyCar in Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType).ToList())
+                foreach (VehicleExt MyCar in Vehicles.CivilianVehicleList.Where(x => x.Vehicle.Exists() && !x.HasUpdatedPlateType).ToList().Take(20))
                 {
                     if (MyCar.Vehicle.Exists())
                     {
                         UpdatePlateType(MyCar, false);
                     }
                     VehiclesUpdated++;
-                    if (VehiclesUpdated > 4)
-                    {
-                        VehiclesUpdated = 0;
-                        GameFiber.Yield();
-                    }
+                    //if (VehiclesUpdated > 4)
+                    //{
+                    //    VehiclesUpdated = 0;
+                    //    GameFiber.Yield();
+                    //}
+                    GameFiber.Yield();
                 }
             }
             catch (Exception ex)

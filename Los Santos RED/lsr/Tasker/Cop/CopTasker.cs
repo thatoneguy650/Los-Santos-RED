@@ -40,6 +40,7 @@ public class CopTasker
         {
             SetPossibleTargets();
             World.Pedestrians.ExpireSeatAssignments();
+            GameFiber.Yield();//TR 29
             foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -54,7 +55,8 @@ public class CopTasker
                             }
                             if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)
                             {
-                                cop.UpdateTask(PedToAttack(cop));
+                                PedExt otherTarget = PedToAttack(cop);
+                                cop.UpdateTask(otherTarget);
                                 GameFiber.Yield();
                             }
                         }

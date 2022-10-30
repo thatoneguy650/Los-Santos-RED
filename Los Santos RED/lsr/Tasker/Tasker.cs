@@ -94,8 +94,11 @@ public class Tasker : ITaskerable
             GameFiber.Yield();
         }
         CivilianTasker.Update();
+        GameFiber.Yield();//TR 29
         GangTasker.Update();
+        GameFiber.Yield();//TR 29
         EMTTasker.Update();
+        GameFiber.Yield();//TR 29
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);

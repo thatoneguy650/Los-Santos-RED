@@ -181,15 +181,12 @@ namespace LosSantosRED.lsr
                 new ModTask(500, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3),//1000 //very bad performance
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
-                new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),//500
-                //new ModTask(500, "VanillaManager.Tick", VanillaManager.Tick, 7),//2000
+                new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
             }));
             TaskGroups.Add(new ModTaskGroup("Group4", new List<ModTask>()
             {
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-                //new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 2),
-                //new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 3),
             }));
             TaskGroups.Add(new ModTaskGroup("Group5", new List<ModTask>()
             {

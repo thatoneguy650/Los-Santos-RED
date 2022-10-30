@@ -60,8 +60,11 @@ public class Vehicles
     public void Prune()
     {
         CivilianVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
         PoliceVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
         EMSVehicles.RemoveAll(x => !x.Vehicle.Exists());
+        GameFiber.Yield();//TR 29
         FireVehicles.RemoveAll(x => !x.Vehicle.Exists());
     }
     public void CreateNew()
@@ -79,6 +82,9 @@ public class Vehicles
             {   
                 GameFiber.Yield();
             }
+
+            //GameFiber.Yield();//TR 29
+
         }
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {
@@ -114,9 +120,11 @@ public class Vehicles
                             GameFiber.Yield();
                         }
                         GameFiber.Yield();
-                    }  
+                    }
+                    //GameFiber.Yield();//TR 29
                 }
             }
+            GameFiber.Yield();//TR 29
             foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
             {
                 if (civilianCar.Vehicle.Exists())
@@ -135,6 +143,7 @@ public class Vehicles
                         }
                         GameFiber.Yield();
                     }
+                    //GameFiber.Yield();//TR 29
                 }
             }
         }
@@ -154,6 +163,7 @@ public class Vehicles
                     PoliceCar.Vehicle.Repair();
                     GameFiber.Yield();
                 }
+               // GameFiber.Yield();//TR 29
             }
         }
     }

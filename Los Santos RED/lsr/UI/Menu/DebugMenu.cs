@@ -597,7 +597,11 @@ public class DebugMenu : Menu
         taskGroups.Activated += (menu, item) =>
         {
             taskGroups.SelectedItem.IsRunning = !taskGroups.SelectedItem.IsRunning;
-            item.Text = taskGroups.SelectedItem.ToString();
+
+            taskGroups.Items = EntryPoint.ModController.TaskGroups;
+            taskGroups.Reformat();
+
+            //item.Text = taskGroups.SelectedItem.ToString();
             Game.DisplaySubtitle($"{taskGroups.SelectedItem.ToString()}");
             //menu.Visible = false;
         };

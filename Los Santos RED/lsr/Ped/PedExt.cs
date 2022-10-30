@@ -311,27 +311,46 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
+
+                    if(Settings.SettingsManager.DebugSettings.IsCivilianYield1Active)
+                    {
+                        GameFiber.Yield();//TR TEST 28
+                    }
+
+
+
                     UpdateVehicleState();
                     if (!IsCop && !IsUnconscious)
                     {
                         if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
-                            // if (IsGangMember)
-                            //{
-
-
-                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
                             {
-
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            //}
+                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+
+
                             PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            //if(IsGangMember)
-                            //{
-                              //  GameFiber.Yield();//TR TEST 28
-                            //}
+
+
+                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield3Active)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+
+
                             PedPerception.Update();
+
+
+                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield4Active)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+
                             if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
 

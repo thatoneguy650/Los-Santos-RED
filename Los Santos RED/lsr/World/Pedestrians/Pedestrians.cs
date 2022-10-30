@@ -219,16 +219,8 @@ public class Pedestrians : ITaskerReportable
             }
             else
             {
-                //if(Pedestrian.IsGangMember())
-                //{
-                //    Pedestrian.RelationshipGroup = new RelationshipGroup("CIVMALE");
-                //}
-
-
                 if (Pedestrian.IsGangMember())
                 {
-
-
                     if (GangMembers.Any(x => x.Handle == localHandle))
                     {
                         continue;
@@ -262,8 +254,11 @@ public class Pedestrians : ITaskerReportable
     public void Prune()
     {
         PruneServicePeds();
+        GameFiber.Yield();//TR 29
         PruneGangMembers();
+        GameFiber.Yield();//TR 29
         PruneCivilians();
+        GameFiber.Yield();//TR 29
         DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
     }
     public bool AnyCopsNearPosition(Vector3 Position, float Distance)
@@ -526,6 +521,11 @@ public class Pedestrians : ITaskerReportable
         RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
         RelationshipGroup criminalsRG = new RelationshipGroup("CRIMINALS");
         RelationshipGroup hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
+
+        RelationshipGroup norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
+
+        
+
         foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
@@ -558,7 +558,7 @@ public class Pedestrians : ITaskerReportable
         DeadPeds.RemoveAll(x => x.Handle == Game.LocalPlayer.Character.Handle);
         foreach (PedExt Civilian in DeadPeds.Where(x => NativeHelper.MaxCellsAway(EntryPoint.FocusCellX,EntryPoint.FocusCellY,x.CellX,x.CellY) >= 3 && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == criminalsRG || Civilian.Pedestrian.RelationshipGroup == hatesPlayerRG)
+            if (Civilian.Pedestrian.RelationshipGroup == formerPlayer || Civilian.Pedestrian.RelationshipGroup == criminalsRG || Civilian.Pedestrian.RelationshipGroup == hatesPlayerRG || Civilian.Pedestrian.RelationshipGroup == norelationshipRG)
             {
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
