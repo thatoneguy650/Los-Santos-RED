@@ -14,4 +14,5 @@ public enum ItemType
     Services,
     Vehicles,
     Weapons,
+    LicensePlates,
 }

@@ -15,22 +15,46 @@ public class DebugSettings : ISettingsDefaultable
     public bool PrintCivilianUpdateTimes { get; set; }
 
     public bool YieldAfterEveryPedExtUpdate { get; set; }
-    public bool PedUpdatePerformanceMode { get; set; }
-    public bool PedUpdatePerformanceMode2 { get; set; }
 
 
 
+    public bool CivilianUpdatePerformanceMode1 { get; set; }//Civilians & Merchants
+    public bool CivilianUpdatePerformanceMode2 { get; set; }
     public bool IsCivilianYield1Active { get; set; }
     public bool IsCivilianYield2Active { get; set; }
     public bool IsCivilianYield3Active { get; set; }
     public bool IsCivilianYield4Active { get; set; }
 
 
+
+    public bool CopUpdatePerformanceMode1 { get; set; }
+    public bool CopUpdatePerformanceMode2 { get; set; }
+    public bool IsCopYield1Active { get; set; }
+    public bool IsCopYield2Active { get; set; }
+    public bool IsCopYield3Active { get; set; }
+
+    public bool GangMemberUpdatePerformanceMode1 { get; set; }
+    public bool GangMemberUpdatePerformanceMode2 { get; set; }
+    public bool IsGangMemberYield1Active { get; set; }
+    public bool IsGangMemberYield2Active { get; set; }
+    public bool IsGangMemberYield3Active { get; set; }
+    public bool IsGangMemberYield4Active { get; set; }
+
+    public bool EMSUpdatePerformanceMode1 { get; set; }
+    public bool EMSUpdatePerformanceMode2 { get; set; }
+    public bool IsEMSYield2Active { get; set; }
+    public bool IsEMSYield1Active { get; set; }
+
+
+
+
+
+
+
     public int CivilianUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
     public int MerchantsUpdateBatch { get; set; }
-
 
 
     public uint TaskAssignmentCheckFrequency { get; set; }
@@ -81,13 +105,32 @@ public class DebugSettings : ISettingsDefaultable
 
         YieldAfterEveryPedExtUpdate = false;
 
-        PedUpdatePerformanceMode = true;
-        PedUpdatePerformanceMode2 = false;
-
+        CivilianUpdatePerformanceMode1 = true;
+        CivilianUpdatePerformanceMode2 = false;
         IsCivilianYield1Active = false;
         IsCivilianYield2Active = false;
         IsCivilianYield3Active = false;
         IsCivilianYield4Active = false;
+
+
+        GangMemberUpdatePerformanceMode1 = true;
+        GangMemberUpdatePerformanceMode2 = false;
+        IsGangMemberYield1Active = false;
+        IsGangMemberYield2Active = false;
+        IsGangMemberYield3Active = false;
+        IsGangMemberYield4Active = false;
+
+
+        CopUpdatePerformanceMode1 = true;
+        CopUpdatePerformanceMode2 = false;
+        IsCopYield1Active = false;
+        IsCopYield2Active = false;
+        IsCopYield3Active = false;
+
+        EMSUpdatePerformanceMode1 = true;
+        EMSUpdatePerformanceMode2 = false;
+        IsEMSYield2Active = false;
+        IsEMSYield1Active = false;
 
         /*
          *         CivilianUpdateBatch = 10;
@@ -109,6 +152,7 @@ public class DebugSettings : ISettingsDefaultable
         OtherUpdateIntervalMedium = 750;
         OtherUpdateIntervalFar = 2000;
         OtherUpdateIntervalVeryFar = 300;*/
+
 
     }
 

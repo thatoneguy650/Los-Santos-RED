@@ -18,15 +18,17 @@ namespace LosSantosRED.lsr.Player
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private Rage.Object Item;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public IngestActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        private IngestItem IngestItem;
+        public IngestActivity(IActionable consumable, ISettingsProvideable settings, IngestItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            IngestItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"";
@@ -171,9 +173,9 @@ namespace LosSantosRED.lsr.Player
             AnimIdleDictionary = "mp_suicide";
             AnimIdle = new List<string>() { "pill" };
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && IngestItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(IngestItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
 

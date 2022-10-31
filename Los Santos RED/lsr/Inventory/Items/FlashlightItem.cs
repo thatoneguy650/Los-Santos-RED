@@ -30,19 +30,25 @@ public class FlashlightItem : ModItem
     public bool CanSearch { get; set; } = true;
     public FlashlightItem()
     {
+        ToolType = ToolTypes.Flashlight;
     }
-    public FlashlightItem(string name, string description, ItemType itemType) : base(name, description, ItemType.Tools)
+    public FlashlightItem(string name, string description) : base(name, description, ItemType.Tools)
     {
-
+        ToolType = ToolTypes.Flashlight;
     }
     public FlashlightItem(string name) : base(name, ItemType.Tools)
     {
-
+        ToolType = ToolTypes.Flashlight;
     }
-    public override void UseItem(IActionable actionable, ISettingsProvideable settings)
+    public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN FLASHLIGHT ACTIVITY!!!!!!!!!!");
-       actionable.ActivityManager.StartUpperBodyActivity(new FlashlightActivity(actionable, settings, this));
+        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        {
+            actionable.ActivityManager.StartUpperBodyActivity(new FlashlightActivity(actionable, settings, this));
+            return true;
+        }
+        return false;
     }
 }
 

@@ -745,18 +745,27 @@ public class PurchaseMenu : Menu
             {
                 description += $"~n~~b~{((float)menuItem.PurchasePrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
             }
-            if (modItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-            {
-                description += $"~n~{modItem.HealthChangeDescription}";
-            }
-            if (modItem.ChangesNeeds && Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-            {
-                description += $"~n~{modItem.NeedChangeDescription}";
-            }
-            if (modItem.ConsumeOnPurchase && (modItem.Type == eConsumableType.Eat || modItem.Type == eConsumableType.Drink))
-            {
-                description += $"~n~~r~Dine-In Only~s~";
-            }
+
+
+
+            description += modItem.PurchaseMenuDescription(Settings);
+
+            //if (modItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+            //{
+            //    description += $"~n~{modItem.HealthChangeDescription}";
+            //}
+            //if (modItem.ChangesNeeds && Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+            //{
+            //    description += $"~n~{modItem.NeedChangeDescription}";
+            //}
+            //if (modItem.ConsumeOnPurchase && (modItem.Type == eConsumableType.Eat || modItem.Type == eConsumableType.Drink))
+            //{
+            //    description += $"~n~~r~Dine-In Only~s~";
+            //}
+
+
+
+
             bool enabled = true;
             int RemainingToBuy = 99;
             int MaxBuy = 99;

@@ -82,9 +82,7 @@ public class Vehicles
             {   
                 GameFiber.Yield();
             }
-
             //GameFiber.Yield();//TR 29
-
         }
         if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
         {

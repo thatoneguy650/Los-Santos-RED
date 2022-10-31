@@ -18,4 +18,5 @@ public enum ToolTypes
     Bong = 9,
     Flashlight = 10,
     Umbrella = 11,
+    LicensePlate = 12,
 }

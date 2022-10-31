@@ -40,50 +40,19 @@ public class ActivityManager
     private DynamicActivity UpperBodyActivity;
     private ICameraControllable CameraControllable;
 
-
-    private bool CanUseFlashlight => !IsResting && Player.IsOnFoot && CanUseItemsBase;
-    private bool CanUseUmbrella => !IsResting && Player.IsOnFoot && CanUseItemsBase;
-    private bool CanUseShovel => !IsResting && Player.IsOnFoot && CanUseItemsBase;
-
-    private bool CanUseItemsBase => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
-
+    public bool CanUseItemsBase => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
     public bool CanPerformActivities => (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !Player.IsMovingDynamically && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle;
     public bool CanPerformMobileActivities => !Player.IsInVehicle && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
-
-
     public bool CanConverse => !Player.IsIncapacitated && !Player.IsVisiblyArmed && Player.IsAliveAndFree && !Player.IsMovingDynamically && ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanConverseWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtPed.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!Player.CurrentLookedAtPed.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
-  
-
-
-
-
     public bool CanTakeHostageWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanTakeHostage && !Player.CurrentLookedAtPed.IsInVehicle && !Player.CurrentLookedAtPed.IsUnconscious && !Player.CurrentLookedAtPed.IsDead && Player.CurrentLookedAtPed.DistanceToPlayer <= 3.0f && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
     public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
-
-
-
     public bool CanHoldUpTargettedPed => Player.CurrentTargetedPed != null && !Player.IsCop && Player.CurrentTargetedPed.CanBeMugged && Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar && Player.IsVisiblyArmed && Player.CurrentTargetedPed.DistanceToPlayer <= 15f;
-
-
-
     public bool CanLoot => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsHoldingHostage && !IsDraggingBody && !IsConversing && !IsDancing;
     public bool CanLootLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanLoot && !Player.CurrentLookedAtPed.HasBeenLooted && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
-    
- 
-    
     public bool CanDrag => !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanDragLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanDrag && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
-   
-    
-
-
-
     public bool CanRecruitLookedAtGangMember => Player.CurrentLookedAtGangMember != null && Player.CurrentTargetedPed == null && Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.CurrentLookedAtGangMember.Gang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == Player.CurrentLookedAtGangMember.Gang.ID && !Player.GroupManager.IsMember(Player.CurrentLookedAtGangMember);
-  
-    
-    
-    
     public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
     public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
     public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
@@ -91,14 +60,9 @@ public class ActivityManager
     public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
     public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
     public bool HasCurrentActivity => UpperBodyActivity != null || LowerBodyActivity != null;
-
-
     public bool IsResting => IsSitting || IsLayingDown;
-
     public bool IsPerformingActivity { get; set; }
     public bool IsSitting { get; set; }
-
-
     public bool IsLayingDown { get; set; } = false;
     public bool IsCommitingSuicide { get; set; }
     public bool IsLootingBody { get; set; }
@@ -107,20 +71,14 @@ public class ActivityManager
     public bool IsDancing { get; set; }
     public bool IsConversing { get; set; }
     public bool IsHoldingUp { get; set; }
-
     public bool IsInteractingWithLocation { get; set; } = false;
-
-
     public bool IsInteracting => IsConversing || IsHoldingUp;
     private bool CanYell => !IsYellingTimeOut;
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
-
-
     public GestureData LastGesture { get; set; }
     public DanceData LastDance { get; set; }
     public Interaction Interaction { get; private set; }
     public DynamicActivity Activity => UpperBodyActivity != null ? UpperBodyActivity : LowerBodyActivity;
-
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons)
@@ -220,7 +178,6 @@ public class ActivityManager
             LowerBodyActivity.Cancel();
         }
     }
-
     public void StartUpperBodyActivity(DynamicActivity toStart)
     {
         ForceCancelUpperBody();
@@ -228,25 +185,21 @@ public class ActivityManager
         UpperBodyActivity = toStart;
         UpperBodyActivity.Start();
     }
-
-    //Dynamic Activites w/ IsPerforming
-    public void ChangePlate(int Index)
+    public void StartLowerBodyActivity(DynamicActivity toStart)
     {
-        if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
-        {
-            ForceCancelAll();
-            IsPerformingActivity = true;
-            UpperBodyActivity = new PlateTheft(PlateChangeable, Player.SpareLicensePlates[Index], Settings, World);
-            UpperBodyActivity.Start();
-        }
+        ForceCancelUpperBody();
+        IsPerformingActivity = true;
+        LowerBodyActivity = toStart;
+        LowerBodyActivity.Start();
     }
-    public void ChangePlate(LicensePlate toChange)
+    //Dynamic Activites w/ IsPerforming
+    public void RemovePlate()
     {
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
         {
             ForceCancelAll();
             IsPerformingActivity = true;
-            UpperBodyActivity = new PlateTheft(PlateChangeable, toChange, Settings, World);
+            UpperBodyActivity = new PlateTheft(Actionable, Settings, World);
             UpperBodyActivity.Start();
         }
     }
@@ -257,28 +210,6 @@ public class ActivityManager
             ForceCancelUpperBody();
             IsPerformingActivity = true;
             UpperBodyActivity = new SuicideActivity(Actionable, Settings);
-            UpperBodyActivity.Start();
-        }
-    }
-    public void HoldFlashlight()
-    {
-        EntryPoint.WriteToConsole($"Flashlight Hold Start");
-        if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
-        {
-            ForceCancelUpperBody();
-            IsPerformingActivity = true;
-            UpperBodyActivity = new FlashlightActivity(Actionable, Settings, null);//will pass in the actual mod item next
-            UpperBodyActivity.Start();
-        }
-    }
-    public void HoldUmbrella()
-    {
-        EntryPoint.WriteToConsole($"Umbrella Hold Start");
-        if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
-        {
-            ForceCancelUpperBody();
-            IsPerformingActivity = true;
-            UpperBodyActivity = new UmbrellaActivity(Actionable, null);
             UpperBodyActivity.Start();
         }
     }
@@ -315,108 +246,71 @@ public class ActivityManager
         StopDynamicActivity();
         LastDance = Dances.DanceLookups.PickRandom();
         Dance(LastDance);
-    }
-    public void RemovePlate()
-    {
-        if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
-        {
-            ForceCancelAll();
-            IsPerformingActivity = true;
-            UpperBodyActivity = new PlateTheft(PlateChangeable, Settings, World);
-            UpperBodyActivity.Start();
-        }
-    }
-    
+    }  
     public void UseInventoryItem(ModItem modItem, bool performActivity)
     {
-        if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) )// modItem.Type != eConsumableType.None)
+        if (((!IsPerformingActivity && CanPerformActivities) || !performActivity))// modItem.Type != eConsumableType.None)
         {
-            if (modItem.CanConsume)
+            //need to check items required?
+            //if (modItem.RequiresTool && !Player.Inventory.UseTool(modItem.RequiredToolType))
+            //{
+            //    Game.DisplayHelp($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
+            //    return;
+            //}
+            if (performActivity)
             {
-                if (modItem.RequiresTool && !Player.Inventory.UseTool(modItem.RequiredToolType))
-                {
-                    Game.DisplayHelp($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
-                    return;
-                }
-                Player.Inventory.SetUsed(modItem);
-                if (performActivity)
-                {
-                    ForceCancelUpperBody();
-                    IsPerformingActivity = true;
-                    if (modItem.Type == eConsumableType.Drink)
-                    {
-                        UpperBodyActivity = new DrinkingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.Eat)
-                    {
-                        UpperBodyActivity = new EatingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.Smoke)
-                    {
-                        UpperBodyActivity = new SmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.Ingest)
-                    {
-                        UpperBodyActivity = new IngestActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.AltSmoke)
-                    {
-                        UpperBodyActivity = new PipeSmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.Snort)
-                    {
-                        UpperBodyActivity = new InhaleActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    else if (modItem.Type == eConsumableType.Inject)
-                    {
-                        UpperBodyActivity = new InjectActivity(Intoxicatable, Settings, modItem, Intoxicants);
-                    }
-                    UpperBodyActivity?.Start();
-                }
-                else
-                {
-                    Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
-                    modItem.ConsumeItem(Player, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
-                }
+                modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
             }
-            else if (modItem.ToolType == ToolTypes.Flashlight)
+            else
             {
-                if (CanUseFlashlight)
-                {
-                    modItem.UseItem(Actionable, Settings);
-
-
-                    //ForceCancelUpperBody();
-                    //IsPerformingActivity = true;
-                    //UpperBodyActivity = new FlashlightActivity(Actionable, Settings, modItem);//will pass in the actual mod item next
-                    //UpperBodyActivity.Start();
-                }
+                Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
+                modItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
             }
-            else if (modItem.ToolType == ToolTypes.Umbrella)
-            {
-                if (CanUseUmbrella)
-                {
-                    ForceCancelUpperBody();
-                    IsPerformingActivity = true;
-                    UpperBodyActivity = new UmbrellaActivity(Actionable, modItem);
-                    UpperBodyActivity.Start();
-                }
-            }
-            else if (modItem.ToolType == ToolTypes.Shovel)
-            {
-                if (CanUseShovel)
-                {
-                    ForceCancelAll();
-                    IsPerformingActivity = true;
-                    LowerBodyActivity = new ShovelActivity(Actionable, modItem, Settings, CameraControllable);
-                    LowerBodyActivity.Start();
-                }
-            }
-
         }
 
+
+
+
+
+
+
+
+   
+        //ForceCancelUpperBody();
+        //IsPerformingActivity = true;
+        //if (modItem.Type == eConsumableType.Drink)
+        //{
+        //    UpperBodyActivity = new DrinkingActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.Eat)
+        //{
+        //    UpperBodyActivity = new EatingActivity(Actionable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.Smoke)
+        //{
+        //    UpperBodyActivity = new SmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.Ingest)
+        //{
+        //    UpperBodyActivity = new IngestActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.AltSmoke)
+        //{
+        //    UpperBodyActivity = new PipeSmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.Snort)
+        //{
+        //    UpperBodyActivity = new InhaleActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //else if (modItem.Type == eConsumableType.Inject)
+        //{
+        //    UpperBodyActivity = new InjectActivity(Intoxicatable, Settings, modItem, Intoxicants);
+        //}
+        //UpperBodyActivity?.Start();
+   
+        
+
     }
-  
     public void StartScenario()
     {
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
@@ -430,7 +324,6 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
-
     //Dynamic Activities W/o Performing
     public void GrabPed()
     {
@@ -500,8 +393,6 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
-
-
     //Interactions
     public void StartConversation()
     {
@@ -567,7 +458,6 @@ public class ActivityManager
             }
         }
     }
-
     //Other
     public void EnterVehicleAsPassenger(bool withBlocking)
     {
@@ -642,7 +532,6 @@ public class ActivityManager
             GameTimeLastYelled = Game.GameTime;
         }
     }
-
     //Vehicle Stuff
     public void ShuffleToNextSeat()
     {
@@ -789,8 +678,6 @@ public class ActivityManager
             Player.CurrentVehicle.SetDriverWindow(!Player.CurrentVehicle.ManuallyRolledDriverWindowDown);
         }
     }
-
-
 }
 
 

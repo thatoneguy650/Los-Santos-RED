@@ -13,7 +13,7 @@ public class ActionMenu : Menu
 
     private UIMenu Actions;
     private UIMenuItem CallPolice;
-    private UIMenuListScrollerItem<LSR.Vehicles.LicensePlate> ChangePlate;
+    //private UIMenuListScrollerItem<LSR.Vehicles.LicensePlate> ChangePlate;
     private UIMenuListScrollerItem<string> CurrentActivityMenu;
     private UIMenuItem EnterAsPassenger;
     private UIMenuListScrollerItem<GestureData> GestureMenu;
@@ -23,7 +23,7 @@ public class ActionMenu : Menu
     private UIMenuItem ToggleStealthMode;
     private UIMenuItem IntimidateDriver;
     private UIMenuListScrollerItem<string> LayDown;
-    private UIMenuItem RemovePlate;
+    //private UIMenuItem RemovePlate;
     private UIMenuItem ShuffleSeat;
     private UIMenuListScrollerItem<string> SitDown;
     private UIMenuItem Suicide;
@@ -92,7 +92,7 @@ public class ActionMenu : Menu
         {
             ToggleBodyArmor.Enabled = false;
         }
-        ChangePlate.Items = Player.SpareLicensePlates;
+        //ChangePlate.Items = Player.SpareLicensePlates;
     }
     private void CreateActionsMenu()
     {
@@ -104,18 +104,18 @@ public class ActionMenu : Menu
             Player.ActivityManager.CommitSuicide();
             Actions.Visible = false;
         };
-        ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
-        ChangePlate.Activated += (sender, selectedItem) =>
-        {
-            Player.ActivityManager.ChangePlate(ChangePlate.SelectedItem);
-            Actions.Visible = false;
-        };       
-        RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
-        RemovePlate.Activated += (sender, selectedItem) =>
-        {
-            Player.ActivityManager.RemovePlate();
-            Actions.Visible = false;
-        };
+        //ChangePlate = new UIMenuListScrollerItem<LSR.Vehicles.LicensePlate>("Change Plate", "Change your license plate if you have spares.", Player.SpareLicensePlates);
+        //ChangePlate.Activated += (sender, selectedItem) =>
+        //{
+        //    Player.ActivityManager.ChangePlate(ChangePlate.SelectedItem);
+        //    Actions.Visible = false;
+        //};       
+        //RemovePlate = new UIMenuItem("Remove Plate", "Remove the license plate.");
+        //RemovePlate.Activated += (sender, selectedItem) =>
+        //{
+        //    Player.ActivityManager.RemovePlate();
+        //    Actions.Visible = false;
+        //};
         SitDown = new UIMenuListScrollerItem<string>("Sit Down", "Sit down either at the nearest seat or where you are.", new List<string>() { "At Closest Seat", "Here Backwards", "Here Forwards" });
         SitDown.Activated += (sender, selectedItem) =>
         {
@@ -233,8 +233,8 @@ public class ActionMenu : Menu
         Actions.AddItem(ToggleActionMode);
         Actions.AddItem(ToggleStealthMode);
         Actions.AddItem(LayDown);
-        Actions.AddItem(ChangePlate);
-        Actions.AddItem(RemovePlate);
+        //Actions.AddItem(ChangePlate);
+        //Actions.AddItem(RemovePlate);
         Actions.AddItem(Suicide);
         Actions.AddItem(ToggleBodyArmor);
 #if DEBUG

@@ -10,7 +10,7 @@ using System.Linq;
 
 public class PedExt : IComplexTaskable, ISeatAssignable
 {
-    private IPoliceRespondable PlayerToCheck;
+    public IPoliceRespondable PlayerToCheck;
     private ISettingsProvideable Settings;
     private uint GameTimeCreated = 0;
     private uint GameTimeLastEnteredVehicle;
@@ -30,7 +30,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint GameTimeLastYelled;
     private RelationshipGroup originalGroup;
 
-    private bool ShouldCheckCrimes
+    public bool ShouldCheckCrimes
     {
         get
         {
@@ -142,7 +142,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
     public string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public string GroupName { get; set; } = "Person";
-    public uint GameTimeLastUpdated { get; private set; }
+    public uint GameTimeLastUpdated { get; set; }
     public uint GameTimeLastUpdatedTask { get; set; }
     public uint Handle { get; private set; }
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
@@ -177,7 +177,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsTurningRightAtTrafficLight { get; set; }
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
-    public bool IsInWrithe { get; private set; } = false;
+    public bool IsInWrithe { get; set; } = false;
     public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
     public bool IsNearSpawnPosition =>  Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;//15f
@@ -194,7 +194,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
     public string Name { get; set; }
-    public bool NeedsFullUpdate
+    public virtual bool NeedsFullUpdate
     {
         get
         {
@@ -299,7 +299,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsDead { get; set; } = false;
     public bool WasModSpawned { get; set; } = false;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
-    public void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
         if (Pedestrian.Exists())
@@ -311,14 +311,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
-
                     if(Settings.SettingsManager.DebugSettings.IsCivilianYield1Active)
                     {
                         GameFiber.Yield();//TR TEST 28
                     }
-
-
-
                     UpdateVehicleState();
                     if (!IsCop && !IsUnconscious)
                     {
@@ -328,32 +324,22 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            if (Settings.SettingsManager.DebugSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-
-
                             PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-
-
                             if (Settings.SettingsManager.DebugSettings.IsCivilianYield3Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-
-
                             PedPerception.Update();
-
-
                             if (Settings.SettingsManager.DebugSettings.IsCivilianYield4Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-
-                            if (Settings.SettingsManager.DebugSettings.PedUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            if (Settings.SettingsManager.DebugSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
-
                                 GameFiber.Yield();//TR TEST 28
                             }
                         }
@@ -362,15 +348,15 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                             CheckPlayerBusted();
                         }
                     }
-                    if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallPoliceOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                    if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
                     {
                         LookForDistressedPeds(world);
                     }
-                    if (IsCop && HasSeenDistressedPed)
-                    {
-                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                        HasSeenDistressedPed = false;
-                    }
+                    //if (IsCop && HasSeenDistressedPed)
+                    //{
+                    //    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+                    //    HasSeenDistressedPed = false;
+                    //}
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }
@@ -538,7 +524,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             CurrentTask.Update();
         }
     }
-    private void LookForDistressedPeds(IEntityProvideable world)
+    public void LookForDistressedPeds(IEntityProvideable world)
     {
         foreach(PedExt distressedPed in world.Pedestrians.PedExts.Where(x=> (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
         {
@@ -552,7 +538,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }   
         }
     }
-    private void CheckPlayerBusted()
+    public void CheckPlayerBusted()
     {
         if (PlayerPerception.DistanceToTarget <= Settings.SettingsManager.PoliceSettings.BustDistance)
         {
@@ -563,7 +549,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
-    private void UpdatePositionData()
+    public void UpdatePositionData()
     {
         position = Pedestrian.Position;//See which cell it is in now
         CellX = (int)(position.X / EntryPoint.CellSize);

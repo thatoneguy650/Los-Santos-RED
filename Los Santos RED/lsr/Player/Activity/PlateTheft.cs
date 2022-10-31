@@ -11,19 +11,19 @@ public class PlateTheft : DynamicActivity
     private Vector3 ChangeSpot;
     private float DistanceToCheckCars = 10f;
     private Rage.Object LicensePlateModel;
-    private LicensePlate PlateToAdd;
-    private IPlateChangeable Player;
+    private LicensePlateItem PlateToAdd;
+    private IActionable Player;
     private Rage.Object ScrewdriverModel;
     private ISettingsProvideable Settings;
     private VehicleExt TargetVehicle;
     private IEntityProvideable World;
-    public PlateTheft(IPlateChangeable player, ISettingsProvideable settings, IEntityProvideable world)
+    public PlateTheft(IActionable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
         Settings = settings;
         World = world;
     }
-    public PlateTheft(IPlateChangeable player, LicensePlate plateToChange, ISettingsProvideable settings, IEntityProvideable world) : this(player, settings, world)
+    public PlateTheft(IActionable player, LicensePlateItem plateToChange, ISettingsProvideable settings, IEntityProvideable world) : this(player, settings, world)
     {
         PlateToAdd = plateToChange;
     }
@@ -72,6 +72,11 @@ public class PlateTheft : DynamicActivity
                 Enter();
                 Player.ActivityManager.IsPerformingActivity = false;
             }, "PlayDispatchQueue");
+        }
+        else
+        {
+            Player.IsChangingLicensePlates = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
     }
     private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
@@ -134,7 +139,7 @@ public class PlateTheft : DynamicActivity
 
             if (!Player.IsMoveControlPressed && CarPosition.DistanceTo2D(TargetVehicle.Vehicle.Position) <= 1f && Player.Character.DistanceTo2D(ChangeSpot) <= 2f && Player.Character.IsAlive)
             {
-                UpdateModelPlates(IsChangingPlate);
+                UpdateModelPlates();
             }
             else
             {
@@ -239,32 +244,38 @@ public class PlateTheft : DynamicActivity
     private void Setup()
     {
         TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, DistanceToCheckCars);//GetTargetVehicle();
-        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists() && (IsChangingPlate || TargetVehicleHasPlate))//make sure we found a vehicle to change the plates of
         {
             CarPosition = TargetVehicle.Vehicle.Position;
             ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
         }
     }
-    private void UpdateModelPlates(bool IsChanging)
+    private void UpdateModelPlates()
     {
         LicensePlate PlateToRemove = TargetVehicle.CarPlate;
-        if (IsChanging)
+        if (IsChangingPlate)
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToAdd {PlateToAdd.PlateNumber}", 3);
-            Player.SpareLicensePlates.Remove(PlateToAdd);// Menu.Instance.SelectedPlateIndex);//need to pass this in somehow???
-            if (PlateToRemove != null)
+            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToAdd {PlateToAdd.LicensePlate.PlateNumber}", 3);
+            Player.Inventory.Remove(PlateToAdd);
+            //Player.SpareLicensePlates.Remove(PlateToAdd);// Menu.Instance.SelectedPlateIndex);//need to pass this in somehow???
+            if (PlateToRemove != null && PlateToRemove.PlateNumber != "        ")
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToRemove {PlateToRemove.PlateNumber}", 3);
-                Player.SpareLicensePlates.Add(PlateToRemove);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {PlateToRemove.PlateNumber}", 3);
+                Player.Inventory.Add(new LicensePlateItem($"Plate: {PlateToRemove.PlateNumber}") { LicensePlate = PlateToRemove },1.0f);
+                //Player.SpareLicensePlates.Add(PlateToRemove);
             }
-            TargetVehicle.CarPlate = PlateToAdd;
-            TargetVehicle.Vehicle.LicensePlate = PlateToAdd.PlateNumber;
-            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", TargetVehicle.Vehicle, PlateToAdd.PlateType);
+            TargetVehicle.CarPlate = PlateToAdd.LicensePlate;
+            TargetVehicle.Vehicle.LicensePlate = PlateToAdd.LicensePlate.PlateNumber;
+            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", TargetVehicle.Vehicle, PlateToAdd.LicensePlate.PlateType);
         }
         else
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChanging} PlateToRemove {TargetVehicle.CarPlate}", 3);
-            Player.SpareLicensePlates.Add(TargetVehicle.CarPlate);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {TargetVehicle.CarPlate}", 3);
+            if (TargetVehicle.CarPlate != null && TargetVehicle.CarPlate.PlateNumber != "        ")
+            {
+                Player.Inventory.Add(new LicensePlateItem($"Plate: {TargetVehicle.CarPlate.PlateNumber}") { LicensePlate = TargetVehicle.CarPlate }, 1.0f);
+            }
+            // Player.SpareLicensePlates.Add(TargetVehicle.CarPlate);
             TargetVehicle.CarPlate = null;
             TargetVehicle.Vehicle.LicensePlate = "        ";
             TargetVehicle.CarPlate = null;

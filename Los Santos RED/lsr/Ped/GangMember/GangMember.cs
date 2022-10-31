@@ -7,10 +7,12 @@ using System.Collections.Generic;
 public class GangMember : PedExt, IWeaponIssuable
 {
     private uint GameTimeSpawned;
-    
+    private ISettingsProvideable Settings;
+
     public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world, bool willFightPolice) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName, world, willFightPolice)
     {
         Gang = gang;
+        Settings = settings;
         WasModSpawned = wasModSpawned;
         WeaponInventory = new WeaponInventory(this, settings);
         if (WasModSpawned)
@@ -35,6 +37,64 @@ public class GangMember : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
+
+
+    public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    {
+        PlayerToCheck = policeRespondable;
+        if (Pedestrian.Exists())
+        {
+            if (Pedestrian.IsAlive)
+            {
+                if (NeedsFullUpdate)
+                {
+                    IsInWrithe = Pedestrian.IsInWrithe;
+                    UpdatePositionData();
+                    PlayerPerception.Update(perceptable, placeLastSeen);
+                    if (Settings.SettingsManager.DebugSettings.IsGangMemberYield1Active)
+                    {
+                        GameFiber.Yield();//TR TEST 28
+                    }
+                    UpdateVehicleState();
+                    if (!IsUnconscious)
+                    {
+                        if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                        {
+                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+                            if (Settings.SettingsManager.DebugSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield3Active)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+                            PedPerception.Update();
+                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield4Active)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+                            if (Settings.SettingsManager.DebugSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                            {
+                                GameFiber.Yield();//TR TEST 28
+                            }
+                        }
+                        if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                        {
+                            CheckPlayerBusted();
+                        }
+                    }
+                    GameTimeLastUpdated = Game.GameTime;
+                }
+            }
+            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+        }
+    }
+
     public override void OnBecameWanted()
     {
         if (Pedestrian.Exists())

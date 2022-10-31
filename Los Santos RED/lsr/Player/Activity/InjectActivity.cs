@@ -18,15 +18,17 @@ namespace LosSantosRED.lsr.Player
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private Rage.Object Item;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public InjectActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        private InjectItem InjectItem;
+        public InjectActivity(IActionable consumable, ISettingsProvideable settings, InjectItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            InjectItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"";
@@ -169,9 +171,9 @@ namespace LosSantosRED.lsr.Player
             AnimIdleDictionary = "rcmpaparazzo1ig_4";
             AnimIdle = new List<string>() { "miranda_shooting_up" };
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && InjectItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(InjectItem.IntoxicantName);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData("", "", AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);

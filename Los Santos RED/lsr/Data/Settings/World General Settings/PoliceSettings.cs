@@ -70,6 +70,8 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Time (in ms) at wanted level 5 required to increase wanted level to 6 (maximum).")]
     public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
     public bool ForceDefaultWeaponAnimations { get; set; }
+    public bool AllowPoliceToCallEMTsOnBodies { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -128,6 +130,6 @@ public class PoliceSettings : ISettingsDefaultable
 #if DEBUG
         DropWeaponWhenBusted = true;
 #endif
-
+        AllowPoliceToCallEMTsOnBodies = true;
     }
 }

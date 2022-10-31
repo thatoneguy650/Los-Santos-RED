@@ -48,7 +48,6 @@ public class Cop : PedExt, IWeaponIssuable
     public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool RecentlyUpdatedTarget => GameTimeLastUpdatedTarget != 0 && Game.GameTime - GameTimeLastUpdatedTarget >= 1000;
-    //public bool WasModSpawned { get; private set; }
     public string ModelName { get; set; }
     public int ShootRate { get; set; } = 500;
     public int Accuracy { get; set; } = 40;
@@ -62,17 +61,102 @@ public class Cop : PedExt, IWeaponIssuable
     public WeaponInventory WeaponInventory { get; private set; }
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
-
     public bool IsRespondingToCitizenWanted { get; set; }
-
     public bool HasTaser { get; set; } = false;
     public int Division { get; set; } = -1;
     public string UnityType { get; set; } = "Lincoln";
     public int BeatNumber { get; set; } = 1;
-
-
     public uint GameTimeLastUpdatedTarget { get; set; }
+    public override bool NeedsFullUpdate
+    {
+        get
+        {
+            if (GameTimeLastUpdated == 0)
+            {
+                return true;
+            }
+            else if (Game.GameTime > GameTimeLastUpdated + FullUpdateInterval)// + UpdateJitter)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
 
+    private int FullUpdateInterval//dont forget distance and LOS in here
+    {
+        get
+        {
+            if (PlayerPerception?.DistanceToTarget >= 300)
+            {
+                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalVeryFar;
+            }
+            else if (PlayerPerception?.DistanceToTarget >= 200)
+            {
+                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalFar;
+            }
+            else if (PlayerPerception?.DistanceToTarget >= 50f)
+            {
+                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalMedium;
+            }
+            else
+            {
+                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalClose;
+            }
+        }
+    }
+
+    public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    {
+        PlayerToCheck = policeRespondable;
+        if (Pedestrian.Exists())
+        {
+            if (Pedestrian.IsAlive)
+            {
+                if (NeedsFullUpdate)
+                {
+                    IsInWrithe = Pedestrian.IsInWrithe;
+                    UpdatePositionData();
+                    PlayerPerception.Update(perceptable, placeLastSeen);
+                    if(Settings.SettingsManager.DebugSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                    {
+                        GameFiber.Yield();//TR TEST 30
+                    }
+                    if (Settings.SettingsManager.DebugSettings.IsCopYield1Active)
+                    {
+                        GameFiber.Yield();//TR TEST 30
+                    }
+                    UpdateVehicleState();
+                    if (Settings.SettingsManager.DebugSettings.IsCopYield2Active)
+                    {
+                        GameFiber.Yield();//TR TEST 30
+                    }
+                    if (Settings.SettingsManager.DebugSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                    {
+                        GameFiber.Yield();//TR TEST 30
+                    }
+                    if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        LookForDistressedPeds(world);
+                    }
+                    if (Settings.SettingsManager.DebugSettings.IsCopYield3Active)
+                    {
+                        GameFiber.Yield();//TR TEST 30
+                    }
+                    if (HasSeenDistressedPed)
+                    {
+                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+                        HasSeenDistressedPed = false;
+                    }
+                    GameTimeLastUpdated = Game.GameTime;
+                }
+            }
+            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+        }
+    }
 
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {

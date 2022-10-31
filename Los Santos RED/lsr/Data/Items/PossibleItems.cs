@@ -13,5 +13,22 @@ public class PossibleItems
     }
     public List<FlashlightItem> FlashlightItems { get; private set; } = new List<FlashlightItem>();
     public List<ModItem> ModItems { get; private set; } = new List<ModItem>();
+    public List<ShovelItem> ShovelItems { get; private set; } = new List<ShovelItem>();
+    public List<UmbrellaItem> UmbrellaItems { get; private set; } = new List<UmbrellaItem>();
+    public List<LicensePlateItem> LicensePlateItems { get; private set; } = new List<LicensePlateItem>();
+    public List<FoodItem> FoodItems { get; private set; } = new List<FoodItem>();
+    public List<SmokeItem> SmokeItems { get; private set; } = new List<SmokeItem>();
+    public List<PipeSmokeItem> PipeSmokeItems { get; private set; } = new List<PipeSmokeItem>();
+    public List<DrinkItem> DrinkItems { get; private set; } = new List<DrinkItem>();
+
+
+    public List<InhaleItem> InhaleItems { get; private set; } = new List<InhaleItem>();
+    public List<IngestItem> IngestItems { get; private set; } = new List<IngestItem>();
+    public List<InjectItem> InjectItems { get; private set; } = new List<InjectItem>();
+    public List<HotelStayItem> HotelStayItems { get; private set; } = new List<HotelStayItem>();
+
+
+    public List<WeaponItem> WeaponItems { get; private set; } = new List<WeaponItem>();
+    public List<VehicleItem> VehicleItems { get; private set; } = new List<VehicleItem>();
 }
 

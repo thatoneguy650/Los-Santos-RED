@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsSmokedItemNearMouth;
         private float MinDistanceBetweenHandAndFace = 999f;
         private float MinDistanceBetweenSmokedItemAndFace = 999f;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private bool PrevHandByFace = false;
@@ -40,7 +40,7 @@ namespace LosSantosRED.lsr.Player
         private LoopedParticle Smoke;
         private Rage.Object SmokedItem;
         private Rage.Object LighterItem;
-
+        private PipeSmokeItem PipeSmokeItem;
 
         private int LeftHandBoneID = 18905;
         private Vector3 LighterOffset = new Vector3(0.13f,0.02f,0.02f);
@@ -48,17 +48,18 @@ namespace LosSantosRED.lsr.Player
         private int HandBoneID;
         private int MouthBoneID;
 
-        public PipeSmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
+        public PipeSmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
         }
-        public PipeSmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public PipeSmokingActivity(IActionable consumable, ISettingsProvideable settings, PipeSmokeItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            PipeSmokeItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
@@ -266,9 +267,9 @@ namespace LosSantosRED.lsr.Player
 
 
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && PipeSmokeItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(PipeSmokeItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);

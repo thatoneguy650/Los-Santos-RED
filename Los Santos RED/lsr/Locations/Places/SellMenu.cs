@@ -357,14 +357,21 @@ public class SellMenu : Menu
             {
                 description += $"~n~~b~{((float)menuItem.SalesPrice / (float)modItem.AmountPerPackage).ToString("C2")} ~s~per Item";
             }
-            if (modItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-            {
-                description += $"~n~{modItem.HealthChangeDescription}";
-            }
-            if (modItem.ChangesNeeds && Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-            {
-                description += $"~n~{modItem.NeedChangeDescription}";
-            }
+
+            description += modItem.SellMenuDescription(Settings);
+            //if (modItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+            //{
+            //    description += $"~n~{modItem.HealthChangeDescription}";
+            //}
+            //if (modItem.ChangesNeeds && Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+            //{
+            //    description += $"~n~{modItem.NeedChangeDescription}";
+            //}
+
+
+
+
+
             description += $"~n~{RemainingToSell} {modItem.MeasurementName}(s) For Purchase~s~";
             description += $"~n~Player Inventory: {PlayerItems}~s~ {modItem.MeasurementName}(s)";
             scrollerItem.Maximum = MaxSell;

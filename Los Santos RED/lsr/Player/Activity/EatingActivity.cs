@@ -17,7 +17,7 @@ namespace LosSantosRED.lsr.Player
         private IIntoxicants Intoxicants;
         private bool IsAttachedToHand;
         private bool IsCancelled;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
@@ -34,13 +34,15 @@ namespace LosSantosRED.lsr.Player
         private bool GivenFullSleep;
         private float PrevAnimationTime;
         private uint GameTimeLastCheckedAnimation;
+        private FoodItem FoodItem;
 
-        public EatingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public EatingActivity(IActionable consumable, ISettingsProvideable settings, FoodItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
             Intoxicants = intoxicants;
+            FoodItem = modItem;
         }
         public override string DebugString => $"";
         public override ModItem ModItem { get; set; }
@@ -122,7 +124,6 @@ namespace LosSantosRED.lsr.Player
             Player.ActivityManager.IsPerformingActivity = true;
             Idle();
         }
-
         private void Idle()
         {
             StartNewIdleAnimation();
@@ -158,8 +159,6 @@ namespace LosSantosRED.lsr.Player
             }
             Exit();
         }
-
-
         private void Exit()
         {
             if (Food.Exists())
@@ -178,7 +177,6 @@ namespace LosSantosRED.lsr.Player
                 Food.Delete();
             }
         }
-
         private void StartNewIdleAnimation()
         {
             GameTimeLastCheckedAnimation = Game.GameTime;
@@ -206,26 +204,25 @@ namespace LosSantosRED.lsr.Player
             }
             return true;
         }
-
         private void UpdateHealthGain()
         {
             if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
             {
-                if (ModItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                if (FoodItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                 {
-                    if (ModItem.HealthChangeAmount > 0 && HealthGiven < ModItem.HealthChangeAmount)
+                    if (FoodItem.HealthChangeAmount > 0 && HealthGiven < FoodItem.HealthChangeAmount)
                     {
                         HealthGiven++;
                         Player.HealthManager.ChangeHealth(1);
                     }
-                    else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
+                    else if (FoodItem.HealthChangeAmount < 0 && HealthGiven > FoodItem.HealthChangeAmount)
                     {
                         HealthGiven--;
                         Player.HealthManager.ChangeHealth(-1);  
                     }
                 }
 
-                if(HealthGiven == ModItem.HealthChangeAmount)
+                if(HealthGiven == FoodItem.HealthChangeAmount)
                 {
                     GivenFullHealth = true;
                 }
@@ -237,13 +234,13 @@ namespace LosSantosRED.lsr.Player
         {
             if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
             {
-                if(ModItem.ChangesNeeds)
+                if(FoodItem.ChangesNeeds)
                 {
-                    if(ModItem.ChangesHunger)
+                    if(FoodItem.ChangesHunger)
                     {
-                        if(ModItem.HungerChangeAmount < 0.0f)
+                        if(FoodItem.HungerChangeAmount < 0.0f)
                         {
-                            if(HungerGiven > ModItem.HungerChangeAmount)
+                            if(HungerGiven > FoodItem.HungerChangeAmount)
                             {
                                 Player.HumanState.Hunger.Change(-1.0f, true);
                                 HungerGiven--;
@@ -255,7 +252,7 @@ namespace LosSantosRED.lsr.Player
                         }
                         else
                         {
-                            if(HungerGiven < ModItem.HungerChangeAmount)
+                            if(HungerGiven < FoodItem.HungerChangeAmount)
                             {
                                 Player.HumanState.Hunger.Change(1.0f, true);
                                 HungerGiven++;
@@ -270,11 +267,11 @@ namespace LosSantosRED.lsr.Player
                     {
                         GivenFullHunger = true;
                     }
-                    if (ModItem.ChangesThirst)
+                    if (FoodItem.ChangesThirst)
                     {
-                        if (ModItem.ThirstChangeAmount < 0.0f)
+                        if (FoodItem.ThirstChangeAmount < 0.0f)
                         {
-                            if (ThirstGiven > ModItem.ThirstChangeAmount)
+                            if (ThirstGiven > FoodItem.ThirstChangeAmount)
                             {
                                 Player.HumanState.Thirst.Change(-1.0f, true);
                                 ThirstGiven--;
@@ -286,7 +283,7 @@ namespace LosSantosRED.lsr.Player
                         }
                         else
                         {
-                            if (ThirstGiven < ModItem.ThirstChangeAmount)
+                            if (ThirstGiven < FoodItem.ThirstChangeAmount)
                             {
                                 Player.HumanState.Thirst.Change(1.0f, true);
                                 ThirstGiven++;
@@ -301,11 +298,11 @@ namespace LosSantosRED.lsr.Player
                     {
                         GivenFullThirst = true;
                     }
-                    if (ModItem.ChangesSleep)
+                    if (FoodItem.ChangesSleep)
                     {
-                        if (ModItem.SleepChangeAmount < 0.0f)
+                        if (FoodItem.SleepChangeAmount < 0.0f)
                         {
-                            if (SleepGiven > ModItem.SleepChangeAmount)
+                            if (SleepGiven > FoodItem.SleepChangeAmount)
                             {
                                 Player.HumanState.Sleep.Change(-1.0f, true);
                                 SleepGiven--;
@@ -317,7 +314,7 @@ namespace LosSantosRED.lsr.Player
                         }
                         else
                         {
-                            if (SleepGiven < ModItem.SleepChangeAmount)
+                            if (SleepGiven < FoodItem.SleepChangeAmount)
                             {
                                 Player.HumanState.Sleep.Change(1.0f, true);
                                 SleepGiven++;
@@ -378,9 +375,9 @@ namespace LosSantosRED.lsr.Player
             AnimEnter = "mp_player_int_eat_burger_enter";
             AnimEnterDictionary = "mp_player_inteat@burger";
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && FoodItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(FoodItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             AnimationDictionary.RequestAnimationDictionay(AnimBaseDictionary);

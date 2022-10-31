@@ -87,7 +87,7 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true) });
+                        SubMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = true });// Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true) });
                     }
                     else
                     {
@@ -98,7 +98,7 @@ public class InventoryMenu : Menu
                 {
                     if (IsInside)
                     {
-                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true)});
+                        inventoryMenu.AddItem(new UIMenuItem(cii.ModItem?.Name, cii.Description) { RightLabel = cii.RightLabel, Enabled = true });//Enabled = (cii.ModItem?.ChangesHealth == true || cii.ModItem?.ChangesNeeds == true)});
                     }
                     else
                     {

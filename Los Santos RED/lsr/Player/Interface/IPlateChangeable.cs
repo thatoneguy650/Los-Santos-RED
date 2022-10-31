@@ -12,7 +12,7 @@ namespace LosSantosRED.lsr.Interface
     {
         List<VehicleExt> TrackedVehicles { get; }
         bool IsChangingLicensePlates { get; set; }
-        List<LicensePlate> SpareLicensePlates { get; }
+      //  List<LicensePlate> SpareLicensePlates { get; }
         Ped Character { get; }
         bool IsMoveControlPressed { get; }
         // bool IsPerformingActivity { get; set; }

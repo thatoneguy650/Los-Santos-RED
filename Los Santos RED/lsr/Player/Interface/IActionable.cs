@@ -15,6 +15,7 @@ namespace LosSantosRED.lsr.Interface
     {
         SurrenderActivity Surrendering { get; }
         VehicleOwnership VehicleOwnership { get; }
+        bool IsChangingLicensePlates { get; set; }
         BankAccounts BankAccounts { get; }
         HumanState HumanState { get; }
         Stance Stance { get; }
@@ -34,7 +35,7 @@ namespace LosSantosRED.lsr.Interface
        // bool IsPerformingActivity { get; set; }
        // bool CanPerformActivities { get; }
        // DanceData LastDance { get; set; }
-        List<LicensePlate> SpareLicensePlates { get; }
+       // List<LicensePlate> SpareLicensePlates { get; }
         bool IsCop { get; }
         Ped Character { get; }
         bool IsMale { get; }
@@ -62,6 +63,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsGangMember { get; }
         uint Handle { get; }
         bool IsVisiblyArmed { get; }
+        bool IsOnFoot { get; }
+        string Gender { get; }
+        bool IsDriver { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

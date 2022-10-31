@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr.Player
         private bool IsSmokedItemNearMouth;
         private float MinDistanceBetweenHandAndFace = 999f;
         private float MinDistanceBetweenSmokedItemAndFace = 999f;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private bool PrevHandByFace = false;
@@ -43,18 +43,19 @@ namespace LosSantosRED.lsr.Player
         private int HealthGiven;
         private int MouthBoneID;
         private int HandBoneID;
-
-        public SmokingActivity(IIntoxicatable consumable, bool isPot, ISettingsProvideable settings) : base()
+        private SmokeItem SmokeItem;
+        public SmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
             IsPot = isPot;
             Settings = settings;
         }
-        public SmokingActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        public SmokingActivity(IActionable consumable, ISettingsProvideable settings, SmokeItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            SmokeItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"IsAttachedToMouth: {IsSmokedItemAttachedToMouth} IsLit: {IsSmokedItemLit} HandByFace: {IsHandByFace} H&F: {Math.Round(DistanceBetweenHandAndFace, 3)}, {Math.Round(MinDistanceBetweenHandAndFace, 3)}";
@@ -294,14 +295,14 @@ namespace LosSantosRED.lsr.Player
         {
             if (Game.GameTime - GameTimeLastGivenHealth >= 15000 && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
             {
-                if (ModItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                if (SmokeItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
                 {
-                    if (ModItem.HealthChangeAmount > 0 && HealthGiven < ModItem.HealthChangeAmount)
+                    if (SmokeItem.HealthChangeAmount > 0 && HealthGiven < SmokeItem.HealthChangeAmount)
                     {
                         HealthGiven++;
                         Player.HealthManager.ChangeHealth(1);
                     }
-                    else if (ModItem.HealthChangeAmount < 0 && HealthGiven > ModItem.HealthChangeAmount)
+                    else if (SmokeItem.HealthChangeAmount < 0 && HealthGiven > SmokeItem.HealthChangeAmount)
                     {
                         HealthGiven--;
                         Player.HealthManager.ChangeHealth(-1);
@@ -477,9 +478,9 @@ namespace LosSantosRED.lsr.Player
 
 
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && SmokeItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(SmokeItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
             //if(Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)

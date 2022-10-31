@@ -23,8 +23,8 @@ public class InventoryItem
     {
 
     }
-    public string Description => $"{ModItem.Description}~n~~n~Type: ~p~{ModItem.ItemType}~s~" + (ModItem.ItemSubType != ItemSubType.None ? $" - ~p~{ModItem.ItemSubType}~s~" : "") 
-                                                    + (Settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ModItem.ChangesNeeds ? $"~n~{ModItem.NeedChangeDescription}" : "") : (ModItem.ChangesHealth ? $"~n~{ModItem.HealthChangeDescription}" : ""))
+    public string Description => $"{ModItem.Description}~n~" + ModItem.GetTypeDescription(Settings)
+                                                    + ModItem.GetExtendedDescription(Settings)// + (Settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ModItem.ChangesNeeds ? $"~n~{ModItem.NeedChangeDescription}" : "") : (ModItem.ChangesHealth ? $"~n~{ModItem.HealthChangeDescription}" : ""))
                                                     
                                                     + $"~n~Amount: ~b~{Amount}~s~" + (ModItem.PercentLostOnUse > 0.0f ? $" (~b~{Math.Round(100f * RemainingPercent,0)}%~s~)" : "") 
                                                     + (ModItem.MeasurementName != "Item" ? " " + ModItem.MeasurementName + "(s)" : "") 

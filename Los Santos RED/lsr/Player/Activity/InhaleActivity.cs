@@ -18,15 +18,17 @@ namespace LosSantosRED.lsr.Player
         private bool IsAttachedToHand;
         private bool IsCancelled;
         private Rage.Object Item;
-        private IIntoxicatable Player;
+        private IActionable Player;
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        public InhaleActivity(IIntoxicatable consumable, ISettingsProvideable settings, ModItem modItem, IIntoxicants intoxicants) : base()
+        private InhaleItem InhaleItem;
+        public InhaleActivity(IActionable consumable, ISettingsProvideable settings, InhaleItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
             Settings = settings;
             ModItem = modItem;
+            InhaleItem = modItem;
             Intoxicants = intoxicants;
         }
         public override string DebugString => $"";
@@ -183,9 +185,9 @@ namespace LosSantosRED.lsr.Player
             AnimIdleDictionary = "amb@code_human_in_car_idles@generic@ps@idle_d";
             AnimIdle = new List<string>() { "idle_j" };
 
-            if (ModItem != null && ModItem.IsIntoxicating)
+            if (ModItem != null && InhaleItem.IsIntoxicating)
             {
-                CurrentIntoxicant = Intoxicants.Get(ModItem.IntoxicantName);
+                CurrentIntoxicant = Intoxicants.Get(InhaleItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
 

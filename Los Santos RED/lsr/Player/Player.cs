@@ -355,7 +355,7 @@ namespace Mod
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
-        public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();//this needs to go in items
+       // public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();//this needs to go in items
         public int SpeechSkill { get; set; }
         public uint TargettingHandle
         {
@@ -424,7 +424,7 @@ namespace Mod
             PlayerVoice.Setup();
             ActivityManager.Setup();
 
-            SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
+           // SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())

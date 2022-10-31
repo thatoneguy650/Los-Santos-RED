@@ -44,7 +44,7 @@ namespace LosSantosRED.lsr.Interface
         InteractableLocation ClosestInteractableLocation { get; }
         string ModelName { get; }
         bool IsMale { get; }
-        List<LicensePlate> SpareLicensePlates { get; }
+       // List<LicensePlate> SpareLicensePlates { get; }
         bool IsOnFoot { get; }
 
         void PlaySpeech(string v1, bool v2);
