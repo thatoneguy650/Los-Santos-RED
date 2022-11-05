@@ -145,10 +145,12 @@ public class ActivityManager
     {
         if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
         }
         else if (LowerBodyActivity != null && LowerBodyActivity.CanCancel)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             LowerBodyActivity.Cancel();
         }
     }
@@ -156,6 +158,7 @@ public class ActivityManager
     {
         if (IsPerformingActivity)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity?.Cancel();
             IsPerformingActivity = false;
         }
@@ -164,6 +167,7 @@ public class ActivityManager
     {
         if (UpperBodyActivity != null)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
         }
     }
@@ -171,10 +175,12 @@ public class ActivityManager
     {
         if (UpperBodyActivity != null)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
         }
         if (LowerBodyActivity != null)
         {
+            Player.ButtonPrompts.RemoveActivityPrompts();
             LowerBodyActivity.Cancel();
         }
     }

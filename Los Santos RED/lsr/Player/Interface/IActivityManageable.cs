@@ -46,6 +46,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMale { get; }
        // List<LicensePlate> SpareLicensePlates { get; }
         bool IsOnFoot { get; }
+        ButtonPrompts ButtonPrompts { get; }
 
         void PlaySpeech(string v1, bool v2);
     }

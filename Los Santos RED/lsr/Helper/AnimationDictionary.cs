@@ -15,7 +15,7 @@ public static class AnimationDictionary
 {
     public static void RequestAnimationDictionay(string sDict)
     {
-        if (sDict != "")
+        if (sDict != "" && string.Empty != sDict)
         {
             NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
             uint GameTimeStartedRequesting = Game.GameTime;
@@ -27,7 +27,7 @@ public static class AnimationDictionary
     }
     public static bool RequestAnimationDictionayResult(string sDict)
     {
-        if (sDict != "")
+        if (sDict != "" && string.Empty != sDict)
         {
             NativeFunction.CallByName<bool>("REQUEST_ANIM_DICT", sDict);
             uint GameTimeStartedRequesting = Game.GameTime;

@@ -262,6 +262,14 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlPause");
         }
     }
+
+    public void RemoveActivityPrompts()
+    {
+        RemovePrompts("ActivityControlContinue");
+        RemovePrompts("ActivityControlCancel");
+        RemovePrompts("ActivityControlPause");
+    }
+
     private void AttemptRemoveMenuPrompts()
     {
         if(!Player.IsDead)

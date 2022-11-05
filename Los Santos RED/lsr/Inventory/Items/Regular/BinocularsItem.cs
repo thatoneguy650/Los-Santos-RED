@@ -11,6 +11,9 @@ public class BinocularsItem : ModItem
     public float MaxFOV { get; set; } = 50f;
     public float MidFOV { get; set; } = 35f;
     public float MinFOV { get; set; } = 10f;
+    public bool HasNightVision { get; set; } = true;
+    public bool HasThermalVision { get; set; } = true;
+
     public BinocularsItem()
     {
 

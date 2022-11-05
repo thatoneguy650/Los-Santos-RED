@@ -255,8 +255,9 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_tool_shovel", new List<PropAttachment>() { new PropAttachment("RighHand", "BONETAG_R_PH_HAND", new Vector3(0.005f, 0.006f, -0.048f), new Rotator(3f, -183f, 0f)) }),
 
             
-            new PhysicalItem("prop_binoc_01", new List<PropAttachment>() { 
-                
+            new PhysicalItem("prop_binoc_01", new List<PropAttachment>() {
+
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), Rotator.Zero),
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.128f, 0.015f, 0.087f), new Rotator(-21f, -249f, -6f)),
                 new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.1f, -0.1f, 0.0f), Rotator.Zero),
 

@@ -674,8 +674,16 @@ public class ModItems : IModItems
         });
         PossibleItems.BinocularsItems.AddRange(new List<BinocularsItem> {
 
-            new BinocularsItem("Binoculars","Not just for peeping toms.") {
-                ModelItemID = "prop_binoc_01"  },
+
+
+            new BinocularsItem("SCHEISS BS-10 Binoculars","Not just for peeping toms. Basic and Trusted.") {
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 15f,MidFOV = 35f,MaxFOV = 55f  },
+            new BinocularsItem("SCHEISS BS-20 Binoculars","Need to spy on a spouse or loved one? Now with more ZOOM!") {
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 12f,MidFOV = 20f,MaxFOV = 50f  },
+            new BinocularsItem("SCHEISS BS-90 Binoculars","Need to spy on spouse or loved one, but in the dark? We have you covered!") {
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = true, MinFOV = 10f,MidFOV = 20f,MaxFOV = 50f  },
+            new BinocularsItem("SCHEISS Combat Binoculars","All the bells and whistles. They will never see you coming!") {
+                ModelItemID = "prop_binoc_01",HasThermalVision = true,HasNightVision = true, MinFOV = 8f,MidFOV = 20f,MaxFOV = 50f  },
         });
     }
     private void DefaultConfig_Vehicles()

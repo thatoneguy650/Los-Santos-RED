@@ -64,6 +64,11 @@ public class ActivitySettings : ISettingsDefaultable
 
     public bool BinocDebugDrawMarkers { get; set; }
     public float BinocFOV { get; set; }
+    public float BinocMotionBlur { get; set; }
+    public float BinocNearDOF { get; set; }
+    public float BinocFarDOF { get; set; }
+    public float BinocDOFStrength { get; set; }
+    public bool BinocDrawScaleform { get; set; }
 
     public ActivitySettings()
     {
@@ -116,6 +121,9 @@ public class ActivitySettings : ISettingsDefaultable
 
         ShovelDebugDrawMarkers = false;
         BinocDebugDrawMarkers = false;
-        BinocFOV = 50f; 
+
+        BinocDrawScaleform = true;
+
+
     }
 }
