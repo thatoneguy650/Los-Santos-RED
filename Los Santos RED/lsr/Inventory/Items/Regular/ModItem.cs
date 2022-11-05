@@ -14,25 +14,25 @@ public class ModItem
         Name = name;
         ItemType = itemType;
     }
-    public ModItem(string name, bool requiresDLC, ItemType itemType)
-    {
-        Name = name;
-        RequiresDLC = requiresDLC;
-        ItemType = itemType;
-    }
+    //public ModItem(string name, bool requiresDLC, ItemType itemType)
+    //{
+    //    Name = name;
+    //    RequiresDLC = requiresDLC;
+    //    ItemType = itemType;
+    //}
     public ModItem(string name, string description, ItemType itemType)
     {
         Name = name;
         Description = description;
         ItemType = itemType;
     }
-    public ModItem(string name, string description, bool requiresDLC, ItemType itemType)
-    {
-        Name = name;
-        Description = description;
-        RequiresDLC = requiresDLC;
-        ItemType = itemType;
-    }
+    //public ModItem(string name, string description, bool requiresDLC, ItemType itemType)
+    //{
+    //    Name = name;
+    //    Description = description;
+    //    RequiresDLC = requiresDLC;
+    //    ItemType = itemType;
+    //}
 
 
     [XmlIgnore]
@@ -68,9 +68,14 @@ public class ModItem
     public ItemType ItemType { get; set; } = ItemType.None;
     public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
 
-    public ToolTypes ToolType { get; set; } = ToolTypes.None;
-    public bool RequiresTool => RequiredToolType != ToolTypes.None;
-    public ToolTypes RequiredToolType { get; set; } = ToolTypes.None;
+   // public ToolTypes ToolType { get; set; } = ToolTypes.None;
+    //public bool RequiresTool => RequiredToolType != ToolTypes.None;
+    //public ToolTypes RequiredToolType { get; set; } = ToolTypes.None;
+
+
+
+
+
     public float PercentLostOnUse { get; set; } = 0.0f;
 
 
@@ -81,10 +86,21 @@ public class ModItem
 
 
 
+    ////maybe?
+    //public bool RequiresDLC { get; set; } = false;
 
 
-    //maybe?
-    public bool RequiresDLC { get; set; } = false;
+
+
+    public virtual string FullDescription(ISettingsProvideable Settings)
+    {
+        return $"{Description}~n~" 
+            + GetTypeDescription(Settings)
+            + GetExtendedDescription(Settings)
+            + (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "");
+        
+    }
+
 
     public virtual bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
@@ -110,6 +126,9 @@ public class ModItem
     {
         return "";
     }
-
+    //public virtual void AddItemToInventory(IActionable actionable, float remainingPercent)
+    //{
+    //    //actionable.Inventory.Add(this, remainingPercent);
+    //}
 }
 

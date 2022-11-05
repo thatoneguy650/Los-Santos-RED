@@ -220,14 +220,11 @@ public class DebugMenu : Menu
         UIMenuItem GetAllItems = new UIMenuItem("Get All Items", "Gets 10 of every item");
         GetAllItems.Activated += (menu, item) =>
         {
-            foreach (ModItem modItem in ModItems.AllItems())
+            foreach (ModItem modItem in ModItems.InventoryItems())
             {
-                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                if (!modItem.ConsumeOnPurchase)
                 {
-                    if (!modItem.ConsumeOnPurchase)
-                    {
-                        Player.Inventory.Add(modItem, 10);
-                    }
+                    Player.Inventory.Add(modItem, 10);
                 }
             }
             menu.Visible = false;
@@ -235,14 +232,11 @@ public class DebugMenu : Menu
         UIMenuItem GetSomeItems = new UIMenuItem("Get Some Items", "Gets 10 of 30 random items");
         GetSomeItems.Activated += (menu, item) =>
         {
-            foreach (ModItem modItem in ModItems.AllItems().OrderBy(x => RandomItems.MyRand.Next()).Take(30))
+            foreach (ModItem modItem in ModItems.InventoryItems().OrderBy(x => RandomItems.MyRand.Next()).Take(30))
             {
-                if (modItem.ItemType == ItemType.Drinks || modItem.ItemType == ItemType.Drugs || modItem.ItemType == ItemType.Food || modItem.ItemType == ItemType.Tools)
+                if (!modItem.ConsumeOnPurchase)
                 {
-                    if (!modItem.ConsumeOnPurchase)
-                    {
-                        Player.Inventory.Add(modItem, 10);
-                    }
+                    Player.Inventory.Add(modItem, 10);
                 }
             }
             menu.Visible = false;

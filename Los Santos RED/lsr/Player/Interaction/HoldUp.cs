@@ -274,6 +274,9 @@ public class HoldUp : Interaction
                 if (localModItem != null && localModItem.ModelItem?.Type == ePhysicalItemType.Prop)
                 {
                     hasAddedItem = true;
+
+                    //localModItem.AddItemToInventory(Player, mi.NumberOfItemsToPurchaseFromPlayer);
+
                     Player.Inventory.Add(localModItem, mi.NumberOfItemsToSellToPlayer);
                     ItemsFound += $"~n~~p~{localModItem.Name}~s~ - {mi.NumberOfItemsToSellToPlayer} {localModItem.MeasurementName}(s)";
                 }

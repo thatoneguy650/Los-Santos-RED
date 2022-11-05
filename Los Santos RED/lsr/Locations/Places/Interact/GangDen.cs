@@ -205,7 +205,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         }
         else if (selectedItem == dropoffItem)
         {
-            if(Player.Inventory.Amount(ExpectedItem.Name) >= ExpectedItemAmount)
+            if (Player.Inventory.Get(ExpectedItem)?.Amount >= ExpectedItemAmount)
             {
                 Player.Inventory.Remove(ExpectedItem, ExpectedItemAmount);
                 Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}. Have something for your time.");

@@ -24,7 +24,6 @@ public class ModItems : IModItems
     {
         return AllItems().Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped).PickRandom();
     }
-    
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -45,47 +44,108 @@ public class ModItems : IModItems
             DefaultConfig();
         }
     }
-    public List<ModItem> BasicItems()
-    {
-        List<ModItem> basicItems = new List<ModItem>();
-        basicItems.AddRange(PossibleItems.ModItems);
-        return basicItems;
-
-    }
     public List<ModItem> AllItems()
     {
-        List<ModItem> AllLocations = new List<ModItem>();
-        AllLocations.AddRange(BasicItems());
-        AllLocations.AddRange(PossibleItems.FlashlightItems);
-        AllLocations.AddRange(PossibleItems.ShovelItems);
-        AllLocations.AddRange(PossibleItems.LicensePlateItems);
-        AllLocations.AddRange(PossibleItems.UmbrellaItems);
-        AllLocations.AddRange(PossibleItems.FoodItems);
-        AllLocations.AddRange(PossibleItems.SmokeItems);
-        AllLocations.AddRange(PossibleItems.DrinkItems);
-        AllLocations.AddRange(PossibleItems.PipeSmokeItems);
-        AllLocations.AddRange(PossibleItems.IngestItems);
-        AllLocations.AddRange(PossibleItems.InhaleItems);
-        AllLocations.AddRange(PossibleItems.InjectItems);
-        AllLocations.AddRange(PossibleItems.VehicleItems);
-        AllLocations.AddRange(PossibleItems.WeaponItems);
-        AllLocations.AddRange(PossibleItems.HotelStayItems);
-        return AllLocations;
+        List<ModItem> AllItems = new List<ModItem>();
+        AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.ShovelItems);
+        AllItems.AddRange(PossibleItems.LicensePlateItems);
+        AllItems.AddRange(PossibleItems.UmbrellaItems);
+        AllItems.AddRange(PossibleItems.FoodItems);
+        AllItems.AddRange(PossibleItems.SmokeItems);
+        AllItems.AddRange(PossibleItems.DrinkItems);
+        AllItems.AddRange(PossibleItems.PipeSmokeItems);
+        AllItems.AddRange(PossibleItems.IngestItems);
+        AllItems.AddRange(PossibleItems.InhaleItems);
+        AllItems.AddRange(PossibleItems.InjectItems);
+        AllItems.AddRange(PossibleItems.VehicleItems);
+        AllItems.AddRange(PossibleItems.WeaponItems);
+        AllItems.AddRange(PossibleItems.HotelStayItems);
+        AllItems.AddRange(PossibleItems.DrillItems);
+        AllItems.AddRange(PossibleItems.TapeItems);
+        AllItems.AddRange(PossibleItems.ScrewdriverItems);
+        AllItems.AddRange(PossibleItems.LighterItems);
+        AllItems.AddRange(PossibleItems.PliersItems);
+        AllItems.AddRange(PossibleItems.HammerItems);
+        AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.BinocularsItems);
+        return AllItems;
     }
+    public List<ModItem> PropItems()
+    {
+        List<ModItem> AllItems = new List<ModItem>();
+        AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.ShovelItems);
+        AllItems.AddRange(PossibleItems.LicensePlateItems);
+        AllItems.AddRange(PossibleItems.UmbrellaItems);
+        AllItems.AddRange(PossibleItems.FoodItems);
+        AllItems.AddRange(PossibleItems.SmokeItems);
+        AllItems.AddRange(PossibleItems.DrinkItems);
+        AllItems.AddRange(PossibleItems.PipeSmokeItems);
+        AllItems.AddRange(PossibleItems.IngestItems);
+        AllItems.AddRange(PossibleItems.InhaleItems);
+        AllItems.AddRange(PossibleItems.InjectItems);
+        AllItems.AddRange(PossibleItems.HotelStayItems);
+        AllItems.AddRange(PossibleItems.DrillItems);
+        AllItems.AddRange(PossibleItems.TapeItems);
+        AllItems.AddRange(PossibleItems.ScrewdriverItems);
+        AllItems.AddRange(PossibleItems.LighterItems);
+        AllItems.AddRange(PossibleItems.PliersItems);
+        AllItems.AddRange(PossibleItems.HammerItems);
+        AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.BinocularsItems);
+        return AllItems;
+    }
+
+
+    public List<ModItem> InventoryItems()
+    {
+        List<ModItem> AllItems = new List<ModItem>();
+        AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.ShovelItems);
+        AllItems.AddRange(PossibleItems.UmbrellaItems);
+        AllItems.AddRange(PossibleItems.FoodItems);
+        AllItems.AddRange(PossibleItems.SmokeItems);
+        AllItems.AddRange(PossibleItems.DrinkItems);
+        AllItems.AddRange(PossibleItems.PipeSmokeItems);
+        AllItems.AddRange(PossibleItems.IngestItems);
+        AllItems.AddRange(PossibleItems.InhaleItems);
+        AllItems.AddRange(PossibleItems.InjectItems);
+        AllItems.AddRange(PossibleItems.DrillItems);
+        AllItems.AddRange(PossibleItems.TapeItems);
+        AllItems.AddRange(PossibleItems.ScrewdriverItems);
+        AllItems.AddRange(PossibleItems.LighterItems);
+        AllItems.AddRange(PossibleItems.PliersItems);
+        AllItems.AddRange(PossibleItems.HammerItems);
+        AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.BinocularsItems);
+        return AllItems;
+    }
+
+
     public void Setup(PhysicalItems propItems)
     {
-        foreach (ModItem mi in AllItems())
+        foreach(WeaponItem mi in PossibleItems.WeaponItems)
         {
-            if (mi.ItemType == ItemType.Vehicles)
-            {
-                mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
-            }
-            else if (mi.ItemType == ItemType.Weapons)
-            {
-                mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
-            }
-            else
-            {
+            mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
+        }
+        foreach (VehicleItem mi in PossibleItems.VehicleItems)
+        {
+            mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
+        }
+
+        foreach (ModItem mi in PropItems())
+        {
+            //if (mi.ItemType == ItemType.Vehicles)
+            //{
+            //    mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
+            //}
+            //else if (mi.ItemType == ItemType.Weapons)
+            //{
+            //    mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
+            //}
+            //else
+            //{
                 if (mi.ModelItemID != "")
                 {
                     mi.ModelItem = propItems.Get(mi.ModelItemID);
@@ -94,7 +154,7 @@ public class ModItems : IModItems
                 {
                     mi.PackageItem = propItems.Get(mi.PackageItemID);
                 }
-            }
+            //}
         }
     }
     private void DefaultConfig()
@@ -201,40 +261,39 @@ public class ModItems : IModItems
             //Cigarettes/Cigars
             new SmokeItem("Redwood Regular", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             new SmokeItem("Redwood Mild", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda. Milder version", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs2",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs2",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             new SmokeItem("Debonaire", "Tobacco products marketed at the more sophisticated smoker, whoever that is", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs3",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs3",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             new SmokeItem("Debonaire Menthol", "Tobacco products marketed at the more sophisticated smoker, whoever that is. With Menthol!", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs4",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs4",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             new SmokeItem("Caradique", "Fine Napoleon Cigarettes", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs5",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs5",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             new SmokeItem("69 Brand","Don't let an embargo stop you", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs6",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
+                PackageItemID = "v_ret_ml_cigs6",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette },
             //new Vector3(-0.025f,0.01f,0.004f),new Rotator(0f, 0f, 90f) female mouth attach?
             new SmokeItem("Estancia Cigar","Medium Cut. Hand Rolled.", ItemType.Drugs) {
                 ModelItemID = "prop_cigar_02",
-                PackageItemID = "p_cigar_pack_02_s",AmountPerPackage = 20, RequiredToolType = ToolTypes.Lighter, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigar },
+                PackageItemID = "p_cigar_pack_02_s",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigar },
             //new ModItem("ElectroToke Vape","The Electrotoke uses highly sophisticated micro-molecule atomization technology to make the ingestion of hard drugs healthy, dscreet, pleasurable and, best of all, completely safe.", ItemType.Drugs) {
             //    ModelItemID = "h4_prop_battle_vape_01"), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },
             new SmokeItem("Marijuana","Little Jacob Tested, Truth Approved", ItemType.Drugs) {
                 ModelItemID = "p_cs_joint_01"//p_amb_joint_01
-                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic },
             new SmokeItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.", ItemType.Drugs) {
-                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter , ItemSubType = ItemSubType.Narcotic},
+                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic},
             new SmokeItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.", ItemType.Drugs) {
-                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic },
             new SmokeItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.", ItemType.Drugs) {
-                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic },
 
         });
-
         PossibleItems.IngestItems.AddRange(new List<IngestItem>
         {
             new IngestItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!", ItemType.Drugs) {
@@ -256,7 +315,6 @@ public class ModItems : IModItems
             new IngestItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic },
         });
-
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
         {
             new InhaleItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow", ItemType.Drugs) { IsPossessionIllicit = true,
@@ -264,7 +322,6 @@ public class ModItems : IModItems
                 ,PackageItemID = "prop_meth_bag_01"
                 ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic },
         });
-
         PossibleItems.InjectItems.AddRange(new List<InjectItem>
         {
             new InjectItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy", ItemType.Drugs) { IsPossessionIllicit = true,
@@ -272,17 +329,16 @@ public class ModItems : IModItems
                 ,PackageItemID = "prop_meth_bag_01"
                 ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic },
         });
-
         PossibleItems.PipeSmokeItems.AddRange(new List<PipeSmokeItem>
         {
             new PipeSmokeItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_meth_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic },
             new PipeSmokeItem("Crack", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_crackpipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram", RequiredToolType = ToolTypes.Lighter, ItemSubType = ItemSubType.Narcotic },
+                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic },
         });
 
     }
@@ -533,78 +589,59 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Tools()
     {
-        PossibleItems.ModItems.AddRange(new List<ModItem>
+        PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>
         {
             //Generic Tools
-            new ModItem("Screwdriver","Might get you into some locked things", ItemType.Tools) {
-                ModelItemID = "prop_tool_screwdvr01", ToolType = ToolTypes.Screwdriver },
-            new ModItem("Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.", ItemType.Tools) {
-                ModelItemID = "prop_tool_drill", ToolType = ToolTypes.Drill  },
-            new ModItem("Pliers","For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.", ItemType.Tools) {
-                ModelItemID = "prop_tool_pliers", ToolType = ToolTypes.Pliers  },
-            //new ModItem("Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.", ItemType.Tools) {
-            //    ModelItemID = "prop_tool_shovel", ToolType = ToolTypes.Shovel  },
-            new ModItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged", ItemType.Tools) {
-                ModelItemID = "p_cs_lighter_01", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.01f },
-            new ModItem("Bong","Also known as a water pipe", ItemType.Tools) {
-                ModelItemID = "prop_bong_01", ToolType = ToolTypes.Bong } ,
-            new ModItem("DIC Lighter Ultra","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Long burn version.", ItemType.Tools) {
-                ModelItemID = "p_cs_lighter_01", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.005f },
-            new ModItem("Dippo Lighter","Want to have all the hassle of carrying a lighter only for it to be out of fluid when you need it? Dippo is for you!", ItemType.Tools) {
-                ModelItemID = "v_res_tt_lighter", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.05f },
-            new ModItem("DIC Lighter Silver","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Too poor for gold?", ItemType.Tools) {
-                ModelItemID = "ex_prop_exec_lighter_01", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
-            new ModItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!", ItemType.Tools) {
-                ModelItemID = "lux_prop_lighter_luxe", ToolType = ToolTypes.Lighter , PercentLostOnUse = 0.02f },
-
-
-
-
-
-
-            new ModItem("Flint Rubber Mallet","Give it a whack", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_hammer_01", ToolType = ToolTypes.Hammer  },
-
-
-            new ModItem("Power Metal Cordless Drill","Not recommended for dentistry", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_drill_01a", ToolType = ToolTypes.Drill  },
-
-            new ModItem("Power Metal Cordless Impact Driver","DRIVE it right in!", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_driver_01a", ToolType = ToolTypes.Drill  },
-
-
-            new ModItem("Flint Flathead Screwdriver","Might get you into some locked things", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_sdriver_01", ToolType = ToolTypes.Screwdriver },
-            new ModItem("Flint Multi-Bit Screwdriver","Might get you into some locked things", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_sdriver_02", ToolType = ToolTypes.Screwdriver },
-
-            new ModItem("Flint Duct Tape","Sticks to anything! Ducts, wrists, windows, mouths, and more.", ItemType.Tools) {
-                ModelItemID = "gr_prop_gr_tape_01", ToolType = ToolTypes.None },
-
-
-
-
-
-
-
-
-
-            //new ModItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.", ItemType.Tools) {
-            //    ModelItemID = "prop_cs_police_torch", ToolType = ToolTypes.Flashlight },
-            //new ModItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.", ItemType.Tools) {
-            //    ModelItemID = "prop_tool_torch", ToolType = ToolTypes.Flashlight },
-
-            //new ModItem("iFruit Cellphone","All of the price, none of the features.", ItemType.Tools) {
-            //    ModelItemID = "prop_phone_ing", ToolType = ToolTypes.Flashlight },
-            //new ModItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.", ItemType.Tools) {
-            //    ModelItemID = "prop_phone_ing_02", ToolType = ToolTypes.Flashlight },
-            //new ModItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.", ItemType.Tools) {
-            //    ModelItemID = "prop_phone_ing_03", ToolType = ToolTypes.Flashlight },
-
-    });
-
-
-       PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
+            new ScrewdriverItem("Screwdriver","Might get you into some locked things") {
+                ModelItemID = "prop_tool_screwdvr01" },
+            new ScrewdriverItem("Flint Flathead Screwdriver","Might get you into some locked things") {
+                ModelItemID = "gr_prop_gr_sdriver_01" },
+            new ScrewdriverItem("Flint Multi-Bit Screwdriver","Might get you into some locked things") {
+                ModelItemID = "gr_prop_gr_sdriver_02" },
+        });
+        PossibleItems.DrillItems.AddRange(new List<DrillItem>
+        {
+            new DrillItem("Power Metal Cordless Drill","~r~CURRENTLY UNUSED~s~ Not recommended for dentistry") {
+                ModelItemID = "gr_prop_gr_drill_01a"  },
+            new DrillItem("Power Metal Cordless Impact Driver","~r~CURRENTLY UNUSED~s~ DRIVE it right in!") {
+                ModelItemID = "gr_prop_gr_driver_01a"  },
+            new DrillItem("Drill","~r~CURRENTLY UNUSED~s~ 2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
+                ModelItemID = "prop_tool_drill"  },
+        });
+        PossibleItems.PliersItems.AddRange(new List<PliersItem>
+        {
+            new PliersItem("Pliers","~r~CURRENTLY UNUSED~s~ For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
+                ModelItemID = "prop_tool_pliers"  },      
+        });
+        PossibleItems.LighterItems.AddRange(new List<LighterItem>
+        {
+            new LighterItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged") {
+                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.01f },
+            new LighterItem("DIC Lighter Ultra","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Long burn version.") {
+                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.005f },
+            new LighterItem("Dippo Lighter","Want to have all the hassle of carrying a lighter only for it to be out of fluid when you need it? Dippo is for you!") {
+                ModelItemID = "v_res_tt_lighter", PercentLostOnUse = 0.05f },
+            new LighterItem("DIC Lighter Silver","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Too poor for gold?") {
+                ModelItemID = "ex_prop_exec_lighter_01", PercentLostOnUse = 0.02f },
+            new LighterItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!") {
+                ModelItemID = "lux_prop_lighter_luxe",  PercentLostOnUse = 0.02f },
+        });
+        PossibleItems.TapeItems.AddRange(new List<TapeItem>
+        {
+            new TapeItem("Flint Duct Tape","~r~CURRENTLY UNUSED~s~ Sticks to anything! Ducts, wrists, windows, mouths, and more.") {
+                ModelItemID = "gr_prop_gr_tape_01" },
+        });
+        PossibleItems.HammerItems.AddRange(new List<HammerItem>
+        {
+            new HammerItem("Flint Rubber Mallet","~r~CURRENTLY UNUSED~s~ Give it a whack") {
+                ModelItemID = "gr_prop_gr_hammer_01"  },
+        });
+        PossibleItems.BongItems.AddRange(new List<BongItem>
+        {
+            new BongItem("Bong","~r~CURRENTLY UNUSED~s~ Also known as a water pipe") {
+                ModelItemID = "prop_bong_01" } ,
+        });
+        PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
             new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {
                 ModelItemID = "prop_phone_ing",
                 EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,
@@ -625,23 +662,21 @@ public class ModItems : IModItems
                 EmissiveRadius = 15f, EmissiveDistance = 100f,EmissiveBrightness = 1.0f, },
 
         });
-
-
         PossibleItems.ShovelItems.AddRange(new List<ShovelItem> {
 
             new ShovelItem("Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.") {
                 ModelItemID = "prop_tool_shovel"  },
         });
-
-
         PossibleItems.UmbrellaItems.AddRange(new List<UmbrellaItem>
         {
-            new UmbrellaItem("Blue Umbrella", "Let justice be done though the heavens fall, now in blue."){ ModelItemID = "p_amb_brolly_01" },
-            new UmbrellaItem("Black Umbrella", "Let justice be done though the heavens fall, in fashionable black.") { ModelItemID = "p_amb_brolly_01_s" },
+            new UmbrellaItem("Blue Umbrella", "Stay out of the acid rain, now in blue."){ ModelItemID = "p_amb_brolly_01" },
+            new UmbrellaItem("Black Umbrella", "Stay out of the acid rain in fashionable black.") { ModelItemID = "p_amb_brolly_01_s" },
         });
+        PossibleItems.BinocularsItems.AddRange(new List<BinocularsItem> {
 
-
-
+            new BinocularsItem("Binoculars","Not just for peeping toms.") {
+                ModelItemID = "prop_binoc_01"  },
+        });
     }
     private void DefaultConfig_Vehicles()
     {

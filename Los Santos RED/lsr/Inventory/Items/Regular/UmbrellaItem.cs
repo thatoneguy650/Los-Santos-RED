@@ -8,15 +8,15 @@ public class UmbrellaItem : ModItem
 {   
     public UmbrellaItem()
     {
-        ToolType = ToolTypes.Umbrella;
+
     }
     public UmbrellaItem(string name, string description) : base(name, description, ItemType.Tools)
     {
-        ToolType = ToolTypes.Umbrella;
+
     }
     public UmbrellaItem(string name) : base(name, ItemType.Tools)
     {
-        ToolType = ToolTypes.Umbrella;
+
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {

@@ -1364,7 +1364,7 @@ public class Debug
     }
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("p_amb_phone_01");
+        string PropName = NativeHelper.GetKeyboardInput("prop_binoc_01");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -1398,13 +1398,13 @@ public class Debug
                 //AnimationDictionary.RequestAnimationDictionay("doors@");
                 // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
 
-                string dictionary = "switch@trevor@digging";
-                string animation = "001433_01_trvs_26_digging_exit";
+                string dictionary = "amb@world_human_binoculars@male@base";
+                string animation = "base";
 
 
 
-                dictionary = NativeHelper.GetKeyboardInput("cellphone@");
-                animation = NativeHelper.GetKeyboardInput("cellphone_text_read_base");
+                dictionary = NativeHelper.GetKeyboardInput("amb@world_human_binoculars@male@base");
+                animation = NativeHelper.GetKeyboardInput("base");
 
                 AnimationDictionary.RequestAnimationDictionay(dictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1

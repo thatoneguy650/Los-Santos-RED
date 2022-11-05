@@ -212,7 +212,6 @@ namespace LosSantosRED.lsr.Player
             }
             return true;
         }
-
         private void StartNewEnterAnimation()
         {
             GameTimeLastCheckedAnimation = Game.GameTime;
@@ -237,7 +236,6 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
-
         private void StartBaseAnimation()
         {
             GameTimeLastCheckedAnimation = Game.GameTime;
@@ -246,7 +244,6 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false); 
         }
-
         private void UpdateHealthGain()
         {
             if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
@@ -371,8 +368,6 @@ namespace LosSantosRED.lsr.Player
                 GameTimeLastGivenNeeds = Game.GameTime;
             }
         }
-
-
         private void Setup()
         {
             List<string> AnimIdle;

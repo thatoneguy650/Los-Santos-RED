@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 public class VehicleItem : ModItem
 {
+    public bool RequiresDLC { get; set; } = false;
     public VehicleItem()
     {
     }
@@ -19,13 +20,13 @@ public class VehicleItem : ModItem
     {
 
     }
-    public VehicleItem(string name, bool requiresDLC, ItemType itemType) : base(name, requiresDLC, itemType)
+    public VehicleItem(string name, bool requiresDLC, ItemType itemType) : base(name, itemType)
     {
-
+        RequiresDLC = requiresDLC;
     }
-    public VehicleItem(string name, string description, bool requiresDLC, ItemType itemType) : base(name, description, requiresDLC, itemType)
+    public VehicleItem(string name, string description, bool requiresDLC, ItemType itemType) : base(name, description, itemType)
     {
-
+        RequiresDLC = requiresDLC;
     }
 
 }

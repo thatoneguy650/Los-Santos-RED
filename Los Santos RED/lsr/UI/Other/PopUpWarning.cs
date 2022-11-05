@@ -110,6 +110,10 @@ public class PopUpWarning
         EntryPoint.ModController.IsDisplayingAlertScreen = false;
         Game.IsPaused = IsGamePaused;
         ButtonPrompts.RemovePrompts("PopUpWarning");
+
+        NativeFunction.Natives.SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(globalScaleformID);
+
+
     }
     private void SetupScaleform()
     {

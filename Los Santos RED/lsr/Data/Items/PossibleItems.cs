@@ -16,19 +16,25 @@ public class PossibleItems
     public List<ShovelItem> ShovelItems { get; private set; } = new List<ShovelItem>();
     public List<UmbrellaItem> UmbrellaItems { get; private set; } = new List<UmbrellaItem>();
     public List<LicensePlateItem> LicensePlateItems { get; private set; } = new List<LicensePlateItem>();
+    public List<LighterItem> LighterItems { get; private set; } = new List<LighterItem>();
+    public List<ScrewdriverItem> ScrewdriverItems { get; private set; } = new List<ScrewdriverItem>();
+    public List<TapeItem> TapeItems { get; private set; } = new List<TapeItem>();
+    public List<DrillItem> DrillItems { get; private set; } = new List<DrillItem>();
+    public List<HammerItem> HammerItems { get; private set; } = new List<HammerItem>();
+    public List<PliersItem> PliersItems { get; private set; } = new List<PliersItem>();
+    public List<BongItem> BongItems { get; private set; } = new List<BongItem>();
     public List<FoodItem> FoodItems { get; private set; } = new List<FoodItem>();
     public List<SmokeItem> SmokeItems { get; private set; } = new List<SmokeItem>();
     public List<PipeSmokeItem> PipeSmokeItems { get; private set; } = new List<PipeSmokeItem>();
     public List<DrinkItem> DrinkItems { get; private set; } = new List<DrinkItem>();
-
-
     public List<InhaleItem> InhaleItems { get; private set; } = new List<InhaleItem>();
     public List<IngestItem> IngestItems { get; private set; } = new List<IngestItem>();
     public List<InjectItem> InjectItems { get; private set; } = new List<InjectItem>();
     public List<HotelStayItem> HotelStayItems { get; private set; } = new List<HotelStayItem>();
-
-
     public List<WeaponItem> WeaponItems { get; private set; } = new List<WeaponItem>();
     public List<VehicleItem> VehicleItems { get; private set; } = new List<VehicleItem>();
+
+    public List<BinocularsItem> BinocularsItems { get; private set; } = new List<BinocularsItem>();
+
 }
 

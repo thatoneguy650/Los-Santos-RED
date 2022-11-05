@@ -100,10 +100,7 @@ namespace LosSantosRED.lsr.Player
             if (SmokedItem.Exists() && IsSmokedItemAttachedToMouth)
             {
                 //SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneID), Data.HandOffset, Data.HandRotator);
-
                 SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
-
-
                 IsSmokedItemAttachedToMouth = false;
                 Player.AttachedProp = SmokedItem;
             }

@@ -41,12 +41,12 @@ public abstract class ConsumableItem : ModItem
     public string SleepChangeDescription => ChangesSleep ? $"{(SleepChangeAmount > 0.0f ? "~g~+" : "~r~") + SleepChangeAmount.ToString() + "~s~ Sleep"}" : "";
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        actionable.Inventory.SetUsed(this);
+        actionable.Inventory.Use(this);
         return true;
     }
     public override bool ConsumeItem(IActionable actionable, bool applyNeeds)
     {
-        actionable.Inventory.SetUsed(this);
+        actionable.Inventory.Use(this);
         if (applyNeeds)
         {
             if (ChangesHunger)

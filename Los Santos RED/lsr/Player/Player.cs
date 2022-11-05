@@ -263,7 +263,12 @@ namespace Mod
         public bool IsDoingSuspiciousActivity { get; set; } = false;
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
+
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
+
+
+
+
         public bool IsGettingIntoAVehicle
         {
             get => isGettingIntoVehicle;
@@ -758,9 +763,10 @@ namespace Mod
             }
             return InitialAmount;
         }
-        public void SetDenStatus(Gang gang, bool v)
+        public void SetDenStatus(Gang gang, bool isEnabled)
         {
-            World.Places.StaticPlaces.SetGangLocationActive(gang.ID, v);
+            EntryPoint.WriteToConsole($"SET DEN {gang.ShortName} {isEnabled}");
+            World.Places.StaticPlaces.SetGangLocationActive(gang.ID, isEnabled);
         }
         public void SetAngeredCop()
         {
@@ -1061,7 +1067,7 @@ namespace Mod
                             CurrentVehicle.AttemptToLock();
                             //GameFiber.Yield();//TR Yield RemovedTest 2
                         }
-                        bool hasScrewDriver = Inventory.HasTool(ToolTypes.Screwdriver);
+                        bool hasScrewDriver = Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
                         if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
                         {
                             if (CurrentVehicle.Vehicle.MustBeHotwired)

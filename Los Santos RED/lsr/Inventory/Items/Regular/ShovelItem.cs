@@ -9,15 +9,15 @@ public class ShovelItem : ModItem
 
     public ShovelItem()
     {
-        ToolType = ToolTypes.Shovel;
+
     }
     public ShovelItem(string name, string description) : base(name, description, ItemType.Tools)
     {
-        ToolType = ToolTypes.Shovel;
+
     }
     public ShovelItem(string name) : base(name, ItemType.Tools)
     {
-        ToolType = ToolTypes.Shovel;
+
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {

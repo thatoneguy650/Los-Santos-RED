@@ -379,185 +379,195 @@ public class PurchaseMenu : Menu
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
-        string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
-        if (cii.PurchasePrice == 0)
+        VehicleItem vehicleItem = (VehicleItem)myItem;
+        if (vehicleItem != null && (!vehicleItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores))
         {
-            formattedPurchasePrice = "FREE";
-        }
-        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string description;
-        if (myItem.Description.Length >= 200)
-        {
-            description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = myItem.Description;
-        }
-        description += "~n~~s~";
-        if (MakeName != "")
-        {
-            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
-        }
-        if (ModelName != "")
-        {
-            description += $"~n~Model: ~g~{ModelName}~s~";
-        }
-        if (ClassName != "")
-        {
-            description += $"~n~Class: ~p~{ClassName}~s~";
-        }
-        if (myItem.RequiresDLC)
-        {
-            description += $"~n~~b~DLC Vehicle";
-        }
-        UIMenu VehicleMenu = null;
-        bool FoundCategoryMenu = false;
-        foreach (UIMenu uimen in MenuPool.ToList())
-        {
-            if (uimen.SubtitleText == ClassName)
+            string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
+            if (cii.PurchasePrice == 0)
             {
-                FoundCategoryMenu = true;
-                VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
-                break;
+                formattedPurchasePrice = "FREE";
             }
-        }
-        if (!FoundCategoryMenu && VehicleMenu == null)
-        {
-            VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
-            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
-            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
-        }
-        if (HasBannerImage)
-        {
-            VehicleMenu.SetBannerType(BannerImage);
-        }
-        else if (RemoveBanner)
-        {
-            VehicleMenu.RemoveBanner();
-        }
-        UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
-        UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
-        UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
-        UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
-        description = myItem.Description;
-        if (description == "")
-        {
-            description = $"List Price {formattedPurchasePrice}";
-        }
-        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
-        VehicleMenu.AddItem(ColorMenu);
-        VehicleMenu.AddItem(PrimaryColorMenu);
-        VehicleMenu.AddItem(SecondaryColorMenu);
-        VehicleMenu.AddItem(Purchase);
-        VehicleMenu.OnItemSelect += OnVehicleItemSelect;
-        VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
-    }
-    private void AddWeaponEntry(MenuItem cii, ModItem myItem)
-    {
-        EntryPoint.WriteToConsole($"Purchase Menu Add Weapon Entry ItemName: {myItem.Name}", 5);
-        string description;
-        if (myItem.Description.Length >= 200)
-        {
-            description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = myItem.Description;
-        }
-        description += "~n~~s~";
-        if (myItem.RequiresDLC)
-        {
-            description += $"~n~~b~DLC Weapon";
-        }
-        string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
-
-        if(cii.PurchasePrice == 0)
-        {
-            formattedPurchasePrice = "FREE";
-        }
-
-        WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
-        UIMenu WeaponMenu = null;
-        bool FoundCategoryMenu = false;
-        if (myWeapon != null)
-        {
+            string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string description;
+            if (myItem.Description.Length >= 200)
+            {
+                description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+            }
+            else
+            {
+                description = myItem.Description;
+            }
+            description += "~n~~s~";
+            if (MakeName != "")
+            {
+                description += $"~n~Manufacturer: ~b~{MakeName}~s~";
+            }
+            if (ModelName != "")
+            {
+                description += $"~n~Model: ~g~{ModelName}~s~";
+            }
+            if (ClassName != "")
+            {
+                description += $"~n~Class: ~p~{ClassName}~s~";
+            }
+            if (vehicleItem.RequiresDLC)
+            {
+                description += $"~n~~b~DLC Vehicle";
+            }
+            UIMenu VehicleMenu = null;
+            bool FoundCategoryMenu = false;
             foreach (UIMenu uimen in MenuPool.ToList())
             {
-                if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == purchaseMenu)
+                if (uimen.SubtitleText == ClassName)
                 {
                     FoundCategoryMenu = true;
-                    WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
+                    VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
                     uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
                     uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                    EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
+                    EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
                     break;
                 }
             }
-        }
-        if (!FoundCategoryMenu && WeaponMenu == null)
-        {
-            WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
-            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
-            purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
-        }
-       // WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
-        if (HasBannerImage)
-        {
-            WeaponMenu.SetBannerType(BannerImage);
-        }
-        else if (RemoveBanner)
-        {
-            WeaponMenu.RemoveBanner();
-        }
-        if (myWeapon != null)
-        {
-            foreach (ComponentSlot cs in myWeapon.PossibleComponents.Where(x => x.ComponentSlot != ComponentSlot.Coloring).GroupBy(x => x.ComponentSlot).Select(x => x.Key))
+            if (!FoundCategoryMenu && VehicleMenu == null)
             {
-                List<MenuItemExtra> stuffList = new List<MenuItemExtra>() { new MenuItemExtra("Default", 0) };
-                bool AddedAny = false;
-                foreach (WeaponComponent mywc in myWeapon.PossibleComponents.Where(x => x.ComponentSlot == cs))
+                VehicleMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
+                purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
+                purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
+            }
+            if (HasBannerImage)
+            {
+                VehicleMenu.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                VehicleMenu.RemoveBanner();
+            }
+            UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
+            UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
+            UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
+            UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
+            description = myItem.Description;
+            if (description == "")
+            {
+                description = $"List Price {formattedPurchasePrice}";
+            }
+            UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
+            VehicleMenu.AddItem(ColorMenu);
+            VehicleMenu.AddItem(PrimaryColorMenu);
+            VehicleMenu.AddItem(SecondaryColorMenu);
+            VehicleMenu.AddItem(Purchase);
+            VehicleMenu.OnItemSelect += OnVehicleItemSelect;
+            VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
+        }
+    }
+    private void AddWeaponEntry(MenuItem cii, ModItem myItem)
+    {
+        WeaponItem weaponItem = (WeaponItem)myItem;
+
+
+        if (weaponItem != null)
+        {
+            EntryPoint.WriteToConsole($"Purchase Menu Add Weapon Entry ItemName: {myItem.Name}", 5);
+            string description;
+            if (myItem.Description.Length >= 200)
+            {
+                description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+            }
+            else
+            {
+                description = myItem.Description;
+            }
+            description += "~n~~s~";
+            if (weaponItem.RequiresDLC)
+            {
+                description += $"~n~~b~DLC Weapon";
+            }
+            string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
+
+            if (cii.PurchasePrice == 0)
+            {
+                formattedPurchasePrice = "FREE";
+            }
+
+            WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
+            UIMenu WeaponMenu = null;
+            bool FoundCategoryMenu = false;
+            if (myWeapon != null)
+            {
+                foreach (UIMenu uimen in MenuPool.ToList())
                 {
-                    MenuItemExtra menuItemExtra = cii.Extras.FirstOrDefault(x => x.ExtraName == mywc.Name);
-                    if (menuItemExtra != null)
+                    if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == purchaseMenu)
                     {
-                        AddedAny = true;
-                        stuffList.Add(menuItemExtra);
+                        FoundCategoryMenu = true;
+                        WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
+                        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+                        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                        EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
+                        break;
                     }
                 }
-                if (AddedAny)
+            }
+            if (!FoundCategoryMenu && WeaponMenu == null)
+            {
+                WeaponMenu = MenuPool.AddSubMenu(purchaseMenu, cii.ModItemName);
+                purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
+                purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
+            }
+            // WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
+            if (HasBannerImage)
+            {
+                WeaponMenu.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                WeaponMenu.RemoveBanner();
+            }
+            if (myWeapon != null)
+            {
+                foreach (ComponentSlot cs in myWeapon.PossibleComponents.Where(x => x.ComponentSlot != ComponentSlot.Coloring).GroupBy(x => x.ComponentSlot).Select(x => x.Key))
                 {
-                    WeaponMenu.AddItem(new UIMenuListScrollerItem<MenuItemExtra>(cs.ToString(), cs.ToString(), stuffList)
-                    { //Formatter = v => v.HasItem ? $"{v.ExtraName} - Equipped" : v.PurchasePrice == 0 ? v.ExtraName : $"{v.ExtraName} - ${v.PurchasePrice}",
-                        Index = 0
-                    });
+                    List<MenuItemExtra> stuffList = new List<MenuItemExtra>() { new MenuItemExtra("Default", 0) };
+                    bool AddedAny = false;
+                    foreach (WeaponComponent mywc in myWeapon.PossibleComponents.Where(x => x.ComponentSlot == cs))
+                    {
+                        MenuItemExtra menuItemExtra = cii.Extras.FirstOrDefault(x => x.ExtraName == mywc.Name);
+                        if (menuItemExtra != null)
+                        {
+                            AddedAny = true;
+                            stuffList.Add(menuItemExtra);
+                        }
+                    }
+                    if (AddedAny)
+                    {
+                        WeaponMenu.AddItem(new UIMenuListScrollerItem<MenuItemExtra>(cs.ToString(), cs.ToString(), stuffList)
+                        { //Formatter = v => v.HasItem ? $"{v.ExtraName} - Equipped" : v.PurchasePrice == 0 ? v.ExtraName : $"{v.ExtraName} - ${v.PurchasePrice}",
+                            Index = 0
+                        });
+                    }
                 }
             }
-        }
-        UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Purchase Ammo", $"Select to purchase ammo for this weapon.", cii.SubAmount, 500, cii.SubAmount) { Index = 0, Formatter = v => $"{v} - ${cii.SubPrice * v}" };
-        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
-        if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, myWeapon.Hash, false))
-        {
-            Purchase.Enabled = false;
-        }
+            UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Purchase Ammo", $"Select to purchase ammo for this weapon.", cii.SubAmount, 500, cii.SubAmount) { Index = 0, Formatter = v => $"{v} - ${cii.SubPrice * v}" };
+            UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
+            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, myWeapon.Hash, false))
+            {
+                Purchase.Enabled = false;
+            }
 
-        if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
-        {
-            WeaponMenu.AddItem(PurchaseAmmo);
-        }
-        WeaponMenu.AddItem(Purchase);
-        WeaponMenu.OnItemSelect += OnWeaponItemSelect;
-        WeaponMenu.OnScrollerChange += OnWeaponScrollerChange;
-        WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
+            if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
+            {
+                WeaponMenu.AddItem(PurchaseAmmo);
+            }
+            WeaponMenu.AddItem(Purchase);
+            WeaponMenu.OnItemSelect += OnWeaponItemSelect;
+            WeaponMenu.OnScrollerChange += OnWeaponScrollerChange;
+            WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
 
-        //WeaponMenu.OnMenuOpen += WeaponMenuOnMenuOpen;
+            //WeaponMenu.OnMenuOpen += WeaponMenuOnMenuOpen;
+        }
     }
     private void CreateCategories()
     {
@@ -681,10 +691,7 @@ public class PurchaseMenu : Menu
                     {
                         if (myItem.ModelItem?.Type == ePhysicalItemType.Vehicle)
                         {
-                            if (!myItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
-                            {
-                                AddVehicleEntry(cii, myItem);
-                            }
+                            AddVehicleEntry(cii, myItem);
                         }
                         else if (myItem.ModelItem?.Type == ePhysicalItemType.Weapon)
                         {

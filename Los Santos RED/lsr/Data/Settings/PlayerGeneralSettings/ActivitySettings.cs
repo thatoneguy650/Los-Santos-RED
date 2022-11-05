@@ -54,6 +54,17 @@ public class ActivitySettings : ISettingsDefaultable
     public float ShovelCameraOffsetZ { get; set; }
     public bool ShovelDebugDrawMarkers { get; set; }
 
+
+
+
+
+    public float BinocDebugExtraDistanceX { get; set; }
+    public float BinocDebugExtraDistanceY { get; set; }
+    public float BinocDebugExtraDistanceZ { get; set; }
+
+    public bool BinocDebugDrawMarkers { get; set; }
+    public float BinocFOV { get; set; }
+
     public ActivitySettings()
     {
         SetDefault();
@@ -104,5 +115,7 @@ public class ActivitySettings : ISettingsDefaultable
 
 
         ShovelDebugDrawMarkers = false;
+        BinocDebugDrawMarkers = false;
+        BinocFOV = 50f; 
     }
 }

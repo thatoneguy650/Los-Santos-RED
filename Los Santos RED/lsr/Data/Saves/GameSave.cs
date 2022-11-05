@@ -248,18 +248,23 @@ namespace LosSantosRED.lsr.Data
 
 
 
-
-
-
+                player.RelationshipManager.GangRelationships.ResetGang(false);
                 foreach (GangRepSave tuple in GangReputationsSave)
                 {
                     Gang myGang = gangs.GetGang(tuple.GangID);
                     if (myGang != null)
-                    {
+                    { 
                         player.RelationshipManager.GangRelationships.SetReputation(myGang, tuple.Reputation, false);
                         player.RelationshipManager.GangRelationships.SetRepStats(myGang, tuple.MembersHurt, tuple.MembersHurtInTerritory, tuple.MembersKilled, tuple.MembersKilledInTerritory, tuple.MembersCarJacked, tuple.MembersCarJackedInTerritory, tuple.PlayerDebt, tuple.IsMember, tuple.IsEnemy);
+                        if(tuple.IsMember)
+                        {
+                            player.RelationshipManager.GangRelationships.SetGang(myGang, false);
+                        }
                     }
                 }
+
+
+
 
 
                 if (GangKickSave != null)
@@ -267,17 +272,26 @@ namespace LosSantosRED.lsr.Data
                     Gang myGang = gangs.GetGang(GangKickSave.GangID);
                     if (myGang != null)
                     {
+                        EntryPoint.WriteToConsole($"Loaded Kick Save {myGang.ShortName}");
                         player.RelationshipManager.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
                     }
                     else
                     {
+                        EntryPoint.WriteToConsole($"NO KICK SAVE");
                         player.RelationshipManager.GangRelationships.ResetGang(false);
                     }
                 }
                 else
                 {
+                    EntryPoint.WriteToConsole($"NO KICK SAVE");
                     player.RelationshipManager.GangRelationships.ResetGang(false);
                 }
+
+
+
+
+
+
 
 
 
@@ -301,6 +315,9 @@ namespace LosSantosRED.lsr.Data
                         player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
                     }    
                 }
+
+
+
                 foreach (SavedTextMessage ifc in TextMessages)
                 {
                     player.CellPhone.AddText(ifc.Name,ifc.IconName,ifc.Message,ifc.HourSent,ifc.MinuteSent, ifc.IsRead);
@@ -311,12 +328,21 @@ namespace LosSantosRED.lsr.Data
                     player.Character.Position = PlayerPosition;
                     player.Character.Heading = PlayerHeading;
                 }
+
+
+
+
+
                 player.RelationshipManager.GunDealerRelationship.SetMoneySpent(UndergroundGunsMoneySpent,false);
                 player.RelationshipManager.GunDealerRelationship.SetDebt(UndergroundGunsDebt);
                 player.RelationshipManager.GunDealerRelationship.SetReputation(UndergroundGunsReputation, false);
                 player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(OfficerFriendlyMoneySpent, false);
                 player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(OfficerFriendlyDebt);
                 player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(OfficerFriendlyReputation, false);
+
+
+
+
                 if (DriversLicense != null)
                 {
                     player.Licenses.DriversLicense = new DriversLicense() { ExpirationDate = DriversLicense.ExpirationDate, IssueDate = DriversLicense.IssueDate };

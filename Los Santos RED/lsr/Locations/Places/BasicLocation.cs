@@ -203,8 +203,11 @@ public class BasicLocation
         }
         if (!ShouldAlwaysHaveBlip && IsBlipEnabled)
         {
-            createdBlip = CreateBlip(time, true);
-            GameFiber.Yield();
+            if (!Blip.Exists())
+            {
+                createdBlip = CreateBlip(time, true);
+                GameFiber.Yield();
+            }
         }
         SetNearby();
         Update(time);
@@ -226,6 +229,7 @@ public class BasicLocation
     {
         if (createdBlip.Exists())
         {
+            EntryPoint.WriteToConsole("DEACTIVATING BLIP 2222222");
             createdBlip.Delete();
         }
     }
@@ -274,10 +278,22 @@ public class BasicLocation
     public virtual void Deactivate()
     {
         IsActivated = false;
+
+
+        if (Blip.Exists())
+        {
+            Blip.Delete();
+        }
+
+
         if (createdBlip.Exists())
         {
             createdBlip.Delete();
         }
+
+
+
+
         if (interior != null)
         {
             interior.Unload();

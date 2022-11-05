@@ -130,8 +130,8 @@ namespace LosSantosRED.lsr.Player
             {
                 try
                 {
-                    InventoryItem LighterInventoryItem = Player.Inventory.Items.Where(x => x.ModItem?.ToolType == ToolTypes.Lighter).FirstOrDefault();
-                    if(LighterInventoryItem != null)
+                    InventoryItem LighterInventoryItem = Player.Inventory.Get(typeof(LighterItem));//LighterInventoryItem = Player.Inventory.Items.Where(x => x.ModItem?.ToolType == ToolTypes.Lighter).FirstOrDefault();
+                    if (LighterInventoryItem != null)
                     {
                         LighterItem = new Rage.Object(Game.GetHashKey(LighterInventoryItem.ModItem.ModelItem?.ModelName), Player.Character.GetOffsetPositionUp(60f));
                     }

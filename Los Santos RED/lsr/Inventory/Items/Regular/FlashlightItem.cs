@@ -30,15 +30,15 @@ public class FlashlightItem : ModItem
     public bool CanSearch { get; set; } = true;
     public FlashlightItem()
     {
-        ToolType = ToolTypes.Flashlight;
+
     }
     public FlashlightItem(string name, string description) : base(name, description, ItemType.Tools)
     {
-        ToolType = ToolTypes.Flashlight;
+
     }
     public FlashlightItem(string name) : base(name, ItemType.Tools)
     {
-        ToolType = ToolTypes.Flashlight;
+
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {

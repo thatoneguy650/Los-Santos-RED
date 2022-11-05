@@ -23,72 +23,137 @@ namespace LosSantosRED.lsr.Player
             Player = player;
             Settings = settings;
         }
-        public bool UseTool(ToolTypes tool)
+
+
+
+
+        //public List<InventoryItem> AllItems()
+        //{
+        //    List<InventoryItem> AllItems = new List<InventoryItem>();
+        //    AllItems.AddRange(FlashlightInventoryItems);
+        //    AllItems.AddRange(ShovelInventoryItems);
+        //    AllItems.AddRange(LicensePlateInventoryItems);
+        //    AllItems.AddRange(UmbrellaInventoryItems);
+        //    AllItems.AddRange(FoodInventoryItems);
+        //    AllItems.AddRange(SmokeInventoryItems);
+        //    AllItems.AddRange(DrinkInventoryItems);
+        //    AllItems.AddRange(PipeSmokeInventoryItems);
+        //    AllItems.AddRange(IngestInventoryItems);
+        //    AllItems.AddRange(InhaleInventoryItems);
+        //    AllItems.AddRange(InjectInventoryItems);
+        //    AllItems.AddRange(VehicleInventoryItems);
+        //    AllItems.AddRange(WeaponInventoryItems);
+        //    AllItems.AddRange(HotelStayInventoryItems);
+        //    AllItems.AddRange(DrillInventoryItems);
+        //    AllItems.AddRange(TapeInventoryItems);
+        //    AllItems.AddRange(ScrewdriverInventoryItems);
+        //    AllItems.AddRange(LighterInventoryItems);
+        //    AllItems.AddRange(PliersInventoryItems);
+        //    AllItems.AddRange(HammerInventoryItems);
+        //    AllItems.AddRange(BongInventoryItems);
+        //    return AllItems;
+        //}
+
+
+        //public List<FlashlightInventoryItem> FlashlightInventoryItems { get; private set; } = new List<FlashlightInventoryItem>();
+        //public List<ShovelInventoryItem> ShovelInventoryItems { get; private set; } = new List<ShovelInventoryItem>();
+        //public List<UmbrellaInventoryItem> UmbrellaInventoryItems { get; private set; } = new List<UmbrellaInventoryItem>();
+        //public List<LicensePlateInventoryItem> LicensePlateInventoryItems { get; private set; } = new List<LicensePlateInventoryItem>();
+        //public List<LighterInventoryItem> LighterInventoryItems { get; private set; } = new List<LighterInventoryItem>();
+        //public List<ScrewdriverInventoryItem> ScrewdriverInventoryItems { get; private set; } = new List<ScrewdriverInventoryItem>();
+        //public List<TapeInventoryItem> TapeInventoryItems { get; private set; } = new List<TapeInventoryItem>();
+        //public List<DrillInventoryItem> DrillInventoryItems { get; private set; } = new List<DrillInventoryItem>();
+        //public List<HammerInventoryItem> HammerInventoryItems { get; private set; } = new List<HammerInventoryItem>();
+        //public List<PliersInventoryItem> PliersInventoryItems { get; private set; } = new List<PliersInventoryItem>();
+        //public List<BongInventoryItem> BongInventoryItems { get; private set; } = new List<BongInventoryItem>();
+        //public List<FoodInventoryItem> FoodInventoryItems { get; private set; } = new List<FoodInventoryItem>();
+        //public List<SmokeInventoryItem> SmokeInventoryItems { get; private set; } = new List<SmokeInventoryItem>();
+        //public List<PipeSmokeInventoryItem> PipeSmokeInventoryItems { get; private set; } = new List<PipeSmokeInventoryItem>();
+        //public List<DrinkInventoryItem> DrinkInventoryItems { get; private set; } = new List<DrinkInventoryItem>();
+        //public List<InhaleInventoryItem> InhaleInventoryItems { get; private set; } = new List<InhaleInventoryItem>();
+        //public List<IngestInventoryItem> IngestInventoryItems { get; private set; } = new List<IngestInventoryItem>();
+        //public List<InjectInventoryItem> InjectInventoryItems { get; private set; } = new List<InjectInventoryItem>();
+        //public List<HotelStayInventoryItem> HotelStayInventoryItems { get; private set; } = new List<HotelStayInventoryItem>();
+        //public List<WeaponInventoryItem> WeaponInventoryItems { get; private set; } = new List<WeaponInventoryItem>();
+        //public List<VehicleInventoryItem> VehicleInventoryItems { get; private set; } = new List<VehicleInventoryItem>();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public void Reset()
         {
-            foreach(InventoryItem ii in ItemsList.Where(x=> x.ModItem.ToolType == tool).OrderBy(x=> x.RemainingPercent))
-            {
-                if(Use(ii.ModItem))
-                {
-                    ItemsList.RemoveAll(x => x.RemainingPercent <= 0.005f);
-                    return true;
-                }
-            }
-            return false;
+            Clear();
         }
-        public bool HasTool(ToolTypes tool) => ItemsList.Any(x => x.ModItem.ToolType == tool);
+        public void Clear()
+        {
+            ItemsList.Clear();
+        }
+
+
+        public bool Has(Type type)
+        {
+            return ItemsList.FirstOrDefault(x => x.ModItem.GetType() == type) != null;
+        }
+        public InventoryItem Get(Type type)
+        {
+            return ItemsList.Where(x => x.ModItem.GetType() == type).OrderBy(x=> x.RemainingPercent).FirstOrDefault();
+        }
+
+
+
+
         public void Add(ModItem modItem, float remainingPercent)
         {
             if (modItem != null)
             {
-                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                InventoryItem ExistingItem = Get(modItem);
                 if (ExistingItem == null)
                 {
                     ItemsList.Add(new InventoryItem(modItem, Settings) { RemainingPercent = remainingPercent });
                 }
                 else
                 {
-                    ExistingItem.RemainingPercent += remainingPercent;//ExistingItem.Amount += amount;
+                    ExistingItem.RemainingPercent += remainingPercent;
                 }
             }
         }
-        //public void Add(ModItem modItem, int amount)
-        //{
-        //    if (modItem != null)
-        //    {
-        //        InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-        //        if (ExistingItem == null)
-        //        {
-        //            ItemsList.Add(new InventoryItem(modItem, amount));
-        //        }
-        //        else
-        //        {
-        //            ExistingItem.AddAmount(amount);//ExistingItem.Amount += amount;
-        //        }
-        //    }
-        //}
-
-        //public void Set(ModItem modItem, float remainingPercent)
-        //{
-        //    if (modItem != null)
-        //    {
-        //        InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-        //        if (ExistingItem == null)
-        //        {
-        //            ItemsList.Add(new InventoryItem(modItem) { RemainingPercent = remainingPercent });
-        //        }
-        //        else
-        //        {
-        //            ExistingItem.RemainingPercent = remainingPercent;//ExistingItem.Amount += amount;
-        //        }
-        //    }
-        //}
-
-
+        public InventoryItem Get(ModItem modItem)
+        {
+            return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+        }
+        public void Use(ModItem modItem)
+        {
+            if (modItem != null)
+            {
+                if (modItem.PercentLostOnUse > 0.0f)
+                {
+                    Get(modItem)?.RemovePercent(modItem.PercentLostOnUse);                
+                }
+                else
+                {
+                    Remove(modItem, 1);
+                }
+            }
+        }
         public bool Remove(ModItem modItem)
         {
             if (modItem != null)
             {
-                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                InventoryItem ExistingItem = Get(modItem);
                 if (ExistingItem != null)
                 {
                     ItemsList.Remove(ExistingItem);
@@ -105,12 +170,12 @@ namespace LosSantosRED.lsr.Player
         {
             if (modItem != null)
             {
-                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
+                InventoryItem ExistingItem = Get(modItem);
                 if (ExistingItem != null)
                 {
                     if (ExistingItem.Amount > amount)
                     {
-                        ExistingItem.RemovePercent(amount);//ExistingItem.Amount -= amount;
+                        ExistingItem.RemovePercent(amount);
                     }
                     else
                     {
@@ -124,66 +189,6 @@ namespace LosSantosRED.lsr.Player
                 }
             }
             return false;
-        }
-        public bool Use(ModItem modItem)
-        {
-            if (modItem != null)
-            {
-                InventoryItem ExistingItem = ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-                if (ExistingItem != null)
-                {
-                    return ExistingItem.RemovePercent(modItem.PercentLostOnUse);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            return false;
-        }
-        public InventoryItem Get(ModItem modItem)
-        {
-            return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
-        }
-        public InventoryItem Get(string itemName)
-        {
-            return ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName);
-        }
-        public bool HasItem(string itemName)
-        {
-            return ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName)?.Amount > 0;
-        }
-        public int Amount(string itemName)
-        {
-            InventoryItem ii = ItemsList.FirstOrDefault(x => x.ModItem.Name == itemName);
-            if(ii == null)
-            {
-                return 0;
-            }
-            else
-            {
-                return ii.Amount;
-            }
-        }
-        public void Reset()
-        {
-            Clear();
-        }
-        public void Clear()
-        {
-            ItemsList.Clear();
-        }
-
-        internal void SetUsed(ModItem modItem)
-        {
-            if (modItem.PercentLostOnUse > 0.0f)
-            {
-                Player.Inventory.Use(modItem);
-            }
-            else
-            {
-                Player.Inventory.Remove(modItem, 1);
-            }
         }
     }
 }

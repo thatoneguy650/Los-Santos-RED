@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
         ModItem Get(string text);
         ModItem GetRandomItem();
         List<ModItem> AllItems();
+        List<ModItem> InventoryItems();
     }
 }

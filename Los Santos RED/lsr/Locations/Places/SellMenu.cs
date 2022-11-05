@@ -209,81 +209,85 @@ public class SellMenu : Menu
     }
     private void AddVehicleEntry(MenuItem cii, ModItem myItem)
     {
-        string formattedSalesPrice = cii.SalesPrice.ToString("C0");
-        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
-        string description;
-        if (myItem.Description.Length >= 200)
+        VehicleItem vehicleItem = (VehicleItem)myItem;
+        if (vehicleItem != null)
         {
-            description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = myItem.Description;
-        }
-        description += "~n~~s~";
-        if (MakeName != "")
-        {
-            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
-        }
-        if (ModelName != "")
-        {
-            description += $"~n~Model: ~g~{ModelName}~s~";
-        }
-        if (ClassName != "")
-        {
-            description += $"~n~Class: ~p~{ClassName}~s~";
-        }
-        if (myItem.RequiresDLC)
-        {
-            description += $"~n~~b~DLC Vehicle";
-        }
-        UIMenu VehicleMenu = null;
-        bool FoundCategoryMenu = false;
-        foreach (UIMenu uimen in MenuPool.ToList())
-        {
-            if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
+            string formattedSalesPrice = cii.SalesPrice.ToString("C0");
+            string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
+            string description;
+            if (myItem.Description.Length >= 200)
             {
-                FoundCategoryMenu = true;
-                VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
-                EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
-                break;
+                description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
             }
-        }
-        if (!FoundCategoryMenu && VehicleMenu == null)
-        {
-            VehicleMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
-            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
-            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
-            EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
-        }
-        if (HasBannerImage)
-        {
-            VehicleMenu.SetBannerType(BannerImage);
-        }
-        else if (RemoveBanner)
-        {
-            VehicleMenu.RemoveBanner();
-        }
-        description = myItem.Description;
-        if (description == "")
-        {
-            description = $"List Price {formattedSalesPrice}";
-        }
-        bool enabled = false;
-        if (Player.VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(myItem.ModelItem.ModelName)))
-        {
-            enabled = true;
-        }
+            else
+            {
+                description = myItem.Description;
+            }
+            description += "~n~~s~";
+            if (MakeName != "")
+            {
+                description += $"~n~Manufacturer: ~b~{MakeName}~s~";
+            }
+            if (ModelName != "")
+            {
+                description += $"~n~Model: ~g~{ModelName}~s~";
+            }
+            if (ClassName != "")
+            {
+                description += $"~n~Class: ~p~{ClassName}~s~";
+            }
+            if (vehicleItem.RequiresDLC)
+            {
+                description += $"~n~~b~DLC Vehicle";
+            }
+            UIMenu VehicleMenu = null;
+            bool FoundCategoryMenu = false;
+            foreach (UIMenu uimen in MenuPool.ToList())
+            {
+                if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
+                {
+                    FoundCategoryMenu = true;
+                    VehicleMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
+                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+                    uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+                    EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
+                    break;
+                }
+            }
+            if (!FoundCategoryMenu && VehicleMenu == null)
+            {
+                VehicleMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
+                sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
+                sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+                EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
+            }
+            if (HasBannerImage)
+            {
+                VehicleMenu.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                VehicleMenu.RemoveBanner();
+            }
+            description = myItem.Description;
+            if (description == "")
+            {
+                description = $"List Price {formattedSalesPrice}";
+            }
+            bool enabled = false;
+            if (Player.VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(myItem.ModelItem.ModelName)))
+            {
+                enabled = true;
+            }
 
 
-        UIMenuItem Sell = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedSalesPrice, Enabled = enabled };
-        VehicleMenu.AddItem(Sell);
-        VehicleMenu.OnItemSelect += OnVehicleItemSelect;
-        //VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
+            UIMenuItem Sell = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedSalesPrice, Enabled = enabled };
+            VehicleMenu.AddItem(Sell);
+            VehicleMenu.OnItemSelect += OnVehicleItemSelect;
+            //VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
+        }
     }
 
 
@@ -870,85 +874,90 @@ public class SellMenu : Menu
     private void AddWeaponEntry(MenuItem cii, ModItem myItem)
     {
         EntryPoint.WriteToConsole($"Sell Menu Add Weapon Entry ItemName: {myItem.Name}", 5);
-        string description;
-        if (myItem.Description.Length >= 200)
-        {
-            description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = myItem.Description;
-        }
-        description += "~n~~s~";
-        if (myItem.RequiresDLC)
-        {
-            description += $"~n~~b~DLC Weapon";
-        }
-        string formattedPurchasePrice = cii.SalesPrice.ToString("C0");
-        WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
-        bool hasPedGotWeapon = false;
-        if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, myWeapon.Hash, false))
-        {
-            hasPedGotWeapon = true;
-        }
-        else
-        {
-            hasPedGotWeapon = false;
-        }
+        WeaponItem weaponItem = (WeaponItem)myItem;
 
-
-        UIMenu WeaponMenu = null;
-        bool FoundCategoryMenu = false;
-        if (myWeapon != null)
+        if (weaponItem != null)
         {
-            foreach (UIMenu uimen in MenuPool.ToList())
+            string description;
+            if (myItem.Description.Length >= 200)
             {
-                if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
+                description = myItem.Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+            }
+            else
+            {
+                description = myItem.Description;
+            }
+            description += "~n~~s~";
+            if (weaponItem.RequiresDLC)
+            {
+                description += $"~n~~b~DLC Weapon";
+            }
+            string formattedPurchasePrice = cii.SalesPrice.ToString("C0");
+            WeaponInformation myWeapon = Weapons.GetWeapon(myItem.ModelItem.ModelName);
+            bool hasPedGotWeapon = false;
+            if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, myWeapon.Hash, false))
+            {
+                hasPedGotWeapon = true;
+            }
+            else
+            {
+                hasPedGotWeapon = false;
+            }
+
+
+            UIMenu WeaponMenu = null;
+            bool FoundCategoryMenu = false;
+            if (myWeapon != null)
+            {
+                foreach (UIMenu uimen in MenuPool.ToList())
                 {
-                    FoundCategoryMenu = true;
-                    WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
-                    EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
-                    break;
+                    if (uimen.SubtitleText == myWeapon.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
+                    {
+                        FoundCategoryMenu = true;
+                        WeaponMenu = MenuPool.AddSubMenu(uimen, cii.ModItemName);
+                        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+                        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                        uimen.MenuItems[uimen.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
+                        EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To SubMenu {uimen.SubtitleText}", 5);
+                        break;
+                    }
                 }
             }
+            if (!FoundCategoryMenu && WeaponMenu == null)
+            {
+                WeaponMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
+                sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
+                sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
+                EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
+            }
+            //WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
+            if (HasBannerImage)
+            {
+                WeaponMenu.SetBannerType(BannerImage);
+            }
+            else if (RemoveBanner)
+            {
+                WeaponMenu.RemoveBanner();
+            }
+            UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Sell Ammo", $"Select to sell ammo for this weapon.", cii.SubAmount, 500, cii.SubAmount) { Index = 0, Formatter = v => $"{v} - ${cii.SubPrice * v}" };
+            UIMenuItem Purchase = new UIMenuItem($"Sell", "Select to sell this Weapon") { RightLabel = formattedPurchasePrice };
+            if (hasPedGotWeapon)
+            {
+                Purchase.Enabled = true;
+            }
+            else
+            {
+                Purchase.Enabled = false;
+            }
+            if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
+            {
+                WeaponMenu.AddItem(PurchaseAmmo);
+            }
+            WeaponMenu.AddItem(Purchase);
+            WeaponMenu.OnItemSelect += OnWeaponItemSelect;
+            WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
         }
-        if (!FoundCategoryMenu && WeaponMenu == null)
-        {
-            WeaponMenu = MenuPool.AddSubMenu(sellMenuRNUI, cii.ModItemName);
-            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
-            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
-            EntryPoint.WriteToConsole($"Added Weapon {myItem.Name} To Main Buy Menu", 5);
-        }
-        //WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
-        if (HasBannerImage)
-        {
-            WeaponMenu.SetBannerType(BannerImage);
-        }
-        else if (RemoveBanner)
-        {
-            WeaponMenu.RemoveBanner();
-        }
-        UIMenuNumericScrollerItem<int> PurchaseAmmo = new UIMenuNumericScrollerItem<int>($"Sell Ammo", $"Select to sell ammo for this weapon.", cii.SubAmount, 500, cii.SubAmount) { Index = 0, Formatter = v => $"{v} - ${cii.SubPrice * v}" };
-        UIMenuItem Purchase = new UIMenuItem($"Sell", "Select to sell this Weapon") { RightLabel = formattedPurchasePrice };
-        if (hasPedGotWeapon)
-        {
-            Purchase.Enabled = true;
-        }
-        else
-        {
-            Purchase.Enabled = false;
-        }
-        if (myWeapon.Category != WeaponCategory.Melee && myWeapon.Category != WeaponCategory.Throwable)
-        {
-            WeaponMenu.AddItem(PurchaseAmmo);
-        }
-        WeaponMenu.AddItem(Purchase);
-        WeaponMenu.OnItemSelect += OnWeaponItemSelect;
-        WeaponMenu.OnMenuOpen += OnWeaponMenuOpen;
     }
     private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
