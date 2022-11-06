@@ -22,7 +22,11 @@ public class DrillItem : ModItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN DrillItem ACTIVITY!!!!!!!!!!");
-        Game.DisplayHelp($"Item: {Name} is currently unused");
+        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        {
+            actionable.ActivityManager.StartLowerBodyActivity(new DrillActivity(actionable, settings, this));
+            return true;
+        }
         return false;
     }
 }

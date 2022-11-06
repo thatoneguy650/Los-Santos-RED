@@ -211,8 +211,6 @@ namespace LosSantosRED.lsr
                 new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
             }));
 
-
-
             TaskGroups.Add(new ModTaskGroup("Group10", new List<ModTask>()
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000

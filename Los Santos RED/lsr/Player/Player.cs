@@ -1295,7 +1295,9 @@ namespace Mod
                     PoliceResponse.OnLostWanted();
                     GameFiber.Yield();
                     PlayerVoice.OnLostWanted();
+                    GameFiber.Yield();//TR 05
                     RelationshipManager.GangRelationships.OnLostWanted();
+                    GameFiber.Yield();//TR 05
                     World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
                     EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
                 }
@@ -1317,6 +1319,7 @@ namespace Mod
                     PoliceResponse.OnBecameWanted();
                     GameFiber.Yield();
                     PlayerVoice.OnBecameWanted();
+                    GameFiber.Yield();//TR 05
                     RelationshipManager.GangRelationships.OnBecameWanted();
                     EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }

@@ -602,16 +602,16 @@ public class ModItems : IModItems
         });
         PossibleItems.DrillItems.AddRange(new List<DrillItem>
         {
-            new DrillItem("Power Metal Cordless Drill","~r~CURRENTLY UNUSED~s~ Not recommended for dentistry") {
+            new DrillItem("Power Metal Cordless Drill","Not recommended for dentistry") {
                 ModelItemID = "gr_prop_gr_drill_01a"  },
-            new DrillItem("Power Metal Cordless Impact Driver","~r~CURRENTLY UNUSED~s~ DRIVE it right in!") {
+            new DrillItem("Power Metal Cordless Impact Driver","DRIVE it right in!") {
                 ModelItemID = "gr_prop_gr_driver_01a"  },
-            new DrillItem("Flint Cordless Drill","~r~CURRENTLY UNUSED~s~ 2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
+            new DrillItem("Flint Cordless Drill","2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
                 ModelItemID = "prop_tool_drill"  },
         });
         PossibleItems.PliersItems.AddRange(new List<PliersItem>
         {
-            new PliersItem("Flint Pliers","~r~CURRENTLY UNUSED~s~ For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
+            new PliersItem("Flint Pliers","For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
                 ModelItemID = "prop_tool_pliers"  },      
         });
         PossibleItems.LighterItems.AddRange(new List<LighterItem>

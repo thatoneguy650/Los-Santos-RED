@@ -7,29 +7,29 @@ using System.Linq;
 
 namespace LosSantosRED.lsr.Player
 {
-    public class HammerActivity : DynamicActivity
+    public class PliersActivity : DynamicActivity
     {
         private bool IsCancelled;
         private IActionable Player;
         private ISettingsProvideable Settings;
-        private HammerItem HammerItem;
+        private PliersItem PliersItem;
         private MeleeWeaponAlias meleeWeaponAlias;
 
-        public HammerActivity(IActionable player, ISettingsProvideable settings, ICameraControllable cameraControllable, HammerItem shovelItem) : base()
+        public PliersActivity(IActionable player, ISettingsProvideable settings, PliersItem plersItem) : base()
         {
             Player = player;
-            ModItem = shovelItem;
+            ModItem = plersItem;
             Settings = settings;
-            HammerItem = shovelItem;
+            PliersItem = plersItem;
         }
 
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
-        public override string PausePrompt { get; set; } = "Pause Hammer";
-        public override string CancelPrompt { get; set; } = "Put Away Hammer";
-        public override string ContinuePrompt { get; set; } = "Continue Hammer";
+        public override string PausePrompt { get; set; } = "Pause Pliers";
+        public override string CancelPrompt { get; set; } = "Put Away Pliers";
+        public override string ContinuePrompt { get; set; } = "Continue Pliers";
         public override void Cancel()
         {
             Dispose();
@@ -45,11 +45,11 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Hammer Start", 5);
+            EntryPoint.WriteToConsole($"Pliers ACTIVITY Start", 5);
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 Setup();
-                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, HammerItem, 1317494643);
+                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, PliersItem, 1317494643);
                 meleeWeaponAlias.Start();
                 while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
                 {
@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr.Player
                     GameFiber.Yield();
                 }
                 Dispose();
-            }, "HammerActivity");
+            }, "PliersActivity");
         }
         private void Setup()
         {
@@ -70,7 +70,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Dispose()
         {
-            EntryPoint.WriteToConsole("HAMMER ACTIVITY END");
+            EntryPoint.WriteToConsole("Pliers ACTIVITY END");
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();

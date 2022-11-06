@@ -64,13 +64,11 @@ public class WeaponRecoil
     {
         CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
         AdjustPitch();
-
         if(Player.IsInVehicle)
         {
             AdjustedPitch *= -1.0f;
         }
-
-        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)//Player.IsInFirstPerson)
+        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
         }
@@ -78,15 +76,7 @@ public class WeaponRecoil
         {
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch)); 
         }
-
-        if (Player.IsInVehicle || 1==1)
-        {
-            CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-        }
-        else
-        {
-            CurrentHeading = 0f;
-        }
+        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
         AdjustHeading();
         if (Math.Abs(AdjustedHeading) > 0)
         {
@@ -139,7 +129,6 @@ public class WeaponRecoil
         {
             AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalFirstPersonRecoilAdjuster;
         }
-
         AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalRecoilAdjuster;
     }
 }

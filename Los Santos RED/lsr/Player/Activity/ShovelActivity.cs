@@ -89,8 +89,8 @@ namespace LosSantosRED.lsr.Player
                 Setup();
                 meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem, 2508868239);
                 meleeWeaponAlias.Start();
-                Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", GameControl.Aim, 12);
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
+                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
                 {
                     if (Player.ButtonPrompts.IsPressed("ShovelDig"))
                     {

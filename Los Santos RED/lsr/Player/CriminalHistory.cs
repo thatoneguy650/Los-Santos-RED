@@ -71,16 +71,19 @@ namespace LosSantosRED.lsr
                     if (Player.IsWanted)
                     {
                         ApplyLastWantedStats();
+                        GameFiber.Yield();//TR 05
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Became Wanted", 3);
                     }
                     else if (IsNearLastSeenLocation && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
                     {
                         ApplyLastWantedStats();
+                        GameFiber.Yield();//TR 05
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Near Last Location", 3);
                     }
                     else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.IsWanted)//.CopsRecognizeAsStolen)
                     {
                         ApplyLastWantedStats();
+                        GameFiber.Yield();//TR 05
                         EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle", 3);
                     }
                 }
@@ -96,6 +99,7 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
                 }
             }
+            GameFiber.Yield();//TR 05
             UpdateBlip();
         }
         public void Reset()

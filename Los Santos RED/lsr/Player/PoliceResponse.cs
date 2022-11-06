@@ -204,6 +204,7 @@ namespace LosSantosRED.lsr
                     }
                 }
             }
+            GameFiber.Yield();//TR 05
             UpdateBlip();
         }
         public void Dispose()
@@ -397,6 +398,7 @@ namespace LosSantosRED.lsr
                 RespondingPolice = 999;
             }
             int tasked = 0;
+            int updated = 0;
             foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
             {
                 if(!cop.IsInVehicle && cop.DistanceToPlayer >= 150f)
@@ -417,7 +419,14 @@ namespace LosSantosRED.lsr
                 {
                     cop.IsRespondingToWanted = false;
                 }
+                updated++;
+                if(updated > 5)
+                {
+                    updated = 0;
+                    GameFiber.Yield();//TR 05
+                }
             }
+            GameFiber.Yield();//TR 05
             CurrentRespondingPoliceCount = tasked;
             //EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
         }
@@ -457,6 +466,7 @@ namespace LosSantosRED.lsr
             PrevPoliceState = CurrentPoliceState;
             if(CurrentPoliceState == PoliceState.DeadlyChase)
             {
+                GameFiber.Yield();//TR 05
                 Player.OnLethalForceAuthorized();
             }
         }
