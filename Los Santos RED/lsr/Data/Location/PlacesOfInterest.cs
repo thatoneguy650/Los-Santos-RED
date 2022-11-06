@@ -73,6 +73,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             AllLocations.AddRange(PossibleLocations.ClothingShops);
             AllLocations.AddRange(PossibleLocations.BusStops);
             AllLocations.AddRange(PossibleLocations.Morgues);
+            AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
         return AllLocations;
         
     }
@@ -1259,6 +1260,10 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new HeadShop(new Vector3(-269.2553f, 243.7069f, 90.40055f), 1.693904f, "Pipe Down", "","HeadShopMenu"),
 
         };
+        List<SportingGoodsStore> SportingGoodsStores = new List<SportingGoodsStore>() {
+            new SportingGoodsStore(new Vector3(-945.9442f, -1191.532f, 4.956469f), 168.678f, "Vespucci Sports", "Our rent is so high, we must have quality items!","SportingGoodsMenu") { BannerImagePath = "vespuccisports.png" },
+
+        };
         List<HardwareStore> HardwareStores = new List<HardwareStore>() {
             new HardwareStore(new Vector3(2747.406f, 3473.213f, 55.67021f), 249.8152f, "You Tool", "Show your wife who the family tool is","ToolMenu") {BannerImagePath = "youtool.png", CameraPosition = new Vector3(2780.472f, 3473.511f, 73.06239f), CameraDirection = new Vector3(-0.9778581f, -0.02382228f, -0.2079087f), CameraRotation = new Rotator(-11.99983f, 0f, 91.39555f) },
             new HardwareStore(new Vector3(339.4021f, -776.9934f, 29.2665f), 68.51967f, "Krapea", "We fake it, you make it","ToolMenu"),
@@ -1694,6 +1699,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
         PossibleLocations.SubwayStations.AddRange(SubwayStations);
         PossibleLocations.Morgues.AddRange(Morgues);
+        PossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
 
@@ -1761,6 +1767,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.Prisons.AddRange(Prisons);
         OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
         OldPossibleLocations.Morgues.AddRange(Morgues);
+        OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
     }

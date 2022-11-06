@@ -22,7 +22,7 @@ public class ScrewdriverItem : ModItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN ScrewdriverItem ACTIVITY!!!!!!!!!!");
-        Game.DisplayHelp($"Item: {Name} is currently unused");
+        Game.DisplayHelp($"Cannot Use Item {Name}");
         return false;
     }
 }

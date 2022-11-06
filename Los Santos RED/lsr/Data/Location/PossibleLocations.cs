@@ -41,6 +41,7 @@ public class PossibleLocations
     public List<SubwayStation> SubwayStations { get; private set; } = new List<SubwayStation>();
     public List<Prison> Prisons { get; private set; } = new List<Prison>();
     public List<Morgue> Morgues { get; private set; } = new List<Morgue>();
+    public List<SportingGoodsStore> SportingGoodsStores { get; private set; } = new List<SportingGoodsStore>();
 
 }
 

@@ -276,9 +276,13 @@ namespace LosSantosRED.lsr.Player
             {
                 RaiseBinoculars();
             }
-            if (Player.ButtonPrompts.IsPressed("BinocularsZoom"))
+            if (Player.ButtonPrompts.IsPressed("BinocularsZoomIn"))
             {
-                ChangeZoomLevel();
+                IncreaseZoom();
+            }
+            if (Player.ButtonPrompts.IsPressed("BinocularsZoomOut"))
+            {
+                DecreaseZoom();
             }
             if (Player.ButtonPrompts.IsPressed("BinocularsVision"))
             {
@@ -290,13 +294,33 @@ namespace LosSantosRED.lsr.Player
             FovOrder = 0;
             CurrentFOV = BinocularItem.MaxFOV;
         }
-        private void ChangeZoomLevel()
+
+
+        private void IncreaseZoom()
         {
             FovOrder++;
-            if(FovOrder > 2)
+            if (FovOrder > 2)
+            {
+                FovOrder = 2;
+            }
+            ChangeZoomLevel();
+        }
+        private void DecreaseZoom()
+        {
+            FovOrder--;
+            if (FovOrder < 0)
             {
                 FovOrder = 0;
             }
+            ChangeZoomLevel();
+        }
+        private void ChangeZoomLevel()
+        {
+            //FovOrder++;
+            //if(FovOrder > 2)
+            //{
+            //    FovOrder = 0;
+            //}
             if(FovOrder == 0)
             {
                 CurrentFOV = BinocularItem.MaxFOV;
@@ -535,10 +559,13 @@ namespace LosSantosRED.lsr.Player
         {
             if(IsBinocsRaised)
             {
-                Player.ButtonPrompts.AddPrompt("Binoculars", "Zoom", "BinocularsZoom", GameControl.Attack, 10);
-                Player.ButtonPrompts.AddPrompt("Binoculars", "Vision Mode", "BinocularsVision", Keys.J, 15);
+                Player.ButtonPrompts.AddPrompt("Binoculars", "Zoom In", "BinocularsZoomIn", GameControl.WeaponWheelPrev, 10);
+
+                Player.ButtonPrompts.AddPrompt("Binoculars", "Zoom Out", "BinocularsZoomOut", GameControl.WeaponWheelNext, 15);
+
+                Player.ButtonPrompts.AddPrompt("Binoculars", "Vision Mode", "BinocularsVision", GameControl.Attack, 20);
                // Player.ButtonPrompts.AddPrompt("Binoculars", "Thermal Vision", "BinocularsThermalVision", Keys.K, 20);
-                Player.ButtonPrompts.AddPrompt("Binoculars", "Lower", "BinocularsLower", GameControl.Aim, 12);
+                Player.ButtonPrompts.AddPrompt("Binoculars", "Lower", "BinocularsLower", GameControl.Aim, 30);
             }
             else
             {
@@ -561,12 +588,29 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.VehicleAim, false);
             Game.DisableControlAction(0, GameControl.AccurateAim, false);
             Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
+
+
+            Game.DisableControlAction(0, GameControl.WeaponWheelNext, false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelPrev, false);
+
+            Game.DisableControlAction(0, GameControl.WeaponWheelUpDown, false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelLeftRight, false);
+
+
+            Game.DisableControlAction(0, GameControl.SelectWeapon, false);
+
+            Game.DisableControlAction(0, GameControl.SelectNextWeapon, false);
+            Game.DisableControlAction(0, GameControl.SelectPrevWeapon, false);
+
+
+            Game.DisableControlAction(0, GameControl.NextWeapon, false);
+            Game.DisableControlAction(0, GameControl.PrevWeapon, false);
         }
         private void Setup()
         {
             HandBoneName = "BONETAG_R_PH_HAND";
 
-            if (Player.IsMale)
+            if (Player.IsMale || 1==1)
             {
                 animLowDictionary = "amb@world_human_binoculars@male@base";
                 animLowStationary = "idle";

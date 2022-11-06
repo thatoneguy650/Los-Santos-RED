@@ -24,7 +24,7 @@ public class ShovelItem : ModItem
         EntryPoint.WriteToConsole("I AM IN SHOVEL ACTIVITY!!!!!!!!!!");
         if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
         {
-            actionable.ActivityManager.StartLowerBodyActivity(new ShovelActivity(actionable,this, settings, cameraControllable));
+            actionable.ActivityManager.StartLowerBodyActivity(new ShovelActivity(actionable, settings, cameraControllable, this));
             return true;
         }
         return false;

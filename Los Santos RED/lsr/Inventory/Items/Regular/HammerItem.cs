@@ -22,7 +22,12 @@ public class HammerItem : ModItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN HammerItem ACTIVITY!!!!!!!!!!");
-        Game.DisplayHelp($"Item: {Name} is currently unused");
+        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        {
+            actionable.ActivityManager.StartLowerBodyActivity(new HammerActivity(actionable, settings, cameraControllable, this));
+            return true;
+        }
+        //Game.DisplayHelp($"Item: {Name} is currently unused");
         return false;
     }
 }

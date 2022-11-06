@@ -226,6 +226,7 @@
     <Compile Include="lsr\Locations\Places\ILocationRespawnable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hotel\HotelRoom.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Morgue.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\SportingGoodsStore.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRoute.cs" />
     <Compile Include="lsr\Locations\Places\Other\BusRouteStop.cs" />
     <Compile Include="lsr\Locations\Places\Other\LocationTeleporter.cs" />
@@ -303,7 +304,9 @@
     <Compile Include="lsr\Player\Activity\Data\DanceData.cs" />
     <Compile Include="lsr\Player\Activity\Data\LayingData.cs" />
     <Compile Include="lsr\Player\Activity\FlashlightActivity.cs" />
+    <Compile Include="lsr\Player\Activity\HammerActivity.cs" />
     <Compile Include="lsr\Player\Activity\InjectActivity.cs" />
+    <Compile Include="lsr\Player\Activity\MeleeWeaponAlias.cs" />
     <Compile Include="lsr\Player\Activity\PipeSmokingActivity.cs" />
     <Compile Include="lsr\Player\Activity\InhaleActivity.cs" />
     <Compile Include="lsr\Player\Activity\ShovelActivity.cs" />

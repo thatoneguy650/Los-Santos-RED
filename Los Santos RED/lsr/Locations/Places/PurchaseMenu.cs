@@ -1265,7 +1265,6 @@ public class PurchaseMenu : Menu
                 ModelToSpawn = itemToShow.ModelItem.ModelName;
                 useClose = !itemToShow.ModelItem.IsLarge;
             }
-
             Vector3 Position = Vector3.Zero;
             if (StoreCam.Exists())
             {
@@ -1282,7 +1281,6 @@ public class PurchaseMenu : Menu
             {
                 Vector3 GPCamPos = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
                 Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
-
                 if (useClose)
                 {
                     Position = GPCamPos + GPCamDir / 2;
@@ -1292,7 +1290,6 @@ public class PurchaseMenu : Menu
                     Position = GPCamPos + GPCamDir.ToNormalized() * 3f;
                 }
             }
-
             if (ModelToSpawn != "" && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelToSpawn)))
             {
                 try
@@ -1303,16 +1300,6 @@ public class PurchaseMenu : Menu
                 {
                     EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
-
-                //if (useClose)
-                //{
-                //    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + StoreCam.Direction);
-                //}
-                //else
-                //{
-                //    SellingProp = new Rage.Object(ModelToSpawn, StoreCam.Position + (StoreCam.Direction.ToNormalized() * 3f));
-                //}
-                //GameFiber.Yield();
                 if (SellingProp.Exists())
                 {
                     SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 45f);
@@ -1375,12 +1362,16 @@ public class PurchaseMenu : Menu
                 {
                     float length = SellingProp.Model.Dimensions.X;
                     float width = SellingProp.Model.Dimensions.Y;
+                    float height = SellingProp.Model.Dimensions.Z;
 
                     float LargestSideLength = length;
-
-                    if(width > length)
+                    if(width > LargestSideLength)
                     {
                         LargestSideLength = width;
+                    }
+                    if(height > LargestSideLength)
+                    {
+                        LargestSideLength = height;
                     }
 
                     if (StoreCam.Exists())

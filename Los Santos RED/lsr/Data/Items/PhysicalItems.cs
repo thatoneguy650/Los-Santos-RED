@@ -252,7 +252,18 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_tool_screwdvr01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
             new PhysicalItem("prop_tool_drill", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
             new PhysicalItem("prop_tool_pliers", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)) }),
-            new PhysicalItem("prop_tool_shovel", new List<PropAttachment>() { new PropAttachment("RighHand", "BONETAG_R_PH_HAND", new Vector3(0.005f, 0.006f, -0.048f), new Rotator(3f, -183f, 0f)) }),
+            new PhysicalItem("prop_tool_shovel", 
+            new List<PropAttachment>() { 
+                
+            new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.005f, 0.006f, -0.048f), new Rotator(3f, -183f, 0f))
+            ,new PropAttachment("RightHandWeapon", "BONETAG_R_PH_HAND", new Vector3(-0.03f,-0.277f,-0.062f),new Rotator(20f, -101f, 81f)) 
+            
+            }
+            
+            
+            
+            
+            ) { IsLarge = true },
 
             
             new PhysicalItem("prop_binoc_01", new List<PropAttachment>() {
@@ -276,13 +287,25 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("ex_prop_exec_lighter_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.13f, 0.02f, 0.02f), new Rotator(-93f, 40f, 0f)) }),
             new PhysicalItem("lux_prop_lighter_luxe", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.13f, 0.02f, 0.02f), new Rotator(-93f, 40f, 0f)) }),
 
-            new PhysicalItem("p_amb_brolly_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }),//blue umbrella
-            new PhysicalItem("p_amb_brolly_01_s", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }),//black umbrellal
+            new PhysicalItem("p_amb_brolly_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }) { IsLarge = true },//blue umbrella
+            new PhysicalItem("p_amb_brolly_01_s", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(-0.01f, 0.01f, 0.05f), new Rotator(0f, -40f, 0f)) }) { IsLarge = true },//black umbrellal
 
             new PhysicalItem("gr_prop_gr_tape_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint duct tape
             new PhysicalItem("gr_prop_gr_sdriver_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint flathead screwdriver
             new PhysicalItem("gr_prop_gr_sdriver_02", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint multi bit screwdriver
-            new PhysicalItem("gr_prop_gr_hammer_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//flint rubber hammer
+            new PhysicalItem("gr_prop_gr_hammer_01", new List<PropAttachment>() {
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
+                new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
+                new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.02f,0f,-0.03f),new Rotator(0f, 0f, 0f)),
+            
+            }) { IsLarge = true },//flint rubber hammer
+
+
+
+
+
+
+
             new PhysicalItem("gr_prop_gr_driver_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//power metal impact driver
             new PhysicalItem("gr_prop_gr_drill_01a", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)) }),//power metal cordless drill
 
@@ -331,18 +354,18 @@ public class PhysicalItems : IPropItems
     {
         PhysicalItemsList.AddRange(new List<PhysicalItem>
         {
-            new PhysicalItem("weapon_bat",0x958a4a8f,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_crowbar",0x84bd7bfd,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_golfclub",0x440e4788,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_hammer",0x4e875f73,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_hatchet",0xf9dcbf2d,ePhysicalItemType.Weapon),
+            new PhysicalItem("weapon_bat",0x958a4a8f,ePhysicalItemType.Weapon) { IsLarge = true },
+            new PhysicalItem("weapon_crowbar",0x84bd7bfd,ePhysicalItemType.Weapon) { IsLarge = true },
+            new PhysicalItem("weapon_golfclub",0x440e4788,ePhysicalItemType.Weapon) { IsLarge = true },
+            new PhysicalItem("weapon_hammer",0x4e875f73,ePhysicalItemType.Weapon) { IsLarge = true },
+            new PhysicalItem("weapon_hatchet",0xf9dcbf2d,ePhysicalItemType.Weapon) { IsLarge = true },
             new PhysicalItem("weapon_knuckle",0xd8df3c3c,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_knife",0x99b507ea,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_machete",0xdd5df8d9,ePhysicalItemType.Weapon),
+            new PhysicalItem("weapon_machete",0xdd5df8d9,ePhysicalItemType.Weapon) { IsLarge = true },
             new PhysicalItem("weapon_switchblade",0xdfe37640,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_nightstick",0x678b81b1,ePhysicalItemType.Weapon),
+            new PhysicalItem("weapon_nightstick",0x678b81b1,ePhysicalItemType.Weapon) { IsLarge = true },
             new PhysicalItem("weapon_wrench",0x19044ee0,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_poolcue",0x94117305,ePhysicalItemType.Weapon),
+            new PhysicalItem("weapon_poolcue",0x94117305,ePhysicalItemType.Weapon) { IsLarge = true },
             new PhysicalItem("weapon_pistol",0x1b06d571,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_pistol_mk2",0xbfe256d4,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_combatpistol",0x5ef9fec4,ePhysicalItemType.Weapon),
@@ -393,7 +416,7 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("weapon_heavysniper_mk2",0xa914799,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_marksmanrifle",0xc734385a,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_marksmanrifle_mk2",0x6a6c02e0,ePhysicalItemType.Weapon),
-            new PhysicalItem("weapon_rpg",0xb1ca77b1,ePhysicalItemType.Weapon),
+            new PhysicalItem("weapon_rpg",0xb1ca77b1,ePhysicalItemType.Weapon) { IsLarge = true },
             new PhysicalItem("weapon_grenadelauncher",0xa284510b,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_grenade",0x93e220bd,ePhysicalItemType.Weapon),
             new PhysicalItem("weapon_molotov",0x24b17070,ePhysicalItemType.Weapon),

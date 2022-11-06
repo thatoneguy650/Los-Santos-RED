@@ -147,11 +147,13 @@ public class ActivityManager
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
+            UpperBodyActivity = null;
         }
         else if (LowerBodyActivity != null && LowerBodyActivity.CanCancel)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             LowerBodyActivity.Cancel();
+            LowerBodyActivity = null;
         }
     }
     public void StopDynamicActivity()
@@ -160,6 +162,7 @@ public class ActivityManager
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity?.Cancel();
+            UpperBodyActivity = null;
             IsPerformingActivity = false;
         }
     }
@@ -169,6 +172,7 @@ public class ActivityManager
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
+            UpperBodyActivity = null;
         }
     }
     private void ForceCancelAll()
@@ -177,11 +181,13 @@ public class ActivityManager
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity.Cancel();
+            UpperBodyActivity = null;
         }
         if (LowerBodyActivity != null)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
             LowerBodyActivity.Cancel();
+            LowerBodyActivity = null;
         }
     }
     public void StartUpperBodyActivity(DynamicActivity toStart)

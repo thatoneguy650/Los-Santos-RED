@@ -141,26 +141,47 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("Flint Duct Tape", 4),
 
-                new MenuItem("Flint Flathead Screwdriver", 14),
-                new MenuItem("Flint Multi-Bit Screwdriver", 15),
+                new MenuItem("Flint Phillips Screwdriver", 14),
+                new MenuItem("Flint Flathead Screwdriver", 16),
+                new MenuItem("Flint Multi-Bit Screwdriver", 20),
 
-                new MenuItem("Hammer", 15),
-                new MenuItem("Flint Rubber Mallet", 26),
+                new MenuItem("Flint Rubber Mallet", 35),
+                new MenuItem("Flint Hammer", 30),
 
-                new MenuItem("Black Umbrella", 22),
-                new MenuItem("Blue Umbrella", 25),
+                new MenuItem("Flint Crowbar", 65),
 
-                new MenuItem("Pliers", 20),
-                new MenuItem("Wrench", 24),
-                new MenuItem("Shovel", 60),
+                new MenuItem("Flint Hatchet", 120),
+                new MenuItem("Vom Feuer Machete", 130),
 
-                new MenuItem("TAG-HARD Flashlight", 78),
-                new MenuItem("Flint Tools Handle Flashlight", 56),
+                new MenuItem("Flint Pliers", 35),
+                new MenuItem("Flint Heavy Duty Pipe Wrench", 55),
+                new MenuItem("Flint Shovel", 75),
 
+                new MenuItem("TAG-HARD Flashlight", 80),
+                new MenuItem("Flint Tools Handle Flashlight", 65),
+
+                new MenuItem("Flint Cordless Drill", 75),
                 new MenuItem("Power Metal Cordless Drill", 90),
                 new MenuItem("Power Metal Cordless Impact Driver", 150),
             }),
 
+
+            new ShopMenu("SportingGoodsMenu","SportingGoods",new List<MenuItem>() {
+                new MenuItem("GASH Black Umbrella", 25),
+                new MenuItem("GASH Blue Umbrella", 30),
+
+                new MenuItem("TAG-HARD Flashlight", 85),
+                new MenuItem("Flint Tools Handle Flashlight", 60),
+
+                new MenuItem("G.E.S. Baseball Bat", 95),
+                new MenuItem("ProLaps Five Iron Golf Club", 85),
+
+                new MenuItem("SCHEISS BS Binoculars", 150),
+                new MenuItem("SCHEISS AS Binoculars", 350),
+                new MenuItem("SCHEISS DS Binoculars", 500),
+                new MenuItem("SCHEISS RP Binoculars", 650),
+
+            }),
 
 
             new ShopMenu("CheapHotelMenu","Cheap Hotel",new List<MenuItem>() { new MenuItem("Room: Single Twin",99),new MenuItem("Room: Single Queen", 130),new MenuItem("Room: Double Queen", 150),new MenuItem("Room: Single King", 160), }),

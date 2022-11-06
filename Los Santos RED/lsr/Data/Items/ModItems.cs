@@ -94,6 +94,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
+
         return AllItems;
     }
 
@@ -592,11 +593,11 @@ public class ModItems : IModItems
         PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>
         {
             //Generic Tools
-            new ScrewdriverItem("Screwdriver","Might get you into some locked things") {
+            new ScrewdriverItem("Flint Phillips Screwdriver","Might get you into some locked things. No relation.") {
                 ModelItemID = "prop_tool_screwdvr01" },
-            new ScrewdriverItem("Flint Flathead Screwdriver","Might get you into some locked things") {
+            new ScrewdriverItem("Flint Flathead Screwdriver","Might get you into some locked things. With a nice flat head.") {
                 ModelItemID = "gr_prop_gr_sdriver_01" },
-            new ScrewdriverItem("Flint Multi-Bit Screwdriver","Might get you into some locked things") {
+            new ScrewdriverItem("Flint Multi-Bit Screwdriver","Might get you into some locked things. Now multi-bit!") {
                 ModelItemID = "gr_prop_gr_sdriver_02" },
         });
         PossibleItems.DrillItems.AddRange(new List<DrillItem>
@@ -605,12 +606,12 @@ public class ModItems : IModItems
                 ModelItemID = "gr_prop_gr_drill_01a"  },
             new DrillItem("Power Metal Cordless Impact Driver","~r~CURRENTLY UNUSED~s~ DRIVE it right in!") {
                 ModelItemID = "gr_prop_gr_driver_01a"  },
-            new DrillItem("Drill","~r~CURRENTLY UNUSED~s~ 2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
+            new DrillItem("Flint Cordless Drill","~r~CURRENTLY UNUSED~s~ 2-Speed Battery Drill. Impact-resistant casing. Light, compact and easy to use.") {
                 ModelItemID = "prop_tool_drill"  },
         });
         PossibleItems.PliersItems.AddRange(new List<PliersItem>
         {
-            new PliersItem("Pliers","~r~CURRENTLY UNUSED~s~ For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
+            new PliersItem("Flint Pliers","~r~CURRENTLY UNUSED~s~ For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
                 ModelItemID = "prop_tool_pliers"  },      
         });
         PossibleItems.LighterItems.AddRange(new List<LighterItem>
@@ -633,7 +634,7 @@ public class ModItems : IModItems
         });
         PossibleItems.HammerItems.AddRange(new List<HammerItem>
         {
-            new HammerItem("Flint Rubber Mallet","~r~CURRENTLY UNUSED~s~ Give it a whack") {
+            new HammerItem("Flint Rubber Mallet","Give it a whack") {
                 ModelItemID = "gr_prop_gr_hammer_01"  },
         });
         PossibleItems.BongItems.AddRange(new List<BongItem>
@@ -663,26 +664,22 @@ public class ModItems : IModItems
 
         });
         PossibleItems.ShovelItems.AddRange(new List<ShovelItem> {
-
-            new ShovelItem("Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.") {
+            new ShovelItem("Flint Shovel","A lot of holes in the desert, and a lot of problems are buried in those holes. But you gotta do it right. I mean, you gotta have the hole already dug before you show up with a package in the trunk.") {
                 ModelItemID = "prop_tool_shovel"  },
         });
         PossibleItems.UmbrellaItems.AddRange(new List<UmbrellaItem>
         {
-            new UmbrellaItem("Blue Umbrella", "Stay out of the acid rain, now in blue."){ ModelItemID = "p_amb_brolly_01" },
-            new UmbrellaItem("Black Umbrella", "Stay out of the acid rain in fashionable black.") { ModelItemID = "p_amb_brolly_01_s" },
+            new UmbrellaItem("GASH Blue Umbrella", "Stay out of the acid rain, now in blue."){ ModelItemID = "p_amb_brolly_01" },
+            new UmbrellaItem("GASH Black Umbrella", "Stay out of the acid rain in fashionable black.") { ModelItemID = "p_amb_brolly_01_s" },
         });
         PossibleItems.BinocularsItems.AddRange(new List<BinocularsItem> {
-
-
-
-            new BinocularsItem("SCHEISS BS-10 Binoculars","Not just for peeping toms. Basic and Trusted.") {
+            new BinocularsItem("SCHEISS BS Binoculars","Not just for peeping toms. Basic and Trusted.") {
                 ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 15f,MidFOV = 35f,MaxFOV = 55f  },
-            new BinocularsItem("SCHEISS BS-20 Binoculars","Need to spy on a spouse or loved one? Now with more ZOOM!") {
+            new BinocularsItem("SCHEISS AS Binoculars","Need to spy on a spouse or loved one? Now with more ZOOM!") {
                 ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 12f,MidFOV = 20f,MaxFOV = 50f  },
-            new BinocularsItem("SCHEISS BS-90 Binoculars","Need to spy on spouse or loved one, but in the dark? We have you covered!") {
+            new BinocularsItem("SCHEISS DS Binoculars","Need to spy on spouse or loved one, but in the dark? We have you covered!") {
                 ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = true, MinFOV = 10f,MidFOV = 20f,MaxFOV = 50f  },
-            new BinocularsItem("SCHEISS Combat Binoculars","All the bells and whistles. They will never see you coming!") {
+            new BinocularsItem("SCHEISS RP Binoculars","All the bells and whistles. They will never see you coming!") {
                 ModelItemID = "prop_binoc_01",HasThermalVision = true,HasNightVision = true, MinFOV = 8f,MidFOV = 20f,MaxFOV = 50f  },
         });
     }
@@ -1289,18 +1286,21 @@ public class ModItems : IModItems
     {
         PossibleItems.WeaponItems.AddRange(new List<WeaponItem>
         {
+            new WeaponItem("Flint Hammer","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false, ItemType.Weapons) { ModelItemID = "weapon_hammer"},
+            new WeaponItem("Flint Hatchet","Add a good old-fashioned hatchet to your armory, and always have a back up for when ammo is hard to come by.", false, ItemType.Weapons) { ModelItemID = "weapon_hatchet"},
+            new WeaponItem("Flint Heavy Duty Pipe Wrench","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false, ItemType.Weapons) { ModelItemID = "weapon_wrench"},  
+            new WeaponItem("Flint Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false, ItemType.Weapons) { ModelItemID = "weapon_crowbar"},
+            
+            new WeaponItem("Vom Feuer Machete","America's West African arms trade isn't just about giving. Rediscover the simple life with this rusty cleaver.", false, ItemType.Weapons) { ModelItemID = "weapon_machete"},
+            
+            new WeaponItem("G.E.S. Baseball Bat","Aluminum baseball bat with leather grip. Lightweight yet powerful for all you big hitters out there.", false, ItemType.Weapons) { ModelItemID = "weapon_bat"},
+            new WeaponItem("ProLaps Five Iron Golf Club","Standard length, mid iron golf club with rubber grip for a lethal short game.", false, ItemType.Weapons) { ModelItemID = "weapon_golfclub"},
+
             //Melee
-            new WeaponItem("Baseball Bat","Aluminum baseball bat with leather grip. Lightweight yet powerful for all you big hitters out there.", false, ItemType.Weapons) { ModelItemID = "weapon_bat"},
-            new WeaponItem("Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false, ItemType.Weapons) { ModelItemID = "weapon_crowbar"},
-            new WeaponItem("Golf Club","Standard length, mid iron golf club with rubber grip for a lethal short game.", false, ItemType.Weapons) { ModelItemID = "weapon_golfclub"},
-            new WeaponItem("Hammer","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false, ItemType.Weapons) { ModelItemID = "weapon_hammer"},
-            new WeaponItem("Hatchet","Add a good old-fashioned hatchet to your armory, and always have a back up for when ammo is hard to come by.", false, ItemType.Weapons) { ModelItemID = "weapon_hatchet"},
             new WeaponItem("Brass Knuckles","Perfect for knocking out gold teeth, or as a gift to the trophy partner who has everything.", false, ItemType.Weapons) { ModelItemID = "weapon_knuckle"},
             new WeaponItem("Combat Knife","This carbon steel 7 inch bladed knife is dual edged with a serrated spine to provide improved stabbing and thrusting capabilities.", false, ItemType.Weapons) { ModelItemID = "weapon_knife"},
-            new WeaponItem("Machete","America's West African arms trade isn't just about giving. Rediscover the simple life with this rusty cleaver.", false, ItemType.Weapons) { ModelItemID = "weapon_machete"},
             new WeaponItem("Switchblade","From your pocket to hilt-deep in the other guy's ribs in under a second: folding knives will never go out of style.", false, ItemType.Weapons) { ModelItemID = "weapon_switchblade" },
             new WeaponItem("Nightstick","24 inch polycarbonate side-handled nightstick.", false, ItemType.Weapons) { ModelItemID = "weapon_nightstick"},
-            new WeaponItem("Wrench","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false, ItemType.Weapons) { ModelItemID = "weapon_wrench"},
             new WeaponItem("Pool Cue","Ah, there's no sound as satisfying as the crack of a perfect break, especially when it's the other guy's spine.", false, ItemType.Weapons) { ModelItemID = "weapon_poolcue"},
 
             //Pistola

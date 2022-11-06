@@ -79,7 +79,7 @@ public class WeaponRecoil
             NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch)); 
         }
 
-        if (Player.IsInVehicle)
+        if (Player.IsInVehicle || 1==1)
         {
             CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
         }

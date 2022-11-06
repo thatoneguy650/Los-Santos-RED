@@ -65,7 +65,7 @@ public class SaveGameTab
         saveCharacter = new TabTextItem("Save Game", "Save Game", "Saves the Current Character");
         saveCharacter.Activated += (s, e) =>
         {
-            if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
+            if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1 == 0)
             {
                 TabView.Visible = false;
                 PopUpWarning popUpWarning = new PopUpWarning("Save", "Are you sure you want to save", "", Player.ButtonPrompts, Settings);
@@ -108,7 +108,7 @@ public class SaveGameTab
         {
             if (selectedItem != null && selectedItem.Name == "Load")
             {
-                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
+                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1==0)
                 {
                     TabView.Visible = false;
                     PopUpWarning popUpWarning = new PopUpWarning("Load", "Are you sure you want to load this save", "", Player.ButtonPrompts, Settings);
@@ -135,7 +135,7 @@ public class SaveGameTab
             }
             if (selectedItem != null && selectedItem.Name == "Delete")
             {
-                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
+                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1 == 0)
                 {
                     TabView.Visible = false;
                     PopUpWarning popUpWarning = new PopUpWarning("Delete", "Are you sure you want to delete this save", "", Player.ButtonPrompts, Settings);

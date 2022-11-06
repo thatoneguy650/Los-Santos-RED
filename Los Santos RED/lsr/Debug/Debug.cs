@@ -67,6 +67,7 @@ public class Debug
     private MusicGuru.MusicPlayerOld MusicPlayerOld;
     private ModDataFileManager ModDataFileManager;
     private bool isRunning;
+    private uint GameTimeLastAttached;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1002,72 +1003,74 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        try
-        {
-            string pickupName = "PICKUP_WEAPON_PISTOL";
+        WeaponTest1();
+
+        //try
+        //{
+        //    string pickupName = "PICKUP_WEAPON_PISTOL";
 
 
 
-            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
-            foreach (Rage.Object obj in Objects)
-            {
-                if (obj.Exists() && obj.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
-                {
+        //    List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+        //    foreach (Rage.Object obj in Objects)
+        //    {
+        //        if (obj.Exists() && obj.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
+        //        {
 
-                    bool isPickup = false;// NativeFunction.Natives.xFC481C641EBBD27D<bool>(obj);
+        //            bool isPickup = false;// NativeFunction.Natives.xFC481C641EBBD27D<bool>(obj);
 
-                    EntryPoint.WriteToConsole($"{obj.Model.Name} {obj.Model.Hash} isPickup {isPickup}");
-
-
-
-                }
-            }
-
-            //W_PI_PISTOL
-            NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(false);
-
-            //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, false);
-            GameFiber.StartNew(delegate
-            {
-                while (!Game.IsKeyDownRightNow(Keys.P))
-                {
-                    NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, false);
-
-                    NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, false);
-                    // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, false);
-
-
-                    bool hasStuff = false;
-                    if (NativeFunction.Natives.DOES_PICKUP_OF_TYPE_EXIST_IN_AREA<bool>(4189041807, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 10f))
-                    {
-                        hasStuff = true;
-                    }
-
-
-                    Game.DisplayHelp($"Press P to Stop Does Pickup Exist {hasStuff}");
-
-                    GameFiber.Yield();
-                }
-
-                NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, true);
-                NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(true);
-                //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, true);
-
-                NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, true);
-                // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, true);
-
-            }, "Run Debug Logic");
+        //            EntryPoint.WriteToConsole($"{obj.Model.Name} {obj.Model.Hash} isPickup {isPickup}");
 
 
 
+        //        }
+        //    }
+
+        //    //W_PI_PISTOL
+        //    NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(false);
+
+        //    //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, false);
+        //    GameFiber.StartNew(delegate
+        //    {
+        //        while (!Game.IsKeyDownRightNow(Keys.P))
+        //        {
+        //            NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, false);
+
+        //            NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, false);
+        //            // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, false);
 
 
-        }
-        catch (Exception ex)
-        {
-            Game.DisplayNotification("Shit CRASHES!!!");
-            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}");
-        }
+        //            bool hasStuff = false;
+        //            if (NativeFunction.Natives.DOES_PICKUP_OF_TYPE_EXIST_IN_AREA<bool>(4189041807, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z, 10f))
+        //            {
+        //                hasStuff = true;
+        //            }
+
+
+        //            Game.DisplayHelp($"Press P to Stop Does Pickup Exist {hasStuff}");
+
+        //            GameFiber.Yield();
+        //        }
+
+        //        NativeFunction.Natives.SET_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_OF_TYPE(Game.LocalPlayer, 4189041807, true);
+        //        NativeFunction.Natives.SET_LOCAL_PLAYER_CAN_COLLECT_PORTABLE_PICKUPS(true);
+        //        //NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(453432689, true);
+
+        //        NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(1467525553, true);
+        //        // NativeFunction.Natives.SET_LOCAL_PLAYER_PERMITTED_TO_COLLECT_PICKUPS_WITH_MODEL(2395771146, true);
+
+        //    }, "Run Debug Logic");
+
+
+
+
+
+        //}
+        //catch (Exception ex)
+        //{
+        //    Game.DisplayNotification("Shit CRASHES!!!");
+        //    EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}");
+        //}
 
         //PICKUP_WEAPON_PISTOL
         //try
@@ -1559,22 +1562,105 @@ public class Debug
 
     }
 
-    private void AlertMessage()
+
+    private void WeaponTest1()
     {
-        PopUpWarning popUpWarning = new PopUpWarning("exit to windows","Are you sure you want to exit to the desktop","",Player.ButtonPrompts, Settings);
-        popUpWarning.Setup();
-        popUpWarning.Show();
-        GameFiber.StartNew(delegate
+        //shovel replacing baseball bat?
+
+
+        NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, 1317494643, 200, false, false);
+        NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, 1317494643, true);
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
         {
-            while (!popUpWarning.IsAnswered)
+            Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = false;
+        }
+        //BONETAG_R_PH_HAND new Vector3(-0.03f,-0.2769999f,-0.06200002f),new Rotator(20f, -101f, 81f)
+        Rage.Object weaponObject = null;
+        try
+        {
+            weaponObject = new Rage.Object("gr_prop_gr_hammer_01", Player.Character.GetOffsetPositionUp(50f));
+            string HandBoneName = "BONETAG_R_PH_HAND";
+            Offset = new Vector3(0f, 0f, 0f);
+            Rotation = new Rotator(0f, 0f, 0f);
+            if (weaponObject.Exists())
             {
-                GameFiber.Yield();
+                AttachItem(weaponObject, HandBoneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+
+                GameFiber.StartNew(delegate
+                {
+                    while (!Game.IsKeyDownRightNow(Keys.Space))
+                    {
+                        uint currentWeapon;
+                        NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Game.LocalPlayer.Character, out currentWeapon, true);
+                        if (currentWeapon != 1317494643)
+                        {
+                            break;
+                        }
+
+
+
+
+
+                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        {
+                            AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                        }
+
+
+                        if (Game.IsKeyDown(Keys.B))
+                        {
+                            EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.N))
+                        {
+                            isPrecise = !isPrecise;
+                            GameFiber.Sleep(500);
+                        }
+
+
+
+
+
+
+                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+
+                        GameFiber.Yield();
+                    }
+                    if(weaponObject.Exists())
+                    {
+                        weaponObject.Delete();
+                    }
+                    if(Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
+                    {
+                        Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = true;
+                    }
+                }, "Run Debug Logic");
             }
-            EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{popUpWarning.IsAccepted} IsRejected{popUpWarning.IsRejected}");
-        }, "Run Debug Logic");
-
-
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+        }
     }
+
+    //private void AlertMessage()
+    //{
+    //    PopUpWarning popUpWarning = new PopUpWarning("exit to windows","Are you sure you want to exit to the desktop","",Player.ButtonPrompts, Settings);
+    //    popUpWarning.Setup();
+    //    popUpWarning.Show();
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        while (!popUpWarning.IsAnswered)
+    //        {
+    //            GameFiber.Yield();
+    //        }
+    //        EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{popUpWarning.IsAccepted} IsRejected{popUpWarning.IsRejected}");
+    //    }, "Run Debug Logic");
+
+
+    //}
     private void ScriptedAnimation()
     {
         //unsafe

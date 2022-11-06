@@ -41,19 +41,28 @@ namespace LosSantosRED.lsr.Player
         private CameraControl CameraControl;
         private ICameraControllable CameraControllable;
         private Rage.Object DirtPile;
+        private bool hadBat;
 
-        public ShovelActivity(IActionable player, ModItem modItem, ISettingsProvideable settings, ICameraControllable cameraControllable) : base()
+        private ShovelItem ShovelItem;
+
+        private string WeaponHandBoneName;
+        private Vector3 WeaponHandOffset;
+        private Rotator WeaponHandRotator;
+        private MeleeWeaponAlias meleeWeaponAlias;
+
+        public ShovelActivity(IActionable player, ISettingsProvideable settings, ICameraControllable cameraControllable, ShovelItem shovelItem) : base()
         {
             Player = player;
-            ModItem = modItem;
+            ModItem = shovelItem;
             Settings = settings;
             CameraControllable = cameraControllable;
+            ShovelItem = shovelItem;
         }
 
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
-        public override bool CanCancel { get; set; } = false;
+        public override bool CanCancel { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Shovel";
         public override string CancelPrompt { get; set; } = "Put Away Shovel";
         public override string ContinuePrompt { get; set; } = "Continue Shovel";
@@ -61,6 +70,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Dispose();
         }
         public override void Pause()
         {
@@ -77,34 +87,68 @@ namespace LosSantosRED.lsr.Player
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 Setup();
-                Enter();
+                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem, 2508868239);
+                meleeWeaponAlias.Start();
+                Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", GameControl.Aim, 12);
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                {
+                    if (Player.ButtonPrompts.IsPressed("ShovelDig"))
+                    {
+                        meleeWeaponAlias.IsCancelled = true;
+                        meleeWeaponAlias.Dispose();
+                        StartShovelling();
+                    }
+                    meleeWeaponAlias.Update();
+                    if(meleeWeaponAlias.IsCancelled)
+                    {
+                        meleeWeaponAlias.Dispose();
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                Dispose();
             }, "ShovelActivity");
         }
-        private void Enter()
+
+    
+        private void SpawnAndAttach()
+        {
+            hadBat = NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, 2508868239, false);
+            if (!hadBat)
+            {
+                NativeFunction.Natives.GIVE_WEAPON_TO_PED(Player.Character, 2508868239, 0, false, false);
+            }
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Player.Character, 2508868239, true);
+            uint GameTimeStarted = Game.GameTime;
+            while(!Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists() && Game.GameTime - GameTimeStarted <= 250)
+            {
+                GameFiber.Yield();
+            }
+            if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
+            {
+                Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = false;
+            }
+            AttachShovelToHand(true);
+        }
+        private void StartShovelling()
         {
             // Game.FadeScreenOut(500, true);
-
+            Player.ButtonPrompts.RemovePrompts("Shovel");
             if(Settings.SettingsManager.ActivitySettings.ShovelFadeOut)
             {
                 Game.FadeScreenOut(500, true);
             }
-
             if (Settings.SettingsManager.ActivitySettings.ShovelUseAltCamera)
             {
                 CameraControl = new CameraControl(CameraControllable);
                 CameraControl.Setup();
                 CameraControl.TransitionHighlightEntity(Player.Character, false, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetX, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetY, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetZ);
             }
-
-
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsPerformingActivity = true;
-            AttachShovelToHand();
+            AttachShovelToHand(false);
             GetHoleLocations();
-
-
             CreateDirt();
-
             if (animEnter != "")
             {
                 GameTimeStartedHolding = Game.GameTime;
@@ -116,7 +160,7 @@ namespace LosSantosRED.lsr.Player
                     GameFiber.Sleep(1000);
                     Game.FadeScreenIn(500, false);
                 }
-                    while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedHolding <= 25000)
+                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedHolding <= 25000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animEnter);
@@ -176,35 +220,48 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-
             if (Settings.SettingsManager.ActivitySettings.ShovelUseAltCamera)
             {
                 CameraControl?.TransitionToGameplayCam(false);
             }
-
-            if (Shovel.Exists())
-            {
-                Shovel.Delete();
-            }
-
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            Player.ActivityManager.IsPerformingActivity = false;
-
-
+            Dispose();
             GameFiber.Sleep(10000);
             if (DirtPile.Exists())
             {
                 DirtPile.Delete();
             }
-
+        }
+        private void Dispose()
+        {
+            Player.ButtonPrompts.RemovePrompts("Shovel");
+            if (Shovel.Exists())
+            {
+                Shovel.Delete();
+            }
+            if(!hadBat && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, 2508868239, false))
+            {
+                NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, 2508868239);
+            }
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            Player.ActivityManager.IsPerformingActivity = false;
+            meleeWeaponAlias?.Dispose();
         }
 
-        private void AttachShovelToHand()
+        private void AttachShovelToHand(bool isWeapon)
         {
             CreateShovel();
-            if (Shovel.Exists() && !IsAttachedToHand)
+            if (Shovel.Exists())
             {
-                Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+                if(isWeapon)
+                {
+                    EntryPoint.WriteToConsole($"WEAPON ATTACH {WeaponHandBoneName} {WeaponHandOffset} {WeaponHandRotator}");
+                    Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, WeaponHandBoneName), WeaponHandOffset, WeaponHandRotator);
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole($"REGULAR ATTACH {HandBoneName} {HandOffset} {HandRotator}");
+                    Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
+                }
                 IsAttachedToHand = true;
                 Player.AttachedProp = Shovel;
             }
@@ -253,16 +310,40 @@ namespace LosSantosRED.lsr.Player
             PropModelName = "prop_tool_shovel";
             HandOffset = new Vector3(0.005f, 0.006f, -0.048f);
             HandRotator = new Rotator(3f, -183f, 0f);
-            if (ModItem != null)
+
+            WeaponHandBoneName = "BONETAG_R_PH_HAND";
+            WeaponHandOffset = new Vector3();
+            WeaponHandRotator = new Rotator();
+
+
+            if (ShovelItem != null)
             {
-                PropModelName = ModItem.ModelItem.ModelName;
-                PropAttachment handAttachment = ModItem.ModelItem.Attachments.Where(x => x.Name == "RightHand").FirstOrDefault();
+                EntryPoint.WriteToConsole("FOUND RIGHT SHOVEL ITEM");
+
+                foreach(PropAttachment pa in ShovelItem.ModelItem.Attachments)
+                {
+                    EntryPoint.WriteToConsole($"PROP ATTACHMENT FOUND {pa.Name}");
+                }
+
+                PropModelName = ShovelItem.ModelItem.ModelName;
+                PropAttachment handAttachment = ShovelItem.ModelItem.Attachments.Where(x => x.Name == "RightHand").FirstOrDefault();
                 if (handAttachment != null)
                 {
+                    EntryPoint.WriteToConsole("FOUND RIGHT HAND REGULAR ATTACHMENTS");
                     HandBoneName = handAttachment.BoneName;
                     HandOffset = handAttachment.Attachment;
                     HandRotator = handAttachment.Rotation;
                 }
+
+                PropAttachment handWeaponAttachment = ShovelItem.ModelItem.Attachments.Where(x => x.Name == "RightHandWeapon").FirstOrDefault();
+                if (handWeaponAttachment != null)
+                {
+                    EntryPoint.WriteToConsole("FOUND RIGHT HAND WEAPON ATTACHMENTS");
+                    WeaponHandBoneName = handWeaponAttachment.BoneName;
+                    WeaponHandOffset = handWeaponAttachment.Attachment;
+                    WeaponHandRotator = handWeaponAttachment.Rotation;
+                }
+
             }
             
             AnimationDictionary.RequestAnimationDictionay(animDictionary);
