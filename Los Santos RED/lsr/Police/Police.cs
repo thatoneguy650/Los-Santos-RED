@@ -42,7 +42,7 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 Player.Arrest();
             }
-            if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+            if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
             {
                 EntryPoint.WriteToConsole($"Police.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPolice} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
             }

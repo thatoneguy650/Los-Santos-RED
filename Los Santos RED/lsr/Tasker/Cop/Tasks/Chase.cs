@@ -115,6 +115,7 @@ public class Chase : ComplexTask
                 NativeFunction.Natives.SET_PED_STEERS_AROUND_PEDS(Ped.Pedestrian, true);
                 NativeFunction.Natives.SET_PED_STEERS_AROUND_VEHICLES(Ped.Pedestrian, true);
             }
+            GameFiber.Yield();
             Update();
         }
     }
@@ -429,6 +430,7 @@ public class Chase : ComplexTask
         CurrentSubTask = SubTask.None;
         FootChase footChase = new FootChase(Ped, Player, World, Cop, Settings);
         footChase.Setup();
+        GameFiber.Yield();
         GameFiber.StartNew(delegate
         {
             while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase)

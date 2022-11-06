@@ -84,7 +84,7 @@ public class Vehicles
             }
             //GameFiber.Yield();//TR 29
         }
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Vehicles.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedVehicles}", 5);
         }

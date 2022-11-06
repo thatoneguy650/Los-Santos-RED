@@ -153,6 +153,7 @@
     <Compile Include="lsr\Data\Scanner\CallSignScannerAudio.cs" />
     <Compile Include="lsr\Data\Scanner\ZoneLookup.cs" />
     <Compile Include="lsr\Data\Settings\ISettingsDefaultable.cs" />
+    <Compile Include="lsr\Data\Settings\Other General Settings\PerformanceSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CellPhoneSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\CriminalHistorySettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\FlashlightSettings.cs" />

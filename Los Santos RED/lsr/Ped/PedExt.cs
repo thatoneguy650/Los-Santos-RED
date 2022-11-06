@@ -212,7 +212,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
-    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.DebugSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
+    public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.PerformanceSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
     public List<WitnessedCrime> OtherCrimesWitnessed => PedPerception.OtherCrimesWitnessed;
     public Ped Pedestrian { get; set; }
     public List<Crime> PlayerCrimesWitnessed => PlayerPerception.CrimesWitnessed;
@@ -250,42 +250,42 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 if (PlayerPerception?.DistanceToTarget >= 300)
                 {
-                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalVeryFar;
+                    return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalVeryFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 200)
                 {
-                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalFar;
+                    return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)
                 {
-                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalMedium;
+                    return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalMedium;
                 }
                 else
                 {
-                    return Settings.SettingsManager.DebugSettings.CopUpdateIntervalClose;
+                    return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalClose;
                 }
             }
             else
             {
                 if (PlayerPerception?.DistanceToTarget >= 100f)//300
                 {
-                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalVeryFar;
+                    return Settings.SettingsManager.PerformanceSettings.OtherUpdateIntervalVeryFar;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 50f)//200
                 {
-                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalFar;
+                    return Settings.SettingsManager.PerformanceSettings.OtherUpdateIntervalFar;
                 }
                 else if (IsWanted)
                 {
-                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalWanted;
+                    return Settings.SettingsManager.PerformanceSettings.OtherUpdateIntervalWanted;
                 }
                 else if (PlayerPerception?.DistanceToTarget >= 25f)//50f
                 {
-                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalMedium;//2000
+                    return Settings.SettingsManager.PerformanceSettings.OtherUpdateIntervalMedium;//2000
                 }
                 else
                 {
-                    return Settings.SettingsManager.DebugSettings.OtherUpdateIntervalClose;
+                    return Settings.SettingsManager.PerformanceSettings.OtherUpdateIntervalClose;
                 }
             }
         }
@@ -311,7 +311,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
-                    if(Settings.SettingsManager.DebugSettings.IsCivilianYield1Active)
+                    if(Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
                     {
                         GameFiber.Yield();//TR TEST 28
                     }
@@ -320,25 +320,25 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     {
                         if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
-                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
+                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            if (Settings.SettingsManager.DebugSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
                             PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield3Active)
+                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
                             PedPerception.Update();
-                            if (Settings.SettingsManager.DebugSettings.IsCivilianYield4Active)
+                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            if (Settings.SettingsManager.DebugSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                            if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }

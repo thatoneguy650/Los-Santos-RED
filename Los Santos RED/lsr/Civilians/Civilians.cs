@@ -62,7 +62,7 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalRan++;
@@ -78,7 +78,7 @@ public class Civilians
                     ped.WillFightPolice = false;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == Settings.SettingsManager.DebugSettings.CivilianUpdateBatch)//5
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.CivilianUpdateBatch)//5
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -91,7 +91,7 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianOnlyUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianOnlyUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.Update Ran Time Since {Game.GameTime - GameTimeLastUpdatedPeds} TotalRan: {TotalRan} TotalChecked: {TotalChecked}", 5);
         }
@@ -107,7 +107,7 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalEMTsRan++;
@@ -122,7 +122,7 @@ public class Civilians
                     ped.WillFight = false;
                     ped.WasEverSetPersistent = true;
                 }
-                if (yield && localRan == Settings.SettingsManager.DebugSettings.EMTsUpdateBatch)
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.EMTsUpdateBatch)
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -136,7 +136,7 @@ public class Civilians
             }
         }
 
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.UpdateEMTs Ran Time Since {Game.GameTime - GameTimeLastUpdatedEMTPeds} TotalRan: {TotalEMTsRan} TotalChecked: {TotalEMTsChecked}", 5);
         }
@@ -155,14 +155,14 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalMerchantsRan++;
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (yield && localRan == Settings.SettingsManager.DebugSettings.MerchantsUpdateBatch)
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.MerchantsUpdateBatch)
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -176,7 +176,7 @@ public class Civilians
             }
         }
 
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.UpdateMerchants Ran Time Since {Game.GameTime - GameTimeLastUpdatedMerchantPeds} TotalRan: {TotalMerchantsRan} TotalChecked: {TotalMerchantsChecked}", 5);
         }
@@ -195,7 +195,7 @@ public class Civilians
             try
             {
                 bool yield = false;
-                if (ped.NeedsFullUpdate || Settings.SettingsManager.DebugSettings.YieldAfterEveryPedExtUpdate)
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
                 {
                     yield = true;
                     TotalGangMembersRan++;
@@ -220,7 +220,7 @@ public class Civilians
                     ped.PlayerKnownsName = true;
                     ped.IsTrustingOfPlayer = true;
                 }
-                if (yield && localRan == Settings.SettingsManager.DebugSettings.GangUpdateBatch)//1
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.GangUpdateBatch)//1
                 {
                     GameFiber.Yield();
                     localRan = 0;
@@ -279,7 +279,7 @@ public class Civilians
                 EntryPoint.WriteToConsole($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
             }
         }
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes || Settings.SettingsManager.DebugSettings.PrintCivilianUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.UpdateGangMembers Ran Time Since {Game.GameTime - GameTimeLastUpdatedGangMemberPeds} TotalRan: {TotalGangMembersRan} TotalChecked: {TotalGangMembersChecked}", 5);
         }

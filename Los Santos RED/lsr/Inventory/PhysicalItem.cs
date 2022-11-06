@@ -39,5 +39,7 @@ public class PhysicalItem
     public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
     public List<PropAttachment> Attachments { get; set; }
 
+    public uint AliasWeaponHash { get; set; }
+
 }
 

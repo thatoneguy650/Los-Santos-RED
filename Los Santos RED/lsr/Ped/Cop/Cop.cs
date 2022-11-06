@@ -92,19 +92,19 @@ public class Cop : PedExt, IWeaponIssuable
         {
             if (PlayerPerception?.DistanceToTarget >= 300)
             {
-                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalVeryFar;
+                return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalVeryFar;
             }
             else if (PlayerPerception?.DistanceToTarget >= 200)
             {
-                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalFar;
+                return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalFar;
             }
             else if (PlayerPerception?.DistanceToTarget >= 50f)
             {
-                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalMedium;
+                return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalMedium;
             }
             else
             {
-                return Settings.SettingsManager.DebugSettings.CopUpdateIntervalClose;
+                return Settings.SettingsManager.PerformanceSettings.CopUpdateIntervalClose;
             }
         }
     }
@@ -121,20 +121,20 @@ public class Cop : PedExt, IWeaponIssuable
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
-                    if(Settings.SettingsManager.DebugSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                    if(Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
-                    if (Settings.SettingsManager.DebugSettings.IsCopYield1Active)
+                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
                     UpdateVehicleState();
-                    if (Settings.SettingsManager.DebugSettings.IsCopYield2Active)
+                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
-                    if (Settings.SettingsManager.DebugSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                    if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
@@ -142,7 +142,7 @@ public class Cop : PedExt, IWeaponIssuable
                     {
                         LookForDistressedPeds(world);
                     }
-                    if (Settings.SettingsManager.DebugSettings.IsCopYield3Active)
+                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }

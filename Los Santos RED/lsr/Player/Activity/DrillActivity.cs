@@ -49,9 +49,9 @@ namespace LosSantosRED.lsr.Player
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 Setup();
-                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, DrillItem, 1317494643);
+                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, DrillItem);
                 meleeWeaponAlias.Start();
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+                while (!IsCancelled)
                 {
                     meleeWeaponAlias.Update();
                     if (meleeWeaponAlias.IsCancelled)

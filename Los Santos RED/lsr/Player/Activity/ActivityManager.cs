@@ -43,6 +43,14 @@ public class ActivityManager
     public bool CanUseItemsBase => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
     public bool CanPerformActivities => (!Player.IsMovingFast || Player.IsInVehicle) && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !Player.IsMovingDynamically && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle;
     public bool CanPerformMobileActivities => !Player.IsInVehicle && !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
+
+
+
+
+
+
+
+
     public bool CanConverse => !Player.IsIncapacitated && !Player.IsVisiblyArmed && Player.IsAliveAndFree && !Player.IsMovingDynamically && ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanConverseWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtPed.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!Player.CurrentLookedAtPed.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
     public bool CanTakeHostageWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanTakeHostage && !Player.CurrentLookedAtPed.IsInVehicle && !Player.CurrentLookedAtPed.IsUnconscious && !Player.CurrentLookedAtPed.IsDead && Player.CurrentLookedAtPed.DistanceToPlayer <= 3.0f && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
@@ -263,12 +271,6 @@ public class ActivityManager
     {
         if (((!IsPerformingActivity && CanPerformActivities) || !performActivity))// modItem.Type != eConsumableType.None)
         {
-            //need to check items required?
-            //if (modItem.RequiresTool && !Player.Inventory.UseTool(modItem.RequiredToolType))
-            //{
-            //    Game.DisplayHelp($"Cannot Use Item {modItem.Name}, Requires {modItem.RequiredToolType}");
-            //    return;
-            //}
             if (performActivity)
             {
                 modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
@@ -279,49 +281,6 @@ public class ActivityManager
                 modItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
             }
         }
-
-
-
-
-
-
-
-
-   
-        //ForceCancelUpperBody();
-        //IsPerformingActivity = true;
-        //if (modItem.Type == eConsumableType.Drink)
-        //{
-        //    UpperBodyActivity = new DrinkingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.Eat)
-        //{
-        //    UpperBodyActivity = new EatingActivity(Actionable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.Smoke)
-        //{
-        //    UpperBodyActivity = new SmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.Ingest)
-        //{
-        //    UpperBodyActivity = new IngestActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.AltSmoke)
-        //{
-        //    UpperBodyActivity = new PipeSmokingActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.Snort)
-        //{
-        //    UpperBodyActivity = new InhaleActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //else if (modItem.Type == eConsumableType.Inject)
-        //{
-        //    UpperBodyActivity = new InjectActivity(Intoxicatable, Settings, modItem, Intoxicants);
-        //}
-        //UpperBodyActivity?.Start();
-   
-        
-
     }
     public void StartScenario()
     {
@@ -336,6 +295,7 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
+
     //Dynamic Activities W/o Performing
     public void GrabPed()
     {

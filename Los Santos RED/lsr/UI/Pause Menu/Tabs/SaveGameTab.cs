@@ -103,7 +103,7 @@ public class SaveGameTab
     }
     private void AddItem(GameSave gs)
     {
-        TabMissionSelectItem MajorTabItem = gs.SaveTabInfo(Time, Gangs);
+        TabMissionSelectItem MajorTabItem = gs.SaveTabInfo(Time, Gangs, Weapons, ModItems);
         MajorTabItem.OnItemSelect += (selectedItem) =>
         {
             if (selectedItem != null && selectedItem.Name == "Load")

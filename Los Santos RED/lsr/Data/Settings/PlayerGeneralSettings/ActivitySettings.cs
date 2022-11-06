@@ -33,6 +33,10 @@ public class ActivitySettings : ISettingsDefaultable
 
 
 
+
+
+
+
     public bool UseAltCameraWhenSitting { get; set; }
     public bool ForceSitWhenClose { get; set; }
     public uint ForceSitTimeOut { get; set; }
@@ -42,33 +46,10 @@ public class ActivitySettings : ISettingsDefaultable
 
 
 
-    public float ShovelAnimationStopTime { get; set; }
-    public bool ShovelFadeOut { get; set; }
-    public bool ShovelUseAltCamera { get; set; }
-    public float ShovelHoleOffsetX { get; set; }
-    public float ShovelHoleOffsetY { get; set; }
-    public float ShovelStartOffsetX { get; set; }
-    public float ShovelStartOffsetY { get; set; }
-    public float ShovelCameraOffsetX { get; set; }
-    public float ShovelCameraOffsetY { get; set; }
-    public float ShovelCameraOffsetZ { get; set; }
-    public bool ShovelDebugDrawMarkers { get; set; }
 
 
 
 
-
-    public float BinocDebugExtraDistanceX { get; set; }
-    public float BinocDebugExtraDistanceY { get; set; }
-    public float BinocDebugExtraDistanceZ { get; set; }
-
-    public bool BinocDebugDrawMarkers { get; set; }
-    public float BinocFOV { get; set; }
-    public float BinocMotionBlur { get; set; }
-    public float BinocNearDOF { get; set; }
-    public float BinocFarDOF { get; set; }
-    public float BinocDOFStrength { get; set; }
-    public bool BinocDrawScaleform { get; set; }
 
     public ActivitySettings()
     {
@@ -100,29 +81,7 @@ public class ActivitySettings : ISettingsDefaultable
         ForceSitDistance = 0.7f;
         SittingSlideDistance = 0.5f;//0.1f
 
-        ShovelAnimationStopTime = 0.7f;
-        ShovelFadeOut = true;
-        ShovelUseAltCamera = true;
 
-
-        ShovelHoleOffsetX = -1.0f;
-        ShovelHoleOffsetY = 0.0f;
-
-
-        ShovelStartOffsetX = 0.0f;
-        ShovelStartOffsetY = 1.0f;
-
-        ShovelCameraOffsetX = 2.0f;
-        ShovelCameraOffsetY = 3.5f;
-        ShovelCameraOffsetZ = 0.5f;
-
-
-
-
-        ShovelDebugDrawMarkers = false;
-        BinocDebugDrawMarkers = false;
-
-        BinocDrawScaleform = true;
 
 
     }

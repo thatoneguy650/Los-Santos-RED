@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,8 @@ using System.Threading.Tasks;
 [Serializable()]
 public class Crime
 {
+    private bool HasShownWarning = false;
+    private uint GameTimeLastShownWarning;
     public Crime(string _ID, string _Name, int _ResultingWantedLevel, bool _ResultsInLethalForce, int priority, bool canBeReportedByCivilians, bool angersCivilians, bool scaresCivilians)
     {
         ID = _ID;
@@ -38,9 +41,22 @@ public class Crime
     public float MaxReportingDistance { get; set; } = 999f;
     public bool RequiresCitation { get; set; } = false;
     public bool RequiresSearch { get; set; } = false;
+
+    public bool ShowsWarning { get; set; } = false;
+    public string WarningMessage { get; set; } = "";
+    public uint TimeBetweenWarnings { get; set; } = 0;
     public override string ToString()
     {
         return Name;
     }
 
+    public void DisplayWarning()
+    {
+        if(ShowsWarning && (!HasShownWarning || (TimeBetweenWarnings > 0 && Game.GameTime - GameTimeLastShownWarning >= TimeBetweenWarnings)) && WarningMessage != "")
+        {
+            Game.DisplayHelp(WarningMessage);
+            GameTimeLastShownWarning = Game.GameTime;
+            HasShownWarning = true;
+        }
+    }
 }

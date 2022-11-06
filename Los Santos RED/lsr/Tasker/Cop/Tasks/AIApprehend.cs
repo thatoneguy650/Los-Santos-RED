@@ -99,8 +99,8 @@ public class AIApprehend : ComplexTask
     public bool ShouldStopCar => DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat /* NEW */&& Ped.Pedestrian.CurrentVehicle.Speed < 20f;
     private bool ShouldExitPoliceVehicle => !Ped.RecentlyGotInVehicle && DistanceToTarget < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed < 0.5f && !OtherTarget.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
-    private bool ShouldAttackWithLessLethal => !OtherTarget.IsBusted && OtherTarget.WantedLevel > 1;
-    private bool ShouldAimTaser => OtherTarget.WantedLevel > 1;
+    private bool ShouldAttackWithLessLethal => !OtherTarget.IsBusted;// && OtherTarget.WantedLevel > 1;
+    private bool ShouldAimTaser => true;// OtherTarget.WantedLevel > 1;
 
     public AIDynamic CurrentAIDynamic
     {
@@ -898,7 +898,10 @@ public class AIApprehend : ComplexTask
             //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
-            NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
+
+
+            NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
+            //NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
         }
     }
     private void FootChaseArresting()

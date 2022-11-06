@@ -139,7 +139,7 @@ public class ModDataFileManager
         Seats.ReadConfig();
 
         WeatherForecasts = new WeatherForecasts();
-        WeatherForecasts.ReadConfig();
+        //WeatherForecasts.ReadConfig();
 
     }
     private void SetupAlternateConfigs()
@@ -211,7 +211,7 @@ public class ModDataFileManager
     private void SetupSimple()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\Simple");
-        string Description = "Simple and basic jurisdiction config" + Environment.NewLine + Environment.NewLine +
+        string Description = "Simple and basic jurisdiction config, vanilla units and gangs only. Basic ped/vehicle models only." + Environment.NewLine + Environment.NewLine +
         "To use, copy all of the .xml files from the AlternateConfigs\\Simple folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
         "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\readme.txt", Description);

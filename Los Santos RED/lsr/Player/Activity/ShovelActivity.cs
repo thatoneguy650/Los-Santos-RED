@@ -87,10 +87,10 @@ namespace LosSantosRED.lsr.Player
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 Setup();
-                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem, 2508868239);
+                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem);
                 meleeWeaponAlias.Start();
                 Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+                while (!IsCancelled)
                 {
                     if (Player.ButtonPrompts.IsPressed("ShovelDig"))
                     {
@@ -134,15 +134,15 @@ namespace LosSantosRED.lsr.Player
         {
             // Game.FadeScreenOut(500, true);
             Player.ButtonPrompts.RemovePrompts("Shovel");
-            if(Settings.SettingsManager.ActivitySettings.ShovelFadeOut)
+            if(Settings.SettingsManager.DebugSettings.ShovelFadeOut)
             {
                 Game.FadeScreenOut(500, true);
             }
-            if (Settings.SettingsManager.ActivitySettings.ShovelUseAltCamera)
+            if (Settings.SettingsManager.DebugSettings.ShovelUseAltCamera)
             {
                 CameraControl = new CameraControl(CameraControllable);
                 CameraControl.Setup();
-                CameraControl.TransitionHighlightEntity(Player.Character, false, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetX, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetY, Settings.SettingsManager.ActivitySettings.ShovelCameraOffsetZ);
+                CameraControl.TransitionHighlightEntity(Player.Character, false, Settings.SettingsManager.DebugSettings.ShovelCameraOffsetX, Settings.SettingsManager.DebugSettings.ShovelCameraOffsetY, Settings.SettingsManager.DebugSettings.ShovelCameraOffsetZ);
             }
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsPerformingActivity = true;
@@ -155,7 +155,7 @@ namespace LosSantosRED.lsr.Player
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animEnter, animEnterBlendIn, animEnterBlendOut, -1, animEnterFlag, 0, false, false, false);//-1
 
 
-                if (Settings.SettingsManager.ActivitySettings.ShovelFadeOut)
+                if (Settings.SettingsManager.DebugSettings.ShovelFadeOut)
                 {
                     GameFiber.Sleep(1000);
                     Game.FadeScreenIn(500, false);
@@ -164,12 +164,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animEnter);
-                    if (AnimationTime >= Settings.SettingsManager.ActivitySettings.ShovelAnimationStopTime)
+                    if (AnimationTime >= Settings.SettingsManager.DebugSettings.ShovelAnimationStopTime)
                     {
                         break;
                     }
 
-                    if (Settings.SettingsManager.ActivitySettings.ShovelDebugDrawMarkers)
+                    if (Settings.SettingsManager.DebugSettings.ShovelDebugDrawMarkers)
                     {
                         if (hasGroundAtStartDiggingPosition)
                         {
@@ -192,7 +192,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void GetHoleLocations()
         {
-            StartDiggingPosition = Player.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.ActivitySettings.ShovelStartOffsetX, Settings.SettingsManager.ActivitySettings.ShovelStartOffsetY, 0.5f));
+            StartDiggingPosition = Player.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.ShovelStartOffsetX, Settings.SettingsManager.DebugSettings.ShovelStartOffsetY, 0.5f));
             float StartDiggingGroundZ;
             hasGroundAtStartDiggingPosition = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(StartDiggingPosition.X, StartDiggingPosition.Y, StartDiggingPosition.Z, out StartDiggingGroundZ, true, false);
             if(hasGroundAtStartDiggingPosition)
@@ -201,7 +201,7 @@ namespace LosSantosRED.lsr.Player
             }
 
 
-            HoleLocation = Player.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.ActivitySettings.ShovelHoleOffsetX, Settings.SettingsManager.ActivitySettings.ShovelHoleOffsetY, 0.5f));
+            HoleLocation = Player.Character.GetOffsetPosition(new Vector3(Settings.SettingsManager.DebugSettings.ShovelHoleOffsetX, Settings.SettingsManager.DebugSettings.ShovelHoleOffsetY, 0.5f));
             float HoleGroundZ;
             hasGroundAtHole = NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(HoleLocation.X, HoleLocation.Y, HoleLocation.Z, out HoleGroundZ, true, false);
             if (hasGroundAtHole)
@@ -220,7 +220,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            if (Settings.SettingsManager.ActivitySettings.ShovelUseAltCamera)
+            if (Settings.SettingsManager.DebugSettings.ShovelUseAltCamera)
             {
                 CameraControl?.TransitionToGameplayCam(false);
             }

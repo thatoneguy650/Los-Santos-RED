@@ -158,7 +158,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Flint Shovel", 75),
 
                 new MenuItem("TAG-HARD Flashlight", 80),
-                new MenuItem("Flint Tools Handle Flashlight", 65),
+                new MenuItem("Flint Handle Flashlight", 65),
 
                 new MenuItem("Flint Cordless Drill", 75),
                 new MenuItem("Power Metal Cordless Drill", 90),
@@ -171,7 +171,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("GASH Blue Umbrella", 30),
 
                 new MenuItem("TAG-HARD Flashlight", 85),
-                new MenuItem("Flint Tools Handle Flashlight", 60),
+                new MenuItem("Flint Handle Flashlight", 60),
 
                 new MenuItem("G.E.S. Baseball Bat", 95),
                 new MenuItem("ProLaps Five Iron Golf Club", 85),

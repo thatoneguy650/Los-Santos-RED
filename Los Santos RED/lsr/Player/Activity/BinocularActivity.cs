@@ -392,29 +392,29 @@ namespace LosSantosRED.lsr.Player
 
                 NativeFunction.Natives.SET_CAM_FOV((uint)ZoomedCamera.Handle, CurrentFOV);
 
-                if (Settings.SettingsManager.ActivitySettings.BinocNearDOF != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocNearDOF != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_NEAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocNearDOF);
+                    NativeFunction.Natives.SET_CAM_NEAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocNearDOF);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocFarDOF != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocFarDOF != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_FAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocFarDOF);
+                    NativeFunction.Natives.SET_CAM_FAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocFarDOF);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocDOFStrength != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocDOFStrength != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_DOF_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocDOFStrength);
+                    NativeFunction.Natives.SET_CAM_DOF_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocDOFStrength);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocMotionBlur != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocMotionBlur != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_MOTION_BLUR_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocMotionBlur);
+                    NativeFunction.Natives.SET_CAM_MOTION_BLUR_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocMotionBlur);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocDrawScaleform)
+                if (Settings.SettingsManager.DebugSettings.BinocDrawScaleform)
                 {
                     NativeFunction.Natives.DRAW_SCALEFORM_MOVIE_FULLSCREEN(binocularsScaleformID, 255, 255, 255, 255, 0);
                 }
                 NativeFunction.CallByName<bool>("DISPLAY_RADAR", false);
             }
-            if(!IsZoomedIn && Settings.SettingsManager.ActivitySettings.BinocDebugDrawMarkers)
+            if(!IsZoomedIn && Settings.SettingsManager.DebugSettings.BinocDebugDrawMarkers)
             {
                 GetBinocularLocation();
                 Rage.Debug.DrawSphereDebug(BinocularsOrigin, 0.1f, Color.Yellow);
@@ -456,21 +456,21 @@ namespace LosSantosRED.lsr.Player
                 Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(0);
                 ZoomedCamera.Rotation = new Rotator(r.X, r.Y, r.Z);
                 ZoomedCamera.Direction = GameplayCameraDirection();// NativeHelper.GetGameplayCameraDirection();
-                if (Settings.SettingsManager.ActivitySettings.BinocNearDOF != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocNearDOF != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_NEAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocNearDOF);
+                    NativeFunction.Natives.SET_CAM_NEAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocNearDOF);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocFarDOF != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocFarDOF != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_FAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocFarDOF);
+                    NativeFunction.Natives.SET_CAM_FAR_DOF((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocFarDOF);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocDOFStrength != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocDOFStrength != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_DOF_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocDOFStrength);
+                    NativeFunction.Natives.SET_CAM_DOF_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocDOFStrength);
                 }
-                if (Settings.SettingsManager.ActivitySettings.BinocMotionBlur != 0.0f)
+                if (Settings.SettingsManager.DebugSettings.BinocMotionBlur != 0.0f)
                 {
-                    NativeFunction.Natives.SET_CAM_MOTION_BLUR_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.ActivitySettings.BinocMotionBlur);
+                    NativeFunction.Natives.SET_CAM_MOTION_BLUR_STRENGTH((uint)ZoomedCamera.Handle, Settings.SettingsManager.DebugSettings.BinocMotionBlur);
                 }
                 ZoomedCamera.Active = true;
             }
@@ -510,7 +510,16 @@ namespace LosSantosRED.lsr.Player
             float HeadingDiff = Extensions.GetHeadingDifference(playerRotator.Yaw, directionRotator.Yaw);
             if (HeadingDiff >= 60f || HeadingDiff <= -60f)
             {
-                cameraDirection = new Rotator(directionRotator.Pitch, lastCameraDirection.ToRotator().Roll, lastCameraDirection.ToRotator().Yaw).ToNormalized().ToVector(); //lastCameraDirection;//cameraDirection = new Vector3(Binoculars.Direction.X, Binoculars.Direction.Y, Binoculars.Direction.Z).ToNormalized();
+                if(lastCameraDirection == Vector3.Zero)
+                {
+                    cameraDirection = new Rotator(directionRotator.Pitch, playerRotator.Roll, playerRotator.Yaw).ToNormalized().ToVector(); //lastCameraDirection;//cameraDirection = new Vector3(Binoculars.Direction.X, Binoculars.Direction.Y, Binoculars.Direction.Z).ToNormalized();
+                }
+                else
+                {
+                    cameraDirection = new Rotator(directionRotator.Pitch, lastCameraDirection.ToRotator().Roll, lastCameraDirection.ToRotator().Yaw).ToNormalized().ToVector(); //lastCameraDirection;//cameraDirection = new Vector3(Binoculars.Direction.X, Binoculars.Direction.Y, Binoculars.Direction.Z).ToNormalized();
+                }
+
+
             }
             else
             {

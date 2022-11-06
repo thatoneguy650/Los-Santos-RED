@@ -26,12 +26,11 @@ public class MeleeWeaponAlias
 
     private uint MeleeWeaponToAliasHash;
 
-    public MeleeWeaponAlias(IActionable player, ISettingsProvideable settings, ModItem itemToAlias, uint meleeWeaponToAliasHash) : base()
+    public MeleeWeaponAlias(IActionable player, ISettingsProvideable settings, ModItem itemToAlias) : base()
     {
         Player = player;
         Settings = settings;
         ItemToAlias = itemToAlias;
-        MeleeWeaponToAliasHash = meleeWeaponToAliasHash;
     }
 
     public void Start()
@@ -52,6 +51,10 @@ public class MeleeWeaponAlias
         {
             IsCancelled = true;
         }
+        if(!Player.IsAliveAndFree)
+        {
+            IsCancelled = true;
+        }
     }
     public void Dispose()
     {
@@ -62,6 +65,7 @@ public class MeleeWeaponAlias
         if (!hadAliasedWeapon && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, MeleeWeaponToAliasHash, false))
         {
             NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, MeleeWeaponToAliasHash);
+            Player.WeaponEquipment.SetUnarmed();
         }
         EntryPoint.WriteToConsole("MELEE WEAPON ALIAS ENDED");
     }
@@ -117,6 +121,7 @@ public class MeleeWeaponAlias
         WeaponHandBoneName = "BONETAG_R_PH_HAND";
         WeaponHandOffset = new Vector3();
         WeaponHandRotator = new Rotator();
+        MeleeWeaponToAliasHash = 1317494643;
         if (ItemToAlias != null)
         {
             PropModelName = ItemToAlias.ModelItem.ModelName;
@@ -127,7 +132,7 @@ public class MeleeWeaponAlias
                 WeaponHandOffset = handWeaponAttachment.Attachment;
                 WeaponHandRotator = handWeaponAttachment.Rotation;
             }
-
+            MeleeWeaponToAliasHash = ItemToAlias.ModelItem.AliasWeaponHash;
         }
         else
         {

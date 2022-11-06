@@ -99,7 +99,7 @@ public class Tasker : ITaskerable
         GameFiber.Yield();//TR 29
         EMTTasker.Update();
         GameFiber.Yield();//TR 29
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);
         }
@@ -112,7 +112,7 @@ public class Tasker : ITaskerable
     public void UpdatePolice()
     {
         CopTasker.Update();
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Tasker.UpdatePolice Ran Time Since {Game.GameTime - GameTimeLastTaskedPolice}", 5);
         }

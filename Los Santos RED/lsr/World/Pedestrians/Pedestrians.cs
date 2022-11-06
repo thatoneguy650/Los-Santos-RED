@@ -245,7 +245,7 @@ public class Pedestrians : ITaskerReportable
                 }
             }
         }
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
         }

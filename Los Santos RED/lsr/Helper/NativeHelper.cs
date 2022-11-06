@@ -253,6 +253,49 @@ namespace LosSantosRED.lsr.Helper
             Game.DisableControlAction(0, GameControl.Jump, true);
         }
 
+
+        //public static string VehicleMakeName(uint ModelHash)
+        //{
+
+        //    string MakeName;
+        //    unsafe
+        //    {
+        //        IntPtr ptr = NativeFunction.CallByHash<IntPtr>(0xF7AF4F159FF99F97, ModelHash);
+        //        MakeName = Marshal.PtrToStringAnsi(ptr);
+        //    }
+        //    unsafe
+        //    {
+        //        IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, MakeName);
+        //        MakeName = Marshal.PtrToStringAnsi(ptr2);
+        //    }
+        //    if (MakeName == "CARNOTFOUND" || MakeName == "NULL")
+        //        return "";
+        //    else
+        //        return MakeName;
+
+
+        //}
+        //public static string VehicleModelName(uint ModelHash)
+        //{
+
+        //        string ModelName;
+        //        unsafe
+        //        {
+        //            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", ModelHash);
+        //            ModelName = Marshal.PtrToStringAnsi(ptr);
+        //        }
+        //        unsafe
+        //        {
+        //            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
+        //            ModelName = Marshal.PtrToStringAnsi(ptr2);
+        //        }
+        //        if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
+        //            return "";
+        //        else
+        //            return ModelName;
+        //}
+
+
         public static bool IsNearby(int cellX, int cellY, int targetCellX, int targetCellY, int distance) => cellX >= targetCellX - distance && cellX <= targetCellX + distance && cellY >= targetCellY - distance && cellY <= targetCellY + distance;
         public static int MaxCellsAway(int cellX, int cellY, int targetCellX, int targetCellY) => Math.Max(Math.Abs(cellX - targetCellX),Math.Abs(cellY - targetCellY));
         public static void GetStreetPositionandHeading(Vector3 PositionNear, out Vector3 SpawnPosition, out float Heading, bool MainRoadsOnly)

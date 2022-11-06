@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -246,21 +247,7 @@ namespace LSR.Vehicles
         {
             if (Vehicle.Exists())
             {
-                string MakeName;
-                unsafe
-                {
-                    IntPtr ptr = NativeFunction.CallByHash<IntPtr>(0xF7AF4F159FF99F97, Vehicle.Model.Hash);
-                    MakeName = Marshal.PtrToStringAnsi(ptr);
-                }
-                unsafe
-                {
-                    IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, MakeName);
-                    MakeName = Marshal.PtrToStringAnsi(ptr2);
-                }
-                if (MakeName == "CARNOTFOUND" || MakeName == "NULL")
-                    return "";
-                else
-                    return MakeName;
+                return NativeHelper.VehicleMakeName(Vehicle.Model.Hash);
             }
             else
             {
@@ -272,21 +259,7 @@ namespace LSR.Vehicles
         {
             if (Vehicle.Exists())
             {
-                string ModelName;
-                unsafe
-                {
-                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_DISPLAY_NAME_FROM_VEHICLE_MODEL", Vehicle.Model.Hash);
-                    ModelName = Marshal.PtrToStringAnsi(ptr);
-                }
-                unsafe
-                {
-                    IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, ModelName);
-                    ModelName = Marshal.PtrToStringAnsi(ptr2);
-                }
-                if (ModelName == "CARNOTFOUND" || ModelName == "NULL")
-                    return "";
-                else
-                    return ModelName;
+                return NativeHelper.VehicleModelName(Vehicle.Model.Hash);
             }
             else
             {

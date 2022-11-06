@@ -146,6 +146,10 @@ public class SettingsManager
 
     [Description("Vanilla Settings")]
     public VanillaSettings VanillaSettings { get; set; } = new VanillaSettings();
+
+    [Description("Performance Settings")]
+    public PerformanceSettings PerformanceSettings { get; set; } = new PerformanceSettings();
+
     [Description("Debug Settings")]
     public DebugSettings DebugSettings { get; set; } = new DebugSettings();
     public void Setup()
@@ -153,7 +157,7 @@ public class SettingsManager
         AllDefaultableSettings = new List<ISettingsDefaultable>()
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
-            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,
+            PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,
             UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings
 
         };

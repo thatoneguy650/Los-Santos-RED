@@ -292,26 +292,26 @@ public class PhysicalItems : IPropItems
             new PhysicalItem("prop_tool_pliers", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.06f,0.07f,0.03f),new Rotator(170f, 260f, -90f)),
-            }),
+            }){ AliasWeaponHash = 1317494643 },
 
             new PhysicalItem("prop_tool_shovel", new List<PropAttachment>() { 
                 
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.005f, 0.006f, -0.048f), new Rotator(3f, -183f, 0f))
                 ,new PropAttachment("RightHandWeapon", "BONETAG_R_PH_HAND", new Vector3(-0.03f,-0.277f,-0.062f),new Rotator(20f, -101f, 81f)) 
-            }) { IsLarge = true },
+            }) { AliasWeaponHash = 2508868239, IsLarge = true },
 
             new PhysicalItem("prop_tool_screwdvr01", new List<PropAttachment>() {
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.08f,0.01f),new Rotator(100f, 0f, 0f)),
-            }),//generic screwdriver
+            }) { AliasWeaponHash = 2578778090 },//generic screwdriver
             new PhysicalItem("gr_prop_gr_sdriver_01", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
-            }),//flint flathead screwdriver
+            }){ AliasWeaponHash = 2578778090 },//flint flathead screwdriver
             new PhysicalItem("gr_prop_gr_sdriver_02", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.04f,0.07f,-0.01f),new Rotator(0f, 0f, -180f)),
-            }),//flint multi bit screwdriver
+            }){ AliasWeaponHash = 2578778090 },//flint multi bit screwdriver
 
             //2578778090
 
@@ -319,21 +319,21 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.02f,0f,-0.03f),new Rotator(0f, 0f, 0f)),      
-            }) { IsLarge = true },//flint rubber hammer
+            }) { AliasWeaponHash = 1317494643,IsLarge = true },//flint rubber hammer
 
 
             new PhysicalItem("prop_tool_drill", new List<PropAttachment>() {
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.1170f, 0.0610f, 0.0150f), new Rotator(-47.199f, 166.62f, -19.9f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.03f,0.05f,0f),new Rotator(70f, 280f, -90f)),
-            }),
+            }){ AliasWeaponHash = 1317494643 },
             new PhysicalItem("gr_prop_gr_driver_01a", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.03f,-0.11f,-0.07f),new Rotator(160f, 243f, 278f)),
-            }),//power metal impact driver
+            }){ AliasWeaponHash = 1317494643 },//power metal impact driver
             new PhysicalItem("gr_prop_gr_drill_01a", new List<PropAttachment>() { 
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0f, 0f, 0f)),
                 new PropAttachment("RightHandWeapon","BONETAG_R_PH_HAND",new Vector3(0.19f,-0.1f,-0.09f),new Rotator(10f, 70f, 104f)),
-            }),//power metal cordless drill
+            }){ AliasWeaponHash = 1317494643 },//power metal cordless drill
 
 
 
@@ -350,7 +350,7 @@ public class PhysicalItems : IPropItems
                 new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(-0.12f, -0.2f, 0.0f), Rotator.Zero),
                 new PropAttachment("FrontRotation", "BONETAG_L_PH_HAND", new Vector3(90f, -1.0f, -1.0f), Rotator.Zero),
             }),
-            new PhysicalItem("prop_tool_torch", new List<PropAttachment>() {//flint tools handle flashlight
+            new PhysicalItem("prop_tool_torch", new List<PropAttachment>() {//flint handle flashlight
                 new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.12f, -0.02f, -0.08f), new Rotator(0f, 0f, -100f)),
                 new PropAttachment("ExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.1f, 0.35f, 0.0f), Rotator.Zero),
                 new PropAttachment("EmissiveExtraDistance", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.1f, 0.0f), Rotator.Zero),

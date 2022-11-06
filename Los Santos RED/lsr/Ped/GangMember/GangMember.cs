@@ -51,7 +51,7 @@ public class GangMember : PedExt, IWeaponIssuable
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (Settings.SettingsManager.DebugSettings.IsGangMemberYield1Active)
+                    if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield1Active)
                     {
                         GameFiber.Yield();//TR TEST 28
                     }
@@ -60,25 +60,25 @@ public class GangMember : PedExt, IWeaponIssuable
                     {
                         if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
-                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
+                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            if (Settings.SettingsManager.DebugSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                            if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
                             PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield3Active)
+                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield3Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
                             PedPerception.Update();
-                            if (Settings.SettingsManager.DebugSettings.IsGangMemberYield4Active)
+                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield4Active)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            if (Settings.SettingsManager.DebugSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                            if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }

@@ -405,9 +405,13 @@ namespace LosSantosRED.lsr.Data
             return $"{PlayerName}";//base.ToString();
         }
 
-        public TabMissionSelectItem SaveTabInfo(ITimeReportable time, IGangs gangs)
+        public TabMissionSelectItem SaveTabInfo(ITimeReportable time, IGangs gangs, IWeapons weapons, IModItems modItems)
         {
             List<MissionInformation> saveMissionInfos = new List<MissionInformation>();
+
+            MissionInformation loadSubTab = new MissionInformation("Load", "Load the selected save", new List<Tuple<string, string>>());
+            saveMissionInfos.Add(loadSubTab);
+
 
             MissionInformation demographicsSubTab = new MissionInformation("Demographics", "", DemographicsInfo());
             saveMissionInfos.Add(demographicsSubTab);
@@ -424,15 +428,14 @@ namespace LosSantosRED.lsr.Data
             MissionInformation vehiclesSubTab = new MissionInformation("Vehicles", "", VehicleInfo());
             saveMissionInfos.Add(vehiclesSubTab);
 
-            MissionInformation weaponsSubTab = new MissionInformation("Weapons", "", WeaponInfo());
+            MissionInformation weaponsSubTab = new MissionInformation("Weapons", "", WeaponInfo(weapons,modItems));
             saveMissionInfos.Add(weaponsSubTab);
 
             MissionInformation residenceSubTab = new MissionInformation("Residences", "", ResidenceInfo());
             saveMissionInfos.Add(residenceSubTab);
-            MissionInformation loadSubTab = new MissionInformation("Load", "", new List<Tuple<string, string>>());
-            saveMissionInfos.Add(loadSubTab);
 
-            MissionInformation deleteSubTab = new MissionInformation("Delete", "", new List<Tuple<string, string>>());
+
+            MissionInformation deleteSubTab = new MissionInformation("Delete", "Deletes the selected save", new List<Tuple<string, string>>());
             saveMissionInfos.Add(deleteSubTab);
 
             TabMissionSelectItem GameSaveEntry = new TabMissionSelectItem($"{PlayerName}~s~", saveMissionInfos);
@@ -452,7 +455,28 @@ namespace LosSantosRED.lsr.Data
         private List<Tuple<string, string>> AffiliationsInfo(IGangs gangs)
         {
             List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
-            toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));
+            bool isGangMember = false;
+            if(IsCop)
+            {
+                toreturn.Add(Tuple.Create("Police Officer:", IsCop ? "Yes" : "No"));//store agency here
+            }
+            else 
+            {
+                GangRepSave memberSave = GangReputationsSave.Where(x => x.IsMember).FirstOrDefault();
+                if(memberSave != null)
+                {
+                    Gang currentGang = gangs.GetGang(memberSave.GangID);
+                    if(currentGang != null)
+                    {
+                        isGangMember = true;
+                        toreturn.Add(Tuple.Create(currentGang.ShortName,"Member"));
+                    }
+                }
+            }    
+            if(!isGangMember && !IsCop)
+            {
+                toreturn.Add(Tuple.Create("None", ""));
+            }
             //Gang myGang = gangs?.GetGang(GangKickSave?.GangID);
             //if (myGang != null)
             //{
@@ -481,16 +505,44 @@ namespace LosSantosRED.lsr.Data
             List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
             foreach (VehicleSaveStatus savedVehicles in OwnedVehicleVariations)
             {
-                toreturn.Add(Tuple.Create("Vehicle:", savedVehicles.ModelName));
+                string MakeName = "Unk";
+                string ModelName = "Unk";
+                if (savedVehicles.ModelName != "")
+                {
+                    ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(savedVehicles.ModelName));
+                    MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(savedVehicles.ModelName));
+                }
+                else
+                {
+                    ModelName = NativeHelper.VehicleModelName(savedVehicles.ModelHash);
+                    MakeName = NativeHelper.VehicleMakeName(savedVehicles.ModelHash);
+                }
+                toreturn.Add(Tuple.Create(MakeName, ModelName));
             }
             return toreturn;
         }
-        private List<Tuple<string, string>> WeaponInfo()
+        private List<Tuple<string, string>> WeaponInfo(IWeapons weapons, IModItems modItems)
         {
             List<Tuple<string, string>> toreturn = new List<Tuple<string, string>>();
-            foreach (StoredWeapon wi in WeaponInventory)
+            foreach (StoredWeapon sw in WeaponInventory)
             {
-                toreturn.Add(Tuple.Create("Weapon:", wi.WeaponHash.ToString()));
+                WeaponInformation wi = weapons.GetWeapon(sw.WeaponHash);
+                if (wi != null)
+                {
+                    ModItem weaponItem = modItems.AllItems().Where(x => x.ModelItem != null && (x.ModelItem.ModelHash == sw.WeaponHash || x.ModelItem.ModelName == sw.WeaponHash.ToString())).FirstOrDefault();
+                    if(weaponItem != null)
+                    {
+                        toreturn.Add(Tuple.Create($"{weaponItem.Name}", $"Ammo: ({sw.Ammo})"));
+                    }
+                    else
+                    {
+                        toreturn.Add(Tuple.Create(wi.ModelName, $"Ammo: ({sw.Ammo})"));
+                    }
+                }
+                else
+                {
+                    toreturn.Add(Tuple.Create(sw.WeaponHash.ToString(), $"Ammo: ({sw.Ammo})"));
+                }
             }
             return toreturn;
         }

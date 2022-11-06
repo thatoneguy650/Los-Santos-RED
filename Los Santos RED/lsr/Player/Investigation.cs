@@ -161,7 +161,7 @@ public class Investigation
             }
         }
         UpdateBlip();
-        if (Settings.SettingsManager.DebugSettings.PrintUpdateTimes)
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Investigation Update (Secondary Tasks) 250ms? Ran Time Since {Game.GameTime - GameTimeLastUpdatedInvestigation}", 5);
         }

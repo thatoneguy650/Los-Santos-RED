@@ -66,6 +66,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsOnFoot { get; }
         string Gender { get; }
         bool IsDriver { get; }
+        bool IsAliveAndFree { get; }
+        bool IsIncapacitated { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

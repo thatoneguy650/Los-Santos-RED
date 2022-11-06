@@ -10,65 +10,34 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowCivilianTaskArrows { get; set; }
     public bool ShowCivilianPerceptionArrows { get; set; }
     public bool ShowTrafficArrows { get; set; }
-    public bool PrintUpdateTimes { get; set; }
-    public bool PrintCivilianOnlyUpdateTimes { get; set; }
-    public bool PrintCivilianUpdateTimes { get; set; }
-
-    public bool YieldAfterEveryPedExtUpdate { get; set; }
 
 
-
-    public bool CivilianUpdatePerformanceMode1 { get; set; }//Civilians & Merchants
-    public bool CivilianUpdatePerformanceMode2 { get; set; }
-    public bool IsCivilianYield1Active { get; set; }
-    public bool IsCivilianYield2Active { get; set; }
-    public bool IsCivilianYield3Active { get; set; }
-    public bool IsCivilianYield4Active { get; set; }
-
-
-
-    public bool CopUpdatePerformanceMode1 { get; set; }
-    public bool CopUpdatePerformanceMode2 { get; set; }
-    public bool IsCopYield1Active { get; set; }
-    public bool IsCopYield2Active { get; set; }
-    public bool IsCopYield3Active { get; set; }
-
-    public bool GangMemberUpdatePerformanceMode1 { get; set; }
-    public bool GangMemberUpdatePerformanceMode2 { get; set; }
-    public bool IsGangMemberYield1Active { get; set; }
-    public bool IsGangMemberYield2Active { get; set; }
-    public bool IsGangMemberYield3Active { get; set; }
-    public bool IsGangMemberYield4Active { get; set; }
-
-    public bool EMSUpdatePerformanceMode1 { get; set; }
-    public bool EMSUpdatePerformanceMode2 { get; set; }
-    public bool IsEMSYield2Active { get; set; }
-    public bool IsEMSYield1Active { get; set; }
+    public float ShovelAnimationStopTime { get; set; }
+    public bool ShovelFadeOut { get; set; }
+    public bool ShovelUseAltCamera { get; set; }
+    public float ShovelHoleOffsetX { get; set; }
+    public float ShovelHoleOffsetY { get; set; }
+    public float ShovelStartOffsetX { get; set; }
+    public float ShovelStartOffsetY { get; set; }
+    public float ShovelCameraOffsetX { get; set; }
+    public float ShovelCameraOffsetY { get; set; }
+    public float ShovelCameraOffsetZ { get; set; }
+    public bool ShovelDebugDrawMarkers { get; set; }
 
 
 
 
 
-
-
-    public int CivilianUpdateBatch { get; set; }
-    public int GangUpdateBatch { get; set; }
-    public int EMTsUpdateBatch { get; set; }
-    public int MerchantsUpdateBatch { get; set; }
-
-
-    public uint TaskAssignmentCheckFrequency { get; set; }
-
-    public int CopUpdateIntervalClose { get; set; }
-    public int CopUpdateIntervalMedium { get; set; }
-    public int CopUpdateIntervalFar { get; set; }
-    public int CopUpdateIntervalVeryFar { get; set; }
-
-    public int OtherUpdateIntervalWanted { get; set; }
-    public int OtherUpdateIntervalClose { get; set; }
-    public int OtherUpdateIntervalMedium { get; set; }
-    public int OtherUpdateIntervalFar { get; set; }
-    public int OtherUpdateIntervalVeryFar { get; set; }
+    public float BinocDebugExtraDistanceX { get; set; }
+    public float BinocDebugExtraDistanceY { get; set; }
+    public float BinocDebugExtraDistanceZ { get; set; }
+    public bool BinocDebugDrawMarkers { get; set; }
+    public float BinocFOV { get; set; }
+    public float BinocMotionBlur { get; set; }
+    public float BinocNearDOF { get; set; }
+    public float BinocFarDOF { get; set; }
+    public float BinocDOFStrength { get; set; }
+    public bool BinocDrawScaleform { get; set; }
 
 
     public DebugSettings()
@@ -81,78 +50,31 @@ public class DebugSettings : ISettingsDefaultable
         ShowCivilianTaskArrows = false;
         ShowCivilianPerceptionArrows = false;
         ShowTrafficArrows = false;
-        PrintUpdateTimes = false;
-        PrintCivilianUpdateTimes = false;
-        PrintCivilianOnlyUpdateTimes = false;
-        CivilianUpdateBatch = 1;// 10;
-        GangUpdateBatch = 1;//10;
-        MerchantsUpdateBatch = 1;//10;
-        EMTsUpdateBatch = 1;//10;
-        TaskAssignmentCheckFrequency = 500;
 
 
-        CopUpdateIntervalClose = 250;
-        CopUpdateIntervalMedium = 250;
-        CopUpdateIntervalFar = 750;
-        CopUpdateIntervalVeryFar = 2000;
+        ShovelAnimationStopTime = 0.7f;
+        ShovelFadeOut = true;
+        ShovelUseAltCamera = true;
 
 
-        OtherUpdateIntervalWanted = 500;
-        OtherUpdateIntervalClose = 500;//250;
-        OtherUpdateIntervalMedium = 500;//750;
-        OtherUpdateIntervalFar = 1000;
-        OtherUpdateIntervalVeryFar = 2000;
-
-        YieldAfterEveryPedExtUpdate = false;
-
-        CivilianUpdatePerformanceMode1 = true;
-        CivilianUpdatePerformanceMode2 = false;
-        IsCivilianYield1Active = false;
-        IsCivilianYield2Active = false;
-        IsCivilianYield3Active = false;
-        IsCivilianYield4Active = false;
+        ShovelHoleOffsetX = -1.0f;
+        ShovelHoleOffsetY = 0.0f;
 
 
-        GangMemberUpdatePerformanceMode1 = true;
-        GangMemberUpdatePerformanceMode2 = false;
-        IsGangMemberYield1Active = false;
-        IsGangMemberYield2Active = false;
-        IsGangMemberYield3Active = false;
-        IsGangMemberYield4Active = false;
+        ShovelStartOffsetX = 0.0f;
+        ShovelStartOffsetY = 1.0f;
+
+        ShovelCameraOffsetX = 2.0f;
+        ShovelCameraOffsetY = 3.5f;
+        ShovelCameraOffsetZ = 0.5f;
 
 
-        CopUpdatePerformanceMode1 = true;
-        CopUpdatePerformanceMode2 = false;
-        IsCopYield1Active = false;
-        IsCopYield2Active = false;
-        IsCopYield3Active = false;
-
-        EMSUpdatePerformanceMode1 = true;
-        EMSUpdatePerformanceMode2 = false;
-        IsEMSYield2Active = false;
-        IsEMSYield1Active = false;
-
-        /*
-         *         CivilianUpdateBatch = 10;
-        PoliceUpdateBatch = 10;
-        GangUpdateBatch = 10;
-        MerchantsUpdateBatch = 10;
-        EMTsUpdateBatch = 10;
-        TaskAssignmentCheckFrequency = 500;
 
 
-        CopUpdateIntervalClose = 250;
-        CopUpdateIntervalMedium = 500;
-        CopUpdateIntervalFar = 2000;
-        CopUpdateIntervalVeryFar = 3000;
+        ShovelDebugDrawMarkers = false;
+        BinocDebugDrawMarkers = false;
 
-
-        OtherUpdateIntervalWanted = 500;
-        OtherUpdateIntervalClose = 500;
-        OtherUpdateIntervalMedium = 750;
-        OtherUpdateIntervalFar = 2000;
-        OtherUpdateIntervalVeryFar = 300;*/
-
+        BinocDrawScaleform = true;
 
     }
 

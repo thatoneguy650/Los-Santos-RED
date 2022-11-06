@@ -22,7 +22,7 @@ public class ModItems : IModItems
     }
     public ModItem GetRandomItem()
     {
-        return AllItems().Where(x => x.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModelItem?.Type != ePhysicalItemType.Ped).PickRandom();
+        return RandomItems().PickRandom();
     }
     public void ReadConfig()
     {
@@ -85,7 +85,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.IngestItems);
         AllItems.AddRange(PossibleItems.InhaleItems);
         AllItems.AddRange(PossibleItems.InjectItems);
-        AllItems.AddRange(PossibleItems.HotelStayItems);
+       // AllItems.AddRange(PossibleItems.HotelStayItems);
         AllItems.AddRange(PossibleItems.DrillItems);
         AllItems.AddRange(PossibleItems.TapeItems);
         AllItems.AddRange(PossibleItems.ScrewdriverItems);
@@ -98,7 +98,29 @@ public class ModItems : IModItems
         return AllItems;
     }
 
-
+    public List<ModItem> RandomItems()
+    {
+        List<ModItem> AllItems = new List<ModItem>();
+        AllItems.AddRange(PossibleItems.FlashlightItems);
+        AllItems.AddRange(PossibleItems.ShovelItems);
+        AllItems.AddRange(PossibleItems.UmbrellaItems);
+        AllItems.AddRange(PossibleItems.FoodItems);
+        AllItems.AddRange(PossibleItems.SmokeItems);
+        AllItems.AddRange(PossibleItems.DrinkItems);
+        AllItems.AddRange(PossibleItems.PipeSmokeItems);
+        AllItems.AddRange(PossibleItems.IngestItems);
+        AllItems.AddRange(PossibleItems.InhaleItems);
+        AllItems.AddRange(PossibleItems.InjectItems);
+        AllItems.AddRange(PossibleItems.DrillItems);
+        AllItems.AddRange(PossibleItems.TapeItems);
+        AllItems.AddRange(PossibleItems.ScrewdriverItems);
+        AllItems.AddRange(PossibleItems.LighterItems);
+        AllItems.AddRange(PossibleItems.PliersItems);
+        AllItems.AddRange(PossibleItems.HammerItems);
+        AllItems.AddRange(PossibleItems.BongItems);
+        AllItems.AddRange(PossibleItems.BinocularsItems);
+        return AllItems;
+    }
     public List<ModItem> InventoryItems()
     {
         List<ModItem> AllItems = new List<ModItem>();
@@ -658,7 +680,7 @@ public class ModItems : IModItems
             new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.") {
                 ModelItemID = "prop_cs_police_torch",
                 EmissiveRadius = 10f, EmissiveDistance = 75f,EmissiveBrightness = 0.75f, },
-            new FlashlightItem("Flint Tools Handle Flashlight","Light up the jobsite, or the dead hookers.") {
+            new FlashlightItem("Flint Handle Flashlight","Light up the jobsite, or the dead hookers.") {
                 ModelItemID = "prop_tool_torch",
                 EmissiveRadius = 15f, EmissiveDistance = 100f,EmissiveBrightness = 1.0f, },
 

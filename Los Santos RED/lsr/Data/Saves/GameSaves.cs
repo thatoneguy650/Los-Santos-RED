@@ -154,6 +154,21 @@ public class GameSaves : IGameSaves
         AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", 15.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", 1.0f));
+
+        //
+
+        AlexisGameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Flint Pliers", 1.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+       // AlexisGameSave.InventoryItems.Add(new InventorySave("GASH Blue Umbrella", 1.0f));
+       // AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
+        AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+        
+
+
+
+
         AlexisGameSave.HungerValue = 75.0f;
         AlexisGameSave.ThirstValue = 75.0f;
         AlexisGameSave.SleepValue = 75.0f;
@@ -332,6 +347,13 @@ public class GameSaves : IGameSaves
 
 
         };
+
+        ClaudeGameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
+        ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Pliers", 1.0f));
+        ClaudeGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
+
+
         ClaudeGameSave.HungerValue = 85.0f;
         ClaudeGameSave.ThirstValue = 85.0f;
         ClaudeGameSave.SleepValue = 85.0f;
@@ -465,6 +487,9 @@ public class GameSaves : IGameSaves
 
 
         };
+        ExampleGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
+        ExampleGameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
+
         //Needs
         ExampleGameSave.HungerValue = 95.0f;
         ExampleGameSave.ThirstValue = 95.0f;
@@ -479,6 +504,8 @@ public class GameSaves : IGameSaves
     {
         GameSave gameSave = new GameSave("Bradley Snider", 250, "ig_brad", true, new PedVariation(new List<PedComponent>() { },new List<PedPropComponent>() { }), new List<StoredWeapon>{ }, new List<VehicleSaveStatus>() { });
         SetDefault(gameSave);
+        gameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
         GameSaveList.Add(gameSave);
     }
     private void AddDaveNorton()
@@ -493,6 +520,11 @@ public class GameSaves : IGameSaves
         };
         GameSave gameSave = new GameSave("Dave Norton", 455000, "ig_davenorton", true, new PedVariation(new List<PedComponent>() { }, new List<PedPropComponent>() { }), Weapons, Vehicles);
         SetDefault(gameSave);
+
+        gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+
         gameSave.IsCop = true;
         GameSaveList.Add(gameSave);
     }
@@ -509,6 +541,11 @@ public class GameSaves : IGameSaves
         GameSave gameSave = new GameSave("Karen Daniels", 867000, "ig_karen_daniels", true, new PedVariation(new List<PedComponent>() { }, new List<PedPropComponent>() { }), Weapons, Vehicles);
         SetDefault(gameSave);
         gameSave.IsCop = true;
+
+        gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+
         GameSaveList.Add(gameSave);
     }
     private void SetDefault(GameSave ExampleGameSave)

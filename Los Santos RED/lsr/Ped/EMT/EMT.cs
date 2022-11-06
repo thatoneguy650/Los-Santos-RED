@@ -34,20 +34,20 @@ public class EMT : PedExt
                     IsInWrithe = Pedestrian.IsInWrithe;
                     UpdatePositionData();
                     PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (Settings.SettingsManager.DebugSettings.EMSUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                    if (Settings.SettingsManager.PerformanceSettings.EMSUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
-                    if (Settings.SettingsManager.DebugSettings.IsEMSYield1Active)
+                    if (Settings.SettingsManager.PerformanceSettings.IsEMSYield1Active)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
                     UpdateVehicleState();
-                    if(Settings.SettingsManager.DebugSettings.IsEMSYield2Active)
+                    if(Settings.SettingsManager.PerformanceSettings.IsEMSYield2Active)
                     {
                         GameFiber.Yield();
                     }
-                    if (Settings.SettingsManager.DebugSettings.EMSUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                    if (Settings.SettingsManager.PerformanceSettings.EMSUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
                     {
                         GameFiber.Yield();//TR TEST 30
                     }
