@@ -25,6 +25,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private ISettingsProvideable SettingsProvider;
     private ICrimes Crimes;
     private IIntoxicants Intoxicants;
+
     public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable, ICrimes crimes, IIntoxicants intoxicants)
     {
         MenuPool = menuPool;
@@ -45,6 +46,11 @@ public class SettingsMenu : Menu//needs lots of cleanup still
 
     private void SettingsUIMenu_OnMenuOpen(UIMenu sender)
     {
+        if(SettingsProvider.IsBackendChanged)
+        {
+            CreateSettingsMenu();
+            SettingsProvider.IsBackendChanged = false;
+        }
        // Update();
     }
 

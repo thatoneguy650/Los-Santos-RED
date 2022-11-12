@@ -26,10 +26,10 @@ public class TimeSettings : ISettingsDefaultable
         FastForwardInterval = 10;
         SetRealTime = false;
 
-#if DEBUG
-        ScaleTime = false;
-        SetRealTime = true;
-#endif
+//#if DEBUG
+//        ScaleTime = false;
+//        SetRealTime = true;
+//#endif
     }
 
 }

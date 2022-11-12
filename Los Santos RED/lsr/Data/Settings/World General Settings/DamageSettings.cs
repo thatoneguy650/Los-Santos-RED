@@ -11,17 +11,8 @@ public class DamageSettings : ISettingsDefaultable
     public bool ModifyDamage { get; set; }
     [Description("Clear the last damage after updating. Disable to increase compatibility with other mods. Leave enabled for best results.")]
     public bool ClearDamage { get; set; }
-
-
-
-
-
-
     [Description("Allows modification of damage to the player in the game world. Requires ModifyDamage to be enabled")]
     public bool ModifyPlayerDamage { get; set; }
-
-
-
     [Description("Percentage of hits that a determined to be normal. Maximum of 100.")]
     public float NormalDamagePercentPlayer { get; set; }
     [Description("Percentage of hits that a determined to be graze. Maximum of 100.")]

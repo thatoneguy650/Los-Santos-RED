@@ -55,8 +55,17 @@ public class CopTasker
                             }
                             if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)
                             {
-                                PedExt otherTarget = PedToAttack(cop);
-                                cop.UpdateTask(otherTarget);
+                                if (1==1 || cop.ShouldUpdateTarget)
+                                {
+                                    PedExt otherTarget = PedToAttack(cop);
+                                    cop.CurrentTarget = otherTarget;
+                                    cop.GameTimeLastUpdatedTarget = Game.GameTime;
+                                    cop.UpdateTask(otherTarget);
+                                }
+                                else
+                                {
+                                    cop.UpdateTask();
+                                }
                                 GameFiber.Yield();
                             }
                         }

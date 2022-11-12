@@ -54,6 +54,7 @@ public class HungerNeed : HumanNeed
         {         
             ChangeAmount *= FootSpeedMultiplier();
         }
+        ChangeAmount *= Settings.SettingsManager.NeedsSettings.HungerChangeScalar;
         Change(ChangeAmount, false);
     }
     private float FootSpeedMultiplier()

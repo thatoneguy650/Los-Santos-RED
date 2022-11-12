@@ -91,7 +91,7 @@ namespace LosSantosRED.lsr
             Crime crime = Crimes.GetCrime(crimeID);
             if (crime != null && crime.Enabled)
             {
-                if (Settings.SettingsManager.ViolationSettings.ShowCrimeWarnings)
+                if (Settings.SettingsManager.ViolationSettings.ShowCrimeWarnings && Player.IsAliveAndFree && Player.IsNotWanted)
                 {
                     crime.DisplayWarning();
                 }

@@ -30,27 +30,16 @@ public class ActivitySettings : ISettingsDefaultable
     public bool CrouchingAdjustsMovementSpeed { get; set; }
     [Description("Amount of override player movement when crouching.")]
     public float CrouchMovementSpeedOverride { get; set; }
-
-
-
-
-
-
-
+    [Description("Set a cinematic camera when sitting")]
     public bool UseAltCameraWhenSitting { get; set; }
+    [Description("Force sitting when close to a seat")]
     public bool ForceSitWhenClose { get; set; }
+    [Description("Time (in ms) before force sit kicks in")]
     public uint ForceSitTimeOut { get; set; }
+    [Description("Distance (in meters) before force sit kicks in")]
     public float ForceSitDistance { get; set; }
+    [Description("Distance (in meters) to slide when sitting")]
     public float SittingSlideDistance { get; set; }
-
-
-
-
-
-
-
-
-
     public ActivitySettings()
     {
         SetDefault();
@@ -69,20 +58,10 @@ public class ActivitySettings : ISettingsDefaultable
         UseSimpleConversation = true;
         CrouchingAdjustsMovementSpeed = true;
         CrouchMovementSpeedOverride = 5.0f;
-
-
-
-
-
         UseAltCameraWhenSitting = false;
-
         ForceSitWhenClose = true;
         ForceSitTimeOut = 3000;
         ForceSitDistance = 0.7f;
         SittingSlideDistance = 0.5f;//0.1f
-
-
-
-
     }
 }

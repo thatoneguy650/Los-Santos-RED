@@ -46,8 +46,6 @@ public class PlayerSpeechSettings : ISettingsDefaultable
     public void SetDefault()
     {
         EnableSpeech = true;
-
-
         OnWantedActiveModePercentage = 80f;
         OnWantedSearchModePercentage = 30f;
         OnBecameWantedPercentage = 100f;

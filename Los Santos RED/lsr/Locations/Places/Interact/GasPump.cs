@@ -316,7 +316,7 @@ public class GasPump : InteractableLocation
     }
     private void FullDispose()
     {
-        Deactivate();
+      // Deactivate();
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Game.LocalPlayer.HasControl = true;

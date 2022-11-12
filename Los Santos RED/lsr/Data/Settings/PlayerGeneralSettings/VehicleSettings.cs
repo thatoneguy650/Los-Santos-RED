@@ -31,11 +31,8 @@ public class VehicleSettings : ISettingsDefaultable
     public float CustomFuelSystemFuelMax { get; set; }
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems")]
     public bool AllowSetEngineState { get; set; }
-
-
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems, but only for cars (requires AllowSetEngineState)")]
     public bool AllowSetEngineStateOnlyCars { get; set; }
-
     [Description("Add additional damage to the engine on collision.")]
     public bool ScaleEngineDamage { get; set; }
     [Description("Multiplier for the aditional damage. Ex. a 30 damage collision would be a 90 damamge collision at a ScaleEngineDamageMultiplier of 3.0")]
@@ -93,8 +90,6 @@ public class VehicleSettings : ISettingsDefaultable
         AllowLockMissionVehicles = false;
         DisableAutoHelmet = true;
         DisableRolloverFlip = true;
-
-
         UseBetterLightStateOnAI = false;
         DisableAircraftWithoutLicense = false;
     }

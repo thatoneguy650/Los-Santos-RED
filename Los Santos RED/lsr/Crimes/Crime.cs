@@ -54,7 +54,12 @@ public class Crime
     {
         if(ShowsWarning && (!HasShownWarning || (TimeBetweenWarnings > 0 && Game.GameTime - GameTimeLastShownWarning >= TimeBetweenWarnings)) && WarningMessage != "")
         {
-            Game.DisplayHelp(WarningMessage);
+            string fullWarningMessage = WarningMessage;
+            if(CanBeReportedByCivilians)
+            {
+                fullWarningMessage += "~n~~o~Citizens~s~ can report this ~r~violation~s~";
+            }
+            Game.DisplayHelp(fullWarningMessage);
             GameTimeLastShownWarning = Game.GameTime;
             HasShownWarning = true;
         }

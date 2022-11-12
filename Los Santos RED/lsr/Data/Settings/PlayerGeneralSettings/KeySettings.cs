@@ -12,8 +12,6 @@ public class KeySettings : ISettingsDefaultable
     public Keys MenuKey { get; set; }
     public Keys SurrenderKey { get; set; }
     public Keys SurrenderKeyModifier { get; set; }
-    //public Keys DropWeaponKey { get; set; }
-    //public Keys DropWeaponKeyModifer { get; set; }
     public Keys RightIndicatorKey { get; set; }
     public Keys RightIndicatorKeyModifer { get; set; }
     public Keys LeftIndicatorKey { get; set; }
@@ -35,19 +33,14 @@ public class KeySettings : ISettingsDefaultable
     public Keys SelectorKeyModifier { get; set; }
     public Keys GestureKey { get; set; }
     public Keys GestureKeyModifier { get; set; }
-
     public Keys ActivityKey { get; set; }
     public Keys ActivityKeyModifier { get; set; }
     public Keys CrouchKeyModifier { get; set; }
     public Keys CrouchKey { get; set; }
-
     public Keys SimplePhoneKey { get; set; }
     public Keys SimplePhoneKeyModifer { get; set; }
-
     public Keys ActionPopUpDisplayKey { get; set; }
     public Keys ActionPopUpDisplayKeyModifier { get; set; }
-
-
     public Keys AltActionPopUpDisplayKey { get; set; }
     public Keys AltActionPopUpDisplayKeyModifier { get; set; }
 
@@ -59,15 +52,10 @@ public class KeySettings : ISettingsDefaultable
     {
         DebugMenuKey = Keys.F11;
         MenuKey = Keys.F10;
-
-
         SimplePhoneKey = Keys.Down;
         SimplePhoneKeyModifer = Keys.LShiftKey;
-
         SurrenderKey = Keys.E;
         SurrenderKeyModifier = Keys.LShiftKey;
-        //DropWeaponKey = Keys.G;
-        //DropWeaponKeyModifer = Keys.None;
         RightIndicatorKey = Keys.E;
         RightIndicatorKeyModifer = Keys.LShiftKey;
         LeftIndicatorKey = Keys.Q;
@@ -78,12 +66,8 @@ public class KeySettings : ISettingsDefaultable
         EngineToggleModifier = Keys.LShiftKey;
         ManualDriverDoorClose = Keys.None;
         ManualDriverDoorCloseModifier = Keys.LControlKey;
-
-
         CrouchKey = Keys.None;
         CrouchKeyModifier = Keys.LControlKey;
-
-
         SprintKey = Keys.Z;
         SprintKeyModifier = Keys.None;
         InteractStart = Keys.O;
@@ -93,20 +77,13 @@ public class KeySettings : ISettingsDefaultable
         ScenarioStart = Keys.P;
         SelectorKey = Keys.X;
         SelectorKeyModifier = Keys.LShiftKey;
-
-
         ActivityKey = Keys.O;
         ActivityKeyModifier = Keys.LShiftKey;
-
         GestureKey = Keys.X;
         GestureKeyModifier = Keys.Z;
-
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpDisplayKeyModifier = Keys.None;
-
         AltActionPopUpDisplayKey = Keys.N;//N
         AltActionPopUpDisplayKeyModifier = Keys.Alt;
-
-
     }
 }

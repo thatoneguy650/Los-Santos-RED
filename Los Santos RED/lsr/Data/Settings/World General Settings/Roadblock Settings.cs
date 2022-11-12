@@ -22,22 +22,18 @@ public class RoadblockSettings : ISettingsDefaultable
     public int TimeBetweenRoadblock_Seen_Min { get; set; }
     [Description("Decreased time (in ms) scalar between roadblocks as wanted level increases. Formula: ((6 - WantedLevel) * TimeBetweenRoadblock_Seen_AdditionalTimeScaler) + TimeBetweenRoadblock_Seen_Min")]
     public int TimeBetweenRoadblock_Seen_AdditionalTimeScaler { get; set; }
-
-
-
+    [Description("Enable or disable removing vehicles around the roadblocks.")]
     public bool RemoveGeneratedVehiclesAroundRoadblock { get; set; }
-
+    [Description("Radius distance (in meters) to remove spawned vehicles around the vehicle and strip centers.")]
     public float RemoveGeneratedVehiclesAroundRoadblockDistance { get; set; }
-
-
+    [Description("Enable or disable disabling vehicle generation around the roadblocks.")]
     public bool DisableVehicleGenerationAroundRoadblock { get; set; }
+    [Description("Radius distance (in meters) to disabling vehicle generation around the vehicle and strip centers.")]
     public float DisableVehicleGenerationAroundRoadblockDistance { get; set; }
 
     public RoadblockSettings()
     {
         SetDefault();
-
-
     }
     public void SetDefault()
     {
@@ -45,21 +41,16 @@ public class RoadblockSettings : ISettingsDefaultable
         RoadblockEnabled = true;
         RoadblockSpikeStripsEnabled = true;
 
-
-
         RoadblockMinWantedLevel = 3;
         RoadblockMaxWantedLevel = 5;
-
 
         Roadblock_PedDistance = 5f;// 15f;
         Roadblock_BarrierDistance = 10f;// 17f;
         Roadblock_ConeDistance = 12f;// 19f;
 
-
         TimeBetweenRoadblock_Unseen = 999999;
         TimeBetweenRoadblock_Seen_Min = 90000;
         TimeBetweenRoadblock_Seen_AdditionalTimeScaler = 25000;
-
 
         RemoveGeneratedVehiclesAroundRoadblock = true;
         RemoveGeneratedVehiclesAroundRoadblockDistance = 15f;

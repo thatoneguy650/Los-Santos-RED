@@ -1327,6 +1327,7 @@ public class PurchaseMenu : Menu
     {
         if (itemToShow != null && itemToShow.ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(itemToShow.ModelItem.ModelName)))
         {
+            NativeFunction.Natives.CLEAR_AREA(Transaction.ItemPreviewPosition.X, Transaction.ItemPreviewPosition.Y, Transaction.ItemPreviewPosition.Z, 4f, true, false, false, false);
             SellingVehicle = new Vehicle(itemToShow.ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
         }
         //GameFiber.Yield();

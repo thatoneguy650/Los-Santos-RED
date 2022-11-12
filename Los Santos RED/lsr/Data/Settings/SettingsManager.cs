@@ -69,8 +69,6 @@ public class SettingsManager
     [Category("Player")]
     [Description("Cellphone Settings")]
     public CellphoneSettings CellphoneSettings { get; set; } = new CellphoneSettings();
-
-
     [Category("Player")]
     [Description("Player Speech Settings")]
     public PlayerSpeechSettings PlayerSpeechSettings { get; set; } = new PlayerSpeechSettings();
@@ -97,8 +95,6 @@ public class SettingsManager
     [Category("World")]
     [Description("Roadblock Settings")]
     public RoadblockSettings RoadblockSettings { get; set; } = new RoadblockSettings();
-
-
     [Category("World")]
     [Description("Gang Settings")]
     public GangSettings GangSettings { get; set; } = new GangSettings();

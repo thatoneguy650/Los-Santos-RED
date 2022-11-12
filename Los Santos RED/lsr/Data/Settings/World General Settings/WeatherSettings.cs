@@ -26,8 +26,11 @@ public class WeatherSettings : ISettingsDefaultable
     public float ReportWindyWeather_MinimumSpeed { get; set; }
     [Description("Show a notification when the weather changes.")]
     public bool ShowWeatherNotifications { get; set; }
+    [Description("(Currently Disabled)")]
     public bool ChangeWeatherByForecast { get; set; }
+    [Description("(Currently Disabled)")]
     public float StartChangeWeatherPrcentage { get; set; }
+    [Description("(Currently Disabled)")]
     public float ChangeWeatherPrcentage { get; set; }
 
     public WeatherSettings()
@@ -45,11 +48,10 @@ public class WeatherSettings : ISettingsDefaultable
         ReportWindyWeather_MinimumTimeBetweenAudioReports = 180000;
         ReportWindyWeather_MinimumSpeed = 11.5f;
         ShowWeatherNotifications = true;
+
         ChangeWeatherByForecast = false;
         StartChangeWeatherPrcentage = 0.01f;
         ChangeWeatherPrcentage = 0.03f;
-
-
     }
 }
 

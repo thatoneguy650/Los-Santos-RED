@@ -11,14 +11,6 @@ public class CellphoneSettings : ISettingsDefaultable
     public bool AllowTerminateVanillaCellphoneScripts { get; set; }
     [Description("Terminate vanilla cell phone while LSR is active")]
     public bool TerminateVanillaCellphone { get; set; }
-    //[Description("Overwrite the vanilla cell phone will LSR texts and contacts.")]
-    //public bool OverwriteVanillaCellphone { get; set; }
-    //[Description("Overwrite the vanilla emergency contact in the phone. Will allow mod dispatch to respond.")]
-    //public bool OverwriteVanillaEmergencyServicesContact { get; set; }
-    //[Description("Index of the vanilla emergency contact to overwrite")]
-    //public int EmergencyServicesContactID { get; set; }
-    //[Description("Starting index for additional custom contacts, should be one more than the total contacts you have in your phone. If set higher, you will see blank entrys until you get to the index")]
-    //public int CustomContactStartingID { get; set; }
     [Description("Allow the use of a custom burner phone to interact with contacts and text messages.")]
     public bool AllowBurnerPhone { get; set; }
     [Description("Burner cell position on screen (X - Horizontal).")]
@@ -52,12 +44,6 @@ public class CellphoneSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-
-        //OverwriteVanillaCellphone = false;
-        //OverwriteVanillaEmergencyServicesContact = true;
-        //EmergencyServicesContactID = 29;//29
-        //CustomContactStartingID = 30;
-
 
         AllowBurnerPhone = true;
         BurnerCellPositionX = 99.62f;

@@ -524,6 +524,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             CurrentTask.Update();
         }
     }
+    public void UpdateTask()
+    {
+        if (CurrentTask != null)
+        {
+            CurrentTask.Update();
+        }
+    }
     public void LookForDistressedPeds(IEntityProvideable world)
     {
         foreach(PedExt distressedPed in world.Pedestrians.PedExts.Where(x=> (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))

@@ -63,20 +63,16 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public float SiegeAimDistance { get; set; }
     [Description("Percentage of cops that will be set to siege mode. If in siege mode, the cop will be forced to attempt entry. If not in siege mode cops may or may not attempt entry depending on vanilla AI.")]
     public float SiegePercentage { get; set; }
-
     [Description("Driver aggressiveness modifer. Min 0.0 Max 1.0")]
     public float DriverAggressiveness { get; set; }
     [Description("Driver ability modifer. Min 0.0 Max 1.0")]
     public float DriverAbility { get; set; }
     [Description("Driver racing modifer. Min 0.0 Max 1.0")]
     public float DriverRacing { get; set; }
-
-
     [Description("If enabled, police can respond without a civilian report.")]
     public bool AllowRespondingWithoutCallIn { get; set; }
     [Description("If enabled, LSR set the siren state for any vehicle an AI Cop is in.")]
     public bool AllowSettingSirenState { get; set; }
-
     [Description("If enabled, LSR will not totally control Ped AI during vehicle chase.")]
     public bool BlockEventsDuringVehicleChase { get; set; }
     [Description("If enabled, LSR will not totally control Ped AI during chase.")]
@@ -95,7 +91,10 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool BlockEventsDuringIdle { get; set; }
     [Description("If enabled, LSR will not totally control Ped AI during AI chase.")]
     public bool BlockEventsDuringAIChase { get; set; }
+    [Description("If enabled, the ped will be given the steer around native when driving.")]
     public bool SetSteerAround { get; set; }
+    [Description("Time (in ms) between target updates during tasking. CURRENTLY DISABLED.")]
+    public uint TargetUpdateTime { get; set; }
 
     public PoliceTaskSettings()
     {
@@ -105,9 +104,6 @@ public class PoliceTaskSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-
-
-
         ManageTasking = true;
 
         AllowChaseAssists = true;
@@ -171,5 +167,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         DriverRacing = 0.0f;
 
         SetSteerAround = false;
+
+        TargetUpdateTime = 1000;
     }
 }

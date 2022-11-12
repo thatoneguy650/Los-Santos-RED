@@ -60,16 +60,12 @@ public class CivilianSettings : ISettingsDefaultable
     public float DrugCustomerPercentagePoorZones { get; set; }
 
 
-
-
-
     [Description("Percentage of civilians that will call the police on criminals in the rich zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentageRichZones { get; set; }
     [Description("Percentage of civilians that will call the police on criminals in the middle income zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentageMiddleZones { get; set; }
     [Description("Percentage of civilians that will call the police on criminals in the poor zones (See Zones.xml). Maximum value of 100.")]
     public float CallPolicePercentagePoorZones { get; set; }
-
 
 
     [Description("Percentage of civilians that will call the police on intense criminal activity (shooting, killing, etc.) in the rich zones (See Zones.xml). Maximum value of 100.")]
@@ -81,9 +77,6 @@ public class CivilianSettings : ISettingsDefaultable
 
 
 
-
-
-
     [Description("Percentage of civilians that will attack criminals in the rich zones (See Zones.xml). Maximum value of 100.")]
     public float FightPercentageRichZones { get; set; }
     [Description("Percentage of civilians that will attack criminals in the middle income zones (See Zones.xml). Maximum value of 100.")]
@@ -92,20 +85,12 @@ public class CivilianSettings : ISettingsDefaultable
     public float FightPercentagePoorZones { get; set; }
 
 
-
-
-
-
     [Description("Percentage of civilians that will attack criminals in the rich zones (See Zones.xml). Maximum value of 100.")]
     public float FightPolicePercentageRichZones { get; set; }
     [Description("Percentage of civilians that will attack criminals in the middle income zones (See Zones.xml). Maximum value of 100.")]
     public float FightPolicePercentageMiddleZones { get; set; }
     [Description("Percentage of civilians that will attack criminals in the poor zones (See Zones.xml). Maximum value of 100.")]
     public float FightPolicePercentagePoorZones { get; set; }
-
-
-
-
 
 
     [Description("Minumum amount of money a merchant will surrender upon mugging.")]
@@ -126,7 +111,6 @@ public class CivilianSettings : ISettingsDefaultable
     public int MaxRandomItemsToGet { get; set; }
     [Description("Max amount to get for each random item when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsAmount { get; set; }
-
 
     public CivilianSettings()
     {

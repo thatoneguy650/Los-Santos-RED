@@ -9,6 +9,7 @@ namespace LosSantosRED.lsr.Interface
     public interface ISettingsProvideable
     {
         SettingsManager SettingsManager { get; }
+        bool IsBackendChanged { get; set; }
 
         void SerializeAllSettings();
         void SetHard();

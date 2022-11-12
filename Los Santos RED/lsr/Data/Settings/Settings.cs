@@ -2,11 +2,14 @@
 using LosSantosRED.lsr.Interface;
 using System.IO;
 using System.Linq;
+using System.Xml.Serialization;
 
 public class Settings : ISettingsProvideable
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\Settings.xml";
     public SettingsManager SettingsManager { get; private set; }
+    [XmlIgnore]
+    public bool IsBackendChanged { get; set; } = false;
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -45,6 +48,7 @@ public class Settings : ISettingsProvideable
 
     public void SetEasy()
     {
+        IsBackendChanged = true;
         SettingsManager.SetDefault();
 
         SettingsManager.GangSettings.ShowSpawnedBlip = true;
@@ -53,10 +57,12 @@ public class Settings : ISettingsProvideable
     }
     public void SetDefault()
     {
+        IsBackendChanged = true;
         SettingsManager.SetDefault();
     }
     public void SetPreferred()
     {
+        IsBackendChanged = true;
         SettingsManager.SetDefault();
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
@@ -107,6 +113,7 @@ public class Settings : ISettingsProvideable
     }
     public void SetHard()
     {
+        IsBackendChanged = true;
         SettingsManager.SetDefault();
 
 

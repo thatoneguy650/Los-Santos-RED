@@ -147,14 +147,37 @@ public class SeatAssigner
     }
     private bool IsSeatAvailable(VehicleExt vehicleToCheck, int seatToCheck)
     {
-        if (vehicleToCheck != null && 
-            vehicleToCheck.Vehicle.Exists() && 
-            vehicleToCheck.Vehicle.IsSeatFree(seatToCheck) && 
-            !World.Pedestrians.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck) && 
-            NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
+        //if (vehicleToCheck != null && 
+        //    vehicleToCheck.Vehicle.Exists() && 
+        //    vehicleToCheck.Vehicle.IsSeatFree(seatToCheck) && 
+        //    !World.Pedestrians.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck) && 
+        //    NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
+        //{
+        //    return true;
+        //}
+
+
+        if (vehicleToCheck != null && Ped != null)
         {
-            return true;
+            if (vehicleToCheck.Vehicle.Exists())
+            {
+                if (vehicleToCheck.Vehicle.IsSeatFree(seatToCheck))
+                {
+                    if (!World.Pedestrians.IsSeatAssigned(Ped, vehicleToCheck, seatToCheck))
+                    {
+                        if (Ped.Pedestrian.Exists())
+                        {
+                            if (NativeFunction.Natives.x639431E895B9AA57<bool>(Ped.Pedestrian, vehicleToCheck.Vehicle, seatToCheck, false, true))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
         }
+
+
         //IS_ENTRY_POINT_FOR_SEAT_CLEAR
         //GET_ENTRY_POINT_POSITION
         return false;

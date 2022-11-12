@@ -79,18 +79,12 @@ public class RespawnSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-
         RemoveWeaponsOnSurrender = true;
-
-
-
         DeductHospitalFee = true;
         HospitalStayDailyFee = 10000;
         HospitalStayMinDays = 4;
         HospitalStayMaxDays = 14;
-
-
-
+      
         RemoveWeaponsOnDeath = true;
 
         RecentlyRespawnedTime = 1000;
@@ -120,19 +114,11 @@ public class RespawnSettings : ISettingsDefaultable
         PoliceBailDurationPoliceInjuredMultiplier = 1;
         PoliceBailDurationCiviliansKilledMultiplier = 2;
 
-
-
         PermanentDeathMode = false;
         ClearIllicitInventoryOnDeath = true;
         ClearIllicitInventoryOnSurrender = true;
-
         ForceBooking = false;
-
         UseCustomCameraWhenBooking = true;
-
-
-
-
         OffsetX = 0.7f;
         OffsetY = 0.5f;
     }

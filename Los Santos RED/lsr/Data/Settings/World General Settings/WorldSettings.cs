@@ -15,18 +15,12 @@ public class WorldSettings : ISettingsDefaultable
     public bool AllowRandomVanityPlates { get; set; }
     [Description("Percentage of vehicles that will get a random vanity plate.")]
     public float RandomVehicleVanityPlatesPercent { get; set; }
-
     [Description("Remove ambient vehicles that are empty from the game world. Not recommended to be disabled.")]
     public bool CleanupVehicles { get; set; }
     [Description("Delete the ambient shopkeeper peds as they spawn to not interfere with mod spawned merchant peds.")]
     public bool ReplaceVanillaShopKeepers { get; set; }
     [Description("If enabled all locations will be visible on the in game directoy (Messages or Player Info Menu). Disabled will show only legal locations.")]
-
-
-
     public bool ShowAllLocationsOnDirectory { get; set; }
-
-
     [Description("If enabled, the civilian ped population will be lessened at 4+ stars.")]
     public bool LowerPedSpawnsAtHigherWantedLevels { get; set; }
     [Description("Civilian ped density multiplier at 4 stars.")]
@@ -35,12 +29,13 @@ public class WorldSettings : ISettingsDefaultable
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier { get; set; }
     [Description("Civilian ped density multiplier at 6 stars.")]
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier { get; set; }
-
-
-
+    [Description("If enabled, ALL static blips will be added to the map.")]
     public bool ShowAllBlipsOnMap { get; set; }
+    [Description("If enabled, there will be a 3D entrance marker around location entrances.")]
     public bool ShowMarkersOnLocationEntrances { get; set; }
+    [Description("If enabled, hotels will use specific rooms (if available).")]
     public bool HotelsUsesRooms { get; set; }
+    [Description("If enabled, the blip showing where police are requsting backup will appear.")]
     public bool AllowPoliceBackupBlip { get; set; }
 
     public WorldSettings()
@@ -70,8 +65,8 @@ public class WorldSettings : ISettingsDefaultable
 #if DEBUG
         RandomVehiclePlatesPercent = 15f;
         RandomVehicleVanityPlatesPercent = 10f;
-        ShowAllBlipsOnMap = true;
 #endif
+        ShowAllBlipsOnMap = true;
     }
 
 }

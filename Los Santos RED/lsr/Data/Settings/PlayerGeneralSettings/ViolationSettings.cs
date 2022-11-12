@@ -23,7 +23,6 @@ public class ViolationSettings : ISettingsDefaultable
     public uint RecentlyKilledCivilianTime { get; set; }
     [Description("Additional time peds will react to you killing a cop. Used for when they only see you directly after you killed a ped.")]
     public uint RecentlyKilledPoliceTime { get; set; }
-
     [Description("Time you can violate driving against traffic before the cops react. Used to ignore small traffic errors.")]
     public uint RecentlyDrivingAgainstTrafficTime { get; set; }
     [Description("Time you can violate driving on pavement before the cops react. Used to ignore small traffic errors.")]

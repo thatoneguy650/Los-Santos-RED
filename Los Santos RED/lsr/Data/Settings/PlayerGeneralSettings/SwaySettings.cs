@@ -32,9 +32,11 @@ public class SwaySettings : ISettingsDefaultable
     public float VeritcalFirstPersonSwayAdjuster { get; set; }
     [Description("First person horizonal sway adjuster. Multiplier for the horizontal intensity of the sway. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
     public float HorizontalFirstPersonSwayAdjuster { get; set; }
-
+    [Description("Enable or disable the sway system when using a sniper rifle.")]
     public bool ApplySwayToSnipers { get; set; }
+    [Description("Frames to wait after recoil to apply sway. DEBUG SETTING")]
     public int FramesBetweenRecoil { get; set; }
+    [Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
     public bool UseAlternateCalculation { get; set; }
 
     public SwaySettings()

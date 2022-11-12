@@ -115,22 +115,22 @@ public class Crimes : ICrimes
         DealingDrugs = new Crime("DealingDrugs", "Dealing Drugs", 2, false, 23, true, false, false) { MaxReportingDistance = 20f };
         DealingGuns = new Crime("DealingGuns", "Illegal Weapons Dealing", 2, false, 24, true, false, false) { MaxReportingDistance = 20f };
 
-        HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, false, false, false) { IsTrafficViolation = true, ShowsWarning = true };
+        HitCarWithCar = new Crime("HitCarWithCar", "Hit and Run", 1, false, 30, false, false, false) { IsTrafficViolation = true };
 
-        PublicIntoxication = new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, true, false, false) { ShowsWarning = true, WarningMessage = "You are intoxicated in public~n~Sober up or avoid attention" };
+        PublicIntoxication = new Crime("PublicIntoxication", "Public Intoxication", 1, false, 31, true, false, false) { ShowsWarning = true, WarningMessage = "You are intoxicated in public~n~Sober up or avoid attention", TimeBetweenWarnings = 900000 };
         ChangingPlates = new Crime("ChangingPlates", "Stealing License Plates", 1, false, 32, true, false, false) { MaxReportingDistance = 20f };
 
-        DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 33, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are driving the wrong way~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 300000 };
-        DrivingOnPavement = new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 34, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are driving recklessly~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 300000 };
-        NonRoadworthyVehicle = new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 35, false, false, false) { IsTrafficViolation = true, RequiresCitation = true };
-        RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You ran a red light~n~Use blinkers for turns~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 20000 };
-        FelonySpeeding = new Crime("FelonySpeeding", "Felony Speeding", 1, false, 37, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are ~r~felony~s~ speeding~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 300000 };
+        DrivingAgainstTraffic = new Crime("DrivingAgainstTraffic", "Driving Against Traffic", 1, false, 33, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are driving the wrong way~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 900000 };
+        DrivingOnPavement = new Crime("DrivingOnPavement", "Driving On Pavement", 1, false, 34, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are driving recklessly~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 900000 };
+        NonRoadworthyVehicle = new Crime("NonRoadworthyVehicle", "NonRoadworthy Vehicle", 1, false, 35, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "This vehicle is not ~r~roadworthy~s~~n~Avoid suspicion by repairing or changing vehicles", TimeBetweenWarnings = 900000 };
+        RunningARedLight = new Crime("RunningARedLight", "Running a Red Light", 1, false, 36, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You ran a red light~n~Use blinkers for turns~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 900000 };
+        FelonySpeeding = new Crime("FelonySpeeding", "Felony Speeding", 1, false, 37, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are ~r~felony~s~ speeding~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 900000 };
  
         DrivingStolenVehicle = new Crime("DrivingStolenVehicle", "Driving a Stolen Vehicle", 2, false, 38, false, false, false);
         SuspiciousActivity = new Crime("SuspiciousActivity", "Suspicious Activity", 1, false, 39, false, false, false) { RequiresSearch = true };
         InsultingOfficer = new Crime("InsultingOfficer", "Insulting a Police Officer", 2, false, 40, false, false, true);
         Harassment = new Crime("Harassment", "Harassment", 1, false, 41, true, false, false) { MaxReportingDistance = 15f, RequiresCitation = true };
-        Speeding = new Crime("Speeding", "Speeding", 1, false, 44, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are speeding~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 300000 };
+        Speeding = new Crime("Speeding", "Speeding", 1, false, 44, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are speeding~n~Avoid tickets by following traffic laws", TimeBetweenWarnings = 900000 };
         PublicNuisance = new Crime("PublicNuisance", "Public Nuisance", 1, false, 50, true, false, false) { MaxReportingDistance = 15f, RequiresCitation = true };
         PublicVagrancy = new Crime("PublicVagrancy", "Public Vagrancy", 1, false, 51, true, false, false) { MaxReportingDistance = 15f, RequiresCitation = true };
         OfficersNeeded = new Crime("OfficersNeeded", "Officers Needed", 1, false, 60, false, false, false);

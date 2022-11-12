@@ -127,9 +127,17 @@ public class PoliceSettings : ISettingsDefaultable
 
         ForceDefaultWeaponAnimations = true;
 
+
+
+
 #if DEBUG
         DropWeaponWhenBusted = true;
 #endif
+
+
+
+
+
         AllowPoliceToCallEMTsOnBodies = true;
     }
 }

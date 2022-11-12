@@ -57,7 +57,7 @@ public class Civilians
         TotalRan = 0;
         TotalChecked = 0;
         int localRan = 0;
-        foreach (PedExt ped in World.Pedestrians.CivilianList.OrderBy(x => x.GameTimeLastUpdated).Take(30))
+        foreach (PedExt ped in World.Pedestrians.CivilianList.OrderBy(x => x.GameTimeLastUpdated))//.Take(30))
         {
             try
             {
