@@ -3,6 +3,33 @@ using System;
 using System.Xml.Serialization;
 
 [Serializable()]
+[XmlInclude(typeof(BinocularsItem))]
+[XmlInclude(typeof(BongItem))]
+[XmlInclude(typeof(ConsumableItem))]
+
+[XmlInclude(typeof(DrillItem))]
+[XmlInclude(typeof(DrinkItem))]
+[XmlInclude(typeof(FlashlightItem))]
+[XmlInclude(typeof(FoodItem))]
+[XmlInclude(typeof(HammerItem))]
+[XmlInclude(typeof(HotelStayItem))]
+[XmlInclude(typeof(IngestItem))]
+[XmlInclude(typeof(InhaleItem))]
+[XmlInclude(typeof(InjectItem))]
+[XmlInclude(typeof(LicensePlateItem))]
+[XmlInclude(typeof(PipeSmokeItem))]
+[XmlInclude(typeof(PliersItem))]
+[XmlInclude(typeof(ScrewdriverItem))]
+[XmlInclude(typeof(ShovelItem))]
+[XmlInclude(typeof(SmokeItem))]
+
+
+[XmlInclude(typeof(TapeItem))]
+[XmlInclude(typeof(UmbrellaItem))]
+[XmlInclude(typeof(VehicleItem))]
+[XmlInclude(typeof(WeaponItem))]
+
+
 public class ModItem
 {
     public ModItem()
@@ -37,6 +64,9 @@ public class ModItem
 
     [XmlIgnore]
     public PhysicalItem ModelItem { get; set; }
+
+
+
     [XmlIgnore]
     public PhysicalItem PackageItem { get; set; }
 
@@ -130,5 +160,13 @@ public class ModItem
     //{
     //    //actionable.Inventory.Add(this, remainingPercent);
     //}
+
+
+    public virtual void AddNewItem(IModItems modItems)
+    {
+
+    }
+
+
 }
 

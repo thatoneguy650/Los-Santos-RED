@@ -21,6 +21,15 @@ public class PerformanceSettings : ISettingsDefaultable
     public bool IsCopYield1Active { get; set; }
     public bool IsCopYield2Active { get; set; }
     public bool IsCopYield3Active { get; set; }
+
+
+
+
+    public bool IsCopYield10Active { get; set; }
+    public bool IsCopYield11Active { get; set; }
+    public bool IsCopYield12Active { get; set; }
+    public bool IsCopYield13Active { get; set; }
+
     public bool GangMemberUpdatePerformanceMode1 { get; set; }
     public bool GangMemberUpdatePerformanceMode2 { get; set; }
     public bool IsGangMemberYield1Active { get; set; }
@@ -98,6 +107,12 @@ public class PerformanceSettings : ISettingsDefaultable
         IsCopYield1Active = false;
         IsCopYield2Active = false;
         IsCopYield3Active = false;
+
+        IsCopYield10Active = false;
+        IsCopYield11Active = false;
+        IsCopYield12Active = false;
+        IsCopYield13Active = false;
+
 
         EMSUpdatePerformanceMode1 = true;
         EMSUpdatePerformanceMode2 = false;

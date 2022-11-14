@@ -66,7 +66,7 @@ public class InventoryMenu : Menu
         CategoryMenus.Clear();
         foreach (ItemType itemType in (ItemType[])Enum.GetValues(typeof(ItemType)))
         {
-            int totalItems = ActionablePlayer.Inventory.Items.Count(x => x.ModItem?.ItemType == itemType && x.ModItem?.CanConsume == true);
+            int totalItems = ActionablePlayer.Inventory.ItemsList.Count(x => x.ModItem?.ItemType == itemType && x.ModItem?.CanConsume == true);
             if (totalItems > 0)
             {
                 UIMenu itemsubMenu = MenuPool.AddSubMenu(inventoryMenu, itemType.ToString());
@@ -77,7 +77,7 @@ public class InventoryMenu : Menu
                 CategoryMenus.Add(itemsubMenu);
             }
         }
-        foreach (InventoryItem cii in ActionablePlayer.Inventory.Items)
+        foreach (InventoryItem cii in ActionablePlayer.Inventory.ItemsList)
         {
             if(cii.ModItem != null)
             {

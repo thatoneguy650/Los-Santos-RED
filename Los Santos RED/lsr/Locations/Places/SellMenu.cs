@@ -321,7 +321,7 @@ public class SellMenu : Menu
         if (modItem != null && menuItem != null && scrollerItem != null)
         {
             bool isEnabled = true;
-            InventoryItem PlayerInventoryItem = Player.Inventory.Items.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            InventoryItem PlayerInventoryItem = Player.Inventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
             int MaxSell = 1;
             int PlayerItems = 0;
             if (PlayerInventoryItem != null)

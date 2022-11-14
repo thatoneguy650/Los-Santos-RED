@@ -8,9 +8,12 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IModItems
     {
+        PossibleItems PossibleItems { get; }
+
         ModItem Get(string text);
         ModItem GetRandomItem();
         List<ModItem> AllItems();
         List<ModItem> InventoryItems();
+        void WriteToFile();
     }
 }

@@ -256,8 +256,6 @@ public class CellPhone
             Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
         }
     }
-
-
     public void AddScamText()
     {
         List<string> ScammerNames = new List<string>() {
@@ -284,7 +282,6 @@ public class CellPhone
         Player.CellPhone.AddScheduledText(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY", ScammerMessages.PickRandom(),0);
         CheckScheduledTexts();
     }
-
     private void CheckScheduledItems()
     {
         if (ShouldCheckScheduledItems)
@@ -294,7 +291,7 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 15000);
+            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(15000, 25000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }
@@ -303,7 +300,7 @@ public class CellPhone
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
             ScheduledText sc = ScheduledTexts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 15000)
             {
                 if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
                 {
@@ -343,7 +340,7 @@ public class CellPhone
         for (int i = ScheduledContacts.Count - 1; i >= 0; i--)
         {
             ScheduledContact sc = ScheduledContacts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 15000)
             {
                 if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                 {
@@ -668,11 +665,13 @@ public class CellPhone
             ContactName = contactName;
             Message = message;
             IconName = iconName;
+            GameTimeSent = Game.GameTime;
         }
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
+        public uint GameTimeSent { get; set; }
     }
     private class ScheduledText
     {
@@ -682,11 +681,13 @@ public class CellPhone
             ContactName = contactName;
             Message = message;
             IconName = iconName;
+            GameTimeSent = Game.GameTime;
         }
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
+        public uint GameTimeSent { get; set; }
     }
 
 }

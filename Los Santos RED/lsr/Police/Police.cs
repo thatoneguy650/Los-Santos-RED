@@ -64,6 +64,10 @@ namespace LosSantosRED.lsr
                     {
                         bool yield = false;
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
+
+
+                        GameFiber.Yield();
+
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
                             //GameFiber.Yield();//TR TEST 28
@@ -71,10 +75,18 @@ namespace LosSantosRED.lsr
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                         {
+                            if (Settings.SettingsManager.PerformanceSettings.IsCopYield10Active)
+                            {
+                                GameFiber.Yield();
+                            }
                             Cop.UpdateSpeech(Player);
                         }
                         if (Settings.SettingsManager.PoliceTaskSettings.AllowChaseAssists)
                         {
+                            if (Settings.SettingsManager.PerformanceSettings.IsCopYield11Active)
+                            {
+                                GameFiber.Yield();
+                            }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowReducedCollisionPenaltyAssist)
                             {
                                 Cop.AssistManager.UpdateCollision(Player.IsWanted);
@@ -89,7 +101,11 @@ namespace LosSantosRED.lsr
                                 Cop.AssistManager.PowerAssist(Player.IsWanted);
                             }
                         }
-                        if(Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
+                        if (Settings.SettingsManager.PerformanceSettings.IsCopYield13Active)
+                        {
+                            GameFiber.Yield();
+                        }
+                        if (Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
@@ -105,6 +121,8 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Cop Data");
                 }
+                TotalRan++;
+                TotalChecked++;
                 GameFiber.Yield();
             }
             if(Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
@@ -126,6 +144,7 @@ namespace LosSantosRED.lsr
             bool anyPoliceCanHearPlayer = false;
             bool anyPoliceCanRecognizePlayer = false;
             bool anyPoliceRecentlySeenPlayer = false;
+            int tested = 0;
             foreach (Cop cop in World.Pedestrians.PoliceList)
             {
                 if(cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
@@ -153,6 +172,12 @@ namespace LosSantosRED.lsr
                 if (anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
                 {
                     break;
+                }
+                tested++;
+                if(tested >= 5)
+                {
+                    tested = 0;
+                    GameFiber.Yield();
                 }
                 //GameFiber.Yield();
             }
@@ -192,6 +217,7 @@ namespace LosSantosRED.lsr
 
             if (Player.IsWanted)
             {
+                GameFiber.Yield();
                 if (Player.AnyPoliceRecentlySeenPlayer)
                 {
                     Player.PlacePoliceLastSeenPlayer = Player.Position;

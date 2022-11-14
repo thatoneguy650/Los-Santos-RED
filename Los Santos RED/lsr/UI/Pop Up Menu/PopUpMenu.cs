@@ -243,13 +243,13 @@ public class PopUpMenu
         int ID = 0;
         int ID2 = 0;
         List<PopUpMenuMap> InventoryCategoriesSubMenu = new List<PopUpMenuMap>();
-        foreach (ItemType mi in Player.Inventory.Items.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x=>x.Value))
+        foreach (ItemType mi in Player.Inventory.ItemsList.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x=>x.Value))
         {
             InventoryCategoriesSubMenu.Add(new PopUpMenuMap(ID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
             ID2 = 0;
 
             List<PopUpMenuMap> InventoryCategorySubMenu = new List<PopUpMenuMap>();
-            foreach (InventoryItem ii in Player.Inventory.Items.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
+            foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
             {
                 InventoryCategorySubMenu.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem,true)), ii.Description));
                 ID2++;

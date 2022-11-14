@@ -29,5 +29,18 @@ public class LicensePlateItem : ModItem
         }
         return false;
     }
+    public override void AddNewItem(IModItems modItems)
+    {
+        LicensePlateItem existingItem = modItems.PossibleItems.LicensePlateItems.FirstOrDefault(x => x.Name == Name);
+        if (existingItem != null)
+        {
+            existingItem.LicensePlate.IsWanted = LicensePlate.IsWanted;
+        }
+        else
+        {
+            modItems.PossibleItems.LicensePlateItems.Add(this);
+        }
+    }
+
 }
 

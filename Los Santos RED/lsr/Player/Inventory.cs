@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace LosSantosRED.lsr.Player
 {
@@ -12,88 +13,25 @@ namespace LosSantosRED.lsr.Player
     {
         private IInventoryable Player;
         private ISettingsProvideable Settings;
-        private List<InventoryItem> ItemsList = new List<InventoryItem>();
-        public List<InventoryItem> Items => ItemsList;
+        private IModItems ModItems;
+        public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
+
+     //   public List<LicensePlateInventoryItem> LicensePlateItems { get; set; } = new List<LicensePlateInventoryItem>();
+
+
+
+
+        // public List<InventoryItem> Items => ItemsList;
         public Inventory()
         {
 
         }
-        public Inventory(IInventoryable player, ISettingsProvideable settings)
+        public Inventory(IInventoryable player, ISettingsProvideable settings, IModItems modItems)
         {
             Player = player;
             Settings = settings;
+            ModItems = modItems;
         }
-
-
-
-
-        //public List<InventoryItem> AllItems()
-        //{
-        //    List<InventoryItem> AllItems = new List<InventoryItem>();
-        //    AllItems.AddRange(FlashlightInventoryItems);
-        //    AllItems.AddRange(ShovelInventoryItems);
-        //    AllItems.AddRange(LicensePlateInventoryItems);
-        //    AllItems.AddRange(UmbrellaInventoryItems);
-        //    AllItems.AddRange(FoodInventoryItems);
-        //    AllItems.AddRange(SmokeInventoryItems);
-        //    AllItems.AddRange(DrinkInventoryItems);
-        //    AllItems.AddRange(PipeSmokeInventoryItems);
-        //    AllItems.AddRange(IngestInventoryItems);
-        //    AllItems.AddRange(InhaleInventoryItems);
-        //    AllItems.AddRange(InjectInventoryItems);
-        //    AllItems.AddRange(VehicleInventoryItems);
-        //    AllItems.AddRange(WeaponInventoryItems);
-        //    AllItems.AddRange(HotelStayInventoryItems);
-        //    AllItems.AddRange(DrillInventoryItems);
-        //    AllItems.AddRange(TapeInventoryItems);
-        //    AllItems.AddRange(ScrewdriverInventoryItems);
-        //    AllItems.AddRange(LighterInventoryItems);
-        //    AllItems.AddRange(PliersInventoryItems);
-        //    AllItems.AddRange(HammerInventoryItems);
-        //    AllItems.AddRange(BongInventoryItems);
-        //    return AllItems;
-        //}
-
-
-        //public List<FlashlightInventoryItem> FlashlightInventoryItems { get; private set; } = new List<FlashlightInventoryItem>();
-        //public List<ShovelInventoryItem> ShovelInventoryItems { get; private set; } = new List<ShovelInventoryItem>();
-        //public List<UmbrellaInventoryItem> UmbrellaInventoryItems { get; private set; } = new List<UmbrellaInventoryItem>();
-        //public List<LicensePlateInventoryItem> LicensePlateInventoryItems { get; private set; } = new List<LicensePlateInventoryItem>();
-        //public List<LighterInventoryItem> LighterInventoryItems { get; private set; } = new List<LighterInventoryItem>();
-        //public List<ScrewdriverInventoryItem> ScrewdriverInventoryItems { get; private set; } = new List<ScrewdriverInventoryItem>();
-        //public List<TapeInventoryItem> TapeInventoryItems { get; private set; } = new List<TapeInventoryItem>();
-        //public List<DrillInventoryItem> DrillInventoryItems { get; private set; } = new List<DrillInventoryItem>();
-        //public List<HammerInventoryItem> HammerInventoryItems { get; private set; } = new List<HammerInventoryItem>();
-        //public List<PliersInventoryItem> PliersInventoryItems { get; private set; } = new List<PliersInventoryItem>();
-        //public List<BongInventoryItem> BongInventoryItems { get; private set; } = new List<BongInventoryItem>();
-        //public List<FoodInventoryItem> FoodInventoryItems { get; private set; } = new List<FoodInventoryItem>();
-        //public List<SmokeInventoryItem> SmokeInventoryItems { get; private set; } = new List<SmokeInventoryItem>();
-        //public List<PipeSmokeInventoryItem> PipeSmokeInventoryItems { get; private set; } = new List<PipeSmokeInventoryItem>();
-        //public List<DrinkInventoryItem> DrinkInventoryItems { get; private set; } = new List<DrinkInventoryItem>();
-        //public List<InhaleInventoryItem> InhaleInventoryItems { get; private set; } = new List<InhaleInventoryItem>();
-        //public List<IngestInventoryItem> IngestInventoryItems { get; private set; } = new List<IngestInventoryItem>();
-        //public List<InjectInventoryItem> InjectInventoryItems { get; private set; } = new List<InjectInventoryItem>();
-        //public List<HotelStayInventoryItem> HotelStayInventoryItems { get; private set; } = new List<HotelStayInventoryItem>();
-        //public List<WeaponInventoryItem> WeaponInventoryItems { get; private set; } = new List<WeaponInventoryItem>();
-        //public List<VehicleInventoryItem> VehicleInventoryItems { get; private set; } = new List<VehicleInventoryItem>();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         public void Reset()
         {
             Clear();
@@ -102,8 +40,6 @@ namespace LosSantosRED.lsr.Player
         {
             ItemsList.Clear();
         }
-
-
         public bool Has(Type type)
         {
             return ItemsList.FirstOrDefault(x => x.ModItem.GetType() == type) != null;
@@ -112,14 +48,14 @@ namespace LosSantosRED.lsr.Player
         {
             return ItemsList.Where(x => x.ModItem.GetType() == type).OrderBy(x=> x.RemainingPercent).FirstOrDefault();
         }
-
-
-
-
         public void Add(ModItem modItem, float remainingPercent)
         {
             if (modItem != null)
             {
+                if (ModItems.Get(modItem.Name) == null)
+                {
+                    modItem.AddNewItem(ModItems);
+                }
                 InventoryItem ExistingItem = Get(modItem);
                 if (ExistingItem == null)
                 {

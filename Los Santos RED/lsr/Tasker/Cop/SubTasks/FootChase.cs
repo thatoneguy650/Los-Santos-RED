@@ -70,6 +70,7 @@ public class FootChase
         }
         Ped.Pedestrian.KeepTasks = false;
         UpdateDistances();
+        GameFiber.Yield();
         UpdateTasking();
     }
     public void Dispose()

@@ -9,6 +9,8 @@ public class ViolationSettings : ISettingsDefaultable
 {
     [Description("If enabled, the game will assume you are a cop and not trigger violations for anything besides murding or hurting other cops")]
     public bool TreatAsCop { get; set; }
+    [Description("If enabled, the game will not allow you to be busted")]
+    public bool IsUnBustable { get; set; }
 
     [Description("If enabled, help text will be displayed the first time you violate a crime")]
     public bool ShowCrimeWarnings { get; set; }
@@ -45,12 +47,16 @@ public class ViolationSettings : ISettingsDefaultable
     public float OverLimitFelonySpeedingAmount { get; set; }
     [Description("Speed required (MPH) over the speed limit to trigger speeding")]
     public float OverLimitSpeedingAmount { get; set; }
+
+
     public ViolationSettings()
     {
         SetDefault();
     }
     public void SetDefault()
     {
+        TreatAsCop = false;
+        IsUnBustable = false;
         RecentlyHurtCivilianTime = 5000;
         RecentlyHurtPoliceTime = 5000;
         RecentlyKilledCivilianTime = 5000;

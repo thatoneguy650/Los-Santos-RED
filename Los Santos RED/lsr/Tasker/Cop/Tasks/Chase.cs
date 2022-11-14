@@ -131,7 +131,15 @@ public class Chase : ComplexTask
             {
                 CopsVehicle = Ped.Pedestrian.CurrentVehicle;
             }
+
+
+
+
             Task UpdatedTask = GetCurrentTaskDynamic();
+
+
+            GameFiber.Yield();
+
             if (CurrentTask != UpdatedTask)
             {
                 IsFirstRun = true;
@@ -155,6 +163,14 @@ public class Chase : ComplexTask
                 }
                 prevIsChasingSlowly = IsChasingSlowly;
             }
+
+
+
+
+
+
+
+
             if (Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
             {
                 //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);

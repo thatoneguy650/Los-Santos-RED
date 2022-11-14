@@ -33,7 +33,14 @@ public class GameSaves : IGameSaves
             DefaultConfig();
         }
     }
-    public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
+    public void Save(ISaveable player, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    {
+        GameSave mySave = new GameSave();
+        GameSaveList.Add(mySave);     
+        mySave.Save(player, weapons, time, placesOfInterest, modItems);
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    }
+    public void SaveSamePlayer(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         GameSave mySave = GetSave(player);
         if(mySave == null)
@@ -41,7 +48,7 @@ public class GameSaves : IGameSaves
             mySave = new GameSave();
             GameSaveList.Add(mySave);
         }
-        mySave.Save(player, weapons, time, placesOfInterest);    
+        mySave.Save(player, weapons, time, placesOfInterest, modItems);    
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
@@ -69,6 +76,7 @@ public class GameSaves : IGameSaves
         }
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
+
     public void DeleteSave(GameSave toDelete)
     {
         if (toDelete != null)
@@ -566,6 +574,9 @@ public class GameSaves : IGameSaves
         ExampleGameSave.SpeechSkill = 35;
     }
 
-
+    //public void Save(ISaveable saveable, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    //{
+    //    throw new System.NotImplementedException();
+    //}
 }
 

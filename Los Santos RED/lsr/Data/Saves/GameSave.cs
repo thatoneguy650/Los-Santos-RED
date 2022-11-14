@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Data
             CurrentModelVariation = currentModelVariation;
             WeaponInventory = weaponInventory;
             OwnedVehicleVariations = vehicleVariations;
+            SaveDateTime = DateTime.Now;
         }
         public Vector3 PlayerPosition { get; set; }
         public float PlayerHeading { get; set; }
@@ -37,6 +38,8 @@ namespace LosSantosRED.lsr.Data
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
+
+        public DateTime SaveDateTime { get; set; }
         public DateTime CurrentDateTime { get; set; }
         public DriversLicense DriversLicense { get; set; }
         public CCWLicense CCWLicense { get; set; }
@@ -59,9 +62,10 @@ namespace LosSantosRED.lsr.Data
         public float ThirstValue { get; set; }
         public float SleepValue { get; set; }
         public int SpeechSkill { get; set; }
+       // public List<InventoryItem> InventoryItemsList { get; set; } = new List<InventoryItem>();
         public GangKickSave GangKickSave { get; set; }
         public bool IsCop { get; set; }
-        public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest)
+        public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             PlayerName = player.PlayerName;
             ModelName = player.ModelName;
@@ -69,11 +73,24 @@ namespace LosSantosRED.lsr.Data
             IsMale = player.IsMale;
             CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
+
+
+
+            modItems.WriteToFile();
+            SaveDateTime = DateTime.Now;
+
             InventoryItems.Clear();
-            foreach (InventoryItem cii in player.Inventory.Items)
+            foreach (InventoryItem cii in player.Inventory.ItemsList)
             {
                 InventoryItems.Add(new InventorySave(cii.ModItem.Name, cii.RemainingPercent));
             }
+
+           // InventoryItemsList.Clear();
+           // InventoryItemsList.AddRange(player.Inventory.ItemsList.ToList());
+
+
+
+
             foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
             {
                 WeaponInventory.Add(new StoredWeapon((uint)wd.Hash, Vector3.Zero, weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)wd.Hash), wd.Ammo));
@@ -175,23 +192,24 @@ namespace LosSantosRED.lsr.Data
         {
             try
             {
-                Game.FadeScreenOut(1000, true);
+                Game.FadeScreenOut(500, true);
 
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
                 LoadVehicles(player, world,settings);
+                LoadPosition(player);
                 LoadRelationships(player, gangs);
                 LoadContacts(player, gangs);
                 LoadLicenses(player);
                 LoadResidences(player, placesOfInterest);
                 LoadHumanState(player);
-                LoadPosition(player);
+
 
                 player.SetCopStatus(IsCop, null);
 
-                Game.FadeScreenIn(1000, true);
+                Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
             }
             catch (Exception e)
@@ -233,7 +251,23 @@ namespace LosSantosRED.lsr.Data
             player.Inventory.Clear();
             foreach (InventorySave cii in InventoryItems)
             {
-                player.Inventory.Add(modItems.Get(cii.ModItemName), (int)cii.RemainingPercent);
+                ModItem toadd = modItems.Get(cii.ModItemName);
+                if (toadd != null)
+                {
+                    player.Inventory.Add(toadd, (int)cii.RemainingPercent);
+                }
+                //else if (cii.ModItemName.Contains("License Plate:"))
+                //{
+                //    string cleanedName = cii.ModItemName.Replace("License Plate:", "");
+                //    string plateNumber = cleanedName.Split('-')[0];
+                //    string plateType = cleanedName.Split('-')[1].ToString();
+                //    bool isWanted = cleanedName.Split('-')[2] == "0" ? false : true;//THIS IS ABSOLUTE CRAPOLA, UNTIL I GET MORE OF THESE FUCKING DYNAMIC ITEMS THIS IS WHERE THEY WILL STAY
+                //    if (int.TryParse(plateType, out int plateTypeInt))
+                //    { 
+                //        LicensePlateItem licensePlateItem = new LicensePlateItem(cii.ModItemName) { LicensePlate = new LicensePlate(plateNumber, plateTypeInt, isWanted) };
+                //        player.Inventory.Add(licensePlateItem, 1.0f);
+                //    }
+                //}
             }
         }
         private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings)
@@ -540,6 +574,9 @@ namespace LosSantosRED.lsr.Data
             }
             return toreturn;
         }
+
+        public string Title => $"{PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
+
     }
 
 }

@@ -355,7 +355,7 @@ public class Respawning// : IRespawning
     {
         //Check Items
         List<InventoryItem> IllegalItems = new List<InventoryItem>();
-        foreach (InventoryItem ii in CurrentPlayer.Inventory.Items.ToList())
+        foreach (InventoryItem ii in CurrentPlayer.Inventory.ItemsList.ToList())
         {
             if (ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
             {
@@ -398,7 +398,7 @@ public class Respawning// : IRespawning
     }
     private void RemoveIllicitInventoryItems()
     {
-        foreach(InventoryItem ii in CurrentPlayer.Inventory.Items.ToList())
+        foreach(InventoryItem ii in CurrentPlayer.Inventory.ItemsList.ToList())
         {
             if(ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
             {

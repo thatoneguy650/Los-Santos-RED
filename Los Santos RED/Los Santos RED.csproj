@@ -189,6 +189,7 @@
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
     <Compile Include="lsr\Inventory\Items\Inventory\BongInventoryItem.cs" />
+    <Compile Include="lsr\Inventory\Items\LicensePlateInventoryItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BinocularsItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BongItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\ConsumableItem.cs" />
@@ -575,6 +576,7 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Other\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\MessagesTab.cs" />
+    <Compile Include="lsr\UI\Pause Menu\Tabs\NewSaveGameTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\PhoneRepliesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\SaveGameTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\TextMessagesTab.cs" />

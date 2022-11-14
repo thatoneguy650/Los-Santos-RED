@@ -44,6 +44,10 @@ public class ModItems : IModItems
             DefaultConfig();
         }
     }
+    public void WriteToFile()
+    {
+        Serialization.SerializeParam(PossibleItems, ConfigFileName);
+    }
     public List<ModItem> AllItems()
     {
         List<ModItem> AllItems = new List<ModItem>();
@@ -97,7 +101,6 @@ public class ModItems : IModItems
 
         return AllItems;
     }
-
     public List<ModItem> RandomItems()
     {
         List<ModItem> AllItems = new List<ModItem>();
@@ -144,8 +147,6 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.BinocularsItems);
         return AllItems;
     }
-
-
     public void Setup(PhysicalItems propItems)
     {
         foreach(WeaponItem mi in PossibleItems.WeaponItems)

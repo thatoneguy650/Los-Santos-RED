@@ -716,7 +716,7 @@ public class PurchaseMenu : Menu
     {
         if (modItem != null && menuItem != null && scrollerItem != null)
         {
-            InventoryItem PlayerInventoryItem = Player.Inventory.Items.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            InventoryItem PlayerInventoryItem = Player.Inventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
             int PlayerItems = 0;
             if (PlayerInventoryItem != null)
             {

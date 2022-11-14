@@ -53,7 +53,7 @@ public class CopTasker
                             {
                                 UpdateCurrentTask(cop);//has yields if it does anything
                             }
-                            if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)
+                            else if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)//used to just be an IF
                             {
                                 if (1==1 || cop.ShouldUpdateTarget)
                                 {
@@ -66,8 +66,9 @@ public class CopTasker
                                 {
                                     cop.UpdateTask();
                                 }
-                                GameFiber.Yield();
+                                //GameFiber.Yield();
                             }
+                            GameFiber.Yield();
                         }
                     }
                     else
@@ -83,6 +84,7 @@ public class CopTasker
                     EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
+                //GameFiber.Yield();
             }
         }
     }

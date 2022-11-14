@@ -116,7 +116,7 @@ namespace Mod
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
-            Inventory = new Inventory(this, Settings);
+            Inventory = new Inventory(this, Settings, ModItems);
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
             Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this);
@@ -248,7 +248,7 @@ namespace Mod
         public bool IsBeingANuisance { get; set; }
         public bool IsBeingBooked { get; set; }
         public bool IsBreakingIntoCar => IsCarJacking || IsLockPicking || IsHotWiring || isJacking;
-        public bool IsBustable => IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
+        public bool IsBustable => !Settings.SettingsManager.ViolationSettings.IsUnBustable && IsAliveAndFree && PoliceResponse.HasBeenWantedFor >= 3000 && !ActivityManager.IsCommitingSuicide && !ActivityManager.IsHoldingHostage && !RecentlyBusted && !RecentlyResistedArrest && !PoliceResponse.IsWeaponsFree && (IsIncapacitated || (!IsMoving && !IsMovingDynamically)) && (!IsInVehicle || WantedLevel == 1 || IsIncapacitated);
         public bool IsBusted { get; private set; }
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
@@ -765,7 +765,7 @@ namespace Mod
         }
         public void SetDenStatus(Gang gang, bool isEnabled)
         {
-            EntryPoint.WriteToConsole($"SET DEN {gang.ShortName} {isEnabled}");
+           // EntryPoint.WriteToConsole($"SET DEN {gang.ShortName} {isEnabled}");
             World.Places.StaticPlaces.SetGangLocationActive(gang.ID, isEnabled);
         }
         public void SetAngeredCop()

@@ -261,7 +261,9 @@ public class PlateTheft : DynamicActivity
             if (PlateToRemove != null && PlateToRemove.PlateNumber != "        ")
             {
                 EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {PlateToRemove.PlateNumber}", 3);
-                Player.Inventory.Add(new LicensePlateItem($"Plate: {PlateToRemove.PlateNumber}") { LicensePlate = PlateToRemove },1.0f);
+
+                LicensePlateItem toAdd = new LicensePlateItem($"License Plate: {TargetVehicle.CarPlate.PlateNumber}-{TargetVehicle.CarPlate.PlateType}-{TargetVehicle.CarPlate.IsWanted}") { LicensePlate = PlateToRemove };
+                Player.Inventory.Add(toAdd, 1.0f);
                 //Player.SpareLicensePlates.Add(PlateToRemove);
             }
             TargetVehicle.CarPlate = PlateToAdd.LicensePlate;
@@ -273,7 +275,8 @@ public class PlateTheft : DynamicActivity
             EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {TargetVehicle.CarPlate}", 3);
             if (TargetVehicle.CarPlate != null && TargetVehicle.CarPlate.PlateNumber != "        ")
             {
-                Player.Inventory.Add(new LicensePlateItem($"Plate: {TargetVehicle.CarPlate.PlateNumber}") { LicensePlate = TargetVehicle.CarPlate }, 1.0f);
+                LicensePlateItem toAdd = new LicensePlateItem($"License Plate: {TargetVehicle.CarPlate.PlateNumber}-{TargetVehicle.CarPlate.PlateType}-{TargetVehicle.CarPlate.IsWanted}") { LicensePlate = TargetVehicle.CarPlate };
+                Player.Inventory.Add(toAdd, 1.0f);
             }
             // Player.SpareLicensePlates.Add(TargetVehicle.CarPlate);
             TargetVehicle.CarPlate = null;

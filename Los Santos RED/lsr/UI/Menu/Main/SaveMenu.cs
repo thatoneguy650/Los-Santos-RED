@@ -94,7 +94,7 @@ public class SaveMenu : Menu
         SaveGameItem = new UIMenuItem("Save Player", "Save current player");
         SaveGameItem.Activated += (s, e) =>
         {
-            GameSaves.Save(PlayerSave, Weapons, Time, PlacesOfInterest);
+            GameSaves.SaveSamePlayer(PlayerSave, Weapons, Time, PlacesOfInterest, ModItems);
             Saves.Visible = false;
             GameSaveMenuList.Items = GameSaves.GameSaveList;//dont ask me why this is needed.....
         };
