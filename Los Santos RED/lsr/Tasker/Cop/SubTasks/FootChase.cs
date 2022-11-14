@@ -54,12 +54,18 @@ public class FootChase
             MoveRate = 1.15f;
         }
         RunSpeed = 500f;
+
+
+        AnimationDictionary.RequestAnimationDictionay("random@arrests");
+
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
         //Cop.WeaponInventory.SetLessLethal();
     }
     public void Update()
     {
+        GameFiber.Yield();
         SetRunSpeed();
+        GameFiber.Yield();
         if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
@@ -69,9 +75,11 @@ public class FootChase
             Ped.Pedestrian.BlockPermanentEvents = false;
         }
         Ped.Pedestrian.KeepTasks = false;
+        GameFiber.Yield();
         UpdateDistances();
         GameFiber.Yield();
         UpdateTasking();
+        GameFiber.Yield();
     }
     public void Dispose()
     {
@@ -79,19 +87,24 @@ public class FootChase
     }
     private void UpdateTasking()
     {
-        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && ShouldAttackWithLessLethal && ShouldAimTaser)//7f
+
+        bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
+        bool shouldAimTaser = ShouldAimTaser;
+        GameFiber.Yield();
+
+        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimTaser)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAttackWithLessLethal();
            // EntryPoint.WriteToConsole("TaskAttackWithLessLethal");
         }
-        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && ShouldAimTaser && (Cop.HasTaser || Player.IsDangerouslyArmed))//7f
+        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimTaser && (Cop.HasTaser || Player.IsDangerouslyArmed))//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAimTaser();
             //EntryPoint.WriteToConsole("TaskAimTaser");
         }
-        else if (LocalDistance < CloseDistance && !ShouldAttackWithLessLethal && !ShouldAimTaser)
+        else if (LocalDistance < CloseDistance && !shouldAttackWithLessLethal && !shouldAimTaser)
         {
             if (Player.ClosestCopToPlayer != null && Player.ClosestCopToPlayer.Handle == Ped.Handle)
             {
@@ -279,7 +292,7 @@ public class FootChase
     private void TaskAimTaser()
     {
         CurrentSubTask = SubTask.AimTaser;
-        AnimationDictionary.RequestAnimationDictionay("random@arrests");
+
         if (LocalDistance > 5f)
         {
             unsafe
@@ -336,7 +349,7 @@ public class FootChase
     private void TaskLookAt()
     {
         CurrentSubTask = SubTask.Look;
-        AnimationDictionary.RequestAnimationDictionay("random@arrests");
+       // AnimationDictionary.RequestAnimationDictionay("random@arrests");
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         if (LocalDistance > 5f)
         {

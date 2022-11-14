@@ -70,6 +70,7 @@ public class DynamicPlaces
     public void ActivateLocations()
     {
         List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+        GameFiber.Yield();
         foreach (Rage.Object obj in Objects)
         {
             if (obj.Exists())
@@ -92,6 +93,7 @@ public class DynamicPlaces
         }
         GameFiber.Yield();
         RemoveInactiveVendingMachines();
+        GameFiber.Yield();
         RemoveInactiveGasPumps();
     }
     private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)

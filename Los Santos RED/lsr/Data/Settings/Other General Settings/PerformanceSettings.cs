@@ -55,6 +55,12 @@ public class PerformanceSettings : ISettingsDefaultable
     public int OtherUpdateIntervalFar { get; set; }
     public int OtherUpdateIntervalVeryFar { get; set; }
 
+    public bool CopGetPedToAttackDisable { get; set; }
+  //  public bool CopGetPedToAttackYield1 { get; set; }
+    public bool CopDisableFootChaseFiber { get; set; }
+   // public bool FootChaseFiberSetSleep { get; set; }
+   // public int FootChaseFiberSleepTime { get; set; }
+
     public PerformanceSettings()
     {
         SetDefault();
@@ -118,6 +124,14 @@ public class PerformanceSettings : ISettingsDefaultable
         EMSUpdatePerformanceMode2 = false;
         IsEMSYield2Active = false;
         IsEMSYield1Active = false;
+
+
+        CopGetPedToAttackDisable = false;
+       // CopGetPedToAttackYield1 = false;
+        CopDisableFootChaseFiber = false;
+
+     //   FootChaseFiberSetSleep = false;
+      //  FootChaseFiberSleepTime = 500;
 
         /*
  *         CivilianUpdateBatch = 10;

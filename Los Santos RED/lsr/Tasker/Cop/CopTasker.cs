@@ -18,7 +18,7 @@ public class CopTasker
     private ISettingsProvideable Settings;
     private Tasker Tasker;
     private IPlacesOfInterest PlacesOfInterest;
-    private List<PedExt> PossibleTargets;
+    private List<PedExt> PossibleTargets = new List<PedExt>();
     private Cop ClosestCopToPlayer;
     private int CopsTaskedToRespond = 0;
     public CopTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
@@ -38,7 +38,9 @@ public class CopTasker
     {
         if (Settings.SettingsManager.PoliceTaskSettings.ManageTasking)
         {
+
             SetPossibleTargets();
+            
             World.Pedestrians.ExpireSeatAssignments();
             GameFiber.Yield();//TR 29
             foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
@@ -49,12 +51,15 @@ public class CopTasker
                     {
                         if (cop.HasBeenSpawnedFor >= 2000)
                         {
+                            bool didOne = false;
                             if (cop.NeedsTaskAssignmentCheck && cop.CanBeAmbientTasked)
                             {
                                 UpdateCurrentTask(cop);//has yields if it does anything
+                                didOne = true;
                             }
-                            else if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)//used to just be an IF
+                            if (cop.CurrentTask != null && cop.CurrentTask.ShouldUpdate)//used to just be an IF
                             {
+                                GameFiber.Yield();
                                 if (1==1 || cop.ShouldUpdateTarget)
                                 {
                                     PedExt otherTarget = PedToAttack(cop);
@@ -93,7 +98,7 @@ public class CopTasker
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
             PedExt MainTarget = PedToAttack(Cop);
-            GameFiber.Yield();
+            //GameFiber.Yield();
             if (MainTarget != null)
             {
                 SetAIApprehend(Cop, MainTarget);
@@ -156,6 +161,11 @@ public class CopTasker
         //    Cop.GameTimeLastUpdatedTarget = Game.GameTime;
         //}
 
+        if(Settings.SettingsManager.PerformanceSettings.CopGetPedToAttackDisable)
+        {
+            return null;
+        }
+
         if (!PossibleTargets.Any(x => x.IsWanted))
         {
             return null;
@@ -181,7 +191,10 @@ public class CopTasker
             int PlayerCops = World.Pedestrians.PoliceList.Count(x => x.Handle != Cop.Handle && x.CurrentTask != null && (x.CurrentTask.Name == "Kill" || x.CurrentTask.Name == "Chase"));
 
 
-
+          //  if(Settings.SettingsManager.PerformanceSettings.CopGetPedToAttackYield1)
+           // {
+                GameFiber.Yield();
+           // }
 
             if (Player.IsBusted)
             {
@@ -324,7 +337,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Chase")
         {
-            //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
+            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
             Cop.CurrentTask = new Chase(Cop, Player, World, Cop, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4

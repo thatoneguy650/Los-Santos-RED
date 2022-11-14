@@ -161,6 +161,10 @@ public class WeaponEquipment
         {
             Player.IsVisiblyArmed = false;
         }
+        else if(Player.ActivityManager.IsUsingToolAsWeapon)
+        {
+            Player.IsVisiblyArmed = false;
+        }
         else if (Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)2725352035
             || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)966099553
             || Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash == (WeaponHash)0x787F0BB//weapon_snowball

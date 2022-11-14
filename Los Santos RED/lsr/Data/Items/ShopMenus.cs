@@ -16,8 +16,7 @@ using System.Threading.Tasks;
 public class ShopMenus : IShopMenus
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ShopMenus.xml";
-    private List<ShopMenu> ShopMenuList;
-
+    public List<ShopMenu> ShopMenuList { get; private set; }
     public ShopMenus()
     {
 

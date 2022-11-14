@@ -66,7 +66,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
 
 
-                        GameFiber.Yield();
+                     //   GameFiber.Yield();
 
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
@@ -174,7 +174,7 @@ namespace LosSantosRED.lsr
                     break;
                 }
                 tested++;
-                if(tested >= 5)
+                if(tested >= 10)
                 {
                     tested = 0;
                     GameFiber.Yield();

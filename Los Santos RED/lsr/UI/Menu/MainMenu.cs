@@ -35,7 +35,7 @@ public class MainMenu : Menu
     private ICrimes Crimes;
 
     public MainMenu(MenuPool menuPool, IActionable actionablePlayer, ILocationInteractable player, ISaveable saveablePlayer, IGameSaves gameSaves, IWeapons weapons, IPedSwap pedswap, IEntityProvideable world, ISettingsProvideable settings, ITaskerable tasker, 
-        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures, IActivityPerformable activityPerformable, IAgencies agencies, ICrimes crimes, IIntoxicants intoxicants)
+        IInventoryable playerinventory, IModItems modItems, UI ui, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IDances dances, IGestures gestures, IActivityPerformable activityPerformable, IAgencies agencies, ICrimes crimes, IIntoxicants intoxicants, IShopMenus shopMenus)
     {
         MenuPool = menuPool;
         ActionablePlayer = actionablePlayer;
@@ -61,7 +61,7 @@ public class MainMenu : Menu
         Crimes = crimes;
         ActivityPerformable = activityPerformable;
         Main = new UIMenu("Los Santos RED", "Select an Option");
-        SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants);
+        SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
 
         if (Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
         {

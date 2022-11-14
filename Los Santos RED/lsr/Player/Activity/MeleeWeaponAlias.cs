@@ -67,6 +67,7 @@ public class MeleeWeaponAlias
             NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(Player.Character, MeleeWeaponToAliasHash);
             Player.WeaponEquipment.SetUnarmed();
         }
+        Player.ActivityManager.IsUsingToolAsWeapon = false;
         EntryPoint.WriteToConsole("MELEE WEAPON ALIAS ENDED");
     }
     private void SpawnAndAttach()
@@ -133,6 +134,9 @@ public class MeleeWeaponAlias
                 WeaponHandRotator = handWeaponAttachment.Rotation;
             }
             MeleeWeaponToAliasHash = ItemToAlias.ModelItem.AliasWeaponHash;
+
+            Player.ActivityManager.IsUsingToolAsWeapon = true;
+
         }
         else
         {

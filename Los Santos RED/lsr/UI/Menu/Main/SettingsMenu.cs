@@ -25,14 +25,16 @@ public class SettingsMenu : Menu//needs lots of cleanup still
     private ISettingsProvideable SettingsProvider;
     private ICrimes Crimes;
     private IIntoxicants Intoxicants;
+    private IShopMenus ShopMenus;
 
-    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable, ICrimes crimes, IIntoxicants intoxicants)
+    public SettingsMenu(MenuPool menuPool, UIMenu parentMenu, ISettingsProvideable settingsProvideable, ICrimes crimes, IIntoxicants intoxicants, IShopMenus shopMenus)
     {
         MenuPool = menuPool;
         ParentMenu = parentMenu;
         SettingsProvider = settingsProvideable;
         Crimes = crimes;
         Intoxicants = intoxicants;
+        ShopMenus = shopMenus;
     }
     public void Setup()
     {
@@ -182,6 +184,7 @@ public class SettingsMenu : Menu//needs lots of cleanup still
 
         //CreateCrimesSubMenu();
         CreateItemSubMenu("Change Crimes SubMenu", Crimes.CrimeList);
+        //CreateItemSubMenu("Change Shop Menus SubMenu", ShopMenus.ShopMenuList);
         //CreateItemSubMenu("Change Intoxicants SubMenu", Intoxicants.Items);
 
     }

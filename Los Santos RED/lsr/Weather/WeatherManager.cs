@@ -67,6 +67,9 @@ public class WeatherManager
     }      
     public void Update()
     {
+
+        return;
+
         if(Settings.SettingsManager.WeatherSettings.ChangeWeatherByForecast && ShouldCheckWeather)
         {
             DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
