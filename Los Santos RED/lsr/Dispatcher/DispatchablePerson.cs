@@ -118,6 +118,7 @@ public class DispatchablePerson
 
     public bool IsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
 
+
     public DispatchablePerson()
     {
 
@@ -296,10 +297,35 @@ public class DispatchablePerson
             }
             if (ped.Exists())//set eyebrows
             {
-                int index = RandomItems.GetRandomNumberInt(0, 5);
-                pedVariation.HeadOverlays.Add(new HeadOverlayData(2, "Eyebrows") { ColorType = 1, Index = index, Opacity = 1.0f, PrimaryColor = HairColor, SecondaryColor = HairColor });   
-                NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, 2, index, 1.0f);
-                NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
+                //always set eyebrows
+                pedVariation.HeadOverlays.Add(new HeadOverlayData(2, "Eyebrows") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 33), Opacity = 1.0f, PrimaryColor = HairColor, SecondaryColor = HairColor });
+                if (RandomItems.RandomPercent(myHead.AgingPercentage))
+                {
+                    pedVariation.HeadOverlays.Add(new HeadOverlayData(3, "Ageing") { Index = RandomItems.GetRandomNumberInt(0, 12), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
+                }
+                if (myHead.IsMale)
+                {
+                    if (RandomItems.RandomPercent(myHead.FacialHairPercentage))
+                    {
+                        pedVariation.HeadOverlays.Add(new HeadOverlayData(1, "Facial Hair") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 28), Opacity = RandomItems.GetRandomNumber(0.5f, 1.0f), PrimaryColor = HairColor, SecondaryColor = HairColor });
+                    }
+                }
+                else
+                {
+                    if (RandomItems.RandomPercent(myHead.LipstickAndMakeupPercentage))
+                    {
+                        pedVariation.HeadOverlays.Add(new HeadOverlayData(4, "Makeup") { Index = RandomItems.GetRandomNumberInt(0, 15), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
+                        int LipstickColor = RandomItems.GetRandomNumberInt(0, 13);
+                        pedVariation.HeadOverlays.Add(new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = RandomItems.GetRandomNumberInt(0, 7), Opacity = RandomItems.GetRandomNumber(0.25f,1.0f), PrimaryColor = LipstickColor, SecondaryColor = LipstickColor });
+                    }
+                }
+                foreach (HeadOverlayData hod in pedVariation.HeadOverlays)
+                {
+                    NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, hod.OverlayID, hod.Index, hod.Opacity);
+                    NativeFunction.Natives.x497BF74A7B9CB952(ped, hod.OverlayID, hod.ColorType, hod.ColorType, hod.ColorType);//colors?
+                }
+                //NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, 2, EyebrowIndex, 1.0f);
+                //NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
                 GameFiber.Yield();
             }
             if (ped.Exists())

@@ -64,22 +64,34 @@ public class FootChase
     public void Update()
     {
         GameFiber.Yield();
-        SetRunSpeed();
-        GameFiber.Yield();
-        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
+        if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = true;
+            SetRunSpeed();
+            GameFiber.Yield();
         }
-        else
+        if (Ped.Pedestrian.Exists())
         {
-            Ped.Pedestrian.BlockPermanentEvents = false;
+            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = true;
+            }
+            else
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+            }
+            Ped.Pedestrian.KeepTasks = false;
+            GameFiber.Yield();
+        }  
+        if (Ped.Pedestrian.Exists())
+        {
+            UpdateDistances();
+            GameFiber.Yield();
+        }  
+        if (Ped.Pedestrian.Exists())
+        {
+            UpdateTasking();
+            GameFiber.Yield();
         }
-        Ped.Pedestrian.KeepTasks = false;
-        GameFiber.Yield();
-        UpdateDistances();
-        GameFiber.Yield();
-        UpdateTasking();
-        GameFiber.Yield();
     }
     public void Dispose()
     {

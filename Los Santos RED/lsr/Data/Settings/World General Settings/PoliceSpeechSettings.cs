@@ -42,23 +42,23 @@ public class PoliceSpeechSettings : ISettingsDefaultable
      
         AllowAmbientSpeech = true;
 
-        TimeBetweenCopSpeak_Armed_Min = 10000;
-        TimeBetweenCopSpeak_Armed_Randomizer_Min = 0;
-        TimeBetweenCopSpeak_Armed_Randomizer_Max = 5000;
+        TimeBetweenCopSpeak_Armed_Min = 15000;
+        TimeBetweenCopSpeak_Armed_Randomizer_Min = 5000;
+        TimeBetweenCopSpeak_Armed_Randomizer_Max = 10000;
 
 
         TimeBetweenCopSpeak_General_Min = 20000;
-        TimeBetweenCopSpeak_General_Randomizer_Min = 0;
-        TimeBetweenCopSpeak_General_Randomizer_Max = 13000;
+        TimeBetweenCopSpeak_General_Randomizer_Min = 10000;
+        TimeBetweenCopSpeak_General_Randomizer_Max = 19000;
 
 
         TimeBetweenCopSpeak_Deadly_Min = 15000;
-        TimeBetweenCopSpeak_Deadly_Randomizer_Min = 0;
-        TimeBetweenCopSpeak_Deadly_Randomizer_Max = 8000;
+        TimeBetweenCopSpeak_Deadly_Randomizer_Min = 7000;
+        TimeBetweenCopSpeak_Deadly_Randomizer_Max = 15000;
 
-        TimeBetweenCopSpeak_WeaponsFree_Min = 10000;
-        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min = 0;
-        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 5000;
+        TimeBetweenCopSpeak_WeaponsFree_Min = 12000;
+        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min = 3000;
+        TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max = 7000;
 
     }
 }

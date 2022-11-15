@@ -96,6 +96,8 @@ public class GameSaves : IGameSaves
 #if DEBUG
         AddDaveNorton();
         AddKarenDaniels();
+        AddMaleMPCop();
+        AddFemaleMPCop();
 #endif
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
@@ -556,6 +558,86 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(gameSave);
     }
+
+    private void AddMaleMPCop()
+    {
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
+        {
+            new VehicleSaveStatus("police2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 48),
+        };
+        GameSave gameSave = new GameSave("Officer Speed", 455000, "mp_m_freemode_01", true, new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 38, 0, 0), new PedComponent(4, 35, 0, 0), new PedComponent(6, 25, 0, 0), new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0) },
+                    new List<PedPropComponent>() { }, new List<HeadOverlayData>() {
+            new HeadOverlayData(0,"Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0},
+            new HeadOverlayData(1, "Facial Hair") { ColorType = 1,Index = 0,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(2, "Eyebrows") { ColorType = 1,Index = 3,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(3, "Ageing") {Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(4, "Makeup") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(5, "Blush") { ColorType = 2, Index = 255,Opacity = 0.4f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(6, "Complexion"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(7, "Sun Damage"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = 255,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(9, "Moles/Freckles"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(10, "Chest Hair") { ColorType = 1, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(11, "Body Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },},
+        new HeadBlendData(42, 42, 0, 42, 42, 0, 1.0f, 0.0f, 0.0f),
+        3,
+        3), Weapons, Vehicles);
+        SetDefault(gameSave);
+
+        gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+
+        gameSave.IsCop = true;
+        GameSaveList.Add(gameSave);
+    }
+    private void AddFemaleMPCop()
+    {
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
+        {
+            new VehicleSaveStatus("police", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 48),
+        };
+        GameSave gameSave = new GameSave("Officer Daniels", 455000, "mp_f_freemode_01", true, new PedVariation(
+                    new List<PedComponent>() { new PedComponent(2, 42, 0, 0), new PedComponent(3, 14, 0, 0), new PedComponent(4, 34, 0, 0), new PedComponent(6, 55, 0, 0), new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0) },
+                    new List<PedPropComponent>() { }, new List<HeadOverlayData>()
+        {
+            new HeadOverlayData(0,"Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0},
+            new HeadOverlayData(1, "Facial Hair") { ColorType = 1,Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(2, "Eyebrows") { ColorType = 1,Index = 3,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(3, "Ageing") {Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(4, "Makeup") { Index = 12,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(5, "Blush") { ColorType = 2, Index = 3,Opacity = 0.4f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(6, "Complexion"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(7, "Sun Damage"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = 2,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(9, "Moles/Freckles"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(10, "Chest Hair") { ColorType = 1, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(11, "Body Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+        },
+        new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
+        11,
+        12), Weapons, Vehicles);
+        SetDefault(gameSave);
+
+        gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+
+        gameSave.IsCop = true;
+        GameSaveList.Add(gameSave);
+    }
+
     private void SetDefault(GameSave ExampleGameSave)
     {
         //Position

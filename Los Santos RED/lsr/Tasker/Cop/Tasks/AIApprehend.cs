@@ -857,7 +857,9 @@ public class AIApprehend : ComplexTask
         {
             while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
             {
+                
                 FootChaseUpdateParameters();
+                GameFiber.Yield();
                 if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
                 {
                     Ped.Pedestrian.BlockPermanentEvents = true;
@@ -868,6 +870,7 @@ public class AIApprehend : ComplexTask
                 }
                 Ped.Pedestrian.KeepTasks = true;
                 LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
+                GameFiber.Yield();
                 if (OtherTarget.IsBusted)
                 {
                     FootChaseBusted();
@@ -880,7 +883,7 @@ public class AIApprehend : ComplexTask
                 {
                     FootChaseAttacking();
                 }
-                GameFiber.Yield();
+                GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
             }
             Ped.IsRunningOwnFiber = false;
         }, "Run Cop Chase Logic");
@@ -906,17 +909,20 @@ public class AIApprehend : ComplexTask
     }
     private void FootChaseArresting()
     {
-        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < 10f && ShouldAttackWithLessLethal && ShouldAimTaser)//7f
+        bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
+        bool shouldAimTaser = ShouldAimTaser;
+
+        if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < 10f && shouldAttackWithLessLethal && shouldAimTaser)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAttackWithLessLethal();
         }
-        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < 10f && !ShouldAttackWithLessLethal && ShouldAimTaser && Cop.HasTaser)//7f
+        else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < 10f && !shouldAttackWithLessLethal && shouldAimTaser && Cop.HasTaser)//7f
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             TaskAimTaser();
         }
-        else if (LocalDistance < 10f && !ShouldAttackWithLessLethal && !ShouldAimTaser)
+        else if (LocalDistance < 10f && !shouldAttackWithLessLethal && !shouldAimTaser)
         {
             if (!Cop.HasTaser)
             {

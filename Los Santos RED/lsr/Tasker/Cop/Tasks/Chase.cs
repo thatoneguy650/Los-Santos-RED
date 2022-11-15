@@ -462,12 +462,12 @@ public class Chase : ComplexTask
             {
 
                 footChase.Update();
-                
-                
 
-                    GameFiber.Sleep(500);//GameFiber.Yield();
-               
-                
+
+                GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
+                //GameFiber.Sleep(500);//GameFiber.Yield();
+
+
 
 
             }

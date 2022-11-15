@@ -75,6 +75,7 @@ public class CopAssistManager
                         range = 10f;
                     }
                     Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
+                    GameFiber.Yield();
                     if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
                     {
                         Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
@@ -93,6 +94,7 @@ public class CopAssistManager
                         {
                             ClosestCar.Delete();
                         }
+                        GameFiber.Yield();
                         EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
                     }
                 }
@@ -115,7 +117,8 @@ public class CopAssistManager
                         while (copCar.Exists() && IsCheatFiberRunning)
                         {
                             NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
-                            GameFiber.Yield();
+                            GameFiber.Sleep(100);
+                            //GameFiber.Yield();
                         }
                     }, "cheatfiber");
                 }

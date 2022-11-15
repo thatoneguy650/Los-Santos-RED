@@ -46,7 +46,7 @@ public class Flee : ComplexTask
             isInVehicle = Ped.Pedestrian.IsInAnyVehicle(false);
             Retask();
         }
-        if(isInVehicle)
+        if(isInVehicle && Ped.IsDriver)
         {
             NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Panic);
             NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
@@ -70,7 +70,7 @@ public class Flee : ComplexTask
         {
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
-            if (isInVehicle)
+            if (isInVehicle && Ped.IsDriver)
             {
                 //unsafe
                 //{

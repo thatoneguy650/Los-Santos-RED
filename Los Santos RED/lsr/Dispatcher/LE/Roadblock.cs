@@ -154,7 +154,7 @@ public class Roadblock
                             }
                         }
                     }
-                    GameFiber.Yield();
+                    GameFiber.Sleep(50);//GameFiber.Yield();
                 }
             }
             catch (Exception e)

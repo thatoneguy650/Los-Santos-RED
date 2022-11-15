@@ -159,6 +159,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (animBase != "")
             {
+                AttachFlashlightToHand();
                 EntryPoint.WriteToConsole($"Flashlight Idle: {animBase}", 5);
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
 

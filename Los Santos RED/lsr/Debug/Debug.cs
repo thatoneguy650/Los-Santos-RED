@@ -1369,7 +1369,7 @@ public class Debug
     }
     private void SetPropAttachment()
     {
-        string PropName = NativeHelper.GetKeyboardInput("p_cs_lighter_01");
+        string PropName = NativeHelper.GetKeyboardInput("prop_holster_01");
         try
         {
             Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
@@ -1382,6 +1382,12 @@ public class Debug
             string boneName = headBoneName;
 
 
+
+            string thighRBoneName = "BONETAG_R_THIGH";
+            string thighLBoneName = "BONETAG_L_THIGH";
+            string pelvisBoneName = "BONETAG_PELVIS";
+            string spineRootBoneName = "BONETAG_SPINE_ROOT";
+            string spineBoneName = "BONETAG_SPINE";
             string wantedBone = NativeHelper.GetKeyboardInput("Head");
             if (wantedBone == "RHand")
             {
@@ -1391,6 +1397,32 @@ public class Debug
             {
                 boneName = handLBoneName;
             }
+            else if (wantedBone == "LThigh")
+            {
+                boneName = thighLBoneName;
+            }
+            else if (wantedBone == "RThigh")
+            {
+                boneName = thighRBoneName;
+            }
+            else if (wantedBone == "Pelvis")
+            {
+                boneName = pelvisBoneName;
+            }
+            else if (wantedBone == "SpineRoot")
+            {
+                boneName = spineRootBoneName;
+            }
+            else if (wantedBone == "Spine")
+            {
+                boneName = spineBoneName;
+            }
+            else
+            {
+                boneName = wantedBone;
+            }
+
+
 
             uint GameTimeLastAttached = 0;
             Offset = new Vector3();

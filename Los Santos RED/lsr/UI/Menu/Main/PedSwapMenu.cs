@@ -129,8 +129,11 @@ public class PedSwapMenu : Menu
             PedSwap.BecomeCustomPed2();
             PedSwapUIMenu.Visible = false;
         };
-        //PedSwapUIMenu.AddItem(BecomeCustomPed2);
 
+
+#if DEBUG
+        PedSwapUIMenu.AddItem(BecomeCustomPed2);
+#endif
 
         //SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
         //SetAsCop.Activated += (menu, item) =>

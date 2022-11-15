@@ -26,4 +26,9 @@ public class RandomHeadData
     public List<int> HairComponents { get; set; }
     public List<int> EyeColors { get; set; }
     public bool IsMale { get; set; }
+
+    public float FacialHairPercentage { get; set; } = 20f;
+    public float LipstickAndMakeupPercentage { get; set; } = 70f;
+    public float AgingPercentage { get; set; } = 20f;
+
 }

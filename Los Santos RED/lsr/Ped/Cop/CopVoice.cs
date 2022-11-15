@@ -202,7 +202,7 @@ public class CopVoice
     private void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
     {
         bool Spoke = false;
-        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()))
+        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(2))
         {
             string voiceName = null;
             bool IsOverWrittingVoice = false;
