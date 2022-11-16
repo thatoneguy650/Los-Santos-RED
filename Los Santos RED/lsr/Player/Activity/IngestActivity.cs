@@ -67,7 +67,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Item.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Item;
+                Player.AttachedProp.Add(Item);
             }
         }
         private void CreateItem()

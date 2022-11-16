@@ -34,6 +34,12 @@ public class DispatchablePerson
 
 
 
+
+    public List<CustomPropAttachment> CustomPropAttachments { get; set; }
+
+
+
+
     public int HealthMin { get; set; } = 85;
     public int HealthMax { get; set; } = 125;
     public int ArmorMin { get; set; } = 0;
@@ -243,6 +249,22 @@ public class DispatchablePerson
             if (isFreemode)
             {
                 NativeFunction.Natives.x50B56988B170AFDF(ped, variationToSet.EyeColor);
+            }
+            if(CustomPropAttachments != null && 1==0)
+            {
+                foreach(CustomPropAttachment cpa in CustomPropAttachments)
+                {
+                    if(ped.Exists() && RandomItems.RandomPercent(OptionalComponentChance))
+                    {
+                        Rage.Object itemToAttach = new Rage.Object(Game.GetHashKey(cpa.PropName), ped.GetOffsetPositionUp(50f));
+                        if (itemToAttach.Exists())
+                        {
+                            itemToAttach.AttachTo(ped, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", ped, cpa.BoneName), cpa.Attachment, cpa.Rotation);
+
+                        }
+                        GameFiber.Yield();
+                    }
+                }
             }
         }
         if (RequiredHelmetType != -1)

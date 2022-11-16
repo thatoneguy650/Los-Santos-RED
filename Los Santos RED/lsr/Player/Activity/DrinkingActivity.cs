@@ -89,7 +89,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Bottle;
+                Player.AttachedProp.Add(Bottle);
             }
         }
         private void CreateBottle()

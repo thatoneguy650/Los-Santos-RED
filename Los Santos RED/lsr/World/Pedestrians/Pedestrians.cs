@@ -184,6 +184,7 @@ public class Pedestrians : ITaskerReportable
     {
         WorldPeds = Rage.World.GetEntities(GetEntitiesFlags.ConsiderHumanPeds | GetEntitiesFlags.ExcludePlayerPed).ToList();
         GameFiber.Yield();
+        int updated = 0;
         foreach (Ped Pedestrian in WorldPeds.Where(s => s.Exists() && !s.IsDead && s.MaxHealth != 1 && s.Handle != Game.LocalPlayer.Character.Handle))//take 20 is new
         {
             string modelName = Pedestrian.Model.Name.ToLower();
@@ -243,6 +244,12 @@ public class Pedestrians : ITaskerReportable
                     AddAmbientCivilian(Pedestrian);
                     GameFiber.Yield();
                 }
+            }
+            updated++;
+            if(updated > 10)
+            {
+                GameFiber.Yield();
+                updated = 0;
             }
         }
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
@@ -469,6 +476,7 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Civilian);
             }
         }
+        GameFiber.Yield();
         Police.RemoveAll(x => x.CanRemove);// || x.Handle == Game.LocalPlayer.Character.Handle);
         EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
@@ -1138,6 +1146,7 @@ public class Pedestrians : ITaskerReportable
     }
     private void Delete(Ped ped)
     {
+        GameFiber.Yield();
         if (ped != null && ped.Exists())
         {
             if (ped.IsInAnyVehicle(false))
@@ -1163,10 +1172,6 @@ public class Pedestrians : ITaskerReportable
             }
         }
     }
-
-
-
-
     public bool IsSeatAssignedToAnyone(VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null);
     public bool IsSeatAssigned(ISeatAssignable pedToCheck, VehicleExt vehicleToCheck, int seatToCheck) => SeatAssignments.Any(x => x.Vehicle != null && vehicleToCheck != null && x.Vehicle.Handle == vehicleToCheck.Handle && x.Seat == seatToCheck && x.Ped != null && pedToCheck != null && x.Ped.Handle != pedToCheck.Handle);
     public bool AddSeatAssignment(ISeatAssignable ped, VehicleExt vehicle, int seat)

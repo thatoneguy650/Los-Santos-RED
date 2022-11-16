@@ -76,26 +76,29 @@ public class CopAssistManager
                     }
                     Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
                     GameFiber.Yield();
-                    if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
+                    if (Cop.Pedestrian.Exists())
                     {
-                        Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
-                        foreach (Ped carOccupant in ClosestCar.Occupants.ToList())
+                        if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
                         {
-                            if(carOccupant.Exists())
+                            Vehicle ClosestCar = (Vehicle)ClosestCarEntity;
+                            foreach (Ped carOccupant in ClosestCar.Occupants.ToList())
                             {
-                                if(carOccupant.IsPersistent)
+                                if (carOccupant.Exists())
                                 {
-                                    return;
+                                    if (carOccupant.IsPersistent)
+                                    {
+                                        return;
+                                    }
+                                    carOccupant.Delete();
                                 }
-                                carOccupant.Delete();
                             }
+                            if (ClosestCar.Exists())
+                            {
+                                ClosestCar.Delete();
+                            }
+                            GameFiber.Yield();
+                            EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
                         }
-                        if(ClosestCar.Exists())
-                        {
-                            ClosestCar.Delete();
-                        }
-                        GameFiber.Yield();
-                        EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
                     }
                 }
             }

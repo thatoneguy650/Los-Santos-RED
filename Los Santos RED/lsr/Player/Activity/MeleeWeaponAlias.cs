@@ -95,7 +95,7 @@ public class MeleeWeaponAlias
         if (ItemToAliasObject.Exists())
         {
             ItemToAliasObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, WeaponHandBoneName), WeaponHandOffset, WeaponHandRotator);
-            Player.AttachedProp = ItemToAliasObject;
+            Player.AttachedProp.Add(ItemToAliasObject);
         }
     }
     private void CreateShovel()

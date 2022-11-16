@@ -105,12 +105,12 @@ namespace LosSantosRED.lsr.Player
             {
                 SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsSmokedItemAttachedToMouth = false;
-                Player.AttachedProp = SmokedItem;
+                Player.AttachedProp.Add(SmokedItem);
             }
             if(LighterItem.Exists())
             {
                 LighterItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, LeftHandBoneID), LighterOffset, LighterRotator);
-                Player.AttachedProp = LighterItem;
+                Player.AttachedProp.Add(LighterItem);
             }
         }
         private void CreateSmokedItem()

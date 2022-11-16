@@ -90,6 +90,16 @@ public class ActivityManager
     public DanceData LastDance { get; set; }
     public Interaction Interaction { get; private set; }
     public DynamicActivity Activity => UpperBodyActivity != null ? UpperBodyActivity : LowerBodyActivity;
+    public ModItem AttachedItem { get; set; }
+
+
+    public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
+
+
+    public List<AttachedItem> AttachedItems { get; set; } = new List<AttachedItem>();
+
+
+
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons)
@@ -121,10 +131,17 @@ public class ActivityManager
     public void Dispose()
     {
         Interaction?.Dispose();
+        foreach(AttachedItem ai in AttachedItems)
+        {
+            if(ai.SpawnedItem.Exists())
+            {
+                ai.SpawnedItem.Delete();
+            }
+        }
     }
     public void Update()
     {
-
+        AttachedItems.RemoveAll(x => !x.SpawnedItem.Exists());
     }
     public void Reset()
     {
@@ -285,6 +302,34 @@ public class ActivityManager
             }
         }
     }
+
+
+
+    public void UseBeltItem(AttachedItem attachedItem, bool performActivity)
+    {
+        if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) && attachedItem != null && attachedItem.ModItem != null)// modItem.Type != eConsumableType.None)
+        {
+            if (attachedItem.SpawnedItem.Exists())
+            {
+                attachedItem.SpawnedItem.Delete();
+            }
+            if (performActivity)
+            {
+                attachedItem.ModItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
+            }
+            else
+            {
+                Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
+                attachedItem.ModItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
+            }
+            if (AttachedItems.Contains(attachedItem))
+            {
+                AttachedItems.Remove(attachedItem);
+            }
+        }
+    }
+
+
     public void StartScenario()
     {
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)

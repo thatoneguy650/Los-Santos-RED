@@ -81,7 +81,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Food;
+                Player.AttachedProp.Add(Food);
             }
         }
         private void CreateFood()

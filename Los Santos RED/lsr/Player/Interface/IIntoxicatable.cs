@@ -13,7 +13,7 @@ namespace LosSantosRED.lsr.Interface
         HealthManager HealthManager { get; }
         Scenario ClosestScenario { get; }
       //  bool IsSitting { get; set; }
-        Rage.Object AttachedProp { get; set; }
+        List<Rage.Object> AttachedProp { get; set; }
         Intoxication Intoxication { get; }
         Sprinting Sprinting { get; }
         bool IsOnMuscleRelaxants { get; set; }

@@ -163,7 +163,7 @@ namespace LosSantosRED.lsr
         }
         public void Update()
         {
-            if (Settings.SettingsManager.ScannerSettings.IsEnabled)
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
             {
                 CheckDispatch();
                 if (DispatchQueue.Count > 0 && !ExecutingQueue)
@@ -206,6 +206,10 @@ namespace LosSantosRED.lsr
                         EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, finishing execution, DONE", 5);
                     }, "PlayDispatchQueue");
                 }
+            }
+            if(!Player.ActivityManager.CanHearScanner)
+            {
+                DispatchQueue.Clear();
             }
         }
         public void Reset()

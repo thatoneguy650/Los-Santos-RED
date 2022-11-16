@@ -29,9 +29,7 @@ public class Settings : ISettingsProvideable
             EntryPoint.WriteToConsole($"No Settings config found, creating default", 0);
             DefaultConfig();
         }
-
         SettingsManager.Setup();
-
     }
     public void DefaultConfig()
     {
@@ -43,8 +41,6 @@ public class Settings : ISettingsProvideable
     {
         Serialization.SerializeParam(SettingsManager == null ? new SettingsManager() : SettingsManager, ConfigFileName);
     }
-
-
 
     public void SetEasy()
     {
@@ -64,6 +60,12 @@ public class Settings : ISettingsProvideable
     {
         IsBackendChanged = true;
         SettingsManager.SetDefault();
+
+
+        SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
+        SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
+
+        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
@@ -108,7 +110,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.WeatherSettings.ReportWeather = false;
         SettingsManager.WeatherSettings.ShowWeatherNotifications = false;
 
-        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
+
 
     }
     public void SetHard()
@@ -116,6 +118,12 @@ public class Settings : ISettingsProvideable
         IsBackendChanged = true;
         SettingsManager.SetDefault();
 
+        SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem = true;
+
+        SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
+        SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
+
+        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
@@ -124,12 +132,9 @@ public class Settings : ISettingsProvideable
         SettingsManager.EMSSettings.ShowSpawnedBlips = false;
         SettingsManager.FireSettings.ShowSpawnedBlips = false;
 
-
-
         SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier = 120000;
 
         SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier = 24;
-
 
         SettingsManager.InvestigationSettings.SuspiciousDistance = 800f;
         SettingsManager.PedSwapSettings.PercentageToGetCriminalHistory = 15;
@@ -184,8 +189,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive = true;
         SettingsManager.UIGeneralSettings.HideRadarUnlessActionWheelActive = true;
 
-        SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry = true;
-        SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
+
 
 
         SettingsManager.ViolationSettings.RecentlyHurtCivilianTime = 10000;
@@ -241,7 +245,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen = 300f;
 
 
-        SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
+
 
 
     }

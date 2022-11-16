@@ -184,7 +184,7 @@ namespace Mod
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
         public int AssignedSeat => -1;
         public VehicleExt AssignedVehicle => null;
-        public Rage.Object AttachedProp { get; set; }
+        public List<Rage.Object> AttachedProp { get; set; } = new List<Rage.Object>();
         public bool BeingArrested { get; private set; }
         public List<uint> BlackListedVehicles => new List<uint>();
         public bool CanSitOnCurrentLookedAtObject { get; private set; }
@@ -505,6 +505,10 @@ namespace Mod
             MeleeManager.Update();
             GameFiber.Yield();//TR Yield RemovedTest 1
             PlayerVoice.Update();
+
+            ActivityManager.Update();
+
+
         }
         public void SetNotBusted()
         {

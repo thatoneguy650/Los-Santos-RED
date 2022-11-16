@@ -41,7 +41,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsMale { get; }
       //  bool IsSitting { get; set; }
       //  bool IsLayingDown { get; set; }
-        Rage.Object AttachedProp { get; set; }
+        List<Rage.Object> AttachedProp { get; set; }
         bool IsMoveControlPressed { get; }
         string ModelName { get; }
      //   bool HasCurrentActivity { get; }

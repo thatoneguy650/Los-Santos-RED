@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LosSantosRED.lsr.Player.Activity;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -33,6 +34,15 @@ public class DebugMenu : Menu
     private IGangs Gangs;
     private IModItems ModItems;
     private ICrimes Crimes;
+
+
+
+
+    private Vector3 Offset;
+    private Rotator Rotation;
+    private bool isPrecise;
+    private bool isRunning;
+    private uint GameTimeLastAttached;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes)
     {
@@ -87,6 +97,7 @@ public class DebugMenu : Menu
         CreateLocationMenu();
         CreateTeleportMenu();
         CreateOtherItems();
+        CreateHelperItems();
         CreateRelationshipsMenu();
     }
     private void CreateLocationMenu()
@@ -652,6 +663,42 @@ public class DebugMenu : Menu
 
 
     }
+
+
+    private void CreateHelperItems()
+    {
+        UIMenu HelperMenuItem = MenuPool.AddSubMenu(Debug, "Helper Menu");
+        HelperMenuItem.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various helper items";
+
+
+
+        UIMenuItem propAttachMenu = new UIMenuItem("Prop Attachment", "Do some prop attachments");
+        propAttachMenu.Activated += (menu, item) =>
+        {
+            SetPropAttachment();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(propAttachMenu);
+
+        UIMenuItem weaponAliasMenu = new UIMenuItem("Weapon Alias Attachment", "Do some weapon alias prop attachments");
+        weaponAliasMenu.Activated += (menu, item) =>
+        {
+            SetWeaponAliasAttachment();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(weaponAliasMenu);
+
+        UIMenuItem particleAttachMenu = new UIMenuItem("Particle Attachment", "Get some particle offsets");
+        particleAttachMenu.Activated += (menu, item) =>
+        {
+            SetParticleAttachment();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(particleAttachMenu);
+
+    }
+
     private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
     {
         throw new NotImplementedException();
@@ -1183,5 +1230,362 @@ public class DebugMenu : Menu
 
         }
     }
+
+
+
+    private void SetPropAttachment()
+    {
+        string PropName = NativeHelper.GetKeyboardInput("prop_holster_01");
+        try
+        {
+            Rage.Object SmokedItem = new Rage.Object(Game.GetHashKey(PropName), Player.Character.GetOffsetPositionUp(50f));
+            GameFiber.Yield();
+
+            string headBoneName = "BONETAG_HEAD";
+            string handRBoneName = "BONETAG_R_PH_HAND";
+            string handLBoneName = "BONETAG_L_PH_HAND";
+
+            string boneName = headBoneName;
+
+
+
+            string thighRBoneName = "BONETAG_R_THIGH";
+            string thighLBoneName = "BONETAG_L_THIGH";
+            string pelvisBoneName = "BONETAG_PELVIS";
+            string spineRootBoneName = "BONETAG_SPINE_ROOT";
+            string spineBoneName = "BONETAG_SPINE";
+            string wantedBone = NativeHelper.GetKeyboardInput("Head");
+            if (wantedBone == "RHand")
+            {
+                boneName = handRBoneName;
+            }
+            else if (wantedBone == "LHand")
+            {
+                boneName = handLBoneName;
+            }
+            else if (wantedBone == "LThigh")
+            {
+                boneName = thighLBoneName;
+            }
+            else if (wantedBone == "RThigh")
+            {
+                boneName = thighRBoneName;
+            }
+            else if (wantedBone == "Pelvis")
+            {
+                boneName = pelvisBoneName;
+            }
+            else if (wantedBone == "SpineRoot")
+            {
+                boneName = spineRootBoneName;
+            }
+            else if (wantedBone == "Spine")
+            {
+                boneName = spineBoneName;
+            }
+            else
+            {
+                boneName = wantedBone;
+            }
+
+
+
+            uint GameTimeLastAttached = 0;
+            Offset = new Vector3();
+            Rotation = new Rotator();
+            isPrecise = false;
+            if (SmokedItem.Exists())
+            {
+                //Specific for umbrella
+
+                //AnimationDictionary.RequestAnimationDictionay("doors@");
+                // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "doors@", "door_sweep_l_hand_medium", 4.0f, -4.0f, -1, (int)(AnimationFlags.StayInEndFrame | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+                //string dictionary = "amb@world_human_binoculars@male@base";
+                //string animation = "base";
+
+
+
+                string dictionary = NativeHelper.GetKeyboardInput("move_strafe@melee_small_weapon_fps");
+                string animation = NativeHelper.GetKeyboardInput("idle");
+
+                AnimationDictionary.RequestAnimationDictionay(dictionary);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+
+                isRunning = true;
+
+                AttachItem(SmokedItem, boneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+
+
+
+                GameFiber.StartNew(delegate
+                {
+                    while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
+                    {
+                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        {
+                            AttachItem(SmokedItem, boneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                        }
+
+
+                        if (Game.IsKeyDown(Keys.B))
+                        {
+                            EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.N))
+                        {
+                            isPrecise = !isPrecise;
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.D0))
+                        {
+                            isRunning = !isRunning;
+                            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+                            GameFiber.Sleep(500);
+                        }
+                        float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, dictionary, animation);
+                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise} ~n~Press 0 Pause{isRunning}");
+                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                        //Game.DisplaySubtitle($"Current Animation Time {AnimationTime}");
+                        GameFiber.Yield();
+                    }
+
+                    if (SmokedItem.Exists())
+                    {
+                        SmokedItem.Delete();
+                    }
+                }, "Run Debug Logic");
+            }
+        }
+        catch (Exception e)
+        {
+            Game.DisplayNotification("ERROR DEBUG");
+        }
+    }
+    private void AttachItem(Rage.Object SmokedItem, string boneName, Vector3 offset, Rotator rotator)
+    {
+        if (SmokedItem.Exists())
+        {
+            SmokedItem.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, boneName), offset, rotator);
+
+        }
+    }
+    private bool CheckAttachmentkeys()
+    {
+
+        float adderOffset = isPrecise ? 0.001f : 0.01f;
+        float rotatorOFfset = isPrecise ? 1.0f : 10f;
+        if (Game.IsKeyDownRightNow(Keys.T))//X UP?
+        {
+            Offset = new Vector3(Offset.X + adderOffset, Offset.Y, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.G))//X Down?
+        {
+            Offset = new Vector3(Offset.X - adderOffset, Offset.Y, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.Y))//Y UP?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y + adderOffset, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.H))//Y Down?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y - adderOffset, Offset.Z);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.U))//Z Up?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y, Offset.Z + adderOffset);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.J))//Z Down?
+        {
+            Offset = new Vector3(Offset.X, Offset.Y, Offset.Z - adderOffset);
+            return true;
+        }
+
+        else if (Game.IsKeyDownRightNow(Keys.I))//XR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch + rotatorOFfset, Rotation.Roll, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.K))//XR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch - rotatorOFfset, Rotation.Roll, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.O))//YR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll + rotatorOFfset, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.L) || Game.IsKeyDownRightNow(Keys.OemPeriod))//YR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll - rotatorOFfset, Rotation.Yaw);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.P))//ZR Up?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll, Rotation.Yaw + rotatorOFfset);
+            return true;
+        }
+        else if (Game.IsKeyDownRightNow(Keys.OemSemicolon))//ZR Down?
+        {
+            Rotation = new Rotator(Rotation.Pitch, Rotation.Roll, Rotation.Yaw - rotatorOFfset);
+            return true;
+        }
+        return false;
+    }
+
+    private void SetWeaponAliasAttachment()
+    {
+        //shovel replacing baseball bat?
+        string propName = NativeHelper.GetKeyboardInput("gr_prop_gr_hammer_01");
+        string weaponHashText = NativeHelper.GetKeyboardInput("1317494643");
+        if (uint.TryParse(weaponHashText, out uint WeaponHash))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(Game.LocalPlayer.Character, WeaponHash, 200, false, false);
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, WeaponHash, true);
+            if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
+            {
+                Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = false;
+            }
+            //BONETAG_R_PH_HAND new Vector3(-0.03f,-0.2769999f,-0.06200002f),new Rotator(20f, -101f, 81f)
+            Rage.Object weaponObject = null;
+            try
+            {
+                weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
+                string HandBoneName = "BONETAG_R_PH_HAND";
+                Offset = new Vector3(0f, 0f, 0f);
+                Rotation = new Rotator(0f, 0f, 0f);
+                if (weaponObject.Exists())
+                {
+                    AttachItem(weaponObject, HandBoneName, new Vector3(0.0f, 0.0f, 0f), new Rotator(0f, 0f, 0f));
+
+                    GameFiber.StartNew(delegate
+                    {
+                        while (!Game.IsKeyDownRightNow(Keys.Space))
+                        {
+                            uint currentWeapon;
+                            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Game.LocalPlayer.Character, out currentWeapon, true);
+                            if (currentWeapon != WeaponHash)
+                            {
+                                break;
+                            }
+                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                            {
+                                AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                                GameTimeLastAttached = Game.GameTime;
+                            }
+                            if (Game.IsKeyDown(Keys.B))
+                            {
+                                EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                GameFiber.Sleep(500);
+                            }
+                            if (Game.IsKeyDown(Keys.N))
+                            {
+                                isPrecise = !isPrecise;
+                                GameFiber.Sleep(500);
+                            }
+                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                            GameFiber.Yield();
+                        }
+                        if (weaponObject.Exists())
+                        {
+                            weaponObject.Delete();
+                        }
+                        if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
+                        {
+                            Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = true;
+                        }
+                    }, "Run Debug Logic");
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            }
+        }
+    }
+
+    private void SetParticleAttachment()
+    {
+        //shovel replacing baseball bat?
+        string propName = NativeHelper.GetKeyboardInput("p_cs_lighter_01");
+        string particleGroupName = NativeHelper.GetKeyboardInput("core");
+        string particleName = NativeHelper.GetKeyboardInput("ent_anim_cig_smoke");
+        Rage.Object weaponObject = null;
+        try
+        {
+            weaponObject = new Rage.Object(propName, Player.Character.GetOffsetPositionUp(50f));
+            string HandBoneName = "BONETAG_L_PH_HAND";
+
+            Offset = new Vector3(0.0f, 0.0f, 0.0f);
+            Rotation = new Rotator(0f, 0f, 0f);
+
+
+            Vector3 CoolOffset = new Vector3(0.13f, 0.02f, 0.02f);
+            Rotator CoolRotation = new Rotator(-93f, 40f, 0f);
+            if (weaponObject.Exists())
+            {
+                string dictionary = "anim@amb@casino@hangout@ped_male@stand_withdrink@01a@base";
+                string animation = "base";
+
+                AnimationDictionary.RequestAnimationDictionay(dictionary);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 4.0f, -4.0f, -1, (int)(AnimationFlags.Loop | AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);//-1
+
+
+
+                AttachItem(weaponObject, HandBoneName, CoolOffset, CoolRotation);
+                LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, weaponObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
+                GameFiber.StartNew(delegate
+                {
+                    while (!Game.IsKeyDownRightNow(Keys.Space))
+                    {
+                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        {
+                            particle.Stop();
+                            particle = new LoopedParticle(particleGroupName, particleName, weaponObject, Offset, Rotation, 1.5f);
+                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                            GameTimeLastAttached = Game.GameTime;
+                        }
+                        if (Game.IsKeyDown(Keys.B))
+                        {
+                            EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            GameFiber.Sleep(500);
+                        }
+                        if (Game.IsKeyDown(Keys.N))
+                        {
+                            isPrecise = !isPrecise;
+                            GameFiber.Sleep(500);
+                        }
+                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                        GameFiber.Yield();
+                    }
+                    if (weaponObject.Exists())
+                    {
+                        weaponObject.Delete();
+                    }
+                    if (particle != null)
+                    {
+                        particle.Stop();
+                    }
+                }, "Run Debug Logic");
+            }
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+        }
+
+    }
+
 
 }

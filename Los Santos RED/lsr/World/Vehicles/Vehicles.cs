@@ -71,6 +71,7 @@ public class Vehicles
     {
         RageVehicles = Rage.World.GetEntities(GetEntitiesFlags.ConsiderAllVehicles);
         GameFiber.Yield();
+        int updated = 0;
         foreach (Vehicle vehicle in RageVehicles.Where(x => x.Exists()))//take 20 is new
         {
             if (Settings.SettingsManager.VehicleSettings.UseBetterLightStateOnAI)//move into a controller proc?
@@ -81,6 +82,12 @@ public class Vehicles
             if (AddEntity(vehicle))
             {   
                 GameFiber.Yield();
+            }
+            updated++;
+            if(updated > 10)
+            {
+                GameFiber.Yield();
+                updated = 0;
             }
             //GameFiber.Yield();//TR 29
         }
@@ -102,6 +109,7 @@ public class Vehicles
     {
         try
         {
+            int updated = 0;
             foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000).ToList())
             {
                 if (PoliceCar.Vehicle.Exists())
@@ -121,8 +129,14 @@ public class Vehicles
                     }
                     //GameFiber.Yield();//TR 29
                 }
+                if(updated > 10)
+                {
+                    GameFiber.Yield();
+                    updated = 0;
+                }
             }
             GameFiber.Yield();//TR 29
+            updated = 0;
             foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
             {
                 if (civilianCar.Vehicle.Exists())
@@ -143,6 +157,11 @@ public class Vehicles
                     }
                     //GameFiber.Yield();//TR 29
                 }
+                if (updated > 10)
+                {
+                    GameFiber.Yield();
+                    updated = 0;
+                }
             }
         }
         catch(InvalidOperationException ex)
@@ -152,6 +171,7 @@ public class Vehicles
     }
     private void FixDamagedPoliceVehicles()
     {
+        int updated = 0;
         foreach (VehicleExt PoliceCar in PoliceVehicles.Where(x => !x.OwnedByPlayer && x.Vehicle.Exists() && x.WasModSpawned && x.HasExistedFor >= 15000).ToList())
         {
             if (PoliceCar.Vehicle.Exists())
@@ -162,6 +182,11 @@ public class Vehicles
                     GameFiber.Yield();
                 }
                // GameFiber.Yield();//TR 29
+            }
+            if (updated > 10)
+            {
+                GameFiber.Yield();
+                updated = 0;
             }
         }
     }

@@ -263,7 +263,7 @@ namespace LosSantosRED.lsr.Player
                     Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 }
                 IsAttachedToHand = true;
-                Player.AttachedProp = Shovel;
+                Player.AttachedProp.Add(Shovel);
             }
         }
         private void CreateShovel()

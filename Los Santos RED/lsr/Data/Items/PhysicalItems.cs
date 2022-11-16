@@ -250,6 +250,16 @@ public class PhysicalItems : IPropItems
         {
 
 
+
+
+
+            new PhysicalItem("prop_cs_hand_radio", new List<PropAttachment>() { 
+                new PropAttachment("RightHand", "BONETAG_R_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)),
+                new PropAttachment("Belt", "BONETAG_PELVIS", new Vector3(0f,0f,0.21f),new Rotator(-90f, -90f, 0f)),
+
+            }),
+
+
             new PhysicalItem("prop_bong_01", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f),new Rotator(0.0f, 0.0f, 0.0f)) }),
 
 

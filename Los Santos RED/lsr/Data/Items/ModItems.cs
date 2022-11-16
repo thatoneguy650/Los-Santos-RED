@@ -73,6 +73,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
+        AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -98,6 +99,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
+        AllItems.AddRange(PossibleItems.RadioItems);
 
         return AllItems;
     }
@@ -122,6 +124,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
+        AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems;
     }
     public List<ModItem> InventoryItems()
@@ -145,6 +148,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.HammerItems);
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
+        AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems;
     }
     public void Setup(PhysicalItems propItems)
@@ -613,6 +617,12 @@ public class ModItems : IModItems
     }
     private void DefaultConfig_Tools()
     {
+
+        PossibleItems.RadioItems.AddRange(new List<RadioItem>
+        {
+            new RadioItem("Schmidt & Priss Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further./") {
+                ModelItemID = "prop_cs_hand_radio" },
+        });
         PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>
         {
             //Generic Tools

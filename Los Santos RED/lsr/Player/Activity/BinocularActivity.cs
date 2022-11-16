@@ -542,7 +542,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Binoculars.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Binoculars;
+                Player.AttachedProp.Add(Binoculars);
                 InitialDirection = Binoculars.Direction;
             }
         }

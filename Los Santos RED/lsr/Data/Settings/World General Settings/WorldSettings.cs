@@ -58,7 +58,7 @@ public class WorldSettings : ISettingsDefaultable
         LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;
 
-        ShowAllBlipsOnMap = false;
+       // ShowAllBlipsOnMap = false;
         ShowMarkersOnLocationEntrances = false;
         HotelsUsesRooms = false;
         AllowPoliceBackupBlip = true;

@@ -36,5 +36,8 @@ public class PossibleItems
 
     public List<BinocularsItem> BinocularsItems { get; private set; } = new List<BinocularsItem>();
 
+
+    public List<RadioItem> RadioItems { get; private set; } = new List<RadioItem>();
+
 }
 

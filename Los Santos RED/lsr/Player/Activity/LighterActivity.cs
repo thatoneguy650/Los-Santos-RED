@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Lighter.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Lighter;
+                Player.AttachedProp.Add(Lighter);
             }
         }
         private void CreateLighter()

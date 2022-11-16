@@ -9,6 +9,8 @@ public class ScannerSettings : ISettingsDefaultable
 {
     [Description("Global enable disable for the entire scanner system.")]
     public bool IsEnabled { get; set; }
+    [Description("If enabled, you will be required to have a radio item with police frequencies to hear the scanner.")]
+    public bool DisableScannerWithoutRadioItem { get; set; }
     [Description("Enable or disable audio alerts from the scanner")]
     public bool EnableAudio { get; set; }
     [Description("Enable or disable changing audio volume with the scanner.")]
@@ -31,6 +33,7 @@ public class ScannerSettings : ISettingsDefaultable
     public int NumberOfUnitsToAnnounce { get; set; }
     [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
     public bool ApplyFilter { get; set; }
+
     public ScannerSettings()
     {
         SetDefault();
@@ -38,6 +41,7 @@ public class ScannerSettings : ISettingsDefaultable
     public void SetDefault()
     {
         IsEnabled = true;
+        DisableScannerWithoutRadioItem = false;
         EnableAudio = true;
         SetVolume = true;
         AudioVolume = 0.45f;

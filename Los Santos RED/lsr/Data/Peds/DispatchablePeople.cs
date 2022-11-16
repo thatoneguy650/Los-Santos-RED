@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -103,12 +104,20 @@ public class DispatchablePeople : IDispatchablePeople
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 7, 1, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() {  }),
-                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 45, 0), new PedPropComponent(1, 25, 9) }, OptionalPropChance = 10 },//no body armor with hat and glasses possible
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 45, 0), new PedPropComponent(1, 25, 9) }, OptionalPropChance = 10
+
+                //,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
+
+            },//no body armor with hat and glasses possible
+
+
             new DispatchablePerson("mp_f_freemode_01",0,40) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 30,ArmorMax = 50,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 14, 0, 0) ,new PedComponent(4, 34, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(9, 6, 1, 0), new PedComponent(10, 7, 3, 0), new PedComponent(11, 48, 0, 0)},
                     new List<PedPropComponent>() {  }),
-                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9) },OptionalPropChance = 10},//body armor, with riot helmet and glasses possible
+                OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 123, 15), new PedPropComponent(1, 25, 9) },OptionalPropChance = 10
+                          //  ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
+                          },//body armor, with riot helmet and glasses possible
 
 
             new DispatchablePerson("mp_m_freemode_01",60,60) { RandomizeHead = true,MaxWantedLevelSpawn = 2,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },
@@ -116,13 +125,17 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 46, 0), new PedPropComponent(1, 23, 9) }
-                ,OptionalPropChance = 10 },
+                ,OptionalPropChance = 10
+                          // ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
+            },
             new DispatchablePerson("mp_m_freemode_01",0,60) { RandomizeHead = true,MinWantedLevelSpawn = 3,ArmorMin = 50,ArmorMax = 50,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" },
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
                     new List<PedPropComponent>() { })
                 ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9) }
                 ,OptionalPropChance = 10
+
+                              // ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
 
 
             },//no body armor with glasses and goofy hat

@@ -358,7 +358,7 @@ namespace LosSantosRED.lsr.Player
             {
                 Flashlight.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 IsAttachedToHand = true;
-                Player.AttachedProp = Flashlight;
+                Player.AttachedProp.Add(Flashlight);
                 InitialDirection = Flashlight.Direction;
             }
         }

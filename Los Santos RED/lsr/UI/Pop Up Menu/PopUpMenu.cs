@@ -87,7 +87,10 @@ public class PopUpMenu
             new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
+#if DEBUG
             new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(7,"Belt","BeltItemsSubMenu","Open Belt Sub Menu"){ ClosesMenu = false },
+#endif
         };
         List<PopUpMenuMap> InVehicleMenuMaps = new List<PopUpMenuMap>()
         {
@@ -97,7 +100,10 @@ public class PopUpMenu
             new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
             new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
+#if DEBUG
             new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(7,"Belt","BeltItemsSubMenu","Open Belt Sub Menu"){ ClosesMenu = false },
+#endif
         };
         List<PopUpMenuMap> InfoSubMenu = new List<PopUpMenuMap>()
         {
@@ -310,6 +316,7 @@ public class PopUpMenu
         UpdateInventoryMenuGroups();
         UpdateGroupMenuGroups();
         UpdateAffiliationMenuGroups();
+        UpdateBeltItems();
         //UpdateGroupMembers();
     }
 
@@ -323,6 +330,23 @@ public class PopUpMenu
         }
         PopUpMenuGroups.Add(new PopUpMenuGroup("AffiliationSubMenu", AffiliationSubMenu) { IsChild = true, Group = "Affiliation" });
     }
+
+
+
+
+    private void UpdateBeltItems()
+    {
+        PopUpMenuGroups.RemoveAll(x => x.Group == "Belt");
+        int ID2 = 0;
+        List<PopUpMenuMap> beltItems = new List<PopUpMenuMap>();
+        foreach (AttachedItem ii in Player.ActivityManager.AttachedItems.Where(x => x.ModItem != null))
+        {
+            beltItems.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseBeltItem(ii, true)), ii.ModItem.Description));
+            ID2++;
+        }
+        PopUpMenuGroups.Add(new PopUpMenuGroup("BeltItemsSubMenu", beltItems) { IsChild = true, Group = "Belt" });
+    }
+
 
     private void UpdateGroupMenuGroups()
     {

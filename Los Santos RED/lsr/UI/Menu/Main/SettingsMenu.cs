@@ -48,10 +48,11 @@ public class SettingsMenu : Menu//needs lots of cleanup still
 
     private void SettingsUIMenu_OnMenuOpen(UIMenu sender)
     {
-        if(SettingsProvider.IsBackendChanged)
+        if(SettingsProvider.IsBackendChanged || Crimes.IsBackendChanged)
         {
             CreateSettingsMenu();
             SettingsProvider.IsBackendChanged = false;
+            Crimes.IsBackendChanged = false;
         }
        // Update();
     }
@@ -180,13 +181,9 @@ public class SettingsMenu : Menu//needs lots of cleanup still
                 }
             }
         }
-
-
-        //CreateCrimesSubMenu();
         CreateItemSubMenu("Change Crimes SubMenu", Crimes.CrimeList);
         //CreateItemSubMenu("Change Shop Menus SubMenu", ShopMenus.ShopMenuList);
         //CreateItemSubMenu("Change Intoxicants SubMenu", Intoxicants.Items);
-
     }
     private void OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -329,52 +326,6 @@ public class SettingsMenu : Menu//needs lots of cleanup still
             }
         }
         MenuPool.ProcessMenus();
-    }
-
-    private void CreateCrimesSubMenu()
-    {
-        UIMenu crimesSubMenu = MenuPool.AddSubMenu(SettingsUIMenu, "Change Crimes SubMenu");
-        crimesSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        crimesSubMenu.Width = 0.5f;
-        foreach (Crime crime in Crimes.CrimeList)
-        {
-            UIMenu crimeMenu = MenuPool.AddSubMenu(crimesSubMenu, crime.Name);
-            crimeMenu.SetBannerType(EntryPoint.LSRedColor);
-            crimeMenu.Width = 0.5f;
-            PropertyInfo[] properties = crime.GetType().GetProperties();
-            foreach (PropertyInfo property in properties)
-            {
-                string strippedPropertyName = property.Name;
-                CategoryAttribute propertyCategory = (CategoryAttribute)property.GetCustomAttribute(typeof(CategoryAttribute), true);
-                DescriptionAttribute propertyNameAlt = (DescriptionAttribute)property.GetCustomAttribute(typeof(DescriptionAttribute), true);
-                if (propertyNameAlt != null)
-                {
-                    strippedPropertyName = propertyNameAlt.Description;
-                }
-                string Description = property.Name;
-                Description = Description.Substring(0, Math.Min(800, Description.Length));
-                if (property.PropertyType == typeof(bool))
-                {
-                    UIMenuCheckboxItem MySetting = new UIMenuCheckboxItem(property.Name, (bool)property.GetValue(crime), Description);
-                    MySetting.CheckboxEvent += (sender, Checked) =>
-                    {
-                        property.SetValue(crime, Checked);
-                        //crimeMenu.Visible = false;
-                    };
-                    crimeMenu.AddItem(MySetting);
-                }
-                else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(string) || property.PropertyType == typeof(float) || property.PropertyType == typeof(uint) || property.PropertyType == typeof(Keys))
-                {
-                    UIMenuItem MySetting = new UIMenuItem($"{property.Name}: {property.GetValue(crime)}", Description);
-                    MySetting.Activated += (sender, selectedItem) =>
-                    {
-                        UpdateSettings(sender, selectedItem, 0, crime.GetType().GetProperties(), crime);
-                        //sender.Visible = false;
-                    };
-                    crimeMenu.AddItem(MySetting);
-                }
-            }
-        }
     }
     private void CreateItemSubMenu<T>(string name, List<T> list)
     {
