@@ -22,7 +22,7 @@ public class LighterItem : ModItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN Lighter ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        if (actionable.IsOnFoot && !actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
         {
             actionable.ActivityManager.StartUpperBodyActivity(new LighterActivity(actionable, this));
             return true;

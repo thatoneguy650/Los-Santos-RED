@@ -77,12 +77,14 @@ namespace LosSantosRED.lsr.Player
             {
                 Setup();
                 ShouldContinue = true;
+                Player.ActivityManager.PausedActivites.Remove(this);
             }
         }
         public override void Pause()
         {
             isPaused = true;
             Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.AddPausedActivity(this);
         }
         public override bool IsPaused() => isPaused;
         public override void Start()

@@ -242,23 +242,41 @@ public class ButtonPrompts
         }
         else
         {
-            if (Player.ActivityManager.CanPauseCurrentActivity && Player.ActivityManager.IsCurrentActivityPaused)
+            if(Player.ActivityManager.PausedActivites.Any(x=>x.IsPaused()))
             {
-                AttemptAddPrompt("ActivityControlContinue", Player.ActivityManager.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
-                if (Player.ActivityManager.CanCancelCurrentActivity)
-                {
-                    AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
-                }
-                else
-                {
-                    RemovePrompts("ActivityControlCancel");
-                }
+                AttemptAddPrompt("ActivityControlContinue", "Continue An Activity", "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
             }
             else
             {
                 RemovePrompts("ActivityControlContinue");
                 RemovePrompts("ActivityControlCancel");
             }
+
+
+
+
+
+            //if (Player.ActivityManager.CanPauseCurrentActivity && Player.ActivityManager.IsCurrentActivityPaused)
+            //{
+            //    AttemptAddPrompt("ActivityControlContinue", Player.ActivityManager.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
+            //    if (Player.ActivityManager.CanCancelCurrentActivity)
+            //    {
+            //        AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            //    }
+            //    else
+            //    {
+            //        RemovePrompts("ActivityControlCancel");
+            //    }
+            //}
+            //else
+            //{
+            //    RemovePrompts("ActivityControlContinue");
+            //    RemovePrompts("ActivityControlCancel");
+            //}
+
+
+
+            RemovePrompts("ActivityControlCancel");
             RemovePrompts("ActivityControlPause");
         }
     }

@@ -49,6 +49,7 @@ public class MeleeWeaponAlias
         NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Player.Character, out currentWeapon, true);
         if (currentWeapon != MeleeWeaponToAliasHash)
         {
+            EntryPoint.WriteToConsole("Player changed weapon, ending");
             IsCancelled = true;
         }
         if(!Player.IsAliveAndFree)
@@ -112,6 +113,7 @@ public class MeleeWeaponAlias
             }
             if (!ItemToAliasObject.Exists())
             {
+                EntryPoint.WriteToConsole("Error Creating Item for Melee Alias");
                 IsCancelled = true;
             }
         }

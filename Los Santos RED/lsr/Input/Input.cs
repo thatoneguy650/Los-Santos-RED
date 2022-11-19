@@ -116,6 +116,11 @@ namespace LosSantosRED.lsr
                 }
             }
 
+
+
+
+
+
             if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)
             {
                 Player.CellPhone.OpenBurner();

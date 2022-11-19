@@ -24,7 +24,7 @@ public class IngestItem : ConsumableItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN InjectItem ACTIVITY!!!!!!!!!!");
-        if (!actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        if (!actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
             actionable.ActivityManager.StartUpperBodyActivity(new IngestActivity(actionable, settings, this, intoxicants));

@@ -121,7 +121,7 @@ public class PopUpMenu
             new PopUpMenuMap(5,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown)},
             new PopUpMenuMap(6,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && !Player.IsInVehicle && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown && Player.CurrentLookedAtVehicle != null)},
             new PopUpMenuMap(7,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle.") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
-           // new PopUpMenuMap(8,"Flashlight",new Action(() => Player.ActivityManager.HoldFlashlight()),"Start Holding a flashlight") { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
+            new PopUpMenuMap(8,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllPaused()),"Stops all active and paused activites") { IsCurrentlyValid = new Func<bool>(() => true) },
         };
 
 
@@ -314,9 +314,13 @@ public class PopUpMenu
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(TransitionInSound, "1st_Person_Transition", "PLAYER_SWITCH_CUSTOM_SOUNDSET", 1);
         CurrentPopUpMenuGroup = "DefaultOnFoot";
         UpdateInventoryMenuGroups();
+        GameFiber.Yield();
         UpdateGroupMenuGroups();
+        GameFiber.Yield();
         UpdateAffiliationMenuGroups();
+        GameFiber.Yield();
         UpdateBeltItems();
+        GameFiber.Yield();
         //UpdateGroupMembers();
     }
 
@@ -336,15 +340,15 @@ public class PopUpMenu
 
     private void UpdateBeltItems()
     {
-        PopUpMenuGroups.RemoveAll(x => x.Group == "Belt");
-        int ID2 = 0;
-        List<PopUpMenuMap> beltItems = new List<PopUpMenuMap>();
-        foreach (AttachedItem ii in Player.ActivityManager.AttachedItems.Where(x => x.ModItem != null))
-        {
-            beltItems.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseBeltItem(ii, true)), ii.ModItem.Description));
-            ID2++;
-        }
-        PopUpMenuGroups.Add(new PopUpMenuGroup("BeltItemsSubMenu", beltItems) { IsChild = true, Group = "Belt" });
+        //PopUpMenuGroups.RemoveAll(x => x.Group == "Belt");
+        //int ID2 = 0;
+        //List<PopUpMenuMap> beltItems = new List<PopUpMenuMap>();
+        //foreach (AttachedItem ii in Player.ActivityManager.AttachedItems.Where(x => x.ModItem != null))
+        //{
+        //    beltItems.Add(new PopUpMenuMap(ID2, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseBeltItem(ii, true)), ii.ModItem.Description));
+        //    ID2++;
+        //}
+        //PopUpMenuGroups.Add(new PopUpMenuGroup("BeltItemsSubMenu", beltItems) { IsChild = true, Group = "Belt" });
     }
 
 

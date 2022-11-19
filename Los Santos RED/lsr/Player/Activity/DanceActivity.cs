@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Player
         public override string PausePrompt { get; set; } = "Pause Dancing";
         public override string CancelPrompt { get; set; } = "Stop Dancing";
         public override string ContinuePrompt { get; set; } = "Continue Dancing";
+
         public override void Cancel()
         {
             IsCancelled = true;

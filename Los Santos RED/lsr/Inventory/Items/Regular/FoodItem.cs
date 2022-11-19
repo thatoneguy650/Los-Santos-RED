@@ -24,7 +24,7 @@ public class FoodItem : ConsumableItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN FoodItem ACTIVITY!!!!!!!!!!");
-        if (!actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        if (!actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
             actionable.ActivityManager.StartUpperBodyActivity(new EatingActivity(actionable, settings, this, intoxicants));

@@ -4,6 +4,8 @@ using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.Elements;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -41,6 +43,9 @@ public class ActivityManager
     private ICameraControllable CameraControllable;
 
 
+    private MenuPool MenuPool;
+    private UIMenu continueActivityMenu;
+
     public bool IsUsingToolAsWeapon { get; set; }
 
     public bool CanUseItemsBase => !Player.IsIncapacitated && Player.IsAliveAndFree && !Player.IsGettingIntoAVehicle && !IsHoldingHostage && !Player.RecentlyGotOutOfVehicle && !IsLootingBody;
@@ -64,9 +69,17 @@ public class ActivityManager
     public bool CanDrag => !Player.IsInVehicle && !Player.IsIncapacitated && !Player.IsMovingDynamically && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanDragLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanDrag && !Player.CurrentLookedAtPed.IsInVehicle && (Player.CurrentLookedAtPed.IsUnconscious || Player.CurrentLookedAtPed.IsDead);
     public bool CanRecruitLookedAtGangMember => Player.CurrentLookedAtGangMember != null && Player.CurrentTargetedPed == null && Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.CurrentLookedAtGangMember.Gang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == Player.CurrentLookedAtGangMember.Gang.ID && !Player.GroupManager.IsMember(Player.CurrentLookedAtGangMember);
+   
+    
+    
     public string ContinueCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.ContinuePrompt : LowerBodyActivity != null ? LowerBodyActivity.ContinuePrompt : "";
     public string CancelCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.CancelPrompt : LowerBodyActivity != null ? LowerBodyActivity.CancelPrompt : "";
     public string PauseCurrentActivityPrompt => UpperBodyActivity != null ? UpperBodyActivity.PausePrompt : LowerBodyActivity != null ? LowerBodyActivity.PausePrompt : "";
+  
+    
+    
+    
+    
     public bool CanCancelCurrentActivity => UpperBodyActivity?.CanCancel == true || LowerBodyActivity?.CanCancel == true;
     public bool CanPauseCurrentActivity => UpperBodyActivity?.CanPause == true || LowerBodyActivity?.CanPause == true;
     public bool IsCurrentActivityPaused => UpperBodyActivity?.IsPaused() == true || LowerBodyActivity?.IsPaused() == true;
@@ -90,13 +103,17 @@ public class ActivityManager
     public DanceData LastDance { get; set; }
     public Interaction Interaction { get; private set; }
     public DynamicActivity Activity => UpperBodyActivity != null ? UpperBodyActivity : LowerBodyActivity;
-    public ModItem AttachedItem { get; set; }
+   // public ModItem AttachedItem { get; set; }
 
 
     public bool CanHearScanner => !Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem || Player.Inventory.Has(typeof(RadioItem));
 
 
-    public List<AttachedItem> AttachedItems { get; set; } = new List<AttachedItem>();
+
+    public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
+
+
+   // public List<AttachedItem> AttachedItems { get; set; } = new List<AttachedItem>();
 
 
 
@@ -131,33 +148,117 @@ public class ActivityManager
     public void Dispose()
     {
         Interaction?.Dispose();
-        foreach(AttachedItem ai in AttachedItems)
+
+
+        foreach(DynamicActivity da in PausedActivites)
         {
-            if(ai.SpawnedItem.Exists())
-            {
-                ai.SpawnedItem.Delete();
-            }
+            da.Cancel();
         }
+        PausedActivites.Clear();
+
+        //foreach(AttachedItem ai in AttachedItems)
+        //{
+        //    if(ai.SpawnedItem.Exists())
+        //    {
+        //        ai.SpawnedItem.Delete();
+        //    }
+        //}
     }
     public void Update()
     {
-        AttachedItems.RemoveAll(x => !x.SpawnedItem.Exists());
+        //AttachedItems.RemoveAll(x => !x.SpawnedItem.Exists());
     }
     public void Reset()
     {
         IsPerformingActivity = false;
     }
+
+
+
+
+
+
+
+
+
+    public void AddPausedActivity(DynamicActivity da)
+    {
+        UpperBodyActivity = null;
+        LowerBodyActivity = null;
+        PausedActivites.Add(da);
+    }
+    public void StopAllActivities()
+    {
+        ForceCancelAllActive();
+        ForceCancelAllPaused();
+    }
+
+
+    public void ForceCancelAllPaused()
+    {
+        foreach (DynamicActivity da in PausedActivites)
+        {
+            da.Cancel();
+        }
+        PausedActivites.Clear();
+    }
     public void ContinueCurrentActivity()
     {
-        if (UpperBodyActivity != null && UpperBodyActivity.CanPause && UpperBodyActivity.IsPaused())
+        EntryPoint.WriteToConsole(" ContinueCurrentActivity 1  I GOT HERE");
+        if (PausedActivites.Count > 1 || 1==1)
         {
-            UpperBodyActivity.Continue();
+            MenuPool = new MenuPool();
+            continueActivityMenu = new UIMenu("Activity", "Select an activity");
+            continueActivityMenu.RemoveBanner();
+            MenuPool.Add(continueActivityMenu);
+            foreach(DynamicActivity da in PausedActivites)
+            {
+                UIMenuItem uii = new UIMenuItem(da.ModItem?.Name);
+                uii.Activated += (menu, item) =>
+                {
+                    UpperBodyActivity = da;
+                    da.Continue();
+                    menu.Visible = false;
+                };
+                continueActivityMenu.AddItem(uii);
+            }
+            continueActivityMenu.Visible = true;
+            GameFiber activityMenuWatcher = GameFiber.StartNew(delegate
+            {
+                EntryPoint.WriteToConsole(" ContinueCurrentActivity STARTED THREAD");
+                while (continueActivityMenu.Visible)
+                {
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+                EntryPoint.WriteToConsole(" ContinueCurrentActivity STOPPED THREAD");
+            }, "ActivityMenuWatcher");
+
+            EntryPoint.WriteToConsole(" ContinueCurrentActivity 2  I GOT HERE");
         }
-        else if (LowerBodyActivity != null && LowerBodyActivity.CanPause && LowerBodyActivity.IsPaused())
+        else
         {
-            LowerBodyActivity.Continue();
+            DynamicActivity toContinue = PausedActivites.FirstOrDefault();
+            if (toContinue != null && toContinue.CanPause)
+            {
+                UpperBodyActivity = toContinue;
+                toContinue.Continue();
+            }
         }
+
+
+
+        //if (UpperBodyActivity != null && UpperBodyActivity.CanPause && UpperBodyActivity.IsPaused())
+        //{
+        //    UpperBodyActivity.Continue();
+        //}
+        //else if (LowerBodyActivity != null && LowerBodyActivity.CanPause && LowerBodyActivity.IsPaused())
+        //{
+        //    LowerBodyActivity.Continue();
+        //}
     }
+
+
     public void PauseCurrentActivity()
     {
         if (UpperBodyActivity != null && UpperBodyActivity.CanPause)
@@ -169,6 +270,23 @@ public class ActivityManager
             LowerBodyActivity.Pause();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void CancelCurrentActivity()
     {
         if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
@@ -203,7 +321,7 @@ public class ActivityManager
             UpperBodyActivity = null;
         }
     }
-    private void ForceCancelAll()
+    private void ForceCancelAllActive()
     {
         if (UpperBodyActivity != null)
         {
@@ -220,24 +338,44 @@ public class ActivityManager
     }
     public void StartUpperBodyActivity(DynamicActivity toStart)
     {
-        ForceCancelUpperBody();
-        IsPerformingActivity = true;
-        UpperBodyActivity = toStart;
-        UpperBodyActivity.Start();
+        if (!PausedActivites.Any(x => x.GetType() == toStart.GetType()))
+        {
+            ForceCancelUpperBody();
+            IsPerformingActivity = true;
+            UpperBodyActivity = toStart;
+            UpperBodyActivity.Start();
+        }
+        else
+        {
+            Game.DisplayHelp("Stop existing activity to start");
+        }
     }
     public void StartLowerBodyActivity(DynamicActivity toStart)
     {
-        ForceCancelUpperBody();
-        IsPerformingActivity = true;
-        LowerBodyActivity = toStart;
-        LowerBodyActivity.Start();
+        if (!PausedActivites.Any(x => x.GetType() == toStart.GetType()))
+        {
+            ForceCancelUpperBody();
+            IsPerformingActivity = true;
+            LowerBodyActivity = toStart;
+            LowerBodyActivity.Start();
+        }
+        else
+        {
+            Game.DisplayHelp("Stop existing activity to start");
+        }
     }
+
+
+
+
+
+
     //Dynamic Activites w/ IsPerforming
     public void RemovePlate()
     {
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             IsPerformingActivity = true;
             UpperBodyActivity = new PlateTheft(Actionable, Settings, World);
             UpperBodyActivity.Start();
@@ -274,7 +412,7 @@ public class ActivityManager
         EntryPoint.WriteToConsole($"Dance Start 2 NO DATA?: {danceData == null}");
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting)
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             IsPerformingActivity = true;
             LastDance = danceData;
             UpperBodyActivity = new DanceActivity(Actionable, danceData, RadioStations, Settings, Dances);
@@ -289,7 +427,7 @@ public class ActivityManager
     }  
     public void UseInventoryItem(ModItem modItem, bool performActivity)
     {
-        if (((!IsPerformingActivity && CanPerformActivities) || !performActivity))// modItem.Type != eConsumableType.None)
+        if ((!IsPerformingActivity && CanPerformActivities) || !performActivity)// modItem.Type != eConsumableType.None)
         {
             if (performActivity)
             {
@@ -305,29 +443,6 @@ public class ActivityManager
 
 
 
-    public void UseBeltItem(AttachedItem attachedItem, bool performActivity)
-    {
-        if (((!IsPerformingActivity && CanPerformActivities) || !performActivity) && attachedItem != null && attachedItem.ModItem != null)// modItem.Type != eConsumableType.None)
-        {
-            if (attachedItem.SpawnedItem.Exists())
-            {
-                attachedItem.SpawnedItem.Delete();
-            }
-            if (performActivity)
-            {
-                attachedItem.ModItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
-            }
-            else
-            {
-                Time.FastForward(Time.CurrentDateTime.AddMinutes(3));
-                attachedItem.ModItem.ConsumeItem(Actionable, Settings.SettingsManager.NeedsSettings.ApplyNeeds);
-            }
-            if (AttachedItems.Contains(attachedItem))
-            {
-                AttachedItems.Remove(attachedItem);
-            }
-        }
-    }
 
 
     public void StartScenario()
@@ -349,7 +464,7 @@ public class ActivityManager
     {
         if (!IsPerformingActivity && CanPerformActivities && CanTakeHostageWithLookedAtPed && Player.IsOnFoot && !IsResting)
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             LowerBodyActivity = new HumanShield(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems);
             LowerBodyActivity.Start();
         }
@@ -358,7 +473,7 @@ public class ActivityManager
     {
         if (!IsPerformingActivity && CanPerformActivities && CanLootLookedAtPed && Player.IsOnFoot && !IsResting)
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             LowerBodyActivity = new Loot(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems);
             LowerBodyActivity.Start();
         }
@@ -367,7 +482,7 @@ public class ActivityManager
     {
         if (!IsPerformingActivity && CanPerformActivities && CanDragLookedAtPed && CanDrag && Player.IsOnFoot && !IsResting)
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             LowerBodyActivity = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World);
             LowerBodyActivity.Start();
         }
@@ -382,7 +497,7 @@ public class ActivityManager
             }
             else
             {
-                ForceCancelAll();
+                ForceCancelAllActive();
                 LowerBodyActivity = new SleepingActivity(Actionable, Settings);
                 LowerBodyActivity.Start();
             }
@@ -408,7 +523,7 @@ public class ActivityManager
     {
         if (!IsPerformingActivity && CanPerformActivities && Player.IsOnFoot && !IsResting )
         {
-            ForceCancelAll();
+            ForceCancelAllActive();
             LowerBodyActivity = new SittingActivity(Actionable, Settings, findSittingProp, enterForward, Seats, CameraControllable);
             LowerBodyActivity.Start();
         }
@@ -698,6 +813,8 @@ public class ActivityManager
             Player.CurrentVehicle.SetDriverWindow(!Player.CurrentVehicle.ManuallyRolledDriverWindowDown);
         }
     }
+
+
 }
 
 

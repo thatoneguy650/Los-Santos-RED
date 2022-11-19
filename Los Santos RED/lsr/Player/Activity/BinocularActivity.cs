@@ -94,7 +94,6 @@ namespace LosSantosRED.lsr.Player
         public override string CancelPrompt { get; set; } = "Put Away Binoculars";
         public override string ContinuePrompt { get; set; } = "Continue Binoculars";
 
-
         public override void Cancel()
         {
             IsCancelled = true;

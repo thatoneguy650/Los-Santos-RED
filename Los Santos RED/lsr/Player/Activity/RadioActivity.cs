@@ -65,6 +65,8 @@ namespace LosSantosRED.lsr.Player
         private string BeltBoneName;
         private Vector3 BeltOffset;
         private Rotator BeltRotator;
+        private bool ShouldContinue;
+        private bool isPaused;
 
         public RadioActivity(IActionable player, ISettingsProvideable settings, RadioItem binocularItem) : base()
         {
@@ -75,13 +77,11 @@ namespace LosSantosRED.lsr.Player
         }
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
-        public override bool CanPause { get; set; } = false;
+        public override bool CanPause { get; set; } = true;
         public override bool CanCancel { get; set; } = true;
-        public override string PausePrompt { get; set; } = "Pause Radio";
+        public override string PausePrompt { get; set; } = "Atach Radio To Belt";
         public override string CancelPrompt { get; set; } = "Put Away Radio";
-        public override string ContinuePrompt { get; set; } = "Continue Radio";
-
-
+        public override string ContinuePrompt { get; set; } = "Take Radio Into Hand";
         public override void Cancel()
         {
             IsCancelled = true;
@@ -89,12 +89,28 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
+            isPaused = true;
+            Player.ActivityManager.IsPerformingActivity = false;
+            Player.ActivityManager.AddPausedActivity(this);
 
+            RemovePrompts();
+            PutAwayItem();
+            AttachItemToBelt();
+            Dispose(false);
         }
-        public override bool IsPaused() => false;
+        public override bool IsPaused() => isPaused;
         public override void Continue()
         {
-
+            if (Player.ActivityManager.CanPerformActivities)
+            {
+                Player.ActivityManager.PausedActivites.Remove(this);
+                isPaused = false;
+                Setup();
+                RemovePrompts();
+                AttachItemToHand();
+                TakeOutItem();
+                AddPrompts();
+            }
         }
         public override void Start()
         {
@@ -213,8 +229,6 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole("Lower Radio End");
             }
         }
-
-
         private void Setup()
         {
             HandBoneName = "BONETAG_R_PH_HAND";
@@ -270,8 +284,6 @@ namespace LosSantosRED.lsr.Player
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsPerformingActivity = true;
         }
-
-
         private void Exit()
         {
             if (!IsCancelled && IsRaised)
@@ -293,45 +305,53 @@ namespace LosSantosRED.lsr.Player
         }
         private void GeneralTick()
         {
-            Player.WeaponEquipment.SetUnarmed();
+            if (!isPaused)
+            {
+                Player.WeaponEquipment.SetUnarmed();
+                
+            }
             CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
         }
         private void StatusTick()
         {
-            CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
+
+                CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
+            
         }
         private void InputTick()
         {
-            DisableControls();
-            if (Player.ButtonPrompts.IsPressed("RadioLower"))
+            if (!isPaused)
             {
-                LowerRadio(true);
-            }
-            if (Player.ButtonPrompts.IsPressed("RadioRaise"))
-            {
-                RaiseRadio();
-            }
-            if (Player.ButtonPrompts.IsPressed("RadioAttach"))
-            {
-                RemovePrompts();
-                PutAwayItem();
-                AttachItemToBelt();
+                DisableControls();
+                if (Player.ButtonPrompts.IsPressed("RadioLower"))
+                {
+                    LowerRadio(true);
+                }
+                if (Player.ButtonPrompts.IsPressed("RadioRaise"))
+                {
+                    RaiseRadio();
+                }
+                //if (Player.ButtonPrompts.IsPressed("RadioAttach"))
+                //{
+                //    RemovePrompts();
+                //    PutAwayItem();
+                //    AttachItemToBelt();
 
 
-                Player.ActivityManager.AttachedItems.Add(new AttachedItem(RadioItem, rageObject));
-                Dispose(false);
+                //    //Player.ActivityManager.AttachedItems.Add(new AttachedItem(RadioItem, rageObject));
+                //    Dispose(false);
 
-                //AddPrompts();
-            }
-            if(Player.ButtonPrompts.IsPressed("RadioDetach"))
-            {
-                RemovePrompts();
-                AttachItemToHand();
-                TakeOutItem();
-                AddPrompts();
+                //    //AddPrompts();
+                //}
+                //if(Player.ButtonPrompts.IsPressed("RadioDetach"))
+                //{
+                //    RemovePrompts();
+                //    AttachItemToHand();
+                //    TakeOutItem();
+                //    AddPrompts();
+                //}
             }
         }
-
         private void AttachItemToHand()
         {
             CreateBinoculars();
@@ -387,17 +407,17 @@ namespace LosSantosRED.lsr.Player
                 }
             }
 
-#if DEBUG
+//#if DEBUG
 
-            if (IsAttachedToHand && !IsRaised)
-            {
-                Player.ButtonPrompts.AddPrompt("Radio", "Attach", "RadioAttach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
-            }
-            else if(IsAttachedToBelt)
-            {
-                Player.ButtonPrompts.AddPrompt("Radio", "Detach", "RadioDetach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
-            }
-#endif
+//            if (IsAttachedToHand && !IsRaised)
+//            {
+//                Player.ButtonPrompts.AddPrompt("Radio", "Attach", "RadioAttach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
+//            }
+//            else if(IsAttachedToBelt)
+//            {
+//                Player.ButtonPrompts.AddPrompt("Radio", "Detach", "RadioDetach", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 12);
+//            }
+//#endif
         }
         private void RemovePrompts()
         {
@@ -433,7 +453,6 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.NextWeapon, false);
             Game.DisableControlAction(0, GameControl.PrevWeapon, false);
         }
-
         private void Dispose(bool deleteObject)
         {
             if (Settings.SettingsManager.ScannerSettings.DisableScannerWithoutRadioItem)

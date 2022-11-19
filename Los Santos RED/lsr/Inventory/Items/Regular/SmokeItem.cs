@@ -26,7 +26,7 @@ public class SmokeItem : ConsumableItem
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
         EntryPoint.WriteToConsole("I AM IN SmokeItem ACTIVITY!!!!!!!!!!");
-        if (!actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        if (!actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
         {
             ModItem li = actionable.Inventory.Get(typeof(LighterItem))?.ModItem;
             if (li != null)

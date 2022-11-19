@@ -34,7 +34,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>x64</PlatformTarget>
@@ -74,16 +74,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.1.9.0\lib\net35\NAudio.dll</HintPath>
+      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="RagePluginHookSDK">
-      <HintPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
+      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -189,14 +189,12 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
-    <Compile Include="lsr\Inventory\Items\Inventory\BongInventoryItem.cs" />
     <Compile Include="lsr\Inventory\Items\LicensePlateInventoryItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BinocularsItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BongItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\ConsumableItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\DrillItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\DrinkItem.cs" />
-    <Compile Include="lsr\Inventory\Items\Inventory\FlashlightInventoryItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\FlashlightItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\FoodItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\HammerItem.cs" />
