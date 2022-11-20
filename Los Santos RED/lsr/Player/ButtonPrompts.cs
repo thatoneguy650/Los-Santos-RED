@@ -328,7 +328,7 @@ public class ButtonPrompts
 
         if (!addedPromptGroup)
         {
-            if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
+            if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
             {
                 SittingPrompts();
                 addedPromptGroup = true;
@@ -421,7 +421,7 @@ public class ButtonPrompts
 
 
 
-        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivities && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
+        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesExtended && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();
             addedPromptGroup = true;

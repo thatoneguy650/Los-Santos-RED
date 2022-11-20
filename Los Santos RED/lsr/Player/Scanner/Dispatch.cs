@@ -87,6 +87,7 @@ public class Dispatch
     public List<AudioSet> SecondaryAudioSet { get; set; } = new List<AudioSet>();
     public int TimesPlayed { get; set; }
     public bool VehicleIncludesIn { get; set; }
+    public bool IsAmbientAllowed { get; set; } = true;
     public void SetPlayed()
     {
         GameTimeLastPlayed = Game.GameTime;

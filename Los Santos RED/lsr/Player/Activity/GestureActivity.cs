@@ -27,6 +27,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Gesture";
         public override string CancelPrompt { get; set; } = "Stop Gesture";
         public override string ContinuePrompt { get; set; } = "Continue Gesture";
@@ -53,6 +54,22 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "GestureActivity");
         }
+
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Gesture");
+            return false;
+        }
+
+
+
+
+
+
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -66,7 +83,7 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"Gesture Enter: {GestureData.AnimationEnter}", 5);
                 GameTimeStartedGesturing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter);
@@ -90,7 +107,7 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"Gesture Idle: {GestureData.AnimationName}", 5);
                 GameTimeStartedGesturing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName);
@@ -116,7 +133,7 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"Gesture Exit: {GestureData.AnimationExit}", 5);
                     GameTimeStartedGesturing = Game.GameTime;
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
-                    while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+                    while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
                     {
                         Player.WeaponEquipment.SetUnarmed();
                         float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit);

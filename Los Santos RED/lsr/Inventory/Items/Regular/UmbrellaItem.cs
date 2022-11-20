@@ -20,10 +20,10 @@ public class UmbrellaItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN Umbrella ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        UmbrellaActivity activity = new UmbrellaActivity(actionable, this);
+        if (activity.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartUpperBodyActivity(new UmbrellaActivity(actionable, this));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
         return false;

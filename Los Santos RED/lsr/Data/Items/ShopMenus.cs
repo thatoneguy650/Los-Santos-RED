@@ -172,7 +172,7 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("G.E.S. Baseball Bat", 95),
                 new MenuItem("ProLaps Five Iron Golf Club", 85),
-                new MenuItem("Schmidt & Priss Scanner", 400),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 400),
 
 
                 new MenuItem("SCHEISS BS Binoculars", 150),
@@ -4044,7 +4044,7 @@ public class ShopMenus : IShopMenus
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
 
 
-                new MenuItem("Schmidt & Priss Scanner", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 85),
 
 
                     }),
@@ -4285,7 +4285,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
-                new MenuItem("Schmidt & Priss Scanner", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 85),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -4429,7 +4429,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
-                new MenuItem("Schmidt & Priss Scanner", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 85),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -4658,7 +4658,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
-                new MenuItem("Schmidt & Priss Scanner", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 85),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });
@@ -4849,7 +4849,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Improvised Incendiary",150) { SubAmount = 1,SubPrice = 150 },
                 new MenuItem("BZ Gas Grenade",250) { SubAmount = 1,SubPrice = 150 },
 
-                new MenuItem("Schmidt & Priss Scanner", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 85),
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
         });

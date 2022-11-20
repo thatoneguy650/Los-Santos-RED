@@ -134,7 +134,7 @@ public class DeadDrop : InteractableLocation
 
         Player.IsDoingSuspiciousActivity = true;
 
-        while (Player.ActivityManager.CanPerformActivities && Game.GameTime - GameTimeStartedAnimation <= 2000)
+        while (Player.ActivityManager.CanPerformActivitiesExtended && Game.GameTime - GameTimeStartedAnimation <= 2000)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "mp_safehousevagos@", "package_dropoff");

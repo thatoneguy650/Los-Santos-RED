@@ -21,10 +21,10 @@ public class ScrewdriverItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN ScrewdriverItem ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        ScrewdriverActivity activity = new ScrewdriverActivity(actionable, settings, this);
+        if (activity.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartLowerBodyActivity(new ScrewdriverActivity(actionable, settings, this));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
         return false;

@@ -21,13 +21,12 @@ public class HammerItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN HammerItem ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        HammerActivity activity = new HammerActivity(actionable, settings, cameraControllable, this);
+        if (activity.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartLowerBodyActivity(new HammerActivity(actionable, settings, cameraControllable, this));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
-        //Game.DisplayHelp($"Item: {Name} is currently unused");
         return false;
     }
 }

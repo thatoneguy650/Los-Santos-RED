@@ -164,7 +164,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.InventoryItems.Add(new InventorySave("Redwood Regular", 15.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Marijuana", 4.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("Hot Dog", 1.0f));
-
+        
         //
 
         AlexisGameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
@@ -174,7 +174,7 @@ public class GameSaves : IGameSaves
        // AlexisGameSave.InventoryItems.Add(new InventorySave("GASH Blue Umbrella", 1.0f));
        // AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
         AlexisGameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-        
+        AlexisGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
 
 
 
@@ -362,7 +362,7 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         ClaudeGameSave.InventoryItems.Add(new InventorySave("Flint Pliers", 1.0f));
         ClaudeGameSave.InventoryItems.Add(new InventorySave("SCHEISS DS Binoculars", 1.0f));
-
+        ClaudeGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
 
         ClaudeGameSave.HungerValue = 85.0f;
         ClaudeGameSave.ThirstValue = 85.0f;
@@ -499,7 +499,7 @@ public class GameSaves : IGameSaves
         };
         ExampleGameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         ExampleGameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
-
+        ExampleGameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         //Needs
         ExampleGameSave.HungerValue = 95.0f;
         ExampleGameSave.ThirstValue = 95.0f;
@@ -516,6 +516,7 @@ public class GameSaves : IGameSaves
         SetDefault(gameSave);
         gameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         GameSaveList.Add(gameSave);
     }
     private void AddDaveNorton()
@@ -534,7 +535,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
         GameSaveList.Add(gameSave);
     }
@@ -555,7 +556,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         GameSaveList.Add(gameSave);
     }
 
@@ -593,7 +594,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
         GameSaveList.Add(gameSave);
     }
@@ -633,7 +634,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
-
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
         GameSaveList.Add(gameSave);
     }

@@ -620,7 +620,7 @@ public class ModItems : IModItems
 
         PossibleItems.RadioItems.AddRange(new List<RadioItem>
         {
-            new RadioItem("Schmidt & Priss Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further./") {
+            new RadioItem("Schmidt & Priss TL6 Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further.") {
                 ModelItemID = "prop_cs_hand_radio" },
         });
         PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>

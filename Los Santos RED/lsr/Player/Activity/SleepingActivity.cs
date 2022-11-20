@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = false;
+        public override bool IsUpperBodyOnly { get; set; } = false;
         public override string PausePrompt { get; set; } = "Pause Activity";
         public override string CancelPrompt { get; set; } = "Stop Activity";
         public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -66,6 +67,24 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "Laying");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if(player.HumanState.Sleep.IsNearMax)
+            {
+                Game.DisplayHelp("You are not tired enough to sleep");
+                return false;
+            }
+            if (!player.IsResting && player.ActivityManager.CanPerformActivitiesExtended)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Sleep");
+            return false;
+        }
+
+
+
+
         private void Enter()
         {
             EntryPoint.WriteToConsole("Sleeping Activity Enter", 5);
@@ -88,7 +107,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, Data.AnimEnterFlag, 0, false, false, false);//-1
             float AnimationTime = 0.0f;
             uint GameTimeStarted = Game.GameTime;
-            while (Player.ActivityManager.CanPerformActivities && Game.GameTime - GameTimeStarted <= 3000 && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && Game.GameTime - GameTimeStarted <= 3000 && !IsCancelled)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
@@ -110,7 +129,7 @@ namespace LosSantosRED.lsr.Player
         {
             EntryPoint.WriteToConsole("Laying Activity Idle", 5);
 
-            if (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            if (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 PlayingDict = Data.AnimBaseDictionary;
                 PlayingAnim = Data.AnimBase;
@@ -119,7 +138,7 @@ namespace LosSantosRED.lsr.Player
 
                 Player.IsResting = true;
                 Player.IsSleeping = true;
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     if (Player.HumanState.Sleep.IsMax)
                     {
@@ -184,7 +203,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle_Foot()
         {
-            if (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            if (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 IsActivelyLayingDown = true;
                 PlayingAnim = "base";
@@ -195,7 +214,7 @@ namespace LosSantosRED.lsr.Player
                 Player.IsResting = true;
                 Player.IsSleeping = true;
 
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     if (Player.IsMoveControlPressed)
                     {

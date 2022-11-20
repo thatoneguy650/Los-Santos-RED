@@ -103,7 +103,7 @@ namespace Mod
             Names = names;
             Seats = seats;
             Agencies = agencies;
-            Scanner = new Scanner(provider, this, audio, Settings, TimeControllable);
+            Scanner = new Scanner(provider, this, audio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
             {
@@ -515,7 +515,7 @@ namespace Mod
             BeingArrested = false;
             IsBusted = false;
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites)
         {
             IsDead = false;
             IsBusted = false;
@@ -528,7 +528,12 @@ namespace Mod
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             HealthState.Reset();
-            ActivityManager.Reset();
+
+
+            if (resetActivites)
+            {
+                ActivityManager.Reset();
+            }
 
             //IsPerformingActivity = false; 
             CurrentVehicle = null;

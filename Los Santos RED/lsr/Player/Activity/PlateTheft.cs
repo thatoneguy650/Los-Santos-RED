@@ -31,6 +31,7 @@ public class PlateTheft : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override bool IsUpperBodyOnly { get; set; } = false;
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -79,6 +80,17 @@ public class PlateTheft : DynamicActivity
             Player.ActivityManager.IsPerformingActivity = false;
         }
     }
+    public override bool CanPerform(IActionable player)
+    {
+        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
+        {
+            return true;
+        }
+        Game.DisplayHelp($"Cannot Change Plate");
+        return false;
+    }
+
+
     private Rage.Object AttachLicensePlateToPed(Ped Pedestrian)
     {
         Rage.Object LicensePlate = null;

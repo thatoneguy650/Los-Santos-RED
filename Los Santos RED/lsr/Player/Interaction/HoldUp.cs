@@ -29,6 +29,7 @@ public class HoldUp : Interaction
     }
     public override string DebugString => $"HoldingUp {Target.Pedestrian.Handle} IsIntimidated {IsTargetIntimidated} TargetMugged {Target.HasBeenMugged}";
     private bool IsTargetIntimidated => GameTimeStartedIntimidating != 0 && Game.GameTime - GameTimeStartedIntimidating >= 1000;
+    public override bool CanPerformActivities { get; set; } = false;
     public override void Dispose()
     {
         CleanUp();

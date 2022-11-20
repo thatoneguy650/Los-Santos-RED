@@ -111,7 +111,7 @@ public class InventoryMenu : Menu
     }
     private void OnActionItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
-        if (ActionablePlayer.ActivityManager.CanPerformActivities)
+        if (ActionablePlayer.ActivityManager.CanPerformActivitiesExtended)
         {
             EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
             ModItem selectedModItem = ModItems.Get(selectedItem.Text);

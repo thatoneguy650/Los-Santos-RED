@@ -21,10 +21,10 @@ public class LicensePlateItem : ModItem
     public LSR.Vehicles.LicensePlate LicensePlate { get; set; }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN LicensePlateItem ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        PlateTheft plateTheft = new PlateTheft(actionable, this, settings, world);
+        if(plateTheft.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartLowerBodyActivity(new PlateTheft(actionable, this, settings, world));
+            actionable.ActivityManager.StartLowerBodyActivity(plateTheft);
             return true;
         }
         return false;

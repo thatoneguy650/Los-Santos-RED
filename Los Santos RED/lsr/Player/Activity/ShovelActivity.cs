@@ -63,6 +63,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Shovel";
         public override string CancelPrompt { get; set; } = "Put Away Shovel";
         public override string ContinuePrompt { get; set; } = "Continue Shovel";
@@ -109,8 +110,16 @@ namespace LosSantosRED.lsr.Player
                 Dispose();
             }, "ShovelActivity");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
 
-    
         private void SpawnAndAttach()
         {
             hadBat = NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, 2508868239, false);
@@ -160,7 +169,7 @@ namespace LosSantosRED.lsr.Player
                     GameFiber.Sleep(1000);
                     Game.FadeScreenIn(500, false);
                 }
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedHolding <= 25000)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedHolding <= 25000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animEnter);

@@ -66,6 +66,7 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Smoking";
         public override string CancelPrompt { get; set; } = "Stop Smoking";
         public override string ContinuePrompt { get; set; } = "Continue Smoking";
@@ -77,7 +78,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Continue()
         {
-            if (Player.ActivityManager.CanPerformActivities)
+            if (Player.ActivityManager.CanPerformActivitiesExtended)
             {
                 Setup();
                 ShouldContinue = true;
@@ -97,6 +98,15 @@ namespace LosSantosRED.lsr.Player
             {
                 Enter();
             }, "SmokingWatcher");
+        }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
         }
         private void AttachSmokedItemToHand()
         {
@@ -189,7 +199,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && !isPaused)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !isPaused)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)

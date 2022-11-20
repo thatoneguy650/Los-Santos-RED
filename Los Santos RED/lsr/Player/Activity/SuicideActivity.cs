@@ -28,6 +28,7 @@ public class SuicideActivity : DynamicActivity
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override bool IsUpperBodyOnly { get; set; } = false;
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -52,6 +53,15 @@ public class SuicideActivity : DynamicActivity
             Enter();
         }, "SuicideWatcher");
     }
+    public override bool CanPerform(IActionable player)
+    {
+        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && player.ActivityManager.IsResting)
+        {
+            return true;
+        }
+        Game.DisplayHelp($"Cannot Suicide");
+        return false;
+    }
     private void Enter()
     {
         Player.ActivityManager.IsCommitingSuicide = true;
@@ -68,6 +78,7 @@ public class SuicideActivity : DynamicActivity
         }
         Exit();
     }
+
     private void Enter(string enterAnimation)
     {
         Vector3 SuicidePosition = Player.Character.Position;
@@ -81,7 +92,7 @@ public class SuicideActivity : DynamicActivity
     {
         bool SwallowedPills = false;
         bool AddedPrompts = false;
-        while (Player.ActivityManager.CanPerformActivities && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
+        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene) < 1.0f)
         {
             Player.WeaponEquipment.SetUnarmed();
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
@@ -120,7 +131,7 @@ public class SuicideActivity : DynamicActivity
     private void IdlePistol()
     {
         bool AddedPrompts = false;
-        while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
             ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", SuicideScene);
             if (ScenePhase >= 0.3f)

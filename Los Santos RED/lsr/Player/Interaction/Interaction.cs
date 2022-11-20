@@ -14,4 +14,5 @@ public abstract class Interaction
     public abstract string DebugString { get; }
     public abstract void Start();
     public abstract void Dispose();
+    public abstract bool CanPerformActivities { get; set; }
 }

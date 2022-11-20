@@ -1,4 +1,6 @@
-﻿public class ActionWheelSettings : ISettingsDefaultable
+﻿using System.ComponentModel;
+
+public class ActionWheelSettings : ISettingsDefaultable
 {
     public float ItemWidth { get; set; }
     public float ItemHeight { get; set; }
@@ -43,6 +45,9 @@
 
     public float AffiliationCenterX { get; set; }
     public float AffiliationCenterY { get; set; }
+    public bool SetSlowMoOnActivate { get; set; }
+    [Description("Seems to obliterate performance? Disabled for now.")]
+    public bool SetTransitionEffectOnActivate { get; set; }
 
     public ActionWheelSettings()
     {
@@ -94,5 +99,8 @@
 
         AffiliationCenterX = 0.92f;
         AffiliationCenterY = 0.55f;
+
+        SetSlowMoOnActivate = true;
+        SetTransitionEffectOnActivate = false;
     }
 }

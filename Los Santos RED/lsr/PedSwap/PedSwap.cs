@@ -1052,12 +1052,12 @@ public class PedSwap : IPedSwap
 
     public void NewPlayer(string modelName, bool isMale)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
         Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax), RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
     }
     public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith, int speechSkill)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
         Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith, speechSkill);
     }
     private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here

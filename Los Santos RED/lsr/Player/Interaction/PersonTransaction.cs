@@ -54,6 +54,7 @@ public class PersonTransaction : Interaction
     //was Player.CanConverse
     
     public override string DebugString => "";
+    public override bool CanPerformActivities { get; set; } = false;
 
     public PersonTransaction(ILocationInteractable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {

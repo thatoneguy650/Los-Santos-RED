@@ -21,13 +21,12 @@ public class LighterItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN Lighter ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
+        LighterActivity activity = new LighterActivity(actionable, this);
+        if (activity.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartUpperBodyActivity(new LighterActivity(actionable, this));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
-
         return false;
     }
     public override bool ConsumeItem(IActionable actionable, bool applyNeeds)

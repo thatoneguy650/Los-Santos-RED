@@ -42,10 +42,10 @@ public class FlashlightItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN FLASHLIGHT ACTIVITY!!!!!!!!!!");
-        if (actionable.IsOnFoot && !actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        FlashlightActivity activity = new FlashlightActivity(actionable, settings, this);
+        if (activity.CanPerform(actionable))
         {
-            actionable.ActivityManager.StartUpperBodyActivity(new FlashlightActivity(actionable, settings, this));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
         return false;

@@ -79,6 +79,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = true;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Atach Radio To Belt";
         public override string CancelPrompt { get; set; } = "Put Away Radio";
         public override string ContinuePrompt { get; set; } = "Take Radio Into Hand";
@@ -89,19 +90,22 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
-            isPaused = true;
+
             Player.ActivityManager.IsPerformingActivity = false;
             Player.ActivityManager.AddPausedActivity(this);
 
             RemovePrompts();
             PutAwayItem();
             AttachItemToBelt();
+
+            isPaused = true;
+
             Dispose(false);
         }
         public override bool IsPaused() => isPaused;
         public override void Continue()
         {
-            if (Player.ActivityManager.CanPerformActivities)
+            if (Player.ActivityManager.CanPerformActivitesBase)
             {
                 Player.ActivityManager.PausedActivites.Remove(this);
                 isPaused = false;
@@ -120,6 +124,16 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "RadioWatcher");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
+
         private void Enter()
         {
             Setup();
@@ -134,7 +148,7 @@ namespace LosSantosRED.lsr.Player
         {
             AddPrompts();
             StartGeneralIdle();
-            while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && !isPaused)
             {
                 GeneralTick();
                 StatusTick();
@@ -152,12 +166,13 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animTakeOutDictionary;
                 PlayingAnimation = animTakeOut;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();
                     GameFiber.Yield();
                 }
+                Player.Scanner.ScannerBoostLevel = 1;
                 EntryPoint.WriteToConsole("Take Out Radio End");
             }
         }
@@ -170,12 +185,13 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animPutAwayDictionary;
                 PlayingAnimation = animPutAway;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();
                     GameFiber.Yield();
                 }
+                Player.Scanner.ScannerBoostLevel = 0;
                 EntryPoint.WriteToConsole("Put Away Radio End");
             }
         }
@@ -190,7 +206,7 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animRaiseDictionary;
                 PlayingAnimation = animRaise;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();
@@ -198,6 +214,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 IsRaised = true;
                 IsRaising = false;
+                Player.Scanner.ScannerBoostLevel = 2;
                 AddPrompts();
                 EntryPoint.WriteToConsole("Raise Radio End");
             }
@@ -213,7 +230,7 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animLowerDictionary;
                 PlayingAnimation = animLower;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowerBlendIn, animLowerBlendOut, -1, animLowerFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();
@@ -221,6 +238,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 IsRaised = false;
                 IsLowering = false;
+                Player.Scanner.ScannerBoostLevel = 1;
                 if (restartIdle)
                 {
                     StartGeneralIdle();
@@ -308,19 +326,23 @@ namespace LosSantosRED.lsr.Player
             if (!isPaused)
             {
                 Player.WeaponEquipment.SetUnarmed();
-                
+                CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
             }
-            CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
         }
         private void StatusTick()
         {
-
+            if (!isPaused)
+            {
                 CurrentAnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDictionary, PlayingAnimation);
-            
+            }
         }
         private void InputTick()
         {
-            if (!isPaused)
+            if(isPaused)
+            {
+                RemovePrompts();
+            }
+            else
             {
                 DisableControls();
                 if (Player.ButtonPrompts.IsPressed("RadioLower"))
@@ -331,25 +353,6 @@ namespace LosSantosRED.lsr.Player
                 {
                     RaiseRadio();
                 }
-                //if (Player.ButtonPrompts.IsPressed("RadioAttach"))
-                //{
-                //    RemovePrompts();
-                //    PutAwayItem();
-                //    AttachItemToBelt();
-
-
-                //    //Player.ActivityManager.AttachedItems.Add(new AttachedItem(RadioItem, rageObject));
-                //    Dispose(false);
-
-                //    //AddPrompts();
-                //}
-                //if(Player.ButtonPrompts.IsPressed("RadioDetach"))
-                //{
-                //    RemovePrompts();
-                //    AttachItemToHand();
-                //    TakeOutItem();
-                //    AddPrompts();
-                //}
             }
         }
         private void AttachItemToHand()
@@ -399,11 +402,11 @@ namespace LosSantosRED.lsr.Player
             {
                 if (IsRaised)
                 {
-                    Player.ButtonPrompts.AddPrompt("Radio", "Lower", "RadioLower", GameControl.Aim, 15);
+                    Player.ButtonPrompts.AddPrompt("Radio", "Lower", "RadioLower", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 15);
                 }
                 else
                 {
-                    Player.ButtonPrompts.AddPrompt("Radio", "Raise", "RadioRaise", GameControl.Aim, 15);
+                    Player.ButtonPrompts.AddPrompt("Radio", "Raise", "RadioRaise", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 15);
                 }
             }
 
@@ -437,6 +440,9 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
 
 
+            Game.DisableControlAction(0, GameControl.VehicleAttack, false);
+            Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+
             Game.DisableControlAction(0, GameControl.WeaponWheelNext, false);
             Game.DisableControlAction(0, GameControl.WeaponWheelPrev, false);
 
@@ -464,7 +470,7 @@ namespace LosSantosRED.lsr.Player
             {
                 rageObject.Delete();
             }
-            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
         }

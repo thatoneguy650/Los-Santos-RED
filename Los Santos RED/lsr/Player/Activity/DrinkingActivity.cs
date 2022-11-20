@@ -57,6 +57,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => $"";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Drinking";
         public override string CancelPrompt { get; set; } = "Stop Drinking";
         public override string ContinuePrompt { get; set; } = "Continue Drinking";
@@ -82,6 +83,17 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "DrinkingWatcher");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if(player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
+
+
         private void AttachBottleToHand()
         {
             CreateBottle();
@@ -116,7 +128,7 @@ namespace LosSantosRED.lsr.Player
             AttachBottleToHand();
             Player.ActivityManager.IsPerformingActivity = true;
             StartNewEnterAnimation();
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -156,7 +168,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
@@ -477,5 +489,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
         }
+
+
     }
 }

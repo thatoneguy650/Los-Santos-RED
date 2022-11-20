@@ -42,6 +42,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Umbrella";
         public override string CancelPrompt { get; set; } = "Put Away Umbrella";
         public override string ContinuePrompt { get; set; } = "Continue Umbrella";
@@ -68,6 +69,15 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "UmbrellaActivity");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -77,7 +87,7 @@ namespace LosSantosRED.lsr.Player
             {
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animEnter, animEnterBlendIn, animEnterBlendOut, -1, animEnterFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled && Game.GameTime - GameTimeStartedHoldingUmbrella <= 5000)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedHoldingUmbrella <= 5000)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animEnter);
@@ -99,7 +109,7 @@ namespace LosSantosRED.lsr.Player
 
 
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animIdle, animIdleBlendIn, animIdleBlendOut, -1, animIdleFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animIdle);
@@ -128,7 +138,7 @@ namespace LosSantosRED.lsr.Player
             {
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDictionary, animExit, animExitBlendIn, animExitBlendOut, -1, animExitFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDictionary, animExit);

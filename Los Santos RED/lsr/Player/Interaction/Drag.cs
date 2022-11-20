@@ -53,6 +53,7 @@ public class Drag : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override bool IsUpperBodyOnly { get; set; } = true;
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -110,6 +111,20 @@ public class Drag : DynamicActivity
                 }
             }, "Drag");
         }
+    }
+    public override bool CanPerform(IActionable player)
+    {
+        if (!player.ActivityManager.CanDragLookedAtPed)
+        {
+            Game.DisplayHelp("Cannot drag ped");
+            return false;
+        }
+        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended)
+        {
+            return true;
+        }
+        Game.DisplayHelp($"Cannot Drag");
+        return false;
     }
     private void BeginDrag()
     {

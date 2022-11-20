@@ -20,6 +20,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => $"IsPerformingActivity: {Player.ActivityManager.IsPerformingActivity}";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = false;
         public override string PausePrompt { get; set; } = "Pause Activity";
         public override string CancelPrompt { get; set; } = "Stop Activity";
         public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -43,6 +44,15 @@ namespace LosSantosRED.lsr.Player
             {
                 Enter();
             }, "DrinkingWatcher");
+        }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Scenario");
+            return false;
         }
         private void Enter()
         {
@@ -79,7 +89,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && !Player.IsMoveControlPressed)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !Player.IsMoveControlPressed)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();

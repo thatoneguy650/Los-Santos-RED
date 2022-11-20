@@ -14,6 +14,7 @@ namespace LosSantosRED.lsr
 {
     public class Scanner
     {
+        private IPlacesOfInterest PlacesOfInterest;
         private bool AbortedAudio;
         private Dispatch AimingWeaponAtPolice;
         private Dispatch AnnounceStolenVehicle;
@@ -134,8 +135,15 @@ namespace LosSantosRED.lsr
         private IEntityProvideable World;
         private ZoneScannerAudio ZoneScannerAudio;
         private Dispatch SuspectSpottedSimple;
+        private bool canHearScanner;
 
-        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time)
+
+        private uint GameTimeLastAddedAmbientDispatch;
+        private uint GameTimeBetweenAmbientDispatches;
+        private bool ShouldAddAmbientDispatch => Game.GameTime - GameTimeLastAddedAmbientDispatch >= GameTimeBetweenAmbientDispatches;
+        private float DesiredVolume => Settings.SettingsManager.ScannerSettings.AudioVolume + (ScannerBoostLevel * Settings.SettingsManager.ScannerSettings.AudioVolumeBoostAmount);
+
+        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             AudioPlayer = audioPlayer;
             Player = currentPlayer;
@@ -146,6 +154,7 @@ namespace LosSantosRED.lsr
             StreetScannerAudio = new StreetScannerAudio();
             ZoneScannerAudio = new ZoneScannerAudio();
             CallsignScannerAudio = new CallsignScannerAudio();
+            PlacesOfInterest = placesOfInterest;
         }
         public bool RecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 25000;
         public bool RecentlyMentionedStreet => GameTimeLastMentionedStreet != 0 && Game.GameTime - GameTimeLastMentionedStreet <= 10000;
@@ -153,6 +162,10 @@ namespace LosSantosRED.lsr
         public bool RecentlyMentionedUnits => GameTimeLastMentionedUnits != 0 && Game.GameTime - GameTimeLastMentionedUnits <= 10000;
         public bool RecentlyMentionedZone => GameTimeLastMentionedZone != 0 && Game.GameTime - GameTimeLastMentionedZone <= 10000;
         public bool VeryRecentlyAnnouncedDispatch => GameTimeLastAnnouncedDispatch != 0 && Game.GameTime - GameTimeLastAnnouncedDispatch <= 10000;
+
+        public int ScannerBoostLevel { get; set; } = 0;
+        public bool CanHearAmbient { get; set; } = false;
+
         public void Setup()
         {
             VehicleScannerAudio.ReadConfig();
@@ -160,58 +173,22 @@ namespace LosSantosRED.lsr
             ZoneScannerAudio.ReadConfig();
             CallsignScannerAudio.ReadConfig();
             DefaultConfig();
+            GameTimeBetweenAmbientDispatches = RandomItems.GetRandomNumber(Settings.SettingsManager.ScannerSettings.AmbientDispatchesMinTimeBetween, Settings.SettingsManager.ScannerSettings.AmbientDispatchesMaxTimeBetween);
         }
         public void Update()
         {
             if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
             {
-                CheckDispatch();
-                if (DispatchQueue.Count > 0 && !ExecutingQueue)
-                {
-                    EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, starting execution", 5);
-                    ExecutingQueue = true;
-                    GameFiber.Yield();
-                    GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
-                    {
-                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
-                        if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
-                        {
-                            DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
-                        }
-                        if (DispatchQueue.Count() > 1)
-                        {
-                            Dispatch HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
-                            DispatchQueue.Clear();
-                            if (HighestItem != null)
-                            {
-                                DispatchQueue.Add(HighestItem);
-                            }
-                        }
-                        while (DispatchQueue.Count > 0)
-                        {
-                            Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
-                            bool AddToPlayed = true;
-                            if (Player.IsNotWanted && Item.LatestInformation.SeenByOfficers)
-                            {
-                                AddToPlayed = false;
-                            }
-                            BuildDispatch(Item, AddToPlayed);
-                            if (DispatchQueue.Contains(Item))
-                            {
-                                DispatchQueue.Remove(Item);
-                            }
-                            GameFiber.Yield();
-                        }
-                        ExecutingQueue = false;
-                        EntryPoint.WriteToConsole("Scanner Dispatch Queue Count > 0, finishing execution, DONE", 5);
-                    }, "PlayDispatchQueue");
-                }
+                UpdateDispatch();
             }
-            if(!Player.ActivityManager.CanHearScanner)
+            if(Player.ActivityManager.CanHearScanner != canHearScanner)
             {
-                DispatchQueue.Clear();
+                OnCanHearScannerChanged();
             }
         }
+
+
+
         public void Reset()
         {
             DispatchQueue.Clear();
@@ -276,12 +253,131 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        public void DebugPlayDispatch()
+        public void ForceRandomDispatch()
         {
             Reset();
             AddToQueue(DispatchList.PickRandom());
         }
+        private void UpdateDispatch()
+        {
+            if (Player.RecentlyStartedPlaying)
+            {
+                return;//don't care right when you become a new person
+            }
+            AddStatusDispatchesToQueue();
+            AddAmbientDispatchesToQueue();
+            AnnounceQueue();
+        }
+        private void AddStatusDispatchesToQueue()
+        {
+            if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.ScannerSettings.AllowStatusAnnouncements)
+            {
+                if (Player.PoliceResponse.HasBeenWantedFor > 25000 && Player.WantedLevel <= 4)
+                {
+                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.AnyPoliceCanSeePlayer)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
+                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
+                    }
+                    else if (!Player.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
+                    {
+                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
+                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
+                    }
+                }
+            }
+            else
+            {
+                foreach (VehicleExt StolenCar in Player.ReportedStolenVehicles)
+                {
+                    StolenCar.AddedToReportedStolenQueue = true;
+                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!Player.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
+                }
+            }
+        }
+        private void AddAmbientDispatchesToQueue()
+        {
+            if(ShouldAddAmbientDispatch)
+            {
+                if (Player.IsAliveAndFree && Player.IsNotWanted && !Player.Investigation.IsActive && CanHearAmbient && Settings.SettingsManager.ScannerSettings.AllowAmbientDispatches)
+                {
+                    Reset();
+                    Dispatch toPlay = DispatchList.Where(x => x.IsAmbientAllowed).PickRandom();
+                    if (toPlay != null)
+                    {
+                        BasicLocation basicLocation = PlacesOfInterest.AllLocations().PickRandom();
+                        if(basicLocation != null)
+                        {
+                            toPlay.LatestInformation = new CrimeSceneDescription(RandomItems.RandomPercent(45), RandomItems.RandomPercent(45), basicLocation.EntrancePosition, false);
+                            AddToQueue(toPlay);
+                        } 
+                    }
+                }
+                GameTimeLastAddedAmbientDispatch = Game.GameTime;
+                GameTimeBetweenAmbientDispatches = RandomItems.GetRandomNumber(Settings.SettingsManager.ScannerSettings.AmbientDispatchesMinTimeBetween, Settings.SettingsManager.ScannerSettings.AmbientDispatchesMaxTimeBetween);
+            }
+        }
+        private void AnnounceQueue()
+        {
+            if (DispatchQueue.Count > 0 && !ExecutingQueue)
+            {
+                ExecutingQueue = true;
+                GameFiber.Yield();
+                GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
+                {
+                    GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                    CleanQueue();
+                    PlayQueue();
+                    ExecutingQueue = false;
+                }, "PlayDispatchQueue");
+            }
+        }
+        private void CleanQueue()
+        {
+            if (DispatchQueue.Any(x => x.LatestInformation.SeenByOfficers))
+            {
+                DispatchQueue.RemoveAll(x => !x.LatestInformation.SeenByOfficers);
+            }
+            if (DispatchQueue.Count() > 1)
+            {
+                Dispatch HighestItem = DispatchQueue.OrderBy(x => x.Priority).FirstOrDefault();
+                DispatchQueue.Clear();
+                if (HighestItem != null)
+                {
+                    DispatchQueue.Add(HighestItem);
+                }
+            }
+        }
+        private void PlayQueue()
+        {
+            while (DispatchQueue.Count > 0)
+            {
+                Dispatch Item = DispatchQueue.OrderBy(x => x.Priority).ToList()[0];
+                bool AddToPlayed = true;
+                if (Player.IsNotWanted && Item.LatestInformation.SeenByOfficers)
+                {
+                    AddToPlayed = false;
+                }
+                BuildDispatch(Item, AddToPlayed);
+                if (DispatchQueue.Contains(Item))
+                {
+                    DispatchQueue.Remove(Item);
+                }
+                GameFiber.Yield();
+            }
+        }
+
+
+
         //Events
+        private void OnCanHearScannerChanged()
+        {
+            if (!Player.ActivityManager.CanHearScanner)
+            {
+                DispatchQueue.Clear();
+            }
+            canHearScanner = Player.ActivityManager.CanHearScanner;
+        }
         public void OnAppliedWantedStats(int wantedLevel)
         {
             if (!WantedSuspectSpotted.HasRecentlyBeenPlayed)
@@ -886,26 +982,31 @@ namespace LosSantosRED.lsr
         }
         private void AddToQueue(Dispatch ToAdd, CrimeSceneDescription ToCallIn)
         {
-            Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
-            if (Existing != null)
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
             {
-                Existing.LatestInformation = ToCallIn;
-            }
-            else
-            {
-                ToAdd.LatestInformation = ToCallIn;
-                //EntryPoint.WriteToConsole("ScannerScript " + ToAdd.Name);
-                DispatchQueue.Add(ToAdd);
+                GameFiber.Yield();//TR Added 7
+                Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
+                if (Existing != null)
+                {
+                    Existing.LatestInformation = ToCallIn;
+                }
+                else
+                {
+                    ToAdd.LatestInformation = ToCallIn;
+                    DispatchQueue.Add(ToAdd);
+                }
             }
         }
         private void AddToQueue(Dispatch ToAdd)
         {
-            GameFiber.Yield();//TR Added 7
-            Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
-            if (Existing == null && Settings.SettingsManager.ScannerSettings.IsEnabled)
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
             {
-                DispatchQueue.Add(ToAdd);
-                //EntryPoint.WriteToConsole("ScannerScript " + ToAdd.Name);
+                GameFiber.Yield();//TR Added 7
+                Dispatch Existing = DispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
+                if (Existing == null)
+                {
+                    DispatchQueue.Add(ToAdd);
+                }
             }
         }
         private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate, Dispatch DispatchToPlay)
@@ -1400,42 +1501,6 @@ namespace LosSantosRED.lsr
             PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
         }
         //Other
-        private void CheckDispatch()
-        {
-            if (Player.RecentlyStartedPlaying)
-            {
-                return;//don't care right when you become a new person
-            }
-            // CheckCrimesToAnnounce();
-            CheckStatusToAnnounce();
-        }
-        private void CheckStatusToAnnounce()
-        {
-            if (Player.IsWanted && Player.IsAliveAndFree && Settings.SettingsManager.ScannerSettings.AllowStatusAnnouncements)
-            {
-                if (Player.PoliceResponse.HasBeenWantedFor > 25000 && Player.WantedLevel <= 4)
-                {
-                    if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.AnyPoliceCanSeePlayer)
-                    {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
-                        AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
-                    }
-                    else if (!Player.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
-                    {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
-                        AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
-                    }
-                }
-            }
-            else
-            {
-                foreach (VehicleExt StolenCar in Player.ReportedStolenVehicles)
-                {
-                    StolenCar.AddedToReportedStolenQueue = true;
-                    AddToQueue(AnnounceStolenVehicle, new CrimeSceneDescription(!Player.IsInVehicle, false, StolenCar.PlaceOriginallyEntered) { VehicleSeen = StolenCar });
-                }
-            }
-        }
         private void DefaultConfig()
         {
             SetupDispatches();
@@ -1621,7 +1686,7 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                     if (Settings.SettingsManager.ScannerSettings.SetVolume)
                     {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                        AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                     }
                     else
                     {
@@ -1652,7 +1717,7 @@ namespace LosSantosRED.lsr
                         {
                             if (Settings.SettingsManager.ScannerSettings.SetVolume)
                             {
-                                AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                                AudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                             }
                             else
                             {

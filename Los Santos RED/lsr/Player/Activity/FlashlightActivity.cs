@@ -104,6 +104,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Flashlight";
         public override string CancelPrompt { get; set; } = "Put Away Flashlight";
         public override string ContinuePrompt { get; set; } = "Continue Flashlight";
@@ -130,6 +131,23 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "FlashlightActivity");
         }
+
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
+
+
+
+
+
+
+
         private void Enter()
         {
             Player.WeaponEquipment.SetUnarmed();
@@ -142,7 +160,7 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animEnterDictionary;
                 PlayingAnimation = animEnter;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animEnterDictionary, animEnter, animEnterBlendIn, animEnterBlendOut, -1, animEnterFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled)
                 {
                     Player.WeaponEquipment.SetUnarmed();
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animEnterDictionary, animEnter);
@@ -176,7 +194,7 @@ namespace LosSantosRED.lsr.Player
                 }
 
 
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+                while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled)
                 {
                     if(Player.IsVisiblyArmed)
                     {
@@ -244,7 +262,7 @@ namespace LosSantosRED.lsr.Player
                     PlayingDictionary = animExitDictionary;
                     PlayingAnimation = animExit;
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animExitDictionary, animExit, animExitBlendIn, animExitBlendOut, -1, animExitFlag, 0, false, false, false);//-1
-                    while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+                    while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled)
                     {
                         Player.WeaponEquipment.SetUnarmed();
                         float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animExitDictionary, animBase);

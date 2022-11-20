@@ -90,6 +90,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Binoculars";
         public override string CancelPrompt { get; set; } = "Put Away Binoculars";
         public override string ContinuePrompt { get; set; } = "Continue Binoculars";
@@ -116,6 +117,22 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "BinocWatcher");
         }
+
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
+
+
+
+
+
+
         private void Enter()
         {
             Setup();
@@ -129,7 +146,7 @@ namespace LosSantosRED.lsr.Player
         {
             AddPrompts();
             LowIdle();
-            while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled)
             {
                 if (!IsBinocsRaised)
                 {
@@ -156,7 +173,7 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animRaiseDictionary;
                 PlayingAnimation = animRaise;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();
@@ -184,7 +201,7 @@ namespace LosSantosRED.lsr.Player
                 PlayingDictionary = animLowerDictionary;
                 PlayingAnimation = animLower;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowerBlendIn, animLowerBlendOut, -1, animLowerFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformMobileActivities && !IsCancelled && CurrentAnimationTime < 1.0f)
+                while (Player.ActivityManager.CanPerformActivitesBase && Player.IsOnFoot && !IsCancelled && CurrentAnimationTime < 1.0f)
                 {
                     DisableControls();
                     GeneralTick();

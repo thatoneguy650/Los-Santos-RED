@@ -251,7 +251,7 @@ public class VendingMachine : InteractableLocation
             HandRotator = pa.Rotation;
             HandBoneName = pa.BoneName;
         }
-        while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+        while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
         {
             Player.WeaponEquipment.SetUnarmed();
             float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

@@ -27,6 +27,7 @@ public class SurrenderActivity : DynamicActivity
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override bool IsUpperBodyOnly { get; set; } = true;
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -52,6 +53,10 @@ public class SurrenderActivity : DynamicActivity
     public override void Start()
     {
         RaiseHands();
+    }
+    public override bool CanPerform(IActionable player)
+    {
+        return true;
     }
     public void LowerHands()
     {

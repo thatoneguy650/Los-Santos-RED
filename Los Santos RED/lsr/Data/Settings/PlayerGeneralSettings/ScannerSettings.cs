@@ -17,6 +17,10 @@ public class ScannerSettings : ISettingsDefaultable
     public bool SetVolume { get; set; }
     [Description("Volume setting to use with the SetVolume setting. Min 0.0 Max 1.0")]
     public float AudioVolume { get; set; }
+
+    [Description("Extra volume amount to add or subtract based on scanner items")]
+    public float AudioVolumeBoostAmount { get; set; }
+
     [Description("Enable or disable subtitles from the scanner.")]
     public bool EnableSubtitles { get; set; }
     [Description("Enable or disable notifications from the scanner.")]
@@ -34,6 +38,14 @@ public class ScannerSettings : ISettingsDefaultable
     [Description("Applies low and high pass filters to the audio to make it sound more like actual radio.")]
     public bool ApplyFilter { get; set; }
 
+
+    [Description("Enable or disable hearing ambient dispatches when you have the scanner out.")]
+    public bool AllowAmbientDispatches { get; set; }
+    [Description("Minimum time between ambient dispatches (if enabled).")]
+    public uint AmbientDispatchesMinTimeBetween { get; set; }
+    [Description("Maximum time between ambient dispatches (if enabled).")]
+    public uint AmbientDispatchesMaxTimeBetween { get; set; }
+
     public ScannerSettings()
     {
         SetDefault();
@@ -45,6 +57,7 @@ public class ScannerSettings : ISettingsDefaultable
         EnableAudio = true;
         SetVolume = true;
         AudioVolume = 0.45f;
+        AudioVolumeBoostAmount = 0.05f;
         ApplyFilter = true;
         EnableSubtitles = false;
         EnableNotifications = true;
@@ -53,7 +66,9 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
-
+        AllowAmbientDispatches = true;
+        AmbientDispatchesMinTimeBetween = 150000;
+        AmbientDispatchesMaxTimeBetween = 800000;
     }
 
 }

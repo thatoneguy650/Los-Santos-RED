@@ -23,11 +23,11 @@ public class InhaleItem : ConsumableItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN InhaleItem ACTIVITY!!!!!!!!!!");
-        if (!actionable.ActivityManager.IsLayingDown && actionable.ActivityManager.CanUseItemsBase)
+        InhaleActivity activity = new InhaleActivity(actionable, settings, this, intoxicants);
+        if (activity.CanPerform(actionable))
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
-            actionable.ActivityManager.StartUpperBodyActivity(new InhaleActivity(actionable, settings, this, intoxicants));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
         return false;

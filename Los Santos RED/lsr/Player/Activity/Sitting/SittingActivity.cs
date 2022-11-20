@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Player
         public override string DebugString => "";
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = false;
+        public override bool IsUpperBodyOnly { get; set; } = false;
         public override string PausePrompt { get; set; } = "Pause Activity";
         public override string CancelPrompt { get; set; } = "Stop Activity";
         public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -76,6 +77,15 @@ namespace LosSantosRED.lsr.Player
                 Enter();
                 EntryPoint.WriteToConsole("Sitting Activity Final");
             }, "Sitting");
+        }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Sit");
+            return false;
         }
         private void Enter()
         {
@@ -127,7 +137,7 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole("Sitting Activity Idle Start");
             StartNewBaseScene();
             float AnimationTime;
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 if(AnimationTime >= 1.0f && !Player.ActivityManager.IsPerformingActivity)
@@ -217,7 +227,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, Data.AnimEnterDictionary, Data.AnimEnter, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
             NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
             float AnimationTime = 0f;
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled && AnimationTime < 1.0f)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && AnimationTime < 1.0f)
             {
                 AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                 if (Player.IsMoveControlPressed)

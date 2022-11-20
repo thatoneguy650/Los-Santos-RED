@@ -33,6 +33,7 @@ public class Conversation : Interaction
         Speeches = speeches;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
+    public override bool CanPerformActivities { get; set; } = true;
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.ActivityManager.CanConverse;
     public override void Dispose()
     {

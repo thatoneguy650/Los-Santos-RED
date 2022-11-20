@@ -48,6 +48,7 @@ namespace LosSantosRED.lsr.Player
         public override ModItem ModItem { get; set; }
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
+        public override bool IsUpperBodyOnly { get; set; } = true;
         public override string PausePrompt { get; set; } = "Pause Eating";
         public override string CancelPrompt { get; set; } = "Stop Eating";
         public override string ContinuePrompt { get; set; } = "Continue Eating";
@@ -74,6 +75,26 @@ namespace LosSantosRED.lsr.Player
                 Enter();
             }, "DrinkingWatcher");
         }
+        public override bool CanPerform(IActionable player)
+        {
+            if (player.ActivityManager.CanPerformActivitesBase)
+            {
+                return true;
+            }
+            Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
+            return false;
+        }
+
+
+
+
+
+
+
+
+
+
+
         private void AttachFoodToHand()
         {
             CreateFood();
@@ -128,7 +149,7 @@ namespace LosSantosRED.lsr.Player
         {
             StartNewIdleAnimation();
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            while (Player.ActivityManager.CanPerformActivities && !IsCancelled)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);

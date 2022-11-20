@@ -47,6 +47,7 @@ public class HumanShield : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override bool CanPause { get; set; } = false;
     public override bool CanCancel { get; set; } = false;
+    public override bool IsUpperBodyOnly { get; set; } = false;
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
@@ -91,6 +92,20 @@ public class HumanShield : DynamicActivity
         Cancel();
     }
     public override bool IsPaused() => false;
+    public override bool CanPerform(IActionable player)
+    {
+        if(!player.ActivityManager.CanTakeHostageWithLookedAtPed)
+        {
+            Game.DisplayHelp($"Cannot take ped hostage");
+            return false;
+        }
+        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitesBase)
+        {
+            return true;
+        }
+        Game.DisplayHelp($"Cannot Take Hostage");
+        return false;
+    }
     private void Setup()
     {
         IsCancelled = false;

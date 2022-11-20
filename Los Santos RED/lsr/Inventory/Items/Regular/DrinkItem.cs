@@ -23,11 +23,11 @@ public class DrinkItem : ConsumableItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN DrinkItem ACTIVITY!!!!!!!!!!");
-        if (!actionable.ActivityManager.IsResting && actionable.ActivityManager.CanUseItemsBase)
+        DrinkingActivity activity = new DrinkingActivity(actionable, settings, this, intoxicants);
+        if (activity.CanPerform(actionable))
         {
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
-            actionable.ActivityManager.StartUpperBodyActivity(new DrinkingActivity(actionable, settings, this, intoxicants));
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;
         }
         return false;
