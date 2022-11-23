@@ -59,6 +59,7 @@ namespace LosSantosRED.lsr.Interface
         float VehicleSpeedMPH { get; }
         int WantedLevel { get; }
         bool IsNotWanted { get; }
+        bool IsSleepingOutside { get; }
 
         //  bool IsLootingBody { get; }
 

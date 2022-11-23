@@ -7,7 +7,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IGameSaves
     {
         List<GameSave> GameSaveList { get; }
-
+        int NextSaveGameNumber { get; }
 
         void SaveSamePlayer(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
         void DeleteSave(string playerName, string modelName);
@@ -15,6 +15,6 @@ namespace LosSantosRED.lsr.Interface
         GameSave GetSave(ISaveable player);
         void UpdateSave(GameSave mySave);
         void DeleteSave(GameSave gs);
-        void Save(ISaveable saveable, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
+        void Save(ISaveable saveable, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, int saveNumber);
     }
 }

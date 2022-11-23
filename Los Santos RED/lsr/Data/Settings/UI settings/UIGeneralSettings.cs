@@ -83,6 +83,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         UseLegacySaveMenu = false;
         ShowLegacyActionMenu = false;
         ShowLegacyInventoryMenu = false;
-        ShowFullscreenWarnings = false;
+
+        ShowFullscreenWarnings = true;
     }
 }

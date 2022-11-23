@@ -44,7 +44,7 @@
     public bool PlayerStatusIncludeTime { get; set; }
     public bool PlayerStatusSimpleTime { get; set; }
 
-
+    public bool PlayerStatusShowWhenSleeping { get; set; }
 
 
 
@@ -147,6 +147,7 @@
         PlayerStatusFont = GTAFont.FontHouseScript;
         PlayerStatusIncludeTime = false;
         PlayerStatusSimpleTime = true;
+        PlayerStatusShowWhenSleeping = true;
         ShowStreetDisplay = true;
         FadeStreetDisplay = true;
         FadeStreetDisplayDuringWantedAndInvestigation = false;

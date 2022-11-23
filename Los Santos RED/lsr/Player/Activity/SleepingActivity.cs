@@ -138,6 +138,7 @@ namespace LosSantosRED.lsr.Player
 
                 Player.IsResting = true;
                 Player.IsSleeping = true;
+                Player.IsSleepingOutside = true;
                 while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     if (Player.HumanState.Sleep.IsMax)
@@ -154,6 +155,7 @@ namespace LosSantosRED.lsr.Player
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
+            Player.IsSleepingOutside = false;
             Player.ActivityManager.IsLayingDown = false;
             Exit_Vehicle();
         }
@@ -213,7 +215,7 @@ namespace LosSantosRED.lsr.Player
 
                 Player.IsResting = true;
                 Player.IsSleeping = true;
-
+                Player.IsSleepingOutside = true;
                 while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
                 {
                     if (Player.IsMoveControlPressed)
@@ -230,6 +232,7 @@ namespace LosSantosRED.lsr.Player
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
+            Player.IsSleepingOutside = false;
             Player.ActivityManager.IsLayingDown = false;
             Exit_Foot();
 

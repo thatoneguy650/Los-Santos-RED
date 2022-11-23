@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +9,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PopUpWarning
+public class SimpleWarning
 {
-    private int globalScaleformID;
     private ButtonPrompts ButtonPrompts;
     private ISettingsProvideable Settings;
     private bool IsGamePaused = false;
     private int FramesSinceStarted = 0;
+    private bool IsGameFaded;
+    public bool IsButtonPromptsSuspended;
+    private int globalScaleformID;
 
+    private InstructionalButtons instructional = new InstructionalButtons();
 
-    
-    public PopUpWarning(string titleMessage, string warningMessage, string promptMessage, ButtonPrompts buttonPrompts, ISettingsProvideable settings)
+    public SimpleWarning(string titleMessage, string warningMessage, string promptMessage, ButtonPrompts buttonPrompts, ISettingsProvideable settings)
     {
         TitleMessage = titleMessage;
         WarningMessage = warningMessage;
@@ -26,14 +29,13 @@ public class PopUpWarning
         ButtonPrompts = buttonPrompts;
         Settings = settings;
     }
-
     public string TitleMessage { get; set; } = "Alert";
     public string WarningMessage { get; set; } = "";
     public string PromptMessage { get; set; } = "";
     public bool IsAccepted { get; set; } = false;
     public bool IsRejected { get; set; } = false;
     public bool IsAnswered => IsAccepted || IsRejected;
-    public void Setup()
+    private void Setup()
     {
         FramesSinceStarted = 0;
         globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>("POPUP_WARNING");
@@ -41,81 +43,68 @@ public class PopUpWarning
         {
             GameFiber.Yield();
         }
-        ButtonPrompts.AddPrompt("PopUpWarning", "No", "PopUpWarningNo", System.Windows.Forms.Keys.Escape, 1);
-        ButtonPrompts.AddPrompt("PopUpWarning", "Yes", "PopUpWarningYes", System.Windows.Forms.Keys.Enter, 999);
+        IsGameFaded = Game.IsScreenFadedOut || Game.IsScreenFadingOut;
+        //Game.FadeScreenOut(0, true);
+        IsButtonPromptsSuspended = ButtonPrompts.IsSuspended;
+        ButtonPrompts.IsSuspended = true;
         IsGamePaused = Game.IsPaused;
+        InstructionalButton yesButton = new InstructionalButton(GameControl.FrontendAccept, "Yes");
+        InstructionalButton noButton = new InstructionalButton(GameControl.FrontendCancel, "No");
+        instructional.Buttons.Clear();
+        instructional.Buttons.Add(yesButton);
+        instructional.Buttons.Add(noButton);
     }
     public void Show()
     {
-        EntryPoint.ModController.IsDisplayingAlertScreen = true;
-        FramesSinceStarted = 0;
-        GameFiber.StartNew(delegate
+        if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
         {
+            Setup();
+            EntryPoint.ModController.IsDisplayingAlertScreen = true;
+            FramesSinceStarted = 0;
+            SetupScaleform();
             while (true)
             {
                 Tick();
                 if (IsAnswered)
                 {
-                    EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
+                    EntryPoint.WriteToConsole($"Simple Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
                     break;
                 }
                 FramesSinceStarted++;
                 GameFiber.Yield();
             }
-        }, "Run Debug Logic");
-    }
-    public void ShowAndWait()
-    {
-        EntryPoint.ModController.IsDisplayingAlertScreen = true;
-        FramesSinceStarted = 0;
-        while (true)
+        }
+        else
         {
-            Tick();
-            if (IsAnswered)
-            {
-                EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
-                break;
-            }
-            FramesSinceStarted++;
-            GameFiber.Yield();
+            IsAccepted = true;
+            Dispose();
         }
     }
-    public void Tick()
+    private void Tick()
     {
         Game.IsPaused = true;
-        SetupScaleform();
-        DrawScaleform();
         DisableControls();
-        if (FramesSinceStarted >= 30)
+        DrawScaleform();
+        if (FramesSinceStarted >= 10)
         {
             CheckPrompts();
         }
     }
     private void CheckPrompts()
     {
-        if (ButtonPrompts.IsPressed("PopUpWarningYes"))
+
+        if (Game.IsControlJustPressed(2, GameControl.FrontendAccept) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.FrontendAccept))
         {
             IsAccepted = true;
             IsRejected = false;
             Dispose();
         }
-        else if (ButtonPrompts.IsPressed("PopUpWarningNo"))
+        else if (Game.IsControlJustPressed(2, GameControl.FrontendCancel) || NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl.FrontendCancel))
         {
             IsAccepted = false;
             IsRejected = true;
             Dispose();
         }
-    }
-
-    public void Dispose()
-    {
-        EntryPoint.ModController.IsDisplayingAlertScreen = false;
-        Game.IsPaused = IsGamePaused;
-        ButtonPrompts.RemovePrompts("PopUpWarning");
-
-        NativeFunction.Natives.SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(globalScaleformID);
-
-
     }
     private void SetupScaleform()
     {
@@ -146,8 +135,32 @@ public class PopUpWarning
     private void DrawScaleform()
     {
         NativeFunction.Natives.DRAW_SCALEFORM_MOVIE_FULLSCREEN(globalScaleformID, 255, 255, 255, 255, 0);
+
+
+        instructional.Update();
+        instructional.Draw();
+
     }
 
+    private void Dispose()
+    {
+        EntryPoint.ModController.IsDisplayingAlertScreen = false;
+        Game.IsPaused = IsGamePaused;
+        if(!IsGameFaded)
+        {
+           // Game.FadeScreenIn(0);
+        }
+        ButtonPrompts.IsSuspended = IsButtonPromptsSuspended;
+
+        //if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings)
+        //{
+        //    NativeFunction.Natives.SET_SCALEFORM_MOVIE_AS_NO_LONGER_NEEDED(globalScaleformID);
+        //}
+
+
+        instructional.Buttons.Clear();
+        instructional.Update();
+    }
     private void DisableControls()
     {
         Game.DisableControlAction(0, GameControl.FrontendPause, true);

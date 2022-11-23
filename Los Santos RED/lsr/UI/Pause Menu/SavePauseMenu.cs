@@ -60,23 +60,15 @@ public class SavePauseMenu
     }
     public void Setup()
     {
-        tabView = new TabView("Los Santos ~r~RED~s~ Save & Load");
+        tabView = new TabView("Los Santos ~r~RED~s~ Game Save Manager");
         tabView.Tabs.Clear();
         tabView.ScrollTabs = true;
         tabView.OnMenuClose += (s, e) =>
         {
             Game.IsPaused = false;
         };
-
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
-        //SaveTab = new SaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable);
-
-
-
-
         NewSaveGameTab = new NewSaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable);
-
-
     }
     public void Toggle()
     {
@@ -108,9 +100,9 @@ public class SavePauseMenu
 
 
         //SaveTab.AddItems();
-
-        NewSaveGameTab.AddSaveItems();
         NewSaveGameTab.AddLoadItems();
+        NewSaveGameTab.AddSaveItems();
+        NewSaveGameTab.AddDeleteItems();
 
 
         tabView.RefreshIndex();

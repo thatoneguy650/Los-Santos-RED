@@ -90,38 +90,47 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Pause()
         {
-
             Player.ActivityManager.IsPerformingActivity = false;
             Player.ActivityManager.AddPausedActivity(this);
-
             RemovePrompts();
+
+
+
+
+            if(IsRaised)
+            {
+                LowerRadio(false);
+            }
             PutAwayItem();
+
+
+
             AttachItemToBelt();
-
-            isPaused = true;
-
             Dispose(false);
+            isPaused = true;
         }
         public override bool IsPaused() => isPaused;
         public override void Continue()
         {
-            if (Player.ActivityManager.CanPerformActivitesBase)
-            {
-                Player.ActivityManager.PausedActivites.Remove(this);
-                isPaused = false;
-                Setup();
-                RemovePrompts();
-                AttachItemToHand();
-                TakeOutItem();
-                AddPrompts();
-            }
+            Player.ActivityManager.PausedActivites.Remove(this);
+            isPaused = false;
+            Start();
         }
         public override void Start()
         {
             EntryPoint.WriteToConsole($"Radio Start", 5);
             GameFiber BinocWatcher = GameFiber.StartNew(delegate
             {
-                Enter();
+                Setup();
+                if (!IsCancelled)
+                {
+                    AttachItemToHand();
+                    TakeOutItem();
+                    AddPrompts();
+                    StartGeneralIdle();
+                    Tick();
+                    Exit();
+                }
             }, "RadioWatcher");
         }
         public override bool CanPerform(IActionable player)
@@ -133,118 +142,13 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
-
-        private void Enter()
-        {
-            Setup();
-            if (!IsCancelled)
-            {
-                AttachItemToHand();
-                TakeOutItem();
-                Tick();
-            }
-        }
         private void Tick()
         {
-            AddPrompts();
-            StartGeneralIdle();
             while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && !isPaused)
             {
                 GeneralTick();
-                StatusTick();
                 InputTick();
                 GameFiber.Yield();
-            }
-            Exit();
-        }
-        private void TakeOutItem()
-        {
-            if (!IsCancelled)
-            {
-                EntryPoint.WriteToConsole("Take Out Radio Start");
-                RemovePrompts();
-                PlayingDictionary = animTakeOutDictionary;
-                PlayingAnimation = animTakeOut;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
-                {
-                    DisableControls();
-                    GeneralTick();
-                    GameFiber.Yield();
-                }
-                Player.Scanner.ScannerBoostLevel = 1;
-                EntryPoint.WriteToConsole("Take Out Radio End");
-            }
-        }
-        private void PutAwayItem()
-        {
-            if (!IsCancelled)
-            {
-                EntryPoint.WriteToConsole("Put Away Radio Start");
-                RemovePrompts();
-                PlayingDictionary = animPutAwayDictionary;
-                PlayingAnimation = animPutAway;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
-                {
-                    DisableControls();
-                    GeneralTick();
-                    GameFiber.Yield();
-                }
-                Player.Scanner.ScannerBoostLevel = 0;
-                EntryPoint.WriteToConsole("Put Away Radio End");
-            }
-        }
-        private void RaiseRadio()
-        {
-            if (!IsCancelled)
-            {
-                EntryPoint.WriteToConsole("Raise Radio Start");
-                IsRaising = true;
-                IsLowering = false;
-                RemovePrompts();
-                PlayingDictionary = animRaiseDictionary;
-                PlayingAnimation = animRaise;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
-                {
-                    DisableControls();
-                    GeneralTick();
-                    GameFiber.Yield();
-                }
-                IsRaised = true;
-                IsRaising = false;
-                Player.Scanner.ScannerBoostLevel = 2;
-                AddPrompts();
-                EntryPoint.WriteToConsole("Raise Radio End");
-            }
-        }
-        private void LowerRadio(bool restartIdle)
-        {
-            if (!IsCancelled)
-            {
-                EntryPoint.WriteToConsole("Lower Radio Start");
-                IsLowering = true;
-                IsRaising = false;
-                RemovePrompts();
-                PlayingDictionary = animLowerDictionary;
-                PlayingAnimation = animLower;
-                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowerBlendIn, animLowerBlendOut, -1, animLowerFlag, 0, false, false, false);//-1
-                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
-                {
-                    DisableControls();
-                    GeneralTick();
-                    GameFiber.Yield();
-                }
-                IsRaised = false;
-                IsLowering = false;
-                Player.Scanner.ScannerBoostLevel = 1;
-                if (restartIdle)
-                {
-                    StartGeneralIdle();
-                    AddPrompts();
-                }
-                EntryPoint.WriteToConsole("Lower Radio End");
             }
         }
         private void Setup()
@@ -304,15 +208,18 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            if (!IsCancelled && IsRaised)
+            if (!isPaused)
             {
-                LowerRadio(false);
+                if (!IsCancelled && IsRaised)
+                {
+                    LowerRadio(false);
+                }
+                if (!IsCancelled)
+                {
+                    PutAwayItem();
+                }
+                Dispose(true);
             }
-            if(!IsCancelled)
-            {
-                PutAwayItem();
-            }
-            Dispose(true);
         }
         private void StartGeneralIdle()
         {
@@ -358,7 +265,7 @@ namespace LosSantosRED.lsr.Player
         private void AttachItemToHand()
         {
             CreateBinoculars();
-            if (rageObject.Exists() && !IsAttachedToHand)
+            if (rageObject.Exists())
             {         
                 rageObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 IsAttachedToHand = true;
@@ -369,7 +276,8 @@ namespace LosSantosRED.lsr.Player
         }
         private void AttachItemToBelt()
         {
-            if (rageObject.Exists() && !IsAttachedToBelt)
+            CreateBinoculars();
+            if (rageObject.Exists())
             {
                 rageObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, BeltBoneName), BeltOffset, BeltRotator);
                 IsAttachedToHand = false;
@@ -402,11 +310,11 @@ namespace LosSantosRED.lsr.Player
             {
                 if (IsRaised)
                 {
-                    Player.ButtonPrompts.AddPrompt("Radio", "Lower", "RadioLower", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 15);
+                    Player.ButtonPrompts.AddPrompt("Radio", "Lower", "RadioLower", GameControl.Attack, 15);
                 }
                 else
                 {
-                    Player.ButtonPrompts.AddPrompt("Radio", "Raise", "RadioRaise", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 15);
+                    Player.ButtonPrompts.AddPrompt("Radio", "Raise", "RadioRaise", GameControl.Attack, 15);
                 }
             }
 
@@ -474,6 +382,125 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
         }
+
+
+
+        private void TakeOutItem()
+        {
+            if (!IsCancelled)
+            {
+                EntryPoint.WriteToConsole("Take Out Radio Start");
+                RemovePrompts();
+                PlayingDictionary = animTakeOutDictionary;
+                PlayingAnimation = animTakeOut;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
+                AnimationWatcher aw = new AnimationWatcher();
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
+                {
+                    DisableControls();
+                    GeneralTick();
+                    if (!aw.IsAnimationRunning(CurrentAnimationTime))
+                    {
+                        EntryPoint.WriteToConsole($"Take Out Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                Player.Scanner.ScannerBoostLevel = 1;
+                EntryPoint.WriteToConsole("Take Out Radio End");
+            }
+        }
+        private void PutAwayItem()
+        {
+            if (!IsCancelled)
+            {
+                EntryPoint.WriteToConsole("Put Away Radio Start");
+                RemovePrompts();
+                PlayingDictionary = animPutAwayDictionary;
+                PlayingAnimation = animPutAway;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
+                AnimationWatcher aw = new AnimationWatcher();
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
+                {
+                    DisableControls();
+                    GeneralTick();
+                    if (!aw.IsAnimationRunning(CurrentAnimationTime))
+                    {
+                        EntryPoint.WriteToConsole("Put Away Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                Player.Scanner.ScannerBoostLevel = 0;
+                EntryPoint.WriteToConsole("Put Away Radio End");
+            }
+        }
+        private void RaiseRadio()
+        {
+            if (!IsCancelled)
+            {
+                EntryPoint.WriteToConsole("Raise Radio Start");
+                IsRaising = true;
+                IsLowering = false;
+                RemovePrompts();
+                PlayingDictionary = animRaiseDictionary;
+                PlayingAnimation = animRaise;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animRaiseBlendIn, animRaiseBlendOut, -1, animRaiseFlag, 0, false, false, false);//-1
+                AnimationWatcher aw = new AnimationWatcher();
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
+                {
+                    DisableControls();
+                    GeneralTick();
+                    if (!aw.IsAnimationRunning(CurrentAnimationTime))
+                    {
+                        EntryPoint.WriteToConsole($"Raise Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                IsRaised = true;
+                IsRaising = false;
+                Player.Scanner.ScannerBoostLevel = 2;
+                AddPrompts();
+                EntryPoint.WriteToConsole("Raise Radio End");
+            }
+        }
+        private void LowerRadio(bool restartIdle)
+        {
+            if (!IsCancelled)
+            {
+                EntryPoint.WriteToConsole("Lower Radio Start");
+                IsLowering = true;
+                IsRaising = false;
+                RemovePrompts();
+                PlayingDictionary = animLowerDictionary;
+                PlayingAnimation = animLower;
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowerBlendIn, animLowerBlendOut, -1, animLowerFlag, 0, false, false, false);//-1
+                AnimationWatcher aw = new AnimationWatcher();
+                while (Player.ActivityManager.CanPerformActivitesBase && !IsCancelled && CurrentAnimationTime < 1.0f)
+                {
+                    DisableControls();
+                    GeneralTick();
+                    if (!aw.IsAnimationRunning(CurrentAnimationTime))
+                    {
+                        EntryPoint.WriteToConsole($"Lower Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                IsRaised = false;
+                IsLowering = false;
+                Player.Scanner.ScannerBoostLevel = 1;
+                if (restartIdle)
+                {
+                    StartGeneralIdle();
+                    AddPrompts();
+                }
+                EntryPoint.WriteToConsole("Lower Radio End");
+            }
+        }
+
+
 
     }
 }

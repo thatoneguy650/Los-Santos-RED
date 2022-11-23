@@ -33,13 +33,19 @@ public class GameSaves : IGameSaves
             DefaultConfig();
         }
     }
-    public void Save(ISaveable player, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    public void Save(ISaveable player, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, int saveNumber)
     {
+        EntryPoint.WriteToConsole($"NEW SAVE GAME save number {saveNumber}");
         GameSave mySave = new GameSave();
+        mySave.SaveNumber = saveNumber;
         GameSaveList.Add(mySave);     
         mySave.Save(player, weapons, time, placesOfInterest, modItems);
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
+
+    public int NextSaveGameNumber => GameSaveList.Count + 1;
+
+
     public void SaveSamePlayer(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         GameSave mySave = GetSave(player);
@@ -90,7 +96,6 @@ public class GameSaves : IGameSaves
         GameSaveList = new List<GameSave>();
         AddAlexis();
         AddClaude();
-        //AddMichaelJones();
         AddLamar();
         AddBrad();
 #if DEBUG
@@ -190,7 +195,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
-
+        AlexisGameSave.SaveNumber = 1;
         GameSaveList.Add(AlexisGameSave);
     }
     private void AddClaude()
@@ -368,86 +373,10 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.ThirstValue = 85.0f;
         ClaudeGameSave.SleepValue = 85.0f;
         ClaudeGameSave.SpeechSkill = 0;
-
+        ClaudeGameSave.SaveNumber = 2;
         GameSaveList.Add(ClaudeGameSave);
     }
-    private void AddMichaelJones()
-    {
-        List<StoredWeapon> weapons = new List<StoredWeapon>
-        {
-            new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
-            new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
-        };
-        PedVariation TestVar1 = new PedVariation(new List<PedComponent>() { new PedComponent(3, 4, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 21, 2, 0), new PedComponent(8, 10, 0, 0), new PedComponent(11, 4, 0, 0) }, new List<PedPropComponent>() { });
 
-        GameSave TestGameSave = new GameSave("Michael Jones", 950000, "MP_M_FREEMODE_01", true, TestVar1, weapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
-                                                                                                                                                                });
-
-        TestGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
-        TestGameSave.PlayerHeading = 45f;
-        TestGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
-
-        TestGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
-        TestGameSave.DriversLicense = new DriversLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
-        TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
-        TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
-        TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
-        TestGameSave.HungerValue = 75.0f;
-        TestGameSave.ThirstValue = 75.0f;
-        TestGameSave.SleepValue = 75.0f;
-        TestGameSave.SpeechSkill = 80;
-
-        GameSaveList.Add(TestGameSave);
-    }
-    private void AddGenericMale()
-    {
-        List<StoredWeapon> Weapons = new List<StoredWeapon>
-        {
-
-            new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
-            new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
-        };
-        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() {
-            new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) {
-                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
-        };
-        PedVariation Variation = new PedVariation(
-            new List<PedComponent>() {
-                new PedComponent(3, 4, 0, 0),
-                new PedComponent(4, 10, 0, 0),
-                new PedComponent(6, 10, 0, 0),
-                new PedComponent(7, 21, 2, 0),
-                new PedComponent(8, 10, 0, 0),
-                new PedComponent(11, 4, 0, 0) },
-            new List<PedPropComponent>() { });
-
-        GameSave ExampleGameSave = new GameSave("John Doe", 950000, "MP_M_FREEMODE_01", true, Variation, Weapons, Vehicles);
-        //Position
-        ExampleGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
-        ExampleGameSave.PlayerHeading = 45f;
-        //Date
-        ExampleGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
-        //Contacts
-        ExampleGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
-        //Licenses
-        ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
-        ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
-        //Residences
-        ExampleGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
-        ExampleGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        //Gang Items
-        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
-        //Needs
-        ExampleGameSave.HungerValue = 75.0f;
-        ExampleGameSave.ThirstValue = 75.0f;
-        ExampleGameSave.SleepValue = 75.0f;
-        //Speech
-        ExampleGameSave.SpeechSkill = 80;
-
-
-        GameSaveList.Add(ExampleGameSave);
-    }
     private void AddLamar()
     {
         List<StoredWeapon> Weapons = new List<StoredWeapon>
@@ -507,7 +436,7 @@ public class GameSaves : IGameSaves
         //Speech
         ExampleGameSave.SpeechSkill = 85;
 
-
+        ExampleGameSave.SaveNumber = 3;
         GameSaveList.Add(ExampleGameSave);
     }
     private void AddBrad()
@@ -517,6 +446,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("Flint Flathead Screwdriver", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS BS Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        gameSave.SaveNumber = 4;
         GameSaveList.Add(gameSave);
     }
     private void AddDaveNorton()
@@ -537,6 +467,9 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
+
+        gameSave.SaveNumber = 5;
+
         GameSaveList.Add(gameSave);
     }
     private void AddKarenDaniels()
@@ -557,6 +490,9 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+
+        gameSave.SaveNumber = 6;
+
         GameSaveList.Add(gameSave);
     }
 
@@ -596,6 +532,8 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
+
+        gameSave.SaveNumber = 7;
         GameSaveList.Add(gameSave);
     }
     private void AddFemaleMPCop()
@@ -636,6 +574,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
+        gameSave.SaveNumber = 8;
         GameSaveList.Add(gameSave);
     }
 
@@ -657,9 +596,85 @@ public class GameSaves : IGameSaves
         ExampleGameSave.SpeechSkill = 35;
     }
 
-    //public void Save(ISaveable saveable, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
-    //{
-    //    throw new System.NotImplementedException();
-    //}
+    private void AddMichaelJones()
+    {
+        List<StoredWeapon> weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
+            new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
+        };
+        PedVariation TestVar1 = new PedVariation(new List<PedComponent>() { new PedComponent(3, 4, 0, 0), new PedComponent(4, 10, 0, 0), new PedComponent(6, 10, 0, 0), new PedComponent(7, 21, 2, 0), new PedComponent(8, 10, 0, 0), new PedComponent(11, 4, 0, 0) }, new List<PedPropComponent>() { });
+
+        GameSave TestGameSave = new GameSave("Michael Jones", 950000, "MP_M_FREEMODE_01", true, TestVar1, weapons, new List<VehicleSaveStatus>() { new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) { VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
+                                                                                                                                                                });
+
+        TestGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
+        TestGameSave.PlayerHeading = 45f;
+        TestGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+
+        TestGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        TestGameSave.DriversLicense = new DriversLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
+        TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
+        TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
+        TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        TestGameSave.HungerValue = 75.0f;
+        TestGameSave.ThirstValue = 75.0f;
+        TestGameSave.SleepValue = 75.0f;
+        TestGameSave.SpeechSkill = 80;
+        TestGameSave.SaveNumber = 2;
+        GameSaveList.Add(TestGameSave);
+    }
+    private void AddGenericMale()
+    {
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+
+            new StoredWeapon(0x2B5EF5EC, Vector3.Zero, new WeaponVariation(), 45),
+            new StoredWeapon(2508868239, Vector3.Zero, new WeaponVariation(), 0),
+        };
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() {
+            new VehicleSaveStatus("sentinel", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f) {
+                VehicleVariation = new VehicleVariation() { PrimaryColor = 0, SecondaryColor = 0, LicensePlate = new LSR.Vehicles.LicensePlate("JG234F1", 0, false) } }
+        };
+        PedVariation Variation = new PedVariation(
+            new List<PedComponent>() {
+                new PedComponent(3, 4, 0, 0),
+                new PedComponent(4, 10, 0, 0),
+                new PedComponent(6, 10, 0, 0),
+                new PedComponent(7, 21, 2, 0),
+                new PedComponent(8, 10, 0, 0),
+                new PedComponent(11, 4, 0, 0) },
+            new List<PedPropComponent>() { });
+
+        GameSave ExampleGameSave = new GameSave("John Doe", 950000, "MP_M_FREEMODE_01", true, Variation, Weapons, Vehicles);
+        //Position
+        ExampleGameSave.PlayerPosition = new Vector3(-368.985046f, -305.745453f, 32.7422867f);
+        ExampleGameSave.PlayerHeading = 45f;
+        //Date
+        ExampleGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
+        //Contacts
+        ExampleGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        //Licenses
+        ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
+        ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
+        //Residences
+        ExampleGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
+        ExampleGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
+        //Gang Items
+        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        //Needs
+        ExampleGameSave.HungerValue = 75.0f;
+        ExampleGameSave.ThirstValue = 75.0f;
+        ExampleGameSave.SleepValue = 75.0f;
+        //Speech
+        ExampleGameSave.SpeechSkill = 80;
+
+
+        GameSaveList.Add(ExampleGameSave);
+    }
+
+
+
 }
 

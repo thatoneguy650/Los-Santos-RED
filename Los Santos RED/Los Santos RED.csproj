@@ -43,7 +43,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutputPath>D:\Steam Library\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
+    <OutputPath>..\..\..\..\..\..\..\Program Files %28x86%29\Steam\steamapps\common\Grand Theft Auto V\Plugins\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -189,6 +189,7 @@
     <Compile Include="lsr\Dispatcher\Gang\GangDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Zombie\ZombieDispatcher.cs" />
     <Compile Include="lsr\Helper\ObjectExtensions.cs" />
+    <Compile Include="lsr\Inventory\AnimationWatcher.cs" />
     <Compile Include="lsr\Inventory\Items\LicensePlateInventoryItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BinocularsItem.cs" />
     <Compile Include="lsr\Inventory\Items\Regular\BongItem.cs" />
@@ -565,6 +566,7 @@
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
     <Compile Include="lsr\UI\Other\MarkerManager.cs" />
     <Compile Include="lsr\UI\Other\PopUpWarning.cs" />
+    <Compile Include="lsr\UI\Other\SimpleWarning.cs" />
     <Compile Include="lsr\UI\Other\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\SavePauseMenu.cs" />

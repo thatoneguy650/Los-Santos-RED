@@ -76,7 +76,7 @@ public class CopAssistManager
                     }
                     Entity ClosestCarEntity = Rage.World.GetClosestEntity(copCar.GetOffsetPositionFront(length/2f + distanceInFront), range, GetEntitiesFlags.ConsiderGroundVehicles | GetEntitiesFlags.ExcludePoliceCars | GetEntitiesFlags.ExcludePlayerVehicle);
                     GameFiber.Yield();
-                    if (Cop.Pedestrian.Exists())
+                    if (Cop.Pedestrian.Exists() && ClosestCarEntity.Exists() && Cop.Pedestrian.CurrentVehicle.Exists())
                     {
                         if (ClosestCarEntity != null && ClosestCarEntity.Handle != Cop.Pedestrian.CurrentVehicle.Handle && !ClosestCarEntity.IsOnScreen && !ClosestCarEntity.IsPersistent)
                         {

@@ -13,7 +13,7 @@ using System.Windows.Forms;
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk", PrefersSingleInstance = true,ShouldTickInPauseMenu = true)]
 public static class EntryPoint
 {
-    private static int LogLevel = 0;
+    public static int LogLevel { get; set; } = 0;
     private static System.Reflection.Assembly LSRAssembly;
     private static System.Diagnostics.FileVersionInfo LSRInstalledVersionInfo;
     private static string PreStartMessage;
@@ -40,7 +40,7 @@ public static class EntryPoint
     {
         #if DEBUG
                 LogLevel = 5;
-#endif
+        #endif
 
         while (Game.IsLoading)
         {

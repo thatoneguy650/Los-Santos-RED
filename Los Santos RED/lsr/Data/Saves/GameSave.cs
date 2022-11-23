@@ -38,7 +38,7 @@ namespace LosSantosRED.lsr.Data
         public int Money { get; set; }
         public string ModelName { get; set; }
         public bool IsMale { get; set; }
-
+        public int SaveNumber { get; set; }
         public DateTime SaveDateTime { get; set; }
         public DateTime CurrentDateTime { get; set; }
         public DriversLicense DriversLicense { get; set; }
@@ -574,8 +574,8 @@ namespace LosSantosRED.lsr.Data
             }
             return toreturn;
         }
-
-        public string Title => $"{PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
+        public string Title => $"{SaveNumber.ToString("D2")} - {PlayerName} ({Money.ToString("C0")}) - {CurrentDateTime.ToString("MM/dd/yyyy HH:mm")}";
+        public string RightLabel => SaveDateTime.ToString("MM/dd/yyyy HH:mm");
 
     }
 

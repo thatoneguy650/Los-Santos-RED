@@ -331,6 +331,7 @@ namespace Mod
             }
         }
         public bool IsSleeping { get; set; } = false;
+        public bool IsSleepingOutside { get; set; } = false;
         public bool IsStill { get; private set; }
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }

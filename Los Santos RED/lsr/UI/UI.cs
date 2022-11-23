@@ -533,7 +533,7 @@ public class UI : IMenuProvideable
     }
     private void DisplayButtonPrompts()
     {
-        if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts)
+        if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts && !DisplayablePlayer.ButtonPrompts.IsSuspended)
         {
             instructional.Buttons.Clear();
 
@@ -653,7 +653,10 @@ public class UI : IMenuProvideable
                 PlayerDisplay += $"~o~ BOLO Issued{CurrentDefaultTextColor}";
             }
         }
-        if (DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime)
+
+
+
+        if ((DisplayablePlayer.IsNotWanted && Settings.SettingsManager.LSRHUDSettings.PlayerStatusIncludeTime) || (Settings.SettingsManager.LSRHUDSettings.PlayerStatusShowWhenSleeping && DisplayablePlayer.IsSleeping))
         {
             if (PlayerDisplay == "")
             {
@@ -664,6 +667,10 @@ public class UI : IMenuProvideable
                 PlayerDisplay += $" {CurrentDefaultTextColor}" + GetFormattedTime();
             }
         }
+
+
+
+
         return PlayerDisplay;
     }
     private string GetSelectorText()

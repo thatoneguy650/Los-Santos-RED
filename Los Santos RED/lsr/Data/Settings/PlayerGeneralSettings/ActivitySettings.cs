@@ -54,7 +54,7 @@ public class ActivitySettings : ISettingsDefaultable
         AllowTakingOtherPedsHostage = true;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
-        PlayDraggingPedAnimation = false;
+        PlayDraggingPedAnimation = true;
         UseSimpleConversation = true;
         CrouchingAdjustsMovementSpeed = true;
         CrouchMovementSpeedOverride = 5.0f;

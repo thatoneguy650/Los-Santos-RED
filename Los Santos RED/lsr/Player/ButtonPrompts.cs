@@ -17,6 +17,7 @@ public class ButtonPrompts
 
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.ActivityManager.IsInteractingWithLocation && !Player.ActivityManager.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
+    public bool IsSuspended { get; set; } = false;
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
     {
         Player = player;

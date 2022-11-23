@@ -325,7 +325,7 @@ public class Drag : DynamicActivity
         if (Ped.Pedestrian.Exists())
         {
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.5f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
-            //NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+           // NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
         }
         if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false))
         {

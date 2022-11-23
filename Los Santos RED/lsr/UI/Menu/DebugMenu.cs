@@ -657,7 +657,13 @@ public class DebugMenu : Menu
         };
         OtherItemsMenu.AddItem(runOther);
 
-
+        UIMenuNumericScrollerItem<int> logLevelChange = new UIMenuNumericScrollerItem<int>("Log Level", "Sets the log level of the mod", 0,5,1);
+        logLevelChange.Value = EntryPoint.LogLevel;
+        logLevelChange.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            EntryPoint.LogLevel = logLevelChange.Value;
+        };
+        OtherItemsMenu.AddItem(logLevelChange);
 
         //HighlightProp()
 
