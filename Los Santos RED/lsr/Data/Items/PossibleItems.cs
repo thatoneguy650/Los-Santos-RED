@@ -33,10 +33,7 @@ public class PossibleItems
     public List<HotelStayItem> HotelStayItems { get; private set; } = new List<HotelStayItem>();
     public List<WeaponItem> WeaponItems { get; private set; } = new List<WeaponItem>();
     public List<VehicleItem> VehicleItems { get; private set; } = new List<VehicleItem>();
-
     public List<BinocularsItem> BinocularsItems { get; private set; } = new List<BinocularsItem>();
-
-
     public List<RadioItem> RadioItems { get; private set; } = new List<RadioItem>();
 
 }
