@@ -47,7 +47,7 @@ public class Transaction
         foreach(MenuItem mi in ShopMenu.Items)
         {
             ModItem modItem = modItems.Get(mi.ModItemName);
-            if ((IsFreeVehicles && modItem.ModelItem?.Type == ePhysicalItemType.Vehicle) || (IsFreeWeapons && modItem.ModelItem?.Type == ePhysicalItemType.Weapon) || (IsFreeItems && modItem.ModelItem?.Type != ePhysicalItemType.Weapon && modItem.ModelItem?.Type != ePhysicalItemType.Vehicle))
+            if (modItem != null && ((IsFreeVehicles && modItem.ModelItem?.Type == ePhysicalItemType.Vehicle) || (IsFreeWeapons && modItem.ModelItem?.Type == ePhysicalItemType.Weapon) || (IsFreeItems && modItem.ModelItem?.Type != ePhysicalItemType.Weapon && modItem.ModelItem?.Type != ePhysicalItemType.Vehicle)))
             {
                 mi.SetFree();
             }

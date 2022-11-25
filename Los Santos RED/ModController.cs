@@ -23,9 +23,8 @@ namespace LosSantosRED.lsr
         private Mod.Time Time;
         private UI UI;
         private VanillaManager VanillaManager;
-       private WavAudioPlayer WavAudioPlayer;
-         private NAudioPlayer NAudioPlayer;
-       // private MediaPlayerAudio MediaPlayerAudio;
+        private NAudioPlayer NAudioPlayer;
+        private NAudioPlayer NAudioPlayer2;
         private Weather Weather;
         private Mod.World World;
         
@@ -58,6 +57,7 @@ namespace LosSantosRED.lsr
 
             //WavAudioPlayer = new WavAudioPlayer();
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
+            NAudioPlayer2 = new NAudioPlayer(ModDataFileManager.Settings);
             //MediaPlayerAudio = new MediaPlayerAudio(ModDataFileManager.Settings);
             GameFiber.Yield();
             Time = new Mod.Time(ModDataFileManager.Settings);
@@ -68,7 +68,7 @@ namespace LosSantosRED.lsr
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
-                ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
+                ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
                 ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, 
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies);
             Player.Setup();

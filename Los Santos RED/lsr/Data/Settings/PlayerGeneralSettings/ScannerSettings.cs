@@ -66,7 +66,7 @@ public class ScannerSettings : ISettingsDefaultable
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
         NumberOfUnitsToAnnounce = 2;
-        AllowAmbientDispatches = true;
+        AllowAmbientDispatches = false;
         AmbientDispatchesMinTimeBetween = 150000;
         AmbientDispatchesMaxTimeBetween = 800000;
     }

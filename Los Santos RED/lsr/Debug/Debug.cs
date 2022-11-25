@@ -65,7 +65,6 @@ public class Debug
     private bool isPrecise;
     private bool IsDisplaying;
     private bool isClearingPeds;
-    private MusicGuru.MusicPlayerOld MusicPlayerOld;
     private ModDataFileManager ModDataFileManager;
     private bool isRunning;
     private uint GameTimeLastAttached;
@@ -1176,13 +1175,91 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        SpawnAttachedRagdoll();
+        
+
+
         //PrintRelationships();
         //AlertMessage();
-        SetPropAttachment();
+        //SetPropAttachment();
         //DisplaySprite();
         //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
     }
+
+
+    private void SpawnAttachedRagdoll()
+    {
+        GameFiber.StartNew(delegate
+        {
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+            Rage.Object coolObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+            GameFiber.Yield();
+            if (coolguy.Exists())
+            {
+                coolguy.BlockPermanentEvents = true;
+                coolguy.KeepTasks = true;
+                coolguy.Kill();
+
+                
+                
+                GameFiber.Sleep(1000);
+
+
+
+
+                if (coolguy.Exists() && coolObject.Exists())
+                {
+                    coolObject.IsVisible = false;
+                    //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, coolObject, 11816, 0f, 0.0f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
+                   // NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolObject, Player.Character, 11816, 0f, 0.0f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
+
+
+                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Player.Character, coolObject, 0, 0,// 10706, 28422,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f,//second entityt offset
+                        0.0f, 0.0f, 0.0f,
+                        1000000.0f,//break force
+                        true, //fixed rotation
+                        true, //DoInitialWarp
+                        false, //collision
+                        false, //teleport
+                        2 //RotationORder
+                        );
+
+                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolObject, coolguy, 0, 0,// 10706, 28422,
+                        0.0f, 1.0f, 0.0f,
+                        0.0f, 0.0f, 0.0f,//second entityt offset
+                        0.0f, 0.0f, 0.0f,
+                        1000000.0f,//break force
+                        true, //fixed rotation
+                        true, //DoInitialWarp
+                        false, //collision
+                        false, //teleport
+                        2 //RotationORder
+                        );
+                }
+                //RightT clavic to right hand
+
+
+            }
+            while (coolguy.Exists() && coolObject.Exists() && !Game.IsKeyDownRightNow(Keys.P) && ModController.IsRunning)
+            {
+                Game.DisplayHelp("Press P to Stop");
+                GameFiber.Yield();
+            }
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+            if (coolObject.Exists())
+            {
+                coolObject.Delete();
+            }
+
+        }, "Run Debug Logic");
+    }
+
     private void PrintRelationships()
     {
         foreach (PedExt ped in World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))

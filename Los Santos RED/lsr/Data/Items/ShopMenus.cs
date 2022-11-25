@@ -1814,14 +1814,14 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Shrewsbury Defender",1200) { IsIllicilt = true },
                 new MenuItem("Toto 12 Guage Sawed-Off",430) { IsIllicilt = true },
                 new MenuItem("M61 Grenade",1000) { IsIllicilt = true },
-                new MenuItem("Baseball Bat",70) { IsIllicilt = true },
-                new MenuItem("Crowbar",35) { IsIllicilt = true },
-                new MenuItem("Golf Club",150) { IsIllicilt = true },
+                new MenuItem("G.E.S. Baseball Bat",70) { IsIllicilt = true },
+                new MenuItem("Flint Crowbar",35) { IsIllicilt = true },
+                new MenuItem("ProLaps Five Iron Golf Club",150) { IsIllicilt = true },
                 new MenuItem("Hammer 2",25) { IsIllicilt = true },
-                new MenuItem("Hatchet",80) { IsIllicilt = true },
+                new MenuItem("Flint Hatchet",80) { IsIllicilt = true },
                 new MenuItem("Brass Knuckles",200) { IsIllicilt = true },
                 new MenuItem("Combat Knife",120) { IsIllicilt = true },
-                new MenuItem("Machete",29) { IsIllicilt = true },
+                new MenuItem("Vom Feuer Machete",29) { IsIllicilt = true },
                 new MenuItem("Switchblade",300) { IsIllicilt = true },
                 new MenuItem("Shrewsbury Luzi",956) { IsIllicilt = true },
                 new MenuItem("Vom Feuer KEK-9",565) { IsIllicilt = true },
@@ -1858,7 +1858,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("SPANK", 45, 20),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -1960,17 +1960,17 @@ public class ShopMenus : IShopMenus
                    new MenuItem("Methamphetamine",50, 40),
 
 
-                    new MenuItem("Baseball Bat",45),
-                    new MenuItem("Crowbar",30),
-                    new MenuItem("Golf Club",100),
-                    new MenuItem("Hammer",20),
-                    new MenuItem("Hatchet",75),
+                    new MenuItem("G.E.S. Baseball Bat",45),
+                    new MenuItem("Flint Crowbar",30),
+                    new MenuItem("ProLaps Five Iron Golf Club",100),
+                    new MenuItem("Flint Hammer",20),
+                    new MenuItem("Flint Hatchet",75),
                     new MenuItem("Brass Knuckles",100),
                     new MenuItem("Combat Knife",100),
-                    new MenuItem("Machete",20),
+                    new MenuItem("Vom Feuer Machete",20),
                     new MenuItem("Switchblade",45),
                     new MenuItem("Nightstick",45),
-                    new MenuItem("Wrench",20),
+                    new MenuItem("Flint Heavy Duty Pipe Wrench",20),
                     new MenuItem("Pool Cue",30),
 
                 //Pistola
@@ -2319,10 +2319,10 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Marijuana", 15, 12),
                     new MenuItem("Toilet Cleaner",20, 16) ,
                     new MenuItem("SPANK", 40, 25),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",55),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
@@ -2613,7 +2613,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Marijuana",14, 11),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -2713,7 +2713,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Heroin",130, 100),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -2813,7 +2813,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Heroin",125, 110),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -2911,10 +2911,10 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("DiablosDenMenu","DiablosDenMenu",new List<MenuItem>() {
                     new MenuItem("SPANK", 45, 20),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",55),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
@@ -3029,10 +3029,10 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("YardiesDenMenu","YardiesDenMenu",new List<MenuItem>() {
                     new MenuItem("Marijuana", 13, 10),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",55),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
@@ -3147,10 +3147,10 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("ArmenianDenMenu","ArmenianDenMenu",new List<MenuItem>() {
                     new MenuItem("Heroin",135, 90),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",55),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
@@ -3270,10 +3270,10 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu> {
                new ShopMenu("MadrazoDenMenu","MadrazoDenMenu",new List<MenuItem>() {
                     new MenuItem("Methamphetamine",45, 40),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",55),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",445) { Extras = new List<MenuItemExtra>() {
@@ -3390,7 +3390,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -3490,7 +3490,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -3590,7 +3590,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -3690,7 +3690,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -3790,7 +3790,7 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Cocaine",150, 130),
                     new MenuItem("Brass Knuckles",175),
                     new MenuItem("Combat Knife",150),
-                    new MenuItem("Machete",45),
+                    new MenuItem("Vom Feuer Machete",45),
                     new MenuItem("Switchblade",78),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",500) { Extras = new List<MenuItemExtra>() {
@@ -3896,10 +3896,10 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu>
         {
                 new ShopMenu("GunShop1","GunShop1",new List<MenuItem>() {
-                    new MenuItem("Baseball Bat",70),
-                    new MenuItem("Crowbar",35),
-                    new MenuItem("Golf Club",150),
-                    new MenuItem("Hammer",25),
+                    new MenuItem("G.E.S. Baseball Bat",70),
+                    new MenuItem("Flint Crowbar",35),
+                    new MenuItem("ProLaps Five Iron Golf Club",150),
+                    new MenuItem("Flint Hammer",25),
 
 
                 //Pistola
@@ -4296,10 +4296,10 @@ public class ShopMenus : IShopMenus
         {
                 new ShopMenu("GunShop3","GunShop3",new List<MenuItem>() {
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",78),
                     new MenuItem("Nightstick",57),
-                    new MenuItem("Wrench",24),
+                    new MenuItem("Flint Heavy Duty Pipe Wrench",24),
                     new MenuItem("Pool Cue",45),
 
                 //Pistola
@@ -4669,9 +4669,9 @@ public class ShopMenus : IShopMenus
         {
                 new ShopMenu("GunShop5","GunShop5",new List<MenuItem>() {
                     
-                    new MenuItem("Hammer",25),
-                    new MenuItem("Hatchet",80),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Flint Hammer",25),
+                    new MenuItem("Flint Hatchet",80),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",78),
                     new MenuItem("Nightstick",57),
 
@@ -4859,17 +4859,17 @@ public class ShopMenus : IShopMenus
         ShopMenuList.AddRange(new List<ShopMenu>
         {
         new ShopMenu("WeaponsMenu", "WeaponsMenu", new List<MenuItem>() {
-                    new MenuItem("Baseball Bat",70),
-                    new MenuItem("Crowbar",35),
-                    new MenuItem("Golf Club",150),
-                    new MenuItem("Hammer",25),
-                    new MenuItem("Hatchet",80),
+                    new MenuItem("G.E.S. Baseball Bat",70),
+                    new MenuItem("Flint Crowbar",35),
+                    new MenuItem("ProLaps Five Iron Golf Club",150),
+                    new MenuItem("Flint Hammer",25),
+                    new MenuItem("Flint Hatchet",80),
                     new MenuItem("Brass Knuckles",150),
                     new MenuItem("Combat Knife",120),
-                    new MenuItem("Machete",29),
+                    new MenuItem("Vom Feuer Machete",29),
                     new MenuItem("Switchblade",78),
                     new MenuItem("Nightstick",57),
-                    new MenuItem("Wrench",24),
+                    new MenuItem("Flint Heavy Duty Pipe Wrench",24),
                     new MenuItem("Pool Cue",45),
 
                 //Pistola

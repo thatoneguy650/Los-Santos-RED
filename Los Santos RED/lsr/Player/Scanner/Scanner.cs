@@ -26,6 +26,10 @@ namespace LosSantosRED.lsr
         private Dispatch AttemptToReacquireSuspect;
         private List<AudioSet> AttentionAllUnits;
         private IAudioPlayable AudioPlayer;
+
+        private IAudioPlayable SecondaryAudioPlayer;
+
+
         private CallsignScannerAudio CallsignScannerAudio;
         private Dispatch CarryingWeapon;
         private Dispatch ChangedVehicles;
@@ -43,6 +47,11 @@ namespace LosSantosRED.lsr
         private List<Dispatch> DispatchList = new List<Dispatch>();
         private List<CrimeDispatch> DispatchLookup;
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
+
+
+        private List<Dispatch> AmbientDispatchQueue = new List<Dispatch>();
+
+
         private Dispatch DrivingAtStolenVehicle;
         private Dispatch DrunkDriving;
         private Dispatch ExcessiveSpeed;
@@ -140,12 +149,15 @@ namespace LosSantosRED.lsr
 
         private uint GameTimeLastAddedAmbientDispatch;
         private uint GameTimeBetweenAmbientDispatches;
+        private bool ExecutingAmbientQueue;
+
         private bool ShouldAddAmbientDispatch => Game.GameTime - GameTimeLastAddedAmbientDispatch >= GameTimeBetweenAmbientDispatches;
         private float DesiredVolume => Settings.SettingsManager.ScannerSettings.AudioVolume + (ScannerBoostLevel * Settings.SettingsManager.ScannerSettings.AudioVolumeBoostAmount);
 
-        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, ISettingsProvideable settings, ITimeReportable time, IPlacesOfInterest placesOfInterest)
+        public Scanner(IEntityProvideable world, IPoliceRespondable currentPlayer, IAudioPlayable audioPlayer, IAudioPlayable secondaryAudioPlayer,  ISettingsProvideable settings, ITimeReportable time, IPlacesOfInterest placesOfInterest)
         {
             AudioPlayer = audioPlayer;
+            SecondaryAudioPlayer = secondaryAudioPlayer;
             Player = currentPlayer;
             World = world;
             Settings = settings;
@@ -299,17 +311,17 @@ namespace LosSantosRED.lsr
         {
             if(ShouldAddAmbientDispatch)
             {
-                if (Player.IsAliveAndFree && Player.IsNotWanted && !Player.Investigation.IsActive && CanHearAmbient && Settings.SettingsManager.ScannerSettings.AllowAmbientDispatches)
+                if (Player.IsAliveAndFree && Player.IsNotWanted && !Player.Investigation.IsActive && Settings.SettingsManager.ScannerSettings.AllowAmbientDispatches)
                 {
-                    Reset();
+                   // Reset();
                     Dispatch toPlay = DispatchList.Where(x => x.IsAmbientAllowed).PickRandom();
                     if (toPlay != null)
                     {
                         BasicLocation basicLocation = PlacesOfInterest.AllLocations().PickRandom();
                         if(basicLocation != null)
                         {
-                            toPlay.LatestInformation = new CrimeSceneDescription(RandomItems.RandomPercent(45), RandomItems.RandomPercent(45), basicLocation.EntrancePosition, false);
-                            AddToQueue(toPlay);
+                            CrimeSceneDescription csd = new CrimeSceneDescription(RandomItems.RandomPercent(45), RandomItems.RandomPercent(45), basicLocation.EntrancePosition, false);
+                            AddToAmbientQueue(toPlay, csd);
                         } 
                     }
                 }
@@ -331,6 +343,18 @@ namespace LosSantosRED.lsr
                     ExecutingQueue = false;
                 }, "PlayDispatchQueue");
             }
+
+            if(AmbientDispatchQueue.Count > 0 && !ExecutingAmbientQueue)
+            {
+                ExecutingAmbientQueue = true;
+                GameFiber.Yield();
+                GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
+                {
+                    PlayAmbientQueue();
+                    ExecutingAmbientQueue = false;
+                }, "PlayDispatchQueue");
+            }
+
         }
         private void CleanQueue()
         {
@@ -358,10 +382,26 @@ namespace LosSantosRED.lsr
                 {
                     AddToPlayed = false;
                 }
-                BuildDispatch(Item, AddToPlayed);
+                BuildDispatch(Item, AddToPlayed, false);
                 if (DispatchQueue.Contains(Item))
                 {
                     DispatchQueue.Remove(Item);
+                }
+                GameFiber.Yield();
+            }
+        }
+
+
+
+        private void PlayAmbientQueue()
+        {
+            while (AmbientDispatchQueue.Count > 0)
+            {
+                Dispatch Item = AmbientDispatchQueue.OrderBy(x => x.Priority).ToList()[0];
+                BuildDispatch(Item, false, true);
+                if (AmbientDispatchQueue.Contains(Item))
+                {
+                    AmbientDispatchQueue.Remove(Item);
                 }
                 GameFiber.Yield();
             }
@@ -1009,6 +1049,27 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+
+
+        private void AddToAmbientQueue(Dispatch ToAdd, CrimeSceneDescription ToCallIn)
+        {
+            if (Settings.SettingsManager.ScannerSettings.IsEnabled && Player.ActivityManager.CanHearScanner)
+            {
+                GameFiber.Yield();//TR Added 7
+                Dispatch Existing = AmbientDispatchQueue.FirstOrDefault(x => x.Name == ToAdd.Name);
+                if (Existing == null)
+                {
+                    AmbientDispatchQueue.Add(ToAdd);
+                }
+                else
+                {
+                    ToAdd.LatestInformation = ToCallIn;
+                    DispatchQueue.Add(ToAdd);
+                }
+            }
+        }
+
+
         private void AddVehicleDescription(DispatchEvent dispatchEvent, VehicleExt VehicleToDescribe, bool IncludeLicensePlate, Dispatch DispatchToPlay)
         {
             if (VehicleToDescribe == null)
@@ -1313,7 +1374,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed)
+        private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed, bool isAmbient)
         {
             EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
             DispatchEvent EventToPlay = new DispatchEvent();
@@ -1323,6 +1384,12 @@ namespace LosSantosRED.lsr
                 AddAudioSet(EventToPlay, DispatchToPlay.PreambleAudioSet.PickRandom());
                 EventToPlay.SoundsToPlay.Add(RadioEnd.PickRandom());
             }
+
+
+
+
+
+
             EventToPlay.SoundsToPlay.Add(RadioStart.PickRandom());
             EventToPlay.NotificationTitle = DispatchToPlay.NotificationTitle;
 
@@ -1343,6 +1410,7 @@ namespace LosSantosRED.lsr
                 EventToPlay.NotificationSubtitle = "~o~Crime Reported";
             }
             EventToPlay.NotificationText = DispatchToPlay.NotificationText;
+
 
             if (DispatchToPlay.IncludeAttentionAllUnits)
             {
@@ -1498,7 +1566,15 @@ namespace LosSantosRED.lsr
             {
                 EventToPlay.AnyDispatchInterrupts = true;
             }
-            PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
+            if(isAmbient)
+            {
+                PlayAmbientDispatch(EventToPlay);
+            }
+            else
+            {
+                PlayDispatch(EventToPlay, DispatchToPlay.LatestInformation, DispatchToPlay);
+            }
+            
         }
         //Other
         private void DefaultConfig()
@@ -1773,6 +1849,60 @@ namespace LosSantosRED.lsr
                 }
             }, "PlayAudioList");
         }
+
+
+
+
+        private void PlayAmbientDispatch(DispatchEvent MyAudioEvent)
+        {
+            List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
+            GameFiber PlayAudioList = GameFiber.StartNew(delegate
+            {
+                uint GameTimeStartedWaitingForAudio = Game.GameTime;
+                while (SecondaryAudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
+                {
+                    GameFiber.Yield();
+                }
+                if (Settings.SettingsManager.ScannerSettings.EnableAudio)
+                {
+                    foreach (string audioname in soundsToPlayer)
+                    {
+                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                        if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning && !AudioPlayer.IsAudioPlaying)
+                        {
+                            if (Settings.SettingsManager.ScannerSettings.SetVolume)
+                            {
+                                SecondaryAudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                            }
+                            else
+                            {
+                                SecondaryAudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                            }
+                            while (SecondaryAudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
+                            {
+                                GameFiber.Yield();
+                                if (AbortedAudio)
+                                {
+                                    EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                    break;
+                                }
+                                if (AudioPlayer.IsAudioPlaying)
+                                {
+                                    EntryPoint.WriteToConsole($"AbortedAudio333", 5);
+                                    break;
+                                }
+                            }
+                            if (AbortedAudio)
+                            {
+                                EntryPoint.WriteToConsole($"AbortedAudio2", 5);
+                                break;
+                            }
+                        }
+                    }
+                }
+            }, "PlayAudioList");
+        }
+
         private void RemoveAllNotifications()
         {
             foreach (uint handles in NotificationHandles)
