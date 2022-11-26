@@ -1763,7 +1763,7 @@ namespace Mod
                     }
                 }
 
-                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.HasSiren && CurrentVehicle.Vehicle.IsSirenSilent)
+                if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.HasSiren && CurrentVehicle.Vehicle.IsSirenSilent)
                 {
                     CurrentVehicle.Vehicle.IsSirenSilent = false;
                 }

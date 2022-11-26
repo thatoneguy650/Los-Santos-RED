@@ -309,7 +309,7 @@ namespace LosSantosRED.lsr
         }
         private void AddAmbientDispatchesToQueue()
         {
-            if(ShouldAddAmbientDispatch)
+            if(1==0 && ShouldAddAmbientDispatch)//turned completely off for now, needs major rethink
             {
                 if (Player.IsAliveAndFree && Player.IsNotWanted && !Player.Investigation.IsActive && Settings.SettingsManager.ScannerSettings.AllowAmbientDispatches)
                 {
@@ -344,7 +344,7 @@ namespace LosSantosRED.lsr
                 }, "PlayDispatchQueue");
             }
 
-            if(AmbientDispatchQueue.Count > 0 && !ExecutingAmbientQueue)
+            if(1==0 && AmbientDispatchQueue.Count > 0 && !ExecutingAmbientQueue)//turned off completly for now
             {
                 ExecutingAmbientQueue = true;
                 GameFiber.Yield();

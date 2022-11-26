@@ -39,7 +39,7 @@ public class ScannerSettings : ISettingsDefaultable
     public bool ApplyFilter { get; set; }
 
 
-    [Description("Enable or disable hearing ambient dispatches when you have the scanner out.")]
+    [Description("Enable or disable hearing ambient dispatches when you have the scanner out. ~r~CURRENTLY DISABLED~s~")]
     public bool AllowAmbientDispatches { get; set; }
     [Description("Minimum time between ambient dispatches (if enabled).")]
     public uint AmbientDispatchesMinTimeBetween { get; set; }

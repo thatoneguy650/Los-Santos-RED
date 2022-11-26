@@ -1786,4 +1786,19 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
         Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
     }
+
+    public void Setup()
+    {
+        foreach(BasicLocation bl in AllLocations())
+        {
+            if(bl.HasBannerImage)
+            {
+                if(!File.Exists($"Plugins\\LosSantosRED\\images\\{bl.BannerImagePath}"))
+                {
+                    bl.BannerImagePath = "";
+                    EntryPoint.WriteToConsole($"Locations ERROR Banner Image file DOES NOT EXIST {bl.Name}, REMOVING FROM LOCATION", 0);
+                }
+            }
+        }
+    }
 }

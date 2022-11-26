@@ -113,7 +113,7 @@ public class StaticPlaces
             }
 
             LocationsCalculated++;
-            if (LocationsCalculated >= 10)//20//50//20//5
+            if (LocationsCalculated >= 7)//20//50//20//5
             {
                 LocationsCalculated = 0;
                 GameFiber.Yield();

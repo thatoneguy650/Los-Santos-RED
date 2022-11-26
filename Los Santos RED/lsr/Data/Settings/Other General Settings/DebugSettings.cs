@@ -40,6 +40,26 @@ public class DebugSettings : ISettingsDefaultable
     public bool BinocDrawScaleform { get; set; }
 
 
+
+    public float DragAttach1X { get; set; }
+    public float DragAttach1Y { get; set; }
+    public float DragAttach1Z { get; set; }
+
+
+    public float DragAttach2X { get; set; }
+    public float DragAttach2Y { get; set; }
+    public float DragAttach2Z { get; set; }
+
+    public float DragAttach3X { get; set; }
+    public float DragAttach3Y { get; set; }
+    public float DragAttach3Z { get; set; }
+
+    //public float DragAttach4X { get; set; }
+    //public float DragAttach4Y { get; set; }
+    //public float DragAttach4Z { get; set; }
+
+    public bool DragFixedRotation { get; set; }
+
     public DebugSettings()
     {
         SetDefault();
@@ -76,6 +96,25 @@ public class DebugSettings : ISettingsDefaultable
 
         BinocDrawScaleform = true;
 
-    }
+
+
+
+        DragAttach1X = 0.1f;
+        DragAttach1Y = 0.3f;
+        DragAttach1Z = -0.1f;
+
+
+        DragAttach2X = 0.0f;
+        DragAttach2Y = 0.0f;
+        DragAttach2Z = 0.0f;
+
+        DragAttach3X = 180f;
+        DragAttach3Y = 90f;
+        DragAttach3Z = 0f;
+
+        DragFixedRotation = true;
+
+
+}
 
 }

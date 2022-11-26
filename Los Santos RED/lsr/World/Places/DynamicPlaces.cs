@@ -71,6 +71,7 @@ public class DynamicPlaces
     {
         List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
         GameFiber.Yield();
+        int checkedObjects = 0;
         foreach (Rage.Object obj in Objects)
         {
             if (obj.Exists())
@@ -89,6 +90,12 @@ public class DynamicPlaces
                     ActivateGasPump(obj, modelName, position, heading);
                     GameFiber.Yield();
                 }
+            }
+            checkedObjects++;
+            if (checkedObjects > 10)
+            {
+                GameFiber.Yield();
+                checkedObjects = 0;
             }
         }
         GameFiber.Yield();
@@ -139,7 +146,7 @@ public class DynamicPlaces
         for (int i = ActiveVendingMachines.Count - 1; i >= 0; i--)
         {
             VendingMachine gl = ActiveVendingMachines[i];
-            if (gl.DistanceToPlayer >= 100f)
+            if (gl.DistanceToPlayer >= 100f || !gl.MachineProp.Exists())
             {
                 if(gl.IsActivated)
                 {
@@ -158,7 +165,7 @@ public class DynamicPlaces
         for (int i = ActiveGasPumps.Count - 1; i >= 0; i--)
         {
             GasPump gl = ActiveGasPumps[i];
-            if (gl.DistanceToPlayer >= 100f)
+            if (gl.DistanceToPlayer >= 100f || !gl.PumpProp.Exists())
             {
                 if(gl.IsActivated)
                 {

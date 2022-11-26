@@ -39,6 +39,8 @@ public class Drag : DynamicActivity
     private int GameTimeLastCheckedVehicle;
     private bool IsNearBody;
     private bool IsBodyPickedUp;
+    private Rage.Object leftHandObject;
+    private bool IsRagdoll = false;
 
     public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world)
     {
@@ -75,7 +77,10 @@ public class Drag : DynamicActivity
         {
             DetachPeds();
         }
-
+        if(leftHandObject.Exists())
+        {
+            leftHandObject.Delete();
+        }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsDraggingBody = false;
     }
@@ -284,11 +289,13 @@ public class Drag : DynamicActivity
         {
             Player.ButtonPrompts.AddPrompt("Drop", "Drop", "Drop", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
+#if DEBUG
+
         if (!Player.ButtonPrompts.HasPrompt("Ragdoll"))
         {
             Player.ButtonPrompts.AddPrompt("Ragdoll", "Ragdoll", "Ragdoll", Settings.SettingsManager.KeySettings.InteractCancel, 10);
         }
-
+#endif
 
 
         if (PlayAttachAnimation() && PlayDragAnimation())
@@ -304,6 +311,7 @@ public class Drag : DynamicActivity
     private bool PlayAttachAnimation()
     {
         AttachPeds();
+        GameFiber.Yield();
         if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -393,13 +401,21 @@ public class Drag : DynamicActivity
                         NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                         //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
                         Ped.Pedestrian.BlockPermanentEvents = true;
-                       //Ped.Pedestrian.IsRagdoll = true;
-                       NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
+                        Ped.Pedestrian.IsRagdoll = true;
+                        //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
 
-                        NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
+                        //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
 
 
-                        AttachPeds();
+                        //AttachPeds();
+
+                        IsRagdoll = true;
+
+                        DoRagdollDrag();
+
+
+
+
                         Game.DisplaySubtitle("RAGDOLLED");
                     }
                 }
@@ -408,7 +424,10 @@ public class Drag : DynamicActivity
         }
 
         EntryPoint.WriteToConsole($"PlayPlayerLoopingAnimation END {animation} repeat {repeat}");
-
+        if(!IsCancelled && IsRagdoll)
+        {
+            return true;
+        }
 
         if (!IsCancelled && AnimationTime >= 1.0f)
         {
@@ -417,6 +436,37 @@ public class Drag : DynamicActivity
         else
         {
             return false;
+        }
+    }
+
+
+    private void DoRagdollDrag()
+    {
+        leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+        if (leftHandObject.Exists() && Ped.Pedestrian.Exists())
+        {
+
+            leftHandObject.IsVisible = false;
+            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
+            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
+            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, leftHandObject,
+                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, "BONETAG_SPINE3"), //bone 1
+                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, "BONETAG_SPINE3"),// bone 2
+                        Settings.SettingsManager.DebugSettings.DragAttach1X, Settings.SettingsManager.DebugSettings.DragAttach1Y, Settings.SettingsManager.DebugSettings.DragAttach1Z,
+                        Settings.SettingsManager.DebugSettings.DragAttach2X, Settings.SettingsManager.DebugSettings.DragAttach2Y, Settings.SettingsManager.DebugSettings.DragAttach2Z,
+                        Settings.SettingsManager.DebugSettings.DragAttach3X, Settings.SettingsManager.DebugSettings.DragAttach3Y, Settings.SettingsManager.DebugSettings.DragAttach3Z,
+                100000.0f,//break force
+                true, //fixed rotation
+                true, //DoInitialWarp
+                false, //collision
+                false, //teleport
+                1 //RotationORder
+                );
+            //"BONETAG_SPINE3"
+            //"BONETAG_PELVIS"
+            //0.1f,0.3f,-0.1f,
+            //0f,0f,0f,
+            //180f,90f,0f,
         }
     }
     private void DirectionLoop()

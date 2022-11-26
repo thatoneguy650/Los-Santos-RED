@@ -5,6 +5,7 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -757,7 +758,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Maibatsu Mule Custom",25000),
                 new MenuItem("Maibatsu Penumbra",150000),
                 new MenuItem("Maibatsu Penumbra FF",150000),
-                new MenuItem("Maibatsu Sanchez (livery)",12000),
+                new MenuItem("Maibatsu Sanchez Custom",12000),
                 new MenuItem("Maibatsu Sanchez",12000),
                 new MenuItem("Mammoth Patriot",50000),
                 new MenuItem("Mammoth Patriot Stretch",50000),
@@ -1100,7 +1101,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Balls & Rings",4),
                 new MenuItem("Fries",2),
                 new MenuItem("Fowlburger",5),
-                new MenuItem("Cup Of Coffee",3),
+                new MenuItem("Cup of Coffee",3),
                 new MenuItem("Cup of eCola",2),
                 new MenuItem("Cup of Sprunk",2), }),
             new ShopMenu("PizzaThisMenu","Pizza",new List<MenuItem>() {
@@ -1323,13 +1324,13 @@ public class ShopMenus : IShopMenus
             new ShopMenu("ViceroyMenu","Viceroy",new List<MenuItem>() {
                 new MenuItem("City View King",354),
                 new MenuItem("City View Deluxe King", 378),
-                new MenuItem("Partial Ocean View King", 392),
+                //new MenuItem("Partial Ocean View King", 392),
                 new MenuItem("Ocean View King", 423),
-                new MenuItem("City View Two Bedded Room", 456),
+               // new MenuItem("City View Two Bedded Room", 456),
                 new MenuItem("Grande King", 534),
                 new MenuItem("Grande Ocean View King", 647),
                 new MenuItem("Empire Suite", 994),
-                new MenuItem("Monarch Suite", 1327), }),
+                new MenuItem("Monarch Suite", 5000), }),
         });
     }
     private void SpecificDealerships()
@@ -1580,7 +1581,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Orang-O-Tang", 1),
-                new MenuItem("Can of Squirter", 1),
                 new MenuItem("Bottle of Raine Water", 2), }) { BannerOverride = "ecola.png" },
             new ShopMenu("BeanMachineVendingMenu","Bean Machine",new List<MenuItem>() {
                 new MenuItem("High Noon Coffee", 2) }) { BannerOverride = "beanmachine.png" },
@@ -1817,7 +1817,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("G.E.S. Baseball Bat",70) { IsIllicilt = true },
                 new MenuItem("Flint Crowbar",35) { IsIllicilt = true },
                 new MenuItem("ProLaps Five Iron Golf Club",150) { IsIllicilt = true },
-                new MenuItem("Hammer 2",25) { IsIllicilt = true },
+                new MenuItem("Flint Hammer",25) { IsIllicilt = true },
                 new MenuItem("Flint Hatchet",80) { IsIllicilt = true },
                 new MenuItem("Brass Knuckles",200) { IsIllicilt = true },
                 new MenuItem("Combat Knife",120) { IsIllicilt = true },
@@ -5282,6 +5282,27 @@ public class ShopMenus : IShopMenus
                // new MenuItem("Tear Gas Grenade",125) { AmmoAmount = 1,AmmoPrice = 125 },
                     }),
                 });
+    }
+
+    public void Setup(IModItems modItems)
+    {
+        foreach(ShopMenu sm in ShopMenuList)
+        {
+            int totalItems = sm.Items.Count;
+            for (int i = totalItems - 1; i >= 0; i--)
+            {
+                MenuItem mi = sm.Items[i];
+                if (mi != null && modItems.Get(mi.ModItemName) == null)
+                {
+                    EntryPoint.WriteToConsole($"Shop Menus ERROR Corresponding Item NOT FOUND {mi.ModItemName} in MENU {sm.Name} REMOVING FROM MENU",0);
+                    sm.Items.RemoveAt(i);
+                }
+            }
+            if(totalItems == 0)
+            {
+                EntryPoint.WriteToConsole($"Shop Menus ERROR No Menu Items in MENU {sm.Name}", 0);
+            }
+        }
     }
 }
 

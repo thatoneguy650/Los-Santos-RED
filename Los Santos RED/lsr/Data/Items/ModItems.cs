@@ -605,6 +605,7 @@ public class ModItems : IModItems
             new HotelStayItem("Room: Single Queen","Clean sheets on request", ItemType.Services) { ConsumeOnPurchase = true, MeasurementName = "Night" },
             new HotelStayItem("Room: Double Queen","Have a little company, but don't want to get too close?", ItemType.Services) { ConsumeOnPurchase = true,MeasurementName = "Night" },
             new HotelStayItem("Room: Single King","Please clean off all mirrors after use", ItemType.Services) { ConsumeOnPurchase = true,MeasurementName = "Night" },
+            new HotelStayItem("Room: Delux","Our nicest room, behave yourself", ItemType.Services) { ConsumeOnPurchase = true,MeasurementName = "Night" },
 
             //Viceroy Hotel
             new HotelStayItem("City View King","Standard room with a view of the city", ItemType.Services) { ConsumeOnPurchase = true,MeasurementName = "Night" },
@@ -613,6 +614,9 @@ public class ModItems : IModItems
             new HotelStayItem("Grande King","XL Deluxe room with plenty of space and amenities.", ItemType.Services) {ConsumeOnPurchase = true,MeasurementName = "Night" },
             new HotelStayItem("Grande Ocean View King","XL Deluxe room with with plenty of space and amenities and a view of the ocean", ItemType.Services) {ConsumeOnPurchase = true, MeasurementName = "Night" },
             new HotelStayItem("Monarch Suite","Penthouse suite, reserved for the most discerning tastes", ItemType.Services) {ConsumeOnPurchase = true,MeasurementName = "Night" },
+            new HotelStayItem("Empire Suite","Deluxe Penthouse suite, by invite only (or lots of money)", ItemType.Services) {ConsumeOnPurchase = true,MeasurementName = "Night" },
+
+            //
         });
     }
     private void DefaultConfig_Tools()
@@ -1051,7 +1055,7 @@ public class ModItems : IModItems
             new VehicleItem("Maibatsu Mule Custom", true, ItemType.Vehicles) { ModelItemID = "mule4" },
             new VehicleItem("Maibatsu Penumbra", ItemType.Vehicles) { ModelItemID = "penumbra" },
             new VehicleItem("Maibatsu Penumbra FF", true, ItemType.Vehicles) { ModelItemID = "penumbra2" },
-            new VehicleItem("Maibatsu Sanchez (livery)", ItemType.Vehicles) { ModelItemID = "Sanchez" },
+            new VehicleItem("Maibatsu Sanchez Custom", ItemType.Vehicles) { ModelItemID = "Sanchez" },
             new VehicleItem("Maibatsu Sanchez", ItemType.Vehicles) { ModelItemID = "sanchez2" },
             new VehicleItem("Mammoth Patriot", ItemType.Vehicles) { ModelItemID = "patriot" },
             new VehicleItem("Mammoth Patriot Stretch", true, ItemType.Vehicles) { ModelItemID = "patriot2" },
@@ -1185,7 +1189,7 @@ public class ModItems : IModItems
             new VehicleItem("Vapid Contender", true, ItemType.Vehicles) { ModelItemID = "contender" },
             new VehicleItem("Vapid Dominator", "Baby boomer teen dream repackaged for the mass market generation. A muscle car without the muscle that's the rental vehicle of choice for tourists looking for a slice of 'real' Americana.", ItemType.Vehicles) { ModelItemID = "Dominator" },
             new VehicleItem("Vapid Pisswasser Dominator", ItemType.Vehicles) { ModelItemID = "dominator2" },
-            new VehicleItem("Vapid Dominator GTX*", "Step one: take the best-looking muscle car the 60's ever saw, and introduce it to the greatest American supercar of the modern era. When your pedigree is this damn good, there's nothing wrong with keeping it in the family.", ItemType.Vehicles) { ModelItemID = "dominator3" },
+            new VehicleItem("Vapid Dominator GTX", "Step one: take the best-looking muscle car the 60's ever saw, and introduce it to the greatest American supercar of the modern era. When your pedigree is this damn good, there's nothing wrong with keeping it in the family.", ItemType.Vehicles) { ModelItemID = "dominator3" },
             new VehicleItem("Vapid Apocalypse Dominator", true, ItemType.Vehicles) { ModelItemID = "dominator4" },
             new VehicleItem("Vapid Future Shock Dominator", true, ItemType.Vehicles) { ModelItemID = "dominator5" },
             new VehicleItem("Vapid Nightmare Dominator", true, ItemType.Vehicles) { ModelItemID = "dominator6" },

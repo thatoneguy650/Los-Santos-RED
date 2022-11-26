@@ -466,8 +466,12 @@ public class Roadblock
                 CreatedRoadblockVehicles.Add(created.Vehicle);
                 created.Vehicle.IsCollisionEnabled = true;
                 created.Vehicle.IsGravityDisabled = false;
-                created.Vehicle.IsSirenOn = true;
-                created.Vehicle.IsSirenSilent = true;
+
+                if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState)
+                {
+                    created.Vehicle.IsSirenOn = true;
+                    created.Vehicle.IsSirenSilent = true;
+                }
             }
         }
         return spawnTask.CreatedVehicles.Any();

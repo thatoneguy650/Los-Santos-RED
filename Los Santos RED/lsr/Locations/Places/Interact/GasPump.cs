@@ -49,7 +49,7 @@ public class GasPump : InteractableLocation
     private GasStation AssociatedStation;
     private bool KeepInteractionGoing;
     private bool IsFueling;
-    private Rage.Object PumpProp = null;
+    public Rage.Object PumpProp { get; private set; } = null;
     public GasPump() : base()
     {
 

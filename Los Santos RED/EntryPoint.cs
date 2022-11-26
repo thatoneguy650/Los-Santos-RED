@@ -114,9 +114,4 @@ public static class EntryPoint
         ModController?.Dispose();
     }
 
-    //test2
-
-
-
-
 }

@@ -17,6 +17,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+//using System.Windows.Media;
 using static DispatchScannerFiles;
 
 public class Debug
@@ -1193,70 +1194,55 @@ public class Debug
         GameFiber.StartNew(delegate
         {
             Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-            Rage.Object coolObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+            Rage.Object leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
             GameFiber.Yield();
             if (coolguy.Exists())
             {
                 coolguy.BlockPermanentEvents = true;
                 coolguy.KeepTasks = true;
                 coolguy.Kill();
-
-                
-                
-                GameFiber.Sleep(1000);
-
-
-
-
-                if (coolguy.Exists() && coolObject.Exists())
+                GameFiber.Sleep(500);
+                if (coolguy.Exists() && leftHandObject.Exists())
                 {
-                    coolObject.IsVisible = false;
-                    //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, coolObject, 11816, 0f, 0.0f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
-                   // NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolObject, Player.Character, 11816, 0f, 0.0f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
-
-
-                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Player.Character, coolObject, 0, 0,// 10706, 28422,
-                        0.0f, 1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f,//second entityt offset
-                        0.0f, 0.0f, 0.0f,
-                        1000000.0f,//break force
-                        true, //fixed rotation
+                    AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
+                    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_drag_plyr", 2.0f, -2.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);
+                    
+                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(coolguy, Player.Character, false);
+                    leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
+                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolguy, leftHandObject, 
+                        NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"), //bone 1
+                        NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"),// bone 2
+                        Settings.SettingsManager.DebugSettings.DragAttach1X, Settings.SettingsManager.DebugSettings.DragAttach1Y, Settings.SettingsManager.DebugSettings.DragAttach1Z,
+                        Settings.SettingsManager.DebugSettings.DragAttach2X, Settings.SettingsManager.DebugSettings.DragAttach2Y, Settings.SettingsManager.DebugSettings.DragAttach2Z,
+                        Settings.SettingsManager.DebugSettings.DragAttach3X, Settings.SettingsManager.DebugSettings.DragAttach3Y, Settings.SettingsManager.DebugSettings.DragAttach3Z,
+                        100000.0f,//break force
+                        Settings.SettingsManager.DebugSettings.DragFixedRotation, //fixed rotation
                         true, //DoInitialWarp
                         false, //collision
                         false, //teleport
-                        2 //RotationORder
+                        1 //RotationORder
                         );
 
-                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolObject, coolguy, 0, 0,// 10706, 28422,
-                        0.0f, 1.0f, 0.0f,
-                        0.0f, 0.0f, 0.0f,//second entityt offset
-                        0.0f, 0.0f, 0.0f,
-                        1000000.0f,//break force
-                        true, //fixed rotation
-                        true, //DoInitialWarp
-                        false, //collision
-                        false, //teleport
-                        2 //RotationORder
-                        );
+                    //"BONETAG_SPINE3"
+                    //"BONETAG_PELVIS"
+                    //0.1,0.3,-0.1
+                    //0,0,0
+                    //180.90,0
                 }
-                //RightT clavic to right hand
-
-
             }
-            while (coolguy.Exists() && coolObject.Exists() && !Game.IsKeyDownRightNow(Keys.P) && ModController.IsRunning)
+            while (coolguy.Exists() && leftHandObject.Exists() && !Game.IsKeyDownRightNow(Keys.Q) && ModController.IsRunning)
             {
-                Game.DisplayHelp("Press P to Stop");
+                Game.DisplayHelp("Press Q to Stop");
                 GameFiber.Yield();
             }
             if (coolguy.Exists())
             {
                 coolguy.Delete();
             }
-            if (coolObject.Exists())
+            if (leftHandObject.Exists())
             {
-                coolObject.Delete();
+                leftHandObject.Delete();
             }
-
         }, "Run Debug Logic");
     }
 

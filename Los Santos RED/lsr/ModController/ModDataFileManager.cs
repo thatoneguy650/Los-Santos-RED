@@ -60,6 +60,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();
+        ShopMenus.Setup(ModItems);
         GameFiber.Yield();
         Counties = new Counties();
         Counties.ReadConfig();
@@ -101,6 +102,7 @@ public class ModDataFileManager
         GameFiber.Yield();
         PlacesOfInterest = new PlacesOfInterest(ShopMenus, Gangs);
         PlacesOfInterest.ReadConfig();
+        PlacesOfInterest.Setup();
         GameFiber.Yield();
         Jurisdictions = new Jurisdictions(Agencies);
         Jurisdictions.ReadConfig();

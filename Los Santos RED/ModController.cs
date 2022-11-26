@@ -156,13 +156,14 @@ namespace LosSantosRED.lsr
         }
         private void StartModLogic()
         {
-            TaskGroups = new List<ModTaskGroup>();
-            TaskGroups.Add(new ModTaskGroup("RG1:Player", new List<ModTask>()
+            TaskGroups = new List<ModTaskGroup>
+            {
+                new ModTaskGroup("RG1:Player", new List<ModTask>()
             {
                  new ModTask(100, "Player.Update", Player.Update, 0),//1
                  new ModTask(250, "UI.UpdateData", UI.CacheData, 1),//500
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG2:Player Gen", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG2:Player Gen", new List<ModTask>()
             {
                 new ModTask(250, "Player.Violations.Update", Player.Violations.Update, 0),
                 new ModTask(250, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
@@ -172,8 +173,8 @@ namespace LosSantosRED.lsr
                 new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
                 new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                 new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG3:World Gen", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG3:World Gen", new List<ModTask>()
             {
                 new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
                 new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?
@@ -182,53 +183,52 @@ namespace LosSantosRED.lsr
                 new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
                 new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
                 new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
             {
                 new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
                 new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG5:Police Update", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG5:Police Update", new List<ModTask>()
             {
                 new ModTask(250, "Police.Update", Police.Update,0),//250
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG6:Civilian Update", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG6:Civilian Update", new List<ModTask>()
             {
                 new ModTask(250, "Civilians.Update", Civilians.UpdateCivilians, 0),//500//250
-            }));
+            }),
 
-            TaskGroups.Add(new ModTaskGroup("RG:7 GangMember Update", new List<ModTask>()
+                new ModTaskGroup("RG:7 GangMember Update", new List<ModTask>()
             {
                 new ModTask(250, "Civilians.UpdateGangMembers", Civilians.UpdateGangMembers, 0),//500//250
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG8:Merchant Update", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG8:Merchant Update", new List<ModTask>()
             {
                 new ModTask(250, "Civilians.UpdateMerchants", Civilians.UpdateMerchants, 0),//500//250
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG9:EMT Update", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG9:EMT Update", new List<ModTask>()
             {
                 new ModTask(250, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
                 new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
-            }));
+            }),
 
-            TaskGroups.Add(new ModTaskGroup("RG10:World LowPri", new List<ModTask>()
+                new ModTaskGroup("RG10:World LowPri", new List<ModTask>()
             {
                 new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                 new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                 new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
-
                 new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 3),//1000
                 new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
                 new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
-
                 new ModTask(1000, "World.Update", World.Update, 6),
 
-            }));
-            TaskGroups.Add(new ModTaskGroup("RG11:TaskerUpdate", new List<ModTask>()
+            }),
+                new ModTaskGroup("RG11:TaskerUpdate", new List<ModTask>()
             {
                 new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
                 new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
-            }));
+            })
+            };
         }
         private void StartCoreLogic()
         {
