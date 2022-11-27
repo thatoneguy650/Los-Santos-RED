@@ -96,7 +96,6 @@ public class Roadblock
             CheckSpikeStrips();
         }
     }
-
     private void ClearArea()
     {
         if (Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblock)
@@ -105,7 +104,6 @@ public class Roadblock
             NativeFunction.Natives.CLEAR_AREA(NodeOffset.X, NodeOffset.Y, NodeOffset.Z, Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance, true, false, false, false);
         }
     }
-
     private void CheckSpikeStrips()
     {
         GameFiber.StartNew(delegate
@@ -163,7 +161,6 @@ public class Roadblock
             }
         }, "SpikeStripTireChecker2");
     }
-
     private void SetSpeedZone()
     {
         roadblockSpeedZoneID1 = NativeFunction.Natives.ADD_ROAD_NODE_SPEED_ZONE<int>(CenterPosition.X, CenterPosition.Y, CenterPosition.Z, 15f, 0f, false);
@@ -176,7 +173,6 @@ public class Roadblock
     }
     private void SetRoadGenerators()
     {
-        
         if (Settings.SettingsManager.RoadblockSettings.DisableVehicleGenerationAroundRoadblock)
         {
             float extendedDistance = Settings.SettingsManager.RoadblockSettings.DisableVehicleGenerationAroundRoadblockDistance;
@@ -185,12 +181,8 @@ public class Roadblock
         }
         if (Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblock)
         {
-
-            
-
             float extendedDistance = Settings.SettingsManager.RoadblockSettings.RemoveGeneratedVehiclesAroundRoadblockDistance;
             NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(CenterPosition.X - extendedDistance, CenterPosition.Y - extendedDistance, CenterPosition.Z - extendedDistance, CenterPosition.X + extendedDistance, CenterPosition.Y + extendedDistance, CenterPosition.Z + extendedDistance, false);
-         
             NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, false);
             
         }
@@ -204,7 +196,6 @@ public class Roadblock
             NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(NodeOffset.X - extendedDistance, NodeOffset.Y - extendedDistance, NodeOffset.Z - extendedDistance, NodeOffset.X + extendedDistance, NodeOffset.Y + extendedDistance, NodeOffset.Z + extendedDistance, true, false);
         }
     }
-
     private void CheckTireForCollision(Rage.VehicleWheel wheel)
     {
         if (wheel.TireHealth != 0)
@@ -235,7 +226,6 @@ public class Roadblock
             PedPosition = RightSide;
             PedHeading = NodeHeading;
         }
-
     }
     private void FillInBlockade()
     {
@@ -319,8 +309,6 @@ public class Roadblock
                 BarriersToAddFront = 2;
                 BarriersToAddRear = 2;
             }
-
-
             if (VehiclesToAddFront < 0)
             {
                 VehiclesToAddFront = 0;
@@ -329,34 +317,6 @@ public class Roadblock
             {
                 VehiclesToAddRear = 0;
             }
-            //if (RoadNode.TotalLanes >= 6)
-            //{
-            //    VehiclesToAddFront = 2;
-            //    VehiclesToAddRear = 2;
-            //    BarriersToAddFront = 2;
-            //    BarriersToAddRear = 2;
-            //}
-            //else if(RoadNode.TotalLanes >= 4)
-            //{
-            //    VehiclesToAddFront = 1;
-            //    VehiclesToAddRear = 1;
-            //    BarriersToAddFront = 2;
-            //    BarriersToAddRear = 2;
-            //}
-            //else if (RoadNode.TotalLanes >= 2)
-            //{
-            //    VehiclesToAddFront = 0;
-            //    VehiclesToAddRear = 0;
-            //    BarriersToAddFront = 1;
-            //    BarriersToAddRear = 1;
-            //}
-            //else
-            //{
-            //    VehiclesToAddFront = 0;
-            //    VehiclesToAddRear = 0;
-            //    BarriersToAddFront = 0;
-            //    BarriersToAddRear = 0;
-            //}
         }
         else
         {
@@ -392,43 +352,9 @@ public class Roadblock
     }
     private bool CreateVehicle(Vector3 position, float heading, bool addPed)
     {
-        Vector3 FrontRight = new Vector3(position.X + VehicleModel.Dimensions.X / 2, position.Y + VehicleModel.Dimensions.Y / 2, position.Z);
-        Vector3 FrontLeft = new Vector3(position.X - VehicleModel.Dimensions.X / 2, position.Y + VehicleModel.Dimensions.Y / 2, position.Z);
-        Vector3 RearRight = new Vector3(position.X + VehicleModel.Dimensions.X / 2, position.Y - VehicleModel.Dimensions.Y / 2, position.Z);
-        Vector3 RearLeft = new Vector3(position.X - VehicleModel.Dimensions.X / 2, position.Y - VehicleModel.Dimensions.Y / 2, position.Z);
-        float GroundZ;
-        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontRight.X, FrontRight.Y, FrontRight.Z, out GroundZ, true, false))
-        //{
-        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-        //    {
-        //        return false;
-        //    }
-        //}
-        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(FrontLeft.X, FrontLeft.Y, FrontLeft.Z, out GroundZ, true, false))
-        //{
-        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-        //    {
-        //        return false;
-        //    }
-        //}
-        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearRight.X, RearRight.Y, RearRight.Z, out GroundZ, true, false))
-        //{
-        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-        //    {
-        //        return false;
-        //    }
-        //}
-        //if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(RearLeft.X, RearLeft.Y, RearLeft.Z, out GroundZ, true, false))
-        //{
-        //    if (GroundZ == 0 || Math.Abs(GroundZ - position.Z) >= 0.5f)
-        //    {
-        //        return false;
-        //    }
-        //}
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
         pos1.Heading = heading;
-
         LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World);
         spawnTask.AllowAnySpawn = AllowAnySpawn;
         spawnTask.AttemptSpawn();
@@ -442,6 +368,7 @@ public class Roadblock
             pos2.StreetPosition = PedPosition;
             LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
+            pedSpawn.SpawnWithAllWeapons = true;
             pedSpawn.AttemptSpawn();
             foreach (PedExt person in pedSpawn.CreatedPeople)
             {
@@ -466,7 +393,6 @@ public class Roadblock
                 CreatedRoadblockVehicles.Add(created.Vehicle);
                 created.Vehicle.IsCollisionEnabled = true;
                 created.Vehicle.IsGravityDisabled = false;
-
                 if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState)
                 {
                     created.Vehicle.IsSirenOn = true;

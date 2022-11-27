@@ -191,6 +191,7 @@ public class HumanShield : DynamicActivity
             }
             AimingLoop();
             PlayerSettingsLoop();
+            DisableControls();
             GameFiber.Yield();
         }
 
@@ -216,7 +217,7 @@ public class HumanShield : DynamicActivity
         Player.ButtonPrompts.RemovePrompts("Grab");
         if (!Player.ButtonPrompts.HasPrompt("Execute"))// if (!Player.ButtonPromptList.Any(x => x.Identifier == "Execute"))
         {
-            Player.ButtonPrompts.AddPrompt("Hostage", "Execute", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Execute", "Hostage", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
+            Player.ButtonPrompts.AddPrompt("Hostage", "Execute", "Execute", GameControl.Attack, 1);//Player.ButtonPromptList.Add(new ButtonPrompt("Execute", "Hostage", "Execute", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1));
         }
         if (!Player.ButtonPrompts.HasPrompt("Release"))//   !Player.ButtonPromptList.Any(x => x.Identifier == "Release"))
         {
@@ -515,6 +516,14 @@ public class HumanShield : DynamicActivity
     private void ResetVariables()
     {
         Player.ButtonPrompts.RemovePrompts("Hostage");
+    }
+    private void DisableControls()
+    {
+        Game.DisableControlAction(0, GameControl.Attack, false);
+        Game.DisableControlAction(0, GameControl.Attack2, false);
+
+        Game.DisableControlAction(0, GameControl.VehicleAttack, false);
+        Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
     }
 
     //private void SetCloseCamera()

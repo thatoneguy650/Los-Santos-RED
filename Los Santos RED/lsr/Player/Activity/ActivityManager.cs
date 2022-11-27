@@ -26,6 +26,7 @@ public class ActivityManager
     private IInteractionable Interactionable;
     private IPlateChangeable PlateChangeable;
     private ILocationInteractable LocationInteractable;
+    private IPlacesOfInterest PlacesOfInterest;
 
     private ITimeControllable Time;
     private IRadioStations RadioStations;
@@ -122,7 +123,7 @@ public class ActivityManager
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
-        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons)
+        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         Settings = settings;
@@ -142,6 +143,7 @@ public class ActivityManager
         Speeches = speeches;
         Seats = seats;
         Weapons = weapons;
+        PlacesOfInterest = placesOfInterest;
     }
     public void Setup()
     {
@@ -521,6 +523,7 @@ public class ActivityManager
     //Interactions
     public void StartLocationInteraction()
     {
+
         if (!IsInteracting && !IsInteractingWithLocation)
         {
             if (Interaction != null)
@@ -532,7 +535,14 @@ public class ActivityManager
             //    UpperBodyActivity?.Cancel();
             //}
             ForceCancelUpperBody();//was only if performing
-            Player.ClosestInteractableLocation.OnInteract(LocationInteractable, ModItems, World, Settings, Weapons, Time);
+            try
+            {
+                Player.ClosestInteractableLocation.OnInteract(LocationInteractable, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
+            }
+            catch(Exception e) 
+            {
+                EntryPoint.WriteToConsole("Location Interaction: " + e.StackTrace + e.Message, 0);
+            }
         }
     }
     public void StartConversation()
@@ -585,17 +595,24 @@ public class ActivityManager
             }
             IsConversing = true;
             Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == Player.CurrentLookedAtPed.Handle);
-            if (merchant != null)
+            try
             {
-                EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
-                Interaction = new PersonTransaction(LocationInteractable, merchant, merchant.ShopMenu, ModItems, World, Settings, Weapons, Time) { AssociatedStore = merchant.AssociatedStore };// Settings, ModItems, TimeControllable, World, Weapons); 
-                Interaction.Start();
+                if (merchant != null)
+                {
+                    EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
+                    Interaction = new PersonTransaction(LocationInteractable, merchant, merchant.ShopMenu, ModItems, World, Settings, Weapons, Time) { AssociatedStore = merchant.AssociatedStore };// Settings, ModItems, TimeControllable, World, Weapons); 
+                    Interaction.Start();
+                }
+                else
+                {
+                    EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
+                    Interaction = new PersonTransaction(LocationInteractable, Player.CurrentLookedAtPed, Player.CurrentLookedAtPed.ShopMenu, ModItems, World, Settings, Weapons, Time);// Settings, ModItems, TimeControllable, World, Weapons);
+                    Interaction.Start();
+                }
             }
-            else
+            catch (Exception e)
             {
-                EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
-                Interaction = new PersonTransaction(LocationInteractable, Player.CurrentLookedAtPed, Player.CurrentLookedAtPed.ShopMenu, ModItems, World, Settings, Weapons, Time);// Settings, ModItems, TimeControllable, World, Weapons);
-                Interaction.Start();
+                EntryPoint.WriteToConsole("Interaction: " + e.StackTrace + e.Message, 0);
             }
         }
     }

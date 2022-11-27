@@ -6,35 +6,23 @@ using System.Drawing;
 [Serializable]
 public class DispatchableVehicle
 {
-    public DispatchableVehicle()
-    {
-    }
-    public DispatchableVehicle(string modelName, int ambientSpawnChance, int wantedSpawnChance)
-    {
-        ModelName = modelName;
-        AmbientSpawnChance = ambientSpawnChance;
-        WantedSpawnChance = wantedSpawnChance;
-    }
-    public int AmbientSpawnChance { get; set; } = 0;
-    public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
-    public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
-    public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
-    public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
-    public int MaxOccupants { get; set; } = 2;
-    public int MaxWantedLevelSpawn { get; set; } = 6;
-    public int MinOccupants { get; set; } = 1;
-    public int MinWantedLevelSpawn { get; set; } = 0;
+    public string DebugName { get; set; }
     public string ModelName { get; set; }
-   // public bool HasSetColor { get; set; } = false;
-   // public Color RequiredColor { get; set; } = Color.Transparent;
+    public string RequiredPedGroup { get; set; } = "";
+    public int MinOccupants { get; set; } = 1;
+    public int MaxOccupants { get; set; } = 2;
+    public int AmbientSpawnChance { get; set; } = 0;
+    public int WantedSpawnChance { get; set; } = 0;
+    public int MinWantedLevelSpawn { get; set; } = 0;
+    public int MaxWantedLevelSpawn { get; set; } = 6;
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
-
-    public string RequiredPedGroup { get; set; } = "";
-    //public List<string> RequiredPassengerModels { get; set; } = new List<string>();
-    public int WantedSpawnChance { get; set; } = 0;
+    public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
+    public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
+    public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
+    public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
     public bool CanCurrentlySpawn(int WantedLevel) => CurrentSpawnChance(WantedLevel) > 0;
     public int CurrentSpawnChance(int WantedLevel)
     {
@@ -54,4 +42,14 @@ public class DispatchableVehicle
             return AmbientSpawnChance;
         }
     }
+    public DispatchableVehicle()
+    {
+    }
+    public DispatchableVehicle(string modelName, int ambientSpawnChance, int wantedSpawnChance)
+    {
+        ModelName = modelName;
+        AmbientSpawnChance = ambientSpawnChance;
+        WantedSpawnChance = wantedSpawnChance;
+    }
+
 }

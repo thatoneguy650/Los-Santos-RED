@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IContactInteractable
     {
         BankAccounts BankAccounts { get; }
-        Destinations Destinations { get; }
+        GPSManager GPSManager { get; }
         RelationshipManager RelationshipManager { get; }
         PlayerTasks PlayerTasks { get; }
         CellPhone CellPhone { get; }

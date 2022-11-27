@@ -123,6 +123,9 @@
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\Destination.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
@@ -331,7 +334,7 @@
     <Compile Include="lsr\Player\Cellphone\GangInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\GunDealerInteraction.cs" />
     <Compile Include="lsr\Player\Cellphone\PhoneText.cs" />
-    <Compile Include="lsr\Player\Crime\Destinations.cs" />
+    <Compile Include="lsr\Player\Crime\GPSManager.cs" />
     <Compile Include="lsr\Player\Gang\GangKickUp.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupManager.cs" />
     <Compile Include="lsr\Player\Interface\ICameraControllable.cs" />

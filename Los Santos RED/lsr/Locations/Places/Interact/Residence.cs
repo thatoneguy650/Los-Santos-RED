@@ -74,7 +74,7 @@ public class Residence : InteractableLocation
         OpenTime = 0;
         CloseTime = 24;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         ModItems = modItems;

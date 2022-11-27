@@ -33,7 +33,7 @@ public class LESpawnTask : SpawnTask
     }
 
     public bool ClearArea { get; set; } = false;
-
+    public bool SpawnWithAllWeapons { get; set; } = false;
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
@@ -375,7 +375,10 @@ public class LESpawnTask : SpawnTask
             //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Gang1H"));
             NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Default"));
         }
-
+        if(SpawnWithAllWeapons)
+        {
+            PrimaryCop.WeaponInventory.GiveHeavyWeapon();
+        }
 
 
         return PrimaryCop;

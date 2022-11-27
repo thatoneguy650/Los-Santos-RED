@@ -38,7 +38,7 @@ public class Bar : InteractableLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         ModItems = modItems;

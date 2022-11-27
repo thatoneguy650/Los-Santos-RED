@@ -13,7 +13,7 @@ namespace LosSantosRED.lsr.Interface
     public interface ICellPhoneable
     {
         BankAccounts BankAccounts { get; }
-        Destinations Destinations { get; }
+        GPSManager GPSManager { get; }
         LocationData CurrentLocation { get; }
         RelationshipManager RelationshipManager { get; }
         PlayerTasks PlayerTasks { get; }

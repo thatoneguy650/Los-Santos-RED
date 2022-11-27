@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
     public interface IBusRideable
     {
         ButtonPrompts ButtonPrompts { get; }
-        Destinations Destinations { get; }
+        GPSManager GPSManager { get; }
         bool IsInVehicle { get; }
         bool IsRidingBus { get; set; }
         bool IsGettingIntoAVehicle { get; }

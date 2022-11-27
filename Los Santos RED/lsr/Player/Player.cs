@@ -132,17 +132,17 @@ namespace Mod
             Speeches = speeches;
             Stance = new Stance(this, Settings);
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
-            Destinations = new Destinations(this, World);
+            GPSManager = new GPSManager(this, World);
             VehicleOwnership = new VehicleOwnership(this,World);
             BankAccounts = new BankAccounts(this, Settings);
-            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons);
+            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest);
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
             PlayerVoice = new PlayerVoice(this, Settings, Speeches);
         }
         public RelationshipManager RelationshipManager { get; private set; }
-        public Destinations Destinations { get; private set; }
+        public GPSManager GPSManager { get; private set; }
         public CriminalHistory CriminalHistory { get; private set; }
         public PlayerTasks PlayerTasks { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
@@ -418,7 +418,7 @@ namespace Mod
             Properties.Setup();
             ButtonPrompts.Setup();
             HumanState.Setup();
-            Destinations.Setup();
+            GPSManager.Setup();
             SetWantedLevel(0, "Initial", true);
             NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             WeaponEquipment.SetUnarmed();
@@ -538,7 +538,7 @@ namespace Mod
 
             //IsPerformingActivity = false; 
             CurrentVehicle = null;
-            Destinations.Reset();
+            GPSManager.Reset();
             NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
             IsMobileRadioEnabled = false;
             if (resetWanted)
@@ -640,7 +640,7 @@ namespace Mod
             Injuries.Dispose();
             HumanState.Dispose();
             WeaponEquipment.Dispose();
-            Destinations.Dispose();
+            GPSManager.Dispose();
             VehicleOwnership.Dispose();
             BankAccounts.Dispose();
             HealthManager.Dispose();
@@ -1581,7 +1581,7 @@ namespace Mod
             }
 
 
-            Destinations.Update();
+            GPSManager.Update();
 
             if (Surrendering.IsWavingHands)
             {

@@ -91,8 +91,6 @@ public class LocationCamera
             ReturnToGameplay();
             Game.FadeScreenIn(1500, true);
             DoExitCam();
-            
-
         }
         else
         {
@@ -114,6 +112,28 @@ public class LocationCamera
         }
         Game.LocalPlayer.Character.Tasks.Clear();
     }
+
+    public void StopImmediately()
+    {
+        NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, false);
+        EnableControl();
+        Player.Character.IsVisible = true;
+        NativeFunction.Natives.CLEAR_FOCUS();
+        if (StoreCam.Exists())
+        {
+            StoreCam.Delete();
+        }
+        if (CameraTo.Exists())
+        {
+            CameraTo.Delete();
+        }
+        if (EntranceCam.Exists())
+        {
+            EntranceCam.Delete();
+        }
+        Game.LocalPlayer.Character.Tasks.Clear();
+    }
+
     public void HighlightEntity(Entity toHighlight)
     {
         if (toHighlight.Exists())//will freeze on the second camera movement

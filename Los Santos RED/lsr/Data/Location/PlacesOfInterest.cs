@@ -47,196 +47,86 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public List<InteractableLocation> InteractableLocations()
     {
+        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        AllLocations.AddRange(PossibleLocations.DeadDrops);
+        AllLocations.AddRange(PossibleLocations.ScrapYards);
+        AllLocations.AddRange(PossibleLocations.GangDens);
+        AllLocations.AddRange(PossibleLocations.GunStores);
+        AllLocations.AddRange(PossibleLocations.Hotels);
+        AllLocations.AddRange(PossibleLocations.Residences);
+        AllLocations.AddRange(PossibleLocations.CityHalls);
+        AllLocations.AddRange(PossibleLocations.VendingMachines);
+        AllLocations.AddRange(PossibleLocations.Restaurants);
+        AllLocations.AddRange(PossibleLocations.Pharmacies);
+        AllLocations.AddRange(PossibleLocations.Dispensaries);
+        AllLocations.AddRange(PossibleLocations.HeadShops);
+        AllLocations.AddRange(PossibleLocations.HardwareStores);
+        AllLocations.AddRange(PossibleLocations.PawnShops);
+        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
+        AllLocations.AddRange(PossibleLocations.LiquorStores);
+        AllLocations.AddRange(PossibleLocations.GasStations);
+        AllLocations.AddRange(PossibleLocations.Bars);
+        AllLocations.AddRange(PossibleLocations.FoodStands);
+        AllLocations.AddRange(PossibleLocations.CarDealerships);
+        AllLocations.AddRange(PossibleLocations.DriveThrus);
+        AllLocations.AddRange(PossibleLocations.ClothingShops);
+        AllLocations.AddRange(PossibleLocations.BusStops);
+        AllLocations.AddRange(PossibleLocations.Morgues);
+        AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
 
-            List<InteractableLocation> AllLocations = new List<InteractableLocation>();
-            AllLocations.AddRange(PossibleLocations.DeadDrops);
-            AllLocations.AddRange(PossibleLocations.ScrapYards);
-            AllLocations.AddRange(PossibleLocations.GangDens);
-            AllLocations.AddRange(PossibleLocations.GunStores);
-            AllLocations.AddRange(PossibleLocations.Hotels);
-            AllLocations.AddRange(PossibleLocations.Residences);
-            AllLocations.AddRange(PossibleLocations.CityHalls);
-            AllLocations.AddRange(PossibleLocations.VendingMachines);
-            AllLocations.AddRange(PossibleLocations.Restaurants);
-            AllLocations.AddRange(PossibleLocations.Pharmacies);
-            AllLocations.AddRange(PossibleLocations.Dispensaries);
-            AllLocations.AddRange(PossibleLocations.HeadShops);
-            AllLocations.AddRange(PossibleLocations.HardwareStores);
-            AllLocations.AddRange(PossibleLocations.PawnShops);
-            AllLocations.AddRange(PossibleLocations.ConvenienceStores);
-            AllLocations.AddRange(PossibleLocations.LiquorStores);
-            AllLocations.AddRange(PossibleLocations.GasStations);
-            AllLocations.AddRange(PossibleLocations.Bars);
-            AllLocations.AddRange(PossibleLocations.FoodStands);
-            AllLocations.AddRange(PossibleLocations.CarDealerships);
-            AllLocations.AddRange(PossibleLocations.DriveThrus);
-            AllLocations.AddRange(PossibleLocations.ClothingShops);
-            AllLocations.AddRange(PossibleLocations.BusStops);
-            AllLocations.AddRange(PossibleLocations.Morgues);
-            AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
-        return AllLocations;
-        
+        AllLocations.AddRange(PossibleLocations.Airports);
+
+        return AllLocations;   
     }
     public List<BasicLocation> BasicLocations()
     {
-
-            List<BasicLocation> AllLocations = new List<BasicLocation>();
-            AllLocations.AddRange(PossibleLocations.PoliceStations);
-            AllLocations.AddRange(PossibleLocations.Hospitals);
-            AllLocations.AddRange(PossibleLocations.FireStations);
-            AllLocations.AddRange(PossibleLocations.Banks);
-            AllLocations.AddRange(PossibleLocations.BeautyShops);
-            AllLocations.AddRange(PossibleLocations.Landmarks);
-            AllLocations.AddRange(PossibleLocations.Prisons);
-            AllLocations.AddRange(PossibleLocations.SubwayStations);
-        return AllLocations;
-        
+        List<BasicLocation> AllLocations = new List<BasicLocation>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Hospitals);
+        AllLocations.AddRange(PossibleLocations.FireStations);
+        AllLocations.AddRange(PossibleLocations.Banks);
+        AllLocations.AddRange(PossibleLocations.BeautyShops);
+        AllLocations.AddRange(PossibleLocations.Landmarks);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        AllLocations.AddRange(PossibleLocations.SubwayStations);
+        return AllLocations;      
     }
     public List<BasicLocation> AllLocations()
     {
-
-            List<BasicLocation> AllLocations = new List<BasicLocation>();
-
-            AllLocations.AddRange(BasicLocations());
-            AllLocations.AddRange(InteractableLocations());
-            return AllLocations;
-        
+        List<BasicLocation> AllLocations = new List<BasicLocation>();
+        AllLocations.AddRange(BasicLocations());
+        AllLocations.AddRange(InteractableLocations());
+        return AllLocations;
     }
     public List<ILocationDispatchable> PoliceDispatchLocations()
     {
-
-            List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-            AllLocations.AddRange(PossibleLocations.PoliceStations);
-            AllLocations.AddRange(PossibleLocations.Prisons);
-            return AllLocations;
-        
+        List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
     }
     public List<ILocationRespawnable> BustedRespawnLocations()
     {
-
-            List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
-            AllLocations.AddRange(PossibleLocations.PoliceStations);
-            AllLocations.AddRange(PossibleLocations.Prisons);
-            return AllLocations;
-        
+        List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        return AllLocations;
     }
     public List<ILocationAgencyAssignable> AgencyAssignableLocations()
     {
-
-            List<ILocationAgencyAssignable> AllLocations = new List<ILocationAgencyAssignable>();
-            AllLocations.AddRange(PossibleLocations.PoliceStations);
-            AllLocations.AddRange(PossibleLocations.Prisons);
-            AllLocations.AddRange(PossibleLocations.Hospitals);
-            AllLocations.AddRange(PossibleLocations.FireStations);
-            return AllLocations;
-        
+        List<ILocationAgencyAssignable> AllLocations = new List<ILocationAgencyAssignable>();
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        AllLocations.AddRange(PossibleLocations.Hospitals);
+        AllLocations.AddRange(PossibleLocations.FireStations);
+        return AllLocations;    
     }
     public List<ILocationGangAssignable> GangAssignableLocations()
     {
-
-            List<ILocationGangAssignable> AllLocations = new List<ILocationGangAssignable>();
-            AllLocations.AddRange(PossibleLocations.GangDens);
-            return AllLocations;
-        
+        List<ILocationGangAssignable> AllLocations = new List<ILocationGangAssignable>();
+        AllLocations.AddRange(PossibleLocations.GangDens);
+        return AllLocations;
     }
-    //public List<InteractableLocation> InteractableLocations
-    //{
-    //    get
-    //    {
-    //        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
-    //        AllLocations.AddRange(PossibleLocations.DeadDrops);
-    //        AllLocations.AddRange(PossibleLocations.ScrapYards);
-    //        AllLocations.AddRange(PossibleLocations.GangDens);
-    //        AllLocations.AddRange(PossibleLocations.GunStores);
-    //        AllLocations.AddRange(PossibleLocations.Hotels);
-    //        AllLocations.AddRange(PossibleLocations.Residences);
-    //        AllLocations.AddRange(PossibleLocations.CityHalls);
-    //        AllLocations.AddRange(PossibleLocations.VendingMachines);
-    //        AllLocations.AddRange(PossibleLocations.Restaurants);
-    //        AllLocations.AddRange(PossibleLocations.Pharmacies);
-    //        AllLocations.AddRange(PossibleLocations.Dispensaries);
-    //        AllLocations.AddRange(PossibleLocations.HeadShops);
-    //        AllLocations.AddRange(PossibleLocations.HardwareStores);
-    //        AllLocations.AddRange(PossibleLocations.PawnShops);
-    //        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
-    //        AllLocations.AddRange(PossibleLocations.LiquorStores);
-    //        AllLocations.AddRange(PossibleLocations.GasStations);
-    //        AllLocations.AddRange(PossibleLocations.Bars);
-    //        AllLocations.AddRange(PossibleLocations.FoodStands);
-    //        AllLocations.AddRange(PossibleLocations.CarDealerships);
-    //        AllLocations.AddRange(PossibleLocations.DriveThrus);
-    //        AllLocations.AddRange(PossibleLocations.ClothingShops);
-    //        AllLocations.AddRange(PossibleLocations.BusStops);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<BasicLocation> BasicLocations
-    //{
-    //    get
-    //    {
-    //        List<BasicLocation> AllLocations = new List<BasicLocation>();
-    //        AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //        AllLocations.AddRange(PossibleLocations.Hospitals);
-    //        AllLocations.AddRange(PossibleLocations.FireStations);
-    //        AllLocations.AddRange(PossibleLocations.Banks);
-    //        AllLocations.AddRange(PossibleLocations.BeautyShops);
-    //        AllLocations.AddRange(PossibleLocations.Landmarks);
-    //        AllLocations.AddRange(PossibleLocations.Prisons);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<BasicLocation> AllLocations
-    //{
-    //    get
-    //    {
-    //        List<BasicLocation> AllLocations = new List<BasicLocation>();
-
-    //        AllLocations.AddRange(BasicLocations);
-    //        AllLocations.AddRange(InteractableLocations);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<ILocationDispatchable> PoliceDispatchLocations
-    //{
-    //    get
-    //    {
-    //        List<ILocationDispatchable> AllLocations = new List<ILocationDispatchable>();
-    //        AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //        AllLocations.AddRange(PossibleLocations.Prisons);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<ILocationRespawnable> BustedRespawnLocations
-    //{
-    //    get
-    //    {
-    //        List<ILocationRespawnable> AllLocations = new List<ILocationRespawnable>();
-    //        AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //        AllLocations.AddRange(PossibleLocations.Prisons);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<ILocationAgencyAssignable> AgencyAssignableLocations
-    //{
-    //    get
-    //    {
-    //        List<ILocationAgencyAssignable> AllLocations = new List<ILocationAgencyAssignable>();
-    //        AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //        AllLocations.AddRange(PossibleLocations.Prisons);
-    //        AllLocations.AddRange(PossibleLocations.Hospitals);
-    //        AllLocations.AddRange(PossibleLocations.FireStations);
-    //        return AllLocations;
-    //    }
-    //}
-    //public List<ILocationGangAssignable> GangAssignableLocations
-    //{
-    //    get
-    //    {
-    //        List<ILocationGangAssignable> AllLocations = new List<ILocationGangAssignable>();
-    //        AllLocations.AddRange(PossibleLocations.GangDens);
-    //        return AllLocations;
-    //    }
-    //}
     private void DefaultConfig()
     {
         List<DeadDrop> DeadDrops = new List<DeadDrop>() {
@@ -1665,7 +1555,321 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         {
             new Morgue(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f,"Los Santos County Coroner Office", "","") {OpenTime = 0,CloseTime = 24, InteriorID = 60418,ScannerFilePath = "01_specific_location\\0x04F66C50.wav" },
         };
+        List<Airport> Airports = new List<Airport>()
+        {
+            new Airport(new Vector3(-1079.419f, -2726.025f, 14.39801f),330.0377f,"LS Intl. Airport","The airport to the stars!")
+            {
+                AirportID = "LSIX"
+                ,OpenTime = 0
+                ,CloseTime = 24
+                ,ArrivalPosition = new Vector3(-1042.862f, -2746.254f, 21.3594f)
+                ,ArrivalHeading = 329.611f
+                ,ScannerFilePath = "01_areas\\0x05E7E888.wav"
+                ,Destinations = new List<Destination>()
+                { 
+                    new Destination("NYRA", 500),
+                } 
+            },
+                        new YanktonAiport(new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"N. Yankton Airport","More than just cropdusters!")
+            {
+                AirportID = "NYRA"
+                ,OpenTime = 0
+                ,CloseTime = 24
+                ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
+                ,ArrivalHeading = 354.7703f
+                ,RequestIPLs = new List<string>() {
+                            "plg_01",
+                            "prologue01",
+                            "prologue01_lod",
+                            "prologue01c",
+                            "prologue01c_lod",
+                            "prologue01d",
+                            "prologue01d_lod",
+                            "prologue01e",
+                            "prologue01e_lod",
+                            "prologue01f",
+                            "prologue01f_lod",
+                            "prologue01g",
+                            "prologue01h",
+                            "prologue01h_lod",
+                            "prologue01i",
+                            "prologue01i_lod",
+                            "prologue01j",
+                            "prologue01j_lod",
+                            "prologue01k",
+                            "prologue01k_lod",
+                            "prologue01z",
+                            "prologue01z_lod",
+                            "plg_02",
+                            "prologue02",
+                            "prologue02_lod",
+                            "plg_03",
+                            "prologue03",
+                            "prologue03_lod",
+                            "prologue03b",
+                            "prologue03b_lod",
+                            "prologue03_grv_dug",
+                            "prologue03_grv_dug_lod",
+                            "prologue_grv_torch",
+                            "plg_04",
+                            "prologue04",
+                            "prologue04_lod",
+                            "prologue04b",
+                            "prologue04b_lod",
+                            "prologue04_cover",
+                            "des_protree_end",
+                            "des_protree_start",
+                            "des_protree_start_lod",
+                            "plg_05",
+                            "prologue05",
+                            "prologue05_lod",
+                            "prologue05b",
+                            "prologue05b_lod",
+                            "plg_06",
+                            "prologue06",
+                            "prologue06_lod",
+                            "prologue06b",
+                            "prologue06b_lod",
+                            "prologue06_int",
+                            "prologue06_int_lod",
+                            "prologue06_pannel",
+                            "prologue06_pannel_lod",
+                            "prologue_m2_door",
+                            "prologue_m2_door_lod",
+                            "plg_occl_00",
+                            "prologue_occl",
+                            "plg_rd",
+                            "prologuerd",
+                            "prologuerdb",
+                            "prologuerd_lod",
+                        }
+                ,RemoveIPLs = new List<string>(){
+                            "plg_01",
+                            "prologue01",
+                            "prologue01_lod",
+                            "prologue01c",
+                            "prologue01c_lod",
+                            "prologue01d",
+                            "prologue01d_lod",
+                            "prologue01e",
+                            "prologue01e_lod",
+                            "prologue01f",
+                            "prologue01f_lod",
+                            "prologue01g",
+                            "prologue01h",
+                            "prologue01h_lod",
+                            "prologue01i",
+                            "prologue01i_lod",
+                            "prologue01j",
+                            "prologue01j_lod",
+                            "prologue01k",
+                            "prologue01k_lod",
+                            "prologue01z",
+                            "prologue01z_lod",
+                            "plg_02",
+                            "prologue02",
+                            "prologue02_lod",
+                            "plg_03",
+                            "prologue03",
+                            "prologue03_lod",
+                            "prologue03b",
+                            "prologue03b_lod",
+                            "prologue03_grv_cov",
+                            "prologue03_grv_cov_lod",
+                            "prologue03_grv_dug",
+                            "prologue03_grv_dug_lod",
+                            "prologue03_grv_fun",
+                            "prologue_grv_torch",
+                            "plg_04",
+                            "prologue04",
+                            "prologue04_lod",
+                            "prologue04b",
+                            "prologue04b_lod",
+                            "prologue04_cover",
+                            "des_protree_end",
+                            "des_protree_start",
+                            "des_protree_start_lod",
+                            "plg_05",
+                            "prologue05",
+                            "prologue05_lod",
+                            "prologue05b",
+                            "prologue05b_lod",
+                            "plg_06",
+                            "prologue06",
+                            "prologue06_lod",
+                            "prologue06b",
+                            "prologue06b_lod",
+                            "prologue06_int",
+                            "prologue06_int_lod",
+                            "prologue06_pannel",
+                            "prologue06_pannel_lod",
+                            "prologue_m2_door",
+                            "prologue_m2_door_lod",
+                            "plg_occl_00",
+                            "prologue_occl",
+                            "plg_rd",
+                            "prologuerd",
+                            "prologuerdb",
+                            "prologuerd_lod",
 
+                        }
+                ,Destinations = new List<Destination>()
+                {
+                    new Destination("LSIX", 750),
+                }
+            },
+        };
+        //List<YanktonAiport> YanktonAiports = new List<YanktonAiport>()
+        //{
+        //    new YanktonAiport(new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"N. Yankton Airport","More than just cropdusters!")
+        //    {
+        //        AirportID = "NYRA"
+        //        ,OpenTime = 0
+        //        ,CloseTime = 24
+        //        ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
+        //        ,ArrivalHeading = 354.7703f
+        //        ,RequestIPLs = new List<string>() {
+        //                    "plg_01",
+        //                    "prologue01",
+        //                    "prologue01_lod",
+        //                    "prologue01c",
+        //                    "prologue01c_lod",
+        //                    "prologue01d",
+        //                    "prologue01d_lod",
+        //                    "prologue01e",
+        //                    "prologue01e_lod",
+        //                    "prologue01f",
+        //                    "prologue01f_lod",
+        //                    "prologue01g",
+        //                    "prologue01h",
+        //                    "prologue01h_lod",
+        //                    "prologue01i",
+        //                    "prologue01i_lod",
+        //                    "prologue01j",
+        //                    "prologue01j_lod",
+        //                    "prologue01k",
+        //                    "prologue01k_lod",
+        //                    "prologue01z",
+        //                    "prologue01z_lod",
+        //                    "plg_02",
+        //                    "prologue02",
+        //                    "prologue02_lod",
+        //                    "plg_03",
+        //                    "prologue03",
+        //                    "prologue03_lod",
+        //                    "prologue03b",
+        //                    "prologue03b_lod",
+        //                    "prologue03_grv_dug",
+        //                    "prologue03_grv_dug_lod",
+        //                    "prologue_grv_torch",
+        //                    "plg_04",
+        //                    "prologue04",
+        //                    "prologue04_lod",
+        //                    "prologue04b",
+        //                    "prologue04b_lod",
+        //                    "prologue04_cover",
+        //                    "des_protree_end",
+        //                    "des_protree_start",
+        //                    "des_protree_start_lod",
+        //                    "plg_05",
+        //                    "prologue05",
+        //                    "prologue05_lod",
+        //                    "prologue05b",
+        //                    "prologue05b_lod",
+        //                    "plg_06",
+        //                    "prologue06",
+        //                    "prologue06_lod",
+        //                    "prologue06b",
+        //                    "prologue06b_lod",
+        //                    "prologue06_int",
+        //                    "prologue06_int_lod",
+        //                    "prologue06_pannel",
+        //                    "prologue06_pannel_lod",
+        //                    "prologue_m2_door",
+        //                    "prologue_m2_door_lod",
+        //                    "plg_occl_00",
+        //                    "prologue_occl",
+        //                    "plg_rd",
+        //                    "prologuerd",
+        //                    "prologuerdb",
+        //                    "prologuerd_lod",
+        //                }
+        //        ,RemoveIPLs = new List<string>(){
+        //                    "plg_01",
+        //                    "prologue01",
+        //                    "prologue01_lod",
+        //                    "prologue01c",
+        //                    "prologue01c_lod",
+        //                    "prologue01d",
+        //                    "prologue01d_lod",
+        //                    "prologue01e",
+        //                    "prologue01e_lod",
+        //                    "prologue01f",
+        //                    "prologue01f_lod",
+        //                    "prologue01g",
+        //                    "prologue01h",
+        //                    "prologue01h_lod",
+        //                    "prologue01i",
+        //                    "prologue01i_lod",
+        //                    "prologue01j",
+        //                    "prologue01j_lod",
+        //                    "prologue01k",
+        //                    "prologue01k_lod",
+        //                    "prologue01z",
+        //                    "prologue01z_lod",
+        //                    "plg_02",
+        //                    "prologue02",
+        //                    "prologue02_lod",
+        //                    "plg_03",
+        //                    "prologue03",
+        //                    "prologue03_lod",
+        //                    "prologue03b",
+        //                    "prologue03b_lod",
+        //                    "prologue03_grv_cov",
+        //                    "prologue03_grv_cov_lod",
+        //                    "prologue03_grv_dug",
+        //                    "prologue03_grv_dug_lod",
+        //                    "prologue03_grv_fun",
+        //                    "prologue_grv_torch",
+        //                    "plg_04",
+        //                    "prologue04",
+        //                    "prologue04_lod",
+        //                    "prologue04b",
+        //                    "prologue04b_lod",
+        //                    "prologue04_cover",
+        //                    "des_protree_end",
+        //                    "des_protree_start",
+        //                    "des_protree_start_lod",
+        //                    "plg_05",
+        //                    "prologue05",
+        //                    "prologue05_lod",
+        //                    "prologue05b",
+        //                    "prologue05b_lod",
+        //                    "plg_06",
+        //                    "prologue06",
+        //                    "prologue06_lod",
+        //                    "prologue06b",
+        //                    "prologue06b_lod",
+        //                    "prologue06_int",
+        //                    "prologue06_int_lod",
+        //                    "prologue06_pannel",
+        //                    "prologue06_pannel_lod",
+        //                    "prologue_m2_door",
+        //                    "prologue_m2_door_lod",
+        //                    "plg_occl_00",
+        //                    "prologue_occl",
+        //                    "plg_rd",
+        //                    "prologuerd",
+        //                    "prologuerdb",
+        //                    "prologuerd_lod",
+
+        //                }
+        //        ,Destinations = new List<Destination>()
+        //        {
+        //            new Destination("LSIX", 750),
+        //        }
+        //    },
+        //};
 
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.ScrapYards.AddRange(ScrapYards);
@@ -1700,6 +1904,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         PossibleLocations.SubwayStations.AddRange(SubwayStations);
         PossibleLocations.Morgues.AddRange(Morgues);
         PossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
+        PossibleLocations.Airports.AddRange(Airports);
+        //PossibleLocations.YanktonAiports.AddRange(YanktonAiports);
+
 
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
 
@@ -1768,6 +1975,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.SubwayStations.AddRange(SubwayStations);
         OldPossibleLocations.Morgues.AddRange(Morgues);
         OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
+        OldPossibleLocations.Airports.AddRange(Airports);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
 
     }
@@ -1786,7 +1994,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
         Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
     }
-
     public void Setup()
     {
         foreach(BasicLocation bl in AllLocations())

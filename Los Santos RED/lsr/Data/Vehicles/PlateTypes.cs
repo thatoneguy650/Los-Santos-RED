@@ -79,6 +79,7 @@ public class PlateTypes : IPlateTypes
         PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "1ABC234"));
         PlateTypeManager.PlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
+        PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Dakota Old", "North Yankton", 0, "123 ABC"));
 
         PlateTypeManager.VanityPlates.Add("AZZ KIKR");
         PlateTypeManager.VanityPlates.Add("STARK 4");

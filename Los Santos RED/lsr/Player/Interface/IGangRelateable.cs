@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr.Interface
         BankAccounts BankAccounts { get; }
         LocationData CurrentLocation { get; }
         ActivityManager ActivityManager { get; }
-        Destinations Destinations { get; }
+        GPSManager GPSManager { get; }
         CriminalHistory CriminalHistory { get; }
 
         bool IsWanted { get; }

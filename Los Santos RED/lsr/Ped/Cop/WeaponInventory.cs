@@ -533,12 +533,14 @@ public class WeaponInventory
         ShouldAutoSetWeaponState = true;
         GameTimeLastWeaponCheck = 0;
     }
-
     public void RemoveHeavyWeapon()
     {
         HasHeavyWeaponOnPerson = false;
     }
-
+    public void GiveHeavyWeapon()
+    {
+        HasHeavyWeaponOnPerson = true;
+    }
     private void HolsterPistol()
     {
         //EntryPoint.WriteToConsole($"Holster Pistol Ran {WeaponOwner.Handle} IsHolsterFull: {IsHolsterFull} Def: {IsSetDefault} Unar: {IsSetUnarmed} LL: {IsSetLessLethal} Dead: {IsSetDeadly}");

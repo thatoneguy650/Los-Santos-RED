@@ -37,6 +37,7 @@ public class Agencies : IAgencies
     private Agency ARMY;
     private Agency LSFDFire;
     private Agency LSFD;
+    private Agency NYSP;
     private Agency UNK;
     private Agency LSMC;
     private Agency MRH;
@@ -139,6 +140,8 @@ public class Agencies : IAgencies
         LSMC = new Agency("~w~", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, "EMTs", "Amublance1", "LSMC ", null, null, null, "LSMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         MRH = new Agency("~w~", "MRH", "Mission Row Hospital", "White", Classification.EMS, "EMTs", "Amublance2", "MRH ", null, null, null, "MRH Officer") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         LSFD = new Agency("~w~", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "EMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
+        NYSP = new Agency("~b~", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
+
         UNK = new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }
 
@@ -175,6 +178,7 @@ public class Agencies : IAgencies
             MRH,
             LSFD,
             UNK,
+            NYSP,
         };
 
         Serialization.SerializeParams(AgenciesList, ConfigFileName);
@@ -197,6 +201,7 @@ public class Agencies : IAgencies
             NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,
             ARMY,
             LSFDFire,LSMC,MRH,LSFD,UNK,
+            NYSP,
         };
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
@@ -218,6 +223,7 @@ public class Agencies : IAgencies
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,LSSD2008,LSSDASD2008,NOOSE2008,FIB2008,DOA2008,SAHP2008,SASPA2008,SAPR2008,SACG2008,ARMY2008,LSFDFire,LSMC,MRH,LSFD,UNK,
+            NYSP,
         };
         foreach(Agency ag in AgenciesList2008)
         {
@@ -236,6 +242,7 @@ public class Agencies : IAgencies
             new Agency("~b~", "ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LSSDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
             new Agency("~b~", "LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
            NOOSE,FIB,DOA,ARMY,
+            NYSP,
             new Agency("~r~", "FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ",null,null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "LCMC", "Liberty City Medical Center", "White", Classification.EMS, "EMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~s~", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
@@ -247,6 +254,7 @@ public class Agencies : IAgencies
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
             LSPD,LSPDASD,LSSD,LSSDASD,NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,ARMY,LSFDFire,LSMC,MRH,LSFD,UNK,
+            NYSP
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
     }

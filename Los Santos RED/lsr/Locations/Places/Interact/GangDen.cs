@@ -68,7 +68,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         GangID = _gangID;
         MenuID = menuID;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
         ModItems = modItems;

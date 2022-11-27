@@ -190,7 +190,7 @@ public class GangInteraction
         GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
         if (myDen != null)
         {
-            Player.Destinations.AddGPSRoute(myDen.Name, myDen.EntrancePosition);
+            Player.GPSManager.AddGPSRoute(myDen.Name, myDen.EntrancePosition);
             List<string> Replies = new List<string>() {
                     $"Our {ActiveGang.DenName} is located on {myDen.FullStreetAddress} come see us.",
                     $"Come check out our {ActiveGang.DenName} on {myDen.FullStreetAddress}.",

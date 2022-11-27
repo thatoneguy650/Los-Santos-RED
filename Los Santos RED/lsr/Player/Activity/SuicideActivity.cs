@@ -105,7 +105,7 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", GameControl.Attack, 1);
                     Player.ButtonPrompts.AddPrompt("Suicide", "Cancel", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2);
                     AddedPrompts = true;
                 }    
@@ -125,9 +125,20 @@ public class SuicideActivity : DynamicActivity
             {
                 Player.Character.Kill();
             }
+            DisableControls();
             GameFiber.Yield();
         }
     }
+
+    private void DisableControls()
+    {
+        Game.DisableControlAction(0, GameControl.Attack, false);
+        Game.DisableControlAction(0, GameControl.Attack2, false);
+
+        Game.DisableControlAction(0, GameControl.VehicleAttack, false);
+        Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+    }
+
     private void IdlePistol()
     {
         bool AddedPrompts = false;
@@ -139,7 +150,7 @@ public class SuicideActivity : DynamicActivity
                 NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_RATE", SuicideScene, 0f);
                 if (!AddedPrompts)
                 {
-                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
+                    Player.ButtonPrompts.AddPrompt("Suicide", "Commit Suicide", "CommitSuicide", GameControl.Attack, 1);
                     Player.ButtonPrompts.AddPrompt("Suicide", "Cancel", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2);
                     AddedPrompts = true;
                 }

@@ -52,10 +52,6 @@ namespace Mod
                 NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
                 isClockPaused = true;
             }
-
-
-
-
         }
         public string CurrentTime => Settings.SettingsManager.LSRHUDSettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
