@@ -48,6 +48,11 @@ public class ActionWheelSettings : ISettingsDefaultable
     public bool SetSlowMoOnActivate { get; set; }
     [Description("Seems to obliterate performance? Disabled for now.")]
     public bool SetTransitionEffectOnActivate { get; set; }
+    public bool ShowIcons { get; set; }
+    public float DebugIconX { get; set; }
+    public float DebugIconY { get; set; }
+    public float DebugIconScale { get; set; }
+    public bool ShowOnlyIcon { get; set; }
 
     public ActionWheelSettings()
     {
@@ -102,5 +107,11 @@ public class ActionWheelSettings : ISettingsDefaultable
 
         SetSlowMoOnActivate = true;
         SetTransitionEffectOnActivate = false;
+        ShowIcons = true;
+
+        DebugIconX = 0.0f;
+        DebugIconY = 0.0f;
+        DebugIconScale = 1.0f;
+        ShowOnlyIcon = true;
     }
 }

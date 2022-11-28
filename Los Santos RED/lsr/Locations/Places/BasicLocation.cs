@@ -13,6 +13,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using static System.Windows.Forms.AxHost;
 
 [Serializable()]
 public class BasicLocation
@@ -168,6 +169,9 @@ public class BasicLocation
 
     public string StateLocation { get; set; }
 
+    public bool IsSameState(string state) => String.IsNullOrEmpty(state) || StateLocation == state;
+
+
     public BasicLocation()
     {
 
@@ -241,7 +245,7 @@ public class BasicLocation
     {
         if (createdBlip.Exists())
         {
-            EntryPoint.WriteToConsole("DEACTIVATING BLIP 2222222");
+            //EntryPoint.WriteToConsole("DEACTIVATING BLIP 2222222");
             createdBlip.Delete();
         }
     }

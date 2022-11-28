@@ -69,39 +69,46 @@ public class DynamicPlaces
     }
     public void ActivateLocations()
     {
-        List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
-        GameFiber.Yield();
-        int checkedObjects = 0;
-        foreach (Rage.Object obj in Objects)
+        if (EntryPoint.ModController.IsRunning)
         {
-            if (obj.Exists())
+            List<Rage.Object> Objects = Rage.World.GetAllObjects().ToList();
+            GameFiber.Yield();
+            int checkedObjects = 0;
+            foreach (Rage.Object obj in Objects)
             {
-                string modelName = obj.Model.Name.ToLower();
-                Vector3 position = obj.Position;
-                float heading = obj.Heading;
-                uint hash = obj.Model.Hash;
-                if (VendingMachinesModelNames.Contains(modelName) || VendingMachinessModelHashes.Contains(hash))
+                if (obj.Exists())
                 {
-                    ActivateVendingMachine(obj, modelName, position, heading);
-                    GameFiber.Yield();
+                    string modelName = obj.Model.Name.ToLower();
+                    Vector3 position = obj.Position;
+                    float heading = obj.Heading;
+                    uint hash = obj.Model.Hash;
+                    if (VendingMachinesModelNames.Contains(modelName) || VendingMachinessModelHashes.Contains(hash))
+                    {
+                        ActivateVendingMachine(obj, modelName, position, heading);
+                        GameFiber.Yield();
+                    }
+                    else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
+                    {
+                        ActivateGasPump(obj, modelName, position, heading);
+                        GameFiber.Yield();
+                    }
                 }
-                else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
+                checkedObjects++;
+                if (checkedObjects > 10)
                 {
-                    ActivateGasPump(obj, modelName, position, heading);
                     GameFiber.Yield();
+                    checkedObjects = 0;
+                }
+                if(!EntryPoint.ModController.IsRunning)
+                {
+                    break;
                 }
             }
-            checkedObjects++;
-            if (checkedObjects > 10)
-            {
-                GameFiber.Yield();
-                checkedObjects = 0;
-            }
+            GameFiber.Yield();
+            RemoveInactiveVendingMachines();
+            GameFiber.Yield();
+            RemoveInactiveGasPumps();
         }
-        GameFiber.Yield();
-        RemoveInactiveVendingMachines();
-        GameFiber.Yield();
-        RemoveInactiveGasPumps();
     }
     private void ActivateVendingMachine(Rage.Object obj, string modelName, Vector3 position, float heading)
     {

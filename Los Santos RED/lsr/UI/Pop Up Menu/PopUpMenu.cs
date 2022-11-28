@@ -58,6 +58,11 @@ public class PopUpMenu
     private Texture Sign75;
     private Texture Sign80;
     private Texture SpeedLimitToDraw;
+    private float SpeedLimitConsistencyScale;
+    private float SpeedLimitScale;
+    private float SpeedLimitPosX;
+    private float SpeedLimitPosY;
+    private HashSet<DrawableIcon> IconsToDraw = new HashSet<DrawableIcon>();
 
     private bool IsCurrentPopUpMenuGroupDefault => CurrentPopUpMenuGroup == "DefaultInVehicle" || CurrentPopUpMenuGroup == "DefaultOnFoot";
 
@@ -81,35 +86,52 @@ public class PopUpMenu
     {
         List<PopUpMenuMap> OnFootMenuMaps = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },        
-            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
-            new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
+            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false, 
+                IconNameDefault = "info_white.png", IconNameSelected = "info_red.png", IconNameInvalid = "info_black.png" },        
+            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "actions_white.png", IconNameSelected = "actions_red.png", IconNameInvalid = "actions_black.png" },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "weapons_white.png", IconNameSelected = "weapons_red.png", IconNameInvalid = "weapons_black.png", IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(3,"Stances","StancesSubMenu","Open Stances Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "stance_white.png", IconNameSelected = "stance_red.png", IconNameInvalid = "stance_black.png", },
+            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "inventory_white.png", IconNameSelected = "inventory_red.png", IconNameInvalid = "inventory_black.png", },
+            new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "group_white.png", IconNameSelected = "group_red.png", IconNameInvalid = "group_black.png",IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
 #if DEBUG
-            new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "affiliation_white.png", IconNameSelected = "affiliation_red.png", IconNameInvalid = "affiliation_black.png",IsCurrentlyValid = new Func<bool>(() => false) },
            // new PopUpMenuMap(7,"Belt","BeltItemsSubMenu","Open Belt Sub Menu"){ ClosesMenu = false },
 #endif
         };
         List<PopUpMenuMap> InVehicleMenuMaps = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false },      
-            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
-            new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false },
-            new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false,IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
+            new PopUpMenuMap(0, "Info", "InfoSubMenu","Open Player Info Sub Menu") { ClosesMenu = false, 
+                IconNameDefault = "info_white.png", IconNameSelected = "info_red.png", IconNameInvalid = "info_black.png" },      
+            new PopUpMenuMap(1,"Actions","ActionsSubMenu","Open Actions Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "actions_white.png", IconNameSelected = "actions_red.png", IconNameInvalid = "actions_black.png" },
+            new PopUpMenuMap(2,"Weapons","WeaponsSubMenu","Open Weapons Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "weapons_white.png", IconNameSelected = "weapons_red.png", IconNameInvalid = "weapons_black.png", IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
+            new PopUpMenuMap(3,"Vehicle Controls","VehicleSubMenu","Open Vehicle Control Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "vehicle_white.png", IconNameSelected = "vehicle_red.png", IconNameInvalid = "vehicle_black.png" },
+            new PopUpMenuMap(4,"Inventory","InventoryCategoriesSubMenu","Open Inventory Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "inventory_white.png", IconNameSelected = "inventory_red.png", IconNameInvalid = "inventory_black.png" },
+            new PopUpMenuMap(5,"Group","GroupMembersSubMenu","Open Group Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "group_white.png", IconNameSelected = "group_red.png", IconNameInvalid = "group_black.png",IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0) },
 #if DEBUG
-            new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false },
+            new PopUpMenuMap(6,"Affiliation","AffiliationSubMenu","Open Affiliation Sub Menu"){ ClosesMenu = false, 
+                IconNameDefault = "affiliation_white.png", IconNameSelected = "affiliation_red.png", IconNameInvalid = "affiliation_black.png",IsCurrentlyValid = new Func<bool>(() => false)  },
            // new PopUpMenuMap(7,"Belt","BeltItemsSubMenu","Open Belt Sub Menu"){ ClosesMenu = false },
 #endif
         };
         List<PopUpMenuMap> InfoSubMenu = new List<PopUpMenuMap>()
         {
-            new PopUpMenuMap(0, "Player Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu"),
-            new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu"),
-            new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone"),
+            new PopUpMenuMap(0, "Player Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu") { 
+                IconNameDefault = "info_white.png", IconNameSelected = "info_red.png", IconNameInvalid = "info_black.png" },
+            new PopUpMenuMap(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu") { 
+                IconNameDefault = "message_white.png", IconNameSelected = "message_red.png", IconNameInvalid = "message_black.png" },
+            new PopUpMenuMap(2, "Burner Cell", Player.CellPhone.OpenBurner,"Open the burner phone") {
+                IconNameDefault = "burnerphone_white.png", IconNameSelected = "burnerphone_red.png", IconNameInvalid = "burnerphone_black.png" },
         };
         List<PopUpMenuMap> ActionsSubMenu = new List<PopUpMenuMap>()
         {
@@ -226,6 +248,17 @@ public class PopUpMenu
         Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
 
 
+        foreach(PopUpMenuGroup pumg in PopUpMenuGroups)
+        {
+            foreach(PopUpMenuMap b in pumg.PopUpMenuMaps)
+            {
+                if(!String.IsNullOrEmpty(b.IconNameDefault))
+                {
+                    b.MakeTexture();
+                }
+            }
+        }
+
         //UpdateInventoryMenuGroups();
     }
     public void Draw()
@@ -339,6 +372,10 @@ public class PopUpMenu
         GameFiber.Yield();
         UpdateBeltItems();
         GameFiber.Yield();
+
+
+
+
         //UpdateGroupMembers();
     }
     private void UpdateAffiliationMenuGroups()
@@ -529,12 +566,23 @@ public class PopUpMenu
     }
     private void DrawShapesAndText()
     {
+
+        SpeedLimitConsistencyScale = (float)Game.Resolution.Width / 2160f;
+        SpeedLimitScale = Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconScale * SpeedLimitConsistencyScale;
+
+        if (SpeedLimitToDraw != null)
+        {
+            SpeedLimitPosX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * SpeedLimitScale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconX;
+            SpeedLimitPosY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * SpeedLimitScale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconY;
+        }
+
         if (Settings.SettingsManager.ActionWheelSettings.ShowCursor)
         {
             NativeFunction.Natives.xAAE7CE1D63167423();//_SET_MOUSE_CURSOR_ACTIVE_THIS_FRAME
         }
         ConsistencyScale = (float)Game.Resolution.Height/(float)Game.Resolution.Width; //(float)Game.Resolution.Width / 3840f;
         PositionMaps.Clear();
+        IconsToDraw.Clear();
         bool DrawPages = false;
         int ID = 0;
         TotalPages = 0;
@@ -608,12 +656,11 @@ public class PopUpMenu
         string display = ID.ToString();
         bool isSelected = false;
         Color textColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.TextColor);
+        bool hasIcon = false;
+        bool isValid = true;
         if (popUpMenuMap != null)
         {
             display = popUpMenuMap.Display;
-
-
-
             if (SelectedMenuMap != null && SelectedMenuMap.ID == popUpMenuMap.ID && SelectedMenuMap.IsCurrentlyValid())//is the selected item
             {
                 overrideColor = Color.FromName(Settings.SettingsManager.ActionWheelSettings.SelectedItemColor);//Color.FromArgb(72, 133, 164, 100);
@@ -622,11 +669,40 @@ public class PopUpMenu
            if(!popUpMenuMap.IsCurrentlyValid())
             {
                 textColor = Color.Gray;
+                isValid = false;
+            }
+            if (popUpMenuMap.HasIcon)
+            {
+
+                hasIcon = true;
+                Texture texture;
+                if(!isValid)
+                {
+                    texture = popUpMenuMap.IconInvalid;
+                }
+                else if (isSelected)
+                {
+                    texture = popUpMenuMap.IconSelected;
+                }
+                else
+                {
+                    texture = popUpMenuMap.IconDefault;
+                }
+
+                float width = texture.Size.Width * 1.25f * Settings.SettingsManager.ActionWheelSettings.DebugIconScale;
+                float height = texture.Size.Height * 1.25f * Settings.SettingsManager.ActionWheelSettings.DebugIconScale;
+
+                float posX = Game.Resolution.Width * (CurrentPositionX + Settings.SettingsManager.ActionWheelSettings.DebugIconX) - width / 2;
+                float posY = Game.Resolution.Height * (CurrentPositionY + Settings.SettingsManager.ActionWheelSettings.DebugIconY) - height / 2;
+
+                IconsToDraw.Add(new DrawableIcon(texture, new RectangleF(posX, posY, width, height)));
             }
         }
-
         float selectedSizeScalar = 1.05f;
-        DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
+        if (!hasIcon || !Settings.SettingsManager.ActionWheelSettings.ShowOnlyIcon)
+        {
+            DisplayTextBoxOnScreen(display, CurrentPositionX, CurrentPositionY, Settings.SettingsManager.ActionWheelSettings.TextScale * excessiveItemScaler, textColor, Settings.SettingsManager.ActionWheelSettings.TextFont, 255, true, overrideColor);
+        }
         PositionMaps.Add(new PositionMap(ID, display, CurrentPositionX, CurrentPositionY));
     }
     private void DrawPage(PopUpMenuMap popUpMenuMap, float CurrentPositionX, float CurrentPositionY)
@@ -678,6 +754,9 @@ public class PopUpMenu
                 CurrentPopUpMenuGroup = "DefaultOnFoot";
             }
         }
+
+
+
     }
     private void DisableControls()
     {
@@ -825,17 +904,20 @@ public class PopUpMenu
             {
                 if (SpeedLimitToDraw != null && SpeedLimitToDraw.Size != null)
                 {
-                    float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
-                    float Scale = Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconScale * ConsistencyScale;
-                    float posX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * Scale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconX;
-                    float posY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * Scale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconY;
-                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(posY, posX, SpeedLimitToDraw.Size.Width * Scale, SpeedLimitToDraw.Size.Height * Scale));
+                    //float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+                    //float SpeedLimitScale = Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconScale * ConsistencyScale;
+                    //float SpeedLimitPosX = (Game.Resolution.Height - (SpeedLimitToDraw.Size.Height * SpeedLimitScale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconX;
+                    //float SpeedLimitPosY = (Game.Resolution.Width - (SpeedLimitToDraw.Size.Width * SpeedLimitScale)) * Settings.SettingsManager.ActionWheelSettings.SpeedLimitIconY;
+                    args.Graphics.DrawTexture(SpeedLimitToDraw, new RectangleF(SpeedLimitPosY, SpeedLimitPosX, SpeedLimitToDraw.Size.Width * SpeedLimitScale, SpeedLimitToDraw.Size.Height * SpeedLimitScale));
                 }
             }
-
-
-
-
+            if(Settings.SettingsManager.ActionWheelSettings.ShowIcons && IsActive && IconsToDraw != null) 
+            {
+                foreach(DrawableIcon obj in IconsToDraw.ToList())
+                {
+                    args.Graphics.DrawTexture(obj.Icon, obj.Rectangle);// new RectangleF(SpeedLimitPosY, SpeedLimitPosX, SpeedLimitToDraw.Size.Width * SpeedLimitScale, SpeedLimitToDraw.Size.Height * SpeedLimitScale));
+                }
+            }
         }
         catch (Exception ex)
         {

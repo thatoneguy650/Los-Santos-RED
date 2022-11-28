@@ -46,7 +46,6 @@ public class Places
     }
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
     public List<BasicLocation> ActiveLocations { get; private set; } = new List<BasicLocation>();
-    //public List<BasicLocation> ActiveALLLocations => ActiveLocations.Concat(ActiveInteractableLocations).ToList();
     public DynamicPlaces DynamicPlaces { get; private set; }
     public StaticPlaces StaticPlaces { get; private set; }
     public void Setup()

@@ -61,67 +61,77 @@ public class StaticPlaces
     public void ActivateLocations()
     {
         int LocationsCalculated = 0;
-        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
+        if (EntryPoint.ModController.IsRunning)
         {
-            if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)
+            foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
             {
-                if (!gl.IsActivated)
+                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled)
                 {
-                    gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-                    GameFiber.Yield();
-                }
-            }
-            else
-            {
-                if(gl.IsActivated)
-                {
-                    gl.Deactivate();
-                    GameFiber.Yield();
-                }
-            }
-            if(Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
-            {
-                if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists() && (EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
-                {
-                    gl.ActivateBlip(Time, World);
-                }
-                else if (!gl.IsEnabled && gl.Blip.Exists())
-                {
-                    gl.DeactivateBlip();
-                }
-                else if (gl.IsEnabled && gl.IsBlipEnabled && gl.Blip.Exists() && EntryPoint.FocusZone?.State != gl.StateLocation)
-                {
-                    gl.DeactivateBlip();
+                    if (!gl.IsActivated)
+                    {
+                        gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+                        GameFiber.Yield();
+                    }
                 }
                 else
                 {
-                    if (gl.IsEnabled && gl.IsBlipEnabled)
+                    if (gl.IsActivated)
                     {
-                        gl.UpdateBlip(Time);
+                        gl.Deactivate();
+                        GameFiber.Yield();
                     }
                 }
-            }
-            else
-            {
-                if (!gl.IsActivated && gl.Blip.Exists())
+                if (Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
                 {
-                    gl.DeactivateBlip();
+                    if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists() && gl.IsSameState(EntryPoint.FocusZone?.State))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
+                    {
+                        gl.ActivateBlip(Time, World);
+                    }
+                    else if (!gl.IsEnabled && gl.Blip.Exists())
+                    {
+                        gl.DeactivateBlip();
+                    }
+                    else if (gl.IsEnabled && gl.IsBlipEnabled && gl.Blip.Exists() && !gl.IsSameState(EntryPoint.FocusZone?.State))
+                    {
+                        gl.DeactivateBlip();
+                    }
+                    else
+                    {
+                        if (gl.IsEnabled && gl.IsBlipEnabled)
+                        {
+                            gl.UpdateBlip(Time);
+                        }
+                    }
                 }
-            }
-            LocationsCalculated++;
-            if (LocationsCalculated >= 7)//20//50//20//5
-            {
-                LocationsCalculated = 0;
-                GameFiber.Yield();
+                else
+                {
+                    if (!gl.IsActivated && gl.Blip.Exists())
+                    {
+                        gl.DeactivateBlip();
+                    }
+                }
+                LocationsCalculated++;
+                if (LocationsCalculated >= 7)//20//50//20//5
+                {
+                    LocationsCalculated = 0;
+                    GameFiber.Yield();
+                }
+                if (!EntryPoint.ModController.IsRunning)
+                {
+                    break;
+                }
             }
         }
     }
     public void Update()
     {
-        foreach (BasicLocation gl in Places.ActiveLocations.ToList())
+        if (EntryPoint.ModController.IsRunning)
         {
-            gl.Update(Time);
-            GameFiber.Yield();
+            foreach (BasicLocation gl in Places.ActiveLocations.ToList())
+            {
+                gl.Update(Time);
+                GameFiber.Yield();
+            }
         }
     }
     public void Dispose()
