@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
@@ -72,6 +73,7 @@ public class BasicLocation
         Zone placeZone = zones.GetZone(EntrancePosition);
         string betweener = "";
         string zoneString = "";
+        string stateString = "San Andreas";
         if (placeZone != null)
         {
             if (placeZone.IsSpecificLocation)
@@ -83,6 +85,7 @@ public class BasicLocation
                 betweener = $"in";
             }
             zoneString = $"~p~{placeZone.DisplayName}~s~";
+            stateString = placeZone.State;
         }
         string streetName = streets.GetStreetNames(EntrancePosition, false);
         string StreetNumber = "";
@@ -99,6 +102,12 @@ public class BasicLocation
         FullStreetAddress = LocationName;
         StreetAddress = ShortLocationName;
         ZoneName = zoneString;
+
+
+        if(String.IsNullOrEmpty(StateLocation))
+        {
+            StateLocation = stateString;
+        }
         CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
@@ -156,6 +165,9 @@ public class BasicLocation
     public bool IsNearby { get; private set; } = false;
     [XmlIgnore]
     public uint GameTimeLastMentioned { get; set; }
+
+    public string StateLocation { get; set; }
+
     public BasicLocation()
     {
 

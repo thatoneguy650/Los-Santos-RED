@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Player;
+﻿using LosSantosRED.lsr.Locations;
+using LosSantosRED.lsr.Player;
 using Rage;
 using RAGENativeUI.Elements;
 using System;
@@ -37,6 +38,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAlive { get; }
         bool IsBeingBooked { get; set; }
         bool IsArrested { get; set; }
+        LocationData CurrentLocation { get; }
 
         void Reset(bool resetWanted, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites);
         void SetWantedLevel(int maxWantedLastLife, string v1, bool v2);

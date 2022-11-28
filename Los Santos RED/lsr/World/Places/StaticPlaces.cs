@@ -67,7 +67,6 @@ public class StaticPlaces
             {
                 if (!gl.IsActivated)
                 {
-                    //EntryPoint.WriteToConsole($"{gl.Name} ACTIVATE 1");
                     gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                     GameFiber.Yield();
                 }
@@ -76,29 +75,28 @@ public class StaticPlaces
             {
                 if(gl.IsActivated)
                 {
-                    //EntryPoint.WriteToConsole($"{gl.Name} DEACTIVATE 1");
                     gl.Deactivate();
                     GameFiber.Yield();
                 }
             }
-
             if(Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
             {
-                if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists())
+                if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists() && (EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
                 {
-                    //EntryPoint.WriteToConsole($"{gl.Name} ACTIVATE BLIP 1");
                     gl.ActivateBlip(Time, World);
                 }
                 else if (!gl.IsEnabled && gl.Blip.Exists())
                 {
-                    //EntryPoint.WriteToConsole($"{gl.Name} DEACTIVATE BLIP 1");
+                    gl.DeactivateBlip();
+                }
+                else if (gl.IsEnabled && gl.IsBlipEnabled && gl.Blip.Exists() && EntryPoint.FocusZone?.State != gl.StateLocation)
+                {
                     gl.DeactivateBlip();
                 }
                 else
                 {
                     if (gl.IsEnabled && gl.IsBlipEnabled)
                     {
-                        //EntryPoint.WriteToConsole($"{gl.Name} UPDATE BLIP 1");
                         gl.UpdateBlip(Time);
                     }
                 }
@@ -107,18 +105,15 @@ public class StaticPlaces
             {
                 if (!gl.IsActivated && gl.Blip.Exists())
                 {
-                    //EntryPoint.WriteToConsole($"{gl.Name} DEACTIVATE BLIP 2");
                     gl.DeactivateBlip();
                 }
             }
-
             LocationsCalculated++;
             if (LocationsCalculated >= 7)//20//50//20//5
             {
                 LocationsCalculated = 0;
                 GameFiber.Yield();
             }
-
         }
     }
     public void Update()
@@ -135,6 +130,10 @@ public class StaticPlaces
         {
             loc.Deactivate();
         }
+        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
+        {
+            gl.DeactivateBlip();
+        }
     }
     public void ActivateLocation(ILocationRespawnable respawnableLocation)
     {
@@ -143,38 +142,13 @@ public class StaticPlaces
             respawnableLocation.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
         }   
     }
-
-
-
-
-
     public void SetGangLocationActive(string iD, bool setEnabled)
     {
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
             gl.IsEnabled = setEnabled;
-            //if (setEnabled)
-            //{
-            //    if (!gl.IsActivated)
-            //    {
-            //        EntryPoint.WriteToConsole("SetGangLocationActive I AM ACTIVATING ");
-            //        gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-            //    }
-            //}
-            //else
-            //{
-            //    if (gl.IsActivated)
-            //    {
-            //        EntryPoint.WriteToConsole("SetGangLocationActive I AM DEACTIVATING ");
-            //        gl.Deactivate();
-            //    }
-            //}
-
         }
     }
-
-
-
     public void AddAllBlips()
     {
         foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())

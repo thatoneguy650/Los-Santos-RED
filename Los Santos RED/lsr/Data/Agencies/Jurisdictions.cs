@@ -603,7 +603,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
             ////Custom
             //new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
-            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
+            new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
             //new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),
         };
         Serialization.SerializeParams(ZoneJurisdictionsList, ZoneConfigFileName);
@@ -986,7 +986,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
             ////Custom
             //new ZoneJurisdiction("APD", "CHI1", 0, 100, 100),
-            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
+            new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
             //new ZoneJurisdiction("VCPD", "VICE", 0, 100, 100),      
         };
         Serialization.SerializeParams(SimpleZoneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\ZoneJurisdictions_FullExpandedJurisdiction.xml");
@@ -1374,7 +1374,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
 
-            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
+            new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
         };
         Serialization.SerializeParams(ZoneJurisdictionsList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\ZoneJurisdictions_LosSantos2008.xml");
     }
@@ -1840,7 +1840,7 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","GALLI", 0, 100, 100),
             new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
 
-            new ZoneJurisdiction("NYSP", "LUDEN", 0, 100, 100),
+            new ZoneJurisdiction("NYSP", "PROL", 0, 100, 100),
         };
         Serialization.SerializeParams(ZoneJurisdictionsListSimple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\ZoneJurisdictions_Simple.xml");
     }

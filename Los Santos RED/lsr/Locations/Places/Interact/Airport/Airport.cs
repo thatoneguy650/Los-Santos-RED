@@ -13,8 +13,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Media.Media3D;
 using System.Xml.Serialization;
 [XmlInclude(typeof(YanktonAiport))]
+[XmlInclude(typeof(CayoPericoAirport))]
 public class Airport : InteractableLocation
 {
 
@@ -46,12 +48,13 @@ public class Airport : InteractableLocation
     public float ArrivalHeading { get; set; }
     public List<string> RequestIPLs { get; set; }
     public List<string> RemoveIPLs { get; set; }
-    public List<Destination> Destinations { get; set; } = new List<Destination>();
+    public List<AirportFlights> Flights { get; set; } = new List<AirportFlights>();
+    public HashSet<RoadToggler> RoadToggels { get; set; } = new HashSet<RoadToggler>();
+    public HashSet<string> ZonesToEnable { get; set; } = new HashSet<string>();
 
-
-    public Airport(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public Airport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-
+        AirportID = airportID;
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -113,31 +116,63 @@ public class Airport : InteractableLocation
 
     private void SetupMenu()
     {
-        foreach (Destination destination in Destinations)
+        InteractionMenu.SubtitleText = "Pick a Destination";
+
+
+
+
+        foreach (string groupedAirportID in Flights.GroupBy(x => x.ToAirportID).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
-            Airport destinationAiport = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == destination.AirportID);
-            if (destinationAiport != null)
+            string DestinationName = groupedAirportID;
+            string DestinationDescription = groupedAirportID; 
+
+            Airport airportGroup = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == groupedAirportID);
+            if(airportGroup != null) 
             {
-                UIMenuItem destinationMenu = new UIMenuItem(destinationAiport.Name, destinationAiport.Name) { RightLabel = $"{destination.Cost:C0}" };
+                DestinationName = airportGroup.Name;
+                DestinationDescription = airportGroup.Description;
+            }
+
+            UIMenu destinationSubMenu = MenuPool.AddSubMenu(InteractionMenu, DestinationName);
+            destinationSubMenu.SubtitleText = "Destination: " + DestinationName;
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = DestinationDescription;
+
+
+            int? minCost = Flights.Where(x => x.ToAirportID == groupedAirportID)?.Min(x => x.Cost);
+            if (minCost.HasValue)
+            {
+                InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightLabel = $"From ${minCost}";
+            }
+
+
+            foreach (AirportFlights flight in Flights.Where(x=> x.ToAirportID == groupedAirportID))
+            {
+                bool canFly = false;
+                Airport destinationAiport = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == flight.ToAirportID);
+                if (destinationAiport != null && destinationAiport.IsEnabled) 
+                {
+                    canFly = true; 
+                }
+                UIMenuItem destinationMenu = new UIMenuItem(flight.Airline, flight.Description) { RightLabel = $"{flight.Cost:C0} - {flight.FlightTime} hour(s)", Enabled = canFly };
                 destinationMenu.Activated += (sender, selectedItem) =>
                 {
-                    if (Player.BankAccounts.Money >= destination.Cost)
+                    if (Player.BankAccounts.Money >= flight.Cost)
                     {
-                        Player.BankAccounts.GiveMoney(-1 * destination.Cost);
+                        Player.BankAccounts.GiveMoney(-1 * flight.Cost);
                         IsFlyingToLocation = true;
                         Game.FadeScreenOut(1000, true);
                         sender.Visible = false;
-                        FlyToAirport(destinationAiport);
+                        FlyToAirport(destinationAiport, flight.FlightTime);
                     }
                     else
                     {
                         Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     }
-
                 };
-                InteractionMenu.AddItem(destinationMenu);
+                destinationSubMenu.AddItem(destinationMenu);
+                
             }
-        }      
+        }
     }
     public virtual void OnArrive()
     {
@@ -146,6 +181,20 @@ public class Airport : InteractableLocation
             foreach (string requestIPL in RequestIPLs)
             {
                 NativeFunction.Natives.REQUEST_IPL(requestIPL);
+            }
+        }
+        if (RoadToggels != null)
+        {
+            foreach (RoadToggler rt in RoadToggels)
+            {
+                rt.SetRoad(true);
+            }
+        }
+        if (ZonesToEnable != null)
+        {
+            foreach (string ze in ZonesToEnable)
+            {
+                NativeFunction.Natives.SET_ZONE_ENABLED(NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>(ze), true);
             }
         }
         Player.Character.Position = ArrivalPosition;
@@ -160,8 +209,22 @@ public class Airport : InteractableLocation
                 NativeFunction.Natives.REMOVE_IPL(removeIPL);
             }
         }
+        if(RoadToggels != null)
+        {
+            foreach (RoadToggler rt in RoadToggels)
+            {
+                rt.SetRoad(false);
+            }
+        }
+        if(ZonesToEnable != null)
+        {
+            foreach(string ze in ZonesToEnable)
+            {
+                NativeFunction.Natives.SET_ZONE_ENABLED(NativeFunction.Natives.GET_ZONE_FROM_NAME_ID<int>(ze), false);
+            }
+        }
     }
-    private void FlyToAirport(Airport destinationAiport)
+    private void FlyToAirport(Airport destinationAiport, int flightTime)
     {
         GameFiber.StartNew(delegate
         {
@@ -170,6 +233,7 @@ public class Airport : InteractableLocation
             destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
             GameFiber.Sleep(1000);
             destinationAiport.OnArrive();
+            Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
             GameFiber.Sleep(1000);//do the whole shebang ehre
             Game.FadeScreenIn(1000, true);
         }, "DestinationGoTo");

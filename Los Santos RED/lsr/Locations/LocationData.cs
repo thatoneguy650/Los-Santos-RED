@@ -109,10 +109,30 @@ namespace LosSantosRED.lsr.Locations
                 if (PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
+                    if(PreviousZone != null && CurrentZone != null && PreviousZone.State != CurrentZone.State)
+                    {
+                        OnChangedState();
+                    }
                     PreviousZone = CurrentZone;
                 }
             }
         }
+
+        private void OnChangedState()
+        {
+            string prevState = "";
+            string currState = "";
+            if (PreviousZone != null)
+            {
+                prevState = PreviousZone.State;
+            }
+            if(CurrentZone != null)
+            {
+                currState = CurrentZone.State;
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: STATE CHANGED FROM {prevState} TO {currState}");
+        }
+
         private void UpdateInterior()
         {
             InteriorID = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(EntityToLocate);

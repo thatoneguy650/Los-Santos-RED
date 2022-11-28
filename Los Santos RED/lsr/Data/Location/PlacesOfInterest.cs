@@ -858,6 +858,14 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
             { new ConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 75f), } },
 
+
+
+            new PoliceStation(new Vector3(3142.471f, -4840.832f, 112.0291f), 349.9769f, "NYSP Office Ludendorff","The return of the Keystone Cops") { StateLocation = "North Yankton",AssignedAgencyID = "NYSP", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+
+            },PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {  } },
+
+
         };
         List<Prison> Prisons = new List<Prison>()
         {
@@ -935,6 +943,13 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 PossiblePedSpawns = new List<ConditionalLocation>() {
 
             } },
+
+
+            new Hospital(new Vector3(3132.073f, -4839.958f, 112.0312f), 354.8388f, "Ludendorff Clinic", "The service you'd expect!") { StateLocation = "North Yankton", OpenTime = 0,CloseTime = 24,
+                PossiblePedSpawns = new List<ConditionalLocation>() {
+
+            } },
+
             //new Hospital(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
         };
         List<FireStation> FireStations = new List<FireStation>()
@@ -1557,26 +1572,59 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<Airport> Airports = new List<Airport>()
         {
-            new Airport(new Vector3(-1079.419f, -2726.025f, 14.39801f),330.0377f,"LS Intl. Airport","The airport to the stars!")
+            new Airport("LSIX",new Vector3(-1079.419f, -2726.025f, 14.39801f),330.0377f,"Los Santos Intl.","Los Santos International brings third-world service to first-world travel" +
+            "~n~" +
+            "~n~City: ~y~Los Santos~s~" +
+            "~n~State: ~p~San Andreas~s~")
             {
-                AirportID = "LSIX"
-                ,OpenTime = 0
+                OpenTime = 0
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(-1042.862f, -2746.254f, 21.3594f)
                 ,ArrivalHeading = 329.611f
                 ,ScannerFilePath = "01_areas\\0x05E7E888.wav"
-                ,Destinations = new List<Destination>()
-                { 
-                    new Destination("NYRA", 500),
-                } 
+                ,CameraPosition = new Vector3(-1047.655f, -2676.447f, 44.60207f), CameraDirection = new Vector3(-0.05335984f, -0.9665251f, -0.2509621f), CameraRotation = new Rotator(-14.53445f, 6.118878E-06f, 176.84f)
+                ,Flights = new List<AirportFlights>()
+                {
+                    new AirportFlights("LDR","Air Herler","For the utmost in luxury", 5000, 4),
+                    new AirportFlights("LDR","Caipira Airways","You'll get there when you get there", 550, 12),
+
+                    new AirportFlights("SFX","San Fierro Air","Its the San Fierro Treat!", 350, 1),
+                    new AirportFlights("SFX","Los Santos Air","Short Flights, Tall Terror", 325, 2),
+
+                    new AirportFlights("FIA","FlyUS","Live A Little, Fly With US", 700, 9),
+                    new AirportFlights("VCIA","FlyUS","Live A Little, Fly With US", 750, 11),
+                    new AirportFlights("CPA","Adios Airlines","Say your goodbyes!", 500, 6),
+
+                    new AirportFlights("SSA","Los Santos Air","Short Flights, Tall Terror", 200, 1),
+                }
             },
-                        new YanktonAiport(new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"N. Yankton Airport","More than just cropdusters!")
+            new Airport("SSA",new Vector3(1759.512f, 3298.777f, 41.95529f), 144.954f,"Sandy Shores Airstrip",
+            "A beach town nowhere near the ocean where the town is a trailer park and the beach is a mixture of toxic sludge and pulverized fish bones." +
+            "~n~" +
+            "~n~City: ~y~Sandy Shores~s~" +
+            "~n~State: ~p~San Andreas~s~")
             {
-                AirportID = "NYRA"
-                ,OpenTime = 0
+                OpenTime = 0
+                ,CloseTime = 24
+                ,ArrivalPosition = new Vector3(1759.512f, 3298.777f, 41.95529f)
+                ,ArrivalHeading = 144.954f
+                ,CameraPosition = new Vector3(1783.648f, 3279.038f, 53.9618f), CameraDirection = new Vector3(-0.9425761f, 0.2726336f, -0.1929279f), CameraRotation = new Rotator(-11.1237f, 6.525906E-07f, 73.86785f)
+                ,Flights = new List<AirportFlights>()
+                {
+                    new AirportFlights("LSIX","Los Santos Air","Short Flights, Tall Terror", 200, 1),
+                }
+            },
+            new YanktonAiport("LDR",new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"Ludendorff Regional",
+            "The best fish boiled in lye in all of North Yankton!" +
+            "~n~" +
+            "~n~City: ~y~Ludendorff~s~" +
+            "~n~State: ~p~North Yankton~s~")
+            {
+                OpenTime = 0
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
                 ,ArrivalHeading = 354.7703f
+                ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
                 ,RequestIPLs = new List<string>() {
                             "plg_01",
                             "prologue01",
@@ -1713,164 +1761,56 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                             "prologuerd_lod",
 
                         }
-                ,Destinations = new List<Destination>()
+                ,Flights = new List<AirportFlights>()
                 {
-                    new Destination("LSIX", 750),
+                    new AirportFlights("LSIX","Caipira Airways","You'll get there when you get there", 650, 14),
+                    new AirportFlights("SFX","San Fierro Air","Its the San Fierro Treat!", 680, 15),
                 }
+                ,RoadToggels = new HashSet<RoadToggler>()
+                {
+                    new RoadToggler(new Vector3(5526.24f, -5137.23f, 61.78925f),new Vector3(3679.327f, -4973.879f, 125.0828f),192.0f),
+                    new RoadToggler(new Vector3(3691.211f, -4941.24f, 94.59368f),new Vector3(3511.115f, -4689.191f, 126.7621f),16.0f),
+                    new RoadToggler(new Vector3(3510.004f, -4865.81f, 94.69557f),new Vector3(3204.424f, -4833.8147f, 126.8152f),16.0f),
+                    new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
+                }
+                ,ZonesToEnable = new HashSet<string>() { "PrLog" }
+                ,StateLocation = "North Yankton",
             },
-        };
-        //List<YanktonAiport> YanktonAiports = new List<YanktonAiport>()
-        //{
-        //    new YanktonAiport(new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"N. Yankton Airport","More than just cropdusters!")
-        //    {
-        //        AirportID = "NYRA"
-        //        ,OpenTime = 0
-        //        ,CloseTime = 24
-        //        ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
-        //        ,ArrivalHeading = 354.7703f
-        //        ,RequestIPLs = new List<string>() {
-        //                    "plg_01",
-        //                    "prologue01",
-        //                    "prologue01_lod",
-        //                    "prologue01c",
-        //                    "prologue01c_lod",
-        //                    "prologue01d",
-        //                    "prologue01d_lod",
-        //                    "prologue01e",
-        //                    "prologue01e_lod",
-        //                    "prologue01f",
-        //                    "prologue01f_lod",
-        //                    "prologue01g",
-        //                    "prologue01h",
-        //                    "prologue01h_lod",
-        //                    "prologue01i",
-        //                    "prologue01i_lod",
-        //                    "prologue01j",
-        //                    "prologue01j_lod",
-        //                    "prologue01k",
-        //                    "prologue01k_lod",
-        //                    "prologue01z",
-        //                    "prologue01z_lod",
-        //                    "plg_02",
-        //                    "prologue02",
-        //                    "prologue02_lod",
-        //                    "plg_03",
-        //                    "prologue03",
-        //                    "prologue03_lod",
-        //                    "prologue03b",
-        //                    "prologue03b_lod",
-        //                    "prologue03_grv_dug",
-        //                    "prologue03_grv_dug_lod",
-        //                    "prologue_grv_torch",
-        //                    "plg_04",
-        //                    "prologue04",
-        //                    "prologue04_lod",
-        //                    "prologue04b",
-        //                    "prologue04b_lod",
-        //                    "prologue04_cover",
-        //                    "des_protree_end",
-        //                    "des_protree_start",
-        //                    "des_protree_start_lod",
-        //                    "plg_05",
-        //                    "prologue05",
-        //                    "prologue05_lod",
-        //                    "prologue05b",
-        //                    "prologue05b_lod",
-        //                    "plg_06",
-        //                    "prologue06",
-        //                    "prologue06_lod",
-        //                    "prologue06b",
-        //                    "prologue06b_lod",
-        //                    "prologue06_int",
-        //                    "prologue06_int_lod",
-        //                    "prologue06_pannel",
-        //                    "prologue06_pannel_lod",
-        //                    "prologue_m2_door",
-        //                    "prologue_m2_door_lod",
-        //                    "plg_occl_00",
-        //                    "prologue_occl",
-        //                    "plg_rd",
-        //                    "prologuerd",
-        //                    "prologuerdb",
-        //                    "prologuerd_lod",
-        //                }
-        //        ,RemoveIPLs = new List<string>(){
-        //                    "plg_01",
-        //                    "prologue01",
-        //                    "prologue01_lod",
-        //                    "prologue01c",
-        //                    "prologue01c_lod",
-        //                    "prologue01d",
-        //                    "prologue01d_lod",
-        //                    "prologue01e",
-        //                    "prologue01e_lod",
-        //                    "prologue01f",
-        //                    "prologue01f_lod",
-        //                    "prologue01g",
-        //                    "prologue01h",
-        //                    "prologue01h_lod",
-        //                    "prologue01i",
-        //                    "prologue01i_lod",
-        //                    "prologue01j",
-        //                    "prologue01j_lod",
-        //                    "prologue01k",
-        //                    "prologue01k_lod",
-        //                    "prologue01z",
-        //                    "prologue01z_lod",
-        //                    "plg_02",
-        //                    "prologue02",
-        //                    "prologue02_lod",
-        //                    "plg_03",
-        //                    "prologue03",
-        //                    "prologue03_lod",
-        //                    "prologue03b",
-        //                    "prologue03b_lod",
-        //                    "prologue03_grv_cov",
-        //                    "prologue03_grv_cov_lod",
-        //                    "prologue03_grv_dug",
-        //                    "prologue03_grv_dug_lod",
-        //                    "prologue03_grv_fun",
-        //                    "prologue_grv_torch",
-        //                    "plg_04",
-        //                    "prologue04",
-        //                    "prologue04_lod",
-        //                    "prologue04b",
-        //                    "prologue04b_lod",
-        //                    "prologue04_cover",
-        //                    "des_protree_end",
-        //                    "des_protree_start",
-        //                    "des_protree_start_lod",
-        //                    "plg_05",
-        //                    "prologue05",
-        //                    "prologue05_lod",
-        //                    "prologue05b",
-        //                    "prologue05b_lod",
-        //                    "plg_06",
-        //                    "prologue06",
-        //                    "prologue06_lod",
-        //                    "prologue06b",
-        //                    "prologue06b_lod",
-        //                    "prologue06_int",
-        //                    "prologue06_int_lod",
-        //                    "prologue06_pannel",
-        //                    "prologue06_pannel_lod",
-        //                    "prologue_m2_door",
-        //                    "prologue_m2_door_lod",
-        //                    "plg_occl_00",
-        //                    "prologue_occl",
-        //                    "plg_rd",
-        //                    "prologuerd",
-        //                    "prologuerdb",
-        //                    "prologuerd_lod",
+            new CayoPericoAirport("CPA",new Vector3(),0f,"Cayo Perico Airstrip",
+                "Have this crap instead of ~r~REAL~s~ DLC!" +
+                "~n~" +
+                "~n~City: ~y~Cayo Perico~s~" +
+                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateLocation = "Colombia" },
+            new Airport("SFX",new Vector3(),0f,"San Fierro Intl.",
+                "The city of psychedelic wonders." +
+                "~n~" +
+                "~n~City: ~y~San Fierro~s~" +
+                "~n~State: ~p~San Andreas~s~"){ IsEnabled = false,StateLocation = "San Andreas" },
+            new Airport("FIA",new Vector3(),0f,"Francis Intl.",
+                "Great To Visit, Even Better To Leave" +
+                "~n~" +
+                "~n~City: ~y~Dukes, Liberty City~s~" +
+                "~n~State: ~p~Liberty~s~") { IsEnabled = false,StateLocation = "Liberty City" },
+            new Airport("VCIA",new Vector3(),0f,"Escobar Intl.",
+                "A city run by dealers and weasels" +
+                "~n~" +
+                "~n~City: ~y~Vice City~s~" +
+                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateLocation = "Florida" },
 
-        //                }
-        //        ,Destinations = new List<Destination>()
-        //        {
-        //            new Destination("LSIX", 750),
-        //        }
-        //    },
-        //};
+            };
 
+        /*
+ *                     new AirportFlights("NYRA","Air Herler","For the utmost in luxury", 5000, 4),//shamal, high end regional
+            new AirportFlights("NYRA","Caipira Airways","You'll get there when you get there", 599, 12),
+
+            new AirportFlights("NYRA","San Fierro Air","Its the San Fierro Treat!", 599, 12),//regional low end
+            new AirportFlights("NYRA","Air Emu","Take our birds anywhere you like", 599, 12),//shamal, high end regional
+
+            new AirportFlights("NYRA","MyFly","Optimal Service, for a price", 599, 12),//shamal, high end regional
+            new AirportFlights("NYRA","Adios Airlines","Say your goodbyes!", 599, 12),//low end, major carrier
+
+            new AirportFlights("NYRA","FlyUS","Live A Little, Fly With US", 599, 12),//low end, major carrier
+            new AirportFlights("NYRA","Los Santos Air","You'll get there when you get there", 599, 12),//regional low end*/
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.ScrapYards.AddRange(ScrapYards);
         PossibleLocations.GangDens.AddRange(GangDens);

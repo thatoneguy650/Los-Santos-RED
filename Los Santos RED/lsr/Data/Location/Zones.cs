@@ -211,10 +211,11 @@ public class Zones : IZones
             new Zone("GALLI", "Galilee", "BlaineCounty", "San Andreas", false, eLocationEconomy.Poor, eLocationType.Rural),
 
             //Other
-            new Zone("LUDEN", "Ludendorff", "NorthYankton", new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },
-                                        new Vector2 { X = 2648.361f, Y = -4091.664f },
-                                        new Vector2 { X = 5647.14f, Y = -4131.478f },
-                                        new Vector2 { X = 5922.999f, Y = -5640.681f } },"North Yankton",false,eLocationEconomy.Middle,eLocationType.Rural),
+            new Zone("PROL", "Ludendorff", "NorthYankton","North Yankton",false,eLocationEconomy.Middle,eLocationType.Rural),
+            //new Zone("LUDEN", "Ludendorff", "NorthYankton", new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },
+            //                            new Vector2 { X = 2648.361f, Y = -4091.664f },
+            //                            new Vector2 { X = 5647.14f, Y = -4131.478f },
+            //                            new Vector2 { X = 5922.999f, Y = -5640.681f } },"North Yankton",false,eLocationEconomy.Middle,eLocationType.Rural),
 
             //new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
             //                            new Vector2 { X = 7898.494f, Y = 3093.242f },

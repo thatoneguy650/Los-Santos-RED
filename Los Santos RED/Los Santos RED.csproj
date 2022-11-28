@@ -124,7 +124,9 @@
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
-    <Compile Include="lsr\Locations\Places\Interact\Airport\Destination.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\AirportFlights.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
