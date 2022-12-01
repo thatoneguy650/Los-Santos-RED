@@ -44,7 +44,7 @@ public class GunDealerInteraction
 
         GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
 
-        if (Player.PlayerTasks.HasTask(EntryPoint.UndergroundGunsContactName))
+        if (Player.PlayerTasks.HasTask(StaticStrings.UndergroundGunsContactName))
         {
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
             GunDealerMenu.AddItem(TaskCancel);
@@ -55,7 +55,7 @@ public class GunDealerInteraction
         }
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if (gl.ContactName == EntryPoint.UndergroundGunsContactName && gl.IsEnabled)
+            if (gl.ContactName == StaticStrings.UndergroundGunsContactName && gl.IsEnabled)
             {
                 GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.FullStreetAddress));
             }
@@ -74,7 +74,7 @@ public class GunDealerInteraction
     {
         if (selectedItem == TaskCancel)
         {
-            Player.PlayerTasks.CancelTask(EntryPoint.UndergroundGunsContactName);
+            Player.PlayerTasks.CancelTask(StaticStrings.UndergroundGunsContactName);
             sender.Visible = false;
         }
         else if (selectedItem == GunPickup)

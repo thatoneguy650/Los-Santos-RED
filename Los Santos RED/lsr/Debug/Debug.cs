@@ -1005,7 +1005,29 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        WeaponTest1();
+        SpawnLocation taxiSpawn = new SpawnLocation(Game.LocalPlayer.Character.Position);
+        taxiSpawn.GetClosestStreet(true);
+        DispatchableVehicle taxiVehicle = new DispatchableVehicle("taxi", 100, 100);
+        DispatchablePerson taxiPed = new DispatchablePerson("a_m_m_socenlat_01", 100, 100);
+        if (taxiSpawn.StreetPosition != null)
+        {
+            CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(taxiSpawn, taxiVehicle, taxiPed, false, false, true, Settings, Crimes, Weapons, ModDataFileManager.Names, World);
+            civilianSpawnTask.AllowAnySpawn = true;
+            civilianSpawnTask.AllowBuddySpawn = false;
+            civilianSpawnTask.AttemptSpawn();
+            civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            civilianSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+            PedExt taxiDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
+            if (taxiDriver != null && taxiDriver.Pedestrian.Exists() && taxiDriver.Pedestrian.CurrentVehicle.Exists())
+            {
+                taxiDriver.CanBeTasked = true;
+                taxiDriver.CanBeAmbientTasked = true;
+                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(taxiDriver.Pedestrian, taxiDriver.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);
+            }
+        }
+
+
+        // WeaponTest1();
 
         //try
         //{

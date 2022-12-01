@@ -89,7 +89,7 @@ public class Respawning// : IRespawning
         }
         else if (Amount < RequiredBribeAmount)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
                 CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
@@ -99,7 +99,7 @@ public class Respawning// : IRespawning
         else
         {
             ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", EntryPoint.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
 
@@ -112,7 +112,7 @@ public class Respawning// : IRespawning
 
             };
 
-            CurrentPlayer.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", OfficerFriendlyResponses.PickRandom(), 1);
+            CurrentPlayer.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", OfficerFriendlyResponses.PickRandom(), 1);
 
 
             //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
@@ -142,7 +142,7 @@ public class Respawning// : IRespawning
                     $"You have paid the citation amount of ~r~${FineAmount}~s~, now fuck off.",
                     $"Citation of ~r~${FineAmount}~s~ paid. Move along."
                 };
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", EntryPoint.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", StaticStrings.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;
             CurrentPlayer.Scanner.OnPaidFine();

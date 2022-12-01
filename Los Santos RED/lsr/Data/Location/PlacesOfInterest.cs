@@ -78,6 +78,14 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         return AllLocations;   
     }
+
+    public List<ILocationSetupable> LocationsToSetup()
+    {
+        List<ILocationSetupable> AllLocations = new List<ILocationSetupable>();
+        AllLocations.AddRange(PossibleLocations.Airports);
+        return AllLocations;
+    }
+
     public List<BasicLocation> BasicLocations()
     {
         List<BasicLocation> AllLocations = new List<BasicLocation>();
@@ -473,7 +481,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
         List<GunStore> GunStores = new List<GunStore>()
 
         {
-            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Guns #1", "General shop","GunShop1") { IsEnabled = true, ContactName = EntryPoint.UndergroundGunsContactName, 
+            new GunStore(new Vector3(1049.596f, -2428.15f, 30.30457f), 84.97017f, "Guns #1", "General shop","GunShop1") { IsEnabled = true, ContactName = StaticStrings.UndergroundGunsContactName, 
                 ParkingSpaces = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(1044.326f, -2404.086f, 29.69204f),352.682f),
 
@@ -482,7 +490,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
                     new SpawnPlace(new Vector3(1061.272f, -2445.152f, 28.1964f), 89.23737f),
                     new SpawnPlace(new Vector3(1066.94f, -2463.334f, 27.96432f), 357.0727f),
                 } },
-            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, MoneyToUnlock = 5000, ContactName = EntryPoint.UndergroundGunsContactName,                
+            new GunStore(new Vector3(-232.552f, -1311.643f, 31.29598f), 3.180501f, "Guns #2", "Specializes in ~o~Pistols~s~","GunShop5") { IsEnabled = false, MoneyToUnlock = 5000, ContactName = StaticStrings.UndergroundGunsContactName,                
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-233.4157f, -1306.795f, 31.31846f),89.50895f),
 
@@ -491,7 +499,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
                     new SpawnPlace(new Vector3(-198.912f, -1300.158f, 30.46804f), 260.0593f),
                     new SpawnPlace(new Vector3(-223.2236f, -1308.06f, 30.46892f), 89.06057f),
             } },
-            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, MoneyToUnlock = 10000, ContactName = EntryPoint.UndergroundGunsContactName,                
+            new GunStore(new Vector3(334.3036f, -1978.458f, 24.16728f), 49.9404f, "Guns #3", "Specializes in ~o~Sub-Machine Guns~s~","GunShop3") { IsEnabled = false, MoneyToUnlock = 10000, ContactName = StaticStrings.UndergroundGunsContactName,                
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(322.9245f, -1981.151f, 23.22856f),305.8783f),
 
@@ -499,7 +507,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
                     new SpawnPlace(new Vector3(318.4567f, -2005.651f, 21.25648f), 205.8739f),
                     new SpawnPlace(new Vector3(308.2981f, -1978.542f, 21.6238f), 141.6945f),
             } },
-            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, MoneyToUnlock = 15000, ContactName = EntryPoint.UndergroundGunsContactName,                
+            new GunStore(new Vector3(-258.3577f, 6247.281f, 31.48922f), 314.4655f, "Guns #4", "Specializes in ~o~Assault Rifles~s~","GunShop4") { IsEnabled = false, MoneyToUnlock = 15000, ContactName = StaticStrings.UndergroundGunsContactName,                
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-258.1833f, 6250.695f, 31.48922f),25.17568f),
 
@@ -507,7 +515,7 @@ new ConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f,
                     new SpawnPlace(new Vector3(-267.765f, 6251.046f, 30.61459f), 312.4225f),
                     new SpawnPlace(new Vector3(-269.5155f, 6274.559f, 30.46577f), 136.3388f),
                 } },
-            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, MoneyToUnlock = 25000, ContactName = EntryPoint.UndergroundGunsContactName,                
+            new GunStore(new Vector3(1673.425f, 4957.921f, 42.34893f), 227.3988f, "Guns #5", "Specializes in ~o~Heavy Weapons~s~","GunShop2") { IsEnabled = false, MoneyToUnlock = 25000, ContactName = StaticStrings.UndergroundGunsContactName,                
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1661.471f, 4951.514f, 42.07043f),217.9459f),
 
@@ -1392,7 +1400,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
             new FoodStand(new Vector3(240.8329f, 167.2296f, 105.0605f), 167.5996f,  "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(240.8329f, 167.2296f, 105.0605f), VendorHeading = 167.5996f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1516.382f, -952.5892f, 9.278718f), 317.7292f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu") { VendorPosition = new Vector3(-1516.382f, -952.5892f, 9.278718f), VendorHeading = 317.7292f, BannerImagePath = "chihuahuahotdogs.png" },
-            new FoodStand(new Vector3(1604.818f, 3822.332f, 34.69806f), 200.7076f, "Chihuahua Hot Dog", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(1607.818f, 3822.332f, 34.69806f), VendorHeading = 200.7076f, BannerImagePath = "chihuahuahotdogs.png" },
+            new FoodStand(new Vector3(1604.818f, 3822.332f, 34.69806f), 200.7076f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(1607.818f, 3822.332f, 34.69806f), VendorHeading = 200.7076f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1248.932f, -1474.449f, 4.277946f), 306.3787f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1248.932f, -1474.449f, 4.277946f), VendorHeading = 306.3787f, BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(821.8197f, -2973.398f, 6.020657f), 276.5136f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(821.8197f, -2973.398f, 6.020657f), VendorHeading = 276.5136f , BannerImagePath = "chihuahuahotdogs.png" },
             new FoodStand(new Vector3(-1219.656f, -1504.36f, 4.36032f), 98.7149f, "Chihuahua Hot Dogs", "Vegan? No. Meat? Yes.","ChihuahuaHotDogMenu"){ VendorPosition = new Vector3(-1219.656f, -1504.36f, 4.36032f), VendorHeading = 98.7149f, BannerImagePath = "chihuahuahotdogs.png" },
@@ -1581,21 +1589,26 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(-1042.862f, -2746.254f, 21.3594f)
                 ,ArrivalHeading = 329.611f
+
+
+                ,AirArrivalPosition = new Vector3(-2154.954f, -2662.385f, 81.9974f)
+                ,AirArrivalHeading = 239.2646f
+
                 ,ScannerFilePath = "01_areas\\0x05E7E888.wav"
                 ,CameraPosition = new Vector3(-1047.655f, -2676.447f, 44.60207f), CameraDirection = new Vector3(-0.05335984f, -0.9665251f, -0.2509621f), CameraRotation = new Rotator(-14.53445f, 6.118878E-06f, 176.84f)
                 ,Flights = new List<AirportFlights>()
                 {
-                    new AirportFlights("LDR","Air Herler","For the utmost in luxury", 5000, 4),
-                    new AirportFlights("LDR","Caipira Airways","You'll get there when you get there", 550, 12),
+                    new AirportFlights("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. Taxi service to downtown Ludendorff included.", 5000, 4),
+                    new AirportFlights("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 4 hour flight! What else could you ask for? Taxi service to downtown Ludendorff included.", 550, 12),
 
-                    new AirportFlights("SFX","San Fierro Air","Its the San Fierro Treat!", 350, 1),
-                    new AirportFlights("SFX","Los Santos Air","Short Flights, Tall Terror", 325, 2),
+                    new AirportFlights("SFX",StaticStrings.SanFierroAirCarrierID,"When driving just isn't an option and your company is paying.", 350, 1),
+                    new AirportFlights("SFX",StaticStrings.LosSantosAirCarrierID,"Experience the luxury of a small regional carriers lowest end fare.", 325, 2),
 
-                    new AirportFlights("FIA","FlyUS","Live A Little, Fly With US", 700, 9),
-                    new AirportFlights("VCIA","FlyUS","Live A Little, Fly With US", 750, 11),
-                    new AirportFlights("CPA","Adios Airlines","Say your goodbyes!", 500, 6),
+                    new AirportFlights("FIA",StaticStrings.FlyUSCarrierID,"Need to get FAR away? FlyUS and see the difference dergulation made!", 700, 9),
+                    new AirportFlights("VCIA",StaticStrings.FlyUSCarrierID,"Nonstop service to the sunniest state in the nation!", 750, 11),
+                    new AirportFlights("CPA",StaticStrings.AdiosAirlinesCarrierID,"We won't be the only ones saying 'Adios' to you!", 500, 6),
 
-                    new AirportFlights("SSA","Los Santos Air","Short Flights, Tall Terror", 200, 1),
+                    new AirportFlights("SSA",StaticStrings.LosSantosAirCarrierID,"Just a hop skip and a jump away, LSIX is proud to provide service to our rural neighbors to the north.", 200, 1),
                 }
             },
             new Airport("SSA",new Vector3(1759.512f, 3298.777f, 41.95529f), 144.954f,"Sandy Shores Airstrip",
@@ -1608,10 +1621,13 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(1759.512f, 3298.777f, 41.95529f)
                 ,ArrivalHeading = 144.954f
+
+                ,AirArrivalPosition = new Vector3(759.6899f, 2999.477f, 120.8867f)
+                ,AirArrivalHeading = 290.1536f
                 ,CameraPosition = new Vector3(1783.648f, 3279.038f, 53.9618f), CameraDirection = new Vector3(-0.9425761f, 0.2726336f, -0.1929279f), CameraRotation = new Rotator(-11.1237f, 6.525906E-07f, 73.86785f)
                 ,Flights = new List<AirportFlights>()
                 {
-                    new AirportFlights("LSIX","Los Santos Air","Short Flights, Tall Terror", 200, 1),
+                    new AirportFlights("LSIX",StaticStrings.LosSantosAirCarrierID,"Need to get to the big city fast? Don't care about safety records? Feeling lucky? If you answered yes to all of these questions, welcome aboard!", 200, 1),
                 }
             },
             new YanktonAiport("LDR",new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"Ludendorff Regional",
@@ -1624,6 +1640,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 ,CloseTime = 24
                 ,ArrivalPosition = new Vector3(3153.898f, -4840.879f, 111.8725f)
                 ,ArrivalHeading = 354.7703f
+
+                ,AirArrivalPosition = new Vector3(4538.156f, -5345.569f, 230.4282f)
+                ,AirArrivalHeading = 43.45281f
                 ,CameraPosition = new Vector3(3142.449f, -4831.813f, 118.558f), CameraDirection = new Vector3(0.5385267f, -0.7833802f, -0.3103296f), CameraRotation = new Rotator(-18.0791f, -1.796229E-06f, -145.4938f)
                 ,RequestIPLs = new List<string>() {
                             "plg_01",
@@ -1763,8 +1782,8 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                         }
                 ,Flights = new List<AirportFlights>()
                 {
-                    new AirportFlights("LSIX","Caipira Airways","You'll get there when you get there", 650, 14),
-                    new AirportFlights("SFX","San Fierro Air","Its the San Fierro Treat!", 680, 15),
+                    new AirportFlights("LSIX",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 650, 14),
+                    new AirportFlights("SFX",StaticStrings.SanFierroAirCarrierID,"Its the San Fierro Treat!", 680, 15),
                 }
                 ,RoadToggels = new HashSet<RoadToggler>()
                 {
@@ -1774,28 +1793,28 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
                 }
                 ,ZonesToEnable = new HashSet<string>() { "PrLog" }
-                ,StateLocation = "North Yankton",
+                ,StateLocation = StaticStrings.NorthYanktonStateID,
             },
             new CayoPericoAirport("CPA",new Vector3(),0f,"Cayo Perico Airstrip",
                 "Have this crap instead of ~r~REAL~s~ DLC!" +
                 "~n~" +
                 "~n~City: ~y~Cayo Perico~s~" +
-                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateLocation = "Colombia" },
+                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateLocation = StaticStrings.ColombiaStateID },
             new Airport("SFX",new Vector3(),0f,"San Fierro Intl.",
                 "The city of psychedelic wonders." +
                 "~n~" +
                 "~n~City: ~y~San Fierro~s~" +
-                "~n~State: ~p~San Andreas~s~"){ IsEnabled = false,StateLocation = "San Andreas" },
+                "~n~State: ~p~San Andreas~s~"){ IsEnabled = false,StateLocation = StaticStrings.SanAndreasStateID },
             new Airport("FIA",new Vector3(),0f,"Francis Intl.",
                 "Great To Visit, Even Better To Leave" +
                 "~n~" +
                 "~n~City: ~y~Dukes, Liberty City~s~" +
-                "~n~State: ~p~Liberty~s~") { IsEnabled = false,StateLocation = "Liberty City" },
+                "~n~State: ~p~Liberty~s~") { IsEnabled = false,StateLocation = StaticStrings.LibertyStateID },
             new Airport("VCIA",new Vector3(),0f,"Escobar Intl.",
                 "A city run by dealers and weasels" +
                 "~n~" +
                 "~n~City: ~y~Vice City~s~" +
-                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateLocation = "Florida" },
+                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateLocation = StaticStrings.FloridaStateID },
 
             };
 

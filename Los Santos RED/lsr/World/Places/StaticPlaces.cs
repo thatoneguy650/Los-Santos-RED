@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,8 @@ public class StaticPlaces
     private IGangs Gangs;
     private IAgencies Agencies;
     private ITimeReportable Time;
-    public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs, IAgencies agencies, ITimeReportable time)
+    private INameProvideable Names;
+    public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs, IAgencies agencies, ITimeReportable time, INameProvideable names)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -38,9 +40,11 @@ public class StaticPlaces
         Gangs = gangs;
         Agencies = agencies;
         Time = time;
+        Names = names;
     }
     public void Setup()
     {
+        //need to combine these
         foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
         {
             basicLocation.StoreData(Zones, Streets);
@@ -56,6 +60,10 @@ public class StaticPlaces
         foreach (ILocationAgencyAssignable ps in PlacesOfInterest.AgencyAssignableLocations())
         {
             ps.StoreData(Agencies);
+        }
+        foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
+        {
+            ps.Setup(Crimes,Names);
         }
     }
     public void ActivateLocations()

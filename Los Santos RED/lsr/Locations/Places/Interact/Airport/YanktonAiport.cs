@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using LSR.Vehicles;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 public class YanktonAiport : Airport
 {
+    private TaxiDropOff TaxiDropOff;
     public YanktonAiport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(airportID, _EntrancePosition, _EntranceHeading, _Name, _Description)
     {
     }
@@ -24,11 +26,18 @@ public class YanktonAiport : Airport
         NativeFunction.Natives.SET_ALLOW_STREAM_PROLOGUE_NODES(false);
         base.OnDepart();
     }
-    public override void OnArrive()
+    public override void OnArrive(bool setPos)
     {
         NativeFunction.Natives.SET_MINIMAP_IN_PROLOGUE(true);
         NativeFunction.Natives.SET_ALLOW_STREAM_PROLOGUE_NODES(true);
-        base.OnArrive();
+        base.OnArrive(setPos);
+
+        if (setPos)
+        {
+            TaxiDropOff = new TaxiDropOff(ArrivalPosition, Settings, Crimes, Weapons, Names, World);
+            TaxiDropOff.Setup();
+            TaxiDropOff.Start();
+        }
     }
 }
 

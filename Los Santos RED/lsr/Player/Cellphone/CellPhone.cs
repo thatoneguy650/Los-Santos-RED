@@ -104,17 +104,17 @@ public class CellPhone
             GangInteraction = new GangInteraction(ContactInteractable, Gangs, PlacesOfInterest);
             GangInteraction.Start(myGang);
         }
-        else if (contact.Name == EntryPoint.OfficerFriendlyContactName)
+        else if (contact.Name == StaticStrings.OfficerFriendlyContactName)
         {
             CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
             CorruptCopInteraction.Start(contact);
         }
-        else if (contact.Name == EntryPoint.UndergroundGunsContactName)
+        else if (contact.Name == StaticStrings.UndergroundGunsContactName)
         {
             GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
             GunDealerInteraction.Start(contact);
         }
-        else if (contact.Name == EntryPoint.EmergencyServicesContactName)
+        else if (contact.Name == StaticStrings.EmergencyServicesContactName)
         {
             EmergencyServicesInteraction = new EmergencyServicesInteraction(ContactInteractable, Gangs, PlacesOfInterest, Jurisdictions);
             EmergencyServicesInteraction.Start(contact);
@@ -314,11 +314,11 @@ public class CellPhone
                         {
                             AddContact(relatedGang, true);
                         }
-                        else if (sc.ContactName == EntryPoint.UndergroundGunsContactName)
+                        else if (sc.ContactName == StaticStrings.UndergroundGunsContactName)
                         {
                             AddGunDealerContact(true);
                         }
-                        else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
+                        else if (sc.ContactName == StaticStrings.OfficerFriendlyContactName)
                         {
                             AddCopContact(true);
                         }
@@ -349,11 +349,11 @@ public class CellPhone
                     {
                         AddContact(relatedGang, true);
                     }
-                    else if (sc.ContactName == EntryPoint.OfficerFriendlyContactName)
+                    else if (sc.ContactName == StaticStrings.OfficerFriendlyContactName)
                     {
                         AddCopContact(true);
                     }
-                    else if (sc.ContactName == EntryPoint.UndergroundGunsContactName)
+                    else if (sc.ContactName == StaticStrings.UndergroundGunsContactName)
                     {
                         AddGunDealerContact(true);
                     }
@@ -422,7 +422,7 @@ public class CellPhone
     }
     public void AddCopContact(bool displayNotification)
     {
-        string Name = EntryPoint.OfficerFriendlyContactName;
+        string Name = StaticStrings.OfficerFriendlyContactName;
         string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == Name))
         {
@@ -443,7 +443,7 @@ public class CellPhone
     }
     public void AddGunDealerContact(bool displayNotification)
     {
-        string Name = EntryPoint.UndergroundGunsContactName;
+        string Name = StaticStrings.UndergroundGunsContactName;
         string IconName = "CHAR_BLANK_ENTRY";
         if (!AddedContacts.Any(x => x.Name == Name))
         {
@@ -464,11 +464,11 @@ public class CellPhone
     }
     public void AddEmergencyServicesCustomContact(bool displayNotification)
     {
-        string Name = EntryPoint.UndergroundGunsContactName;
+        string Name = StaticStrings.UndergroundGunsContactName;
         string IconName = "CHAR_CALL911";
-        if (!AddedContacts.Any(x => x.Name == EntryPoint.EmergencyServicesContactName))
+        if (!AddedContacts.Any(x => x.Name == StaticStrings.EmergencyServicesContactName))
         {
-            PhoneContact contactA = new PhoneContact(EntryPoint.EmergencyServicesContactName, ContactIndex);
+            PhoneContact contactA = new PhoneContact(StaticStrings.EmergencyServicesContactName, ContactIndex);
             contactA.DialTimeout = 3000;
             contactA.Active = true;
             contactA.IconName = IconName;

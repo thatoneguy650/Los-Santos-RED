@@ -40,19 +40,19 @@ public class OtherViolations
     {
         if (Player.ActivityManager.IsCommitingSuicide)
         {
-            Violations.AddViolating("AttemptingSuicide");
+            Violations.AddViolating(StaticStrings.AttemptingSuicideCrimeID);
         }
         if (Player.IsWanted && Player.CurrentLocation != null && Player.CurrentLocation.CurrentZone != null && Player.CurrentLocation.CurrentZone.IsRestrictedDuringWanted && Player.CurrentLocation.GameTimeInZone >= 15000 && (Player.WantedLevel >= 3 || Player.PoliceResponse.IsDeadlyChase))
         {
-            Violations.AddViolating("TrespessingOnGovtProperty");
+            Violations.AddViolating(StaticStrings.TrespessingOnGovtPropertyCrimeID);
         }
         if (Player.Investigation.IsSuspicious)
         {
-            Violations.AddViolating("SuspiciousActivity");
+            Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
         }
         if (Player.IsDoingSuspiciousActivity)
         {
-            Violations.AddViolating("SuspiciousActivity");
+            Violations.AddViolating(StaticStrings.SuspiciousActivityCrimeID);
         }
         if (Player.IsWanted && !Player.Surrendering.HandsAreUp)
         {
@@ -62,21 +62,21 @@ public class OtherViolations
                 {
                     if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
                     {
-                        Violations.AddViolating("ResistingArrest");
+                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
                     }
                 }
                 else if (Player.HasBeenMovingFast)
                 {
                     if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestMediumTriggerTime)
                     {
-                        Violations.AddViolating("ResistingArrest");
+                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
                     }
                 }
                 else
                 {
                     if (Player.HasBeenMoving && Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                     {
-                        Violations.AddViolating("ResistingArrest");
+                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
                     }
                 }
             }
@@ -86,7 +86,7 @@ public class OtherViolations
                 {
                     if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestFastTriggerTime)//kept going or took off
                     {
-                        Violations.AddViolating("ResistingArrest");
+                        Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
                     }
                 }
                 else
@@ -95,7 +95,7 @@ public class OtherViolations
                     {
                         if (Player.PoliceResponse.HasBeenWantedFor >= Settings.SettingsManager.ViolationSettings.ResistingArrestSlowTriggerTime)
                         {
-                            Violations.AddViolating("ResistingArrest");
+                            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
                         }
                     }
                 }
@@ -103,39 +103,39 @@ public class OtherViolations
         }
         if (Player.RecentlyResistedArrest)
         {
-            Violations.AddViolating("ResistingArrest");
+            Violations.AddViolating(StaticStrings.ResistingArrestCrimeID);
         }
         if (Player.Intoxication.IsIntoxicated && Player.Intoxication.CurrentIntensity >= 2.0f && !Player.IsInVehicle)
         {
-            Violations.AddViolating("PublicIntoxication");
+            Violations.AddViolating(StaticStrings.PublicIntoxicationCrimeID);
         }
         if (Player.RecentlyFedUpCop)
         {
-            Violations.AddViolating("InsultingOfficer");
+            Violations.AddViolating(StaticStrings.InsultingOfficerCrimeID);
         }
         if (Player.IsDealingDrugs)
         {
-            Violations.AddViolating("DealingDrugs");
+            Violations.AddViolating(StaticStrings.DealingDrugsCrimeID);
         }
         if (Player.IsDealingIllegalGuns)
         {
-            Violations.AddViolating("DealingGuns");
+            Violations.AddViolating(StaticStrings.DealingGunsCrimeID);
         }
         if (Player.ActivityManager.IsHoldingHostage)
         {
-            Violations.AddViolating("Kidnapping");
+            Violations.AddViolating(StaticStrings.KidnappingCrimeID);
         }
         if (Player.IsBeingANuisance)
         {
-            Violations.AddViolating("PublicNuisance");
+            Violations.AddViolating(StaticStrings.PublicNuisanceCrimeID);
         }
         if (Player.IsSleeping && Player.IsSleepingOutside && !Player.CurrentLocation.IsInside && Player.CurrentLocation.CurrentZone?.Type != eLocationType.Wilderness && (Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Rich || Player.CurrentLocation.CurrentZone?.Economy == eLocationEconomy.Middle))
         {
-            Violations.AddViolating("PublicVagrancy");
+            Violations.AddViolating(StaticStrings.PublicVagrancyCrimeID);
         }
         if (Player.ActivityManager.IsLootingBody)
         {
-            Violations.AddViolating("Mugging");
+            Violations.AddViolating(StaticStrings.MuggingCrimeID);
         }
     }
 }

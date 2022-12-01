@@ -17,6 +17,7 @@ namespace LosSantosRED.lsr.Interface
         List<ILocationRespawnable> BustedRespawnLocations();
         List<ILocationAgencyAssignable> AgencyAssignableLocations();
         List<ILocationGangAssignable> GangAssignableLocations();
+        List<ILocationSetupable> LocationsToSetup();
         //List<BasicLocation> BasicLocations { get; }
         //List<InteractableLocation> InteractableLocations { get; }
         //List<BasicLocation> AllLocations { get; }

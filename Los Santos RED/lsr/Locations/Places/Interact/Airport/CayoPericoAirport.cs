@@ -25,12 +25,12 @@ public class CayoPericoAirport : Airport
         NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(false);
         base.OnDepart();
     }
-    public override void OnArrive()
+    public override void OnArrive(bool setPos)
     {
         NativeFunction.Natives.SET_ISLAND_ENABLED("HeistIsland", true);
         NativeFunction.Natives.SET_USE_ISLAND_MAP(true);
         NativeFunction.Natives.SET_ALLOW_STREAM_HEIST_ISLAND_NODES(true);
-        base.OnArrive();
+        base.OnArrive(setPos);
     }
 }
 

@@ -33,9 +33,6 @@ public static class EntryPoint
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
     public static Color LSRedColor { get; set; } = Color.FromArgb(181, 48, 48);
     public static uint NotificationID { get; set; }
-    public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
-    public static string UndergroundGunsContactName => "Underground Guns";//these have gotta go, but where?
-    public static string EmergencyServicesContactName => "911 - Emergency Services";//these have gotta go, but where?
     public static void Main()
     {
         #if DEBUG

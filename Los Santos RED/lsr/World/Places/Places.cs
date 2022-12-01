@@ -25,7 +25,7 @@ public class Places
     private IPlacesOfInterest PlacesOfInterest;
     private IEntityProvideable World;
     private IAgencies Agencies;
-    public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies)
+    public Places(IEntityProvideable world, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, IWeapons weapons, ICrimes crimes, ITimeReportable time, IShopMenus shopMenus, IInteriors interiors, IGangs gangs, IGangTerritories gangTerritories, IStreets streets, IAgencies agencies, INameProvideable names)
     {
         World = world;
         PlacesOfInterest = placesOfInterest;
@@ -42,7 +42,7 @@ public class Places
         Streets = streets;
         Agencies = agencies;
         DynamicPlaces = new DynamicPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Time);
-        StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time);
+        StaticPlaces = new StaticPlaces(this, PlacesOfInterest, World, Interiors, ShopMenus, Settings, Crimes, Weapons, Zones,Streets,Gangs,Agencies, Time, names);
     }
     public List<InteractableLocation> ActiveInteractableLocations { get; private set; } = new List<InteractableLocation>();
     public List<BasicLocation> ActiveLocations { get; private set; } = new List<BasicLocation>();

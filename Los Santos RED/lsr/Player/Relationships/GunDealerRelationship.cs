@@ -76,7 +76,7 @@ public class GunDealerRelationship
         TotalMoneySpentAtShops += Amount;
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if (gs.ContactName == EntryPoint.UndergroundGunsContactName && !gs.IsEnabled && TotalMoneySpentAtShops >= gs.MoneyToUnlock)
+            if (gs.ContactName == StaticStrings.UndergroundGunsContactName && !gs.IsEnabled && TotalMoneySpentAtShops >= gs.MoneyToUnlock)
             {
                 gs.IsEnabled = true;
 
@@ -94,7 +94,7 @@ public class GunDealerRelationship
                     $"Got some other things at the shop on {gs.FullStreetAddress}",
                 };
 
-                Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
+                Player.CellPhone.AddScheduledText(StaticStrings.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
                 EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
             }
         }
@@ -109,7 +109,7 @@ public class GunDealerRelationship
         TotalMoneySpentAtShops = Amount;
         foreach (GunStore gs in PlacesOfInterest.PossibleLocations.GunStores)
         {
-            if(gs.ContactName == EntryPoint.UndergroundGunsContactName)
+            if(gs.ContactName == StaticStrings.UndergroundGunsContactName)
             {
                 if(TotalMoneySpentAtShops >= gs.MoneyToUnlock)
                 {
@@ -132,7 +132,7 @@ public class GunDealerRelationship
                                 $"Got some other things at the shop on {gs.FullStreetAddress}",
                             };
 
-                            Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
+                            Player.CellPhone.AddScheduledText(StaticStrings.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom());
                         }
                         EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
                     }

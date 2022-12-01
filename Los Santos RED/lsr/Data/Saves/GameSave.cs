@@ -192,7 +192,7 @@ namespace LosSantosRED.lsr.Data
         {
             try
             {
-                Game.FadeScreenOut(500, true);
+                Game.FadeScreenOut(1000, true);
 
                 time.SetDateTime(CurrentDateTime);
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
@@ -205,10 +205,8 @@ namespace LosSantosRED.lsr.Data
                 LoadLicenses(player);
                 LoadResidences(player, placesOfInterest);
                 LoadHumanState(player);
-
-
                 player.SetCopStatus(IsCop, null);
-
+                GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
             }
@@ -342,11 +340,11 @@ namespace LosSantosRED.lsr.Data
             foreach (SavedContact ifc in Contacts.OrderBy(x => x.Index))
             {
                 Gang gang = gangs.GetGangByContact(ifc.Name);
-                if (ifc.Name == EntryPoint.UndergroundGunsContactName)
+                if (ifc.Name == StaticStrings.UndergroundGunsContactName)
                 {
                     player.CellPhone.AddGunDealerContact(false);
                 }
-                else if (ifc.Name == EntryPoint.OfficerFriendlyContactName)
+                else if (ifc.Name == StaticStrings.OfficerFriendlyContactName)
                 {
                     player.CellPhone.AddCopContact(false);//mess with this and need to test contacts after loading
                 }

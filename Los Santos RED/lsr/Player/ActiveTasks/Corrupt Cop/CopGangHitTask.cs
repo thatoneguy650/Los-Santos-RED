@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Start()
         {
-            if (PlayerTasks.CanStartNewTask(EntryPoint.OfficerFriendlyContactName))
+            if (PlayerTasks.CanStartNewTask(StaticStrings.OfficerFriendlyContactName))
             {
                 GetGang();
                 if (TargetGang != null)
@@ -91,13 +91,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
+                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                     break;
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
                 {
                     CurrentTask.IsReadyForPayment = true;
-                    Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Ready for Payment");
+                    Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Ready for Payment");
                     EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
                     break;
                 }
@@ -123,26 +123,26 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
+                        EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Money Picked Up");
-                        EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {EntryPoint.OfficerFriendlyContactName}");
+                        Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
+                        EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     GameFiber.Sleep(1000);
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
+                    PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
+                PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
             }
         }   
         private void AddTask()
@@ -150,8 +150,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             CurrentGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = CurrentGangReputation.MembersKilled;
             EntryPoint.WriteToConsole($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
-            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");
-            CurrentTask = PlayerTasks.GetTask(EntryPoint.OfficerFriendlyContactName);
+            PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");
+            CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
         }
         private void GetPayment()
         {
@@ -179,7 +179,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     "We will let you know when you can do something for us",
                     "Check back later.",
                     };
-            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendInitialInstructionsMessage()
         {
@@ -200,7 +200,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Need some spectacle in the streets to keep our budget. Need you to waste {MembersToKill} {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ members. ${MoneyToRecieve}",
                      };
             }
-            Player.CellPhone.AddPhoneResponse(EntryPoint.OfficerFriendlyContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.OfficerFriendlyContactName, Replies.PickRandom());
         }
         private void SendQuickPaymentMessage()
         {
@@ -211,7 +211,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
         }
         private void SendDeadDropStartMessage()
         {
@@ -220,7 +220,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
         }
     }
 }

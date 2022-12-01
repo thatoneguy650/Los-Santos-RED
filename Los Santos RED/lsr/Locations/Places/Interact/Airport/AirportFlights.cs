@@ -11,10 +11,21 @@ using System.Windows.Forms;
 public class AirportFlights
 {
     public string ToAirportID { get; set; }
-    public string Airline { get; set; }
+    public string CarrierID { get; set; }
+
+
+
+
+
     public string Description { get; set; }
     public int Cost { get; set; }
     public int FlightTime { get; set; }
+
+
+
+
+
+
     public AirportFlights()
     {
 
@@ -23,7 +34,7 @@ public class AirportFlights
     public AirportFlights(string airportID, string airline, string description, int cost, int flightTime)
     {
         ToAirportID = airportID;
-        Airline = airline;
+        CarrierID = airline;
         Description = description;
         Cost = cost;
         FlightTime = flightTime;

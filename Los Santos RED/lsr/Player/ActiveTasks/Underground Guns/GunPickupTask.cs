@@ -80,7 +80,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Start()
         {
-            if (PlayerTasks.CanStartNewTask(EntryPoint.UndergroundGunsContactName))
+            if (PlayerTasks.CanStartNewTask(StaticStrings.UndergroundGunsContactName))
             {
                 GetShops();
                 if (DropOffStore != null && PickUpStore != null)
@@ -104,7 +104,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private void SetCompleted()
         {
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(EntryPoint.UndergroundGunsContactName, true);
+            PlayerTasks.CompleteTask(StaticStrings.UndergroundGunsContactName, true);
         }
         private void SetInactive()
         {
@@ -121,7 +121,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 GunProp.Delete();
             }
-            PlayerTasks.CancelTask(EntryPoint.UndergroundGunsContactName);
+            PlayerTasks.CancelTask(StaticStrings.UndergroundGunsContactName);
         }
         private void FinishTask()
         {
@@ -144,18 +144,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.UndergroundGunsContactName}");
+                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}");
                     break;
                 }
                 else if (hasSpawnedCar && IsSpawnedVehicleDestroyed)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.UndergroundGunsContactName}, the spawned vehicle was destroyed");
-                    Game.DisplayHelp($"{EntryPoint.UndergroundGunsContactName} Vehicle Destroyed");
+                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, the spawned vehicle was destroyed");
+                    Game.DisplayHelp($"{StaticStrings.UndergroundGunsContactName} Vehicle Destroyed");
                     break;
                 }
                 else if (hasSpawnedCar && hasGottenInCar && IsPlayerFarAwayFromSpawnedVehicle)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.UndergroundGunsContactName}, you ran away from the car");
+                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, you ran away from the car");
                     break;
                 }
                 if (!hasSpawnedCar && IsPlayerNearbyPickupStore)
@@ -195,7 +195,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             SpawnedVehicle.SetLock((VehicleLockStatus)10);
             EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");
 
-            Game.DisplayHelp($"{EntryPoint.UndergroundGunsContactName} You have arrived, leave the vehicle");
+            Game.DisplayHelp($"{StaticStrings.UndergroundGunsContactName} You have arrived, leave the vehicle");
 
             //Game.DisplayHelp($"You have arrived, leave the vehicle");
         }
@@ -224,8 +224,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            PlayerTasks.AddTask(EntryPoint.UndergroundGunsContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gun Transport");
-            CurrentTask = PlayerTasks.GetTask(EntryPoint.UndergroundGunsContactName);
+            PlayerTasks.AddTask(StaticStrings.UndergroundGunsContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gun Transport");
+            CurrentTask = PlayerTasks.GetTask(StaticStrings.UndergroundGunsContactName);
             hasGottenInCar = false;
             hasSpawnedCar = false;
             GameTimeGotInCar = 0;
@@ -246,11 +246,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetShops()
         {
-            DropOffStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == EntryPoint.UndergroundGunsContactName && x.IsEnabled).PickRandom();
+            DropOffStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == StaticStrings.UndergroundGunsContactName && x.IsEnabled).PickRandom();
             PickUpStore = null;
             if (DropOffStore != null)
             {
-                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == EntryPoint.UndergroundGunsContactName && x.Name != DropOffStore.Name && x.ParkingSpaces.Any()).PickRandom();
+                PickUpStore = PlacesOfInterest.PossibleLocations.GunStores.Where(x => x.ContactName == StaticStrings.UndergroundGunsContactName && x.Name != DropOffStore.Name && x.ParkingSpaces.Any()).PickRandom();
             }
         }
         private bool SpawnVehicle(GunStore PickUpStore)
@@ -325,7 +325,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Get to {DropOffStore.FullStreetAddress}.",
                 $"Bring the van to {DropOffStore.FullStreetAddress}, don't loiter.",
                     };
-            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendVehicleSpawnedMessage()
         {
@@ -336,7 +336,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"The guns are loaded in the Dark Blue ~p~Burrito Van~s~, plate number is {SpawnedVehicle.LicensePlate}. Keys should be in it.",
                         $"Take the Dark Blue ~p~Burrito Van~s~. It is already loaded and ready to go.",
                         };
-            Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", PickupMessage.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(StaticStrings.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", PickupMessage.PickRandom(), 1);
         }
         private void SendInitialInstructionsMessage()
         {
@@ -345,7 +345,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 $"Go get the van from {PickUpStore.FullStreetAddress} and take it to {DropOffStore.FullStreetAddress}. ${MoneyToRecieve} on completion",
                 $"There is a van in front of {PickUpStore.FullStreetAddress}, go get it and bring it to {DropOffStore.FullStreetAddress}. Some sensitive stuff in the back, don't draw attention. Payment is ${MoneyToRecieve}",
                     };
-            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendCompletedMessage()
         {
@@ -356,7 +356,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(EntryPoint.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(StaticStrings.UndergroundGunsContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
         }
         private void SendTaskAbortMessage()
         {
@@ -368,7 +368,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     "We will let you know when you can do something for us",
                     "Check back later.",
                     };
-            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendGangSabotageMessage(Gang gang)
         {

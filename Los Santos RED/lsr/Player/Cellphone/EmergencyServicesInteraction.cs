@@ -44,7 +44,7 @@ public class EmergencyServicesInteraction
     }
     public void Start(PhoneContact contact)
     {
-        EmergencyServicesMenu = new UIMenu(EntryPoint.EmergencyServicesContactName, "Select an Option");
+        EmergencyServicesMenu = new UIMenu(StaticStrings.EmergencyServicesContactName, "Select an Option");
         EmergencyServicesMenu.RemoveBanner();
         MenuPool.Add(EmergencyServicesMenu);
         EmergencyServicesMenu.OnItemSelect += OnEmergencyServicesSelect;
@@ -102,7 +102,7 @@ public class EmergencyServicesInteraction
         }
         fullText += " is en route to ";
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
-        Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
+        Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
         Player.CellPhone.CallPolice();
     }
     private void RequestFireAssistance()
@@ -124,7 +124,7 @@ public class EmergencyServicesInteraction
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
 
         //fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
-        Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
+        Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
         Player.CellPhone.CallFire();
     }
     private void RequestEMSAssistance()
@@ -145,7 +145,7 @@ public class EmergencyServicesInteraction
         fullText += " is en route to ";
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
        // fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
-        Player.CellPhone.AddPhoneResponse(EntryPoint.EmergencyServicesContactName, "CHAR_CALL911", fullText);
+        Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
         Player.CellPhone.CallEMS();
     }
 

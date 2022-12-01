@@ -576,6 +576,11 @@ public class Pedestrians : ITaskerReportable
                 Civilian.Pedestrian.IsPersistent = false;
                 EntryPoint.PersistentPedsNonPersistent++;
             }
+            else if(Civilian.WasModSpawned)
+            {
+                Civilian.Pedestrian.IsPersistent = false;
+                EntryPoint.PersistentPedsNonPersistent++;
+            }
         }
     }
     public void AddEntity(PedExt pedExt)

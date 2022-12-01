@@ -80,7 +80,7 @@ public class GunStore : InteractableLocation
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
                 Transaction.ProcessTransactionMenu();
 
-                if (ContactName == EntryPoint.UndergroundGunsContactName)
+                if (ContactName == StaticStrings.UndergroundGunsContactName)
                 {
                     Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.PurchaseMenu.MoneySpent);
                     Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.SellMenu.MoneySpent);

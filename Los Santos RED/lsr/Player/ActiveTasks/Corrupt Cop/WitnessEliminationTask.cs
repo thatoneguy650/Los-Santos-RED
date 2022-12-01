@@ -94,7 +94,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Start()
         {
-            if (PlayerTasks.CanStartNewTask(EntryPoint.OfficerFriendlyContactName))
+            if (PlayerTasks.CanStartNewTask(StaticStrings.OfficerFriendlyContactName))
             {
                 GetPedInformation();
                 if (HasSpawnPosition)
@@ -178,7 +178,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
+                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                     break;
                 }
                 if(!IsWitnessSpawned && IsPlayerNearWitnessSpawn)
@@ -191,7 +191,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     if(Witness.HasSeenPlayerCommitCrime)
                     {
                         EntryPoint.WriteToConsole("Witness Elimination WITNESS FLED");
-                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} The witness fled");
+                        Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} The witness fled");
                         //Game.DisplayHelp($"The witness fled");
                         break;
                     }
@@ -207,7 +207,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     CurrentTask.IsReadyForPayment = true;
                     EntryPoint.WriteToConsole("Witness Elimination WITNESS WAS KILLED");
 
-                    Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} The witness was killed");
+                    Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} The witness was killed");
 
                     //Game.DisplayHelp($"The witness was killed");
                     break;
@@ -241,13 +241,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             EntryPoint.WriteToConsole("Witness Elimination COMPLETED");
             SendCompletedMessage();
-            PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
+            PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
         }
         private void SetFailed()
         {
             EntryPoint.WriteToConsole("Witness Elimination FAILED");
             SendFailMessage();
-            PlayerTasks.FailTask(EntryPoint.OfficerFriendlyContactName);
+            PlayerTasks.FailTask(StaticStrings.OfficerFriendlyContactName);
         }
         private void StartDeadDropPayment()
         {
@@ -261,33 +261,33 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        EntryPoint.WriteToConsole($"Task Inactive for {EntryPoint.OfficerFriendlyContactName}");
+                        EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        EntryPoint.WriteToConsole($"Picked up money for Witness Elimination for {EntryPoint.OfficerFriendlyContactName}");
-                        Game.DisplayHelp($"{EntryPoint.OfficerFriendlyContactName} Money Picked Up");
+                        EntryPoint.WriteToConsole($"Picked up money for Witness Elimination for {StaticStrings.OfficerFriendlyContactName}");
+                        Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
                         break;
                     }
                     GameFiber.Sleep(1000);
                 }
                 if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
                 {
-                    PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
+                    PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
                 }
             }
             else
             {
                 SendQuickPaymentMessage();
-                PlayerTasks.CompleteTask(EntryPoint.OfficerFriendlyContactName, true);
+                PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
             }
         }
         private void AddTask()
         {
             EntryPoint.WriteToConsole($"You are hired to kill a witness!");
-            PlayerTasks.AddTask(EntryPoint.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Witness Elimination");
-            CurrentTask = PlayerTasks.GetTask(EntryPoint.OfficerFriendlyContactName);
+            PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Witness Elimination");
+            CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
             IsWitnessSpawned = false;
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
@@ -460,7 +460,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
 
                 string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
-                Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, str, PickedReply, 0);
+                Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, str, PickedReply, 0);
             }
             else
             {
@@ -489,7 +489,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     PickedReply += " The target might have gotten wind, be careful.";
                 }
 
-                Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", PickedReply, 0);
+                Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", PickedReply, 0);
             }
         }
         private void DespawnWitness()
@@ -519,7 +519,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     "We will let you know when you can do something for us",
                     "Check back later.",
                     };
-            Player.CellPhone.AddPhoneResponse(EntryPoint.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
         }
         private void SendInitialInstructionsMessage()
         {
@@ -545,7 +545,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                      };
             }
             
-            Player.CellPhone.AddPhoneResponse(EntryPoint.OfficerFriendlyContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(StaticStrings.OfficerFriendlyContactName, Replies.PickRandom());
         }
         private void SendQuickPaymentMessage()
         {
@@ -556,7 +556,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
         }
         private void SendDeadDropStartMessage()
         {
@@ -565,7 +565,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
         }
         private void SendCompletedMessage()
         {
@@ -576,7 +576,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
         }
         private void SendFailMessage()
         {
@@ -587,7 +587,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
         }
     }
 

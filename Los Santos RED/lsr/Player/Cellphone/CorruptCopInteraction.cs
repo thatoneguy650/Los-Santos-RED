@@ -66,7 +66,7 @@ public class CorruptCopInteraction
         WitnessElimination = new UIMenuItem("Witness Elimination", "Probably some major federal indictment of somebody who majorly does not want to get indicted. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyWitnessEliminationPaymentMax:C0}~s~" };
         CopHit = new UIMenuItem("Cop Hit", "Force the retirement of some of the LSPDs finest. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.OfficerFriendlyCopHitPaymentMax:C0}~s~" };
 
-        if (Player.PlayerTasks.HasTask(EntryPoint.OfficerFriendlyContactName))
+        if (Player.PlayerTasks.HasTask(StaticStrings.OfficerFriendlyContactName))
         {
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the officer you can't complete the task.") { RightLabel = "~o~$?~s~" };
             CopMenu.AddItem(TaskCancel);
@@ -120,7 +120,7 @@ public class CorruptCopInteraction
         }
         else if (selectedItem == TaskCancel)
         {
-            Player.PlayerTasks.CancelTask(EntryPoint.OfficerFriendlyContactName);
+            Player.PlayerTasks.CancelTask(StaticStrings.OfficerFriendlyContactName);
             sender.Visible = false;
         }
         else if (selectedItem == GangHit)

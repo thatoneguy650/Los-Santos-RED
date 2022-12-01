@@ -43,27 +43,27 @@ public class TheftViolations
     {
         if (Player.IsWanted && Player.IsInVehicle && Player.IsInAirVehicle)
         {
-            Violations.AddViolating("GotInAirVehicleDuringChase");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.GotInAirVehicleDuringChaseCrimeID);//.IsCurrentlyViolating = true;
         }
         if (Player.CurrentVehicle != null && Player.CurrentVehicle.CopsRecognizeAsStolen && Player.IsInVehicle && Player.IsDriver)
         {
-            Violations.AddViolating("DrivingStolenVehicle");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.DrivingStolenVehicleCrimeID);//.IsCurrentlyViolating = true;
         }
         if (Player.IsInVehicle && Player.IsDriver && Player.CurrentVehicle != null && Player.AnyPoliceCanRecognizePlayer && Player.CurrentVehicle.Vehicle.Exists() && Player.CurrentVehicle.Vehicle.IsPoliceVehicle)
         {
-            Violations.AddViolating("DrivingStolenVehicle");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.DrivingStolenVehicleCrimeID);//.IsCurrentlyViolating = true;
         }
         if (Player.ActivityManager.IsHoldingUp)
         {
-            Violations.AddViolating("Mugging");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.MuggingCrimeID);//.IsCurrentlyViolating = true;
         }
         if (Player.IsBreakingIntoCar)
         {
-            Violations.AddViolating("GrandTheftAuto");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.GrandTheftAutoCrimeID);//.IsCurrentlyViolating = true;
         }
         if (Player.IsChangingLicensePlates)
         {
-            Violations.AddViolating("ChangingPlates");//.IsCurrentlyViolating = true;
+            Violations.AddViolating(StaticStrings.ChangingPlatesCrimeID);//.IsCurrentlyViolating = true;
         }
     }
     public void AddCarJacked(PedExt myPed)

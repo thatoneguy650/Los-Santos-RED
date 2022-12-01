@@ -66,12 +66,12 @@ public class DamageViolations
     {
         if (RecentlyKilledCivilian || NearCivilianMurderVictim)
         {
-            Violations.AddViolating("KillingCivilians");
+            Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
         }
 
         if (RecentlyHurtCivilian)
         {
-            Violations.AddViolating("HurtingCivilians");
+            Violations.AddViolating(StaticStrings.HurtingCiviliansCrimeID);
         }
     }
 
@@ -80,7 +80,7 @@ public class DamageViolations
         if (myPed.IsCop)
         {
             GameTimeLastHurtCop = Game.GameTime;
-            Player.AddCrime(Crimes.GetCrime("HurtingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.AddCrime(Crimes.GetCrime(StaticStrings.HurtingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
             EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
@@ -101,7 +101,7 @@ public class DamageViolations
             PlayerKilledCops.Add(myPed);
             GameTimeLastKilledCop = Game.GameTime;
             GameTimeLastHurtCop = Game.GameTime;
-            Player.AddCrime(Crimes.GetCrime("KillingPolice"), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+            Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
             Player.OnKilledCop();
             EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }

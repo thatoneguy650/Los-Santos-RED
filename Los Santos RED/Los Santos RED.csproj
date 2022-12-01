@@ -123,10 +123,14 @@
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Helper\StaticStrings.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\Carrier.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\AirportFlights.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\ILocationSetupable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
@@ -182,6 +186,7 @@
     <Compile Include="lsr\Data\Settings\World General Settings\Roadblock Settings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherSettings.cs" />
+    <Compile Include="lsr\Spawner\CivilianSpawnTask.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleGroup.cs" />

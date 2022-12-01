@@ -155,8 +155,14 @@ public class GameSaves : IGameSaves
 
             new StoredWeapon(3756226112, Vector3.Zero, new WeaponVariation(), 0),
         };
-        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() { 
-            new VehicleSaveStatus("furoregt", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } } });
+        GameSave AlexisGameSave = new GameSave("Alexis Davis", 15500, "MP_F_FREEMODE_01", false, AlexisVariation, AlexisWeapons, new List<VehicleSaveStatus>() {
+            new VehicleSaveStatus("furoregt", new Vector3(-365.8749f, -179.3706f, 36.62038f), 206.9494f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 111, LicensePlate = new LSR.Vehicles.LicensePlate("125JK34", 0, false) } },
+            new VehicleSaveStatus("velum", new Vector3(-1222.977f, -3338.955f, 14.87685f), 94.55769f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  111, SecondaryColor = 27, LicensePlate = new LSR.Vehicles.LicensePlate("81VAU819", 0, false) } },
+        }
+        );
+
+
+
 
 
         AlexisGameSave.PlayerPosition = new Vector3(-380.8266f, -192.3129f, 36.84449f);
@@ -190,7 +196,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.SpeechSkill = 80;
 
 
-        AlexisGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        AlexisGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
@@ -348,7 +354,7 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.PlayerPosition = new Vector3(860.6456f, -1591.222f, 31.7381f);
         ClaudeGameSave.PlayerHeading = 107.1845f;
         ClaudeGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
-        ClaudeGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        ClaudeGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         ClaudeGameSave.SavedResidences.Add(new SavedResidence("310S Popular Street", false, true) { RentalPaymentDate = ClaudeGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ClaudeGameSave.CurrentDateTime });
         ClaudeGameSave.GangReputationsSave = new List<GangRepSave>() { 
             
@@ -412,7 +418,7 @@ public class GameSaves : IGameSaves
         //Date
         ExampleGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
         //Contacts
-        ExampleGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        ExampleGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         //Licenses
         ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
@@ -612,7 +618,7 @@ public class GameSaves : IGameSaves
         TestGameSave.PlayerHeading = 45f;
         TestGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
 
-        TestGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        TestGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         TestGameSave.DriversLicense = new DriversLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
         TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
         TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
@@ -654,7 +660,7 @@ public class GameSaves : IGameSaves
         //Date
         ExampleGameSave.CurrentDateTime = new System.DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, System.DateTime.Now.Day, 13, 30, 0);
         //Contacts
-        ExampleGameSave.Contacts.Add(new SavedContact(EntryPoint.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
+        ExampleGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         //Licenses
         ExampleGameSave.DriversLicense = new DriversLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };
         ExampleGameSave.CCWLicense = new CCWLicense() { IssueDate = ExampleGameSave.CurrentDateTime, ExpirationDate = ExampleGameSave.CurrentDateTime.AddMonths(12) };

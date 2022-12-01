@@ -612,10 +612,10 @@ public class Jurisdictions : IJurisdictions
     {
         CountyJurisdictionList = new List<CountyJurisdiction>()
         {
-            new CountyJurisdiction("LSPD-ASD","CityOfLosSantos", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","BlaineCounty", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","LosSantosCounty", 0, 100, 100),
-            new CountyJurisdiction("NYSP", "NorthYankton", 0, 100, 100),
+            new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList, CountyConfigFileName);
     }
@@ -996,10 +996,10 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> SimpleCountyJurisdictionList = new List<CountyJurisdiction>()
         {
-            new CountyJurisdiction("LSPD-ASD","CityOfLosSantos", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","BlaineCounty", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","LosSantosCounty", 0, 100, 100),
-            new CountyJurisdiction("NYSP", "NorthYankton", 0, 100, 100),
+            new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\CountyJurisdictions_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(SimpleCountyJurisdictionList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\CountyJurisdictions_EUP.xml");
@@ -1382,10 +1382,10 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
-            new CountyJurisdiction("LSPD-ASD","CityOfLosSantos", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","BlaineCounty", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","LosSantosCounty", 0, 100, 100),
-            new CountyJurisdiction("NYSP", "NorthYankton", 0, 100, 100),
+            new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\CountyJurisdictions_LosSantos2008.xml");
     }
@@ -1848,10 +1848,10 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> CountyJurisdictionListSimple = new List<CountyJurisdiction>()
         {
-            new CountyJurisdiction("LSPD-ASD","CityOfLosSantos", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","BlaineCounty", 0, 100, 100),
-            new CountyJurisdiction("LSSD-ASD","LosSantosCounty", 0, 100, 100),
-            new CountyJurisdiction("NYSP", "NorthYankton", 0, 100, 100),
+            new CountyJurisdiction("LSPD-ASD",StaticStrings.CityOfLosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.BlaineCountyID, 0, 100, 100),
+            new CountyJurisdiction("LSSD-ASD",StaticStrings.LosSantosCountyID, 0, 100, 100),
+            new CountyJurisdiction("NYSP", StaticStrings.NorthYanktonCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionListSimple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\CountyJurisdictions_Simple.xml");
     }
