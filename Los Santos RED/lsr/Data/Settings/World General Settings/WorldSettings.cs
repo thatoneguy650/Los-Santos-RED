@@ -38,6 +38,13 @@ public class WorldSettings : ISettingsDefaultable
     [Description("If enabled, the blip showing where police are requsting backup will appear.")]
     public bool AllowPoliceBackupBlip { get; set; }
 
+    [Description("If enabled, airports will require your owned vehicles to be nearby to use them for takeoff.")]
+    public bool AirportsRequireOwnedPlanesLocal { get; set; }
+    [Description("Distance (in meters) considered nearby in the case of owned planes being used for takeoff.")]
+    public float AirportsOwnedPlanesLocalDistance { get; set; }
+    [Description("If enabled, airports will require you to have a valid pilots license to take off.")]
+    public bool AirportsRequireLicenseForPrivateFlights { get; set; }
+
     public WorldSettings()
     {
         SetDefault();
@@ -67,6 +74,10 @@ public class WorldSettings : ISettingsDefaultable
         RandomVehicleVanityPlatesPercent = 10f;
 #endif
         ShowAllBlipsOnMap = true;
+
+        AirportsRequireOwnedPlanesLocal = true;
+        AirportsOwnedPlanesLocalDistance = 1000f;
+        AirportsRequireLicenseForPrivateFlights = true;
     }
 
 }

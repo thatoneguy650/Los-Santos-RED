@@ -9,10 +9,12 @@ using System.Linq;
 public class GameSaves : IGameSaves
 {
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\SaveGames.xml";
+    private GameSave PlayingSave;
     public GameSaves()
     {
     }
     public List<GameSave> GameSaveList { get; private set; } = new List<GameSave>();
+    public int NextSaveGameNumber => GameSaveList.Count + 1;
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -41,56 +43,36 @@ public class GameSaves : IGameSaves
         GameSaveList.Add(mySave);     
         mySave.Save(player, weapons, time, placesOfInterest, modItems);
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
-    }
-
-    public int NextSaveGameNumber => GameSaveList.Count + 1;
-
-
-    public void SaveSamePlayer(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
-    {
-        GameSave mySave = GetSave(player);
-        if(mySave == null)
-        {
-            mySave = new GameSave();
-            GameSaveList.Add(mySave);
-        }
-        mySave.Save(player, weapons, time, placesOfInterest, modItems);    
-        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+        PlayingSave = mySave;
     }
     public void Load(GameSave gameSave, IWeapons weapons, IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {       
         gameSave.Load(weapons, pedSwap, player, settings, world, gangs, time, placesOfInterest, modItems);
+        PlayingSave = gameSave;
     }
-    public GameSave GetSave(ISaveable player)
-    {
-        GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
-        return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
-    }
-    public void UpdateSave(GameSave toUpdate)
-    {
-        if(toUpdate != null)
-        {
-            Serialization.SerializeParams(GameSaveList, ConfigFileName);
-        }
-    }
-    public void DeleteSave(string playerName, string modelName)
-    {
-        GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);
-        if(toDelete != null)
-        {
-            GameSaveList.Remove(toDelete);
-        }
-        Serialization.SerializeParams(GameSaveList, ConfigFileName);
-    }
-
     public void DeleteSave(GameSave toDelete)
     {
         if (toDelete != null)
         {
+            if(PlayingSave != null && PlayingSave == toDelete)
+            {
+                PlayingSave = null;
+            }
             GameSaveList.Remove(toDelete);
         }
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
+    public void DeleteSave()
+    {
+        if (PlayingSave != null)
+        {
+            GameSaveList.Remove(PlayingSave);
+            PlayingSave = null;
+        }
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    }
+    public bool IsPlaying(GameSave toCheck) => PlayingSave != null && toCheck != null && PlayingSave == toCheck;
+
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();
@@ -199,6 +181,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.Contacts.Add(new SavedContact(StaticStrings.UndergroundGunsContactName, 30, "CHAR_BLANK_ENTRY"));
         AlexisGameSave.DriversLicense = new DriversLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
+        AlexisGameSave.PilotsLicense = new PilotsLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12),IsFixedWingEndorsed = true,IsLighterThanAirEndorsed = true,IsRotaryEndorsed = true };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
         AlexisGameSave.SaveNumber = 1;
@@ -382,7 +365,6 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.SaveNumber = 2;
         GameSaveList.Add(ClaudeGameSave);
     }
-
     private void AddLamar()
     {
         List<StoredWeapon> Weapons = new List<StoredWeapon>
@@ -501,7 +483,6 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(gameSave);
     }
-
     private void AddMaleMPCop()
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
@@ -583,7 +564,6 @@ public class GameSaves : IGameSaves
         gameSave.SaveNumber = 8;
         GameSaveList.Add(gameSave);
     }
-
     private void SetDefault(GameSave ExampleGameSave)
     {
         //Position
@@ -601,7 +581,6 @@ public class GameSaves : IGameSaves
         //Speech
         ExampleGameSave.SpeechSkill = 35;
     }
-
     private void AddMichaelJones()
     {
         List<StoredWeapon> weapons = new List<StoredWeapon>
@@ -680,7 +659,31 @@ public class GameSaves : IGameSaves
         GameSaveList.Add(ExampleGameSave);
     }
 
-
+    public void DeleteSave_Obsolete(string playerName, string modelName)
+    {
+        GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);
+        if (toDelete != null)
+        {
+            GameSaveList.Remove(toDelete);
+        }
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    }
+    public GameSave GetSave_Obsolete(ISaveable player)
+    {
+        GameSaveList = Serialization.DeserializeParams<GameSave>(ConfigFileName);
+        return GameSaveList.FirstOrDefault(x => x.PlayerName == player.PlayerName && x.ModelName == player.ModelName);
+    }
+    public void SaveSamePlayer_Obsolete(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    {
+        GameSave mySave = GetSave_Obsolete(player);
+        if (mySave == null)
+        {
+            mySave = new GameSave();
+            GameSaveList.Add(mySave);
+        }
+        mySave.Save(player, weapons, time, placesOfInterest, modItems);
+        Serialization.SerializeParams(GameSaveList, ConfigFileName);
+    }
 
 }
 

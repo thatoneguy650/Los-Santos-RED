@@ -11,6 +11,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using static DispatchScannerFiles;
 
 namespace LSR.Vehicles
 {
@@ -271,6 +272,63 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
+
+
+
+        public string ClassName()
+        {
+            int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
+            switch (ClassInt)
+            {
+                case 0:
+                    return "Compact";
+                case 1:
+                    return "Sedan";
+                case 2:
+                    return "SUV";
+                case 3:
+                    return "Coupe";
+                case 4:
+                    return "Muscle";
+                case 5:
+                    return "Sports Classic";
+                case 6:
+                    return "Sports Car";
+                case 7:
+                    return "Super";
+                case 8:
+                    return "Motorcycle";
+                case 9:
+                    return "Off Road";
+                case 10:
+                    return "Industrial";
+                case 11:
+                    return "Utility";
+                case 12:
+                    return "Van";
+                case 13:
+                    return "Bicycle";
+                case 14:
+                    return "Boat";
+                case 15:
+                    return "Helicopter";
+                case 16:
+                    return "Plane";
+                case 17:
+                    return "Service";
+                case 18:
+                    return "Emergency";
+                case 19:
+                    return "Military";
+                case 20:
+                    return "Commercial";
+                case 21:
+                    return "Train";
+                default:
+                    return "";
+            }
+        }
+
         public void SetNotWanted()
         {
             IsStolen = false;
@@ -283,6 +341,55 @@ namespace LSR.Vehicles
             {
                 OriginalLicensePlate.IsWanted = false;
             }
+        }
+        public string FullName(bool withColor)
+        {
+            string VehicleName = "";
+            Color carColor = VehicleColor();
+            string Make = MakeName();
+            string Model = ModelName();
+            string hexColor = ColorTranslator.ToHtml(Color.FromArgb(carColor.ToArgb()));
+            string ColorizedColorName = carColor.Name;
+            if (Make != "" && Model != "")
+            {
+                VehicleName = $"{Make} {Model}";
+            }
+            else if (Make == "")
+            {
+                VehicleName = $"{Model}";
+            }
+            else if (Model == "")
+            {
+                VehicleName = $"{Make}";
+            }
+            else
+            {
+                VehicleName = $"Unknown";
+            }
+            if (carColor.ToString() != "" && withColor)
+            {
+                ColorizedColorName = $"<FONT color='{hexColor}'>" + carColor.Name + "~s~";
+                VehicleName = $"{ColorizedColorName} " + VehicleName;
+            }
+            return VehicleName;
+        }
+        public string FullDescription()
+        {
+            string description = "";
+            description += "~n~~s~";
+            if (MakeName() != "")
+            {
+                description += $"~n~Manufacturer: ~b~{MakeName()}~s~";
+            }
+            if (ModelName() != "")
+            {
+                description += $"~n~Model: ~g~{ModelName()}~s~";
+            }
+            if (ClassName() != "")
+            {
+                description += $"~n~Class: ~p~{ClassName()}~s~";
+            }
+            return description;
         }
         public void Update(IDriveable driver)
         {

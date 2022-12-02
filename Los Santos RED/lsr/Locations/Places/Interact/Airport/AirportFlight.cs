@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-public class AirportFlights
+public class AirportFlight
 {
     public string ToAirportID { get; set; }
     public string CarrierID { get; set; }
@@ -26,12 +26,12 @@ public class AirportFlights
 
 
 
-    public AirportFlights()
+    public AirportFlight()
     {
 
     }
 
-    public AirportFlights(string airportID, string airline, string description, int cost, int flightTime)
+    public AirportFlight(string airportID, string airline, string description, int cost, int flightTime)
     {
         ToAirportID = airportID;
         CarrierID = airline;

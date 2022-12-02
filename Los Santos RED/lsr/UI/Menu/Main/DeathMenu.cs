@@ -62,7 +62,6 @@ public class DeathMenu : Menu
     private void Create()
     {
         Menu.Clear();
-
         UIMenuItem Undie = new UIMenuItem("Un-Die", "Respawn at this exact spot as yourself.");
         Undie.Activated += (sender, selectedItem) =>
         {
@@ -73,7 +72,6 @@ public class DeathMenu : Menu
         {
             Menu.AddItem(Undie);
         }  
-
         UIMenuListScrollerItem<Hospital> HospitalRespawn = new UIMenuListScrollerItem<Hospital>("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         HospitalRespawn.Activated += (sender, selectedItem) =>
         {
@@ -97,7 +95,7 @@ public class DeathMenu : Menu
             }
             if (Settings.SettingsManager.RespawnSettings.PermanentDeathMode)//shouldnt be here!
             {
-                GameSaves.DeleteSave(Player.PlayerName, Player.ModelName);
+                GameSaves.DeleteSave();//GameSaves.DeleteSave_Obsolete(Player.PlayerName, Player.ModelName);
             }
             Menu.Visible = false;
         };

@@ -142,7 +142,20 @@ public class LocationCamera
             {
                 StoreCam = new Camera(false);
             }
-            Vector3 InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(7f, 7f, 2f));
+
+            float width = toHighlight.Model.Dimensions.X;
+            float length = toHighlight.Model.Dimensions.Y;
+            float height = toHighlight.Model.Dimensions.Z;
+            Vector3 InitialCameraPosition;
+            if (width >= 5f || length >= 5f || height >= 5f)
+            {
+                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(12f, 12f, 2f));
+            }
+            else
+            {
+                InitialCameraPosition = toHighlight.GetOffsetPosition(new Vector3(7f, 7f, 2f));
+            }
+            
             StoreCam.Position = InitialCameraPosition;
             Vector3 ToLookAt = new Vector3(toHighlight.Position.X, toHighlight.Position.Y, toHighlight.Position.Z + 0.5f);
             _direction = (ToLookAt - InitialCameraPosition).ToNormalized();

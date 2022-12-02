@@ -138,12 +138,12 @@ public class PopUpMenu
             new PopUpMenuMap(0,"Gesture","Gesture","Open Gesture Sub Menu") { ClosesMenu = false },//,IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
             new PopUpMenuMap(1,"Dance","Dance","Open Dance Sub Menu") { ClosesMenu = false },//,IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle) },
             new PopUpMenuMap(2,"Suicide",Player.ActivityManager.CommitSuicide,"Commit suicide"),//  { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)},
-            new PopUpMenuMap(3,"Hands Up",Player.Surrendering.ToggleSurrender,"Toggle hands up mode"),
-            new PopUpMenuMap(4,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false },//, IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)},
-            new PopUpMenuMap(5,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here"),//  { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown)},
-            new PopUpMenuMap(6,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),//  { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && !Player.IsInVehicle && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown && Player.CurrentLookedAtVehicle != null)},
-            new PopUpMenuMap(7,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle.") ,// { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
-            new PopUpMenuMap(8,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),//  { IsCurrentlyValid = new Func<bool>(() => true) },
+            //new PopUpMenuMap(3,"Hands Up",Player.Surrendering.ToggleSurrender,"Toggle hands up mode"),
+            new PopUpMenuMap(3,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false },//, IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)},
+            new PopUpMenuMap(4,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here"),//  { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown)},
+            new PopUpMenuMap(5,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),//  { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && !Player.IsInVehicle && Player.ActivityManager.CanPerformActivities && !Player.ActivityManager.IsSitting && !Player.ActivityManager.IsLayingDown && Player.CurrentLookedAtVehicle != null)},
+            new PopUpMenuMap(6,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle.") ,// { IsCurrentlyValid = new Func<bool>(() => !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivities) },
+            new PopUpMenuMap(7,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),//  { IsCurrentlyValid = new Func<bool>(() => true) },
         };
 
 
@@ -248,16 +248,16 @@ public class PopUpMenu
         Sign80 = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\80mph.png");
 
 
-        foreach(PopUpMenuGroup pumg in PopUpMenuGroups)
-        {
-            foreach(PopUpMenuMap b in pumg.PopUpMenuMaps)
-            {
-                if(!String.IsNullOrEmpty(b.IconNameDefault))
-                {
-                    b.MakeTexture();
-                }
-            }
-        }
+        //foreach(PopUpMenuGroup pumg in PopUpMenuGroups)
+        //{
+        //    foreach(PopUpMenuMap b in pumg.PopUpMenuMaps)
+        //    {
+        //        if(!String.IsNullOrEmpty(b.IconNameDefault))
+        //        {
+        //            b.MakeTexture();
+        //        }
+        //    }
+        //}
 
         //UpdateInventoryMenuGroups();
     }

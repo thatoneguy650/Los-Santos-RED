@@ -67,6 +67,9 @@ public class Settings : ISettingsProvideable
 
         SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
 
+
+        SettingsManager.WorldSettings.AirportsRequireLicenseForPrivateFlights = true;
+
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;
         SettingsManager.UIGeneralSettings.ShowDebug = false;
@@ -124,6 +127,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.VehicleSettings.RequireScrewdriverForHotwire = true;
 
         SettingsManager.VehicleSettings.DisableAircraftWithoutLicense = true;
+        SettingsManager.WorldSettings.AirportsRequireLicenseForPrivateFlights = true;
 
         SettingsManager.GangSettings.ShowSpawnedBlip = false;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = false;

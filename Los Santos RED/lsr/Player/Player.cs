@@ -686,13 +686,21 @@ namespace Mod
         //Needed
         public void ChangeName(string newName)
         {
-            GameSave mySave = GameSaves.GetSave(this);
-            if (mySave != null)
-            {
-                mySave.PlayerName = newName;
-                GameSaves.UpdateSave(mySave);
-                EntryPoint.WriteToConsole($"PLAYER EVENT: SAVED {newName}", 3);
-            }
+
+
+
+
+            //GameSave mySave = GameSaves.GetSave(this);
+            //if (mySave != null)
+            //{
+            //    mySave.PlayerName = newName;
+            //    GameSaves.UpdateSave(mySave);
+            //    EntryPoint.WriteToConsole($"PLAYER EVENT: SAVED {newName}", 3);
+            //}
+
+
+
+
             PlayerName = newName;
             EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}", 3);
         }

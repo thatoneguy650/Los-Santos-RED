@@ -29,6 +29,8 @@ public class CityHall : InteractableLocation
     private UIMenuItem ChangeNameMenu;
     private UIMenuItem DriversLicenseMenu;
     private UIMenuItem CCWLicenseMenu;
+    private UIMenuItem PilotsLicenseMenu;
+
     public CityHall() : base()
     {
 
@@ -41,6 +43,7 @@ public class CityHall : InteractableLocation
     public int NameChangeFee { get; set; } = 500;
     public int DriversLicenseFee { get; set; } = 150;
     public int CCWLicenseFee { get; set; } = 1500;
+    public int PilotsLicenseFee { get; set; } = 2500;
     public CityHall(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -87,9 +90,12 @@ public class CityHall : InteractableLocation
         ChangeNameMenu = new UIMenuItem("Change Name", NameDescription()) { RightLabel = $"{NameChangeFee:C0}" };
         DriversLicenseMenu = new UIMenuItem("Renew/Purchase Drivers License", DriversLicenseDescription()) { RightLabel = $"{DriversLicenseFee:C0}" };
         CCWLicenseMenu = new UIMenuItem("Renew/Purchase CCW License", CCWLicenseDescription()) { RightLabel = $"{CCWLicenseFee:C0}" };
+        PilotsLicenseMenu = new UIMenuItem("Renew/Purchase Pilots License", PilotsLicenseDescription()) { RightLabel = $"{PilotsLicenseFee:C0}" };
+
         InteractionMenu.AddItem(ChangeNameMenu);
         InteractionMenu.AddItem(DriversLicenseMenu);
         InteractionMenu.AddItem(CCWLicenseMenu);
+        InteractionMenu.AddItem(PilotsLicenseMenu);
     }
     private string DriversLicenseDescription()
     {
@@ -131,6 +137,29 @@ public class CityHall : InteractableLocation
         }
         return CCWLicenseDescription;
     }
+
+    private string PilotsLicenseDescription()
+    {
+        string PilotsLicenseDescription;
+        if (Player.Licenses.HasValidPilotsLicense(Time))
+        {
+            PilotsLicenseDescription = $"Extend ~p~Pilots License~s~~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: ~g~{Player.Licenses.PilotsLicense.ExpirationDate:d}~s~";
+        }
+        else
+        {
+            if (Player.Licenses.HasCCWLicense)
+            {
+                PilotsLicenseDescription = $"Renew your expired ~p~Pilots License~s~ ~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: ~r~{Player.Licenses.PilotsLicense.ExpirationDate:d}~s~";
+            }
+            else
+            {
+                PilotsLicenseDescription = "Purchase a new ~p~Pilots License~s~";
+            }
+        }
+        return PilotsLicenseDescription;
+    }
+
+
     private string NameDescription()
     {
         return $"Change your characters name. ~n~Legal Name: ~p~{Player.PlayerName}~s~";
@@ -202,6 +231,31 @@ public class CityHall : InteractableLocation
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"CCW license issued.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
+                }
+            }
+            else
+            {
+                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+            }
+        }
+        else if (selectedItem == PilotsLicenseMenu)
+        {
+            if (Player.BankAccounts.Money >= PilotsLicenseFee)
+            {
+                if (Player.Licenses.HasCCWLicense && Player.Licenses.PilotsLicense.IsValid(Time))
+                {
+                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
+                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+                    PilotsLicenseMenu.Description = PilotsLicenseDescription();
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your Pilots license.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
+                }
+                else
+                {
+                    Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
+                    Player.Licenses.PilotsLicense = new PilotsLicense();
+                    Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
+                    PilotsLicenseMenu.Description = PilotsLicenseDescription();
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"Pilots license issued.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
                 }
             }
             else

@@ -1596,19 +1596,19 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
                 ,ScannerFilePath = "01_areas\\0x05E7E888.wav"
                 ,CameraPosition = new Vector3(-1047.655f, -2676.447f, 44.60207f), CameraDirection = new Vector3(-0.05335984f, -0.9665251f, -0.2509621f), CameraRotation = new Rotator(-14.53445f, 6.118878E-06f, 176.84f)
-                ,Flights = new List<AirportFlights>()
+                ,CommercialFlights = new List<AirportFlight>()
                 {
-                    new AirportFlights("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. Taxi service to downtown Ludendorff included.", 5000, 4),
-                    new AirportFlights("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 4 hour flight! What else could you ask for? Taxi service to downtown Ludendorff included.", 550, 12),
+                    new AirportFlight("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. ~n~~n~Taxi service to downtown Ludendorff included.", 1500, 5),
+                    new AirportFlight("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 5 hour flight! What else could you ask for? ~n~~n~Taxi service to downtown Ludendorff included.", 550, 12),
 
-                    new AirportFlights("SFX",StaticStrings.SanFierroAirCarrierID,"When driving just isn't an option and your company is paying.", 350, 1),
-                    new AirportFlights("SFX",StaticStrings.LosSantosAirCarrierID,"Experience the luxury of a small regional carriers lowest end fare.", 325, 2),
+                    new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"When driving just isn't an option and your company is paying.", 350, 1),
+                    new AirportFlight("SFX",StaticStrings.LosSantosAirCarrierID,"Experience the luxury of a small regional carriers lowest end fare.", 325, 2),
 
-                    new AirportFlights("FIA",StaticStrings.FlyUSCarrierID,"Need to get FAR away? FlyUS and see the difference dergulation made!", 700, 9),
-                    new AirportFlights("VCIA",StaticStrings.FlyUSCarrierID,"Nonstop service to the sunniest state in the nation!", 750, 11),
-                    new AirportFlights("CPA",StaticStrings.AdiosAirlinesCarrierID,"We won't be the only ones saying 'Adios' to you!", 500, 6),
+                    new AirportFlight("FIA",StaticStrings.FlyUSCarrierID,"Need to get FAR away? FlyUS and see the difference deregulation made!", 450, 6),
+                    new AirportFlight("VCIA",StaticStrings.FlyUSCarrierID,"Nonstop service to the sunniest state in the nation!", 425, 7),
+                    new AirportFlight("CPA",StaticStrings.AdiosAirlinesCarrierID,"We won't be the only ones saying 'Adios' to you!", 500, 10),
 
-                    new AirportFlights("SSA",StaticStrings.LosSantosAirCarrierID,"Just a hop skip and a jump away, LSIX is proud to provide service to our rural neighbors to the north.", 200, 1),
+                    new AirportFlight("SSA",StaticStrings.LosSantosAirCarrierID,"Just a hop skip and a jump away, LSIX is proud to provide service to our rural neighbors to the north.", 200, 1),
                 }
             },
             new Airport("SSA",new Vector3(1759.512f, 3298.777f, 41.95529f), 144.954f,"Sandy Shores Airstrip",
@@ -1625,9 +1625,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 ,AirArrivalPosition = new Vector3(759.6899f, 2999.477f, 120.8867f)
                 ,AirArrivalHeading = 290.1536f
                 ,CameraPosition = new Vector3(1783.648f, 3279.038f, 53.9618f), CameraDirection = new Vector3(-0.9425761f, 0.2726336f, -0.1929279f), CameraRotation = new Rotator(-11.1237f, 6.525906E-07f, 73.86785f)
-                ,Flights = new List<AirportFlights>()
+                ,CommercialFlights = new List<AirportFlight>()
                 {
-                    new AirportFlights("LSIX",StaticStrings.LosSantosAirCarrierID,"Need to get to the big city fast? Don't care about safety records? Feeling lucky? If you answered yes to all of these questions, welcome aboard!", 200, 1),
+                    new AirportFlight("LSIX",StaticStrings.LosSantosAirCarrierID,"Need to get to the big city fast? Don't care about safety records? Feeling lucky? If you answered yes to all of these questions, welcome aboard!", 200, 1),
                 }
             },
             new YanktonAiport("LDR",new Vector3(3153.898f, -4840.879f, 111.8725f),354.7703f,"Ludendorff Regional",
@@ -1780,10 +1780,10 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                             "prologuerd_lod",
 
                         }
-                ,Flights = new List<AirportFlights>()
+                ,CommercialFlights = new List<AirportFlight>()
                 {
-                    new AirportFlights("LSIX",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 650, 14),
-                    new AirportFlights("SFX",StaticStrings.SanFierroAirCarrierID,"Its the San Fierro Treat!", 680, 15),
+                    new AirportFlight("LSIX",StaticStrings.CaipiraAirwaysCarrierID,"You'll get there when you get there", 650, 14),
+                    new AirportFlight("SFX",StaticStrings.SanFierroAirCarrierID,"Its the San Fierro Treat!", 680, 15),
                 }
                 ,RoadToggels = new HashSet<RoadToggler>()
                 {

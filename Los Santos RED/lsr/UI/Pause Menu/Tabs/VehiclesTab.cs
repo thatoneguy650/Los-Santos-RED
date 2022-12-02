@@ -36,7 +36,7 @@ public class VehiclesTab
         bool addedItems = false;
         foreach (VehicleExt car in Player.VehicleOwnership.OwnedVehicles)
         {
-            Color carColor = car.VehicleColor();
+            Color carColor = car.VehicleColor();//should match with the others....
             string Make = car.MakeName();
             string Model = car.ModelName();
             string PlateText = car.CarPlate?.PlateNumber;
@@ -49,6 +49,12 @@ public class VehiclesTab
                 ColorizedColorName = $"<FONT color='{hexColor}'>" + carColor.Name + "~s~";
                 VehicleName += ColorizedColorName;
             }
+
+
+
+
+
+
             string rightText = "";
             if (car.CarPlate != null && car.CarPlate.IsWanted)
             {

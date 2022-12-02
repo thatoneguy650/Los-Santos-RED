@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,7 +36,7 @@ public class Airport : InteractableLocation, ILocationSetupable
     private ITimeControllable Time;
     private protected IPlacesOfInterest PlacesOfInterest;
     private bool IsFlyingToLocation;
-
+   
     public Airport() : base()
     {
 
@@ -47,7 +48,7 @@ public class Airport : InteractableLocation, ILocationSetupable
     public override string ButtonPromptText { get; set; }
 
 
-
+    
 
     public string AirportID { get; set; }
     public Vector3 ArrivalPosition { get; set; }
@@ -60,9 +61,11 @@ public class Airport : InteractableLocation, ILocationSetupable
 
     public List<string> RequestIPLs { get; set; }
     public List<string> RemoveIPLs { get; set; }
-    public List<AirportFlights> Flights { get; set; } = new List<AirportFlights>();
+    public List<AirportFlight> CommercialFlights { get; set; } = new List<AirportFlight>();
     public HashSet<RoadToggler> RoadToggels { get; set; } = new HashSet<RoadToggler>();
     public HashSet<string> ZonesToEnable { get; set; } = new HashSet<string>();
+
+    public int FuelPrice { get; set; } = 6;
 
     public Airport(string airportID, Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -138,7 +141,7 @@ public class Airport : InteractableLocation, ILocationSetupable
         commercialSubMenu.SubtitleText = "Pick a Destination";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Need to get away? Chose one of our fine commercial carriers to get you where you need to go";
 
-        foreach (string groupedAirportID in Flights.GroupBy(x => x.ToAirportID).Select(x => x.Key).Distinct().OrderBy(x => x))
+        foreach (string groupedAirportID in CommercialFlights.GroupBy(x => x.ToAirportID).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
             string DestinationName = groupedAirportID;
             string DestinationDescription = groupedAirportID;
@@ -155,14 +158,14 @@ public class Airport : InteractableLocation, ILocationSetupable
             commercialSubMenu.MenuItems[commercialSubMenu.MenuItems.Count() - 1].Description = DestinationDescription;
 
 
-            int? minCost = Flights.Where(x => x.ToAirportID == groupedAirportID)?.Min(x => x.Cost);
+            int? minCost = CommercialFlights.Where(x => x.ToAirportID == groupedAirportID)?.Min(x => x.Cost);
             if (minCost.HasValue)
             {
                 commercialSubMenu.MenuItems[commercialSubMenu.MenuItems.Count() - 1].RightLabel = $"From ${minCost}";
             }
 
 
-            foreach (AirportFlights flight in Flights.Where(x => x.ToAirportID == groupedAirportID))
+            foreach (AirportFlight flight in CommercialFlights.Where(x => x.ToAirportID == groupedAirportID))
             {
                 bool canFly = false;
                 Airport destinationAiport = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == flight.ToAirportID);
@@ -208,10 +211,31 @@ public class Airport : InteractableLocation, ILocationSetupable
         UIMenu privateSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Private Flights");
         privateSubMenu.SubtitleText = "Pick a Destination";
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Have your own license and plane?";
-        foreach (string groupedAirportID in Flights.GroupBy(x => x.ToAirportID).Select(x => x.Key).Distinct().OrderBy(x => x))
+
+        if(!Player.Licenses.HasValidPilotsLicense(Time) && Settings.SettingsManager.WorldSettings.AirportsRequireLicenseForPrivateFlights)
+        {
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Enabled = false;
+            InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "~n~~n~~r~Invalid License~s~";
+        }
+
+        foreach (string groupedAirportID in CommercialFlights.GroupBy(x => x.ToAirportID).Select(x => x.Key).Distinct().OrderBy(x => x))
         {
             string DestinationName = groupedAirportID;
             string DestinationDescription = groupedAirportID;
+            AirportFlight commercialFlight = CommercialFlights.Where(x => x.ToAirportID == groupedAirportID).OrderBy(x => x.FlightTime).FirstOrDefault();
+
+            int FlightTime = 2;
+            float FuelUsed = 20.0f;
+            if(commercialFlight != null) 
+            {
+                FlightTime = commercialFlight.FlightTime;
+                FuelUsed = commercialFlight.FlightTime * 10.0f;
+                if(FuelUsed >= 60.0f)
+                {
+                    FuelUsed = 60.0f;
+                }
+            }
+
 
             Airport airportGroup = PlacesOfInterest.PossibleLocations.Airports.FirstOrDefault(x => x.AirportID == groupedAirportID);
             if (airportGroup != null)
@@ -222,44 +246,132 @@ public class Airport : InteractableLocation, ILocationSetupable
             UIMenu destinationSubMenu = MenuPool.AddSubMenu(privateSubMenu, DestinationName);
             destinationSubMenu.SubtitleText = "Destination: " + DestinationName;
             privateSubMenu.MenuItems[privateSubMenu.MenuItems.Count() - 1].Description = DestinationDescription;
-
-
-
-
+            bool added = false;
             foreach (VehicleExt owned in Player.VehicleOwnership.OwnedVehicles)
             {
-                if (owned != null && owned.Vehicle.Exists() && owned.IsAircraft && owned.Vehicle.DistanceTo2D(Player.Character) <= 1000)
+                if (owned != null && owned.Vehicle.Exists() && owned.IsAircraft && (!Settings.SettingsManager.WorldSettings.AirportsRequireOwnedPlanesLocal || owned.Vehicle.DistanceTo2D(Player.Character) <= Settings.SettingsManager.WorldSettings.AirportsOwnedPlanesLocalDistance))
                 {
-
-                    string Make = owned.MakeName();
-                    string Model = owned.ModelName();
-                    string VehicleName = "";
-                    if (Make != "")
+                    string VehicleName = owned.FullName(false);
+                    string VehicleDescription = owned.FullDescription();
+                    UIMenu planeSubMenu = MenuPool.AddSubMenu(destinationSubMenu, VehicleName);
+                    planeSubMenu.SubtitleText = "Destination: " + DestinationName;
+                    destinationSubMenu.MenuItems[destinationSubMenu.MenuItems.Count() - 1].Description = VehicleDescription;
+                    destinationSubMenu.MenuItems[destinationSubMenu.MenuItems.Count() - 1].Enabled = airportGroup?.IsEnabled == true;
+                    planeSubMenu.OnMenuOpen += (sender) =>
                     {
-                        VehicleName = Make;
-                    }
-                    if (Model != "")
+                        StoreCamera.HighlightEntity(owned.Vehicle);
+                    };
+                    planeSubMenu.OnMenuClose += (sender) =>
                     {
-                        VehicleName += " " + Model;
-                    }
+                        StoreCamera.ReHighlightStoreWithCamera();
+                    };
 
-
-
-                    UIMenuItem destinationMenu = new UIMenuItem(VehicleName, DestinationDescription) { Enabled = airportGroup?.IsEnabled == true };
-                    destinationMenu.Activated += (sender, selectedItem) =>
+                    string StartFlightDescription = $"Estimated Flight Time: ~y~{FlightTime}~s~ hour(s)";
+                    StartFlightDescription += $"~n~Estimated Fuel Use: ~r~{FuelUsed}~s~%";
+                    UIMenuItem startFlightMenu = new UIMenuItem("Depart", StartFlightDescription + "~n~" + VehicleDescription) { Enabled = airportGroup?.IsEnabled == true };
+                    startFlightMenu.Activated += (sender, selectedItem) =>
                     {
-                        Player.BankAccounts.GiveMoney(-1 * 0);
                         IsFlyingToLocation = true;
                         Game.FadeScreenOut(1000, true);
                         sender.Visible = false;
-                        FlyInToAirport(airportGroup, owned);
+
+                        FlyInToAirport(airportGroup, owned, FlightTime, FuelUsed);
+                        
                     };
-                    destinationSubMenu.AddItem(destinationMenu);
+                    planeSubMenu.AddItem(startFlightMenu);
+
+
+
+
+                    float PercentFuelNeeded = (100f - owned.Vehicle.FuelLevel) / 100f;
+                    float VehicleToFillFuelTankCapacity = owned.FuelTankCapacity;
+                    int UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
+                    float PercentFilledPerUnit = 0f;
+                    if (VehicleToFillFuelTankCapacity == 0)
+                    {
+                        PercentFilledPerUnit = 0;
+                    }
+                    else
+                    {
+                        PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
+                    }
+                    float AmountToFill = UnitsOfFuelNeeded * FuelPrice;
+                    string MenuString = $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{UnitsOfFuelNeeded}~s~ Gallons";
+
+
+
+                    UIMenuNumericScrollerItem<int> AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Refuel", "Add gasoline by the gallon" + MenuString, 1, UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * FuelPrice).ToString("C0"), Enabled = UnitsOfFuelNeeded > 1 };
+                    AddSomeMenuItem.Value = UnitsOfFuelNeeded;
+                    AddSomeMenuItem.Activated += (sender, selectedItem) =>
+                    {
+                        if (owned.Vehicle.Exists())
+                        {
+                            Refuel(owned, AddSomeMenuItem.Value, PercentFilledPerUnit);
+                            PercentFuelNeeded = (100f - owned.Vehicle.FuelLevel) / 100f;
+                            VehicleToFillFuelTankCapacity = owned.FuelTankCapacity;
+                            UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
+                            PercentFilledPerUnit = 0f;
+                            if (VehicleToFillFuelTankCapacity == 0)
+                            {
+                                PercentFilledPerUnit = 0;
+                            }
+                            else
+                            {
+                                PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
+                            }
+                            AmountToFill = UnitsOfFuelNeeded * FuelPrice;
+                            if (UnitsOfFuelNeeded > 0)
+                            {
+                                AddSomeMenuItem.Value = UnitsOfFuelNeeded;
+                                AddSomeMenuItem.Maximum = UnitsOfFuelNeeded;      
+                            }
+                            else
+                            {
+                                AddSomeMenuItem.Value = 1;
+                                AddSomeMenuItem.Maximum = 1;
+                                AddSomeMenuItem.Enabled = false;
+                            }
+                            
+                            AddSomeMenuItem.Description = "Add gasoline by the gallon" + $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{UnitsOfFuelNeeded}~s~ Gallons";
+                        }
+                    };
+                    planeSubMenu.AddItem(AddSomeMenuItem);
+                    added = true;
+                   
+                }
+            }
+            if(!added)
+            {
+                UIMenuItem noPlanesMenu = new UIMenuItem("No Planes", "No valid planes available") { Enabled = false };
+                destinationSubMenu.AddItem(noPlanesMenu);
+            }
+        }
+    }
+    private void Refuel(VehicleExt VehicleToFill, int UnitsToAdd, float PercentFilledPerUnit)
+    {
+        if (UnitsToAdd * FuelPrice > Player.BankAccounts.Money)
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
+        }
+        else
+        {
+            if (VehicleToFill.Vehicle.Exists())
+            {
+                VehicleToFill.Vehicle.FuelLevel += PercentFilledPerUnit * UnitsToAdd;
+                if (VehicleToFill.Vehicle.FuelLevel >= 99.0f)
+                {
+                    VehicleToFill.Vehicle.FuelLevel = 100.0f;
+                }
+                Player.BankAccounts.GiveMoney(-1 * FuelPrice * UnitsToAdd);
+                if (UnitsToAdd > 0)
+                {
+                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsToAdd} gallons of fuel for a total price of ~r~${UnitsToAdd * FuelPrice}~s~ at {Name}");
                 }
             }
         }
     }
-    
     public virtual void OnArrive(bool setPos)
     {
         if (RequestIPLs != null)
@@ -327,7 +439,7 @@ public class Airport : InteractableLocation, ILocationSetupable
             Game.FadeScreenIn(1500, true);
         }, "DestinationGoTo");
     }
-    private void FlyInToAirport(Airport destinationAiport, VehicleExt plane)
+    private void FlyInToAirport(Airport destinationAiport, VehicleExt plane, int flightTime, float fuelSpent)
     {
         GameFiber.StartNew(delegate
         {
@@ -336,7 +448,7 @@ public class Airport : InteractableLocation, ILocationSetupable
             destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
             GameFiber.Sleep(1000);
             destinationAiport.OnArrive(false);
-            Time.SetDateTime(Time.CurrentDateTime.AddHours(2));
+            Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
             if (plane != null && plane.Vehicle.Exists())
             {
                 plane.Vehicle.Position = destinationAiport.AirArrivalPosition;
@@ -348,6 +460,14 @@ public class Airport : InteractableLocation, ILocationSetupable
                 NativeFunction.Natives.SET_VEHICLE_ENGINE_ON(plane.Vehicle, true, true, false);
                 NativeFunction.Natives.SET_HELI_BLADES_FULL_SPEED(plane.Vehicle);
                 NativeFunction.Natives.CONTROL_LANDING_GEAR(plane.Vehicle, 3);
+                if (plane.Vehicle.FuelLevel - fuelSpent < 0.0f)
+                {
+                    plane.Vehicle.FuelLevel = 0.0f;
+                }
+                else
+                {
+                    plane.Vehicle.FuelLevel -= fuelSpent;
+                }
             }
             else
             {
@@ -358,7 +478,6 @@ public class Airport : InteractableLocation, ILocationSetupable
             Game.FadeScreenIn(1500, true);
         }, "DestinationGoTo");
     }
-
     public void Setup(ICrimes crimes, INameProvideable names)
     {
         Crimes = crimes;

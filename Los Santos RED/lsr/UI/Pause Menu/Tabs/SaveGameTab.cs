@@ -76,7 +76,7 @@ public class SaveGameTab
                     Game.IsPaused = false;
                     TabView.Visible = false;
                     GameFiber.Sleep(500);
-                    GameSaves.SaveSamePlayer(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
+                    GameSaves.SaveSamePlayer_Obsolete(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
                 }
                 else
                 {
@@ -87,7 +87,7 @@ public class SaveGameTab
             {
                 TabView.Visible = false;
                 Game.IsPaused = false;
-                GameSaves.SaveSamePlayer(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
+                GameSaves.SaveSamePlayer_Obsolete(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
             }
         };
         items.Add(saveCharacter);

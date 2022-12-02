@@ -9,12 +9,14 @@ namespace LosSantosRED.lsr.Interface
         List<GameSave> GameSaveList { get; }
         int NextSaveGameNumber { get; }
 
-        void SaveSamePlayer(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
-        void DeleteSave(string playerName, string modelName);
+        void SaveSamePlayer_Obsolete(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
+        void DeleteSave_Obsolete(string playerName, string modelName);
         void Load(GameSave selectedItem, IWeapons weapons, IPedSwap pedSwap, IInventoryable playerInvetory, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems);
-        GameSave GetSave(ISaveable player);
-        void UpdateSave(GameSave mySave);
+        GameSave GetSave_Obsolete(ISaveable player);
+
         void DeleteSave(GameSave gs);
         void Save(ISaveable saveable, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, int saveNumber);
+        void DeleteSave();
+        bool IsPlaying(GameSave gs);
     }
 }

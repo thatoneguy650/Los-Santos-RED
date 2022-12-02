@@ -55,7 +55,7 @@ public class SuicideActivity : DynamicActivity
     }
     public override bool CanPerform(IActionable player)
     {
-        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && player.ActivityManager.IsResting)
+        if (player.IsOnFoot && player.ActivityManager.CanPerformActivitiesExtended && !player.ActivityManager.IsResting)
         {
             return true;
         }

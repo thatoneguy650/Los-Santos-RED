@@ -183,17 +183,20 @@ public class VehicleOwnership
         bool usingOwned = true;
         if (VehicleToDescribe != null)
         {
-            string Make = VehicleToDescribe.MakeName();
-            string Model = VehicleToDescribe.ModelName();
-            string VehicleName = "";
-            if (Make != "")
-            {
-                VehicleName = Make;
-            }
-            if (Model != "")
-            {
-                VehicleName += " " + Model;
-            }
+            //string Make = VehicleToDescribe.MakeName();
+            //string Model = VehicleToDescribe.ModelName();
+            //string VehicleName = "";
+            //if (Make != "")
+            //{
+            //    VehicleName = Make;
+            //}
+            //if (Model != "")
+            //{
+            //    VehicleName += " " + Model;
+            //}
+
+            string VehicleName = VehicleToDescribe.FullName(false);
+
 
             //string VehicleNameColor = "~p~";
             //string VehicleString = "";
