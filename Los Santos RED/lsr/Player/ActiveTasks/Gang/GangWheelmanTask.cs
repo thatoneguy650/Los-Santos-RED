@@ -58,6 +58,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Vector3 EgressCamPosition;
         private float EgressCamFOV;
         private bool hasAddedButtonPrompt;
+        private GangContact Contact;
+
         private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
         public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus)
@@ -78,7 +80,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
+            
         }
         public void Dispose()
         {
@@ -92,6 +94,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
+            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(ActiveGang?.ContactName))
             {
                 GetRobberyInformation();
@@ -728,7 +731,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
                                 $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
                                 };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
         }
         private void SendFailMessage()
         {
@@ -740,7 +743,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so badly?",
                         $"You just cost me a lot with this fuckup.",
                         };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
         }
         private void SendTaskAbortMessage()
         {

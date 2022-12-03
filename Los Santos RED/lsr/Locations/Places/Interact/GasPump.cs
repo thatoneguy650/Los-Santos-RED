@@ -31,24 +31,15 @@ public class GasPump : InteractableLocation
     private string PlayingAnim;
     private bool hasAttachedProp;
     private UIMenu GetGasSubMenu;
-
     private Rage.Object SellingProp;
     private VehicleExt VehicleToFill;
     private UIMenuItem FillMenuItem;
     private UIMenuNumericScrollerItem<int> AddSomeMenuItem;
     private int pricePerUnit;
-    private float PercentFuelNeeded;
-    private int VehicleToFillFuelTankCapacity;
-    private int UnitsOfFuelNeeded;
-    private float PercentFilledPerUnit;
-    private float AmountToFill;
-    private string VehicleToFillMakeName;
-    private string VehicleToFillModelName;
-    private string VehicleToFillClassName;
-    private string VehicleToFillName;
     private GasStation AssociatedStation;
     private bool KeepInteractionGoing;
-    private bool IsFueling;
+    private Refueling Refueling;
+
     public Rage.Object PumpProp { get; private set; } = null;
     public GasPump() : base()
     {
@@ -61,6 +52,7 @@ public class GasPump : InteractableLocation
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;
     public override string ButtonPromptText { get; set; }
+    public bool IsFueling { get; set; } = false;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Get Gas at {Name}";
@@ -86,6 +78,7 @@ public class GasPump : InteractableLocation
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
             Player.IsTransacting = true;
+            IsFueling = false;
             GameFiber.StartNew(delegate
             {
                 GetPropEntry();
@@ -96,7 +89,7 @@ public class GasPump : InteractableLocation
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                GenerateGasMenu();
+                SetupGeneral();
                 while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
                 {
                     MenuPool.ProcessMenus();
@@ -110,14 +103,29 @@ public class GasPump : InteractableLocation
             }, "Gas Station Interact");
         }
     }
-    private void GenerateGasMenu()
+
+    private void SetupGeneral()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
-        if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel < 100f && VehicleToFill.RequiresFuel)
+        if (AssociatedStation != null)
         {
-            GetVehicleData();
-            string MenuString = $"~n~Price Per Gallon: ~r~${pricePerUnit}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~p~{UnitsOfFuelNeeded}~s~ Gallons";
-            GetGasSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Gas Up {VehicleToFillName}");
+            pricePerUnit = AssociatedStation.PricePerGallon;
+        }
+        else
+        {
+            pricePerUnit = 3;
+        }
+        Refueling = new Refueling(Player, Name, pricePerUnit, VehicleToFill, Settings);
+        Refueling.Setup();
+        GenerateGasMenu();
+    }
+
+    private void GenerateGasMenu()
+    {   
+        if (Refueling.CanRefuel)
+        {
+            string MenuString = $"~n~Price Per Gallon: ~r~${pricePerUnit}~s~~n~Fuel Capacity: ~y~{Refueling.VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~p~{Refueling.UnitsOfFuelNeeded}~s~ Gallons";
+            GetGasSubMenu = MenuPool.AddSubMenu(InteractionMenu, $"Gas Up {VehicleToFill.FullName(false)}");
             InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = $"Gas Up Your Vehicle";
             InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
             if (HasBannerImage)
@@ -128,76 +136,19 @@ public class GasPump : InteractableLocation
             GetGasSubMenu.OnItemSelect += InteractionMenu_OnItemSelect;
             GetGasSubMenu.OnMenuOpen += GetGasSubMenu_OnMenuOpen;
             GetGasSubMenu.OnMenuClose += GetGasSubMenu_OnMenuClose;
-            FillMenuItem = new UIMenuItem("Fill", "Fill the entire tank" + MenuString) { RightLabel = UnitsOfFuelNeeded + " Gallons - " +  AmountToFill.ToString("C0") };
-            if (UnitsOfFuelNeeded > 1)
+            FillMenuItem = new UIMenuItem("Fill", "Fill the entire tank" + MenuString) { RightLabel = Refueling.UnitsOfFuelNeeded + " Gallons - " + Refueling.AmountToFill.ToString("C0") };
+            if (Refueling.UnitsOfFuelNeeded > 0)
             {
-                AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Partial", "Add gasoline by the gallon" + MenuString, 1, UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * pricePerUnit).ToString("C0") };
+                AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Partial", "Add gasoline by the gallon" + MenuString, 1, Refueling.UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * pricePerUnit).ToString("C0") };
                 GetGasSubMenu.AddItem(AddSomeMenuItem);
             }
             GetGasSubMenu.AddItem(FillMenuItem);            
         }
         else
         {
-            if(VehicleToFill == null || (VehicleToFill != null && !VehicleToFill.Vehicle.Exists()))
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"No vehicle found to fuel");
-            }
-            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.RequiresFuel)
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Incompatible Fueling");
-            }
-            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && VehicleToFill.Vehicle.IsEngineOn)
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle engine is still on");
-            }
-            else if (VehicleToFill != null && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn && VehicleToFill.Vehicle.FuelLevel >= 100f)
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle fuel tank is already full");
-            }
+            Refueling.DisplayFuelingFailedReason();
             InteractionMenu.Visible = false;
         }
-    }
-    private void GetVehicleData()
-    {
-        VehicleToFillMakeName = NativeHelper.VehicleMakeName(VehicleToFill.Vehicle.Model.Hash);
-        VehicleToFillModelName = NativeHelper.VehicleModelName(VehicleToFill.Vehicle.Model.Hash);
-        VehicleToFillClassName = NativeHelper.VehicleClassName(VehicleToFill.Vehicle.Model.Hash);
-        VehicleToFillName = (VehicleToFillMakeName + " " + VehicleToFillModelName).Trim();
-        string CarDescription = "";
-        if (VehicleToFillMakeName != "")
-        {
-            CarDescription += $"~n~Manufacturer: ~b~{VehicleToFillMakeName}~s~";
-        }
-        if (VehicleToFillModelName != "")
-        {
-            CarDescription += $"~n~Model: ~g~{VehicleToFillModelName}~s~";
-        }
-        if (VehicleToFillClassName != "")
-        {
-            CarDescription += $"~n~Class: ~p~{VehicleToFillClassName}~s~";
-        }
-        if(AssociatedStation != null)
-        {
-            pricePerUnit = AssociatedStation.PricePerGallon;
-        }
-        else
-        {
-            pricePerUnit = 3;
-        }    
-        PercentFuelNeeded = (100f - VehicleToFill.Vehicle.FuelLevel)/100f;
-        VehicleToFillFuelTankCapacity = VehicleToFill.FuelTankCapacity;
-        UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
-
-        if (VehicleToFillFuelTankCapacity == 0)
-        {
-            PercentFilledPerUnit = 0;
-        }
-        else
-        {
-            PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
-        }
-
-        AmountToFill = UnitsOfFuelNeeded * pricePerUnit;
     }
     private void GetGasSubMenu_OnMenuOpen(UIMenu sender)
     {
@@ -222,101 +173,23 @@ public class GasPump : InteractableLocation
     {
         if(selectedItem == FillMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
-            KeepInteractionGoing = true;
+            //KeepInteractionGoing = true;
+            IsFueling = true;
             InteractionMenu.Visible = false;
             sender.Visible = false;
-            FuelVehicle(UnitsOfFuelNeeded);
+            Refueling.RefuelSlow(Refueling.UnitsOfFuelNeeded, this);
         }
         else if (selectedItem == AddSomeMenuItem && VehicleToFill != null && VehicleToFill.Vehicle.Exists())
         {
-            KeepInteractionGoing = true;
+            //KeepInteractionGoing = true;
+            IsFueling = true;
             InteractionMenu.Visible = false;
             sender.Visible = false;
-            FuelVehicle(AddSomeMenuItem.Value);
-        }
-    }
-    private void FuelVehicle(int UnitsToAdd)
-    {
-        if (UnitsToAdd * pricePerUnit > Player.BankAccounts.Money)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
-            FullDispose();
-        }
-        else
-        {
-            Player.ButtonPrompts.AddPrompt("Fueling", "Cancel Fueling", "CancelFueling", Settings.SettingsManager.KeySettings.InteractCancel, 99);
-            KeepInteractionGoing = true;
-            int UnitsAdded = 0;
-            GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
-            {
-                IsFueling = true;
-                uint GameTimeBetweenUnits = 1500;
-                uint GameTimeAddedUnit = Game.GameTime;
-                int dotsAdded = 0;
-                if (VehicleToFill.Vehicle.Exists())
-                {
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, VehicleToFill.Vehicle, 2000);
-                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, VehicleToFill.Vehicle, -1, 0, 2);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
-
-                }
-                while (UnitsAdded < UnitsToAdd && VehicleToFill.Vehicle.Exists() && !VehicleToFill.Vehicle.IsEngineOn)
-                {
-                    string tabs = new string('.', dotsAdded);
-                    Game.DisplayHelp($"Fueling Progress {UnitsAdded}/{UnitsToAdd}");
-                    NativeHelper.DisablePlayerControl();
-                    //Game.LocalPlayer.HasControl = false;
-                    if (Game.GameTime - GameTimeAddedUnit >= GameTimeBetweenUnits)
-                    {
-                        UnitsAdded++;
-                        GameTimeAddedUnit = Game.GameTime;
-                        if (VehicleToFill.Vehicle.FuelLevel + PercentFilledPerUnit > 100f)
-                        {
-                            VehicleToFill.Vehicle.FuelLevel = 100f;
-                        }
-                        else
-                        {
-                            VehicleToFill.Vehicle.FuelLevel += PercentFilledPerUnit;
-                        }
-                        Player.BankAccounts.GiveMoney(-1 * pricePerUnit);
-                        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-
-                        EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * pricePerUnit}");
-                    }
-                    if (Player.ButtonPrompts.IsPressed("CancelFueling"))
-                    {
-                        break;
-                    }
-                    GameFiber.Yield();
-                }
-                if (UnitsAdded > 0)
-                {
-                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsAdded} gallons of fuel for a total price of ~r~${UnitsAdded * pricePerUnit}~s~ at {Name}");
-                }
-
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                // Game.LocalPlayer.HasControl = true;
-                NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);
-                KeepInteractionGoing = false;
-                Player.ButtonPrompts.RemovePrompts("Fueling");
-                IsFueling = false;
-
-            }, "FastForwardWatcher");
+            Refueling.RefuelSlow(AddSomeMenuItem.Value, this);
         }
     }
     private void FullDispose()
     {
-      // Deactivate();
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Game.LocalPlayer.HasControl = true;
@@ -414,6 +287,5 @@ public class GasPump : InteractableLocation
             FullDispose();
         }
     }
-   
 }
 

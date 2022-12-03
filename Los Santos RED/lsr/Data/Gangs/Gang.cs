@@ -124,6 +124,9 @@ public class Gang
     public int MemberKickUpAmount { get; set; } = 2000;
     public int MemberKickUpMissLimit { get; set; } = 3;
 
+
+
+
     [XmlIgnore]
     public bool HasWantedMembers { get; set; }
 

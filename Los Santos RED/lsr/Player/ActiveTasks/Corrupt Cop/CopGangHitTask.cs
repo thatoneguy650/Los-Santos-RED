@@ -28,6 +28,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private GangReputation CurrentGangReputation;
         private int CurrentKilledMembers;
         private DeadDrop myDrop;
+        private CorruptCopContact Contact;
 
         public CopGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
         {
@@ -43,7 +44,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
+            Contact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
         }
         public void Dispose()
         {
@@ -211,7 +212,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendDeadDropStartMessage()
         {
@@ -220,7 +221,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
         }
     }
 }

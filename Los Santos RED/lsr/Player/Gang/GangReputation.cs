@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 [Serializable]
 public class GangReputation
@@ -200,11 +201,11 @@ public class GangReputation
                 {
                     if (sendText)
                     {
-                        Player.CellPhone.AddGangText(Gang, false);
+                        SendInfoText(new GangContact(Gang.ContactName,Gang.ContactIcon), Gang, false);
                     }
                     else
                     {
-                        Player.CellPhone.AddContact(Gang, false);
+                        Player.CellPhone.AddContact(new GangContact(Gang.ContactName,Gang.ContactIcon), false);
                     }
                 }
             }
@@ -215,11 +216,11 @@ public class GangReputation
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
-                    Player.CellPhone.AddGangText(Gang, true);
+                    SendInfoText(new GangContact(Gang.ContactName, Gang.ContactIcon), Gang, true);
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(Gang, false);
+                    Player.CellPhone.AddContact(new GangContact(Gang.ContactName, Gang.ContactIcon), false);
                 }
             }
             else if (GangRelationship == GangRespect.Member || IsMember)
@@ -229,11 +230,11 @@ public class GangReputation
                 Player.SetDenStatus(Gang, true);
                 if (sendText)
                 {
-                    Player.CellPhone.AddGangText(Gang, true);
+                    SendInfoText(new GangContact(Gang.ContactName, Gang.ContactIcon), Gang, true);
                 }
                 else
                 {
-                    Player.CellPhone.AddContact(Gang, false);
+                    Player.CellPhone.AddContact(new GangContact(Gang.ContactName, Gang.ContactIcon), false);
                 }
             }
             else if (GangRelationship == GangRespect.Neutral)
@@ -343,4 +344,87 @@ public class GangReputation
         }
         return ending;
     }
+
+
+
+    public void SendInfoText(PhoneContact phoneContact, Gang gang, bool isPositive)
+    {
+        if (gang != null)
+        {
+            List<string> Replies = new List<string>();
+            if (isPositive)
+            {
+                Replies.AddRange(new List<string>() {
+                    $"Heard some good things about you, come see us sometime.",
+                    $"Call us soon to discuss business.",
+                    $"Might have some business opportunites for you soon, give us a call.",
+                    $"You've been making some impressive moves, call us to discuss.",
+                    $"Give us a call soon.",
+                    $"We may have some opportunites for you.",
+                    $"My guys tell me you are legit, hit us up sometime.",
+                    $"Looking for people I can trust, if so give us a call.",
+                    $"Word has gotten around about you, mostly positive, give us a call soon.",
+                    $"Always looking for help with some 'items'. Call us if you think you can handle it.",
+                });
+            }
+            else
+            {
+                Replies.AddRange(new List<string>() {
+                    $"Watch your back",
+                    $"Dead man walking",
+                    $"ur fucking dead",
+                    $"You just fucked with the wrong people asshole",
+                    $"We're gonna fuck you up buddy",
+                    $"My boys are gonna skin you alive prick.",
+                    $"You will die slowly.",
+                    $"I'll take pleasure in guttin you boy.",
+                    $"Better leave LS while you can...",
+                    $"We'll be waiting for you asshole.",
+                    $"You're gonna wish you were dead motherfucker.",
+                    $"Got some 'associates' out looking for you prick. Where you at?",
+
+
+                    $"We'll be seeing you soon",
+                    $"{Player.PlayerName}? Better watch out.",
+                    $"You'll never hear us coming",
+                    $"You are a dead man",
+                    $"You're gonna find out what happens when you fuck with us asshole.",
+                    $"When my boys find you...",
+                });
+            }
+            //dont have zones of territories
+            //List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
+            //ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
+
+            //if (mainTerritory != null)
+            //{
+            //    Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
+            //    if (mainGangZone != null)
+            //    {
+            //        if (isPositive)
+            //        {
+            //            Replies.AddRange(new List<string>() {
+            //                $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
+            //                $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
+            //                $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
+            //                $"You've been making some impressive moves, call us to discuss.",
+            //            });
+            //        }
+            //        else
+            //        {
+            //            Replies.AddRange(new List<string>() {
+            //                $"Watch your back next time you are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
+            //                $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
+            //                $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
+            //            });
+            //        }
+            //    }
+            //}
+            string MessageToSend;
+            MessageToSend = Replies.PickRandom();
+            Player.CellPhone.AddScheduledText(phoneContact, MessageToSend);
+        }
+    }
+
+
 }

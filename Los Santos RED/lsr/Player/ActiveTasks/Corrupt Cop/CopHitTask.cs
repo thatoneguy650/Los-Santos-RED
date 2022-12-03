@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private PedVariation TargetCopVariation;
         private bool HasAddedComplications;
         private bool WillAddComplications;
+        private CorruptCopContact Contact;
 
         private bool IsPlayerFarFromTargetCop => TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearTargetCopSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
@@ -65,7 +66,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
+            Contact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
         }
         public void Dispose()
         {
@@ -324,7 +325,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendDeadDropStartMessage()
         {
@@ -333,7 +334,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
         }
         private void SendCompletedMessage()
         {
@@ -344,7 +345,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
     }
 

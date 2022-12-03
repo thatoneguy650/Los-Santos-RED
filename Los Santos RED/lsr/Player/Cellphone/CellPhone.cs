@@ -18,11 +18,14 @@ public class CellPhone
     private MenuPool MenuPool;
     private IJurisdictions Jurisdictions;
     private List<PhoneContact> AddedContacts = new List<PhoneContact>();
+
+
+
+
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
     private IGangs Gangs;
     private List<PhoneText> AddedTexts = new List<PhoneText>();
-    private Gang ActiveGang;
     private IPlacesOfInterest PlacesOfInterest;
     private IZones Zones;
     private IStreets Streets;
@@ -70,11 +73,8 @@ public class CellPhone
     }
     public void Setup()
     {
-        AddEmergencyServicesCustomContact(false);
+        AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
         BurnerPhone.Setup();
-
-        
-
     }
     public void ContactAnswered(PhoneContact contact)
     {
@@ -97,32 +97,7 @@ public class CellPhone
         {
             isRunningForcedMobileTask = false;
         }
-        Gang myGang = Gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == contact.Name);
-        if (myGang != null)
-        {
-            ActiveGang = myGang;
-            GangInteraction = new GangInteraction(ContactInteractable, Gangs, PlacesOfInterest);
-            GangInteraction.Start(myGang);
-        }
-        else if (contact.Name == StaticStrings.OfficerFriendlyContactName)
-        {
-            CorruptCopInteraction = new CorruptCopInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
-            CorruptCopInteraction.Start(contact);
-        }
-        else if (contact.Name == StaticStrings.UndergroundGunsContactName)
-        {
-            GunDealerInteraction = new GunDealerInteraction(ContactInteractable, Gangs, PlacesOfInterest, Settings);
-            GunDealerInteraction.Start(contact);
-        }
-        else if (contact.Name == StaticStrings.EmergencyServicesContactName)
-        {
-            EmergencyServicesInteraction = new EmergencyServicesInteraction(ContactInteractable, Gangs, PlacesOfInterest, Jurisdictions);
-            EmergencyServicesInteraction.Start(contact);
-        }
-        else
-        {
-            Close(0);
-        }
+        contact.OnAnswered(ContactInteractable, this, Gangs, PlacesOfInterest, Settings, Jurisdictions, Crimes, World);
     }
     public void DeleteText(PhoneText text)
     {
@@ -136,10 +111,10 @@ public class CellPhone
     {
         CheckScheduledItems();
         MenuPool.ProcessMenus();
-        GangInteraction?.Update();
-        GunDealerInteraction?.Update();
-        CorruptCopInteraction?.Update();
-        EmergencyServicesInteraction?.Update();
+        foreach(PhoneContact phoneContact in ContactList)
+        {
+            phoneContact.MenuInteraction?.Update();
+        }
         if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
         {
             BurnerPhone.Update();
@@ -153,7 +128,7 @@ public class CellPhone
         PhoneResponses = new List<PhoneResponse>();
         ScheduledContacts = new List<ScheduledContact>();
         ScheduledTexts = new List<ScheduledText>();
-        AddEmergencyServicesCustomContact(false);
+        AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
     }
     public void ClearTextMessages()
     {
@@ -212,50 +187,6 @@ public class CellPhone
             BurnerPhone.ClosePhone();
         }
     }
-    public void CallEMS()
-    {
-        if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking && World.TotalWantedLevel <= 1)
-        {
-            Player.Scanner.Reset();
-            Player.Investigation.Start(Player.Position, false, false, true, false);
-            Player.Scanner.OnMedicalServicesRequested();
-        }
-    }
-    public void CallFire()
-    {
-        if (World.TotalWantedLevel <= 1)
-        {
-            Player.Scanner.Reset();
-            Player.Investigation.Start(Player.Position, false, false, false, true);
-            Player.Scanner.OnFirefightingServicesRequested();
-        }
-    }
-    public void CallPolice()
-    {
-        Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
-        PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-        CrimeSceneDescription description;
-        if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
-        {
-            description = new CrimeSceneDescription(!violatingCiv.IsInVehicle, Player.IsCop, violatingCiv.Pedestrian.Position, false) { VehicleSeen = null, WeaponSeen = null };
-            ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
-        }
-        else
-        {
-            description = new CrimeSceneDescription(false, Player.IsCop, Player.Position);
-        }
-
-        if (Player.IsCop)
-        {
-            Player.Scanner.Reset();
-            Player.Scanner.AnnounceCrime(ToCallIn, description);
-            Player.Investigation.Start(Player.Position, false, true, false, false);
-        }
-        else
-        {
-            Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
-        }
-    }
     public void AddScamText()
     {
         List<string> ScammerNames = new List<string>() {
@@ -279,7 +210,7 @@ public class CellPhone
 
         };
 
-        Player.CellPhone.AddScheduledText(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY", ScammerMessages.PickRandom(),0);
+        Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(),0);
         CheckScheduledTexts();
     }
     private void CheckScheduledItems()
@@ -307,27 +238,7 @@ public class CellPhone
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
                     NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
                     PlayTextReceivedSound();
-                    if (!AddedContacts.Any(x => x.Name == sc.ContactName))
-                    {
-                        Gang relatedGang = Gangs.GetGangByContact(sc.ContactName);
-                        if (relatedGang != null)
-                        {
-                            AddContact(relatedGang, true);
-                        }
-                        else if (sc.ContactName == StaticStrings.UndergroundGunsContactName)
-                        {
-                            AddGunDealerContact(true);
-                        }
-                        else if (sc.ContactName == StaticStrings.OfficerFriendlyContactName)
-                        {
-                            AddCopContact(true);
-                        }
-                        else
-                        {
-                            AddContact(sc.ContactName, sc.IconName, true);
-                        }
-
-                    }
+                    AddContact(sc.PhoneContact, true);
                 }
                 ScheduledTexts.RemoveAt(i);
                 return true;
@@ -344,23 +255,7 @@ public class CellPhone
             {
                 if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                 {
-                    Gang relatedGang = Gangs.GetGangByContact(sc.ContactName);
-                    if (relatedGang != null)
-                    {
-                        AddContact(relatedGang, true);
-                    }
-                    else if (sc.ContactName == StaticStrings.OfficerFriendlyContactName)
-                    {
-                        AddCopContact(true);
-                    }
-                    else if (sc.ContactName == StaticStrings.UndergroundGunsContactName)
-                    {
-                        AddGunDealerContact(true);
-                    }
-                    else
-                    {
-                        AddContact(sc.ContactName, sc.IconName, true);
-                    }
+                    AddContact(sc.PhoneContact, true);
                     PlayTextReceivedSound();
                     if (sc.Message == "")
                     {
@@ -375,204 +270,33 @@ public class CellPhone
             }
         }
     }
-    public void AddScheduledContact(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
+    public void AddContact(PhoneContact phoneContact, bool displayNotification)
     {
-        if(!AddedContacts.Any(x=> x.Name == Name))
+        if (!AddedContacts.Any(x=> x.Name == phoneContact.Name))
         {
-            ScheduledContacts.Add(new ScheduledContact(timeToAdd, Name, MessageToSend, IconName));
-        }
-    }
-    public void AddContact(string Name, string IconName, bool displayNotification)
-    {
-        if (!AddedContacts.Any(x => x.Name == Name))
-        {
-            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-            contactA.Active = false;
-            contactA.DialTimeout = 4000;
-            contactA.RandomizeDialTimeout = true;
-            contactA.IconName = IconName;
+            phoneContact.Index = ContactIndex;
             ContactIndex++;
-            AddedContacts.Add(contactA);
-
+            AddedContacts.Add(phoneContact);
             if (displayNotification)
             {
-                NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
+                NativeHelper.DisplayNotificationCustom(phoneContact.IconName, phoneContact.IconName, "New Contact", phoneContact.Name, NotificationIconTypes.AddFriendRequest, true);
                 PlayTextReceivedSound();
             }
         }
     }
-    public void AddContact(Gang gang, bool displayNotification)
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, int minutesToWait)
     {
-        if (!AddedContacts.Any(x => x.Name == gang.ContactName))
+        AddScheduledText(phoneContact, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait));
+    }
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend)
+    {
+        AddScheduledText(phoneContact, MessageToSend, 0);
+    }
+    public void AddScheduledText(PhoneContact phoneContact, string MessageToSend, DateTime timeToAdd)
+    {
+        if (!AddedTexts.Any(x => x.ContactName == phoneContact.Name && x.Message == MessageToSend))
         {
-            PhoneContact contactA = new PhoneContact(gang.ContactName, ContactIndex);
-            contactA.Active = true;
-            contactA.DialTimeout = 4000;
-            contactA.RandomizeDialTimeout = true;
-            contactA.IconName = gang.ContactIcon;
-            ContactIndex++;
-            AddedContacts.Add(contactA);
-
-            if (displayNotification)
-            {
-                NativeHelper.DisplayNotificationCustom(gang.ContactIcon, gang.ContactIcon, "New Contact", gang.ContactName, NotificationIconTypes.AddFriendRequest, true);
-                PlayTextReceivedSound();
-            }
-        }
-    }
-    public void AddCopContact(bool displayNotification)
-    {
-        string Name = StaticStrings.OfficerFriendlyContactName;
-        string IconName = "CHAR_BLANK_ENTRY";
-        if (!AddedContacts.Any(x => x.Name == Name))
-        {
-            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-            contactA.Active = true;
-            contactA.DialTimeout = 4000;
-            contactA.RandomizeDialTimeout = true;
-            contactA.IconName = IconName;
-            ContactIndex++;
-            AddedContacts.Add(contactA);
-
-            if (displayNotification)
-            {
-                NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                PlayTextReceivedSound();
-            }
-        }
-    }
-    public void AddGunDealerContact(bool displayNotification)
-    {
-        string Name = StaticStrings.UndergroundGunsContactName;
-        string IconName = "CHAR_BLANK_ENTRY";
-        if (!AddedContacts.Any(x => x.Name == Name))
-        {
-            PhoneContact contactA = new PhoneContact(Name, ContactIndex);
-            contactA.Active = true;
-            contactA.DialTimeout = 4000;
-            contactA.RandomizeDialTimeout = true;
-            contactA.IconName = IconName;
-            ContactIndex++;
-            AddedContacts.Add(contactA);
-
-            if (displayNotification)
-            {
-                NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                PlayTextReceivedSound();
-            }
-        }
-    }
-    public void AddEmergencyServicesCustomContact(bool displayNotification)
-    {
-        string Name = StaticStrings.UndergroundGunsContactName;
-        string IconName = "CHAR_CALL911";
-        if (!AddedContacts.Any(x => x.Name == StaticStrings.EmergencyServicesContactName))
-        {
-            PhoneContact contactA = new PhoneContact(StaticStrings.EmergencyServicesContactName, ContactIndex);
-            contactA.DialTimeout = 3000;
-            contactA.Active = true;
-            contactA.IconName = IconName;
-
-            ContactIndex++;
-            AddedContacts.Add(contactA);
-            if (displayNotification)
-            {
-                NativeHelper.DisplayNotificationCustom(IconName, IconName, "New Contact", Name, NotificationIconTypes.AddFriendRequest, true);
-                PlayTextReceivedSound();
-            }
-        }
-    }
-    public void AddGangText(Gang gang, bool isPositive)
-    {
-        if (gang != null)
-        {
-            List<string> Replies = new List<string>();
-            if (isPositive)
-            {
-                Replies.AddRange(new List<string>() {
-                    $"Heard some good things about you, come see us sometime.",
-                    $"Call us soon to discuss business.",
-                    $"Might have some business opportunites for you soon, give us a call.",
-                    $"You've been making some impressive moves, call us to discuss.",
-                    $"Give us a call soon.",
-                    $"We may have some opportunites for you.",
-                    $"My guys tell me you are legit, hit us up sometime.",
-                    $"Looking for people I can trust, if so give us a call.",
-                    $"Word has gotten around about you, mostly positive, give us a call soon.",
-                    $"Always looking for help with some 'items'. Call us if you think you can handle it.",
-                });
-            }
-            else
-            {
-                Replies.AddRange(new List<string>() {
-                    $"Watch your back",
-                    $"Dead man walking",
-                    $"ur fucking dead",
-                    $"You just fucked with the wrong people asshole",
-                    $"We're gonna fuck you up buddy",
-                    $"My boys are gonna skin you alive prick.",
-                    $"You will die slowly.",
-                    $"I'll take pleasure in guttin you boy.",
-                    $"Better leave LS while you can...",
-                    $"We'll be waiting for you asshole.",
-                    $"You're gonna wish you were dead motherfucker.",
-                    $"Got some 'associates' out looking for you prick. Where you at?",
-
-
-                    $"We'll be seeing you soon",
-                    $"{Player.PlayerName}? Better watch out.",
-                    $"You'll never hear us coming",
-                    $"You are a dead man",
-                    $"You're gonna find out what happens when you fuck with us asshole.",
-                    $"When my boys find you...",
-                });
-            }
-
-            List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
-            ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
-
-            if (mainTerritory != null)
-            {
-                Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
-                if (mainGangZone != null)
-                {
-                    if (isPositive)
-                    {
-                        Replies.AddRange(new List<string>() {
-                            $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
-                            $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
-                            $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
-                            $"You've been making some impressive moves, call us to discuss.",
-                        });
-                    }
-                    else
-                    {
-                        Replies.AddRange(new List<string>() {
-                            $"Watch your back next time you are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
-                            $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
-                            $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
-                        });
-                    }
-                }
-            }
-            string MessageToSend;
-            MessageToSend = Replies.PickRandom();
-            AddScheduledText(gang.ContactName,gang.ContactIcon, MessageToSend);
-        }
-    }
-    public void AddScheduledText(string Name, string IconName, string MessageToSend, int minutesToWait)
-    {
-        AddScheduledText(Name, IconName, MessageToSend, Time.CurrentDateTime.AddMinutes(minutesToWait));
-    }
-    public void AddScheduledText(string Name, string IconName, string MessageToSend)
-    {
-        AddScheduledText(Name, IconName, MessageToSend, 0);
-    }
-    public void AddScheduledText(string Name, string IconName, string MessageToSend, DateTime timeToAdd)
-    {
-        if (!AddedTexts.Any(x => x.ContactName == Name && x.Message == MessageToSend))
-        {
-            ScheduledTexts.Add(new ScheduledText(timeToAdd, Name, MessageToSend, IconName));
+            ScheduledTexts.Add(new ScheduledText(timeToAdd, phoneContact, MessageToSend));
         }
     }
     public void AddText(string Name, string IconName, string message, int hourSent, int minuteSent, bool isRead)
@@ -598,17 +322,13 @@ public class CellPhone
     {
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message,Time.CurrentDateTime));
         NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
-        //Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
     }
     public void AddPhoneResponse(string Name, string Message)
     {
         string IconName = ContactList.FirstOrDefault(x => x.Name.ToLower() == Name.ToLower())?.IconName;
         PhoneResponses.Add(new PhoneResponse(Name, IconName, Message, Time.CurrentDateTime));
-
         NativeHelper.DisplayNotificationCustom(IconName, IconName, Name, "~o~Response", Message, NotificationIconTypes.RightJumpingArrow, false);
-
-        //Game.DisplayNotification(IconName, IconName, Name, "~o~Response", Message);
         PlayPhoneResponseSound();
     }
     public void DisableContact(string Name)
@@ -656,38 +376,120 @@ public class CellPhone
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
-
     private class ScheduledContact
     {
-        public ScheduledContact(DateTime timeToSend, string contactName, string message, string iconName)
+        public ScheduledContact(DateTime timeToSend, PhoneContact phoneContact, string message)
         {
             TimeToSend = timeToSend;
-            ContactName = contactName;
+            ContactName = phoneContact.Name;
             Message = message;
-            IconName = iconName;
+            IconName = phoneContact.IconName;
             GameTimeSent = Game.GameTime;
+            PhoneContact = phoneContact;
         }
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
         public uint GameTimeSent { get; set; }
+        public PhoneContact PhoneContact { get; set; }
     }
     private class ScheduledText
     {
-        public ScheduledText(DateTime timeToSend, string contactName, string message, string iconName)
+        public ScheduledText(DateTime timeToSend, PhoneContact phoneContact, string message)
         {
             TimeToSend = timeToSend;
-            ContactName = contactName;
+            ContactName = phoneContact.Name;
             Message = message;
-            IconName = iconName;
+            IconName = phoneContact.IconName;
             GameTimeSent = Game.GameTime;
+            PhoneContact = phoneContact;
         }
         public DateTime TimeToSend { get; set; }
         public string ContactName { get; set; }
         public string Message { get; set; } = "We need to talk";
         public string IconName { get; set; } = "CHAR_BLANK_ENTRY";
         public uint GameTimeSent { get; set; }
+        public PhoneContact PhoneContact { get; set; }
     }
 
 }
+
+//public void AddGangText(PhoneContact phoneContact, Gang gang, bool isPositive)
+//{
+//    if (gang != null)
+//    {
+//        List<string> Replies = new List<string>();
+//        if (isPositive)
+//        {
+//            Replies.AddRange(new List<string>() {
+//                $"Heard some good things about you, come see us sometime.",
+//                $"Call us soon to discuss business.",
+//                $"Might have some business opportunites for you soon, give us a call.",
+//                $"You've been making some impressive moves, call us to discuss.",
+//                $"Give us a call soon.",
+//                $"We may have some opportunites for you.",
+//                $"My guys tell me you are legit, hit us up sometime.",
+//                $"Looking for people I can trust, if so give us a call.",
+//                $"Word has gotten around about you, mostly positive, give us a call soon.",
+//                $"Always looking for help with some 'items'. Call us if you think you can handle it.",
+//            });
+//        }
+//        else
+//        {
+//            Replies.AddRange(new List<string>() {
+//                $"Watch your back",
+//                $"Dead man walking",
+//                $"ur fucking dead",
+//                $"You just fucked with the wrong people asshole",
+//                $"We're gonna fuck you up buddy",
+//                $"My boys are gonna skin you alive prick.",
+//                $"You will die slowly.",
+//                $"I'll take pleasure in guttin you boy.",
+//                $"Better leave LS while you can...",
+//                $"We'll be waiting for you asshole.",
+//                $"You're gonna wish you were dead motherfucker.",
+//                $"Got some 'associates' out looking for you prick. Where you at?",
+
+
+//                $"We'll be seeing you soon",
+//                $"{Player.PlayerName}? Better watch out.",
+//                $"You'll never hear us coming",
+//                $"You are a dead man",
+//                $"You're gonna find out what happens when you fuck with us asshole.",
+//                $"When my boys find you...",
+//            });
+//        }
+
+//        List<ZoneJurisdiction> myGangTerritories = GangTerritories.GetGangTerritory(gang.ID);
+//        ZoneJurisdiction mainTerritory = myGangTerritories.OrderBy(x => x.Priority).FirstOrDefault();
+
+//        if (mainTerritory != null)
+//        {
+//            Zone mainGangZone = Zones.GetZone(mainTerritory.ZoneInternalGameName);
+//            if (mainGangZone != null)
+//            {
+//                if (isPositive)
+//                {
+//                    Replies.AddRange(new List<string>() {
+//                        $"Heard some good things about you, come see us sometime in ~p~{mainGangZone.DisplayName}~s~ to discuss some business",
+//                        $"Call us soon to discuss business in ~p~{mainGangZone.DisplayName}~s~.",
+//                        $"Might have some business opportunites for you soon in ~p~{mainGangZone.DisplayName}~s~, give us a call.",
+//                        $"You've been making some impressive moves, call us to discuss.",
+//                    });
+//                }
+//                else
+//                {
+//                    Replies.AddRange(new List<string>() {
+//                        $"Watch your back next time you are in ~p~{mainGangZone.DisplayName}~s~ motherfucker",
+//                        $"You are dead next time we see you in ~p~{mainGangZone.DisplayName}~s~",
+//                        $"Better stay out of ~p~{mainGangZone.DisplayName}~s~ cocksucker",
+//                    });
+//                }
+//            }
+//        }
+//        string MessageToSend;
+//        MessageToSend = Replies.PickRandom();
+//        AddScheduledText(phoneContact, MessageToSend);
+//    }
+//}

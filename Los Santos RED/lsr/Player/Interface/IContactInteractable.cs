@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Locations;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,11 @@ namespace LosSantosRED.lsr.Interface
         bool IsNotWanted { get; }
         int WantedLevel { get; }
         Respawning Respawning { get; }
+        Scanner Scanner { get; }
+        Vector3 Position { get; }
+        bool IsCop { get; }
 
+        void AddCrime(Crime toCallIn, bool v1, Vector3 placeSeen, VehicleExt vehicleSeen, WeaponInformation weaponSeen, bool v2, bool v3, bool v4);
         void SetWantedLevel(int v1, string v2, bool v3);
     }
 }

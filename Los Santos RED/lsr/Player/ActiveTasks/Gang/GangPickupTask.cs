@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int MoneyToRecieve;
         private int MoneyToPickup;
         private GangDen HiringGangDen;
+        private GangContact Contact;
 
         private bool HasDeadDropAndDen => DeadDrop != null && HiringGangDen != null;
 
@@ -59,6 +60,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
+            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(HiringGang?.ContactName))
             {
                 GetDeadDrop();
@@ -158,7 +160,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Drop the money off at the designated place",
                                 "Take the money where it needs to go",
                                 "Bring the stuff back to us. Don't take long.",  };
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendInitialInstructionsMessage()
         {

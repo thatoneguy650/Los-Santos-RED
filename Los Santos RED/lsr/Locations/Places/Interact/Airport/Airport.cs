@@ -280,50 +280,22 @@ public class Airport : InteractableLocation, ILocationSetupable
                     };
                     planeSubMenu.AddItem(startFlightMenu);
 
-
-
-
-                    float PercentFuelNeeded = (100f - owned.Vehicle.FuelLevel) / 100f;
-                    float VehicleToFillFuelTankCapacity = owned.FuelTankCapacity;
-                    int UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
-                    float PercentFilledPerUnit = 0f;
-                    if (VehicleToFillFuelTankCapacity == 0)
-                    {
-                        PercentFilledPerUnit = 0;
-                    }
-                    else
-                    {
-                        PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
-                    }
-                    float AmountToFill = UnitsOfFuelNeeded * FuelPrice;
-                    string MenuString = $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{UnitsOfFuelNeeded}~s~ Gallons";
-
-
-
-                    UIMenuNumericScrollerItem<int> AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Refuel", "Add gasoline by the gallon" + MenuString, 1, UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * FuelPrice).ToString("C0"), Enabled = UnitsOfFuelNeeded > 1 };
-                    AddSomeMenuItem.Value = UnitsOfFuelNeeded;
+                    Refueling refueling = new Refueling(Player, Name, FuelPrice, owned, Settings);
+                    refueling.Setup();
+                    float AmountToFill = refueling.UnitsOfFuelNeeded * FuelPrice;
+                    string MenuString = $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{refueling.VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{refueling.UnitsOfFuelNeeded}~s~ Gallons";
+                    UIMenuNumericScrollerItem<int> AddSomeMenuItem = new UIMenuNumericScrollerItem<int>("Refuel", "Add gasoline by the gallon" + MenuString, 1, refueling.UnitsOfFuelNeeded, 1) { Formatter = v => v + " Gallons - " + (v * FuelPrice).ToString("C0"), Enabled = refueling.UnitsOfFuelNeeded > 1 };
+                    AddSomeMenuItem.Value = refueling.UnitsOfFuelNeeded;
                     AddSomeMenuItem.Activated += (sender, selectedItem) =>
                     {
                         if (owned.Vehicle.Exists())
                         {
-                            Refuel(owned, AddSomeMenuItem.Value, PercentFilledPerUnit);
-                            PercentFuelNeeded = (100f - owned.Vehicle.FuelLevel) / 100f;
-                            VehicleToFillFuelTankCapacity = owned.FuelTankCapacity;
-                            UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
-                            PercentFilledPerUnit = 0f;
-                            if (VehicleToFillFuelTankCapacity == 0)
+                            refueling.RefuelQuick(AddSomeMenuItem.Value);
+                            refueling.GetFuelStatus();
+                            if (refueling.UnitsOfFuelNeeded > 0)
                             {
-                                PercentFilledPerUnit = 0;
-                            }
-                            else
-                            {
-                                PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
-                            }
-                            AmountToFill = UnitsOfFuelNeeded * FuelPrice;
-                            if (UnitsOfFuelNeeded > 0)
-                            {
-                                AddSomeMenuItem.Value = UnitsOfFuelNeeded;
-                                AddSomeMenuItem.Maximum = UnitsOfFuelNeeded;      
+                                AddSomeMenuItem.Value = refueling.UnitsOfFuelNeeded;
+                                AddSomeMenuItem.Maximum = refueling.UnitsOfFuelNeeded;      
                             }
                             else
                             {
@@ -331,8 +303,7 @@ public class Airport : InteractableLocation, ILocationSetupable
                                 AddSomeMenuItem.Maximum = 1;
                                 AddSomeMenuItem.Enabled = false;
                             }
-                            
-                            AddSomeMenuItem.Description = "Add gasoline by the gallon" + $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{UnitsOfFuelNeeded}~s~ Gallons";
+                            AddSomeMenuItem.Description = "Add gasoline by the gallon" + $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{refueling.VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{refueling.UnitsOfFuelNeeded}~s~ Gallons";
                         }
                     };
                     planeSubMenu.AddItem(AddSomeMenuItem);
@@ -344,31 +315,6 @@ public class Airport : InteractableLocation, ILocationSetupable
             {
                 UIMenuItem noPlanesMenu = new UIMenuItem("No Planes", "No valid planes available") { Enabled = false };
                 destinationSubMenu.AddItem(noPlanesMenu);
-            }
-        }
-    }
-    private void Refuel(VehicleExt VehicleToFill, int UnitsToAdd, float PercentFilledPerUnit)
-    {
-        if (UnitsToAdd * FuelPrice > Player.BankAccounts.Money)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
-        }
-        else
-        {
-            if (VehicleToFill.Vehicle.Exists())
-            {
-                VehicleToFill.Vehicle.FuelLevel += PercentFilledPerUnit * UnitsToAdd;
-                if (VehicleToFill.Vehicle.FuelLevel >= 99.0f)
-                {
-                    VehicleToFill.Vehicle.FuelLevel = 100.0f;
-                }
-                Player.BankAccounts.GiveMoney(-1 * FuelPrice * UnitsToAdd);
-                if (UnitsToAdd > 0)
-                {
-                    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsToAdd} gallons of fuel for a total price of ~r~${UnitsToAdd * FuelPrice}~s~ at {Name}");
-                }
             }
         }
     }

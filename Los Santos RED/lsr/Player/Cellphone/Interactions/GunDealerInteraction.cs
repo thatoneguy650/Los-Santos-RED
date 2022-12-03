@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GunDealerInteraction
+public class GunDealerInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
     private UIMenu GunDealerMenu;

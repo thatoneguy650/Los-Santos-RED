@@ -45,7 +45,7 @@ namespace LosSantosRED.lsr.Data
         public CCWLicense CCWLicense { get; set; }
         public PilotsLicense PilotsLicense { get; set; }
         public List<SavedTextMessage> TextMessages { get; set; } = new List<SavedTextMessage>();
-        public List<SavedContact> Contacts { get; set; } = new List<SavedContact>();
+        public List<PhoneContact> Contacts { get; set; } = new List<PhoneContact>();
         public List<GangRepSave> GangReputationsSave { get; set; } = new List<GangRepSave>();
         public PedVariation CurrentModelVariation { get; set; }
         public List<StoredWeapon> WeaponInventory { get; set; }
@@ -131,10 +131,10 @@ namespace LosSantosRED.lsr.Data
                 GangKickSave = new GangKickSave(player.RelationshipManager.GangRelationships.CurrentGang.ID, player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueDate, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedPeriods, player.RelationshipManager.GangRelationships.CurrentGangKickUp.MissedAmount);
             }
 
-            Contacts = new List<SavedContact>();
-            foreach (PhoneContact ifc in player.CellPhone.ContactList)
+            Contacts = new List<PhoneContact>();
+            foreach (PhoneContact ifc in player.CellPhone.ContactList.ToList())
             {
-                Contacts.Add(new SavedContact(ifc.Name, ifc.Index, ifc.IconName));
+                Contacts.Add(ifc);
             }
             TextMessages = new List<SavedTextMessage>();
             foreach (PhoneText ifc in player.CellPhone.TextList)
@@ -337,25 +337,25 @@ namespace LosSantosRED.lsr.Data
         }
         private void LoadContacts(IInventoryable player, IGangs gangs)
         {
-            foreach (SavedContact ifc in Contacts.OrderBy(x => x.Index))
+            foreach (PhoneContact ifc in Contacts.OrderBy(x => x.Index))
             {
-                Gang gang = gangs.GetGangByContact(ifc.Name);
-                if (ifc.Name == StaticStrings.UndergroundGunsContactName)
-                {
-                    player.CellPhone.AddGunDealerContact(false);
-                }
-                else if (ifc.Name == StaticStrings.OfficerFriendlyContactName)
-                {
-                    player.CellPhone.AddCopContact(false);//mess with this and need to test contacts after loading
-                }
-                else if (gang != null)
-                {
-                    player.CellPhone.AddContact(gang, false);
-                }
-                else
-                {
-                    player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
-                }
+                //Gang gang = gangs.GetGangByContact(ifc.Name);
+                //if (ifc.Name == StaticStrings.UndergroundGunsContactName)
+                //{
+                //    player.CellPhone.AddGunDealerContact(false);
+                //}
+                //else if (ifc.Name == StaticStrings.OfficerFriendlyContactName)
+                //{
+                //    player.CellPhone.AddCopContact(false);//mess with this and need to test contacts after loading
+                //}
+                //else if (gang != null)
+                //{
+                //    player.CellPhone.AddContact(gang, false);
+                //}
+                //else
+                //{
+                //    player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
+                //}
             }
             foreach (SavedTextMessage ifc in TextMessages)
             {

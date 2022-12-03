@@ -57,6 +57,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool WillFight;
         private ShopMenu WitnessShopMenu;
         private WeaponInformation WitnessWeapon;
+        private CorruptCopContact Contact;
 
         private bool IsPlayerFarFromWitness => Witness != null && Witness.Pedestrian.Exists() && Witness.Pedestrian.DistanceTo2D(Player.Character) >= 850f;
         private bool IsPlayerNearWitnessSpawn => SpawnPositionCellX != -1 && SpawnPositionCellY != -1 && NativeHelper.IsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, SpawnPositionCellX, SpawnPositionCellY, 5);
@@ -77,7 +78,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
+            Contact = new CorruptCopContact(StaticStrings.OfficerFriendlyContactName);
         }
         public void Dispose()
         {
@@ -432,7 +433,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     LookingForItem = myMenuItem.ModItemName;
                 }
             }
-            if (NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
+            if (1==0 && NativeFunction.Natives.IsPedheadshotReady<bool>(pedHeadshotHandle))
             {
                 Replies = new List<string>() {
                     $"Picture of ~y~{WitnessName}~s~ attached. I heard they were still around ~p~{WitnessLocation.Name}~s~.",
@@ -460,7 +461,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
 
                 string str = NativeFunction.Natives.GetPedheadshotTxdString<string>(pedHeadshotHandle);
-                Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, str, PickedReply, 0);
+                Player.CellPhone.AddScheduledText(Contact, PickedReply, 0);
             }
             else
             {
@@ -489,7 +490,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     PickedReply += " The target might have gotten wind, be careful.";
                 }
 
-                Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", PickedReply, 0);
+                Player.CellPhone.AddScheduledText(Contact, PickedReply, 0);
             }
         }
         private void DespawnWitness()
@@ -556,7 +557,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Sending ${MoneyToRecieve}",
                             $"Heard you were done. We owe you ${MoneyToRecieve}",
                             };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendDeadDropStartMessage()
         {
@@ -565,7 +566,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             $"Go get your payment of ${MoneyToRecieve} from {myDrop.Description}, address is {myDrop.FullStreetAddress}.",
                             };
 
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 1);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
         }
         private void SendCompletedMessage()
         {
@@ -576,7 +577,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"Sending ${MoneyToRecieve}",
                         $"Heard you were done. We owe you ${MoneyToRecieve}",
                         };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendFailMessage()
         {
@@ -587,7 +588,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         $"How did you fuck this up so bad, they are squealing everything",
                         $"Since you fucked that up, they went right to the cops.",
                         };
-            Player.CellPhone.AddScheduledText(StaticStrings.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
     }
 

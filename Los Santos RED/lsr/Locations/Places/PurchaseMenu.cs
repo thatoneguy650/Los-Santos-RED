@@ -89,21 +89,10 @@ public class PurchaseMenu : Menu
     public bool HasBannerImage { get; set; } = false;
     public Texture BannerImage { get; set; }
     public bool RemoveBanner { get; set; } = false;
-
-
-
-
-
-
-
     public string StoreName { get; set; } = "";
-
-
     public int MoneySpent { get; private set; } = 0;
     private bool CanContinueConversation => Player.ActivityManager.CanConverse;
-
     public bool IsStealing { get; set; }
-
     public void ClearPreviews()
     {
         if (SellingProp.Exists())
@@ -143,167 +132,183 @@ public class PurchaseMenu : Menu
         Transaction.ClearPreviews();
         ColorList = new List<ColorLookup>()
         {
-        new ColorLookup(0,"Metallic Black"),
-        new ColorLookup(1,"Metallic Graphite Black"),
-        new ColorLookup(2,"Metallic Black Steal"),
-        new ColorLookup(3,"Metallic Dark Silver"),
-        new ColorLookup(4,"Metallic Silver"),
-        new ColorLookup(5,"Metallic Blue Silver"),
-        new ColorLookup(6,"Metallic Steel Gray"),
-        new ColorLookup(7,"Metallic Shadow Silver"),
-        new ColorLookup(8,"Metallic Stone Silver"),
-        new ColorLookup(9,"Metallic Midnight Silver"),
-        new ColorLookup(10,"Metallic Gun Metal"),
-        new ColorLookup(11,"Metallic Anthracite Grey"),
-        new ColorLookup(12,"Matte Black"),
-        new ColorLookup(13,"Matte Gray"),
-        new ColorLookup(14,"Matte Light Grey"),
-        new ColorLookup(15,"Util Black"),
-        new ColorLookup(16,"Util Black Poly"),
-        new ColorLookup(17,"Util Dark silver"),
-        new ColorLookup(18,"Util Silver"),
-        new ColorLookup(19,"Util Gun Metal"),
-        new ColorLookup(20,"Util Shadow Silver"),
-        new ColorLookup(21,"Worn Black"),
-        new ColorLookup(22,"Worn Graphite"),
-        new ColorLookup(23,"Worn Silver Grey"),
-        new ColorLookup(24,"Worn Silver"),
-        new ColorLookup(25,"Worn Blue Silver"),
-        new ColorLookup(26,"Worn Shadow Silver"),
-        new ColorLookup(27,"Metallic Red"),
-        new ColorLookup(28,"Metallic Torino Red"),
-        new ColorLookup(29,"Metallic Formula Red"),
-        new ColorLookup(30,"Metallic Blaze Red"),
-        new ColorLookup(31,"Metallic Graceful Red"),
-        new ColorLookup(32,"Metallic Garnet Red"),
-        new ColorLookup(33,"Metallic Desert Red"),
-        new ColorLookup(34,"Metallic Cabernet Red"),
-        new ColorLookup(35,"Metallic Candy Red"),
-        new ColorLookup(36,"Metallic Sunrise Orange"),
-        new ColorLookup(37,"Metallic Classic Gold"),
-        new ColorLookup(38,"Metallic Orange"),
-        new ColorLookup(39,"Matte Red"),
-        new ColorLookup(40,"Matte Dark Red"),
-        new ColorLookup(41,"Matte Orange"),
-        new ColorLookup(42,"Matte Yellow"),
-        new ColorLookup(43,"Util Red"),
-        new ColorLookup(44,"Util Bright Red"),
-        new ColorLookup(45,"Util Garnet Red"),
-        new ColorLookup(46,"Worn Red"),
-        new ColorLookup(47,"Worn Golden Red"),
-        new ColorLookup(48,"Worn Dark Red"),
-        new ColorLookup(49,"Metallic Dark Green"),
-        new ColorLookup(50,"Metallic Racing Green"),
-        new ColorLookup(51,"Metallic Sea Green"),
-        new ColorLookup(52,"Metallic Olive Green"),
-        new ColorLookup(53,"Metallic Green"),
-        new ColorLookup(54,"Metallic Gasoline Blue Green"),
-        new ColorLookup(55,"Matte Lime Green"),
-        new ColorLookup(56,"Util Dark Green"),
-        new ColorLookup(57,"Util Green"),
-        new ColorLookup(58,"Worn Dark Green"),
-        new ColorLookup(59,"Worn Green"),
-        new ColorLookup(60,"Worn Sea Wash"),
-        new ColorLookup(61,"Metallic Midnight Blue"),
-        new ColorLookup(62,"Metallic Dark Blue"),
-        new ColorLookup(63,"Metallic Saxony Blue"),
-        new ColorLookup(64,"Metallic Blue"),
-        new ColorLookup(65,"Metallic Mariner Blue"),
-        new ColorLookup(66,"Metallic Harbor Blue"),
-        new ColorLookup(67,"Metallic Diamond Blue"),
-        new ColorLookup(68,"Metallic Surf Blue"),
-        new ColorLookup(69,"Metallic Nautical Blue"),
-        new ColorLookup(70,"Metallic Bright Blue"),
-        new ColorLookup(71,"Metallic Purple Blue"),
-        new ColorLookup(72,"Metallic Spinnaker Blue"),
-        new ColorLookup(73,"Metallic Ultra Blue"),
-        new ColorLookup(74,"Metallic Bright Blue"),
-        new ColorLookup(75,"Util Dark Blue"),
-        new ColorLookup(76,"Util Midnight Blue"),
-        new ColorLookup(77,"Util Blue"),
-        new ColorLookup(78,"Util Sea Foam Blue"),
-        new ColorLookup(79,"Uil Lightning blue"),
-        new ColorLookup(80,"Util Maui Blue Poly"),
-        new ColorLookup(81,"Util Bright Blue"),
-        new ColorLookup(82,"Matte Dark Blue"),
-        new ColorLookup(83,"Matte Blue"),
-        new ColorLookup(84,"Matte Midnight Blue"),
-        new ColorLookup(85,"Worn Dark blue"),
-        new ColorLookup(86,"Worn Blue"),
-        new ColorLookup(87,"Worn Light blue"),
-        new ColorLookup(88,"Metallic Taxi Yellow"),
-        new ColorLookup(89,"Metallic Race Yellow"),
-        new ColorLookup(90,"Metallic Bronze"),
-        new ColorLookup(91,"Metallic Yellow Bird"),
-        new ColorLookup(92,"Metallic Lime"),
-        new ColorLookup(93,"Metallic Champagne"),
-        new ColorLookup(94,"Metallic Pueblo Beige"),
-        new ColorLookup(95,"Metallic Dark Ivory"),
-        new ColorLookup(96,"Metallic Choco Brown"),
-        new ColorLookup(97,"Metallic Golden Brown"),
-        new ColorLookup(98,"Metallic Light Brown"),
-        new ColorLookup(99,"Metallic Straw Beige"),
-        new ColorLookup(100,"Metallic Moss Brown"),
-        new ColorLookup(101,"Metallic Biston Brown"),
-        new ColorLookup(102,"Metallic Beechwood"),
-        new ColorLookup(103,"Metallic Dark Beechwood"),
-        new ColorLookup(104,"Metallic Choco Orange"),
-        new ColorLookup(105,"Metallic Beach Sand"),
-        new ColorLookup(106,"Metallic Sun Bleeched Sand"),
-        new ColorLookup(107,"Metallic Cream"),
-        new ColorLookup(108,"Util Brown"),
-        new ColorLookup(109,"Util Medium Brown"),
-        new ColorLookup(110,"Util Light Brown"),
-        new ColorLookup(111,"Metallic White"),
-        new ColorLookup(112,"Metallic Frost White"),
-        new ColorLookup(113,"Worn Honey Beige"),
-        new ColorLookup(114,"Worn Brown"),
-        new ColorLookup(115,"Worn Dark Brown"),
-        new ColorLookup(116,"Worn straw beige"),
-        new ColorLookup(117,"Brushed Steel"),
-        new ColorLookup(118,"Brushed Black steel"),
-        new ColorLookup(119,"Brushed Aluminium"),
-        new ColorLookup(120,"Chrome"),
-        new ColorLookup(121,"Worn Off White"),
-        new ColorLookup(122,"Util Off White"),
-        new ColorLookup(123,"Worn Orange"),
-        new ColorLookup(124,"Worn Light Orange"),
-        new ColorLookup(125,"Metallic Securicor Green"),
-        new ColorLookup(126,"Worn Taxi Yellow"),
-        new ColorLookup(127,"police car blue"),
-        new ColorLookup(128,"Matte Green"),
-        new ColorLookup(129,"Matte Brown"),
-        new ColorLookup(130,"Worn Orange"),
-        new ColorLookup(131,"Matte White"),
-        new ColorLookup(132,"Worn White"),
-        new ColorLookup(133,"Worn Olive Army Green"),
-        new ColorLookup(134,"Pure White"),
-        new ColorLookup(135,"Hot Pink"),
-        new ColorLookup(136,"Salmon pink"),
-        new ColorLookup(137,"Metallic Vermillion Pink"),
-        new ColorLookup(138,"Orange"),
-        new ColorLookup(139,"Green"),
-        new ColorLookup(140,"Blue"),
-        new ColorLookup(141,"Mettalic Black Blue"),
-        new ColorLookup(142,"Metallic Black Purple"),
-        new ColorLookup(143,"Metallic Black Red"),
-        new ColorLookup(144,"hunter green"),
-        new ColorLookup(145,"Metallic Purple"),
-        new ColorLookup(146,"Metaillic V Dark Blue"),
-        new ColorLookup(147,"MODSHOP BLACK1"),
-        new ColorLookup(148,"Matte Purple"),
-        new ColorLookup(149,"Matte Dark Purple"),
-        new ColorLookup(150,"Metallic Lava Red"),
-        new ColorLookup(151,"Matte Forest Green"),
-        new ColorLookup(152,"Matte Olive Drab"),
-        new ColorLookup(153,"Matte Desert Brown"),
-        new ColorLookup(154,"Matte Desert Tan"),
-        new ColorLookup(155,"Matte Foilage Green"),
-        new ColorLookup(156,"DEFAULT ALLOY COLOR"),
-        new ColorLookup(157,"Epsilon Blue"),
-        new ColorLookup(158,"MP100 GOLD"),
-        new ColorLookup(159,"MP100 GOLD SATIN"),
-        new ColorLookup(160,"MP100 GOLD SPEC"),
+            new ColorLookup(0,"Metallic Black","Metallic","Black",1)
+            ,new ColorLookup(1,"Metallic Graphite Black","Metallic","Graphite Black",2)
+            ,new ColorLookup(2,"Metallic Black Steal","Metallic","Black Steal",3)
+            ,new ColorLookup(3,"Metallic Dark Silver","Metallic","Dark Silver",4)
+            ,new ColorLookup(4,"Metallic Silver","Metallic","Silver",5)
+            ,new ColorLookup(5,"Metallic Blue Silver","Metallic","Blue Silver",6)
+            ,new ColorLookup(6,"Metallic Steel Gray","Metallic","Steel Gray",7)
+            ,new ColorLookup(7,"Metallic Shadow Silver","Metallic","Shadow Silver",8)
+            ,new ColorLookup(8,"Metallic Stone Silver","Metallic","Stone Silver",9)
+            ,new ColorLookup(9,"Metallic Midnight Silver","Metallic","Midnight Silver",10)
+            ,new ColorLookup(10,"Metallic Gun Metal","Metallic","Gun Metal",11)
+            ,new ColorLookup(11,"Metallic Anthracite Grey","Metallic","Anthracite Grey",12)
+            ,new ColorLookup(27,"Metallic Red","Metallic","Red",13)
+            ,new ColorLookup(28,"Metallic Torino Red","Metallic","Torino Red",14)
+            ,new ColorLookup(29,"Metallic Formula Red","Metallic","Formula Red",15)
+            ,new ColorLookup(30,"Metallic Blaze Red","Metallic","Blaze Red",16)
+            ,new ColorLookup(31,"Metallic Graceful Red","Metallic","Graceful Red",17)
+            ,new ColorLookup(32,"Metallic Garnet Red","Metallic","Garnet Red",18)
+            ,new ColorLookup(33,"Metallic Desert Red","Metallic","Desert Red",19)
+            ,new ColorLookup(34,"Metallic Cabernet Red","Metallic","Cabernet Red",20)
+            ,new ColorLookup(35,"Metallic Candy Red","Metallic","Candy Red",21)
+            ,new ColorLookup(36,"Metallic Sunrise Orange","Metallic","Sunrise Orange",22)
+            ,new ColorLookup(37,"Metallic Classic Gold","Metallic","Classic Gold",23)
+            ,new ColorLookup(38,"Metallic Orange","Metallic","Orange",24)
+            ,new ColorLookup(49,"Metallic Dark Green","Metallic","Dark Green",25)
+            ,new ColorLookup(50,"Metallic Racing Green","Metallic","Racing Green",26)
+            ,new ColorLookup(51,"Metallic Sea Green","Metallic","Sea Green",27)
+            ,new ColorLookup(52,"Metallic Olive Green","Metallic","Olive Green",28)
+            ,new ColorLookup(53,"Metallic Green","Metallic","Green",29)
+            ,new ColorLookup(54,"Metallic Gasoline Blue Green","Metallic","Gasoline Blue Green",30)
+            ,new ColorLookup(61,"Metallic Midnight Blue","Metallic","Midnight Blue",31)
+            ,new ColorLookup(62,"Metallic Dark Blue","Metallic","Dark Blue",32)
+            ,new ColorLookup(63,"Metallic Saxony Blue","Metallic","Saxony Blue",33)
+            ,new ColorLookup(64,"Metallic Blue","Metallic","Blue",34)
+            ,new ColorLookup(65,"Metallic Mariner Blue","Metallic","Mariner Blue",35)
+            ,new ColorLookup(66,"Metallic Harbor Blue","Metallic","Harbor Blue",36)
+            ,new ColorLookup(67,"Metallic Diamond Blue","Metallic","Diamond Blue",37)
+            ,new ColorLookup(68,"Metallic Surf Blue","Metallic","Surf Blue",38)
+            ,new ColorLookup(69,"Metallic Nautical Blue","Metallic","Nautical Blue",39)
+            ,new ColorLookup(70,"Metallic Bright Blue","Metallic","Bright Blue",40)
+            ,new ColorLookup(71,"Metallic Purple Blue","Metallic","Purple Blue",41)
+            ,new ColorLookup(72,"Metallic Spinnaker Blue","Metallic","Spinnaker Blue",42)
+            ,new ColorLookup(73,"Metallic Ultra Blue","Metallic","Ultra Blue",43)
+            ,new ColorLookup(74,"Metallic Bright Blue","Metallic","Bright Blue",44)
+            ,new ColorLookup(88,"Metallic Taxi Yellow","Metallic","Taxi Yellow",45)
+            ,new ColorLookup(89,"Metallic Race Yellow","Metallic","Race Yellow",46)
+            ,new ColorLookup(90,"Metallic Bronze","Metallic","Bronze",47)
+            ,new ColorLookup(91,"Metallic Yellow Bird","Metallic","Yellow Bird",48)
+            ,new ColorLookup(92,"Metallic Lime","Metallic","Lime",49)
+            ,new ColorLookup(93,"Metallic Champagne","Metallic","Champagne",50)
+            ,new ColorLookup(94,"Metallic Pueblo Beige","Metallic","Pueblo Beige",51)
+            ,new ColorLookup(95,"Metallic Dark Ivory","Metallic","Dark Ivory",52)
+            ,new ColorLookup(96,"Metallic Choco Brown","Metallic","Choco Brown",53)
+            ,new ColorLookup(97,"Metallic Golden Brown","Metallic","Golden Brown",54)
+            ,new ColorLookup(98,"Metallic Light Brown","Metallic","Light Brown",55)
+            ,new ColorLookup(99,"Metallic Straw Beige","Metallic","Straw Beige",56)
+            ,new ColorLookup(100,"Metallic Moss Brown","Metallic","Moss Brown",57)
+            ,new ColorLookup(101,"Metallic Biston Brown","Metallic","Biston Brown",58)
+            ,new ColorLookup(102,"Metallic Beechwood","Metallic","Beechwood",59)
+            ,new ColorLookup(103,"Metallic Dark Beechwood","Metallic","Dark Beechwood",60)
+            ,new ColorLookup(104,"Metallic Choco Orange","Metallic","Choco Orange",61)
+            ,new ColorLookup(105,"Metallic Beach Sand","Metallic","Beach Sand",62)
+            ,new ColorLookup(106,"Metallic Sun Bleeched Sand","Metallic","Sun Bleeched Sand",63)
+            ,new ColorLookup(107,"Metallic Cream","Metallic","Cream",64)
+            ,new ColorLookup(111,"Metallic White","Metallic","White",65)
+            ,new ColorLookup(112,"Metallic Frost White","Metallic","Frost White",66)
+            ,new ColorLookup(125,"Metallic Securicor Green","Metallic","Securicor Green",67)
+            ,new ColorLookup(137,"Metallic Vermillion Pink","Metallic","Vermillion Pink",68)
+            ,new ColorLookup(141,"Metallic Black Blue","Metallic","Black Blue",69)
+            ,new ColorLookup(142,"Metallic Black Purple","Metallic","Black Purple",70)
+            ,new ColorLookup(143,"Metallic Black Red","Metallic","Black Red",71)
+            ,new ColorLookup(145,"Metallic Purple","Metallic","Purple",72)
+            ,new ColorLookup(146,"Metallic V Dark Blue","Metallic","V Dark Blue",73)
+            ,new ColorLookup(150,"Metallic Lava Red","Metallic","Lava Red",74)
+
+            ,new ColorLookup(12,"Matte Black","Matte","Black",75)
+            ,new ColorLookup(13,"Matte Gray","Matte","Gray",76)
+            ,new ColorLookup(14,"Matte Light Grey","Matte","Light Grey",77)
+            ,new ColorLookup(39,"Matte Red","Matte","Red",78)
+            ,new ColorLookup(40,"Matte Dark Red","Matte","Dark Red",79)
+            ,new ColorLookup(41,"Matte Orange","Matte","Orange",80)
+            ,new ColorLookup(42,"Matte Yellow","Matte","Yellow",81)
+            ,new ColorLookup(55,"Matte Lime Green","Matte","Lime Green",82)
+            ,new ColorLookup(82,"Matte Dark Blue","Matte","Dark Blue",83)
+            ,new ColorLookup(83,"Matte Blue","Matte","Blue",84)
+            ,new ColorLookup(84,"Matte Midnight Blue","Matte","Midnight Blue",85)
+            ,new ColorLookup(128,"Matte Green","Matte","Green",86)
+            ,new ColorLookup(129,"Matte Brown","Matte","Brown",87)
+            ,new ColorLookup(148,"Matte Purple","Matte","Purple",88)
+            ,new ColorLookup(149,"Matte Dark Purple","Matte","Dark Purple",89)
+            ,new ColorLookup(151,"Matte Forest Green","Matte","Forest Green",90)
+            ,new ColorLookup(152,"Matte Olive Drab","Matte","Olive Drab",91)
+            ,new ColorLookup(153,"Matte Desert Brown","Matte","Desert Brown",92)
+            ,new ColorLookup(154,"Matte Desert Tan","Matte","Desert Tan",93)
+            ,new ColorLookup(155,"Matte Foilage Green","Matte","Foilage Green",94)
+            ,new ColorLookup(131,"Matte White","Matte","White",95)
+
+            ,new ColorLookup(15,"Util Black","Util","Black",96)
+            ,new ColorLookup(16,"Util Black Poly","Util","Black Poly",97)
+            ,new ColorLookup(17,"Util Dark silver","Util","Dark silver",98)
+            ,new ColorLookup(18,"Util Silver","Util","Silver",99)
+            ,new ColorLookup(19,"Util Gun Metal","Util","Gun Metal",100)
+            ,new ColorLookup(20,"Util Shadow Silver","Util","Shadow Silver",101)
+            ,new ColorLookup(43,"Util Red","Util","Red",102)
+            ,new ColorLookup(44,"Util Bright Red","Util","Bright Red",103)
+            ,new ColorLookup(45,"Util Garnet Red","Util","Garnet Red",104)
+            ,new ColorLookup(56,"Util Dark Green","Util","Dark Green",105)
+            ,new ColorLookup(57,"Util Green","Util","Green",106)
+            ,new ColorLookup(75,"Util Dark Blue","Util","Dark Blue",107)
+            ,new ColorLookup(76,"Util Midnight Blue","Util","Midnight Blue",108)
+            ,new ColorLookup(77,"Util Blue","Util","Blue",109)
+            ,new ColorLookup(78,"Util Sea Foam Blue","Util","Sea Foam Blue",110)
+            ,new ColorLookup(79,"Util Lightning blue","Util","Lightning blue",111)
+            ,new ColorLookup(80,"Util Maui Blue Poly","Util","Maui Blue Poly",112)
+            ,new ColorLookup(81,"Util Bright Blue","Util","Bright Blue",113)
+            ,new ColorLookup(108,"Util Brown","Util","Brown",114)
+            ,new ColorLookup(109,"Util Medium Brown","Util","Medium Brown",115)
+            ,new ColorLookup(110,"Util Light Brown","Util","Light Brown",116)
+            ,new ColorLookup(122,"Util Off White","Util","Off White",117)
+
+
+
+
+
+            ,new ColorLookup(21,"Worn Black","Worn","Black",118)
+            ,new ColorLookup(22,"Worn Graphite","Worn","Graphite",119)
+            ,new ColorLookup(23,"Worn Silver Grey","Worn","Silver Grey",120)
+            ,new ColorLookup(24,"Worn Silver","Worn","Silver",121)
+            ,new ColorLookup(25,"Worn Blue Silver","Worn","Blue Silver",122)
+            ,new ColorLookup(26,"Worn Shadow Silver","Worn","Shadow Silver",123)
+            ,new ColorLookup(46,"Worn Red","Worn","Red",124)
+            ,new ColorLookup(47,"Worn Golden Red","Worn","Golden Red",125)
+            ,new ColorLookup(48,"Worn Dark Red","Worn","Dark Red",126)
+            ,new ColorLookup(58,"Worn Dark Green","Worn","Dark Green",127)
+            ,new ColorLookup(59,"Worn Green","Worn","Green",128)
+            ,new ColorLookup(60,"Worn Sea Wash","Worn","Sea Wash",129)
+            ,new ColorLookup(85,"Worn Dark blue","Worn","Dark blue",130)
+            ,new ColorLookup(86,"Worn Blue","Worn","Blue",131)
+            ,new ColorLookup(87,"Worn Light blue","Worn","Light blue",132)
+            ,new ColorLookup(113,"Worn Honey Beige","Worn","Honey Beige",133)
+            ,new ColorLookup(114,"Worn Brown","Worn","Brown",134)
+            ,new ColorLookup(115,"Worn Dark Brown","Worn","Dark Brown",135)
+            ,new ColorLookup(116,"Worn straw beige","Worn","straw beige",136)
+            ,new ColorLookup(121,"Worn Off White","Worn","Off White",137)
+            ,new ColorLookup(123,"Worn Orange","Worn","Orange",138)
+            ,new ColorLookup(124,"Worn Light Orange","Worn","Light Orange",139)
+            ,new ColorLookup(126,"Worn Taxi Yellow","Worn","Taxi Yellow",140)
+            ,new ColorLookup(130,"Worn Orange","Worn","Orange",141)
+            ,new ColorLookup(132,"Worn White","Worn","White",142)
+            ,new ColorLookup(133,"Worn Olive Army Green","Worn","Olive Army Green",143)
+
+
+
+            ,new ColorLookup(134,"Pure White","Standard","Pure White",150)
+            ,new ColorLookup(135,"Hot Pink","Standard","Hot Pink",150)
+            ,new ColorLookup(136,"Salmon pink","Standard","Salmon Pink",150)
+            ,new ColorLookup(138,"Orange","Standard","Orange",150)
+            ,new ColorLookup(139,"Green","Standard","Green",150)
+            ,new ColorLookup(140,"Blue","Standard","Blue",150)
+
+            ,new ColorLookup(120,"Chrome","Chrome","Chrome",199)
+
+
+            ,new ColorLookup(117,"Brushed Steel","Metals","Brushed Steel",200)
+            ,new ColorLookup(118,"Brushed Black Steel","Metals","Brushed Black Steel",201)
+            ,new ColorLookup(119,"Brushed Aluminium","Metals","Brushed Aluminium",202)
+            ,new ColorLookup(158,"Pure Gold","Metals","Pure Gold",203)
+            ,new ColorLookup(159,"Brushed Gold","Metals","Brushed Gold",204)
+
+
+
+            //,new ColorLookup(127,"police car blue","Unknown","police car blue",205)
+            //,new ColorLookup(156,"DEFAULT ALLOY COLOR","Unknown","DEFAULT ALLOY COLOR",206)
+            //,new ColorLookup(157,"Epsilon Blue","Unknown","Epsilon Blue",207)
+            //,new ColorLookup(144,"hunter green","Unknown","hunter green",208)
+            //,new ColorLookup(147,"MODSHOP BLACK1","Unknown","MODSHOP BLACK1",209)
+
         };
         CreatePurchaseMenu();
     }
@@ -344,7 +349,6 @@ public class PurchaseMenu : Menu
             ClearPreviews();
         }
     }
-
     public void OnAmountChanged(ModItem modItem)
     {
         if (modItem != null)
@@ -359,8 +363,6 @@ public class PurchaseMenu : Menu
             }
         }
     }
-
-
 
     private void AddPropEntry(MenuItem menuItem, ModItem modItem)
     {
@@ -382,14 +384,18 @@ public class PurchaseMenu : Menu
         VehicleItem vehicleItem = (VehicleItem)myItem;
         if (vehicleItem != null && (!vehicleItem.RequiresDLC || Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores))
         {
+            //Setup Menu
             string formattedPurchasePrice = cii.PurchasePrice.ToString("C0");
             if (cii.PurchasePrice == 0)
             {
                 formattedPurchasePrice = "FREE";
             }
+
             string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(myItem.ModelItem.ModelName));
             string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(myItem.ModelItem.ModelName));
             string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(myItem.ModelItem.ModelName));
+
+
             string description;
             if (myItem.Description.Length >= 200)
             {
@@ -399,6 +405,9 @@ public class PurchaseMenu : Menu
             {
                 description = myItem.Description;
             }
+
+
+
             description += "~n~~s~";
             if (MakeName != "")
             {
@@ -416,6 +425,8 @@ public class PurchaseMenu : Menu
             {
                 description += $"~n~~b~DLC Vehicle";
             }
+
+
             UIMenu VehicleMenu = null;
             bool FoundCategoryMenu = false;
             foreach (UIMenu uimen in MenuPool.ToList())
@@ -437,6 +448,7 @@ public class PurchaseMenu : Menu
                 purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
                 EntryPoint.WriteToConsole($"Added Vehicle {myItem.Name} To Main Buy Menu", 5);
             }
+
             if (HasBannerImage)
             {
                 VehicleMenu.SetBannerType(BannerImage);
@@ -445,24 +457,90 @@ public class PurchaseMenu : Menu
             {
                 VehicleMenu.RemoveBanner();
             }
-            UIMenuItem SetPlate = new UIMenuItem($"Set Plate", $"Change License Plate");
-            UIMenuListScrollerItem<ColorLookup> ColorMenu = new UIMenuListScrollerItem<ColorLookup>("Color", "Select Color", ColorList);
-            UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Primary Color", "Select Primary Color", ColorList);
-            UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Secondary Color", "Select Secondary Color", ColorList);
-            description = myItem.Description;
-            if (description == "")
+
+            UIMenu colorFullMenu = MenuPool.AddSubMenu(VehicleMenu, "Colors");
+            colorFullMenu.SubtitleText = "COLORS";
+            VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Colors";
+            if (HasBannerImage) { colorFullMenu.SetBannerType(BannerImage); }
+
+            UIMenu primaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Primary Color");
+            primaryColorMenu.SubtitleText = "COLOR GROUPS";
+            colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Primary Colors";
+            if (HasBannerImage) { primaryColorMenu.SetBannerType(BannerImage); }
+
+            UIMenu secondaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Secondary Color");
+            secondaryColorMenu.SubtitleText = "COLOR GROUPS";
+            colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
+            if (HasBannerImage) { secondaryColorMenu.SetBannerType(BannerImage); }
+
+
+            //Add Color Sub Menu Here
+            foreach (string colorGroupString in ColorList.GroupBy(x => x.ColorGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
             {
-                description = $"List Price {formattedPurchasePrice}";
+                UIMenu primarycolorGroupMenu = MenuPool.AddSubMenu(primaryColorMenu, colorGroupString);
+                primarycolorGroupMenu.SubtitleText = "PRIMARY COLORS";
+                primaryColorMenu.MenuItems[primaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+                if (HasBannerImage) { primarycolorGroupMenu.SetBannerType(BannerImage); }
+
+                UIMenu secondarycolorGroupMenu = MenuPool.AddSubMenu(secondaryColorMenu, colorGroupString);
+                secondarycolorGroupMenu.SubtitleText = "SECONDARY COLORS";
+                secondaryColorMenu.MenuItems[secondaryColorMenu.MenuItems.Count() - 1].Description = "Choose a color group";
+                if (HasBannerImage) { secondarycolorGroupMenu.SetBannerType(BannerImage); }
+
+                foreach (ColorLookup cl in ColorList.Where(x=>x.ColorGroup == colorGroupString))
+                {
+                    UIMenuItem actualColorPrimary = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                    actualColorPrimary.Activated += (sender, selectedItem) =>
+                    {
+                        PrimaryColor = cl.ColorID;
+                        if (SellingVehicle.Exists())
+                        {
+                            NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+                        }
+                    };
+                    primarycolorGroupMenu.AddItem(actualColorPrimary);
+
+                    UIMenuItem actualColorSeconmdary = new UIMenuItem(cl.ColorName, cl.FullColorName);
+                    actualColorSeconmdary.Activated += (sender, selectedItem) =>
+                    {
+                        SecondaryColor = cl.ColorID;
+                        if (SellingVehicle.Exists())
+                        {
+                            NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
+                        }
+                    };
+                    secondarycolorGroupMenu.AddItem(actualColorSeconmdary);
+                }
             }
+
+            //Purchase Stuff Here
             UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
-            VehicleMenu.AddItem(ColorMenu);
-            VehicleMenu.AddItem(PrimaryColorMenu);
-            VehicleMenu.AddItem(SecondaryColorMenu);
+            Purchase.Activated += (sender, selectedItem) =>
+            {
+                if (cii != null)
+                {
+                    EntryPoint.WriteToConsole($"Vehicle Purchase {cii.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {cii.PurchasePrice}", 5);
+                    if (Player.BankAccounts.Money < cii.PurchasePrice)
+                    {
+                        DisplayInsufficientFundsMessage();
+                        return;
+                    }
+                    if (!PurchaseVehicle(vehicleItem))
+                    {
+                        return;
+                    }
+                    Player.BankAccounts.GiveMoney(-1 * cii.PurchasePrice);
+                    MoneySpent += cii.PurchasePrice;
+                }
+                sender.Visible = false;
+                Dispose();
+            };
             VehicleMenu.AddItem(Purchase);
-            VehicleMenu.OnItemSelect += OnVehicleItemSelect;
-            VehicleMenu.OnScrollerChange += OnVehicleScrollerChange;
         }
     }
+
+
+
     private void AddWeaponEntry(MenuItem cii, ModItem myItem)
     {
         WeaponItem weaponItem = (WeaponItem)myItem;
@@ -569,6 +647,7 @@ public class PurchaseMenu : Menu
             //WeaponMenu.OnMenuOpen += WeaponMenuOnMenuOpen;
         }
     }
+
     private void CreateCategories()
     {
         List<WeaponCategory> WeaponCategories = new List<WeaponCategory>();
@@ -709,9 +788,6 @@ public class PurchaseMenu : Menu
             //LoopMenus();
         }
     }
-
-
-
     private void UpdatePropEntryData(ModItem modItem, MenuItem menuItem, UIMenuNumericScrollerItem<int> scrollerItem)
     {
         if (modItem != null && menuItem != null && scrollerItem != null)
@@ -872,30 +948,6 @@ public class PurchaseMenu : Menu
             }
         }
     }
-    private void OnVehicleItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Purchase" && CurrentModItem != null)
-        {
-            MenuItem menuItem = ShopMenu.Items.Where(x => x.ModItemName == CurrentModItem.Name).FirstOrDefault();
-            if (menuItem != null)
-            {
-                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {Player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
-                if (Player.BankAccounts.Money < menuItem.PurchasePrice)
-                {
-                    DisplayInsufficientFundsMessage();
-                    return;
-                }
-                if (!PurchaseVehicle(CurrentModItem))
-                {
-                    return;
-                }
-                Player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice);
-                MoneySpent += menuItem.PurchasePrice;
-            }
-            sender.Visible = false;
-            Dispose();
-        }
-    }
     private void OnVehicleScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
         if (item.Text == "Primary Color")
@@ -916,12 +968,7 @@ public class PurchaseMenu : Menu
         }
         else if (item.Text == "Color")
         {
-            PrimaryColor = newIndex;
-            SecondaryColor = newIndex;
-            if (SellingVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
-            }
+
         }
     }
     private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
@@ -1242,9 +1289,6 @@ public class PurchaseMenu : Menu
     }
 
 
-
-
-
     private void PreviewPed(ModItem itemToShow)
     {
         //GameFiber.Yield();
@@ -1401,8 +1445,6 @@ public class PurchaseMenu : Menu
         //GameFiber.Yield();
     }
 
-
-
     private bool PurchaseAmmo(int TotalItems)
     {
         if (CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(Player.Character, CurrentWeapon.Hash, false))
@@ -1536,7 +1578,6 @@ public class PurchaseMenu : Menu
         return false;
     }
 
-
     private void DisplayInsufficientFundsMessage()
     {
         PlayErrorSound();
@@ -1553,14 +1594,20 @@ public class PurchaseMenu : Menu
         public ColorLookup()
         {
         }
-        public ColorLookup(int colorID, string colorName)
+        public ColorLookup(int colorID, string fullColorName, string colorGroup, string colorName, int order)
         {
             ColorID = colorID;
+            FullColorName = fullColorName;
+            ColorGroup = colorGroup;
             ColorName = colorName;
+            Order = order;
         }
 
         public int ColorID { get; set; }
+        public string FullColorName { get; set; }
+        public string ColorGroup { get; set; }
         public string ColorName { get; set; }
+        public int Order { get; set; }
         public override string ToString()
         {
             return ColorName;

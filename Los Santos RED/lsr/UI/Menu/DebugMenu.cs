@@ -396,7 +396,7 @@ public class DebugMenu : Menu
             Player.RelationshipManager.OfficerFriendlyRelationship.Reset(false);
             Player.RelationshipManager.OfficerFriendlyRelationship.SetReputation(Player.RelationshipManager.OfficerFriendlyRelationship.RepMaximum,false);
             Player.RelationshipManager.OfficerFriendlyRelationship.SetMoneySpent(90000,false);
-            Player.CellPhone.AddCopContact(false);
+            Player.CellPhone.AddContact(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), false);
             menu.Visible = false;
         };
         UIMenuItem AddUndergroundGuns = new UIMenuItem("Add Underground Guns", "Add underground guns contact and set relationship to friendly");
@@ -405,17 +405,12 @@ public class DebugMenu : Menu
             Player.RelationshipManager.GunDealerRelationship.Reset(false);
             Player.RelationshipManager.GunDealerRelationship.SetReputation(Player.RelationshipManager.GunDealerRelationship.RepMaximum, false);
             Player.RelationshipManager.GunDealerRelationship.SetMoneySpent(90000, false);
-            Player.CellPhone.AddGunDealerContact(false);
+            Player.CellPhone.AddContact(new GunDealerContact(StaticStrings.UndergroundGunsContactName), false);
             menu.Visible = false;
         };
         
-     
-
-
         PlayerStateItemsMenu.AddItem(AddOfficerFriendly);
         PlayerStateItemsMenu.AddItem(AddUndergroundGuns);
-
-
     }
     public void Setup()
     {

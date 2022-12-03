@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangInteraction
+public class GangInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
     private UIMenu GangMenu;
@@ -40,68 +40,78 @@ public class GangInteraction
         PlacesOfInterest = placesOfInterest;
         MenuPool = new MenuPool();
     }
+    public void Start(PhoneContact phoneContact)
+    {
+        if(phoneContact != null)
+        {
+            Start(Gangs.GetGangByContact(phoneContact.Name));
+        }
+    }
     public void Start(Gang gang)
     {
-        ActiveGang = gang;
-        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(ActiveGang);
-        int repLevel = Player.RelationshipManager.GangRelationships.GetRepuationLevel(ActiveGang);
-
-        GangMenu = new UIMenu("", "Select an Option");
-        GangMenu.RemoveBanner();
-        MenuPool.Add(GangMenu);
-        GangMenu.OnItemSelect += OnGangItemSelect;
-        if (!gr.IsEnemy)
+        if (gang != null)
         {
-            if (gr != null && gr.PlayerDebt > 0)
+            ActiveGang = gang;
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(ActiveGang);
+            int repLevel = Player.RelationshipManager.GangRelationships.GetRepuationLevel(ActiveGang);
+
+            GangMenu = new UIMenu("", "Select an Option");
+            GangMenu.RemoveBanner();
+            MenuPool.Add(GangMenu);
+            GangMenu.OnItemSelect += OnGangItemSelect;
+            if (!gr.IsEnemy)
             {
-                PayoffDebt = new UIMenuItem("Payoff Debt", "Payoff your current debt to the gang") { RightLabel = "~r~" + gr.PlayerDebt.ToString("C0") + "~s~" };
-                GangMenu.AddItem(PayoffDebt);
-            }
-            else if (repLevel < 0)
-            {
-                PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
-                ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
-                GangMenu.AddItem(PayoffGangNeutral);
-                GangMenu.AddItem(ApoligizeToGang);
-            }
-            else if (repLevel >= gr.FriendlyRepLevel)
-            {
-                if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
+                if (gr != null && gr.PlayerDebt > 0)
                 {
-                    GangTaskCancel = new UIMenuItem("Cancel Task", "Tell the gang you can't complete the task.") { RightLabel = "~o~$?~s~" };
-                    GangMenu.AddItem(GangTaskCancel);
+                    PayoffDebt = new UIMenuItem("Payoff Debt", "Payoff your current debt to the gang") { RightLabel = "~r~" + gr.PlayerDebt.ToString("C0") + "~s~" };
+                    GangMenu.AddItem(PayoffDebt);
+                }
+                else if (repLevel < 0)
+                {
+                    PayoffGangNeutral = new UIMenuItem("Payoff", "Payoff the gang to return to a neutral relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
+                    ApoligizeToGang = new UIMenuItem("Apologize", "Apologize to the gang for your actions");
+                    GangMenu.AddItem(PayoffGangNeutral);
+                    GangMenu.AddItem(ApoligizeToGang);
+                }
+                else if (repLevel >= gr.FriendlyRepLevel)
+                {
+                    if (Player.PlayerTasks.HasTask(ActiveGang.ContactName))
+                    {
+                        GangTaskCancel = new UIMenuItem("Cancel Task", "Tell the gang you can't complete the task.") { RightLabel = "~o~$?~s~" };
+                        GangMenu.AddItem(GangTaskCancel);
+                    }
+                    else
+                    {
+                        GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
+                        GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
+                        GangTheft = new UIMenuItem("Theft", "Steal an item for the gang. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
+                        GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
+                        GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
+                        GangPizza = new UIMenuItem("Pizza Man", "Pizza Time.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
+
+                        GangMenu.AddItem(GangHit);
+                        GangMenu.AddItem(GangMoneyPickup);
+                        GangMenu.AddItem(GangTheft);
+                        GangMenu.AddItem(GangDelivery);
+                        GangMenu.AddItem(GangWheelman);
+
+
+                        if (gang.ShortName == "Gambetti" || gang.ShortName == "Pavano" || gang.ShortName == "Lupisella" || gang.ShortName == "Messina" || gang.ShortName == "Ancelotti")
+                        {
+                            GangMenu.AddItem(GangPizza);
+                        }
+
+                    }
+                    RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
+                    GangMenu.AddItem(RequestGangDen);
                 }
                 else
                 {
-                    GangHit = new UIMenuItem("Hit", "Do a hit for the gang on a rival.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.HitPaymentMin:C0}-{gang.HitPaymentMax:C0}~s~" };
-                    GangMoneyPickup = new UIMenuItem("Money Pickup", "Pickup some cash from a dead drop for the gang and bring it back.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.PickupPaymentMin:C0}-{gang.PickupPaymentMax:C0}~s~" };
-                    GangTheft = new UIMenuItem("Theft", "Steal an item for the gang. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.TheftPaymentMin:C0}-{gang.TheftPaymentMax:C0}~s~" };
-                    GangDelivery = new UIMenuItem("Delivery", "Source some items for the gang.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.DeliveryPaymentMin:C0}-{gang.DeliveryPaymentMax:C0}~s~" };
-                    GangWheelman = new UIMenuItem("Wheelman", "Be a wheelman for the gang ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{gang.WheelmanPaymentMin:C0}-{gang.WheelmanPaymentMax:C0}~s~" };
-                    GangPizza = new UIMenuItem("Pizza Man", "Pizza Time.") { RightLabel = $"~HUD_COLOUR_GREENDARK~{100:C0}-{250:C0}~s~" };
-
-                    GangMenu.AddItem(GangHit);
-                    GangMenu.AddItem(GangMoneyPickup);
-                    GangMenu.AddItem(GangTheft);
-                    GangMenu.AddItem(GangDelivery);
-                    GangMenu.AddItem(GangWheelman);
-
-
-                    if (gang.ShortName == "Gambetti" || gang.ShortName == "Pavano" || gang.ShortName == "Lupisella" || gang.ShortName == "Messina" || gang.ShortName == "Ancelotti")
-                    {
-                        GangMenu.AddItem(GangPizza);
-                    }
-
+                    PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
+                    GangMenu.AddItem(PayoffGangFriendly);
                 }
-                RequestGangDen = new UIMenuItem("Request Invite", "Request the location of the gang den");
-                GangMenu.AddItem(RequestGangDen);
+                GangMenu.Visible = true;
             }
-            else
-            {
-                PayoffGangFriendly = new UIMenuItem("Payoff", "Payoff the gang to get a friendly relationship") { RightLabel = "~r~" + gr.CostToPayoff.ToString("C0") + "~s~" };
-                GangMenu.AddItem(PayoffGangFriendly);
-            }
-            GangMenu.Visible = true;
         }
         GameFiber.StartNew(delegate
         {

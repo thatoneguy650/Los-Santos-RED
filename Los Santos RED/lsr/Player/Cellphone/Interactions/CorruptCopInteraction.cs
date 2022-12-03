@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class CorruptCopInteraction
+public class CorruptCopInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
 

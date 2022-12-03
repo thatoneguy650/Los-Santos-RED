@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class EmergencyServicesInteraction
+public class EmergencyServicesInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
 
@@ -26,7 +26,9 @@ public class EmergencyServicesInteraction
     private string playerCurrentFormattedStreetName;
     private string playerCurrentFormattedZoneName;
     private IJurisdictions Jurisdictions;
-
+    private ISettingsProvideable Settings;
+    private ICrimes Crimes;
+    private IEntityProvideable World;
     private int CostToClearWanted
     {
         get
@@ -34,13 +36,16 @@ public class EmergencyServicesInteraction
             return Player.WantedLevel * 10000;
         }
     }
-    public EmergencyServicesInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, IJurisdictions jurisdictions)
+    public EmergencyServicesInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         MenuPool = new MenuPool();
         Jurisdictions = jurisdictions;
+        Settings = settings;
+        Crimes = crimes;
+        World = world;
     }
     public void Start(PhoneContact contact)
     {
@@ -103,7 +108,7 @@ public class EmergencyServicesInteraction
         fullText += " is en route to ";
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
         Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CellPhone.CallPolice();
+        CallPolice();
     }
     private void RequestFireAssistance()
     {
@@ -125,7 +130,7 @@ public class EmergencyServicesInteraction
 
         //fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
         Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CellPhone.CallFire();
+        CallFire();
     }
     private void RequestEMSAssistance()
     {
@@ -146,8 +151,58 @@ public class EmergencyServicesInteraction
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
        // fullText = "We are sorry, all our ~w~ambulances~s~ are busy. Please try again later.";
         Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
-        Player.CellPhone.CallEMS();
+        CallEMS();
     }
+
+
+    public void CallEMS()
+    {
+        if (Settings.SettingsManager.EMSSettings.ManageDispatching && Settings.SettingsManager.EMSSettings.ManageTasking)// && World.TotalWantedLevel <= 1)
+        {
+            Player.Scanner.Reset();
+            Player.Investigation.Start(Player.Position, false, false, true, false);
+            Player.Scanner.OnMedicalServicesRequested();
+        }
+    }
+    public void CallFire()
+    {
+        if (1==1)//World.TotalWantedLevel <= 1)
+        {
+            Player.Scanner.Reset();
+            Player.Investigation.Start(Player.Position, false, false, false, true);
+            Player.Scanner.OnFirefightingServicesRequested();
+        }
+    }
+    public void CallPolice()
+    {
+        Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
+        PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
+
+
+
+        CrimeSceneDescription description;
+        if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
+        {
+            description = new CrimeSceneDescription(!violatingCiv.IsInVehicle, Player.IsCop, violatingCiv.Pedestrian.Position, false) { VehicleSeen = null, WeaponSeen = null };
+            ToCallIn = violatingCiv.CrimesCurrentlyViolating.OrderBy(x => x.Priority).FirstOrDefault();
+        }
+        else
+        {
+            description = new CrimeSceneDescription(false, Player.IsCop, Player.Position);
+        }
+
+        if (Player.IsCop)
+        {
+            Player.Scanner.Reset();
+            Player.Scanner.AnnounceCrime(ToCallIn, description);
+            Player.Investigation.Start(Player.Position, false, true, false, false);
+        }
+        else
+        {
+            Player.AddCrime(ToCallIn, false, description.PlaceSeen, description.VehicleSeen, description.WeaponSeen, false, true, false);
+        }
+    }
+
 
 }
 

@@ -30,6 +30,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private int RepToNextLevel;
         private bool HasAddedComplications;
         private bool WillAddComplications;
+        private GangContact Contact;
 
         private bool HasDeadDrop => DeadDrop != null;
 
@@ -47,7 +48,6 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
         }
         public void Dispose()
         {
@@ -59,6 +59,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         public void Start(Gang ActiveGang)
         {
             HiringGang = ActiveGang;
+            Contact = new GangContact(HiringGang.ContactName, HiringGang.ContactIcon);
             if (PlayerTasks.CanStartNewTask(HiringGang?.ContactName))
             {
                 GetDeadDrop();
@@ -186,7 +187,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                                 "Ah you got me my favorite thing! I owe you a thing or two",
                                 };
             }
-            Player.CellPhone.AddScheduledText(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom(), 0);
+            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 0);
         }
         private void SendInitialInstructionsMessage()
         {
