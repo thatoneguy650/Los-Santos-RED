@@ -302,7 +302,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     "We will let you know when you can do something for us",
                     "Check back later.",
                     };
-            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         private void SendInitialInstructionsMessage()
         {
@@ -314,7 +314,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Need you to make sure ~y~{TargetCopName}~s~ doesn't make it to the deposition, they live at ~p~{TargetCopResidence.FullStreetAddress}~s~. ${MoneyToRecieve}",
                      };
 
-            Player.CellPhone.AddPhoneResponse(StaticStrings.OfficerFriendlyContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         private void SendQuickPaymentMessage()
         {

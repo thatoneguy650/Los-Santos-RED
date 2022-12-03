@@ -15,6 +15,7 @@ public class GangKickUp
     private IGangRelateable Player;
     private Gang Gang;
     private ITimeReportable Time;
+    private GangContact Contact;
 
     public DateTime DueDate { get; private set; }
     public int DueAmount { get; private set; }
@@ -28,7 +29,7 @@ public class GangKickUp
         Player = player;
         Gang = gang;
         Time = time;
-
+        Contact = new GangContact(Gang.ContactName, Gang.ContactIcon);
     }
     public void Setup()
     {
@@ -123,7 +124,7 @@ public class GangKickUp
             $"You need to kick up ${DueAmount} every {Gang.MemberKickUpDays} days.",
             $"This ain't free, ${DueAmount} every {Gang.MemberKickUpDays} days.",
         };
-        Player.CellPhone.AddScheduledText(new GangContact(Gang.ContactName, Gang.ContactIcon), StartMessages.PickRandom());
+        Player.CellPhone.AddScheduledText(Contact, StartMessages.PickRandom());
     }
     private void SendPaymentMessage()
     {
@@ -145,7 +146,7 @@ public class GangKickUp
             $"Cutting it a little close? ${DueAmount} by {DueDate:g}.",
 
         };
-        Player.CellPhone.AddScheduledText(new GangContact(Gang.ContactName, Gang.ContactIcon), WarningMessages.PickRandom());
+        Player.CellPhone.AddScheduledText(Contact, WarningMessages.PickRandom());
         HasSentWarning = true;
         EntryPoint.WriteToConsole("SENT WARNING FOR GANG KICK UP");
     }
@@ -160,7 +161,7 @@ public class GangKickUp
         $"Missing the kick up can be hazardous to your health. Now its ${DueAmount} by {DueDate:g}. Don't forget.",
         $"Fuck you, pay me ${DueAmount} by {DueDate:g}.",
         };
-        Player.CellPhone.AddScheduledText(new GangContact(Gang.ContactName, Gang.ContactIcon), MissedMessages.PickRandom());
+        Player.CellPhone.AddScheduledText(Contact, MissedMessages.PickRandom());
     }
     public override string ToString()
     {

@@ -160,7 +160,7 @@ public class InteractableLocation : BasicLocation
         {
             Merchant.Pedestrian.Delete();
         }
-        if (World.Places.ActiveInteractableLocations.Contains(this))
+        if (World != null && World.Places != null && World.Places.ActiveInteractableLocations != null && World.Places.ActiveInteractableLocations.Contains(this))
         {
             World.Places.ActiveInteractableLocations.Remove(this);
         }

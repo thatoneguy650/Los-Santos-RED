@@ -314,7 +314,7 @@ public class BasicLocation
         {
             interior.Unload();
         }
-        if (World.Places.ActiveLocations.Contains(this))
+        if (World != null && World.Places.ActiveLocations.Contains(this))
         {
             World.Places.ActiveLocations.Remove(this);
         }

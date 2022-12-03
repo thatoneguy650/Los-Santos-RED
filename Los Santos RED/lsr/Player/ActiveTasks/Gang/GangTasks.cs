@@ -52,23 +52,10 @@ public class GangTasks
         Names = names;
         Weapons = weapons;
         PedGroups = pedGroups;
-        //RivalGangHit = new RivalGangHitTask(Player,Time,Gangs,PlayerTasks,PlacesOfInterest,ActiveDrops,Settings,World,Crimes);
-        //PayoffGangTask = new PayoffGangTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        //RivalGangTheftTask = new RivalGangTheftTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        //GangPickupTask = new GangPickupTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
-        //GangDeliveryTask = new GangDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
-        //GangWheelmanTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, weapons, Names, PedGroups, ShopMenus);
-        //GangPizzaDeliveryTask = new GangPizzaDeliveryTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, ModItems, ShopMenus);
     }
     public void Setup()
     {
-        //RivalGangHit.Setup();
-        //PayoffGangTask.Setup();
-        //RivalGangTheftTask.Setup();
-        //GangPickupTask.Setup();
-        //GangDeliveryTask.Setup();
-        //GangWheelmanTask.Setup();
-        //GangPizzaDeliveryTask.Setup();
+
     }
     public void Dispose()
     {    

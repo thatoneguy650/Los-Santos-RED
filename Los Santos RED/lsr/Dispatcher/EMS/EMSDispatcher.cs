@@ -346,6 +346,9 @@ public class EMSDispatcher
     }
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
+        VehicleType = null;
+        PersonType = null;
+        Agency = null;
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;

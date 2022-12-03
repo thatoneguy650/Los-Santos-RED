@@ -161,7 +161,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
                 $"They are out to get you since you fucked with the cops, nothing I can do.",
                 $"Next time don't send so many cops to the hospital and maybe I can help",
                 };
-            Player.CellPhone.AddPhoneResponse(contact.Name, contact.IconName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(contact.Name,contact.IconName, Replies.PickRandom());
         }
         else if (Player.WantedLevel == 1)
         {

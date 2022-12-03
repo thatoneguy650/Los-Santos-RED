@@ -90,7 +90,6 @@ public class PedSwap : IPedSwap
             Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
     }
-
     public void BecomeCustomPed2()
     {
         try
@@ -123,7 +122,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: BecomeCustomPed2; " + ex.Message + " " + ex.StackTrace, 0);
         }
     }
-
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
     {
         try
@@ -251,8 +249,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
-
     public void BecomeCop(Agency agency)
     {
         try
@@ -321,7 +317,6 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-
     public void BecomeGangMember(Gang gang)
     {
         try

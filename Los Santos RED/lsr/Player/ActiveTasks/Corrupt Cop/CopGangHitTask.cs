@@ -180,7 +180,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     "We will let you know when you can do something for us",
                     "Check back later.",
                     };
-            Player.CellPhone.AddPhoneResponse(StaticStrings.UndergroundGunsContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name, Contact.IconName, Replies.PickRandom());
         }
         private void SendInitialInstructionsMessage()
         {
@@ -201,7 +201,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     $"Need some spectacle in the streets to keep our budget. Need you to waste {MembersToKill} {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ members. ${MoneyToRecieve}",
                      };
             }
-            Player.CellPhone.AddPhoneResponse(StaticStrings.OfficerFriendlyContactName, Replies.PickRandom());
+            Player.CellPhone.AddPhoneResponse(Contact.Name,Contact.IconName, Replies.PickRandom());
         }
         private void SendQuickPaymentMessage()
         {

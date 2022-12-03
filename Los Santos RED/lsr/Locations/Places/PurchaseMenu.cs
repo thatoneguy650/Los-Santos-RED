@@ -464,12 +464,12 @@ public class PurchaseMenu : Menu
             if (HasBannerImage) { colorFullMenu.SetBannerType(BannerImage); }
 
             UIMenu primaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Primary Color");
-            primaryColorMenu.SubtitleText = "COLOR GROUPS";
+            primaryColorMenu.SubtitleText = "PRIMARY COLOR GROUPS";
             colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Primary Colors";
             if (HasBannerImage) { primaryColorMenu.SetBannerType(BannerImage); }
 
             UIMenu secondaryColorMenu = MenuPool.AddSubMenu(colorFullMenu, "Secondary Color");
-            secondaryColorMenu.SubtitleText = "COLOR GROUPS";
+            secondaryColorMenu.SubtitleText = "SECONDARY COLOR GROUPS";
             colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
             if (HasBannerImage) { secondaryColorMenu.SetBannerType(BannerImage); }
 
@@ -946,29 +946,6 @@ public class PurchaseMenu : Menu
             {
                 EntryPoint.WriteToConsole($"    Sub Level: {menuItem.ModItemName}", 5);
             }
-        }
-    }
-    private void OnVehicleScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
-    {
-        if (item.Text == "Primary Color")
-        {
-            PrimaryColor = newIndex;
-            if (SellingVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
-            }
-        }
-        else if (item.Text == "Secondary Color")
-        {
-            SecondaryColor = newIndex;
-            if (SellingVehicle.Exists())
-            {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(SellingVehicle, PrimaryColor, SecondaryColor);
-            }
-        }
-        else if (item.Text == "Color")
-        {
-
         }
     }
     private void OnWeaponItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)

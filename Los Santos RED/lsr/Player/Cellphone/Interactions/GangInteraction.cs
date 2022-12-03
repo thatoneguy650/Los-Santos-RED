@@ -32,13 +32,15 @@ public class GangInteraction : IContactMenuInteraction
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
     private UIMenuItem PayoffDebt;
+    private GangContact GangContact;
 
-    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest)
+    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         MenuPool = new MenuPool();
+        GangContact = gangContact;
     }
     public void Start(PhoneContact phoneContact)
     {

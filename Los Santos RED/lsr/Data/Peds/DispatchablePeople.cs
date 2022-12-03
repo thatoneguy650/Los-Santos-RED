@@ -26,7 +26,8 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> CoastGuardPeds;
     private List<DispatchablePerson> NYSPPeds;
     private List<DispatchablePerson> Firefighters;
-    private List<DispatchablePerson> EMTs;
+    private List<DispatchablePerson> GreenEMTs;
+    private List<DispatchablePerson> BlueEMTs;
     private List<DispatchablePerson> LostMCPeds;
     private List<DispatchablePerson> VagosPeds;
     private List<DispatchablePerson> FamiliesPeds;
@@ -368,8 +369,141 @@ public class DispatchablePeople : IDispatchablePeople
         Firefighters = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_fireman_01",100,100)  { DebugName = "FireFighterMale" },
         };
-        EMTs = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_paramedic_01",100,100)   { DebugName = "EMTMale" },
+        GreenEMTs = new List<DispatchablePerson>() {
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "EMTMaleGreen1"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 85, 0, 0),
+                        new PedComponent(4, 96, 1, 0),
+                        new PedComponent(6, 25, 0, 0),
+                        new PedComponent(7, 127, 0, 0),
+                        new PedComponent(8, 129, 0, 0),
+                        new PedComponent(10, 58, 0, 0),
+                        new PedComponent(11, 250, 1, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 122, 1) })
+            },
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "EMTMaleGreen2"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 85, 0, 0),
+                        new PedComponent(4, 96, 1, 0),
+                        new PedComponent(6, 25, 0, 0),
+                        new PedComponent(7, 126, 0, 0),
+                        new PedComponent(8, 129, 0, 0),
+                        new PedComponent(10, 58, 0, 0),
+                        new PedComponent(11, 250, 1, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 122, 1) })
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "EMTFemaleGreen1"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 98, 0, 0),
+                        new PedComponent(4, 99, 1, 0),
+                        new PedComponent(6, 55, 0, 0),
+                        new PedComponent(7, 97, 0, 0),
+                        new PedComponent(8, 159, 0, 0),
+                        new PedComponent(10, 66, 0, 0),//or 66 65 is the one with chest icon, 66 has only side
+                        new PedComponent(11, 258, 1, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 121, 1) })
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "EMTFemaleGreen2"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 98, 0, 0),
+                        new PedComponent(4, 99, 1, 0),
+                        new PedComponent(6, 55, 0, 0),
+                        new PedComponent(7, 96, 0, 0),
+                        new PedComponent(8, 159, 0, 0),
+                        new PedComponent(10, 66, 0, 0),//or 66 65 is the one with chest icon, 66 has only side
+                        new PedComponent(11, 258, 1, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 121, 1) })
+            },
+
+            new DispatchablePerson("s_m_m_paramedic_01",0,0)   { DebugName = "EMTMaleDefault" },
+
+        };
+        BlueEMTs = new List<DispatchablePerson>() {
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "EMTMaleBlue1"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 85, 0, 0),
+                        new PedComponent(4, 96, 0, 0),
+                        new PedComponent(6, 25, 0, 0),
+                        new PedComponent(7, 127, 0, 0),
+                        new PedComponent(8, 129, 0, 0),
+                        new PedComponent(10, 58, 0, 0),
+                        new PedComponent(11, 250, 0, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 122, 0) })
+            },
+            new DispatchablePerson("mp_m_freemode_01",100,100) {
+                DebugName = "EMTMaleBlue2"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 85, 0, 0),
+                        new PedComponent(4, 96, 0, 0),
+                        new PedComponent(6, 25, 0, 0),
+                        new PedComponent(7, 126, 0, 0),
+                        new PedComponent(8, 129, 0, 0),
+                        new PedComponent(10, 58, 0, 0),
+                        new PedComponent(11, 250, 0, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 122, 0) })
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "EMTFemaleBlue1"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 98, 0, 0),
+                        new PedComponent(4, 99, 0, 0),
+                        new PedComponent(6, 55, 0, 0),
+                        new PedComponent(7, 97, 0, 0),
+                        new PedComponent(8, 159, 0, 0),
+                        new PedComponent(10, 66, 0, 0),//or 66
+                        new PedComponent(11, 258, 0, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 121, 0) })
+            },
+            new DispatchablePerson("mp_f_freemode_01",100,100) {
+                DebugName = "EMTFemaleBlue2"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {
+                        new PedComponent(3, 98, 0, 0),
+                        new PedComponent(4, 99, 0, 0),
+                        new PedComponent(6, 55, 0, 0),
+                        new PedComponent(7, 96, 0, 0),
+                        new PedComponent(8, 159, 0, 0),
+                        new PedComponent(10, 66, 0, 0),//or 66
+                        new PedComponent(11, 258, 0, 0)
+                    },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 121, 0) })
+            },
+            new DispatchablePerson("s_m_m_paramedic_01",0,0)   { DebugName = "EMTMaleDefault" },
         };
 
         //Gangs
@@ -593,7 +727,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
-        PeopleGroupLookup.Add(new DispatchablePersonGroup("EMTs", EMTs));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("BlueEMTs", BlueEMTs));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("GreenEMTs", GreenEMTs));
 
         //Gangs
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
@@ -694,7 +829,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
-        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("EMTs", EMTs));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BlueEMTs", BlueEMTs));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("GreenEMTs", GreenEMTs));
 
         //Gangs
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
@@ -764,7 +900,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("EMTs", EMTs));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("BlueEMTs", BlueEMTs));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("GreenEMTs", GreenEMTs));
 
         //Gangs
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
@@ -4875,7 +5012,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("Firefighters", Firefighters));
-        PeopleConfig_EUP.Add(new DispatchablePersonGroup("EMTs", EMTs));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BlueEMTs", BlueEMTs));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("GreenEMTs", GreenEMTs));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSPPPeds", LSPPPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_FEJ));
