@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
@@ -41,7 +42,9 @@ public class PedSwap : IPedSwap
     private IEntityProvideable World;
     private IPedGroups PedGroups;
     private IShopMenus ShopMenus;
-    public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, IPedGroups pedGroups, IShopMenus shopMenus)
+    private IDispatchablePeople DispatchablePeople;
+    private IHeads Heads;
+    public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads)
     {
         Time = time;
         Player = player;
@@ -54,6 +57,8 @@ public class PedSwap : IPedSwap
         World = world;
         PedGroups = pedGroups;
         ShopMenus = shopMenus;
+        DispatchablePeople = dispatchablePeople;
+        Heads = heads;
     }
     public int CurrentPedMoney { get; private set; }
     public void AddOffset()
@@ -97,29 +102,38 @@ public class PedSwap : IPedSwap
 
             GameFiber.StartNew(delegate
             {
-                ResetOffsetForCurrentModel();
-                Player.IsCustomizingPed = true;
-                MenuPool menuPool = new MenuPool();
-                PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings);
-                PedCustomizer.Setup();
-                PedCustomizer.Start();
-                GameFiber.Yield();
-                while (menuPool.IsAnyMenuOpen())
+                try
                 {
-                    PedCustomizer.Update();
+                    ResetOffsetForCurrentModel();
+                    Player.IsCustomizingPed = true;
+                    MenuPool menuPool = new MenuPool();
+                    PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings, DispatchablePeople, Heads);
+                    PedCustomizer.Setup();
+                    PedCustomizer.Start();
                     GameFiber.Yield();
+                    while (menuPool.IsAnyMenuOpen())
+                    {
+                        PedCustomizer.Update();
+                        GameFiber.Yield();
+                    }
+                    PedCustomizer.Dispose();
+                    if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                    {
+                        AddOffset();
+                    }
+                    Player.IsCustomizingPed = false;
                 }
-                PedCustomizer.Dispose();
-                if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                catch (Exception ex)
                 {
-                    AddOffset();
+                    EntryPoint.WriteToConsole("PEDSWAP: BecomeCustomPed2; " + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                Player.IsCustomizingPed = false;
             }, "Custom Ped Loop 2");
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole("PEDSWAP: BecomeCustomPed2; " + ex.Message + " " + ex.StackTrace, 0);
+            EntryPoint.ModController.CrashUnload();
         }
     }
     public void BecomeExistingPed(float radius, bool nearest, bool deleteOld, bool clearNearPolice, bool createRandomPedIfNoneReturned)
@@ -277,7 +291,7 @@ public class PedSwap : IPedSwap
 
                     if (toBecome != null)
                     {
-                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads);
+                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
                     }
 
 
@@ -345,7 +359,7 @@ public class PedSwap : IPedSwap
 
                     if (toBecome != null)
                     {
-                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads);
+                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads, false);
                     }
 
 

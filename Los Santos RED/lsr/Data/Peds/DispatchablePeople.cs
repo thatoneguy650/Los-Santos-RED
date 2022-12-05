@@ -48,6 +48,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SheriffPeds_Old;
     private List<DispatchablePerson> StandardCops_Simple;
 
+    public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");

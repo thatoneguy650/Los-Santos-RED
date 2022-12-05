@@ -145,7 +145,7 @@ public class DispatchablePerson
         CombatAbilityMin = combatAbilityMin;
         CombatAbilityMax = combatAbilityMax;
     }
-    public PedVariation SetPedVariation(Ped ped, List<RandomHeadData> PossibleHeads)
+    public PedVariation SetPedVariation(Ped ped, List<RandomHeadData> PossibleHeads, bool isSlow)
     {
         PedVariation variationToSet = new PedVariation();
         if (RequiredVariation == null)
@@ -165,7 +165,14 @@ public class DispatchablePerson
             {
                 setDefaultFirst = true;
             }
-            RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
+            if (isSlow)
+            {
+                RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
+            }
+            else
+            {
+                RequiredVariation.ApplyToPed(ped, setDefaultFirst);
+            }
             if (RandomizeHead)//need to have a variation for this as its just freemode otherwise
             {
                 bool isMale = ModelName.ToLower() == "mp_m_freemode_01";

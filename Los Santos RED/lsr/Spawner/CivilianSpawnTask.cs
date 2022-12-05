@@ -157,7 +157,7 @@ public class CivilianSpawnTask : SpawnTask
                     return null;
                 }
                 PedExt Person = SetupPed(createdPed);
-                PersonType.SetPedVariation(createdPed, null);
+                PersonType.SetPedVariation(createdPed, null, true);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;

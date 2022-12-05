@@ -34,6 +34,7 @@ public class CustomizeHeadMenu
     private UIMenuListScrollerItem<ColorLookup> HairPrimaryColorMenu;
     private UIMenuListScrollerItem<ColorLookup> HairSecondaryColorMenu;
     private UIMenu HeadSubMenu;
+    private UIMenuItem HeadSubMenuItem;
     private UIMenu CustomizeMainMenu;
     private UIMenu AncestrySubMenu;
     private UIMenu HairSubMenu;
@@ -185,9 +186,18 @@ public class CustomizeHeadMenu
     {
         CustomizeMainMenu = customizeMainMenu;
         HeadSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Head");
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the head features of the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        HeadSubMenuItem = CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1];
+
+
+        HeadSubMenuItem.Description = "Change the head features of the current ped";
+        HeadSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         HeadSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        SetHeadEnabledStatus();
+
+
+
 
 
         AncestrySubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Ancestry");
@@ -216,6 +226,17 @@ public class CustomizeHeadMenu
         
     }
 
+    private void SetHeadEnabledStatus()
+    {
+        if (PedCustomizer.ModelPed.Exists() && PedCustomizer.PedModelIsFreeMode)
+        {
+            HeadSubMenuItem.Enabled = true;
+        }
+        else
+        {
+            HeadSubMenuItem.Enabled = false;
+        }
+    }
 
     private void SetupAncestryMenu()
     {
@@ -304,14 +325,27 @@ public class CustomizeHeadMenu
     }
     private void SetupHairMenu()
     {
+        HairSubMenu.Clear();
         RandomizeHair = new UIMenuItem("Randomize Hair", "Set random hair (use components to select manually)");
         RandomizeHair.Activated += (sender, selectedItem) =>
         {
             RandomizePedHair();
         };
         HairSubMenu.AddItem(RandomizeHair);
+
+
+
+
+
+
+
+
         HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select primary hair color (requires head data)", ColorList);
         HairPrimaryColorMenu.Activated += (sender, selectedItem) =>
+        {
+            SetPrimaryHairColor(HairPrimaryColorMenu.SelectedItem.ColorID);
+        };
+        HairPrimaryColorMenu.IndexChanged += (sender, e, selectedItem) =>
         {
             SetPrimaryHairColor(HairPrimaryColorMenu.SelectedItem.ColorID);
         };
@@ -319,9 +353,19 @@ public class CustomizeHeadMenu
         HairSecondaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Secondary Hair Color", "Select secondary hair color (requires head data)", ColorList);
         HairSecondaryColorMenu.Activated += (sender, selectedItem) =>
         {
-            SetSecondaryHairColor(HairPrimaryColorMenu.SelectedItem.ColorID);
+            SetSecondaryHairColor(HairSecondaryColorMenu.SelectedItem.ColorID);
+        };
+        HairSecondaryColorMenu.IndexChanged += (sender,e, selectedItem) =>
+        {
+            SetSecondaryHairColor(HairSecondaryColorMenu.SelectedItem.ColorID);
         };
         HairSubMenu.AddItem(HairSecondaryColorMenu);
+
+
+        FashionComponent HairFashionComponenet = new FashionComponent(2, "Hair");
+        HairFashionComponenet.CombineCustomizeMenu(MenuPool, HairSubMenu, PedCustomizer.ModelPed, PedCustomizer);
+
+
     }
     private void SetupFaceMenu()
     {
@@ -591,6 +635,12 @@ public class CustomizeHeadMenu
             HairPrimaryColorMenu.Index = PedCustomizer.WorkingVariation.PrimaryHairColor == -1 ? 0 : PedCustomizer.WorkingVariation.PrimaryHairColor;
             HairSecondaryColorMenu.Index = PedCustomizer.WorkingVariation.SecondaryHairColor == -1 ? 0 : PedCustomizer.WorkingVariation.SecondaryHairColor;     
         }
+    }
+    public void OnModelChanged()
+    {
+        SetHeadEnabledStatus();
+        SetupHairMenu();
+        OnVariationChanged();
     }
 }
 

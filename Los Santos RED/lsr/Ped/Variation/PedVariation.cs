@@ -54,7 +54,15 @@ public class PedVariation
     public int EyeColor { get; set; } = -1;
 
 
-
+    public void ApplyToPed(Ped ped, bool setDefaultFirst)
+    {
+        if (setDefaultFirst)
+        {
+            NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+            GameFiber.Yield();
+        }
+        ApplyToPed(ped);
+    }
 
     public void ApplyToPed(Ped ped)
     {

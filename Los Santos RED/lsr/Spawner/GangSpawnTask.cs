@@ -185,7 +185,7 @@ public class GangSpawnTask : SpawnTask
                     return null;
                 }
                 PedExt Person = SetupGangPed(createdPed);
-                PersonType.SetPedVariation(createdPed, Gang.PossibleHeads);
+                PersonType.SetPedVariation(createdPed, Gang.PossibleHeads, true);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;

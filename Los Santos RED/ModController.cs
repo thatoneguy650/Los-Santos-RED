@@ -84,7 +84,8 @@ namespace LosSantosRED.lsr
 
 
 
-            PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems, World, ModDataFileManager.RelationshipGroups, ModDataFileManager.ShopMenus);
+            PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems, World, ModDataFileManager.RelationshipGroups, 
+                ModDataFileManager.ShopMenus, ModDataFileManager.DispatchablePeople, ModDataFileManager.Heads);
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
@@ -140,7 +141,7 @@ namespace LosSantosRED.lsr
         public void Dispose()
         {
             IsRunning = false;
-            GameFiber.Sleep(500);
+            //GameFiber.Sleep(500);
             Player.Dispose();
             World.Dispose();
             PedSwap.Dispose();
@@ -153,6 +154,11 @@ namespace LosSantosRED.lsr
             WeatherManager.Dispose();
             Game.DisplayNotification("~s~Los Santos ~r~RED ~s~Deactivated");
             EntryPoint.WriteToConsole($"Has Been Deactivated",0);
+        }
+        public void CrashUnload()
+        {
+            DisplayCrashMessage();
+            Dispose();
         }
         private void StartModLogic()
         {

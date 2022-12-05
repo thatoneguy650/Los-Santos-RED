@@ -22,14 +22,17 @@ public class PedCustomizer
     private IEntityProvideable World;
     private PedExt ModelPedExt;
     private ISettingsProvideable Settings;
+    private IDispatchablePeople DispatchablePeople;
     private PedCustomizerMenu PedCustomizerMenu;
+    private IHeads Heads;
 
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
     public Ped ModelPed { get; set; }
     public string WorkingName { get; set; } = "John Doe";
     public int WorkingMoney { get; set; } = 5000;
+    public PedVariation InitialVariation { get; set; } = new PedVariation();
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings)
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -37,9 +40,11 @@ public class PedCustomizer
         Player = player;
         World = world;
         Settings = settings;
+        DispatchablePeople = dispatchablePeople;
+        Heads = heads;
     }
     public bool ChoseNewModel { get; private set; } = false;
-    public bool PedModelIsFreeMode => ModelPed.Exists() && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01";
+    public bool PedModelIsFreeMode => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01";
     public void Dispose()
     {
         if (!IsDisposed)
@@ -63,7 +68,7 @@ public class PedCustomizer
     }
     public void Setup()
     {
-        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this);
+        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads);
         PedCustomizerMenu.Setup();
     }
     public void Update()
@@ -195,62 +200,6 @@ public class PedCustomizer
             EntryPoint.WriteToConsole($"Customize Ped Error {ex.Message}  {ex.StackTrace}", 0);
         }
     }
-    private void RandomizeHairStyle()
-    {
-        //int DrawableID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_DRAWABLE_VARIATIONS<int>(ModelPed, 2));
-        //int TextureID = RandomItems.GetRandomNumberInt(0, NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(ModelPed, 2, DrawableID) - 1);
-        ////NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(ModelPed, 2, DrawableID, TextureID, 0);
-        //WorkingVariation.PrimaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-        //WorkingVariation.SecondaryHairColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-        //HairPrimaryColorMenu.Index = WorkingVariation.PrimaryHairColor;
-        //HairSecondaryColorMenu.Index = WorkingVariation.SecondaryHairColor;
-        //PedComponent hairComponent = WorkingVariation.Components.FirstOrDefault(x => x.ComponentID == 2);
-        //if (hairComponent == null)
-        //{
-        //    WorkingVariation.Components.Add(new PedComponent(2, DrawableID, TextureID, 0));
-        //}
-        //else
-        //{
-        //    hairComponent.DrawableID = DrawableID;
-        //    hairComponent.TextureID = TextureID;
-        //}
-    }
-    private void RandomizeHeadblend()
-    {
-        //int MotherID = 0;
-        //int FatherID = 0;
-        //float FatherSide = 0f;
-        //float MotherSide = 0f;
-        //MotherID = RandomItems.GetRandomNumberInt(0, 45);
-        //FatherID = RandomItems.GetRandomNumberInt(0, 45);
-        //if (ModelPed.IsMale)
-        //{
-        //    FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-        //    MotherSide = 1.0f - FatherSide;
-        //}
-        //else
-        //{
-        //    MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-        //    FatherSide = 1.0f - MotherSide;
-        //}
-
-        //Parent1IDMenu.Index = MotherID;
-        //Parent2IDMenu.Index = FatherID;
-        //Parent1MixMenu.Value = MotherSide;
-        //Parent2MixMenu.Value = FatherSide;
-        //WorkingVariation.HeadBlendData = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
-    }
-    private void RandomizeOverlay()
-    {
-        //foreach (HeadOverlayData ho in WorkingVariation.HeadOverlays)
-        //{
-        //    int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);
-        //    ho.Index = RandomItems.GetRandomNumberInt(-1, TotalItems - 1);
-        //    ho.Opacity = RandomItems.GetRandomNumber(0.0f, 1.0f);
-        //    ho.PrimaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-        //    ho.SecondaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-        //}
-    }
     private void ResetPedModel()
     {
         if (ModelPed.Exists())
@@ -258,6 +207,7 @@ public class PedCustomizer
             ModelPed.Delete();
         }
         WorkingVariation = new PedVariation();
+        InitialVariation = new PedVariation();
         if (ModelPed.Exists())
         {
             WorkingName = Names.GetRandomName(ModelPed.IsMale);
@@ -266,6 +216,13 @@ public class PedCustomizer
         {
             WorkingName = Names.GetRandomName(false);
         }
+        //if(ModelPed.Exists() && PedModelIsFreeMode)
+        //{
+        //    WorkingVariation.HeadBlendData.shapeFirst = 0;
+        //    WorkingVariation.HeadBlendData.shapeMix = 1.0f;
+
+        //    WorkingVariation.ApplyToPed(ModelPed);
+        //}
         ChoseNewModel = true;
     }
     private void SetModelAsCharacter()
@@ -274,6 +231,7 @@ public class PedCustomizer
         {
             Player.CurrentModelVariation.ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
             WorkingVariation = Player.CurrentModelVariation;
+            InitialVariation = Player.CurrentModelVariation.Copy();
         }
     }
     public void OnModelChanged()
@@ -290,5 +248,25 @@ public class PedCustomizer
             WorkingVariation.ApplyToPed(ModelPed);
         }
         PedCustomizerMenu.OnVariationChanged();
+    }
+    public void BecomePed()
+    {
+        if (ModelPed.Exists())
+        {
+            Game.FadeScreenOut(1500, true);
+            if (!ChoseNewModel)
+            {
+                PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
+            }
+            else
+            {
+                PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+            }
+            Dispose();
+        }
+    }
+    public void Exit()
+    {
+        Dispose();
     }
 }

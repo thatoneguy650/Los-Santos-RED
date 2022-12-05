@@ -1,0 +1,91 @@
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
+using Mod;
+using Rage.Native;
+using Rage;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Media.Media3D;
+using System.ComponentModel;
+
+
+public class CustomizeComponentsMenu
+{
+    private IPedSwap PedSwap;
+    private MenuPool MenuPool;
+    private INameProvideable Names;
+    private IPedSwappable Player;
+    private IEntityProvideable World;
+    private ISettingsProvideable Settings;
+    private PedCustomizer PedCustomizer;
+    private UIMenuItem InputModel;
+    private UIMenuListScrollerItem<string> SelectModel;
+    private UIMenuItem SearchModel;
+    private PedCustomizerMenu PedCustomizerMenu;
+    private UIMenu ModelSearchSubMenu;
+    private string FilterString;
+    private UIMenu PickComponentMenu;
+    private List<FashionComponent> ComponentLookup;
+    public CustomizeComponentsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
+    {
+        PedSwap = pedSwap;
+        MenuPool = menuPool;
+        Names = names;
+        Player = player;
+        World = world;
+        Settings = settings;
+        PedCustomizer = pedCustomizer;
+        PedCustomizerMenu = pedCustomizerMenu;
+    }
+    public void Setup(UIMenu CustomizeMainMenu)
+    {
+        ComponentLookup = new List<FashionComponent>() {
+            new FashionComponent(0,"Face"),
+            new FashionComponent(1, "Mask/Beard"),
+            new FashionComponent(2, "Hair"),
+            new FashionComponent(3, "Torso"),
+            new FashionComponent(4, "Lower"),
+            new FashionComponent(5, "Bags"),
+            new FashionComponent(6, "Foot"),
+            new FashionComponent(7, "Accessories"),
+            new FashionComponent(8, "Undershirt"),
+            new FashionComponent(9, "Body Armor"),
+            new FashionComponent(10, "Decals"),
+            new FashionComponent(11, "Tops"), };
+
+        PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Components");
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the components of the current ped";
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        PickComponentMenu.SetBannerType(EntryPoint.LSRedColor);
+    }
+    public void OnModelChanged()
+    {
+        PickComponentMenu.Clear();
+        AddComponentItems();
+    }
+    private void AddComponentItems()
+    {
+        //Add List of componentes here with names as sub menu? Head/Torso/Top/Etc.
+        foreach (FashionComponent s in ComponentLookup)
+        {
+            s.AddCustomizeMenu(MenuPool, PickComponentMenu, PedCustomizer.ModelPed, PedCustomizer);
+            //each sub menu
+
+            //Reset - goes back to whatever the componenet was before any changes here
+            //drawableID with scroller , shoudl this be name if I have it? where would price be displayed?
+            //a textureID with scroller //on scroll change 
+
+            //goto specific drawable
+            //Save as Favorite (maybe)
+
+            //accept drawable, (or just not reset?
+
+        }
+    }
+}
+

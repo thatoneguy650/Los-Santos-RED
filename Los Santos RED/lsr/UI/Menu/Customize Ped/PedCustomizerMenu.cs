@@ -7,6 +7,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media.Media3D;
 
 public class PedCustomizerMenu
 {
@@ -21,8 +22,10 @@ public class PedCustomizerMenu
     private CustomizeDemographicsMenu CustomizeDemographicsMenu;
     private CustomizeModelMenu CustomizeModelMenu;
     private CustomizeHeadMenu CustomizeHeadMenu;
-
-    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer)
+    private CustomizeComponentsMenu CustomizeComponentsMenu;
+    private CustomizePropsMenu CustomizePropsMenu;
+    private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
+    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -34,6 +37,10 @@ public class PedCustomizerMenu
         CustomizeDemographicsMenu = new CustomizeDemographicsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeModelMenu = new CustomizeModelMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeHeadMenu = new CustomizeHeadMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
+        CustomizeComponentsMenu = new CustomizeComponentsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
+        CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
+        CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
+
     }
     public void Setup()
     {
@@ -43,16 +50,38 @@ public class PedCustomizerMenu
         CustomizeDemographicsMenu.Setup(CustomizeMainMenu);
         CustomizeModelMenu.Setup(CustomizeMainMenu);
         CustomizeHeadMenu.Setup(CustomizeMainMenu);
+        CustomizeComponentsMenu.Setup(CustomizeMainMenu);
+        CustomizePropsMenu.Setup(CustomizeMainMenu);
+        CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
+
+        UIMenuItem BecomeModel = new UIMenuItem("Become Character", "Return to gameplay as displayed character");
+        BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        BecomeModel.Activated += (sender, e) =>
+        {
+            PedCustomizer.BecomePed();
+        };
+        CustomizeMainMenu.AddItem(BecomeModel);
+
+        UIMenuItem Exit = new UIMenuItem("Exit", "Return to gameplay as old character");
+        Exit.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        Exit.Activated += (sender, e) =>
+        {
+            PedCustomizer.Exit();
+        };
+        CustomizeMainMenu.AddItem(Exit);
     }
     public void Start()
     {
-        OnVariationChanged();
+        OnModelChanged();
+        //OnVariationChanged();
         CustomizeMainMenu.Visible = true;
     }
     public void OnModelChanged()
     {
         //Change the components and stuff, reset everything
-        CustomizeHeadMenu.OnVariationChanged();
+        CustomizeHeadMenu.OnModelChanged();
+        CustomizeComponentsMenu.OnModelChanged();
+        CustomizePropsMenu.OnModelChanged();
     }
     public void OnVariationChanged()
     {
