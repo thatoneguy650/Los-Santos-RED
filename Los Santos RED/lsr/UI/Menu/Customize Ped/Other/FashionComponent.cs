@@ -196,6 +196,21 @@ public class FashionComponent
         };
         componentMenu.AddItem(goToDrawable);
     }
+    public void SetCurrent(int drawableID, int textureID)
+    {
+        PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == drawableID).FirstOrDefault();
+        if (pfa != null)
+        {
+            DrawableMenuScroller.SelectedItem = pfa;
+        }
+
+        PedFashionAlias tfa = TextureMenuScroller.Items.Where(x => x.ID == textureID).FirstOrDefault();
+        if (tfa != null)
+        {
+            TextureMenuScroller.SelectedItem = tfa;
+        }
+
+    }
     public override string ToString()
     {
         return ComponentName;

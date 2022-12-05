@@ -6,11 +6,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using LosSantosRED.lsr.Helper;
+using System;
 
 public class FashionProp
 {
     private UIMenuListScrollerItem<PedFashionAlias> DrawableMenuScroller;
     private UIMenuListScrollerItem<PedFashionAlias> TextureMenuScroller;
+    private UIMenuItem ClearProps;
+
     public FashionProp()
     {
     }
@@ -48,7 +51,22 @@ public class FashionProp
         AddDrawableItem(propMenu, ped, pedCustomizer);
         AddTextureItem(propMenu, ped, pedCustomizer);
         AddGoToMenuItem(propMenu, ped, pedCustomizer);
+        AddClearPropsMenu(propMenu, ped, pedCustomizer);
     }
+
+    private void AddClearPropsMenu(UIMenu propMenu, Ped ped, PedCustomizer pedCustomizer)
+    {
+        //ClearProps = new UIMenuItem("Clear Props", "Remove ALL props from displayed character");
+        //ClearProps.RightBadge = UIMenuItem.BadgeStyle.Crown;
+        //ClearProps.Activated += (sender, e) =>
+        //{
+
+        //    PedCustomizer.WorkingVariation.Props.Clear();
+        //    PedCustomizer.OnVariationChanged();
+        //};
+        //PickPropMenu.AddItem(ClearProps);
+    }
+
     private void AddResetMenuItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
     {
         UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the drawable back to the initial value");
@@ -105,6 +123,27 @@ public class FashionProp
         UIMenuItem removeProprMenu = new UIMenuItem("Remove Prop", "Select to remove the current prop");
         removeProprMenu.Activated += (sender, e) =>
         {
+            if(!DrawableMenuScroller.IsEmpty)
+            {
+                DrawableMenuScroller.Index = 0;
+            }
+            else
+            {
+                DrawableMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
+            }
+
+            if (!TextureMenuScroller.IsEmpty)
+            {
+                TextureMenuScroller.Index = 0;
+            }
+            else
+            {
+                TextureMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
+            }
+
+
+
+
             pedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
             pedCustomizer.OnVariationChanged();
         };

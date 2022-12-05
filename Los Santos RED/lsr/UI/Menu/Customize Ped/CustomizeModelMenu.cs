@@ -105,7 +105,7 @@ public class CustomizeModelMenu
         if (new Rage.Model(modelName).IsValid)
         {
             PedCustomizer.WorkingModelName = modelName;
-            PedCustomizer.OnModelChanged();
+            PedCustomizer.OnModelChanged(true);
         }
     }
     private void SetModelFromString(string modelName)
@@ -113,7 +113,7 @@ public class CustomizeModelMenu
         if (new Rage.Model(modelName).IsValid)
         {
             PedCustomizer.WorkingModelName = modelName;
-            PedCustomizer.OnModelChanged();
+            PedCustomizer.OnModelChanged(true);
         }
     }
 }

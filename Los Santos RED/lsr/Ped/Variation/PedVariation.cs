@@ -52,8 +52,6 @@ public class PedVariation
     public int SecondaryHairColor { get; set; } = -1;
     public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
     public int EyeColor { get; set; } = -1;
-
-
     public void ApplyToPed(Ped ped, bool setDefaultFirst)
     {
         if (setDefaultFirst)
@@ -63,7 +61,6 @@ public class PedVariation
         }
         ApplyToPed(ped);
     }
-
     public void ApplyToPed(Ped ped)
     {
         try
@@ -97,8 +94,6 @@ public class PedVariation
                 {
                     NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
                 }
-
-
             }
         }
         catch (Exception ex)

@@ -116,7 +116,10 @@ public class PedSwap : IPedSwap
                         PedCustomizer.Update();
                         GameFiber.Yield();
                     }
-                    PedCustomizer.Dispose();
+                    if(!PedCustomizer.ChoseToClose)
+                    {
+                        PedCustomizer.Dispose(true);
+                    }
                     if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
                     {
                         AddOffset();

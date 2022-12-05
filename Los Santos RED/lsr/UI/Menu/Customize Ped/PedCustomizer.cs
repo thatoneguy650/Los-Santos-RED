@@ -44,13 +44,16 @@ public class PedCustomizer
         Heads = heads;
     }
     public bool ChoseNewModel { get; private set; } = false;
+
+    public bool ChoseToClose { get; private set; } = false;
+
     public bool PedModelIsFreeMode => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01";
-    public void Dispose()
+    public void Dispose(bool fadeOut)
     {
         if (!IsDisposed)
         {
             IsDisposed = true;
-            if (!Game.IsScreenFadedOut && !Game.IsScreenFadingOut)
+            if (fadeOut && !Game.IsScreenFadedOut && !Game.IsScreenFadingOut)
             {
                 Game.FadeScreenOut(1500, true);
             }
@@ -63,6 +66,7 @@ public class PedCustomizer
             CharCam.Active = false;
             Game.LocalPlayer.Character.Position = PreviousPos;
             Game.LocalPlayer.Character.Heading = PreviousHeading;
+            GameFiber.Sleep(1000);
             Game.FadeScreenIn(1500, true);
         }
     }
@@ -200,14 +204,13 @@ public class PedCustomizer
             EntryPoint.WriteToConsole($"Customize Ped Error {ex.Message}  {ex.StackTrace}", 0);
         }
     }
-    private void ResetPedModel()
+    private void ResetPedModel(bool resetVariation)
     {
-        if (ModelPed.Exists())
+        if (resetVariation)
         {
-            ModelPed.Delete();
+            WorkingVariation = new PedVariation();
+            InitialVariation = new PedVariation();
         }
-        WorkingVariation = new PedVariation();
-        InitialVariation = new PedVariation();
         if (ModelPed.Exists())
         {
             WorkingName = Names.GetRandomName(ModelPed.IsMale);
@@ -216,13 +219,29 @@ public class PedCustomizer
         {
             WorkingName = Names.GetRandomName(false);
         }
-        //if(ModelPed.Exists() && PedModelIsFreeMode)
-        //{
-        //    WorkingVariation.HeadBlendData.shapeFirst = 0;
-        //    WorkingVariation.HeadBlendData.shapeMix = 1.0f;
-
-        //    WorkingVariation.ApplyToPed(ModelPed);
-        //}
+        WorkingMoney = 5000;
+        if (ModelPed.Exists() && PedModelIsFreeMode)
+        {
+            int MotherID = 0;
+            int FatherID = 0;
+            float FatherSide = 0f;
+            float MotherSide = 0f;
+            MotherID = RandomItems.GetRandomNumberInt(0, 45);
+            FatherID = RandomItems.GetRandomNumberInt(0, 45);
+            if (ModelPed.IsMale)
+            {
+                FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+                MotherSide = 1.0f - FatherSide;
+            }
+            else
+            {
+                MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+                FatherSide = 1.0f - MotherSide;
+            }
+            WorkingVariation.HeadBlendData = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
+            WorkingVariation.ApplyToPed(ModelPed);
+            EntryPoint.WriteToConsole("I GOT HERE");
+        }
         ChoseNewModel = true;
     }
     private void SetModelAsCharacter()
@@ -234,10 +253,10 @@ public class PedCustomizer
             InitialVariation = Player.CurrentModelVariation.Copy();
         }
     }
-    public void OnModelChanged()
+    public void OnModelChanged(bool resetVariation)
     {
-        ResetPedModel();
         CreateModelPed();
+        ResetPedModel(resetVariation);
         PedCustomizerMenu.OnModelChanged();
         OnVariationChanged();
     }
@@ -245,12 +264,13 @@ public class PedCustomizer
     {
         if (ModelPed.Exists())
         {
-            WorkingVariation.ApplyToPed(ModelPed);
+            WorkingVariation?.ApplyToPed(ModelPed, PedModelIsFreeMode);
         }
         PedCustomizerMenu.OnVariationChanged();
     }
     public void BecomePed()
     {
+        ChoseToClose = true;
         if (ModelPed.Exists())
         {
             Game.FadeScreenOut(1500, true);
@@ -262,11 +282,16 @@ public class PedCustomizer
             {
                 PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
             }
-            Dispose();
+            Dispose(false);
+        }
+        else
+        {
+            Dispose(true);
         }
     }
     public void Exit()
     {
-        Dispose();
+        ChoseToClose = true;
+        Dispose(true);
     }
 }

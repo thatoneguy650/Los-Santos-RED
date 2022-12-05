@@ -79,6 +79,7 @@ public class PedCustomizerMenu
     public void OnModelChanged()
     {
         //Change the components and stuff, reset everything
+        CustomizeDemographicsMenu.OnModelChanged();
         CustomizeHeadMenu.OnModelChanged();
         CustomizeComponentsMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();

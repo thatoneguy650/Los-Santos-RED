@@ -40,6 +40,7 @@ public class CustomizeHeadMenu
     private UIMenu HairSubMenu;
     private UIMenu FaceSubMenu;
     private List<OverlayMenuGroup> OverlayMenus = new List<OverlayMenuGroup>();
+    private FashionComponent HairFashionComponenet;
 
     public CustomizeHeadMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
     {
@@ -225,7 +226,6 @@ public class CustomizeHeadMenu
 
         
     }
-
     private void SetHeadEnabledStatus()
     {
         if (PedCustomizer.ModelPed.Exists() && PedCustomizer.PedModelIsFreeMode)
@@ -237,9 +237,9 @@ public class CustomizeHeadMenu
             HeadSubMenuItem.Enabled = false;
         }
     }
-
     private void SetupAncestryMenu()
     {
+        AncestrySubMenu.Clear();
         RandomizeHead = new UIMenuItem("Randomize", "Randomize head data");
         RandomizeHead.Activated += (sender, selectedItem) =>
         {
@@ -296,14 +296,14 @@ public class CustomizeHeadMenu
         PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void Parent2Activated()
     {
         PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void Parent1MixActivated()
     {
@@ -312,7 +312,7 @@ public class CustomizeHeadMenu
         PedCustomizer.WorkingVariation.HeadBlendData.skinMix = 1.0f - newMix;
         Parent2MixMenu.Value = 1.0f - newMix;
         PedCustomizer.OnVariationChanged();
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void Parent2MixActivated()
     {
@@ -321,7 +321,7 @@ public class CustomizeHeadMenu
         PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = 1.0f - newMix;
         Parent1MixMenu.Value = 1.0f - newMix;
         PedCustomizer.OnVariationChanged();
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void SetupHairMenu()
     {
@@ -332,13 +332,6 @@ public class CustomizeHeadMenu
             RandomizePedHair();
         };
         HairSubMenu.AddItem(RandomizeHair);
-
-
-
-
-
-
-
 
         HairPrimaryColorMenu = new UIMenuListScrollerItem<ColorLookup>("Set Primary Hair Color", "Select primary hair color (requires head data)", ColorList);
         HairPrimaryColorMenu.Activated += (sender, selectedItem) =>
@@ -355,20 +348,20 @@ public class CustomizeHeadMenu
         {
             SetSecondaryHairColor(HairSecondaryColorMenu.SelectedItem.ColorID);
         };
-        HairSecondaryColorMenu.IndexChanged += (sender,e, selectedItem) =>
+        HairSecondaryColorMenu.IndexChanged += (sender, e, selectedItem) =>
         {
             SetSecondaryHairColor(HairSecondaryColorMenu.SelectedItem.ColorID);
         };
         HairSubMenu.AddItem(HairSecondaryColorMenu);
 
-
-        FashionComponent HairFashionComponenet = new FashionComponent(2, "Hair");
+        HairFashionComponenet = new FashionComponent(2, "Hair");
         HairFashionComponenet.CombineCustomizeMenu(MenuPool, HairSubMenu, PedCustomizer.ModelPed, PedCustomizer);
 
 
     }
     private void SetupFaceMenu()
     {
+        FaceSubMenu.Clear();
         foreach (HeadOverlayData ho in HeadOverlayLookups)
         {
             UIMenu overlayHeaderMenu = MenuPool.AddSubMenu(FaceSubMenu, ho.Part);
@@ -442,7 +435,7 @@ public class CustomizeHeadMenu
             EntryPoint.WriteToConsole("OpacityMenu FOUND OVERLAY TO CHANGE");
             toChange.Opacity = OpacityMenu.Value;
             PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
-            OnVariationChanged();
+           // OnVariationChanged();
         }
     }
     private void FaceSecondaryColorActivated(int OverlayID, UIMenuListScrollerItem<ColorLookup> SecondaryColorMenu)
@@ -453,7 +446,7 @@ public class CustomizeHeadMenu
         {
             toChange.SecondaryColor = SecondaryColorMenu.SelectedItem.ColorID;
             PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
-            OnVariationChanged();
+            //OnVariationChanged();
         }
     }
     private void FacePrimaryColorActivated(int OverlayID, UIMenuListScrollerItem<ColorLookup> PrimaryColorMenu)
@@ -464,7 +457,7 @@ public class CustomizeHeadMenu
         {
             toChange.PrimaryColor = PrimaryColorMenu.SelectedItem.ColorID;
             PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
-            OnVariationChanged();
+            //OnVariationChanged();
         }
     }
     private void FaceIndexActivated(int OverlayID, UIMenuNumericScrollerItem<int> OverlayIndexMenu)
@@ -475,7 +468,7 @@ public class CustomizeHeadMenu
         {
             toChange.Index = OverlayIndexMenu.Value;
             PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
-            OnVariationChanged();
+            //OnVariationChanged();
         }
     }
     private void AddOverlay(int id)
@@ -500,7 +493,7 @@ public class CustomizeHeadMenu
             NativeFunction.Natives.x4CFFC65454C93A49(PedCustomizer.ModelPed, PedCustomizer.WorkingVariation.PrimaryHairColor, PedCustomizer.WorkingVariation.SecondaryHairColor);
             EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
         }
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void SetSecondaryHairColor(int newIndex)
     {
@@ -510,18 +503,19 @@ public class CustomizeHeadMenu
             NativeFunction.Natives.x4CFFC65454C93A49(PedCustomizer.ModelPed, PedCustomizer.WorkingVariation.PrimaryHairColor, PedCustomizer.WorkingVariation.SecondaryHairColor);
             EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
         }
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void RandomizePedHair()
     {
         if (PedCustomizer.ModelPed.Exists() && PedCustomizer.PedModelIsFreeMode)
         {
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            //PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
             RandomizeHairStyle();
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            //PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
             PedCustomizer.OnVariationChanged();
-            GameFiber.Yield();
-        }
+           // GameFiber.Yield();
+            //OnVariationChanged();
+        }    
     }
     private void RandomizePedHead()
     {
@@ -529,9 +523,10 @@ public class CustomizeHeadMenu
         {
             RandomizeOverlay();
             RandomizeHeadblend();
-            PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
+            //PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
             PedCustomizer.OnVariationChanged();
-            GameFiber.Yield();
+            //GameFiber.Yield();
+            //OnVariationChanged();
         }
     }
     private void RandomizeHairStyle()
@@ -550,7 +545,7 @@ public class CustomizeHeadMenu
             hairComponent.DrawableID = DrawableID;
             hairComponent.TextureID = TextureID;
         }
-        OnVariationChanged();
+        
     }
     private void RandomizeHeadblend()
     {
@@ -571,24 +566,36 @@ public class CustomizeHeadMenu
             FatherSide = 1.0f - MotherSide;
         }
         PedCustomizer.WorkingVariation.HeadBlendData = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     private void RandomizeOverlay()
     {
-        foreach (HeadOverlayData ho in PedCustomizer.WorkingVariation.HeadOverlays)
+        PedCustomizer.WorkingVariation.HeadOverlays.Clear();
+        foreach (HeadOverlayData ho in HeadOverlayLookups)// PedCustomizer.WorkingVariation.HeadOverlays)
         {
             int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);
-            ho.Index = RandomItems.GetRandomNumberInt(-1, TotalItems - 1);
-            ho.Opacity = RandomItems.GetRandomNumber(0.0f, 1.0f);
-            ho.PrimaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
-            ho.SecondaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+            int Index = RandomItems.GetRandomNumberInt(-1, TotalItems - 1);
+            float Opacity = RandomItems.GetRandomNumber(0.0f, 1.0f);
+            int PrimaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+            int SecondaryColor = RandomItems.GetRandomNumberInt(0, ColorList.Count());
+            PedCustomizer.WorkingVariation.HeadOverlays.Add(new HeadOverlayData(ho.OverlayID, ho.Part) { Index = Index, Opacity = Opacity, PrimaryColor = PrimaryColor, SecondaryColor = SecondaryColor });
         }
-        OnVariationChanged();
+        //OnVariationChanged();
     }
     public void OnVariationChanged()
     {
         if (PedCustomizer.WorkingVariation != null)
         {
+            if(PedCustomizer.WorkingVariation.Components != null)
+            {
+                foreach(PedComponent pc in PedCustomizer.WorkingVariation.Components)
+                {
+                    if(pc.ComponentID == 2)
+                    {
+                        HairFashionComponenet.SetCurrent(pc.DrawableID, pc.TextureID);
+                    }
+                }
+            }
             if (HeadList != null && PedCustomizer.WorkingVariation.HeadBlendData != null)
             {
                 HeadLookup Parent1IDMenuHead = HeadList.FirstOrDefault(x => x.HeadID == PedCustomizer.WorkingVariation.HeadBlendData.skinFirst);
@@ -640,6 +647,8 @@ public class CustomizeHeadMenu
     {
         SetHeadEnabledStatus();
         SetupHairMenu();
+        SetupAncestryMenu();
+        SetupFaceMenu();
         OnVariationChanged();
     }
 }

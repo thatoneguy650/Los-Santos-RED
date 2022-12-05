@@ -57,8 +57,16 @@ public class CustomizeExistingVariationsMenu
                 uIMenuItem.Activated += (sender, e) =>
                 {
                     PedCustomizer.WorkingModelName = dp.ModelName;
-                    PedCustomizer.OnModelChanged();
-                    PedCustomizer.WorkingVariation = dp.SetPedVariation(PedCustomizer.ModelPed, Heads.GetHeadData("AllHeads"),false);
+                    if(dp.RequiredVariation == null)
+                    {
+                        PedCustomizer.WorkingVariation = new PedVariation();
+                    }
+                    else
+                    {
+                        PedCustomizer.WorkingVariation = dp.RequiredVariation;
+                    }
+                    PedCustomizer.OnModelChanged(false);
+                    //PedCustomizer.WorkingVariation = dp.SetPedVariation(PedCustomizer.ModelPed, Heads.GetHeadData("AllHeads"),false);
                 };
                 dpgSubMenu.AddItem(uIMenuItem);
             }

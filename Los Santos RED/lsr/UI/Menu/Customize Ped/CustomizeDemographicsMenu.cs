@@ -71,6 +71,7 @@ public class CustomizeDemographicsMenu
     private void ChangeWorkingName()
     {
         PedCustomizer.WorkingName = NativeHelper.GetKeyboardInput(PedCustomizer.WorkingName);
+        OnWorkingNameChanged();
     }
     private void RandomizeWorkingName()
     {
@@ -94,6 +95,12 @@ public class CustomizeDemographicsMenu
     private void OnMoneyChanged()
     {
         ChangeMoney.Description = "Current: " + PedCustomizer.WorkingMoney.ToString("C0");
+    }
+
+    public void OnModelChanged()
+    {
+        OnWorkingNameChanged();
+        OnMoneyChanged();
     }
 }
 
