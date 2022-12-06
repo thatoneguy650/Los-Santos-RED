@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29201.188
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Los Santos RED", "Los Santos RED\Los Santos RED.csproj", "{2541830F-5D6E-4B6C-947C-90B760178BE2}"
 EndProject
@@ -18,6 +18,8 @@ Global
 		Obfuscate|x64 = Obfuscate|x64
 		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
+		Test|Any CPU = Test|Any CPU
+		Test|x64 = Test|x64
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|x64.ActiveCfg = Release|x64
 		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Release|x64.Build.0 = Release|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Test|Any CPU.ActiveCfg = Test|Any CPU
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Test|Any CPU.Build.0 = Test|Any CPU
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Test|x64.ActiveCfg = Test|x64
+		{2541830F-5D6E-4B6C-947C-90B760178BE2}.Test|x64.Build.0 = Test|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
