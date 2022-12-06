@@ -41,6 +41,10 @@ public class GangTasker
             {
                 try
                 {
+                    //if(gangMember.IsGroupMember)
+                    //{
+                    //    continue;
+                    //}
                     if (!gangMember.IsBusted && !gangMember.CanBeTasked)
                     {
                         if (gangMember.CurrentTask != null)

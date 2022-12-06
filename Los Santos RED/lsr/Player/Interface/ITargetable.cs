@@ -51,6 +51,7 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceKnowInteriorLocation { get; }
 
         ActivityManager ActivityManager { get; }
+        bool IsOnFoot { get; }
         //bool IsHostile(Gang gang);
     }
 }

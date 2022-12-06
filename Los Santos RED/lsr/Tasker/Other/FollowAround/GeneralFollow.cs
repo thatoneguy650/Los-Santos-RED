@@ -1,0 +1,113 @@
+﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
+using Rage;
+using Rage.Native;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+
+public class GeneralFollow : ComplexTask
+{
+    private PedExt PedGeneral;
+    private IEntityProvideable World;
+    private IPlacesOfInterest PlacesOfInterest;
+    private SeatAssigner SeatAssigner;
+    private TaskState CurrentTaskState;
+    private ISettingsProvideable Settings;
+    private bool AllowEnteringVehicle => true;//!Ped.IsAmbientSpawn || PedGeneral.HasExistedFor >= 10000;
+    public bool ShouldGetInVehicle => Player.IsInVehicle;
+    public bool ShouldGetOutOfVehicle => Player.IsOnFoot;
+    public GeneralFollow(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings) : base(player, ped, 1500)//1500
+    {
+        PedGeneral = pedGeneral;
+        Name = "GeneralFollow";
+        SubTaskName = "";
+        World = world;
+        PlacesOfInterest = placesOfInterest;
+        Settings = settings;
+        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
+    }
+    public override void ReTask()
+    {
+        Start();
+    }
+    public override void Start()
+    {
+        CurrentTaskState?.Stop();
+        GetNewTaskState();
+        CurrentTaskState?.Start();
+    }
+    public override void Stop()
+    {
+        CurrentTaskState?.Stop();
+    }
+    public override void Update()
+    {
+        if (CurrentTaskState == null || !CurrentTaskState.IsValid)
+        {
+            Start();
+        }
+        else
+        {
+            SubTaskName = CurrentTaskState.DebugName;
+            CurrentTaskState.Update();
+        }
+    }
+
+    private void GetNewTaskState()
+    {
+        if (ShouldGetInVehicle && AllowEnteringVehicle && !Ped.IsInVehicle && !SeatAssigner.IsAssignmentValid())
+        {
+            SeatAssigner.AssignFrontSeat(true);
+        }
+        if (Ped.IsInVehicle)
+        {
+            if (ShouldGetOutOfVehicle)
+            {
+                CurrentTaskState = new GetOutOfVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player);
+            }
+            else
+            {
+                if (Ped.IsDriver)
+                {
+                    if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
+                    {
+                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings);
+                    }
+                    else
+                    {
+                        CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player);
+                    }
+                }
+                else
+                {
+                    //Wait
+                }
+            }
+        }
+        else
+        {
+            if(ShouldGetInVehicle && SeatAssigner.IsAssignmentValid())
+            {
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings) { IsGang = true };
+
+            }
+            else
+            {
+                CurrentTaskState = new FollowOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings);
+            }
+        }
+        if (CurrentTaskState != null)
+        {
+            EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState {CurrentTaskState.DebugName}");
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState NONE");
+        }
+    }
+}
+

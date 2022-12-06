@@ -411,10 +411,9 @@ public class PopUpMenu
             List<PopUpMenuMap> GroupMemberSubMenu = new List<PopUpMenuMap>();
             GroupMemberSubMenu.Add(new PopUpMenuMap(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpMenuMap(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi)), "Remove the Member"));
-
-
             GroupMemberSubMenu.Add(new PopUpMenuMap(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi)), "Reset the member's tasks"));
-
+           // GroupMemberSubMenu.Add(new PopUpMenuMap(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi)), "Tell the member to escort you around"));
+            //GroupMemberSubMenu.Add(new PopUpMenuMap(4, "Get In Alt Vehicle", new Action(() => Player.GroupManager.GetInAssignedVehicle(mi)), "Tell the member to get into their assigned vehicle and follow you"));
             PopUpMenuGroups.Add(new PopUpMenuGroup($"{mi.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             ID++;
         }
@@ -754,9 +753,6 @@ public class PopUpMenu
                 CurrentPopUpMenuGroup = "DefaultOnFoot";
             }
         }
-
-
-
     }
     private void DisableControls()
     {

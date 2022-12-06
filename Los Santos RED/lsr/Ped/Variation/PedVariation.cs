@@ -65,7 +65,7 @@ public class PedVariation
     {
         try
         {
-            NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+            //NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
             foreach (PedComponent Component in Components)
             {
                 NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);

@@ -54,6 +54,15 @@ public class PedCustomizerMenu
         CustomizePropsMenu.Setup(CustomizeMainMenu);
         CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
 
+        UIMenuItem PrintVariation = new UIMenuItem("Print Variation", "Print the variation out to the log");
+        PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        PrintVariation.Activated += (sender, e) =>
+        {
+            PedCustomizer.PrintVariation();
+        };
+        CustomizeMainMenu.AddItem(PrintVariation);
+
+
         UIMenuItem BecomeModel = new UIMenuItem("Become Character", "Return to gameplay as displayed character");
         BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Clothes;
         BecomeModel.Activated += (sender, e) =>
@@ -73,7 +82,6 @@ public class PedCustomizerMenu
     public void Start()
     {
         OnModelChanged();
-        //OnVariationChanged();
         CustomizeMainMenu.Visible = true;
     }
     public void OnModelChanged()
@@ -83,9 +91,10 @@ public class PedCustomizerMenu
         CustomizeHeadMenu.OnModelChanged();
         CustomizeComponentsMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();
+        EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
     }
-    public void OnVariationChanged()
-    {
-        CustomizeHeadMenu.OnVariationChanged();
-    }
+    //public void OnVariationChanged()
+    //{
+    //    //CustomizeHeadMenu.OnVariationChanged();
+    //}
 }

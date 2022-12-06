@@ -220,28 +220,28 @@ public class PedCustomizer
             WorkingName = Names.GetRandomName(false);
         }
         WorkingMoney = 5000;
-        if (ModelPed.Exists() && PedModelIsFreeMode)
-        {
-            int MotherID = 0;
-            int FatherID = 0;
-            float FatherSide = 0f;
-            float MotherSide = 0f;
-            MotherID = RandomItems.GetRandomNumberInt(0, 45);
-            FatherID = RandomItems.GetRandomNumberInt(0, 45);
-            if (ModelPed.IsMale)
-            {
-                FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-                MotherSide = 1.0f - FatherSide;
-            }
-            else
-            {
-                MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
-                FatherSide = 1.0f - MotherSide;
-            }
-            WorkingVariation.HeadBlendData = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
-            WorkingVariation.ApplyToPed(ModelPed);
-            EntryPoint.WriteToConsole("I GOT HERE");
-        }
+        //if (ModelPed.Exists() && PedModelIsFreeMode)
+        //{
+        //    int MotherID = 0;
+        //    int FatherID = 0;
+        //    float FatherSide = 0f;
+        //    float MotherSide = 0f;
+        //    MotherID = RandomItems.GetRandomNumberInt(0, 45);
+        //    FatherID = RandomItems.GetRandomNumberInt(0, 45);
+        //    if (ModelPed.IsMale)
+        //    {
+        //        FatherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+        //        MotherSide = 1.0f - FatherSide;
+        //    }
+        //    else
+        //    {
+        //        MotherSide = RandomItems.GetRandomNumber(0.75f, 1.0f);
+        //        FatherSide = 1.0f - MotherSide;
+        //    }
+        //    WorkingVariation.HeadBlendData = new HeadBlendData(MotherID, FatherID, 0, MotherID, FatherID, 0, MotherSide, FatherSide, 0.0f);
+        //    WorkingVariation.ApplyToPed(ModelPed);
+        //    EntryPoint.WriteToConsole("I GOT HERE");
+        //}
         ChoseNewModel = true;
     }
     private void SetModelAsCharacter()
@@ -264,9 +264,9 @@ public class PedCustomizer
     {
         if (ModelPed.Exists())
         {
-            WorkingVariation?.ApplyToPed(ModelPed, PedModelIsFreeMode);
+            WorkingVariation?.ApplyToPed(ModelPed, false);
         }
-        PedCustomizerMenu.OnVariationChanged();
+        //PedCustomizerMenu.OnVariationChanged();
     }
     public void BecomePed()
     {
@@ -293,5 +293,14 @@ public class PedCustomizer
     {
         ChoseToClose = true;
         Dispose(true);
+    }
+
+    public void PrintVariation()
+    {
+        EntryPoint.WriteToConsole($"{WorkingModelName}");
+        if (WorkingVariation!= null) 
+        {
+            Serialization.SerializeParam(WorkingVariation, "Plugins\\LosSantosRED\\WorkingModelName.xml");
+        }
     }
 }

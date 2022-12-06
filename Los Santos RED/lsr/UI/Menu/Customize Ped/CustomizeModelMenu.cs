@@ -58,8 +58,6 @@ public class CustomizeModelMenu
         ModelSubMenu.AddItem(SelectModel);
 
 
-
-
         ModelSearchSubMenu = MenuPool.AddSubMenu(ModelSubMenu, "Search Model");
         ModelSubMenu.MenuItems[ModelSubMenu.MenuItems.Count() - 1].Description = "Search for the model by name";
         ModelSubMenu.MenuItems[ModelSubMenu.MenuItems.Count() - 1].RightLabel = "";

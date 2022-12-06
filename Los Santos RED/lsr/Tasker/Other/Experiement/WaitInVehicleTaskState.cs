@@ -14,10 +14,12 @@ class WaitInVehicleTaskState : TaskState
     private IEntityProvideable World;
     private SeatAssigner SeatAssigner;
     private ISettingsProvideable Settings;
+    private ITargetable Player;
 
-    public WaitInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
+    public WaitInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
+        Player = player;
         World = world;
         SeatAssigner = seatAssigner;
         Settings = settings;

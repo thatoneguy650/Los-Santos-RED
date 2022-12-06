@@ -60,6 +60,7 @@ public class CustomizePropsMenu
     {
         PickPropMenu.Clear();
         AddPropItems();
+        EntryPoint.WriteToConsole("CustomizePropsMenu.OnModelChanged Executed");
     }
     private void AddPropItems()
     {
@@ -67,14 +68,6 @@ public class CustomizePropsMenu
         {
             s.AddCustomizeMenu(MenuPool, PickPropMenu, PedCustomizer.ModelPed, PedCustomizer);
         }
-        //ClearProps = new UIMenuItem("Clear Props", "Remove ALL props from displayed character");
-        //ClearProps.RightBadge = UIMenuItem.BadgeStyle.Crown;
-        //ClearProps.Activated += (sender, e) =>
-        //{
-        //    PedCustomizer.WorkingVariation.Props.Clear();
-        //    PedCustomizer.OnVariationChanged();
-        //};
-        //PickPropMenu.AddItem(ClearProps);
     }
 }
 

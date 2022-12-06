@@ -17,15 +17,17 @@ class GetInVehicleTaskState : TaskState
     private VehicleExt TaskedVehicle;
     private int TaskedSeat;
     private ISettingsProvideable Settings;
-    public GetInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
+    private ITargetable Player;
+    public GetInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
     {
         PedGeneral = pedGeneral;
+        Player = player;
         World = world;
         SeatAssigner = seatAssigner;
         Settings = settings;
     }
-
-    public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid();
+    public bool IsGang { get; set; } = false;
+    public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid();
     public string DebugName => $"GetInVehicleTaskState Vehicle {SeatAssigner?.VehicleAssigned?.Handle} Seat {SeatAssigner?.SeatAssigned}";
     public void Dispose()
     {

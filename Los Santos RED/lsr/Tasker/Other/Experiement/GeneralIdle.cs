@@ -77,7 +77,7 @@ public class GeneralIdle : ComplexTask
             {
                 if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                 {
-                    CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings);
+                    CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings);
                 }
                 else if(HasArrestedPassengers())
                 {
@@ -97,7 +97,7 @@ public class GeneralIdle : ComplexTask
         {
             if (SeatAssigner.IsAssignmentValid())//Ped.ShouldGetInVehicle)
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral,World,SeatAssigner, Settings);
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World,SeatAssigner, Settings);
             }
             else
             {

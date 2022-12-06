@@ -63,10 +63,9 @@ public class CustomizeExistingVariationsMenu
                     }
                     else
                     {
-                        PedCustomizer.WorkingVariation = dp.RequiredVariation;
+                        PedCustomizer.WorkingVariation = dp.RequiredVariation.Copy();
                     }
                     PedCustomizer.OnModelChanged(false);
-                    //PedCustomizer.WorkingVariation = dp.SetPedVariation(PedCustomizer.ModelPed, Heads.GetHeadData("AllHeads"),false);
                 };
                 dpgSubMenu.AddItem(uIMenuItem);
             }

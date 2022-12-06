@@ -47,7 +47,7 @@ public class CustomizeComponentsMenu
         ComponentLookup = new List<FashionComponent>() {
             new FashionComponent(0,"Face"),
             new FashionComponent(1, "Mask/Beard"),
-            new FashionComponent(2, "Hair"),
+            //new FashionComponent(2, "Hair"),
             new FashionComponent(3, "Torso"),
             new FashionComponent(4, "Lower"),
             new FashionComponent(5, "Bags"),
@@ -67,24 +67,13 @@ public class CustomizeComponentsMenu
     {
         PickComponentMenu.Clear();
         AddComponentItems();
+        EntryPoint.WriteToConsole("CustomizeComponentsMenu.OnModelChanged Executed");
     }
     private void AddComponentItems()
     {
-        //Add List of componentes here with names as sub menu? Head/Torso/Top/Etc.
         foreach (FashionComponent s in ComponentLookup)
         {
             s.AddCustomizeMenu(MenuPool, PickComponentMenu, PedCustomizer.ModelPed, PedCustomizer);
-            //each sub menu
-
-            //Reset - goes back to whatever the componenet was before any changes here
-            //drawableID with scroller , shoudl this be name if I have it? where would price be displayed?
-            //a textureID with scroller //on scroll change 
-
-            //goto specific drawable
-            //Save as Favorite (maybe)
-
-            //accept drawable, (or just not reset?
-
         }
     }
 }
