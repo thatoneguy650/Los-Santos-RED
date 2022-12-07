@@ -63,7 +63,10 @@ public class CustomizeExistingVariationsMenu
                     }
                     else
                     {
-                        PedCustomizer.WorkingVariation = dp.RequiredVariation.Copy();
+                        PedVariation newVariation = dp.RequiredVariation.Copy();
+
+
+                        PedCustomizer.WorkingVariation = newVariation;
                     }
                     PedCustomizer.OnModelChanged(false);
                 };

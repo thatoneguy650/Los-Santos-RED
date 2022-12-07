@@ -139,6 +139,11 @@ public class FashionProp
     }
     private void OnComponentChanged(int newDrawableID)
     {
+        if (PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole("FP OnComponentChanged");
         GetPossibleTextures(newDrawableID);
         TextureMenuScroller.Items = PossibleTextures;
         SetTextureValue();
@@ -216,6 +221,11 @@ public class FashionProp
     }
     private void OnTextureChanged()
     {
+        if (PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole("FP OnTextureChanged");
         int TextureID = 0;
         if (TextureMenuScroller.SelectedItem != null)
         {

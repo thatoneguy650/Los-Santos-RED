@@ -145,6 +145,10 @@ public class DispatchablePerson
         CombatAbilityMin = combatAbilityMin;
         CombatAbilityMax = combatAbilityMax;
     }
+    
+    
+    
+    
     public PedVariation SetPedVariation(Ped ped, List<RandomHeadData> PossibleHeads, bool isSlow)
     {
         PedVariation variationToSet = new PedVariation();
@@ -154,7 +158,7 @@ public class DispatchablePerson
         }
         else
         {
-            variationToSet = RequiredVariation;
+            variationToSet = RequiredVariation.Copy();
             if (AllowRandomizeBeforeVariationApplied)
             {
                 ped.RandomizeVariation();

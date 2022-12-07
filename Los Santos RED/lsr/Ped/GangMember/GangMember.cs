@@ -3,13 +3,13 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
+using System.Linq;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;
-
-    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, bool _WillFight, bool _WillCallPolice, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world, bool willFightPolice) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, true, false, _Name, crimes, weapons, gang.MemberName, world, willFightPolice)
+    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, false, false, true, false, _Name, crimes, weapons, gang.MemberName, world, false)
     {
         Gang = gang;
         Settings = settings;
@@ -19,8 +19,6 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
-        IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
-        Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
     }
     public int ShootRate { get; set; } = 400;
     public int Accuracy { get; set; } = 5;
@@ -37,8 +35,6 @@ public class GangMember : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
-
-
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -94,7 +90,6 @@ public class GangMember : PedExt, IWeaponIssuable
             CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         }
     }
-
     public override void OnBecameWanted()
     {
         if (Pedestrian.Exists())
@@ -115,6 +110,70 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             PedViolations.Reset();
             EntryPoint.WriteToConsole($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
+        }
+    }
+    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
+    {
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
+        Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
+        WillFight = RandomItems.RandomPercent(Gang.FightPercentage);
+        WillCallPolice = false;
+        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
+        if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
+        {
+            ShopMenu = shopMenus.GetRandomMenu(Gang.DealerMenuGroup);
+            Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
+        }
+        WeaponInventory.IssueWeapons(weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson?.EmptyHolster, dispatchablePerson?.FullHolster);
+        if (addBlip)
+        {
+            Blip myBlip = Pedestrian.AttachBlip();
+            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
+            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+            myBlip.Color = Gang.Color;
+            myBlip.Scale = 0.3f;
+        }
+        if (dispatchablePerson == null)
+        {
+            return;
+        }
+        Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
+        ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
+        CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
+        TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
+        TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
+        VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
+        VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
+        if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
+        {
+            VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
+        }
+        Pedestrian.Money = 0;
+        //if (Settings.SettingsManager.GangSettings.DisableCriticalHits)
+        //{
+        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        //}
+        if (Settings.SettingsManager.GangSettings.OverrideHealth)
+        {
+            int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
+            Pedestrian.MaxHealth = health;
+            Pedestrian.Health = health;
+        }
+        if (Settings.SettingsManager.GangSettings.OverrideArmor)
+        {
+            int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
+            Pedestrian.Armor = armor;
+        }
+        if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
+        {
+            Pedestrian.Accuracy = Accuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
         }
     }
 }

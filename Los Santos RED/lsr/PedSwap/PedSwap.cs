@@ -270,64 +270,62 @@ public class PedSwap : IPedSwap
     {
         try
         {
-            if (agency != null)
+            if(agency == null)
             {
-                DispatchablePerson toBecome = agency.Personnel.PickRandom();
-                if (toBecome != null)
-                {
-                    Game.FadeScreenOut(500, true);
-                    ResetOffsetForCurrentModel();
-                    Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
-                    EntryPoint.SpawnedEntities.Add(TargetPed);
-                    GameFiber.Yield();
-                    if (!TargetPed.Exists())
-                    {
-                        Game.FadeScreenIn(0);
-                        return;
-                    }
-                    TargetPed.RandomizeVariation();
-                    StoreTargetPedData(TargetPed);
-                    NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+                return;
+            }
+            DispatchablePerson toBecome = agency.Personnel.PickRandom()?.Copy();
+            if(toBecome == null)
+            {
+                return;
+            }
+
+            Game.FadeScreenOut(500, true);
+            ResetOffsetForCurrentModel();
+            Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+            EntryPoint.SpawnedEntities.Add(TargetPed);
+            GameFiber.Yield();
+            if (!TargetPed.Exists())
+            {
+                Game.FadeScreenIn(0);
+                return;
+            }
+            TargetPed.RandomizeVariation();
+            StoreTargetPedData(TargetPed);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
                     
-                    HandlePreviousPed(false, TargetPed);
-                    PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            HandlePreviousPed(false, TargetPed);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
 
-                    if (toBecome != null)
+            if (toBecome != null)
+            {
+                Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
+            }
+            // Player.GangRelationships.SetGang(agency, false);
+            Player.SetCopStatus(true, agency);
+
+            IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons),agency.GetRandomWeapon(false, Weapons));
+            if (RandomItems.RandomPercent(100f))
+            {
+                SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
+                vehicleSpawn.GetClosestStreet(false);
+                if (vehicleSpawn.HasSpawns)
+                {
+                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true)?.Copy(), null, false, Settings, Weapons, Names, false, World);
+                    carSpawn.AllowAnySpawn = true;
+                    carSpawn.AttemptSpawn();
+                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                    VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
+                    if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
-                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, agency.PossibleHeads, false);
+                        Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                        Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
                     }
-
-
-                    // Player.GangRelationships.SetGang(agency, false);
-                    Player.SetCopStatus(true, agency);
-
-                    IssueWeapons(agency.GetRandomMeleeWeapon(Weapons), agency.GetRandomWeapon(true, Weapons),agency.GetRandomWeapon(false, Weapons));
-                    if (RandomItems.RandomPercent(100f))
-                    {
-                        SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
-                        vehicleSpawn.GetClosestStreet(false);
-                        if (vehicleSpawn.HasSpawns)
-                        {
-                            SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, World);
-                            carSpawn.AllowAnySpawn = true;
-                            carSpawn.AttemptSpawn();
-                            carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
-                            VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
-                            if (createdVehicle != null && createdVehicle.Vehicle.Exists())
-                            {
-                                Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
-                                Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
-                            }
-                        }
-                    }
-
-
-
-                    GameFiber.Sleep(500);
-                    Game.FadeScreenIn(500, true);
-                    GiveHistory(true);
                 }
             }
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+            GiveHistory(true);    
         }
         catch (Exception e3)
         {
@@ -340,7 +338,7 @@ public class PedSwap : IPedSwap
         {
             if (gang != null)
             {
-                DispatchablePerson toBecome = gang.Personnel.PickRandom();
+                DispatchablePerson toBecome = gang.Personnel.PickRandom()?.Copy();
                 if (toBecome != null)
                 {
                     Game.FadeScreenOut(500, true);

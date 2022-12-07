@@ -96,6 +96,18 @@ public class PoliceTaskSettings : ISettingsDefaultable
     [Description("Time (in ms) between target updates during tasking. CURRENTLY DISABLED.")]
     public uint TargetUpdateTime { get; set; }
 
+
+
+    public bool EnableCombatAttributeCanInvestigate { get; set; }
+    public bool EnableCombatAttributeDisableEntryReactions { get; set; }
+    public bool EnableCombatAttributeCanFlank { get; set; }
+    public bool EnableCombatAttributeCanChaseOnFoot { get; set; }
+    public bool OverrrideTargetLossResponse { get; set; }
+    public int OverrrideTargetLossResponseValue { get; set; }
+    public bool EnableConfigFlagAlwaysSeeAproachingVehicles { get; set; }
+    public bool EnableConfigFlagDiveFromApproachingVehicles { get; set; }
+    public bool AllowMinorReactions { get; set; }
+
     public PoliceTaskSettings()
     {
         SetDefault();
@@ -169,5 +181,20 @@ public class PoliceTaskSettings : ISettingsDefaultable
         SetSteerAround = false;
 
         TargetUpdateTime = 1000;
+
+
+        EnableCombatAttributeCanInvestigate = true;
+        EnableCombatAttributeDisableEntryReactions = true;
+        EnableCombatAttributeCanFlank = true;
+        EnableCombatAttributeCanChaseOnFoot = true;
+
+        OverrrideTargetLossResponse = true;
+        OverrrideTargetLossResponseValue = 2;
+
+
+        EnableConfigFlagAlwaysSeeAproachingVehicles = true;
+        EnableConfigFlagDiveFromApproachingVehicles = true;
+        AllowMinorReactions = true;
+
     }
 }

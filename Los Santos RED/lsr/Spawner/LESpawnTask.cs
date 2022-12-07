@@ -324,63 +324,12 @@ public class LESpawnTask : SpawnTask
         }
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
-        if (PrimaryCop != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        {
-            PrimaryCop.VoiceName = PersonType.OverrideVoice.PickRandom();
-        }
-        PrimaryCop.WeaponInventory.IssueWeapons(Weapons, true, true, true, PersonType.EmptyHolster, PersonType.FullHolster);
-        PrimaryCop.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
-        PrimaryCop.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
-        PrimaryCop.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
-        PrimaryCop.TaserAccuracy = RandomItems.GetRandomNumberInt(PersonType.TaserAccuracyMin, PersonType.TaserAccuracyMax);
-        PrimaryCop.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
-        PrimaryCop.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
-        PrimaryCop.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
-        //PrimaryCop.HasTaser = Agency.HasTasers;
-        if (Agency.Division != -1)
-        {
-            PrimaryCop.Division = Agency.Division;
-            PrimaryCop.UnityType = UnitCode;
-            PrimaryCop.BeatNumber = NextBeatNumber;
-            PrimaryCop.GroupName = $"{Agency.ID} {PrimaryCop.Division}-{PrimaryCop.UnityType}-{PrimaryCop.BeatNumber}";
-        }
-        else if (Agency.GroupName != "")
-        {
-            PrimaryCop.GroupName = Agency.GroupName;
-        }
-        if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
-        {
-            int health = RandomItems.GetRandomNumberInt(PersonType.HealthMin, PersonType.HealthMax) + 100;
-            ped.MaxHealth = health;
-            ped.Health = health;
-        }
-        if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
-        {
-            int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
-            ped.Armor = armor;
-        }
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
 
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryCop.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
-
-        if (ped.Exists() && Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
-        {
-            //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Gang1H"));
-            NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(ped, Game.GetHashKey("Default"));
-        }
         if(SpawnWithAllWeapons)
         {
             PrimaryCop.WeaponInventory.GiveHeavyWeapon();
         }
-
-
         return PrimaryCop;
     }
     private void SetupCallSigns()

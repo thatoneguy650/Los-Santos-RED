@@ -218,6 +218,8 @@
     <Compile Include="lsr\Tasker\Other\FollowAround\FollowOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\GeneralFollow.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\GetOutOfVehicleTaskState.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CameraCycler.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CameraCyclerPosition.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeComponentsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeExistingVariationsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeProprsMenu.cs" />

@@ -802,6 +802,12 @@ public class Pedestrians : ITaskerReportable
             return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
         }
     }
+
+
+
+
+
+
     private void AddAmbientCivilian(Ped Pedestrian)
     {  
         bool WillFight = false;
@@ -855,213 +861,102 @@ public class Pedestrians : ITaskerReportable
             }
         }
     }
+    private void SetCivilianStats(Ped Pedestrian)
+    {
+        if (Pedestrian.Exists() && !Pedestrian.IsPersistent)
+        {
+            if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
+            {
+                Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
+            }
+            if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
+            {
+                int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
+                Pedestrian.MaxHealth = DesiredHealth;
+                Pedestrian.Health = DesiredHealth;
+                Pedestrian.Armor = 0;
+            }
+            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
+            NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
+        }
+    }
     private void AddAmbientGangMember(Ped Pedestrian)
     {
-        if (Pedestrian.Exists())
+        if(!Pedestrian.Exists())
         {
-            bool isCarSpawn = Pedestrian.IsInAnyVehicle(false);
-
-
-            bool WasPersistentOnCreate = false;
-            string relationshipGroupName = Pedestrian.RelationshipGroup.Name;
-            Gang MyGang = Gangs.GetGang(relationshipGroupName);
-            if(MyGang == null)
-            {
-                MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName, relationshipGroupName);
-            }
-            DispatchablePerson gangPerson = null;
-            if(MyGang.Personnel != null)
-            {
-                gangPerson = MyGang.GetSpecificPed(Pedestrian);
-            }
-            if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOutsideTerritory)
-            {
-                Zone CurrentZone = Zones.GetZone(Pedestrian.Position);
-                if (CurrentZone != null)
-                {
-                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
-                    if (!totalTerritories.Any(x => x.ZoneInternalGameName == CurrentZone.InternalGameName))
-                    {
-                        Delete(Pedestrian);
-                        return;
-                    }
-                }
-            }
-            bool WillFight = RandomItems.RandomPercent(MyGang.FightPercentage);
-            bool WillFightPolice = RandomItems.RandomPercent(MyGang.FightPolicePercentage);
-            bool canBeAmbientTasked = true;
-            bool isDrugDealer = RandomItems.RandomPercent(MyGang.DrugDealerPercentage);
-            bool IssueMelee = RandomItems.RandomPercent(MyGang.PercentageWithMelee);
-            bool IssueSidearm = RandomItems.RandomPercent(MyGang.PercentageWithSidearms);
-            bool IssueHeavy = RandomItems.RandomPercent(MyGang.PercentageWithLongGuns);
-
-            if (Settings.SettingsManager.GangSettings.ShowAmbientBlips && Pedestrian.Exists())
-            {
-                Blip myBlip = Pedestrian.AttachBlip();
-                myBlip.Color = MyGang.Color;
-                myBlip.Scale = 0.3f;
-            }
-
-
-
-            if (Pedestrian.IsPersistent)
-            {
-                WasPersistentOnCreate = true;
-            }
-            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && WasPersistentOnCreate)//must have been spawned by another mod?
-            {
-                WillFight = false;
-                WillFightPolice = false;
-                canBeAmbientTasked = false;
-                isDrugDealer = false;
-            }
-
-
-
-            if(isCarSpawn && Settings.SettingsManager.GangSettings.ForceAmbientCarDocile)
-            {
-                WillFight = false;
-                WillFightPolice = false;
-                isDrugDealer = false;
-                IssueMelee = false;
-                IssueSidearm = false;
-                IssueHeavy = false;
-                NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
-            }
-
-
-
-            ShopMenu toAdd = null;         
-            if (isDrugDealer)
-            {
-                toAdd = ShopMenus.GetRandomMenu(MyGang.DealerMenuGroup);
-                if (toAdd == null)
-                {
-                    toAdd = ShopMenus.GetRandomDrugDealerMenu();
-                }
-            }
-            GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, WillFight, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked, ShopMenu = toAdd,WasPersistentOnCreate = WasPersistentOnCreate };
-            if (Pedestrian.Exists())
-            {
-                if(isDrugDealer)
-                {
-                    gm.Money = RandomItems.GetRandomNumberInt(MyGang.DealerMemberMoneyMin, MyGang.DealerMemberMoneyMax);
-                }
-                gm.Pedestrian.Money = 0;// gm.Money;
-                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-                gm.WeaponInventory.IssueWeapons(Weapons, IssueMelee, IssueSidearm, IssueHeavy, gangPerson?.EmptyHolster, gangPerson?.FullHolster);
-            }
-            bool withPerson = false;
-            if (gangPerson != null)
-            {
-                if (Settings.SettingsManager.GangSettings.OverrideHealth)
-                {
-                    int health = RandomItems.GetRandomNumberInt(gangPerson.HealthMin, gangPerson.HealthMax) + 100;
-                    Pedestrian.MaxHealth = health;
-                    Pedestrian.Health = health;
-                }
-                if (Settings.SettingsManager.GangSettings.OverrideArmor)
-                {
-                    int armor = RandomItems.GetRandomNumberInt(gangPerson.ArmorMin, gangPerson.ArmorMax);
-                    Pedestrian.Armor = armor;
-                }
-                gm.Accuracy = RandomItems.GetRandomNumberInt(gangPerson.AccuracyMin, gangPerson.AccuracyMax);
-                gm.ShootRate = RandomItems.GetRandomNumberInt(gangPerson.ShootRateMin, gangPerson.ShootRateMax);
-                gm.CombatAbility = RandomItems.GetRandomNumberInt(gangPerson.CombatAbilityMin, gangPerson.CombatAbilityMax);
-
-                if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
-                {
-                    Pedestrian.Accuracy = gm.Accuracy;
-                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
-                    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
-                }
-                withPerson = true;
-            }
-            else
-            {
-                if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
-                {
-                    Pedestrian.Accuracy = gm.Accuracy;
-                    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, gm.ShootRate);
-                    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, gm.CombatAbility);
-                }
-            }
-            GangMembers.Add(gm);
+            return;
         }
+        bool isCarSpawn = Pedestrian.IsInAnyVehicle(false);
+        //bool WasPersistentOnCreate = false;
+        string relationshipGroupName = Pedestrian.RelationshipGroup.Name;
+        Gang MyGang = Gangs.GetGang(relationshipGroupName);
+        if(MyGang == null)
+        {
+            MyGang = new Gang(relationshipGroupName, relationshipGroupName, relationshipGroupName, relationshipGroupName);
+        }
+        DispatchablePerson gangPerson = null;
+        if(MyGang.Personnel != null)
+        {
+            gangPerson = MyGang.GetSpecificPed(Pedestrian);
+        }
+        if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOutsideTerritory)
+        {
+            Zone CurrentZone = Zones.GetZone(Pedestrian.Position);
+            if (CurrentZone != null)
+            {
+                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(MyGang.ID);
+                if (!totalTerritories.Any(x => x.ZoneInternalGameName == CurrentZone.InternalGameName))
+                {
+                    Delete(Pedestrian);
+                    return;
+                }
+            }
+        }
+        GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World);// { CanBeAmbientTasked = canBeAmbientTasked, WasPersistentOnCreate = WasPersistentOnCreate };
+        gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips);
+        if (Pedestrian.IsPersistent)
+        {
+            gm.WasPersistentOnCreate = true;
+        }
+        if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && gm.WasPersistentOnCreate)//must have been spawned by another mod?
+        {
+            gm.WillFight = false;
+            gm.WillFightPolice = false;
+            gm.CanBeAmbientTasked = false;
+            gm.ShopMenu = null;
+        }
+        if (isCarSpawn && Settings.SettingsManager.GangSettings.ForceAmbientCarDocile)
+        {
+            gm.WillFight = false;
+            gm.WillFightPolice = false;
+            gm.ShopMenu = null;
+            NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
+        }
+        GangMembers.Add(gm);    
     }
     private void AddAmbientCop(Ped Pedestrian)
     {
         var AgencyData = GetAgencyData(Pedestrian, 0);
         Agency AssignedAgency = AgencyData.agency;
         DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
-
-        if (AssignedAgency != null && Pedestrian.Exists() && AssignedPerson != null)
-        {
-            if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
-            {
-                int health = RandomItems.GetRandomNumberInt(AssignedPerson.HealthMin, AssignedPerson.HealthMax) + 100;
-                Pedestrian.MaxHealth = health;
-                Pedestrian.Health = health;
-            }
-            if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
-            {
-                int armor = RandomItems.GetRandomNumberInt(AssignedPerson.ArmorMin, AssignedPerson.ArmorMax);
-                Pedestrian.Armor = armor;
-            }
-
-            Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
-            myCop.WeaponInventory.IssueWeapons(Weapons, true,true,true, AssignedPerson.EmptyHolster,AssignedPerson.FullHolster);
-
-
-
-
-            int accuracy = RandomItems.GetRandomNumberInt(AssignedPerson.AccuracyMin, AssignedPerson.AccuracyMax);
-            int shootRate = RandomItems.GetRandomNumberInt(AssignedPerson.ShootRateMin, AssignedPerson.ShootRateMax);
-            int combatAbility = RandomItems.GetRandomNumberInt(AssignedPerson.CombatAbilityMin, AssignedPerson.CombatAbilityMax);
-
-            int tazerAccuracy = RandomItems.GetRandomNumberInt(AssignedPerson.TaserAccuracyMin, AssignedPerson.TaserAccuracyMax);
-            int tazerShootRate = RandomItems.GetRandomNumberInt(AssignedPerson.TaserShootRateMin, AssignedPerson.TaserShootRateMax);
-
-            int vehicleAccuracy = RandomItems.GetRandomNumberInt(AssignedPerson.VehicleAccuracyMin, AssignedPerson.VehicleAccuracyMax);
-            int vehicleShootRate = RandomItems.GetRandomNumberInt(AssignedPerson.VehicleShootRateMin, AssignedPerson.VehicleShootRateMax);
-
-            myCop.Accuracy = accuracy;
-            myCop.ShootRate = shootRate;
-            myCop.CombatAbility = combatAbility;
-            myCop.TaserAccuracy = tazerAccuracy;
-            myCop.TaserShootRate = tazerShootRate;
-            myCop.VehicleAccuracy = vehicleAccuracy;
-            myCop.VehicleShootRate = vehicleShootRate;
-            if (AssignedAgency.Division != -1)
-            {
-                myCop.Division = AssignedAgency.Division;
-                myCop.UnityType = "Lincoln";
-                myCop.BeatNumber = AssignedAgency.GetNextBeatNumber();
-                myCop.GroupName = $"{AssignedAgency.ID} {myCop.Division}-{myCop.UnityType}-{myCop.BeatNumber}";
-            }
-            else if (AssignedAgency.GroupName != "")
-            {
-                myCop.GroupName = AssignedAgency.GroupName;
-            }
-            if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
-            {
-                Police.Add(myCop);
-                myCop.Pedestrian.IsPersistent = true;
-            }
-            EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
-        }
-        else
+        if(AssignedAgency == null || AssignedPerson == null || !Pedestrian.Exists())
         {
             if (Pedestrian.IsPersistent)
             {
                 EntryPoint.PersistentPedsDeleted++;
             }
-
             Delete(Pedestrian);
-
-            //Pedestrian.Delete();
             EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP FAIL, DELETING", 2);
+            return;
         }
+        Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
+        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.ShowVanillaBlips, "Lincoln");
+        if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
+        {
+            Police.Add(myCop);
+            myCop.Pedestrian.IsPersistent = true;
+        }
+        EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
     }
     public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped Cop, int WantedLevel)
     {
@@ -1092,25 +987,6 @@ public class Pedestrians : ITaskerReportable
             }
         }
         return (null, null);
-    }
-    private void SetCivilianStats(Ped Pedestrian)
-    {
-        if (Pedestrian.Exists() && !Pedestrian.IsPersistent)
-        {
-            if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
-            {
-                Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
-            }
-            if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
-            {
-                int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
-                Pedestrian.MaxHealth = DesiredHealth;
-                Pedestrian.Health = DesiredHealth;
-                Pedestrian.Armor = 0;
-            }
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-            NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
-        }
     }
     private string GetInternalZoneString(Vector3 ZonePosition)
     {

@@ -181,6 +181,15 @@ public class GroupManager
     }
     public void SetFollow(PedExt mi)
     {
+        if (mi.Pedestrian.Exists())
+        {
+            PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
+            if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(mi.Pedestrian, PlayerGroup))
+            {
+                NativeFunction.Natives.REMOVE_PED_FROM_GROUP(mi.Pedestrian);
+            }
+        }
+
         if (mi.CurrentTask != null)
         {
             mi.CurrentTask.Stop();

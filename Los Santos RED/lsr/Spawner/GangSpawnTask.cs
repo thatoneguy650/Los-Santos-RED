@@ -282,7 +282,6 @@ public class GangSpawnTask : SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         ped.RelationshipGroup = rg;
         bool isMale;
@@ -294,65 +293,9 @@ public class GangSpawnTask : SpawnTask
         {
             isMale = ped.IsMale;
         }
-        ShopMenu toAdd = null;
-        bool isDrugDealer = RandomItems.RandomPercent(Gang.DrugDealerPercentage);
-        if (isDrugDealer)
-        {
-            toAdd = ShopMenus.GetRandomMenu(Gang.DealerMenuGroup);
-            if (toAdd == null)
-            {
-                toAdd = ShopMenus.GetRandomDrugDealerMenu();
-            }
-        }
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, RandomItems.RandomPercent(Gang.FightPercentage), false, Names.GetRandomName(isMale), Crimes, Weapons, World, RandomItems.RandomPercent(Gang.FightPolicePercentage)) { ShopMenu = toAdd };
+        GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         World.Pedestrians.AddEntity(GangMember);
-        if (GangMember.Pedestrian.Exists())
-        {
-            GangMember.Pedestrian.Money = 0;// GangMember.Money;
-        
-        }
-        if (isDrugDealer)
-        {
-            GangMember.Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
-        }
-        GangMember.WeaponInventory.IssueWeapons(Weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), PersonType.EmptyHolster,PersonType.FullHolster);
-        GangMember.Accuracy = RandomItems.GetRandomNumberInt(PersonType.AccuracyMin, PersonType.AccuracyMax);
-        GangMember.ShootRate = RandomItems.GetRandomNumberInt(PersonType.ShootRateMin, PersonType.ShootRateMax);
-        GangMember.CombatAbility = RandomItems.GetRandomNumberInt(PersonType.CombatAbilityMin, PersonType.CombatAbilityMax);
-        GangMember.TaserAccuracy = RandomItems.GetRandomNumberInt(PersonType.TaserAccuracyMin, PersonType.TaserAccuracyMax);
-        GangMember.TaserShootRate = RandomItems.GetRandomNumberInt(PersonType.TaserShootRateMin, PersonType.TaserShootRateMax);
-        GangMember.VehicleAccuracy = RandomItems.GetRandomNumberInt(PersonType.VehicleAccuracyMin, PersonType.VehicleAccuracyMax);
-        GangMember.VehicleShootRate = RandomItems.GetRandomNumberInt(PersonType.VehicleShootRateMin, PersonType.VehicleShootRateMax);
-        if (Settings.SettingsManager.GangSettings.OverrideHealth)
-        {
-            int health = RandomItems.GetRandomNumberInt(PersonType.HealthMin, PersonType.HealthMax) + 100;
-            ped.MaxHealth = health;
-            ped.Health = health;
-        }
-        if (Settings.SettingsManager.GangSettings.OverrideArmor)
-        {
-            int armor = RandomItems.GetRandomNumberInt(PersonType.ArmorMin, PersonType.ArmorMax);
-            ped.Armor = armor;
-        }
-        if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
-        {
-            ped.Accuracy = GangMember.Accuracy;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(ped, GangMember.ShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(ped, GangMember.CombatAbility);
-        }
-        if (GangMember != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        {
-            GangMember.VoiceName = PersonType.OverrideVoice.PickRandom();
-        }
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GangMember.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Gang.Color;
-            myBlip.Scale = 0.3f;
-        }
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
         return GangMember;
     }
     private void SetupPed(Ped ped)
