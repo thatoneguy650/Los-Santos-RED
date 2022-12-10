@@ -61,7 +61,7 @@ public class FaceFeature
             FaceFeature ff = PedCustomizer.WorkingVariation.FaceFeatures.FirstOrDefault(x => x.Name == Name);
             if(ff == null)
             {
-                PedCustomizer.WorkingVariation.FaceFeatures.Add(this.Copy());
+                PedCustomizer.WorkingVariation.FaceFeatures.Add(new FaceFeature(Index, Name) { Scale = Scale, RangeLow = RangeLow, RangeHigh = RangeHigh });
             }
             else
             {
