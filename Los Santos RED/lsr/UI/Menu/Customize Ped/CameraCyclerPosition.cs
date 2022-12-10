@@ -12,12 +12,8 @@ using System.Threading.Tasks;
 
 public class CameraCyclerPosition
 {
-
     private Vector3 CurrentBonePosition;
     private Vector3 DesiredCameraPosition;
-
-
-
     public CameraCyclerPosition(string name, Vector3 cameraPosition, Vector3 cameraFocusPosition, int order)
     {
         Name = name;
@@ -34,41 +30,42 @@ public class CameraCyclerPosition
         CameraRotation = cameraRotation;
         Order = order;
     }
-
     public string Name { get; set; }
-
     public int Order { get; set; }
     public Vector3 CameraPosition { get; set; }
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public Vector3 CameraFocusPosition { get; set; }
-
-    public void Move(Camera charCam, PedExt modelPed)
+    public void Move(Camera charCam)
     {
+        Camera coolCam = charCam;
+
+
         EntryPoint.WriteToConsole($"CameraCyclerPosition MoveToPosition {Name}");
-        if (!charCam.Exists())
+        if (coolCam == null || !coolCam.Exists())
         {
-            charCam = new Camera(false);
+            coolCam = new Camera(false);
         }
-        charCam.Position = CameraPosition;
+        coolCam.Position = CameraPosition;
         if (CameraRotation == Rotator.Zero)
         {
             Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            charCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+            coolCam.Rotation = new Rotator(r.X, r.Y, r.Z);
         }
         else
         {
-            charCam.Rotation = CameraRotation;
+            coolCam.Rotation = CameraRotation;
         }
         if (CameraDirection == Vector3.Zero)
-        { 
-            charCam.Direction = (CameraFocusPosition - charCam.Position).ToNormalized();
+        {
+            coolCam.Direction = (CameraFocusPosition - coolCam.Position).ToNormalized();
         }
         else
         {
-            charCam.Direction = CameraDirection;
+            coolCam.Direction = CameraDirection;
         }
-        charCam.Active = true;
+        coolCam.Active = true;
+        //Game.DisplayHelp($"Camera Position: {Name}");
     }
 
 

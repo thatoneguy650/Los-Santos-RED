@@ -130,8 +130,12 @@ public class Respawning// : IRespawning
         int FineAmount = CurrentPlayer.FineAmount();
         if (CurrentPlayer.BankAccounts.Money < FineAmount)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", FineAmount));
-            return false;
+            BailFeePastDue += FineAmount;
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", StaticStrings.OfficerFriendlyContactName, "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
+            GameTimeLastPaidFine = Game.GameTime;
+            CurrentPlayer.Scanner.OnPaidFine();
+            return true;
         }
         else
         {

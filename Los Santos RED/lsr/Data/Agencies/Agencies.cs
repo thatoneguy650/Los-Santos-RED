@@ -251,9 +251,15 @@ public class Agencies : IAgencies
     }
     private void DefaultConfig_Simple()
     {
+        Agency LSMC_Simple = LSMC.Copy();
+        Agency MRH_Simple = MRH.Copy();
+        Agency LSFD_Simple = LSFD.Copy();
+        LSMC_Simple.PersonnelID = "EMTs";
+        MRH_Simple.PersonnelID = "EMTs";
+        LSFD_Simple.PersonnelID = "EMTs";
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
-            LSPD,LSPDASD,LSSD,LSSDASD,NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,ARMY,LSFDFire,LSMC,MRH,LSFD,UNK,
+            LSPD,LSPDASD,LSSD,LSSDASD,NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,ARMY,LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,UNK,
             NYSP
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");

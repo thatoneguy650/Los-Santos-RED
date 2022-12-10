@@ -63,7 +63,7 @@ class FollowInVehicleTaskState : TaskState
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, Settings.SettingsManager.GangSettings.EscortSpeed, (int)eCustomDrivingStyles.Code2, Settings.SettingsManager.GangSettings.EscortOffsetValue * GroupMemberNumber, 20, 20.0f);
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_ESCORT", 0, PedGeneral.Pedestrian.CurrentVehicle, Player.Character, -1, Settings.SettingsManager.GangSettings.EscortSpeed, (int)eCustomDrivingStyles.Code2, Settings.SettingsManager.GangSettings.EscortOffsetValue, 20, 20.0f);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);

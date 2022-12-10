@@ -70,7 +70,6 @@ public class GeneralFollow : ComplexTask
             if (ShouldGetOutOfVehicle)
             {
                 CurrentTaskState = new GetOutOfVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player);
-                //GroupManager.AddInternal(PedGeneral);
             }
             else
             {
@@ -79,7 +78,6 @@ public class GeneralFollow : ComplexTask
                     if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                     {
                         CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings);
-                        //GroupManager.AddInternal(PedGeneral);
                     }
                     else
                     {
@@ -90,7 +88,6 @@ public class GeneralFollow : ComplexTask
                             index = gm.Index;
                         }
                         CurrentTaskState = new FollowInVehicleTaskState(PedGeneral, World, SeatAssigner, Settings, Player, index);
-                        //GroupManager.AddInternal(PedGeneral);
                     }
                 }
                 else
@@ -104,13 +101,11 @@ public class GeneralFollow : ComplexTask
             if(ShouldGetInVehicle && SeatAssigner.IsAssignmentValid())
             {
                 CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings) { IsGang = true };
-                //GroupManager.AddInternal(PedGeneral);
 
             }
             else
             {
                 CurrentTaskState = new FollowOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, GroupManager);
-                //GroupManager.AddInternal(PedGeneral);
             }
         }
         if (CurrentTaskState != null)

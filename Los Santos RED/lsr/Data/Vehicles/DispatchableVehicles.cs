@@ -111,7 +111,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         LSPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 48,35) { VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police2", 25, 20),
-            new DispatchableVehicle("police4", 1,1),
+            new DispatchableVehicle("police4", 1,1) { RequiredPedGroup = "Detectives" },
             new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4, MinWantedLevelSpawn = 3}};
         SAHPVehicles = new List<DispatchableVehicle>() {
