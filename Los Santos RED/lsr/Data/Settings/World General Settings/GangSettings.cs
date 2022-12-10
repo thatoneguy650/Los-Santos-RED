@@ -55,6 +55,8 @@ public class GangSettings : ISettingsDefaultable
     public bool DenSpawningIgnoresLimits { get; set; }
     [Description("If enabled, den ambient spawns will happen regardless of the player wanted level. If disabled, dens will not have ambient spawns when you are wanted.")]
     public bool AllowDenSpawningWhenPlayerWanted { get; set; }
+    public float EscortOffsetValue { get; set; }
+    public float EscortSpeed { get; set; }
 
     public GangSettings()
     {
@@ -98,8 +100,8 @@ public class GangSettings : ISettingsDefaultable
 #else
 
 #endif
-
-
+        EscortOffsetValue = 3.0f;
+        EscortSpeed = 100f;
     }
 
 }

@@ -23,16 +23,9 @@ public class CustomizePropsMenu
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private PedCustomizer PedCustomizer;
-    private UIMenuItem InputModel;
-    private UIMenuListScrollerItem<string> SelectModel;
-    private UIMenuItem SearchModel;
     private PedCustomizerMenu PedCustomizerMenu;
-    private UIMenu ModelSearchSubMenu;
-    private string FilterString;
     private List<FashionProp> PropLookup;
     private UIMenu PickPropMenu;
-    private UIMenuItem ClearProps;
-
     public CustomizePropsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
     {
         PedSwap = pedSwap;

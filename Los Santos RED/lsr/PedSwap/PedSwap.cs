@@ -75,9 +75,6 @@ public class PedSwap : IPedSwap
             PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities,Settings);
             PedSwapCustomMenu.Setup();
             PedSwapCustomMenu.Show();
-
-
-
             GameFiber.Yield();
             while (menuPool.IsAnyMenuOpen())
             {
@@ -89,9 +86,6 @@ public class PedSwap : IPedSwap
             {
                 AddOffset();
             }
-
-
-
             Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
     }
@@ -163,11 +157,8 @@ public class PedSwap : IPedSwap
             Player.SetCopStatus(false, null);
             HandlePreviousPed(deleteOld, TargetPed);
             PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
-
-
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
-
             GiveHistory(false);
         }
         catch (Exception e3)
@@ -336,62 +327,58 @@ public class PedSwap : IPedSwap
     {
         try
         {
-            if (gang != null)
+            if (gang == null)
             {
-                DispatchablePerson toBecome = gang.Personnel.PickRandom()?.Copy();
-                if (toBecome != null)
+                return;
+            }
+            DispatchablePerson toBecome = gang.Personnel.PickRandom()?.Copy();
+            if(toBecome == null)
+            {
+                return;
+            }
+            Game.FadeScreenOut(500, true);
+            ResetOffsetForCurrentModel();
+            Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
+            EntryPoint.SpawnedEntities.Add(TargetPed);
+            GameFiber.Yield();
+            if (!TargetPed.Exists())
+            {
+                Game.FadeScreenIn(0);
+                return;
+            }
+            TargetPed.RandomizeVariation();
+            StoreTargetPedData(TargetPed);
+            NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
+            Player.SetCopStatus(false, null);
+            HandlePreviousPed(false, TargetPed);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            if (toBecome != null)
+            {
+                Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads, false);
+            }
+            Player.RelationshipManager.GangRelationships.SetGang(gang, false);
+            IssueWeapons(RandomItems.RandomPercent(gang.PercentageWithMelee) ? gang.GetRandomMeleeWeapon(Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(true, Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithLongGuns) ? gang.GetRandomWeapon(false, Weapons) : null);
+            if (RandomItems.RandomPercent(gang.VehicleSpawnPercentage))
+            {
+                SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
+                vehicleSpawn.GetClosestStreet(false);
+                if (vehicleSpawn.HasSpawns)
                 {
-                    Game.FadeScreenOut(500, true);
-                    ResetOffsetForCurrentModel();
-                    Ped TargetPed = new Ped(toBecome.ModelName, Player.Character.Position.Around2D(15f), Game.LocalPlayer.Character.Heading);
-                    EntryPoint.SpawnedEntities.Add(TargetPed);
-                    GameFiber.Yield();
-                    if (!TargetPed.Exists())
+                    SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
+                    carSpawn.AllowAnySpawn = true;
+                    carSpawn.AttemptSpawn();
+                    carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+                    VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
+                    if (createdVehicle != null && createdVehicle.Vehicle.Exists())
                     {
-                        Game.FadeScreenIn(0);
-                        return;
+                        Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
+                        Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
                     }
-                    TargetPed.RandomizeVariation();
-                    StoreTargetPedData(TargetPed);
-                    NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
-                    Player.SetCopStatus(false, null);
-                    HandlePreviousPed(false, TargetPed);
-                    PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
-
-                    if (toBecome != null)
-                    {
-                        Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads, false);
-                    }
-
-
-                    Player.RelationshipManager.GangRelationships.SetGang(gang, false);
-                    IssueWeapons(RandomItems.RandomPercent(gang.PercentageWithMelee) ? gang.GetRandomMeleeWeapon(Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithSidearms) ? gang.GetRandomWeapon(true, Weapons) : null, RandomItems.RandomPercent(gang.PercentageWithLongGuns) ? gang.GetRandomWeapon(false, Weapons) : null);
-                    if (RandomItems.RandomPercent(gang.VehicleSpawnPercentage))
-                    {
-                        SpawnLocation vehicleSpawn = new SpawnLocation(Player.Position);
-                        vehicleSpawn.GetClosestStreet(false);
-                        if (vehicleSpawn.HasSpawns)
-                        {
-                            SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
-                            carSpawn.AllowAnySpawn = true;
-                            carSpawn.AttemptSpawn();
-                            carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
-                            VehicleExt createdVehicle = carSpawn.CreatedVehicles.FirstOrDefault();
-                            if (createdVehicle != null && createdVehicle.Vehicle.Exists())
-                            {
-                                Player.Character.WarpIntoVehicle(createdVehicle.Vehicle, -1);
-                                Player.VehicleOwnership.TakeOwnershipOfVehicle(createdVehicle, false);
-                            }
-                        }
-                    }
-                    
-
-
-                    GameFiber.Sleep(500);
-                    Game.FadeScreenIn(500, true);
-                    GiveHistory(false);
                 }
             }
+            GameFiber.Sleep(500);
+            Game.FadeScreenIn(500, true);
+            GiveHistory(false);  
         }
         catch (Exception e3)
         {

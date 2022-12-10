@@ -25,13 +25,15 @@ class FollowOnFootTaskState : TaskState
     private bool isPatrolling = false;
     private ISettingsProvideable Settings;
     private ITargetable Player;
-    public FollowOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
+    private GroupManager GroupManager;
+    public FollowOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, GroupManager groupManager)
     {
         PedGeneral = pedGeneral;
         Player = player;
         World = world;
         SeatAssigner = seatAssigner;
         Settings = settings;
+        GroupManager = groupManager;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && !PedGeneral.IsInVehicle && Player.IsOnFoot;
@@ -46,6 +48,7 @@ class FollowOnFootTaskState : TaskState
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(PedGeneral.Pedestrian);
         }
+        //GroupManager.Add(PedGeneral);
     }
     public void Stop()
     {

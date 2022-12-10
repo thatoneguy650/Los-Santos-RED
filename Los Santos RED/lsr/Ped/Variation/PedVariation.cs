@@ -92,8 +92,17 @@ public class PedVariation
                 }
                 foreach(FaceFeature faceFeature in FaceFeatures)
                 {
-                    NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
+                    EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
+                    NativeFunction.Natives.SET_PED_MICRO_MORPH(ped, faceFeature.Index, faceFeature.Scale);
+                    GameFiber.Yield();
                 }
+
+                if (EyeColor != -1)
+                {
+                    NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
+                }
+
+
             }
         }
         catch (Exception ex)
@@ -170,6 +179,7 @@ public class PedVariation
 
                                         foreach (FaceFeature faceFeature in FaceFeatures)
                                         {
+                                            EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
                                             NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
                                         }
 
@@ -181,6 +191,13 @@ public class PedVariation
                                         break;
                                     }
                                     GameFiber.Yield();
+                                }
+                                if(ped.Exists())
+                                {
+                                    if (EyeColor != -1)
+                                    {
+                                        NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
+                                    }
                                 }
                             }
                         }

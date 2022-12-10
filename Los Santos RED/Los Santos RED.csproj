@@ -159,6 +159,7 @@
     <Compile Include="lsr\Player\Cellphone\Contacts\GangContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\GunDealerContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Interactions\IContactMenuInteraction.cs" />
+    <Compile Include="lsr\Player\GroupManager\GroupMember.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
@@ -220,9 +221,13 @@
     <Compile Include="lsr\Tasker\Other\FollowAround\GetOutOfVehicleTaskState.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCycler.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCyclerPosition.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeAncestryMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeComponentsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeExistingVariationsMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeProprsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMorphMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHairMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />

@@ -25,9 +25,7 @@ public class PedCustomizerMenu
     private CustomizeComponentsMenu CustomizeComponentsMenu;
     private CustomizePropsMenu CustomizePropsMenu;
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
-
     public bool IsProgramicallySettingFieldValues { get; private set; }
-
     public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads)
     {
         PedSwap = pedSwap;
@@ -102,8 +100,4 @@ public class PedCustomizerMenu
 
         IsProgramicallySettingFieldValues = false;
     }
-    //public void OnVariationChanged()
-    //{
-    //    //CustomizeHeadMenu.OnVariationChanged();
-    //}
 }

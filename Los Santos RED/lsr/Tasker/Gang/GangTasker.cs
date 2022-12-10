@@ -45,33 +45,56 @@ public class GangTasker
                     //{
                     //    continue;
                     //}
-                    if (!gangMember.IsBusted && !gangMember.CanBeTasked)
+
+
+
+
+                    if (gangMember.IsGroupMember && !gangMember.IsBusted)
                     {
-                        if (gangMember.CurrentTask != null)
+                        if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
+                        {
+                            gangMember.UpdateTask(null);
+                            GameFiber.Yield();
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        if (!gangMember.IsBusted && !gangMember.CanBeTasked)
+                        {
+                            if (gangMember.CurrentTask != null)
+                            {
+                                gangMember.CurrentTask = null;
+                            }
+                            continue;
+                        }
+
+                        if (gangMember.DistanceToPlayer >= 230f)
+                        {
+                            continue;
+                        }
+
+                        if (gangMember.NeedsTaskAssignmentCheck)
+                        {
+                            if (gangMember.DistanceToPlayer <= 200f)
+                            {
+                                UpdateCurrentTask(gangMember);//has yields if it does anything
+                            }
+                        }
+
+
+                        if (gangMember.CurrentTask?.Name != "GetArrested" && !gangMember.CanBeAmbientTasked)
                         {
                             gangMember.CurrentTask = null;
                         }
-                        continue;
-                    }
-                    if (gangMember.DistanceToPlayer >= 230f)
-                    {
-                        continue;
-                    }
-                    if (gangMember.NeedsTaskAssignmentCheck)
-                    {
-                        if (gangMember.DistanceToPlayer <= 200f)
+
+
+
+                        if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
                         {
-                            UpdateCurrentTask(gangMember);//has yields if it does anything
+                            gangMember.UpdateTask(null);
+                            GameFiber.Yield();
                         }
-                    }
-                    if(gangMember.CurrentTask?.Name != "GetArrested" && !gangMember.CanBeAmbientTasked)
-                    {
-                        gangMember.CurrentTask = null;
-                    }
-                    if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
-                    {
-                        gangMember.UpdateTask(null);
-                        GameFiber.Yield();
                     }
 
                 }

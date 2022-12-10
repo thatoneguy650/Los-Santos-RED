@@ -149,6 +149,12 @@ public class ActivityManager
     {
         LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
         LastDance = Dances.GetRandomDance();
+
+        AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
+        AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
+        AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
+        AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
+        AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
     }
     public void Dispose()
     {

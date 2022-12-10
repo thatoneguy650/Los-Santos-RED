@@ -23,12 +23,7 @@ public class CustomizeComponentsMenu
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private PedCustomizer PedCustomizer;
-    private UIMenuItem InputModel;
-    private UIMenuListScrollerItem<string> SelectModel;
-    private UIMenuItem SearchModel;
     private PedCustomizerMenu PedCustomizerMenu;
-    private UIMenu ModelSearchSubMenu;
-    private string FilterString;
     private UIMenu PickComponentMenu;
     private List<FashionComponent> ComponentLookup;
     public CustomizeComponentsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
@@ -47,7 +42,7 @@ public class CustomizeComponentsMenu
         ComponentLookup = new List<FashionComponent>() {
             new FashionComponent(0,"Face"),
             new FashionComponent(1, "Mask/Beard"),
-            //new FashionComponent(2, "Hair"),
+            new FashionComponent(2, "Hair"),
             new FashionComponent(3, "Torso"),
             new FashionComponent(4, "Lower"),
             new FashionComponent(5, "Bags"),

@@ -64,8 +64,6 @@ public class CustomizeExistingVariationsMenu
                     else
                     {
                         PedVariation newVariation = dp.RequiredVariation.Copy();
-
-
                         PedCustomizer.WorkingVariation = newVariation;
                     }
                     PedCustomizer.OnModelChanged(false);

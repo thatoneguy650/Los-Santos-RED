@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
 using System.Windows.Media.Imaging;
+using System.Threading;
 
 public class CameraCycler
 {
@@ -19,35 +20,48 @@ public class CameraCycler
 
     private Vector3 DefaultCameraPosition;
     private Vector3 DefaultCameraLookAtPosition;
+    private CameraCyclerPosition DefaultPosition;
 
-
-
+    private PedExt ModelPed;
 
     public CameraCycler(Camera charCam, IPedSwappable player, PedExt modelPed, Vector3 initialPosition, Vector3 initialPosition2)
     { 
         Player = player;
         DefaultCameraPosition = initialPosition;
         DefaultCameraLookAtPosition = initialPosition2;
+        ModelPed = modelPed;
+        DefaultPosition = new CameraCyclerPosition("Default", DefaultCameraPosition, DefaultCameraLookAtPosition, 0);
     }
     public void Setup()
     {
-        CameraCyclerPositions.Add(new CameraCyclerPosition("Root", 0, 2.0f, 0));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("LHand", 18905, 2.0f, 1));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("RHand", 57005, 2.0f, 2));
-        CameraCyclerPositions.Add(new CameraCyclerPosition("RKnee", 16335, 2.0f, 3));
+        CameraCyclerPositions.Add(DefaultPosition);
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Face", new Vector3(402.8708f, -997.5441f, -98.30454f), new Vector3(-0.005195593f, 0.9991391f, -0.04116036f), new Rotator(-2.358982f, 2.136245E-06f, 0.2979394f), 1));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Lower", new Vector3(402.9348f, -998.0379f, -99.38499f), new Vector3(0.02025275f, 0.9928887f, -0.117311f), new Rotator(-6.736939f, 1.611956E-07f, -1.168546f), 2));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Torso", new Vector3(402.9301f, -998.267f, -98.51537f), new Vector3(0.004358141f, 0.9860916f, -0.1661458f), new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f), 3));
+        CameraCyclerPositions.Add(new CameraCyclerPosition("Hands", new Vector3(402.8127f, -997.4653f, -99.04851f), new Vector3(0.0355651f, 0.9914218f, -0.1257696f), new Rotator(-7.225204f, -5.647735E-07f, -2.054481f),4));
+        //Face Close Up
+        //, CameraPosition = new Vector3(402.8708f, -997.5441f, -98.30454f), CameraDirection = new Vector3(-0.005195593f, 0.9991391f, -0.04116036f), CameraRotation = new Rotator(-2.358982f, 2.136245E-06f, 0.2979394f);
 
+        //Lower CLose Up
+        //, CameraPosition = new Vector3(402.9348f, -998.0379f, -99.38499f), CameraDirection = new Vector3(0.02025275f, 0.9928887f, -0.117311f), CameraRotation = new Rotator(-6.736939f, 1.611956E-07f, -1.168546f);
+
+        //Torso Close Up
+        //, CameraPosition = new Vector3(402.9301f, -998.267f, -98.51537f), CameraDirection = new Vector3(0.004358141f, 0.9860916f, -0.1661458f), CameraRotation = new Rotator(-9.5638f, -4.058472E-08f, -0.2532234f);
+
+        //Hands Close Up
+        //, CameraPosition = new Vector3(402.8127f, -997.4653f, -99.04851f), CameraDirection = new Vector3(0.0355651f, 0.9914218f, -0.1257696f), CameraRotation = new Rotator(-7.225204f, -5.647735E-07f, -2.054481f);
     }
 
     public void Cycle(Camera charCam, PedExt modelPed)
     {
         CurrentPositionIndex++;
-        if(CurrentPositionIndex >= CameraCyclerPositions.Count())
+        if(CurrentPositionIndex > CameraCyclerPositions.Count()-1)
         {
             CurrentPositionIndex = 0;
         }
         CameraCyclerPosition ccp = CameraCyclerPositions.Where(x => x.Order == CurrentPositionIndex).FirstOrDefault();
-        ccp?.MoveToPosition(charCam, modelPed);
+        ccp?.Move(charCam, modelPed);
+        GameFiber.Sleep(100);
     }
-
 }
 

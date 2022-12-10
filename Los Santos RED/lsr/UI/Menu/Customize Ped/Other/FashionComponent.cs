@@ -188,15 +188,12 @@ public class FashionComponent
     }
     private void GetPossibleTextures(int drawableID)
     {
-
-
         int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_TEXTURE_VARIATIONS<int>(Ped, ComponentID, drawableID) - 1;
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
             PossibleTextures.Add(new PedFashionAlias(TextureNumber, TextureNumber.ToString()));
         }
-
     }
     private void SetTextureValue()
     {

@@ -118,7 +118,7 @@ public class DynamicPlaces
             if (!ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
             {
                 ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
-                VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu };
+                VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
                 newVend.CanInteractWhenWanted = true;
                 newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                 ActiveVendingMachines.Add(newVend);
@@ -136,11 +136,11 @@ public class DynamicPlaces
                 GasPump newGasPump;
                 if (ClosestStation != null)
                 {
-                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath };
+                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = ClosestStation.OpenTime, CloseTime = ClosestStation.CloseTime };
                 }
                 else
                 {
-                    newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { };
+                    newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
                 }
                 newGasPump.CanInteractWhenWanted = true;
                 newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);

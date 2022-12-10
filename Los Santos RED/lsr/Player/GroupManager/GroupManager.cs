@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
@@ -18,7 +19,7 @@ public class GroupManager
     private IGangs Gangs;
     private IWeapons Weapons;
     private ITargetable Targetable;
-    public List<PedExt> CurrentGroupMembers { get; private set; } = new List<PedExt>();
+    public List<GroupMember> CurrentGroupMembers { get; private set; } = new List<GroupMember>();
     public int PlayerGroup { get; private set; }
     public int MemberCount => CurrentGroupMembers.Count();
     public GroupManager(IGroupManageable player, ITargetable targetable, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, IWeapons weapons)
@@ -34,18 +35,45 @@ public class GroupManager
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
         NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
-        CurrentGroupMembers = new List<PedExt>();
+        CurrentGroupMembers = new List<GroupMember>();
     }
     public void Update()
     {
-        CurrentGroupMembers.RemoveAll(x => !x.Pedestrian.Exists() || x.Pedestrian.IsDead);
-        foreach(PedExt groupMember in CurrentGroupMembers)
+        CurrentGroupMembers.RemoveAll(x => x.PedExt == null || !x.PedExt.Pedestrian.Exists() || x.PedExt.Pedestrian.IsDead);
+
+        for (int i = CurrentGroupMembers.Count - 1; i >= 0; i--)
         {
-            if(groupMember.Pedestrian.Exists() && groupMember.CurrentTask != null)
+            GroupMember sc = CurrentGroupMembers[i];
+            if(sc != null && sc.PedExt != null && sc.PedExt.IsBusted)
             {
-                groupMember.CurrentTask.Update();
+                Remove(sc.PedExt);
+                EntryPoint.WriteToConsole("Remove Group Member (Busted)");
             }
         }
+    }
+    public void AddInternal(PedExt groupMember)
+    {
+        PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
+        if (groupMember != null && groupMember.Pedestrian.Exists())
+        {
+            NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
+        }
+        //EntryPoint.WriteToConsole("Added Ped To GTA Group");
+    }
+    public void RemoveInternal(PedExt groupMember)
+    {
+        PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
+        if (groupMember.Pedestrian.Exists())
+        {
+            if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(groupMember.Pedestrian, PlayerGroup))
+            {
+                NativeFunction.Natives.REMOVE_PED_FROM_GROUP(groupMember.Pedestrian);
+            }
+        }
+    }
+    public GroupMember GetMember(PedExt toget)
+    {
+        return CurrentGroupMembers.Where(x => x.PedExt != null && x.PedExt.Handle == toget.Handle).FirstOrDefault();
     }
     public void Dispose()
     {
@@ -59,10 +87,10 @@ public class GroupManager
     {
         if (groupMember != null && groupMember.Pedestrian.Exists() && CurrentGroupMembers.Count <= maxMembers-1)
         {
-            if (!CurrentGroupMembers.Any(x => x.Handle == groupMember.Handle))
+            if (!CurrentGroupMembers.Any(x => x.PedExt != null && x.PedExt.Handle == groupMember.Handle))
             {
                 PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-                CurrentGroupMembers.Add(groupMember);
+                CurrentGroupMembers.Add(new GroupMember(groupMember, CurrentGroupMembers.Count+1));
                 OnBecameGroupMember(groupMember);
                 return true;
             }
@@ -72,36 +100,26 @@ public class GroupManager
     public void Disband()
     {
         PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-        foreach (PedExt groupMember in CurrentGroupMembers)
+        foreach (GroupMember groupMember in CurrentGroupMembers)
         {
-            if (groupMember.Pedestrian.Exists())
-            {
-                if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(groupMember.Pedestrian, PlayerGroup))
-                {
-                    NativeFunction.Natives.REMOVE_PED_FROM_GROUP(groupMember.Pedestrian);
-                }
-            }
-            OnLeftGroup(groupMember);
+            RemoveInternal(groupMember.PedExt);
+            OnLeftGroup(groupMember.PedExt);
         }
         CurrentGroupMembers.Clear();
     }
     public void Remove(PedExt groupMember)
     {
-        PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-        if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(groupMember.Pedestrian, PlayerGroup))
+        RemoveInternal(groupMember);
+        if(CurrentGroupMembers.Any(x => x.PedExt.Handle == groupMember.Handle))
         {
-            NativeFunction.Natives.REMOVE_PED_FROM_GROUP(groupMember.Pedestrian);
-        }
-        if(CurrentGroupMembers.Contains(groupMember))
-        {
-            CurrentGroupMembers.Remove(groupMember);
+            CurrentGroupMembers.RemoveAll(x => x.PedExt.Handle == groupMember.Handle);
         }
         OnLeftGroup(groupMember);
 
     }
     public bool IsMember(PedExt groupMember)
     {
-        return CurrentGroupMembers.Contains(groupMember);
+        return CurrentGroupMembers.Any(x=> x.PedExt.Handle == groupMember.Handle);
     }
     public void GiveCurrentWeapon(PedExt groupMember)
     {
@@ -123,6 +141,10 @@ public class GroupManager
     }
     public void ResetStatus(PedExt groupMember)
     {
+        if(groupMember.IsBusted)
+        {
+            return;
+        }
         if (groupMember.CurrentTask != null)
         {
             groupMember.CurrentTask.Stop();
@@ -134,13 +156,15 @@ public class GroupManager
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
-            NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
-            NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
+
+            AddInternal(groupMember);
+
+            //NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
+            //NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
             NativeFunction.Natives.CLEAR_PED_TASKS(groupMember.Pedestrian);
         }
     }
-
     public void TryRecruitLookedAtPed()
     {
         if(Add(Player.CurrentLookedAtPed))
@@ -165,8 +189,11 @@ public class GroupManager
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_AlwaysFight, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
         NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(groupMember.Pedestrian, 0, false);
-        NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
-        NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
+
+        AddInternal(groupMember);
+
+       // NativeFunction.Natives.SET_PED_AS_GROUP_MEMBER(groupMember.Pedestrian, PlayerGroup);
+      //  NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
         //groupMember.Pedestrian.KeepTasks = true;
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
@@ -181,21 +208,16 @@ public class GroupManager
     }
     public void SetFollow(PedExt mi)
     {
-        if (mi.Pedestrian.Exists())
+        if (mi.IsBusted)
         {
-            PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-            if (NativeFunction.Natives.IS_PED_GROUP_MEMBER<bool>(mi.Pedestrian, PlayerGroup))
-            {
-                NativeFunction.Natives.REMOVE_PED_FROM_GROUP(mi.Pedestrian);
-            }
+            return;
         }
-
         if (mi.CurrentTask != null)
         {
             mi.CurrentTask.Stop();
             mi.CurrentTask = null;
         }
-        mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings);
+        mi.CurrentTask = new GeneralFollow(mi, mi, Targetable, World, new List<VehicleExt>() { mi.AssignedVehicle }, null, Settings, this);
         mi.CurrentTask.Start();
     }
 }

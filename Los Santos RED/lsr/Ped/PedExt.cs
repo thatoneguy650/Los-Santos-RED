@@ -515,6 +515,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         IsBusted = true;
         CanBeAmbientTasked = false;
         CanBeTasked = false;
+
     }
     public void UpdateTask(PedExt otherTarget)
     {

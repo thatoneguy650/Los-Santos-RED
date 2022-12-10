@@ -23,9 +23,14 @@ public class PedCustomizer
     private PedExt ModelPedExt;
     private ISettingsProvideable Settings;
     private IDispatchablePeople DispatchablePeople;
-    private readonly Vector3 DefaultCameraPosition = new Vector3(402.8473f, -998.3224f, -98.00025f);
-    private readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
 
+
+
+    public readonly Vector3 DefaultCameraPosition = new Vector3(402.8473f, -998.3224f, -98.00025f);
+    public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
+    public readonly Vector3 DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
+    public readonly float DefaultModelPedHeading = 182.7549f;
+    public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
 
     private IHeads Heads;
     private CameraCycler CameraCycler;
@@ -142,7 +147,7 @@ public class PedCustomizer
 
 
 
-                Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Camera Cycle", $"CameraCycle", System.Windows.Forms.Keys.O, 4);
+                Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Camera Cycle", $"CameraCycle", System.Windows.Forms.Keys.LShiftKey, System.Windows.Forms.Keys.O, 4);
                 //Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Camera Down", $"CameraDown", System.Windows.Forms.Keys.L, 5);
                 //Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Zoom In", $"ZoomCameraIn", System.Windows.Forms.Keys.U, 3);
                 //Player.ButtonPrompts.AddPrompt("ChangeCamera", $"Zoom Out", $"ZoomCameraOut", System.Windows.Forms.Keys.I, 4);
@@ -226,7 +231,7 @@ public class PedCustomizer
     {
         PreviousPos = Player.Character.Position;
         PreviousHeading = Player.Character.Heading;
-        Player.Character.Position = new Vector3(402.5164f, -1002.847f, -99.2587f);
+        Player.Character.Position = DefaultPlayerHoldingPosition;
     }
     private void CreateModelPed()
     {
@@ -236,7 +241,7 @@ public class PedCustomizer
             {
                 ModelPed.Delete();
             }
-            ModelPed = new Ped(WorkingModelName, new Vector3(402.8473f, -996.7224f, -99.00025f), 182.7549f);
+            ModelPed = new Ped(WorkingModelName, DefaultModelPedPosition, DefaultModelPedHeading);//new Vector3(402.8473f, -996.3224f, -99.00025f);
             if (ModelPed.Exists())
             {
                 ModelPed.IsPersistent = true;

@@ -263,12 +263,7 @@ namespace Mod
         public bool IsDoingSuspiciousActivity { get; set; } = false;
         public bool IsDriver { get; private set; }
         public bool IsDuckingInVehicle { get; set; } = false;
-
         public bool IsGangMember => RelationshipManager.GangRelationships.CurrentGang != null;
-
-
-
-
         public bool IsGettingIntoAVehicle
         {
             get => isGettingIntoVehicle;
@@ -361,7 +356,6 @@ namespace Mod
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
-       // public List<LicensePlate> SpareLicensePlates { get; private set; } = new List<LicensePlate>();//this needs to go in items
         public int SpeechSkill { get; set; }
         public uint TargettingHandle
         {
@@ -463,11 +457,11 @@ namespace Mod
                     GameFiber.Yield();
                 }
             }, "CellPhone");
-            AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
-            AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
+            //AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
+            //AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
+            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
+            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
+            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
             if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
             {
                 NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
@@ -520,23 +514,15 @@ namespace Mod
         {
             IsDead = false;
             IsBusted = false;
-
-
             IsArrested = false;
             IsBeingBooked = false;
-
-
             Game.LocalPlayer.HasControl = true;
             BeingArrested = false;
             HealthState.Reset();
-
-
             if (resetActivites)
             {
                 ActivityManager.Reset();
             }
-
-            //IsPerformingActivity = false; 
             CurrentVehicle = null;
             GPSManager.Reset();
             NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
@@ -606,7 +592,6 @@ namespace Mod
             {
                 Licenses.Reset();
             }
-
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -619,8 +604,6 @@ namespace Mod
             {
                 NativeFunction.Natives.SET_CAN_ATTACK_FRIENDLY(Game.LocalPlayer.Character, true, false);
             }
-
-
         }
         public void Dispose()
         {
@@ -686,21 +669,6 @@ namespace Mod
         //Needed
         public void ChangeName(string newName)
         {
-
-
-
-
-            //GameSave mySave = GameSaves.GetSave(this);
-            //if (mySave != null)
-            //{
-            //    mySave.PlayerName = newName;
-            //    GameSaves.UpdateSave(mySave);
-            //    EntryPoint.WriteToConsole($"PLAYER EVENT: SAVED {newName}", 3);
-            //}
-
-
-
-
             PlayerName = newName;
             EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}", 3);
         }
@@ -774,7 +742,6 @@ namespace Mod
                     InitialAmount += Settings.SettingsManager.PoliceSettings.DrivingWithoutLicenseFineAmount;
                 }
             }
-
             if(Respawning.TimesTalked > 0)
             {
                 InitialAmount += Settings.SettingsManager.PoliceSettings.TalkFailFineAmount;
@@ -2011,7 +1978,7 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 750)//750)//750
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 500)//750)//750)//750
             {
                 GameFiber.Yield();
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);
