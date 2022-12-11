@@ -2,6 +2,8 @@
 
 public class ActionWheelSettings : ISettingsDefaultable
 {
+
+
     public float ItemWidth { get; set; }
     public float ItemHeight { get; set; }
     public float ItemSpacingX { get; set; }
@@ -53,6 +55,21 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float DebugIconY { get; set; }
     public float DebugIconScale { get; set; }
     public bool ShowOnlyIcon { get; set; }
+    public float ControllerCursorScale { get; set; }
+    public bool RequireButtonHold { get; set; }
+
+
+
+    public float MainMenuCenterX { get; set; }
+    public float MainMenuCenterY { get; set; }
+
+    public float DebugMenuCenterX { get; set; }
+    public float DebugMenuCenterY { get; set; }
+
+
+    public float ButtonPromptXStart { get; set; }
+    public float ButtonPromptYStart { get; set; }
+
 
     public ActionWheelSettings()
     {
@@ -113,5 +130,18 @@ public class ActionWheelSettings : ISettingsDefaultable
         DebugIconY = 0.0f;
         DebugIconScale = 1.0f;
         ShowOnlyIcon = true;
+
+        ControllerCursorScale = 3.5f;
+
+        RequireButtonHold = false;
+
+        MainMenuCenterX = 0.92f;
+        MainMenuCenterY = 0.45f;
+        DebugMenuCenterX = 0.92f;
+        DebugMenuCenterY = 0.5f;
+
+
+        ButtonPromptXStart = 0.92f;
+        ButtonPromptYStart = 0.55f;
     }
 }

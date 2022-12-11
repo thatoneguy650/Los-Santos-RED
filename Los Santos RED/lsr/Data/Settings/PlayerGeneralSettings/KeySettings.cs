@@ -44,6 +44,12 @@ public class KeySettings : ISettingsDefaultable
     public Keys AltActionPopUpDisplayKey { get; set; }
     public Keys AltActionPopUpDisplayKeyModifier { get; set; }
 
+
+    public int GameControlActionPopUpDisplayKey { get; set; }
+
+
+    public int GameControlToDisable { get; set; }
+
     public KeySettings()
     {
         SetDefault();
@@ -81,9 +87,17 @@ public class KeySettings : ISettingsDefaultable
         ActivityKeyModifier = Keys.LShiftKey;
         GestureKey = Keys.X;
         GestureKeyModifier = Keys.Z;
+
+
+
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpDisplayKeyModifier = Keys.None;
         AltActionPopUpDisplayKey = Keys.N;//N
         AltActionPopUpDisplayKeyModifier = Keys.Alt;
+        GameControlActionPopUpDisplayKey = 236;
+
+        GameControlToDisable = 0;
+
+
     }
 }

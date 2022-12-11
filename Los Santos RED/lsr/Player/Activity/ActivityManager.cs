@@ -189,6 +189,7 @@ public class ActivityManager
     }
     private void ForceCancelUpperBody()
     {
+        EntryPoint.WriteToConsole("ForceCancelUpperBody");
         if (UpperBodyActivity != null)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -198,6 +199,7 @@ public class ActivityManager
     }
     private void ForceCancelLowerBody()
     {
+        EntryPoint.WriteToConsole("ForceCancelLowerBody");
         if (LowerBodyActivity != null)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -212,6 +214,7 @@ public class ActivityManager
     }
     public void ForceCancelAllPaused()
     {
+        EntryPoint.WriteToConsole("ForceCancelAllPaused");
         foreach (DynamicActivity da in PausedActivites)
         {
             da.Cancel();
@@ -270,6 +273,18 @@ public class ActivityManager
     }
     public void CancelCurrentActivity()
     {
+        foreach(ButtonPrompt bp in Player.ButtonPrompts.Prompts)
+        {
+            if(bp.IsPressedNow || bp.IsHeldNow || bp.IsAlternativePressed)
+            {
+                EntryPoint.WriteToConsole($"BP PRESSED: {bp.Text} IsPressedNow{bp.IsPressedNow} IsHeldNow{bp.IsHeldNow} IsAlternativePressed{bp.IsAlternativePressed}");
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"BP NOT PRESSED: {bp.Text}");
+            }
+        }
+        EntryPoint.WriteToConsole("CancelCurrentActivity");
         if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -287,6 +302,7 @@ public class ActivityManager
     {
         if (IsPerformingActivity)
         {
+            EntryPoint.WriteToConsole("StopDynamicActivity");
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity?.Cancel();
             UpperBodyActivity = null;

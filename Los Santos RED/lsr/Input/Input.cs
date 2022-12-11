@@ -68,16 +68,39 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
-        private bool IsPressingActionWheelMenu => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
+        private bool IsPressingActionWheelMenu;// => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
         public void Tick()
         {        
             DisableVanillaControls();
-            UpdateControlStatus();
-            GeneralControlCheck();
-            VehicleControlCheck();
-            MenuControlCheck();
-            MenuProvider.UpdateWheelMenu(IsPressingActionWheelMenu);
+            ProcessButtonPrompts();
+            ProcessGeneralControls();
+            ProcessVehicleControls();
+            ProcessMenuControls();
+            ProcessWheelMenuInput();
         }
+
+        private void ProcessWheelMenuInput()
+        {
+            //bool IsUsingKeyboardAndMouse = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
+            //bool IsUsingController = !IsUsingKeyboardAndMouse;
+            if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier))
+            {
+                MenuProvider.IsPressingActionWheelButton = true;
+            }
+            else if (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier))
+            {
+                MenuProvider.IsPressingActionWheelButton = true;
+            }
+            else if (Game.IsControlPressed(0, (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey))
+            {
+                MenuProvider.IsPressingActionWheelButton = true;
+            }
+            else
+            {
+                MenuProvider.IsPressingActionWheelButton = false;
+            }
+        }
+
         private void DisableVanillaControls()
         {
             Game.DisableControlAction(0, GameControl.CharacterWheel, true);
@@ -86,12 +109,27 @@ namespace LosSantosRED.lsr
             Game.DisableControlAction(0, GameControl.SelectCharacterMultiplayer, true);
             Game.DisableControlAction(0, GameControl.SelectCharacterTrevor, true);
             Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
-            if(Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching)
+
+
+            bool IsUsingKeyboardAndMouse = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
+            bool IsUsingController = !IsUsingKeyboardAndMouse;
+
+
+            if(IsUsingController && Settings.SettingsManager.KeySettings.GameControlToDisable >= 0)
+            {
+                Game.DisableControlAction(0, (GameControl)Settings.SettingsManager.KeySettings.GameControlToDisable, true);
+            }
+            
+
+
+
+
+            if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching)
             {
                 Game.DisableControlAction(0, GameControl.Duck, true);
             }
         }
-        private void GeneralControlCheck()
+        private void ProcessGeneralControls()
         {
             if (Player.ActivityManager.IsPerformingActivity)
             {
@@ -115,11 +153,6 @@ namespace LosSantosRED.lsr
                     Player.ActivityManager.CancelCurrentActivity();
                 }
             }
-
-
-
-
-
 
             if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)
             {
@@ -223,7 +256,7 @@ namespace LosSantosRED.lsr
                 Player.ActivityManager.Gesture();
             }
         } 
-        private void VehicleControlCheck()
+        private void ProcessVehicleControls()
         {
             if (Player.CurrentVehicle != null)
             {
@@ -298,7 +331,7 @@ namespace LosSantosRED.lsr
                 heldVehicleEnter = false;
             }
         }
-        private void MenuControlCheck()
+        private void ProcessMenuControls()
         {
             if (!Player.IsDisplayingCustomMenus)
             {
@@ -312,7 +345,7 @@ namespace LosSantosRED.lsr
                 }
             }
         }
-        private void UpdateControlStatus()
+        private void ProcessButtonPrompts()
         {
 
             foreach (ButtonPrompt bp in Player.ButtonPrompts.Prompts)
@@ -333,23 +366,45 @@ namespace LosSantosRED.lsr
                     {
                         bp.IsHeldNow = false;
                     }
+
+
+
                     if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
                     {
-                        //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
+                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 1");
                         bp.IsPressedNow = true;
                     }
                     else if (Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
                     {
+                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 2");
                         bp.IsPressedNow = true;
                     }
-                    else if (NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)bp.GameControl) && !bp.IsPressedNow)
+                    else if (bp.HasGameControl && NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)bp.GameControl) && !bp.IsPressedNow)
                     {
+                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 3");
                         bp.IsPressedNow = true;
+                    }
+                    else if (bp.IsAlternativePressed)
+                    {
+                        if(Game.GameTime - bp.GameTimeAlternativePressed >= 20)
+                        {
+                            bp.IsPressedNow = false;
+                            bp.IsAlternativePressed = false;
+                        }
+                        else
+                        {
+                            EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 4");
+                            bp.IsPressedNow = true;
+                        }
                     }
                     else
                     {
                         bp.IsPressedNow = false;
                     }
+
+
+
+
                 }
             }
             Player.IsNotHoldingEnter = IsNotHoldingEnter;

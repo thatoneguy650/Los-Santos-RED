@@ -7,20 +7,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PopUpMenuMap
+public class PopUpBox
 {
-    public PopUpMenuMap()
+    public PopUpBox()
     {
 
     }
-    public PopUpMenuMap(int iD, string display, Action action, string description)
+    public PopUpBox(int iD, string display, Action action, string description)
     {
         ID = iD;
         Display = display;
         Action = action;
         Description = description;
     }
-    public PopUpMenuMap(int iD, string display, string childMenuID, string description)
+    public PopUpBox(int iD, string display, string childMenuID, string description)
     {
         ID = iD;
         Display = display;

@@ -637,8 +637,8 @@
     <Compile Include="lsr\UI\Other\Util.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PopUpMenu.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuConfig.cs" />
-    <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuGroup.cs" />
-    <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuMap.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpBoxGroup.cs" />
+    <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpBox.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PositionMap.cs" />
     <Compile Include="lsr\VanillaManager\VanillaSpawnManager.cs" />
     <Compile Include="lsr\VanillaManager\VanillaCopManager.cs" />

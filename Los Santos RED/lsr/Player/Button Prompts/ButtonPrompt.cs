@@ -29,10 +29,12 @@ public class ButtonPrompt
     {
         Text = text;
         GameControl = gameControl;
+        HasGameControl = true;
         Identifier = identifier;
         Group = group;
         Order = order;
     }
+    public bool HasGameControl { get; set; } = false;
     public GameControl GameControl { get; set; }
     public string Identifier { get; set; }
     public string Text { get; set; }
@@ -41,7 +43,17 @@ public class ButtonPrompt
     public bool IsPressedNow { get; set; }
     public string Group { get; set; }
     public int Order { get; set; }
-    public bool IsHeldNow { get; internal set; }
+    public bool IsHeldNow { get; set; }
+
+    public bool IsAlternativePressed { get; set; }
+    public uint GameTimeAlternativePressed { get; set; }
+
+    public void SetAlternativePressed()
+    {
+        IsAlternativePressed = true;
+        GameTimeAlternativePressed = Game.GameTime;
+    }
+
 }
 
 

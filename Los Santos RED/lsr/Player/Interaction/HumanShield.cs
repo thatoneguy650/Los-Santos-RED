@@ -251,7 +251,11 @@ public class HumanShield : DynamicActivity
                 //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Player.Character, Game.GetHashKey("Gang1H"));
 
                 isAnimationPaused = true;
+
+                Player.ButtonPrompts.RemovePrompts("Hostage");
+
             }
+
         }
         else
         {
@@ -268,6 +272,7 @@ public class HumanShield : DynamicActivity
                 isBackingUp = false;
                 IsMovingForward = false;
                 isAnimationPaused = false;
+                SetupPrompts();
             }
         }
     }

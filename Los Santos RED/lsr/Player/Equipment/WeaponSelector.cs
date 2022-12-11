@@ -202,13 +202,15 @@ public class WeaponSelector
             {
                 NativeFunction.Natives.xE8A25867FBA3B05E(2, 24, 1.0f);
             }
-
+            EntryPoint.WriteToConsole("Fired Round");
             //roundsFired++;
         }
         else if (Player.ReleasedFireWeapon && (roundsFired > BulletLimt - 1) && BulletLimt > 0)
         {
             roundsFired = 0;
             canShoot = true;
+
+            EntryPoint.WriteToConsole("Released Fire");
         }
         if (Player.WeaponEquipment.CurrentWeapon == null)
         {
@@ -218,6 +220,8 @@ public class WeaponSelector
         {
             canShoot = true;
             roundsFired = 0;
+
+            EntryPoint.WriteToConsole("Started Reloading");
         }
         SetShootingEnabled(canShoot);
     }

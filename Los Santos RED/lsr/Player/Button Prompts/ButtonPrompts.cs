@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ public class ButtonPrompts
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.ActivityManager.IsInteractingWithLocation && !Player.ActivityManager.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
     public bool IsSuspended { get; set; } = false;
+    public bool IsUsingKeyboard { get; private set; } = true;
     public ButtonPrompts(IButtonPromptable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -32,6 +34,10 @@ public class ButtonPrompts
     public void Update()
     {
         addedPromptGroup = false;
+
+        IsUsingKeyboard = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
+
+
         AttemptAddInteractionPrompts();
         AttemptAddAdvancedInteractionPrompts();
         AttemptAddLocationPrompts();
@@ -54,6 +60,9 @@ public class ButtonPrompts
     {
         Prompts.RemoveAll(x => x.Group == groupName);
     }
+
+
+
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
@@ -68,7 +77,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
-
     public void AddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -76,13 +84,26 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
         }
     }
-    public void AddPrompt(string groupName, string prompt, string identifier, GameControl gameCcontrol, int order)
+
+
+
+
+
+    public void AddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
         {
-            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameCcontrol, order));
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
+
+
+
+
+
+
+
+
     public bool HasPrompt(string identifier)
     {
         return Prompts.Any(x => x.Identifier == identifier);
@@ -281,14 +302,12 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlPause");
         }
     }
-
     public void RemoveActivityPrompts()
     {
         RemovePrompts("ActivityControlContinue");
         RemovePrompts("ActivityControlCancel");
         RemovePrompts("ActivityControlPause");
     }
-
     private void AttemptRemoveMenuPrompts()
     {
         if(!Player.IsDead)
@@ -387,7 +406,6 @@ public class ButtonPrompts
         }
 
     }
-
     private void SittingPrompts()
     {
         RemovePrompts("InteractableLocation");
@@ -398,7 +416,6 @@ public class ButtonPrompts
             AttemptAddPrompt("Sit", $"Sit", $"Sit", Settings.SettingsManager.KeySettings.InteractCancel, 9);
         }
     }
-
     private void PersonRecruitingPrompts()
     {
         if (!HasPrompt($"Recruit {Player.CurrentLookedAtGangMember.Handle}"))
@@ -407,7 +424,6 @@ public class ButtonPrompts
             AttemptAddPrompt("Recruit", $"Recruit {Player.CurrentLookedAtGangMember.FormattedName}", $"Recruit {Player.CurrentLookedAtGangMember.Handle}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 3);
         }
     }
-
     private void AttemptAddLocationPrompts()
     {
         if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && CanInteractWithClosestLocation)//no cops around

@@ -5,20 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PopUpMenuGroup
+public class PopUpBoxGroup
 {
-    public PopUpMenuGroup()
+    public PopUpBoxGroup()
     {
 
     }
-    public PopUpMenuGroup(string iD, List<PopUpMenuMap> popUpMenuMaps)
+    public PopUpBoxGroup(string iD, List<PopUpBox> popUpMenuMaps)
     {
         ID = iD;
         PopUpMenuMaps = popUpMenuMaps;
     }
     public bool IsChild { get; set; } = false;
     public string ID { get; set; } = "";
-    public List<PopUpMenuMap> PopUpMenuMaps { get; set; } = new List<PopUpMenuMap>();
+    public List<PopUpBox> PopUpMenuMaps { get; set; } = new List<PopUpBox>();
     public string Group { get; set; } = "";
 }
 

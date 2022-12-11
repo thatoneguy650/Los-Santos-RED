@@ -165,15 +165,18 @@ namespace LosSantosRED.lsr.Player
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle);
                     if (AnimationTime >= 0.99f && shouldStop)
                     {
+                        EntryPoint.WriteToConsole("EXIT ANIM OVER AND SHOULDSTOP");
                         break;
                     }
                     if (Player.IsMoveControlPressed)
                     {
+                        EntryPoint.WriteToConsole("EXIT IsMoveControlPressed");
                         IsCancelled = true;
                         break;
                     }
                     if(PlayingAnimation != DanceData.AnimationIdle || PlayingDictionary != DanceData.AnimationDictionary)//changed the dance, restart it baby!
                     {
+                        EntryPoint.WriteToConsole("EXIT NOT PLAYING ANIM");
                         shouldExit = false;
                         break;
 
@@ -201,6 +204,9 @@ namespace LosSantosRED.lsr.Player
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
+
+                EntryPoint.WriteToConsole($" CanPerformActivitiesExtended{Player.ActivityManager.CanPerformActivitiesExtended} IsCancelled {IsCancelled} IsMoveControlPressed {Player.IsMoveControlPressed}");
+
                 Player.ButtonPrompts.RemovePrompts("DanceActivity");
             }
             if (shouldExit || IsCancelled)

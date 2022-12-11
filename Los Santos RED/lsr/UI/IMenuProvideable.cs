@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 public interface IMenuProvideable
 {
     bool IsDisplayingMenu { get; }
+    bool IsPressingActionWheelButton { get; set; }
 
     void ToggleMenu();
     void ToggleDebugMenu();
     void ToggleMessagesMenu();
     //void DrawWheelMenu();
     //void DisposeWheelMenu();
-    void UpdateWheelMenu(bool isPressingActionWheelMenu);
+   // void UpdateWheelMenu(bool isPressingActionWheelMenu);
 }
 

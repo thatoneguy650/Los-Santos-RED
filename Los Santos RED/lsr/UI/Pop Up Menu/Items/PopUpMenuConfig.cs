@@ -8,6 +8,6 @@ using System.Threading.Tasks;
 public class PopUpMenuConfig
 {
     public string ID { get; set; }
-    public List<PopUpMenuMap> PopUpMenuMaps { get; set; }
+    public List<PopUpBox> PopUpMenuMaps { get; set; }
 }
 

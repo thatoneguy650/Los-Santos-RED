@@ -97,8 +97,13 @@ public class UI : IMenuProvideable
     private float lowerRightHeighSpace;
     private ICounties Counties;
 
+    private bool IsNotShowingFrontEndMenus = false;
+
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
     public bool IsDisplayingMenu => MenuPool.IsAnyMenuOpen();
+
+    public bool IsPressingActionWheelButton { get; set; }
+
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, RadioStations radioStations, IGameSaves gameSaves, 
         IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, 
         IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, IActivityPerformable activityPerformable, ICrimes crimes, ICounties counties, IIntoxicants intoxicants)
@@ -165,14 +170,9 @@ public class UI : IMenuProvideable
 
     public void Tick1()
     {
-        if (!MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen)
-        {
-            DisplayLowerRightMenu();
-            if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree && IsDrawingWheelMenu)
-            {
-                ActionPopUpMenu.Draw();
-            }
-        }
+        IsNotShowingFrontEndMenus = !MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen;
+        ProcessActionWheel();
+        DisplayLowerRightMenu();
         if (!EntryPoint.ModController.IsDisplayingAlertScreen)
         {
             DisplayTopMenu();
@@ -180,6 +180,33 @@ public class UI : IMenuProvideable
         MenuUpdate();
         MarkerManager.Update();
     }
+
+    private void ProcessActionWheel()
+    {
+        if (IsPressingActionWheelButton)
+        {
+            if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed)
+            {
+                ActionPopUpMenu.OnStartDisplaying();
+            }
+        }
+        else
+        {
+            if (Settings.SettingsManager.ActionWheelSettings.RequireButtonHold)
+            {
+                if (ActionPopUpMenu.IsActive)
+                {
+                    ActionPopUpMenu.OnStopDisplaying();
+                    ActionPopUpMenu.OnMenuClosed();
+                }
+            }
+        }
+        if (IsNotShowingFrontEndMenus && Settings.SettingsManager.UIGeneralSettings.IsEnabled)
+        {
+            ActionPopUpMenu.Draw();
+        }
+    }
+
     public void Tick2()
     {
         DisplayButtonPrompts();
@@ -396,31 +423,34 @@ public class UI : IMenuProvideable
     }
     private void DisplayLowerRightMenu()
     {
-        GameTimeLastDrawnUI = Game.GameTime;
-        if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree)
+        if (IsNotShowingFrontEndMenus)
         {
-            if (!Settings.SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive || IsDrawingWheelMenu)
+            GameTimeLastDrawnUI = Game.GameTime;
+            if (Settings.SettingsManager.UIGeneralSettings.IsEnabled && DisplayablePlayer.IsAliveAndFree)
             {
-                lowerRightHeighSpace = TimerBarController.ItemsDisplaying * Settings.SettingsManager.LSRHUDSettings.LowerDisplayTimerBarSpacing;
-                if (instructional.Buttons.Count > 0)
+                if (!Settings.SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive || IsDrawingWheelMenu)
                 {
-                    lowerRightHeighSpace += Settings.SettingsManager.LSRHUDSettings.LowerDisplayButtonPromptSpacing;
-                }
-                if (lowerRightHeighSpace == 0.0f)
-                {
-                    lowerRightHeighSpace = Settings.SettingsManager.LSRHUDSettings.LowerDisplayNoItemSpacing;
-                }
+                    lowerRightHeighSpace = TimerBarController.ItemsDisplaying * Settings.SettingsManager.LSRHUDSettings.LowerDisplayTimerBarSpacing;
+                    if (instructional.Buttons.Count > 0)
+                    {
+                        lowerRightHeighSpace += Settings.SettingsManager.LSRHUDSettings.LowerDisplayButtonPromptSpacing;
+                    }
+                    if (lowerRightHeighSpace == 0.0f)
+                    {
+                        lowerRightHeighSpace = Settings.SettingsManager.LSRHUDSettings.LowerDisplayNoItemSpacing;
+                    }
 #if DEBUG
 
-                DisplayDebug();
+                    DisplayDebug();
 #endif
-                DisplayCurrentCrimes();
-                DisplayVehicleStatus();
-                DisplayPlayerInfo();
-                DisplayStreets();
-                DisplayZones();
-            }
+                    DisplayCurrentCrimes();
+                    DisplayVehicleStatus();
+                    DisplayPlayerInfo();
+                    DisplayStreets();
+                    DisplayZones();
+                }
 
+            }
         }
     }
     private void DisplayTopMenu()
@@ -1047,38 +1077,51 @@ public class UI : IMenuProvideable
         return toDisplay;
     }
 
-    public void UpdateWheelMenu(bool isPressingActionWheelMenu)
-    {
-        if (isPressingActionWheelMenu)
-        {
-            if (ActionPopUpMenu.HasRanItem)
-            {
-                if (IsDrawingWheelMenu)
-                {
-                    ActionPopUpMenu.OnStopDisplaying();
-                    IsDrawingWheelMenu = false;
-                }
-            }
-            else
-            {
-                if (!IsDrawingWheelMenu)
-                {
-                    ActionPopUpMenu.OnStartDisplaying();
-                    IsDrawingWheelMenu = true;
-                }
-            }
-        }
-        else
-        {
-            if (IsDrawingWheelMenu)
-            {
-                ActionPopUpMenu.OnStopDisplaying();
-                ActionPopUpMenu.OnMenuClosed();
-                IsDrawingWheelMenu = false;
-            }
-            ActionPopUpMenu.Reset();
-        }
-    }
+
+
+    
+
+
+    //public void UpdateWheelMenu(bool isPressingActionWheelMenu)
+    //{
+    //    if (isPressingActionWheelMenu)
+    //    {
+    //        if (ActionPopUpMenu.HasRanItem)
+    //        {
+    //            if (IsDrawingWheelMenu)
+    //            {
+    //                ActionPopUpMenu.OnStopDisplaying();
+    //                IsDrawingWheelMenu = false;
+    //            }
+    //        }
+    //        else
+    //        {
+    //            if (!IsDrawingWheelMenu)
+    //            {
+    //                ActionPopUpMenu.OnStartDisplaying();
+    //                IsDrawingWheelMenu = true;
+    //            }
+    //        }
+    //    }
+    //    else
+    //    {
+    //        if (IsDrawingWheelMenu)
+    //        {
+    //            ActionPopUpMenu.OnStopDisplaying();
+    //            ActionPopUpMenu.OnMenuClosed();
+    //            IsDrawingWheelMenu = false;
+    //        }
+    //        ActionPopUpMenu.Reset();
+    //    }
+    //}
+
+
+
+
+
+
+
+
     private void MenuUpdate()
     {
         TimerBarPool.Draw();
