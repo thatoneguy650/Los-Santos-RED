@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
@@ -44,7 +45,17 @@ public class DeathMenu : Menu
             Create();
             Player.ButtonPrompts.RemovePrompts("MenuShowDead");
             Player.ButtonPrompts.RemovePrompts("MenuShowBusted");
-            Player.ButtonPrompts.AttemptAddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.MenuKey, 999);
+
+            if(NativeHelper.IsUsingController)
+            {
+                Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey, 999);
+            }
+            else
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.MenuKey, 999);
+            }
+
+            
             Menu.Visible = true;
         }
     }

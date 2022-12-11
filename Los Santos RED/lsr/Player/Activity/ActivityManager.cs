@@ -859,7 +859,15 @@ public class ActivityManager
         }
     }
 
+    public void OnPlayerBusted()
+    {
+        ForceCancelAllActivities();
+    }
 
+    public void OnPlayerDied()
+    {
+        ForceCancelAllActivities();
+    }
 }
 
 

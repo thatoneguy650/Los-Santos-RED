@@ -93,8 +93,8 @@ public class KeySettings : ISettingsDefaultable
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpDisplayKeyModifier = Keys.None;
         AltActionPopUpDisplayKey = Keys.N;//N
-        AltActionPopUpDisplayKeyModifier = Keys.Alt;
-        GameControlActionPopUpDisplayKey = 236;
+        AltActionPopUpDisplayKeyModifier = Keys.LMenu;//left alt
+        GameControlActionPopUpDisplayKey = 217;// 236;
 
         GameControlToDisable = 0;
 

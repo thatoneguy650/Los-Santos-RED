@@ -11,14 +11,14 @@ public class PopUpBoxGroup
     {
 
     }
-    public PopUpBoxGroup(string iD, List<PopUpBox> popUpMenuMaps)
+    public PopUpBoxGroup(string iD, List<PopUpBox> popUpBoxes)
     {
         ID = iD;
-        PopUpMenuMaps = popUpMenuMaps;
+        PopUpBoxes = popUpBoxes;
     }
     public bool IsChild { get; set; } = false;
     public string ID { get; set; } = "";
-    public List<PopUpBox> PopUpMenuMaps { get; set; } = new List<PopUpBox>();
+    public List<PopUpBox> PopUpBoxes { get; set; } = new List<PopUpBox>();
     public string Group { get; set; } = "";
 }
 

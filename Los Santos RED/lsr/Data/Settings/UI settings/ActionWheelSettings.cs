@@ -2,6 +2,15 @@
 
 public class ActionWheelSettings : ISettingsDefaultable
 {
+    public bool SetSlowMoOnActivate { get; set; }
+    public bool SetSlowMoOnActivateControllerOnly { get; set; }
+    [Description("Seems to obliterate performance? Disabled for now.")]
+    public bool SetTransitionEffectOnActivate { get; set; }
+    public bool PlayTransitionSoundsOnActivate { get; set; }
+    public float SlowMoScale { get; set; }
+    public float ControllerCursorScale { get; set; }
+    public bool RequireButtonHold { get; set; }
+
 
 
     public float ItemWidth { get; set; }
@@ -43,22 +52,11 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float SpeedLimitIconX { get; set; }
     public float SpeedLimitIconY { get; set; }
 
-
-
-    public float AffiliationCenterX { get; set; }
-    public float AffiliationCenterY { get; set; }
-    public bool SetSlowMoOnActivate { get; set; }
-    [Description("Seems to obliterate performance? Disabled for now.")]
-    public bool SetTransitionEffectOnActivate { get; set; }
     public bool ShowIcons { get; set; }
     public float DebugIconX { get; set; }
     public float DebugIconY { get; set; }
     public float DebugIconScale { get; set; }
     public bool ShowOnlyIcon { get; set; }
-    public float ControllerCursorScale { get; set; }
-    public bool RequireButtonHold { get; set; }
-
-
 
     public float MainMenuCenterX { get; set; }
     public float MainMenuCenterY { get; set; }
@@ -66,11 +64,11 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float DebugMenuCenterX { get; set; }
     public float DebugMenuCenterY { get; set; }
 
-
     public float ButtonPromptXStart { get; set; }
     public float ButtonPromptYStart { get; set; }
 
-
+    public float AffiliationCenterX { get; set; }
+    public float AffiliationCenterY { get; set; }
     public ActionWheelSettings()
     {
         SetDefault();
@@ -124,12 +122,12 @@ public class ActionWheelSettings : ISettingsDefaultable
 
         SetSlowMoOnActivate = true;
         SetTransitionEffectOnActivate = false;
-        ShowIcons = true;
+        ShowIcons = false;
 
         DebugIconX = 0.0f;
         DebugIconY = 0.0f;
         DebugIconScale = 1.0f;
-        ShowOnlyIcon = true;
+        ShowOnlyIcon = false;
 
         ControllerCursorScale = 3.5f;
 
@@ -143,5 +141,12 @@ public class ActionWheelSettings : ISettingsDefaultable
 
         ButtonPromptXStart = 0.92f;
         ButtonPromptYStart = 0.55f;
+
+
+        SetSlowMoOnActivate = true;
+        SetSlowMoOnActivateControllerOnly = false;
+        PlayTransitionSoundsOnActivate = true;
+        SlowMoScale = 0.2f;
+
     }
 }

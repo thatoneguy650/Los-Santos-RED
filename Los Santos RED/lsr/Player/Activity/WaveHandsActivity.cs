@@ -6,25 +6,23 @@ using Rage.Native;
 using System;
 using System.Linq;
 
-public class SurrenderActivity : DynamicActivity
+public class WaveHandsActivity : DynamicActivity
 {
     private IInputable Player;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private uint GameTimeLastYelled;
     private uint GameTimeLastToggledSurrender;
+    private bool IsToggled;
 
-
-    private bool IsSurrendering = false;
-
-
-    public SurrenderActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
+    public WaveHandsActivity(IInputable currentPlayer, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = currentPlayer;
         World = world;
         Settings = settings;
     }
-    public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);//&& Player.IsWanted;
+    public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsWanted;
+    public bool CanWaveHands => !HandsAreUp && !IsWavingHands && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving) && Player.IsNotWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
@@ -33,6 +31,8 @@ public class SurrenderActivity : DynamicActivity
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
+    //public bool IsCommitingSuicide { get; set; }
+    public bool IsWavingHands { get; private set; }
     public bool HandsAreUp { get; private set; }
 
     public override void Cancel()
@@ -56,64 +56,82 @@ public class SurrenderActivity : DynamicActivity
     {
         return true;
     }
-
-    public void ToggleSurrender()
+    public void LowerHands()
     {
-        EntryPoint.WriteToConsole("Toggle Surrender Ran");
-        if (Game.GameTime - GameTimeLastToggledSurrender >= 200)
+        if (!IsToggled)
         {
-            EntryPoint.WriteToConsole($"Toggle Surrender Ran 2 HandsAreUp {HandsAreUp} CanSurrender {CanSurrender}");
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
+            HandsAreUp = false; // You put your hands down
+            IsWavingHands = false;
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            Player.ActivityManager.IsPerformingActivity = false;
+        }
+    }
+    public void RaiseHands()
+    {
+        if (!IsToggled)
+        {
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
+            if (Player.Character.IsWearingHelmet)
+            {
+                Player.Character.RemoveHelmet(true);
+            }
             if (HandsAreUp)
             {
-                if (!Player.IsBusted)
-                {
-                    LowerHands();
-                }
+                return;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+            HandsAreUp = true;
+            if (Player.IsInVehicle)
+            {
+                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
             }
             else
             {
-                if (CanSurrender)
-                {
-                    RaiseHands();
-                }
+                AnimationDictionary.RequestAnimationDictionay("ped");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
             }
-            GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
+    public void WaveHands()
+    {
+        if (!IsToggled)
+        {
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
+            if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
+            {
+                return;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+            IsWavingHands = true;
 
-    private void LowerHands()
-    {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
-        HandsAreUp = false; // You put your hands down
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.ActivityManager.IsPerformingActivity = false;       
-    }
-    private void RaiseHands()
-    {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
-        if (Player.Character.IsWearingHelmet)
-        {
-            Player.Character.RemoveHelmet(true);
+            string Animation;
+            string DictionaryName;
+            if (Player.IsMale)
+            {
+                DictionaryName = "anim@amb@waving@male";
+            }
+            else
+            {
+                DictionaryName = "anim@amb@waving@female";
+            }
+            //if (RandomItems.RandomPercent(50))
+            //{
+            //    Animation = "ground_wave";
+            //}
+            //else
+            //{
+            Animation = "air_wave";
+            //}
+            AnimationDictionary.RequestAnimationDictionay(DictionaryName);
+            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, DictionaryName, Animation, 2.0f, -2.0f, -1, 49, 0, false, false, false);
         }
-        if (HandsAreUp)
-        {
-            return;
-        }
-        Player.WeaponEquipment.SetUnarmed();
-        HandsAreUp = true;
-        if (Player.IsInVehicle)
-        {
-            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
-        }
-        else
-        {
-            AnimationDictionary.RequestAnimationDictionay("ped");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        }      
+
     }
     public void SetArrestedAnimation(bool StayStanding)
     {
+        //StayStanding = false;
         GameFiber SetArrestedAnimation = GameFiber.StartNew(delegate
         {
             AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
@@ -131,17 +149,22 @@ public class SurrenderActivity : DynamicActivity
             {
                 return;
             }
+
+
             if (!Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
             {
+
                 Player.WeaponEquipment.SetUnarmed();
             }
+
+
             if (Player.Character.IsInAnyVehicle(false))
             {
                 Vehicle oldVehicle = Player.Character.CurrentVehicle;
                 if (Player.Character.Exists() && oldVehicle.Exists())
                 {
                     NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, 256);
-                    while(Player.Character.IsInAnyVehicle(false) && Player.IsBusted)
+                    while (Player.Character.IsInAnyVehicle(false) && Player.IsBusted)
                     {
                         GameFiber.Yield();
                     }
@@ -151,13 +174,17 @@ public class SurrenderActivity : DynamicActivity
                     }
                 }
             }
+
+
             if (StayStanding)
             {
+                //Player.Equipment.SetUnarmed();
                 if (IsNotPlayingAnimation("ped", "handsup_enter"))
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+
                     GameFiber.Wait(500);
-                    if(Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
+                    if (Player.IsBusted && Player.WeaponEquipment.CurrentWeapon != null && Settings.SettingsManager.PoliceSettings.DropWeaponWhenBusted)
                     {
                         DropWeapon(false);
                     }
@@ -168,9 +195,10 @@ public class SurrenderActivity : DynamicActivity
                 if (IsNotPlayingAnimation("busted", "idle_a") && IsNotPlayingAnimation("busted", "idle_2_hands_up") && IsNotPlayingAnimation("busted", "idle_2_hands_up_2h"))
                 {
                     bool isOneHanded = false;
-                    if(Player.WeaponEquipment.CurrentWeapon != null && !Player.WeaponEquipment.CurrentWeaponIsOneHanded)
+                    if (Player.WeaponEquipment.CurrentWeapon != null && !Player.WeaponEquipment.CurrentWeaponIsOneHanded)
                     {
                         NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_2_hands_up_2h", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+
                     }
                     else
                     {
@@ -205,10 +233,11 @@ public class SurrenderActivity : DynamicActivity
                     }
                     if (!Player.Character.Exists() || !Player.IsBusted)
                     {
-                        if(Player.Character.Exists())
+                        if (Player.Character.Exists())
                         {
                             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                         }
+
                         return;
                     }
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "idle_a", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -220,21 +249,39 @@ public class SurrenderActivity : DynamicActivity
     }
     private void DropWeapon(bool isLow)
     {
+        //NativeFunction.Natives.x616093EC6B139DD9(Game.LocalPlayer, NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
+
+        //NativeFunction.Natives.x88EAEC617CD26926(NativeFunction.Natives.xD6429A016084F1A5<uint>((int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash), false);
+        //NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, 186, false);
         Vector3 HandPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
         Vector3 RootPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0));
         Vector3 ResultPosition = HandPosition - RootPosition;
-        ResultPosition = new Vector3(ResultPosition.X - 0.2f, ResultPosition.Y + 0.2f, ResultPosition.Z -0.2f);
+
+
+        ResultPosition = new Vector3(ResultPosition.X - 0.2f, ResultPosition.Y + 0.2f, ResultPosition.Z - 0.2f);
         ResultPosition = new Vector3(0.6f, 0.6f, 0.6f);
-        if(isLow)
+
+
+        if (isLow)
         {
             ResultPosition = new Vector3(0.75f, 0.75f, -0.3f);
         }
+
+
+
         Player.WeaponEquipment.DisableWeaponPickup((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
+
+
         NativeFunction.Natives.SET_PED_DROPS_INVENTORY_WEAPON(Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, ResultPosition.X, ResultPosition.Y, ResultPosition.Z, -1);
+
+
+
+
         if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
         {
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, (uint)2725352035, true);
         }
+        //NativeFunction.Natives.SET_PED_DROPS_WEAPON(Player.Character);
     }
     public void UnSetArrestedAnimation()
     {
@@ -286,10 +333,48 @@ public class SurrenderActivity : DynamicActivity
     public void OnPlayerBusted()
     {
         HandsAreUp = false;
+        IsWavingHands = false;
         if (Player.WantedLevel > 1)
         {
             SetArrestedAnimation(Player.WantedLevel <= 2);//needs to move
         }
     }
+    public void ToggleSurrender()
+    {
 
+        if (Game.GameTime - GameTimeLastToggledSurrender >= 500)
+        {
+            EntryPoint.WriteToConsole($"Surrender Toggle START {IsToggled}");
+            if (HandsAreUp)
+            {
+                if (!Player.IsBusted)
+                {
+                    IsToggled = false;
+                    LowerHands();
+
+                }
+            }
+            else if (IsWavingHands)
+            {
+                IsToggled = false;
+                LowerHands();
+
+            }
+            else
+            {
+                if (CanSurrender)
+                {
+                    RaiseHands();
+                    IsToggled = true;
+                }
+                else if (CanWaveHands)
+                {
+                    WaveHands();
+                    IsToggled = true;
+                }
+            }
+            EntryPoint.WriteToConsole($"Surrender Toggle END {IsToggled}");
+            GameTimeLastToggledSurrender = Game.GameTime;
+        }
+    }
 }

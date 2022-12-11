@@ -1,5 +1,7 @@
 ﻿using LosSantosRED.lsr.Helper;
 using Rage;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -404,18 +406,29 @@ namespace LosSantosRED.lsr
             }
             Game.DisplayNotification(
                 $"~s~Los Santos ~r~RED ~s~v{fvi.FileVersion} " +
-                $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully." +
-                $"~n~" +
-                $"~n~Press {ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey} to open the ~r~Main Menu~s~" +
-                $"~n~Select ~r~Main Menu -> About~s~ for mod information and controls." +
-                $"~n~" +
-                $"~n~Press {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)} " +
-                    $"or {NativeHelper.FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)} " +
-                    $"to open the ~r~Action Wheel~s~");
+                $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully.");
 
+            string controlString =
+                $"Main Menu: ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
+                $"~n~Action Wheel: {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
+                $"~n~Action Wheel (Alt): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
+            if(NativeHelper.IsUsingController || 1==1)
+            {
+                controlString += $"~n~Action Wheel (Controller): ~{InstructionalButton.GetButtonId((GameControl)ModDataFileManager.Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey)}~";
+            }
+            Game.DisplayHelp(controlString);
             EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
-
-
+        }
+        private string FormatKeys(Keys modifier, Keys key)
+        {
+            if(modifier != Keys.None)
+            {
+                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+            }
+            else
+            {
+                return $"~{key.GetInstructionalId()}~";
+            }
         }
     }
 }

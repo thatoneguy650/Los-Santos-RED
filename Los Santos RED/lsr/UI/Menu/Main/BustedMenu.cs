@@ -53,7 +53,17 @@ public class BustedMenu : Menu
             Create();
             Player.ButtonPrompts.RemovePrompts("MenuShowDead");
             Player.ButtonPrompts.RemovePrompts("MenuShowBusted");
-            Player.ButtonPrompts.AttemptAddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.MenuKey, 999);
+
+            if (NativeHelper.IsUsingController)
+            {
+                Player.ButtonPrompts.AddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey, 999);
+            }
+            else
+            {
+                Player.ButtonPrompts.AttemptAddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.MenuKey, 999);
+            }
+
+            
             Menu.Visible = true;
         }
     }

@@ -330,7 +330,7 @@ public class Respawning// : IRespawning
             CheckWeapons();
         }
         CalculateBail();
-        CurrentPlayer.Surrendering.RaiseHands();
+        //CurrentPlayer.Surrendering.RaiseHands();
         ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (respawnableLocation == null)

@@ -252,7 +252,8 @@ namespace LosSantosRED.lsr.Helper
             Game.DisableControlAction(0, GameControl.VehicleBrake, true);
             Game.DisableControlAction(0, GameControl.Jump, true);
         }
-
+        public static bool IsUsingKeyboard => NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
+        public static bool IsUsingController => !NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
 
         //public static string VehicleMakeName(uint ModelHash)
         //{

@@ -98,6 +98,7 @@ public class UI : IMenuProvideable
     private ICounties Counties;
 
     private bool IsNotShowingFrontEndMenus = false;
+    private bool IsNotShowingFullScreenMenus;
 
     private bool ShouldShowSpeedLimitSign => DisplayablePlayer.CurrentVehicle != null && DisplayablePlayer.CurrentLocation.CurrentStreet != null && DisplayablePlayer.IsAliveAndFree;
     public bool IsDisplayingMenu => MenuPool.IsAnyMenuOpen();
@@ -171,6 +172,7 @@ public class UI : IMenuProvideable
     public void Tick1()
     {
         IsNotShowingFrontEndMenus = !MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen;
+        IsNotShowingFullScreenMenus = !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen;
         ProcessActionWheel();
         DisplayLowerRightMenu();
         if (!EntryPoint.ModController.IsDisplayingAlertScreen)
@@ -185,7 +187,7 @@ public class UI : IMenuProvideable
     {
         if (IsPressingActionWheelButton)
         {
-            if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed)
+            if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed && DisplayablePlayer.IsAliveAndFree)
             {
                 ActionPopUpMenu.OnStartDisplaying();
             }
@@ -201,7 +203,7 @@ public class UI : IMenuProvideable
                 }
             }
         }
-        if (IsNotShowingFrontEndMenus && Settings.SettingsManager.UIGeneralSettings.IsEnabled)
+        if (IsNotShowingFullScreenMenus && Settings.SettingsManager.UIGeneralSettings.IsEnabled)
         {
             ActionPopUpMenu.Draw();
         }
@@ -571,7 +573,7 @@ public class UI : IMenuProvideable
             {
                 foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.Prompts.OrderByDescending(x => x.Order))
                 {
-                    if(buttonPrompt.GameControl != GameControl.NextCamera)
+                    if(buttonPrompt.HasGameControl && buttonPrompt.GameControl != GameControl.NextCamera)
                     {
 
                         InstructionalButton mybutt = new InstructionalButton(buttonPrompt.GameControl, buttonPrompt.Text);
@@ -598,7 +600,7 @@ public class UI : IMenuProvideable
                 }
 
 
-                string stuff = InstructionalButton.GetButtonId(GameControl.Enter);
+               // string stuff = InstructionalButton.GetButtonId(GameControl.Enter);
             }
             instructional.Update();
             if (DisplayablePlayer.ButtonPrompts.Prompts.Any())

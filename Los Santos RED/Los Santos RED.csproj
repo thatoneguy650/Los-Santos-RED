@@ -154,6 +154,7 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
+    <Compile Include="lsr\Player\Activity\WaveHandsActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\CorruptCopContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\EmergencyServicesContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\GangContact.cs" />

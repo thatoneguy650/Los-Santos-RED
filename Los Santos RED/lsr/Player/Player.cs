@@ -1175,6 +1175,7 @@ namespace Mod
             WasDangerouslyArmedWhenBusted = IsDangerouslyArmed;
             Surrendering.OnPlayerBusted();
             Respawning.OnPlayerBusted();
+            ActivityManager.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
                 Game.TimeScale = 0.4f;
@@ -1202,6 +1203,7 @@ namespace Mod
                 Game.TimeScale = 0.4f;
             }
             Scanner.OnSuspectWasted();
+            ActivityManager.OnPlayerDied();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
         }
         private void OnIsShootingChanged()
@@ -1558,19 +1560,25 @@ namespace Mod
 
             GPSManager.Update();
 
-            if (Surrendering.IsWavingHands)
-            {
-                if (Game.GameTime - GameTimeLastRaiseHandsEmote >= 5000)
-                {
-                    if (!Investigation.IsActive && World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 100f) && World.Pedestrians.Civilians.Any(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)))
-                    {
-                        Investigation.Start(Position, false, true, false, false);
-                    }
-                    PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
-                    GameTimeLastRaiseHandsEmote = Game.GameTime;
-                }
-            }
-            else if (Surrendering.HandsAreUp)
+
+
+
+
+            //if (Surrendering.IsWavingHands)
+            //{
+            //    if (Game.GameTime - GameTimeLastRaiseHandsEmote >= 5000)
+            //    {
+            //        if (!Investigation.IsActive && World.Pedestrians.Police.Any(x => x.DistanceToPlayer <= 100f) && World.Pedestrians.Civilians.Any(x => x.WantedLevel == 0 && x.CurrentlyViolatingWantedLevel > 0 && ((x.DistanceToPlayer <= 70f && x.CanSeePlayer) || x.DistanceToPlayer <= 30f)))
+            //        {
+            //            Investigation.Start(Position, false, true, false, false);
+            //        }
+            //        PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
+            //        GameTimeLastRaiseHandsEmote = Game.GameTime;
+            //    }
+            //}
+            //else 
+            
+            if (Surrendering.HandsAreUp)
             {
 
                 if (Game.GameTime - GameTimeLastRaiseHandsEmote >= 10000)
@@ -1587,6 +1595,12 @@ namespace Mod
                 }
 
             }
+
+
+
+
+
+
             if (IsInVehicle)
             {
                 int VehicleViewMode = NativeFunction.Natives.GET_FOLLOW_VEHICLE_CAM_VIEW_MODE<int>();
