@@ -2,14 +2,21 @@
 
 public class ActionWheelSettings : ISettingsDefaultable
 {
+    public bool RequireButtonHold { get; set; }
+    public bool SetPauseOnActivate { get; set; }
+    public bool SetPauseOnActivateControllerOnly { get; set; }
     public bool SetSlowMoOnActivate { get; set; }
     public bool SetSlowMoOnActivateControllerOnly { get; set; }
-    [Description("Seems to obliterate performance? Disabled for now.")]
+    public float SlowMoScale { get; set; }
+
+
+    //[Description("Seems to obliterate performance? Disabled for now.")]
     public bool SetTransitionEffectOnActivate { get; set; }
     public bool PlayTransitionSoundsOnActivate { get; set; }
-    public float SlowMoScale { get; set; }
-    public float ControllerCursorScale { get; set; }
-    public bool RequireButtonHold { get; set; }
+
+
+
+
 
 
 
@@ -69,6 +76,9 @@ public class ActionWheelSettings : ISettingsDefaultable
 
     public float AffiliationCenterX { get; set; }
     public float AffiliationCenterY { get; set; }
+
+
+    public float ControllerCursorScale { get; set; }
     public ActionWheelSettings()
     {
         SetDefault();
@@ -121,7 +131,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         AffiliationCenterY = 0.55f;
 
         SetSlowMoOnActivate = true;
-        SetTransitionEffectOnActivate = false;
+        SetTransitionEffectOnActivate = true;
         ShowIcons = false;
 
         DebugIconX = 0.0f;
@@ -129,7 +139,7 @@ public class ActionWheelSettings : ISettingsDefaultable
         DebugIconScale = 1.0f;
         ShowOnlyIcon = false;
 
-        ControllerCursorScale = 3.5f;
+        ControllerCursorScale = 0.01f;
 
         RequireButtonHold = false;
 
@@ -142,7 +152,8 @@ public class ActionWheelSettings : ISettingsDefaultable
         ButtonPromptXStart = 0.92f;
         ButtonPromptYStart = 0.55f;
 
-
+        SetPauseOnActivate = false;
+        SetPauseOnActivateControllerOnly = false;
         SetSlowMoOnActivate = true;
         SetSlowMoOnActivateControllerOnly = false;
         PlayTransitionSoundsOnActivate = true;

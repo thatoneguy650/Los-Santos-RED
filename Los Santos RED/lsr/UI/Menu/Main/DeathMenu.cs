@@ -48,7 +48,7 @@ public class DeathMenu : Menu
 
             if(NativeHelper.IsUsingController)
             {
-                Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey, 999);
+                Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
             }
             else
             {

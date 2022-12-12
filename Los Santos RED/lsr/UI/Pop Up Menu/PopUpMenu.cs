@@ -131,15 +131,11 @@ public class PopUpMenu
         Game.TimeScale = 1.0f;
         Game.RawFrameRender -= DrawSprites;
     }
-    public void OnMenuClosed()
+    public void CloseMenu()
     {
         IsActive = false;
-        Game.TimeScale = 1.0f;
+        //Game.TimeScale = 1.0f;
         GameTimeLastClosed = Game.GameTime;
-    }
-    public void OnStopDisplaying()
-    {
-        //NativeFunction.Natives.RELEASE_SOUND_ID(ActionSoundID);
         Game.DisplaySubtitle("");//clear the subtitles out
         if (Settings.SettingsManager.ActionWheelSettings.SetTransitionEffectOnActivate)
         {
@@ -150,6 +146,10 @@ public class PopUpMenu
         {
             Game.TimeScale = 1.0f;
         }
+        if (SetPaused)
+        {
+            Game.IsPaused = false;
+        }
         if (Settings.SettingsManager.ActionWheelSettings.PlayTransitionSoundsOnActivate)
         {
             NativeFunction.Natives.STOP_SOUND(TransitionInSound);
@@ -159,11 +159,12 @@ public class PopUpMenu
         IsActive = false;
         Game.RawFrameRender -= DrawSprites;
     }
-    public void OnStartDisplaying()
+    public void ShowMenu()
     {
         GameTimeStartedDisplaying = Game.GameTime;
         IsActive = true;
         SelectedMenuMap = null;
+        ClosestPositionMap = null;
         PrevSelectedMenuMap = null;
         HasStoppedPressingDisplayKey = false;
         HasRanItem = false;
@@ -175,7 +176,16 @@ public class PopUpMenu
         CursorXPos = 0.5f;
         CursorYPos = 0.5f;
 
-        if (Settings.SettingsManager.ActionWheelSettings.SetSlowMoOnActivate || (NativeHelper.IsUsingController && Settings.SettingsManager.ActionWheelSettings.SetSlowMoOnActivateControllerOnly))
+
+        if (Settings.SettingsManager.ActionWheelSettings.SetPauseOnActivate || (NativeHelper.IsUsingController && Settings.SettingsManager.ActionWheelSettings.SetPauseOnActivateControllerOnly))
+        {
+            if(!Game.IsPaused)
+            {
+                SetPaused = true;
+                Game.IsPaused = true;
+            }
+        }
+        else if (Settings.SettingsManager.ActionWheelSettings.SetSlowMoOnActivate || (NativeHelper.IsUsingController && Settings.SettingsManager.ActionWheelSettings.SetSlowMoOnActivateControllerOnly))
         {
             if(Game.TimeScale == 1.0f)
             {
@@ -183,6 +193,7 @@ public class PopUpMenu
                 Game.TimeScale = Settings.SettingsManager.ActionWheelSettings.SlowMoScale;
             }
         }   
+
         if (Settings.SettingsManager.ActionWheelSettings.SetTransitionEffectOnActivate)
         {
             NativeFunction.Natives.x2206bf9a37b7f724(Settings.SettingsManager.ActionWheelSettings.TransitionInEffect, 0, true);
@@ -256,11 +267,11 @@ public class PopUpMenu
     }
     private void FindClosestPositionMap()
     {
-        if(Game.GameTime - GameTimeStartedDisplaying <= 20)
-        {
-            ClosestPositionMap = null;
-            return;
-        }
+        //if(Game.GameTime - GameTimeStartedDisplaying <= 20)
+        //{
+        //    ClosestPositionMap = null;
+        //    return;
+        //}
         MouseState mouseState = Game.GetMouseState();
         if (mouseState != null)
         {
@@ -281,11 +292,11 @@ public class PopUpMenu
     }
     private void UpdateSelection()
     {
-        if(Game.GameTime - GameTimeStartedDisplaying <= 20)
-        {
-            ClosestPositionMap = null;
-            return;
-        }
+        //if(Game.GameTime - GameTimeStartedDisplaying <= 20)
+        //{
+        //    ClosestPositionMap = null;
+        //    return;
+        //}
         if(!UI.IsPressingActionWheelButton && !HasStoppedPressingDisplayKey)
         {
             EntryPoint.WriteToConsole("HAS STOPPED PRESSING ACTION WHEEL SHOW");
@@ -306,11 +317,11 @@ public class PopUpMenu
             {
                 if ((popUpBox.Action != null || popUpBox.ChildMenuID != ""))
                 {
-                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)) && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
+                    if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)))// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
                         if (popUpBox.ClosesMenu)
                         {
-                            OnMenuClosed();
+                            CloseMenu();
                             HasRanItem = true;
                         }
                         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
@@ -326,7 +337,7 @@ public class PopUpMenu
                             TotalPages = 0;
 
                         }
-                        GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
+                        //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
                     }
                 }
                 SelectedMenuMap = popUpBox;
@@ -362,11 +373,11 @@ public class PopUpMenu
         }
         else if(IsCurrentPopUpBoxGroupDefault && !Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && isPressingAim)
         {
-            OnMenuClosed();
+            CloseMenu();
         }
         else if (!Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && UI.IsPressingActionWheelButton && HasStoppedPressingDisplayKey)
         {
-            OnMenuClosed();
+            CloseMenu();
         }
     }
     private void ProcessControllerInput()
@@ -375,8 +386,8 @@ public class PopUpMenu
         {
             float XChange = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.ScriptRightAxisX);
             float YChange = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.ScriptRightAxisY);
-            float xAmount = Game.FrameTime * XChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale;
-            float yAmount = Game.FrameTime * YChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale;
+            float xAmount = XChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale; ;// Game.FrameTime * XChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale;
+            float yAmount = YChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale; ;// Game.FrameTime * YChange * Settings.SettingsManager.ActionWheelSettings.ControllerCursorScale;
             CursorXPos += xAmount;
             CursorYPos += yAmount;
             if (CursorXPos > 1.0f)
@@ -444,7 +455,7 @@ public class PopUpMenu
         int added = 1;
         foreach (ButtonPrompt bp in Player.ButtonPrompts.Prompts.OrderBy(x => x.Order))
         {
-            PopUpBox toAdd = new PopUpBox(id, bp.Text, new Action(() => bp.SetAlternativePressed()), "Press Prompt");
+            PopUpBox toAdd = new PopUpBox(id, bp.Text, new Action(() => bp.SetFakePressed()), "Press Prompt");
             ButtonPromptItems.Add(toAdd);
             id++;
 

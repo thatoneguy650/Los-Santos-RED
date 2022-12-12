@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace LosSantosRED.lsr
 {
@@ -409,17 +410,29 @@ namespace LosSantosRED.lsr
                 $"~n~By ~g~Greskrendtregk ~s~Has Loaded Successfully.");
 
             string controlString =
-                $"Main Menu: ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
-                $"~n~Action Wheel: {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
-                $"~n~Action Wheel (Alt): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
+                $"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
+                $"~n~Action Wheel (Mouse): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
+                $"~n~Action Wheel (Keyboard): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
             if(NativeHelper.IsUsingController || 1==1)
             {
-                controlString += $"~n~Action Wheel (Controller): ~{InstructionalButton.GetButtonId((GameControl)ModDataFileManager.Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey)}~";
+                controlString += $"~n~Action Wheel + Menu (Controller): ";
+                controlString += FormatButtons(ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionDisplay);
             }
             Game.DisplayHelp(controlString);
             EntryPoint.WriteToConsole($"Has Loaded Successfully",0);
         }
-        private string FormatKeys(Keys modifier, Keys key)
+        public string FormatButtons(ControllerButtons modifier, ControllerButtons key)
+        {
+            if (modifier != ControllerButtons.None)
+            {
+                return $"~{modifier.GetInstructionalId()}~ + ~{key.GetInstructionalId()}~";
+            }
+            else
+            {
+                return $"~{key.GetInstructionalId()}~";
+            }
+        }
+        public string FormatKeys(Keys modifier, Keys key)
         {
             if(modifier != Keys.None)
             {
@@ -428,6 +441,17 @@ namespace LosSantosRED.lsr
             else
             {
                 return $"~{key.GetInstructionalId()}~";
+            }
+        }
+        public string FormatControls(int modifier, int control)
+        {
+            if (modifier != -1)
+            {
+                return $"~{InstructionalButton.GetButtonId((GameControl)modifier)}~ + ~{InstructionalButton.GetButtonId((GameControl)control)}~";
+            }
+            else
+            {
+                return $"~{InstructionalButton.GetButtonId((GameControl)control)}~";
             }
         }
     }

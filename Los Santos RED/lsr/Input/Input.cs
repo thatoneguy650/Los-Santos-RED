@@ -95,7 +95,14 @@ namespace LosSantosRED.lsr
             {
                 MenuProvider.IsPressingActionWheelButton = true;
             }
-            else if (IsUsingController && (Game.IsControlPressed(0, (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey)))
+            else if (IsUsingController && 
+                (
+                Settings.SettingsManager.KeySettings.ControllerActionModifier == -1 || 
+                    (
+                    Game.IsControlPressed(0, (GameControl)Settings.SettingsManager.KeySettings.ControllerActionModifier) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, Settings.SettingsManager.KeySettings.ControllerActionModifier)
+                    )
+                ) && 
+                (Game.IsControlPressed(0, (GameControl)Settings.SettingsManager.KeySettings.ControllerAction) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, Settings.SettingsManager.KeySettings.ControllerAction)))
             {
                 MenuProvider.IsPressingActionWheelButton = true;
             }
@@ -331,77 +338,22 @@ namespace LosSantosRED.lsr
             {
                 if (Player.ButtonPrompts.IsSuspended)
                 {
-                    bp.IsHeldNow = false;
-                    bp.IsPressedNow = false;
+                    bp.Reset();
                 }
                 else
                 {
                     hasPrompts = true;
-                    if (Game.IsKeyDownRightNow(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDownRightNow(bp.Modifier)) && !bp.IsHeldNow)
-                    {
-                        //EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down");
-                        bp.IsHeldNow = true;
-                    }
-                    else if (bp.IsAlternativePressed)
-                    {
-                        bp.IsHeldNow = true;
-                    }
-                    else
-                    {
-                        bp.IsHeldNow = false;
-                    }
-
-
-
-                    if (Game.IsKeyDown(bp.Key) && (bp.Modifier == Keys.None || Game.IsKeyDown(bp.Modifier)) && !bp.IsPressedNow)
-                    {
-                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 1");
-                        bp.IsPressedNow = true;
-                    }
-                    else if (bp.HasGameControl && Game.IsControlJustPressed(2, bp.GameControl) && !bp.IsPressedNow)
-                    {
-                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 2");
-                        bp.IsPressedNow = true;
-                    }
-                    else if (bp.HasGameControl && NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)bp.GameControl) && !bp.IsPressedNow)
-                    {
-                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 3");
-                        bp.IsPressedNow = true;
-                    }
-                    else if (bp.IsAlternativePressed)
-                    {
-                        EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 4");
-                        bp.IsPressedNow = true;
-                        //if(Game.GameTime - bp.GameTimeAlternativePressed >= 20)
-                        //{
-                        //    bp.IsPressedNow = false;
-                        //    bp.IsAlternativePressed = false;
-                        //}
-                        //else
-                        //{
-                        //    EntryPoint.WriteToConsole($"INPUT! Control :{bp.Text}: Down 4");
-                        //    bp.IsPressedNow = true;
-                        //}
-                    }
-                    else
-                    {
-                        bp.IsPressedNow = false;
-                    }
-
-
-
-                    if (Game.GameTime - bp.GameTimeAlternativePressed >= 20)
-                    {
-                        bp.IsAlternativePressed = false;
-                    }
+                    bp.UpdateState();
                 }
+            }
+            if(Player.ButtonPrompts.IsSuspended)
+            {
+                hasPrompts = false;
             }
             Player.IsNotHoldingEnter = IsNotHoldingEnter;
             Player.IsMoveControlPressed = IsMoveControlPressed;
             Player.IsPressingFireWeapon = IsPressingFireWeapon;
             Player.ReleasedFireWeapon = ReleasedFireWeapon;
-
-
             if(hasPrompts && IsUsingController && !HasShownControllerHelpPrompt)
             {
                 ShowControllerHelpPrompt();
@@ -410,8 +362,10 @@ namespace LosSantosRED.lsr
         }
         private void ShowControllerHelpPrompt()
         {
-            EntryPoint.WriteToConsole($"Controller Prompt ID: {InstructionalButton.GetButtonId((GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey)}");
-            Game.DisplayHelp($"You can also access prompts through the action wheel.~n~Press ~{InstructionalButton.GetButtonId((GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey)}~ to open");
+            string helpText = $"You can also access prompts through the action wheel.~n~Press ";
+            helpText += EntryPoint.ModController.FormatButtons(Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay);
+            helpText += " to open";
+            Game.DisplayHelp(helpText);
             HasShownControllerHelpPrompt = true;
         }
         private bool IsKeyDownSafe(Keys key)
@@ -435,6 +389,17 @@ namespace LosSantosRED.lsr
             else
             {
                 return Game.IsKeyDownRightNow(key);
+            }
+        }
+        private bool IsControllerButtonDownSafe(ControllerButtons buttons)
+        {
+            if (buttons == ControllerButtons.None)
+            {
+                return true;
+            }
+            else
+            {
+                return Game.IsControllerButtonDownRightNow(buttons);
             }
         }
     }

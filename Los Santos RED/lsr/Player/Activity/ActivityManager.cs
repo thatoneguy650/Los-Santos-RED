@@ -275,9 +275,9 @@ public class ActivityManager
     {
         foreach(ButtonPrompt bp in Player.ButtonPrompts.Prompts)
         {
-            if(bp.IsPressedNow || bp.IsHeldNow || bp.IsAlternativePressed)
+            if(bp.IsPressedNow || bp.IsHeldNow || bp.IsFakePressed)
             {
-                EntryPoint.WriteToConsole($"BP PRESSED: {bp.Text} IsPressedNow{bp.IsPressedNow} IsHeldNow{bp.IsHeldNow} IsAlternativePressed{bp.IsAlternativePressed}");
+                EntryPoint.WriteToConsole($"BP PRESSED: {bp.Text} IsPressedNow{bp.IsPressedNow} IsHeldNow{bp.IsHeldNow} IsAlternativePressed{bp.IsFakePressed}");
             }
             else
             {

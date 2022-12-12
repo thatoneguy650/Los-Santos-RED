@@ -88,7 +88,7 @@ public class UI : IMenuProvideable
     private bool IsDisposed = false;
     private PopUpMenu ActionPopUpMenu;
     private TimerBarController TimerBarController;
-    private bool IsDrawingWheelMenu;
+    private bool IsDrawingWheelMenu => ActionPopUpMenu.IsActive;
     private IActionable ActionablePlayer;
     private bool IsVanillaWeaponHUDVisible;
     private int VanillaDiplayedLines;
@@ -189,7 +189,7 @@ public class UI : IMenuProvideable
         {
             if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed && DisplayablePlayer.IsAliveAndFree)
             {
-                ActionPopUpMenu.OnStartDisplaying();
+                ActionPopUpMenu.ShowMenu();
             }
         }
         else
@@ -198,8 +198,8 @@ public class UI : IMenuProvideable
             {
                 if (ActionPopUpMenu.IsActive)
                 {
-                    ActionPopUpMenu.OnStopDisplaying();
-                    ActionPopUpMenu.OnMenuClosed();
+                   // ActionPopUpMenu.OnStopDisplaying();
+                    ActionPopUpMenu.CloseMenu();
                 }
             }
         }
@@ -583,18 +583,18 @@ public class UI : IMenuProvideable
                     }
                     else if (buttonPrompt.Key != Keys.None)
                     {
-                        if (buttonPrompt.Modifier != Keys.None)
+                        if (buttonPrompt.ModifierKey != Keys.None)
                         {
-                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
+                            instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.ModifierKey.GetInstructionalKey(), InstructionalKey.SymbolPlus, buttonPrompt.Key.GetInstructionalKey()));
                         }
                         else
                         {
                             instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Key.GetInstructionalKey()));
                         }
                     }
-                    else if (buttonPrompt.Modifier != Keys.None)
+                    else if (buttonPrompt.ModifierKey != Keys.None)
                     {
-                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.Modifier.GetInstructionalKey()));
+                        instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.ModifierKey.GetInstructionalKey()));
                     }
 
                 }

@@ -70,6 +70,10 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
+
+
+
+
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -86,7 +90,20 @@ public class ButtonPrompts
     }
 
 
-
+    public void AddPrompt(string groupName, string prompt, string identifier, ControllerButtons interactKey, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
+        }
+    }
+    public void AddPrompt(string groupName, string prompt, string identifier, ControllerButtons modifierKey, ControllerButtons interactKey, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
+        }
+    }
 
 
     public void AddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order)
@@ -96,7 +113,13 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
-
+    public void AddPrompt(string groupName, string prompt, string identifier, GameControl modifierControl, GameControl gameControl, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, modifierControl, order));
+        }
+    }
 
 
 

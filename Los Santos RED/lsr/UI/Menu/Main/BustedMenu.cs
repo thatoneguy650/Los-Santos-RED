@@ -56,7 +56,7 @@ public class BustedMenu : Menu
 
             if (NativeHelper.IsUsingController)
             {
-                Player.ButtonPrompts.AddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", (GameControl)Settings.SettingsManager.KeySettings.GameControlActionPopUpDisplayKey, 999);
+                Player.ButtonPrompts.AddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier,Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
             }
             else
             {

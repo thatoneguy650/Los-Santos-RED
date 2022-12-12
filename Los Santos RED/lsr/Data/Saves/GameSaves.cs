@@ -81,6 +81,7 @@ public class GameSaves : IGameSaves
         AddLamar();
         AddBrad();
 #if DEBUG
+        AddNicholasClark();
         AddDaveNorton();
         AddKarenDaniels();
         AddMaleMPCop();
@@ -438,6 +439,54 @@ public class GameSaves : IGameSaves
         gameSave.SaveNumber = 4;
         GameSaveList.Add(gameSave);
     }
+    private void AddNicholasClark()
+    {
+        List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>()
+        {
+            new VehicleSaveStatus("oracle2", new Vector3(-372.865936f, -308.577576f, 32.1299629f), 280.34967f){ VehicleVariation = new VehicleVariation() { PrimaryColor =  61, SecondaryColor = 61, LicensePlate = new LSR.Vehicles.LicensePlate("7CVJ356", 0, false) } }
+        };
+        List<StoredWeapon> Weapons = new List<StoredWeapon>
+        {
+            new StoredWeapon(453432689, Vector3.Zero, new WeaponVariation(), 48),
+        };
+        GameSave gameSave = new GameSave("Nicholas Clark", 455000, "mp_m_freemode_01", true, new PedVariation(new List<PedComponent>() {
+            new PedComponent(3,1,0,0),
+            new PedComponent(4, 35, 0, 0),
+            new PedComponent(6, 10, 0, 0),
+            new PedComponent(7, 125, 0, 0),
+            new PedComponent(8,130,0,0),
+            new PedComponent(10,0,0,0),
+            new PedComponent(11,348,0,0),
+            new PedComponent(2,56,0,0),
+        }, new List<PedPropComponent>() { })
+        {
+            HeadOverlays = new List<HeadOverlayData>() { new HeadOverlayData(2, "Eyebrows") { Opacity = 1.0f, Index = 0, ColorType = 1, PrimaryColor = 0, SecondaryColor = 0 } },
+            HeadBlendData = new HeadBlendData(9, 20, 0, 9, 20, 0, 1, 0, 0),
+            PrimaryHairColor = 27,
+            SecondaryHairColor = 7,
+            EyeColor = 4,
+            FaceFeatures = new List<FaceFeature>() {
+                new FaceFeature(13, "Jaw Bone Width") { Scale = 0.0f,RangeLow = -1.0f, RangeHigh = 1.0f },
+                new FaceFeature(12, "Lip Thickness") { Scale = 0.9f,RangeLow = -1.0f, RangeHigh = 1.0f },
+                new FaceFeature(10, "Cheek Bones Width") { Scale = -0.7f,RangeLow = -1.0f, RangeHigh = 1.0f },
+                new FaceFeature(7, "Eyebrow In/Out") { Scale = 0.3f,RangeLow = -1.0f, RangeHigh = 1.0f },
+                new FaceFeature(4, "Nose Tip") { Scale = 1.0f,RangeLow = -1.0f, RangeHigh = 1.0f },
+                new FaceFeature(0, "Nose Width") { Scale = 1.0f,RangeLow = -1.0f, RangeHigh = 1.0f },
+            },
+        }
+        , Weapons, Vehicles);
+        SetDefault(gameSave);
+
+        gameSave.InventoryItems.Add(new InventorySave("TAG-HARD Flashlight", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("GASH Black Umbrella", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
+        gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
+        gameSave.IsCop = true;
+
+        gameSave.SaveNumber = 5;
+
+        GameSaveList.Add(gameSave);
+    }
     private void AddDaveNorton()
     {
         List<VehicleSaveStatus> Vehicles = new List<VehicleSaveStatus>() 
@@ -457,7 +506,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
 
-        gameSave.SaveNumber = 5;
+        gameSave.SaveNumber = 6;
 
         GameSaveList.Add(gameSave);
     }
@@ -480,7 +529,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
 
-        gameSave.SaveNumber = 6;
+        gameSave.SaveNumber = 7;
 
         GameSaveList.Add(gameSave);
     }
@@ -521,7 +570,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
 
-        gameSave.SaveNumber = 7;
+        gameSave.SaveNumber = 8;
         GameSaveList.Add(gameSave);
     }
     private void AddFemaleMPCop()
@@ -562,9 +611,11 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("SCHEISS RP Binoculars", 1.0f));
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
-        gameSave.SaveNumber = 8;
+        gameSave.SaveNumber = 9;
         GameSaveList.Add(gameSave);
     }
+
+
     private void SetDefault(GameSave ExampleGameSave)
     {
         //Position

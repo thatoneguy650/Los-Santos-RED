@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -44,8 +45,16 @@ public class KeySettings : ISettingsDefaultable
     public Keys AltActionPopUpDisplayKey { get; set; }
     public Keys AltActionPopUpDisplayKeyModifier { get; set; }
 
+    public ControllerButtons ControllerActionDisplay { get; set; }
+    public ControllerButtons ControllerActionDisplayModifier { get; set; }
 
-    public int GameControlActionPopUpDisplayKey { get; set; }
+
+
+
+    public int ControllerAction { get; set; }
+    public int ControllerActionModifier { get; set; }
+
+
 
 
     public int GameControlToDisable { get; set; }
@@ -94,9 +103,13 @@ public class KeySettings : ISettingsDefaultable
         ActionPopUpDisplayKeyModifier = Keys.None;
         AltActionPopUpDisplayKey = Keys.N;//N
         AltActionPopUpDisplayKeyModifier = Keys.LMenu;//left alt
-        GameControlActionPopUpDisplayKey = 217;// 236;
-
+        ControllerAction = 236;//189 - frontend left//234 - ScriptPadLeft//217;// 236;
+        ControllerActionModifier = -1;//227 - scriptRB//206 - frontenRB
         GameControlToDisable = 0;
+
+
+        ControllerActionDisplay = ControllerButtons.Back;
+        ControllerActionDisplayModifier = ControllerButtons.None;
 
 
     }

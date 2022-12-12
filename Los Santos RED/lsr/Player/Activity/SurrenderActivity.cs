@@ -28,10 +28,10 @@ public class SurrenderActivity : DynamicActivity
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
-    public override bool CanCancel { get; set; } = false;
+    public override bool CanCancel { get; set; } = true;
     public override bool IsUpperBodyOnly { get; set; } = true;
     public override string PausePrompt { get; set; } = "Pause Activity";
-    public override string CancelPrompt { get; set; } = "Stop Activity";
+    public override string CancelPrompt { get; set; } = "Stop Surrendering";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
     public bool HandsAreUp { get; private set; }
 
@@ -51,6 +51,7 @@ public class SurrenderActivity : DynamicActivity
     public override void Start()
     {
         RaiseHands();
+
     }
     public override bool CanPerform(IActionable player)
     {
@@ -65,17 +66,11 @@ public class SurrenderActivity : DynamicActivity
             EntryPoint.WriteToConsole($"Toggle Surrender Ran 2 HandsAreUp {HandsAreUp} CanSurrender {CanSurrender}");
             if (HandsAreUp)
             {
-                if (!Player.IsBusted)
-                {
-                    LowerHands();
-                }
+                LowerHands();
             }
             else
             {
-                if (CanSurrender)
-                {
-                    RaiseHands();
-                }
+                RaiseHands();          
             }
             GameTimeLastToggledSurrender = Game.GameTime;
         }
@@ -83,34 +78,51 @@ public class SurrenderActivity : DynamicActivity
 
     private void LowerHands()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
-        HandsAreUp = false; // You put your hands down
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-        Player.ActivityManager.IsPerformingActivity = false;       
+        if (!Player.IsBusted)
+        {
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
+            HandsAreUp = false; // You put your hands down
+            NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+            Player.ActivityManager.IsPerformingActivity = false;
+        }
     }
     private void RaiseHands()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
-        if (Player.Character.IsWearingHelmet)
+        if (CanSurrender)
         {
-            Player.Character.RemoveHelmet(true);
+            EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
+            if (Player.Character.IsWearingHelmet)
+            {
+                Player.Character.RemoveHelmet(true);
+            }
+            if (HandsAreUp)
+            {
+                return;
+            }
+            Player.WeaponEquipment.SetUnarmed();
+            HandsAreUp = true;
+            if (Player.IsInVehicle)
+            {
+                AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
+            }
+            else
+            {
+                AnimationDictionary.RequestAnimationDictionay("ped");
+                NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+            }
+            GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
+            {
+                while (!Player.IsMoveControlPressed && HandsAreUp && Player.IsAliveAndFree)
+                {
+                    GameFiber.Yield();
+                }
+                if (HandsAreUp)
+                {
+                    LowerHands();
+                }
+            }, "DrinkingWatcher");
         }
-        if (HandsAreUp)
-        {
-            return;
-        }
-        Player.WeaponEquipment.SetUnarmed();
-        HandsAreUp = true;
-        if (Player.IsInVehicle)
-        {
-            AnimationDictionary.RequestAnimationDictionay("veh@busted_std");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "veh@busted_std", "stay_in_car_crim", 2.0f, -2.0f, -1, 50, 0, false, false, false);
-        }
-        else
-        {
-            AnimationDictionary.RequestAnimationDictionay("ped");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "ped", "handsup_enter", 2.0f, -2.0f, -1, 2, 0, false, false, false);
-        }      
     }
     public void SetArrestedAnimation(bool StayStanding)
     {
