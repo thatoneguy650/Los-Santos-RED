@@ -44,7 +44,7 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenu GetMenu(string menuID)
     {
-        return ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault();
+        return ShopMenuList.Where(x => x.ID == menuID).FirstOrDefault()?.Copy();
     }
     public Tuple<int,int> GetPrices(string itemName)
     {
@@ -71,47 +71,47 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenu GetRandomMenu(string menuGroup)
     {
-        return ShopMenuList.Where(x => x.GroupName == menuGroup).PickRandom();
+        return ShopMenuList.Where(x => x.GroupName == menuGroup).PickRandom()?.Copy();
     }
     public ShopMenu GetRandomDrugDealerMenu()
     {
-        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DealerMenu").PickRandom();
+        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DealerMenu").PickRandom()?.Copy();
         return Possible;
     }
     public ShopMenu GetRandomDrugCustomerMenu()
     {
-        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DrugCustomerMenu").PickRandom();
+        ShopMenu Possible = ShopMenuList.Where(x => x.ID == "DrugCustomerMenu").PickRandom()?.Copy();
         return Possible;
     }
     public ShopMenu GetVendingMenu(string propName)
     {
         if (propName == "prop_vend_snak_01")
         {
-            return ShopMenuList.Where(x => x.ID == "CandyVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "CandyVendingMenu").PickRandom()?.Copy();
         }
         else if (propName == "prop_vend_water_01" || propName == "0x418f055a")
         {
-            return ShopMenuList.Where(x => x.ID == "WaterVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "WaterVendingMenu").PickRandom()?.Copy();
         }
         else if (propName == "prop_vend_soda_01" || propName == "0x426a547c")
         {
-            return ShopMenuList.Where(x => x.ID == "SprunkVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "SprunkVendingMenu").PickRandom()?.Copy();
         }
         else if (propName == "prop_vend_soda_02" || propName == "0x3b21c5e7")
         {
-            return ShopMenuList.Where(x => x.ID == "eColaVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "eColaVendingMenu").PickRandom()?.Copy();
         }
         else if (propName == "prop_vend_coffe_01")
         {
-            return ShopMenuList.Where(x => x.ID == "BeanMachineVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "BeanMachineVendingMenu").PickRandom()?.Copy();
         }
         else if (propName == "prop_vend_fags_01")
         {
-            return ShopMenuList.Where(x => x.ID == "CigVendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "CigVendingMenu").PickRandom()?.Copy();
         }
         else
         {
-            return ShopMenuList.Where(x => x.ID == "VendingMenu").PickRandom();
+            return ShopMenuList.Where(x => x.ID == "VendingMenu").PickRandom()?.Copy();
         }
     }
     private void DefaultConfig()

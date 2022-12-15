@@ -132,7 +132,7 @@ public class MainMenu : Menu
             ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
             ShowSaveMenu.Activated += (s, e) =>
             {
-                UI.ToggleSavePauseMenu();
+                UI.SavePauseMenu.Toggle();
                 Main.Visible = false;
             };
             Main.AddItem(ShowSaveMenu);
@@ -144,7 +144,7 @@ public class MainMenu : Menu
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         AboutMenu.Activated += (s, e) =>
         {
-            UI.ToggleAboutMenu();
+            UI.AboutMenu.Toggle();
             Main.Visible = false;
         };
         Main.AddItem(AboutMenu);
@@ -153,7 +153,7 @@ public class MainMenu : Menu
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
         ShowReportingMenu.Activated += (s, e) =>
         {
-            UI.TogglePlayerInfoMenu();
+            UI.PlayerInfoMenu.Toggle();
             Main.Visible = false;
         };
         Main.AddItem(ShowReportingMenu);
@@ -162,7 +162,7 @@ public class MainMenu : Menu
         ShowSimplePhoneMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         ShowSimplePhoneMenu.Activated += (s, e) =>
         {
-            UI.ToggleMessagesMenu();
+            UI.MessagesMenu.Toggle();
             Main.Visible = false;
         };
         Main.AddItem(ShowSimplePhoneMenu);

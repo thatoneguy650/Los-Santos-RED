@@ -428,6 +428,16 @@ public class ButtonPrompts
             RemovePrompts("ShowSurrender");
         }
 
+
+        if(Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
+        {
+            AddPrompt("ShowStopSurrender", "Stop Surrendering", "ShowStopSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
+        }
+        else
+        {
+            RemovePrompts("ShowStopSurrender");
+        }
+
     }
     private void SittingPrompts()
     {

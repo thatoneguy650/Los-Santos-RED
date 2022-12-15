@@ -320,10 +320,13 @@ namespace LosSantosRED.lsr.Data
                     if (gangRepSave.IsMember)
                     {
                         player.RelationshipManager.GangRelationships.SetGang(myGang, false);
-
                         if(GangKickSave != null)
                         {
                             player.RelationshipManager.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
+                        }
+                        else
+                        {
+
                         }
                     }
                 }

@@ -51,5 +51,12 @@ public class CameraCycler
         DefaultPosition?.Move(CharCam);
         GameFiber.Sleep(100);
     }
+    public void Set(string name)
+    {
+        CurrentPositionIndex = 0;
+        CameraCyclerPosition ccp = CameraCyclerPositions.Where(x => x.Name == name).FirstOrDefault();
+        ccp?.Move(CharCam);
+        GameFiber.Sleep(100);
+    }
 }
 

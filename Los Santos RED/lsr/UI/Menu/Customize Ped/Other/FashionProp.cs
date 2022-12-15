@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Linq;
 using LosSantosRED.lsr.Helper;
 using System;
+using System.Windows.Media.Media3D;
 
 public class FashionProp
 {
@@ -55,10 +56,14 @@ public class FashionProp
     private void AddMenuItems(UIMenu componentMenu)
     {
         AddResetMenuItem(componentMenu);
+        AddClearMenuItem(componentMenu);
         AddDrawableItem(componentMenu);
         AddTextureItem(componentMenu);
         AddGoToMenuItem(componentMenu);
     }
+
+
+
     private void AddResetMenuItem(UIMenu componentMenu)
     {
         UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the drawable back to the initial value");
@@ -94,7 +99,20 @@ public class FashionProp
         };
         componentMenu.AddItem(ResetMenu);
     }
-
+    private void AddClearMenuItem(UIMenu componentMenu)
+    {
+        UIMenuItem RemoveMenu = new UIMenuItem("Remove Item", "Remove the prop from the ped");
+        RemoveMenu.Activated += (sender, e) =>
+        {
+            if (Ped.Exists())
+            {
+                NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
+            }
+            PedCustomizer.WorkingVariation.Props.RemoveAll(x=> x.PropID == PropID);
+            PedCustomizer.OnVariationChanged();
+        };
+        componentMenu.AddItem(RemoveMenu);
+    }
 
 
     private void AddDrawableItem(UIMenu componentMenu)

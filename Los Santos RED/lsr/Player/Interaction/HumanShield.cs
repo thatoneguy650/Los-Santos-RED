@@ -524,11 +524,14 @@ public class HumanShield : DynamicActivity
     }
     private void DisableControls()
     {
-        Game.DisableControlAction(0, GameControl.Attack, false);
-        Game.DisableControlAction(0, GameControl.Attack2, false);
+        if (!Player.Character.IsAiming)
+        {
+            Game.DisableControlAction(0, GameControl.Attack, false);
+            Game.DisableControlAction(0, GameControl.Attack2, false);
 
-        Game.DisableControlAction(0, GameControl.VehicleAttack, false);
-        Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+            Game.DisableControlAction(0, GameControl.VehicleAttack, false);
+            Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+        }
     }
 
     //private void SetCloseCamera()

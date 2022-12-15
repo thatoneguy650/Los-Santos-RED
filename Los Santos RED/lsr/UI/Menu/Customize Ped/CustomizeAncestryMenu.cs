@@ -7,6 +7,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -94,8 +95,9 @@ public class CustomizeAncestryMenu
     public void Create(UIMenu headSubMenu)
     {
         HeadSubMenu = headSubMenu;
-        AncestrySubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Ancestry");
-        HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the ancestry of the current ped";
+        AncestrySubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Heritage");
+        AncestrySubMenu.SubtitleText = "HERITAGE";
+        HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the heritage of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
         AncestrySubMenu.SetBannerType(EntryPoint.LSRedColor);
     }
@@ -109,7 +111,7 @@ public class CustomizeAncestryMenu
         };
         AncestrySubMenu.AddItem(RandomizeHead);
 
-        Parent1IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 1", "Select parent ID 1", HeadList);
+        Parent1IDMenu = new UIMenuListScrollerItem<HeadLookup>("First Parent", "Select first parent", HeadList);
         Parent1IDMenu.Activated += (sender, selectedItem) =>
         {
             Parent1Activated();
@@ -120,7 +122,7 @@ public class CustomizeAncestryMenu
         };
         AncestrySubMenu.AddItem(Parent1IDMenu);
 
-        Parent2IDMenu = new UIMenuListScrollerItem<HeadLookup>("Set Parent 2", "Select parent ID 2", HeadList);
+        Parent2IDMenu = new UIMenuListScrollerItem<HeadLookup>("Second Parent", "Select second parent", HeadList);
         Parent2IDMenu.Activated += (sender, selectedItem) =>
         {
             Parent2Activated();
@@ -131,7 +133,17 @@ public class CustomizeAncestryMenu
         };
         AncestrySubMenu.AddItem(Parent2IDMenu);
 
-        Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 1 Mix", "Select percent of parent ID 1 to use", 0.0f, 1.0f, 0.1f);
+
+
+
+
+        Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Resemblance", "Select if your resemblance is influenced more by the first parent or second parent.", 0.0f, 1.0f, 0.1f);
+        Parent1MixMenu.Formatter = v => "First - " + (1.0f - v).ToString("P0") + " Second - " + v.ToString("P0");
+        //Parent1MixMenu.SliderBar = new UIMenuScrollerSliderBar();
+        //Parent1MixMenu.SliderBar.Markers.Add(new UIMenuScrollerSliderBarMarker(0.5f, Color.White));
+        //Parent1MixMenu.AllowWrapAround = false;
+        //Parent1MixMenu.LeftBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_female_icon", Color.White);
+        //Parent1MixMenu.RightBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_male_icon", Color.White);
         Parent1MixMenu.Activated += (sender, selectedItem) =>
         {
             Parent1MixActivated();
@@ -142,7 +154,13 @@ public class CustomizeAncestryMenu
         };
         AncestrySubMenu.AddItem(Parent1MixMenu);
 
-        Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Set Parent 2 Mix", "Select percent of parent ID 2 to use", 0.0f, 1.0f, 0.1f);
+        Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Skin Tone", "Select if your skin tone is influenced more by the first parent or second parent.", 0.0f, 1.0f, 0.1f);
+        Parent2MixMenu.Formatter = v => "First - " + (1.0f - v).ToString("P0") + " Second - " + v.ToString("P0");
+        //Parent2MixMenu.SliderBar = new UIMenuScrollerSliderBar();
+        //Parent2MixMenu.SliderBar.Markers.Add(new UIMenuScrollerSliderBarMarker(0.5f, Color.White));
+        //Parent2MixMenu.AllowWrapAround = false;
+        //Parent2MixMenu.LeftBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_female_icon",Color.White);
+        //Parent2MixMenu.RightBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_male_icon", Color.White);
         Parent2MixMenu.Activated += (sender, selectedItem) =>
         {
             Parent2MixActivated();
@@ -186,8 +204,25 @@ public class CustomizeAncestryMenu
         }
         float newMix = Parent1MixMenu.Value;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = newMix;
-        PedCustomizer.WorkingVariation.HeadBlendData.skinMix = 1.0f - newMix;
-        Parent2MixMenu.Value = 1.0f - newMix;
+
+
+        if(PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst == -1)
+        {
+            PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = 0;
+            PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = 0;
+
+            PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = 0;
+            PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = 0;
+        }
+
+
+
+        //PedCustomizer.WorkingVariation.HeadBlendData.skinMix = 1.0f - newMix;
+        //Parent2MixMenu.Value = 1.0f - newMix;
+
+
+
+
         PedCustomizer.OnVariationChanged();
         //OnVariationChanged();
     }
@@ -199,8 +234,19 @@ public class CustomizeAncestryMenu
         }
         float newMix = Parent2MixMenu.Value;
         PedCustomizer.WorkingVariation.HeadBlendData.skinMix = newMix;
-        PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = 1.0f - newMix;
-        Parent1MixMenu.Value = 1.0f - newMix;
+
+
+        if (PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst == -1)
+        {
+            PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = 0;
+            PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = 0;
+
+            PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = 0;
+            PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = 0;
+        }
+
+        //PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = 1.0f - newMix;
+        //Parent1MixMenu.Value = 1.0f - newMix;
         PedCustomizer.OnVariationChanged();
         //OnVariationChanged();
     }

@@ -43,6 +43,18 @@ public class CustomizeModelMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the model of the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        ModelSubMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+        ModelSubMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
+
         InputModel = new UIMenuItem("Input Model", "Input the model name");
         InputModel.Activated += (sender, selectedItem) =>
         {

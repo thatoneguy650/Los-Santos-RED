@@ -922,11 +922,11 @@ public class PopUpMenu
         };
         List<PopUpBox> InfoSubMenu = new List<PopUpBox>()
         {
-            new PopUpBox(0, "Player Info", UI.TogglePlayerInfoMenu,"Display the Player Info Menu") {
+            new PopUpBox(0, "Player Info", UI.PlayerInfoMenu.Toggle,"Display the Player Info Menu") {
                 IconNameDefault = "info_white.png",
                 IconNameSelected = "info_red.png",
                 IconNameInvalid = "info_black.png" },
-            new PopUpBox(1, "Messages", UI.ToggleMessagesMenu,"Display the Messages and Contacts Menu") {
+            new PopUpBox(1, "Messages", UI.MessagesMenu.Toggle,"Display the Messages and Contacts Menu") {
                 IconNameDefault = "message_white.png",
                 IconNameSelected = "message_red.png",
                 IconNameInvalid = "message_black.png" },

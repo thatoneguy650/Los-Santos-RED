@@ -231,7 +231,7 @@ namespace LosSantosRED.lsr
                 }
             }
 
-            if (IsPressingSurrender || Player.ButtonPrompts.IsPressed("ShowSurrender"))
+            if (IsPressingSurrender || Player.ButtonPrompts.IsPressed("ShowSurrender") || Player.ButtonPrompts.IsPressed("ShowStopSurrender"))
             {
                 Player.Surrendering.ToggleSurrender();
             }

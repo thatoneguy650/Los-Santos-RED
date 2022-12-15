@@ -59,11 +59,9 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float SpeedLimitIconX { get; set; }
     public float SpeedLimitIconY { get; set; }
 
-    public bool ShowIcons { get; set; }
-    public float DebugIconX { get; set; }
-    public float DebugIconY { get; set; }
-    public float DebugIconScale { get; set; }
-    public bool ShowOnlyIcon { get; set; }
+
+
+
 
     public float MainMenuCenterX { get; set; }
     public float MainMenuCenterY { get; set; }
@@ -76,6 +74,16 @@ public class ActionWheelSettings : ISettingsDefaultable
 
     public float AffiliationCenterX { get; set; }
     public float AffiliationCenterY { get; set; }
+
+
+
+    public bool ShowIcons { get; set; }
+    public float DebugIconX { get; set; }
+    public float DebugIconY { get; set; }
+    public float DebugIconScale { get; set; }
+    public bool ShowOnlyIcon { get; set; }
+
+
 
 
     public float ControllerCursorScale { get; set; }
@@ -124,11 +132,9 @@ public class ActionWheelSettings : ISettingsDefaultable
 
         ShowSpeedLimitIcon = true;
         SpeedLimitIconScale = 0.35f;
-        SpeedLimitIconX = 0.6f;
-        SpeedLimitIconY = 0.98f;
 
-        AffiliationCenterX = 0.92f;
-        AffiliationCenterY = 0.55f;
+
+
 
         SetSlowMoOnActivate = true;
         SetTransitionEffectOnActivate = true;
@@ -143,14 +149,24 @@ public class ActionWheelSettings : ISettingsDefaultable
 
         RequireButtonHold = false;
 
+
+        SpeedLimitIconY = 0.94f;
+        SpeedLimitIconX = 0.375f;
+
         MainMenuCenterX = 0.92f;
         MainMenuCenterY = 0.45f;
+
         DebugMenuCenterX = 0.92f;
         DebugMenuCenterY = 0.5f;
 
+        AffiliationCenterX = 0.92f;
+        AffiliationCenterY = 0.575f;
 
         ButtonPromptXStart = 0.92f;
-        ButtonPromptYStart = 0.55f;
+        ButtonPromptYStart = 0.625f;
+
+
+
 
         SetPauseOnActivate = false;
         SetPauseOnActivateControllerOnly = false;

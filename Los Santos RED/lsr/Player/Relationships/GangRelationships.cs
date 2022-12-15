@@ -186,6 +186,7 @@ public class GangRelationships
             gd.Reset();
         }
         CurrentGang = null;
+        CurrentGangKickUp = null;
     }
     public void SetAllRandomReputations()
     {

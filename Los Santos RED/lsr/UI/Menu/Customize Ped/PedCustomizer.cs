@@ -24,18 +24,27 @@ public class PedCustomizer
     private ISettingsProvideable Settings;
     private IDispatchablePeople DispatchablePeople;
     private IHeads Heads;
-    private CameraCycler CameraCycler;
-
-    public readonly Vector3 DefaultCameraPosition = new Vector3(402.7357f, -999.6426f, -98.01408f);// new Vector3(402.8473f, -998.3224f, -98.00025f);
-    public readonly Vector3 DefaultCameraDirection = new Vector3(0.04971042f, 0.9577833f, -0.2831609f);
-    public readonly Rotator DefaultCameraRotation = new Rotator(-16.44895f, 7.789317E-06f, -2.971073f);
+    //private CameraCycler CameraCycler;
 
 
+    public readonly Vector3 DefaultCameraPosition = new Vector3(402.8999f, -998.8654f, -98.36703f);
+    public readonly Vector3 DefaultCameraDirection = new Vector3(0.003477225f, 0.9522974f, -0.3051518f);
+    public readonly Rotator DefaultCameraRotation = new Rotator(-17.7673f, 3.740232E-06f, -0.2092093f);
     public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
+
+    //public readonly Vector3 DefaultCameraPosition = new Vector3(402.7357f, -999.6426f, -98.01408f);
+    //public readonly Vector3 DefaultCameraDirection = new Vector3(0.04971042f, 0.9577833f, -0.2831609f);
+    //public readonly Rotator DefaultCameraRotation = new Rotator(-16.44895f, 7.789317E-06f, -2.971073f);
+    //public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
+
+
+
+
+
     public readonly Vector3 DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
     public readonly float DefaultModelPedHeading = 182.7549f;
     public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
-
+    public CameraCycler CameraCycler { get; private set; }
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
     public Ped ModelPed { get; set; }
     public string WorkingName { get; set; } = "John Doe";
@@ -265,4 +274,6 @@ public class PedCustomizer
             Serialization.SerializeParam(WorkingVariation, $"Plugins\\LosSantosRED\\SavedVariation{WorkingModelName}{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml");
         }
     }
+
+
 }

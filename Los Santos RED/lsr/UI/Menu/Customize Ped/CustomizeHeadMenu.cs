@@ -52,6 +52,17 @@ public class CustomizeHeadMenu
         HeadSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         HeadSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
+        HeadSubMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.Set("Face");
+        };
+        HeadSubMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
+
+
         SetHeadEnabledStatus();
 
         CustomizeAncestryMenu = new CustomizeAncestryMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, PedCustomizerMenu);
@@ -72,6 +83,9 @@ public class CustomizeHeadMenu
         CustomizeFaceMorphMenu.Create(HeadSubMenu);
         CustomizeFaceMorphMenu.Setup();
     }
+
+
+
     private void SetHeadEnabledStatus()
     {
         if (PedCustomizer.ModelPed.Exists() && PedCustomizer.PedModelIsFreeMode)

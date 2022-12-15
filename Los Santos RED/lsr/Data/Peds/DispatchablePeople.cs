@@ -168,7 +168,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
             new DispatchablePerson("mp_f_freemode_01",2,2) {
-                DebugName = "LSPDMPNoArmorFemale"
+                DebugName = "LSPDMPDetectiveFemale"
                 ,GroupName = "Detective"
                 ,RandomizeHead = true
                 ,MaxWantedLevelSpawn = 2

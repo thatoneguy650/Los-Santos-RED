@@ -56,10 +56,12 @@ public class BustedMenu : Menu
 
             if (NativeHelper.IsUsingController)
             {
+                EntryPoint.WriteToConsole("Busted Menu Controller Prompt Added");
                 Player.ButtonPrompts.AddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier,Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
             }
             else
             {
+                EntryPoint.WriteToConsole("Busted Menu Regular Prompt Added");
                 Player.ButtonPrompts.AttemptAddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.MenuKey, 999);
             }
 

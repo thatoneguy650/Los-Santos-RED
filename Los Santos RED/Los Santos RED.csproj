@@ -220,6 +220,7 @@
     <Compile Include="lsr\Tasker\Other\FollowAround\FollowOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\GeneralFollow.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\GetOutOfVehicleTaskState.cs" />
+    <Compile Include="lsr\UI\LowerRightDisplay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCycler.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCyclerPosition.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeAncestryMenu.cs" />
@@ -231,6 +232,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
+    <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleGroup.cs" />
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
