@@ -25,6 +25,8 @@ public class PedCustomizer
     private ISettingsProvideable Settings;
     private IDispatchablePeople DispatchablePeople;
     private IHeads Heads;
+    private IGangs Gangs;
+    private IAgencies Agencies;
 
     //private CameraCycler CameraCycler;
 
@@ -40,9 +42,6 @@ public class PedCustomizer
     //public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
 
 
-
-
-
     public readonly Vector3 DefaultModelPedPosition = new Vector3(402.8473f, -996.7224f, -99.00025f);
     public readonly float DefaultModelPedHeading = 182.7549f;
     public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
@@ -54,7 +53,7 @@ public class PedCustomizer
     public PedVariation InitialVariation { get; set; } = new PedVariation();
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
     public IClothesNames ClothesNames { get; private set; }
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames)
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -66,6 +65,8 @@ public class PedCustomizer
         Heads = heads;
         ClothesNames = clothesNames;
         CharCam = new Camera(false);
+        Agencies= agencies;
+        Gangs= gangs;
     }
     public bool ChoseNewModel { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
@@ -94,6 +95,10 @@ public class PedCustomizer
         }
     }
     public bool PedModelIsFreeModeFemale => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01";
+
+    public Gang AssignedGang { get; set; }
+    public Agency AssignedAgency { get; set; }
+
     public void Dispose(bool fadeOut)
     {
         if (!IsDisposed)
@@ -118,7 +123,7 @@ public class PedCustomizer
     }
     public void Setup()
     {
-        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads);
+        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies);
         PedCustomizerMenu.Setup();
 
         CameraCycler = new CameraCycler(CharCam, Player, this);
@@ -269,6 +274,14 @@ public class PedCustomizer
             WorkingVariation = Player.CurrentModelVariation.Copy();
             InitialVariation = Player.CurrentModelVariation.Copy();
         }
+        if(Player.RelationshipManager.GangRelationships.CurrentGang != null)
+        {
+            AssignedGang = Player.RelationshipManager.GangRelationships.CurrentGang;
+        }
+        else if(Player.IsCop)
+        {
+            AssignedAgency = Player.AssignedAgency;
+        }
     }
     public void OnModelChanged(bool resetVariation)
     {
@@ -301,6 +314,26 @@ public class PedCustomizer
                 else
                 {
                     PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+                }
+
+
+                if(AssignedAgency != null)
+                {
+                    Player.SetCopStatus(true, AssignedAgency);
+                }
+                else
+                {
+                    Player.SetCopStatus(false, null);
+                }
+
+
+                if (AssignedGang != null)
+                {
+                    Player.RelationshipManager.GangRelationships.SetGang(AssignedGang, true);
+                }
+                else
+                {
+                    Player.RelationshipManager.GangRelationships.ResetGang(false);
                 }
                 Dispose(false);
             }

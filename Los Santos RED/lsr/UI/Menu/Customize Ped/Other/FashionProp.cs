@@ -63,7 +63,6 @@ public class FashionProp
     }
 
 
-
     private void AddResetMenuItem(UIMenu componentMenu)
     {
         UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the item back to the initial value");
@@ -171,21 +170,15 @@ public class FashionProp
         PossibleDrawables = new List<PedFashionAlias>();
         for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
         {
-            string drawableName = DrawableNumber.ToString();
+            string drawableName = $"({DrawableNumber})";
             if (PedCustomizer.PedModelIsFreeMode)
             {
-                drawableName = PedCustomizer.ClothesNames.GetName(true, PropID, DrawableNumber, 0, PedCustomizer.PedModelGender);
-                if (drawableName == "")
+                FashionItemLookup fil = PedCustomizer.ClothesNames.GetItemFast(true, PropID, DrawableNumber, 0, PedCustomizer.PedModelGender);
+                if (fil != null)
                 {
-                    drawableName = $"Unknown: {DrawableNumber}";
-                }
-                else
-                {
-                    drawableName += $" ({DrawableNumber})";
+                    drawableName = fil.GetDrawableString();
                 }
             }
-
-
             PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, drawableName));
         }
     }
@@ -235,13 +228,6 @@ public class FashionProp
     }
 
 
-
-
-
-
-
-
-
     private void AddTextureItem(UIMenu componentMenu)
     {
         PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
@@ -267,17 +253,13 @@ public class FashionProp
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
-            string drawableName = TextureNumber.ToString();
+            string drawableName = $"({TextureNumber})";
             if (PedCustomizer.PedModelIsFreeMode)
             {
-                drawableName = PedCustomizer.ClothesNames.GetName(true, PropID, drawableID, TextureNumber, PedCustomizer.PedModelGender);
-                if (drawableName == "")
+                FashionItemLookup fil = PedCustomizer.ClothesNames.GetItemFast(true, PropID, drawableID, TextureNumber, PedCustomizer.PedModelGender);
+                if (fil != null)
                 {
-                    drawableName = $"Unknown: {TextureNumber}";
-                }
-                else
-                {
-                    drawableName += $" ({TextureNumber})";
+                    drawableName = fil.GetTextureString();
                 }
             }
             PossibleTextures.Add(new PedFashionAlias(TextureNumber, drawableName));
@@ -329,12 +311,6 @@ public class FashionProp
         }
         PedCustomizer.OnVariationChanged();
     }
-
-
-
-
-
-
 
     private void AddGoToMenuItem(UIMenu componentMenu)
     {

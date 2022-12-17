@@ -194,6 +194,7 @@ namespace Mod
         public bool CharacterModelIsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
         public bool CharacterModelIsPrimaryCharacter => ModelName.ToLower() == "player_zero" || ModelName.ToLower() == "player_one" || ModelName.ToLower() == "player_two";
         public Cop ClosestCopToPlayer { get; set; }
+        public Agency AssignedAgency { get; set; }
         public InteractableLocation ClosestInteractableLocation { get; private set; }
         public float ClosestPoliceDistanceToPlayer { get; set; }
         public Scenario ClosestScenario { get; private set; }
@@ -822,9 +823,11 @@ namespace Mod
                 meAsCop.CanBeTasked = false;
                 meAsCop.CanBeAmbientTasked = false;
                 World.Pedestrians.AddEntity(meAsCop);
+                AssignedAgency = toassign;
             }
             else
             {
+                AssignedAgency = null;
                 World.Pedestrians.PoliceList.RemoveAll(x => x.Handle == Handle);
             }
             IsCop = isCop;

@@ -689,6 +689,10 @@ public class LEDispatcher
     {
         if (Cop != null && Cop.Pedestrian.Exists())
         {
+            if(Cop.Pedestrian.Handle == Game.LocalPlayer.Character.Handle)
+            {
+                return;
+            }
             //EntryPoint.WriteToConsole($"Attempting to Delete {Cop.Pedestrian.Handle}");
             if (Cop.Pedestrian.IsInAnyVehicle(false))
             {

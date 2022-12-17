@@ -57,7 +57,7 @@ public class PedVariation
         if (setDefaultFirst)
         {
             NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
         ApplyToPed(ped);
     }

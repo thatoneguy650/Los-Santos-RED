@@ -13,6 +13,9 @@ public class FaceFeature
 {
     private Ped Ped;
     private PedCustomizer PedCustomizer;
+    private UIMenuNumericScrollerItem<float> ChangeAmount;
+    private float faceFeatureScale = 0.1f;
+    private UIMenuNumericScrollerItem<float> FeatureMenu;
 
     public int Index { get; set; }
     public string Name { get; set; }    
@@ -50,7 +53,18 @@ public class FaceFeature
     }
     private void AddScaleItem(UIMenu componentMenu)
     {
-        UIMenuNumericScrollerItem<float> FeatureMenu = new UIMenuNumericScrollerItem<float>(Name, "Set the face feature",RangeLow, RangeHigh, 0.1f);
+
+        ChangeAmount = new UIMenuNumericScrollerItem<float>("Scale Amount", "How much each increment will increase or decrease the amount", 0.01f, 0.5f, 0.01f);
+        ChangeAmount.Value = 0.1f;
+        ChangeAmount.IndexChanged += (sender, oldIndex, newIndex) =>
+        {
+            faceFeatureScale = ChangeAmount.Value;
+            FeatureMenu.Step = ChangeAmount.Value;
+        };
+        componentMenu.AddItem(ChangeAmount);
+
+        FeatureMenu = new UIMenuNumericScrollerItem<float>(Name, "Set the face feature",RangeLow, RangeHigh, faceFeatureScale);
+        FeatureMenu.Value = 0.0f;
         FeatureMenu.Activated += (sender, e) =>
         {
             OnScaleItemChanged(FeatureMenu.Value);

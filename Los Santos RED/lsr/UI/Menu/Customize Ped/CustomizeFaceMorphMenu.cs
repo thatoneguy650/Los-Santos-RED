@@ -58,8 +58,8 @@ public class CustomizeFaceMorphMenu
             new FaceFeature(15, "Chin Bone"),
             new FaceFeature(16, "Chin Bone Length"),
             new FaceFeature(17, "Chin Bone Shape"),
-            new FaceFeature(18, "Chin Hole") { RangeLow = 1.0f },
-            new FaceFeature(19, "Neck Thickness") { RangeLow = 1.0f },
+            new FaceFeature(18, "Chin Hole") { RangeLow = 0.0f },
+            new FaceFeature(19, "Neck Thickness") { RangeLow = 0.0f },
 
 
         };

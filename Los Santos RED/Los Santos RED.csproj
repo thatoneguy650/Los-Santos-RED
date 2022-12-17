@@ -225,6 +225,7 @@
     <Compile Include="lsr\UI\LowerRightDisplay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCycler.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CameraCyclerPosition.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeAffiliationMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeAncestryMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeComponentsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeExistingVariationsMenu.cs" />

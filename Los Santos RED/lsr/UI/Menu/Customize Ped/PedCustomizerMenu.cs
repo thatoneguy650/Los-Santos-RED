@@ -25,8 +25,10 @@ public class PedCustomizerMenu
     private CustomizeComponentsMenu CustomizeComponentsMenu;
     private CustomizePropsMenu CustomizePropsMenu;
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
+    private CustomizeAffiliationMenu CustomizeAffiliationMenu;
+
     public bool IsProgramicallySettingFieldValues { get; set; }
-    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads)
+    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads, IGangs gangs, IAgencies agencies)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -41,7 +43,7 @@ public class PedCustomizerMenu
         CustomizeComponentsMenu = new CustomizeComponentsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
-
+        CustomizeAffiliationMenu = new CustomizeAffiliationMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this,gangs,agencies);
     }
     public void Setup()
     {
@@ -54,6 +56,7 @@ public class PedCustomizerMenu
         CustomizeComponentsMenu.Setup(CustomizeMainMenu);
         CustomizePropsMenu.Setup(CustomizeMainMenu);
         CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
+        CustomizeAffiliationMenu.Setup(CustomizeMainMenu);
 
         UIMenuItem PrintVariation = new UIMenuItem("Print Variation", "Print the variation out to the log");
         PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Clothes;
@@ -95,6 +98,8 @@ public class PedCustomizerMenu
         CustomizeHeadMenu.OnModelChanged();
         CustomizeComponentsMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();
+        CustomizeAffiliationMenu.OnModelChanged();
+
         EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
 
 

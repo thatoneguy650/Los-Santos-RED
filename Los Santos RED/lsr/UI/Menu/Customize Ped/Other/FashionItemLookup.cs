@@ -25,5 +25,35 @@ public class FashionItemLookup
     public string Gender { get; set; }
     public string GXT { get; set; }
     public string Name { get; set; }
+
+
+
+    public string Category { get; set; }
+    public string DrawableName { get; set; }
+    public string TextureName { get; set; }
+
+
+    public string GetDrawableString()
+    {
+        if (DrawableName == "" || string.IsNullOrEmpty(DrawableName))
+        {
+            return $"({DrawableID})";
+        }
+        else
+        {
+            return $"{DrawableName} ({DrawableID})";
+        }
+    }
+    public string GetTextureString()
+    {
+        if(TextureName == "" || string.IsNullOrEmpty(TextureName))
+        {
+            return $"({TextureID})";
+        }
+        else
+        {
+            return $"{TextureName} ({TextureID})";
+        }
+    }
 }
 
