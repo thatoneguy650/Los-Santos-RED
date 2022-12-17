@@ -21,6 +21,7 @@ public class DebugMenu : Menu
     private IActionable Player;
     private RadioStations RadioStations;
     private Camera FreeCam;
+    private string FreeCamString = "Regular";
     private float FreeCamScale = 1.0f;
     private IWeapons Weapons;
     private IPlacesOfInterest PlacesOfInterest;
@@ -961,12 +962,20 @@ public class DebugMenu : Menu
                 {
                     if (FreeCamScale == 1.0f)
                     {
+                        FreeCamString = "Slow";
                         FreeCamScale = 0.25f;
+                    }
+                    else if (FreeCamScale == 0.25f)
+                    {
+                        FreeCamString = "Super Slow";
+                        FreeCamScale = 0.05f;
                     }
                     else
                     {
+                        FreeCamString = "Regular";
                         FreeCamScale = 1.0f;
                     }
+                    GameFiber.Sleep(100);
                 }
 
                 if (Game.IsKeyDownRightNow(Keys.J))
@@ -975,7 +984,7 @@ public class DebugMenu : Menu
                     Game.LocalPlayer.Character.Heading = FreeCam.Heading;
                 }
 
-                string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
+                //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
                 Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}~n~Press J To Move Player to Position");
                 GameFiber.Yield();
             }

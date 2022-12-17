@@ -57,6 +57,18 @@ public class CustomizeComponentsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the components of the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickComponentMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        PickComponentMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+        PickComponentMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
+
     }
     public void OnModelChanged()
     {

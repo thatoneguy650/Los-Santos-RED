@@ -73,7 +73,16 @@ public class PedSwapMenu : Menu
     private void CreatePedSwap()
     {
         PedSwapUIMenu.Clear();
-        
+
+
+        BecomeCustomPed2 = new UIMenuItem("Ped Creator", "Becomes a customized ped from user input.");
+        BecomeCustomPed2.Activated += (menu, item) =>
+        {
+            PedSwap.BecomeCreatorPed();
+            PedSwapUIMenu.Visible = false;
+        };
+        PedSwapUIMenu.AddItem(BecomeCustomPed2);
+
         TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
         TakeoverRandomPed.Activated += (s, e) =>
         {
@@ -97,15 +106,8 @@ public class PedSwapMenu : Menu
         };
         PedSwapUIMenu.AddItem(BecomeRandomPed);
 
-        BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian", "Becomes a customized ped from user input.");
-        BecomeCustomPed.Activated += (menu, item) =>
-        {
-            PedSwap.BecomeCustomPed();
-            PedSwapUIMenu.Visible = false;
-        };
-        PedSwapUIMenu.AddItem(BecomeCustomPed);
 
-        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a gang member of the selected gang", Gangs.GetAllGangs());
+        SetAsGangMember = new UIMenuListScrollerItem<Gang>("Become Gang Member", "Become a random gang member of the selected gang", Gangs.GetAllGangs());
         SetAsGangMember.Activated += (menu, item) =>
         {
             PedSwap.BecomeGangMember(SetAsGangMember.SelectedItem);
@@ -114,7 +116,7 @@ public class PedSwapMenu : Menu
         PedSwapUIMenu.AddItem(SetAsGangMember);
 
 
-        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a cop from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
+        SetAsCop = new UIMenuListScrollerItem<Agency>("Become Cop", "Become a random cop from the selected agency. ~r~WIP~s~ Functionality will be expanded later", Agencies.GetAgencies().Where(x=> x.ResponseType == ResponseType.LawEnforcement));
         SetAsCop.Activated += (menu, item) =>
         {
             PedSwap.BecomeCop(SetAsCop.SelectedItem);
@@ -123,17 +125,16 @@ public class PedSwapMenu : Menu
         //PedSwapUIMenu.AddItem(SetAsCop);
 
 
-        BecomeCustomPed2 = new UIMenuItem("Become Custom Pedestrian 2", "Becomes a customized ped from user input.");
-        BecomeCustomPed2.Activated += (menu, item) =>
+        BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian (Legacy)", "Becomes a customized ped from user input. (Old Version)");
+        BecomeCustomPed.Activated += (menu, item) =>
         {
-            PedSwap.BecomeCustomPed2();
+            PedSwap.BecomeCustomPed();
             PedSwapUIMenu.Visible = false;
         };
+        PedSwapUIMenu.AddItem(BecomeCustomPed);
 
 
-#if DEBUG
-        PedSwapUIMenu.AddItem(BecomeCustomPed2);
-#endif
+
 
         //SetAsCop = new UIMenuItem("Set as Cop", "Treat the current player model as a cop without any changes.");
         //SetAsCop.Activated += (menu, item) =>

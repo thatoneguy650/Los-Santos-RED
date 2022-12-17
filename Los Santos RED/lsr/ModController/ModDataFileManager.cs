@@ -40,6 +40,7 @@ public class ModDataFileManager
     public Seats Seats;
     public Counties Counties;
     public WeatherForecasts WeatherForecasts;
+    public ClothesNames ClothesNames;
 
     public ModDataFileManager()
     {
@@ -137,12 +138,17 @@ public class ModDataFileManager
         GameFiber.Yield();
         SpeechList = new Speeches();
         SpeechList.ReadConfig();
+        GameFiber.Yield();
         Seats = new Seats();
         Seats.ReadConfig();
-
+        GameFiber.Yield();
         WeatherForecasts = new WeatherForecasts();
         //WeatherForecasts.ReadConfig();
 
+        GameFiber.Yield();
+        ClothesNames = new ClothesNames();
+        ClothesNames.DefaultConfig();
+        GameFiber.Yield();
     }
     private void SetupAlternateConfigs()
     {

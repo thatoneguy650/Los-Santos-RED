@@ -114,6 +114,7 @@ public class CustomizeHairMenu
     {
         HeadSubMenu = headSubMenu;
         HairSubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Hair");
+        HairSubMenu.SubtitleText = "HAIR";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the hair of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Barber;
         HairSubMenu.SetBannerType(EntryPoint.LSRedColor);

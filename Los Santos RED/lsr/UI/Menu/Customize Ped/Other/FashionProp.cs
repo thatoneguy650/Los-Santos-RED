@@ -55,7 +55,7 @@ public class FashionProp
     }
     private void AddMenuItems(UIMenu componentMenu)
     {
-        AddResetMenuItem(componentMenu);
+        //AddResetMenuItem(componentMenu);
         AddClearMenuItem(componentMenu);
         AddDrawableItem(componentMenu);
         AddTextureItem(componentMenu);
@@ -66,11 +66,11 @@ public class FashionProp
 
     private void AddResetMenuItem(UIMenu componentMenu)
     {
-        UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the drawable back to the initial value");
+        UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the item back to the initial value");
         PedPropComponent initialComponentStart = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
         if (initialComponentStart != null)
         {
-            ResetMenu.Description = $"Reset the drawable back to the initial value ~n~DrawableID: {initialComponentStart.DrawableID} TextureID: {initialComponentStart.TextureID}";
+            ResetMenu.Description = $"Reset the item back to the initial value ~n~ItemID: {initialComponentStart.DrawableID} VariationID: {initialComponentStart.TextureID}";
         }
         else
         {
@@ -93,7 +93,15 @@ public class FashionProp
                     pedComponent.TextureID = initialComponent.TextureID;
                 }
 
-                ResetMenu.Description = "Reset the drawable back to the initial value" + $"~n~DrawableID: {initialComponent.DrawableID} TextureID: {initialComponent.TextureID}";
+                
+
+               // DrawableMenuScroller.SelectedItem = PossibleDrawables.FirstOrDefault(x => x.ID == initialComponent.DrawableID);
+
+
+
+
+               // OnComponentChanged(initialComponent.DrawableID);
+                ResetMenu.Description = "Reset the drawable back to the initial value" + $"~n~ItemID: {initialComponent.DrawableID} VariationID: {initialComponent.TextureID}";
                 PedCustomizer.OnVariationChanged();
             }
         };
@@ -109,6 +117,37 @@ public class FashionProp
                 NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
             }
             PedCustomizer.WorkingVariation.Props.RemoveAll(x=> x.PropID == PropID);
+
+
+            //DrawableMenuScroller.SelectedItem = PossibleDrawables[0];
+
+
+            //OnComponentChanged(0);
+
+            PedFashionAlias test = PossibleDrawables.FirstOrDefault(x => x.ID == 0);
+            if(test != null)
+            {
+                DrawableMenuScroller.SelectedItem = test;
+            }
+
+            PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = true;
+
+            GetPossibleTextures(0);
+            TextureMenuScroller.Items = PossibleTextures;
+            SetTextureValue();
+
+
+            if (Ped.Exists())
+            {
+                NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
+            }
+            PedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
+
+
+            PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = false;
+
+
+
             PedCustomizer.OnVariationChanged();
         };
         componentMenu.AddItem(RemoveMenu);
@@ -118,7 +157,7 @@ public class FashionProp
     private void AddDrawableItem(UIMenu componentMenu)
     {
         GetPossibleDrawables();
-        DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Drawables", "Select drawable", PossibleDrawables);
+        DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Item", "Select item", PossibleDrawables);
         SetDrawableValue();
         DrawableMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
@@ -132,7 +171,22 @@ public class FashionProp
         PossibleDrawables = new List<PedFashionAlias>();
         for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
         {
-            PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, DrawableNumber.ToString()));
+            string drawableName = DrawableNumber.ToString();
+            if (PedCustomizer.PedModelIsFreeMode)
+            {
+                drawableName = PedCustomizer.ClothesNames.GetName(true, PropID, DrawableNumber, 0, PedCustomizer.PedModelGender);
+                if (drawableName == "")
+                {
+                    drawableName = $"Unknown: {DrawableNumber}";
+                }
+                else
+                {
+                    drawableName += $" ({DrawableNumber})";
+                }
+            }
+
+
+            PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, drawableName));
         }
     }
     private void SetDrawableValue()
@@ -199,7 +253,7 @@ public class FashionProp
         {
             GetPossibleTextures(0);
         }
-        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Textures", "Select Texture", PossibleTextures);
+        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Variation", "Select variation", PossibleTextures);
         SetTextureValue();
         TextureMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
@@ -213,7 +267,20 @@ public class FashionProp
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
-            PossibleTextures.Add(new PedFashionAlias(TextureNumber, TextureNumber.ToString()));
+            string drawableName = TextureNumber.ToString();
+            if (PedCustomizer.PedModelIsFreeMode)
+            {
+                drawableName = PedCustomizer.ClothesNames.GetName(true, PropID, drawableID, TextureNumber, PedCustomizer.PedModelGender);
+                if (drawableName == "")
+                {
+                    drawableName = $"Unknown: {TextureNumber}";
+                }
+                else
+                {
+                    drawableName += $" ({TextureNumber})";
+                }
+            }
+            PossibleTextures.Add(new PedFashionAlias(TextureNumber, drawableName));
         }
 
     }
@@ -271,7 +338,7 @@ public class FashionProp
 
     private void AddGoToMenuItem(UIMenu componentMenu)
     {
-        UIMenuItem goToDrawable = new UIMenuItem("Go To Drawable", "Enter a specific drawable number to auto select");
+        UIMenuItem goToDrawable = new UIMenuItem("Go To Item", "Enter a specific item number to auto select");
         goToDrawable.Activated += (sender, e) =>
         {
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))

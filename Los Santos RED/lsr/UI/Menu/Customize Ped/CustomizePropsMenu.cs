@@ -42,12 +42,25 @@ public class CustomizePropsMenu
         PropLookup = new List<FashionProp>() {
             new FashionProp(0,"Hats"),
             new FashionProp(1, "Glasses"),
-            new FashionProp(2, "Ear"),};
+            new FashionProp(2, "Ear"),
+            new FashionProp(6, "Watches"),
+            new FashionProp(7, "Bracelets"),
+        };
 
         PickPropMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Props");
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the props of the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickPropMenu.SetBannerType(EntryPoint.LSRedColor);
+
+        PickPropMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+        PickPropMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
     }
     public void OnModelChanged()
     {

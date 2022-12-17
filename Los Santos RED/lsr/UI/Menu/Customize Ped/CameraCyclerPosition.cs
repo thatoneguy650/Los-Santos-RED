@@ -47,23 +47,23 @@ public class CameraCyclerPosition
             coolCam = new Camera(false);
         }
         coolCam.Position = CameraPosition;
-        if (CameraRotation == Rotator.Zero)
-        {
-            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            coolCam.Rotation = new Rotator(r.X, r.Y, r.Z);
-        }
-        else
-        {
+        //if (CameraRotation == Rotator.Zero)
+        //{
+        //    Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+        //    coolCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+        //}
+        //else
+        //{
             coolCam.Rotation = CameraRotation;
-        }
-        if (CameraDirection == Vector3.Zero)
-        {
-            coolCam.Direction = (CameraFocusPosition - coolCam.Position).ToNormalized();
-        }
-        else
-        {
+        //}
+        //if (CameraDirection == Vector3.Zero)
+        //{
+        //    coolCam.Direction = (CameraFocusPosition - coolCam.Position).ToNormalized();
+        //}
+        //else
+        //{
             coolCam.Direction = CameraDirection;
-        }
+        //}
         coolCam.Active = true;
         //Game.DisplayHelp($"Camera Position: {Name}");
     }

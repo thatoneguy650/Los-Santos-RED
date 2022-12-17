@@ -68,6 +68,7 @@ public class CustomizeFaceMorphMenu
     {
         HeadSubMenu = headSubMenu;
         FaceMorphSubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Features");
+        FaceMorphSubMenu.SubtitleText = "FEATURES";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the features of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Mask;
         FaceMorphSubMenu.SetBannerType(EntryPoint.LSRedColor);

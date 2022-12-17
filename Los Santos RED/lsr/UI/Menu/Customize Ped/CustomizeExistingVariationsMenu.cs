@@ -47,6 +47,16 @@ public class CustomizeExistingVariationsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
+        ModelSubMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+        ModelSubMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
+
         foreach (DispatchablePersonGroup dpg in DispatchablePeople.AllPeople)
         {
             UIMenu dpgSubMenu = MenuPool.AddSubMenu(ModelSubMenu, dpg.DispatchablePersonGroupID);

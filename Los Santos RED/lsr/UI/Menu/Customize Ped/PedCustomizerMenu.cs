@@ -17,7 +17,7 @@ public class PedCustomizerMenu
     private IPedSwappable Player;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
-    private UIMenu CustomizeMainMenu;
+    public UIMenu CustomizeMainMenu { get; private set; }
     private PedCustomizer PedCustomizer;
     private CustomizeDemographicsMenu CustomizeDemographicsMenu;
     private CustomizeModelMenu CustomizeModelMenu;
@@ -25,7 +25,7 @@ public class PedCustomizerMenu
     private CustomizeComponentsMenu CustomizeComponentsMenu;
     private CustomizePropsMenu CustomizePropsMenu;
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
-    public bool IsProgramicallySettingFieldValues { get; private set; }
+    public bool IsProgramicallySettingFieldValues { get; set; }
     public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads)
     {
         PedSwap = pedSwap;
@@ -45,7 +45,7 @@ public class PedCustomizerMenu
     }
     public void Setup()
     {
-        CustomizeMainMenu = new UIMenu("Customize Ped 2", "Select an Option");
+        CustomizeMainMenu = new UIMenu("Ped Creator", "Select an Option");
         CustomizeMainMenu.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(CustomizeMainMenu);
         CustomizeDemographicsMenu.Setup(CustomizeMainMenu);

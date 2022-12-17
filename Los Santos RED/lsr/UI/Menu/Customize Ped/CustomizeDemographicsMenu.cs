@@ -41,6 +41,18 @@ public class CustomizeDemographicsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change demographics for the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
         DemographicsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        DemographicsSubMenu.OnMenuOpen += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+        DemographicsSubMenu.OnMenuClose += (sender) =>
+        {
+            PedCustomizer.CameraCycler.SetDefault();
+        };
+
+
         ChangeName = new UIMenuItem("Change Name", "Current: " + PedCustomizer.WorkingName);
         ChangeName.Activated += (sender, selectedItem) =>
         {

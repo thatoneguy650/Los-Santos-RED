@@ -161,7 +161,8 @@ public class CustomizeFaceMenu
     public void Create(UIMenu headSubMenu)
     {
         HeadSubMenu = headSubMenu;
-        FaceSubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Face");
+        FaceSubMenu = MenuPool.AddSubMenu(HeadSubMenu, "Overlays");
+        FaceSubMenu.SubtitleText = "OVERLAY";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the face of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Mask;
         FaceSubMenu.SetBannerType(EntryPoint.LSRedColor);

@@ -126,6 +126,7 @@
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
+    <Compile Include="lsr\Data\Interface\IClothesNames.cs" />
     <Compile Include="lsr\Data\Interface\ICounties.cs" />
     <Compile Include="lsr\Data\Interface\IDances.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchablePeople.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Helper\StaticStrings.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Carrier.cs" />
@@ -230,6 +232,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMorphMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHairMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />

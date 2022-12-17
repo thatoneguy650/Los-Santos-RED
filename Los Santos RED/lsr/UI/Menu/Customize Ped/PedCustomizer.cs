@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,13 +25,14 @@ public class PedCustomizer
     private ISettingsProvideable Settings;
     private IDispatchablePeople DispatchablePeople;
     private IHeads Heads;
+
     //private CameraCycler CameraCycler;
 
 
-    public readonly Vector3 DefaultCameraPosition = new Vector3(402.8999f, -998.8654f, -98.36703f);
-    public readonly Vector3 DefaultCameraDirection = new Vector3(0.003477225f, 0.9522974f, -0.3051518f);
-    public readonly Rotator DefaultCameraRotation = new Rotator(-17.7673f, 3.740232E-06f, -0.2092093f);
-    public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
+    //public readonly Vector3 DefaultCameraPosition = new Vector3(402.8145f, -998.5043f, -98.29621f);// new Vector3(402.8985f, -998.7176f, -98.36113f);// new Vector3(402.8291f, -999.0933f, -98.39355f);//new Vector3(402.8999f, -998.8654f, -98.36703f);
+    //public readonly Vector3 DefaultCameraDirection = new Vector3(-0.02121102f, 0.9286007f, -0.3704739f);// new Vector3(-0.006049804f, 0.9478015f, -0.3188036f);// new Vector3(0.01690567f, 0.959121f, -0.282491f);// new Vector3(0.003477225f, 0.9522974f, -0.3051518f);
+    //public readonly Rotator DefaultCameraRotation = new Rotator(-21.74485f, -5.170386E-07f, 1.308518f);// new Rotator(-18.59059f, -2.955668E-07f, 0.3657132f);// new Rotator(-16.40893f, 5.006387E-07f, -1.009803f);// new Rotator(-17.7673f, 3.740232E-06f, -0.2092093f);
+    //public readonly Vector3 DefaultCameraLookAtPosition = new Vector3(402.8473f, -996.3224f, -99.00025f);
 
     //public readonly Vector3 DefaultCameraPosition = new Vector3(402.7357f, -999.6426f, -98.01408f);
     //public readonly Vector3 DefaultCameraDirection = new Vector3(0.04971042f, 0.9577833f, -0.2831609f);
@@ -51,7 +53,8 @@ public class PedCustomizer
     public int WorkingMoney { get; set; } = 5000;
     public PedVariation InitialVariation { get; set; } = new PedVariation();
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads)
+    public IClothesNames ClothesNames { get; private set; }
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -61,12 +64,36 @@ public class PedCustomizer
         Settings = settings;
         DispatchablePeople = dispatchablePeople;
         Heads = heads;
+        ClothesNames = clothesNames;
         CharCam = new Camera(false);
     }
     public bool ChoseNewModel { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
     public PedCustomizerMenu PedCustomizerMenu { get; private set; }
-    public bool PedModelIsFreeMode => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01";
+    public bool PedModelIsFreeMode => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && (ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01");
+    public string PedModelGender
+    {
+        get
+        {
+            if(ModelPed == null || !ModelPed.Exists() || !PedModelIsFreeMode)
+            {
+                return "U";
+            }
+            else if(ModelPed.Model.Name.ToLower() == "mp_f_freemode_01")
+            {
+                return "F";
+            }
+            else if(ModelPed.Model.Name.ToLower() == "mp_m_freemode_01")
+            {
+                return "M";
+            }
+            else
+            {
+                return "U";
+            }
+        }
+    }
+    public bool PedModelIsFreeModeFemale => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && ModelPed.Model.Name.ToLower() == "mp_f_freemode_01";
     public void Dispose(bool fadeOut)
     {
         if (!IsDisposed)
@@ -102,6 +129,22 @@ public class PedCustomizer
         ProcessButtonPrompts();
         StopModelPedTasking();
         MenuPool.ProcessMenus();
+
+
+        if(!MenuPool.IsAnyMenuOpen() && !ChoseToClose)
+        {
+            SimpleWarning popUpWarning = new SimpleWarning("Exit", "Are you sure you want to exit discarding changes", "", Player.ButtonPrompts, Settings);
+            popUpWarning.Show();
+            if (popUpWarning.IsAccepted)
+            {
+                ChoseToClose = true;
+                Dispose(true);
+            }
+            else
+            {
+                PedCustomizerMenu.CustomizeMainMenu.Visible = true;
+            }
+        }
     }
     public void Start()
     {
@@ -243,29 +286,39 @@ public class PedCustomizer
     }
     public void BecomePed()
     {
-        ChoseToClose = true;
-        if (ModelPed.Exists())
+        SimpleWarning popUpWarning = new SimpleWarning("Become Ped", "Are you sure you want to become the current model ped", "", Player.ButtonPrompts, Settings);
+        popUpWarning.Show();
+        if (popUpWarning.IsAccepted)
         {
-            Game.FadeScreenOut(1500, true);
-            if (!ChoseNewModel)
+            ChoseToClose = true;
+            if (ModelPed.Exists())
             {
-                PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
+                Game.FadeScreenOut(1500, true);
+                if (!ChoseNewModel)
+                {
+                    PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
+                }
+                else
+                {
+                    PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+                }
+                Dispose(false);
             }
             else
             {
-                PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+                Dispose(true);
             }
-            Dispose(false);
-        }
-        else
-        {
-            Dispose(true);
         }
     }
     public void Exit()
     {
-        ChoseToClose = true;
-        Dispose(true);
+        SimpleWarning popUpWarning = new SimpleWarning("Exit", "Are you sure you want to exit discarding changes", "", Player.ButtonPrompts, Settings);
+        popUpWarning.Show();
+        if (popUpWarning.IsAccepted)
+        {
+            ChoseToClose = true;
+            Dispose(true);
+        }
     }
     public void PrintVariation()
     {

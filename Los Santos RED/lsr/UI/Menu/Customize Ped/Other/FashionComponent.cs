@@ -97,7 +97,7 @@ public class FashionComponent
     private void AddDrawableItem(UIMenu componentMenu)
     {
         GetPossibleDrawables();
-        DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Drawables", "Select drawable", PossibleDrawables);
+        DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Item", "Select item", PossibleDrawables);
         SetDrawableValue();
         DrawableMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
@@ -111,7 +111,20 @@ public class FashionComponent
         PossibleDrawables = new List<PedFashionAlias>();
         for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
         {
-            PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, DrawableNumber.ToString()));
+            string drawableName = DrawableNumber.ToString();
+            if(PedCustomizer.PedModelIsFreeMode)
+            {
+                drawableName = PedCustomizer.ClothesNames.GetName(false, ComponentID, DrawableNumber, 0, PedCustomizer.PedModelGender);
+                if(drawableName == "")
+                {
+                    drawableName = $"Unknown: {DrawableNumber}";
+                }
+                else
+                {
+                    drawableName += $" ({DrawableNumber})";
+                }
+            }
+            PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, drawableName));
         }
     }
     private void SetDrawableValue()
@@ -178,7 +191,7 @@ public class FashionComponent
         {
             GetPossibleTextures(0);
         }
-        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Textures", "Select Texture", PossibleTextures);
+        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Variation", "Select variation", PossibleTextures);
         SetTextureValue();
         TextureMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
@@ -192,7 +205,20 @@ public class FashionComponent
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
-            PossibleTextures.Add(new PedFashionAlias(TextureNumber, TextureNumber.ToString()));
+            string drawableName = TextureNumber.ToString();
+            if (PedCustomizer.PedModelIsFreeMode)
+            {
+                drawableName = PedCustomizer.ClothesNames.GetName(false, ComponentID, drawableID, TextureNumber, PedCustomizer.PedModelGender);
+            }
+            if (drawableName == "")
+            {
+                drawableName = $"Unknown: {TextureNumber}";
+            }
+            else
+            {
+                drawableName += $" ({TextureNumber})";
+            }
+            PossibleTextures.Add(new PedFashionAlias(TextureNumber, drawableName));
         }
     }
     private void SetTextureValue()
