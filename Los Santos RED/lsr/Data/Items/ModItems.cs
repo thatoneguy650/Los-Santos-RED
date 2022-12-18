@@ -151,38 +151,11 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.RadioItems);
         return AllItems;
     }
-    public void Setup(PhysicalItems propItems)
+    public void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        foreach(WeaponItem mi in PossibleItems.WeaponItems)
+        foreach(ModItem modItem in AllItems())
         {
-            mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
-        }
-        foreach (VehicleItem mi in PossibleItems.VehicleItems)
-        {
-            mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
-        }
-
-        foreach (ModItem mi in PropItems())
-        {
-            //if (mi.ItemType == ItemType.Vehicles)
-            //{
-            //    mi.ModelItem = new PhysicalItem(mi.ModelItemID, ePhysicalItemType.Vehicle);
-            //}
-            //else if (mi.ItemType == ItemType.Weapons)
-            //{
-            //    mi.ModelItem = new PhysicalItem(mi.ModelItemID, Game.GetHashKey(mi.ModelItemID), ePhysicalItemType.Weapon);
-            //}
-            //else
-            //{
-                if (mi.ModelItemID != "")
-                {
-                    mi.ModelItem = propItems.Get(mi.ModelItemID);
-                }
-                if (mi.PackageItemID != "")
-                {
-                    mi.PackageItem = propItems.Get(mi.PackageItemID);
-                }
-            //}
+            modItem.Setup(physicalItems, weapons);
         }
     }
     private void DefaultConfig()

@@ -41,6 +41,8 @@ public class MenuItem
 
 
     [XmlIgnore]
+    public ModItem ModItem { get; set; }
+    [XmlIgnore]
     public int ItemsSoldToPlayer { get; set; } = 0;
     [XmlIgnore]
     public int ItemsBoughtFromPlayer { get; set; } = 0;

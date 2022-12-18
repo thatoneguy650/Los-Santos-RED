@@ -156,6 +156,9 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
+    <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
+    <Compile Include="lsr\Locations\Places\SellMenu.cs" />
+    <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
     <Compile Include="lsr\Player\Activity\WaveHandsActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\CorruptCopContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\EmergencyServicesContact.cs" />
@@ -235,6 +238,8 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
+    <Compile Include="lsr\UI\Menu\ItemSelector\ItemSelector.cs" />
+    <Compile Include="lsr\UI\Menu\ItemSelector\ItemSelectorMenu.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
@@ -325,8 +330,8 @@
     <Compile Include="lsr\Locations\Places\Interact\Residence.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Restaurant.cs" />
     <Compile Include="lsr\Camera\LocationCamera.cs" />
-    <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
-    <Compile Include="lsr\Locations\Places\SellMenu.cs" />
+    <Compile Include="lsr\Locations\Places\PurchaseMenu_Old.cs" />
+    <Compile Include="lsr\Locations\Places\SellMenu_Old.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ScrapYard.cs" />
     <Compile Include="lsr\Locations\Places\Transaction.cs" />
     <Compile Include="lsr\Locations\Places\Interact\VendingMachine.cs" />

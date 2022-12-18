@@ -52,12 +52,20 @@ public class ModDataFileManager
         SetupAlternateConfigs();
         Settings = new Settings();
         Settings.ReadConfig();
+        GameFiber.Yield();
+
+
+        Weapons = new Weapons();
+        Weapons.ReadConfig();
+        GameFiber.Yield();
+
+
         PhysicalItems = new PhysicalItems();
         PhysicalItems.ReadConfig();
         GameFiber.Yield();
         ModItems = new ModItems();
         ModItems.ReadConfig();
-        ModItems.Setup(PhysicalItems);
+        ModItems.Setup(PhysicalItems, Weapons);
         GameFiber.Yield();
         ShopMenus = new ShopMenus();
         ShopMenus.ReadConfig();
@@ -74,9 +82,8 @@ public class ModDataFileManager
         GameFiber.Yield();
         Streets = new Streets();
         Streets.ReadConfig();
-        GameFiber.Yield();
-        Weapons = new Weapons();
-        Weapons.ReadConfig();
+        
+
         GameFiber.Yield();
         Names = new Names();
         Names.ReadConfig();

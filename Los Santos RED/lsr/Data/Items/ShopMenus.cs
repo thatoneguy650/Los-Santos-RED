@@ -5292,7 +5292,11 @@ public class ShopMenus : IShopMenus
             for (int i = totalItems - 1; i >= 0; i--)
             {
                 MenuItem mi = sm.Items[i];
-                if (mi != null && modItems.Get(mi.ModItemName) == null)
+                if(mi != null)
+                {
+                    mi.ModItem = modItems.Get(mi.ModItemName);
+                }
+                if (mi.ModItem == null)
                 {
                     EntryPoint.WriteToConsole($"Shop Menus ERROR Corresponding Item NOT FOUND {mi.ModItemName} in MENU {sm.Name} REMOVING FROM MENU",0);
                     sm.Items.RemoveAt(i);
