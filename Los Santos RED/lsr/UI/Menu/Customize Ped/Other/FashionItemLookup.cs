@@ -35,9 +35,9 @@ public class FashionItemLookup
 
     public string GetDrawableString()
     {
-        if (DrawableName == "" || string.IsNullOrEmpty(DrawableName))
+        if (DrawableName == "" || string.IsNullOrEmpty(DrawableName) || DrawableName is null)
         {
-            return $"({DrawableID})";
+            return $"{Name} ({DrawableID})";
         }
         else
         {
@@ -46,9 +46,9 @@ public class FashionItemLookup
     }
     public string GetTextureString()
     {
-        if(TextureName == "" || string.IsNullOrEmpty(TextureName))
+        if(TextureName == "" || string.IsNullOrEmpty(TextureName) || TextureName is null)
         {
-            return $"({TextureID})";
+            return $"{Name} ({TextureID})";
         }
         else
         {

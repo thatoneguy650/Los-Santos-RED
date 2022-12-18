@@ -249,7 +249,7 @@ public class FashionProp
     }
     private void GetPossibleTextures(int drawableID)
     {
-        int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(Ped, PropID, drawableID) - 1;
+        int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(Ped, PropID, drawableID);
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
