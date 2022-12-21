@@ -62,38 +62,46 @@ public class Dealership : InteractableLocation
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
+                try
+                {
+                    StoreCamera = new LocationCamera(this, Player);
 
-                StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
-                StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
+                    StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
+                    StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
 
-                StoreCamera.Setup();
+                    StoreCamera.Setup();
 
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
 
-                //Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
-                //Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
+                    //Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
+                    //Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
 
-                Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+                    Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
 
-                Transaction.ItemPreviewPosition = ItemPreviewPosition;
-                Transaction.ItemPreviewHeading = ItemPreviewHeading;
+                    Transaction.ItemPreviewPosition = ItemPreviewPosition;
+                    Transaction.ItemPreviewHeading = ItemPreviewHeading;
 
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    Transaction.ProcessTransactionMenu();
 
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
 
-                StoreCamera.Dispose();
+                    StoreCamera.Dispose();
 
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    Player.IsTransacting = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "CarDealershipInteract");
         }
     }

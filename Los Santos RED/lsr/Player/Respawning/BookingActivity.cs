@@ -83,48 +83,56 @@ public class BookingActivity
             Player.IsBeingBooked = true;
             GameFiber.StartNew(delegate
             {
-                SetupCop();
-                SetupWorld();
-                MoveCopBehindPlayer();
-                if (isCopInPosition)
+                try
                 {
-                    PlayCuffAnimation();
-                    if (isPlayerCuffed)
+                    SetupCop();
+                    SetupWorld();
+                    MoveCopBehindPlayer();
+                    if (isCopInPosition)
                     {
-                        NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Player.Character, true);
-
-                        Player.SetNotBusted();
-
-                        Player.SetWantedLevel(0, "Handcuffed", true);
-                        Player.IsArrested = true;
-                        
-
-                        try
+                        PlayCuffAnimation();
+                        if (isPlayerCuffed)
                         {
-                            BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
-                            bookingVehicleManager.Setup();
-                            bookingVehicleManager.Start();
+                            NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Player.Character, true);
+
+                            Player.SetNotBusted();
+
+                            Player.SetWantedLevel(0, "Handcuffed", true);
+                            Player.IsArrested = true;
+
+
+                            try
+                            {
+                                BookingVehicleManager bookingVehicleManager = new BookingVehicleManager(Player, World, PoliceRespondable, Location, SeatAssignable, Settings, this, Cop);
+                                bookingVehicleManager.Setup();
+                                bookingVehicleManager.Start();
+                            }
+                            catch (Exception e)
+                            {
+                                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Booking");
+                            }
+                            //TaskPlayerIntoVehicle();
+                            FinishBooking();
                         }
-                        catch(Exception e)
+                        else
                         {
-                            EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
-                            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Booking");
+                            ReleaseCop();
+                            EndBooking();
+                            EntryPoint.WriteToConsole("Booking Activity, Failure Cuffing Player");
                         }
-                        //TaskPlayerIntoVehicle();
-                        FinishBooking();
                     }
                     else
                     {
                         ReleaseCop();
                         EndBooking();
-                        EntryPoint.WriteToConsole("Booking Activity, Failure Cuffing Player");
+                        EntryPoint.WriteToConsole("Booking Activity, Failure Moving Cop To Cuff Position");
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ReleaseCop();
-                    EndBooking();
-                    EntryPoint.WriteToConsole("Booking Activity, Failure Moving Cop To Cuff Position");
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "Booking");
         }

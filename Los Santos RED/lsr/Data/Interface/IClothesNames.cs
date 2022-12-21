@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         string GetName(bool isProp, int ItemID, int DrawableID, int TextureID, string Gender);
         FashionItemLookup GetItemFast(bool isProp, int ItemID, int DrawableID, int TextureID, string Gender);
+        HashSet<FashionItemLookup> GetItemsFast(bool isProp, int ItemID, int DrawableID, string Gender);
     }
 }

@@ -243,11 +243,20 @@ public class ActivityManager
             continueActivityMenu.Visible = true;
             GameFiber activityMenuWatcher = GameFiber.StartNew(delegate
             {
-                while (continueActivityMenu.Visible)
+                try
                 {
-                    MenuPool.ProcessMenus();
-                    GameFiber.Yield();
+                    while (continueActivityMenu.Visible)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
                 }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+
             }, "ActivityMenuWatcher");
         }
         else
@@ -805,16 +814,24 @@ public class ActivityManager
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
                         GameFiber DoorWatcher = GameFiber.StartNew(delegate
                         {
-                            GameFiber.Sleep(TimeToWait);
-                            if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                            try
                             {
-                                NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
-                                GameFiber.Sleep(250);
-                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                                GameFiber.Sleep(TimeToWait);
+                                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                                {
+                                    NativeFunction.Natives.SET_VEHICLE_DOOR_SHUT(Game.LocalPlayer.Character.CurrentVehicle, 0, false);
+                                    GameFiber.Sleep(250);
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                                }
+                                else
+                                {
+                                    NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                                }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
+                                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                                EntryPoint.ModController.CrashUnload();
                             }
                         }, "DoorWatcher");
                     }

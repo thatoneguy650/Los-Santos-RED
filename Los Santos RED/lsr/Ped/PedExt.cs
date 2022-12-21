@@ -78,11 +78,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
         PedReactions = new PedReactions(this);
+        PedInventory = new PedInventory(this, Settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
-
-
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
-
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
     {
@@ -99,6 +97,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public HealthState CurrentHealthState { get; private set; }
 
     public PedReactions PedReactions { get; set; }
+    public PedInventory PedInventory { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
@@ -225,7 +224,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
     public Vector3 PositionLastSeenDistressedPed { get; set; }
+
+
     public ShopMenu ShopMenu { get; set; }
+
+
+
+
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
@@ -680,5 +685,15 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
         }
+    }
+
+    public virtual void OnItemPurchased(ILocationInteractable player, int amountPurchased)
+    {
+
+    }
+
+    public virtual void OnItemSold(ILocationInteractable player, int amountSold)
+    {
+
     }
 }

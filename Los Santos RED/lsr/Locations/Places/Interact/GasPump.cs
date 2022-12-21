@@ -81,25 +81,33 @@ public class GasPump : InteractableLocation
             IsFueling = false;
             GameFiber.StartNew(delegate
             {
-                GetPropEntry();
-                if (!MoveToMachine())
+                try
                 {
+                    GetPropEntry();
+                    if (!MoveToMachine())
+                    {
+                        FullDispose();
+                    }
+                    CreateInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    SetupGeneral();
+                    while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                    DisposeInteractionMenu();
                     FullDispose();
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    Player.IsTransacting = false;
+                    CanInteract = true;
                 }
-                CreateInteractionMenu();
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                SetupGeneral();
-                while (IsAnyMenuVisible || KeepInteractionGoing || IsFueling)
+                catch (Exception ex)
                 {
-                    MenuPool.ProcessMenus();
-                    GameFiber.Yield();
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                DisposeInteractionMenu();
-                FullDispose();
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
             }, "Gas Station Interact");
         }
     }

@@ -56,35 +56,43 @@ public class CarJack
             {
                 GameFiber CarJackPedWithWeapon = GameFiber.StartNew(delegate
                 {
-                    GameFiber.Yield();
-                    if (Driver != null && Driver.Pedestrian.Exists())
+                    try
                     {
-                        if (!SetupCarJack())
+                        GameFiber.Yield();
+                        if (Driver != null && Driver.Pedestrian.Exists())
                         {
-                            GameFiber.Yield();
+                            if (!SetupCarJack())
+                            {
+                                GameFiber.Yield();
+                                if (Driver != null)
+                                {
+                                    Driver.CanBeTasked = true;
+                                }
+                                return;
+                            }
+                            if (!CarJackAnimation())
+                            {
+                                GameFiber.Yield();
+                                if (Driver != null)
+                                {
+                                    Driver.CanBeTasked = true;
+                                }
+                                return;
+                            }
+                            FinishCarJack();
                             if (Driver != null)
                             {
                                 Driver.CanBeTasked = true;
                             }
-                            return;
-                        }
-                        if (!CarJackAnimation())
-                        {
-                            GameFiber.Yield();
-                            if (Driver != null)
-                            {
-                                Driver.CanBeTasked = true;
-                            }
-                            return;
-                        }
-                        FinishCarJack();
-                        if (Driver != null)
-                        {
-                            Driver.CanBeTasked = true;
                         }
                     }
-                //CameraManager.RestoreGameplayerCamera();
-            }, "CarJackPedWithWeapon");
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
+                    //CameraManager.RestoreGameplayerCamera();
+                }, "CarJackPedWithWeapon");
             }
             catch (Exception e)
             {
@@ -435,25 +443,33 @@ public class CarJack
     {
         GameFiber CarJackPed = GameFiber.StartNew(delegate
         {
-            GameFiber.Yield();
-            if (Driver != null)
-            {
-                Driver.CanBeTasked = false;
-            }
-            uint GameTimeStarted = Game.GameTime;
-            while(!Player.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 5000)
+            try
             {
                 GameFiber.Yield();
-            }
-            if (Player.Character.IsInAnyVehicle(false))
-            {
+                if (Driver != null)
+                {
+                    Driver.CanBeTasked = false;
+                }
+                uint GameTimeStarted = Game.GameTime;
+                while (!Player.Character.IsInAnyVehicle(false) && Game.GameTime - GameTimeStarted <= 5000)
+                {
+                    GameFiber.Yield();
+                }
+                if (Player.Character.IsInAnyVehicle(false))
+                {
 
+                }
+                if (Driver != null)
+                {
+                    Driver.CanBeTasked = true;
+                }
+                GameFiber.Sleep(4000);
             }
-            if (Driver != null)
+            catch (Exception ex)
             {
-                Driver.CanBeTasked = true;
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-            GameFiber.Sleep(4000);
         }, "CarJackPed");
     }
 }

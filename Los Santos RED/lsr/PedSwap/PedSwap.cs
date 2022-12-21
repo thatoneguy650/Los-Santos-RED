@@ -76,24 +76,32 @@ public class PedSwap : IPedSwap
     {
         GameFiber.StartNew(delegate
         {
-            ResetOffsetForCurrentModel();
-            Player.IsCustomizingPed = true;
-            MenuPool menuPool = new MenuPool();
-            PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities,Settings);
-            PedSwapCustomMenu.Setup();
-            PedSwapCustomMenu.Show();
-            GameFiber.Yield();
-            while (menuPool.IsAnyMenuOpen())
+            try
             {
-                PedSwapCustomMenu.Update();
+                ResetOffsetForCurrentModel();
+                Player.IsCustomizingPed = true;
+                MenuPool menuPool = new MenuPool();
+                PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities, Settings);
+                PedSwapCustomMenu.Setup();
+                PedSwapCustomMenu.Show();
                 GameFiber.Yield();
+                while (menuPool.IsAnyMenuOpen())
+                {
+                    PedSwapCustomMenu.Update();
+                    GameFiber.Yield();
+                }
+                PedSwapCustomMenu.Dispose();
+                if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                {
+                    AddOffset();
+                }
+                Player.IsCustomizingPed = false;
             }
-            PedSwapCustomMenu.Dispose();
-            if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+            catch (Exception ex)
             {
-                AddOffset();
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-            Player.IsCustomizingPed = false;
         }, "Custom Ped Loop");
     }
     public void BecomeCreatorPed()
@@ -514,11 +522,19 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP<bool>(Game.LocalPlayer.Character, TargetPedPosition.X, TargetPedPosition.Y, TargetPedPosition.Z, 5f, 0);
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                while (!Player.IsMoveControlPressed)
+                try
                 {
-                    GameFiber.Yield();
+                    while (!Player.IsMoveControlPressed)
+                    {
+                        GameFiber.Yield();
+                    }
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
                 }
-                NativeFunction.Natives.CLEAR_PED_TASKS(Game.LocalPlayer.Character);
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "ScenarioWatcher");
         }
     }

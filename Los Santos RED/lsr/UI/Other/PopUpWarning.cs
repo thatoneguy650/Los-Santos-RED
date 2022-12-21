@@ -51,16 +51,24 @@ public class PopUpWarning
         FramesSinceStarted = 0;
         GameFiber.StartNew(delegate
         {
-            while (true)
+            try
             {
-                Tick();
-                if (IsAnswered)
+                while (true)
                 {
-                    EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
-                    break;
+                    Tick();
+                    if (IsAnswered)
+                    {
+                        EntryPoint.WriteToConsole($"Pop Up Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
+                        break;
+                    }
+                    FramesSinceStarted++;
+                    GameFiber.Yield();
                 }
-                FramesSinceStarted++;
-                GameFiber.Yield();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
         }, "Run Debug Logic");
     }

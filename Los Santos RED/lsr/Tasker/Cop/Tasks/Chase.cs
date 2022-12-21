@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using System;
 using System.Linq;
 
 
@@ -450,23 +451,31 @@ public class Chase : ComplexTask
         GameFiber.Yield();
         GameFiber.StartNew(delegate
         {
-            EntryPoint.WriteToConsole($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
-            while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber)
+            try
             {
+                EntryPoint.WriteToConsole($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
+                while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber)
+                {
 
-                footChase.Update();
-
-
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
-                //GameFiber.Sleep(500);//GameFiber.Yield();
-
+                    footChase.Update();
 
 
+                    GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
+                    //GameFiber.Sleep(500);//GameFiber.Yield();
 
+
+
+
+                }
+                footChase.Dispose();
+                Ped.IsRunningOwnFiber = false;
+                EntryPoint.WriteToConsole($"ENDED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
             }
-            footChase.Dispose();
-            Ped.IsRunningOwnFiber = false;
-            EntryPoint.WriteToConsole($"ENDED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "Run Cop Chase Logic");
     }
 

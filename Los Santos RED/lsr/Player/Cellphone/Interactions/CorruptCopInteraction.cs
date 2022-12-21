@@ -95,11 +95,19 @@ public class CorruptCopInteraction : IContactMenuInteraction
         CopMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
-            while (MenuPool.IsAnyMenuOpen())
+            try
             {
-                GameFiber.Yield();
+                while (MenuPool.IsAnyMenuOpen())
+                {
+                    GameFiber.Yield();
+                }
+                Player.CellPhone.Close(250);
             }
-            Player.CellPhone.Close(250);
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "CellPhone");
     }
     public void Update()
@@ -179,11 +187,18 @@ public class CorruptCopInteraction : IContactMenuInteraction
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
-                int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
-                GameFiber.Sleep(SleepTime);
-                Player.Respawning.PayoffPolice();
-                Player.SetWantedLevel(0, "Cop Payoff", true);
-
+                try
+                {
+                    int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
+                    GameFiber.Sleep(SleepTime);
+                    Player.Respawning.PayoffPolice();
+                    Player.SetWantedLevel(0, "Cop Payoff", true);
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "PayoffFiber");
             List<string> Replies = new List<string>() {
                 $"Let me work my magic, hang on.",
@@ -219,12 +234,19 @@ public class CorruptCopInteraction : IContactMenuInteraction
 
             GameFiber PayoffFiber = GameFiber.StartNew(delegate
             {
-                int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
-                GameFiber.Sleep(SleepTime);
-                Player.Respawning.PayoffPolice();
-                Player.SetWantedLevel(0, "Cop Payoff", true);
-                Player.Investigation.Expire();
-
+                try
+                {
+                    int SleepTime = RandomItems.GetRandomNumberInt(5000, 10000);
+                    GameFiber.Sleep(SleepTime);
+                    Player.Respawning.PayoffPolice();
+                    Player.SetWantedLevel(0, "Cop Payoff", true);
+                    Player.Investigation.Expire();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "PayoffFiber");
             List<string> Replies = new List<string>() {
                 $"Let me work my magic, hang on.",

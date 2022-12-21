@@ -194,17 +194,25 @@ namespace Mod
                 EntryPoint.WriteToConsole($"World - START Setting Population Density {CurrentSpawnMultiplier}");
                 GameFiber.StartNew(delegate
                 {
-                    while (CurrentSpawnMultiplier != 1.0f)
+                    try
                     {
-                        NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
-                        NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
-                        NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
-                        NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
-                        NativeFunction.Natives.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
-                        GameFiber.Yield();
+                        while (CurrentSpawnMultiplier != 1.0f)
+                        {
+                            NativeFunction.Natives.SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                            NativeFunction.Natives.SET_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                            NativeFunction.Natives.SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                            NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                            NativeFunction.Natives.SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(CurrentSpawnMultiplier);
+                            GameFiber.Yield();
+                        }
+                        isSettingDensity = false;
+                        EntryPoint.WriteToConsole($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
                     }
-                    isSettingDensity = false;
-                    EntryPoint.WriteToConsole($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
                 }, $"Density Runner");
             }
 

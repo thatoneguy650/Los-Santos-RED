@@ -49,20 +49,28 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Drill ACTIVITY Start", 5);
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, DrillItem);
-                meleeWeaponAlias.Start();
-                while (!IsCancelled)
+                try
                 {
-                    meleeWeaponAlias.Update();
-                    if (meleeWeaponAlias.IsCancelled)
+                    Setup();
+                    meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, DrillItem);
+                    meleeWeaponAlias.Start();
+                    while (!IsCancelled)
                     {
-                        meleeWeaponAlias.Dispose();
-                        break;
+                        meleeWeaponAlias.Update();
+                        if (meleeWeaponAlias.IsCancelled)
+                        {
+                            meleeWeaponAlias.Dispose();
+                            break;
+                        }
+                        GameFiber.Yield();
                     }
-                    GameFiber.Yield();
+                    Dispose();
                 }
-                Dispose();
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "DrillActivity");
         }
         public override bool CanPerform(IActionable player)

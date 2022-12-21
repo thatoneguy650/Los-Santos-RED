@@ -18,6 +18,9 @@ public class FashionProp
     private List<PedFashionAlias> PossibleTextures;
     private Ped Ped;
     private PedCustomizer PedCustomizer;
+    private string filterString = "";
+    private UIMenuItem filterItems;
+    private UIMenuItem ResetMenu;
 
     public FashionProp()
     {
@@ -55,17 +58,17 @@ public class FashionProp
     }
     private void AddMenuItems(UIMenu componentMenu)
     {
-        //AddResetMenuItem(componentMenu);
+        filterString = "";
+        AddResetMenuItem(componentMenu);
         AddClearMenuItem(componentMenu);
         AddDrawableItem(componentMenu);
         AddTextureItem(componentMenu);
         AddGoToMenuItem(componentMenu);
+        AddSearchMenuItem(componentMenu);
     }
-
-
     private void AddResetMenuItem(UIMenu componentMenu)
     {
-        UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the item back to the initial value");
+        ResetMenu = new UIMenuItem("Reset", "Reset the item back to the initial value");
         PedPropComponent initialComponentStart = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
         if (initialComponentStart != null)
         {
@@ -77,32 +80,7 @@ public class FashionProp
         }
         ResetMenu.Activated += (sender, e) =>
         {
-            PedPropComponent initialComponent = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-            PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-            if (initialComponent != null)
-            {
-                if (pedComponent == null)
-                {
-                    pedComponent = new PedPropComponent(PropID, initialComponent.DrawableID, initialComponent.TextureID);
-                    PedCustomizer.WorkingVariation.Props.Add(pedComponent);
-                }
-                else
-                {
-                    pedComponent.DrawableID = initialComponent.DrawableID;
-                    pedComponent.TextureID = initialComponent.TextureID;
-                }
-
-                
-
-               // DrawableMenuScroller.SelectedItem = PossibleDrawables.FirstOrDefault(x => x.ID == initialComponent.DrawableID);
-
-
-
-
-               // OnComponentChanged(initialComponent.DrawableID);
-                ResetMenu.Description = "Reset the drawable back to the initial value" + $"~n~ItemID: {initialComponent.DrawableID} VariationID: {initialComponent.TextureID}";
-                PedCustomizer.OnVariationChanged();
-            }
+            SetToInitialValue();
         };
         componentMenu.AddItem(ResetMenu);
     }
@@ -111,48 +89,10 @@ public class FashionProp
         UIMenuItem RemoveMenu = new UIMenuItem("Remove Item", "Remove the prop from the ped");
         RemoveMenu.Activated += (sender, e) =>
         {
-            if (Ped.Exists())
-            {
-                NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
-            }
-            PedCustomizer.WorkingVariation.Props.RemoveAll(x=> x.PropID == PropID);
-
-
-            //DrawableMenuScroller.SelectedItem = PossibleDrawables[0];
-
-
-            //OnComponentChanged(0);
-
-            PedFashionAlias test = PossibleDrawables.FirstOrDefault(x => x.ID == 0);
-            if(test != null)
-            {
-                DrawableMenuScroller.SelectedItem = test;
-            }
-
-            PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = true;
-
-            GetPossibleTextures(0);
-            TextureMenuScroller.Items = PossibleTextures;
-            SetTextureValue();
-
-
-            if (Ped.Exists())
-            {
-                NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
-            }
-            PedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
-
-
-            PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = false;
-
-
-
-            PedCustomizer.OnVariationChanged();
+            SetPropRemoved();
         };
         componentMenu.AddItem(RemoveMenu);
     }
-
-
     private void AddDrawableItem(UIMenu componentMenu)
     {
         GetPossibleDrawables();
@@ -164,22 +104,83 @@ public class FashionProp
         };
         componentMenu.AddItem(DrawableMenuScroller);
     }
+    private void AddTextureItem(UIMenu componentMenu)
+    {
+        PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+        if (pedComponent != null)
+        {
+            GetPossibleTextures(pedComponent.DrawableID);
+        }
+        else
+        {
+            GetPossibleTextures(0);
+        }
+        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Variation", "Select variation", PossibleTextures);
+        SetTextureValue();
+        TextureMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
+        {
+            OnTextureChanged();
+        };
+        componentMenu.AddItem(TextureMenuScroller);
+    }
+    private void AddGoToMenuItem(UIMenu componentMenu)
+    {
+        UIMenuItem goToDrawable = new UIMenuItem("Go To Item", "Enter a specific item number to auto select");
+        goToDrawable.Activated += (sender, e) =>
+        {
+            SetToEnteredDrawableID();
+        };
+        componentMenu.AddItem(goToDrawable);
+    }
+    private void AddSearchMenuItem(UIMenu componentMenu)
+    {
+        filterItems = new UIMenuItem("Search", "Search for specific items matching the search terms");
+        filterItems.Activated += (sender, e) =>
+        {
+            filterString = NativeHelper.GetKeyboardInput("");
+            SetFiltering();
+        };
+        componentMenu.AddItem(filterItems);
+    }
+
+
     private void GetPossibleDrawables()
     {
         int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS<int>(Ped, PropID);
         PossibleDrawables = new List<PedFashionAlias>();
+        bool isValid = true;
         for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
         {
             string drawableName = $"({DrawableNumber})";
+            string fullName = "";
+            isValid = true;
             if (PedCustomizer.PedModelIsFreeMode)
             {
-                FashionItemLookup fil = PedCustomizer.ClothesNames.GetItemFast(true, PropID, DrawableNumber, 0, PedCustomizer.PedModelGender);
+                isValid = false;
+                HashSet<FashionItemLookup> possibleDrawables = PedCustomizer.ClothesNames.GetItemsFast(true, PropID, DrawableNumber, PedCustomizer.PedModelGender);
+                if (filterString == "")
+                {
+                    isValid = true;
+                }
+                else if (possibleDrawables != null)
+                {
+                    isValid = possibleDrawables?.Any(x =>
+                    (x.DrawableID.ToString().Contains(filterString.ToLower())) ||
+                    (x.DrawableName != null && x.DrawableName.ToLower().Contains(filterString.ToLower())) ||
+                    (x.Name != null && x.Name.ToLower().Contains(filterString.ToLower()))
+                    ) == true;
+                }
+                FashionItemLookup fil = possibleDrawables?.OrderBy(x => x.TextureID).FirstOrDefault();
                 if (fil != null)
                 {
                     drawableName = fil.GetDrawableString();
-                }
+                    fullName = fil.Name;
+                }         
             }
-            PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, drawableName));
+            if (isValid)
+            {
+                PossibleDrawables.Add(new PedFashionAlias(DrawableNumber, drawableName));
+            }
         }
     }
     private void SetDrawableValue()
@@ -227,26 +228,6 @@ public class FashionProp
         PedCustomizer.OnVariationChanged();
     }
 
-
-    private void AddTextureItem(UIMenu componentMenu)
-    {
-        PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-        if (pedComponent != null)
-        {
-            GetPossibleTextures(pedComponent.DrawableID);
-        }
-        else
-        {
-            GetPossibleTextures(0);
-        }
-        TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Variation", "Select variation", PossibleTextures);
-        SetTextureValue();
-        TextureMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
-        {
-            OnTextureChanged();
-        };
-        componentMenu.AddItem(TextureMenuScroller);
-    }
     private void GetPossibleTextures(int drawableID)
     {
         int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(Ped, PropID, drawableID);
@@ -312,21 +293,77 @@ public class FashionProp
         PedCustomizer.OnVariationChanged();
     }
 
-    private void AddGoToMenuItem(UIMenu componentMenu)
+    private void SetFiltering()
     {
-        UIMenuItem goToDrawable = new UIMenuItem("Go To Item", "Enter a specific item number to auto select");
-        goToDrawable.Activated += (sender, e) =>
+        filterItems.RightLabel = filterString;
+        GetPossibleDrawables();
+        DrawableMenuScroller.Items = PossibleDrawables;
+        SetDrawableValue();
+        OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
+    }
+    private void SetToInitialValue()
+    {
+        PedPropComponent initialComponent = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+        PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+        if (initialComponent != null)
         {
-            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
+            if (pedComponent == null)
             {
-                PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == moneyToSet).FirstOrDefault();
-                if (pfa != null)
-                {
-                    DrawableMenuScroller.SelectedItem = pfa;
-                }
+                pedComponent = new PedPropComponent(PropID, initialComponent.DrawableID, initialComponent.TextureID);
+                PedCustomizer.WorkingVariation.Props.Add(pedComponent);
             }
-        };
-        componentMenu.AddItem(goToDrawable);
+            else
+            {
+                pedComponent.DrawableID = initialComponent.DrawableID;
+                pedComponent.TextureID = initialComponent.TextureID;
+            }
+            filterString = "";
+            SetFiltering();
+            SetCurrent(pedComponent.DrawableID, pedComponent.TextureID);
+            ResetMenu.Description = "Reset the drawable back to the initial value" + $"~n~ItemID: {initialComponent.DrawableID} VariationID: {initialComponent.TextureID}";
+            PedCustomizer.OnVariationChanged();
+        }
+        else
+        {
+            filterString = "";
+            SetFiltering();
+            SetPropRemoved();
+        }
+    }
+    private void SetToEnteredDrawableID()
+    {
+        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int drawableToSet))
+        {
+            PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == drawableToSet).FirstOrDefault();
+            if (pfa != null)
+            {
+                DrawableMenuScroller.SelectedItem = pfa;
+            }
+        }
+    }
+    private void SetPropRemoved()
+    {
+        if (Ped.Exists())
+        {
+            NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
+        }
+        PedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
+        PedFashionAlias test = PossibleDrawables.FirstOrDefault(x => x.ID == 0);
+        if (test != null)
+        {
+            DrawableMenuScroller.SelectedItem = test;
+        }
+        PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = true;
+        GetPossibleTextures(0);
+        TextureMenuScroller.Items = PossibleTextures;
+        SetTextureValue();
+        if (Ped.Exists())
+        {
+            NativeFunction.Natives.CLEAR_PED_PROP(Ped, PropID);
+        }
+        PedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
+        PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = false;
+        PedCustomizer.OnVariationChanged();
     }
     public void SetCurrent(int drawableID, int textureID)
     {
@@ -343,261 +380,4 @@ public class FashionProp
         }
 
     }
-    public override string ToString()
-    {
-        return PropName;
-    }
-
-
-
-
-
-
-    //public void CombineCustomizeMenu(MenuPool MenuPool, UIMenu topMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    if (ped.Exists())
-    //    {
-    //        AddMenuItems(topMenu, ped, pedCustomizer);
-    //    }
-    //}
-    //public void AddCustomizeMenu(MenuPool MenuPool, UIMenu topMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    UIMenu componentMenu = MenuPool.AddSubMenu(topMenu, PropName);
-    //    topMenu.MenuItems[topMenu.MenuItems.Count() - 1].Description = $"Customize the {PropName}";
-    //    topMenu.MenuItems[topMenu.MenuItems.Count() - 1].RightLabel = "";
-    //    componentMenu.SetBannerType(EntryPoint.LSRedColor);
-    //    if (ped.Exists())
-    //    {
-    //        AddMenuItems(componentMenu, ped, pedCustomizer);
-    //    }
-    //}
-    //private void AddMenuItems(UIMenu propMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    AddResetMenuItem(propMenu, ped, pedCustomizer);
-    //    AddRemoveMenuItem(propMenu, ped, pedCustomizer);
-    //    AddDrawableItem(propMenu, ped, pedCustomizer);
-    //    AddTextureItem(propMenu, ped, pedCustomizer);
-    //    AddGoToMenuItem(propMenu, ped, pedCustomizer);
-    //}
-    //private void AddResetMenuItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    UIMenuItem ResetMenu = new UIMenuItem("Reset", "Reset the drawable back to the initial value");
-    //    PedPropComponent initialComponentStart = pedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-    //    if (initialComponentStart != null)
-    //    {
-    //        ResetMenu.Description += $"~n~DrawableID: {initialComponentStart.DrawableID} TextureID: {initialComponentStart.TextureID}";
-    //    }
-    //    else
-    //    {
-    //        ResetMenu.Enabled = false;
-    //    }
-    //    ResetMenu.Activated += (sender, e) =>
-    //    {
-    //        PedPropComponent initialComponent = pedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-    //        PedPropComponent pedComponent = pedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-    //        if (initialComponent != null)
-    //        {
-    //            if (pedComponent == null)
-    //            {
-    //                pedComponent = new PedPropComponent(PropID, initialComponent.DrawableID, initialComponent.TextureID);
-    //                pedCustomizer.WorkingVariation.Props.Add(pedComponent);
-    //            }
-    //            else
-    //            {
-    //                pedComponent.DrawableID = initialComponent.DrawableID;
-    //                pedComponent.TextureID = initialComponent.TextureID;
-    //            }
-
-    //            ResetMenu.Description = "Reset the drawable back to the initial value" + $"~n~DrawableID: {initialComponent.DrawableID} TextureID: {initialComponent.TextureID}";
-    //            pedCustomizer.OnVariationChanged();
-    //        }
-    //    };
-    //    componentMenu.AddItem(ResetMenu);
-    //}
-    //private void AddGoToMenuItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    UIMenuItem goToDrawable = new UIMenuItem("Go To Drawable", "Enter a specific drawable number to auto select");
-    //    goToDrawable.Activated += (sender, e) =>
-    //    {
-    //        if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int moneyToSet))
-    //        {
-    //            PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == moneyToSet).FirstOrDefault();
-    //            if (pfa != null)
-    //            {
-    //                DrawableMenuScroller.SelectedItem = pfa;
-    //            }
-    //        }
-    //    };
-    //    componentMenu.AddItem(goToDrawable);
-    //}
-    //private void AddRemoveMenuItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    UIMenuItem removeProprMenu = new UIMenuItem("Remove Prop", "Select to remove the current prop");
-    //    removeProprMenu.Activated += (sender, e) =>
-    //    {
-    //        if(!DrawableMenuScroller.IsEmpty)
-    //        {
-    //            DrawableMenuScroller.Index = 0;
-    //        }
-    //        else
-    //        {
-    //            DrawableMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
-    //        }
-    //        if (!TextureMenuScroller.IsEmpty)
-    //        {
-    //            TextureMenuScroller.Index = 0;
-    //        }
-    //        else
-    //        {
-    //            TextureMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
-    //        }
-    //        pedCustomizer.WorkingVariation.Props.RemoveAll(x => x.PropID == PropID);
-    //        pedCustomizer.OnVariationChanged();
-    //    };
-    //    componentMenu.AddItem(removeProprMenu);
-    //}
-    //private void AddDrawableItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    int NumberOfDrawables = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_DRAWABLE_VARIATIONS<int>(ped, PropID);
-    //    List<PedFashionAlias> pedDrawables = new List<PedFashionAlias>();
-    //    for (int DrawableNumber = 0; DrawableNumber < NumberOfDrawables; DrawableNumber++)
-    //    {
-    //        pedDrawables.Add(new PedFashionAlias(DrawableNumber, DrawableNumber.ToString()));
-    //    }
-    //    DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Drawables", "Select drawable", pedDrawables);
-    //    if (DrawableMenuScroller.IsEmpty)
-    //    {
-    //        DrawableMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
-    //    }
-    //    else
-    //    {
-    //        DrawableMenuScroller.Index = 0;
-    //    }
-    //    PedPropComponent cpc = pedCustomizer.WorkingVariation.Props.Where(x => x.PropID == PropID).FirstOrDefault();
-    //    if (cpc != null)
-    //    {
-    //        PedFashionAlias pfa = pedDrawables.Where(x => x.ID == cpc.DrawableID).FirstOrDefault();
-    //        if (pfa != null)
-    //        {
-    //            DrawableMenuScroller.SelectedItem = pfa;
-    //        }
-    //    }
-
-
-
-    //    DrawableMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
-    //    {
-    //        OnComponentChanged(pedCustomizer, ped);
-    //    };
-    //    DrawableMenuScroller.Activated += (sender,e) =>
-    //    {
-    //        OnComponentChanged(pedCustomizer, ped);
-    //    };
-    //    componentMenu.AddItem(DrawableMenuScroller);
-    //}
-    //private void OnComponentChanged(PedCustomizer pedCustomizer, Ped ped)
-    //{
-    //    int DrawableID = 0;
-    //    if (DrawableMenuScroller.SelectedItem != null)
-    //    {
-    //        DrawableID = DrawableMenuScroller.SelectedItem.ID;
-    //    }
-    //    int NewNumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(ped, PropID, DrawableID) - 1;
-    //    List<PedFashionAlias> NewpedTextures = new List<PedFashionAlias>();
-    //    for (int TextureNumber = 0; TextureNumber < NewNumberOfTextureVariations; TextureNumber++)
-    //    {
-    //        NewpedTextures.Add(new PedFashionAlias(TextureNumber, TextureNumber.ToString()));
-    //    }
-    //    TextureMenuScroller.Items = NewpedTextures;
-    //    if (TextureMenuScroller.IsEmpty)
-    //    {
-    //        TextureMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
-    //    }
-    //    else
-    //    {
-    //        TextureMenuScroller.Index = 0;
-    //    }
-    //    PedPropComponent pedComponent = pedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-    //    int TextureID = 0;
-    //    if (!TextureMenuScroller.IsEmpty && TextureMenuScroller.SelectedItem != null)
-    //    {
-    //        TextureID = TextureMenuScroller.SelectedItem.ID;
-    //    }
-    //    if (pedComponent == null)
-    //    {
-    //        pedComponent = new PedPropComponent(PropID, DrawableMenuScroller.SelectedItem.ID, TextureID);
-    //        pedCustomizer.WorkingVariation.Props.Add(pedComponent);
-    //    }
-    //    else
-    //    {
-    //        pedComponent.DrawableID = DrawableMenuScroller.SelectedItem.ID;
-    //        pedComponent.TextureID = TextureID;
-    //    }
-    //    pedCustomizer.OnVariationChanged();
-    //}
-    //private void AddTextureItem(UIMenu componentMenu, Ped ped, PedCustomizer pedCustomizer)
-    //{
-    //    int NumberOfTextureVariations = NativeFunction.Natives.GET_NUMBER_OF_PED_PROP_TEXTURE_VARIATIONS<int>(ped, PropID, 0) - 1;
-    //    List<PedFashionAlias> pedTextures = new List<PedFashionAlias>();
-    //    for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
-    //    {
-    //        pedTextures.Add(new PedFashionAlias(TextureNumber, TextureNumber.ToString()));
-    //    }
-    //    TextureMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Textures", "Select Texture", pedTextures);
-    //    if (TextureMenuScroller.IsEmpty)
-    //    {
-    //        TextureMenuScroller.Index = UIMenuScrollerItem.EmptyIndex;
-    //    }
-    //    else
-    //    {
-    //        TextureMenuScroller.Index = 0;
-    //    }
-
-
-    //    PedPropComponent cpc = pedCustomizer.WorkingVariation.Props.Where(x => x.PropID == PropID).FirstOrDefault();
-    //    if (cpc != null)
-    //    {
-    //        PedFashionAlias pfa = pedTextures.Where(x => x.ID == cpc.DrawableID).FirstOrDefault();
-    //        if (pfa != null)
-    //        {
-    //            TextureMenuScroller.SelectedItem = pfa;
-    //        }
-    //    }
-
-
-    //    TextureMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
-    //    {
-    //        OnTextureChanged(pedCustomizer);
-    //    };
-    //    TextureMenuScroller.Activated += (sender, e) =>
-    //    {
-    //        OnTextureChanged(pedCustomizer);
-    //    };
-
-    //    componentMenu.AddItem(TextureMenuScroller);
-    //}
-    //private void OnTextureChanged(PedCustomizer pedCustomizer)
-    //{
-    //    int TextureID = 0;
-    //    if (TextureMenuScroller.SelectedItem != null)
-    //    {
-    //        TextureID = TextureMenuScroller.SelectedItem.ID;
-    //    }
-    //    PedPropComponent pedComponent = pedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
-    //    if (pedComponent == null)
-    //    {
-    //        pedComponent = new PedPropComponent(PropID, DrawableMenuScroller.SelectedItem.ID, TextureID);
-    //        pedCustomizer.WorkingVariation.Props.Add(pedComponent);
-    //    }
-    //    else
-    //    {
-    //        pedComponent.DrawableID = DrawableMenuScroller.SelectedItem.ID;
-    //        pedComponent.TextureID = TextureID;
-    //    }
-    //    pedCustomizer.OnVariationChanged();
-    //}
-    //public override string ToString()
-    //{
-    //    return PropName;
-    //}
 }

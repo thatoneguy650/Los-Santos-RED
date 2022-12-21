@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
@@ -175,5 +176,13 @@ public class GangMember : PedExt, IWeaponIssuable
             NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
         }
+    }
+    public override void OnItemPurchased(ILocationInteractable player, int amountPurchased)
+    {
+        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, amountPurchased, true);    
+    }
+    public override void OnItemSold(ILocationInteractable player, int amountSold)
+    {
+        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, amountSold, true);
     }
 }

@@ -121,15 +121,23 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Radio Start", 5);
             GameFiber BinocWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                if (!IsCancelled)
+                try
                 {
-                    AttachItemToHand();
-                    TakeOutItem();
-                    AddPrompts();
-                    StartGeneralIdle();
-                    Tick();
-                    Exit();
+                    Setup();
+                    if (!IsCancelled)
+                    {
+                        AttachItemToHand();
+                        TakeOutItem();
+                        AddPrompts();
+                        StartGeneralIdle();
+                        Tick();
+                        Exit();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "RadioWatcher");
         }

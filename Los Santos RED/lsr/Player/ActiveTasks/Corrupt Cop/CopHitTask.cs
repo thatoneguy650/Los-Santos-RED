@@ -93,8 +93,16 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     AddTask();
                     GameFiber PayoffFiber = GameFiber.StartNew(delegate
                     {
-                        Loop();
-                        FinishTask();
+                        try
+                        {
+                            Loop();
+                            FinishTask();
+                        }
+                        catch (Exception ex)
+                        {
+                            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                            EntryPoint.ModController.CrashUnload();
+                        }
                     }, "PayoffFiber");
                 }
                 else

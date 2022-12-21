@@ -54,25 +54,33 @@ public class ConvenienceStore : InteractableLocation
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
-      
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                try
+                {
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
 
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    Transaction.ProcessTransactionMenu();
 
-                StoreCamera.Dispose();
-                
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
+
+                    StoreCamera.Dispose();
+
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    Player.IsTransacting = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "RestaurantInteract");
         }
     }

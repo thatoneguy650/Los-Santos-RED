@@ -27,14 +27,11 @@ public class PedVariation
         Components = _MyPedComponents;
         Props = _MyPedProps;
     }
-
-
     public PedVariation(List<PedPropComponent> _MyPedProps,List<PedComponent> _MyPedComponents)
     {
         Components = _MyPedComponents;
         Props = _MyPedProps;
     }
-
     public PedVariation(List<PedComponent> _MyPedComponents, List<PedPropComponent> _MyPedProps, List<HeadOverlayData> headOverlays, HeadBlendData headBlendData, int primaryHairColor, int secondaryHairColor)
     {
         Components = _MyPedComponents;

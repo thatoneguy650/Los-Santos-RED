@@ -363,7 +363,14 @@ public class UI : IMenuProvideable
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
-        if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowRadar)
+
+
+
+        if (DisplayablePlayer.IsCustomizingPed)
+        {
+            ShowRadar = false;
+        }
+        else if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowRadar)
         {
             ShowRadar = true;
         }
@@ -414,6 +421,7 @@ public class UI : IMenuProvideable
                 ShowRadar = false;
             }
         }
+        
 
         NativeFunction.CallByName<bool>("DISPLAY_RADAR", ShowRadar);
 

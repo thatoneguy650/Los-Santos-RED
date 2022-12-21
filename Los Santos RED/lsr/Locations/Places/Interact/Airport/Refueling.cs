@@ -73,61 +73,69 @@ public class Refueling
             int UnitsAdded = 0;
             GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
             {
-                uint GameTimeBetweenUnits = 1500;
-                uint GameTimeAddedUnit = Game.GameTime;
-                int dotsAdded = 0;
-                if (VehicleExt.Vehicle.Exists())
+                try
                 {
-                    unsafe
+                    uint GameTimeBetweenUnits = 1500;
+                    uint GameTimeAddedUnit = Game.GameTime;
+                    int dotsAdded = 0;
+                    if (VehicleExt.Vehicle.Exists())
                     {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, VehicleExt.Vehicle, 2000);
-                        NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, VehicleExt.Vehicle, -1, 0, 2);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        unsafe
+                        {
+                            int lol = 0;
+                            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                            NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", 0, VehicleExt.Vehicle, 2000);
+                            NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", 0, VehicleExt.Vehicle, -1, 0, 2);
+                            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Player.Character, lol);
+                            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                        }
                     }
-                }
-                while (UnitsAdded < UnitsToAdd && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn)
-                {
-                    string tabs = new string('.', dotsAdded);
-                    Game.DisplayHelp($"Fueling Progress {UnitsAdded}/{UnitsToAdd}");
-                    NativeHelper.DisablePlayerControl();
-                    if (Game.GameTime - GameTimeAddedUnit >= GameTimeBetweenUnits)
+                    while (UnitsAdded < UnitsToAdd && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn)
                     {
-                        UnitsAdded++;
-                        GameTimeAddedUnit = Game.GameTime;
-                        if (VehicleExt.Vehicle.FuelLevel + PercentFilledPerUnit > 100f)
+                        string tabs = new string('.', dotsAdded);
+                        Game.DisplayHelp($"Fueling Progress {UnitsAdded}/{UnitsToAdd}");
+                        NativeHelper.DisablePlayerControl();
+                        if (Game.GameTime - GameTimeAddedUnit >= GameTimeBetweenUnits)
                         {
-                            VehicleExt.Vehicle.FuelLevel = 100f;
-                        }
-                        else
-                        {
-                            VehicleExt.Vehicle.FuelLevel += PercentFilledPerUnit;
-                        }
-                        Player.BankAccounts.GiveMoney(-1 * PricePerUnit);
-                        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+                            UnitsAdded++;
+                            GameTimeAddedUnit = Game.GameTime;
+                            if (VehicleExt.Vehicle.FuelLevel + PercentFilledPerUnit > 100f)
+                            {
+                                VehicleExt.Vehicle.FuelLevel = 100f;
+                            }
+                            else
+                            {
+                                VehicleExt.Vehicle.FuelLevel += PercentFilledPerUnit;
+                            }
+                            Player.BankAccounts.GiveMoney(-1 * PricePerUnit);
+                            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
 
-                        EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
+                            EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
+                        }
+                        if (Player.ButtonPrompts.IsPressed("CancelFueling"))
+                        {
+                            break;
+                        }
+                        GameFiber.Yield();
                     }
-                    if (Player.ButtonPrompts.IsPressed("CancelFueling"))
+                    if (UnitsAdded > 0)
                     {
-                        break;
+                        PurchaseSucceeded(UnitsToAdd);
                     }
-                    GameFiber.Yield();
+                    NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                    NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);
+                    Player.ButtonPrompts.RemovePrompts("Fueling");
+                    if (gasPump != null)
+                    {
+                        gasPump.IsFueling = false;
+                    }
                 }
-                if (UnitsAdded > 0)
+                catch (Exception ex)
                 {
-                    PurchaseSucceeded(UnitsToAdd);
-                }
-                NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                NativeFunction.Natives.ENABLE_ALL_CONTROL_ACTIONS(0);
-                Player.ButtonPrompts.RemovePrompts("Fueling");
-                if (gasPump != null)
-                {
-                    gasPump.IsFueling = false;
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "FastForwardWatcher");
             return true;

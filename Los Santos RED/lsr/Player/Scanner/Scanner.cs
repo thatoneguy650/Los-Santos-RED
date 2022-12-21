@@ -337,10 +337,18 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                 {
-                    GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
-                    CleanQueue();
-                    PlayQueue();
-                    ExecutingQueue = false;
+                    try
+                    {
+                        GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                        CleanQueue();
+                        PlayQueue();
+                        ExecutingQueue = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
                 }, "PlayDispatchQueue");
             }
 
@@ -350,8 +358,16 @@ namespace LosSantosRED.lsr
                 GameFiber.Yield();
                 GameFiber PlayDispatchQueue = GameFiber.StartNew(delegate
                 {
-                    PlayAmbientQueue();
-                    ExecutingAmbientQueue = false;
+                    try
+                    {
+                        PlayAmbientQueue();
+                        ExecutingAmbientQueue = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
                 }, "PlayDispatchQueue");
             }
 
@@ -619,12 +635,20 @@ namespace LosSantosRED.lsr
             //long teerm need to change how the wanted level is set maybe with the chase result flag
             GameFiber TempWait = GameFiber.StartNew(delegate
             {
-                GameFiber.Sleep(1000);
-                if (!RemainInArea.HasRecentlyBeenPlayed)
+                try
                 {
-                    AddToQueue(RemainInArea, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
+                    GameFiber.Sleep(1000);
+                    if (!RemainInArea.HasRecentlyBeenPlayed)
+                    {
+                        AddToQueue(RemainInArea, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
+                    }
+                    EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
                 }
-                EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "PlayDispatchQueue");
         }
         public void OnSuspectWasted()
@@ -1756,96 +1780,104 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
-                GameFiber.Yield();
-                if (AbortedAudio)
-                {
-                    EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
-                    if (Settings.SettingsManager.ScannerSettings.SetVolume)
-                    {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                    }
-                    else
-                    {
-                        AudioPlayer.Play(RadioEnd.PickRandom(), false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                    }
-                    AbortedAudio = false;
-                    GameFiber.Sleep(1000);
-                }
-                uint GameTimeStartedWaitingForAudio = Game.GameTime;
-                while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
+                try
                 {
                     GameFiber.Yield();
-                }
-                if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
-                {
-                    RemoveAllNotifications();
-                    NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
-                }
-                CurrentlyPlaying = MyAudioEvent;
-                CurrentlyPlayingCallIn = dispatchDescription;
-                CurrentlyPlayingDispatch = dispatchToPlay;
-                if (Settings.SettingsManager.ScannerSettings.EnableAudio)
-                {
-                    foreach (string audioname in soundsToPlayer)
+                    if (AbortedAudio)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
-                        if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
+                        EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
+                        if (Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
-                            if (Settings.SettingsManager.ScannerSettings.SetVolume)
+                            AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                        }
+                        else
+                        {
+                            AudioPlayer.Play(RadioEnd.PickRandom(), false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                        }
+                        AbortedAudio = false;
+                        GameFiber.Sleep(1000);
+                    }
+                    uint GameTimeStartedWaitingForAudio = Game.GameTime;
+                    while (AudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
+                    {
+                        GameFiber.Yield();
+                    }
+                    if (MyAudioEvent.NotificationTitle != "" && Settings.SettingsManager.ScannerSettings.EnableNotifications)
+                    {
+                        RemoveAllNotifications();
+                        NotificationHandles.Add(Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", MyAudioEvent.NotificationTitle, MyAudioEvent.NotificationSubtitle, MyAudioEvent.NotificationText));
+                    }
+                    CurrentlyPlaying = MyAudioEvent;
+                    CurrentlyPlayingCallIn = dispatchDescription;
+                    CurrentlyPlayingDispatch = dispatchToPlay;
+                    if (Settings.SettingsManager.ScannerSettings.EnableAudio)
+                    {
+                        foreach (string audioname in soundsToPlayer)
+                        {
+                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning)
                             {
-                                AudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                            }
-                            else
-                            {
-                                AudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                            }
-                            while (AudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
-                            {
-                                if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                                if (Settings.SettingsManager.ScannerSettings.SetVolume)
                                 {
-                                    Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
-                                    GameTimeLastDisplayedSubtitle = Game.GameTime;
+                                    AudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                                 }
-                                GameTimeLastAnnouncedDispatch = Game.GameTime;
-                                if (MyAudioEvent.HasStreetAudio)
+                                else
                                 {
-                                    GameTimeLastMentionedStreet = Game.GameTime;
+                                    AudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
                                 }
-                                if (MyAudioEvent.HasZoneAudio)
+                                while (AudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
                                 {
-                                    GameTimeLastMentionedZone = Game.GameTime;
+                                    if (MyAudioEvent.Subtitles != "" && Settings.SettingsManager.ScannerSettings.EnableSubtitles && Game.GameTime - GameTimeLastDisplayedSubtitle >= 1500)
+                                    {
+                                        Game.DisplaySubtitle(MyAudioEvent.Subtitles, 2000);
+                                        GameTimeLastDisplayedSubtitle = Game.GameTime;
+                                    }
+                                    GameTimeLastAnnouncedDispatch = Game.GameTime;
+                                    if (MyAudioEvent.HasStreetAudio)
+                                    {
+                                        GameTimeLastMentionedStreet = Game.GameTime;
+                                    }
+                                    if (MyAudioEvent.HasZoneAudio)
+                                    {
+                                        GameTimeLastMentionedZone = Game.GameTime;
+                                    }
+                                    if (MyAudioEvent.HasUnitAudio)
+                                    {
+                                        GameTimeLastMentionedUnits = Game.GameTime;
+                                    }
+                                    if (MyAudioEvent.HasLocationAudio)
+                                    {
+                                        GameTimeLastMentionedLocation = Game.GameTime;
+                                    }
+                                    GameFiber.Yield();
+                                    if (AbortedAudio)
+                                    {
+                                        EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                        break;
+                                    }
                                 }
-                                if (MyAudioEvent.HasUnitAudio)
-                                {
-                                    GameTimeLastMentionedUnits = Game.GameTime;
-                                }
-                                if(MyAudioEvent.HasLocationAudio)
-                                {
-                                    GameTimeLastMentionedLocation = Game.GameTime;
-                                }
-                                GameFiber.Yield();
                                 if (AbortedAudio)
                                 {
-                                    EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                    EntryPoint.WriteToConsole($"AbortedAudio2", 5);
                                     break;
                                 }
                             }
-                            if (AbortedAudio)
-                            {
-                                EntryPoint.WriteToConsole($"AbortedAudio2", 5);
-                                break;
-                            }
                         }
                     }
+                    if (AbortedAudio)
+                    {
+                        AbortedAudio = false;
+                    }
+                    CurrentlyPlaying = null;
+                    if (dispatchDescription.VehicleSeen != null)
+                    {
+                        dispatchDescription.VehicleSeen.HasBeenDescribedByDispatch = true;
+                    }
                 }
-                if (AbortedAudio)
+                catch (Exception ex)
                 {
-                    AbortedAudio = false;
-                }
-                CurrentlyPlaying = null;
-                if (dispatchDescription.VehicleSeen != null)
-                {
-                    dispatchDescription.VehicleSeen.HasBeenDescribedByDispatch = true;
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "PlayAudioList");
         }
@@ -1858,47 +1890,55 @@ namespace LosSantosRED.lsr
             List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
             GameFiber PlayAudioList = GameFiber.StartNew(delegate
             {
-                uint GameTimeStartedWaitingForAudio = Game.GameTime;
-                while (SecondaryAudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
+                try
                 {
-                    GameFiber.Yield();
-                }
-                if (Settings.SettingsManager.ScannerSettings.EnableAudio)
-                {
-                    foreach (string audioname in soundsToPlayer)
+                    uint GameTimeStartedWaitingForAudio = Game.GameTime;
+                    while (SecondaryAudioPlayer.IsAudioPlaying && Game.GameTime - GameTimeStartedWaitingForAudio <= 15000)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
-                        if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning && !AudioPlayer.IsAudioPlaying)
+                        GameFiber.Yield();
+                    }
+                    if (Settings.SettingsManager.ScannerSettings.EnableAudio)
+                    {
+                        foreach (string audioname in soundsToPlayer)
                         {
-                            if (Settings.SettingsManager.ScannerSettings.SetVolume)
+                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning && !AudioPlayer.IsAudioPlaying)
                             {
-                                SecondaryAudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                            }
-                            else
-                            {
-                                SecondaryAudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
-                            }
-                            while (SecondaryAudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
-                            {
-                                GameFiber.Yield();
+                                if (Settings.SettingsManager.ScannerSettings.SetVolume)
+                                {
+                                    SecondaryAudioPlayer.Play(audioname, DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                                }
+                                else
+                                {
+                                    SecondaryAudioPlayer.Play(audioname, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
+                                }
+                                while (SecondaryAudioPlayer.IsAudioPlaying && EntryPoint.ModController.IsRunning)
+                                {
+                                    GameFiber.Yield();
+                                    if (AbortedAudio)
+                                    {
+                                        EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                        break;
+                                    }
+                                    if (AudioPlayer.IsAudioPlaying)
+                                    {
+                                        EntryPoint.WriteToConsole($"AbortedAudio333", 5);
+                                        break;
+                                    }
+                                }
                                 if (AbortedAudio)
                                 {
-                                    EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                    EntryPoint.WriteToConsole($"AbortedAudio2", 5);
                                     break;
                                 }
-                                if (AudioPlayer.IsAudioPlaying)
-                                {
-                                    EntryPoint.WriteToConsole($"AbortedAudio333", 5);
-                                    break;
-                                }
-                            }
-                            if (AbortedAudio)
-                            {
-                                EntryPoint.WriteToConsole($"AbortedAudio2", 5);
-                                break;
                             }
                         }
                     }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "PlayAudioList");
         }

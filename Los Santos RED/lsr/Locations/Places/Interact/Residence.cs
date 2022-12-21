@@ -93,35 +93,43 @@ public class Residence : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.SayGreeting = false;
-                StoreCamera.Setup();
-                CreateInteractionMenu();
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
-                GenerateResidenceMenu();
-
-
-
-
-
-                //ProcessInteractionMenu();
-
-                while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                try
                 {
-                    MenuPool.ProcessMenus();
-                    GameFiber.Yield();
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.SayGreeting = false;
+                    StoreCamera.Setup();
+                    CreateInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+
+                    GenerateResidenceMenu();
+
+
+
+
+
+                    //ProcessInteractionMenu();
+
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                    EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
+
+
+                    DisposeInteractionMenu();
+                    StoreCamera.Dispose();
+
+
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
                 }
-                EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
-
-
-                DisposeInteractionMenu();
-                StoreCamera.Dispose();
-
-
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "ResidenceInteract");
         }
     }
@@ -292,28 +300,36 @@ public class Residence : InteractableLocation
         Player.ButtonPrompts.AddPrompt("ResidenceRest", "Cancel Rest", "ResidenceRest", Settings.SettingsManager.KeySettings.InteractCancel, 99);
         GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
         {
-            while (Time.IsFastForwarding)
+            try
             {
-                if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                while (Time.IsFastForwarding)
                 {
-                    Player.HealthManager.ChangeHealth(1);
+                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                    {
+                        Player.HealthManager.ChangeHealth(1);
+                    }
+                    if (Player.ButtonPrompts.IsPressed("ResidenceRest"))
+                    {
+                        Time.StopFastForwarding();
+                    }
+                    GameFiber.Yield();
                 }
-                if (Player.ButtonPrompts.IsPressed("ResidenceRest"))
+                Player.ButtonPrompts.RemovePrompts("ResidenceRest");
+                Player.IsResting = false;
+                Player.IsSleeping = false;
+                if (RentDisplayItem != null)
                 {
-                    Time.StopFastForwarding();
+                    RentDisplayItem.Description = $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
+                    RentDisplayItem.RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
                 }
-                GameFiber.Yield();
+                InteractionMenu.Visible = true;
+                KeepInteractionGoing = false;
             }
-            Player.ButtonPrompts.RemovePrompts("ResidenceRest");
-            Player.IsResting = false;
-            Player.IsSleeping = false;
-            if (RentDisplayItem != null)
+            catch (Exception ex)
             {
-                RentDisplayItem.Description = $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
-                RentDisplayItem.RightLabel = "Remaing Days: " + Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0).ToString();
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-            InteractionMenu.Visible = true;
-            KeepInteractionGoing = false;
         }, "FastForwardWatcher");
         EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT RESIDENCE", 3);
     }

@@ -41,9 +41,17 @@ public class BusRide
             {
                 GameFiber BusRideFiber = GameFiber.StartNew(delegate
                 {
-                    GameFiber.Yield();
-                    HandleRide();
-                    Player.IsRidingBus = false;
+                    try
+                    {
+                        GameFiber.Yield();
+                        HandleRide();
+                        Player.IsRidingBus = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
                 }, "BusRide");
             }
             else

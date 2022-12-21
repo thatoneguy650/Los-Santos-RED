@@ -79,11 +79,19 @@ namespace Mod
             IsPaused = false;
             GameFiber UnPauseTime = GameFiber.StartNew(delegate
             {
-                uint GameTimeStartedResettingTime = Game.GameTime;
-                while (Game.GameTime - GameTimeStartedResettingTime <= 3000)
+                try
                 {
-                    SetToStoredTime();
-                    GameFiber.Yield();
+                    uint GameTimeStartedResettingTime = Game.GameTime;
+                    while (Game.GameTime - GameTimeStartedResettingTime <= 3000)
+                    {
+                        SetToStoredTime();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "UnPauseTime");
 
@@ -156,10 +164,18 @@ namespace Mod
 
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
-                    while (IsFastForwarding)
+                    try
                     {
-                        CheckTimeInterval();
-                        GameFiber.Yield();
+                        while (IsFastForwarding)
+                        {
+                            CheckTimeInterval();
+                            GameFiber.Yield();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
                     }
                 }, "FastForwardWatcher");
             }
@@ -174,10 +190,18 @@ namespace Mod
 
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
-                    while (IsFastForwarding)
+                    try
                     {
-                        CheckTimeInterval();
-                        GameFiber.Yield();
+                        while (IsFastForwarding)
+                        {
+                            CheckTimeInterval();
+                            GameFiber.Yield();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
                     }
                 }, "FastForwardWatcher");
             }

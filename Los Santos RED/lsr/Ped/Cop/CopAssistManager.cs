@@ -117,11 +117,19 @@ public class CopAssistManager
                     IsCheatFiberRunning = true;
                     GameFiber.StartNew(delegate
                     {
-                        while (copCar.Exists() && IsCheatFiberRunning)
+                        try
                         {
-                            NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
-                            GameFiber.Sleep(100);
-                            //GameFiber.Yield();
+                            while (copCar.Exists() && IsCheatFiberRunning)
+                            {
+                                NativeFunction.Natives.SET_VEHICLE_CHEAT_POWER_INCREASE(copCar, 1.8f);
+                                GameFiber.Sleep(100);
+                                //GameFiber.Yield();
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                            EntryPoint.ModController.CrashUnload();
                         }
                     }, "cheatfiber");
                 }

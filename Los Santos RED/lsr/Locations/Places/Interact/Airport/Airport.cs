@@ -95,25 +95,33 @@ public class Airport : InteractableLocation, ILocationSetupable
 
             GameFiber.StartNew(delegate
             {
-                IsFlyingToLocation = false;
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
-                CreateInteractionMenu();
-                InteractionMenu.Visible = true;
-                SetupMenu();
-                ProcessInteractionMenu();
-                DisposeInteractionMenu();
+                try
+                {
+                    IsFlyingToLocation = false;
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
+                    CreateInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    SetupMenu();
+                    ProcessInteractionMenu();
+                    DisposeInteractionMenu();
 
-                if (IsFlyingToLocation)
-                {
-                    StoreCamera.StopImmediately();
+                    if (IsFlyingToLocation)
+                    {
+                        StoreCamera.StopImmediately();
+                    }
+                    else
+                    {
+                        StoreCamera.Dispose();
+                    }
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
                 }
-                else
+                catch (Exception ex)
                 {
-                    StoreCamera.Dispose();
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
             }, "HotelInteract");
         }
     }
@@ -375,53 +383,69 @@ public class Airport : InteractableLocation, ILocationSetupable
     {
         GameFiber.StartNew(delegate
         {
-            Game.FadeScreenOut(1500, true);
-            OnDepart();
-            destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
-            GameFiber.Sleep(1000);
-            destinationAiport.OnArrive(true);
-            Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
-            GameFiber.Sleep(3000);//do the whole shebang ehre
-            Game.FadeScreenIn(1500, true);
+            try
+            {
+                Game.FadeScreenOut(1500, true);
+                OnDepart();
+                destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
+                GameFiber.Sleep(1000);
+                destinationAiport.OnArrive(true);
+                Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
+                GameFiber.Sleep(3000);//do the whole shebang ehre
+                Game.FadeScreenIn(1500, true);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "DestinationGoTo");
     }
     private void FlyInToAirport(Airport destinationAiport, VehicleExt plane, int flightTime, float fuelSpent)
     {
         GameFiber.StartNew(delegate
         {
-            Game.FadeScreenOut(1500, true);
-            OnDepart();
-            destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
-            GameFiber.Sleep(1000);
-            destinationAiport.OnArrive(false);
-            Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
-            if (plane != null && plane.Vehicle.Exists())
+            try
             {
-                plane.Vehicle.Position = destinationAiport.AirArrivalPosition;
-                plane.Vehicle.Heading = destinationAiport.AirArrivalHeading;
-                Player.Character.WarpIntoVehicle(plane.Vehicle, -1);
-                plane.Vehicle.ApplyForce(new Vector3(0.0f, 500.0f, 0.0f), Vector3.Zero, true, true);
-                plane.Vehicle.IsEngineOn = true;
-                NativeFunction.Natives.SET_VEHICLE_FORWARD_SPEED(plane.Vehicle, 90f);
-                NativeFunction.Natives.SET_VEHICLE_ENGINE_ON(plane.Vehicle, true, true, false);
-                NativeFunction.Natives.SET_HELI_BLADES_FULL_SPEED(plane.Vehicle);
-                NativeFunction.Natives.CONTROL_LANDING_GEAR(plane.Vehicle, 3);
-                if (plane.Vehicle.FuelLevel - fuelSpent < 0.0f)
+                Game.FadeScreenOut(1500, true);
+                OnDepart();
+                destinationAiport.OnSetDestination(Player, ModItems, World, Settings, Weapons, Time, PlacesOfInterest);
+                GameFiber.Sleep(1000);
+                destinationAiport.OnArrive(false);
+                Time.SetDateTime(Time.CurrentDateTime.AddHours(flightTime));
+                if (plane != null && plane.Vehicle.Exists())
                 {
-                    plane.Vehicle.FuelLevel = 0.0f;
+                    plane.Vehicle.Position = destinationAiport.AirArrivalPosition;
+                    plane.Vehicle.Heading = destinationAiport.AirArrivalHeading;
+                    Player.Character.WarpIntoVehicle(plane.Vehicle, -1);
+                    plane.Vehicle.ApplyForce(new Vector3(0.0f, 500.0f, 0.0f), Vector3.Zero, true, true);
+                    plane.Vehicle.IsEngineOn = true;
+                    NativeFunction.Natives.SET_VEHICLE_FORWARD_SPEED(plane.Vehicle, 90f);
+                    NativeFunction.Natives.SET_VEHICLE_ENGINE_ON(plane.Vehicle, true, true, false);
+                    NativeFunction.Natives.SET_HELI_BLADES_FULL_SPEED(plane.Vehicle);
+                    NativeFunction.Natives.CONTROL_LANDING_GEAR(plane.Vehicle, 3);
+                    if (plane.Vehicle.FuelLevel - fuelSpent < 0.0f)
+                    {
+                        plane.Vehicle.FuelLevel = 0.0f;
+                    }
+                    else
+                    {
+                        plane.Vehicle.FuelLevel -= fuelSpent;
+                    }
                 }
                 else
                 {
-                    plane.Vehicle.FuelLevel -= fuelSpent;
+                    Player.Character.Position = destinationAiport.ArrivalPosition;
+                    Player.Character.Heading = destinationAiport.ArrivalHeading;
                 }
+                GameFiber.Sleep(500);//do the whole shebang ehre
+                Game.FadeScreenIn(1500, true);
             }
-            else
+            catch (Exception ex)
             {
-                Player.Character.Position = destinationAiport.ArrivalPosition;
-                Player.Character.Heading = destinationAiport.ArrivalHeading;
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-            GameFiber.Sleep(500);//do the whole shebang ehre
-            Game.FadeScreenIn(1500, true);
         }, "DestinationGoTo");
     }
     public void Setup(ICrimes crimes, INameProvideable names)

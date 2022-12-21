@@ -861,45 +861,53 @@ public class AIApprehend : ComplexTask
         CurrentSubTask = SubTask.None;
         GameFiber.StartNew(delegate
         {
-            while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
+            try
             {
-                if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
+                while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
                 {
-                    FootChaseUpdateParameters();
-                    GameFiber.Yield();
                     if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                     {
-                        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
-                        {
-                            Ped.Pedestrian.BlockPermanentEvents = true;
-                        }
-                        else
-                        {
-                            Ped.Pedestrian.BlockPermanentEvents = false;
-                        }
-                        Ped.Pedestrian.KeepTasks = true;
-                        LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
+                        FootChaseUpdateParameters();
                         GameFiber.Yield();
                         if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                         {
-                            if (OtherTarget.IsBusted)
+                            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
                             {
-                                FootChaseBusted();
-                            }
-                            else if (IsArresting)
-                            {
-                                FootChaseArresting();
+                                Ped.Pedestrian.BlockPermanentEvents = true;
                             }
                             else
                             {
-                                FootChaseAttacking();
+                                Ped.Pedestrian.BlockPermanentEvents = false;
+                            }
+                            Ped.Pedestrian.KeepTasks = true;
+                            LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
+                            GameFiber.Yield();
+                            if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
+                            {
+                                if (OtherTarget.IsBusted)
+                                {
+                                    FootChaseBusted();
+                                }
+                                else if (IsArresting)
+                                {
+                                    FootChaseArresting();
+                                }
+                                else
+                                {
+                                    FootChaseAttacking();
+                                }
                             }
                         }
                     }
+                    GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
                 }
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
+                Ped.IsRunningOwnFiber = false;
             }
-            Ped.IsRunningOwnFiber = false;
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "Run Cop Chase Logic");
     }
     private void FootChaseAttacking()

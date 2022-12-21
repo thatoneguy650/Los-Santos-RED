@@ -57,12 +57,20 @@ public class HumanShield : DynamicActivity
         {
             GameFiber.StartNew(delegate
             {
-                Setup();
-                if (!IsCancelled)
+                try
                 {
-                    TakHostage();
+                    Setup();
+                    if (!IsCancelled)
+                    {
+                        TakHostage();
+                    }
+                    Cancel();
                 }
-                Cancel();
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "Conversation");
         }
     }
@@ -78,12 +86,20 @@ public class HumanShield : DynamicActivity
         ResetVariables();
         GameFiber.StartNew(delegate
         {
-            GameFiber.Wait(3000);
-            if (Ped.Pedestrian.Exists())
+            try
             {
-                Ped.Pedestrian.CollisionIgnoredEntity = null;
+                GameFiber.Wait(3000);
+                if (Ped.Pedestrian.Exists())
+                {
+                    Ped.Pedestrian.CollisionIgnoredEntity = null;
+                }
+                //Cancel();
             }
-            //Cancel();
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "Conversation");
         
     }

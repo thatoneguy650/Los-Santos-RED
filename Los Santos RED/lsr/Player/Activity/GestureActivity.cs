@@ -3,6 +3,7 @@ using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using Rage;
 using Rage.Native;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 
@@ -50,8 +51,16 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Gesture Start: {GestureData.Name}", 5);
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                Enter();
+                try
+                {
+                    Setup();
+                    Enter();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "GestureActivity");
         }
 

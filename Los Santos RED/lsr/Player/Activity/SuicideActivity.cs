@@ -50,7 +50,15 @@ public class SuicideActivity : DynamicActivity
         Setup();
         GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
         {
-            Enter();
+            try
+            {
+                Enter();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "SuicideWatcher");
     }
     public override bool CanPerform(IActionable player)

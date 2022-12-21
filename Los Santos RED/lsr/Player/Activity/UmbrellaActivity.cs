@@ -65,8 +65,16 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Umbrella Start", 5);
             GameFiber UmbrellaWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                Enter();
+                try
+                {
+                    Setup();
+                    Enter();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "UmbrellaActivity");
         }
         public override bool CanPerform(IActionable player)

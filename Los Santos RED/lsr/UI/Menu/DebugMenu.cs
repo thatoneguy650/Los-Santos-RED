@@ -928,69 +928,77 @@ public class DebugMenu : Menu
     {
         GameFiber.StartNew(delegate
         {
-            FreeCam = new Camera(false);
-            FreeCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
-            FreeCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
-            Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
-            FreeCam.Rotation = new Rotator(r.X, r.Y, r.Z);
-            FreeCam.Active = true;
-            Game.LocalPlayer.HasControl = false;
-            //This is all adapted from https://github.com/CamxxCore/ScriptCamTool/blob/master/GTAV_ScriptCamTool/PositionSelector.cs#L59
-            while (!Game.IsKeyDownRightNow(Keys.P))
+            try
             {
-                if (Game.IsKeyDownRightNow(Keys.W))
+                FreeCam = new Camera(false);
+                FreeCam.FOV = NativeFunction.Natives.GET_GAMEPLAY_CAM_FOV<float>();
+                FreeCam.Position = NativeFunction.Natives.GET_GAMEPLAY_CAM_COORD<Vector3>();
+                Vector3 r = NativeFunction.Natives.GET_GAMEPLAY_CAM_ROT<Vector3>(2);
+                FreeCam.Rotation = new Rotator(r.X, r.Y, r.Z);
+                FreeCam.Active = true;
+                Game.LocalPlayer.HasControl = false;
+                //This is all adapted from https://github.com/CamxxCore/ScriptCamTool/blob/master/GTAV_ScriptCamTool/PositionSelector.cs#L59
+                while (!Game.IsKeyDownRightNow(Keys.P))
                 {
-                    FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
-                }
-                else if (Game.IsKeyDownRightNow(Keys.S))
-                {
-                    FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
-                }
-                if (Game.IsKeyDownRightNow(Keys.A))
-                {
-                    FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
-                }
-                else if (Game.IsKeyDownRightNow(Keys.D))
-                {
-                    FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
-                }
-                FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
-
-                NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
-
-                if (Game.IsKeyDownRightNow(Keys.O))
-                {
-                    if (FreeCamScale == 1.0f)
+                    if (Game.IsKeyDownRightNow(Keys.W))
                     {
-                        FreeCamString = "Slow";
-                        FreeCamScale = 0.25f;
+                        FreeCam.Position += NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
                     }
-                    else if (FreeCamScale == 0.25f)
+                    else if (Game.IsKeyDownRightNow(Keys.S))
                     {
-                        FreeCamString = "Super Slow";
-                        FreeCamScale = 0.05f;
+                        FreeCam.Position -= NativeHelper.GetCameraDirection(FreeCam, FreeCamScale);
                     }
-                    else
+                    if (Game.IsKeyDownRightNow(Keys.A))
                     {
-                        FreeCamString = "Regular";
-                        FreeCamScale = 1.0f;
+                        FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, -1.0f * FreeCamScale);
                     }
-                    GameFiber.Sleep(100);
-                }
+                    else if (Game.IsKeyDownRightNow(Keys.D))
+                    {
+                        FreeCam.Position = NativeHelper.GetOffsetPosition(FreeCam.Position, FreeCam.Rotation.Yaw, 1.0f * FreeCamScale);
+                    }
+                    FreeCam.Rotation += new Rotator(NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 221) * -4f, 0, NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, 220) * -5f) * FreeCamScale;
 
-                if (Game.IsKeyDownRightNow(Keys.J))
-                {
-                    Game.LocalPlayer.Character.Position = FreeCam.Position;
-                    Game.LocalPlayer.Character.Heading = FreeCam.Heading;
-                }
+                    NativeFunction.Natives.SET_FOCUS_POS_AND_VEL(FreeCam.Position.X, FreeCam.Position.Y, FreeCam.Position.Z, 0f, 0f, 0f);
 
-                //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
-                Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}~n~Press J To Move Player to Position");
-                GameFiber.Yield();
+                    if (Game.IsKeyDownRightNow(Keys.O))
+                    {
+                        if (FreeCamScale == 1.0f)
+                        {
+                            FreeCamString = "Slow";
+                            FreeCamScale = 0.25f;
+                        }
+                        else if (FreeCamScale == 0.25f)
+                        {
+                            FreeCamString = "Super Slow";
+                            FreeCamScale = 0.05f;
+                        }
+                        else
+                        {
+                            FreeCamString = "Regular";
+                            FreeCamScale = 1.0f;
+                        }
+                        GameFiber.Sleep(100);
+                    }
+
+                    if (Game.IsKeyDownRightNow(Keys.J))
+                    {
+                        Game.LocalPlayer.Character.Position = FreeCam.Position;
+                        Game.LocalPlayer.Character.Heading = FreeCam.Heading;
+                    }
+
+                    //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
+                    Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}~n~Press J To Move Player to Position");
+                    GameFiber.Yield();
+                }
+                FreeCam.Active = false;
+                Game.LocalPlayer.HasControl = true;
+                NativeFunction.Natives.CLEAR_FOCUS();
             }
-            FreeCam.Active = false;
-            Game.LocalPlayer.HasControl = true;
-            NativeFunction.Natives.CLEAR_FOCUS();
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "Run Debug Logic");
     }
     private void LogGameLocation()
@@ -1066,48 +1074,56 @@ public class DebugMenu : Menu
     {
         GameFiber.StartNew(delegate
         {
-            bool isInvince = true;
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
-            GameFiber.Yield();
-            if (coolguy.Exists())
+            try
             {
-                coolguy.BlockPermanentEvents = true;
-                coolguy.KeepTasks = true;
+                bool isInvince = true;
+                Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+                GameFiber.Yield();
+                if (coolguy.Exists())
+                {
+                    coolguy.BlockPermanentEvents = true;
+                    coolguy.KeepTasks = true;
 
-                coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-                //coolguy.IsInvincible = true;
-                //if (RandomItems.RandomPercent(30))
-                //{
-                //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-                //}
-                //else if (RandomItems.RandomPercent(30))
-                //{
-                //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
-                //}
-                coolguy.Tasks.FightAgainstClosestHatedTarget(250f,-1);
-                PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
-                pedExt.WasEverSetPersistent = true;
-                World.Pedestrians.AddEntity(pedExt);
-            }
-            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
-            {
-                Game.DisplayHelp($"Attackers Spawned! ~n~P to Delete ~n~O to Flee~n~L to Toggle Invincible");
-                if (Game.IsKeyDownRightNow(Keys.L))
-                {
-                    isInvince = !isInvince;
-                    coolguy.IsInvincible = isInvince;
-                    Game.DisplaySubtitle($"isInvince {isInvince}");
+                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+                    //coolguy.IsInvincible = true;
+                    //if (RandomItems.RandomPercent(30))
+                    //{
+                    //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
+                    //}
+                    //else if (RandomItems.RandomPercent(30))
+                    //{
+                    //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                    //}
+                    coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
+                    PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
+                    pedExt.WasEverSetPersistent = true;
+                    World.Pedestrians.AddEntity(pedExt);
                 }
-                if (Game.IsKeyDownRightNow(Keys.O))
+                while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
                 {
-                    coolguy.Tasks.Clear();
-                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                    Game.DisplayHelp($"Attackers Spawned! ~n~P to Delete ~n~O to Flee~n~L to Toggle Invincible");
+                    if (Game.IsKeyDownRightNow(Keys.L))
+                    {
+                        isInvince = !isInvince;
+                        coolguy.IsInvincible = isInvince;
+                        Game.DisplaySubtitle($"isInvince {isInvince}");
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.O))
+                    {
+                        coolguy.Tasks.Clear();
+                        coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                    }
+                    GameFiber.Sleep(25);
                 }
-                GameFiber.Sleep(25);
+                if (coolguy.Exists())
+                {
+                    coolguy.Delete();
+                }
             }
-            if (coolguy.Exists())
+            catch (Exception ex)
             {
-                coolguy.Delete();
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
         }, "Run Debug Logic");
     }
@@ -1136,47 +1152,54 @@ public class DebugMenu : Menu
     {
         GameFiber.StartNew(delegate
         {
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
-            GameFiber.Yield();
-            if (coolguy.Exists())
+            try
             {
-                coolguy.BlockPermanentEvents = true;
-                coolguy.KeepTasks = true;
-                //coolguy.IsInvincible = true;
-                PedExt pedExt = new PedExt(coolguy, Settings,true,false,false,false,"Test1", Crimes, Weapons, "CRIMINAL", World, true);
-                pedExt.WasEverSetPersistent = true;
-                World.Pedestrians.AddEntity(pedExt);
-                NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe
-                NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", coolguy, false);
+                Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
+                GameFiber.Yield();
+                if (coolguy.Exists())
+                {
+                    coolguy.BlockPermanentEvents = true;
+                    coolguy.KeepTasks = true;
+                    //coolguy.IsInvincible = true;
+                    PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
+                    pedExt.WasEverSetPersistent = true;
+                    World.Pedestrians.AddEntity(pedExt);
+                    NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe
+                    NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", coolguy, false);
 
-                if (RandomItems.RandomPercent(30))
-                {
-                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                    if (RandomItems.RandomPercent(30))
+                    {
+                        coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
+                    }
+                    else if (RandomItems.RandomPercent(30))
+                    {
+                        coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
+                    }
+                    //coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
+                    coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
                 }
-                else if (RandomItems.RandomPercent(30))
+                while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
                 {
-                    coolguy.Inventory.GiveNewWeapon(WeaponHash.Knife, 1, true);
+                    Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
+
+
+                    if (Game.IsKeyDownRightNow(Keys.O))
+                    {
+                        coolguy.Tasks.Clear();
+                        coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
+                    }
+                    GameFiber.Sleep(25);
                 }
-                //coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
-                coolguy.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                if (coolguy.Exists())
+                {
+                    coolguy.Delete();
+                }
             }
-            while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
+            catch (Exception ex)
             {
-                 Game.DisplayHelp($"Attackers Spawned! Press P to Delete O to Flee");
-
-
-                if (Game.IsKeyDownRightNow(Keys.O))
-                {
-                    coolguy.Tasks.Clear();
-                    coolguy.Tasks.Flee(Game.LocalPlayer.Character, 1000f, -1);
-                }
-                GameFiber.Sleep(25);
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-            if (coolguy.Exists())
-            {
-                coolguy.Delete();
-            }
-
         }, "Run Debug Logic");
     }
     private void PrintPersistentEntities()
@@ -1331,41 +1354,49 @@ public class DebugMenu : Menu
 
                 GameFiber.StartNew(delegate
                 {
-                    while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
+                    try
                     {
-                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        while (!Game.IsKeyDownRightNow(Keys.Space) && SmokedItem.Exists())
                         {
-                            AttachItem(SmokedItem, boneName, Offset, Rotation);
-                            GameTimeLastAttached = Game.GameTime;
-                        }
+                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                            {
+                                AttachItem(SmokedItem, boneName, Offset, Rotation);
+                                GameTimeLastAttached = Game.GameTime;
+                            }
 
 
-                        if (Game.IsKeyDown(Keys.B))
-                        {
-                            EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
-                            GameFiber.Sleep(500);
+                            if (Game.IsKeyDown(Keys.B))
+                            {
+                                EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                GameFiber.Sleep(500);
+                            }
+                            if (Game.IsKeyDown(Keys.N))
+                            {
+                                isPrecise = !isPrecise;
+                                GameFiber.Sleep(500);
+                            }
+                            if (Game.IsKeyDown(Keys.D0))
+                            {
+                                isRunning = !isRunning;
+                                NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
+                                GameFiber.Sleep(500);
+                            }
+                            float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, dictionary, animation);
+                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise} ~n~Press 0 Pause{isRunning}");
+                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                            //Game.DisplaySubtitle($"Current Animation Time {AnimationTime}");
+                            GameFiber.Yield();
                         }
-                        if (Game.IsKeyDown(Keys.N))
+
+                        if (SmokedItem.Exists())
                         {
-                            isPrecise = !isPrecise;
-                            GameFiber.Sleep(500);
+                            SmokedItem.Delete();
                         }
-                        if (Game.IsKeyDown(Keys.D0))
-                        {
-                            isRunning = !isRunning;
-                            NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, dictionary, animation, isRunning ? 1.0f : 0.0f);
-                            GameFiber.Sleep(500);
-                        }
-                        float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, dictionary, animation);
-                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise} ~n~Press 0 Pause{isRunning}");
-                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
-                        //Game.DisplaySubtitle($"Current Animation Time {AnimationTime}");
-                        GameFiber.Yield();
                     }
-
-                    if (SmokedItem.Exists())
+                    catch (Exception ex)
                     {
-                        SmokedItem.Delete();
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
                     }
                 }, "Run Debug Logic");
             }
@@ -1479,40 +1510,48 @@ public class DebugMenu : Menu
 
                     GameFiber.StartNew(delegate
                     {
-                        while (!Game.IsKeyDownRightNow(Keys.Space))
+                        try
                         {
-                            uint currentWeapon;
-                            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Game.LocalPlayer.Character, out currentWeapon, true);
-                            if (currentWeapon != WeaponHash)
+                            while (!Game.IsKeyDownRightNow(Keys.Space))
                             {
-                                break;
+                                uint currentWeapon;
+                                NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Game.LocalPlayer.Character, out currentWeapon, true);
+                                if (currentWeapon != WeaponHash)
+                                {
+                                    break;
+                                }
+                                if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                                {
+                                    AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                                    GameTimeLastAttached = Game.GameTime;
+                                }
+                                if (Game.IsKeyDown(Keys.B))
+                                {
+                                    EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                    GameFiber.Sleep(500);
+                                }
+                                if (Game.IsKeyDown(Keys.N))
+                                {
+                                    isPrecise = !isPrecise;
+                                    GameFiber.Sleep(500);
+                                }
+                                Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                                Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                                GameFiber.Yield();
                             }
-                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                            if (weaponObject.Exists())
                             {
-                                AttachItem(weaponObject, HandBoneName, Offset, Rotation);
-                                GameTimeLastAttached = Game.GameTime;
+                                weaponObject.Delete();
                             }
-                            if (Game.IsKeyDown(Keys.B))
+                            if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
                             {
-                                EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
-                                GameFiber.Sleep(500);
+                                Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = true;
                             }
-                            if (Game.IsKeyDown(Keys.N))
-                            {
-                                isPrecise = !isPrecise;
-                                GameFiber.Sleep(500);
-                            }
-                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
-                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
-                            GameFiber.Yield();
                         }
-                        if (weaponObject.Exists())
+                        catch (Exception ex)
                         {
-                            weaponObject.Delete();
-                        }
-                        if (Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.Exists())
-                        {
-                            Game.LocalPlayer.Character.Inventory.EquippedWeaponObject.IsVisible = true;
+                            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                            EntryPoint.ModController.CrashUnload();
                         }
                     }, "Run Debug Logic");
                 }
@@ -1556,36 +1595,44 @@ public class DebugMenu : Menu
                 LoopedParticle particle = new LoopedParticle(particleGroupName, particleName, weaponObject, new Vector3(0.0f, 0.0f, 0f), Rotator.Zero, 1.5f);
                 GameFiber.StartNew(delegate
                 {
-                    while (!Game.IsKeyDownRightNow(Keys.Space))
+                    try
                     {
-                        if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                        while (!Game.IsKeyDownRightNow(Keys.Space))
+                        {
+                            if (Game.GameTime - GameTimeLastAttached >= 100 && CheckAttachmentkeys())
+                            {
+                                particle.Stop();
+                                particle = new LoopedParticle(particleGroupName, particleName, weaponObject, Offset, Rotation, 1.5f);
+                                //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
+                                GameTimeLastAttached = Game.GameTime;
+                            }
+                            if (Game.IsKeyDown(Keys.B))
+                            {
+                                EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                GameFiber.Sleep(500);
+                            }
+                            if (Game.IsKeyDown(Keys.N))
+                            {
+                                isPrecise = !isPrecise;
+                                GameFiber.Sleep(500);
+                            }
+                            Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
+                            Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
+                            GameFiber.Yield();
+                        }
+                        if (weaponObject.Exists())
+                        {
+                            weaponObject.Delete();
+                        }
+                        if (particle != null)
                         {
                             particle.Stop();
-                            particle = new LoopedParticle(particleGroupName, particleName, weaponObject, Offset, Rotation, 1.5f);
-                            //AttachItem(weaponObject, HandBoneName, Offset, Rotation);
-                            GameTimeLastAttached = Game.GameTime;
                         }
-                        if (Game.IsKeyDown(Keys.B))
-                        {
-                            EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
-                            GameFiber.Sleep(500);
-                        }
-                        if (Game.IsKeyDown(Keys.N))
-                        {
-                            isPrecise = !isPrecise;
-                            GameFiber.Sleep(500);
-                        }
-                        Game.DisplaySubtitle($"{Offset.X}f,{Offset.Y}f,{Offset.Z}f -- {Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f");
-                        Game.DisplayHelp($"Press SPACE to Stop~n~Press T-P to Increase~n~Press G=; to Decrease~n~Press B to print~n~Press N Toggle Precise {isPrecise}");
-                        GameFiber.Yield();
                     }
-                    if (weaponObject.Exists())
+                    catch (Exception ex)
                     {
-                        weaponObject.Delete();
-                    }
-                    if (particle != null)
-                    {
-                        particle.Stop();
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
                     }
                 }, "Run Debug Logic");
             }

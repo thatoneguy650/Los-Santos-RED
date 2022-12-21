@@ -84,95 +84,103 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             CanInteract = false;
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.SayGreeting = false;
-
-                StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
-                StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
-
-                StoreCamera.Setup();
-
-
-                CreateInteractionMenu();
-                if(Player.IsWanted)
+                try
                 {
-                    LayLowMenuItem = new UIMenuItem("Lay Low", "Wait out the cops.");
-                    InteractionMenu.AddItem(LayLowMenuItem);
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing || Player.IsWanted)
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.SayGreeting = false;
+
+                    StoreCamera.ItemPreviewHeading = ItemPreviewHeading;
+                    StoreCamera.ItemPreviewPosition = ItemPreviewPosition;
+
+                    StoreCamera.Setup();
+
+
+                    CreateInteractionMenu();
+                    if (Player.IsWanted)
                     {
-                        MenuPool.ProcessMenus();
-                        GameFiber.Yield();
+                        LayLowMenuItem = new UIMenuItem("Lay Low", "Wait out the cops.");
+                        InteractionMenu.AddItem(LayLowMenuItem);
+                        InteractionMenu.Visible = true;
+                        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing || Player.IsWanted)
+                        {
+                            MenuPool.ProcessMenus();
+                            GameFiber.Yield();
+                        }
+                        InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
                     }
-                    InteractionMenu.OnItemSelect -= InteractionMenu_OnItemSelect;
+
+
+
+                    CreateInteractionMenu();
+                    if (Player.IsNotWanted)
+                    {
+                        KeepInteractionGoing = false;
+                        Player.IsTransacting = true;
+                        Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+
+
+                        if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == GangID)
+                        {
+                            Transaction.IsFreeVehicles = true;
+                            Transaction.IsFreeWeapons = true;
+                        }
+
+                        Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                        Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
+                        Transaction.ItemPreviewPosition = ItemPreviewPosition;
+                        Transaction.ItemPreviewHeading = ItemPreviewHeading;
+
+                        PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
+                        if (ExpectedMoney > 0 && pt.IsReadyForPayment)
+                        {
+                            dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
+                            InteractionMenu.AddItem(dropoffCash);
+                        }
+                        else if (ExpectedItem != null && pt.IsReadyForPayment)
+                        {
+                            dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
+                            InteractionMenu.AddItem(dropoffItem);
+                        }
+                        else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
+                        {
+                            completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
+                            InteractionMenu.AddItem(completeTask);
+                        }
+                        RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+
+
+                        if (isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
+                        {
+                            dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
+                            InteractionMenu.AddItem(dropoffKick);
+                        }
+
+
+
+                        InteractionMenu.Visible = true;
+                        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                        {
+                            MenuPool.ProcessMenus();
+                            Transaction?.PurchaseMenu?.Update();
+                            Transaction?.SellMenu?.Update();
+                            GameFiber.Yield();
+                        }
+                        Transaction.DisposeTransactionMenu();
+                        Player.IsTransacting = false;
+                    }
+                    DisposeInteractionMenu();
+                    StoreCamera.Dispose();
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
                 }
-
-
-
-                CreateInteractionMenu();
-                if (Player.IsNotWanted)
+                catch (Exception ex)
                 {
-                    KeepInteractionGoing = false;
-                    Player.IsTransacting = true;
-                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
-
-                    if(Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == GangID)
-                    {
-                        Transaction.IsFreeVehicles = true;
-                        Transaction.IsFreeWeapons = true;
-                    }
-
-                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                    Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
-                    Transaction.ItemPreviewPosition = ItemPreviewPosition;
-                    Transaction.ItemPreviewHeading = ItemPreviewHeading;
-
-                    PlayerTask pt = Player.PlayerTasks.GetTask(AssociatedGang.ContactName);
-                    if (ExpectedMoney > 0 && pt.IsReadyForPayment)
-                    {
-                        dropoffCash = new UIMenuItem("Drop Cash", "Drop off the expected amount of cash.") { RightLabel = $"${ExpectedMoney}" };
-                        InteractionMenu.AddItem(dropoffCash);
-                    }
-                    else if (ExpectedItem != null && pt.IsReadyForPayment)
-                    {
-                        dropoffItem = new UIMenuItem($"Drop off item", $"Drop off {ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s).") { RightLabel = $"{ExpectedItem.Name} - {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s)" };
-                        InteractionMenu.AddItem(dropoffItem);
-                    }
-                    else if (pt != null && pt.IsActive && pt.IsReadyForPayment)
-                    {
-                        completeTask = new UIMenuItem($"Collect Money", $"Inform the higher ups that you have completed the assigment and collect your payment.") { RightLabel = $"${pt.PaymentAmountOnCompletion}" };
-                        InteractionMenu.AddItem(completeTask);
-                    }
-                    RestMenuItem = new UIMenuNumericScrollerItem<int>("Relax", $"Relax at the {AssociatedGang?.DenName}. Recover ~g~health~s~ and increase ~s~rep~s~ a small amount. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
-
-
-                    if(isPlayerMember && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
-                    {
-                        dropoffKick = new UIMenuItem("Pay Dues", "Drop of your member dues.") { RightLabel = $"${player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount}" };
-                        InteractionMenu.AddItem(dropoffKick);
-                    }
-
-
-
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
-                    {
-                        MenuPool.ProcessMenus();
-                        Transaction?.PurchaseMenu?.Update();
-                        Transaction?.SellMenu?.Update();
-                        GameFiber.Yield();
-                    }
-                    Transaction.DisposeTransactionMenu();
-                    Player.IsTransacting = false;
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                DisposeInteractionMenu();
-                StoreCamera.Dispose();
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
             }, "GangDenInteract");       
         }
     }

@@ -311,37 +311,45 @@ public class Weather
         GameFiber.Yield();
         GameFiber PlayAudioList = GameFiber.StartNew(delegate
         {
-            GameFiber.Yield();
-            while (AudioPlayer.IsAudioPlaying)
+            try
             {
                 GameFiber.Yield();
-            }
-            foreach (string audioname in AudioToPlay)
-            {
-                if(Player.IsWanted || Player.Investigation.IsActive)
-                {
-                    if(isPlayingAudio)
-                    {
-                        AudioPlayer.Abort();
-                    }
-                    break;
-                }
-                if (Settings.SettingsManager.ScannerSettings.SetVolume)
-                {
-                    isPlayingAudio = true;
-                    AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, true, false);
-                }
-                else
-                {
-                    isPlayingAudio = true;
-                    AudioPlayer.Play(audioname, true, false);
-                }
                 while (AudioPlayer.IsAudioPlaying)
                 {
                     GameFiber.Yield();
                 }
+                foreach (string audioname in AudioToPlay)
+                {
+                    if (Player.IsWanted || Player.Investigation.IsActive)
+                    {
+                        if (isPlayingAudio)
+                        {
+                            AudioPlayer.Abort();
+                        }
+                        break;
+                    }
+                    if (Settings.SettingsManager.ScannerSettings.SetVolume)
+                    {
+                        isPlayingAudio = true;
+                        AudioPlayer.Play(audioname, Settings.SettingsManager.ScannerSettings.AudioVolume, true, false);
+                    }
+                    else
+                    {
+                        isPlayingAudio = true;
+                        AudioPlayer.Play(audioname, true, false);
+                    }
+                    while (AudioPlayer.IsAudioPlaying)
+                    {
+                        GameFiber.Yield();
+                    }
+                }
+                isPlayingAudio = false;
             }
-            isPlayingAudio = false;
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "PlayAudioList");
     }
     private void RemoveAllNotifications()
@@ -387,22 +395,30 @@ public class Weather
                 NativeFunction.Natives.SET_VEH_RADIO_STATION(Game.LocalPlayer.Character.CurrentVehicle, "OFF");
                 GameFiber ChangeRadioBack = GameFiber.StartNew(delegate
                 {
-                    GameFiber.Sleep(2000);
-                    while (AudioPlayer.IsAudioPlaying)
-                    {
-                        GameFiber.Sleep(100);
-                    }
                     try
                     {
-                        if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                        GameFiber.Sleep(2000);
+                        while (AudioPlayer.IsAudioPlaying)
                         {
-                            NativeFunction.Natives.SET_VEH_RADIO_STATION(Game.LocalPlayer.Character.CurrentVehicle, RadioStationLastTuned);
+                            GameFiber.Sleep(100);
+                        }
+                        try
+                        {
+                            if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
+                            {
+                                NativeFunction.Natives.SET_VEH_RADIO_STATION(Game.LocalPlayer.Character.CurrentVehicle, RadioStationLastTuned);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Game.DisplayNotification("ERROR Changing radio back");
+                            EntryPoint.WriteToConsole($"ERROR Changing radio back, {ex.Message} {ex.StackTrace}", 0);
                         }
                     }
                     catch (Exception ex)
                     {
-                        Game.DisplayNotification("ERROR Changing radio back");
-                        EntryPoint.WriteToConsole($"ERROR Changing radio back, {ex.Message} {ex.StackTrace}", 0);
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
                     }
                 }, "ChangeRadioBack");
             }

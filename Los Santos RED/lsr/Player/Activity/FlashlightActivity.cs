@@ -127,8 +127,16 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Flashlight Start", 5);
             GameFiber FlashlightWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                Enter();
+                try
+                {
+                    Setup();
+                    Enter();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "FlashlightActivity");
         }
 

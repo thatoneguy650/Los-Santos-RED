@@ -73,9 +73,17 @@ namespace LosSantosRED.lsr.Player
             Setup();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
-                EntryPoint.WriteToConsole("Sitting Activity Enter");
-                Enter();
-                EntryPoint.WriteToConsole("Sitting Activity Final");
+                try
+                {
+                    EntryPoint.WriteToConsole("Sitting Activity Enter");
+                    Enter();
+                    EntryPoint.WriteToConsole("Sitting Activity Final");
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "Sitting");
         }
         public override bool CanPerform(IActionable player)

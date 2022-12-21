@@ -156,9 +156,11 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\TransactionInteraction.cs" />
     <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
+    <Compile Include="lsr\Ped\PedInventory.cs" />
     <Compile Include="lsr\Player\Activity\WaveHandsActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\CorruptCopContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\EmergencyServicesContact.cs" />
@@ -830,6 +832,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lsr\Crimes\" />
+    <Folder Include="lsr\Data\Peds\Clothes\" />
     <Folder Include="lsr\Old\" />
     <Folder Include="lsr\UI\Pause Menu\Tabs\GangTab\" />
   </ItemGroup>

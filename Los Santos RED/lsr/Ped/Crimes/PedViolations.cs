@@ -344,23 +344,31 @@ public class PedViolations
             GameFiber.Yield();//TR Yield add 1
             GameFiber.StartNew(delegate
             {
-                IsShootingCheckerActive = true;
-                //EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
-                uint GameTimeLastShot = 0;
-                while (PedExt.Pedestrian.Exists() && IsShootingCheckerActive)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
+                try
                 {
-                    if (PedExt.Pedestrian.IsShooting)
+                    IsShootingCheckerActive = true;
+                    //EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
+                    uint GameTimeLastShot = 0;
+                    while (PedExt.Pedestrian.Exists() && IsShootingCheckerActive)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
                     {
-                        IsShooting = true;
-                        GameTimeLastShot = Game.GameTime;
+                        if (PedExt.Pedestrian.IsShooting)
+                        {
+                            IsShooting = true;
+                            GameTimeLastShot = Game.GameTime;
+                        }
+                        else if (Game.GameTime - GameTimeLastShot >= 5000)
+                        {
+                            IsShooting = false;
+                        }
+                        GameFiber.Yield();
                     }
-                    else if (Game.GameTime - GameTimeLastShot >= 5000)
-                    {
-                        IsShooting = false;
-                    }
-                    GameFiber.Yield();
+                    IsShootingCheckerActive = false;
                 }
-                IsShootingCheckerActive = false;
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "Ped Shooting Checker");
         }
     }

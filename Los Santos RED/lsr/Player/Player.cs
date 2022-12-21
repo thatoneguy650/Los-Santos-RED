@@ -452,10 +452,18 @@ namespace Mod
             WeaponEquipment.Setup();
             GameFiber.StartNew(delegate
             {
-                while (isActive)
+                try
                 {
-                    CellPhone.Update();
-                    GameFiber.Yield();
+                    while (isActive)
+                    {
+                        CellPhone.Update();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "CellPhone");
             //AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
@@ -1000,13 +1008,21 @@ namespace Mod
             {
                 GameFiber SpeedWatcher = GameFiber.StartNew(delegate
                 {
-                    isCheckingExcessSpeed = true;
-                    GameFiber.Sleep(5000);
-                    if (isExcessiveSpeed)
+                    try
                     {
-                        Scanner.OnExcessiveSpeed();
+                        isCheckingExcessSpeed = true;
+                        GameFiber.Sleep(5000);
+                        if (isExcessiveSpeed)
+                        {
+                            Scanner.OnExcessiveSpeed();
+                        }
+                        isCheckingExcessSpeed = false;
                     }
-                    isCheckingExcessSpeed = false;
+                    catch (Exception ex)
+                    {
+                        EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                        EntryPoint.ModController.CrashUnload();
+                    }
                 }, "FastForwardWatcher");
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);

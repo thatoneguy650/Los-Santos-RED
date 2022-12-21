@@ -114,7 +114,15 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Binoculars Start", 5);
             GameFiber BinocWatcher = GameFiber.StartNew(delegate
             {
-                Enter();
+                try
+                {
+                    Enter();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "BinocWatcher");
         }
 

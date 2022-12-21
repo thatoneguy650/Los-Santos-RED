@@ -60,21 +60,29 @@ public class Hotel : InteractableLocation
             CanInteract = false;
             GameFiber.StartNew(delegate
             {
-                HotelCamera = new LocationCamera(this, Player);
-                HotelCamera.Setup();
-                CreateInteractionMenu();
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                GenerateHotelMenu();
-                while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                try
                 {
-                    MenuPool.ProcessMenus();
-                    GameFiber.Yield();
+                    HotelCamera = new LocationCamera(this, Player);
+                    HotelCamera.Setup();
+                    CreateInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    GenerateHotelMenu();
+                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                    DisposeInteractionMenu();
+                    HotelCamera.Dispose();
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
                 }
-                DisposeInteractionMenu();
-                HotelCamera.Dispose();
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "HotelInteract");
         }
     }

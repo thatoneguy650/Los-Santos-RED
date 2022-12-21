@@ -94,7 +94,15 @@ namespace LosSantosRED.lsr.Player
             Setup();
             GameFiber SmokingWatcher = GameFiber.StartNew(delegate
             {
-                Enter();
+                try
+                {
+                    Enter();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "SmokingWatcher");
         }
         public override bool CanPerform(IActionable player)

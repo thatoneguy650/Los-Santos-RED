@@ -53,14 +53,22 @@ public class TaxiDropOff
             }
             GameFiber.StartNew(delegate
             {
-                GameFiber.Sleep(15000);
-                if (spawnedDriver != null && spawnedDriver.Pedestrian.Exists())
+                try
                 {
-                    spawnedDriver.Pedestrian.IsPersistent = false;
+                    GameFiber.Sleep(15000);
+                    if (spawnedDriver != null && spawnedDriver.Pedestrian.Exists())
+                    {
+                        spawnedDriver.Pedestrian.IsPersistent = false;
+                    }
+                    if (spawnedTaxi != null && spawnedTaxi.Vehicle.Exists())
+                    {
+                        spawnedTaxi.Vehicle.IsPersistent = false;
+                    }
                 }
-                if (spawnedTaxi != null && spawnedTaxi.Vehicle.Exists())
+                catch (Exception ex)
                 {
-                    spawnedTaxi.Vehicle.IsPersistent = false;
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "HotelInteract");
         }

@@ -187,7 +187,15 @@ public class CameraControl
         {
             GameFiber CameraWatcher = GameFiber.StartNew(delegate
             {
-                FinishReturn();
+                try
+                { 
+                    FinishReturn();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "CameraWatcher");
         }
         

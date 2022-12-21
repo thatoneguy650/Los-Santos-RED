@@ -54,15 +54,23 @@ public class DeadDrop : InteractableLocation
         {
             GameFiber.StartNew(delegate
             {
-                if (IsDropOff)
-                {
-                    DoDropOff(Player);
+                try
+                { 
+                    if (IsDropOff)
+                    {
+                        DoDropOff(Player);
+                    }
+                    else
+                    {
+                        DoPickup(Player);
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    DoPickup(Player);
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                
+
             }, "DeadDropLoop");
         }
         //base.OnInteract(player);

@@ -56,6 +56,7 @@ public class FaceFeature
 
         ChangeAmount = new UIMenuNumericScrollerItem<float>("Scale Amount", "How much each increment will increase or decrease the amount", 0.01f, 0.5f, 0.01f);
         ChangeAmount.Value = 0.1f;
+        ChangeAmount.Formatter = v => v.ToString("P0");
         ChangeAmount.IndexChanged += (sender, oldIndex, newIndex) =>
         {
             faceFeatureScale = ChangeAmount.Value;
@@ -65,6 +66,7 @@ public class FaceFeature
 
         FeatureMenu = new UIMenuNumericScrollerItem<float>(Name, "Set the face feature",RangeLow, RangeHigh, faceFeatureScale);
         FeatureMenu.Value = 0.0f;
+        FeatureMenu.Formatter = v => v.ToString("P0");
         FeatureMenu.Activated += (sender, e) =>
         {
             OnScaleItemChanged(FeatureMenu.Value);

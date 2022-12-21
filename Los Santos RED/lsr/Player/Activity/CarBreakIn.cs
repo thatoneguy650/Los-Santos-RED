@@ -36,22 +36,30 @@ public class CarBreakIn
             WereWindowsIntact = NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle);
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
-                GameFiber.Yield();
-                while (Game.LocalPlayer.Character.IsGettingIntoVehicle)
+                try
                 {
-                    if(!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
-                    {
-                        if (Settings.SettingsManager.VehicleSettings.InjureOnWindowBreak)
-                        {
-                            Player.Character.Health -= 5;
-                        }
-                        HasBrokenWindow = true;
-                        TargetVehicle.AlarmTimeLeft = new TimeSpan(0, 0, 30);
-                    }
                     GameFiber.Yield();
+                    while (Game.LocalPlayer.Character.IsGettingIntoVehicle)
+                    {
+                        if (!HasBrokenWindow && WereWindowsIntact && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", TargetVehicle))
+                        {
+                            if (Settings.SettingsManager.VehicleSettings.InjureOnWindowBreak)
+                            {
+                                Player.Character.Health -= 5;
+                            }
+                            HasBrokenWindow = true;
+                            TargetVehicle.AlarmTimeLeft = new TimeSpan(0, 0, 30);
+                        }
+                        GameFiber.Yield();
+                    }
+                    Player.IsCarJacking = false;
+                    EntryPoint.WriteToConsole("PLAYER EVENT: CarBreakIn End", 3);
                 }
-                Player.IsCarJacking = false;
-                EntryPoint.WriteToConsole("PLAYER EVENT: CarBreakIn End", 3);
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "CarBreakIn");
         }
         catch (Exception e)

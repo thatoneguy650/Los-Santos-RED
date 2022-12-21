@@ -63,11 +63,19 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
 
         GameFiber.StartNew(delegate
         {
-            while (MenuPool.IsAnyMenuOpen())
+            try
             {
-                GameFiber.Yield();
+                while (MenuPool.IsAnyMenuOpen())
+                {
+                    GameFiber.Yield();
+                }
+                Player.CellPhone.Close(250);
             }
-            Player.CellPhone.Close(250);
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
         }, "CellPhone");
     }
     public void Update()

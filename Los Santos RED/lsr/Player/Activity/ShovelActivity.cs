@@ -87,27 +87,35 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Shovel Start", 5);
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
-                Setup();
-                meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem);
-                meleeWeaponAlias.Start();
-                Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
-                while (!IsCancelled)
+                try
                 {
-                    if (Player.ButtonPrompts.IsPressed("ShovelDig"))
+                    Setup();
+                    meleeWeaponAlias = new MeleeWeaponAlias(Player, Settings, ShovelItem);
+                    meleeWeaponAlias.Start();
+                    Player.ButtonPrompts.AddPrompt("Shovel", "Dig Here", "ShovelDig", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 12);
+                    while (!IsCancelled)
                     {
-                        meleeWeaponAlias.IsCancelled = true;
-                        meleeWeaponAlias.Dispose();
-                        StartShovelling();
+                        if (Player.ButtonPrompts.IsPressed("ShovelDig"))
+                        {
+                            meleeWeaponAlias.IsCancelled = true;
+                            meleeWeaponAlias.Dispose();
+                            StartShovelling();
+                        }
+                        meleeWeaponAlias.Update();
+                        if (meleeWeaponAlias.IsCancelled)
+                        {
+                            meleeWeaponAlias.Dispose();
+                            break;
+                        }
+                        GameFiber.Yield();
                     }
-                    meleeWeaponAlias.Update();
-                    if(meleeWeaponAlias.IsCancelled)
-                    {
-                        meleeWeaponAlias.Dispose();
-                        break;
-                    }
-                    GameFiber.Yield();
+                    Dispose();
                 }
-                Dispose();
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "ShovelActivity");
         }
         public override bool CanPerform(IActionable player)

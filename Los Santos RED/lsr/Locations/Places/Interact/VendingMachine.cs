@@ -71,37 +71,44 @@ public class VendingMachine : InteractableLocation
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
-
-                NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
-                GetPropEntry();
-                if (!MoveToMachine())
+                try
                 {
-                    EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER", 5);
+                    NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
+                    GetPropEntry();
+                    if (!MoveToMachine())
+                    {
+                        EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER", 5);
+                        FullDispose();
+                    }
+
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+
+                    Transaction.PreviewItems = false;
+
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    Transaction.ProcessTransactionMenu();
+
+
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
                     FullDispose();
+
+                    //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+                    //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    Player.IsTransacting = false;
+                    CanInteract = true;
                 }
-
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
-                Transaction.PreviewItems = false;
-
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
-
-
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
-                FullDispose();
-
-                //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-                //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "GangDenInteract");
         }
     }

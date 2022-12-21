@@ -163,45 +163,52 @@ public class Respawning// : IRespawning
         bookingActivity.Start();
         GameFiber.StartNew(delegate
         {
-            while(bookingActivity.IsActive)
+            try
             {
-                GameFiber.Yield();
-            }
+                while (bookingActivity.IsActive)
+                {
+                    GameFiber.Yield();
+                }
 
-            if (CurrentPlayer.IsArrested && EntryPoint.ModController.IsRunning)//if you are still arrested after the booking, do the standard police station respawn
+                if (CurrentPlayer.IsArrested && EntryPoint.ModController.IsRunning)//if you are still arrested after the booking, do the standard police station respawn
+                {
+                    FadeOut();
+                    if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
+                    {
+                        CheckWeapons();
+                    }
+                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true);//if you pass clear weapons here it will just remover everything anwyays
+                    CurrentPlayer.PlayerTasks.OnStandardRespawn();
+                    if (respawnableLocation == null)
+                    {
+                        List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
+                        PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
+                        PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
+                        respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
+                    }
+                    SetPlayerAtLocation(respawnableLocation);
+                    if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
+                    {
+                        RemoveIllicitInventoryItems();
+                    }
+                    Time.SetDateTime(BailPostingTime);
+                    GameFiber.Sleep(2000);
+                    CurrentPlayer.HumanState.SetRandom();
+                    FadeIn();
+                    if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
+                    {
+                        SetBailFee(respawnableLocation.Name, BailFee);
+                    }
+                    GameTimeLastSurrenderedToPolice = Game.GameTime;
+
+                }
+
+            }
+            catch (Exception ex)
             {
-                FadeOut();
-                if (Settings.SettingsManager.RespawnSettings.RemoveWeaponsOnSurrender)
-                {
-                    CheckWeapons();
-                }
-                ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true);//if you pass clear weapons here it will just remover everything anwyays
-                CurrentPlayer.PlayerTasks.OnStandardRespawn();
-                if (respawnableLocation == null)
-                {
-                    List<ILocationRespawnable> PossibleLocations = new List<ILocationRespawnable>();
-                    PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.PoliceStations);
-                    PossibleLocations.AddRange(PlacesOfInterest.PossibleLocations.Prisons);
-                    respawnableLocation = PossibleLocations.OrderBy(x => Game.LocalPlayer.Character.Position.DistanceTo2D(x.EntrancePosition)).FirstOrDefault();
-                }
-                SetPlayerAtLocation(respawnableLocation);
-                if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
-                {
-                    RemoveIllicitInventoryItems();
-                }
-                Time.SetDateTime(BailPostingTime);
-                GameFiber.Sleep(2000);
-                CurrentPlayer.HumanState.SetRandom();
-                FadeIn();
-                if (Settings.SettingsManager.RespawnSettings.DeductBailFee)
-                {
-                    SetBailFee(respawnableLocation.Name, BailFee);
-                }
-                GameTimeLastSurrenderedToPolice = Game.GameTime;
-
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
-
-
         }, "Booking");
     }
     public bool TalkOutOfTicket()

@@ -68,32 +68,40 @@ public class GunStore : InteractableLocation
             Player.IsTransacting = true;
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.SayGreeting = false;
-                StoreCamera.Setup();
-
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
-
-                if (ContactName == StaticStrings.UndergroundGunsContactName)
+                try
                 {
-                    Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
-                    player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.SayGreeting = false;
+                    StoreCamera.Setup();
+
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    Transaction.ProcessTransactionMenu();
+
+                    if (ContactName == StaticStrings.UndergroundGunsContactName)
+                    {
+                        Player.RelationshipManager.GunDealerRelationship.AddMoneySpent(Transaction.MoneySpent);
+                        player.RelationshipManager.GunDealerRelationship.SetReputation((Transaction.MoneySpent) / 5, false);
+                    }
+
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
+
+                    StoreCamera.Dispose();
+
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    Player.IsTransacting = false;
+                    CanInteract = true;
                 }
-
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
-
-                StoreCamera.Dispose();
-
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                Player.IsTransacting = false;
-                CanInteract = true;
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "GangDenInteract");
         }
     }

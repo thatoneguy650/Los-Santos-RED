@@ -52,8 +52,16 @@ public class Loot : DynamicActivity
            // NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             GameFiber.StartNew(delegate
             {
-                LootBody();
-                Cancel();
+                try
+                {
+                    LootBody();
+                    Cancel();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "Conversation");
         }
     }

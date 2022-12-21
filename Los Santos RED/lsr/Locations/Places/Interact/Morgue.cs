@@ -49,6 +49,7 @@ public class Morgue : InteractableLocation
 
         if (CanInteract)
         {
+            
             Player.ActivityManager.IsInteractingWithLocation = true;
             CanInteract = false;
 
@@ -63,19 +64,27 @@ public class Morgue : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-
-
-
-
-                while(locationTeleporter?.IsInside == true)
+                try
                 {
-                    locationTeleporter.Update();
-                    GameFiber.Yield();
+
+
+
+                    while (locationTeleporter?.IsInside == true)
+                    {
+                        locationTeleporter.Update();
+                        GameFiber.Yield();
+                    }
+
+
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
 
-
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
             }, "Interact");
         }
     }

@@ -55,24 +55,32 @@ public class Bar : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
+                try
+                { 
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
 
-                CreateInteractionMenu();
-                Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
 
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                Transaction.ProcessTransactionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                    Transaction.ProcessTransactionMenu();
 
-                Transaction.DisposeTransactionMenu();
-                DisposeInteractionMenu();
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
 
-                StoreCamera.Dispose();
-                Player.IsTransacting = false;
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
+                    StoreCamera.Dispose();
+                    Player.IsTransacting = false;
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "BarInteract");
         }
     }

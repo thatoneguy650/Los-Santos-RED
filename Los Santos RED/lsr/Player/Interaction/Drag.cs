@@ -105,14 +105,22 @@ public class Drag : DynamicActivity
             LoadBody = false;
             GameFiber.StartNew(delegate
             {
-                BeginDrag();
-                if (LoadBody)
+                try
                 {
-                    LoadBodyInCar();
+                    BeginDrag();
+                    if (LoadBody)
+                    {
+                        LoadBodyInCar();
+                    }
+                    else
+                    {
+                        Cancel();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    Cancel();
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
             }, "Drag");
         }

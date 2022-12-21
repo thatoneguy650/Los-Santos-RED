@@ -51,5 +51,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceKnowInteriorLocation { get; }
         HealthManager HealthManager { get; }
         string DebugString { get; }
+        bool IsCustomizingPed { get; }
     }
 }

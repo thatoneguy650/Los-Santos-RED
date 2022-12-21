@@ -69,19 +69,28 @@ public class CityHall : InteractableLocation
 
             GameFiber.StartNew(delegate
             {
-                StoreCamera = new LocationCamera(this, Player);
-                StoreCamera.Setup();
-                CreateInteractionMenu();
-                InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                try
+                {
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
+                    CreateInteractionMenu();
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
-                GenerateCityHallMenu();
+                    GenerateCityHallMenu();
 
-                ProcessInteractionMenu();
-                DisposeInteractionMenu();
-                StoreCamera.Dispose();
-                Player.ActivityManager.IsInteractingWithLocation = false;
-                CanInteract = true;
+                    ProcessInteractionMenu();
+                    DisposeInteractionMenu();
+                    StoreCamera.Dispose();
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+
             }, "HotelInteract");
         }
     }

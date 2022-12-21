@@ -329,7 +329,14 @@ public class VehicleItem : ModItem
             if (NewVehicle.Exists())
             {
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
+
+
+
+
                 CurrentMenuItem.ItemsSoldToPlayer += 1;
+
+
+
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);

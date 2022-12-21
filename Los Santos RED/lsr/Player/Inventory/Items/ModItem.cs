@@ -165,7 +165,9 @@ public class ModItem
         int RemainingToSell = MaxSell;
         if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
         {
+
             RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - menuItem.ItemsBoughtFromPlayer;
+
             if (RemainingToSell >= 1 && PlayerItems >= 1)
             {
                 MaxSell = Math.Min(MaxSell, RemainingToSell);
@@ -212,7 +214,13 @@ public class ModItem
         {
             player.BankAccounts.GiveMoney(TotalPrice);
             Transaction.MoneySpent += TotalPrice;
+
+
+
             menuItem.ItemsBoughtFromPlayer += TotalItems;
+
+
+
             Transaction.OnAmountChanged(this);
             Transaction.OnItemSold(this, menuItem, TotalItems);
             while (player.ActivityManager.IsPerformingActivity)
@@ -292,7 +300,13 @@ public class ModItem
             int MaxBuy = 99;
             if (menuItem.NumberOfItemsToSellToPlayer != -1)
             {
+
+
                 RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - menuItem.ItemsSoldToPlayer;
+
+
+
+
                 if (RemainingToBuy <= 0)
                 {
                     MaxBuy = 0;
@@ -317,7 +331,19 @@ public class ModItem
         if (player.BankAccounts.Money >= TotalPrice || isStealing)
         {
             Transaction.OnItemPurchased(this, menuItem, TotalItems);
+
+
+
+
+
+
             menuItem.ItemsSoldToPlayer += TotalItems;
+
+
+
+
+
+
             if (ConsumeOnPurchase)
             {
                 player.ActivityManager.UseInventoryItem(this, false);

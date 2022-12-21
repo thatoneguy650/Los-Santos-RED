@@ -43,38 +43,54 @@ public class WeaponEquipment
         isActive = true;
         GameFiber.StartNew(delegate
         {
-            while (isActive)
+            try
             {
-                if (Game.LocalPlayer.Character.IsShooting)
+                while (isActive)
                 {
-                    FramesSinceShot = 0;
-                    WeaponRecoil.Update();
-                    Player.SetShot();
-                }
-                else
-                {
-                    if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                    if (Game.LocalPlayer.Character.IsShooting)
                     {
-                        FramesSinceShot++;
+                        FramesSinceShot = 0;
+                        WeaponRecoil.Update();
+                        Player.SetShot();
                     }
-                    if(FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                    else
                     {
-                        WeaponSway.Reset();
+                        if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                        {
+                            FramesSinceShot++;
+                        }
+                        if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                        {
+                            WeaponSway.Reset();
+                        }
                     }
+                    if (FramesSinceShot >= Settings.SettingsManager.SwaySettings.FramesBetweenRecoil && (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
+                    {
+                        WeaponSway.Update();
+                    }
+                    GameFiber.Yield();
                 }
-                if (FramesSinceShot >= Settings.SettingsManager.SwaySettings.FramesBetweenRecoil && (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
-                {
-                    WeaponSway.Update();
-                }
-                GameFiber.Yield();
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
         }, "IsShootingChecker");
         GameFiber.StartNew(delegate
         {
-            while (isActive)
+            try
             {
-                WeaponSelector.Update();
-                GameFiber.Yield();
+                while (isActive)
+                {
+                    WeaponSelector.Update();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
             }
         }, "IsShootingChecker2");
     }

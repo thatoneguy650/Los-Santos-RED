@@ -70,8 +70,16 @@ public class PlateTheft : DynamicActivity
         {
             GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
             {
-                Enter();
-                Player.ActivityManager.IsPerformingActivity = false;
+                try
+                {
+                    Enter();
+                    Player.ActivityManager.IsPerformingActivity = false;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "PlayDispatchQueue");
         }
         else

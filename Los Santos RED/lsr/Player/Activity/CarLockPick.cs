@@ -64,20 +64,28 @@ public class CarLockPick
         {
             GameFiber UnlockCarDoor = GameFiber.StartNew(delegate
             {
-                GameFiber.Yield();
-                if (!SetupLockPick())
+                try
                 {
-                    EntryPoint.WriteToConsole("PickLock Setup Failed",3);
-                    return;
+                    GameFiber.Yield();
+                    if (!SetupLockPick())
+                    {
+                        EntryPoint.WriteToConsole("PickLock Setup Failed", 3);
+                        return;
+                    }
+                    GameFiber.Yield();
+                    if (!LockPickAnimation())
+                    {
+                        EntryPoint.WriteToConsole("PickLock Animation Failed", 3);
+                        return;
+                    }
+                    GameFiber.Yield();
+                    FinishLockPick();
                 }
-                GameFiber.Yield();
-                if (!LockPickAnimation())
+                catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole("PickLock Animation Failed",3);
-                    return;
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
                 }
-                GameFiber.Yield();
-                FinishLockPick();
             }, "PickLock");
         }
         catch (Exception e)

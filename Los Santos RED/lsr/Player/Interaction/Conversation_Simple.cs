@@ -3,6 +3,7 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -58,9 +59,17 @@ public class Conversation_Simple : Interaction
             NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             GameFiber.StartNew(delegate
             {
-                Greet();
-                Tick();
-                Dispose();
+                try
+                {
+                    Greet();
+                    Tick();
+                    Dispose();
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
             }, "Conversation");
         }
     } 
