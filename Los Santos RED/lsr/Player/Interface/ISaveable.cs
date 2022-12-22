@@ -29,5 +29,6 @@ namespace LosSantosRED.lsr.Interface
         int SpeechSkill { get; }
         bool IsCop { get; }
         ButtonPrompts ButtonPrompts { get; }
+        string FreeModeVoice { get; }
     }
 }

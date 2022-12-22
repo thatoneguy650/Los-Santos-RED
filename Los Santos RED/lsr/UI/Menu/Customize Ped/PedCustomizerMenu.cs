@@ -26,7 +26,7 @@ public class PedCustomizerMenu
     private CustomizePropsMenu CustomizePropsMenu;
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
     private CustomizeAffiliationMenu CustomizeAffiliationMenu;
-
+    private CustomizeVoiceMenu CustomizeVoiceMenu;
     public bool IsProgramicallySettingFieldValues { get; set; }
     public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads, IGangs gangs, IAgencies agencies)
     {
@@ -44,6 +44,11 @@ public class PedCustomizerMenu
         CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
         CustomizeAffiliationMenu = new CustomizeAffiliationMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this,gangs,agencies);
+
+
+
+        CustomizeVoiceMenu = new CustomizeVoiceMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
+
     }
     public void Setup()
     {
@@ -57,6 +62,7 @@ public class PedCustomizerMenu
         CustomizePropsMenu.Setup(CustomizeMainMenu);
         CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
         CustomizeAffiliationMenu.Setup(CustomizeMainMenu);
+        CustomizeVoiceMenu.Setup(CustomizeMainMenu);
 
         UIMenuItem PrintVariation = new UIMenuItem("Print Variation", "Print the variation out to the log");
         PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Clothes;
@@ -99,7 +105,7 @@ public class PedCustomizerMenu
         CustomizeComponentsMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();
         CustomizeAffiliationMenu.OnModelChanged();
-
+        CustomizeVoiceMenu.OnModelChanged();
         EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
 
 

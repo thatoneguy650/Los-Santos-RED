@@ -992,7 +992,8 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        ParticleTest1();
+        DoUiCustomzierFont();
+        //ParticleTest1();
         //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
         //NAudioPlayer nAudio = new NAudioPlayer(Settings);
         //nAudio.Play(AudioFilePath, false, false);
@@ -1268,6 +1269,103 @@ public class Debug
         }, "Run Debug Logic");
     }
 
+
+
+    private void DoUiCustomzierFont()
+    {
+
+        GameFiber.Sleep(500);
+        GameFiber.StartNew(delegate
+        {
+            while (!Game.IsKeyDownRightNow(Keys.Space))
+            {
+                DisplayName();
+                Game.DisplayHelp($"Press SPACE to Stop");
+                GameFiber.Yield();
+            }
+           
+        }, "Run Debug Logic");
+
+        
+    }
+    private void DisplayName()
+    {
+        //AffiliationCenterX = 0.92f;
+        //AffiliationCenterY = 0.575f;
+
+
+
+
+
+        DisplayTextOnScreen("Franklin Clinton",
+            Settings.SettingsManager.PedSwapSettings.NamePositionY,
+            Settings.SettingsManager.PedSwapSettings.NamePositionX,
+            Settings.SettingsManager.PedSwapSettings.NameScale,
+            Color.FromName(Settings.SettingsManager.PedSwapSettings.NameColor),
+            (GTAFont)Settings.SettingsManager.PedSwapSettings.NameFont,
+            (GTATextJustification)Settings.SettingsManager.PedSwapSettings.NameJustificationID,
+            false);
+
+        string AffiliationName = "Unaffiliated";
+
+        DisplayTextOnScreen(AffiliationName,
+            Settings.SettingsManager.PedSwapSettings.AffiliationPositionY,
+            Settings.SettingsManager.PedSwapSettings.AffiliationPositionX,
+            Settings.SettingsManager.PedSwapSettings.AffiliationScale,
+            Color.FromName(Settings.SettingsManager.PedSwapSettings.AffiliationColor),
+            (GTAFont)Settings.SettingsManager.PedSwapSettings.AffiliationFont,
+            (GTATextJustification)Settings.SettingsManager.PedSwapSettings.AffiliationJustificationID,
+            false);
+    }
+    private void DisplayTextOnScreen(string TextToShow, float Y, float X, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
+    {
+        DisplayTextOnScreen(TextToShow, Y, X, Scale, TextColor, Font, Justification, outline, 255);
+    }
+    private void DisplayTextOnScreen(string TextToShow, float Y, float X, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
+    {
+        try
+        {
+            if (TextToShow == "" || alpha == 0 || TextToShow is null)
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+            NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+
+            NativeFunction.Natives.SetTextJustification((int)Justification);
+
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+
+            if (outline)
+            {
+                NativeFunction.Natives.SET_TEXT_OUTLINE(true);
+
+
+                NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
+            }
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+            //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+            //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
+            if (Justification == GTATextJustification.Right)
+            {
+                NativeFunction.Natives.SET_TEXT_WRAP(0f, X);
+            }
+            else
+            {
+                NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
+            }
+            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+        }
+        //return;
+    }
     private void PrintRelationships()
     {
         foreach (PedExt ped in World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))

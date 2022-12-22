@@ -47,7 +47,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public bool DisableVanillaGangHassling { get; set; }
     [Description("If enabled, friendly gangs will not be able to be targetted or carjacked by you.")]
     public bool AllowAttackingFriendlyPeds { get; set; }
-    [Description("If enabled, DLC vehicles will appear in the stores. You will need a trainer to stop the rockstar security measure that despawns DPC cars in SP.")]
+    [Description("If enabled, DLC vehicles will appear in the stores. You will need a trainer to stop the rockstar security measure that despawns DLC cars in SP.")]
     public bool AllowDLCVehiclesInStores { get; set; }
     [Description("Minimum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Min { get; set; }

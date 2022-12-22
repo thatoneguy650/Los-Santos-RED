@@ -418,12 +418,25 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Dippo Lighter", 20), }),
             new ShopMenu("PharmacyMenu","Pharmacy",new List<MenuItem>() {
                 new MenuItem("Chesty", 19, 0),
+
+
+
+                new MenuItem("Hingmyralgan", 45, 0),
+                new MenuItem("Deludamol", 85, 0),
+                new MenuItem("Delladamol", 55, 0),
+
                 new MenuItem("Lax to the Max", 24, 0),
                 new MenuItem("Bull Shark Testosterone", 25, 0),
                 new MenuItem("Alco Patch", 55, 0),
                 new MenuItem("Equanox", 89, 0),
                 new MenuItem("Mollis", 345, 0),
                 new MenuItem("Zombix", 267, 0),
+
+
+
+
+
+
             }),
 
             //Cars

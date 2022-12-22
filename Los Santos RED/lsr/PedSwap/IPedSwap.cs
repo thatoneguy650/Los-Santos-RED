@@ -10,7 +10,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IPedSwap
     {
-        void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation, int speechSkill);
+        void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation, int speechSkill, string voiceName);
         void BecomeSamePed(string modelName, string fullName, int money, PedVariation variation);
 
 
@@ -21,7 +21,7 @@ namespace LosSantosRED.lsr.Interface
         void BecomeRandomPed();
         void BecomeCop(Agency agency);
         void BecomeCustomPed();
-        void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation, int speechSkill);
+        void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation, int speechSkill, string voiceName);
         void RemoveOffset();
         void AddOffset();
         void TreatAsCivilian();

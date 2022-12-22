@@ -71,6 +71,14 @@ public class CustomizeDemographicsMenu
             ChangeWorkingMoney();
         };
         DemographicsSubMenu.AddItem(ChangeMoney);
+
+
+
+
+
+
+
+
     }
     private void ChangeWorkingMoney()
     {

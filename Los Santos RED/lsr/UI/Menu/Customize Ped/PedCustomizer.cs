@@ -7,6 +7,8 @@ using RAGENativeUI.Elements;
 using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 
 public class PedCustomizer
@@ -27,6 +29,7 @@ public class PedCustomizer
     private IHeads Heads;
     private IGangs Gangs;
     private IAgencies Agencies;
+    private bool ShowDisplayName = true;
 
     //private CameraCycler CameraCycler;
 
@@ -47,6 +50,10 @@ public class PedCustomizer
     public readonly Vector3 DefaultPlayerHoldingPosition = new Vector3(402.5164f, -1002.847f, -99.2587f);
     public CameraCycler CameraCycler { get; private set; }
     public string WorkingModelName { get; set; } = "S_M_M_GENTRANSPORT";
+
+
+    public string WorkingVoice { get; set; } = "";
+
     public Ped ModelPed { get; set; }
     public string WorkingName { get; set; } = "John Doe";
     public int WorkingMoney { get; set; } = 5000;
@@ -120,6 +127,7 @@ public class PedCustomizer
             GameFiber.Sleep(1000);
             Game.FadeScreenIn(1500, true);
         }
+
     }
     public void Setup()
     {
@@ -131,26 +139,40 @@ public class PedCustomizer
     }
     public void Update()
     {
-        ProcessButtonPrompts();
+        if (MenuPool.IsAnyMenuOpen())
+        {
+            ProcessButtonPrompts();
+        }
         StopModelPedTasking();
-        MenuPool.ProcessMenus();
-
-
         if(!MenuPool.IsAnyMenuOpen() && !ChoseToClose)
         {
             SimpleWarning popUpWarning = new SimpleWarning("Exit", "Are you sure you want to exit discarding changes", "", Player.ButtonPrompts, Settings);
             popUpWarning.Show();
+            ShowDisplayName = false;
             if (popUpWarning.IsAccepted)
             {
                 ChoseToClose = true;
+                Game.FadeScreenOut(0, false);
                 Dispose(true);
             }
             else
             {
                 PedCustomizerMenu.CustomizeMainMenu.Visible = true;
+                ShowDisplayName = true;
             }
+
+        }
+        
+        if (ShowDisplayName)
+        {
+            DisplayName();
         }
     }
+    //public void Tick()
+    //{
+    //    MenuPool.ProcessMenus();
+    //}
+
     public void Start()
     {
         Game.FadeScreenOut(1500, true);
@@ -163,6 +185,26 @@ public class PedCustomizer
         CameraCycler.SetDefault();
         Game.FadeScreenIn(1500, true);
         PedCustomizerMenu.Start();
+
+
+
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while(!IsDisposed)
+                {
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("PEDSWAP: BecomeCustomPed2; " + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "MENUPROCESSOR");
+
     }
     public void Finish()
     {
@@ -282,6 +324,12 @@ public class PedCustomizer
         {
             AssignedAgency = Player.AssignedAgency;
         }
+
+        if(Player.CharacterModelIsFreeMode)
+        {
+            WorkingVoice = Player.FreeModeVoice;
+        }
+
     }
     public void OnModelChanged(bool resetVariation)
     {
@@ -306,14 +354,15 @@ public class PedCustomizer
             ChoseToClose = true;
             if (ModelPed.Exists())
             {
-                Game.FadeScreenOut(1500, true);
+                Game.FadeScreenOut(0, false);
+                //Game.FadeScreenOut(1500, true);
                 if (!ChoseNewModel)
                 {
                     PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
                 }
                 else
                 {
-                    PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+                    PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max), WorkingVoice);
                 }
 
 
@@ -360,6 +409,92 @@ public class PedCustomizer
             Serialization.SerializeParam(WorkingVariation, $"Plugins\\LosSantosRED\\SavedVariation{WorkingModelName}{DateTime.Now.ToString("yyyyMMddHHmmssfff")}.xml");
         }
     }
+    private void DisplayName()
+    {
+        //AffiliationCenterX = 0.92f;
+        //AffiliationCenterY = 0.575f;
 
 
+
+
+
+        DisplayTextOnScreen(WorkingName,
+            Settings.SettingsManager.PedSwapSettings.NamePositionY,
+            Settings.SettingsManager.PedSwapSettings.NamePositionX,
+            Settings.SettingsManager.PedSwapSettings.NameScale,
+            Color.FromName(Settings.SettingsManager.PedSwapSettings.NameColor),
+            (GTAFont)Settings.SettingsManager.PedSwapSettings.NameFont, 
+            (GTATextJustification)Settings.SettingsManager.PedSwapSettings.NameJustificationID,
+            false);
+
+        string AffiliationName = "Unaffiliated";
+        Color affiliationColor = Color.FromName(Settings.SettingsManager.PedSwapSettings.AffiliationColor);
+        if (AssignedAgency != null)
+        {
+            AffiliationName = AssignedAgency.ID;
+            affiliationColor = AssignedAgency.Color;
+        }
+        else if (AssignedGang != null)
+        {
+            AffiliationName = AssignedGang.ShortName;
+            affiliationColor = AssignedGang.Color;
+        }
+        DisplayTextOnScreen(AffiliationName,
+            Settings.SettingsManager.PedSwapSettings.AffiliationPositionY,
+            Settings.SettingsManager.PedSwapSettings.AffiliationPositionX,
+            Settings.SettingsManager.PedSwapSettings.AffiliationScale,
+            affiliationColor,
+            (GTAFont)Settings.SettingsManager.PedSwapSettings.AffiliationFont,
+            (GTATextJustification)Settings.SettingsManager.PedSwapSettings.AffiliationJustificationID,
+            false);
+    }
+    private void DisplayTextOnScreen(string TextToShow, float Y, float X, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline)
+    {
+        DisplayTextOnScreen(TextToShow, Y, X, Scale, TextColor, Font, Justification, outline, 255);
+    }
+    private void DisplayTextOnScreen(string TextToShow, float Y, float X, float Scale, Color TextColor, GTAFont Font, GTATextJustification Justification, bool outline, int alpha)
+    {
+        try
+        {
+            if (TextToShow == "" || alpha == 0 || TextToShow is null)
+            {
+                return;
+            }
+            NativeFunction.Natives.SET_TEXT_FONT((int)Font);
+            NativeFunction.Natives.SET_TEXT_SCALE(Scale, Scale);
+            NativeFunction.Natives.SET_TEXT_COLOUR((int)TextColor.R, (int)TextColor.G, (int)TextColor.B, alpha);
+
+            NativeFunction.Natives.SetTextJustification((int)Justification);
+
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+
+            if (outline)
+            {
+                NativeFunction.Natives.SET_TEXT_OUTLINE(true);
+
+
+                NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
+            }
+            NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
+            //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);
+            //NativeFunction.Natives.SetTextJustification((int)GTATextJustification.Center);
+            if (Justification == GTATextJustification.Right)
+            {
+                NativeFunction.Natives.SET_TEXT_WRAP(0f, X);
+            }
+            else
+            {
+                NativeFunction.Natives.SET_TEXT_WRAP(0f, 1f);
+            }
+            NativeFunction.Natives.x25fbb336df1804cb("STRING"); //NativeFunction.Natives.x25fbb336df1804cb("STRING");
+            //NativeFunction.Natives.x25FBB336DF1804CB(TextToShow);
+            NativeFunction.Natives.x6C188BE134E074AA(TextToShow);
+            NativeFunction.Natives.xCD015E5BB0D96A57(X, Y);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI ERROR {ex.Message} {ex.StackTrace}", 0);
+        }
+        //return;
+    }
 }

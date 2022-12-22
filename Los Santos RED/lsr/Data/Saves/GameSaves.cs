@@ -186,6 +186,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
         AlexisGameSave.SaveNumber = 1;
+        AlexisGameSave.VoiceName = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GameSaveList.Add(AlexisGameSave);
     }
     private void AddClaude()
@@ -364,6 +365,7 @@ public class GameSaves : IGameSaves
         ClaudeGameSave.SleepValue = 85.0f;
         ClaudeGameSave.SpeechSkill = 0;
         ClaudeGameSave.SaveNumber = 2;
+        ClaudeGameSave.VoiceName = "A_M_M_SKATER_01_WHITE_FULL_01";
         GameSaveList.Add(ClaudeGameSave);
     }
     private void AddLamar()
@@ -612,6 +614,7 @@ public class GameSaves : IGameSaves
         gameSave.InventoryItems.Add(new InventorySave("Schmidt & Priss TL6 Scanner", 1.0f));
         gameSave.IsCop = true;
         gameSave.SaveNumber = 9;
+
         GameSaveList.Add(gameSave);
     }
 

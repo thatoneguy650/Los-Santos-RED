@@ -315,6 +315,17 @@ public class ModItems : IModItems
                 ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic },
             new IngestItem("Toilet Cleaner","Meth brought you forbidden fruits of incest. Bath salts brought you the taboo joys of cannibalism. It's time to step things up a level. The hot new legal high that takes you to places you never imagined and leaves you forever changed - Toilet Cleaner.", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic },
+
+            new IngestItem("Hingmyralgan","For BrainAche", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 20 },
+
+
+            new IngestItem("Deludamol","For a Night You'll Never Remeber", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 25,ThirstChangeAmount = -1 },
+
+            new IngestItem("Delladamol","Gives A Time You Won't Recall", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 15,ThirstChangeAmount = -3 },
+
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
         {

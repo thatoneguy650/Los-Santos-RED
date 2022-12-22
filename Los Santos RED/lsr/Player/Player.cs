@@ -211,7 +211,7 @@ namespace Mod
         public string DebugString { get; set; }
         public bool DiedInVehicle { get; private set; }
         public float FootSpeed { get; set; }
-        public string FreeModeVoice => IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
+        public string FreeModeVoice { get; set; }//IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
         public string Gender => IsMale ? "M" : "F";
         public int GroupID { get; set; }
         public uint Handle => Game.LocalPlayer.Character.Handle;
@@ -424,10 +424,9 @@ namespace Mod
             MeleeManager.Setup();
             PlayerVoice.Setup();
             ActivityManager.Setup();
-
-           // SpareLicensePlates.Add(new LicensePlate(RandomItems.RandomString(8), 3, false));//random cali
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
+            FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
             if (Game.LocalPlayer.Character.IsInAnyVehicle(false) && Game.LocalPlayer.Character.CurrentVehicle.Exists())
             {
                 UpdateCurrentVehicle();
@@ -466,22 +465,12 @@ namespace Mod
                     EntryPoint.ModController.CrashUnload();
                 }
             }, "CellPhone");
-            //AnimationDictionary.RequestAnimationDictionay("facials@gen_female@base");
-            //AnimationDictionary.RequestAnimationDictionay("facials@gen_male@base");
-            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_zero@base");
-            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_one@base");
-            //AnimationDictionary.RequestAnimationDictionay("facials@p_m_two@base");
             if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
             {
                 NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");
                 NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_controller");
             }
-            //LastGesture = new GestureData("Thumbs Up Quick", "anim@mp_player_intselfiethumbs_up", "enter");
-            //LastDance = Dances.GetRandomDance();
-
             SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
-            // NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 11, 320, 0, 0); NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(Game.LocalPlayer.Character, 10, 70, 0, 0);
-
         }
         public void Update()
         {
@@ -695,13 +684,21 @@ namespace Mod
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", $"~y~{PlayerName}", NotifcationText);
             // DisplayPlayerVehicleNotification();
         }
-        public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill)
+        public void SetDemographics(string modelName, bool isMale, string playerName, int money, int speechSkill, string voiceName)
         {
             ModelName = modelName;
             PlayerName = playerName;
             IsMale = isMale;
             BankAccounts.SetMoney(money);
             SpeechSkill = speechSkill;// 
+            if (voiceName == "")
+            {
+                FreeModeVoice = IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;
+            }
+            else
+            {
+                FreeModeVoice = voiceName;
+            }
             EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
         }
         public void LocationUpdate()

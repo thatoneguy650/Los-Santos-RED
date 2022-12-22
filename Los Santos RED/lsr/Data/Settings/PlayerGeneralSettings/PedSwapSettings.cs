@@ -34,6 +34,22 @@ public class PedSwapSettings : ISettingsDefaultable
     [Description("Enable randomly setting needs values after takeover. If diabled you will start with full needs. Requires PlayerSettings.NeedsSettings.ApplyNeeds")]
     public bool SetRandomNeeds { get; set; }
 
+
+    public float NamePositionX { get; set; }
+    public float NamePositionY { get; set; }
+    public float NameScale { get; set; }
+    public string NameColor { get; set; }
+    public int NameFont { get; set; }
+    public int NameJustificationID { get; set; }
+
+
+    public float AffiliationPositionX { get; set; }
+    public float AffiliationPositionY { get; set; }
+    public float AffiliationScale { get; set; }
+    public string AffiliationColor { get; set; }
+    public int AffiliationFont { get; set; }
+    public int AffiliationJustificationID { get; set; }
+
     public PedSwapSettings()
     {
         SetDefault();
@@ -60,5 +76,20 @@ public class PedSwapSettings : ISettingsDefaultable
         PercentageToGetDriversLicense = 90.0f;
         PercentageToGetCCWLicense = 10.0f;
         SetRandomNeeds = true;
+
+
+        NamePositionX = 0.925f;
+        NamePositionY = 0.82f;
+        NameScale = 1.5f;
+        NameColor = "White";
+        NameFont = (int)GTAFont.FontChaletComprimeCologne;
+        NameJustificationID = 2;
+
+        AffiliationPositionX = 0.98f;
+        AffiliationPositionY = 0.87f;
+        AffiliationScale = 1.25f;
+        AffiliationColor = "RoyalBlue";
+        AffiliationFont = (int)GTAFont.FontHouseScript;
+        AffiliationJustificationID = 2;
     }
 }

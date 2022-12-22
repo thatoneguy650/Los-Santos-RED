@@ -121,19 +121,19 @@ public class PedSwap : IPedSwap
                     PedCustomizer.Start();
                     GameFiber.Yield();
 
-
                     while (true)
                     {
                         PedCustomizer.Update();
-
                         if(PedCustomizer.ChoseToClose)
                         {
                             break;
                         }
-
-
                         GameFiber.Yield();
                     }
+
+
+
+
                     if(!PedCustomizer.ChoseToClose)
                     {
                         PedCustomizer.Dispose(true);
@@ -180,7 +180,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.SetCopStatus(false, null);
             HandlePreviousPed(deleteOld, TargetPed);
-            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0,"");
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
             GiveHistory(false);
@@ -190,7 +190,7 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-    public void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation, int speechSkill)
+    public void BecomeExistingPed(Ped TargetPed, string modelName, string fullName, int money, PedVariation variation, int speechSkill, string voiceName)
     {
         try
         {
@@ -207,7 +207,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.SetCopStatus(false, null);
             HandlePreviousPed(true, TargetPed);
-            PostLoad(modelName, false, fullName, money, variation, speechSkill);
+            PostLoad(modelName, false, fullName, money, variation, speechSkill, voiceName);
 
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
@@ -244,7 +244,7 @@ public class PedSwap : IPedSwap
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         //EntryPoint.WriteToConsole($"BecomeRandomCop4: TargetPed ModelName: {TargetPed.Model.Name}", 2);
         HandlePreviousPed(false, TargetPed);
-        PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+        PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
         //EntryPoint.WriteToConsole($"BecomeRandomCop5: CurrentModelPlayerIs ModelName: {CurrentModelPlayerIs.Name} PlayerModelName: {Game.LocalPlayer.Character.Model.Name}", 2);
         IssueWeapons(null, toSwapWith.WeaponInventory.Sidearm, toSwapWith.WeaponInventory.LongGun);
         //Player.AliasedCop = new Cop(Game.LocalPlayer.Character, Settings, Player.Character.Health, toSwapWith.AssignedAgency, true, Crimes, Weapons, "Jack Bauer", CurrentModelPlayerIs.Name);
@@ -270,7 +270,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.SetCopStatus(false, null);
             HandlePreviousPed(false, TargetPed);
-            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
             GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
 
@@ -310,7 +310,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
                     
             HandlePreviousPed(false, TargetPed);
-            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
 
             if (toBecome != null)
             {
@@ -375,7 +375,7 @@ public class PedSwap : IPedSwap
             NativeFunction.Natives.CHANGE_PLAYER_PED<uint>(Game.LocalPlayer, TargetPed, true, true);
             Player.SetCopStatus(false, null);
             HandlePreviousPed(false, TargetPed);
-            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0);
+            PostTakeover(CurrentModelPlayerIs.Name, true, "", 0, 0, "");
             if (toBecome != null)
             {
                 Player.CurrentModelVariation = toBecome.SetPedVariation(Game.LocalPlayer.Character, gang.PossibleHeads, false);
@@ -435,7 +435,7 @@ public class PedSwap : IPedSwap
             EntryPoint.WriteToConsole("PEDSWAP: TakeoverPed Error; " + e3.Message + " " + e3.StackTrace, 0);
         }
     }
-    public void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation, int speechSkill)
+    public void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation, int speechSkill, string voiceName)
     {
         try
         {
@@ -457,7 +457,7 @@ public class PedSwap : IPedSwap
             Game.LocalPlayer.Character.Heading = MyHeading;
             Player.SetCopStatus(false, null);
             HandlePreviousPed(true, TargetPed);
-            PostLoad(modelName, false, playerName, money, variation, speechSkill);
+            PostLoad(modelName, false, playerName, money, variation, speechSkill, voiceName);
         }
         catch (Exception e3)
         {
@@ -777,7 +777,7 @@ public class PedSwap : IPedSwap
             }
         }
     }
-    private void PostLoad(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, PedVariation variation, int speechSkill)
+    private void PostLoad(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, PedVariation variation, int speechSkill, string voiceName)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
         bool isMale = Game.LocalPlayer.Character.IsMale;
@@ -794,7 +794,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign, speechSkill);
+            NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign, speechSkill, voiceName);
         }
         Player.ModelName = ModelToChange;
         Player.CurrentModelVariation = variation.Copy();
@@ -815,7 +815,7 @@ public class PedSwap : IPedSwap
         Player.WeaponEquipment.SetUnarmed();
         Time.UnPauseTime();
     }
-    private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, int speechSkill)
+    private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, int speechSkill, string voiceName)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
@@ -858,7 +858,7 @@ public class PedSwap : IPedSwap
         }
         else
         {
-            NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign, speechSkill);
+            NewPlayer(TargetPedModelName, TargetPedIsMale, nameToAssign, moneyToAssign, speechSkill, voiceName);
         }
 
 
@@ -1082,12 +1082,27 @@ public class PedSwap : IPedSwap
     public void NewPlayer(string modelName, bool isMale)//gotta go
     {
         Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
-        Player.SetDemographics(modelName, isMale, GetName(modelName, Names.GetRandomName(isMale)), RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax), RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+
+
+        Player.SetDemographics(
+            modelName, 
+            isMale, 
+            GetName(modelName, Names.GetRandomName(isMale)), 
+            RandomItems.MyRand.Next(Settings.SettingsManager.PedSwapSettings.RandomMoneyMin, Settings.SettingsManager.PedSwapSettings.RandomMoneyMax), 
+            RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max),
+            ""  
+            );
     }
-    public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith, int speechSkill)//gotta go
+    public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith, int speechSkill, string voiceName)//gotta go
     {
         Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
-        Player.SetDemographics(modelName, isMale, playerName, moneyToSpawnWith, speechSkill);
+        Player.SetDemographics(
+            modelName, 
+            isMale, 
+            playerName, 
+            moneyToSpawnWith, 
+            speechSkill,
+            voiceName);
     }
     private string GetName(string modelBeforeSpoof, string defaultName)//gotta get outta here
     {

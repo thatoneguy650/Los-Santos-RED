@@ -72,7 +72,7 @@ public class FashionProp
         PedPropComponent initialComponentStart = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
         if (initialComponentStart != null)
         {
-            ResetMenu.Description = $"Reset the item back to the initial value ~n~ItemID: {initialComponentStart.DrawableID} VariationID: {initialComponentStart.TextureID}";
+            ResetMenu.Description = $"Reset the item back to the initial value ~n~({initialComponentStart.DrawableID},{initialComponentStart.TextureID})";
         }
         else
         {
@@ -97,10 +97,10 @@ public class FashionProp
     {
         GetPossibleDrawables();
         DrawableMenuScroller = new UIMenuListScrollerItem<PedFashionAlias>("Item", "Select item", PossibleDrawables);
-        SetDrawableValue();
+        SetDrawableValue(false);
         DrawableMenuScroller.IndexChanged += (Sender, oldIndex, newIndex) =>
         {
-            OnComponentChanged(newIndex);
+            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
         };
         componentMenu.AddItem(DrawableMenuScroller);
     }
@@ -183,7 +183,7 @@ public class FashionProp
             }
         }
     }
-    private void SetDrawableValue()
+    private void SetDrawableValue(bool canGo)
     {
         if (DrawableMenuScroller.IsEmpty)
         {
@@ -200,6 +200,15 @@ public class FashionProp
             if (pfa != null)
             {
                 DrawableMenuScroller.SelectedItem = pfa;
+            }
+        }
+        else if (canGo)
+        {
+            PedFashionAlias pfa = PossibleDrawables.OrderBy(x => x.ID).FirstOrDefault();
+            if (pfa != null)
+            {
+                DrawableMenuScroller.SelectedItem = pfa;
+                EntryPoint.WriteToConsole($"SetDrawableValue SET ANY VARIATION {PropID} {pfa.ID} {pfa.Name} canGo {canGo}");
             }
         }
     }
@@ -234,16 +243,18 @@ public class FashionProp
         PossibleTextures = new List<PedFashionAlias>();
         for (int TextureNumber = 0; TextureNumber < NumberOfTextureVariations; TextureNumber++)
         {
-            string drawableName = $"({TextureNumber})";
+            string textureName = $"({TextureNumber})";
+            string fullName = "";
             if (PedCustomizer.PedModelIsFreeMode)
             {
                 FashionItemLookup fil = PedCustomizer.ClothesNames.GetItemFast(true, PropID, drawableID, TextureNumber, PedCustomizer.PedModelGender);
                 if (fil != null)
                 {
-                    drawableName = fil.GetTextureString();
+                    textureName = fil.GetTextureString();
+                    fullName = fil.Name;
                 }
             }
-            PossibleTextures.Add(new PedFashionAlias(TextureNumber, drawableName));
+            PossibleTextures.Add(new PedFashionAlias(TextureNumber, textureName));
         }
 
     }
@@ -292,19 +303,11 @@ public class FashionProp
         }
         PedCustomizer.OnVariationChanged();
     }
-
-    private void SetFiltering()
-    {
-        filterItems.RightLabel = filterString;
-        GetPossibleDrawables();
-        DrawableMenuScroller.Items = PossibleDrawables;
-        SetDrawableValue();
-        OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
-    }
     private void SetToInitialValue()
     {
         PedPropComponent initialComponent = PedCustomizer.InitialVariation.Props.FirstOrDefault(x => x.PropID == PropID);
         PedPropComponent pedComponent = PedCustomizer.WorkingVariation.Props.FirstOrDefault(x => x.PropID == PropID);
+        ResetFiltering();
         if (initialComponent != null)
         {
             if (pedComponent == null)
@@ -330,15 +333,41 @@ public class FashionProp
             SetPropRemoved();
         }
     }
+    private void ResetFiltering()
+    {
+        EntryPoint.WriteToConsole($"ResetFiltering Start {PropID}");
+        filterString = "";
+        SetFiltering();
+        EntryPoint.WriteToConsole($"ResetFiltering End {PropID}");
+    }
     private void SetToEnteredDrawableID()
     {
         if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int drawableToSet))
         {
+            ResetFiltering();
             PedFashionAlias pfa = DrawableMenuScroller.Items.Where(x => x.ID == drawableToSet).FirstOrDefault();
             if (pfa != null)
             {
                 DrawableMenuScroller.SelectedItem = pfa;
             }
+        }
+    }
+    private void SetFiltering()
+    {
+        filterItems.RightLabel = filterString;
+        GetPossibleDrawables();
+        PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = true;
+        DrawableMenuScroller.Items = PossibleDrawables;
+        PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = false;
+        if (!DrawableMenuScroller.Items.Any())
+        {
+            EntryPoint.WriteToConsole($"SetFiltering NO DRAWABLES {PropID}");
+            TextureMenuScroller.Items.Clear();
+        }
+        else
+        {
+            SetDrawableValue(true);
+            OnComponentChanged(DrawableMenuScroller.SelectedItem.ID);
         }
     }
     private void SetPropRemoved()

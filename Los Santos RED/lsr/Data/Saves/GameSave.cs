@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -62,6 +63,10 @@ namespace LosSantosRED.lsr.Data
         public float ThirstValue { get; set; }
         public float SleepValue { get; set; }
         public int SpeechSkill { get; set; }
+
+
+        public string VoiceName { get; set; }
+
        // public List<InventoryItem> InventoryItemsList { get; set; } = new List<InventoryItem>();
         public GangKickSave GangKickSave { get; set; }
         public bool IsCop { get; set; }
@@ -187,6 +192,7 @@ namespace LosSantosRED.lsr.Data
             }
             SpeechSkill = player.SpeechSkill;
             IsCop = player.IsCop;
+            VoiceName = player.FreeModeVoice;
         }
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -195,7 +201,7 @@ namespace LosSantosRED.lsr.Data
                 Game.FadeScreenOut(1000, true);
 
                 time.SetDateTime(CurrentDateTime);
-                pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
+                pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
                 LoadVehicles(player, world,settings);

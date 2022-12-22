@@ -107,6 +107,10 @@ public class LowerRightDisplay
         {
             return;
         }
+        if(DisplayablePlayer.IsCustomizingPed)
+        {
+            return;
+        }
         if(!Settings.SettingsManager.UIGeneralSettings.IsEnabled || !DisplayablePlayer.IsAliveAndFree)
         {
             return;

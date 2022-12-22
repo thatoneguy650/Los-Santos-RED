@@ -104,6 +104,10 @@ public class CustomizeAncestryMenu
     public void Setup()
     {
         AncestrySubMenu.Clear();
+        if (PedCustomizer.PedModelIsFreeMode)
+        {
+            PedCustomizer.WorkingVariation.HeadBlendData = new HeadBlendData(0, 0, 0, 0, 0, 0, 1.0f, 1.0f, 0.0f);
+        }
         RandomizeHead = new UIMenuItem("Randomize", "Randomize head data");
         RandomizeHead.Activated += (sender, selectedItem) =>
         {
@@ -112,6 +116,7 @@ public class CustomizeAncestryMenu
         AncestrySubMenu.AddItem(RandomizeHead);
 
         Parent1IDMenu = new UIMenuListScrollerItem<HeadLookup>("First Parent", "Select first parent", HeadList);
+        Parent1IDMenu.SelectedItem = HeadList.FirstOrDefault(x => x.HeadID == 0);
         Parent1IDMenu.Activated += (sender, selectedItem) =>
         {
             Parent1Activated();
@@ -123,6 +128,7 @@ public class CustomizeAncestryMenu
         AncestrySubMenu.AddItem(Parent1IDMenu);
 
         Parent2IDMenu = new UIMenuListScrollerItem<HeadLookup>("Second Parent", "Select second parent", HeadList);
+        Parent2IDMenu.SelectedItem = HeadList.FirstOrDefault(x => x.HeadID == 0);
         Parent2IDMenu.Activated += (sender, selectedItem) =>
         {
             Parent2Activated();
@@ -133,17 +139,9 @@ public class CustomizeAncestryMenu
         };
         AncestrySubMenu.AddItem(Parent2IDMenu);
 
-
-
-
-
         Parent1MixMenu = new UIMenuNumericScrollerItem<float>("Resemblance", "Select if your resemblance is influenced more by the first parent or second parent.", 0.0f, 1.0f, 0.1f);
         Parent1MixMenu.Formatter = v => "First - " + (1.0f - v).ToString("P0") + " Second - " + v.ToString("P0");
-        //Parent1MixMenu.SliderBar = new UIMenuScrollerSliderBar();
-        //Parent1MixMenu.SliderBar.Markers.Add(new UIMenuScrollerSliderBarMarker(0.5f, Color.White));
-        //Parent1MixMenu.AllowWrapAround = false;
-        //Parent1MixMenu.LeftBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_female_icon", Color.White);
-        //Parent1MixMenu.RightBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_male_icon", Color.White);
+        Parent1MixMenu.Value = 1.0f;
         Parent1MixMenu.Activated += (sender, selectedItem) =>
         {
             Parent1MixActivated();
@@ -156,11 +154,7 @@ public class CustomizeAncestryMenu
 
         Parent2MixMenu = new UIMenuNumericScrollerItem<float>("Skin Tone", "Select if your skin tone is influenced more by the first parent or second parent.", 0.0f, 1.0f, 0.1f);
         Parent2MixMenu.Formatter = v => "First - " + (1.0f - v).ToString("P0") + " Second - " + v.ToString("P0");
-        //Parent2MixMenu.SliderBar = new UIMenuScrollerSliderBar();
-        //Parent2MixMenu.SliderBar.Markers.Add(new UIMenuScrollerSliderBarMarker(0.5f, Color.White));
-        //Parent2MixMenu.AllowWrapAround = false;
-        //Parent2MixMenu.LeftBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_female_icon",Color.White);
-        //Parent2MixMenu.RightBadgeInfo = new UIMenuItem.BadgeInfo("mpleaderboard", "leaderboard_male_icon", Color.White);
+        Parent2MixMenu.Value = 1.0f;
         Parent2MixMenu.Activated += (sender, selectedItem) =>
         {
             Parent2MixActivated();
@@ -183,7 +177,6 @@ public class CustomizeAncestryMenu
         PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
-        //OnVariationChanged();
     }
     private void Parent2Activated()
     {
@@ -191,10 +184,10 @@ public class CustomizeAncestryMenu
         {
             return;
         }
+        EntryPoint.WriteToConsole("Parent2Activated");
         PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
-        //OnVariationChanged();
     }
     private void Parent1MixActivated()
     {
@@ -204,27 +197,7 @@ public class CustomizeAncestryMenu
         }
         float newMix = Parent1MixMenu.Value;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = newMix;
-
-
-        if(PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst == -1)
-        {
-            PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = 0;
-            PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = 0;
-
-            PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = 0;
-            PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = 0;
-        }
-
-
-
-        //PedCustomizer.WorkingVariation.HeadBlendData.skinMix = 1.0f - newMix;
-        //Parent2MixMenu.Value = 1.0f - newMix;
-
-
-
-
         PedCustomizer.OnVariationChanged();
-        //OnVariationChanged();
     }
     private void Parent2MixActivated()
     {
@@ -234,21 +207,7 @@ public class CustomizeAncestryMenu
         }
         float newMix = Parent2MixMenu.Value;
         PedCustomizer.WorkingVariation.HeadBlendData.skinMix = newMix;
-
-
-        if (PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst == -1)
-        {
-            PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = 0;
-            PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = 0;
-
-            PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = 0;
-            PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = 0;
-        }
-
-        //PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = 1.0f - newMix;
-        //Parent1MixMenu.Value = 1.0f - newMix;
         PedCustomizer.OnVariationChanged();
-        //OnVariationChanged();
     }
     private void RandomizePedHead()
     {
@@ -306,6 +265,15 @@ public class CustomizeAncestryMenu
             EntryPoint.WriteToConsole($"OnHeadblendValuesChanged MIX P1{Parent1MixMenu.Value} P2{Parent2MixMenu.Value}");
         }
         EntryPoint.WriteToConsole("OnHeadblendValuesChanged Executed");
+    }
+    private void MatchHeadblendToMenuValues()
+    {
+        PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = Parent1IDMenu.SelectedItem.HeadID;
+        PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = Parent1IDMenu.SelectedItem.HeadID;
+        PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = Parent2IDMenu.SelectedItem.HeadID;
+        PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = Parent2IDMenu.SelectedItem.HeadID;
+        PedCustomizer.WorkingVariation.HeadBlendData.shapeMix = Parent1MixMenu.Value;
+        PedCustomizer.WorkingVariation.HeadBlendData.skinMix = Parent2MixMenu.Value;
     }
 }
 

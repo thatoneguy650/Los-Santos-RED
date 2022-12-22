@@ -238,6 +238,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMorphMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHairMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Menu\ItemSelector\ItemSelector.cs" />

@@ -413,7 +413,7 @@ public class CustomizePedMenu : Menu
                 }
                 else
                 {
-                    PedSwap.BecomeExistingPed(ModelPed, NewModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min,Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max));
+                    PedSwap.BecomeExistingPed(ModelPed, NewModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min,Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max), "");
                 }
                 Dispose();
             }
