@@ -15,14 +15,14 @@ using System.Xml.Serialization;
 
 public class CityHall : InteractableLocation
 {
-    private LocationCamera StoreCamera;
+    //private LocationCamera StoreCamera;
 
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
+    //private ILocationInteractable Player;
+    //private IModItems ModItems;
+    //private IEntityProvideable World;
+    //private ISettingsProvideable Settings;
+    //private IWeapons Weapons;
+    //private ITimeControllable Time;
     private UIMenu GovernmentSubMenu;
 
 
@@ -61,6 +61,11 @@ public class CityHall : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

@@ -183,7 +183,7 @@ public class UI : IMenuProvideable
     {
         if (IsPressingActionWheelButton)
         {
-            if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed && DisplayablePlayer.IsAliveAndFree)
+            if(!ActionPopUpMenu.IsActive && !ActionPopUpMenu.RecentlyClosed && DisplayablePlayer.IsAliveAndFree && !DisplayablePlayer.ActivityManager.IsInteractingWithLocation)
             {
                 ActionPopUpMenu.ShowMenu();
             }

@@ -26,6 +26,10 @@ public class WeaponRecoil
     {
         if (Settings.SettingsManager.RecoilSettings.ApplyRecoil && Player.WeaponEquipment.CurrentWeapon != null)// && !IsInVehicle)
         {
+            if(Player.IsUsingController && !Settings.SettingsManager.RecoilSettings.ApplyRecoilWithController)
+            {
+                return;
+            }
             if (Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;

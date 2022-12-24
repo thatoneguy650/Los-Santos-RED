@@ -1,32 +1,27 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
-using Rage.Native;
-using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 
-public class ClothingShop : InteractableLocation
+public class SubwayStation : InteractableLocation
 {
-    public ClothingShop() : base()
+    public SubwayStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    {
+        OpenTime = 0;
+        CloseTime = 24;
+    }
+    public SubwayStation() : base()
     {
 
     }
-    public override string TypeName { get; set; } = "Clothing Store";
-    public override int MapIcon { get; set; } = (int)BlipSprite.ClothesStore;
+    public override string TypeName { get; set; } = "Subway Station";
+    public override int MapIcon { get; set; } = 777;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
-    public override string ButtonPromptText { get; set; }
-    public Vector3 ChangingRoomLocation { get; set; }
-    public ClothingShop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, Vector3 changingRoomLocation) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
-    {
-        MenuID = menuID;
-        ChangingRoomLocation = changingRoomLocation;
-    }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Shop At {Name}";
@@ -46,7 +41,7 @@ public class ClothingShop : InteractableLocation
         }
         if (CanInteract)
         {
-            Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
+            Game.DisplayHelp("~r~No Interaction~s~");
         }
     }
 }

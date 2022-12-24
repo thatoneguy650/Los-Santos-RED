@@ -15,14 +15,6 @@ using System.Xml.Serialization;
 
 public class ScrapYard : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenu ScrapSubMenu;
     private readonly float VehiclePickupDistance = 25f;
 
@@ -52,6 +44,11 @@ public class ScrapYard : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

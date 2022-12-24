@@ -269,17 +269,20 @@ public class HoldUp : Interaction
         Target.HasBeenLooted = true;
         if (Target.HasMenu)
         {
-            foreach (MenuItem mi in Target.ShopMenu.Items.Where(x => x.Purchaseable && x.NumberOfItemsToSellToPlayer > 0))
+            foreach (MenuItem mi in Target.ShopMenu.Items.Where(x => x.Purchaseable && x.NumberOfItemsToSellToPlayer - x.ItemsSoldToPlayer > 0))
             {
                 ModItem localModItem = ModItems.Get(mi.ModItemName);
                 if (localModItem != null && localModItem.ModelItem?.Type == ePhysicalItemType.Prop)
                 {
                     hasAddedItem = true;
 
+
+                    int TotalItems = mi.NumberOfItemsToSellToPlayer - mi.ItemsSoldToPlayer;
+
                     //localModItem.AddItemToInventory(Player, mi.NumberOfItemsToPurchaseFromPlayer);
 
-                    Player.Inventory.Add(localModItem, mi.NumberOfItemsToSellToPlayer);
-                    ItemsFound += $"~n~~p~{localModItem.Name}~s~ - {mi.NumberOfItemsToSellToPlayer} {localModItem.MeasurementName}(s)";
+                    Player.Inventory.Add(localModItem, TotalItems);
+                    ItemsFound += $"~n~~p~{localModItem.Name}~s~ - {TotalItems} {localModItem.MeasurementName}(s)";
                 }
             }
         }

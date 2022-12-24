@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         bool ReleasedFireWeapon { get; }
         Ped Character { get; }
         bool IsInVehicle { get; }
+        bool IsUsingController { get; }
     }
 }

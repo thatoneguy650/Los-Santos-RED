@@ -13,15 +13,7 @@ using System.Xml.Serialization;
 
 public class VendingMachine : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenuItem completeTask;
-    private Transaction Transaction;
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
     private bool IsCancelled;
@@ -34,9 +26,6 @@ public class VendingMachine : InteractableLocation
     {
 
     }
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
     [XmlIgnore]
     public Rage.Object MachineProp { get; set; }
     public override bool ShowsOnDirectory { get; set; } = false;
@@ -63,6 +52,11 @@ public class VendingMachine : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

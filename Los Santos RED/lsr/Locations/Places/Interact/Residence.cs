@@ -15,14 +15,6 @@ using System.Xml.Serialization;
 
 public class Residence : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
     private UIMenuItem InventoryMenuItem;
@@ -82,8 +74,11 @@ public class Residence : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-        //ActivityPerformable = activityPerformable;
 
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
 
         if (CanInteract)
@@ -103,12 +98,6 @@ public class Residence : InteractableLocation
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
                     GenerateResidenceMenu();
-
-
-
-
-
-                    //ProcessInteractionMenu();
 
                     while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                     {

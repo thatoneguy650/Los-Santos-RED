@@ -401,6 +401,9 @@ namespace Mod
         public int WantedLevel => wantedLevel;
         public bool WasDangerouslyArmedWhenBusted { get; private set; }
 
+
+        public bool IsUsingController { get; set; }
+
         //Required
         public void Setup()
         {
@@ -912,8 +915,11 @@ namespace Mod
         public void OnSuspectEluded()//runs before OnWantedLevelChanged
         {
             GameFiber.Yield();
-            CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x => x.AssociatedCrime).ToList(), PlacePoliceLastSeenPlayer);
-            Scanner.OnSuspectEluded();
+            if (WantedLevel > 1)
+            {
+                CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x => x.AssociatedCrime).ToList(), PlacePoliceLastSeenPlayer);
+                Scanner.OnSuspectEluded();
+            }
             PlayerVoice.OnSuspectEluded();
         }
         public void OnVehicleCrashed()
@@ -1533,7 +1539,8 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
+                    if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
+                    //if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     {
                         if (gl.DistanceToPlayer < ClosestDistance)
                         {

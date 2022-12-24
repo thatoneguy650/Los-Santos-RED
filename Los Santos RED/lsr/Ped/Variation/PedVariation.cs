@@ -91,7 +91,7 @@ public class PedVariation
                 {
                     EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
                     NativeFunction.Natives.SET_PED_MICRO_MORPH(ped, faceFeature.Index, faceFeature.Scale);
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                 }
 
                 if (EyeColor != -1)

@@ -13,6 +13,9 @@ public class SwaySettings : ISettingsDefaultable
     public bool ApplySwayInVehicle { get; set; }
     [Description("Enable or disable the sway system when on foot only.")]
     public bool ApplySwayOnFoot { get; set; }
+
+    [Description("Enable or disable the sway system when using a controller.")]
+    public bool ApplySwayWithController { get; set; }
     [Description("Global vertical sway adjuster. Multiplier for the vertical intensity of the sway. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
     public float VeritcalSwayAdjuster { get; set; }
     [Description("Global horizonal sway adjuster. Multiplier for the horizontal intensity of the sway. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
@@ -38,6 +41,7 @@ public class SwaySettings : ISettingsDefaultable
     public int FramesBetweenRecoil { get; set; }
     [Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
     public bool UseAlternateCalculation { get; set; }
+
 
     public SwaySettings()
     {
@@ -71,7 +75,7 @@ public class SwaySettings : ISettingsDefaultable
         FramesBetweenRecoil = 30;
 
         UseAlternateCalculation = false;
-
+        ApplySwayWithController = false;
     }
 
 }

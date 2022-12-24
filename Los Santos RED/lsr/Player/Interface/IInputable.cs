@@ -48,14 +48,16 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         GroupManager GroupManager { get; }
         ActivityManager ActivityManager { get; }
-     //   void CancelCurrentActivity();
-      //  void CloseDriverDoor();
+        bool IsUsingController { get; set; }
+
+        //   void CancelCurrentActivity();
+        //  void CloseDriverDoor();
         //void ContinueCurrentActivity();
-       // void DragPed();
-      //  void Gesture();
-       // void GrabPed();
-      //  void LootPed();
-       // void PauseCurrentActivity();
+        // void DragPed();
+        //  void Gesture();
+        // void GrabPed();
+        //  void LootPed();
+        // void PauseCurrentActivity();
         void PlaySpeech(string player, bool v);
      //   void StartConversation();
      //   void StartLocationInteraction();

@@ -52,5 +52,6 @@ namespace LosSantosRED.lsr.Interface
         HealthManager HealthManager { get; }
         string DebugString { get; }
         bool IsCustomizingPed { get; }
+        bool IsUsingController { get; }
     }
 }

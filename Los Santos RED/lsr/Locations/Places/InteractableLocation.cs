@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -15,7 +16,20 @@ using System.Xml.Serialization;
 
 public class InteractableLocation : BasicLocation
 {
-    private IEntityProvideable World;
+
+
+    protected LocationCamera StoreCamera;
+    protected ILocationInteractable Player;
+    protected IModItems ModItems;
+    protected IEntityProvideable World;
+    protected ISettingsProvideable Settings;
+    protected IWeapons Weapons;
+    protected ITimeControllable Time;
+    protected Transaction Transaction;
+
+
+
+    //private IEntityProvideable World;
     private uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
 
@@ -56,9 +70,71 @@ public class InteractableLocation : BasicLocation
     {
 
     }
-    public virtual void OnInteract(ILocationInteractable Player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    public virtual void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
     {
+        Player = player;
+        ModItems = modItems;
+        World = world;
+        Settings = settings;
+        Weapons = weapons;
+        Time = time;
 
+
+        if(IsLocationClosed())
+        {
+            return;
+        }
+
+
+
+        if (CanInteract)
+        {
+            Player.ActivityManager.IsInteractingWithLocation = true;
+            CanInteract = false;
+            Player.IsTransacting = true;
+
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
+
+                    CreateInteractionMenu();
+                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
+                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
+
+                    InteractionMenu.Visible = true;
+                    InteractionMenu.OnItemSelect += (selnder, selectedItem, index) =>
+                    {
+                        if (selectedItem.Text == "Buy")
+                        {
+                            Transaction?.SellMenu?.Dispose();
+                            Transaction?.PurchaseMenu?.Show();
+                        }
+                        else if (selectedItem.Text == "Sell")
+                        {
+                            Transaction?.PurchaseMenu?.Dispose();
+                            Transaction?.SellMenu?.Show();
+                        }
+                    };
+                    Transaction.ProcessTransactionMenu();
+
+                    Transaction.DisposeTransactionMenu();
+                    DisposeInteractionMenu();
+
+                    StoreCamera.Dispose();
+                    Player.IsTransacting = false;
+                    Player.ActivityManager.IsInteractingWithLocation = false;
+                    CanInteract = true;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "BarInteract");
+        }
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
@@ -220,6 +296,22 @@ public class InteractableLocation : BasicLocation
 
             }
         }
+    }
+    protected bool IsLocationClosed()
+    {
+        if(IsTemporarilyClosed)
+        {
+            Game.RemoveNotification(NotificationHandle);
+            NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is ~r~Temporarily Closed~s~.");
+            return true;
+        }
+        if (!IsOpen(Time.CurrentHour))
+        {
+            Game.RemoveNotification(NotificationHandle);
+            NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is now closed.~n~Hours: {OpenTime} to {CloseTime}");
+            return true;
+        }
+        return false;
     }
 }
 

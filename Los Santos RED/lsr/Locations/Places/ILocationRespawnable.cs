@@ -16,6 +16,10 @@ public interface ILocationRespawnable
     bool IsEnabled { get; }
     bool IsActivated { get; }
     string StateLocation { get; }
+
+
+    Vector3 RespawnLocation { get; }
+    float RespawnHeading { get; }
     void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world);
 }
 

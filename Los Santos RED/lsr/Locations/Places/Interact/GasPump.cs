@@ -15,15 +15,7 @@ using System.Xml.Serialization;
 
 public class GasPump : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenuItem completeTask;
-    private Transaction Transaction;
     private Vector3 PropEntryPosition;
     private float PropEntryHeading;
     private bool IsCancelled;
@@ -73,6 +65,11 @@ public class GasPump : InteractableLocation
         Weapons = weapons;
         Time = time;
 
+        if (IsLocationClosed())
+        {
+            return;
+        }
+
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -111,7 +108,6 @@ public class GasPump : InteractableLocation
             }, "Gas Station Interact");
         }
     }
-
     private void SetupGeneral()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
@@ -127,7 +123,6 @@ public class GasPump : InteractableLocation
         Refueling.Setup();
         GenerateGasMenu();
     }
-
     private void GenerateGasMenu()
     {   
         if (Refueling.CanRefuel)

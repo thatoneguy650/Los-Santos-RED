@@ -56,7 +56,7 @@ public class ScannerSettings : ISettingsDefaultable
         DisableScannerWithoutRadioItem = false;
         EnableAudio = true;
         SetVolume = true;
-        AudioVolume = 0.45f;
+        AudioVolume = 0.25f;// 0.45f;
         AudioVolumeBoostAmount = 0.05f;
         ApplyFilter = true;
         EnableSubtitles = false;
@@ -65,7 +65,7 @@ public class ScannerSettings : ISettingsDefaultable
         DelayMaxTime = 2500;
         AllowStatusAnnouncements  = true;
         UseNearForLocations  = false;
-        NumberOfUnitsToAnnounce = 2;
+        NumberOfUnitsToAnnounce = 1;// 2;
         AllowAmbientDispatches = false;
         AmbientDispatchesMinTimeBetween = 150000;
         AmbientDispatchesMaxTimeBetween = 800000;

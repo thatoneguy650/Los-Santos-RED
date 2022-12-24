@@ -12,14 +12,6 @@ using System.Xml.Serialization;
 
 public class DriveThru : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
-    private Transaction Transaction;
     public DriveThru() : base()
     {
 
@@ -46,6 +38,11 @@ public class DriveThru : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

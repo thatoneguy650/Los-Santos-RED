@@ -48,6 +48,18 @@ public class PlacesOfInterest : IPlacesOfInterest
     public List<InteractableLocation> InteractableLocations()
     {
         List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+
+
+
+        AllLocations.AddRange(PossibleLocations.PoliceStations);
+        AllLocations.AddRange(PossibleLocations.Hospitals);
+        AllLocations.AddRange(PossibleLocations.FireStations);
+        AllLocations.AddRange(PossibleLocations.Banks);
+        AllLocations.AddRange(PossibleLocations.BeautyShops);
+        AllLocations.AddRange(PossibleLocations.Landmarks);
+        AllLocations.AddRange(PossibleLocations.Prisons);
+        AllLocations.AddRange(PossibleLocations.SubwayStations);
+
         AllLocations.AddRange(PossibleLocations.DeadDrops);
         AllLocations.AddRange(PossibleLocations.ScrapYards);
         AllLocations.AddRange(PossibleLocations.GangDens);
@@ -86,23 +98,23 @@ public class PlacesOfInterest : IPlacesOfInterest
         return AllLocations;
     }
 
-    public List<BasicLocation> BasicLocations()
-    {
-        List<BasicLocation> AllLocations = new List<BasicLocation>();
-        AllLocations.AddRange(PossibleLocations.PoliceStations);
-        AllLocations.AddRange(PossibleLocations.Hospitals);
-        AllLocations.AddRange(PossibleLocations.FireStations);
-        AllLocations.AddRange(PossibleLocations.Banks);
-        AllLocations.AddRange(PossibleLocations.BeautyShops);
-        AllLocations.AddRange(PossibleLocations.Landmarks);
-        AllLocations.AddRange(PossibleLocations.Prisons);
-        AllLocations.AddRange(PossibleLocations.SubwayStations);
-        return AllLocations;      
-    }
+    //public List<BasicLocation> BasicLocations()
+    //{
+    //    List<BasicLocation> AllLocations = new List<BasicLocation>();
+    //    AllLocations.AddRange(PossibleLocations.PoliceStations);
+    //    AllLocations.AddRange(PossibleLocations.Hospitals);
+    //    AllLocations.AddRange(PossibleLocations.FireStations);
+    //    AllLocations.AddRange(PossibleLocations.Banks);
+    //    AllLocations.AddRange(PossibleLocations.BeautyShops);
+    //    AllLocations.AddRange(PossibleLocations.Landmarks);
+    //    AllLocations.AddRange(PossibleLocations.Prisons);
+    //    AllLocations.AddRange(PossibleLocations.SubwayStations);
+    //    return AllLocations;      
+    //}
     public List<BasicLocation> AllLocations()
     {
         List<BasicLocation> AllLocations = new List<BasicLocation>();
-        AllLocations.AddRange(BasicLocations());
+        //AllLocations.AddRange(BasicLocations());
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
@@ -902,35 +914,49 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<Hospital> Hospitals = new List<Hospital>()
         {
-            new Hospital(new Vector3(364.7124f, -583.1641f, 28.69318f), 280.637f, "Pill Box Hill Medical Center","Some of the most famous people of LS have died here") { OpenTime = 0,CloseTime = 24, InteriorID = -787, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new Hospital(new Vector3(359.6708f, -584.4868f, 28.81813f), 255.1885f, "Pill Box Hill Medical Center","Some of the most famous people of LS have died here") { OpenTime = 0,CloseTime = 24, InteriorID = -787, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(355.4031f, -598.8352f, 28.77448f), 250.9611f, 50f),
                 new ConditionalLocation(new Vector3(364.3289f, -579.7377f, 28.84095f), 227.9576f, 50f),
                 new ConditionalLocation(new Vector3(299.7511f, -579.8925f, 43.26084f), 72.9278f, 50f),
-            } },
-            new Hospital(new Vector3(338.208f, -1396.154f, 32.50927f), 77.07102f, "Central Los Santos Medical Center","Gang Related Injury? We take Fleeca and Limit cards") {OpenTime = 0,CloseTime = 24, ScannerFilePath= "01_specific_location\\0x13583D6F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
+            }
+            ,RespawnLocation = new Vector3(364.7124f, -583.1641f, 28.69318f),RespawnHeading = 280.637f
+            ,CameraPosition = new Vector3(396.9802f, -582.7473f, 40.12638f), CameraDirection = new Vector3(-0.948761f, -0.1335131f, -0.2864031f), CameraRotation = new Rotator(-16.64274f, 1.069323E-05f, 98.01027f) },
+
+            new Hospital(new Vector3(343.5177f, -1399.408f, 32.50927f), 49.67379f, "Central Los Santos Medical Center","Gang Related Injury? We take Fleeca and Limit cards") {OpenTime = 0,CloseTime = 24, ScannerFilePath= "01_specific_location\\0x13583D6F.wav", PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(333.7716f, -1381.868f, 32.50922f), 80.20363f, 50f),
                 new ConditionalLocation(new Vector3(327.9682f, -1393.585f, 32.50924f), 23.40009f, 50f),
                 new ConditionalLocation(new Vector3(297.9529f, -1448.031f, 29.96662f), 306.945f, 50f),
                 new ConditionalLocation(new Vector3(361.8272f, -1465.073f, 29.28194f), 178.0938f, 50f),
-            } },
-            new Hospital(new Vector3(1842.057f, 3668.679f, 33.67996f), 228.3818f, "Sandy Shores Medical Center","Just as good as those REAL hospitals in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            }
+            ,RespawnLocation = new Vector3(338.208f, -1396.154f, 32.50927f), RespawnHeading = 77.07102f
+            ,CameraPosition = new Vector3(304.5882f, -1362.572f, 45.39756f), CameraDirection = new Vector3(0.2721124f, -0.907807f, -0.3191258f), CameraRotation = new Rotator(-18.61007f, 2.792723E-05f, -163.3141f) },
+
+            new Hospital(new Vector3(1839.211f, 3673.892f, 34.27668f), 215.6462f, "Sandy Shores Medical Center","Just as good as those REAL hospitals in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1835.39f, 3670.011f, 34.27673f), 172.621f, 50f),
                 new ConditionalLocation(new Vector3(1844.322f, 3672.015f, 33.67998f), 196.141f, 50f),
-            } },
-            new Hospital(new Vector3(-244.3214f, 6328.575f, 32.42618f), 219.7734f, "The Bay Care Center","One stop shopping! Funeral Home and Crematorium on site") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            }
+            ,RespawnLocation = new Vector3(1842.057f, 3668.679f, 33.67996f),RespawnHeading = 228.3818f
+            ,CameraPosition = new Vector3(1851.532f, 3664.737f, 39.15179f), CameraDirection = new Vector3(-0.7719535f, 0.5178522f, -0.3686691f), CameraRotation = new Rotator(-21.63356f, -3.67388E-06f, 56.14497f) },
+
+            new Hospital(new Vector3(-248.4412f, 6332.721f, 32.42618f), 225.41f, "The Bay Care Center","One stop shopping! Funeral Home and Crematorium on site") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-242.6317f, 6324.892f, 32.42618f), 318.8682f, 50f),
                 new ConditionalLocation(new Vector3(-238.915f, 6314.112f, 31.48628f), 227.0187f, 50f),
-            } },
+            }
+            ,RespawnLocation = new Vector3(-244.3214f, 6328.575f, 32.42618f),RespawnHeading = 219.7734f
+            ,CameraPosition = new Vector3(-229.6282f, 6315.992f, 36.41383f), CameraDirection = new Vector3(-0.9177954f, 0.3135513f, -0.2435924f), CameraRotation = new Rotator(-14.09866f, -7.922609E-06f, 71.13802f) },
+
             new Hospital(new Vector3(1151.386f, -1529.34f, 35.36609f), 337.4726f, "St. Fiacre Hospital", "Come see the most expensive specialists in LS") {OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(1150.269f, -1524.425f, 34.84344f), 316.4077f, 50f),
                 new ConditionalLocation(new Vector3(1137.925f, -1514.329f, 34.84341f), 327.5841f, 50f),
                 new ConditionalLocation(new Vector3(1171.36f, -1520.041f, 34.8434f), 319.8948f, 50f),
-            } },
+            }
+            ,RespawnLocation = new Vector3(1151.386f, -1529.34f, 35.36609f),RespawnHeading = 337.4726f
+            ,CameraPosition = new Vector3(1152.484f, -1510.302f, 41.42735f), CameraDirection = new Vector3(-0.1392823f, -0.9661027f, -0.2173616f), CameraRotation = new Rotator(-12.55411f, 2.186715E-07f, 171.7962f) },
 
 
             new Hospital(new Vector3(-449.76f, -341.03f, 35.5f), 106f, "Mount Zonah Medical Center", "The hospital with the largest advertising budget") { OpenTime = 0,CloseTime = 24, 
@@ -940,23 +966,29 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new ConditionalLocation(new Vector3(-447.0008f, -329.9945f, 33.50186f), 27.4845562493075f,50f),
                     new ConditionalLocation(new Vector3(-496.9766f, -331.2807f, 33.50167f), 223.606079066179f,50f),
                     new ConditionalLocation(new Vector3(-464.4201f, -353.7608f, 33.39479f), 111.44917199877f,50f),
-            } },
+            }
+            ,RespawnLocation = new Vector3(-449.76f, -341.03f, 35.5f),RespawnHeading = 106f
+            ,CameraPosition = new Vector3(-461.4951f, -347.7999f, 36.37646f), CameraDirection = new Vector3(0.8014859f, 0.59798f, 0.006344283f), CameraRotation = new Rotator(0.3635031f, -9.738551E-07f, -53.27378f) },
 
-            new Hospital(new Vector3(-677.44f, 309.2f, 84.33f), 189.027617763797f, "Eclipse Medical Tower", "Not for emergencies") { OpenTime = 0,CloseTime = 24,
+            new Hospital(new Vector3(-675.6584f, 313.8624f, 83.08415f), 175.4087f, "Eclipse Medical Tower", "Not for emergencies") { OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
 
-            } },
+            }
+            ,RespawnLocation = new Vector3(-677.44f, 309.2f, 84.33f),RespawnHeading = 189.027617763797f
+            ,CameraPosition = new Vector3(-684.0377f, 287.5522f, 95.29053f), CameraDirection = new Vector3(0.2572458f, 0.9077324f, -0.3314311f), CameraRotation = new Rotator(-19.35566f, 4.072142E-06f, -15.82241f) },
 
-                        new Hospital(new Vector3(-874.43f, -307.64f, 40.41f), 343.800477779369f, "Portola Trinity Medical Center", "Bring Insurance") { OpenTime = 0,CloseTime = 24,
+            new Hospital(new Vector3(-874.9105f, -309.6224f, 39.53273f), 348.7842f, "Portola Trinity Medical Center", "Bring Insurance") { OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
 
-            } },
+            }
+            ,RespawnLocation = new Vector3(-873.8141f, -305.9774f, 39.5518f),RespawnHeading = 345.7174f
+            ,CameraPosition = new Vector3(-859.3407f, -294.1456f, 52.37224f), CameraDirection = new Vector3(-0.7405583f, -0.5703712f, -0.3553168f), CameraRotation = new Rotator(-20.81286f, -2.740125E-06f, 127.6031f) },
 
 
             new Hospital(new Vector3(3132.073f, -4839.958f, 112.0312f), 354.8388f, "Ludendorff Clinic", "The service you'd expect!") { StateLocation = "North Yankton", OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-
-            } },
+            }
+            ,RespawnLocation = new Vector3(3132.073f, -4839.958f, 112.0312f),RespawnHeading = 354.8388f },
 
             //new Hospital(new Vector3(241.2085f, -1378.962f, 33.74176f), 140.41f, LocationType.Morgue, "Los Santos County Coroner Office", "") {OpenTime = 0,CloseTime = 24, InteriorID = 60418, TeleportEnterPosition = new Vector3(253.351f, -1364.622f, 39.53437f), TeleportEnterHeading = 327.1821f },
         };
@@ -1373,15 +1405,15 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<Bar> Bars = new List<Bar>()
         {
-            new Bar(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, "Pitchers", "","BarMenu") ,
-            new Bar(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, "Singletons", "","BarMenu"),
-            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "","BarMenu") { VendorPosition =new Vector3(1982.979f, 3053.596f, 47.21508f), VendorHeading = 226.3188f, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav"  },
-            new Bar(new Vector3(-262.8396f, 6291.08f, 31.49327f), 222.9271f, "The Bay Bar", "","BarMenu"),
-            new Bar(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, "The Last Resort", "","BarMenu"),
-            new Bar(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, "Shenanigan's Bar", "","BarMenu"),
-            new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu"),
-            new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778,  VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
-            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
+            new Bar(new Vector3(224.5178f, 336.3819f, 105.5973f), 340.0694f, "Pitchers", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(219.5508f, 304.9488f, 105.5861f), 250.1051f, "Singletons", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(1982.979f, 3053.596f, 47.21508f), 226.3188f, "Yellow Jacket Inn", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorPosition =new Vector3(1982.979f, 3053.596f, 47.21508f), VendorHeading = 226.3188f, ScannerFilePath = "01_specific_location\\0x02C36B8B.wav"  },
+            new Bar(new Vector3(-262.8396f, 6291.08f, 31.49327f), 222.9271f, "The Bay Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(-576.9105f, 239.0964f, 82.63644f), 354.0043f, "The Last Resort", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(255.3016f, -1013.603f, 29.26964f), 70.28053f, "Shenanigan's Bar", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
+            new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778,  VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
+            new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
             
 
         };

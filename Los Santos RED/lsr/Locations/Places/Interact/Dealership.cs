@@ -12,14 +12,7 @@ using System.Xml.Serialization;
 
 public class Dealership : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
-    private Transaction Transaction;
+
     public Dealership() : base()
     {
 
@@ -54,6 +47,12 @@ public class Dealership : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

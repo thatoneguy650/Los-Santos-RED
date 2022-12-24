@@ -11,18 +11,10 @@ using System.Xml.Serialization;
 
 public class GangDen : InteractableLocation, ILocationGangAssignable
 {
-    private LocationCamera StoreCamera;
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenuItem completeTask;
 
-    private Transaction Transaction;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
     private bool KeepInteractionGoing;
     private UIMenuItem LayLowMenuItem;
@@ -76,6 +68,11 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

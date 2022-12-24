@@ -152,11 +152,11 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\AirportFlight.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Refueling.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Hospital\MedicalTreatment.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ILocationSetupable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
-    <Compile Include="lsr\Locations\Places\Interact\TransactionInteraction.cs" />
     <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
@@ -285,8 +285,8 @@
     <Compile Include="lsr\Player\Inventory\PropAttachment.cs" />
     <Compile Include="lsr\Locations\GameCounty.cs" />
     <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\Prison.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\Subway Station.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Prison.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\SubwayStation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationAgencyAssignable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
@@ -305,11 +305,11 @@
     <Compile Include="lsr\Player\Inventory\MenuItemExtra.cs" />
     <Compile Include="lsr\Locations\InteriorDoor.cs" />
     <Compile Include="lsr\Locations\Places\BasicLocation.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\Bank.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\BeautyShop.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\FireStation.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\Hospital.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\Landmark.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Bank.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\BeautyShop.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\FireStation.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Hospital\Hospital.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\Landmark.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Bar.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Dealership.cs" />
     <Compile Include="lsr\Locations\Places\Interact\CityHall.cs" />
@@ -326,15 +326,15 @@
     <Compile Include="lsr\Locations\Places\Interact\HeadShop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hotel.cs" />
     <Compile Include="lsr\Locations\Places\InteractableLocation.cs" />
-    <Compile Include="lsr\Locations\Places\Basic\PoliceStation.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\PoliceStation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\LiquorStore.cs" />
     <Compile Include="lsr\Locations\Places\Interact\PawnShop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Pharmacy.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Residence.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Restaurant.cs" />
     <Compile Include="lsr\Camera\LocationCamera.cs" />
-    <Compile Include="lsr\Locations\Places\PurchaseMenu_Old.cs" />
-    <Compile Include="lsr\Locations\Places\SellMenu_Old.cs" />
+    <Compile Include="lsr\Old\PurchaseMenu_Old.cs" />
+    <Compile Include="lsr\Old\SellMenu_Old.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ScrapYard.cs" />
     <Compile Include="lsr\Locations\Places\Transaction.cs" />
     <Compile Include="lsr\Locations\Places\Interact\VendingMachine.cs" />
@@ -834,7 +834,7 @@
   <ItemGroup>
     <Folder Include="lsr\Crimes\" />
     <Folder Include="lsr\Data\Peds\Clothes\" />
-    <Folder Include="lsr\Old\" />
+    <Folder Include="lsr\Locations\Places\Basic\" />
     <Folder Include="lsr\UI\Pause Menu\Tabs\GangTab\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class FireStation : BasicLocation, ILocationAgencyAssignable
+public class FireStation : InteractableLocation, ILocationAgencyAssignable
 {
     public FireStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -41,6 +41,28 @@ public class FireStation : BasicLocation, ILocationAgencyAssignable
         if (AssignedAgencyID != null)
         {
             AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+        }
+    }
+    public override bool CanCurrentlyInteract(ILocationInteractable player)
+    {
+        ButtonPromptText = $"Enter {Name}";
+        return true;
+    }
+    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
+    {
+        Player = player;
+        ModItems = modItems;
+        World = world;
+        Settings = settings;
+        Weapons = weapons;
+        Time = time;
+        if (IsLocationClosed())
+        {
+            return;
+        }
+        if (CanInteract)
+        {
+            Game.DisplayHelp("Closed for Renovations. Check back Later.~r~WIP~s~");
         }
     }
 }

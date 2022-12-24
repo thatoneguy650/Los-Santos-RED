@@ -136,7 +136,7 @@ public class DynamicPlaces
                 GasPump newGasPump;
                 if (ClosestStation != null)
                 {
-                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = ClosestStation.OpenTime, CloseTime = ClosestStation.CloseTime };
+                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
                 }
                 else
                 {

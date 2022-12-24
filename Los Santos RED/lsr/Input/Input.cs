@@ -114,7 +114,7 @@ namespace LosSantosRED.lsr
         private void DisableVanillaControls()
         {
             IsUsingController = NativeHelper.IsUsingController;
-
+            Player.IsUsingController = IsUsingController;
 
             Game.DisableControlAction(0, GameControl.CharacterWheel, true);
             Game.DisableControlAction(0, GameControl.SelectCharacterFranklin, true);

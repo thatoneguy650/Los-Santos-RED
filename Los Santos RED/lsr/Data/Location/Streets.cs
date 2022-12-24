@@ -330,7 +330,7 @@ public class Streets : IStreets
     {
         List<Street> LCStreetsList = new List<Street>
         {
-            new Street("Unknwon", 40f, "MPH")
+            new Street("Unknown", 40f, "MPH")
         };
         Serialization.SerializeParams(LCStreetsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Streets_LibertyCity.xml");
     }

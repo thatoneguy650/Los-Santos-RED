@@ -59,7 +59,12 @@ public class TopRightMenu
 
 
         bool willShowCash = !IsVanillaCashHUDVisible && (DisplayablePlayer.IsTransacting || DisplayablePlayer.BankAccounts.RecentlyChangedMoney || DisplayablePlayer.IsBusted || UI.IsDrawingWheelMenu);
-        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.TopDisplayShowWeapon && (IsVanillaWeaponHUDVisible || UI.IsDrawingWheelMenu) && DisplayablePlayer.WeaponEquipment.CurrentWeapon != null && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable;
+        bool willShowWeapon = Settings.SettingsManager.LSRHUDSettings.TopDisplayShowWeapon 
+            && Settings.SettingsManager.SelectorSettings.ApplySelector && (Settings.SettingsManager.SelectorSettings.ApplySelectorWithController || !DisplayablePlayer.IsUsingController)
+            && (IsVanillaWeaponHUDVisible || UI.IsDrawingWheelMenu) 
+            && DisplayablePlayer.WeaponEquipment.CurrentWeapon != null 
+            && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee 
+            && DisplayablePlayer.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Throwable;
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
         bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;

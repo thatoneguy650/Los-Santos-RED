@@ -11,28 +11,12 @@ using System.Xml.Serialization;
 
 public class GunStore : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private UIMenuItem completeTask;
-    private Transaction Transaction;
     public GunStore() : base()
     {
 
     }
 
-
-    //[XmlIgnore]
-    //public ShopMenu Menu { get; set; }
-    //public string MenuID { get; set; }
-
-
-    //public Vector3 ParkingSpot { get; set; }
-    //public float ParkingHeading { get; set; }
     public List<SpawnPlace> ParkingSpaces = new List<SpawnPlace>();
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gun Store";
@@ -60,6 +44,11 @@ public class GunStore : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
 
         if (CanInteract)
         {

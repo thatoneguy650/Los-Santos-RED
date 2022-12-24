@@ -12,14 +12,6 @@ using System.Xml.Serialization;
 
 public class GasStation : InteractableLocation
 {
-    private LocationCamera StoreCamera;
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
-    private Transaction Transaction;
     public GasStation() : base()
     {
 
@@ -39,66 +31,5 @@ public class GasStation : InteractableLocation
         ButtonPromptText = $"Shop At {Name}";
         return true;
     }
-    public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
-    {
-        Player = player;
-        ModItems = modItems;
-        World = world;
-        Settings = settings;
-        Weapons = weapons;
-        Time = time;
-
-        if (CanInteract)
-        {
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-            Player.IsTransacting = true;
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    StoreCamera = new LocationCamera(this, Player);
-                    StoreCamera.Setup();
-
-                    CreateInteractionMenu();
-                    Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                    Transaction.CreateTransactionMenu(Player, modItems, world, settings, weapons, time);
-
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                    Transaction.ProcessTransactionMenu();
-
-                    Transaction.DisposeTransactionMenu();
-                    DisposeInteractionMenu();
-
-                    StoreCamera.Dispose();
-
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                    Player.IsTransacting = false;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-
-            }, "GasStationInteract");
-        }
-    }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        if (selectedItem.Text == "Buy")
-        {
-            Transaction?.SellMenu?.Dispose();
-            Transaction?.PurchaseMenu?.Show();
-        }
-        else if (selectedItem.Text == "Sell")
-        {
-            Transaction?.PurchaseMenu?.Dispose();
-            Transaction?.SellMenu?.Show();
-        }
-    }
-
 }
 

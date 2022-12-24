@@ -80,18 +80,18 @@ public class CellPhone
     {
         if (!BurnerPhone.IsActive)
         {
-            NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
-            isRunningForcedMobileTask = true;
-            NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
-            Player.Character.KeepTasks = true;
-            if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
-            {
-                BurnerPhone.DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper());
-            }
-            else
-            {
-                BurnerPhone.SetOffScreen();
-            }
+            //NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
+            //isRunningForcedMobileTask = true;
+            //NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
+            //Player.Character.KeepTasks = true;
+            //if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+            //{
+            //    BurnerPhone.DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper());
+            //}
+            //else
+            //{
+            //    BurnerPhone.SetOffScreen();
+            //}
         }
         else
         {
@@ -164,7 +164,7 @@ public class CellPhone
             //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         }
         isRunningForcedMobileTask = false;
-        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone && IsActive)
         {
             BurnerPhone.ClosePhone();
         }

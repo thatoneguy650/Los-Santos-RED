@@ -64,7 +64,13 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    if (IsInSearchMode && TimeInSearchMode >= CurrentSearchTime)
+                    if(IsInSearchMode && Player.WantedLevel == 1)
+                    {
+                        IsInActiveMode = false;
+                        IsInSearchMode = false;
+                        Player.OnSuspectEluded();
+                    }
+                    else if (IsInSearchMode && TimeInSearchMode >= CurrentSearchTime)
                     {
                         IsInActiveMode = false;
                         IsInSearchMode = false;

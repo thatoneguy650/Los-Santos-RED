@@ -51,7 +51,7 @@ public class PlayerVoice
     {
         GenericFightPossibilities = new List<string>() { "FIGHT", "FIGHT_RUN", "GENERIC_CURSE_HIGH", "GENERIC_CURSE_MED", "PROVOKE_GENERIC", "CHALLENGE_THREATEN" };
         GenericCrashPossibilities = new List<string>(){"BUMP","CRASH_CAR","CRASH_GENERIC","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","CHALLENGE_THREATEN"};
-        GenericWonPossibilities = new List<string>(){"WON_DISPUTE","GENERIC_WHATEVER"};
+        GenericWonPossibilities = new List<string>(){ "WON_DISPUTE","GENERIC_WHATEVER" };
         GenericPoliceFightPossibilities = new List<string>(){"CHASED_BY_POLICE","FIGHT","FIGHT_RUN","GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_SHOCKED_MED","PROVOKE_GENERIC","WON_DISPUTE","CHALLENGE_THREATEN"};
     }
     public void Update()

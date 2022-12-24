@@ -575,17 +575,23 @@ public class Respawning// : IRespawning
     }
     private void SetPlayerAtLocation(ILocationRespawnable ToSet)
     {
-        Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
-        Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
-        EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
-        EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
-        //if (ToSet.HasInterior)
-        //{
+        if (ToSet.RespawnLocation == Vector3.Zero)
+        {
+            Game.LocalPlayer.Character.Position = ToSet.EntrancePosition;
+            Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
+            EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
+            EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
+        }
+        else
+        {
+            Game.LocalPlayer.Character.Position = ToSet.RespawnLocation;
+            Game.LocalPlayer.Character.Heading = ToSet.RespawnHeading;
+            EntryPoint.FocusCellX = (int)(ToSet.RespawnLocation.X / EntryPoint.CellSize);
+            EntryPoint.FocusCellY = (int)(ToSet.RespawnLocation.Y / EntryPoint.CellSize);
+        }
 
         World.ClearSpawned(false);
-
-            World.Places.StaticPlaces.ActivateLocation(ToSet);
-        //}
+        World.Places.StaticPlaces.ActivateLocation(ToSet);
         GameTimeLastPlacedAtLocation = Game.GameTime;
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Game.LocalPlayer.Character);
     }

@@ -88,6 +88,25 @@ public class Airport : InteractableLocation, ILocationSetupable
 
 
 
+        if(!IsOpen(Time.CurrentHour))
+        {
+            return;
+        }
+        if(!CanCurrentlyInteract(Player))
+        {
+            return;
+        }
+            
+            
+            
+            
+             
+
+
+
+
+
+
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;

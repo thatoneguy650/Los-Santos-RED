@@ -107,7 +107,7 @@ public class WeaponSelector
     }
     public void Update()
     {
-        if (Settings.SettingsManager.SelectorSettings.ApplySelector)
+        if (Settings.SettingsManager.SelectorSettings.ApplySelector && (!Player.IsUsingController || Settings.SettingsManager.SelectorSettings.ApplySelectorWithController))
         {
             UpdateShooting();
         }

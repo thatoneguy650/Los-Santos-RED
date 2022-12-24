@@ -561,10 +561,6 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            //if (IsPerformingActivity)
-            //{
-            //    UpperBodyActivity?.Cancel();
-            //}
             ForceCancelUpperBody();//was only if performing
             try
             {

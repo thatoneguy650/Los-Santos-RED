@@ -45,6 +45,10 @@ public class WeaponSway
     {
         if (Settings.SettingsManager.SwaySettings.ApplySway && Player.WeaponEquipment.CurrentWeapon != null && !IsDisabled)// && !IsInVehicle)
         {
+            if (Player.IsUsingController && !Settings.SettingsManager.SwaySettings.ApplySwayWithController)
+            {
+                return;
+            }
             if (Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Throwable || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Vehicle || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Misc || Player.WeaponEquipment.CurrentWeapon.Category == WeaponCategory.Unknown)
             {
                 return;

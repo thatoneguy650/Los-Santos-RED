@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr.Player
             }
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
-            if (!CurrentIntoxicant.ContinuesWithoutCurrentUse)
+            if (CurrentIntoxicant != null && !CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
                 EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion", 5);
                 Player.Intoxication.StopIngesting(CurrentIntoxicant);

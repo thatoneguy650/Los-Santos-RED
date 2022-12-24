@@ -12,19 +12,7 @@ using System.Xml.Serialization;
 
 public class Hotel : InteractableLocation
 {
-    private LocationCamera HotelCamera;
-
-    private ILocationInteractable Player;
-    private IModItems ModItems;
-    private IEntityProvideable World;
-    private ISettingsProvideable Settings;
-    private IWeapons Weapons;
-    private ITimeControllable Time;
     private bool KeepInteractionGoing = false;
-
-
-
-
     public Hotel() : base()
     {
 
@@ -54,6 +42,12 @@ public class Hotel : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+        if (IsLocationClosed())
+        {
+            return;
+        }
+
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -62,8 +56,8 @@ public class Hotel : InteractableLocation
             {
                 try
                 {
-                    HotelCamera = new LocationCamera(this, Player);
-                    HotelCamera.Setup();
+                    StoreCamera = new LocationCamera(this, Player);
+                    StoreCamera.Setup();
                     CreateInteractionMenu();
                     InteractionMenu.Visible = true;
                     InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
@@ -74,7 +68,7 @@ public class Hotel : InteractableLocation
                         GameFiber.Yield();
                     }
                     DisposeInteractionMenu();
-                    HotelCamera.Dispose();
+                    StoreCamera.Dispose();
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     CanInteract = true;
                 }
@@ -144,7 +138,7 @@ public class Hotel : InteractableLocation
                 if(hotelRoom != null)
                 {
                     isInRoom = true;
-                    HotelCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation);
+                    StoreCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation);
                 }
 
             }
@@ -175,7 +169,7 @@ public class Hotel : InteractableLocation
                 if(isInRoom)
                 {
                     isInRoom = false;
-                    HotelCamera.ReHighlightStoreWithCamera();
+                    StoreCamera.ReHighlightStoreWithCamera();
                 }
 
             }, "FastForwardWatcher");
