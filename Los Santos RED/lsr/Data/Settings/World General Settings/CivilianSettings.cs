@@ -134,29 +134,30 @@ public class CivilianSettings : ISettingsDefaultable
         CheckCivilianCrimes = true;
         AllowCivilinsToCallPoliceOnOtherCivilians = true;
         AllowCivilinsToCallEMTsOnBodies = true;
-        ShowRandomCriminalBlips = true;
-        DrugDealerPercentageRichZones = 1f;
-        DrugDealerPercentageMiddleZones = 2f;
-        DrugDealerPercentagePoorZones = 5f;
+        ShowRandomCriminalBlips = false;
 
-        DrugCustomerPercentageRichZones = 5f;
-        DrugCustomerPercentageMiddleZones = 7f;
-        DrugCustomerPercentagePoorZones = 10f;
+        DrugDealerPercentageRichZones = 5f;// 1f;
+        DrugDealerPercentageMiddleZones = 7f;// 2f;
+        DrugDealerPercentagePoorZones = 10f;//5f;
 
-        CallPolicePercentageRichZones = 50f;
-        CallPolicePercentageMiddleZones = 30f;
-        CallPolicePercentagePoorZones = 20f;
+        DrugCustomerPercentageRichZones = 10f;// 5f;
+        DrugCustomerPercentageMiddleZones = 12f;// 7f;
+        DrugCustomerPercentagePoorZones = 15f;// 10f;
 
-
-        CallPoliceForSeriousCrimesPercentageRichZones = 80f;
-        CallPoliceForSeriousCrimesPercentageMiddleZones = 70f;
-        CallPoliceForSeriousCrimesPercentagePoorZones = 50f;
+        CallPolicePercentageRichZones = 40f;// 50f;
+        CallPolicePercentageMiddleZones = 20f;// 30f;
+        CallPolicePercentagePoorZones = 10f;// 20f;
 
 
+        CallPoliceForSeriousCrimesPercentageRichZones = 70f;// 80f;
+        CallPoliceForSeriousCrimesPercentageMiddleZones = 60f;// 70f;
+        CallPoliceForSeriousCrimesPercentagePoorZones = 40f;// 50f;
 
-        FightPercentageRichZones = 0f;
-        FightPercentageMiddleZones = 1f;
-        FightPercentagePoorZones = 2f;
+
+
+        FightPercentageRichZones = 1f;// 0f;
+        FightPercentageMiddleZones = 2f;// 1f;
+        FightPercentagePoorZones = 4f;// 2f;
 
 
         FightPolicePercentageRichZones = 1f;

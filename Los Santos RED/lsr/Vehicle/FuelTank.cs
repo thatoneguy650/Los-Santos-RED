@@ -82,6 +82,10 @@ public class FuelTank
         {
             float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
             FuelLevel -= AmountToSubtract;
+            if (FuelLevel < 0)
+            {
+                FuelLevel = 0;
+            }
             VehicleExt.Vehicle.FuelLevel = FuelLevel;
         }
     }

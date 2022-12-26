@@ -403,7 +403,7 @@ namespace Mod
 
 
         public bool IsUsingController { get; set; }
-
+        public bool IsShowingActionWheel { get; set; }
         //Required
         public void Setup()
         {

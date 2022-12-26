@@ -46,16 +46,16 @@ public class DeathMenu : Menu
             Player.ButtonPrompts.RemovePrompts("MenuShowDead");
             Player.ButtonPrompts.RemovePrompts("MenuShowBusted");
 
-            if(NativeHelper.IsUsingController)
-            {
-                EntryPoint.WriteToConsole("Death Menu Controller Prompt Added");
-                Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
-            }
-            else
-            {
-                EntryPoint.WriteToConsole("Death Menu Regular Prompt Added");
-                Player.ButtonPrompts.AttemptAddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.MenuKey, 999);
-            }
+            //if(NativeHelper.IsUsingController)
+            //{
+            //    EntryPoint.WriteToConsole("Death Menu Controller Prompt Added");
+            //    Player.ButtonPrompts.AddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
+            //}
+            //else
+            //{
+                //EntryPoint.WriteToConsole("Death Menu Regular Prompt Added");
+                //Player.ButtonPrompts.AttemptAddPrompt("MenuShowDead", "Toggle Dead Menu", "MenuShowDead", Settings.SettingsManager.KeySettings.MenuKey, 999);
+            //}
 
             
             Menu.Visible = true;

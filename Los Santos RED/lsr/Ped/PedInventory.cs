@@ -10,7 +10,6 @@ public class PedInventory
     private PedExt PedExt;
     private ISettingsProvideable Settings;
     public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
-
     public PedInventory(PedExt pedExt, ISettingsProvideable settings)
     {
         PedExt = pedExt;
@@ -31,6 +30,7 @@ public class PedInventory
             }
         }
     }
+
     public InventoryItem Get(ModItem modItem)
     {
         return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
@@ -75,6 +75,23 @@ public class PedInventory
             }
         }
         return false;
+    }
+
+    public void AddRandomItems(IModItems modItems)
+    {
+        if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
+        {
+            int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
+            for (int i = 0; i < ItemsToGet; i++)
+            {
+                ModItem toGet = modItems.GetRandomItem();
+                int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
+                if (toGet != null)
+                {
+                    Add(toGet, AmountToGet);
+                }
+            }
+        }
     }
 }
 

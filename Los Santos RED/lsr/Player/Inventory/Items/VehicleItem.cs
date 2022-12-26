@@ -327,16 +327,8 @@ public class VehicleItem : ModItem
         {
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             if (NewVehicle.Exists())
-            {
-                transaction.OnItemPurchased(this, CurrentMenuItem, 1);
-
-
-
-
+            {  
                 CurrentMenuItem.ItemsSoldToPlayer += 1;
-
-
-
                 NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
                 NewVehicle.Wash();
                 VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);
@@ -348,6 +340,7 @@ public class VehicleItem : ModItem
                 }
                 world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
+                transaction.OnItemPurchased(this, CurrentMenuItem, 1);
                 return true;
             }
             else

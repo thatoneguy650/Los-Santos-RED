@@ -74,8 +74,9 @@ public class SellMenu : Menu
         }
         sellMenuRNUI.Clear();
         CreateCategories();
-        foreach (MenuItem cii in ShopMenu.Items)
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable))
         {
+            EntryPoint.WriteToConsole($"SELL MENU ADD ITEM {cii.ModItemName} Sellable:{cii.Sellable} SalesPrice {cii.SalesPrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreateSellMenuItem(Transaction, cii, sellMenuRNUI, Settings, Player, Transaction.IsStealing, World);
         }
     }
@@ -177,5 +178,8 @@ public class SellMenu : Menu
         }
         selectedMenu.ModItem.CreatePreview(Transaction, StoreCam);
     }
-
+    public void OnItemPurchased(MenuItem menuItem)
+    {
+        menuItem.ModItem.UpdateSellMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);
+    }
 }

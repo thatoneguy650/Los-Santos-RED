@@ -44,19 +44,8 @@ public class KeySettings : ISettingsDefaultable
     public Keys ActionPopUpDisplayKeyModifier { get; set; }
     public Keys AltActionPopUpDisplayKey { get; set; }
     public Keys AltActionPopUpDisplayKeyModifier { get; set; }
-
-    public ControllerButtons ControllerActionDisplay { get; set; }
-    public ControllerButtons ControllerActionDisplayModifier { get; set; }
-
-
-
-
     public int ControllerAction { get; set; }
     public int ControllerActionModifier { get; set; }
-
-
-
-
     public int GameControlToDisable { get; set; }
 
     public KeySettings()
@@ -69,48 +58,55 @@ public class KeySettings : ISettingsDefaultable
         MenuKey = Keys.F10;
         SimplePhoneKey = Keys.Down;
         SimplePhoneKeyModifer = Keys.LShiftKey;
+
         SurrenderKey = Keys.E;
         SurrenderKeyModifier = Keys.LShiftKey;
+
         RightIndicatorKey = Keys.E;
         RightIndicatorKeyModifer = Keys.LShiftKey;
+
         LeftIndicatorKey = Keys.Q;
         LeftIndicatorKeyModifer = Keys.LShiftKey;
+
         HazardKey = Keys.Space;
         HazardKeyModifer = Keys.LShiftKey;
+
         EngineToggle = Keys.Z;
         EngineToggleModifier = Keys.LShiftKey;
+
         ManualDriverDoorClose = Keys.None;
         ManualDriverDoorCloseModifier = Keys.LControlKey;
+
         CrouchKey = Keys.None;
         CrouchKeyModifier = Keys.LControlKey;
+
         SprintKey = Keys.Z;
         SprintKeyModifier = Keys.None;
+
         InteractStart = Keys.O;
         InteractPositiveOrYes = Keys.J;
         InteractNegativeOrNo = Keys.K;
         InteractCancel = Keys.L;
         ScenarioStart = Keys.P;
+
         SelectorKey = Keys.X;
         SelectorKeyModifier = Keys.LShiftKey;
+
         ActivityKey = Keys.O;
         ActivityKeyModifier = Keys.LShiftKey;
+
         GestureKey = Keys.X;
         GestureKeyModifier = Keys.Z;
 
-
-
         ActionPopUpDisplayKey = Keys.XButton1;//mouse4
         ActionPopUpDisplayKeyModifier = Keys.None;
+
         AltActionPopUpDisplayKey = Keys.N;//N
-        AltActionPopUpDisplayKeyModifier = Keys.LMenu;//left alt
-        ControllerAction = 236;//189 - frontend left//234 - ScriptPadLeft//217;// 236;
+        AltActionPopUpDisplayKeyModifier = Keys.LMenu;//left alt 
+
+        ControllerAction = 236;//189 - frontend left//234 - ScriptPadLeft//217;// 236 - back;
         ControllerActionModifier = -1;//227 - scriptRB//206 - frontenRB
-        GameControlToDisable = 0;
 
-
-        ControllerActionDisplay = ControllerButtons.Back;
-        ControllerActionDisplayModifier = ControllerButtons.None;
-
-
+        GameControlToDisable = 0;//Next Cam
     }
 }

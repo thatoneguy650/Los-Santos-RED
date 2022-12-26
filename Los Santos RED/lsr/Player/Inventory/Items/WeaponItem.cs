@@ -204,9 +204,10 @@ public class WeaponItem : ModItem
         {
             if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
             {
-                NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(player.Character, WeaponInformation.Hash);
-                transaction.OnItemSold(this, menuItem, 1);
+                menuItem.ItemsBoughtFromPlayer++;
+                NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(player.Character, WeaponInformation.Hash);   
                 player.WeaponEquipment.SetUnarmed();
+                transaction.OnItemSold(this, menuItem, 1);
                 return true;
             }
         }
@@ -554,13 +555,14 @@ public class WeaponItem : ModItem
         {
             if (WeaponInformation.Category == WeaponCategory.Throwable || !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
             {
-                transaction.OnItemPurchased(this, menuItem, 1);
+                menuItem.ItemsSoldToPlayer++;
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(player.Character, WeaponInformation.Hash, WeaponInformation.AmmoAmount, false, false);
                 if (CurrentWeaponVariation != null)
                 {
                     WeaponInformation.ApplyWeaponVariation(player.Character, CurrentWeaponVariation);
                 }
                 player.WeaponEquipment.SetUnarmed();
+                transaction.OnItemPurchased(this, menuItem, 1);
                 return true;
             }
         }
@@ -671,7 +673,6 @@ public class WeaponItem : ModItem
             EntryPoint.WriteToConsole($"Weapon Preview Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
-
     public override void CreatePreview(Transaction Transaction, Camera StoreCam)
     {
         try

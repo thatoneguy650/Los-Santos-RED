@@ -126,7 +126,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 40f,
             PercentageWithSidearms = 30f,
             PercentageWithLongGuns = 15f,
-            MemberKickUpAmount = 2500
+            MemberKickUpAmount = 2500,
+
+            DrugDealerPercentage = 40f,
         };//Meth
         Vagos = new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Orange", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos O.G.", "CHAR_MP_MEX_BOSS", "Vagos Member")
         {
@@ -155,7 +157,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 5f,
-            MemberKickUpAmount = 2200
+            MemberKickUpAmount = 2200,
+
+            DrugDealerPercentage = 55f,
         };//marijuana
         Families = new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Families", "Green", "FamiliesPeds", "FamiliesVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Families O.G.", "CHAR_MP_FAM_BOSS", "Families Member")
         {
@@ -184,7 +188,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 5f,
-            MemberKickUpAmount = 2500
+            MemberKickUpAmount = 2500,
+            DrugDealerPercentage = 60f,
         };//marijuana
         Ballas = new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas", "Ballas", "Purple", "BallasPeds", "BallasVehicles", "", "MeleeWeapons", "BallasSidearms", "BallasLongGuns", "Ballas O.G.", "CHAR_MP_JULIO", "Ballas Member")
         {
@@ -213,7 +218,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 5f,
-            MemberKickUpAmount = 2700
+            MemberKickUpAmount = 2700,
+
+            DrugDealerPercentage = 60f,
         };//crack
         Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta O.G.", "CHAR_MP_MEX_LT", "Marabunta Member")
         {
@@ -242,7 +249,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 5f,
-            MemberKickUpAmount = 2000
+            MemberKickUpAmount = 2000,
+
+            DrugDealerPercentage = 70f,
         };//marijuana
         Varrios = new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Yellow", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios O.G.", "CHAR_ORTEGA", "Varrios Member")
         {
@@ -271,7 +280,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 25f,
             PercentageWithSidearms = 25f,
             PercentageWithLongGuns = 10f,
-            MemberKickUpAmount = 2200
+            MemberKickUpAmount = 2200,
+
+            DrugDealerPercentage = 50f,
         };//crack
         Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triad Leader", "CHAR_CHENGSR", "Triad Member")
         {
@@ -300,7 +311,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 30f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 3000
+            MemberKickUpAmount = 3000,
+
+            DrugDealerPercentage = 40f,
         };//heroin
         Redneck = new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Rednecks", "Black", "RedneckPeds", "RedneckVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Redneck Leader", "CHAR_ONEIL", "Redneck")
         {
@@ -329,7 +342,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 50f,
             PercentageWithLongGuns = 20f,
-            MemberKickUpAmount = 1500
+            MemberKickUpAmount = 1500,
+
+            DrugDealerPercentage = 40f,
         };//TOILET CLEANER
         Korean = new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae", "Kkangpae", "Pink", "KoreanPeds", "KoreanVehicles", "", "MeleeWeapons", "KkangpaeSidearms", "KkangpaeLongGuns", "Kkangpae Leader", "CHAR_CHENG", "Kkangpae Member")
         {
@@ -358,7 +373,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 30f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 3200
+            MemberKickUpAmount = 3200,
+            DrugDealerPercentage = 40f,
         };//heroin
         Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti Boss", "CHAR_TOM", "Gambetti Associate")
         {
@@ -388,7 +404,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 5f,
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 6000
+            MemberKickUpAmount = 6000,
+            DrugDealerPercentage = 35f,
         };//cocaine
         Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano Boss", "CHAR_DOM", "Pavano Assocaite")
         {
@@ -418,7 +435,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 5f,
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 5500
+            MemberKickUpAmount = 5500,
+            DrugDealerPercentage = 35f,
         };//cocaine
         Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella Boss", "CHAR_AGENT14", "Lupisella Assocaite")
         {
@@ -448,7 +466,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 5f,
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 5700
+            MemberKickUpAmount = 5700,
+            DrugDealerPercentage = 35f,
         };//cocaine
         Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina Boss", "CHAR_BARRY", "Messina Assocaite")
         {
@@ -478,7 +497,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 5f,
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 5200
+            MemberKickUpAmount = 5200,
+            DrugDealerPercentage = 35f,
         };//cocaine
         Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti Boss", "CHAR_DREYFUSS", "Ancelotti Associate")
         {
@@ -508,7 +528,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 5f,
             PercentageWithSidearms = 35f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 5500
+            MemberKickUpAmount = 5500,
+            DrugDealerPercentage = 35f,
         };//cocaine
         Cartel = new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel", "Cartel", "Red", "CartelPeds", "CartelVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Madrazo", "CHAR_MANUEL", "Cartel Member")
         {
@@ -537,7 +558,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 25f,
             PercentageWithSidearms = 20f,
             PercentageWithLongGuns = 15f,
-            MemberKickUpAmount = 2800
+            MemberKickUpAmount = 2800,
+
+            DrugDealerPercentage = 55f,
         };//Meth
         Armenian = new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob", "Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Armenian Leader", "CHAR_MP_PROF_BOSS", "Armenian Member")
         {
@@ -566,7 +589,9 @@ public class Gangs : IGangs
             PercentageWithMelee = 20f,
             PercentageWithSidearms = 25f,
             PercentageWithLongGuns = 15f,
-            MemberKickUpAmount = 3000
+            MemberKickUpAmount = 3000,
+
+            DrugDealerPercentage = 55f,
         };//heroin
         Yardies = new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies", "Yardies", "Green", "YardiesPeds", "YardieVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Yardie O.G.", "CHAR_MP_GERALD", "Yardie Member")
            {
@@ -595,8 +620,10 @@ public class Gangs : IGangs
                PercentageWithMelee = 15f,
                PercentageWithSidearms = 10f,
                PercentageWithLongGuns = 2f,
-               MemberKickUpAmount = 1500
-           };//marijuana
+               MemberKickUpAmount = 1500,
+
+                DrugDealerPercentage = 90f,
+        };//marijuana
         Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "VagosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablo Leader", "CHAR_TW", "Diablo Soldier")
         {
             DenName = "Hangout",
@@ -624,7 +651,8 @@ public class Gangs : IGangs
             PercentageWithMelee = 15f,
             PercentageWithSidearms = 15f,
             PercentageWithLongGuns = 2f,
-            MemberKickUpAmount = 1500
+            MemberKickUpAmount = 1500,
+            DrugDealerPercentage = 55f,
         };//SPANK
         //new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", "AltruistPeds", "GenericGangVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Altruist Leader","CHAR_PA_MALE","Altruist Member") { 
         //                                DenName = "Gathering Location",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_HILLBILLY" }, DealerMenuGroup = "ToiletCleanerDealerMenu",

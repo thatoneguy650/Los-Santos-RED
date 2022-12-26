@@ -83,19 +83,26 @@ public class GroupManager
     {
         Disband();
     }
-    public bool Add(PedExt groupMember)
+    public void Add(PedExt groupMember)
     {
-        if (groupMember != null && groupMember.Pedestrian.Exists() && CurrentGroupMembers.Count <= maxMembers-1)
+        if(groupMember == null || !groupMember.Pedestrian.Exists())
         {
-            if (!CurrentGroupMembers.Any(x => x.PedExt != null && x.PedExt.Handle == groupMember.Handle))
-            {
-                PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
-                CurrentGroupMembers.Add(new GroupMember(groupMember, CurrentGroupMembers.Count+1));
-                OnBecameGroupMember(groupMember);
-                return true;
-            }
+            Game.DisplayHelp("Cannot Recruit: Member Invalid");
+            return;
         }
-        return false;
+        if (CurrentGroupMembers.Count > maxMembers - 1)
+        {
+            Game.DisplayHelp("Cannot Recruit: Too Many Members");
+            return;
+        }
+        if (CurrentGroupMembers.Any(x => x.PedExt != null && x.PedExt.Handle == groupMember.Handle))
+        {
+            Game.DisplayHelp("Cannot Recruit: Already Member");
+            return;
+        }
+        PlayerGroup = NativeFunction.Natives.GET_PLAYER_GROUP<int>(Game.LocalPlayer);
+        CurrentGroupMembers.Add(new GroupMember(groupMember, CurrentGroupMembers.Count+1));
+        OnBecameGroupMember(groupMember);    
     }
     public void Disband()
     {
@@ -167,14 +174,7 @@ public class GroupManager
     }
     public void TryRecruitLookedAtPed()
     {
-        if(Add(Player.CurrentLookedAtPed))
-        {
-            Game.DisplayHelp($"Recruited {Player.CurrentLookedAtPed.FormattedName}");
-        }
-        else
-        {
-            Game.DisplayHelp("Cannot Recruit Member");
-        }
+        Add(Player.CurrentLookedAtPed);
     }
     private void OnBecameGroupMember(PedExt groupMember)
     {
@@ -196,9 +196,24 @@ public class GroupManager
       //  NativeFunction.Natives.SET_PED_AS_GROUP_LEADER(Player.Character, PlayerGroup);
         //groupMember.Pedestrian.KeepTasks = true;
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(groupMember.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
-       // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
-       // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
-       // groupMember.Pedestrian.KeepTasks = true;
+        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(groupMember.Pedestrian, 100f, 0);//TR
+        // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_IN_AREA(groupMember.Pedestrian, groupMember.Pedestrian.Position.X,groupMember.Pedestrian.Position.Y,groupMember.Pedestrian.Position.Z, 5000f, 0);//TR
+        // groupMember.Pedestrian.KeepTasks = true;
+
+        uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(groupMember.Pedestrian, 0);
+        WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
+
+        string weaponInfo;
+        if(wi != null)
+        {
+            weaponInfo = $"Weapon: {wi.Category}";
+        }
+        else
+        {
+            weaponInfo = "Unarmed";
+        }
+        Game.DisplayHelp($"Recruited {Player.CurrentLookedAtPed.FormattedName} {weaponInfo}");
+
     }
     private void OnLeftGroup(PedExt groupMember)
     {

@@ -386,7 +386,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(ped);
                     if (WitnessIsCustomer)
                     {
-                        Witness.ShopMenu = WitnessShopMenu;
+                        //Witness.ShopMenu = WitnessShopMenu;
+
+                        Witness.SetupTransactionItems(WitnessShopMenu);
                     }
 
 

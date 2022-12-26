@@ -149,6 +149,12 @@ namespace LosSantosRED.lsr.Player
         private void ControlTick()
         {
             DisableControls();
+
+            if (Player.IsShowingActionWheel)
+            {
+                return;
+            }
+
             if (Player.ButtonPrompts.IsPressed("LighterToggle"))
             {
                 IsLit = !IsLit;

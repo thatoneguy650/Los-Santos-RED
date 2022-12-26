@@ -260,6 +260,12 @@ namespace LosSantosRED.lsr.Player
             else
             {
                 DisableControls();
+
+                if (Player.IsShowingActionWheel)
+                {
+                    return;
+                }
+
                 if (Player.ButtonPrompts.IsPressed("RadioLower"))
                 {
                     LowerRadio(true);

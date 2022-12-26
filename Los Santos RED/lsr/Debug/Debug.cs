@@ -1199,8 +1199,9 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        SpawnAttachedRagdoll();
-        
+        CarChanePos();
+       // SpawnAttachedRagdoll();
+
 
 
         //PrintRelationships();
@@ -1269,8 +1270,78 @@ public class Debug
         }, "Run Debug Logic");
     }
 
+    private void CarChanePos()
+    {
+        GameFiber.Sleep(200);
+        VehicleExt TargetVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);//GetTargetVehicle();
+        if (TargetVehicle != null && TargetVehicle.Vehicle.Exists())//make sure we found a vehicle to change the plates of
+        {
+            Vector3 ChangeSpot = GetLicensePlateChangePosition(TargetVehicle.Vehicle);
+            GameFiber.StartNew(delegate
+            {
+                while (!Game.IsKeyDownRightNow(Keys.Space))
+                {
+                    Rage.Debug.DrawArrowDebug(ChangeSpot, Vector3.Zero, Rotator.Zero, 1f, Color.White);
+                    Game.DisplayHelp($"Press SPACE to Stop");
+                    GameFiber.Yield();
+                }
+            }, "Run Debug Logic");
+        }
+    }
+    private Vector3 GetLicensePlateChangePosition(Vehicle VehicleToChange)
+    {
+        Vector3 Position;
+        Vector3 Right;
+        Vector3 Forward;
+        Vector3 Up;
+
+        if (VehicleToChange.HasBone("numberplate"))
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
+            Position = VehicleToChange.GetBonePosition("numberplate");
 
 
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            return SpawnPosition;
+
+            VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);
+            return Vector3.Add(Forward * -1.0f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);
+        }
+        else if (VehicleToChange.HasBone("boot"))
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
+            Position = VehicleToChange.GetBonePosition("boot");
+
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            return SpawnPosition;
+
+            VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);
+            return Vector3.Add(Forward * -1.75f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);//return Vector3.Add(Forward * -1.75f, Position);
+        }
+        else if (VehicleToChange.IsBike)
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
+            return VehicleToChange.GetOffsetPositionFront(-1.5f);
+        }
+        else if (VehicleToChange.HasBone("bumper_r"))
+        {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
+            Position = VehicleToChange.GetBonePosition("bumper_r");
+
+
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            return SpawnPosition;
+
+
+            VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);
+            Position = Vector3.Add(Forward * -1.0f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);
+            return Vector3.Add(Right * 0.25f, Position);
+        }
+        else
+        {
+            return Vector3.Zero;
+        }
+    }
     private void DoUiCustomzierFont()
     {
 

@@ -323,7 +323,10 @@ namespace LosSantosRED.lsr.Player
             Game.DisableControlAction(0, GameControl.AccurateAim, false);
             Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
 
-
+            if (Player.IsShowingActionWheel)
+            {
+                return;
+            }
 
             if (Player.ButtonPrompts.IsPressed("FlashlightToggle"))
             {

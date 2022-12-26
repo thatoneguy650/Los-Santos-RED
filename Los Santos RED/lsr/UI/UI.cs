@@ -202,6 +202,9 @@ public class UI : IMenuProvideable
         {
             ActionPopUpMenu.Draw();
         }
+
+        DisplayablePlayer.IsShowingActionWheel = ActionPopUpMenu.IsActive;
+
     }
     private void DisplayButtonPrompts()
     {

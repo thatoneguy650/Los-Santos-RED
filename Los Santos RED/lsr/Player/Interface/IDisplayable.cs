@@ -53,5 +53,6 @@ namespace LosSantosRED.lsr.Interface
         string DebugString { get; }
         bool IsCustomizingPed { get; }
         bool IsUsingController { get; }
+        bool IsShowingActionWheel { get; set; }
     }
 }

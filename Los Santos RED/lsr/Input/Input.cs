@@ -321,7 +321,7 @@ namespace LosSantosRED.lsr
         {
             if (!Player.IsDisplayingCustomMenus)
             {
-                if (IsPressingMenuKey || Player.ButtonPrompts.IsPressed("MenuShowBusted") || Player.ButtonPrompts.IsPressed("MenuShowDead"))
+                if (IsPressingMenuKey || Player.ButtonPrompts.IsPressed("MenuShowBusted") || Player.ButtonPrompts.IsPressed("MenuShowDead") || (IsUsingController && MenuProvider.IsPressingActionWheelButton))
                 {
                     MenuProvider.ToggleMenu();
                 }
@@ -363,7 +363,7 @@ namespace LosSantosRED.lsr
         private void ShowControllerHelpPrompt()
         {
             string helpText = $"You can also access prompts through the action wheel.~n~Press ";
-            helpText += EntryPoint.ModController.FormatButtons(Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, Settings.SettingsManager.KeySettings.ControllerActionDisplay);
+            helpText += EntryPoint.ModController.FormatControls(Settings.SettingsManager.KeySettings.ControllerActionModifier, Settings.SettingsManager.KeySettings.ControllerAction);
             helpText += " to open";
             Game.DisplayHelp(helpText);
             HasShownControllerHelpPrompt = true;

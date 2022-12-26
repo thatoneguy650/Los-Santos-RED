@@ -279,7 +279,8 @@ public class InteractableLocation : BasicLocation
                 Merchant = new Merchant(ped, settings, false, true, false, "Vendor", crimes, weapons, World, false);
                 if (addMenu)
                 {
-                    Merchant.ShopMenu = Menu;
+                    //Merchant.ShopMenu = Menu;
+                    Merchant.SetupTransactionItems(Menu);
                 }
                 Merchant.AssociatedStore = this;
                 Merchant.SpawnPosition = VendorPosition;

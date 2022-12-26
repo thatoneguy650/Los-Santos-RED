@@ -126,7 +126,7 @@ public class GangMember : PedExt, IWeaponIssuable
         WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
-            ShopMenu = shopMenus.GetRandomMenu(Gang.DealerMenuGroup);
+            SetupTransactionItems(shopMenus.GetRandomMenu(Gang.DealerMenuGroup));
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
         WeaponInventory.IssueWeapons(weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson?.EmptyHolster, dispatchablePerson?.FullHolster);

@@ -132,13 +132,12 @@ public class ModItem
 
     public virtual void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
-
         sellScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.SalesPrice)}", Value = 1 };
-        UpdateSellMenuItem(menuItem, settings, player, isStealing);
+        UpdateSellMenuItem(Transaction, menuItem, settings, player, isStealing);
         sellScroller.Activated += (sender, selectedItem) =>
         {
             SellItem(Transaction, player, menuItem, sellScroller.Value, isStealing);
-            UpdateSellMenuItem(menuItem, settings, player, isStealing);
+            UpdateSellMenuItem(Transaction, menuItem, settings, player, isStealing);
         };
         UIMenu CategoryMenu = sellMenu.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
         if (CategoryMenu != null)
@@ -151,7 +150,7 @@ public class ModItem
             sellMenu.AddItem(sellScroller);
         }
     }
-    private void UpdateSellMenuItem(MenuItem menuItem, ISettingsProvideable settings, ILocationInteractable player, bool isStealing)
+    public void UpdateSellMenuItem(Transaction Transaction, MenuItem menuItem, ISettingsProvideable settings, ILocationInteractable player, bool isStealing)
     {
         bool isEnabled = true;
         InventoryItem PlayerInventoryItem = player.Inventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
@@ -165,9 +164,18 @@ public class ModItem
         int RemainingToSell = MaxSell;
         if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
         {
-
+            //int numberOfItemsPedHas = 0;
+            //InventoryItem PedInventoryItem = Transaction.PersonTransaction?.TransactionPed?.PedInventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+            //if (PedInventoryItem != null)
+            //{
+            //    numberOfItemsPedHas = PedInventoryItem.Amount;
+            //}
+            //RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - numberOfItemsPedHas;
             RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - menuItem.ItemsBoughtFromPlayer;
-
+            if(RemainingToSell < 0)
+            {
+                RemainingToSell = 0;
+            }
             if (RemainingToSell >= 1 && PlayerItems >= 1)
             {
                 MaxSell = Math.Min(MaxSell, RemainingToSell);
@@ -196,16 +204,13 @@ public class ModItem
         {
             description += $"~n~~b~{((float)menuItem.SalesPrice / (float)AmountPerPackage).ToString("C2")} ~s~per Item";
         }
-
         description += SellMenuDescription(settings);
-
-
-        description += $"~n~{RemainingToSell} {MeasurementName}(s) For Purchase~s~";
+        description += $"~n~{RemainingToSell} {MeasurementName}(s) Wanted~s~";
         description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
         sellScroller.Maximum = MaxSell;
         sellScroller.Enabled = isEnabled;
         sellScroller.Description = description;
-        EntryPoint.WriteToConsole($"Item: {Name} formattedPurchasePrice {formattedPurchasePrice}");
+        EntryPoint.WriteToConsole($"SELL Item: {Name} formattedSalesPrice {formattedPurchasePrice} NumberOfItemsToPurchaseFromPlayer: {menuItem.NumberOfItemsToPurchaseFromPlayer} ItemsBoughtFromPlayer {menuItem.ItemsBoughtFromPlayer}");
     }
     private bool SellItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
     {
@@ -214,13 +219,8 @@ public class ModItem
         {
             player.BankAccounts.GiveMoney(TotalPrice);
             Transaction.MoneySpent += TotalPrice;
-
-
-
+            Transaction.PersonTransaction?.TransactionPed?.PedInventory.Add(this, TotalItems);
             menuItem.ItemsBoughtFromPlayer += TotalItems;
-
-
-
             Transaction.OnAmountChanged(this);
             Transaction.OnItemSold(this, menuItem, TotalItems);
             while (player.ActivityManager.IsPerformingActivity)
@@ -231,8 +231,6 @@ public class ModItem
         }
         return false;
     }
-
-
     public virtual void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         purchaseScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 99, 1)
@@ -244,11 +242,11 @@ public class ModItem
             $"{(menuItem.PurchasePrice == 0 ? "FREE" : $"${(v * menuItem.PurchasePrice)}")}",
             Value = 1
         };
-        UpdatePurchaseMenuItem(menuItem, settings, player, isStealing);
+        UpdatePurchaseMenuItem(Transaction, menuItem, settings, player, isStealing);
         purchaseScroller.Activated += (sender,selectedItem) =>
         {
             PurchaseItem(Transaction, player, menuItem, purchaseScroller.Value, isStealing);
-            UpdatePurchaseMenuItem(menuItem, settings, player, isStealing);
+            UpdatePurchaseMenuItem(Transaction, menuItem, settings, player, isStealing);
         };
         UIMenu CategoryMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
         if (CategoryMenu != null)
@@ -261,7 +259,7 @@ public class ModItem
             purchaseMenu.AddItem(purchaseScroller);
         }
     }
-    public void UpdatePurchaseMenuItem(MenuItem menuItem, ISettingsProvideable settings, ILocationInteractable player, bool isStealing)
+    public void UpdatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, ISettingsProvideable settings, ILocationInteractable player, bool isStealing)
     {
         if (menuItem != null && purchaseScroller != null)
         {
@@ -300,13 +298,18 @@ public class ModItem
             int MaxBuy = 99;
             if (menuItem.NumberOfItemsToSellToPlayer != -1)
             {
-
-
+                //int numberOfItemsPedHas = 0;
+                //InventoryItem PedInventoryItem = Transaction.PersonTransaction?.TransactionPed?.PedInventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
+                //if (PedInventoryItem != null)
+                //{
+                //    numberOfItemsPedHas = PedInventoryItem.Amount;
+                //}
+                //RemainingToBuy = numberOfItemsPedHas;// menuItem.NumberOfItemsToSellToPlayer - numberOfItemsPedHas;
+                //if (RemainingToBuy < 0)
+                //{
+                //    RemainingToBuy = 0;
+                //}
                 RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - menuItem.ItemsSoldToPlayer;
-
-
-
-
                 if (RemainingToBuy <= 0)
                 {
                     MaxBuy = 0;
@@ -323,6 +326,7 @@ public class ModItem
             purchaseScroller.Maximum = RemainingToBuy;
             purchaseScroller.Enabled = enabled;
             purchaseScroller.Description = description;
+            EntryPoint.WriteToConsole($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {menuItem.ItemsSoldToPlayer}");
         }
     }
     private bool PurchaseItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
@@ -330,20 +334,9 @@ public class ModItem
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
         if (player.BankAccounts.Money >= TotalPrice || isStealing)
         {
-            Transaction.OnItemPurchased(this, menuItem, TotalItems);
-
-
-
-
-
-
+            
+            Transaction?.PersonTransaction?.TransactionPed?.PedInventory.Remove(this, TotalItems);
             menuItem.ItemsSoldToPlayer += TotalItems;
-
-
-
-
-
-
             if (ConsumeOnPurchase)
             {
                 player.ActivityManager.UseInventoryItem(this, false);
@@ -357,6 +350,7 @@ public class ModItem
                 player.BankAccounts.GiveMoney(-1 * TotalPrice);
                 Transaction.MoneySpent += TotalPrice;
             }
+            Transaction.OnItemPurchased(this, menuItem, TotalItems);
             return true;
         }
         Transaction.DisplayInsufficientFundsMessage();

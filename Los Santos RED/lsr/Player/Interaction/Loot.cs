@@ -104,21 +104,13 @@ public class Loot : DynamicActivity
         int CashAdded = 0;
         if (Ped.Pedestrian.Exists())
         {
-            Ped.HasBeenLooted = true;    
-            if (Ped.HasMenu)
+            Ped.HasBeenLooted = true;
+            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
             {
-                foreach (MenuItem mi in Ped.ShopMenu.Items.Where(x => x.Purchaseable && x.NumberOfItemsToSellToPlayer - x.ItemsSoldToPlayer > 0))
-                {
-                    ModItem localModItem = ModItems.Get(mi.ModItemName);
-                    if (localModItem != null && localModItem.ModelItem?.Type == ePhysicalItemType.Prop)
-                    {
-                        int TotalItems = mi.NumberOfItemsToSellToPlayer - mi.ItemsSoldToPlayer;
-                        hasAddedItem = true;
-                        Player.Inventory.Add(localModItem, TotalItems);
-                        ItemsFound += $"~n~~p~{localModItem.Name}~s~ - {TotalItems} {localModItem.MeasurementName}(s)";
-                    }
-                }
+                Ped.PedInventory.AddRandomItems(ModItems);
             }
+            ItemsFound = Ped.LootInventory(Player);
+            hasAddedItem = ItemsFound != "";
             if (Ped.Money > 0)//dead peds already drop it, truned off dropping for now
             {
                 Player.BankAccounts.GiveMoney(Ped.Money);
@@ -126,24 +118,6 @@ public class Loot : DynamicActivity
                 Ped.Money = 0;
                 Ped.Pedestrian.Money = 0;
                 hasAddedCash = true;
-            }
-            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
-            {
-                if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
-                {
-                    int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
-                    for (int i = 0; i < ItemsToGet; i++)
-                    {
-                        ModItem toGet = ModItems.GetRandomItem();
-                        int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
-                        if (toGet != null)
-                        {
-                            hasAddedItem = true;
-                            ItemsFound += $"~n~~p~{toGet.Name}~s~ - {AmountToGet} {toGet.MeasurementName}(s)";
-                            Player.Inventory.Add(toGet, AmountToGet);
-                        }
-                    }
-                }
             }
         }
         string Description = "";

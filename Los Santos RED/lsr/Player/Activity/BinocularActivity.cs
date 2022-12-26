@@ -292,6 +292,12 @@ namespace LosSantosRED.lsr.Player
         private void InputTick()
         {
             DisableControls();
+
+            if(Player.IsShowingActionWheel)
+            {
+                return;
+            }
+
             if (Player.ButtonPrompts.IsPressed("BinocularsLower"))
             {
                 LowerBinoculars(true);
@@ -318,8 +324,6 @@ namespace LosSantosRED.lsr.Player
             FovOrder = 0;
             CurrentFOV = BinocularItem.MaxFOV;
         }
-
-
         private void IncreaseZoom()
         {
             FovOrder++;
@@ -593,11 +597,8 @@ namespace LosSantosRED.lsr.Player
             if(IsBinocsRaised)
             {
                 Player.ButtonPrompts.AddPrompt("Binoculars", "Zoom In", "BinocularsZoomIn", GameControl.WeaponWheelPrev, 10);
-
                 Player.ButtonPrompts.AddPrompt("Binoculars", "Zoom Out", "BinocularsZoomOut", GameControl.WeaponWheelNext, 15);
-
                 Player.ButtonPrompts.AddPrompt("Binoculars", "Vision Mode", "BinocularsVision", GameControl.Attack, 20);
-               // Player.ButtonPrompts.AddPrompt("Binoculars", "Thermal Vision", "BinocularsThermalVision", Keys.K, 20);
                 Player.ButtonPrompts.AddPrompt("Binoculars", "Lower", "BinocularsLower", GameControl.Aim, 30);
             }
             else

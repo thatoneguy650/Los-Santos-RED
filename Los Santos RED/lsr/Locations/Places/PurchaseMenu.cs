@@ -85,8 +85,9 @@ public class PurchaseMenu : Menu
         }
         purchaseMenu.Clear();
         CreateCategories();
-        foreach (MenuItem cii in ShopMenu.Items)
+        foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable))
         {
+            EntryPoint.WriteToConsole($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreatePurchaseMenuItem(Transaction, cii, purchaseMenu, Settings, Player, Transaction.IsStealing, World);
         }
     }
@@ -173,5 +174,10 @@ public class PurchaseMenu : Menu
             return;
         }
         selectedMenu.ModItem.CreatePreview(Transaction,StoreCam);
+    }
+
+    public void OnItemSold(MenuItem menuItem)
+    {
+        menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);
     }
 }

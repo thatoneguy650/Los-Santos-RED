@@ -69,6 +69,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAliveAndFree { get; }
         bool IsIncapacitated { get; }
         bool IsSleepingOutside { get; set; }
+        bool IsShowingActionWheel { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

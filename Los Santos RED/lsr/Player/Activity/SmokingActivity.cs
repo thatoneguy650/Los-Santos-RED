@@ -283,6 +283,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void InactiveIdle()
         {
+            Pause();
             EntryPoint.WriteToConsole("SmokingActivity InactiveIdle Start", 5);
             AttachSmokedItemToMouth();
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);

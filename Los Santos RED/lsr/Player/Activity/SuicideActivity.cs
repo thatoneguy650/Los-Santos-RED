@@ -117,7 +117,7 @@ public class SuicideActivity : DynamicActivity
                     Player.ButtonPrompts.AddPrompt("Suicide", "Cancel", "CancelSuicide", Settings.SettingsManager.KeySettings.InteractCancel, 2);
                     AddedPrompts = true;
                 }    
-                if (Player.ButtonPrompts.IsPressed("CommitSuicide"))
+                if (Player.ButtonPrompts.IsPressed("CommitSuicide") && !Player.IsShowingActionWheel)
                 {
                     SwallowedPills = true;
                     Player.ButtonPrompts.RemovePrompts("Suicide");

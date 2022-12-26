@@ -330,11 +330,10 @@ public class Transaction
         {
             SellingPed.Delete();
         }
-        //PurchaseMenu?.ClearPreviews();
-        //SellMenu?.ClearPreviews();
     }
     public void OnAmountChanged(ModItem modItem)
     {
+
         //PurchaseMenu?.OnAmountChanged(modItem);
         //SellMenu?.OnAmountChanged(modItem);
     }
@@ -347,7 +346,8 @@ public class Transaction
         else if (Store != null)
         {
             Store.OnItemPurchased(modItem, menuItem, TotalItems);
-        }   
+        }
+        SellMenu.OnItemPurchased(menuItem);
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int TotalItems)
     {
@@ -359,7 +359,7 @@ public class Transaction
         {
             Store.OnItemSold(modItem, menuItem, TotalItems);
         }
-         
+        PurchaseMenu.OnItemSold(menuItem); 
     }
     public void DisplayInsufficientFundsMessage()
     {

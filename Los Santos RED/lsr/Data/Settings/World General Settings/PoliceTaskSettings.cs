@@ -143,9 +143,9 @@ public class PoliceTaskSettings : ISettingsDefaultable
 
 
 
-        SixthSensePercentage = 70f;
-        SixthSenseHelicopterPercentage = 90f;
-        SixthSenseSearchModeLimitPercentage = 0.7f;
+        SixthSensePercentage = 75f;// 70f;
+        SixthSenseHelicopterPercentage = 100f;// 90f;
+        SixthSenseSearchModeLimitPercentage = 0.6f;// 0.7f;
 
 
 

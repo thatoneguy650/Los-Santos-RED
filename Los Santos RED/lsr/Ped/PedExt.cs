@@ -22,45 +22,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private uint KillerHandle;
     private Entity LastHurtBy;
     private Vector3 position;
-
     private uint UpdateJitter;
-
-    public Vector3 SpawnPosition { get; set; }
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
     private RelationshipGroup originalGroup;
-
-    public bool ShouldCheckCrimes
-    {
-        get
-        {
-            if (Pedestrian.Exists())
-            {
-                string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
-                if (RelationshipGroupName == string.Empty)
-                {
-                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
-                    RelationshipGroupName = RelationshipGroupName.ToUpper();
-                }
-                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
-                {
-                    return false;
-                }
-                else if (RelationshipGroupName == "")
-                {
-                    return true;
-                }
-                else if (RelationshipGroupName == "ZOMBIE")
-                {
-                    return true;
-                }
-                return true;
-            }
-            return false;
-            // return PedExt != null && (PedExt.PedGroup == null || PedExt.PedGroup?.InternalName.ToUpper() == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName.ToUpper() != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName.ToUpper() != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName.ToUpper() != "FIREMAN" && PedExt.PedGroup?.InternalName.ToUpper() != "MEDIC"));
-        }
-    }
-
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
@@ -95,7 +60,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PedPerception PedPerception { get; private set; }
     public PlayerPerception PlayerPerception { get; private set; }
     public HealthState CurrentHealthState { get; private set; }
-
     public PedReactions PedReactions { get; set; }
     public PedInventory PedInventory { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
@@ -125,9 +89,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
-
-
-
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }
     public int CellY { get; set; }
@@ -149,7 +110,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
+
+
+
     public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
+
+
+
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasBeenTreatedByEMTs { get; set; }
     public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x=> x.AngersCivilians || x.ScaresCivilians);
@@ -221,16 +188,41 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool RecentlyUpdated => GameTimeLastUpdated != 0 && Game.GameTime - GameTimeLastUpdated < 2000;
     public int RelationShipFromPlayer { get; set; } = 255;
     public int RelationShipToPlayer { get; set; } = 255;
+    public bool ShouldCheckCrimes
+    {
+        get
+        {
+            if (Pedestrian.Exists())
+            {
+                string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
+                if (RelationshipGroupName == string.Empty)
+                {
+                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
+                    RelationshipGroupName = RelationshipGroupName.ToUpper();
+                }
+                if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
+                {
+                    return false;
+                }
+                else if (RelationshipGroupName == "")
+                {
+                    return true;
+                }
+                else if (RelationshipGroupName == "ZOMBIE")
+                {
+                    return true;
+                }
+                return true;
+            }
+            return false;
+            // return PedExt != null && (PedExt.PedGroup == null || PedExt.PedGroup?.InternalName.ToUpper() == "ZOMBIE" || (PedExt.PedGroup != null && PedExt.PedGroup?.InternalName.ToUpper() != "SECURITY_GUARD" && PedExt.PedGroup?.InternalName.ToUpper() != "PRIVATE_SECURITY" && PedExt.PedGroup?.InternalName.ToUpper() != "FIREMAN" && PedExt.PedGroup?.InternalName.ToUpper() != "MEDIC"));
+        }
+    }
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
     public Vector3 PositionLastSeenDistressedPed { get; set; }
-
-
-    public ShopMenu ShopMenu { get; set; }
-
-
-
-
+    public ShopMenu ShopMenu { get; private set; }
+    public Vector3 SpawnPosition { get; set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
@@ -240,11 +232,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WillCallPolice { get; set; } = false;//true;
     public bool WillCallPoliceIntense { get; set; } = false;//true;
     public bool WillFight { get; set; } = false;
-
-
     public bool IsGroupMember { get; set; } = false;
     public bool WillFightPolice { get; set; } = false;
-
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
     private int FullUpdateInterval//dont forget distance and LOS in here
@@ -384,7 +373,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");     
         }
     }
-
     public virtual void OnLostWanted()
     {
         if (Pedestrian.Exists())
@@ -686,14 +674,35 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
         }
     }
-
     public virtual void OnItemPurchased(ILocationInteractable player, int amountPurchased)
     {
 
     }
-
     public virtual void OnItemSold(ILocationInteractable player, int amountSold)
     {
 
+    }
+    public virtual void SetupTransactionItems(ShopMenu shopMenu)
+    {
+        ShopMenu = shopMenu;
+        if (shopMenu == null)
+        {
+            return;
+        }
+        foreach (MenuItem menuItem in ShopMenu.Items.Where(x=> x.NumberOfItemsToSellToPlayer > 0))
+        {
+            PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
+        }
+    }
+    public string LootInventory(IInteractionable player)
+    {
+        string ItemsFound = "";
+        foreach(InventoryItem ii in PedInventory.ItemsList)
+        {
+            player.Inventory.Add(ii.ModItem, ii.RemainingPercent);
+            ItemsFound += $"~n~~p~{ii.ModItem.Name}~s~ - {ii.RemainingPercent} {ii.ModItem.MeasurementName}(s)";
+        }
+        PedInventory.ItemsList.Clear();
+        return ItemsFound;
     }
 }

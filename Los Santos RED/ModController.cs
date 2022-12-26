@@ -414,10 +414,14 @@ namespace LosSantosRED.lsr
                 $"Main Menu (Keyboard): ~{ModDataFileManager.Settings.SettingsManager.KeySettings.MenuKey.GetInstructionalId()}~" +
                 $"~n~Action Wheel (Mouse): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey)}" +
                 $"~n~Action Wheel (Keyboard): {FormatKeys(ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey)}";
-            if(NativeHelper.IsUsingController || 1==1)
+            controlString += $"~n~Action Wheel + Menu (Controller): ";
+            if (ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionModifier == -1 && ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerAction == 236)
             {
-                controlString += $"~n~Action Wheel + Menu (Controller): ";
-                controlString += FormatButtons(ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionDisplay);
+                controlString += FormatButtons(ControllerButtons.None, ControllerButtons.Back);
+            }
+            else
+            {
+                controlString += FormatControls(ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerActionModifier, ModDataFileManager.Settings.SettingsManager.KeySettings.ControllerAction);
             }
             Game.DisplayHelp(controlString);
             EntryPoint.WriteToConsole($"Has Loaded Successfully",0);

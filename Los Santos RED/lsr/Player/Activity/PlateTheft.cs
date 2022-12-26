@@ -1,9 +1,11 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player;
 using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
+using System.Drawing;
 
 public class PlateTheft : DynamicActivity
 {
@@ -209,29 +211,49 @@ public class PlateTheft : DynamicActivity
 
         if (VehicleToChange.HasBone("numberplate"))
         {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
             Position = VehicleToChange.GetBonePosition("numberplate");
-            VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);
+
+
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.0f);
+            return SpawnPosition;
+
+            VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             return Vector3.Add(Forward * -1.0f, Position);
         }
         else if (VehicleToChange.HasBone("boot"))
         {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
             Position = VehicleToChange.GetBonePosition("boot");
-            VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);
-            return Vector3.Add(Forward * -1.75f, Position);
+
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90,1.75f);
+            return SpawnPosition;
+
+
+            VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
+            return Vector3.Add(Forward * -1.75f, Position);//return Vector3.Add(Forward * -1.75f, Position);
         }
         else if (VehicleToChange.IsBike)
         {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
             return VehicleToChange.GetOffsetPositionFront(-1.5f);
         }
         else if (VehicleToChange.HasBone("bumper_r"))
         {
+            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
             Position = VehicleToChange.GetBonePosition("bumper_r");
-            VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);
+
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90,1.0f);
+            return SpawnPosition;
+
+            VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             Position = Vector3.Add(Forward * -1.0f, Position);
             return Vector3.Add(Right * 0.25f, Position);
         }
         else
+        {
             return Vector3.Zero;
+        }
     }
     private bool MovePedToCarPosition(Vehicle TargetVehicle, Ped PedToMove, float DesiredHeading, Vector3 PositionToMoveTo, bool StopDriver)
     {
@@ -242,7 +264,7 @@ public class PlateTheft : DynamicActivity
         Ped Driver = TargetVehicle.Driver;
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", PedToMove, PositionToMoveTo.X, PositionToMoveTo.Y, PositionToMoveTo.Z, DesiredHeading, -1);
 
-        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
+        while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.2f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
         {
             GameFiber.Yield();
             if (isPlayer && Player.IsMoveControlPressed)
@@ -251,7 +273,12 @@ public class PlateTheft : DynamicActivity
                 break;
             }
             if (StopDriver && TargetVehicle.Driver != null)
+            {
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
+            }
+//#if DEBUG
+//            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+//#endif
         }
         if (!Continue)
         {

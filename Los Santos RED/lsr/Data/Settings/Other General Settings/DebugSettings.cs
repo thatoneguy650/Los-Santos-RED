@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,6 +60,7 @@ public class DebugSettings : ISettingsDefaultable
     //public float DragAttach4Z { get; set; }
 
     public bool DragFixedRotation { get; set; }
+    public float PlateTheftFloat { get; set; }
 
     public DebugSettings()
     {
@@ -113,7 +115,7 @@ public class DebugSettings : ISettingsDefaultable
         DragAttach3Z = 0f;
 
         DragFixedRotation = true;
-
+        PlateTheftFloat = 1.0f;
 
 }
 

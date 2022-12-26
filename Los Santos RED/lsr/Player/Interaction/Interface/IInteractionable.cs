@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr.Interface
      //   bool IsSitting { get; }
         bool IsTransacting { get; set; }
         Stance Stance { get; }
+        bool IsShowingActionWheel { get; }
 
         void SetAngeredCop();
     }

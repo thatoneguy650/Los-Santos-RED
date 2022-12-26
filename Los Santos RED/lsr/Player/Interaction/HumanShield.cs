@@ -88,7 +88,17 @@ public class HumanShield : DynamicActivity
         {
             try
             {
-                GameFiber.Wait(3000);
+                uint gametimeStarted = Game.GameTime;
+                while(EntryPoint.ModController.IsRunning)
+                {
+                    if(Game.GameTime - gametimeStarted >= 3000)
+                    {
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+
+                //GameFiber.Wait(3000);
                 if (Ped.Pedestrian.Exists())
                 {
                     Ped.Pedestrian.CollisionIgnoredEntity = null;
@@ -242,6 +252,10 @@ public class HumanShield : DynamicActivity
     }
     private bool IsPromptPressed()
     {
+        if (Player.IsShowingActionWheel)
+        {
+            return false;
+        }
         if (Player.ButtonPrompts.IsPressed("Execute")) //if (Player.ButtonPromptList.Any(x => x.Identifier == "Execute" && x.IsPressedNow))//demand cash?
         {
             Player.ButtonPrompts.RemovePrompts("Hostage");

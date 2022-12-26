@@ -852,7 +852,9 @@ public class Pedestrians : ITaskerReportable
                 myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
             }
             ShopMenu toAdd = GetIllicitMenu();
-            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , ShopMenu = toAdd, WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
+            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
+            toCreate.SetupTransactionItems(toAdd);
+                 
             Civilians.Add(toCreate);
             if (Pedestrian.Exists())
             {
@@ -923,13 +925,13 @@ public class Pedestrians : ITaskerReportable
             gm.WillFight = false;
             gm.WillFightPolice = false;
             gm.CanBeAmbientTasked = false;
-            gm.ShopMenu = null;
+            gm.SetupTransactionItems(null);
         }
         if (isCarSpawn && Settings.SettingsManager.GangSettings.ForceAmbientCarDocile)
         {
             gm.WillFight = false;
             gm.WillFightPolice = false;
-            gm.ShopMenu = null;
+            gm.SetupTransactionItems(null);
             NativeFunction.Natives.REMOVE_ALL_PED_WEAPONS(Pedestrian, false);
         }
         GangMembers.Add(gm);    
