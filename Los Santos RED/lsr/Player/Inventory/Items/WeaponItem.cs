@@ -44,6 +44,7 @@ public class WeaponItem : ModItem
 
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
+
         string description;
         if (Description.Length >= 200)
         {
@@ -70,6 +71,10 @@ public class WeaponItem : ModItem
             hasPedGotWeapon = false;
         }
 
+        if (ModelItem != null && ModelItem.ModelHash != 0)
+        {
+            NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
+        }
 
         UIMenu WeaponMenu = null;
         bool FoundCategoryMenu = false;
@@ -240,7 +245,10 @@ public class WeaponItem : ModItem
         {
             formattedPurchasePrice = "FREE";
         }
-
+        if (ModelItem != null && ModelItem.ModelHash != 0)
+        {
+            NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
+        }
 
         UIMenu WeaponMenu = null;
         bool FoundCategoryMenu = false;
@@ -679,6 +687,7 @@ public class WeaponItem : ModItem
         {
             if (ModelItem != null && ModelItem.ModelName != "")
             {
+                EntryPoint.WriteToConsole($"WEAPON ITEM CREATE PREVIEW {ModelItem.ModelName} {ModelItem.ModelHash}");
                 Vector3 Position = Vector3.Zero;
                 if (StoreCam.Exists())
                 {
@@ -690,8 +699,12 @@ public class WeaponItem : ModItem
                     Vector3 GPCamDir = NativeHelper.GetGameplayCameraDirection();
                     Position = GPCamPos + GPCamDir / 2f;
                 }
+
+                
+
                 if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
                 {
+                    EntryPoint.WriteToConsole($"WEAPON ITEM ASSET LOADED {ModelItem.ModelName} {ModelItem.ModelHash}");
                     Transaction.SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
                 }
                 if (Transaction.SellingProp.Exists())

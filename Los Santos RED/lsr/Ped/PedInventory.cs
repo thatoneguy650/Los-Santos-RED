@@ -88,7 +88,7 @@ public class PedInventory
                 int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
                 if (toGet != null)
                 {
-                    Add(toGet, AmountToGet);
+                    Add(toGet, AmountToGet * toGet.AmountPerPackage);
                 }
             }
         }

@@ -152,6 +152,7 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\AirportFlight.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Refueling.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\CarCrusher.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hospital\MedicalTreatment.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ILocationSetupable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />

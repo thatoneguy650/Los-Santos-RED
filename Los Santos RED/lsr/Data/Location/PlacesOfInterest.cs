@@ -62,6 +62,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
         AllLocations.AddRange(PossibleLocations.DeadDrops);
         AllLocations.AddRange(PossibleLocations.ScrapYards);
+        AllLocations.AddRange(PossibleLocations.CarCrushers);
         AllLocations.AddRange(PossibleLocations.GangDens);
         AllLocations.AddRange(PossibleLocations.GunStores);
         AllLocations.AddRange(PossibleLocations.Hotels);
@@ -97,24 +98,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Airports);
         return AllLocations;
     }
-
-    //public List<BasicLocation> BasicLocations()
-    //{
-    //    List<BasicLocation> AllLocations = new List<BasicLocation>();
-    //    AllLocations.AddRange(PossibleLocations.PoliceStations);
-    //    AllLocations.AddRange(PossibleLocations.Hospitals);
-    //    AllLocations.AddRange(PossibleLocations.FireStations);
-    //    AllLocations.AddRange(PossibleLocations.Banks);
-    //    AllLocations.AddRange(PossibleLocations.BeautyShops);
-    //    AllLocations.AddRange(PossibleLocations.Landmarks);
-    //    AllLocations.AddRange(PossibleLocations.Prisons);
-    //    AllLocations.AddRange(PossibleLocations.SubwayStations);
-    //    return AllLocations;      
-    //}
     public List<BasicLocation> AllLocations()
     {
         List<BasicLocation> AllLocations = new List<BasicLocation>();
-        //AllLocations.AddRange(BasicLocations());
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
@@ -197,6 +183,15 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
         };
+
+        List<CarCrusher> CarCrushers = new List<CarCrusher>() {
+            new CarCrusher(new Vector3(-538.0128f, -1720.554f, 19.4278f), 324.869f, "The Crushinator", "Dead skunk in the trunk?") { OpenTime = 0, CloseTime = 24, 
+                CameraPosition = new Vector3(-527.7763f, -1704.601f, 27.12083f), CameraDirection = new Vector3(0.005943439f, -0.9625598f, -0.2710043f), CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f) },
+            //new CarCrusher(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
+            //new CarCrusher(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
+        };
+
+
         List<ScrapYard> ScrapYards = new List<ScrapYard>() {
             new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
@@ -1864,6 +1859,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new AirportFlights("NYRA","Los Santos Air","You'll get there when you get there", 599, 12),//regional low end*/
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.ScrapYards.AddRange(ScrapYards);
+        PossibleLocations.CarCrushers.AddRange(CarCrushers);
         PossibleLocations.GangDens.AddRange(GangDens);
         PossibleLocations.GunStores.AddRange(GunStores);
         PossibleLocations.Hotels.AddRange(Hotels);
@@ -1936,6 +1932,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
         OldPossibleLocations.DeadDrops.AddRange(DeadDrops);
         OldPossibleLocations.ScrapYards.AddRange(ScrapYards);
+        OldPossibleLocations.CarCrushers.AddRange(CarCrushers);
         OldPossibleLocations.GangDens.AddRange(GangDens2008);
         OldPossibleLocations.GunStores.AddRange(GunStores);
         OldPossibleLocations.Hotels.AddRange(Hotels);

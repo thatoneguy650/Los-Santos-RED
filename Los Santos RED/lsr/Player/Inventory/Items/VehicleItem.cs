@@ -43,11 +43,14 @@ public class VehicleItem : ModItem
     {
         ModelItem = new PhysicalItem(ModelItemID, ePhysicalItemType.Vehicle);
         MenuCategory = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
+
     }
 
 
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
+        PrimaryColor = 0;
+        SecondaryColor = 0;
         string formattedSalesPrice = menuItem.SalesPrice.ToString("C0");
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
@@ -148,6 +151,8 @@ public class VehicleItem : ModItem
 
     public override void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
+        PrimaryColor = 0;
+        SecondaryColor = 0;
         if(RequiresDLC && !settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
         {
             return;

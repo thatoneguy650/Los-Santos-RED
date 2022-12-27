@@ -347,7 +347,7 @@ public class Transaction
         {
             Store.OnItemPurchased(modItem, menuItem, TotalItems);
         }
-        SellMenu.OnItemPurchased(menuItem);
+        SellMenu?.OnItemPurchased(menuItem);
     }
     public void OnItemSold(ModItem modItem, MenuItem menuItem, int TotalItems)
     {
@@ -359,7 +359,7 @@ public class Transaction
         {
             Store.OnItemSold(modItem, menuItem, TotalItems);
         }
-        PurchaseMenu.OnItemSold(menuItem); 
+        PurchaseMenu?.OnItemSold(menuItem); 
     }
     public void DisplayInsufficientFundsMessage()
     {

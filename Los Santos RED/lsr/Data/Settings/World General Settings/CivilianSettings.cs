@@ -172,8 +172,8 @@ public class CivilianSettings : ISettingsDefaultable
         MoneyMax = 550;
         PercentageTrustingOfPlayer = 85f;
         PercentageToGetRandomItems = 80f;
-        MaxRandomItemsToGet = 5;
-        MaxRandomItemsAmount = 3;
+        MaxRandomItemsToGet = 6;
+        MaxRandomItemsAmount = 2;
     }
 
 }

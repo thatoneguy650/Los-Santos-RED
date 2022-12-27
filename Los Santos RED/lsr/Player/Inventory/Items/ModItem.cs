@@ -15,7 +15,6 @@ using System.Runtime;
 [XmlInclude(typeof(BinocularsItem))]
 [XmlInclude(typeof(BongItem))]
 [XmlInclude(typeof(ConsumableItem))]
-
 [XmlInclude(typeof(DrillItem))]
 [XmlInclude(typeof(DrinkItem))]
 [XmlInclude(typeof(FlashlightItem))]
@@ -31,14 +30,10 @@ using System.Runtime;
 [XmlInclude(typeof(ScrewdriverItem))]
 [XmlInclude(typeof(ShovelItem))]
 [XmlInclude(typeof(SmokeItem))]
-
-
 [XmlInclude(typeof(TapeItem))]
 [XmlInclude(typeof(UmbrellaItem))]
 [XmlInclude(typeof(VehicleItem))]
 [XmlInclude(typeof(WeaponItem))]
-
-
 public class ModItem
 {
     private UIMenuNumericScrollerItem<int> sellScroller;
@@ -59,25 +54,37 @@ public class ModItem
         Description = description;
         ItemType = itemType;
     }
+
+
+
     [XmlIgnore]
     public string MenuCategory { get; set; }
     [XmlIgnore]
     public PhysicalItem ModelItem { get; set; }
     [XmlIgnore]
     public PhysicalItem PackageItem { get; set; }
+
+
+
+
     public string Name { get; set; }
     public string Description { get; set; } = "";
+    public ItemType ItemType { get; set; } = ItemType.None;
+    public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
     public string MeasurementName { get; set; } = "Item";
-    public bool CleanupItemImmediately { get; set; } = false;//should be at the prop level?
-    public bool IsPossessionIllicit { get; set; } = false;
-    public bool ConsumeOnPurchase { get; set; } = false;
     public int AmountPerPackage { get; set; } = 1;
     public string ModelItemID { get; set; }
     public string PackageItemID { get; set; }
-    public virtual bool CanConsume { get; set; } = false;//no no
-    public ItemType ItemType { get; set; } = ItemType.None;
-    public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
+    public bool IsPossessionIllicit { get; set; } = false;
+
+
+
+
     public float PercentLostOnUse { get; set; } = 0.0f;
+    public bool ConsumeOnPurchase { get; set; } = false;
+    public virtual bool CanConsume { get; set; } = false;//no no
+
+    public int FindPercentage { get; set; } = 0;
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
@@ -128,7 +135,6 @@ public class ModItem
     {
 
     }
-
 
     public virtual void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
@@ -207,6 +213,11 @@ public class ModItem
         description += SellMenuDescription(settings);
         description += $"~n~{RemainingToSell} {MeasurementName}(s) Wanted~s~";
         description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
+
+        if (sellScroller == null)
+        {
+            return;
+        }
         sellScroller.Maximum = MaxSell;
         sellScroller.Enabled = isEnabled;
         sellScroller.Description = description;
@@ -323,6 +334,10 @@ public class ModItem
                 description += $"~n~{MaxBuy} {MeasurementName}(s) For Purchase~s~";
             }
             description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
+            if (purchaseScroller == null)
+            {
+                return;
+            }
             purchaseScroller.Maximum = RemainingToBuy;
             purchaseScroller.Enabled = enabled;
             purchaseScroller.Description = description;
@@ -356,7 +371,6 @@ public class ModItem
         Transaction.DisplayInsufficientFundsMessage();
         return false;
     }
-
     public virtual void CreatePreview(Transaction Transaction, Camera StoreCam)
     {
         try
@@ -368,7 +382,7 @@ public class ModItem
                 ModelToSpawn = PackageItem.ModelName;
                 useClose = !PackageItem.IsLarge;
             }
-            if (ModelToSpawn == "")
+            if (ModelToSpawn == "" && ModelItem != null)
             {
                 ModelToSpawn = ModelItem.ModelName;
                 useClose = !ModelItem.IsLarge;

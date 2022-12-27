@@ -154,7 +154,20 @@ public class PurchaseMenu : Menu
     }
     private void GeneratePreview(UIMenu menuSelected, int v)
     {
-        MenuItem selectedMenuItem = ShopMenu.Items.Where(x => x.ModItemName == menuSelected.MenuItems[v].Text).FirstOrDefault();
+        if(menuSelected == null || menuSelected.MenuItems == null)
+        {
+            Transaction.ClearPreviews();
+            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
+            return;
+        }
+        UIMenuItem myItem = menuSelected.MenuItems.ElementAtOrDefault(v);
+        if (myItem == null)
+        {
+            Transaction.ClearPreviews();
+            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
+            return;
+        }
+        MenuItem selectedMenuItem = ShopMenu.Items.Where(x => x.ModItemName == myItem.Text).FirstOrDefault();
         if (selectedMenuItem != null)
         {
             CreatePreview(selectedMenuItem);
@@ -173,7 +186,27 @@ public class PurchaseMenu : Menu
         {
             return;
         }
-        selectedMenu.ModItem.CreatePreview(Transaction,StoreCam);
+
+
+
+
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                selectedMenu.ModItem.CreatePreview(Transaction, StoreCam);
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "CreatePreview");
+
+
+
+
+
     }
 
     public void OnItemSold(MenuItem menuItem)

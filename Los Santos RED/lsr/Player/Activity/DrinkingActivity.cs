@@ -161,7 +161,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-            if(ModItem?.CleanupItemImmediately == false)
+            if(ModItem?.ModelItem?.CleanupItemImmediately == false)
             {
                 GameFiber.Sleep(5000);
             }

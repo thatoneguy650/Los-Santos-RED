@@ -38,8 +38,7 @@ public class PhysicalItem
     public bool IsLarge { get; set; } = false;
     public ePhysicalItemType Type { get; set; } = ePhysicalItemType.Prop;
     public List<PropAttachment> Attachments { get; set; }
-
+    public bool CleanupItemImmediately { get; set; } = false;
     public uint AliasWeaponHash { get; set; }
-
 }
 
