@@ -29,7 +29,11 @@ public class WeaponItem : ModItem
 
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Weapon);
+        ModelItem = physicalItems.Get(ModelItemID);
+        if (ModelItem == null)
+        {
+            ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Weapon);
+        }
         WeaponInformation = weapons.GetWeapon(ModelItem.ModelName);
         if (WeaponInformation == null)
         {

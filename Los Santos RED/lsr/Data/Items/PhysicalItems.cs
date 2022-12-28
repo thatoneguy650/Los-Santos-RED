@@ -52,8 +52,8 @@ public class PhysicalItems : IPropItems
         DefaultConfig_Food();
         DefaultConfig_Drugs();
         DefaultConfig_Tools();
-        DefaultConfig_Vehicles();
-        DefaultConfig_Weapons();
+       // DefaultConfig_Vehicles();//not needed, as it created them itself if it doesnt find them
+        //DefaultConfig_Weapons();
         Serialization.SerializeParams(PhysicalItemsList, ConfigFileName);
     }
 

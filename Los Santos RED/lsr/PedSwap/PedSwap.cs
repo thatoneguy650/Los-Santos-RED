@@ -484,10 +484,10 @@ public class PedSwap : IPedSwap
         {
             InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
         }
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
-        {
-            SetPlayerOffset(InitialPlayerModel.Hash);
-        }
+        //if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
+        //{
+        //    SetPlayerOffset(InitialPlayerModel.Hash);
+        //}
         if (Car.Exists() && WasInCar)
         {
             Game.LocalPlayer.Character.WarpIntoVehicle(Car, SeatIndex);
@@ -781,6 +781,19 @@ public class PedSwap : IPedSwap
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
         bool isMale = Game.LocalPlayer.Character.IsMale;
+        //if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        //{
+        //    SetPlayerOffset();
+        //    NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+        //    NativeHelper.ChangeModel(ModelToChange);
+        //}
+        //variation.ApplyToPed(Game.LocalPlayer.Character);
+
+
+        Player.ModelName = ModelToChange;
+        Player.CurrentModelVariation = variation.Copy();
+
+
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
@@ -788,6 +801,8 @@ public class PedSwap : IPedSwap
             NativeHelper.ChangeModel(ModelToChange);
         }
         variation.ApplyToPed(Game.LocalPlayer.Character);
+
+
         if (setRandomDemographics)
         {
             NewPlayer(ModelToChange, isMale);
@@ -796,8 +811,14 @@ public class PedSwap : IPedSwap
         {
             NewPlayer(ModelToChange, isMale, nameToAssign, moneyToAssign, speechSkill, voiceName);
         }
-        Player.ModelName = ModelToChange;
-        Player.CurrentModelVariation = variation.Copy();
+        
+        
+
+
+
+
+
+
         NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
@@ -818,6 +839,21 @@ public class PedSwap : IPedSwap
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, int speechSkill, string voiceName)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
+        //if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        //{
+        //    SetPlayerOffset();
+        //    NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
+        //    NativeHelper.ChangeModel(ModelToChange);
+        //}
+        //if (!Game.LocalPlayer.Character.IsConsideredMainCharacter() && TargetPedVariation != null)
+        //{
+        //    TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
+        //}
+
+
+        Player.ModelName = TargetPedModel.Name;
+        Player.CurrentModelVariation = TargetPedVariation;
+
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
@@ -828,6 +864,7 @@ public class PedSwap : IPedSwap
         {
             TargetPedVariation.ApplyToPed(Game.LocalPlayer.Character);
         }
+
         VehicleExt NewVehicle = null;
         if (TargetPedInVehicle)
         {
@@ -862,7 +899,7 @@ public class PedSwap : IPedSwap
         }
 
 
-        if(NewVehicle != null)
+        if (NewVehicle != null)
         {
             NewVehicle.IsStolen = false;
             if (NewVehicle.Vehicle.Exists())
@@ -871,8 +908,8 @@ public class PedSwap : IPedSwap
                 NewVehicle.Vehicle.IsStolen = false;
             }
         }
-        Player.ModelName = TargetPedModel.Name;
-        Player.CurrentModelVariation = TargetPedVariation;
+
+
         NativeFunction.Natives.CLEAR_TIMECYCLE_MODIFIER<int>();
         NativeFunction.Natives.x80C8B1846639BB19(0);
         NativeFunction.Natives.STOP_GAMEPLAY_CAM_SHAKING<int>(true);
@@ -962,6 +999,10 @@ public class PedSwap : IPedSwap
         //    *((ulong*)(SkinPtr + 0x18)) = (ulong)225514697;
         //}
     }
+
+
+
+
     private void StoreTargetPedData(Ped TargetPed)
     {
         CurrentModelPlayerIs = TargetPed.Model;

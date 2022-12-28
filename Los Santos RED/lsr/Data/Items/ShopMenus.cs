@@ -2,6 +2,7 @@
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using NAudio.Gui;
 using Rage;
 using Rage.Native;
 using System;
@@ -3951,6 +3952,9 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Default Clip", 0),
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
+                new MenuItem("Vom Feuer Gruber",705, 400) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Suppressor", 950), } },
 
 
                 //Shotgun
@@ -4638,6 +4642,12 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Scope", 567),
                     new MenuItemExtra("Suppressor", 800),} },
                 new MenuItem("Vom Feuer POCK",1700, 1200),
+                new MenuItem("Vom Feuer DP1 Carbine",855, 656) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Extended Clip", 125),
+                    new MenuItemExtra("Flashlight", 90),
+                    new MenuItemExtra("Grip", 567),
+                    new MenuItemExtra("Suppressor", 800),} },
 
                 //LMG
                 new MenuItem("Vom Feuer BAT",4340, 3400) { Extras = new List<MenuItemExtra>() {
@@ -4760,6 +4770,12 @@ public class ShopMenus : IShopMenus
                     new MenuItemExtra("Extended Clip", 85),
                     new MenuItemExtra("Suppressor", 890), } },
 
+
+                new MenuItem("Vom Feuer Gruber",675, 454) { Extras = new List<MenuItemExtra>() {
+                    new MenuItemExtra("Default Clip", 0),
+                    new MenuItemExtra("Suppressor", 800), } },
+
+                
 
                 //Shotgun
                 new MenuItem("Shrewsbury Taiga-12",670, 450) { Extras = new List<MenuItemExtra>() {

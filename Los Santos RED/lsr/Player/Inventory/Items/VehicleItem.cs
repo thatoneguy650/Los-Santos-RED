@@ -41,12 +41,13 @@ public class VehicleItem : ModItem
     }
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        ModelItem = new PhysicalItem(ModelItemID, ePhysicalItemType.Vehicle);
+        ModelItem = physicalItems.Get(ModelItemID);
+        if (ModelItem == null)
+        {
+            ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
+        }
         MenuCategory = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
-
     }
-
-
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         PrimaryColor = 0;
