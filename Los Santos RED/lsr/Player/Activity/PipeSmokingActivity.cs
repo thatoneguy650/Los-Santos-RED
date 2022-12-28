@@ -156,10 +156,7 @@ namespace LosSantosRED.lsr.Player
                     else
                     {
                         LighterItem = new Rage.Object(Game.GetHashKey("p_cs_lighter_01"), Player.Character.GetOffsetPositionUp(60f));
-                    }
-
-
-                    
+                    }                  
                 }
                 catch (Exception e)
                 {
@@ -200,6 +197,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            PipeSmokeItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
             AttachSmokedItemToHand();
             EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
             PlayingDict = Data.AnimIdleDictionary;
@@ -212,22 +210,17 @@ namespace LosSantosRED.lsr.Player
                 Player.WeaponEquipment.SetUnarmed();
                 if (NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim) >= 1.0f)
                 {
-                    //if (!hasGainedHP)//get health once you finish it once, but you can still continue drinking, might chnage it to a duration based
-                    //{
-                    //    Player.ChangeHealth(ModItem.MaxHealthChangeAmount);
-                    //    hasGainedHP = true;
-                    //}
                     PlayingDict = Data.AnimIdleDictionary;
                     PlayingAnim = Data.AnimIdle.PickRandom();
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
                 }
                 UpdatePosition();
                 UpdateSmoke();
+                PipeSmokeItem.ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             EntryPoint.WriteToConsole("SmokingActivity Idle End", 5);
-            Exit();
-            
+            Exit();        
         }
      
         private void Setup()

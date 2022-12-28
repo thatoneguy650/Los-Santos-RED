@@ -208,16 +208,22 @@ public class PlateTheft : DynamicActivity
         Vector3 Right;
         Vector3 Forward;
         Vector3 Up;
-
+        bool isFrontPlate = false;
+        
         if (VehicleToChange.HasBone("numberplate"))
         {
+            float HeadingRotation = -90f;
+
             EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
             Position = VehicleToChange.GetBonePosition("numberplate");
 
-
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.0f);
+            if(Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(2f)) < Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(-2f)))
+            {
+                EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate IS FRONT PLATE");
+                HeadingRotation = 90f;
+            }
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading + HeadingRotation, 1.0f);
             return SpawnPosition;
-
             VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             return Vector3.Add(Forward * -1.0f, Position);
         }
@@ -225,11 +231,8 @@ public class PlateTheft : DynamicActivity
         {
             EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
             Position = VehicleToChange.GetBonePosition("boot");
-
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90,1.75f);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.75f);
             return SpawnPosition;
-
-
             VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             return Vector3.Add(Forward * -1.75f, Position);//return Vector3.Add(Forward * -1.75f, Position);
         }
@@ -242,10 +245,8 @@ public class PlateTheft : DynamicActivity
         {
             EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
             Position = VehicleToChange.GetBonePosition("bumper_r");
-
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90,1.0f);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.0f);
             return SpawnPosition;
-
             VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             Position = Vector3.Add(Forward * -1.0f, Position);
             return Vector3.Add(Right * 0.25f, Position);

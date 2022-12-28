@@ -87,8 +87,9 @@ public class NewSaveGameTab
                     {
                         TabView.Visible = false;
                         Game.IsPaused = false;
+                        int saveNumber = gs.SaveNumber;
                         GameSaves.DeleteSave(gs);
-                        GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest, ModItems, i);
+                        GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest, ModItems, saveNumber);
                     }
                 };
             }

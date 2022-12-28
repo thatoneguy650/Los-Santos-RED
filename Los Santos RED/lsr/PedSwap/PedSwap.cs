@@ -91,7 +91,7 @@ public class PedSwap : IPedSwap
                     GameFiber.Yield();
                 }
                 PedSwapCustomMenu.Dispose();
-                if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
                 {
                     AddOffset();
                 }
@@ -138,7 +138,7 @@ public class PedSwap : IPedSwap
                     {
                         PedCustomizer.Dispose(true);
                     }
-                    if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+                    if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
                     {
                         AddOffset();
                     }
@@ -418,7 +418,7 @@ public class PedSwap : IPedSwap
             Player.CurrentModelVariation = variation.Copy();
             Player.PlayerName = fullName;
             Player.BankAccounts.SetMoney(money);
-            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+            if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
             {
                 SetPlayerOffset();
                 NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
@@ -484,7 +484,7 @@ public class PedSwap : IPedSwap
         {
             InitialPlayerVariation.ApplyToPed(Game.LocalPlayer.Character);
         }
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
         {
             SetPlayerOffset(InitialPlayerModel.Hash);
         }
@@ -781,7 +781,7 @@ public class PedSwap : IPedSwap
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
         bool isMale = Game.LocalPlayer.Character.IsMale;
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
             NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
@@ -818,7 +818,7 @@ public class PedSwap : IPedSwap
     private void PostTakeover(string ModelToChange, bool setRandomDemographics, string nameToAssign, int moneyToAssign, int speechSkill, string voiceName)
     {
         NativeFunction.Natives.x2206BF9A37B7F724("MinigameTransitionOut", 5000, false);
-        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter) //if (!TargetPedAlreadyTakenOver && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
         {
             SetPlayerOffset();
             NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
@@ -896,8 +896,10 @@ public class PedSwap : IPedSwap
     }
     private void ResetOffsetForCurrentModel()
     {
+        EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
         {
+            EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
             unsafe
             {
                 var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
@@ -908,6 +910,11 @@ public class PedSwap : IPedSwap
     }
     private void SetPlayerOffset(ulong ModelHash)
     {
+        if (!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
         //bigbruh in discord, supplied the below, seems to work just fine
         unsafe
         {
@@ -918,6 +925,10 @@ public class PedSwap : IPedSwap
     }
     private void SetPlayerOffset()
     {
+        if(!Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter)
+        {
+            return;
+        }
         ulong ModelHash = 0;
         if (Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias == "Michael")
         {
@@ -931,6 +942,8 @@ public class PedSwap : IPedSwap
         {
             ModelHash = 2608926626;
         }
+        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset 2 RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+
         if (ModelHash != 0)
         {
             //bigbruh in discord, supplied the below, seems to work just fine

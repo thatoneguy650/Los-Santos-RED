@@ -176,6 +176,9 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
+
+            DrinkItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
+
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -190,8 +193,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = true;
                         EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
                     }
-                    bool isFinished = Settings.SettingsManager.NeedsSettings.ApplyNeeds ? GivenFullHunger && GivenFullSleep && GivenFullThirst : GivenFullHealth;
-                    if (TimesDrank >= 5 && isFinished)// || Player.Character.Health == Player.Character.MaxHealth))
+                    if (TimesDrank >= 5 && DrinkItem.ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
@@ -208,12 +210,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                //if(IsFinishedWithSip && !isAnimRunning)
-                //{
-                //    IsFinishedWithSip = true;
-                //}
-                UpdateHealthGain();
-                UpdateNeeds();
+                DrinkItem.ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             Exit();

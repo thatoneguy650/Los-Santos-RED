@@ -343,14 +343,14 @@ public class ModItems : IModItems
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
 
             new IngestItem("Hingmyralgan","For BrainAche", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 20, FindPercentage = 15 },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 20, FindPercentage = 15, AlwaysChangesHealth = true },
 
 
-            new IngestItem("Deludamol","For a Night You'll Never Remeber", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindPercentage = 5 },
+            new IngestItem("Deludamol","For a Night You'll Never Remember", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindPercentage = 5, AlwaysChangesHealth = true },
 
             new IngestItem("Delladamol","Gives A Time You Won't Recall", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindPercentage = 5 },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
 
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>

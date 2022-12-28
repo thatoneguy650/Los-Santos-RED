@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr.Interface
         HumanState HumanState { get; }
         Agency AssignedAgency { get; }
         string FreeModeVoice { get; }
+        bool CharacterModelIsPrimaryCharacter { get; }
 
         void DisplayPlayerNotification();
         void Reset(bool v1, bool v2, bool v3, bool v4, bool v5, bool v6, bool v7, bool v8, bool v9, bool v10, bool v11, bool v12, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetACtivites);

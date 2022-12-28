@@ -170,6 +170,7 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\IContactMenuInteraction.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupMember.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\ConsumableRefresher.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
     <Compile Include="lsr\Data\Items\PossibleItems.cs" />

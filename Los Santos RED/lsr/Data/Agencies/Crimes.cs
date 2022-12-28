@@ -124,7 +124,7 @@ public class Crimes : ICrimes
         HitCarWithCar = new Crime(StaticStrings.HitCarWithCarCrimeID, "Hit and Run", 1, false, 30, false, false, false) { IsTrafficViolation = true, ShowsWarning = true, WarningMessage = "You ~r~crashed your vehicle~s~~n~Avoid tickets by following traffic laws" };
 
         PublicIntoxication = new Crime(StaticStrings.PublicIntoxicationCrimeID, "Public Intoxication", 1, false, 31, true, false, false) { ShowsWarning = true, WarningMessage = "You are ~r~intoxicated in public~s~~n~Sober up or avoid attention" };
-        ChangingPlates = new Crime(StaticStrings.ChangingPlatesCrimeID, "Stealing License Plates", 1, false, 32, true, false, false) { MaxReportingDistance = 20f,ShowsWarning = true, WarningMessage = "You are ~rdealing illegal drugs~s~~n~Avoid dealing in public" };
+        ChangingPlates = new Crime(StaticStrings.ChangingPlatesCrimeID, "Stealing License Plates", 1, false, 32, true, false, false) { MaxReportingDistance = 20f,ShowsWarning = true, WarningMessage = "You are ~r~Staling License Plates~s~~n~Avoid removing in public" };
 
         DrivingAgainstTraffic = new Crime(StaticStrings.DrivingAgainstTrafficCrimeID, "Driving Against Traffic", 1, false, 33, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are ~r~driving the wrong way~s~~n~Avoid tickets by following traffic laws" };
         DrivingOnPavement = new Crime(StaticStrings.DrivingOnPavementCrimeID, "Driving On Pavement", 1, false, 34, false, false, false) { IsTrafficViolation = true, RequiresCitation = true, ShowsWarning = true, WarningMessage = "You are ~r~driving recklessly~s~~n~Avoid tickets by following traffic laws" };

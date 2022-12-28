@@ -141,6 +141,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            InjectItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, InjectItem, Settings);
             bool hasStartedIntoxicating = false;
             uint GameTimeLastGaveHealth = Game.GameTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
@@ -154,6 +155,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 if (AnimationTime >= 0.7f)
                 {
+                    InjectItem.ConsumableItemNeedGain.FullyConsume();
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }

@@ -41,6 +41,7 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastPressedDoorClose;
         private uint GameTimeLastPressedCrouch;
         private uint GameTimeLastPressedSimplePhone;
+        private uint GameTimeLastPressedSurrender;
         private int TicksPressedVehicleEnter;
         private int TicksNotPressedVehicleEnter;
         private bool heldVehicleEnter;
@@ -64,13 +65,14 @@ namespace LosSantosRED.lsr
         private bool IsMoveControlPressed => Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveRight) || Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveLeft);
         private bool IsNotHoldingEnter => !heldVehicleEnter;//!Game.IsControlPressed(2, GameControl.Enter);
         private bool IsPressingVehicleAccelerate => Game.IsControlPressed(0, GameControl.VehicleAccelerate);
-        private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 250;
+        private bool RecentlyPressedCrouch => Game.GameTime - GameTimeLastPressedCrouch <= 500;
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
         private bool IsPressingActionWheelMenu;// => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
         private bool HasShownControllerHelpPrompt;
+        private bool RecentlyPressedSurrender => Game.GameTime - GameTimeLastPressedSurrender <= 750;
 
         public bool IsUsingController { get; private set; }
         
@@ -157,13 +159,11 @@ namespace LosSantosRED.lsr
                     Player.ActivityManager.CancelCurrentActivity();
                 }
             }
-
             if (IsPressingSimpleCellphone && !RecentlyPressedSimplePhone && !MenuProvider.IsDisplayingMenu && !Player.IsDisplayingCustomMenus)
             {
                 Player.CellPhone.OpenBurner();
                 GameTimeLastPressedSimplePhone = Game.GameTime;
             }
-
             if (Player.ButtonPrompts.IsGroupPressed("StartConversation"))//Player.ButtonPromptList.Any(x => x.Group == "StartConversation" && x.IsPressedNow))//string for now...
             {
                 Player.ActivityManager.StartConversation();
@@ -188,13 +188,10 @@ namespace LosSantosRED.lsr
             {
                 Player.ActivityManager.GrabPed();
             }
-
             if (Player.ButtonPrompts.IsGroupPressed("StartScenario"))//Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
                 Player.ActivityManager.StartScenario();
             }
-
-
             if (Player.ButtonPrompts.IsGroupPressed("Recruit"))
             {
                 Player.GroupManager.TryRecruitLookedAtPed();
@@ -203,7 +200,6 @@ namespace LosSantosRED.lsr
             {
                 Player.ActivityManager.StartSittingDown(true, true);
             }
-
             if (!Player.IsInVehicle)
             {
                 if (IsPressingSprint)
@@ -219,23 +215,16 @@ namespace LosSantosRED.lsr
             {
                 Player.WeaponEquipment.ToggleSelector();
             }
-            if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle)
+            if (Settings.SettingsManager.ActivitySettings.AllowPlayerCrouching && !Player.IsInVehicle && !RecentlyPressedCrouch && IsPressingCrouchToggle)
             {
-                if (!RecentlyPressedCrouch)
-                {
-                    if (IsPressingCrouchToggle)
-                    {
-                        Player.Stance.Crouch();
-                        GameTimeLastPressedCrouch = Game.GameTime;
-                    }
-                }
+                Player.Stance.Crouch();
+                GameTimeLastPressedCrouch = Game.GameTime;
             }
-
-            if (IsPressingSurrender || Player.ButtonPrompts.IsPressed("ShowSurrender") || Player.ButtonPrompts.IsPressed("ShowStopSurrender"))
+            if (!RecentlyPressedSurrender && (IsPressingSurrender || Player.ButtonPrompts.IsPressed("ShowSurrender") || Player.ButtonPrompts.IsPressed("ShowStopSurrender")))
             {
                 Player.Surrendering.ToggleSurrender();
+                GameTimeLastPressedSurrender = Game.GameTime;
             }
-
             if (IsPressingGesture)
             {
                 EntryPoint.WriteToConsole("Gesture Start Hotkey");
@@ -295,7 +284,6 @@ namespace LosSantosRED.lsr
                     Game.DisableControlAction(0, GameControl.VehicleMoveUpDown, true);
                 }
             }
-
             if(Game.IsControlPressed(2, GameControl.Enter))
             {
                 TicksNotPressedVehicleEnter = 0;
@@ -306,8 +294,6 @@ namespace LosSantosRED.lsr
                 TicksNotPressedVehicleEnter++;
                 TicksPressedVehicleEnter = 0;
             }
-
-
             if(TicksPressedVehicleEnter >= 20)
             {
                 heldVehicleEnter = true;
@@ -358,7 +344,6 @@ namespace LosSantosRED.lsr
             {
                 ShowControllerHelpPrompt();
             }
-
         }
         private void ShowControllerHelpPrompt()
         {

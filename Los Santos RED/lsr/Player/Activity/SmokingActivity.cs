@@ -160,6 +160,10 @@ namespace LosSantosRED.lsr.Player
             Player.ActivityManager.IsPerformingActivity = true;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
+
+
+            SmokeItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, SmokeItem, Settings);
+
             while (Player.ActivityManager.CanPerformActivitiesExtended && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -264,7 +268,8 @@ namespace LosSantosRED.lsr.Player
                 }
                 UpdatePosition();
                 UpdateSmoke();
-                UpdateHealthGain();
+                SmokeItem.ConsumableItemNeedGain.Update();
+                //UpdateHealthGain();
                 if (IsHandByFace)
                 {
                     AttachSmokedItemToHand();
@@ -293,7 +298,8 @@ namespace LosSantosRED.lsr.Player
             {
                 UpdatePosition();
                 UpdateSmoke();
-                UpdateHealthGain();
+                SmokeItem.ConsumableItemNeedGain.Update();
+                //UpdateHealthGain();
                 GameFiber.Yield();
             }
             if (ShouldContinue && !IsCancelled)

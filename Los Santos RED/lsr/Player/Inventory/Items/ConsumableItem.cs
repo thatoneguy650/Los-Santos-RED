@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Xml.Serialization;
 
 public abstract class ConsumableItem : ModItem
 {
@@ -20,19 +20,19 @@ public abstract class ConsumableItem : ModItem
     {
 
     }
-
-
+    [XmlIgnore]
+    public ConsumableRefresher ConsumableItemNeedGain { get; set; }
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
-
     public int HealthChangeAmount { get; set; }
     public float HungerChangeAmount { get; set; }
     public float ThirstChangeAmount { get; set; }
     public float SleepChangeAmount { get; set; }
+    public bool AlwaysChangesHealth { get; set; } = false;
     public bool ChangesHealth => HealthChangeAmount != 0;
     public string HealthChangeDescription => HealthChangeAmount > 0 ? $"~g~+{HealthChangeAmount} ~s~HP" : $"~r~{HealthChangeAmount} ~s~HP";
-    public string NeedChangeDescription => (ChangesHunger ? HungerChangeDescription + " " : "") + (ChangesThirst ? ThirstChangeDescription + " " : "") + (ChangesSleep ? SleepChangeDescription : "").Trim();
-    public bool ChangesNeeds => ChangesHunger || ChangesThirst || ChangesSleep;
+    public string NeedChangeDescription => (ChangesHunger ? HungerChangeDescription + " " : "") + (ChangesThirst ? ThirstChangeDescription + " " : "") + (ChangesSleep ? SleepChangeDescription : "")   + (AlwaysChangesHealth && ChangesHealth ? HealthChangeDescription : "") .Trim();
+    public bool ChangesNeeds => ChangesHunger || ChangesThirst || ChangesSleep || (ChangesHealth && AlwaysChangesHealth);
     public bool ChangesHunger => HungerChangeAmount != 0.0f;
     public string HungerChangeDescription => ChangesHunger ? $"{(HungerChangeAmount > 0.0f ? "~g~+" : "~r~") + HungerChangeAmount.ToString() + "~s~ Hunger"}" : "";
     public bool ChangesThirst => ThirstChangeAmount != 0.0f;
@@ -60,6 +60,10 @@ public abstract class ConsumableItem : ModItem
             if (ChangesThirst)
             {
                 actionable.HumanState.Thirst.Change(ThirstChangeAmount, true);
+            }
+            if(ChangesHealth && AlwaysChangesHealth)
+            {
+                actionable.HealthManager.ChangeHealth(HealthChangeAmount);
             }
         }
         else

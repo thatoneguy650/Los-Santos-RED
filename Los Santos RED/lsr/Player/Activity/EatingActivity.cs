@@ -21,17 +21,7 @@ namespace LosSantosRED.lsr.Player
         private string PlayingAnim;
         private string PlayingDict;
         private ISettingsProvideable Settings;
-        private uint GameTimeLastGivenHealth;
-        private int HealthGiven;
         private int TimesAte;
-        private uint GameTimeLastGivenNeeds;
-        private float HungerGiven;
-        private float ThirstGiven;
-        private int SleepGiven;
-        private bool GivenFullHealth;
-        private bool GivenFullHunger;
-        private bool GivenFullThirst;
-        private bool GivenFullSleep;
         private float PrevAnimationTime;
         private uint GameTimeLastCheckedAnimation;
         private FoodItem FoodItem;
@@ -84,17 +74,6 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
-
-
-
-
-
-
-
-
-
-
-
         private void AttachFoodToHand()
         {
             CreateFood();
@@ -121,21 +100,6 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                //try
-                //{
-                //    if (Food.Exists())
-                //    {
-                //        Food.IsGravityDisabled = false;
-                //    }
-                //    else
-                //    {
-                //        IsCancelled = true;
-                //    }
-                //}
-                //catch (Exception ex)
-                //{
-                //    EntryPoint.WriteToConsole($"Error Setting Model Gravity {ex.Message} {ex.StackTrace}");
-                //}
             }
         }
         private void Enter()
@@ -147,6 +111,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            FoodItem.ConsumableItemNeedGain = new ConsumableRefresher(Player,FoodItem,Settings);
             StartNewIdleAnimation();
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
@@ -155,8 +120,7 @@ namespace LosSantosRED.lsr.Player
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
-                    bool isFinished = Settings.SettingsManager.NeedsSettings.ApplyNeeds ? GivenFullHunger && GivenFullSleep && GivenFullThirst : GivenFullHealth;
-                    if (TimesAte >= 5 && isFinished) // || Player.Character.Health == Player.Character.MaxHealth))
+                    if (TimesAte >= 5 && FoodItem.ConsumableItemNeedGain.IsFinished)
                     {
                         if (Food.Exists())
                         {
@@ -174,8 +138,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                UpdateHealthGain();
-                UpdateNeeds();
+                FoodItem.ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             Exit();
@@ -209,9 +172,6 @@ namespace LosSantosRED.lsr.Player
         private bool IsAnimationRunning(float AnimationTime)
         {
             //return NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, PlayingDict, PlayingAnim, 3);
-
-
-
             //return true;
             if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
             {
@@ -224,135 +184,6 @@ namespace LosSantosRED.lsr.Player
                 GameTimeLastCheckedAnimation = Game.GameTime;
             }
             return true;
-        }
-        private void UpdateHealthGain()
-        {
-            if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
-            {
-                if (FoodItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-                {
-                    if (FoodItem.HealthChangeAmount > 0 && HealthGiven < FoodItem.HealthChangeAmount)
-                    {
-                        HealthGiven++;
-                        Player.HealthManager.ChangeHealth(1);
-                    }
-                    else if (FoodItem.HealthChangeAmount < 0 && HealthGiven > FoodItem.HealthChangeAmount)
-                    {
-                        HealthGiven--;
-                        Player.HealthManager.ChangeHealth(-1);  
-                    }
-                }
-
-                if(HealthGiven == FoodItem.HealthChangeAmount)
-                {
-                    GivenFullHealth = true;
-                }
-
-                GameTimeLastGivenHealth = Game.GameTime;
-            }
-        }
-        private void UpdateNeeds()
-        {
-            if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
-            {
-                if(FoodItem.ChangesNeeds)
-                {
-                    if(FoodItem.ChangesHunger)
-                    {
-                        if(FoodItem.HungerChangeAmount < 0.0f)
-                        {
-                            if(HungerGiven > FoodItem.HungerChangeAmount)
-                            {
-                                Player.HumanState.Hunger.Change(-1.0f, true);
-                                HungerGiven--;
-                            }
-                            else
-                            {
-                                GivenFullHunger = true;
-                            }
-                        }
-                        else
-                        {
-                            if(HungerGiven < FoodItem.HungerChangeAmount)
-                            {
-                                Player.HumanState.Hunger.Change(1.0f, true);
-                                HungerGiven++;
-                            }
-                            else
-                            {
-                                GivenFullHunger = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullHunger = true;
-                    }
-                    if (FoodItem.ChangesThirst)
-                    {
-                        if (FoodItem.ThirstChangeAmount < 0.0f)
-                        {
-                            if (ThirstGiven > FoodItem.ThirstChangeAmount)
-                            {
-                                Player.HumanState.Thirst.Change(-1.0f, true);
-                                ThirstGiven--;
-                            }
-                            else
-                            {
-                                GivenFullThirst = true;
-                            }
-                        }
-                        else
-                        {
-                            if (ThirstGiven < FoodItem.ThirstChangeAmount)
-                            {
-                                Player.HumanState.Thirst.Change(1.0f, true);
-                                ThirstGiven++;
-                            }
-                            else
-                            {
-                                GivenFullThirst = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullThirst = true;
-                    }
-                    if (FoodItem.ChangesSleep)
-                    {
-                        if (FoodItem.SleepChangeAmount < 0.0f)
-                        {
-                            if (SleepGiven > FoodItem.SleepChangeAmount)
-                            {
-                                Player.HumanState.Sleep.Change(-1.0f, true);
-                                SleepGiven--;
-                            }
-                            else
-                            {
-                                GivenFullSleep = true;
-                            }
-                        }
-                        else
-                        {
-                            if (SleepGiven < FoodItem.SleepChangeAmount)
-                            {
-                                Player.HumanState.Sleep.Change(1.0f, true);
-                                SleepGiven++;
-                            }
-                            else
-                            {
-                                GivenFullSleep = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullSleep = true;
-                    }
-                }
-                GameTimeLastGivenNeeds = Game.GameTime;
-            }
         }
         private void Setup()
         {
@@ -383,12 +214,6 @@ namespace LosSantosRED.lsr.Player
                     EntryPoint.WriteToConsole($"Eating Activity Found Attachment {HandOffset} {HandRotator} {HandBoneName}");
                 }
             }
-            //if (Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
-            //{
-            //    HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
-            //    HandRotator = new Rotator(Settings.SettingsManager.PlayerOtherSettings.HandRotateX, Settings.SettingsManager.PlayerOtherSettings.HandRotateY, Settings.SettingsManager.PlayerOtherSettings.HandRotateZ);
-            //}
-
             AnimIdleDictionary = "mp_player_inteat@burger";
             AnimIdle = new List<string>() { "mp_player_int_eat_burger" };
             AnimBase = "mp_player_int_eat_burger_enter";

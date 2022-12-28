@@ -57,11 +57,11 @@ public class PedSwapSettings : ISettingsDefaultable
     public void SetDefault()
     {
 
-#if DEBUG
-        AliasPedAsMainCharacter = false;
-#else
+//#if DEBUG
+//        AliasPedAsMainCharacter = false;
+//#else
         AliasPedAsMainCharacter = true;
-#endif
+//#endif
 
         MainCharacterToAlias = "Michael";
         SetRandomMoney = true;

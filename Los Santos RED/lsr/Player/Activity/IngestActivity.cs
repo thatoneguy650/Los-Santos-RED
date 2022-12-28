@@ -141,6 +141,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
+            IngestItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, IngestItem, Settings);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -154,6 +155,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 if (AnimationTime >= 0.35f)
                 {
+                    IngestItem.ConsumableItemNeedGain.FullyConsume();
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }
