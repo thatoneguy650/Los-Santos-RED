@@ -9,6 +9,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Linq;
 
 public class PurchaseMenu : Menu
 {
@@ -84,7 +85,7 @@ public class PurchaseMenu : Menu
             return;
         }
         purchaseMenu.Clear();
-        CreateCategories();
+        CreateCategories2();
         foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable))
         {
             EntryPoint.WriteToConsole($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
@@ -109,16 +110,16 @@ public class PurchaseMenu : Menu
             Hide();
         }
     }
-    public void Update()
-    {
+    //public void Update()
+    //{
 
-    }
+    //}
     private void CreateCategories()
     {
-        if (ShopMenu.Items.Where(x => x.Purchaseable).Count() < 7)
-        {
-            return;
-        }
+        //if (ShopMenu.Items.Where(x => x.Purchaseable).Count() < 7)
+        //{
+        //    return;
+        //}
         List<string> Categories = new List<string>();
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable))
         {
@@ -152,6 +153,70 @@ public class PurchaseMenu : Menu
             };
         }
     }
+    private void CreateCategories2()
+    {
+        List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon).ToList();
+        List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle).ToList();
+        List<MenuItem> OtherItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon).ToList();
+        if (WeaponItems.Any())
+        {
+            UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Weapons");
+            SetupCategoryMenu(headerMenu);
+            foreach (string category in WeaponItems.Select(x=> x.ModItem.MenuCategory).Distinct())
+            {
+                UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
+                SetupCategoryMenu(categoryMenu);
+            }
+        }
+        if (VehicleItems.Any())
+        {
+            UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
+            SetupCategoryMenu(headerMenu);
+            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct())
+            {
+                UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
+                SetupCategoryMenu(categoryMenu);
+            }
+        }
+        List<string> Categories = new List<string>();
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle))
+        {
+            if (!Categories.Contains(cii.ModItem.MenuCategory))
+            {
+                Categories.Add(cii.ModItem.MenuCategory);
+            }
+        }
+        foreach (string category in Categories)
+        {
+            UIMenu categoryMenu = MenuPool.AddSubMenu(purchaseMenu, category);
+            SetupCategoryMenu(categoryMenu);
+        }
+    }
+
+    private void SetupCategoryMenu(UIMenu categoryMenu)
+    {
+        if (Transaction.HasBannerImage)
+        {
+            categoryMenu.SetBannerType(Transaction.BannerImage);
+        }
+        else if (Transaction.RemoveBanner)
+        {
+            categoryMenu.RemoveBanner();
+        }
+        categoryMenu.OnIndexChange += (sender, newIndex) =>
+        {
+            GeneratePreview(categoryMenu, newIndex);
+        };
+        categoryMenu.OnMenuOpen += (sender) =>
+        {
+            GeneratePreview(categoryMenu, categoryMenu.CurrentSelection);
+        };
+        categoryMenu.OnMenuClose += (sender) =>
+        {
+            Transaction.ClearPreviews();
+        };
+    }
+
     private void GeneratePreview(UIMenu menuSelected, int v)
     {
         if(menuSelected == null || menuSelected.MenuItems == null)
@@ -194,7 +259,7 @@ public class PurchaseMenu : Menu
         {
             try
             {
-                selectedMenu.ModItem.CreatePreview(Transaction, StoreCam);
+                selectedMenu.ModItem.CreatePreview(Transaction, StoreCam, true);
             }
             catch (Exception ex)
             {

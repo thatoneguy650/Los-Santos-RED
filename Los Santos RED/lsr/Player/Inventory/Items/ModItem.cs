@@ -69,8 +69,13 @@ public class ModItem
 
     public string Name { get; set; }
     public string Description { get; set; } = "";
+
+
+
     public ItemType ItemType { get; set; } = ItemType.None;
     public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
+
+
     public string MeasurementName { get; set; } = "Item";
     public int AmountPerPackage { get; set; } = 1;
     public string ModelItemID { get; set; }
@@ -371,7 +376,7 @@ public class ModItem
         Transaction.DisplayInsufficientFundsMessage();
         return false;
     }
-    public virtual void CreatePreview(Transaction Transaction, Camera StoreCam)
+    public virtual void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
     {
         try
         {

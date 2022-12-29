@@ -392,17 +392,23 @@ public class ShopMenus : IShopMenus
                    
             //Drugs
             new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() {
-                new MenuItem("White Widow",7),
-                new MenuItem("OG Kush",8),
-                new MenuItem("Northern Lights",9),
+
+                new MenuItem("Marijuana",15),
+
+                //new MenuItem("White Widow",7),
+                //new MenuItem("OG Kush",8),
+                //new MenuItem("Northern Lights",9),
+
+
                 new MenuItem("Bong",25),
                 //new MenuItem("ElectroToke Vape", 25),
                 new MenuItem("DIC Lighter",5),
                 new MenuItem("DIC Lighter Ultra", 7),
             }),
             new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow",10),
-                new MenuItem("OG Kush",12),
-                new MenuItem("Northern Lights",13),
+                //new MenuItem("OG Kush",12),
+                //new MenuItem("Northern Lights",13),
+                new MenuItem("Marijuana",17),
                 new MenuItem("Bong",35),
                 new MenuItem("Redwood Regular", 30),
                 new MenuItem("Redwood Mild", 32),

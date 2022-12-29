@@ -26,4 +26,6 @@ public enum ItemSubType
     Cereal,
     Fruit,
     Pizza,
+    Painkiller,
+    Medication,
 }

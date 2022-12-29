@@ -174,8 +174,11 @@ public class PersonTransaction : Interaction
 
 
                             MenuPool.ProcessMenus();
-                            Transaction.PurchaseMenu?.Update();
-                            Transaction.SellMenu?.Update();
+
+                            Transaction?.Update();
+
+                            //Transaction.PurchaseMenu?.Update();
+                            //Transaction.SellMenu?.Update();
                             GameFiber.Yield();
                         }
 

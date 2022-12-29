@@ -161,8 +161,11 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                         while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                         {
                             MenuPool.ProcessMenus();
-                            Transaction?.PurchaseMenu?.Update();
-                            Transaction?.SellMenu?.Update();
+
+                            Transaction?.Update();
+
+                            //Transaction?.PurchaseMenu?.Update();
+                            //Transaction?.SellMenu?.Update();
                             GameFiber.Yield();
                         }
                         Transaction.DisposeTransactionMenu();

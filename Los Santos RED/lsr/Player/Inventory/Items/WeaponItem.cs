@@ -84,19 +84,46 @@ public class WeaponItem : ModItem
         bool FoundCategoryMenu = false;
         if (WeaponInformation != null)
         {
-            foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+
+
+            UIMenu WeaponSubMenu = sellMenuRNUI.Children.Where(x => x.Value.SubtitleText.ToLower() == "weapons").FirstOrDefault().Value;
+            UIMenu ToCheckFirst = sellMenuRNUI;
+            if (WeaponSubMenu != null)
             {
-                if (uimen.SubtitleText == WeaponInformation.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
-                {
-                    FoundCategoryMenu = true;
-                    WeaponMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
-                    EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {uimen.SubtitleText}", 5);
-                    break;
-                }
+                ToCheckFirst = WeaponSubMenu;
             }
+            UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+            if (CategoryMenu != null)
+            {
+                FoundCategoryMenu = true;
+                WeaponMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
+                CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
+                CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
+                EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+            }
+
+
+            //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+            //{
+            //    if (uimen.SubtitleText == WeaponInformation.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
+            //    {
+            //        FoundCategoryMenu = true;
+            //        WeaponMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
+            //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+            //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
+            //        EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {uimen.SubtitleText}", 5);
+            //        break;
+            //    }
+            //}
+
+
+
+
+
+
+
         }
         if (!FoundCategoryMenu && WeaponMenu == null)
         {
@@ -258,18 +285,33 @@ public class WeaponItem : ModItem
         bool FoundCategoryMenu = false;
         if (WeaponInformation != null)
         {
-            foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+            UIMenu WeaponSubMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText.ToLower() == "weapons").FirstOrDefault().Value;
+            UIMenu ToCheckFirst = purchaseMenu;
+            if(WeaponSubMenu != null)
             {
-                if (uimen.SubtitleText == WeaponInformation.Category.ToString() && uimen.ParentMenu == purchaseMenu)
-                {
-                    FoundCategoryMenu = true;
-                    WeaponMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                    uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                    EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {uimen.SubtitleText}", 5);
-                    break;
-                }
+                ToCheckFirst = WeaponSubMenu;
             }
+            UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+            if (CategoryMenu != null)
+            {
+                FoundCategoryMenu = true;
+                WeaponMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
+                CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
+                CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+                EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+            }
+            //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+            //{
+            //    if (uimen.SubtitleText == WeaponInformation.Category.ToString() && uimen.ParentMenu == purchaseMenu)
+            //    {
+            //        FoundCategoryMenu = true;
+            //        WeaponMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
+            //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+            //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            //        EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {uimen.SubtitleText}", 5);
+            //        break;
+            //    }
+            //}
         }
         if (!FoundCategoryMenu && WeaponMenu == null)
         {
@@ -278,9 +320,6 @@ public class WeaponItem : ModItem
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Weapon {Name} To Main Buy Menu", 5);
         }
-
-
-
         if (Transaction.HasBannerImage)
         {
             WeaponMenu.SetBannerType(Transaction.BannerImage);
@@ -289,15 +328,10 @@ public class WeaponItem : ModItem
         {
             WeaponMenu.RemoveBanner();
         }
-
-
         WeaponMenu.OnMenuOpen += (sender) =>
         {
             OnWeaponMenuOpen(sender, player);
         };
-
-
-
         if (WeaponInformation != null)
         {
             foreach (ComponentSlot majorCOmponentSlot in WeaponInformation.PossibleComponents.Where(x => x.ComponentSlot != ComponentSlot.Coloring).GroupBy(x => x.ComponentSlot).Select(x => x.Key))
@@ -365,20 +399,10 @@ public class WeaponItem : ModItem
                             OnWeaponMenuOpen(sender, player);
                         }
                     };
-
-
                     WeaponMenu.AddItem(componentScroller);
                 }
             }
         }
-
-
-
-
-
-
-
-
 
 
 
@@ -685,7 +709,7 @@ public class WeaponItem : ModItem
             EntryPoint.WriteToConsole($"Weapon Preview Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
-    public override void CreatePreview(Transaction Transaction, Camera StoreCam)
+    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
     {
         try
         {

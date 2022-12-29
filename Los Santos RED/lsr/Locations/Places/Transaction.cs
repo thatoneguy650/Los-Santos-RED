@@ -288,8 +288,8 @@ public class Transaction
             MenuPool.ProcessMenus();
             Update();
 
-            PurchaseMenu?.Update();
-            SellMenu?.Update();
+            //PurchaseMenu?.Update();
+            //SellMenu?.Update();
             GameFiber.Yield();
         }
     }

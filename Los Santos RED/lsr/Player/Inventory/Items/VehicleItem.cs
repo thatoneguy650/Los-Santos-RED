@@ -7,6 +7,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -17,6 +18,8 @@ public class VehicleItem : ModItem
 {
     private int PrimaryColor = 0;
     private int SecondaryColor = 0;
+    private Color SellPrimaryColor = Color.Black;
+    private Color SellSecondaryColor = Color.Black;
 
     public bool RequiresDLC { get; set; } = false;
     public VehicleItem()
@@ -52,6 +55,8 @@ public class VehicleItem : ModItem
     {
         PrimaryColor = 0;
         SecondaryColor = 0;
+        SellPrimaryColor = Color.Black;
+        SellSecondaryColor = Color.Black;
         string formattedSalesPrice = menuItem.SalesPrice.ToString("C0");
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
@@ -84,18 +89,42 @@ public class VehicleItem : ModItem
         }
         UIMenu VehicleMenu = null;
         bool FoundCategoryMenu = false;
-        foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+
+
+        UIMenu VehicleSubMenu = sellMenuRNUI.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
+        UIMenu ToCheckFirst = sellMenuRNUI;
+        if (VehicleSubMenu != null)
         {
-            if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
-            {
-                FoundCategoryMenu = true;
-                VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
-                EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
-                break;
-            }
+            ToCheckFirst = VehicleSubMenu;
         }
+        UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        if(CategoryMenu != null)
+        {
+            FoundCategoryMenu = true;
+            VehicleMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
+            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
+            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+            EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+        }
+
+        //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+        //{
+        //    if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
+        //    {
+        //        FoundCategoryMenu = true;
+        //        VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
+        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
+        //        EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
+        //        break;
+        //    }
+        //}
+
+
+
+
+
+
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(sellMenuRNUI, menuItem.ModItemName);
@@ -117,8 +146,12 @@ public class VehicleItem : ModItem
             description = $"List Price {formattedSalesPrice}";
         }
         bool enabled = false;
-        if (player.VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName)))
+        VehicleExt ownedVersion = player.VehicleOwnership.OwnedVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName));
+
+        if (ownedVersion != null)
         {
+            SellPrimaryColor = ownedVersion.Vehicle.PrimaryColor;
+            SellSecondaryColor = ownedVersion.Vehicle.SecondaryColor;
             enabled = true;
         }
         UIMenuItem Sell = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedSalesPrice, Enabled = enabled };
@@ -149,7 +182,6 @@ public class VehicleItem : ModItem
             return false;
         }
     }
-
     public override void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         PrimaryColor = 0;
@@ -201,18 +233,41 @@ public class VehicleItem : ModItem
 
         UIMenu VehicleMenu = null;
         bool FoundCategoryMenu = false;
-        foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+
+        UIMenu VehicleSubMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
+        UIMenu ToCheckFirst = purchaseMenu;
+        if (VehicleSubMenu != null)
         {
-            if (uimen.SubtitleText == ClassName)
-            {
-                FoundCategoryMenu = true;
-                VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-                uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
-                break;
-            }
+            ToCheckFirst = VehicleSubMenu;
         }
+        UIMenu CategoryMenu = ToCheckFirst.Children.Where(x => x.Value.SubtitleText == MenuCategory).FirstOrDefault().Value;
+        if (CategoryMenu != null)
+        {
+            FoundCategoryMenu = true;
+            VehicleMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
+            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
+            CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+            EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+        }
+
+
+        //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
+        //{
+        //    if (uimen.SubtitleText == ClassName)
+        //    {
+        //        FoundCategoryMenu = true;
+        //        VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
+        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
+        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
+        //        EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
+        //        break;
+        //    }
+        //}
+
+
+
+
+
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(purchaseMenu, menuItem.ModItemName);
@@ -363,7 +418,7 @@ public class VehicleItem : ModItem
             return false;
         }
     }
-    public override void CreatePreview(Transaction Transaction, Camera StoreCam)
+    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
     {
         if (ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelItem.ModelName)))
         {
@@ -373,7 +428,16 @@ public class VehicleItem : ModItem
         if (Transaction.SellingVehicle.Exists())
         {
             Transaction.SellingVehicle.Wash();
-            NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, PrimaryColor, SecondaryColor);
+            if (isPurchase)
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, PrimaryColor, SecondaryColor);
+            }
+            else
+            {
+                Transaction.SellingVehicle.PrimaryColor = SellPrimaryColor;
+                Transaction.SellingVehicle.SecondaryColor = SellSecondaryColor;
+                //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, SellPrimaryColor, SellSecondaryColor);
+            }
             NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
         }
     }

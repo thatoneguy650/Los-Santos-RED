@@ -676,7 +676,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("g_m_y_lost_01",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale1" },
             new DispatchablePerson("g_m_y_lost_02",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale2" },
             new DispatchablePerson("g_m_y_lost_03",30,30,5,10,400,600,0,1) { DebugName = "LOSTMale3" },
-            new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1) { DebugName = "LOSTClay" },
+            //new DispatchablePerson("ig_clay",30,30,5,10,400,600,0,1) { DebugName = "LOSTClay" },
             new DispatchablePerson("g_f_y_lost_01",10,10,5,10,400,600,0,1) { DebugName = "LOSTFemale1" },
         };
         VagosPeds = new List<DispatchablePerson>() {
@@ -713,13 +713,13 @@ public class DispatchablePeople : IDispatchablePeople
         };
         VarriosPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_azteca_01",100,100,5,10,400,600,0,1) { DebugName = "VarriosMale" },
-            new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1) { DebugName = "VarriosOrtegaMale" },
+            //new DispatchablePerson("ig_ortega",20,20,5,10,400,600,0,1) { DebugName = "VarriosOrtegaMale" },
         };
         TriadsPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_m_chigoon_01",33,33,5,10,400,600,0,1) { DebugName = "TriadMale1" },
             new DispatchablePerson("g_m_m_chigoon_02",33,33,5,10,400,600,0,1) { DebugName = "TriadMale2" },
             new DispatchablePerson("g_m_m_korboss_01",33,33,5,10,400,600,0,1) { DebugName = "TriadMale3" },
-            new DispatchablePerson("ig_hao",33,33,5,10,400,600,0,1) { DebugName = "TriadHaoMale1" },
+            //new DispatchablePerson("ig_hao",33,33,5,10,400,600,0,1) { DebugName = "TriadHaoMale1" },
         };
         KoreanPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_korean_01",33,33,5,10,400,600,0,1) { DebugName = "KoreanMale1" },
