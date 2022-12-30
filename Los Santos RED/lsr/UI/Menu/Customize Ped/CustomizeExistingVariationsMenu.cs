@@ -46,7 +46,7 @@ public class CustomizeExistingVariationsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Choose from a list of saved variations";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        ModelSubMenu.InstructionalButtonsEnabled = false;
         ModelSubMenu.OnMenuOpen += (sender) =>
         {
             PedCustomizer.CameraCycler.SetDefault();
@@ -61,6 +61,7 @@ public class CustomizeExistingVariationsMenu
         {
             UIMenu dpgSubMenu = MenuPool.AddSubMenu(ModelSubMenu, dpg.DispatchablePersonGroupID);
             dpgSubMenu.SetBannerType(EntryPoint.LSRedColor);
+            dpgSubMenu.InstructionalButtonsEnabled = false;
             foreach (DispatchablePerson dp in dpg.DispatchablePeople)
             {
                 UIMenuItem uIMenuItem = new UIMenuItem(dp.DebugName + " - " + dp.ModelName, dp.DebugName);

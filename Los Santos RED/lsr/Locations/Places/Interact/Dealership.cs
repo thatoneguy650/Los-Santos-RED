@@ -73,9 +73,6 @@ public class Dealership : InteractableLocation
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
 
-                    //Transaction.ItemDeliveryHeading = ItemDeliveryHeading;
-                    //Transaction.ItemDeliveryPosition = ItemDeliveryPosition;
-
                     Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
 
                     Transaction.ItemPreviewPosition = ItemPreviewPosition;

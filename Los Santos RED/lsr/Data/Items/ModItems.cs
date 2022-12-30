@@ -312,13 +312,13 @@ public class ModItems : IModItems
             //    ModelItemID = "h4_prop_battle_vape_01"), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },
             new SmokeItem("Marijuana","Little Jacob Tested, Truth Approved", ItemType.Drugs) {
                 ModelItemID = "p_cs_joint_01"//p_amb_joint_01
-                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2 },
+                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f },
             //new SmokeItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2},
+            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana"},
             //new SmokeItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2 },
+            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana" },
             //new SmokeItem("Northern Lights","Northern Lights, also known as 'NL', is an indica marijuana strain made by crossing Afghani with Thai.", ItemType.Drugs) {
-            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2 },
+            //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana" },
 
         });
         PossibleItems.IngestItems.AddRange(new List<IngestItem>
@@ -1276,6 +1276,10 @@ public class ModItems : IModItems
             new VehicleItem("Willard Faction Custom Donk", true, ItemType.Vehicles) { ModelName = "faction3" },
             new VehicleItem("Zirconium Journey", ItemType.Vehicles) { ModelName = "journey" },
             new VehicleItem("Zirconium Stratum", ItemType.Vehicles) { ModelName = "stratum" },
+
+            new VehicleItem("Police Stanier", ItemType.Vehicles) { ModelName = "police" },
+            new VehicleItem("Police Buffalo", ItemType.Vehicles) { ModelName = "police2" },
+            new VehicleItem("Police Interceptor", ItemType.Vehicles) { ModelName = "police3" },
 
             //Heli
             new VehicleItem("Buckingham SuperVolito", true, ItemType.Vehicles) { ModelName = "supervolito" },

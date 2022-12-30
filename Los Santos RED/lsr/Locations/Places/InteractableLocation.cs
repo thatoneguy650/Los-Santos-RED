@@ -30,7 +30,7 @@ public class InteractableLocation : BasicLocation
 
 
     //private IEntityProvideable World;
-    private uint NotificationHandle;
+    protected uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
 
     public string MenuID { get; set; }
@@ -61,6 +61,8 @@ public class InteractableLocation : BasicLocation
     public MenuPool MenuPool { get; private set; }
     [XmlIgnore]
     public bool VendorAbandoned { get; set; } = false;
+
+
 
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -285,6 +287,22 @@ public class InteractableLocation : BasicLocation
             return true;
         }
         return false;
+    }
+
+
+    public virtual void DisplayMessage(string header, string message)
+    {
+        Game.RemoveNotification(NotificationHandle);
+        NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, header, message);
+    }
+    public void PlayErrorSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+    }
+    public void PlaySuccessSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
     }
 }
 

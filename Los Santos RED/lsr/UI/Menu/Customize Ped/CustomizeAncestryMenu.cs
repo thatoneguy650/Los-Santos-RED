@@ -100,6 +100,7 @@ public class CustomizeAncestryMenu
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the heritage of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Heart;
         AncestrySubMenu.SetBannerType(EntryPoint.LSRedColor);
+        AncestrySubMenu.InstructionalButtonsEnabled = false;
     }
     public void Setup()
     {

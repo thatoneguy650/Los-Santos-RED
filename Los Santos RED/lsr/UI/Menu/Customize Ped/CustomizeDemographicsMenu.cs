@@ -41,7 +41,7 @@ public class CustomizeDemographicsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change demographics for the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
         DemographicsSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        DemographicsSubMenu.InstructionalButtonsEnabled = false;
 
         DemographicsSubMenu.OnMenuOpen += (sender) =>
         {

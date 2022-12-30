@@ -53,12 +53,8 @@ public class DriveThru : InteractableLocation
             {
                 try
                 {
-                    //StoreCamera = new LocationCamera(this, Player);
-                    // StoreCamera.Setup();
 
                     NativeFunction.Natives.SET_GAMEPLAY_COORD_HINT(EntrancePosition.X, EntrancePosition.Y, EntrancePosition.Z, -1, 2000, 2000);
-
-
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
@@ -74,10 +70,7 @@ public class DriveThru : InteractableLocation
                     Transaction.DisposeTransactionMenu();
                     DisposeInteractionMenu();
 
-                    // StoreCamera.Dispose();
-
                     NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
-
 
                     Player.ActivityManager.IsInteractingWithLocation = false;
                     Player.IsTransacting = false;

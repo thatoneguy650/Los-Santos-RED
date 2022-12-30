@@ -109,7 +109,7 @@ namespace LosSantosRED.lsr.Player
             Player.ActivityManager.IsPerformingActivity = true;
             Idle();
         }
-        private void Idle()
+        private void Idle_Old()
         {
             FoodItem.ConsumableItemNeedGain = new ConsumableRefresher(Player,FoodItem,Settings);
             StartNewIdleAnimation();
@@ -135,6 +135,49 @@ namespace LosSantosRED.lsr.Player
                     }
                 }
                 if (!IsAnimationRunning(AnimationTime))
+                {
+                    IsCancelled = true;
+                }
+                FoodItem.ConsumableItemNeedGain.Update();
+                GameFiber.Yield();
+            }
+            Exit();
+        }
+        private void Idle()
+        {
+            uint GameTimeBetweenBites = RandomItems.GetRandomNumber(1500, 2500);
+            uint GameTimeLastChangedIdle = Game.GameTime;
+            bool IsFinishedWithBite = false;
+            StartNewIdleAnimation();
+            FoodItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, FoodItem, Settings);
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            {
+                Player.WeaponEquipment.SetUnarmed();
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 1.0f || IsFinishedWithBite)
+                {
+                    if (!IsFinishedWithBite)
+                    {
+                        StartBaseAnimation();
+                        GameTimeLastChangedIdle = Game.GameTime;
+                        GameTimeBetweenBites = RandomItems.GetRandomNumber(1500, 2500);
+                        IsFinishedWithBite = true;
+                        EntryPoint.WriteToConsole($"Eating Bite finished {PlayingAnim} TimesAte {TimesAte}", 5);
+                    }
+                    if (TimesAte >= 5 && FoodItem.ConsumableItemNeedGain.IsFinished)
+                    {
+                        IsCancelled = true;
+                    }
+                    else if (IsFinishedWithBite && Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenBites)
+                    {
+                        TimesAte++;
+                        StartNewIdleAnimation();
+                        IsFinishedWithBite = false;
+                        EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte}", 5);
+                    }
+                }
+                bool isAnimRunning = IsAnimationRunning(AnimationTime);
+                if (!isAnimRunning && !IsFinishedWithBite)
                 {
                     IsCancelled = true;
                 }
@@ -169,15 +212,20 @@ namespace LosSantosRED.lsr.Player
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);
         }
+        private void StartBaseAnimation()
+        {
+            GameTimeLastCheckedAnimation = Game.GameTime;
+            PrevAnimationTime = 0.0f;
+            PlayingDict = Data.AnimBaseDictionary;
+            PlayingAnim = Data.AnimBase;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
+        }
         private bool IsAnimationRunning(float AnimationTime)
         {
-            //return NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Player.Character, PlayingDict, PlayingAnim, 3);
-            //return true;
             if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
             {
                 if (PrevAnimationTime == AnimationTime)
                 {
-                    //EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
                     return false;
                 }
                 PrevAnimationTime = AnimationTime;

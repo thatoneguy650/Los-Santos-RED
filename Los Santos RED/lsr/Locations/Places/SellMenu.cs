@@ -74,7 +74,7 @@ public class SellMenu : Menu
         }
         sellMenuRNUI.Clear();
         CreateCategories2();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable))
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable).OrderBy(x => x.SalesPrice).ThenBy(x => x.ModItemName))
         {
             EntryPoint.WriteToConsole($"SELL MENU ADD ITEM {cii.ModItemName} Sellable:{cii.Sellable} SalesPrice {cii.SalesPrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreateSellMenuItem(Transaction, cii, sellMenuRNUI, Settings, Player, Transaction.IsStealing, World);
@@ -164,7 +164,7 @@ public class SellMenu : Menu
         {
             UIMenu headerMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Weapons");
             SetupCategoryMenu(headerMenu);
-            foreach (string category in WeaponItems.Select(x => x.ModItem.MenuCategory).Distinct())
+            foreach (string category in WeaponItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
             {
                 UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
                 SetupCategoryMenu(categoryMenu);
@@ -174,7 +174,7 @@ public class SellMenu : Menu
         {
             UIMenu headerMenu = MenuPool.AddSubMenu(sellMenuRNUI, "Vehicles");
             SetupCategoryMenu(headerMenu);
-            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct())
+            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
             {
                 UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
                 SetupCategoryMenu(categoryMenu);
@@ -188,7 +188,7 @@ public class SellMenu : Menu
                 Categories.Add(cii.ModItem.MenuCategory);
             }
         }
-        foreach (string category in Categories)
+        foreach (string category in Categories.OrderBy(x => x))
         {
             UIMenu categoryMenu = MenuPool.AddSubMenu(sellMenuRNUI, category);
             SetupCategoryMenu(categoryMenu);

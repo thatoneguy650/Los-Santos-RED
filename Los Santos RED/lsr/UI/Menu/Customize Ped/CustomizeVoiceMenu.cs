@@ -51,6 +51,7 @@ public class CustomizeVoiceMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Crown;
         VoiceSubMenuItem = CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1];
         VoiceSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        VoiceSubMenu.InstructionalButtonsEnabled = false;
         VoiceSubMenu.Width = 0.35f;
         AddNames();
 
@@ -70,6 +71,7 @@ public class CustomizeVoiceMenu
         //{
         //    SetVoiceFromInput();
         //};
+        CurrentVoice.Enabled = false;
         VoiceSubMenu.AddItem(CurrentVoice);
 
         //SelectModel = new UIMenuListScrollerItem<string>("Select Voice", "Select the voice from a list", VoiceList);
@@ -84,6 +86,7 @@ public class CustomizeVoiceMenu
         VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].Description = "Search for the voice by name";
         VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].RightLabel = "";
         ModelSearchSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        ModelSearchSubMenu.InstructionalButtonsEnabled = false;
         ModelSearchSubMenu.Width = 0.35f;
 
         SearchModel = new UIMenuItem("Input Voice", "Input the voice name");
@@ -106,6 +109,7 @@ public class CustomizeVoiceMenu
                     UIMenuItem test = new UIMenuItem(modelName, "");
                     test.Activated += (sender2, selecteditem2) =>
                     {
+                        Game.DisplaySubtitle($"Voice Set to {test.Text}");
                         SetVoiceFromString(test.Text);
                     };
                     ModelSearchSubMenu.AddItem(test);

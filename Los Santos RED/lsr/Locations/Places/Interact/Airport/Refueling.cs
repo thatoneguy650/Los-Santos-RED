@@ -12,6 +12,7 @@ using System.Xml.Linq;
 
 public class Refueling
 {
+    private InteractableLocation Shop;
     private ILocationInteractable Player;
     private ISettingsProvideable Settings;
     private int PricePerUnit;
@@ -19,13 +20,14 @@ public class Refueling
     private VehicleExt VehicleExt;
     private bool IsCancelled = false;
     private string Name;
-    public Refueling(ILocationInteractable player, string name, int pricePerUnit, VehicleExt vehicleExt, ISettingsProvideable settings)
+    public Refueling(ILocationInteractable player, string name, int pricePerUnit, VehicleExt vehicleExt, ISettingsProvideable settings, InteractableLocation shop)
     {
         Player = player;
         PricePerUnit = pricePerUnit;
         Name = name;
         VehicleExt = vehicleExt;
         Settings = settings;
+        Shop = shop;
     }
     public int UnitsAdded = 0;
     public int VehicleToFillFuelTankCapacity { get; private set; }
@@ -110,7 +112,9 @@ public class Refueling
                                 VehicleExt.Vehicle.FuelLevel += PercentFilledPerUnit;
                             }
                             Player.BankAccounts.GiveMoney(-1 * PricePerUnit);
-                            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+                            //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+
+                            Shop.PlaySuccessSound();
 
                             EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
                         }
@@ -168,31 +172,35 @@ public class Refueling
     }
     private void PurchaseFailed()
     {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
+        Shop.PlayErrorSound();
+        Shop.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
     }
     private void PurchaseSucceeded(int UnitsToAdd)
     {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {UnitsToAdd} gallons of fuel for a total price of ~r~${UnitsToAdd * PricePerUnit}~s~ at {Name}");
+        Shop.PlaySuccessSound();
+        Shop.DisplayMessage("~g~Purchased", $"Thank you for purchasing {UnitsToAdd} gallons of fuel for a total price of ~r~${UnitsToAdd * PricePerUnit}~s~ at {Name}");
     }
     public void DisplayFuelingFailedReason()
     {
         if (VehicleExt == null || (VehicleExt != null && !VehicleExt.Vehicle.Exists()))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"No vehicle found to fuel");
+            Shop.PlayErrorSound();
+            Shop.DisplayMessage("~r~Fueling Failed", $"No vehicle found to fuel");
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.RequiresFuel)
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Incompatible Fueling");
+            Shop.PlayErrorSound();
+            Shop.DisplayMessage("~r~Fueling Failed", $"Incompatible Fueling");
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.IsEngineOn)
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle engine is still on");
+            Shop.PlayErrorSound();
+            Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle engine is still on");
         }
         else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel >= 100f)
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Fueling Failed", $"Vehicle fuel tank is already full");
+            Shop.PlayErrorSound();
+            Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle fuel tank is already full");
         }
     }
 }

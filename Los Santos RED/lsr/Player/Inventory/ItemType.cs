@@ -15,4 +15,5 @@ public enum ItemType
     Vehicles,
     Weapons,
     LicensePlates,
+    Valuables,
 }

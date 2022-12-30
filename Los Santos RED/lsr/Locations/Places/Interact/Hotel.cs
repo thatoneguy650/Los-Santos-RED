@@ -161,7 +161,10 @@ public class Hotel : InteractableLocation
                 Player.IsResting = false;
                 Player.IsSleeping = false;
                 Player.ButtonPrompts.RemovePrompts("HotelStay");
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for staying at {Name}");
+
+                PlaySuccessSound();
+                DisplayMessage("~g~Purchased", $"Thank you for staying at {Name}");
+
                 InteractionMenu.Visible = true;
                 KeepInteractionGoing = false;
 
@@ -176,7 +179,8 @@ public class Hotel : InteractableLocation
         }
         else
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
+            PlayErrorSound();
+            DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
         }
     
     }

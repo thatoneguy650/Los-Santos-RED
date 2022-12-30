@@ -51,7 +51,7 @@ public class CustomizePropsMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the props of the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickPropMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        PickPropMenu.InstructionalButtonsEnabled = false;
         PickPropMenu.OnMenuOpen += (sender) =>
         {
             PedCustomizer.CameraCycler.SetDefault();

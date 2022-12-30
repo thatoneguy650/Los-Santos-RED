@@ -170,6 +170,7 @@
     <Compile Include="lsr\Player\Cellphone\Interactions\IContactMenuInteraction.cs" />
     <Compile Include="lsr\Player\GroupManager\GroupMember.cs" />
     <Compile Include="lsr\Player\Inventory\ItemSubType.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\ClothingItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ConsumableRefresher.cs" />
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
@@ -240,7 +241,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMorphMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHairMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Customize Ped\Other\CustomizeVoiceMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
@@ -526,7 +527,7 @@
     <Compile Include="lsr\Tasker\Gang\Tasks\GangFight.cs" />
     <Compile Include="lsr\Tasker\Gang\Tasks\GangFlee.cs" />
     <Compile Include="lsr\Tasker\Gang\GangTasker.cs" />
-    <Compile Include="lsr\UI\BarDisplay.cs" />
+    <Compile Include="lsr\Old\BarDisplay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHeadMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\ColorLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeDemographicsMenu.cs" />
@@ -542,8 +543,8 @@
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />
     <Compile Include="lsr\Player\Inventory\ePhysicalItemType.cs" />
     <Compile Include="lsr\Player\Inventory\Intoxicant.cs" />
-    <Compile Include="lsr\UI\eGTAFont.cs" />
-    <Compile Include="lsr\UI\Fader.cs" />
+    <Compile Include="lsr\UI\Other\eGTAFont.cs" />
+    <Compile Include="lsr\UI\Other\Fader.cs" />
     <Compile Include="lsr\UI\Menu\Main\InventoryMenu.cs" />
     <Compile Include="lsr\Player\Inventory\ItemCategory.cs" />
     <Compile Include="lsr\Player\Inventory\eConsumableType.cs" />
@@ -613,7 +614,7 @@
     <Compile Include="lsr\Tasker\Civilian\Tasks\GetArrested.cs" />
     <Compile Include="lsr\Tasker\Other\ITaskerable.cs" />
     <Compile Include="lsr\Tasker\Other\ITaskerReportable.cs" />
-    <Compile Include="lsr\UI\IMenuProvideable.cs" />
+    <Compile Include="lsr\UI\Other\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\Main\PedSwapMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\SaveMenu.cs" />
     <Compile Include="lsr\Player\Inventory\InventoryItem.cs" />
@@ -628,10 +629,10 @@
     <Compile Include="lsr\Other\Scenario.cs" />
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
-    <Compile Include="lsr\UI\Other\MarkerManager.cs" />
+    <Compile Include="lsr\UI\Location Markers\MarkerManager.cs" />
     <Compile Include="lsr\Old\PopUpWarning.cs" />
-    <Compile Include="lsr\UI\Other\SimpleWarning.cs" />
-    <Compile Include="lsr\UI\Other\TimerBarController.cs" />
+    <Compile Include="lsr\UI\Warnings\SimpleWarning.cs" />
+    <Compile Include="lsr\UI\Timer Bars\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\SavePauseMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />
@@ -641,14 +642,12 @@
     <Compile Include="lsr\UI\Pause Menu\Tabs\LocationsTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\MessagesMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
-    <Compile Include="lsr\UI\Other\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\MessagesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\SaveGameTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\PhoneRepliesTab.cs" />
     <Compile Include="lsr\Old\SaveGameTabOLD.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\TextMessagesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\VehiclesTab.cs" />
-    <Compile Include="lsr\UI\Other\Util.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\PopUpMenu.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpMenuConfig.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\Items\PopUpBoxGroup.cs" />
@@ -680,7 +679,7 @@
     <Compile Include="lsr\UI\Menu\Main\BustedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\DeathMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\DebugMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Main\DistanceSelect.cs" />
+    <Compile Include="lsr\UI\Other\DistanceSelect.cs" />
     <Compile Include="lsr\UI\Menu\Main\MainMenu.cs" />
     <Compile Include="lsr\Player\Button Prompts\ButtonPrompt.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation.cs" />

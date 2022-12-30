@@ -698,5 +698,79 @@ namespace LSR.Vehicles
             GetFuelTankCapacity();
 
         }
+        public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes)//this might need to come out of here.... along with the two bools
+        {
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            HasUpdatedPlateType = true;
+            PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle));
+            Zone CurrentZone = Zones.GetZone(Vehicle.Position);
+            PlateType NewType = null;
+            if (force)
+            {
+                NewType = PlateTypes.GetRandomPlateType();
+            }
+            else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+            {
+                NewType = PlateTypes.GetPlateType(CurrentZone.State);
+            }
+            else
+            {
+                if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && CanUpdatePlate)
+                {
+                    NewType = PlateTypes.GetRandomPlateType();
+                }
+            }
+            if (NewType != null)
+            {
+                string NewPlateNumber;
+                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+                {
+                    NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
+                }
+                else
+                {
+                    NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                }
+                if (NewPlateNumber != "")
+                {
+                    Vehicle.LicensePlate = NewPlateNumber;
+                    OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                    CarPlate.PlateNumber = NewPlateNumber;
+                }
+                else
+                {
+                    NewPlateNumber = RandomItems.RandomString(8);
+                    Vehicle.LicensePlate = NewPlateNumber;
+                    OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                    CarPlate.PlateNumber = NewPlateNumber;
+                }
+                if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
+                {
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle, NewType.Index);
+                    OriginalLicensePlate.PlateType = NewType.Index;
+                    CarPlate.PlateType = NewType.Index;
+                }
+            }
+            else
+            {
+                string NewPlateNumber;
+                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+                {
+                    NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
+                    if (NewPlateNumber != "")
+                    {
+                        Vehicle.LicensePlate = NewPlateNumber;
+                        OriginalLicensePlate.PlateNumber = NewPlateNumber;
+                        CarPlate.PlateNumber = NewPlateNumber;
+                    }
+                }
+            }
+        }
+
+
+
     }
 }

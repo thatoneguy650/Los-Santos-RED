@@ -37,12 +37,10 @@ public class BusStop : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
         if (IsLocationClosed())
         {
             return;
         }
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -54,7 +52,7 @@ public class BusStop : InteractableLocation
                 StoreCamera.Setup();
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
-                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                //InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
                // GenerateCityHallMenu();
 
@@ -65,19 +63,6 @@ public class BusStop : InteractableLocation
                 CanInteract = true;
             }, "HotelInteract");
         }
-    }
-    private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
-    {
-        //if (selectedItem.Text == "Buy")
-        //{
-        //    Transaction?.SellMenu?.Dispose();
-        //    Transaction?.PurchaseMenu?.Show();
-        //}
-        //else if (selectedItem.Text == "Sell")
-        //{
-        //    Transaction?.PurchaseMenu?.Dispose();
-        //    Transaction?.SellMenu?.Show();
-        //}
     }
     public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {

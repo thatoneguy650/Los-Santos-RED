@@ -62,15 +62,10 @@ public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAge
         Settings = settings;
         Weapons = weapons;
         Time = time;
-
-
         if (IsLocationClosed())
         {
             return;
         }
-
-
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -134,16 +129,12 @@ public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAge
     public void DisplayInsufficientFundsMessage()
     {
         PlayErrorSound();
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+        DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
     }
-    public void PlayErrorSound()
-    {
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-    }
-
     public void DisplayPurchaseMessage()
     {
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"Thank you for your purchase.");
+        PlaySuccessSound();
+        DisplayMessage("~g~Purchase", $"Thank you for your purchase.");
     }
 }
 

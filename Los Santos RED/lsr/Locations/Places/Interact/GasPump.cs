@@ -119,7 +119,7 @@ public class GasPump : InteractableLocation
         {
             pricePerUnit = 3;
         }
-        Refueling = new Refueling(Player, Name, pricePerUnit, VehicleToFill, Settings);
+        Refueling = new Refueling(Player, Name, pricePerUnit, VehicleToFill, Settings, this);
         Refueling.Setup();
         GenerateGasMenu();
     }

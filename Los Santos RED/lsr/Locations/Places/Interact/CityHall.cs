@@ -190,16 +190,19 @@ public class CityHall : InteractableLocation
                     Player.BankAccounts.GiveMoney(-1 * NameChangeFee);
                     Player.ChangeName(NewName);
                     ChangeNameMenu.Description = NameDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have successfully changed your name to {NewName}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"You have successfully changed your name to {NewName}");
                 }
                 else
                 {
-                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Cancelled", "Name change cancelled, you have not been charged");
+                    PlayErrorSound();
+                    DisplayMessage("~r~Cancelled", "Name change cancelled, you have not been charged");
                 } 
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                PlayErrorSound();
+                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
             }
         }
         else if (selectedItem == DriversLicenseMenu)
@@ -211,7 +214,8 @@ public class CityHall : InteractableLocation
                     Player.BankAccounts.GiveMoney(-1 * DriversLicenseFee);
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your drivers license.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"You have updated your drivers license.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
                 }
                 else
                 {
@@ -219,12 +223,14 @@ public class CityHall : InteractableLocation
                     Player.Licenses.DriversLicense = new DriversLicense();
                     Player.Licenses.DriversLicense.IssueLicense(Time, 12);
                     DriversLicenseMenu.Description = DriversLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"Drivers license issued.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"Drivers license issued.~n~Issue Date: {Player.Licenses.DriversLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.DriversLicense.ExpirationDate:d}");
                 }
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                PlayErrorSound();
+                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
             }
         }
         else if (selectedItem == CCWLicenseMenu)
@@ -236,7 +242,8 @@ public class CityHall : InteractableLocation
                     Player.BankAccounts.GiveMoney(-1 * CCWLicenseFee);
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your CCW license.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"You have updated your CCW license.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
                 }
                 else
                 {
@@ -244,12 +251,14 @@ public class CityHall : InteractableLocation
                     Player.Licenses.CCWLicense = new CCWLicense();
                     Player.Licenses.CCWLicense.IssueLicense(Time, 12);
                     CCWLicenseMenu.Description = CCWLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"CCW license issued.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"CCW license issued.~n~Issue Date: {Player.Licenses.CCWLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.CCWLicense.ExpirationDate:d}");
                 }
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                PlayErrorSound();
+                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
             }
         }
         else if (selectedItem == PilotsLicenseMenu)
@@ -261,7 +270,8 @@ public class CityHall : InteractableLocation
                     Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
                     Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have updated your Pilots license.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"You have updated your Pilots license.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
                 }
                 else
                 {
@@ -269,12 +279,14 @@ public class CityHall : InteractableLocation
                     Player.Licenses.PilotsLicense = new PilotsLicense();
                     Player.Licenses.PilotsLicense.IssueLicense(Time, 12);
                     PilotsLicenseMenu.Description = PilotsLicenseDescription();
-                    Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"Pilots license issued.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
+                    PlaySuccessSound();
+                    DisplayMessage("~g~Purchase", $"Pilots license issued.~n~Issue Date: {Player.Licenses.PilotsLicense.IssueDate:d}~n~Expiration Date: {Player.Licenses.PilotsLicense.ExpirationDate:d}");
                 }
             }
             else
             {
-                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                PlayErrorSound();
+                DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
             }
         }
     }

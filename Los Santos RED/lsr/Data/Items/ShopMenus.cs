@@ -1573,6 +1573,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Declasse Burrito",35000, 25000),
                 new MenuItem("BF Surfer",65000, 45000),
                 new MenuItem("Brute Camper",145000, 95000),
+
+                new MenuItem("Police Stanier",500, 200),
+                new MenuItem("Police Buffalo",500, 200),
+                new MenuItem("Police Interceptor",500, 200),
             }),
         });
     }

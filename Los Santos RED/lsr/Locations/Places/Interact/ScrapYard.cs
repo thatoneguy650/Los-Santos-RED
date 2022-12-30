@@ -136,7 +136,8 @@ public class ScrapYard : InteractableLocation
         if(!Added)
         {
             InteractionMenu.Visible = false;
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Scrapping Failed", "Please come back with a vehicle to scrap!");
+            PlayErrorSound();
+            DisplayMessage("~r~Scrapping Failed", "Please come back with a vehicle to scrap!");
         }
     }
     private void ScrapSubMenu_OnMenuClose(UIMenu sender)
@@ -175,14 +176,6 @@ public class ScrapYard : InteractableLocation
     {
         if(carToScrap != null && carToScrap.Vehicle.Exists())
         {
-            
-
-
-
-
-
-
-
             Game.FadeScreenOut(1000, true);     
             string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
             string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
@@ -191,17 +184,15 @@ public class ScrapYard : InteractableLocation
             ScrapSubMenu.MenuItems.RemoveAll(x => x.Text == CarName);
             ScrapSubMenu.RefreshIndex();
             ScrapSubMenu.Close(true);
-
-
             Game.FadeScreenIn(1000, true);
-
-            //InteractionMenu.Visible = false;
             Player.BankAccounts.GiveMoney(Price);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Scrapped", $"Thank you for scrapping your ~p~{CarName}~s~ at ~y~{Name}~s~");
+            PlaySuccessSound();
+            DisplayMessage("~g~Scrapped", $"Thank you for scrapping your ~p~{CarName}~s~ at ~y~{Name}~s~");
         }
         else
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Scrapping Failed", "We are unable to complete this scrapping.");
+            PlayErrorSound();
+            DisplayMessage("~r~Scrapping Failed", "We are unable to complete this scrapping.");
         }        
     }
     private int GetScrapPrice(VehicleExt toScrap)

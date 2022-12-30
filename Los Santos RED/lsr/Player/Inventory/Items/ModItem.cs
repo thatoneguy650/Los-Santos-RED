@@ -12,6 +12,7 @@ using Mod;
 using System.Runtime;
 
 [Serializable()]
+[XmlInclude(typeof(ClothingItem))]
 [XmlInclude(typeof(BinocularsItem))]
 [XmlInclude(typeof(BongItem))]
 [XmlInclude(typeof(ConsumableItem))]
@@ -90,6 +91,9 @@ public class ModItem
     public virtual bool CanConsume { get; set; } = false;//no no
 
     public int FindPercentage { get; set; } = 0;
+
+
+  //  public string SubItemName { get; set; }
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {

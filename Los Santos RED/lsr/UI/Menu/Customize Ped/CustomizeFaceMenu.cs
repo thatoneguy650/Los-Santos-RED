@@ -166,6 +166,7 @@ public class CustomizeFaceMenu
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].Description = "Change the face of the current ped";
         HeadSubMenu.MenuItems[HeadSubMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Mask;
         FaceSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        FaceSubMenu.InstructionalButtonsEnabled = false;
     }
     public void Setup()
     {
@@ -189,6 +190,7 @@ public class CustomizeFaceMenu
         {
             UIMenu overlayHeaderMenu = MenuPool.AddSubMenu(FaceSubMenu, ho.Part);
             overlayHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+            overlayHeaderMenu.InstructionalButtonsEnabled = false;
             overlayHeaderMenu.TitleText = $"{ho.Part}";
 
             int TotalItems = NativeFunction.Natives.xCF1CE768BB43480E<int>(ho.OverlayID);

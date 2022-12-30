@@ -23,28 +23,23 @@ namespace LosSantosRED.lsr.Player
         private Intoxicant CurrentIntoxicant;
         private bool hasGainedHP = false;
         private uint GameTimeLastGivenHealth;
-        private int HealthGiven;
+       //private int HealthGiven;
         private int TimesDrank;
 
         private uint GameTimeLastCheckedAnimation;
         private float LastAnimationValue;
         private uint GameTimeLastGivenNeeds;
-        private float HungerGiven;
-        private float ThirstGiven;
-        private int SleepGiven;
-        private bool GivenFullHealth;
-        private bool GivenFullHunger;
-        private bool GivenFullThirst;
-        private bool GivenFullSleep;
+        //private float HungerGiven;
+        //private float ThirstGiven;
+        //private int SleepGiven;
+        //private bool GivenFullHealth;
+        //private bool GivenFullHunger;
+        //private bool GivenFullThirst;
+        //private bool GivenFullSleep;
         private float PrevAnimationTime;
 
         private DrinkItem DrinkItem;
 
-        //public DrinkingActivity(IActionable consumable, ISettingsProvideable settings) : base()
-        //{
-        //    Player = consumable;
-        //    Settings = settings;
-        //}
         public DrinkingActivity(IActionable consumable, ISettingsProvideable settings, DrinkItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -100,8 +95,6 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
-
-
         private void AttachBottleToHand()
         {
             CreateBottle();
@@ -172,13 +165,11 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(2500,4000);
+            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
-
             DrinkItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
-
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -189,9 +180,9 @@ namespace LosSantosRED.lsr.Player
                     {
                         StartBaseAnimation();
                         GameTimeLastChangedIdle = Game.GameTime;
-                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(3500, 5500);
+                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
                         IsFinishedWithSip = true;
-                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
+                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
                     }
                     if (TimesDrank >= 5 && DrinkItem.ConsumableItemNeedGain.IsFinished)
                     {
@@ -202,7 +193,7 @@ namespace LosSantosRED.lsr.Player
                         TimesDrank++;
                         StartNewIdleAnimation();
                         IsFinishedWithSip = false;
-                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank} HealthGiven {HealthGiven}", 5);
+                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}", 5);
                     }
                 }
                 bool isAnimRunning = IsAnimationRunning(AnimationTime);
@@ -221,7 +212,6 @@ namespace LosSantosRED.lsr.Player
             {
                 if (PrevAnimationTime == AnimationTime)
                 {
-                    //EntryPoint.WriteToConsole("Animation Issues Detected, Cancelling");
                     return false;
                 }
                 PrevAnimationTime = AnimationTime;
@@ -260,130 +250,6 @@ namespace LosSantosRED.lsr.Player
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false); 
-        }
-        private void UpdateHealthGain()
-        {
-            if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
-            {
-                if (DrinkItem.ChangesHealth && !Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-                {
-                    if(DrinkItem.HealthChangeAmount > 0 && HealthGiven < DrinkItem.HealthChangeAmount)
-                    {
-                        HealthGiven++;
-                        Player.HealthManager.ChangeHealth(1);
-                    }
-                    else if (DrinkItem.HealthChangeAmount < 0 && HealthGiven > DrinkItem.HealthChangeAmount)
-                    {
-                        HealthGiven--;
-                        Player.HealthManager.ChangeHealth(-1);
-                    }
-                    //Player.HumanState.Thirst.Change(2.0f, true);
-                }
-                GameTimeLastGivenHealth = Game.GameTime;
-            }
-        }
-        private void UpdateNeeds()
-        {
-            if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
-            {
-                if (DrinkItem.ChangesNeeds)
-                {
-                    if (DrinkItem.ChangesHunger)
-                    {
-                        if (DrinkItem.HungerChangeAmount < 0.0f)
-                        {
-                            if (HungerGiven > DrinkItem.HungerChangeAmount)
-                            {
-                                Player.HumanState.Hunger.Change(-1.0f, true);
-                                HungerGiven--;
-                            }
-                            else
-                            {
-                                GivenFullHunger = true;
-                            }
-                        }
-                        else
-                        {
-                            if (HungerGiven < DrinkItem.HungerChangeAmount)
-                            {
-                                Player.HumanState.Hunger.Change(1.0f, true);
-                                HungerGiven++;
-                            }
-                            else
-                            {
-                                GivenFullHunger = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullHunger = true;
-                    }
-                    if (DrinkItem.ChangesThirst)
-                    {
-                        if (DrinkItem.ThirstChangeAmount < 0.0f)
-                        {
-                            if (ThirstGiven > DrinkItem.ThirstChangeAmount)
-                            {
-                                Player.HumanState.Thirst.Change(-1.0f, true);
-                                ThirstGiven--;
-                            }
-                            else
-                            {
-                                GivenFullThirst = true;
-                            }
-                        }
-                        else
-                        {
-                            if (ThirstGiven < DrinkItem.ThirstChangeAmount)
-                            {
-                                Player.HumanState.Thirst.Change(1.0f, true);
-                                ThirstGiven++;
-                            }
-                            else
-                            {
-                                GivenFullThirst = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullThirst = true;
-                    }
-                    if (DrinkItem.ChangesSleep)
-                    {
-                        if (DrinkItem.SleepChangeAmount < 0.0f)
-                        {
-                            if (SleepGiven > DrinkItem.SleepChangeAmount)
-                            {
-                                Player.HumanState.Sleep.Change(-1.0f, true);
-                                SleepGiven--;
-                            }
-                            else
-                            {
-                                GivenFullSleep = true;
-                            }
-                        }
-                        else
-                        {
-                            if (SleepGiven < DrinkItem.SleepChangeAmount)
-                            {
-                                Player.HumanState.Sleep.Change(1.0f, true);
-                                SleepGiven++;
-                            }
-                            else
-                            {
-                                GivenFullSleep = true;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        GivenFullSleep = true;
-                    }
-                }
-                GameTimeLastGivenNeeds = Game.GameTime;
-            }
         }
         private void Setup()
         {

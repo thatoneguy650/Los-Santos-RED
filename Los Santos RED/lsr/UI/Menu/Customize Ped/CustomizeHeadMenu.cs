@@ -51,7 +51,7 @@ public class CustomizeHeadMenu
         HeadSubMenuItem.Description = "Change the head features of the current ped";
         HeadSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         HeadSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        HeadSubMenu.InstructionalButtonsEnabled = false;
         HeadSubMenu.OnMenuOpen += (sender) =>
         {
             PedCustomizer.CameraCycler.Set("Face");

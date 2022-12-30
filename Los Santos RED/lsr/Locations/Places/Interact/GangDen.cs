@@ -201,14 +201,16 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             if(Player.BankAccounts.Money >= ExpectedMoney)
             {
                 Player.BankAccounts.GiveMoney(-1*ExpectedMoney);
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for the cash. Here's your cut.");
                 ExpectedMoney = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
                 InteractionMenu.Visible = false;
+                PlaySuccessSound();
+                DisplayMessage("~g~Reply", "Thanks for the cash. Here's your cut.");
             }
             else
             {
-                Game.DisplayNotification(AssociatedGang.ContactIcon,AssociatedGang.ContactIcon,AssociatedGang.ContactName,"~r~Reply","Come back when you actually have the cash.");
+                PlayErrorSound();
+                DisplayMessage("~r~Reply", "Come back when you actually have the cash.");
             }
         }
         else if (selectedItem == dropoffItem)
@@ -216,7 +218,8 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             if (Player.Inventory.Get(ExpectedItem)?.Amount >= ExpectedItemAmount)
             {
                 Player.Inventory.Remove(ExpectedItem, ExpectedItemAmount);
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", $"Thanks for bringing us {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}. Have something for your time.");
+                PlaySuccessSound();
+                DisplayMessage("~g~Reply", $"Thanks for bringing us {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}. Have something for your time.");
                 ExpectedItem = null;
                 ExpectedItemAmount = 0;
                 Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
@@ -224,13 +227,15 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             }
             else
             {
-                Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", $"Come back when you actually have {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}.");
+                PlayErrorSound();
+                DisplayMessage("~r~Reply", $"Come back when you actually have {ExpectedItemAmount} {ExpectedItem.MeasurementName}(s) of {ExpectedItem.Name}.");
             }
 
         }
         else if (selectedItem == completeTask)
         {
-            Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~g~Reply", "Thanks for taking care of that thing. Here's your share.");
+            PlaySuccessSound();
+            DisplayMessage("~g~Reply", "Thanks for taking care of that thing. Here's your share.");
             ExpectedMoney = 0;
             Player.PlayerTasks.CompleteTask(AssociatedGang.ContactName, true);
             InteractionMenu.Visible = false;
@@ -254,15 +259,19 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                         Player.BankAccounts.GiveMoney(-1 * Player.RelationshipManager.GangRelationships.CurrentGangKickUp.DueAmount);
                         Player.RelationshipManager.GangRelationships.CurrentGangKickUp.PayDue();
                         InteractionMenu.Visible = false;
+                        PlaySuccessSound();
+                        DisplayMessage("~g~Reply", "Thanks for the kick.");
                     }
                     else
                     {
-                        Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", "Not time yet, come back closer to the due date.");
+                        PlayErrorSound();
+                        DisplayMessage("~r~Reply", "Not time yet, come back closer to the due date.");
                     }
                 }
                 else
                 {
-                    Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, "~r~Reply", "Come back when you actually have the cash.");
+                    PlayErrorSound();
+                    DisplayMessage("~r~Reply", "Come back when you actually have the cash.");
                 }
             }
             
@@ -344,5 +353,10 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     //        InteractionMenu.RefreshIndex();
     //    }
     //}
+    public override void DisplayMessage(string header, string message)
+    {
+        Game.RemoveNotification(NotificationHandle);
+        NotificationHandle = Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, header, message);
+    }
 }
 

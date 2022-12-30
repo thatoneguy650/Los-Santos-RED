@@ -266,7 +266,8 @@ public class Residence : InteractableLocation
             OnRented();
             return true;
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Rental Failed", "We are sorry, we are unable to complete this rental. Please make sure you have the funds.");
+        PlayErrorSound();
+        DisplayMessage("~r~Rental Failed", "We are sorry, we are unable to complete this rental. Please make sure you have the funds.");
         return false;
     }
     private bool Purchase()
@@ -276,7 +277,8 @@ public class Residence : InteractableLocation
             OnPurchased();
             return true;
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
+        PlayErrorSound();
+        DisplayMessage("~r~Purchased Failed", "We are sorry, we are unable to complete this purchase. Please make sure you have the funds.");
         return false;
     }
     private void Rest(int Hours)
@@ -337,9 +339,9 @@ public class Residence : InteractableLocation
 
         AddInteractionItems();
         OfferSubMenu.Close(true);
-        
 
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rented", $"Thank you for renting {Name}");
+        PlaySuccessSound();
+        DisplayMessage("~g~Rented", $"Thank you for renting {Name}");
     }
     private void OnPurchased()
     {
@@ -359,8 +361,8 @@ public class Residence : InteractableLocation
             AddInteractionItems();
             OfferSubMenu.Close(true);
         }
-
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchased", $"Thank you for purchasing {Name}");
+        PlaySuccessSound();
+        DisplayMessage("~g~Purchased", $"Thank you for purchasing {Name}");
     }
     private void UpdateStoredData()
     {

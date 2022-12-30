@@ -34,14 +34,9 @@ public class PlateController
                 {
                     if (MyCar.Vehicle.Exists())
                     {
-                        UpdatePlateType(MyCar, false);
+                        MyCar.UpdatePlateType(false, Zones, PlateTypes);
                     }
                     VehiclesUpdated++;
-                    //if (VehiclesUpdated > 4)
-                    //{
-                    //    VehiclesUpdated = 0;
-                    //    GameFiber.Yield();
-                    //}
                     GameFiber.Yield();
                 }
             }
@@ -51,83 +46,76 @@ public class PlateController
             }
         }
     }
-    private void UpdatePlateType(VehicleExt vehicleExt, bool force)//this might need to come out of here.... along with the two bools
-    {
-        if (vehicleExt.Vehicle.Exists())
-        {
-            vehicleExt.HasUpdatedPlateType = true;
-            PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
-            Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
-            PlateType NewType = null;
-            if (force)
-            {
-                NewType = PlateTypes.GetRandomPlateType();
-            }
-            else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
-            {
-                NewType = PlateTypes.GetPlateType(CurrentZone.State);
-            }
-            else
-            {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
-                {
-                    NewType = PlateTypes.GetRandomPlateType();
-                }
-            }
-
-
-
-            if (NewType != null)
-            {
-                string NewPlateNumber;
-                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
-                {
-                    NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
-                }
-                else
-                {
-                    NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                }
-                if (NewPlateNumber != "")
-                {
-                    vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                    vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                    vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                }
-                else
-                {
-                    NewPlateNumber = RandomItems.RandomString(8);
-                    vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                    vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                    vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                }
-                if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
-                {
-                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
-                    vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
-                    vehicleExt.CarPlate.PlateType = NewType.Index;
-
-
-
-                    
-                }
-            }
-            else
-            {
-                string NewPlateNumber;
-                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
-                {
-                    NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
-                    if (NewPlateNumber != "")
-                    {
-                        vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
-                        vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                        vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
-                    }
-                }
-            }
-
-        }
-    }
+    //private void UpdatePlateType(VehicleExt vehicleExt, bool force)//this might need to come out of here.... along with the two bools
+    //{
+    //    if(!vehicleExt.Vehicle.Exists())
+    //    {
+    //        return;
+    //    }
+    //    vehicleExt.HasUpdatedPlateType = true;
+    //    PlateType CurrentType = PlateTypes.GetPlateType(NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle));
+    //    Zone CurrentZone = Zones.GetZone(vehicleExt.Vehicle.Position);
+    //    PlateType NewType = null;
+    //    if (force)
+    //    {
+    //        NewType = PlateTypes.GetRandomPlateType();
+    //    }
+    //    else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+    //    {
+    //        NewType = PlateTypes.GetPlateType(CurrentZone.State);
+    //    }
+    //    else
+    //    {
+    //        if (RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehiclePlatesPercent) && CurrentType != null && CurrentType.CanOverwrite && vehicleExt.CanUpdatePlate)
+    //        {
+    //            NewType = PlateTypes.GetRandomPlateType();
+    //        }
+    //    }
+    //    if (NewType != null)
+    //    {
+    //        string NewPlateNumber;
+    //        if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+    //        {
+    //            NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
+    //        }
+    //        else
+    //        {
+    //            NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+    //        }
+    //        if (NewPlateNumber != "")
+    //        {
+    //            vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+    //            vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+    //            vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+    //        }
+    //        else
+    //        {
+    //            NewPlateNumber = RandomItems.RandomString(8);
+    //            vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+    //            vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+    //            vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+    //        }
+    //        if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
+    //        {
+    //            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", vehicleExt.Vehicle, NewType.Index);
+    //            vehicleExt.OriginalLicensePlate.PlateType = NewType.Index;
+    //            vehicleExt.CarPlate.PlateType = NewType.Index;         
+    //        }
+    //    }
+    //    else
+    //    {
+    //        string NewPlateNumber;
+    //        if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+    //        {
+    //            NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
+    //            if (NewPlateNumber != "")
+    //            {
+    //                vehicleExt.Vehicle.LicensePlate = NewPlateNumber;
+    //                vehicleExt.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+    //                vehicleExt.CarPlate.PlateNumber = NewPlateNumber;
+    //            }
+    //        }
+    //    }  
+    //}
 }
 

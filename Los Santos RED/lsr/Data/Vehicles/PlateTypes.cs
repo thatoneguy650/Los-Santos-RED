@@ -74,11 +74,11 @@ public class PlateTypes : IPlateTypes
     private void DefaultConfig()
     {
         PlateTypeManager = new PlateTypeManager();
-        PlateTypeManager.PlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "1ABC234"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "1ABC234"));
-        PlateTypeManager.PlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
+        PlateTypeManager.PlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "12ABC345"));
+        PlateTypeManager.PlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "12ABC345") { CanOverwrite = false });
         PlateTypeManager.PlateTypeList.Add(new PlateType(5, "North Dakota Old", "North Yankton", 0, "123 ABC"));
 
         PlateTypeManager.VanityPlates.Add("AZZ KIKR");
@@ -135,11 +135,11 @@ public class PlateTypes : IPlateTypes
     {
         PlateTypeManager FullPlateTypeManager = new PlateTypeManager();
         List<PlateType> FullPlateTypeList = new List<PlateType>();
-        FullPlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "1ABC234") { CanOverwrite = false });
+        FullPlateTypeList.Add(new PlateType(0, "Red on White California", "San Andreas", 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(1, "Yellow on Black California", "San Andreas", 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(2, "Yellow on Blue California", "San Andreas", 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(3, "Classic California", "San Andreas", 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(4, "Exempt California", "San Andreas", 0, "12ABC345") { CanOverwrite = false });
         FullPlateTypeList.Add(new PlateType(5, "North Dakota Old", "North Yankton", 3, "123 ABC"));
         FullPlateTypeList.Add(new PlateType(6, "New York 1", "Liberty", 0, "ABC-1234"));
         FullPlateTypeList.Add(new PlateType(7, "Florida 1", "Vice City", 0, "123 4AB"));
@@ -147,8 +147,8 @@ public class PlateTypes : IPlateTypes
         FullPlateTypeList.Add(new PlateType(9, "New York 3", "Liberty", 0, "ABC-1234"));
         FullPlateTypeList.Add(new PlateType(10, "Sprunk Logo", "None", 0, "1ABC234"));
         FullPlateTypeList.Add(new PlateType(11, "Patriots?", "None", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(12, "Los Santos Shrimps", "San Andreas", 1, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(13, "Nevada San Andreas Mashup", "San Andreas", 0, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(12, "Los Santos Shrimps", "San Andreas", 1, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(13, "Nevada San Andreas Mashup", "San Andreas", 0, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(14, "North Carolina", "North Volucrina", 3, "ABC-1234"));
         FullPlateTypeList.Add(new PlateType(15, "New Jersey", "Alderney", 3, "D12-ABC"));
 
@@ -158,7 +158,7 @@ public class PlateTypes : IPlateTypes
 
 
         FullPlateTypeList.Add(new PlateType(17, "Illinois", "Lincoln", 3, "AB 12345"));
-        FullPlateTypeList.Add(new PlateType(18, "Epsilon", "None", 3, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(18, "Epsilon", "None", 3, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(19, "Our Florida", "Miami", 3, "123 4AB"));
         FullPlateTypeList.Add(new PlateType(20, "Florida 1", "Miami", 0, "123 4AB"));
         FullPlateTypeList.Add(new PlateType(21, "Florida 2", "Miami", 0, "123 4AB"));
@@ -184,7 +184,7 @@ public class PlateTypes : IPlateTypes
 
 
 
-        FullPlateTypeList.Add(new PlateType(33, "Corvette Plate", "San Andreas", 0, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(33, "Corvette Plate", "San Andreas", 0, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(34, "Nothing", "San Andreas", 0));
         FullPlateTypeList.Add(new PlateType(35, "Nothing", "San Andreas", 0));
         FullPlateTypeList.Add(new PlateType(36, "Nothing", "San Andreas", 0));
@@ -197,15 +197,15 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(40, "Washington DC", "Jefferson CD", 3, "AB-1234"));
         FullPlateTypeList.Add(new PlateType(41, "Wisconsin", "Meskousin", 3, "ABC-1234"));
-        FullPlateTypeList.Add(new PlateType(42, "Black on Yellow California", "San Andreas", 0, "1ABC234"));
-        FullPlateTypeList.Add(new PlateType(43, "Nothing", "San Andreas", 0, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(42, "Black on Yellow California", "San Andreas", 0, "12ABC345"));
+        FullPlateTypeList.Add(new PlateType(43, "Nothing", "San Andreas", 0, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(44, "Minnesota", "Minnewa", 3, "123-ABC"));
         FullPlateTypeList.Add(new PlateType(45, "North Dakota Old", "North Yankton", 3, "123 ABC"));
         FullPlateTypeList.Add(new PlateType(46, "Michigan", "Misquakewan", 3, "ABC 1234"));
         FullPlateTypeList.Add(new PlateType(47, "Nothing", "Carcer City", 0));
         FullPlateTypeList.Add(new PlateType(48, "Alaska", "Tanadux", 3, "ABC 123"));
         FullPlateTypeList.Add(new PlateType(49, "Hawaii", "Haiateaa", 3, "ABC 123"));
-        FullPlateTypeList.Add(new PlateType(50, "Nothing", "San Andreas", 0, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(50, "Nothing", "San Andreas", 0, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(51, "Willsylvania", "Willsylvania", 3, "ABC 123"));
         FullPlateTypeList.Add(new PlateType(52, "Nothing", "None", 0));
         FullPlateTypeList.Add(new PlateType(53, "Nothing", "None", 0));
@@ -215,7 +215,7 @@ public class PlateTypes : IPlateTypes
 
         FullPlateTypeList.Add(new PlateType(57, "Nevada 2", "Robada", 10, "123-A45"));
 
-        FullPlateTypeList.Add(new PlateType(58, "San Andreas Veteran", "San Andreas", 1, "1ABC234"));
+        FullPlateTypeList.Add(new PlateType(58, "San Andreas Veteran", "San Andreas", 1, "12ABC345"));
         FullPlateTypeList.Add(new PlateType(59, "Nothing", "None", 0));
         FullPlateTypeList.Add(new PlateType(60, "Nothing", "None", 0));
         FullPlateTypeList.Add(new PlateType(61, "Nothing", "None", 0));

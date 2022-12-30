@@ -44,15 +44,13 @@ public class PedCustomizerMenu
         CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
         CustomizeAffiliationMenu = new CustomizeAffiliationMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this,gangs,agencies);
-
-
-
         CustomizeVoiceMenu = new CustomizeVoiceMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
 
     }
     public void Setup()
     {
         CustomizeMainMenu = new UIMenu("Ped Creator", "Select an Option");
+        CustomizeMainMenu.InstructionalButtonsEnabled = false;
         CustomizeMainMenu.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(CustomizeMainMenu);
         CustomizeDemographicsMenu.Setup(CustomizeMainMenu);
@@ -72,6 +70,8 @@ public class PedCustomizerMenu
         };
         CustomizeMainMenu.AddItem(PrintVariation);
 
+        
+        //CustomizeMainMenu.AddInstructionalButton(new InstructionalButton() { a });
 
         UIMenuItem BecomeModel = new UIMenuItem("Become Character", "Return to gameplay as displayed character");
         BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Clothes;
@@ -97,8 +97,6 @@ public class PedCustomizerMenu
     public void OnModelChanged()
     {
         IsProgramicallySettingFieldValues = true;
-
-
         //Change the components and stuff, reset everything
         CustomizeDemographicsMenu.OnModelChanged();
         CustomizeHeadMenu.OnModelChanged();
@@ -107,8 +105,6 @@ public class PedCustomizerMenu
         CustomizeAffiliationMenu.OnModelChanged();
         CustomizeVoiceMenu.OnModelChanged();
         EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
-
-
         IsProgramicallySettingFieldValues = false;
     }
 }

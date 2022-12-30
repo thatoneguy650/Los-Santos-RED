@@ -86,7 +86,7 @@ public class PurchaseMenu : Menu
         }
         purchaseMenu.Clear();
         CreateCategories2();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable))
+        foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderBy(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
         {
             EntryPoint.WriteToConsole($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreatePurchaseMenuItem(Transaction, cii, purchaseMenu, Settings, Player, Transaction.IsStealing, World);
@@ -110,16 +110,8 @@ public class PurchaseMenu : Menu
             Hide();
         }
     }
-    //public void Update()
-    //{
-
-    //}
     private void CreateCategories()
     {
-        //if (ShopMenu.Items.Where(x => x.Purchaseable).Count() < 7)
-        //{
-        //    return;
-        //}
         List<string> Categories = new List<string>();
         foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable))
         {
@@ -162,7 +154,7 @@ public class PurchaseMenu : Menu
         {
             UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Weapons");
             SetupCategoryMenu(headerMenu);
-            foreach (string category in WeaponItems.Select(x=> x.ModItem.MenuCategory).Distinct())
+            foreach (string category in WeaponItems.Select(x=> x.ModItem.MenuCategory).Distinct().OrderBy(x => x))
             {
                 UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
                 SetupCategoryMenu(categoryMenu);
@@ -172,7 +164,7 @@ public class PurchaseMenu : Menu
         {
             UIMenu headerMenu = MenuPool.AddSubMenu(purchaseMenu, "Vehicles");
             SetupCategoryMenu(headerMenu);
-            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct())
+            foreach (string category in VehicleItems.Select(x => x.ModItem.MenuCategory).Distinct().OrderBy(x=> x))
             {
                 UIMenu categoryMenu = MenuPool.AddSubMenu(headerMenu, category);
                 SetupCategoryMenu(categoryMenu);
@@ -186,7 +178,7 @@ public class PurchaseMenu : Menu
                 Categories.Add(cii.ModItem.MenuCategory);
             }
         }
-        foreach (string category in Categories)
+        foreach (string category in Categories.OrderBy(x => x))
         {
             UIMenu categoryMenu = MenuPool.AddSubMenu(purchaseMenu, category);
             SetupCategoryMenu(categoryMenu);

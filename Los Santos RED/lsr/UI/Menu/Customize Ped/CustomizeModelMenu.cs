@@ -43,7 +43,7 @@ public class CustomizeModelMenu
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the model of the current ped";
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
+        ModelSubMenu.InstructionalButtonsEnabled = false;
 
         ModelSubMenu.OnMenuOpen += (sender) =>
         {
@@ -74,6 +74,7 @@ public class CustomizeModelMenu
         ModelSubMenu.MenuItems[ModelSubMenu.MenuItems.Count() - 1].Description = "Search for the model by name";
         ModelSubMenu.MenuItems[ModelSubMenu.MenuItems.Count() - 1].RightLabel = "";
         ModelSearchSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        ModelSearchSubMenu.InstructionalButtonsEnabled = false;
 
         SearchModel = new UIMenuItem("Input Name", "Input the model name");
         SearchModel.Activated += (sender, selectedItem) =>

@@ -225,7 +225,8 @@ public class Airport : InteractableLocation, ILocationSetupable
                     }
                     else
                     {
-                        Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
+                        PlayErrorSound();
+                        DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation, as you do not have the required funds");
                     }
                 };
                 destinationSubMenu.AddItem(destinationMenu);
@@ -307,7 +308,7 @@ public class Airport : InteractableLocation, ILocationSetupable
                     };
                     planeSubMenu.AddItem(startFlightMenu);
 
-                    Refueling refueling = new Refueling(Player, Name, FuelPrice, owned, Settings);
+                    Refueling refueling = new Refueling(Player, Name, FuelPrice, owned, Settings, this);
                     refueling.Setup();
                     float AmountToFill = refueling.UnitsOfFuelNeeded * FuelPrice;
                     string MenuString = $"~n~Price Per Gallon: ~r~${FuelPrice}~s~~n~Fuel Capacity: ~y~{refueling.VehicleToFillFuelTankCapacity}~s~ Gallons~n~Fuel Needed: ~y~{refueling.UnitsOfFuelNeeded}~s~ Gallons";

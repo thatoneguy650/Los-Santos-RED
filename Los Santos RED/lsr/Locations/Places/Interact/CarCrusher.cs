@@ -141,7 +141,8 @@ public class CarCrusher : InteractableLocation
         if (!Added)
         {
             InteractionMenu.Visible = false;
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Crushing Failed", "Please come back with a vehicle to crush!");
+            PlayErrorSound();
+            DisplayMessage("~r~Crushing Failed", "Please come back with a vehicle to crush!");
         }
     }
     private void ScrapSubMenu_OnMenuClose(UIMenu sender)
@@ -171,15 +172,16 @@ public class CarCrusher : InteractableLocation
     {
         if(carToScrap == null || !carToScrap.Vehicle.Exists())
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Crushing Failed", "We are unable to complete this crushing.");
+            PlayErrorSound();
+            DisplayMessage("~r~Crushing Failed", "We are unable to complete this crushing.");
             return;
         }
-
         if(Player.BankAccounts.Money < Price)
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+            PlayErrorSound();
+            DisplayMessage("~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
+            return;
         }
-
         Game.FadeScreenOut(1000, true);
         string MakeName = NativeHelper.VehicleMakeName(carToScrap.Vehicle.Model.Hash);
         string ModelName = NativeHelper.VehicleModelName(carToScrap.Vehicle.Model.Hash);
@@ -190,7 +192,8 @@ public class CarCrusher : InteractableLocation
         CrusherSubMenu.Close(true);
         Game.FadeScreenIn(1000, true);
         Player.BankAccounts.GiveMoney(Price);
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Crushed", $"Thank you for crushing your ~p~{CarName}~s~ at ~y~{Name}~s~");
+        PlaySuccessSound();
+        DisplayMessage("~g~Crushed", $"Thank you for crushing your ~p~{CarName}~s~ at ~y~{Name}~s~");
     }
     private VehicleExt GetVehicle(string menuEntry)
     {
