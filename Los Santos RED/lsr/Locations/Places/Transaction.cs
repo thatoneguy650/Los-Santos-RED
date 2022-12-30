@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using System.Xml.Serialization;
 
 public class Transaction
@@ -287,9 +288,6 @@ public class Transaction
         {
             MenuPool.ProcessMenus();
             Update();
-
-            //PurchaseMenu?.Update();
-            //SellMenu?.Update();
             GameFiber.Yield();
         }
     }
@@ -333,7 +331,6 @@ public class Transaction
     }
     public void OnAmountChanged(ModItem modItem)
     {
-
         //PurchaseMenu?.OnAmountChanged(modItem);
         //SellMenu?.OnAmountChanged(modItem);
     }
@@ -341,11 +338,12 @@ public class Transaction
     {
         if (PersonTransaction != null)
         {
-            PersonTransaction.OnItemPurchased(modItem, menuItem, TotalItems);
+            PersonTransaction.OnItemPurchased(modItem, menuItem, TotalItems);//shows message too, but in the middle of the animation
         }
         else if (Store != null)
         {
             Store.OnItemPurchased(modItem, menuItem, TotalItems);
+            DisplayItemPurchasedMessage(modItem, TotalItems);
         }
         SellMenu?.OnItemPurchased(menuItem);
     }
@@ -358,6 +356,7 @@ public class Transaction
         else if(Store != null)
         {
             Store.OnItemSold(modItem, menuItem, TotalItems);
+            DisplayItemSoldMessage(modItem, TotalItems);
         }
         PurchaseMenu?.OnItemSold(menuItem); 
     }
@@ -367,8 +366,55 @@ public class Transaction
         Game.RemoveNotification(NotificationHandle);
         NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, "~r~Insufficient Funds", "We are sorry, we are unable to complete this transation.");
     }
+    public void DisplayItemSoldMessage(ModItem modItem, int TotalItems)
+    {
+        if(modItem == null)
+        {
+            return;
+        }
+        PlaySuccessSound();
+        string Header = "~g~Sale";
+        string Message = $"You have sold {TotalItems} ~r~{modItem.Name}(s)~s~";
+        if (modItem.MeasurementName != "Item")
+        {
+            Message = $"You have sold {TotalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~";
+        }
+        DisplayMessage(Header, Message);   
+    }
+    public void DisplayItemPurchasedMessage(ModItem modItem, int TotalItems)
+    {
+        if (modItem == null)
+        {
+            return;
+        }
+        PlaySuccessSound();
+        string Header = "~g~Purchase";
+        string Message = $"You have purchased {TotalItems} ~r~{modItem.Name}(s)~s~";
+        if (modItem.MeasurementName != "Item")
+        {
+            Message = $"You have purchased {TotalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~";
+        }
+        DisplayMessage(Header, Message);
+    }
     public void PlayErrorSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "ERROR", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+    }
+    public void PlaySuccessSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+    }
+    public void DisplayMessage(string header, string message)
+    {
+        Game.RemoveNotification(NotificationHandle);
+        if (Store == null)
+        {
+            NotificationHandle = Game.DisplayNotification(message);
+        }
+        else
+        {
+            NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, header, message);
+        }
     }
 }

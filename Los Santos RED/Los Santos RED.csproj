@@ -243,8 +243,6 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
-    <Compile Include="lsr\UI\Menu\ItemSelector\ItemSelector.cs" />
-    <Compile Include="lsr\UI\Menu\ItemSelector\ItemSelectorMenu.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />
@@ -631,14 +629,13 @@
     <Compile Include="lsr\UI\Other\GTAHudComponent.cs" />
     <Compile Include="lsr\UI\Other\GTATextJustification.cs" />
     <Compile Include="lsr\UI\Other\MarkerManager.cs" />
-    <Compile Include="lsr\UI\Other\PopUpWarning.cs" />
+    <Compile Include="lsr\Old\PopUpWarning.cs" />
     <Compile Include="lsr\UI\Other\SimpleWarning.cs" />
     <Compile Include="lsr\UI\Other\TimerBarController.cs" />
     <Compile Include="lsr\UI\Pause Menu\AboutMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\SavePauseMenu.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\ContactsTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\CrimesTab.cs" />
-    <Compile Include="lsr\UI\Pause Menu\Tabs\DynamicGangTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\GangTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\LicensesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\LocationsTab.cs" />
@@ -646,9 +643,9 @@
     <Compile Include="lsr\UI\Pause Menu\PlayerInfoMenu.cs" />
     <Compile Include="lsr\UI\Other\PauseMenuExample.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\MessagesTab.cs" />
-    <Compile Include="lsr\UI\Pause Menu\Tabs\NewSaveGameTab.cs" />
-    <Compile Include="lsr\UI\Pause Menu\Tabs\PhoneRepliesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\SaveGameTab.cs" />
+    <Compile Include="lsr\UI\Pause Menu\Tabs\PhoneRepliesTab.cs" />
+    <Compile Include="lsr\Old\SaveGameTabOLD.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\TextMessagesTab.cs" />
     <Compile Include="lsr\UI\Pause Menu\Tabs\VehiclesTab.cs" />
     <Compile Include="lsr\UI\Other\Util.cs" />
@@ -682,9 +679,9 @@
     <Compile Include="lsr\UI\Menu\Main\ActionMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\BustedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\DeathMenu.cs" />
-    <Compile Include="lsr\UI\Menu\DebugMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Debug\DebugMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\DistanceSelect.cs" />
-    <Compile Include="lsr\UI\Menu\MainMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Main\MainMenu.cs" />
     <Compile Include="lsr\Player\Button Prompts\ButtonPrompt.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
@@ -835,9 +832,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="lsr\Crimes\" />
-    <Folder Include="lsr\Data\Peds\Clothes\" />
-    <Folder Include="lsr\Locations\Places\Basic\" />
-    <Folder Include="lsr\UI\Pause Menu\Tabs\GangTab\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

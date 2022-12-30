@@ -3,11 +3,13 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static DispatchScannerFiles;
 
 namespace LosSantosRED.lsr.Helper
 {
@@ -40,6 +42,19 @@ namespace LosSantosRED.lsr.Helper
             NativeFunction.Natives.START_NEW_SCRIPT(scriptName, buffer);
             NativeFunction.Natives.SET_SCRIPT_AS_NO_LONGER_NEEDED(scriptName);
         }
+
+
+
+        public static bool IsStringHash(string value, out uint hash)
+        {
+            var hex = value.ToLower();
+            if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
+            {
+                hex = hex.Substring(2);
+            }
+            return uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out hash);
+        }
+
         public static string FormatControls(Keys modifier, Keys key)
         {
             string KeyString = $"~o~{KeyHandyName(key)}~s~";

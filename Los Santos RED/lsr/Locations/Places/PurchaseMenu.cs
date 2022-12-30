@@ -216,7 +216,6 @@ public class PurchaseMenu : Menu
             Transaction.ClearPreviews();
         };
     }
-
     private void GeneratePreview(UIMenu menuSelected, int v)
     {
         if(menuSelected == null || menuSelected.MenuItems == null)
@@ -251,10 +250,6 @@ public class PurchaseMenu : Menu
         {
             return;
         }
-
-
-
-
         GameFiber.StartNew(delegate
         {
             try
@@ -267,11 +262,6 @@ public class PurchaseMenu : Menu
                 EntryPoint.ModController.CrashUnload();
             }
         }, "CreatePreview");
-
-
-
-
-
     }
 
     public void OnItemSold(MenuItem menuItem)

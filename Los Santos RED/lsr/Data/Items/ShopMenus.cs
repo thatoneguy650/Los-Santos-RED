@@ -405,7 +405,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("DIC Lighter",5),
                 new MenuItem("DIC Lighter Ultra", 7),
             }),
-            new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { new MenuItem("White Widow",10),
+            new ShopMenu("WeedAndCigMenu","Marijuana/Cigarette",new List<MenuItem>() { 
+                //new MenuItem("White Widow",10),
                 //new MenuItem("OG Kush",12),
                 //new MenuItem("Northern Lights",13),
                 new MenuItem("Marijuana",17),

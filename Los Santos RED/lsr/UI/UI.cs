@@ -368,8 +368,11 @@ public class UI : IMenuProvideable
         }
 
 
-
-        if (DisplayablePlayer.IsCustomizingPed)
+        if (DisplayablePlayer.ActivityManager.IsInteractingWithLocation)
+        {
+            ShowRadar = false;
+        }
+        else if (DisplayablePlayer.IsCustomizingPed)
         {
             ShowRadar = false;
         }

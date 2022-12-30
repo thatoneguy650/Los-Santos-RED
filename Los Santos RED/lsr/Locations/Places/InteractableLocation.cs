@@ -79,14 +79,10 @@ public class InteractableLocation : BasicLocation
         Weapons = weapons;
         Time = time;
 
-
         if(IsLocationClosed())
         {
             return;
         }
-
-
-
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -138,19 +134,7 @@ public class InteractableLocation : BasicLocation
     }
     public virtual void OnItemSold(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        if (modItem != null)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.RemoveNotification(NotificationHandle);
-            if (modItem.MeasurementName == "Item")
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
-            }
-            else
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Sale", $"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
-        }
+
     }
     public virtual bool CanCurrentlyInteract(ILocationInteractable player)
     {
@@ -159,19 +143,7 @@ public class InteractableLocation : BasicLocation
     }
     public virtual void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
-        if (modItem != null)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-            Game.RemoveNotification(NotificationHandle);
-            if (modItem.MeasurementName == "Item")
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
-            }
-            else
-            {
-                NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Purchase", $"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-            }
-        }
+
     }
     public void CreateInteractionMenu()
     {

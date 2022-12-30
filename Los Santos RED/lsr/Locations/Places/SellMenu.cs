@@ -252,8 +252,6 @@ public class SellMenu : Menu
         {
             return;
         }
-
-
         GameFiber.StartNew(delegate
         {
             try
@@ -265,9 +263,7 @@ public class SellMenu : Menu
                 EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
                 EntryPoint.ModController.CrashUnload();
             }
-        }, "CreatePreview");
-
-        
+        }, "CreatePreview");  
     }
     public void OnItemPurchased(MenuItem menuItem)
     {

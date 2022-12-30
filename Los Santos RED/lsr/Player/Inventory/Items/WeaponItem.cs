@@ -19,6 +19,9 @@ public class WeaponItem : ModItem
     private WeaponVariation CurrentWeaponVariation = new WeaponVariation();
     private WeaponInformation WeaponInformation;
     public bool RequiresDLC { get; set; } = false;
+    public string ModelName { get; set; }
+    public uint ModelHash { get; set; }
+
     public WeaponItem()
     {
     }
@@ -29,12 +32,13 @@ public class WeaponItem : ModItem
 
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        ModelItem = physicalItems.Get(ModelItemID);
-        if (ModelItem == null)
-        {
-            ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Weapon);
-        }
-        WeaponInformation = weapons.GetWeapon(ModelItem.ModelName);
+        //ModelItem = physicalItems.Get(ModelItemID);
+        //if (ModelItem == null)
+        //{
+            //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Weapon);
+        //}
+        ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Weapon);
+        WeaponInformation = weapons.GetWeapon(ModelItem?.ModelName);
         if (WeaponInformation == null)
         {
             MenuCategory = "Weapon";
@@ -44,7 +48,6 @@ public class WeaponItem : ModItem
             MenuCategory = WeaponInformation.Category.ToString();
         }
     }
-
 
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
@@ -84,8 +87,6 @@ public class WeaponItem : ModItem
         bool FoundCategoryMenu = false;
         if (WeaponInformation != null)
         {
-
-
             UIMenu WeaponSubMenu = sellMenuRNUI.Children.Where(x => x.Value.SubtitleText.ToLower() == "weapons").FirstOrDefault().Value;
             UIMenu ToCheckFirst = sellMenuRNUI;
             if (WeaponSubMenu != null)
@@ -102,8 +103,6 @@ public class WeaponItem : ModItem
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
                 EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
             }
-
-
             //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
             //{
             //    if (uimen.SubtitleText == WeaponInformation.Category.ToString() && uimen.ParentMenu == sellMenuRNUI)
@@ -117,12 +116,6 @@ public class WeaponItem : ModItem
             //        break;
             //    }
             //}
-
-
-
-
-
-
 
         }
         if (!FoundCategoryMenu && WeaponMenu == null)
@@ -247,7 +240,8 @@ public class WeaponItem : ModItem
                 return true;
             }
         }
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
+        transaction.PlayErrorSound();
+        transaction.DisplayMessage("~r~Sale Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
 
@@ -280,7 +274,6 @@ public class WeaponItem : ModItem
         {
             NativeFunction.Natives.REQUEST_WEAPON_ASSET(ModelItem.ModelHash, 31, 0);
         }
-
         UIMenu WeaponMenu = null;
         bool FoundCategoryMenu = false;
         if (WeaponInformation != null)
@@ -368,7 +361,8 @@ public class WeaponItem : ModItem
                                 if (myItem.SelectedItem.ExtraName == "Default")
                                 {
                                     WeaponInformation.SetSlotDefault(player.Character, selectedSlot);
-                                    Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Transaction.Store?.Name, "Set Default", $"Set the {selectedSlot} slot to default");
+                                    Transaction.PlaySuccessSound();
+                                    Transaction.DisplayMessage("Set Default", $"Set the {selectedSlot} slot to default");
                                     OnWeaponMenuOpen(sender,player);
                                     return;
                                 }
@@ -387,7 +381,7 @@ public class WeaponItem : ModItem
                             if (WeaponInformation.HasComponent(player.Character, myComponent))
                             {
                                 Transaction.PlayErrorSound();
-                                Game.DisplayNotification("CHAR_BLOCKED", "CHAR_BLOCKED", Transaction.Store?.Name, "Already Owned", "We are sorry, we are unable to complete this transation, as the item is already owned");
+                                Transaction.DisplayMessage("Already Owned", "We are sorry, we are unable to complete this transation, as the item is already owned");
                                 return;
                             }
                             if (!PurchaseComponent(player, Transaction, menuItem, myComponent))
@@ -395,7 +389,7 @@ public class WeaponItem : ModItem
                                 return;
                             }
                             player.BankAccounts.GiveMoney(-1 * myItem.SelectedItem.PurchasePrice);
-                           Transaction.MoneySpent += myItem.SelectedItem.PurchasePrice;
+                            Transaction.MoneySpent += myItem.SelectedItem.PurchasePrice;
                             OnWeaponMenuOpen(sender, player);
                         }
                     };
@@ -440,19 +434,6 @@ public class WeaponItem : ModItem
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
         UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
         if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
         {
@@ -484,7 +465,6 @@ public class WeaponItem : ModItem
             OnWeaponMenuOpen(sender, player);
         };
         WeaponMenu.AddItem(Purchase);
-
     }
     private void OnWeaponMenuOpen(UIMenu sender, ILocationInteractable player)
     {
@@ -553,36 +533,24 @@ public class WeaponItem : ModItem
         if (WeaponInformation != null && WeaponInformation.Category != WeaponCategory.Melee && NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
         {
             NativeFunction.Natives.ADD_AMMO_TO_PED(player.Character, WeaponInformation.Hash, TotalItems);
-            if (transaction.Store?.Name == "")
-            {
-                Game.DisplayNotification($"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
-            }
-            else
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
-            }
+            transaction.PlaySuccessSound();
+            transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
             return true;
         }
         transaction.PlayErrorSound();
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
     private bool PurchaseComponent(ILocationInteractable player, Transaction transaction, MenuItem menuItem, WeaponComponent myComponent)
     {
         if (WeaponInformation != null && WeaponInformation.AddComponent(player.Character, myComponent))
         {
-            if (transaction.Store?.Name == "")
-            {
-                Game.DisplayNotification($"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
-            }
-            else
-            {
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
-            }
+            transaction.PlaySuccessSound();
+            transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
             return true;
         }
         transaction.PlayErrorSound();
-        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }   
     private bool PurchaseWeapon(ILocationInteractable player, Transaction transaction, MenuItem menuItem)
@@ -728,8 +696,7 @@ public class WeaponItem : ModItem
                     Position = GPCamPos + GPCamDir / 2f;
                 }
 
-                
-
+               
                 if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
                 {
                     EntryPoint.WriteToConsole($"WEAPON ITEM ASSET LOADED {ModelItem.ModelName} {ModelItem.ModelHash}");

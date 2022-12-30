@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -8,6 +9,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Xml.Serialization;
+using static DispatchScannerFiles;
 
 [Serializable()]
 public class Agency
@@ -94,27 +96,22 @@ public class Agency
         {
             return null;
         }
-
-        uint modelHash;
-        var hex = ped.Model.Name.ToLower();
-        if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
-        {
-            hex = hex.Substring(2);
-        }
-        bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
-
+        //uint modelHash;
+        //var hex = ped.Model.Name.ToLower();
+        //if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
+        //{
+        //    hex = hex.Substring(2);
+        //}
+        //bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
         List<DispatchablePerson> ToPickFrom = new List<DispatchablePerson>();
-        if (parsedSuccessfully)//is not actualy a model name
+        if (NativeHelper.IsStringHash(ped.Model.Name, out uint modelHash))//is not actualy a model name
         {
             ToPickFrom = Personnel.Where(b => Game.GetHashKey(b.ModelName.ToLower()) == modelHash).ToList();
         }
-
         if(!ToPickFrom.Any())
         {
             ToPickFrom = Personnel.Where(b => b.ModelName.ToLower() == ped.Model.Name.ToLower()).ToList();
-        }
-
-      
+        }     
         if (ToPickFrom.Any())
         {
             return ToPickFrom.PickRandom();

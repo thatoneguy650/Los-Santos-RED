@@ -28,14 +28,13 @@ public class SaveGameTab
     private IEntityProvideable World;
     private IInventoryable Inventoryable;
     private ISaveable Saveable;
-    private BigMessageThread BigMessage;
     private TabView TabView;
     private List<TabItem> items;
     private bool addedItems;
     private TabItem saveCharacter;
     private TabSubmenuItem myTab;
 
-    public SaveGameTab(ISaveable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeControllable time, ISettingsProvideable settings, IGameSaves gameSaves, IGangs gangs, IPedSwap pedSwap,IInventoryable inventoryable, IEntityProvideable world,ISaveable saveable)
+    public SaveGameTab(ISaveable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeControllable time, ISettingsProvideable settings, IGameSaves gameSaves, IGangs gangs, IPedSwap pedSwap, IInventoryable inventoryable, IEntityProvideable world, ISaveable saveable)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
@@ -53,117 +52,147 @@ public class SaveGameTab
         World = world;
         Inventoryable = inventoryable;
         Saveable = saveable;
-
-        BigMessage = new BigMessageThread(true);
-
     }
-    public void AddItems()
+    public void AddSaveItems()
     {
-        items = new List<TabItem>();
-        addedItems = true;
-
-        saveCharacter = new TabTextItem("Save Game", "Save Game", "Saves the Current Character");
-        saveCharacter.Activated += (s, e) =>
+        List<UIMenuItem> saveListItems = new List<UIMenuItem>();
+        UIMenuItem createNew = new UIMenuItem($"Create New Save {GameSaves.GameSaveList.Count()}/99", "");
+        createNew.Activated += (s, e) =>
         {
-            if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1 == 0)
-            {
-                TabView.Visible = false;
-                PopUpWarning popUpWarning = new PopUpWarning("Save", "Are you sure you want to save", "", Player.ButtonPrompts, Settings);
-                popUpWarning.Setup();
-                popUpWarning.ShowAndWait();
-                if (popUpWarning.IsAccepted)
-                {
-                    Game.IsPaused = false;
-                    TabView.Visible = false;
-                    GameFiber.Sleep(500);
-                    GameSaves.SaveSamePlayer_Obsolete(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
-                }
-                else
-                {
-                    TabView.Visible = true;
-                }
-            }
-            else
+            SimpleWarning popUpWarning = new SimpleWarning("Save", "Are you sure you want to create a new save", "", Player.ButtonPrompts, Settings);
+            popUpWarning.Show();
+            if (popUpWarning.IsAccepted)
             {
                 TabView.Visible = false;
                 Game.IsPaused = false;
-                GameSaves.SaveSamePlayer_Obsolete(Saveable, Weapons, Time, PlacesOfInterest, ModItems);
+                GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest, ModItems, GameSaves.NextSaveGameNumber);
             }
         };
-        items.Add(saveCharacter);
-        foreach (GameSave gs in GameSaves.GameSaveList)
+        saveListItems.Add(createNew);
+
+        int maxNumber = GameSaves.GameSaveList.Max(x => x.SaveNumber);
+        for (int i = 1; i <= maxNumber; i++)
         {
-            AddItem(gs);
-        }
-        if (addedItems)
-        {
-            myTab = new TabSubmenuItem("Save", items);
-            TabView.AddTab(myTab);
-        }
-    }
-    private void AddItem(GameSave gs)
-    {
-        TabMissionSelectItem MajorTabItem = gs.SaveTabInfo(Time, Gangs, Weapons, ModItems);
-        MajorTabItem.OnItemSelect += (selectedItem) =>
-        {
-            if (selectedItem != null && selectedItem.Name == "Load")
+            UIMenuItem saveItem;
+            GameSave gs = GameSaves.GameSaveList.FirstOrDefault(x => x.SaveNumber == i);
+            if(gs != null)
             {
-                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1==0)
+                saveItem = new UIMenuItem(gs.Title, "") { RightLabel = gs.RightLabel };
+                if (GameSaves.IsPlaying(gs)) { saveItem.Text += " - Active"; saveItem.BackColor = EntryPoint.LSRedColor; }
+                saveItem.Activated += (s, e) =>
                 {
-                    TabView.Visible = false;
-                    PopUpWarning popUpWarning = new PopUpWarning("Load", "Are you sure you want to load this save", "", Player.ButtonPrompts, Settings);
-                    popUpWarning.Setup();
-                    popUpWarning.ShowAndWait();
+                    SimpleWarning popUpWarning = new SimpleWarning("Save", "Are you sure you want to overwrite this save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Show();
+                    if(popUpWarning.IsAccepted)
+                    {
+                        TabView.Visible = false;
+                        Game.IsPaused = false;
+                        int saveNumber = gs.SaveNumber;
+                        GameSaves.DeleteSave(gs);
+                        GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest, ModItems, saveNumber);
+                    }
+                };
+            }
+            else
+            {
+                saveItem = new UIMenuItem($"{i.ToString("D2")} - New Save Game", "");
+                saveItem.Activated += (s, e) =>
+                {
+                    int index = saveItem.Text.IndexOf(" -");
+                    string intAsString = (index > 0 ? saveItem.Text.Substring(0, index) : "");//why is this needed, is the i used as ref or something?
+                    int result = 0;
+                    int number = i;
+                    if (int.TryParse(intAsString, out result))
+                    {
+                        number = result;
+                    }
+                    SimpleWarning popUpWarning = new SimpleWarning("Save", "Are you sure you want to create a new save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Show();
                     if (popUpWarning.IsAccepted)
                     {
-                        Game.IsPaused = false;
                         TabView.Visible = false;
+                        Game.IsPaused = false;
+                        GameSaves.Save(Saveable, Weapons, Time, PlacesOfInterest, ModItems, result);
+                    }
+                };
+            }
+            saveListItems.Add(saveItem);
+        }
+        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("SAVE", saveListItems);
+        TabView.AddTab(interactiveListItem2);
+    }
+    public void AddLoadItems()
+    {
+        List<UIMenuItem> saveListItems = new List<UIMenuItem>();
+        UIMenuItem saveCount = new UIMenuItem($"Number of Save Games: {GameSaves.GameSaveList.Count()}", "") { Enabled = false};
+        saveListItems.Add(saveCount);
+
+        int maxNumber = GameSaves.GameSaveList.Max(x => x.SaveNumber);
+        for (int i = 1; i <= maxNumber; i++)
+        {
+            UIMenuItem loadItem;
+            GameSave gs = GameSaves.GameSaveList.FirstOrDefault(x => x.SaveNumber == i);
+            if (gs != null)
+            {
+                loadItem = new UIMenuItem(gs.Title, "") { RightLabel = gs.RightLabel };
+                if (GameSaves.IsPlaying(gs)) { loadItem.Text += " - Active"; loadItem.BackColor = EntryPoint.LSRedColor; }
+                loadItem.Activated += (s, e) =>
+                {
+                    SimpleWarning popUpWarning = new SimpleWarning("Load", "Are you sure you want to load this save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Show();
+                    if (popUpWarning.IsAccepted)
+                    {
+                        TabView.Visible = false;
+                        Game.IsPaused = false;
                         GameFiber.Sleep(500);
                         GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
                     }
-                    else
-                    {
-                        TabView.Visible = true;
-                    }
-                }
-                else
-                {
-                    TabView.Visible = false;
-                    Game.IsPaused = false;
-                    GameSaves.Load(gs, Weapons, PedSwap, Inventoryable, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
-                }
+                };
             }
-            if (selectedItem != null && selectedItem.Name == "Delete")
+            else
             {
-                if (Settings.SettingsManager.UIGeneralSettings.ShowFullscreenWarnings && 1 == 0)
-                {
-                    TabView.Visible = false;
-                    PopUpWarning popUpWarning = new PopUpWarning("Delete", "Are you sure you want to delete this save", "", Player.ButtonPrompts, Settings);
-                    popUpWarning.Setup();
-                    popUpWarning.ShowAndWait();
-                    if (popUpWarning.IsAccepted)
-                    {
-                        Game.IsPaused = false;
-                        TabView.Visible = false;
-                        GameFiber.Sleep(500);
-                        GameSaves.DeleteSave(gs);
-                    }
-                    else
-                    {
-                        TabView.Visible = true;
-                    }
-                }
-                else
-                {
-                    TabView.Visible = false;
-                    Game.IsPaused = false;
-                    GameSaves.DeleteSave(gs);
-                }
+                loadItem = new UIMenuItem($"{i.ToString("D2")} - Empty Save", "") { Enabled = false };
             }
-        };
-        items.Add(MajorTabItem);
-        addedItems = true;
+            saveListItems.Add(loadItem);
+        }
+        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("LOAD", saveListItems);
+        TabView.AddTab(interactiveListItem2);
     }
 
+    internal void AddDeleteItems()
+    {
+        List<UIMenuItem> saveListItems = new List<UIMenuItem>();
+        UIMenuItem createNew = new UIMenuItem($"Number of Save Games: {GameSaves.GameSaveList.Count()}", "") { Enabled = false };
+        saveListItems.Add(createNew);
 
+        int maxNumber = GameSaves.GameSaveList.Max(x => x.SaveNumber);
+        for (int i = 1; i <= maxNumber; i++)
+        {
+            UIMenuItem deleteItem;
+            GameSave gs = GameSaves.GameSaveList.FirstOrDefault(x => x.SaveNumber == i);
+            if (gs != null)
+            {
+                deleteItem = new UIMenuItem(gs.Title, "") { RightLabel = gs.RightLabel };
+                if (GameSaves.IsPlaying(gs)) { deleteItem.Text += " - Active"; deleteItem.BackColor = EntryPoint.LSRedColor; }
+                deleteItem.Activated += (s, e) =>
+                {
+                    SimpleWarning popUpWarning = new SimpleWarning("Delete", "Are you sure you want to delete this save", "", Player.ButtonPrompts, Settings);
+                    popUpWarning.Show();
+                    if (popUpWarning.IsAccepted)
+                    {
+                        TabView.Visible = false;
+                        Game.IsPaused = false;
+                        GameSaves.DeleteSave(gs);
+                    }
+                };
+            }
+            else
+            {
+                deleteItem = new UIMenuItem($"{i.ToString("D2")} - Empty Save", "") { Enabled = false };
+            }
+            saveListItems.Add(deleteItem);
+        }
+        TabInteractiveListItem interactiveListItem2 = new TabInteractiveListItem("DELETE", saveListItems);
+        TabView.AddTab(interactiveListItem2);
+    }
 }

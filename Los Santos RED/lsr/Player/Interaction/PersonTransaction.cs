@@ -767,23 +767,41 @@ public class PersonTransaction : Interaction
             }
         }
         GameFiber.Sleep(500);
-        if (isWeapon)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
-        }
-        else
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        }
-        Game.RemoveNotification(NotificationHandle);
-        if (modItem.MeasurementName == "Item")
-        {
-            NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
-        }
-        else
-        {
-            NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-        }
+
+
+
+
+
+
+
+
+
+        Transaction.DisplayItemPurchasedMessage(modItem, totalItems);
+
+
+        //if (isWeapon)
+        //{
+        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        //}
+        //Game.RemoveNotification(NotificationHandle);
+        //if (modItem.MeasurementName == "Item")
+        //{
+        //    NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} ~r~{modItem.Name}(s)~s~");
+        //}
+        //else
+        //{
+        //    NotificationHandle = Game.DisplayNotification($"You have purchased {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+        //}
+
+
+
+
+
+
 
 
 
@@ -904,25 +922,29 @@ public class PersonTransaction : Interaction
             }
         }
         GameFiber.Sleep(500);
-        if(isWeapon)
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
-        }
-        else
-        {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
-        }
 
-        
-        Game.RemoveNotification(NotificationHandle);
-        if (modItem.MeasurementName == "Item")
-        {
-            NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
-        }
-        else
-        {
-            NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
-        }
+
+
+        //if(isWeapon)
+        //{
+        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
+        //}   
+        //Game.RemoveNotification(NotificationHandle);
+        //if (modItem.MeasurementName == "Item")
+        //{
+        //    NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} ~r~{modItem.Name}(s)~s~");
+        //}
+        //else
+        //{
+        //    NotificationHandle = Game.DisplayNotification($"You have sold {totalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~");
+        //}
+
+        Transaction.DisplayItemSoldMessage(modItem, totalItems);
+
 
 
 

@@ -30,8 +30,7 @@ public class SavePauseMenu
     private IGameSaves GameSaves;
     private IPedSwap PedSwap;
     private IInventoryable Inventoryable;
-    private SaveGameTab SaveTab;
-    private NewSaveGameTab NewSaveGameTab;
+    private SaveGameTab NewSaveGameTab;
     private ISaveable Saveable;
     private ISettingsProvideable Settings;
 
@@ -68,7 +67,7 @@ public class SavePauseMenu
             Game.IsPaused = false;
         };
         Game.RawFrameRender += (s, e) => tabView.DrawTextures(e.Graphics);
-        NewSaveGameTab = new NewSaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable);
+        NewSaveGameTab = new SaveGameTab(Player, PlacesOfInterest, ShopMenus, ModItems, Weapons, GangTerritories, Zones, tabView, Time, Settings, GameSaves, Gangs, PedSwap, Inventoryable, World, Saveable);
     }
     public void Toggle()
     {
@@ -97,13 +96,9 @@ public class SavePauseMenu
         tabView.Money = Time.CurrentTime;
         tabView.Tabs.Clear();
 
-
-
-        //SaveTab.AddItems();
         NewSaveGameTab.AddLoadItems();
         NewSaveGameTab.AddSaveItems();
         NewSaveGameTab.AddDeleteItems();
-
 
         tabView.RefreshIndex();
     }

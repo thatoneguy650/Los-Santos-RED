@@ -105,15 +105,15 @@ namespace LosSantosRED.lsr.Data
             {
                 if (car.Vehicle.Exists())
                 {
-                    uint modelHash;
-                    var hex = car.VehicleModelName.ToLower();
-                    if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        hex = hex.Substring(2);
-                    }
-                    bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
+                    //uint modelHash;
+                    //var hex = car.VehicleModelName.ToLower();
+                    //if (hex.StartsWith("0x", StringComparison.CurrentCultureIgnoreCase) || hex.StartsWith("&H", StringComparison.CurrentCultureIgnoreCase))
+                    //{
+                    //    hex = hex.Substring(2);
+                    //}
+                    //bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
                     VehicleSaveStatus vss;
-                    if (parsedSuccessfully)//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
+                    if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash))//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
                     {
                         vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
                     }

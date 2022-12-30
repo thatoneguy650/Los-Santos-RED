@@ -22,6 +22,8 @@ public class VehicleItem : ModItem
     private Color SellSecondaryColor = Color.Black;
 
     public bool RequiresDLC { get; set; } = false;
+    public string ModelName { get; set; }
+    public uint ModelHash { get; set; }
     public VehicleItem()
     {
     }
@@ -44,11 +46,8 @@ public class VehicleItem : ModItem
     }
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        ModelItem = physicalItems.Get(ModelItemID);
-        if (ModelItem == null)
-        {
-            ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
-        }
+        //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Vehicle);
+        ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Vehicle);
         MenuCategory = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
     }
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
@@ -106,7 +105,6 @@ public class VehicleItem : ModItem
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
             EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
         }
-
         //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
         //{
         //    if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
@@ -119,12 +117,6 @@ public class VehicleItem : ModItem
         //        break;
         //    }
         //}
-
-
-
-
-
-
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(sellMenuRNUI, menuItem.ModItemName);
@@ -178,7 +170,7 @@ public class VehicleItem : ModItem
         else
         {
             transaction.PlayErrorSound();
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~r~Sale Failed", "We are sorry, we are unable to complete this transation");
+            transaction.DisplayMessage("~r~Sale Failed", "We are sorry, we are unable to complete this transation");
             return false;
         }
     }
@@ -200,8 +192,6 @@ public class VehicleItem : ModItem
         string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
         string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
         string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(ModelItem.ModelName));
-
-
         string description;
         if (Description.Length >= 200)
         {
@@ -229,8 +219,6 @@ public class VehicleItem : ModItem
         {
             description += $"~n~~b~DLC Vehicle";
         }
-
-
         UIMenu VehicleMenu = null;
         bool FoundCategoryMenu = false;
 
@@ -249,8 +237,6 @@ public class VehicleItem : ModItem
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
         }
-
-
         //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
         //{
         //    if (uimen.SubtitleText == ClassName)
@@ -263,11 +249,6 @@ public class VehicleItem : ModItem
         //        break;
         //    }
         //}
-
-
-
-
-
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(purchaseMenu, menuItem.ModItemName);
@@ -275,7 +256,6 @@ public class VehicleItem : ModItem
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {Name} To Main Buy Menu", 5);
         }
-
         if (Transaction.HasBannerImage)
         {
             VehicleMenu.SetBannerType(Transaction.BannerImage);
@@ -284,7 +264,6 @@ public class VehicleItem : ModItem
         {
             VehicleMenu.RemoveBanner();
         }
-
         UIMenu colorFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Colors");
         colorFullMenu.SubtitleText = "COLORS";
         VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Colors";
@@ -407,14 +386,14 @@ public class VehicleItem : ModItem
             else
             {
                 transaction.PlayErrorSound();
-                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~r~Delivery Failed", "We are sorry, we are unable to complete this transation");
+                transaction.DisplayMessage("~r~Delivery Failed", "We are sorry, we are unable to complete this transation");
                 return false;
             }
         }
         else
         {
             transaction.PlayErrorSound();
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", transaction.Store?.Name, "~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
+            transaction.DisplayMessage("~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
             return false;
         }
     }

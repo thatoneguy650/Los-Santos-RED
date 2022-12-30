@@ -121,10 +121,6 @@ public class MainMenu : Menu
     }
     private void CreateMainMenu()
     {
-
-
-
-
         //The Submenus have already added their items
         if (!Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
         {
@@ -137,9 +133,6 @@ public class MainMenu : Menu
             };
             Main.AddItem(ShowSaveMenu);
         }
-
-
-
         UIMenuItem AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         AboutMenu.Activated += (s, e) =>
@@ -147,8 +140,7 @@ public class MainMenu : Menu
             UI.AboutMenu.Toggle();
             Main.Visible = false;
         };
-        Main.AddItem(AboutMenu);
-
+        //Main.AddItem(AboutMenu);//gone but not forgotten
         UIMenuItem ShowReportingMenu = new UIMenuItem("Player Information", "Show the player information menu. This pause menu has info about Owned Vehicles, Licenses, ~r~Gang Relationships~s~, and ~y~Locations~s~.");
         ShowReportingMenu.RightBadge = UIMenuItem.BadgeStyle.Lock;
         ShowReportingMenu.Activated += (s, e) =>
@@ -180,7 +172,7 @@ public class MainMenu : Menu
             Main.Visible = false;
         };
         VehicleItems.AddItem(TakeVehicleOwnership);
-        UIMenuItem RemoveVehicleOwnership = new UIMenuItem("Remove Vehicle Onwership", "Set closest vehicle as not owned");
+        UIMenuItem RemoveVehicleOwnership = new UIMenuItem("Remove Vehicle Ownership", "Set closest vehicle as not owned");
         RemoveVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
         RemoveVehicleOwnership.Activated += (s, e) =>
         {
