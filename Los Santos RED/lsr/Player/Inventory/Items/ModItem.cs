@@ -380,7 +380,7 @@ public class ModItem
         Transaction.DisplayInsufficientFundsMessage();
         return false;
     }
-    public virtual void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
+    public virtual void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase, IEntityProvideable world, ISettingsProvideable settings)
     {
         try
         {

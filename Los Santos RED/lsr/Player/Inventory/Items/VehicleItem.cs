@@ -5,9 +5,11 @@ using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Drawing;
 using System.Linq;
-
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 
 public class VehicleItem : ModItem
 {
@@ -16,7 +18,18 @@ public class VehicleItem : ModItem
     private Color SellPrimaryColor = Color.Black;
     private Color SellSecondaryColor = Color.Black;
     private int Livery1 = -1;
+    private UIMenu liveryFullMenu;
+    private UIMenu VehicleMenu;
+    private bool HasLivery1 = false;
+    private bool HasLivery2 = false;
 
+    private bool SetPrimaryColor = false;
+    private bool SetSecondaryColor = false;
+    private bool SetLivery1 = false;
+    private bool SetLivery2 = false;
+
+    private int FinalPrimaryColor => PrimaryColor == -1 ? 0 : PrimaryColor;
+    private int FinalSecondaryColor => SecondaryColor == -1 ? 0 : SecondaryColor;
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
@@ -48,57 +61,23 @@ public class VehicleItem : ModItem
     }
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
-        PrimaryColor = 0;
-        SecondaryColor = 0;
+        PrimaryColor = -1;
+        SecondaryColor = -1;
         SellPrimaryColor = Color.Black;
         SellSecondaryColor = Color.Black;
         string formattedSalesPrice = menuItem.SalesPrice.ToString("C0");
-        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
-        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
-        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(ModelItem.ModelName));
-        string description;
-        if (Description.Length >= 200)
-        {
-            description = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = Description;
-        }
-        description += "~n~~s~";
-        if (MakeName != "")
-        {
-            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
-        }
-        if (ModelName != "")
-        {
-            description += $"~n~Model: ~g~{ModelName}~s~";
-        }
-        if (ClassName != "")
-        {
-            description += $"~n~Class: ~p~{ClassName}~s~";
-        }
-        if (RequiresDLC)
-        {
-            description += $"~n~~b~DLC Vehicle";
-        }
-
-
+        string description = GetGeneralDescription(menuItem);
         bool enabled = false;
         VehicleExt ownedVersion = player.VehicleOwnership.OwnedVehicles.FirstOrDefault(x => x.Vehicle.Exists() && x.Vehicle.Model.Hash == Game.GetHashKey(ModelItem.ModelName));
-
         if (ownedVersion != null)
         {
             SellPrimaryColor = ownedVersion.Vehicle.PrimaryColor;
             SellSecondaryColor = ownedVersion.Vehicle.SecondaryColor;
             enabled = true;
         }
-
-
         UIMenu VehicleMenu = null;
+
         bool FoundCategoryMenu = false;
-
-
         UIMenu VehicleSubMenu = sellMenuRNUI.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
         UIMenu ToCheckFirst = sellMenuRNUI;
         if (VehicleSubMenu != null)
@@ -115,18 +94,6 @@ public class VehicleItem : ModItem
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = enabled;
             EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
         }
-        //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
-        //{
-        //    if (uimen.SubtitleText == ClassName && uimen.ParentMenu == sellMenuRNUI)
-        //    {
-        //        FoundCategoryMenu = true;
-        //        VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
-        //        EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
-        //        break;
-        //    }
-        //}
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(sellMenuRNUI, menuItem.ModItemName);
@@ -143,21 +110,31 @@ public class VehicleItem : ModItem
         {
             VehicleMenu.RemoveBanner();
         }
-        description = Description;
+        //description = Description;
         if (description == "")
         {
             description = $"List Price {formattedSalesPrice}";
         }
-
         UIMenuItem Sell = new UIMenuItem($"Sell", "Select to sell this vehicle") { RightLabel = formattedSalesPrice, Enabled = enabled };
         Sell.Activated += (sender, selectedItem) =>
         {
-            if(SellVehicle(Transaction, menuItem, player, settings, world))
+            Transaction.IsShowingConfirmDialog = true;
+            sender.Visible = false;
+            SimpleWarning popUpWarning = new SimpleWarning("Sell", $"Are you sure you want to sell this vehicle for ${menuItem.SalesPrice}", "", player.ButtonPrompts, settings);
+            popUpWarning.Show();
+            if (!popUpWarning.IsAccepted)
+            {
+                Transaction.IsShowingConfirmDialog = false;
+                sender.Visible = true;
+                return;
+            }
+            if (SellVehicle(Transaction, menuItem, player, settings, world))
             {
                 player.BankAccounts.GiveMoney(menuItem.SalesPrice);
                 Transaction.MoneySpent += menuItem.SalesPrice;
                 sender.Visible = false;
             }
+            Transaction.IsShowingConfirmDialog = false;
         };
         VehicleMenu.AddItem(Sell);
     }
@@ -167,6 +144,10 @@ public class VehicleItem : ModItem
         if (toSell != null)
         {
             player.VehicleOwnership.RemoveOwnershipOfVehicle(toSell);
+            if(toSell.Vehicle.Exists())
+            {
+                toSell.Vehicle.Delete();
+            }
             transaction.OnItemSold(this, CurrentMenuItem, 1);
             return true;
         }
@@ -179,8 +160,12 @@ public class VehicleItem : ModItem
     }
     public override void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
-        PrimaryColor = 0;
-        SecondaryColor = 0;
+        PrimaryColor = -1;
+        SecondaryColor = -1;
+        SetPrimaryColor = false;
+        SetSecondaryColor = false;
+        SetLivery1 = false;
+        SetLivery2 = false;
         if(RequiresDLC && !settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores)
         {
             return;
@@ -192,39 +177,9 @@ public class VehicleItem : ModItem
             formattedPurchasePrice = "FREE";
         }
 
-        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
-        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
-        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(ModelItem.ModelName));
-        string description;
-        if (Description.Length >= 200)
-        {
-            description = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
-        }
-        else
-        {
-            description = Description;
-        }
+        string description = GetGeneralDescription(menuItem);
 
-        description += "~n~~s~";
-        if (MakeName != "")
-        {
-            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
-        }
-        if (ModelName != "")
-        {
-            description += $"~n~Model: ~g~{ModelName}~s~";
-        }
-        if (ClassName != "")
-        {
-            description += $"~n~Class: ~p~{ClassName}~s~";
-        }
-        if (RequiresDLC)
-        {
-            description += $"~n~~b~DLC Vehicle";
-        }
-        UIMenu VehicleMenu = null;
         bool FoundCategoryMenu = false;
-
         UIMenu VehicleSubMenu = purchaseMenu.Children.Where(x => x.Value.SubtitleText.ToLower() == "vehicles").FirstOrDefault().Value;
         UIMenu ToCheckFirst = purchaseMenu;
         if (VehicleSubMenu != null)
@@ -240,18 +195,6 @@ public class VehicleItem : ModItem
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
         }
-        //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
-        //{
-        //    if (uimen.SubtitleText == ClassName)
-        //    {
-        //        FoundCategoryMenu = true;
-        //        VehicleMenu = Transaction.MenuPool.AddSubMenu(uimen, menuItem.ModItemName);
-        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].Description = description;
-        //        uimen.MenuItems[uimen.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-        //        EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {uimen.SubtitleText}", 5);
-        //        break;
-        //    }
-        //}
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(purchaseMenu, menuItem.ModItemName);
@@ -267,6 +210,43 @@ public class VehicleItem : ModItem
         {
             VehicleMenu.RemoveBanner();
         }
+
+        //Purchase Stuff Here
+        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
+        Purchase.Activated += (sender, selectedItem) =>
+        {
+            if(menuItem == null)
+            {
+                return;
+            }
+            EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+            if (player.BankAccounts.Money < menuItem.PurchasePrice)
+            {
+                Transaction.DisplayInsufficientFundsMessage();
+                return;
+            }
+            Transaction.IsShowingConfirmDialog = true;
+            sender.Visible = false;
+            SimpleWarning popUpWarning = new SimpleWarning("Purchase", $"Are you sure you want to purchase this vehicle for ${menuItem.PurchasePrice}", "", player.ButtonPrompts, settings);
+            popUpWarning.Show();
+            if (!popUpWarning.IsAccepted)
+            {
+                sender.Visible = true;
+                Transaction.IsShowingConfirmDialog = false;
+                return;
+            }
+            Transaction.IsShowingConfirmDialog = false;
+            if (!PurchaseVehicle(Transaction, menuItem, player, settings, world))
+            {
+                return;
+            }
+            player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice);
+            Transaction.MoneySpent += menuItem.PurchasePrice;   
+           // sender.Visible = false;
+        };
+        VehicleMenu.AddItem(Purchase);
+
+        //Color Stuff Here
         UIMenu colorFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Colors");
         colorFullMenu.SubtitleText = "COLORS";
         VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Colors";
@@ -281,7 +261,6 @@ public class VehicleItem : ModItem
         secondaryColorMenu.SubtitleText = "SECONDARY COLOR GROUPS";
         colorFullMenu.MenuItems[colorFullMenu.MenuItems.Count() - 1].Description = "Pick Secondary Colors";
         if (Transaction.HasBannerImage) { secondaryColorMenu.SetBannerType(Transaction.BannerImage); }
-
 
         //Add Color Sub Menu Here
         foreach (string colorGroupString in Transaction.VehicleColors.GroupBy(x => x.ColorGroup).Select(x => x.Key).Distinct().OrderBy(x => x))
@@ -303,92 +282,30 @@ public class VehicleItem : ModItem
                 actualColorPrimary.RightBadgeInfo.Color = cl.RGBColor;
                 actualColorPrimary.Activated += (sender, selectedItem) =>
                 {
+                    SetPrimaryColor = true;
                     PrimaryColor = cl.ColorID;
                     if (Transaction.SellingVehicle.Exists())
                     {
-                        NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, PrimaryColor, SecondaryColor);
+                        NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
                     }
                 };
                 primarycolorGroupMenu.AddItem(actualColorPrimary);
-
                 UIMenuItem actualColorSecondary = new UIMenuItem(cl.ColorName, cl.FullColorName);
-
                 actualColorSecondary.RightBadge = UIMenuItem.BadgeStyle.Heart;
                 actualColorSecondary.RightBadgeInfo.Color = cl.RGBColor;
-
                 actualColorSecondary.Activated += (sender, selectedItem) =>
                 {
+                    SetSecondaryColor = true;
                     SecondaryColor = cl.ColorID;
                     if (Transaction.SellingVehicle.Exists())
                     {
-                        NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, PrimaryColor, SecondaryColor);
+                        NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
                     }
                 };
                 secondarycolorGroupMenu.AddItem(actualColorSecondary);
             }
         }
-
-        if (Transaction.SellingVehicle.Exists())//it will never exist here......
-        {
-            int Livery1Count = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Transaction.SellingVehicle);
-            int Livery2Count = NativeFunction.Natives.GET_VEHICLE_LIVERY2_COUNT<int>(Transaction.SellingVehicle);
-
-            if (Livery1Count > -1 || Livery2Count > -1)
-            {
-                UIMenu liveryFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Liveries");
-                liveryFullMenu.SubtitleText = "LIVERIES";
-                VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Livery";
-                if (Transaction.HasBannerImage) { liveryFullMenu.SetBannerType(Transaction.BannerImage); }
-                if (Livery1Count > -1)
-                {
-                    for (int i = -1; i <= Livery1Count - 1; i++)
-                    {
-                        UIMenuItem liveryOneMenu = new UIMenuItem($"Livery: {i}");
-                        liveryOneMenu.Activated += (sender, selectedItem) =>
-                        {
-                            Livery1 = i;
-                            EntryPoint.WriteToConsole($"Livery 1 Activated {Livery1}");
-                            if (Transaction.SellingVehicle.Exists())
-                            {
-                                NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, Livery1);
-                            }
-                        };
-                        liveryFullMenu.AddItem(liveryOneMenu);
-                    }
-                }
-                if (Livery2Count > -1)
-                {
-
-                }
-
-            }
-        }
-
-
-        //Purchase Stuff Here
-        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
-        Purchase.Activated += (sender, selectedItem) =>
-        {
-            if (menuItem != null)
-            {
-                EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
-                if (player.BankAccounts.Money < menuItem.PurchasePrice)
-                {
-                    Transaction.DisplayInsufficientFundsMessage();
-                    return;
-                }
-                if (!PurchaseVehicle(Transaction, menuItem, player,settings, world))
-                {
-                    return;
-                }
-                player.BankAccounts.GiveMoney(-1 * menuItem.PurchasePrice);
-                Transaction.MoneySpent += menuItem.PurchasePrice;
-            }
-            sender.Visible = false;
-            //Dispose();
-        };
-        VehicleMenu.AddItem(Purchase);
-        
+        liveryFullMenu = null;     
     }
     private bool PurchaseVehicle(Transaction transaction, MenuItem CurrentMenuItem, ILocationInteractable player, ISettingsProvideable settings, IEntityProvideable world)
     {
@@ -407,10 +324,13 @@ public class VehicleItem : ModItem
         {
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             if (NewVehicle.Exists())
-            {  
+            {
                 CurrentMenuItem.ItemsSoldToPlayer += 1;
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, PrimaryColor, SecondaryColor);
-                if(Livery1 != -1)
+                if(SetPrimaryColor || SetSecondaryColor || !SetLivery1)
+                {
+                    NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, FinalPrimaryColor, FinalSecondaryColor);
+                }
+                if(SetLivery1 && Livery1 != -1)
                 {
                     NativeFunction.Natives.SET_VEHICLE_LIVERY(NewVehicle, Livery1);
                 }
@@ -425,6 +345,7 @@ public class VehicleItem : ModItem
                 }
                 world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
+
                 transaction.OnItemPurchased(this, CurrentMenuItem, 1);
                 return true;
             }
@@ -442,19 +363,29 @@ public class VehicleItem : ModItem
             return false;
         }
     }
-    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
+    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase, IEntityProvideable world, ISettingsProvideable settings)
     {
         if (ModelItem != null && NativeFunction.Natives.IS_MODEL_VALID<bool>(Game.GetHashKey(ModelItem.ModelName)))
         {
             NativeFunction.Natives.CLEAR_AREA(Transaction.ItemPreviewPosition.X, Transaction.ItemPreviewPosition.Y, Transaction.ItemPreviewPosition.Z, 4f, true, false, false, false);
             Transaction.SellingVehicle = new Vehicle(ModelItem.ModelName, Transaction.ItemPreviewPosition, Transaction.ItemPreviewHeading);
         }
-        if (Transaction.SellingVehicle.Exists())
+        if (!Transaction.SellingVehicle.Exists())
         {
-            Transaction.SellingVehicle.Wash();
+            return;
+        }
+        VehicleExt Car = new VehicleExt(Transaction.SellingVehicle, settings);
+        Car.Setup();
+        Car.WasModSpawned = true;
+        Car.WasSpawnedEmpty = true;
+        world.Vehicles.AddEntity(Car, ResponseType.None);
+        Transaction.SellingVehicle.Wash();
+        CreateLiveryMenuOne(Transaction);
+        if (!HasLivery1)
+        {
             if (isPurchase)
             {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, PrimaryColor, SecondaryColor);
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, FinalPrimaryColor, FinalSecondaryColor);
             }
             else
             {
@@ -462,9 +393,114 @@ public class VehicleItem : ModItem
                 Transaction.SellingVehicle.SecondaryColor = SellSecondaryColor;
                 //NativeFunction.Natives.SET_VEHICLE_COLOURS(Transaction.SellingVehicle, SellPrimaryColor, SellSecondaryColor);
             }
-            NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
-            Transaction.SellingVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();
         }
+        NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
+        Transaction.SellingVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();     
+    }
+    private void CreateLiveryMenuOne(Transaction Transaction)
+    {
+        if(liveryFullMenu != null)
+        {
+            return;
+        }
+        int Livery1Count = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Transaction.SellingVehicle);
+        if(Livery1Count == -1)
+        {
+            HasLivery1 = false;
+            return;
+        }
+        HasLivery1 = true;
+        liveryFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Liveries");
+        liveryFullMenu.SubtitleText = "LIVERIES";
+        VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Livery";
+
+        if (Transaction.HasBannerImage) { liveryFullMenu.SetBannerType(Transaction.BannerImage); }
+        for (int i = -1; i <= Livery1Count - 1; i++)
+        {
+            int selectedLivery = i;
+            string MenuName = GetLiveryName(Transaction.SellingVehicle, i);
+            UIMenuItemExt liveryOneMenu = new UIMenuItemExt(MenuName);// { RightLabel = i.ToString() };
+            liveryOneMenu.Activated += (sender, selectedItem) =>
+            {
+                //int value = i;
+                //if (!int.TryParse(liveryOneMenu.RightLabel, out int value))
+                //{
+                //    return;
+                //}
+                if (selectedLivery == -1)
+                {
+                    SetLivery1 = false;
+                    Livery1 = -1;
+                }
+                else
+                {
+                    SetLivery1 = true;
+                    Livery1 = selectedLivery;
+                    EntryPoint.WriteToConsole($"Livery 1 Activated {Livery1}");
+                    if (Transaction.SellingVehicle.Exists())
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, Livery1);
+                    }
+                }
+            };
+            liveryFullMenu.AddItem(liveryOneMenu);
+        }
+    }
+    private string GetLiveryName(Vehicle vehicle, int Index)
+    {
+        if(Index == -1)
+        {
+            return "Default";
+        }
+        string LiveryName;
+        unsafe
+        {
+            IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_LIVERY_NAME", vehicle, Index);
+            LiveryName = Marshal.PtrToStringAnsi(ptr);
+        }
+        unsafe
+        {
+            IntPtr ptr2 = NativeFunction.CallByHash<IntPtr>(0x7B5280EBA9840C72, LiveryName);
+            LiveryName = Marshal.PtrToStringAnsi(ptr2);
+        }
+        if(LiveryName == "NULL")
+        {
+            return $"Livery #{Index}";
+        }
+        return LiveryName;
+    }
+    private string GetGeneralDescription(MenuItem menuItem)
+    {
+        string MakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(ModelItem.ModelName));
+        string ClassName = NativeHelper.VehicleClassName(Game.GetHashKey(ModelItem.ModelName));
+        string ModelName = NativeHelper.VehicleModelName(Game.GetHashKey(ModelItem.ModelName));
+        string description;
+        if (Description.Length >= 200)
+        {
+            description = Description.Substring(0, 200) + "...";//menu cant show more than 225?, need some for below
+        }
+        else
+        {
+            description = Description;
+        }
+        description += "~n~~s~";
+        if (MakeName != "")
+        {
+            description += $"~n~Manufacturer: ~b~{MakeName}~s~";
+        }
+        if (ModelName != "")
+        {
+            description += $"~n~Model: ~g~{ModelName}~s~";
+        }
+        if (ClassName != "")
+        {
+            description += $"~n~Class: ~p~{ClassName}~s~";
+        }
+        if (RequiresDLC)
+        {
+            description += $"~n~~b~DLC Vehicle";
+        }
+        return description;
     }
 }
 

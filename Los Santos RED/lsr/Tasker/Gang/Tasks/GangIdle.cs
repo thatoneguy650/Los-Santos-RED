@@ -224,7 +224,7 @@ public class GangIdle : ComplexTask
                     {
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(4000, 8000));
+                        //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(1000, 3000));
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

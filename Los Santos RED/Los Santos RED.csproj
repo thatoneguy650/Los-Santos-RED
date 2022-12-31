@@ -244,6 +244,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
+    <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />

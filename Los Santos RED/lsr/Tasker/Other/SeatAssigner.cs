@@ -24,6 +24,70 @@ public class SeatAssigner
 
     public VehicleExt VehicleAssigned { get; set; }
     public int SeatAssigned { get; set; }
+    public void AssignDriverSeat(bool includeNonAssigned)
+    {
+        VehicleAssigned = null;
+        SeatAssigned = -99;
+        if (IsSeatAvailable(Ped.AssignedVehicle, -1))
+        {
+            VehicleAssigned = Ped.AssignedVehicle;
+            SeatAssigned = -1;
+        }
+        else
+        {
+            VehicleExt LastVehicle = null;//
+            if (Ped.Pedestrian.Exists())
+            {
+                if (Ped.Pedestrian.LastVehicle.Exists())
+                {
+                    if (!Ped.BlackListedVehicles.Any(x => x == Ped.Pedestrian.LastVehicle.Handle))
+                    {
+                        LastVehicle = World.Vehicles.GetVehicleExt(Ped.Pedestrian.LastVehicle);
+                    }
+                }
+                if (LastVehicle != null && IsSeatAvailable(LastVehicle, -1))
+                {
+                    VehicleAssigned = LastVehicle;
+                    SeatAssigned = -1;
+                }
+               
+                else if (includeNonAssigned)
+                {
+                    foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
+                    {
+                        float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
+                        if (DistanceTo <= 125f)
+                        {
+                            if (IsSeatAvailable(possibleVehicle, -1))
+                            {
+                                VehicleAssigned = possibleVehicle;
+                                SeatAssigned = -1;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (VehicleAssigned != null && SeatAssigned != -1)
+        {
+            if (!World.Pedestrians.IsSeatAssignedToAnyone(VehicleAssigned, -1) && IsSeatAvailable(VehicleAssigned, -1))
+            {
+                VehicleAssigned = VehicleAssigned;
+                SeatAssigned = -1;
+            }
+        }
+        if (VehicleAssigned != null && SeatAssigned != -99)
+        {
+            World.Pedestrians.RemoveSeatAssignment(Ped);
+            World.Pedestrians.AddSeatAssignment(Ped, VehicleAssigned, SeatAssigned);
+            if (VehicleAssigned.Vehicle.Exists())
+            {
+                VehicleAssigned.Vehicle.LockStatus = Rage.VehicleLockStatus.Unlocked;
+                VehicleAssigned.Vehicle.MustBeHotwired = false;
+            }
+        }
+    }
     public void AssignFrontSeat(bool includeNonAssigned)
     {
         VehicleAssigned = null;

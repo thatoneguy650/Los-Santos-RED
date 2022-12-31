@@ -75,8 +75,8 @@ public class GangSettings : ISettingsDefaultable
         ManageDispatching = true;
 
         TimeBetweenSpawn = 10000;
-        MinDistanceToSpawn = 50f;
-        MaxDistanceToSpawn = 150f;
+        MinDistanceToSpawn = 75f;// 50f;
+        MaxDistanceToSpawn = 200f;// 150f;
         TotalSpawnedMembersLimit = 8;//5
         OverrideArmor = true;
         OverrideHealth = true;

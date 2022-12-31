@@ -10,6 +10,9 @@ public class Chase : ComplexTask
     private float ChaseDistance = 5f;
     private Cop Cop;
     private Vehicle CopsVehicle;
+    private int CopsSeat = -1;
+
+
     private SubTask CurrentSubTask;
     private Task CurrentTask = Task.Nothing;
     private uint GameTimeChaseStarted;
@@ -26,6 +29,8 @@ public class Chase : ComplexTask
     private bool prevIsChasingSlowly = false;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
+    private SeatAssigner SeatAssigner;
+
     public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
         Name = "Chase";
@@ -93,6 +98,8 @@ public class Chase : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            SeatAssigner = new SeatAssigner(Ped, World, World.Vehicles.PoliceVehicleList);
+
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
             GameTimeChaseStarted = Game.GameTime;
             if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
@@ -126,61 +133,74 @@ public class Chase : ComplexTask
     }
     public override void Update()
     {
-        if (Ped.Pedestrian.Exists() && ShouldUpdate)
+        if(!Ped.Pedestrian.Exists() || !ShouldUpdate)
         {
-            if (Ped.Pedestrian.IsInAnyPoliceVehicle && !CopsVehicle.Exists())
-            {
-                CopsVehicle = Ped.Pedestrian.CurrentVehicle;
-            }
-            Task UpdatedTask = GetCurrentTaskDynamic();
-            GameFiber.Yield();
-            if (Ped.Pedestrian.Exists())
-            {
-                if (CurrentTask != UpdatedTask)
-                {
-                    IsFirstRun = true;
-                    hasOwnFiber = false;
-                    CurrentTask = UpdatedTask;
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-                    //EntryPoint.WriteToConsole($"TASKER: Chase SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
-                    ExecuteCurrentSubTask();
-                }
-                else if (NeedsUpdates)
-                {
-                    ExecuteCurrentSubTask();
-                }
-                else if (IsChasingSlowly != prevIsChasingSlowly)
-                {
-                    CurrentSubTask = SubTask.None;
-                    if (!hasOwnFiber)
-                    {
-                        ExecuteCurrentSubTask();
-                    }
-                    prevIsChasingSlowly = IsChasingSlowly;
-                }
-                if (Ped.Pedestrian.Exists() && Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
-                {
-                    //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
-                    SetSiren();
-                    if (Ped.IsInVehicle && Ped.Pedestrian.CurrentVehicle.Exists())
-                    {
-                        if (Ped.Pedestrian.CurrentVehicle.Speed == 0f)
-                        {
-                            if (GameTimeVehicleStoppedMoving == 0)
-                            {
-                                GameTimeVehicleStoppedMoving = Game.GameTime;
-                            }
-
-                        }
-                        else
-                        {
-                            GameTimeVehicleStoppedMoving = 0;
-                        }
-                    }
-                }
-            }
-            GameTimeLastRan = Game.GameTime;
+            return;
         }
+        if (Ped.Pedestrian.IsInAnyPoliceVehicle && !CopsVehicle.Exists())
+        {
+            CopsVehicle = Ped.Pedestrian.CurrentVehicle;
+            CopsSeat = Ped.Pedestrian.SeatIndex;
+        }
+        if(!CopsVehicle.Exists())
+        {
+            SeatAssigner.AssignDriverSeat(true);
+            if(SeatAssigner.VehicleAssigned != null && SeatAssigner.VehicleAssigned.Vehicle.Exists())
+            {
+                CopsVehicle = SeatAssigner.VehicleAssigned.Vehicle;
+                CopsSeat = SeatAssigner.SeatAssigned;
+                EntryPoint.WriteToConsole("ASSIGNED COP NEW VEHICLE");
+            }
+        }
+        Task UpdatedTask = GetCurrentTaskDynamic();
+        GameFiber.Yield();
+        if (Ped.Pedestrian.Exists())
+        {
+            if (CurrentTask != UpdatedTask)
+            {
+                IsFirstRun = true;
+                hasOwnFiber = false;
+                CurrentTask = UpdatedTask;
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+                //EntryPoint.WriteToConsole($"TASKER: Chase SubTask Changed: {Ped.Pedestrian.Handle} to {CurrentTask} {CurrentDynamic}");
+                ExecuteCurrentSubTask();
+            }
+            else if (NeedsUpdates)
+            {
+                ExecuteCurrentSubTask();
+            }
+            else if (IsChasingSlowly != prevIsChasingSlowly)
+            {
+                CurrentSubTask = SubTask.None;
+                if (!hasOwnFiber)
+                {
+                    ExecuteCurrentSubTask();
+                }
+                prevIsChasingSlowly = IsChasingSlowly;
+            }
+            if (Ped.Pedestrian.Exists() && Ped.IsInVehicle)//CurrentTask == Task.VehicleChase || CurrentTask == Task.VehicleChasePed || Cu)
+            {
+                //NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_BEHAVIOR_FLAG(Ped.Pedestrian, (int)eChaseBehaviorFlag.NoContact, true);
+                SetSiren();
+                if (Ped.IsInVehicle && Ped.Pedestrian.CurrentVehicle.Exists())
+                {
+                    if (Ped.Pedestrian.CurrentVehicle.Speed == 0f)
+                    {
+                        if (GameTimeVehicleStoppedMoving == 0)
+                        {
+                            GameTimeVehicleStoppedMoving = Game.GameTime;
+                        }
+
+                    }
+                    else
+                    {
+                        GameTimeVehicleStoppedMoving = 0;
+                    }
+                }
+            }
+        }
+        GameTimeLastRan = Game.GameTime;
+        
         //EntryPoint.WriteToConsole($"TASKER: Chase UpdateEnd: {Ped.Pedestrian.Handle} InVeh: {Ped.IsInVehicle} InVeh2: {Ped.Pedestrian.IsInAnyVehicle(false)}");
     }
     public override void ReTask()
@@ -370,7 +390,7 @@ public class Chase : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, Ped.LastSeatIndex, 2.0f, 9);
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, 9);
             }
         }
         //EntryPoint.WriteToConsole(string.Format("Started Enter Old Car: {0}", Ped.Pedestrian.Handle));

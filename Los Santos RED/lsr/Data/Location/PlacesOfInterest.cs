@@ -1538,6 +1538,13 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){BannerImagePath = "larrysrv.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
+
+             //CameraPosition = new Vector3(1224.612f, 2711.322f, 39.84733f), CameraDirection = new Vector3(0.03426333f, 0.9912365f, -0.1275782f), CameraRotation = new Rotator(-7.329671f, 2.152019E-07f, -1.979712f),
+
+              //  ItemPreviewPosition = new Vector3(1224.737f, 2720.088f, 37.65635f), ItemPreviewHeading = 90.58456f,
+
+
+
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(1236.887f, 2709.858f, 38.00579f), 201.5402f),
 

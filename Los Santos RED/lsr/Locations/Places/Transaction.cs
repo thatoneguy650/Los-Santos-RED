@@ -39,6 +39,7 @@ public class Transaction
     public string StoreName { get; set; } = "";
     public int MoneySpent { get; set; } = 0;
     public bool IsStealing { get; set; }
+    public bool IsShowingConfirmDialog { get; set; } = false;
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
     {
         MenuPool = menuPool;
@@ -284,7 +285,7 @@ public class Transaction
     }
     public void ProcessTransactionMenu()
     {
-        while (MenuPool.IsAnyMenuOpen())
+        while (MenuPool.IsAnyMenuOpen() || IsShowingConfirmDialog)
         {
             MenuPool.ProcessMenus();
             Update();

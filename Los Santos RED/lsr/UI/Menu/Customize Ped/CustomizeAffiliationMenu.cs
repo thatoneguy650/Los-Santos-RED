@@ -88,13 +88,19 @@ public class CustomizeAffiliationMenu
         AffiliationSubMenu.AddItem(GangsMenu);
 
 
-        AgenciesMenu = new UIMenuListScrollerItem<Agency>("Set Agency", "Join a law enforcement agency", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.LawEnforcement));
+        AgenciesMenu = new UIMenuListScrollerItem<Agency>("Set Agency", "Join a law enforcement agency. ~r~WIP~s~", Agencies.GetAgencies().Where(x => x.ResponseType == ResponseType.LawEnforcement));
         AgenciesMenu.Activated += (sender, selectedItem) =>
         {
             PedCustomizer.AssignedGang = null;
             PedCustomizer.AssignedAgency = AgenciesMenu.SelectedItem;
             SetCurrent();
         };
+#if DEBUG
+        AgenciesMenu.Enabled = true;
+#else
+        AgenciesMenu.Enabled = false;
+#endif
+
         AffiliationSubMenu.AddItem(AgenciesMenu);
         SetCurrent();
     }
@@ -122,8 +128,6 @@ public class CustomizeAffiliationMenu
         {
             CurrentValueMenu.RightLabel = "";
         }
-        
-
     }
 
     public void OnModelChanged()

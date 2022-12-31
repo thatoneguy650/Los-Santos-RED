@@ -256,7 +256,7 @@ public class SellMenu : Menu
         {
             try
             {
-                selectedMenu.ModItem.CreatePreview(Transaction, StoreCam, false);
+                selectedMenu.ModItem.CreatePreview(Transaction, StoreCam, false, World, Settings);
             }
             catch (Exception ex)
             {

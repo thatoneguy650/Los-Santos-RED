@@ -677,7 +677,7 @@ public class WeaponItem : ModItem
             EntryPoint.WriteToConsole($"Weapon Preview Error {ex.Message} {ex.StackTrace}", 0);
         }
     }
-    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase)
+    public override void CreatePreview(Transaction Transaction, Camera StoreCam, bool isPurchase, IEntityProvideable world, ISettingsProvideable settings)
     {
         try
         {
