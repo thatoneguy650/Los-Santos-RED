@@ -69,6 +69,71 @@ public class BasicLocation
             }
         }
     }
+    public BasicLocation()
+    {
+
+    }
+    public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description)
+    {
+        EntrancePosition = _EntrancePosition;
+        EntranceHeading = _EntranceHeading;
+        Name = _Name;
+        Description = _Description;
+        FullName = Name;
+    }
+    public string Name { get; set; }
+    public string FullName { get; set; }
+    public string Description { get; set; }
+    public bool IsEnabled { get; set; } = true;
+    public bool IsTemporarilyClosed { get; set; } = false;
+    public string BannerImagePath { get; set; } = "";
+    public bool RemoveBanner { get; set; } = false;
+    public bool IsBlipEnabled { get; set; } = true;
+    public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
+    public virtual Color MapIconColor { get; set; } = Color.White;
+    public virtual float MapIconScale { get; set; } = 1.0f;
+    public virtual float MapIconRadius { get; set; } = 1.0f;
+    public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
+    public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
+    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
+    public float EntranceHeading { get; set; }
+    public int OpenTime { get; set; } = 6;
+    public int CloseTime { get; set; } = 20;
+    public int InteriorID { get; set; } = -1;
+    public bool IsWalkup { get; set; } = false;
+    public virtual bool ShowsOnDirectory { get; set; } = true;
+    public virtual string TypeName { get; set; } = "Location";
+    public virtual int SortOrder { get; set; } = 999;
+    public string StateLocation { get; set; }
+    public string ScannerFilePath { get; set; } = "";
+    [XmlIgnore]
+    public Texture BannerImage { get; set; }
+    [XmlIgnore]
+    public bool IsPlayerInterestedInLocation { get; set; } = false;
+    [XmlIgnore]
+    public bool IsActivated { get; set; } = false;
+    [XmlIgnore]
+    public int CellX { get; set; }
+    [XmlIgnore]
+    public int CellY { get; set; }
+    [XmlIgnore]
+    public string FullStreetAddress { get; set; }
+    [XmlIgnore]
+    public string StreetAddress { get; set; }
+    [XmlIgnore]
+    public string ZoneName { get; set; }
+    [XmlIgnore]
+    public bool IsNearby { get; private set; } = false;
+    [XmlIgnore]
+    public uint GameTimeLastMentioned { get; set; }
+    public float DistanceToPlayer => distanceToPlayer;
+    public Blip Blip => createdBlip;
+    public bool ShouldAlwaysHaveBlip => false;
+    public bool Is247 => CloseTime >= 24;
+    public bool HasInterior => InteriorID != -1;
+    public bool HasBannerImage => BannerImagePath != "";
+    public Interior Interior => interior;
+    public bool IsSameState(string state) => String.IsNullOrEmpty(state) || StateLocation == state;
     public void StoreData(IZones zones, IStreets streets)
     {
         Zone placeZone = zones.GetZone(EntrancePosition);
@@ -105,97 +170,12 @@ public class BasicLocation
         ZoneName = zoneString;
 
 
-        if(String.IsNullOrEmpty(StateLocation))
+        if (String.IsNullOrEmpty(StateLocation))
         {
             StateLocation = stateString;
         }
         CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
-    }
-    public bool HasBannerImage => BannerImagePath != "";
-    public string BannerImagePath { get; set; } = "";
-    public bool RemoveBanner { get; set; } = false;
-    public bool IsEnabled { get; set; } = true;
-    public string Name { get; set; }
-    public string FullName { get; set; }
-    public bool IsTemporarilyClosed { get; set; } = false;
-    public string Description { get; set; }
-    public Vector3 EntrancePosition { get; set; } = Vector3.Zero;
-    public float EntranceHeading { get; set; }
-    public Blip Blip => createdBlip;
-    public bool ShouldAlwaysHaveBlip => false;
-    public bool IsBlipEnabled { get; set; } = true;
-    public bool Is247 => CloseTime >= 24;
-    public int OpenTime { get; set; } = 6;
-    public int CloseTime { get; set; } = 20;
-    public bool HasInterior => InteriorID != -1;
-    public int InteriorID { get; set; } = -1;
-    public Interior Interior => interior;
-    public string ScannerFilePath { get; set; } = "";
-    public bool IsWalkup { get; set; } = false;
-
-    public virtual string TypeName { get; set; } = "Location";
-    public virtual bool ShowsOnDirectory { get; set; } = true;
-    public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
-    public virtual Color MapIconColor { get; set; } = Color.White;
-    public virtual float MapIconScale { get; set; } = 1.0f;
-    public virtual float MapIconRadius { get; set; } = 1.0f;
-    public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
-    public virtual float MapClosedIconAlpha { get; set; } = 0.25f;
-    public virtual int SortOrder { get; set; } = 999;
-
-    public float DistanceToPlayer => distanceToPlayer;
-
-    [XmlIgnore]
-    public Texture BannerImage { get; set; }
-    [XmlIgnore]
-    public bool IsPlayerInterestedInLocation { get; set; } = false;
-    [XmlIgnore]
-    public bool IsActivated { get; set; } = false;
-    [XmlIgnore]
-    public int CellX { get; set; }
-    [XmlIgnore]
-    public int CellY { get; set; }
-    [XmlIgnore]
-    public string FullStreetAddress { get; set; }
-    [XmlIgnore]
-    public string StreetAddress { get; set; }
-    [XmlIgnore]
-    public string ZoneName { get; set; }
-    [XmlIgnore]
-    public bool IsNearby { get; private set; } = false;
-    [XmlIgnore]
-    public uint GameTimeLastMentioned { get; set; }
-
-    public string StateLocation { get; set; }
-
-    public bool IsSameState(string state) => String.IsNullOrEmpty(state) || StateLocation == state;
-
-
-    public BasicLocation()
-    {
-
-    }
-    public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description)
-    {
-        EntrancePosition = _EntrancePosition;
-        EntranceHeading = _EntranceHeading;
-        Name = _Name;
-        Description = _Description;
-        FullName = Name;
-    }
-
-    public BasicLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string _FullName)
-    {
-        EntrancePosition = _EntrancePosition;
-        EntranceHeading = _EntranceHeading;
-        Name = _Name;
-        Description = _Description;
-        FullName = _FullName;
-    }
-    public override string ToString()
-    {
-        return Name;
     }
     public bool IsOpen(int currentHour)
     {
@@ -204,6 +184,10 @@ public class BasicLocation
             return false;
         }
         return (CloseTime == 24 && OpenTime == 0) || (currentHour >= OpenTime && currentHour <= CloseTime);
+    }
+    public override string ToString()
+    {
+        return Name;
     }
     public virtual void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world)
     {
@@ -266,8 +250,6 @@ public class BasicLocation
             GameTimeLastCheckedDistance = Game.GameTime;
         }
     }
-
-
     public void UpdateBlip(ITimeReportable time)
     {
         if (Blip.Exists())
@@ -290,7 +272,6 @@ public class BasicLocation
             }
         }
     }
-
     public virtual void Deactivate()
     {
         IsActivated = false;
@@ -347,13 +328,6 @@ public class BasicLocation
         return locationBlip;
 
     }
-
-
-
-
-
-
-
     public bool CheckIsNearby(int cellX, int cellY, int Distance)
     {
         if (GameTimeLastCheckedNearby == 0 || Game.GameTime - GameTimeLastCheckedNearby >= NearbyUpdateIntervalTime)
@@ -390,6 +364,5 @@ public class BasicLocation
         return toreturn;
 
     }
-
 }
 

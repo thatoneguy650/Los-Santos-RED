@@ -47,24 +47,19 @@ public class Interior
         ID = iD;
         Name = name;
     }
-
     public int ID { get; set; }
     public string Name { get; set; }
     public bool IsMPOnly { get; set; } = false;
     public bool IsSPOnly { get; set; } = false;
-
     public bool IsTeleportEntry { get; set; } = false;
-
-    public Vector3 DisabledInteriorCoords = Vector3.Zero;
+    public Vector3 DisabledInteriorCoords { get; set; } = Vector3.Zero;
     public List<InteriorDoor> Doors { get; set; } = new List<InteriorDoor>();
-
     public List<string> RequestIPLs { get; set; } = new List<string>();
     public List<string> RemoveIPLs { get; set; } = new List<string>();
     public List<string> InteriorSets { get; set; } = new List<string>();
-    public bool IsActive { get; set; } = false;
+    //public bool IsActive { get; set; } = false;
     public Vector3 InteriorEgressPosition { get; set; }
     public float InteriorEgressHeading { get; set; }
-
     public void Load()
     {
         GameFiber.StartNew(delegate
@@ -106,7 +101,7 @@ public class Interior
                     //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), false);
                 }
                 NativeFunction.Natives.REFRESH_INTERIOR(ID);
-                IsActive = true;
+               // IsActive = true;
                 GameFiber.Yield();
             }
             catch (Exception ex)
@@ -158,7 +153,7 @@ public class Interior
                         //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), true);
                     }
                     NativeFunction.Natives.REFRESH_INTERIOR(ID);
-                    IsActive = false;
+                   // IsActive = false;
                     GameFiber.Yield();
                 }
                 catch (Exception ex)

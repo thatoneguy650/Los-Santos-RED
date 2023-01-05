@@ -57,34 +57,33 @@ public class Gang
         ContactIcon = contactIcon;
         MemberName = _MemberName;
     }
-    public Color Color => Color.FromName(ColorString);
-    public string ColorString { get; set; } = "White";
-    public bool CanSpawnAnywhere { get; set; } = false;
-    public string ColorInitials
-    {
-        get
-        {
-            return ColorPrefix + ShortName;
-        }
-    }
-    public string ColorPrefix { get; set; } = "~s~";
+    public string ID { get; set; } = "UNK";
     public string FullName { get; set; } = "Unknown";
     public string ShortName { get; set; } = "Unk";
-    public bool HasMotorcycles => Vehicles.Any(x => x.IsMotorcycle);
-    public string ID { get; set; } = "UNK";
-    public string LicensePlatePrefix { get; set; } = "";
-    public uint MaxWantedLevelSpawn { get; set; } = 6;
-    public uint MinWantedLevelSpawn { get; set; } = 0;
-    public int SpawnLimit { get; set; } = 10;
-    public bool SpawnsOnHighway { get; set; } = false;
+    public string MemberName { get; set; } = "Gang Member";
     public string ContactName { get; set; } = "Unknown";
     public string ContactIcon { get; set; }
-    public string DealerMenuGroup { get; set; } = "";
     public string DenName { get; set; } = "Den";
+    public string ColorPrefix { get; set; } = "~s~";
+    public string ColorString { get; set; } = "White";
+    public string LicensePlatePrefix { get; set; } = "";
+    public int SpawnLimit { get; set; } = 10;
+    public bool CanSpawnAnywhere { get; set; } = false;
+    public uint MinWantedLevelSpawn { get; set; } = 0;
+    public uint MaxWantedLevelSpawn { get; set; } = 6;
+    public string HeadDataGroupID { get; set; }
+    public string PersonnelID { get; set; }
+    public string MeleeWeaponsID { get; set; }
+    public string SideArmsID { get; set; }
+    public string LongGunsID { get; set; }
+    public string VehiclesID { get; set; }
+    public int MinimumRep { get; set; } = -2000;
+    public int MaximumRep { get; set; } = 2000;
+    public int StartingRep { get; set; } = 200;
+    public int NeutralRepLevel { get; set; } = 0;
+    public int FriendlyRepLevel { get; set; } = 500;
+    public bool AddAmbientRep { get; set; } = true;
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
-    public float PercentageWithLongGuns { get; set; } = 5f;
-    public float PercentageWithSidearms { get; set; } = 40f;
-    public float PercentageWithMelee { get; set; } = 50f;
     public int PickupPaymentMin { get; set; } = 200;
     public int PickupPaymentMax { get; set; } = 1000;
     public int TheftPaymentMin { get; set; } = 1000;
@@ -98,58 +97,41 @@ public class Gang
     public float FightPercentage { get; set; } = 80f;
     public float FightPolicePercentage { get; set; } = 50f;
     public float DrugDealerPercentage { get; set; } = 40f;
+    public string DealerMenuGroup { get; set; } = "";
     public int AmbientMemberMoneyMin { get; set; } = 500;
     public int AmbientMemberMoneyMax { get; set; } = 1200;
-
-
     public int DealerMemberMoneyMin { get; set; } = 1500;
     public int DealerMemberMoneyMax { get; set; } = 5000;
-
-
-    public float VehicleSpawnPercentage { get; set; } = 60f;
     public int CostToPayoffGangScalar { get; set; } = 5;
     public bool RemoveRepOnWantedInTerritory { get; set; } = true;
-    public int RemoveRepoOnWantedInTerritoryScalar { get; set; } = 5;
-    public bool AddAmbientRep { get; set; } = true;
-    public int MinimumRep { get; set; } = -2000;
-    public int MaximumRep { get; set; } = 2000;
-    public int StartingRep { get; set; } = 200;
-    public int NeutralRepLevel { get; set; } = 0;
-    public int FriendlyRepLevel { get; set; } = 500;
+    public int RemoveRepOnWantedInTerritoryScalar { get; set; } = 5;
     public float PercentageTrustingOfPlayer { get; set; } = 60f;
-    public List<string> EnemyGangs = new List<string>();
-    public bool IsFedUpWithPlayer { get; set; } = false;
-
+    public float PercentageWithLongGuns { get; set; } = 5f;
+    public float PercentageWithSidearms { get; set; } = 40f;
+    public float PercentageWithMelee { get; set; } = 50f;
+    public float VehicleSpawnPercentage { get; set; } = 60f;
     public int MemberKickUpDays { get; set; } = 7;
     public int MemberKickUpAmount { get; set; } = 2000;
     public int MemberKickUpMissLimit { get; set; } = 3;
-
-
-
-
-    [XmlIgnore]
-    public bool HasWantedMembers { get; set; }
-
-
+    public List<string> EnemyGangs { get; set; } = new List<string>();
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
-    public string HeadDataGroupID { get; set; }
     [XmlIgnore]
-    public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
-    public string PersonnelID { get; set; }
+    public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>(); 
     [XmlIgnore]
     public List<IssuableWeapon> MeleeWeapons { get; set; } = new List<IssuableWeapon>();
-    public string MeleeWeaponsID { get; set; }
     [XmlIgnore]
-    public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
-    public string SideArmsID { get; set; }
+    public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();  
     [XmlIgnore]
-    public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
-    public string LongGunsID { get; set; }
+    public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();  
     [XmlIgnore]
     public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
-    public string VehiclesID { get; set; }
-    public string MemberName { get; set; }
+    [XmlIgnore]
+    public bool IsFedUpWithPlayer { get; set; } = false;
+    [XmlIgnore]
+    public bool HasWantedMembers { get; set; }
+    public Color Color => Color.FromName(ColorString);
+    public string ColorInitials => ColorPrefix + ShortName;
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
     {

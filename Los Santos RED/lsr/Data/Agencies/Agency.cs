@@ -18,11 +18,12 @@ public class Agency
     public Agency()
     {
     }
-    public Agency(string _ColorPrefix, string _ID, string _FullName, string _AgencyColorString, Classification _AgencyClassification, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string groupName)
+    public Agency(string _ColorPrefix, string _ID, string _shortName, string _FullName, string _AgencyColorString, Classification _AgencyClassification, string _DispatchablePeropleGroupID, string _DispatchableVehicleGroupID, string _LicensePlatePrefix, string meleeWeaponsID, string sideArmsID, string longGunsID, string groupName)
     {
         ColorPrefix = _ColorPrefix;
         ID = _ID;
         FullName = _FullName;
+        ShortName = _shortName;
         LessLethalWeaponsID = meleeWeaponsID;
         PersonnelID = _DispatchablePeropleGroupID;
         ColorString = _AgencyColorString;
@@ -31,64 +32,43 @@ public class Agency
         LicensePlatePrefix = _LicensePlatePrefix;
         SideArmsID = sideArmsID;
         LongGunsID = longGunsID;
-        GroupName = groupName;
+        MemberName = groupName;
     }
+    public string ID { get; set; } = "UNK";
+    public string FullName { get; set; } = "Unknown";
+    public string ShortName { get; set; } = "Unk";
+    public string MemberName { get; set; } = "Cop";
     public Classification Classification { get; set; } = Classification.Other;
-    public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : ResponseType.LawEnforcement;
-    public Color Color => Color.FromName(ColorString);
-    public string ColorString { get; set; } = "White";
-    public bool CanCheckTrafficViolations
-    {
-        get
-        {
-            if (Classification == Classification.Police || Classification == Classification.Federal || Classification == Classification.Sheriff || Classification == Classification.State)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-    public bool CanSpawnAnywhere { get; set; } = false;
-    public string ColorInitials
-    {
-        get
-        {
-            return ColorPrefix + ID;
-        }
-    }
     public int Division { get; set; } = -1;
     public string ColorPrefix { get; set; } = "~s~";
-    public string FullName { get; set; } = "Unknown";
-    public bool HasMotorcycles => Vehicles.Any(x => x.IsMotorcycle);
-    public string ID { get; set; } = "UNK";
+    public string ColorString { get; set; } = "White";
     public string LicensePlatePrefix { get; set; } = "";
-    public uint MaxWantedLevelSpawn { get; set; } = 6;
-    public uint MinWantedLevelSpawn { get; set; } = 0;
     public int SpawnLimit { get; set; } = 99;
+    public bool CanSpawnAnywhere { get; set; } = false;
     public bool SpawnsOnHighway { get; set; } = false;
-    public string GroupName { get; set; } = "Cop";
-    [XmlIgnore]
-    public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
+    public uint MinWantedLevelSpawn { get; set; } = 0;
+    public uint MaxWantedLevelSpawn { get; set; } = 6;
     public string HeadDataGroupID { get; set; }
-    [XmlIgnore]
-    public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
     public string PersonnelID { get; set; }
-    [XmlIgnore]
-    public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
+    public string LessLethalWeaponsID { get; set; }
     public string SideArmsID { get; set; }
-    [XmlIgnore]
-    public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
     public string LongGunsID { get; set; }
-    [XmlIgnore]
-    public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
     public string VehiclesID { get; set; }
     [XmlIgnore]
+    public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();
+    [XmlIgnore]
+    public List<DispatchablePerson> Personnel { get; set; } = new List<DispatchablePerson>();
+    [XmlIgnore]
+    public List<IssuableWeapon> SideArms { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<IssuableWeapon> LongGuns { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<DispatchableVehicle> Vehicles { get; set; } = new List<DispatchableVehicle>();
+    [XmlIgnore]
     public List<IssuableWeapon> LessLethalWeapons { get; set; } = new List<IssuableWeapon>();
-    public string LessLethalWeaponsID { get; set; }
-
+    public string ColorInitials => ColorPrefix + ShortName;
+    public Color Color => Color.FromName(ColorString);
+    public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : ResponseType.LawEnforcement;
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
     {
@@ -256,7 +236,4 @@ public class Agency
         }
         return beatNumber;
     }
-
-
-
 }

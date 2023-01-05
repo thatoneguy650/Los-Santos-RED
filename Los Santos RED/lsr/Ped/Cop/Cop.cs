@@ -186,9 +186,9 @@ public class Cop : PedExt, IWeaponIssuable
             BeatNumber = AssignedAgency.GetNextBeatNumber();
             GroupName = $"{AssignedAgency.ID} {Division}-{UnityType}-{BeatNumber}";
         }
-        else if (AssignedAgency.GroupName != "")
+        else if (AssignedAgency.MemberName != "")
         {
-            GroupName = AssignedAgency.GroupName;
+            GroupName = AssignedAgency.MemberName;
         }
         if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
         {

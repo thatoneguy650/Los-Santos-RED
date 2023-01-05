@@ -44,7 +44,7 @@ public class GangRelationships
         {
             if (!rg.IsMember)
             {
-                int WantedRep = rg.Gang.RemoveRepoOnWantedInTerritoryScalar * Player.WantedLevel;
+                int WantedRep = rg.Gang.RemoveRepOnWantedInTerritoryScalar * Player.WantedLevel;
                 if (Player.IsWanted)
                 {
                     if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID && rg.ReputationLevel >= WantedRep)

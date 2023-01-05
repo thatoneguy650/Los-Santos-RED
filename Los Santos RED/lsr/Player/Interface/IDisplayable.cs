@@ -54,5 +54,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsCustomizingPed { get; }
         bool IsUsingController { get; }
         bool IsShowingActionWheel { get; set; }
+        bool IsInAutomobile { get; }
+        bool IsOnMotorcycle { get; }
     }
 }

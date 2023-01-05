@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 [Serializable]
 public class Street
 {
-    public string Name = "";
-    public float SpeedLimit = 50f;
-    private string SpeedLimitUnits = "MPH";
+    public string Name { get; set; } = "";
+    public float SpeedLimit { get; set; } = 50f;
+    private string SpeedLimitUnits { get; set; } = "MPH";
+    public bool IsHighway { get; set; } = false;
     public float SpeedLimitKMH => SpeedLimitUnits == "KM/H" ? SpeedLimit : SpeedLimit * 1.60933f;
     public float SpeedLimitMPH => SpeedLimitUnits == "MPH" ? SpeedLimit : SpeedLimit * 0.621371f;
-    public bool IsHighway = false;
     public Street()
     {
 

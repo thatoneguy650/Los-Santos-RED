@@ -146,6 +146,7 @@
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
+    <Compile Include="lsr\Data\Peds\PossibleNames.cs" />
     <Compile Include="lsr\Helper\StaticStrings.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Carrier.cs" />

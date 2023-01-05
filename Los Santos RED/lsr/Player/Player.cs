@@ -280,6 +280,8 @@ namespace Mod
         public bool IsHotWiring { get; private set; }
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
+        public bool IsOnBicycle { get; private set; }
+
         public bool IsIncapacitated => IsStunned || IsRagdoll;
         public bool IsInCover { get; private set; }
         public bool IsInFirstPerson { get; private set; }
@@ -1697,15 +1699,23 @@ namespace Mod
                 }
                 IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
                 IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
-                IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || Game.LocalPlayer.Character.IsOnBike || Game.LocalPlayer.Character.IsInHelicopter);
-                IsOnMotorcycle = Game.LocalPlayer.Character.IsOnBike;
+
+                bool isModelBike = false;
+                bool isModelBicycle = false;
+
+                if (Character.CurrentVehicle.Exists())
+                {
+                    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
+                    isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
+                }
+                IsOnBicycle = isModelBicycle && isModelBike;
+                IsOnMotorcycle = !isModelBicycle && isModelBike;
+                IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || IsOnBicycle || IsOnMotorcycle || Game.LocalPlayer.Character.IsInHelicopter);
                 UpdateCurrentVehicle();
                 GameFiber.Yield();
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
-
                     IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
-
                     CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
                     if (CurrentVehicleRoll >= 80f || CurrentVehicleRoll <= -80f)
                     {
@@ -1721,7 +1731,6 @@ namespace Mod
                 {
                     CurrentVehicleIsRolledOver = false;
                 }
-
                 if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
                 {
                     VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;

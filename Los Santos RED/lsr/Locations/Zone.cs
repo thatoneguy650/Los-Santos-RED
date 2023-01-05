@@ -36,13 +36,17 @@ public class Zone
         Economy = economy;
         Type = type;
     }
-    public string DispatchUnitName { get; set; }
+
+
     public string InternalGameName { get; set; }
     public string DisplayName { get; set; }
     public string CountyID { get; set; }
-    public bool IsRestrictedDuringWanted { get; set; } = false;
-    public Vector2[] Boundaries { get; set; }
     public string State { get; set; }
+    public bool IsRestrictedDuringWanted { get; set; } = false;
+    public bool IsSpecificLocation { get; set; } = false;
+    public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
+    public eLocationType Type { get; set; } = eLocationType.Rural;
+    public Vector2[] Boundaries { get; set; }
     public string FullDisplayName(ICounties counties)
     {
         GameCounty myCounty = counties.GetCounty(CountyID);
@@ -52,27 +56,17 @@ public class Zone
         }
         return DisplayName;
     }
-
     [XmlIgnore]
     public string AssignedLEAgencyInitials { get; set; }
     [XmlIgnore]
     public string AssignedSecondLEAgencyInitials { get; set; }
     [XmlIgnore]
     public string AssignedGangInitials { get; set; }
-
-
     [XmlIgnore]
     public List<Gang> Gangs { get; set; }
-
     [XmlIgnore]
     public List<Agency> Agencies { get; set; }
-
-
     public bool IsLowPop => Type == eLocationType.Rural || Type == eLocationType.Wilderness;
-    public bool IsSpecificLocation { get; set; } = false;
-    public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
-    public eLocationType Type { get; set; } = eLocationType.Rural;
-
     public void StoreData(IGangTerritories gangTerritories, IJurisdictions jurisdictions)
     {
         Gangs = new List<Gang>();

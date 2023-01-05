@@ -24,11 +24,11 @@ public class ShopMenu
         Items = items;
         GroupName = groupName;
     }
-    public List<MenuItem> Items { get; set; }
     public string ID { get; set; }
     public string Name { get; set; }
     public string GroupName { get; set; } = "";
     public string BannerOverride { get; set; } = "";
+    public List<MenuItem> Items { get; set; }
     public void Randomize()
     {
         foreach (MenuItem mi in Items)

@@ -178,10 +178,10 @@ public class Jurisdictions : IJurisdictions
             return null;
         }
     }
-    public bool CanSpawnPedestrianAtZone(string zoneName, string agencyInitials)
-    {
-        return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower() && x.AgencyInitials == agencyInitials).FirstOrDefault()?.CanSpawnPedestrianOfficers == true;
-    }
+    //public bool CanSpawnPedestrianAtZone(string zoneName, string agencyInitials)
+    //{
+    //    return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower() && x.AgencyInitials == agencyInitials).FirstOrDefault()?.CanSpawnPedestrianOfficers == true;
+    //}
     private void DefaultZoneConfig()
     {
         ZoneJurisdictionsList = new List<ZoneJurisdiction>()

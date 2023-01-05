@@ -7,12 +7,11 @@ using System.Threading.Tasks;
 
 public class CountyJurisdiction
 {
-    public string AgencyInitials { get; set; } = "";
     public string CountyID { get; set; }
+    public string AgencyInitials { get; set; } = "";
     public int Priority { get; set; } = 99;
     public int AmbientSpawnChance { get; set; } = 0;
     public int WantedSpawnChance { get; set; } = 0;
-    public bool CanSpawnPedestrianOfficers { get; set; } = false;
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)

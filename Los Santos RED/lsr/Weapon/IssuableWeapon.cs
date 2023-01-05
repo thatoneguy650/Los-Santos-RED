@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 [Serializable]
 public class IssuableWeapon
@@ -28,9 +29,11 @@ public class IssuableWeapon
     }
 
     public string ModelName { get; set; }
-    private List<WeaponComponent> PossibleComponents  = new List<WeaponComponent>();
     public WeaponVariation Variation { get; set; }
     public int SpawnChance { get; set; } = 100;
+
+    [XmlIgnore]
+    private List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
     public bool IsTaser => isTaser;
     public void ApplyVariation(Ped WeaponOwner)
     {

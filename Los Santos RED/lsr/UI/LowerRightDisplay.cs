@@ -103,15 +103,15 @@ public class LowerRightDisplay
     }
     public void Display()
     {
-        if(!UI.IsNotShowingFrontEndMenus)
+        if (!UI.IsNotShowingFrontEndMenus)
         {
             return;
         }
-        if(DisplayablePlayer.IsCustomizingPed)
+        if (DisplayablePlayer.IsCustomizingPed)
         {
             return;
         }
-        if(!Settings.SettingsManager.UIGeneralSettings.IsEnabled || !DisplayablePlayer.IsAliveAndFree)
+        if (!Settings.SettingsManager.UIGeneralSettings.IsEnabled || !DisplayablePlayer.IsAliveAndFree)
         {
             return;
         }
@@ -134,7 +134,7 @@ public class LowerRightDisplay
             DisplayPlayerInfo();
             DisplayStreets();
             DisplayZones();
-        }  
+        }
     }
 
     private void DisplayDebug()
@@ -344,7 +344,7 @@ public class LowerRightDisplay
     private string GetVehicleStatusDisplay()
     {
         string CurrentSpeedDisplay = "";
-        if (DisplayablePlayer.CurrentVehicle != null)//was game.localpalyer.character.isinanyvehicle(false)
+        if (DisplayablePlayer.CurrentVehicle != null && (DisplayablePlayer.IsInAutomobile || DisplayablePlayer.IsOnMotorcycle))//was game.localpalyer.character.isinanyvehicle(false)
         {
             CurrentSpeedDisplay = $" {UI.CurrentDefaultTextColor}" + "";
             if (DisplayablePlayer.CurrentVehicle.Vehicle.Exists() && DisplayablePlayer.CurrentVehicle.IsCar && !DisplayablePlayer.CurrentVehicle.Engine.IsRunning)

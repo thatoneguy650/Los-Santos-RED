@@ -54,7 +54,7 @@ public class Indicators
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
                 return;
 
             if (HazardsOn)
@@ -77,7 +77,7 @@ public class Indicators
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
                 return;
 
             if (LeftBlinkerOn)
@@ -99,7 +99,7 @@ public class Indicators
     {
         if (Game.GameTime - GameTimeLastPressIndicator >= 1500)
         {
-            if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+            if (VehicleExt == null || !VehicleExt.Vehicle.Exists() || !VehicleExt.IsCar)
                 return;
 
             if (RightBlinkerOn)

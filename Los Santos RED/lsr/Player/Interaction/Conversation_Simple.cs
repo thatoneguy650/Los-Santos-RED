@@ -197,7 +197,7 @@ public class Conversation_Simple : Interaction
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
             }
-            if (Player.IsInVehicle)
+            if (Player.IsInVehicle || Player.ActivityManager.IsSitting)
             {
                 NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Player.Character, Ped.Pedestrian, -1, 0, 2);
             }

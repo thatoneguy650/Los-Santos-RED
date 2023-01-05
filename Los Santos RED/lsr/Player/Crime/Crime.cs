@@ -27,6 +27,8 @@ public class Crime
     }
     public string ID { get; set; }
     public string Name { get; set; }
+    public bool Enabled { get; set; } = true;
+    public int Priority { get; set; } = 99;
     public bool CanReportBySound { get; set; } = false;
     public bool CanViolateMultipleTimes { get; set; } = true;
     public bool CanViolateWithoutPerception { get; set; } = false;
@@ -36,12 +38,9 @@ public class Crime
     public bool ResultsInLethalForce { get; set; } = false;
     public bool AngersCivilians { get; set; } = false;
     public bool ScaresCivilians { get; set; } = true;
-    public int Priority { get; set; } = 99;
-    public bool Enabled { get; set; } = true;
     public float MaxReportingDistance { get; set; } = 999f;
     public bool RequiresCitation { get; set; } = false;
     public bool RequiresSearch { get; set; } = false;
-
     public bool ShowsWarning { get; set; } = false;
     public string WarningMessage { get; set; } = "";
     public uint TimeBetweenWarnings { get; set; } = 900000;//900000;
