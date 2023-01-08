@@ -57,10 +57,8 @@ public class TaskSettings : ISettingsDefaultable
 
     [Description("Show blips on entities that are related to the task.")]
     public bool ShowEntityBlips { get; set; }
-
-
-
-
+    [Description("Show help text pop ups on task status changes.")]
+    public bool DisplayHelpPrompts { get; set; }
 
     public TaskSettings()
     {
@@ -85,7 +83,7 @@ public class TaskSettings : ISettingsDefaultable
         UndergroundGunsGunPickupComplicationsPercentage = 15f;
 
         ShowEntityBlips = false;
-
+        DisplayHelpPrompts = true;
 
 
 

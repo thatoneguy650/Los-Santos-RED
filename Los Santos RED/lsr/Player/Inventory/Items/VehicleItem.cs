@@ -376,6 +376,16 @@ public class VehicleItem : ModItem
         }
         VehicleExt Car = new VehicleExt(Transaction.SellingVehicle, settings);
         Car.Setup();
+
+        if(Car.IsBoat)
+        {
+            Transaction.RotatePreview = false;
+        }
+        else
+        {
+            Transaction.RotatePreview = true;
+        }
+
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
         world.Vehicles.AddEntity(Car, ResponseType.None);

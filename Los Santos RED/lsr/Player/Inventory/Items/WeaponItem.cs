@@ -683,6 +683,7 @@ public class WeaponItem : ModItem
         {
             if (ModelItem != null && ModelItem.ModelName != "")
             {
+                Transaction.RotatePreview = true;
                 EntryPoint.WriteToConsole($"WEAPON ITEM CREATE PREVIEW {ModelItem.ModelName} {ModelItem.ModelHash}");
                 Vector3 Position = Vector3.Zero;
                 if (StoreCam.Exists())

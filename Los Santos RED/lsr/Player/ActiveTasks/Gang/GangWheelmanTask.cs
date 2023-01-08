@@ -338,7 +338,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             if (Player.IsNotWanted && !Player.Investigation.IsActive && !CurrentTask.IsReadyForPayment)
             {
-                CurrentTask.IsReadyForPayment = true;
+                CurrentTask.OnReadyForPayment(true);
                 if (!hasSentCompleteMessage)
                 {
                     SendMoneyPickupMessage();

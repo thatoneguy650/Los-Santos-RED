@@ -1213,8 +1213,8 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
         };
         List<PawnShop> PawnShops = new List<PawnShop>() {
-            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","ToolMenu"),
-            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","ToolMenu"),
+            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","PawnShopMenu"),
+            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","PawnShopMenu"),
         };
         List<Landmark> Landmarks = new List<Landmark>()
         {
@@ -1552,6 +1552,27 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(1232.931f, 2699.977f, 37.18208f), 94.271f),
                     new SpawnPlace(new Vector3(1210.044f, 2706.118f, 37.17501f), 173.5784f),
                     new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
+                } },
+
+
+            new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elital","ElitasMenu") {
+                CameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f), CameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f), CameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
+                ItemPreviewPosition = new Vector3(-714.89f, -1435.682f, 5.102043f), ItemPreviewHeading = 227.1837f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-1015.187f, -3401.692f, 13.8351f), 327.5063f),
+                    new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
+                    new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
+                } },
+
+            new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") {
+                CameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f), CameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f), CameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
+                ItemPreviewPosition = new Vector3(-755.6831f, -1361.648f, -0.0738305f), ItemPreviewHeading = 229.675f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-884.1031f, -1460.032f, 0.1196398f), 198.8394f),
+                    new SpawnPlace(new Vector3(-892.0487f, -1464.138f, 0.1223292f), 200.6151f),
+                    new SpawnPlace(new Vector3(-901.3271f, -1465.705f, 0.1061458f), 200.2641f),
+                    new SpawnPlace(new Vector3(-832.6543f, -1406.055f, 0.09211653f), 293.3259f),
+                    new SpawnPlace(new Vector3(-833.0579f, -1397.259f, 0.1287543f), 290.7657f),
                 } },
 
         };

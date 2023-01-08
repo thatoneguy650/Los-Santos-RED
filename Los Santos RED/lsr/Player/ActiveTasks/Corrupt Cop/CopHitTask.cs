@@ -162,9 +162,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 else if (IsTargetCopSpawned && TargetCop != null && TargetCop.Pedestrian.Exists() && TargetCop.Pedestrian.IsDead)
                 {
-                    CurrentTask.IsReadyForPayment = true;
-                    Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Ready for Payment");
-                    EntryPoint.WriteToConsole("COP HIT, COP WAS KILLED");
+                    CurrentTask.OnReadyForPayment(true);
                     break;
                 }
                 if (IsTargetCopSpawned && TargetCop != null && !TargetCop.Pedestrian.Exists())//somehow it got removed, set it as despawned

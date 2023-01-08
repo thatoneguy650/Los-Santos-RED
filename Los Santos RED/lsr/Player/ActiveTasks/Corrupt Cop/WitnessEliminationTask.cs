@@ -213,12 +213,8 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         attachedBlip.Delete();
                     }
-                    CurrentTask.IsReadyForPayment = true;
                     EntryPoint.WriteToConsole("Witness Elimination WITNESS WAS KILLED");
-
-                    Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} The witness was killed");
-
-                    //Game.DisplayHelp($"The witness was killed");
+                    CurrentTask.OnReadyForPayment(true);
                     break;
                 }
                 if(IsWitnessSpawned && Witness != null && !Witness.Pedestrian.Exists())//somehow it got removed, set it as despawned

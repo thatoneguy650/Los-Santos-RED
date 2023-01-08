@@ -11,5 +11,6 @@ public interface IMenuProvideable
     bool IsPressingActionWheelButton { get; set; }
     void ToggleMenu();
     void ToggleDebugMenu();
+    void ToggleAltMenu();
 }
 

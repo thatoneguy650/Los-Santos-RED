@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LosSantosRED.lsr.Interface;
+using Rage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,10 +9,12 @@ using System.Threading.Tasks;
 
 public class PlayerTask
 {
-    public PlayerTask(string contactName, bool isActive)
+    private ISettingsProvideable Settings;
+    public PlayerTask(string contactName, bool isActive, ISettingsProvideable settings)
     {
         ContactName = contactName;
         IsActive = isActive;
+        Settings = settings;
     }
 
     public string Name { get; set; } = "";
@@ -37,8 +41,24 @@ public class PlayerTask
     public bool FailOnStandardRespawn { get; set; } = false;
     public bool HasSentExpiringSoon { get; set; } = false;
 
+    public void OnReadyForPayment(bool displayHelp, string helpText)
+    {
+        EntryPoint.WriteToConsole($"OnReadyForPayment {ContactName} displayHelp {displayHelp} helpText {helpText}");
+        IsReadyForPayment = true;
+        if (!displayHelp || !Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
+        {
+            return;
+        }
 
-    //public uint GameTimeCompleted { get; set; }
-    //public uint GameTimeFailed { get; set; }
+        if (helpText == "")
+        {
+            Game.DisplayHelp($"{ContactName} Ready for Payment");
+        }
+        else
+        {
+            Game.DisplayHelp(helpText);
+        }       
+    }
+    public void OnReadyForPayment(bool displayHelp) => OnReadyForPayment(displayHelp, "");
 }
 

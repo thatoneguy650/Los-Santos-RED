@@ -69,10 +69,14 @@ namespace LosSantosRED.lsr
         private bool RecentlyPressedDoorClose => Game.GameTime - GameTimeLastPressedDoorClose <= 500;
         private bool RecentlyPressedIndicators => Game.GameTime - GameTimeLastPressedIndicators <= 500;
         private bool RecentlyPressedEngineToggle => Game.GameTime - GameTimeLastPressedEngineToggle <= 500;
+        private bool RecentlyPressedAltMenu => Game.GameTime - GameTimeLastPressedAltMenu <= 200;
         private bool RecentlyPressedSimplePhone => Game.GameTime - GameTimeLastPressedSimplePhone <= 500;
         private bool IsPressingActionWheelMenu;// => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
         private bool HasShownControllerHelpPrompt;
-        private bool RecentlyPressedSurrender => Game.GameTime - GameTimeLastPressedSurrender <= 750;
+        private uint GameTimeLastPressedAltMenu;
+        private bool CanToggleAltMenu;
+
+        private bool RecentlyPressedSurrender => Game.GameTime - GameTimeLastPressedSurrender <= 1000;
         public bool IsUsingController { get; private set; }   
         public void Tick()
         {        
@@ -305,15 +309,33 @@ namespace LosSantosRED.lsr
         {
             if (!Player.IsDisplayingCustomMenus)
             {
-                if (IsPressingMenuKey || Player.ButtonPrompts.IsPressed("MenuShowBusted") || Player.ButtonPrompts.IsPressed("MenuShowDead") || (IsUsingController && MenuProvider.IsPressingActionWheelButton))
+                if (IsPressingMenuKey || Player.ButtonPrompts.IsPressed("MenuShowBusted") || Player.ButtonPrompts.IsPressed("MenuShowDead"))
                 {
                     MenuProvider.ToggleMenu();
+                }
+                if(IsUsingController && MenuProvider.IsPressingActionWheelButton && CanToggleAltMenu)
+                {
+                    EntryPoint.WriteToConsole("TOGGLE ALT MENU RAN");
+                    CanToggleAltMenu = false;
+                    MenuProvider.ToggleAltMenu();
+                   // GameTimeLastPressedAltMenu = Game.GameTime;
                 }
                 else if (IsPressingDebugMenuKey)
                 {
                     MenuProvider.ToggleDebugMenu();
                 }
+
+
+
             }
+
+
+            if(!MenuProvider.IsPressingActionWheelButton && !CanToggleAltMenu)
+            {
+                CanToggleAltMenu = true;
+            }
+
+
         }
         private void ProcessButtonPrompts()
         {

@@ -200,7 +200,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 GunProp.IsPersistent = false;
             }
-            CurrentTask.IsReadyForPayment = true;
+            CurrentTask.OnReadyForPayment(true);
             Player.LastFriendlyVehicle = null;
             SpawnedVehicle.SetLock((VehicleLockStatus)10);
             EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");

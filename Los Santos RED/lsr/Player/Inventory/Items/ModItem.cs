@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Xml.Serialization;
 using Mod;
 using System.Runtime;
+using static DispatchScannerFiles;
 
 [Serializable()]
 [XmlInclude(typeof(ClothingItem))]
@@ -396,6 +397,10 @@ public class ModItem
                 ModelToSpawn = ModelItem.ModelName;
                 useClose = !ModelItem.IsLarge;
             }
+
+
+            Transaction.RotatePreview = true;
+
             Vector3 Position = Vector3.Zero;
             if (StoreCam.Exists())
             {

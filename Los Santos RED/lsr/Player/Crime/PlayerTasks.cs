@@ -103,44 +103,20 @@ public class PlayerTasks
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
         if(myTask != null)
         {
-            Gang myGang = Gangs.GetGangByContact(contactName);
-            if (myGang != null)
-            {
-                if (myTask.RepAmountOnCompletion != 0)
-                {
-                    Player.RelationshipManager.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnCompletion, false);
-                }
-                Player.RelationshipManager.GangRelationships.SetDebt(myGang, 0);
-            }
-            else if (contactName == StaticStrings.UndergroundGunsContactName)
-            {
-                if (myTask.RepAmountOnCompletion != 0)
-                {
-                    Player.RelationshipManager.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
-                }
-                Player.RelationshipManager.GunDealerRelationship.SetDebt(0);
-            }
-            else if (contactName == StaticStrings.OfficerFriendlyContactName)
-            {
-                if (myTask.RepAmountOnCompletion != 0)
-                {
-                    Player.RelationshipManager.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnCompletion, false);
-                }
-                Player.RelationshipManager.OfficerFriendlyRelationship.SetDebt(0);
-            }
-
-
+            Player.RelationshipManager.SetCompleteTask(contactName, myTask.RepAmountOnCompletion);
             if (myTask.PaymentAmountOnCompletion != 0)
             {
                 Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion);
             }
-
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasCompleted = true;
             myTask.CompletionTime = Time.CurrentDateTime;
             EntryPoint.WriteToConsole($"Task Completed for {contactName}");
-            Game.DisplayHelp($"Task Completed for {contactName}");
+            if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
+            {
+                Game.DisplayHelp($"Task Completed for {contactName}");
+            }
             LastContactTask.RemoveAll(x => x.ContactName == contactName);
             if (addToLast)
             {
@@ -154,46 +130,17 @@ public class PlayerTasks
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
         if (myTask != null)
         {
-            Gang myGang = Gangs.GetGangByContact(contactName);
-            if (myGang != null)
-            {
-                if (myTask.RepAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.GangRelationships.ChangeReputation(myGang, myTask.RepAmountOnFail, false);
-                }
-                if (myTask.DebtAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.GangRelationships.AddDebt(myGang, myTask.DebtAmountOnFail);
-                }
-            }
-            else if(contactName == StaticStrings.UndergroundGunsContactName)
-            {
-                if (myTask.RepAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.GunDealerRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
-                }
-                if (myTask.DebtAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.GunDealerRelationship.AddDebt(myTask.DebtAmountOnFail);
-                } 
-            }
-            else if (contactName == StaticStrings.OfficerFriendlyContactName)
-            {
-                if (myTask.RepAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.OfficerFriendlyRelationship.ChangeReputation(myTask.RepAmountOnFail, false);
-                }
-                if (myTask.DebtAmountOnFail != 0)
-                {
-                    Player.RelationshipManager.OfficerFriendlyRelationship.AddDebt(myTask.DebtAmountOnFail);
-                }
-            }
+            Player.RelationshipManager.SetFailedTask(contactName, myTask.RepAmountOnFail, myTask.DebtAmountOnFail);    
+            
             myTask.IsActive = false;
             myTask.IsReadyForPayment = false;
             myTask.WasFailed = true;
             myTask.FailedTime = Time.CurrentDateTime;
             EntryPoint.WriteToConsole($"Task Failed for {contactName}");
-            Game.DisplayHelp($"Task Failed for {contactName}");
+            if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
+            {
+                Game.DisplayHelp($"Task Failed for {contactName}");
+            }
             LastContactTask.RemoveAll(x => x.ContactName == contactName);
             LastContactTask.Add(myTask);
         }
@@ -207,21 +154,21 @@ public class PlayerTasks
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
         }
     }
     public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void AddQuickTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int hoursToComplete, string taskName)
     {
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
-            PlayerTaskList.Add(new PlayerTask(contactName, true) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddHours(hoursToComplete), StartTime = Time.CurrentDateTime });
+            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddHours(hoursToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void RemoveTask(string contactName)

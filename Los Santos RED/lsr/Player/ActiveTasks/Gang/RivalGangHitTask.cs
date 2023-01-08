@@ -98,11 +98,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers)
                 {
-                    CurrentTask.IsReadyForPayment = true;
+                    CurrentTask.OnReadyForPayment(true);
+                    //CurrentTask.IsReadyForPayment = true;
                     EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
-
-                    Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
-
+                    //Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
                     break;
                 }
                 GameFiber.Sleep(1000);

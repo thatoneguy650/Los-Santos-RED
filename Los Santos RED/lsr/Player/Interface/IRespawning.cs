@@ -10,5 +10,6 @@ namespace LosSantosRED.lsr.Interface
     {
         bool RecentlyRespawned { get; }
         Respawning Respawning { get; }
+        bool IsUsingController { get; }
     }
 }

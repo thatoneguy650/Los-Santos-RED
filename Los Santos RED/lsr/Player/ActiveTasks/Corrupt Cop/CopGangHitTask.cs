@@ -105,8 +105,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
                 {
-                    CurrentTask.IsReadyForPayment = true;
-                    Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Ready for Payment");
+                    CurrentTask.OnReadyForPayment(true);
                     EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
                     break;
                 }

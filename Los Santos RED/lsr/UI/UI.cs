@@ -515,4 +515,15 @@ public class UI : IMenuProvideable
             Toggle(MainMenu);
         }
     }
+    public void ToggleAltMenu()
+    {
+        if (DisplayablePlayer.IsDead)
+        {
+            Toggle(DeathMenu);
+        }
+        else if (DisplayablePlayer.IsBusted)
+        {
+            Toggle(BustedMenu);
+        }
+    }
 }

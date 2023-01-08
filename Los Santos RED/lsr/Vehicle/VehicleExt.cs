@@ -145,6 +145,17 @@ namespace LSR.Vehicles
                 return false;
             }
         }
+        public bool IsBoat
+        {
+            get
+            {
+                if (vehicleClass == VehicleClass.Boat)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
         public bool IsCar { get; private set; }
         private void GetFuelTankCapacity()
         {

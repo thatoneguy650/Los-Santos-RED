@@ -122,7 +122,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             HiringGangDen.ExpectedItemAmount = NumberOfItemsToDeliver;
 
             CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
-            CurrentTask.IsReadyForPayment = true;
+            CurrentTask.OnReadyForPayment(false);
 
 
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);

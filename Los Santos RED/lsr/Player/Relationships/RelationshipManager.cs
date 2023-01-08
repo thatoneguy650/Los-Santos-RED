@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,71 @@ public class RelationshipManager
         GangRelationships.Setup();
         GunDealerRelationship.Setup();
         OfficerFriendlyRelationship.Setup();
+    }
+    public void SetCompleteTask(string contactName, int repAmountOnCompletion)
+    {
+        Gang myGang = Gangs.GetGangByContact(contactName);
+        if (myGang != null)
+        {
+            if (repAmountOnCompletion != 0)
+            {
+                GangRelationships.ChangeReputation(myGang, repAmountOnCompletion, false);
+            }
+            GangRelationships.SetDebt(myGang, 0);
+        }
+        else if (contactName == StaticStrings.UndergroundGunsContactName)
+        {
+            if (repAmountOnCompletion != 0)
+            {
+                GunDealerRelationship.ChangeReputation(repAmountOnCompletion, false);
+            }
+            GunDealerRelationship.SetDebt(0);
+        }
+        else if (contactName == StaticStrings.OfficerFriendlyContactName)
+        {
+            if (repAmountOnCompletion != 0)
+            {
+                OfficerFriendlyRelationship.ChangeReputation(repAmountOnCompletion, false);
+            }
+            OfficerFriendlyRelationship.SetDebt(0);
+        }
+    }
+    public void SetFailedTask(string contactName, int repAmountOnFail, int debtAmountOnFail)
+    {
+        Gang myGang = Gangs.GetGangByContact(contactName);
+        if (myGang != null)
+        {
+            if (repAmountOnFail != 0)
+            {
+                GangRelationships.ChangeReputation(myGang, repAmountOnFail, false);
+            }
+            if (debtAmountOnFail != 0)
+            {
+                GangRelationships.AddDebt(myGang, debtAmountOnFail);
+            }
+        }
+        else if (contactName == StaticStrings.UndergroundGunsContactName)
+        {
+            if (repAmountOnFail != 0)
+            {
+                GunDealerRelationship.ChangeReputation(repAmountOnFail, false);
+            }
+            if (debtAmountOnFail != 0)
+            {
+                GunDealerRelationship.AddDebt(debtAmountOnFail);
+            }
+        }
+        else if (contactName == StaticStrings.OfficerFriendlyContactName)
+        {
+            if (repAmountOnFail != 0)
+            {
+                OfficerFriendlyRelationship.ChangeReputation(repAmountOnFail, false);
+            }
+            if (debtAmountOnFail != 0)
+            {
+                OfficerFriendlyRelationship.AddDebt(debtAmountOnFail);
+            }
+        }
     }
 }
 //default groups and relationships 20221026

@@ -1290,6 +1290,8 @@ public class ModItems : IModItems
             new VehicleItem("Mammoth Thruster", true, ItemType.Vehicles) { ModelName = "thruster" },
             new VehicleItem("Nagasaki Havok", true, ItemType.Vehicles) { ModelName = "havok" },
 
+            new VehicleItem("Buckingham Maverick","Used by law enforcement for surveillance operations, you'll often see them hovering above inner city African American neighborhoods.", false, ItemType.Vehicles) { ModelName = "maverick" },
+
             //Plane
             new VehicleItem("Buckingham Alpha-Z1", true, ItemType.Vehicles) { ModelName = "alphaz1" },
             new VehicleItem("Buckingham Howard NX-25", true, ItemType.Vehicles) { ModelName = "howard" },
@@ -1298,7 +1300,7 @@ public class ModItems : IModItems
             new VehicleItem("Buckingham Miljet", true, ItemType.Vehicles) { ModelName = "Miljet" },
             new VehicleItem("Buckingham Nimbus", true, ItemType.Vehicles) { ModelName = "nimbus" },
             new VehicleItem("Buckingham Pyro", true, ItemType.Vehicles) { ModelName = "pyro" },
-            new VehicleItem("Buckingham Shamal", ItemType.Vehicles) { ModelName = "Shamal" },
+            new VehicleItem("Buckingham Shamal","At current gas prices, you can fly a Shamal coast to coast for just $50,000, without even a second thought for the Ozone layer.", ItemType.Vehicles) { ModelName = "Shamal" },
             new VehicleItem("Buckingham Vestra", true, ItemType.Vehicles) { ModelName = "vestra" },
             new VehicleItem("Mammoth Avenger", true, ItemType.Vehicles) { ModelName = "avenger" },
             new VehicleItem("Mammoth Avenger 2", true, ItemType.Vehicles) { ModelName = "avenger2" },
@@ -1310,6 +1312,11 @@ public class ModItems : IModItems
             new VehicleItem("Western Besra", true, ItemType.Vehicles) { ModelName = "besra" },
             new VehicleItem("Western Rogue", true, ItemType.Vehicles) { ModelName = "rogue" },
             new VehicleItem("Western Seabreeze", true, ItemType.Vehicles) { ModelName = "seabreeze" },
+
+
+
+            new VehicleItem("JoBuilt Mammatus","Affordable, easy to fly, held together with rivets... The Mammatus is one of the best-selling light aircraft in history, and a whole lot of fun to land in high winds.", false, ItemType.Vehicles) { ModelName = "mammatus" },
+            new VehicleItem("JoBuilt Velum","The Velum is a high-performance single-engine light aircraft manufactured specifically to fulfill the needs of executive travel because, let's face it, that's the only investment in aviation that happens these days.", false, ItemType.Vehicles) { ModelName = "velum" },
 
             //Boat
             new VehicleItem("Dinka Marquis", ItemType.Vehicles) { ModelName = "marquis" },

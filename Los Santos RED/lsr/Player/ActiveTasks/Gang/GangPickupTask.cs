@@ -106,7 +106,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 if (DeadDrop.InteractionComplete && !DeadDrop.IsNearby)
                 {
-                    CurrentTask.IsReadyForPayment = true;
+                    CurrentTask.OnReadyForPayment(false);
                     break;
                 }
                 GameFiber.Sleep(1000);

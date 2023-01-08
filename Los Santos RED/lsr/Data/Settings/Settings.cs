@@ -50,6 +50,11 @@ public class Settings : ISettingsProvideable
         SettingsManager.GangSettings.ShowSpawnedBlip = true;
         SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips = true;
         SettingsManager.EMSSettings.ShowSpawnedBlips = true;
+
+        SettingsManager.GangSettings.ShowAmbientBlips = true;
+        SettingsManager.PoliceSettings.TalkFailFineAmount = 100;
+
+        SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
     }
     public void SetDefault()
     {
@@ -113,6 +118,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.WeatherSettings.ReportWeather = false;
         SettingsManager.WeatherSettings.ShowWeatherNotifications = false;
 
+        
 
 
     }

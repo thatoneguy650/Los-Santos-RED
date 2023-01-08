@@ -133,21 +133,31 @@ public class BustedMenu : Menu
     private void CreateHighLevelItems()
     {
         Respawning.Respawning.CalulateBribe();
-        string description = "Bribe the police to let you go. Don't be cheap.";
-        if(Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount)
+        Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+
+        if (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount ||  (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmountControllerOnly && Respawning.IsUsingController))
         {
-            description += $"~n~Required: ${Respawning.Respawning.RequiredBribeAmount}";
-        }
-        Bribe = new UIMenuItem("Bribe Police", description);
-        Bribe.RightBadge = UIMenuItem.BadgeStyle.Trevor;
-        Bribe.Activated += (sender, selectedItem) =>
-        {
-            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
+            Bribe.RightBadge = UIMenuItem.BadgeStyle.None;
+            Bribe.RightLabel = $"~r~${Respawning.Respawning.RequiredBribeAmount}~s~" ;
+            Bribe.Activated += (sender, selectedItem) =>
             {
-                Respawning.Respawning.BribePolice(BribeAmount);
-            }
-            Menu.Visible = false;
-        };
+                Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount);
+                Menu.Visible = false;
+            };
+        }
+        else
+        {
+            Bribe.RightBadge = UIMenuItem.BadgeStyle.Trevor;
+            Bribe.RightLabel = "";
+            Bribe.Activated += (sender, selectedItem) =>
+            {
+                if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
+                {
+                    Respawning.Respawning.BribePolice(BribeAmount);
+                }
+                Menu.Visible = false;
+            };
+        }
         Menu.AddItem(Bribe);
 
 

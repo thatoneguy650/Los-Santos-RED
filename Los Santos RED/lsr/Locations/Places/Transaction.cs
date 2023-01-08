@@ -40,6 +40,8 @@ public class Transaction
     public int MoneySpent { get; set; } = 0;
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
+    public bool RotatePreview { get; set; }
+
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
     {
         MenuPool = menuPool;
@@ -296,13 +298,16 @@ public class Transaction
     {
         if (MenuPool.IsAnyMenuOpen())
         {
-            if (SellingProp.Exists())
+            if (RotatePreview)
             {
-                SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);
-            }
-            if (SellingVehicle.Exists())
-            {
-                SellingVehicle.SetRotationYaw(SellingVehicle.Rotation.Yaw + 1f);
+                if (SellingProp.Exists())
+                {
+                    SellingProp.SetRotationYaw(SellingProp.Rotation.Yaw + 1f);
+                }
+                if (SellingVehicle.Exists())
+                {
+                    SellingVehicle.SetRotationYaw(SellingVehicle.Rotation.Yaw + 1f);
+                }
             }
         }
         else

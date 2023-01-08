@@ -119,6 +119,7 @@ public class ShopMenus : IShopMenus
     {
         ShopMenuList = new List<ShopMenu>();
         GenericLocationsMenu();
+        GenericPawnShopMenu();
 
         SpecificVendingMachines();
         SpecificRestaurants();
@@ -132,6 +133,53 @@ public class ShopMenus : IShopMenus
         GunShopList();
         Serialization.SerializeParams(ShopMenuList, ConfigFileName);
     }
+
+    private void GenericPawnShopMenu()
+    {
+        ShopMenuList.AddRange(new List<ShopMenu>{
+            new ShopMenu("PawnShopMenu","PawnShop",new List<MenuItem>() {
+
+                new MenuItem("GASH Black Umbrella", 50, 5),
+                new MenuItem("TAG-HARD Flashlight", 140, 10),
+                new MenuItem("Flint Handle Flashlight", 110, 25),
+                new MenuItem("G.E.S. Baseball Bat", 150, 25),
+                new MenuItem("ProLaps Five Iron Golf Club", 190, 25),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 800, 150),
+                new MenuItem("SCHEISS AS Binoculars", 700, 200),
+                new MenuItem("SCHEISS RP Binoculars", 1200, 300),
+
+                new MenuItem("Hawk & Little PTF092F",1100, 150),
+                new MenuItem("Hawk & Little Thunder",1250, 200),
+                new MenuItem("Hawk & Little Combat Pistol",1500, 300),
+                new MenuItem("Hawk & Little Desert Slug",1900, 500),
+                new MenuItem("Hawk & Little 1919",1600, 350),
+                new MenuItem("Hawk & Little Raging Mare",2300, 450),
+                new MenuItem("Hawk & Little Raging Mare Dx",2500, 475),
+                new MenuItem("Vom Feuer P69",1050, 170),
+                new MenuItem("Shrewsbury S7",1500, 330),
+                new MenuItem("Shrewsbury S7A",1750, 450),
+                new MenuItem("Coil Tesla",1400, 250),
+                new MenuItem("BS M1922",1900, 250),
+
+
+
+                new MenuItem("Flint Duct Tape", 10,1),
+                new MenuItem("Flint Multi-Bit Screwdriver", 40,5),
+                new MenuItem("Flint Rubber Mallet", 70,15),
+                new MenuItem("Flint Hammer", 60,5),
+                new MenuItem("Flint Crowbar", 85,20),
+                new MenuItem("Flint Hatchet", 290,50),
+                new MenuItem("Vom Feuer Machete", 150,40),
+                new MenuItem("Flint Pliers", 45,10),
+                new MenuItem("Flint Heavy Duty Pipe Wrench", 55),
+                new MenuItem("Flint Shovel", 120,35),
+                new MenuItem("Flint Cordless Drill", 150, 25),
+                new MenuItem("Power Metal Cordless Drill", 110,30),
+
+            }),
+        });
+    }
+
     private void GenericLocationsMenu()
     {
         ShopMenuList.AddRange(new List<ShopMenu>{
@@ -986,6 +1034,61 @@ public class ShopMenus : IShopMenus
                 //new MenuItem("Police Buffalo",500, 200),
                 //new MenuItem("Police Interceptor",500, 200),
             }),
+
+
+            new ShopMenu("GetAweighMenu","Get Aweigh",new List<MenuItem>() {
+
+                //Boat
+                new MenuItem("Dinka Marquis",240000),
+                new MenuItem("Lampadati Toro",190000),
+                new MenuItem("Nagasaki Dinghy",45000),
+                new MenuItem("Nagasaki Dinghy 2",50000),
+                new MenuItem("Pegassi Speeder",185000),
+
+                new MenuItem("Shitzu Jetmax",250000),
+                new MenuItem("Shitzu Longfin",275000),
+                new MenuItem("Shitzu Squalo",85000),
+                new MenuItem("Shitzu Suntrap",35000),
+                new MenuItem("Shitzu Tropic",75000),
+
+                //Jetski
+                new MenuItem("Speedophile Seashark",5000),
+                //new MenuItem("Speedophile Seashark 2",6000),
+                new MenuItem("Speedophile Seashark 3",7000),
+            }),
+
+            new ShopMenu("ElitasMenu","PlaneMan",new List<MenuItem>() {
+
+                //Heli
+                new MenuItem("Buckingham SuperVolito",2000000),
+                new MenuItem("Buckingham SuperVolito Carbon",2100000),
+                new MenuItem("Buckingham Swift",1500000),
+                new MenuItem("Buckingham Swift Deluxe",1600000),
+                new MenuItem("Buckingham Volatus",1200000),
+                new MenuItem("Nagasaki Havok",155000),
+
+
+                new MenuItem("Buckingham Maverick",1100000),
+
+                //Airplane
+                new MenuItem("Buckingham Alpha-Z1",350000),
+                new MenuItem("Buckingham Howard NX-25",650000),
+                new MenuItem("Buckingham Luxor",5000000),
+                new MenuItem("Buckingham Luxor Deluxe",5500000),
+                new MenuItem("Buckingham Miljet",3200000),
+                new MenuItem("Buckingham Nimbus",2900000), 
+                new MenuItem("Buckingham Shamal",1800000),
+                new MenuItem("Buckingham Vestra",650000),
+                new MenuItem("Mammoth Dodo",145000),
+                new MenuItem("Nagasaki Ultralight",45000),
+                new MenuItem("Western Seabreeze",750000),
+
+
+
+                new MenuItem("JoBuilt Mammatus",320000),
+                new MenuItem("JoBuilt Velum",550000),
+            }),
+
         });
     }
     private void SpecificVendingMachines()
