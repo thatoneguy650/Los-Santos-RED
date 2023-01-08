@@ -43,7 +43,7 @@ public class Crime
     public bool RequiresSearch { get; set; } = false;
     public bool ShowsWarning { get; set; } = false;
     public string WarningMessage { get; set; } = "";
-    public uint TimeBetweenWarnings { get; set; } = 900000;//900000;
+    public uint TimeBetweenWarnings { get; set; } = 1800000;//900000;
     public override string ToString()
     {
         return Name;

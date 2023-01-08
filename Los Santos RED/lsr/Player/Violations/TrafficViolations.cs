@@ -31,7 +31,7 @@ public class TrafficViolations
 
     private int TimeSincePlayerHitPed;
     private int TimeSincePlayerHitVehicle;
-    private bool TreatAsCop;
+   // private bool TreatAsCop;
     private bool VehicleIsSuspicious;
  
 
@@ -90,7 +90,7 @@ public class TrafficViolations
     {
         Violations.CrimesViolating.RemoveAll(x => x.IsTrafficViolation);
         VehicleIsSuspicious = false;
-        TreatAsCop = false;
+        //TreatAsCop = false;
         IsFelonySpeeding = false;
         IsRegularSpeeding = false;
         //IsRunningRedLight = false;
@@ -110,7 +110,7 @@ public class TrafficViolations
             isDrivingSuspiciously = true;
             Violations.AddViolating(StaticStrings.HitPedWithCarCrimeID);
             EntryPoint.WriteToConsole("Violations HitPedWithCar");
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
         if (RecentlyHitVehicle && IsFastEnoughToCheckViolations)
         {
@@ -127,9 +127,9 @@ public class TrafficViolations
         {
             SentRecentCrash = false;
         }
-        if (!TreatAsCop)
+        if (!Player.IsInPoliceVehicle)
         {
-            GameFiber.Yield();
+           // GameFiber.Yield();
             if ((HasBeenDrivingAgainstTraffic || Game.LocalPlayer.IsDrivingAgainstTraffic) && IsFastEnoughToCheckViolations)
             {
                 isDrivingSuspiciously = true;
@@ -169,7 +169,7 @@ public class TrafficViolations
     {
         //GameFiber.Yield();//TR Yield RemovedTest 1
         VehicleIsSuspicious = false;
-        TreatAsCop = false;
+        //TreatAsCop = false;
         IsFelonySpeeding = false;
         if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Player.IsDriver)
         {

@@ -13,8 +13,15 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint Recognize_NightPenalty { get; set; }
     [Description("Additional Time an NPC needs to have seen you to determine if they can recognize you when you are in an unknown vehicle")]
     public uint Recognize_VehiclePenalty { get; set; }
-    [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
-    public uint SearchMode_SearchTimeMultiplier { get; set; }
+
+
+
+
+
+
+
+
+
     [Description("Set slow mo when you are wasted and using the wasted menu.")]
     public bool SetSlowMoOnDeath { get; set; }
     [Description("Set slow mo when you are busted and using the busted menu.")]
@@ -63,7 +70,7 @@ public class PlayerOtherSettings : ISettingsDefaultable
         Recognize_BaseTime = 2000;
         Recognize_NightPenalty = 3500;
         Recognize_VehiclePenalty = 750;
-        SearchMode_SearchTimeMultiplier = 30000;
+
         SetSlowMoOnDeath = true;
         SetSlowMoOnBusted = true;
         AllowWeaponDropping = true;

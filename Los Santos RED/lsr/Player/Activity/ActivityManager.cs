@@ -172,10 +172,6 @@ public class ActivityManager
         ForceCancelAllActivities();
     }
 
-
-
-
-
     public void AddPausedActivity(DynamicActivity da)
     {
         UpperBodyActivity = null;
@@ -347,20 +343,6 @@ public class ActivityManager
         }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     //Dynamic Activites w/ IsPerforming
     public void RemovePlate()
     {
@@ -454,7 +436,6 @@ public class ActivityManager
             modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
         }
     }
-
     public void StartScenario()
     {
         if (IsPerformingActivity)
@@ -471,9 +452,6 @@ public class ActivityManager
             UpperBodyActivity.Start();
         }
     }
-
-
-
     //Dynamic Activities W/o Performing
     public void GrabPed()
     {
@@ -550,7 +528,6 @@ public class ActivityManager
             LowerBodyActivity.Start();
         }
     }
-
     //Interactions
     public void StartLocationInteraction()
     {
@@ -871,12 +848,10 @@ public class ActivityManager
             Player.CurrentVehicle.SetDriverWindow(!Player.CurrentVehicle.ManuallyRolledDriverWindowDown);
         }
     }
-
     public void OnPlayerBusted()
     {
         ForceCancelAllActivities();
     }
-
     public void OnPlayerDied()
     {
         ForceCancelAllActivities();

@@ -73,9 +73,7 @@ namespace LosSantosRED.lsr
         private bool IsPressingActionWheelMenu;// => (IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.ActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier)) || (IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKey) && IsKeyDownSafe(Settings.SettingsManager.KeySettings.AltActionPopUpDisplayKeyModifier));
         private bool HasShownControllerHelpPrompt;
         private bool RecentlyPressedSurrender => Game.GameTime - GameTimeLastPressedSurrender <= 750;
-
-        public bool IsUsingController { get; private set; }
-        
+        public bool IsUsingController { get; private set; }   
         public void Tick()
         {        
             DisableVanillaControls();
@@ -320,7 +318,8 @@ namespace LosSantosRED.lsr
         private void ProcessButtonPrompts()
         {
             bool hasPrompts = false;
-            foreach (ButtonPrompt bp in Player.ButtonPrompts.Prompts)
+           // List<ButtonPrompt> ActivatedPrompts = new List<ButtonPrompt>();
+            foreach (ButtonPrompt bp in Player.ButtonPrompts.Prompts)//.OrderBy(x=> x.Order).ThenBy(x=>x.Identifier))
             {
                 if (Player.ButtonPrompts.IsSuspended)
                 {

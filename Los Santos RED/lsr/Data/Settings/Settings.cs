@@ -150,7 +150,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.PlayerOtherSettings.MeleeDamageModifier = 0.5f;
         SettingsManager.PlayerOtherSettings.CorruptCopInvestigationClearCost = 10000;
         SettingsManager.PlayerOtherSettings.CorruptCopWantedClearCostScalar = 10000;
-        SettingsManager.PlayerOtherSettings.SearchMode_SearchTimeMultiplier = 60000;
+        SettingsManager.PoliceSettings.SearchTimeMultiplier = 60000;
 
 
 

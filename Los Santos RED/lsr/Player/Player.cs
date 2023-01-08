@@ -406,6 +406,8 @@ namespace Mod
 
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
+        public bool IsInPoliceVehicle { get; private set; }
+
         //Required
         public void Setup()
         {
@@ -1532,6 +1534,12 @@ namespace Mod
             }
 
 
+
+
+
+
+
+
             //GameFiber.Yield();//TR Yield RemovedTest 1
             ClosestInteractableLocation = null;
             if (!IsMovingFast && IsAliveAndFree && !ActivityManager.IsConversing)
@@ -1554,6 +1562,12 @@ namespace Mod
             }
             //GameFiber.Yield();//TR Yield RemovedTest 1
             GameFiber.Yield();
+
+
+
+
+
+
             Stance.Update();
 
             Sprinting.Update();
@@ -1577,6 +1591,14 @@ namespace Mod
             {
                 IsNearScenario = false;
             }
+
+
+
+
+
+
+
+
             if (IsMakingInsultingGesture && CurrentLookedAtPed != null)// && !CurrentLookedAtPed.IsFedUpWithPlayer)
             {
                 CurrentLookedAtPed.InsultedByPlayer();
@@ -1767,7 +1789,17 @@ namespace Mod
                     isHotwiring = IsHotWiring;
                 }
 
-                if (Settings.SettingsManager.VehicleSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsEngineOn && CurrentVehicle.Vehicle.IsPoliceVehicle)
+
+                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPoliceVehicle)
+                {
+                    IsInPoliceVehicle = true;
+                }
+                else
+                {
+                    IsInPoliceVehicle = false;
+                }
+
+                if (Settings.SettingsManager.VehicleSettings.AllowRadioInPoliceVehicles && CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsEngineOn && IsInPoliceVehicle)
                 {
                     if (!IsMobileRadioEnabled)
                     {
@@ -1847,6 +1879,7 @@ namespace Mod
                 IsDriver = false;
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
+                IsInPoliceVehicle = false;
                 PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
 

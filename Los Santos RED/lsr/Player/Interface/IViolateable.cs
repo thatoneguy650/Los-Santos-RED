@@ -60,6 +60,7 @@ namespace LosSantosRED.lsr.Interface
         int WantedLevel { get; }
         bool IsNotWanted { get; }
         bool IsSleepingOutside { get; }
+        bool IsInPoliceVehicle { get; }
 
         //  bool IsLootingBody { get; }
 

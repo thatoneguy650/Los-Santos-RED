@@ -49,9 +49,11 @@ namespace LosSantosRED.lsr.Interface
         string Gender { get; }
         HealthManager HealthManager { get; }
         Rage.Object CurrentLookedAtObject { get; }
+        float ClosestPoliceDistanceToPlayer { get; }
+        bool AnyPoliceRecentlySeenPlayer { get; }
 
-      //  void StopDynamicActivity();
-     //   void StartConsumingActivity(ModItem modItem, bool v);
+        //  void StopDynamicActivity();
+        //   void StartConsumingActivity(ModItem modItem, bool v);
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);
     }

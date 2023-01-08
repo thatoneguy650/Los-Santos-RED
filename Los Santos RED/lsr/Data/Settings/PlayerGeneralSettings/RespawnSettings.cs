@@ -24,12 +24,24 @@ public class RespawnSettings : ISettingsDefaultable
     public bool PermanentDeathMode { get; set; }
     [Description("Deduct the money without granting the bribe if the amount is too low.")]
     public bool DeductMoneyOnFailedBribe { get; set; }
-    [Description("Minimum bribe amount required for each wanted level. Ex. a value of 500 would require a $1500 bribe at 3 stars.")]
+
+
+
+    [Description("Minimum bribe amount required.")]
+    public int PoliceBribeBase { get; set; }
+    [Description("Additional bribe amount for each wanted level. Ex. a value of 500 would require $1500 bribe at 3 stars.")]
     public int PoliceBribeWantedLevelScale { get; set; }
     [Description("Additional bribe amount for each police officer killed.")]
     public int PoliceBribePoliceKilledMultiplier { get; set; }
     [Description("Additional bribe amount for each police officer injured.")]
     public int PoliceBribePoliceInjuredMultiplier { get; set; }
+
+
+    [Description("If enabled, the required minimum bribe amount will be shown in the menu.")]
+    public bool ShowRequiredBribeAmount { get; set; }
+
+
+
     [Description("Deduct money on player after surrendering")]
     public bool DeductBailFee { get; set; }
     [Description("Minimum bail amount for each wanted level. Ex a value of 750 would require a $2250 bail fee at 3 stars.")]
@@ -96,9 +108,10 @@ public class RespawnSettings : ISettingsDefaultable
 
 
         DeductMoneyOnFailedBribe = true;
-        PoliceBribeWantedLevelScale = 500;
-        PoliceBribePoliceKilledMultiplier = 10000;
-        PoliceBribePoliceInjuredMultiplier = 2000;
+        PoliceBribeBase = 1000;//500;
+        PoliceBribeWantedLevelScale = 2000;//500;
+        PoliceBribePoliceKilledMultiplier = 15000;//10000;
+        PoliceBribePoliceInjuredMultiplier = 5000;//2000;
 
 
 
@@ -121,5 +134,13 @@ public class RespawnSettings : ISettingsDefaultable
         UseCustomCameraWhenBooking = true;
         OffsetX = 0.7f;
         OffsetY = 0.5f;
+
+
+        ShowRequiredBribeAmount = false;
+
+
+#if DEBUG
+        ShowRequiredBribeAmount = true;
+#endif
     }
 }

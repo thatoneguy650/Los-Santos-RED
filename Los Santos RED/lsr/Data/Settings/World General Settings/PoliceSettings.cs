@@ -69,6 +69,12 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted4 { get; set; }
     [Description("Time (in ms) at wanted level 5 required to increase wanted level to 6 (maximum).")]
     public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
+
+
+    [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
+    public uint SearchTimeMultiplier { get; set; }
+
+
     public bool ForceDefaultWeaponAnimations { get; set; }
     public bool AllowPoliceToCallEMTsOnBodies { get; set; }
 
@@ -136,7 +142,7 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
-
+        SearchTimeMultiplier = 20000;
 
         AllowPoliceToCallEMTsOnBodies = true;
     }

@@ -91,7 +91,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
 
                     StoreCamera.Setup();
 
-
+                    KeepInteractionGoing = false;
                     CreateInteractionMenu();
                     if (Player.IsWanted)
                     {
@@ -99,7 +99,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                         InteractionMenu.AddItem(LayLowMenuItem);
                         InteractionMenu.Visible = true;
                         InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing || Player.IsWanted)
+                        while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)// || Player.IsWanted)
                         {
                             MenuPool.ProcessMenus();
                             GameFiber.Yield();

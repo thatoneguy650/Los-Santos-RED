@@ -28,6 +28,10 @@ public class Pedestrians : ITaskerReportable
     private IEntityProvideable World;
 
     private List<AssignedSeat> SeatAssignments = new List<AssignedSeat>();
+    private RelationshipGroup formerPlayer;
+    private RelationshipGroup criminalsRG;
+    private RelationshipGroup hatesPlayerRG;
+    private RelationshipGroup norelationshipRG;
 
     public Pedestrians(IAgencies agencies, IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, INameProvideable names, IPedGroups relationshipGroups, IWeapons weapons, ICrimes crimes, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories, IEntityProvideable world)
     {
@@ -174,6 +178,14 @@ public class Pedestrians : ITaskerReportable
             RelationshipGroup.Cop.SetRelationshipWith(thisGangGroup, Relationship.Neutral);//was like
         }
         NativeFunction.Natives.SET_AMBIENT_PEDS_DROP_MONEY(false);
+
+
+        formerPlayer = new RelationshipGroup("FORMERPLAYER");
+        criminalsRG = new RelationshipGroup("CRIMINALS");
+        hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
+        norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
+
+
     }
     public void Dispose()
     {
@@ -526,14 +538,13 @@ public class Pedestrians : ITaskerReportable
             }
             EntryPoint.PersistentPedsNonPersistent++;
         }
-        RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
-        RelationshipGroup criminalsRG = new RelationshipGroup("CRIMINALS");
-        RelationshipGroup hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
 
-        RelationshipGroup norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
+        //RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
+        //RelationshipGroup criminalsRG = new RelationshipGroup("CRIMINALS");
+        //RelationshipGroup hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
+        //RelationshipGroup norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
 
         
-
         foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)

@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr
         public bool IsInActiveMode { get; private set; }
         public uint TimeInSearchMode => IsInSearchMode && GameTimeStartedSearchMode != 0 ? Game.GameTime - GameTimeStartedSearchMode : 0;
         public uint TimeInActiveMode => IsInActiveMode ? Game.GameTime - GameTimeStartedActiveMode : 0;
-        public uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PlayerOtherSettings.SearchMode_SearchTimeMultiplier;//30000;//30 seconds each
+        public uint CurrentSearchTime => (uint)Player.WantedLevel * Settings.SettingsManager.PoliceSettings.SearchTimeMultiplier;//30000;//30 seconds each
         public uint CurrentActiveTime => (uint)Player.WantedLevel * 30000;//30 seconds each
         public string DebugString { get; set; }
         public void Update()

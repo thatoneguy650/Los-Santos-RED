@@ -32,7 +32,7 @@ public class Respawning// : IRespawning
     private IEntityProvideable World;
     private List<string> BribedCopResponses;
     private List<string> CitationCopResponses;
-    private int RequiredBribeAmount;
+    
     private int BailDuration;
     private DateTime BailPostingTime;
     private string BailReport;
@@ -61,6 +61,7 @@ public class Respawning// : IRespawning
     public bool CanUndie => TimesDied < Settings.SettingsManager.RespawnSettings.UndieLimit || Settings.SettingsManager.RespawnSettings.UndieLimit == 0;
     public int TimesDied { get; private set; }
     public int TimesTalked { get; private set; }
+    public int RequiredBribeAmount { get; private set; }
     public void Reset()
     {
         TimesDied = 0;
@@ -450,13 +451,14 @@ public class Respawning// : IRespawning
         BailReport = $"~s~Incarcerated Days: ~r~{BailDuration}~s~~n~Released: {BailPostingTime:g}~s~";
         EntryPoint.WriteToConsole($"CalculateBail(): HighestWantedLevel {HighestWantedLevel} PoliceKilled {PoliceKilled} PoliceInjured {PoliceInjured} CiviliansKilled {CiviliansKilled} BailFee {BailFee} BailDuration {BailDuration} BailPostingTime {BailPostingTime:g}");
     }
-    private void CalculateBribe()
+    public void CalculateBribe()
     {
         int PoliceKilled = CurrentPlayer.PoliceResponse.PoliceKilled;
         int PoliceInjured = CurrentPlayer.PoliceResponse.PoliceHurt;
         int HighestWantedLevel = CurrentPlayer.WantedLevel;
 
-        RequiredBribeAmount = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
+        RequiredBribeAmount = Settings.SettingsManager.RespawnSettings.PoliceBribeBase;
+        RequiredBribeAmount += HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
         RequiredBribeAmount += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier;
         RequiredBribeAmount += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier;
     }
@@ -624,6 +626,11 @@ public class Respawning// : IRespawning
     public void OnPlayerBusted()
     {
         TimesTalked = 0;
+    }
+
+    internal void CalulateBribe()
+    {
+        CalculateBribe();
     }
 }
 

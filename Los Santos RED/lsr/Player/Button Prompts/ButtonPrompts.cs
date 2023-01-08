@@ -16,7 +16,14 @@ public class ButtonPrompts
     private ISettingsProvideable Settings;
     private bool addedPromptGroup;
 
-    private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null && !Player.ActivityManager.IsInteractingWithLocation && !Player.ActivityManager.IsInteracting && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
+    private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null
+        && !Player.ActivityManager.IsInteractingWithLocation
+        && !Player.ActivityManager.IsInteracting;
+
+
+
+
+       // && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
     public bool IsSuspended { get; set; } = false;
     public bool IsUsingKeyboard { get; private set; } = true;
@@ -459,7 +466,7 @@ public class ButtonPrompts
     }
     private void AttemptAddLocationPrompts()
     {
-        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && CanInteractWithClosestLocation)//no cops around
+        if (!addedPromptGroup && CanInteractWithClosestLocation)
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;

@@ -99,7 +99,7 @@ namespace LosSantosRED.lsr
                     EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
                 }
             }
-            GameFiber.Yield();//TR 05
+            //GameFiber.Yield();//TR 05
             UpdateBlip();
         }
         public void Reset()

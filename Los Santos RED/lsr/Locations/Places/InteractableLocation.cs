@@ -286,6 +286,18 @@ public class InteractableLocation : BasicLocation
             NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Closed", $"We're sorry, this location is now closed.~n~Hours: {OpenTime} to {CloseTime}");
             return true;
         }
+        if(Player.IsWanted && !CanInteractWhenWanted)
+        {
+            Game.DisplayHelp($"{Name} is unavailable when wanted");
+            PlayErrorSound();
+            return true;
+        }
+        if (Player.IsWanted && CanInteractWhenWanted && (Player.ClosestPoliceDistanceToPlayer < 80f || Player.AnyPoliceRecentlySeenPlayer))
+        {
+            Game.DisplayHelp($"{Name} is unavailable when police are nearby");
+            PlayErrorSound();
+            return true;
+        }
         return false;
     }
 

@@ -68,27 +68,33 @@ public class PlateTheft : DynamicActivity
     {
         EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChangingPlate: {IsChangingPlate}", 3);
         Setup();
-        if (ChangeSpot != Vector3.Zero)
+        if(TargetVehicle == null || !TargetVehicle.Vehicle.Exists())
         {
-            GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    Enter();
-                    Player.ActivityManager.IsPerformingActivity = false;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "PlayDispatchQueue");
-        }
-        else
-        {
+            Game.DisplayHelp("No vehicle found");
             Player.IsChangingLicensePlates = false;
             Player.ActivityManager.IsPerformingActivity = false;
+            return;
         }
+        if(ChangeSpot == Vector3.Zero)
+        {
+            Game.DisplayHelp("Cannot remove plate");
+            Player.IsChangingLicensePlates = false;
+            Player.ActivityManager.IsPerformingActivity = false;
+            return;
+        }
+        GameFiber ChangeLicensePlateAnimation = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                Enter();
+                Player.ActivityManager.IsPerformingActivity = false;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "PlayDispatchQueue");
     }
     public override bool CanPerform(IActionable player)
     {
@@ -227,15 +233,15 @@ public class PlateTheft : DynamicActivity
             VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
             return Vector3.Add(Forward * -1.0f, Position);
         }
-        else if (VehicleToChange.HasBone("boot"))
-        {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
-            Position = VehicleToChange.GetBonePosition("boot");
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.75f);
-            return SpawnPosition;
-            VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
-            return Vector3.Add(Forward * -1.75f, Position);//return Vector3.Add(Forward * -1.75f, Position);
-        }
+        //else if (VehicleToChange.HasBone("boot"))
+        //{
+        //    EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
+        //    Position = VehicleToChange.GetBonePosition("boot");
+        //    Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.75f);
+        //    return SpawnPosition;
+        //    VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);//GetBoneAxes no longer works as of 2022-12-23
+        //    return Vector3.Add(Forward * -1.75f, Position);//return Vector3.Add(Forward * -1.75f, Position);
+        //}
         else if (VehicleToChange.IsBike)
         {
             EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
@@ -277,9 +283,9 @@ public class PlateTheft : DynamicActivity
             {
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
             }
-//#if DEBUG
-//            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-//#endif
+#if DEBUG
+            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+#endif
         }
         if (!Continue)
         {

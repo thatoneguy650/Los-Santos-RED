@@ -359,7 +359,12 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
-
+        UIMenuItem RemoveButtonPrompts = new UIMenuItem("Remove Prompts", "Removes all the button prompts");
+        RemoveButtonPrompts.Activated += (menu, item) =>
+        {
+            Player.ButtonPrompts.Clear();
+            menu.Visible = false;
+        };
 
 
 
@@ -382,6 +387,8 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(GetDriversLicense);
         PlayerStateItemsMenu.AddItem(GetCCWLicense);
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
+
+        PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
 
     }
     private void CreateRelationshipsMenu()

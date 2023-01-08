@@ -59,13 +59,13 @@ namespace LosSantosRED.lsr
             if (Player.IsAliveAndFree && Player.ShouldCheckViolations)
             {
                 DamageViolations.Update();
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 WeaponViolations.Update();
                 GameFiber.Yield();
                 TheftViolations.Update();
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 OtherViolations.Update();
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 AddObservedAndReported();
             }
         }

@@ -177,7 +177,7 @@ namespace LosSantosRED.lsr
                 new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                 new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
             }),
-                new ModTaskGroup("RG3:World Gen", new List<ModTask>()
+                new ModTaskGroup("RG3:World Gen", new List<ModTask>()//something in here is causing a hang on some crapola computers
             {
                 new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
                 new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //very bad performance//500, need to up this somehow, we are stuck around 1250 to 1500, maybe just up the times?

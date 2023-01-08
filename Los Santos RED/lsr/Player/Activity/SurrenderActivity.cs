@@ -34,7 +34,6 @@ public class SurrenderActivity : DynamicActivity
     public override string CancelPrompt { get; set; } = "Stop Surrendering";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
     public bool HandsAreUp { get; private set; }
-
     public override void Cancel()
     {
         LowerHands();
@@ -57,7 +56,6 @@ public class SurrenderActivity : DynamicActivity
     {
         return true;
     }
-
     public void ToggleSurrender()
     {
         EntryPoint.WriteToConsole("Toggle Surrender Ran");
@@ -75,7 +73,6 @@ public class SurrenderActivity : DynamicActivity
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
-
     private void LowerHands()
     {
         if (!Player.IsBusted)

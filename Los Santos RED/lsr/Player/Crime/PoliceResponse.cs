@@ -151,58 +151,7 @@ namespace LosSantosRED.lsr
             AssignCops();
             if (Player.IsWanted)
             {
-                if (!Player.IsDead && !Player.IsBusted)
-                {
-                    Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
-                    if (CurrentWantedCenter != Vector3.Zero)
-                    {
-                        LastWantedCenterPosition = CurrentWantedCenter;
-                    }
-                    if (Player.AnyPoliceCanSeePlayer)
-                    {
-                        PlayerSeenDuringCurrentWanted = true;
-                        PlayerSeenDuringWanted = true;
-                        if (Player.IsInVehicle)
-                        {
-                            PlayerSeenInVehicleDuringWanted = true;
-                        }
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
-                    {
-                        GameTimeLastRequestedBackup = Game.GameTime;
-                        Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
-                        Player.OnRequestedBackUp();
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
-                    {
-                        Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
-                    }
-                    if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
-                    {
-                        int PoliceKilled = InstancesOfCrime("KillingPolice");
-                        if (PoliceKilled > 0)
-                        {
-                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
-                            {
-                                Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
-                            {
-                                Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
-                            {
-                                Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
-                                IsWeaponsFree = true;
-                                Player.OnWeaponsFree();
-                            }
-                        }
-                    }
-                }
+                UpdateWanted();
             }
             GameFiber.Yield();//TR 05
             UpdateBlip();
@@ -521,6 +470,68 @@ namespace LosSantosRED.lsr
                 }
             }
         }
+        private void UpdateWanted()
+        {
+            if(Player.IsBusted || Player.IsDead)
+            {
+                return;
+            }
+            Vector3 CurrentWantedCenter = Player.PlacePoliceLastSeenPlayer;
+            if (CurrentWantedCenter != Vector3.Zero)
+            {
+                LastWantedCenterPosition = CurrentWantedCenter;
+            }
+            if (Player.AnyPoliceCanSeePlayer)
+            {
+                PlayerSeenDuringCurrentWanted = true;
+                PlayerSeenDuringWanted = true;
+                if (Player.IsInVehicle)
+                {
+                    PlayerSeenInVehicleDuringWanted = true;
+                }
+            }
+            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
+            {
+                GameTimeLastRequestedBackup = Game.GameTime;
+                Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
+                Player.OnRequestedBackUp();
+            }
+            if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
+            {
+                Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
+            }
+            PoliceKilledUpdate();     
+        }
+        private void PoliceKilledUpdate()
+        {
+            if(!Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesByKillingPolice)
+            {
+                return;
+            }
+            int PoliceKilled = InstancesOfCrime("KillingPolice");
+            if (PoliceKilled > 0)
+            {
+                if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+                {
+                    Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
+                    IsWeaponsFree = true;
+                    Player.OnWeaponsFree();
+                }
+                if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+                {
+                    Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
+                    IsWeaponsFree = true;
+                    Player.OnWeaponsFree();
+                }
+                else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
+                {
+                    Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
+                    IsWeaponsFree = true;
+                    Player.OnWeaponsFree();
+                }
+            }
+        }
     }
+
 
 }

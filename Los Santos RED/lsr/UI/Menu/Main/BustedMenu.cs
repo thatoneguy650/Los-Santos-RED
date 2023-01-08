@@ -132,7 +132,13 @@ public class BustedMenu : Menu
     }
     private void CreateHighLevelItems()
     {
-        Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+        Respawning.Respawning.CalulateBribe();
+        string description = "Bribe the police to let you go. Don't be cheap.";
+        if(Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount)
+        {
+            description += $"~n~Required: ${Respawning.Respawning.RequiredBribeAmount}";
+        }
+        Bribe = new UIMenuItem("Bribe Police", description);
         Bribe.RightBadge = UIMenuItem.BadgeStyle.Trevor;
         Bribe.Activated += (sender, selectedItem) =>
         {
