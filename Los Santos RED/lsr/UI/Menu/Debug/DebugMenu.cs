@@ -37,15 +37,16 @@ public class DebugMenu : Menu
     private ICrimes Crimes;
 
 
-
+    private IPlateTypes PlateTypes;
 
     private Vector3 Offset;
     private Rotator Rotation;
     private bool isPrecise;
     private bool isRunning;
     private uint GameTimeLastAttached;
+    private UIMenu vehicleItemsMenu;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes)
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -61,6 +62,7 @@ public class DebugMenu : Menu
         Tasker = tasker;
         ModItems = modItems;
         Crimes = crimes;
+        PlateTypes = plateTypes;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
@@ -74,6 +76,7 @@ public class DebugMenu : Menu
     {
         if (!Debug.Visible)
         {
+            UpdateVehicleItems();
             Debug.Visible = true;
         }
     }
@@ -81,6 +84,7 @@ public class DebugMenu : Menu
     {
         if (!Debug.Visible)
         {
+            UpdateVehicleItems();
             Debug.Visible = true;
         }
         else
@@ -100,7 +104,78 @@ public class DebugMenu : Menu
         CreateOtherItems();
         CreateHelperItems();
         CreateRelationshipsMenu();
+        CreateVehicleMenu();
     }
+    private void UpdateVehicleItems()
+    {
+        vehicleItemsMenu.Clear();
+        if (Player.CurrentVehicle == null || !Player.CurrentVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        CreatePlateMenuItem();
+        CreateLiveryMenuItem();
+    }
+    private void CreateVehicleMenu()
+    {
+        vehicleItemsMenu = MenuPool.AddSubMenu(Debug, "Vehicle Menu");
+        vehicleItemsMenu.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various vehicle items.";
+
+        UpdateVehicleItems();
+
+
+
+    }
+
+    private void CreateLiveryMenuItem()
+    {
+        int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+        if (Total == -1)
+        {
+            return;
+        }
+        UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery", "Set the vehicle Livery", 0, Total, 1);
+        LogLocationMenu.Activated += (menu, item) =>
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LogLocationMenu.Value);
+                Game.DisplaySubtitle($"SET LIVERY {LogLocationMenu.Value}");
+            }
+
+        };
+        vehicleItemsMenu.AddItem(LogLocationMenu);
+    }
+
+    private void CreatePlateMenuItem()
+    {
+        UIMenuListScrollerItem<PlateType> plateIndex = new UIMenuListScrollerItem<PlateType>("Plate Type","Select Plate Type to change",PlateTypes.PlateTypeManager.PlateTypeList);
+        plateIndex.Activated += (menu, item) =>
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                PlateType NewType = PlateTypes.GetPlateType(plateIndex.SelectedItem.Index);
+                if (NewType != null)
+                {
+                    string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+                    if (NewPlateNumber != "")
+                    {
+                        Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
+                    }
+                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
+                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index}, Index: {NewType.Index}, State: {NewType.State}, Description: {NewType.Description}");
+                }
+                else
+                {
+                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index} None Found");
+                }
+            }
+
+        };
+        vehicleItemsMenu.AddItem(plateIndex);
+    }
+
     private void CreateLocationMenu()
     {
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Menu");
@@ -672,8 +747,6 @@ public class DebugMenu : Menu
 
 
     }
-
-
     private void CreateHelperItems()
     {
         UIMenu HelperMenuItem = MenuPool.AddSubMenu(Debug, "Helper Menu");
@@ -707,7 +780,6 @@ public class DebugMenu : Menu
         HelperMenuItem.AddItem(particleAttachMenu);
 
     }
-
     private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
     {
         throw new NotImplementedException();
@@ -1144,7 +1216,6 @@ public class DebugMenu : Menu
         }
 
     }
-
     private void SetNearestPedWanted()
     {
         PedExt toChoose = World.Pedestrians.PedExts.Where(x=> x.Handle != Player.Handle).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
@@ -1270,9 +1341,6 @@ public class DebugMenu : Menu
 
         }
     }
-
-
-
     private void SetPropAttachment()
     {
         string PropName = NativeHelper.GetKeyboardInput("prop_holster_01");
@@ -1489,7 +1557,6 @@ public class DebugMenu : Menu
         }
         return false;
     }
-
     private void SetWeaponAliasAttachment()
     {
         //shovel replacing baseball bat?
@@ -1569,7 +1636,6 @@ public class DebugMenu : Menu
             }
         }
     }
-
     private void SetParticleAttachment()
     {
         //shovel replacing baseball bat?
@@ -1650,6 +1716,4 @@ public class DebugMenu : Menu
         }
 
     }
-
-
 }

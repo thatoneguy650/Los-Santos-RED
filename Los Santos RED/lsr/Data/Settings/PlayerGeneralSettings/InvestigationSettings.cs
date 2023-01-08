@@ -23,9 +23,9 @@ public class InvestigationSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        ActiveDistance = 800f;
-        TimeLimit = 60000;
-        MaxDistance = 1500f;
+        ActiveDistance = 700f;// 800f;
+        TimeLimit = 20000;//60000;
+        MaxDistance = 1000f;// 1500f;
         SuspiciousDistance = 250f;
         CreateBlip = true;
     }
