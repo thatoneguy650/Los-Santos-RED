@@ -1703,8 +1703,8 @@ namespace Mod
         }
         public void UpdateVehicleData()
         {
-            IsInVehicle = Game.LocalPlayer.Character.IsInAnyVehicle(false);
-            IsGettingIntoAVehicle = Game.LocalPlayer.Character.IsGettingIntoVehicle;
+            IsInVehicle = Character.IsInAnyVehicle(false);
+            IsGettingIntoAVehicle = Character.IsGettingIntoVehicle;
             if (IsInVehicle)
             {
                 if (Character.CurrentVehicle.Exists() && VehicleOwnership.OwnedVehicles.Any(x => x.Vehicle.Exists() && x.Vehicle.Handle == Character.CurrentVehicle.Handle))//OwnedVehicle != null && OwnedVehicle.Vehicle.Exists() && Character.CurrentVehicle.Handle == OwnedVehicle.Vehicle.Handle)
@@ -1719,16 +1719,16 @@ namespace Mod
                 {
                     isJacking = Character.IsJacking;
                 }
-                IsDriver = Game.LocalPlayer.Character.SeatIndex == -1;
-                IsInAirVehicle = Game.LocalPlayer.Character.IsInAirVehicle;
+                IsDriver = Character.SeatIndex == -1;
+                IsInAirVehicle = Character.IsInAirVehicle;
 
                 bool isModelBike = false;
                 bool isModelBicycle = false;
 
                 if (Character.CurrentVehicle.Exists())
                 {
-                    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
-                    isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Game.LocalPlayer.Character.CurrentVehicle.Model.Hash);
+                    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
+                    isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
                 }
                 IsOnBicycle = isModelBicycle && isModelBike;
                 IsOnMotorcycle = !isModelBicycle && isModelBike;
@@ -1737,6 +1737,7 @@ namespace Mod
                 GameFiber.Yield();
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
+                    VehicleSpeed = Character.CurrentVehicle.Speed;
                     IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
                     CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
                     if (CurrentVehicleRoll >= 80f || CurrentVehicleRoll <= -80f)
@@ -1752,13 +1753,6 @@ namespace Mod
                 else
                 {
                     CurrentVehicleIsRolledOver = false;
-                }
-                if (Game.LocalPlayer.Character.CurrentVehicle.Exists())
-                {
-                    VehicleSpeed = Game.LocalPlayer.Character.CurrentVehicle.Speed;
-                }
-                else
-                {
                     VehicleSpeed = 0f;
                 }
                 if (VehicleSpeedMPH >= 80f)
@@ -1882,8 +1876,9 @@ namespace Mod
                 IsInPoliceVehicle = false;
                 PreviousVehicle = CurrentVehicle;
                 CurrentVehicle = null;
+                VehicleSpeed = 0f;
 
-                float PlayerSpeed = Game.LocalPlayer.Character.Speed;
+                float PlayerSpeed = Character.Speed;
                 FootSpeed = PlayerSpeed;
                 if (PlayerSpeed >= 0.1f)
                 {
@@ -1901,7 +1896,7 @@ namespace Mod
                 {
                     GameTimeLastMovedFast = 0;
                 }
-                IsStill = Game.LocalPlayer.Character.IsStill;
+                IsStill = Character.IsStill;
 
                 if (PlayerSpeed >= 3.0f)
                 {

@@ -64,13 +64,8 @@ namespace LosSantosRED.lsr
                     {
                         bool yield = false;
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
-
-
-                     //   GameFiber.Yield();
-
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            //GameFiber.Yield();//TR TEST 28
                             Cop.WeaponInventory.UpdateLoadout(Player);
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
@@ -93,7 +88,6 @@ namespace LosSantosRED.lsr
                             }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowFrontVehicleClearAssist)
                             {
-                                //GameFiber.Yield();//TR TEST 28
                                 Cop.AssistManager.ClearFront(Player.IsWanted);
                             }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowPowerAssist)
@@ -174,20 +168,18 @@ namespace LosSantosRED.lsr
                     break;
                 }
                 tested++;
-                if(tested >= 10)
+                if(tested >= 20)//10
                 {
                     tested = 0;
                     GameFiber.Yield();
                 }
                 //GameFiber.Yield();
             }
-            GameFiber.Yield();//TR TEST 28
+            //GameFiber.Yield();//TR TEST 28
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
-
-
             if(Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !anyPoliceCanSeePlayer)
             {
                 if(Player.RecentlyShot && anyPoliceCanHearPlayer)
@@ -196,7 +188,6 @@ namespace LosSantosRED.lsr
                     Player.AnyPoliceRecentlySeenPlayer = true;
                 }
             }
-
             if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {
                 Player.AnyPoliceKnowInteriorLocation = true;
@@ -205,16 +196,11 @@ namespace LosSantosRED.lsr
             {
                 Player.AnyPoliceKnowInteriorLocation = false;
             }
-
-
             if(PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
             {
                 EntryPoint.WriteToConsole($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
                 PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
             }
-
-
-
             if (Player.IsWanted)
             {
                 GameFiber.Yield();
@@ -234,36 +220,23 @@ namespace LosSantosRED.lsr
                         EntryPoint.WriteToConsole($"POLICE EVENT: Updated Place Police Last Seen To A Citizen Reported Location", 3);
                     }
                 }
-
-
                 if (Player.SearchMode.IsInStartOfSearchMode)
                 {
-                    //if (Game.GameTime - GameTimeLastUpdatedSearchLocation >= 10000)
-                    //{
                     if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) >= 10f)
                     {
                         Player.PlacePoliceShouldSearchForPlayer = Player.Position;
                     }
-                        //GameTimeLastUpdatedSearchLocation = Game.GameTime;
-                    //}
-
                     if(Game.GameTime - GameTimeLastUpdatedSearchLocation >= 1000)
                     {
                         EntryPoint.WriteToConsole("Ghost Position Update for Cop Tasking");
                         GameTimeLastUpdatedSearchLocation = Game.GameTime;
                     }
-
                 }
                 else
                 {
                     Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
                 }
-                    
-                
-
-
-
-                if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
+                  if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
                 {
                     if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
                     {
@@ -275,11 +248,6 @@ namespace LosSantosRED.lsr
                 {
                     Player.CurrentVehicle.UpdateDescription();
                 }
-                
-            }
-            else if(World.TotalWantedLevel > 0)
-            {
-
             }
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
         }

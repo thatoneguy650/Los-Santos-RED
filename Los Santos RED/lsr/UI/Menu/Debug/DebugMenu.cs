@@ -35,7 +35,7 @@ public class DebugMenu : Menu
     private IGangs Gangs;
     private IModItems ModItems;
     private ICrimes Crimes;
-
+    private INameProvideable Names;
 
     private IPlateTypes PlateTypes;
 
@@ -46,7 +46,8 @@ public class DebugMenu : Menu
     private uint GameTimeLastAttached;
     private UIMenu vehicleItemsMenu;
 
-    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes)
+    public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
+        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -63,6 +64,7 @@ public class DebugMenu : Menu
         ModItems = modItems;
         Crimes = crimes;
         PlateTypes = plateTypes;
+        Names = names;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
@@ -442,6 +444,18 @@ public class DebugMenu : Menu
         };
 
 
+        //spawn taxi
+        UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
+        TaxiSpawn.Activated += (menu, item) =>
+        {
+            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World);
+            TaxiDropOff.Setup();
+            TaxiDropOff.Start();
+            menu.Visible = false;
+        };
+
+
+
 
 
         PlayerStateItemsMenu.AddItem(KillPlayer);
@@ -464,6 +478,7 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(GetPilotsLicense);
 
         PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
+        PlayerStateItemsMenu.AddItem(TaxiSpawn);
 
     }
     private void CreateRelationshipsMenu()

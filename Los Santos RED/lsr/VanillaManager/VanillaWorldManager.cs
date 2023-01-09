@@ -138,6 +138,9 @@ public class VanillaWorldManager
     private void TerminateHealthRecharge()
     {
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
+      //  NativeFunction.CallByName<bool>("DISABLE_PLAYER_HEALTH_RECHARGE", Game.LocalPlayer);
+      //  NativeFunction.Natives.xBCB06442F7E52666(Game.LocalPlayer);
+       //NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
     }
     private void TerminateRespawnController()
     {

@@ -42,13 +42,13 @@ public class VanillaManager
     public void Tick()
     {
         VanillaWorldManager.Tick();
-        GameFiber.Yield();
+        //GameFiber.Yield();
         VanillaCopManager.Tick();
-        GameFiber.Yield();
+        //GameFiber.Yield();
         VanillaGangManager.Tick();
-        GameFiber.Yield();
-        VanillaCarGeneratorManager.Tick();
-        GameFiber.Yield();
+        //GameFiber.Yield();
+        //VanillaCarGeneratorManager.Tick();
+        //GameFiber.Yield();
     }
 
 }

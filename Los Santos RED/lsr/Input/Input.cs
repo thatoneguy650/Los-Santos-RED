@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr
             Game.DisableControlAction(0, GameControl.SelectCharacterMichael, true);
             Game.DisableControlAction(0, GameControl.SelectCharacterMultiplayer, true);
             Game.DisableControlAction(0, GameControl.SelectCharacterTrevor, true);
-            Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
+            //Game.DisableControlAction(0, GameControl.Talk, true);//dont mess up my other talking!
 
             if(IsUsingController && Settings.SettingsManager.KeySettings.GameControlToDisable >= 0)
             {

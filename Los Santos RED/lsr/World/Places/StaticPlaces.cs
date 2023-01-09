@@ -135,10 +135,16 @@ public class StaticPlaces
     {
         if (EntryPoint.ModController.IsRunning)
         {
+            int updated = 0;
             foreach (BasicLocation gl in Places.ActiveLocations.ToList())
             {
                 gl.Update(Time);
-                GameFiber.Yield();
+                updated++;
+                if (updated >= 5)
+                { 
+                    GameFiber.Yield();
+                    updated = 0;
+                }
             }
         }
     }

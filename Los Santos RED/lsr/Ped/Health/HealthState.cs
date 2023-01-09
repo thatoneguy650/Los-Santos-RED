@@ -161,7 +161,7 @@ public class HealthState
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 GameFiber.Yield();
-                //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                 if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
                 {
                     ModifyDamage();
@@ -173,7 +173,7 @@ public class HealthState
             {
                 CurrentPlayer.ActivityManager.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;
-                //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
+                EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
             }
         }
     }
