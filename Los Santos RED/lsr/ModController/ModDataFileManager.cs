@@ -186,19 +186,27 @@ public class ModDataFileManager
     private void SetupFullExpandedJurisdiction()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
-        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. No gameconfig changes are needed, as these are replace." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+        string Description = "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles. Requires a custom gameconfig. https://www.gta5-mods.com/misc/gta-5-gameconfig-300-cars" + Environment.NewLine + Environment.NewLine + Environment.NewLine +
             "EUP Installation: https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" + Environment.NewLine + Environment.NewLine +
             "Expanded Department Liveries Installation: " + Environment.NewLine + Environment.NewLine +
 
-            "Stanier (police)" + Environment.NewLine + 
-               "Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-            "Buffalo (police2)" + Environment.NewLine + "" +
-               "Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-            "Granger (sheriff2)" + Environment.NewLine + 
-               "Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
 
-            "Interceptor (police3)" + Environment.NewLine + 
-               "Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
+
+            "Copy greskfej folder to '\\mods\\update\\x64\\dlcpacks'" + Environment.NewLine + 
+            "Add <Item>dlcpacks:/greskfej/</Item> to the end of '\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'" + Environment.NewLine + 
+
+
+
+
+            //"Stanier (police)" + Environment.NewLine + 
+            //   "Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
+            //"Buffalo (police2)" + Environment.NewLine + "" +
+            //   "Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
+            //"Granger (sheriff2)" + Environment.NewLine + 
+            //   "Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
+
+            //"Interceptor (police3)" + Environment.NewLine + 
+            //   "Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
 
             //"Gresley (police5)" + Environment.NewLine + 
             //   "Copy police5_hi.yft, police5.ytd, and police5.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'." + Environment.NewLine + 

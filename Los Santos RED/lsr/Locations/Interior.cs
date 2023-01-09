@@ -86,7 +86,7 @@ public class Interior
                 {
                     NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
                     door.IsLocked = false;
-                    GameFiber.Yield();
+                    //GameFiber.Yield();
                 }
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
@@ -107,7 +107,7 @@ public class Interior
             catch (Exception ex)
             {
                 EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
+                //EntryPoint.ModController.CrashUnload();
             }
             //EntryPoint.WriteToConsole($"Interior LOADED {Name} {ID}");
         }, "Load Interior");

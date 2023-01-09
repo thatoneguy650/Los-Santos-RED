@@ -124,7 +124,7 @@ public class Agencies : IAgencies
         LSSDVW = new Agency("~r~", "LSSD-VW", "LSSD-VW", "Los Santos Sheriff - Vinewood Division", "Red", Classification.Sheriff, "SheriffPeds", "VWHillsLSSDVehicles", "LSCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 8 };
         LSSDDV = new Agency("~r~", "LSSD-DV", "LSSD-DV", "Los Santos Sheriff - Davis Division", "Red", Classification.Sheriff, "SheriffPeds", "DavisLSSDVehicles", "LSCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 9 };
         LSSDBC = new Agency("~r~", "LSSD-BC", "LSSD-BC", "Los Santos Sheriff - Blaine County Division", "Red", Classification.Sheriff, "SheriffPeds", "BCSOVehicles", "BCS ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 10 };
-        LSSDMJ = new Agency("~r~", "LSSD-MJ", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, "SheriffPeds", "BCSOVehicles", "MCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 11 };
+        LSSDMJ = new Agency("~r~", "LSSD-MJ", "LSSD-MJ", "Los Santos Sheriff - Majestic County Division", "Red", Classification.Sheriff, "SheriffPeds", "MajesticLSSDVehicles", "MCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "LSSD Deputy") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 11 };
         LSSDASD = new Agency("~r~", "LSSD-ASD", "LSSD-ASD", "Los Santos Sheriffs Department - Air Support Division", "Red", Classification.Sheriff, "SheriffPeds", "SheriffHeliVehicles", "ASD ", "Tasers", "HeliSidearms", "HeliLongGuns", "LSSD Deputy") { MinWantedLevelSpawn = 3, MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 13 };     
         LSPP = new Agency("~p~", "LSPP", "LSPP", "Los Santos Port Police", "LightGray", Classification.Police, "SecurityPeds", "UnmarkedVehicles", "LSPP ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "Port Authority Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 15 };
         LSIAPD = new Agency("~p~", "LSIAPD", "LSIAPD", "Los Santos International Airport Police Department", "LightBlue", Classification.Police, "StandardCops", "LSPDVehicles", "LSA ", "Tasers", "AllSidearms", "AllLongGuns", "LSIAPD Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads", Division = 16 };
@@ -190,6 +190,16 @@ public class Agencies : IAgencies
         Agency RHPD = new Agency("~b~", "RHPD", "RHPD", "Rockford Hills Police Department", "Blue", Classification.Police, "RHPDCops", "RHPDVehicles", "RH ", "Tasers", "AllSidearms", "AllLongGuns", "RHPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 5 };
         Agency BCSO = new Agency("~r~", "BCSO", "BCSO", "Blaine County Sheriff", "Red", Classification.Sheriff, "BCSheriffPeds", "BCSOVehicles", "BCS ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "BCSO Deputy") { MaxWantedLevelSpawn = 4, HeadDataGroupID = "AllHeads", Division = 10 };
 
+        Agency LSPPFEJ = Extensions.DeepCopy(LSPP);
+
+        LSPPFEJ.PersonnelID = "LSPPPeds";
+        LSPPFEJ.VehiclesID = "LSPPVehicles";
+
+        Agency LSIAPDFEJ = Extensions.DeepCopy(LSIAPD);
+        LSIAPDFEJ.PersonnelID = "LSIAPDPeds";
+        LSIAPDFEJ.VehiclesID = "LSIAPDVehicles";
+
+
         List< Agency> FullAgenciesList = new List<Agency>
         {
             LSPD,LSPDVW,LSPDELS,
@@ -197,7 +207,7 @@ public class Agencies : IAgencies
             LSSD,LSSDVW,LSSDDV,LSSDMJ,
             BCSO,
             LSPDASD,LSSDASD,
-            LSPP,LSIAPD,
+            LSPPFEJ,LSIAPDFEJ,
             NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,
             ARMY,
             LSFDFire,LSMC,MRH,LSFD,UNK,
