@@ -597,7 +597,7 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            IsConversing = true;
+            //IsConversing = true;
             Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == Player.CurrentLookedAtPed.Handle);
             try
             {

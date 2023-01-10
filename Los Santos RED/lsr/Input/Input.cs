@@ -75,6 +75,7 @@ namespace LosSantosRED.lsr
         private bool HasShownControllerHelpPrompt;
         private uint GameTimeLastPressedAltMenu;
         private bool CanToggleAltMenu;
+        private uint GameTimeLastPressedStartTransaction;
 
         private bool RecentlyPressedSurrender => Game.GameTime - GameTimeLastPressedSurrender <= 1000;
         public bool IsUsingController { get; private set; }   
@@ -172,7 +173,11 @@ namespace LosSantosRED.lsr
             }
             else if (Player.ButtonPrompts.IsGroupPressed("StartTransaction"))//Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
             {
-                Player.ActivityManager.StartTransaction();
+                if (Game.GameTime - GameTimeLastPressedStartTransaction >= 1000)
+                {
+                    Player.ActivityManager.StartTransaction();
+                    GameTimeLastPressedStartTransaction = Game.GameTime;
+                }
             }
             else if (Player.ButtonPrompts.IsGroupPressed("InteractableLocation"))//Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
             {

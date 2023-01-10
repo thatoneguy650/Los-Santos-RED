@@ -292,7 +292,7 @@ public class InteractableLocation : BasicLocation
             PlayErrorSound();
             return true;
         }
-        if (Player.IsWanted && CanInteractWhenWanted && (Player.ClosestPoliceDistanceToPlayer < 80f || Player.AnyPoliceRecentlySeenPlayer))
+        if (Player.IsWanted && CanInteractWhenWanted && (Player.ClosestPoliceDistanceToPlayer < 20f || Player.AnyPoliceRecentlySeenPlayer))
         {
             Game.DisplayHelp($"{Name} is unavailable when police are nearby");
             PlayErrorSound();

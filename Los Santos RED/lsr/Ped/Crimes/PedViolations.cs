@@ -349,7 +349,7 @@ public class PedViolations
                     IsShootingCheckerActive = true;
                     //EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
                     uint GameTimeLastShot = 0;
-                    while (PedExt.Pedestrian.Exists() && IsShootingCheckerActive)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
+                    while (PedExt.Pedestrian.Exists() && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
                     {
                         if (PedExt.Pedestrian.IsShooting)
                         {

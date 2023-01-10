@@ -251,7 +251,9 @@ public class Pedestrians : ITaskerReportable
                     AddAmbientGangMember(Pedestrian);
                     GameFiber.Yield();
                 }
-                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x => x.Handle == localHandle) && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x => x.Handle == localHandle) && !Police.Any(x => x.Handle == localHandle))
+                else if (!Civilians.Any(x => x.Handle == localHandle) && !Merchants.Any(x => x.Handle == localHandle) 
+                    && !Zombies.Any(x => x.Handle == localHandle) && !GangMembers.Any(x => x.Handle == localHandle) 
+                    && !Police.Any(x => x.Handle == localHandle) && !EMTs.Any(x => x.Handle == localHandle) && !Firefighters.Any(x => x.Handle == localHandle))
                 {
                     AddAmbientCivilian(Pedestrian);
                     GameFiber.Yield();

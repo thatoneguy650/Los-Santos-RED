@@ -265,7 +265,7 @@ public class CityHall : InteractableLocation
         {
             if (Player.BankAccounts.Money >= PilotsLicenseFee)
             {
-                if (Player.Licenses.HasCCWLicense && Player.Licenses.PilotsLicense.IsValid(Time))
+                if (Player.Licenses.HasPilotsLicense && Player.Licenses.PilotsLicense.IsValid(Time))
                 {
                     Player.BankAccounts.GiveMoney(-1 * PilotsLicenseFee);
                     Player.Licenses.PilotsLicense.IssueLicense(Time, 12);

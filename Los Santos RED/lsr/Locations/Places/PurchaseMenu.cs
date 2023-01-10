@@ -184,7 +184,6 @@ public class PurchaseMenu : Menu
             SetupCategoryMenu(categoryMenu);
         }
     }
-
     private void SetupCategoryMenu(UIMenu categoryMenu)
     {
         if (Transaction.HasBannerImage)
@@ -255,7 +254,6 @@ public class PurchaseMenu : Menu
             }
         }, "CreatePreview");
     }
-
     public void OnItemSold(MenuItem menuItem)
     {
         menuItem.ModItem.UpdatePurchaseMenuItem(Transaction, menuItem, Settings, Player, Transaction.IsStealing);

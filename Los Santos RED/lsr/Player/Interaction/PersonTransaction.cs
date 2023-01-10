@@ -75,11 +75,16 @@ public class PersonTransaction : Interaction
             EntryPoint.WriteToConsole("Shop Menu is null for some fucking reason !");
 
         }
-        else
-        {
-            Player.ActivityManager.IsConversing = false;
-            Player.IsTransacting = false;
-        }
+        //else
+        //{
+
+        //}
+
+
+        Player.ActivityManager.IsConversing = true;
+        Player.IsTransacting = true;
+
+
 
         GameFiber.StartNew(delegate
         {
@@ -126,7 +131,7 @@ public class PersonTransaction : Interaction
 
                         EntryPoint.WriteToConsole("PERSON TRANSACTION START");
 
-                        
+
 
 
 
@@ -166,8 +171,8 @@ public class PersonTransaction : Interaction
                                 EntryPoint.WriteToConsole("Unpased Person Transaction");
                             }
 
-                            if(isPaused && Player.ButtonPrompts.IsPressed("CancelTransaction"))
-                            {   
+                            if (isPaused && Player.ButtonPrompts.IsPressed("CancelTransaction"))
+                            {
                                 EntryPoint.WriteToConsole("Cancelled Paused Person Transaction");
                                 break;
                             }
@@ -213,11 +218,11 @@ public class PersonTransaction : Interaction
             DisposeInteractionMenu();
             Player.LastFriendlyVehicle = null;
 
-            if(PedCanBeTasked)
+            if(PedCanBeTasked && Ped != null)
             {
                 Ped.CanBeTasked = true;
             }
-            if(PedCanBeAmbientTasked)
+            if(PedCanBeAmbientTasked && Ped != null)
             {
                 Ped.CanBeAmbientTasked = true;
             }
