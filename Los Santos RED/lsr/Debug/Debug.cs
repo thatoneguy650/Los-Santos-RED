@@ -440,13 +440,13 @@ public class Debug
         //// StuffTwo();
 
 
-        VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
-        if (myCar != null && myCar.Vehicle.Exists())
-        {
-            NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(myCar.Vehicle, true);
-            Game.DisplayHelp("Set Light State");
-        }
-        // return;
+        //VehicleExt myCar = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 100f);
+        //if (myCar != null && myCar.Vehicle.Exists())
+        //{
+        //    NativeFunction.Natives.SET_VEHICLE_USE_PLAYER_LIGHT_SETTINGS(myCar.Vehicle, true);
+        //    Game.DisplayHelp("Set Light State");
+        //}
+        //// return;
         // Player.ResetScannerDebug();
         //  Player.AddCrime(Crimes.CrimeList.PickRandom(), false, Game.LocalPlayer.Character.Position, null, null, false, true, false);
 
