@@ -20,8 +20,8 @@ public abstract class ConsumableItem : ModItem
     {
 
     }
-    [XmlIgnore]
-    public ConsumableRefresher ConsumableItemNeedGain { get; set; }
+    //[XmlIgnore]
+    //public ConsumableRefresher ConsumableItemNeedGain { get; set; }
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
     public int HealthChangeAmount { get; set; }

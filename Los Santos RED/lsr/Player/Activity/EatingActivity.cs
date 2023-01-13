@@ -25,6 +25,7 @@ namespace LosSantosRED.lsr.Player
         private float PrevAnimationTime;
         private uint GameTimeLastCheckedAnimation;
         private FoodItem FoodItem;
+        private ConsumableRefresher ConsumableItemNeedGain;
 
         public EatingActivity(IActionable consumable, ISettingsProvideable settings, FoodItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -111,7 +112,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle_Old()
         {
-            FoodItem.ConsumableItemNeedGain = new ConsumableRefresher(Player,FoodItem,Settings);
+            ConsumableItemNeedGain = new ConsumableRefresher(Player,FoodItem,Settings);
             StartNewIdleAnimation();
             EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
@@ -120,7 +121,7 @@ namespace LosSantosRED.lsr.Player
                 float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
-                    if (TimesAte >= 5 && FoodItem.ConsumableItemNeedGain.IsFinished)
+                    if (TimesAte >= 5 && ConsumableItemNeedGain.IsFinished)
                     {
                         if (Food.Exists())
                         {
@@ -138,7 +139,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                FoodItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             Exit();
@@ -149,7 +150,7 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithBite = false;
             StartNewIdleAnimation();
-            FoodItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, FoodItem, Settings);
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, FoodItem, Settings);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -164,7 +165,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithBite = true;
                         EntryPoint.WriteToConsole($"Eating Bite finished {PlayingAnim} TimesAte {TimesAte}", 5);
                     }
-                    if (TimesAte >= 5 && FoodItem.ConsumableItemNeedGain.IsFinished)
+                    if (TimesAte >= 5 && ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
@@ -181,7 +182,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                FoodItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             Exit();

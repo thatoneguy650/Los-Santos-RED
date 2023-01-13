@@ -271,6 +271,7 @@ public class Pedestrians : ITaskerReportable
             EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
         }
         GameTimeLastCreatedPeds = Game.GameTime;
+        EntryPoint.WriteToConsole("CREATE NEW PEDS END");
     }
     public void Prune()
     {
@@ -815,12 +816,6 @@ public class Pedestrians : ITaskerReportable
             return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
         }
     }
-
-
-
-
-
-
     private void AddAmbientCivilian(Ped Pedestrian)
     {  
         bool WillFight = false;
@@ -867,13 +862,13 @@ public class Pedestrians : ITaskerReportable
             ShopMenu toAdd = GetIllicitMenu();
             PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
             toCreate.SetupTransactionItems(toAdd);
-                 
             Civilians.Add(toCreate);
             if (Pedestrian.Exists())
             {
                 Pedestrian.Money = 0;// toCreate.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
+            EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
         }
     }
     private void SetCivilianStats(Ped Pedestrian)

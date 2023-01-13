@@ -684,15 +684,18 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu)
     {
+        EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
         ShopMenu = shopMenu;
         if (shopMenu == null)
         {
+            //EntryPoint.WriteToConsole("SetupTransactionItems END NO MENU");
             return;
         }
-        foreach (MenuItem menuItem in ShopMenu.Items.Where(x=> x.NumberOfItemsToSellToPlayer > 0))
+        foreach (MenuItem menuItem in ShopMenu.Items.Where(x => x.NumberOfItemsToSellToPlayer > 0))
         {
             PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
         }
+        //EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
     public string LootInventory(IInteractionable player)
     {

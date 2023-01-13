@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Player
         private string PlayingDict;
         private ISettingsProvideable Settings;
         private IngestItem IngestItem;
+        private ConsumableRefresher ConsumableItemNeedGain;
+
         public IngestActivity(IActionable consumable, ISettingsProvideable settings, IngestItem modItem, IIntoxicants intoxicants) : base()
         {
             Player = consumable;
@@ -141,7 +143,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            IngestItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, IngestItem, Settings);
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, IngestItem, Settings);
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -155,7 +157,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 if (AnimationTime >= 0.35f)
                 {
-                    IngestItem.ConsumableItemNeedGain.FullyConsume();
+                    ConsumableItemNeedGain.FullyConsume();
                     NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);//NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     break;
                 }

@@ -44,6 +44,8 @@ namespace LosSantosRED.lsr.Player
         private int MouthBoneID;
         private int HandBoneID;
         private SmokeItem SmokeItem;
+        private ConsumableRefresher ConsumableItemNeedGain;
+
         public SmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
             Player = consumable;
@@ -162,7 +164,12 @@ namespace LosSantosRED.lsr.Player
             EntryPoint.WriteToConsole($"Smoking Activity Playing {Data.AnimEnterDictionary} {Data.AnimEnter}", 5);
 
 
-            SmokeItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, SmokeItem, Settings);
+
+           ConsumableItemNeedGain = new ConsumableRefresher(Player, SmokeItem, Settings);
+
+
+
+
 
             while (Player.ActivityManager.CanPerformActivitiesExtended && !isPaused && !IsCancelled && NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, Data.AnimEnterDictionary, Data.AnimEnter) < 1.0f)//NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, AnimEnterDictionary, AnimEnter, 1))// && CurrentAnimationTime < 1.0f)
             {
@@ -268,7 +275,8 @@ namespace LosSantosRED.lsr.Player
                 }
                 UpdatePosition();
                 UpdateSmoke();
-                SmokeItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
+                //SmokeItem.ConsumableItemNeedGain.Update();
                 //UpdateHealthGain();
                 if (IsHandByFace)
                 {
@@ -298,7 +306,8 @@ namespace LosSantosRED.lsr.Player
             {
                 UpdatePosition();
                 UpdateSmoke();
-                SmokeItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
+                //SmokeItem.ConsumableItemNeedGain.Update();
                 //UpdateHealthGain();
                 GameFiber.Yield();
             }
@@ -507,6 +516,12 @@ namespace LosSantosRED.lsr.Player
                 CurrentIntoxicant = Intoxicants.Get(SmokeItem.IntoxicantName);
                 Player.Intoxication.StartIngesting(CurrentIntoxicant);
             }
+
+
+
+
+
+
             //if(Settings.SettingsManager.PlayerOtherSettings.OverwriteHandOffset)
             //{
             //    HandOffset = new Vector3(Settings.SettingsManager.PlayerOtherSettings.HandOffsetX, Settings.SettingsManager.PlayerOtherSettings.HandOffsetY, Settings.SettingsManager.PlayerOtherSettings.HandOffsetZ);
@@ -521,6 +536,13 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
+
+
+
+
+
+
+
             Data = new SmokingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, MouthBoneName, MouthOffset, MouthRotator, PropModelName);
         }
         private void UpdatePosition()

@@ -39,6 +39,7 @@ namespace LosSantosRED.lsr.Player
         private float PrevAnimationTime;
 
         private DrinkItem DrinkItem;
+        private ConsumableRefresher ConsumableItemNeedGain;
 
         public DrinkingActivity(IActionable consumable, ISettingsProvideable settings, DrinkItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -169,7 +170,9 @@ namespace LosSantosRED.lsr.Player
             uint GameTimeLastChangedIdle = Game.GameTime;
             bool IsFinishedWithSip = false;
             StartNewIdleAnimation();
-            DrinkItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
+
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
+
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
                 Player.WeaponEquipment.SetUnarmed();
@@ -184,7 +187,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = true;
                         EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
                     }
-                    if (TimesDrank >= 5 && DrinkItem.ConsumableItemNeedGain.IsFinished)
+                    if (TimesDrank >= 5 && ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }
@@ -201,7 +204,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                DrinkItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             Exit();

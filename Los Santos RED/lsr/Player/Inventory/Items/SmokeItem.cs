@@ -28,6 +28,9 @@ public class SmokeItem : ConsumableItem
         SmokingActivity activity = new SmokingActivity(actionable, settings, this, intoxicants);
         if (activity.CanPerform(actionable))
         {
+
+
+
             ModItem li = actionable.Inventory.Get(typeof(LighterItem))?.ModItem;
             if (li == null)
             {
@@ -35,6 +38,9 @@ public class SmokeItem : ConsumableItem
                 return false;
             }
             actionable.Inventory.Use(li);
+
+
+
             base.UseItem(actionable, settings, world, cameraControllable, intoxicants);
             actionable.ActivityManager.StartUpperBodyActivity(activity);
             return true;

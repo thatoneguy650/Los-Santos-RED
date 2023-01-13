@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Player
         private Rotator LighterRotator = new Rotator(-93f,40f,0f);
         private int HandBoneID;
         private int MouthBoneID;
+        private ConsumableRefresher ConsumableItemNeedGain;
 
         public PipeSmokingActivity(IActionable consumable, bool isPot, ISettingsProvideable settings) : base()
         {
@@ -197,7 +198,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            PipeSmokeItem.ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
             AttachSmokedItemToHand();
             EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
             PlayingDict = Data.AnimIdleDictionary;
@@ -216,7 +217,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 UpdatePosition();
                 UpdateSmoke();
-                PipeSmokeItem.ConsumableItemNeedGain.Update();
+                ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
             EntryPoint.WriteToConsole("SmokingActivity Idle End", 5);

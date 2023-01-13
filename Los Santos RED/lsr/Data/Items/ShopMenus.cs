@@ -78,12 +78,48 @@ public class ShopMenus : IShopMenus
     }
     public ShopMenu GetRandomDrugDealerMenu()
     {
-        ShopMenu Possible = ShopMenuList.Where(x => x.ID == DealerMenuID).PickRandom()?.Copy();
+        ShopMenu Possible = ShopMenuList.Where(x => x.ID == DealerMenuID).PickRandom();//?.Copy();
+
+        List<MenuItem> newMenuItems = new List<MenuItem>() { };
+        foreach (MenuItem mi in Possible.Items)
+        {
+            List<MenuItemExtra> newMenuExtraItems = new List<MenuItemExtra>();
+            if (mi.Extras != null)
+            {
+                newMenuExtraItems = new List<MenuItemExtra>() { };
+                foreach (MenuItemExtra mie in mi.Extras)
+                {
+                    newMenuExtraItems.Add(new MenuItemExtra(mie.ExtraName, mie.PurchasePrice, mie.SalesPrice) { HasItem = mie.HasItem });
+                }
+            }
+            newMenuItems.Add(new MenuItem(mi.ModItemName, mi.PurchasePrice, mi.SalesPrice) { ModItem = mi.ModItem, IsIllicilt = mi.IsIllicilt, SubPrice = mi.SubPrice, SubAmount = mi.SubAmount, Extras = newMenuExtraItems });//need to add extras in here
+        }
+        ShopMenu toReturn = new ShopMenu(Possible.ID, Possible.Name, newMenuItems);
+
         return Possible;
     }
     public ShopMenu GetRandomDrugCustomerMenu()
     {
-        ShopMenu Possible = ShopMenuList.Where(x => x.ID == DrugCustomerMenuID).PickRandom()?.Copy();
+        ShopMenu Possible = ShopMenuList.Where(x => x.ID == DrugCustomerMenuID).PickRandom();//?.Copy();
+        if(Possible == null)
+        {
+            return null;
+        }
+        List<MenuItem> newMenuItems = new List<MenuItem>() { };
+        foreach (MenuItem mi in Possible.Items) 
+        {
+            List<MenuItemExtra> newMenuExtraItems = new List<MenuItemExtra>();
+            if (mi.Extras != null)
+            {
+                newMenuExtraItems = new List<MenuItemExtra>() { };
+                foreach(MenuItemExtra mie in mi.Extras)
+                {
+                    newMenuExtraItems.Add(new MenuItemExtra(mie.ExtraName, mie.PurchasePrice, mie.SalesPrice) { HasItem = mie.HasItem });
+                }
+            }
+            newMenuItems.Add(new MenuItem(mi.ModItemName, mi.PurchasePrice, mi.SalesPrice) { ModItem = mi.ModItem, IsIllicilt = mi.IsIllicilt, SubPrice = mi.SubPrice, SubAmount = mi.SubAmount, Extras = newMenuExtraItems });//need to add extras in here
+        }
+        ShopMenu toReturn = new ShopMenu(Possible.ID,Possible.Name, newMenuItems);
         return Possible;
     }
     public ShopMenu GetVendingMenu(string propName)

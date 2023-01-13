@@ -75,9 +75,24 @@ namespace LosSantosRED.lsr.Player
         {
             if (modItem != null)
             {
+                EntryPoint.WriteToConsole($"USED {modItem.Name}");
                 if (modItem.PercentLostOnUse > 0.0f)
                 {
-                    Get(modItem)?.RemovePercent(modItem.PercentLostOnUse);                
+                    InventoryItem ExistingItem = Get(modItem);
+                    EntryPoint.WriteToConsole($"USED {modItem.Name} {modItem.PercentLostOnUse}");
+                    if (ExistingItem != null)
+                    {
+                        if(ExistingItem.RemainingPercent > modItem.PercentLostOnUse)
+                        {
+                            EntryPoint.WriteToConsole($"USED {modItem.Name} {modItem.PercentLostOnUse} REMOVING PERCENT");
+                            ExistingItem.RemovePercent(modItem.PercentLostOnUse);
+                        }
+                        else
+                        {
+                            EntryPoint.WriteToConsole($"USED {modItem.Name} {modItem.PercentLostOnUse} REMOVING FULL ITEM");
+                            Remove(modItem);
+                        }
+                    }         
                 }
                 else
                 {

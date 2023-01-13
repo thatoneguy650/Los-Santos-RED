@@ -254,7 +254,7 @@ namespace LosSantosRED.lsr.Data
                 ModItem toadd = modItems.Get(cii.ModItemName);
                 if (toadd != null)
                 {
-                    player.Inventory.Add(toadd, (int)cii.RemainingPercent);
+                    player.Inventory.Add(toadd, cii.RemainingPercent); //player.Inventory.Add(toadd, (int)cii.RemainingPercent);
                 }
                 //else if (cii.ModItemName.Contains("License Plate:"))
                 //{
