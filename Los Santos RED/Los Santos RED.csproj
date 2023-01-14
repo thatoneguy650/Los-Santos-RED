@@ -167,7 +167,8 @@
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
     <Compile Include="lsr\Ped\PedInventory.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityGuard.cs" />
-    <Compile Include="lsr\Ped\SecurityGuard\SecurityGuardTaskManager.cs" />
+    <Compile Include="lsr\Tasker\Generic\PedBrain.cs" />
+    <Compile Include="lsr\Tasker\SecurityGuard\SecurityGuardBrain.cs" />
     <Compile Include="lsr\Player\Activity\WaveHandsActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\CorruptCopContact.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\EmergencyServicesContact.cs" />
@@ -232,7 +233,7 @@
     <Compile Include="lsr\Data\Settings\World General Settings\TaskSettings.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\WeatherSettings.cs" />
     <Compile Include="lsr\Spawner\CivilianSpawnTask.cs" />
-    <Compile Include="lsr\Spawner\SecurityGuardSpawner.cs" />
+    <Compile Include="lsr\Spawner\SecuritySpawnTask.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\FollowInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\FollowOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\FollowAround\GeneralFollow.cs" />

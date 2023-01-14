@@ -14,11 +14,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable
     private bool WasAlreadySetPersistent = false;
     public SecurityGuard(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, true,true,false,false,name, crimes, weapons, "Security", world,false )
     {
-        //WillCallPolice = true;
-        //WillCallPoliceIntense = true;
-        //WillFight = true;
-        //WillFightPolice = false;
-
         IsCop = false;
         Health = health;
         AssignedAgency = agency;
@@ -43,8 +38,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable
         }
         WeaponInventory = new WeaponInventory(this, Settings);
         Voice = new CopVoice(this, ModelName, Settings);
-        SecurityGuardTaskManager = new SecurityGuardTaskManager(this, Settings, null);
-       // AssistManager = new CopAssistManager(this);
+        PedBrain = new SecurityGuardBrain(this, Settings, world, weapons);
     }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
@@ -62,9 +56,8 @@ public class SecurityGuard : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 20;
-   // public CopAssistManager AssistManager { get; private set; }
     public CopVoice Voice { get; private set; }
-    public SecurityGuardTaskManager SecurityGuardTaskManager { get; private set; }
+    public SecurityGuardBrain SecurityGuardTaskManager { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
@@ -170,7 +163,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable
         Voice.ResetSpeech();
         Voice.Speak(currentPlayer);
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string UnitCode)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson.EmptyHolster, dispatchablePerson.FullHolster);
         Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);

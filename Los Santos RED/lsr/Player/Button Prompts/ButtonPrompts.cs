@@ -166,11 +166,15 @@ public class ButtonPrompts
         if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
         {
             bool toSell = false;
+            bool toSellPlayerHas = false;
             bool toBuy = false;
             if (Player.CurrentLookedAtPed.HasMenu)
             {
                 toSell = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable);
                 toBuy = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Purchaseable);
+
+                toSellPlayerHas = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable && Player.Inventory.Get(x.ModItem) != null && x.NumberOfItemsToPurchaseFromPlayer > 0);
+
             }
             RemovePrompts("StartTransaction");
             string promptText = $"Purchase from {Player.CurrentLookedAtPed.FormattedName}";
@@ -189,6 +193,12 @@ public class ButtonPrompts
             else
             {
                 promptText = $"Transact with {Player.CurrentLookedAtPed.FormattedName}";
+            }
+
+
+            if(toSellPlayerHas && Settings.SettingsManager.ActivitySettings.ShowInPromptWhenPedsWantToBuyItemsYouHave)
+            {
+                promptText += " (!)" ;
             }
 
             AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);

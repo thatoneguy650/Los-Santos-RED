@@ -288,20 +288,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         }
         SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(primarySecurityGuard);
-        primarySecurityGuard.WasModSpawned = true;
-        if (primarySecurityGuard != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        {
-            primarySecurityGuard.VoiceName = PersonType.OverrideVoice.PickRandom();
-        }
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(primarySecurityGuard.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
+        primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
         return primarySecurityGuard;
     }
     private void SetupPed(Ped ped)

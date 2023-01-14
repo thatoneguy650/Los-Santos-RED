@@ -49,7 +49,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> SheriffPeds_Old;
     private List<DispatchablePerson> StandardCops_Simple;
     private List<DispatchablePerson> PrisonPeds_Simple;
-
+    private List<DispatchablePerson> SecurityPeds_Simple;
     public List<DispatchablePersonGroup> AllPeople => PeopleGroupLookup;
     public void ReadConfig()
     {
@@ -520,7 +520,72 @@ public class DispatchablePeople : IDispatchablePeople
 
         };
         SecurityPeds = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_security_01",100,100)  { DebugName = "SecurityMale" },
+            new DispatchablePerson("s_m_m_security_01",0,0)  { DebugName = "SecurityMale" },
+
+
+            new DispatchablePerson("mp_m_freemode_01",20,20) {
+                DebugName = "FreemodeCreamSecurityShortSleeveMale"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 11, 0, 0), new PedComponent(4, 122, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 71, 0, 0), new PedComponent(11, 319, 2, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 5, 0) }
+                ,OptionalPropChance = 25
+
+                //,OptionalComponents = new List<PedComponent>() { new PedComponent(4, 123, 0, 0) }//tucked in pants
+                //,OptionalComponentChance = 35
+            },
+
+            new DispatchablePerson("mp_m_freemode_01",20,20) {
+                DebugName = "FreemodeCreamSecurityLongSleeveMale"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 1, 0, 0), new PedComponent(4, 122, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(10, 71, 0, 0), new PedComponent(11, 317, 2, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 5, 0) }
+                ,OptionalPropChance = 25
+
+                //,OptionalComponents = new List<PedComponent>() { new PedComponent(4, 123, 0, 0) }//tucked in pants
+                //,OptionalComponentChance = 35
+            },
+
+                        //Male
+            //Top 317 = long sleeve 316 is collar closed
+            //319 = short sleeve 318 is collar closed
+            //Textur 0 - Black, 1 - Forest Green, 2 - Cream, 3- Tan, 4 - Dark Green, 5 - white, 6 - off white, 7 grey
+
+            //Lower
+            //122 = pants tucked in
+            //1234 = pants not tucked in
+            new DispatchablePerson("mp_f_freemode_01",20,20) {
+                DebugName = "FreemodeCreamSecurityShortSleeveFemale"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 9, 0, 0) ,new PedComponent(4, 128, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 80, 0, 0), new PedComponent(11, 330, 2, 0)},
+                    new List<PedPropComponent>() {  })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 11, 0) }
+                ,OptionalPropChance = 10
+
+                //,OptionalComponents = new List<PedComponent>() { new PedComponent(4, 129, 0, 0) }//tucked in pants
+                //,OptionalComponentChance = 35
+            },
+            new DispatchablePerson("mp_f_freemode_01",20,20) {
+                DebugName = "FreemodeCreamSecurityLongSleeveFemale"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 3, 0, 0) ,new PedComponent(4, 128, 0, 0) ,new PedComponent(6, 55, 0, 0) ,new PedComponent(8, 35, 0, 0), new PedComponent(10, 80, 0, 0), new PedComponent(11, 328, 2, 0)},
+                    new List<PedPropComponent>() {  })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(1, 11, 0) }
+                ,OptionalPropChance = 10
+
+                //,OptionalComponents = new List<PedComponent>() { new PedComponent(4, 129, 0, 0) }//tucked in pants
+                //,OptionalComponentChance = 35
+            },
+
         };
         CoastGuardPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_uscg_01",100,100)  { DebugName = "CoastGuardMale" },
@@ -1053,9 +1118,11 @@ public class DispatchablePeople : IDispatchablePeople
         };
 
         PrisonPeds_Simple = new List<DispatchablePerson>() {
-            new DispatchablePerson("s_m_m_prisguard_01",0,0)  { DebugName = "PrisonGuardMale" },
+            new DispatchablePerson("s_m_m_prisguard_01",100,100)  { DebugName = "PrisonGuardMale" },
         };
-
+        SecurityPeds_Simple = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_security_01",100,100)  { DebugName = "SecurityMale" },
+        };
 
         //
         List<DispatchablePersonGroup> PeopleGroupLookup_Simple = new List<DispatchablePersonGroup>();
@@ -1068,7 +1135,7 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("MilitaryPeds", MilitaryPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("PrisonPeds", PrisonPeds_Simple));
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SecurityPeds", SecurityPeds));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SecurityPeds", SecurityPeds_Simple));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CoastGuardPeds", CoastGuardPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NYSPPeds", NYSPPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("Firefighters", Firefighters));

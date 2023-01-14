@@ -40,6 +40,9 @@ public class ActivitySettings : ISettingsDefaultable
     public float ForceSitDistance { get; set; }
     [Description("Distance (in meters) to slide when sitting")]
     public float SittingSlideDistance { get; set; }
+    [Description("Will add an exclamation point to the prompt if the ped wants to buy an item you have")]
+    public bool ShowInPromptWhenPedsWantToBuyItemsYouHave { get; set; }
+
     public ActivitySettings()
     {
         SetDefault();
@@ -63,5 +66,6 @@ public class ActivitySettings : ISettingsDefaultable
         ForceSitTimeOut = 3000;
         ForceSitDistance = 0.7f;
         SittingSlideDistance = 0.5f;//0.1f
+        ShowInPromptWhenPedsWantToBuyItemsYouHave = true;
     }
 }

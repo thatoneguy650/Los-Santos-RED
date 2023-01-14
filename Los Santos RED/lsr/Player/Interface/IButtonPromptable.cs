@@ -1,4 +1,5 @@
-﻿using LSR.Vehicles;
+﻿using LosSantosRED.lsr.Player;
+using LSR.Vehicles;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,8 +53,9 @@ namespace LosSantosRED.lsr.Interface
       //  bool CanRecruitLookedAtGangMember { get; }
         Rage.Object CurrentLookedAtObject { get; }
         bool CanSitOnCurrentLookedAtObject { get; }
-       // bool IsSitting { get; }
-      //  bool IsConversing { get; }
+        Inventory Inventory { get; set; }
+        // bool IsSitting { get; }
+        //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }
     }
 }

@@ -215,13 +215,13 @@ public class SecurityDispatcher
         try
         {
             EntryPoint.WriteToConsole($"Security Dispatcher, SPAWN TASK STARTING");
-            SecurityGuardSpawnTask eMTSpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes);
-            eMTSpawnTask.AllowAnySpawn = allowAny;
-            eMTSpawnTask.AllowBuddySpawn = allowBuddy;
-            eMTSpawnTask.ClearArea = clearArea;
-            eMTSpawnTask.AttemptSpawn();
-            eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
+            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes);
+            securitySpawnTask.AllowAnySpawn = allowAny;
+            securitySpawnTask.AllowBuddySpawn = allowBuddy;
+            securitySpawnTask.ClearArea = clearArea;
+            securitySpawnTask.AttemptSpawn();
+            securitySpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
         }
         catch (Exception ex)
         {

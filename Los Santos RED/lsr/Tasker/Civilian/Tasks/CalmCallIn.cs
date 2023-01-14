@@ -41,15 +41,14 @@ public class CalmCallIn : ComplexTask
         {
             if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
-                ReportCrime();
+                Ped.ReportCrime(Player);
             }
         }
         else
         {
             if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
-                ReportCrime();
-                //EntryPoint.WriteToConsole($"TASKER: CalmCallIn Reporting Crimes For Deleted Ped: {Ped.Pedestrian.Handle}", 3);
+                Ped.ReportCrime(Player);
             }
         }
         GameTimeLastRan = Game.GameTime;
@@ -62,66 +61,6 @@ public class CalmCallIn : ComplexTask
     {
 
     }
-    private void ReportCrime()
-    {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsRagdoll)
-        {
-            if (Ped.PlayerCrimesWitnessed.Any())
-            {
-                //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Pedestrian.Handle}", 3);
-                Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                foreach (Crime toReport in Ped.PlayerCrimesWitnessed.ToList())
-                {
-                    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
-                }
-                Ped.PlayerCrimesWitnessed.Clear();
-            }
-            else if (Ped.OtherCrimesWitnessed.Any())
-            {
-               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
-                WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-                if (toReport != null)
-                {
-                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
-                }
-                Ped.OtherCrimesWitnessed.Clear();
-            }
-            else if (Ped.HasSeenDistressedPed)
-            {
-                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
-                Ped.HasSeenDistressedPed = false;
-            }
-            //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime: {Ped.Pedestrian.Handle}", 3);
-        }
-        else if (!Ped.Pedestrian.Exists())
-        {
-            if (Ped.PlayerCrimesWitnessed.Any())
-            {
-               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime Player: {Ped.Handle}", 3);
-                Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                foreach (Crime toReport in Ped.PlayerCrimesWitnessed)
-                {
-                    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
-                }
-                Ped.PlayerCrimesWitnessed.Clear();
-            }
-            else if (Ped.OtherCrimesWitnessed.Any())
-            {
-               // EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime OtherCrimesWithnessed: {Ped.Pedestrian.Handle}", 3);
-                WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-                if (toReport != null)
-                {
-                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
-                }
-                Ped.OtherCrimesWitnessed.Clear();
-            }
-            else if (Ped.HasSeenDistressedPed)
-            {
-                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
-                Ped.HasSeenDistressedPed = false;
-            }
-            //EntryPoint.WriteToConsole($"TASKER: CalmCallIn ReportCrime GHOST: {Ped.Handle}", 3);
-        }
-    }
+ 
 }
 

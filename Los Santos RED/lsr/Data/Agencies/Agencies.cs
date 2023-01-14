@@ -143,7 +143,7 @@ public class Agencies : IAgencies
         LSFD = new Agency("~w~", "LSFD", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "GreenEMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
 
-        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", "LimitedSidearms", "LimitedLongGuns", "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", null, null, "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 
 
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
@@ -238,10 +238,13 @@ public class Agencies : IAgencies
         Agency SAPR2008 = Extensions.DeepCopy(SAPR);
         Agency SACG2008 = Extensions.DeepCopy(SACG);
         Agency ARMY2008 = Extensions.DeepCopy(ARMY);
+
+        Agency GRPSECHS2008 = Extensions.DeepCopy(GRPSECHS);
+
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,LSSD2008,LSSDASD2008,NOOSE2008,FIB2008,DOA2008,SAHP2008,SASPA2008,SAPR2008,SACG2008,ARMY2008,LSFDFire,LSMC,MRH,LSFD,UNK,
-            NYSP,GRPSECHS,
+            NYSP,GRPSECHS2008,
         };
         foreach(Agency ag in AgenciesList2008)
         {

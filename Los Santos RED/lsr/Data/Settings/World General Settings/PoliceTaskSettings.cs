@@ -202,7 +202,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
         AllowMinorReactions = true;
 
 
-        RecklessVehicleChaseWantedLevelRequirement = 3;
+        RecklessVehicleChaseWantedLevelRequirement = 4;//3;
         AllowVeryRecklessVehicleChaseWithLethalForce = true;
 
     }

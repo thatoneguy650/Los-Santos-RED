@@ -44,6 +44,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PlayerPerception = new PlayerPerception(this, null, settings);
         PedReactions = new PedReactions(this);
         PedInventory = new PedInventory(this, Settings);
+        PedBrain = new PedBrain(this, settings, world, weapons);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
     }
@@ -62,6 +63,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public HealthState CurrentHealthState { get; private set; }
     public PedReactions PedReactions { get; set; }
     public PedInventory PedInventory { get; private set; }
+
+    public PedBrain PedBrain { get; set; }
+
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
@@ -110,13 +114,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
-
-
-
     public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
-
-
-
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasBeenTreatedByEMTs { get; set; }
     public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x=> x.AngersCivilians || x.ScaresCivilians);
@@ -292,10 +290,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public bool WasModSpawned { get; set; } = false;
-
-
     public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
-
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
@@ -715,4 +710,68 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedInventory.ItemsList.Clear();
         return ItemsFound;
     }
+
+
+
+    public virtual void ReportCrime(ITargetable Player)
+    {
+        if (Pedestrian.Exists() && Pedestrian.IsAlive && !Pedestrian.IsRagdoll)
+        {
+            if (PlayerCrimesWitnessed.Any())
+            {
+                Crime ToReport = PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
+                List<Crime> toCheck = PlayerCrimesWitnessed.Copy();
+                foreach (Crime toReport in toCheck)
+                {
+                    Player.AddCrime(ToReport, false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 10f, true, true);
+
+                }
+                PlayerCrimesWitnessed.Clear();
+            }
+            else if (OtherCrimesWitnessed.Any())
+            {
+                WitnessedCrime toReport = OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+                if (toReport != null)
+                {
+                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, false);// true);//why was this set to true?
+                }
+                OtherCrimesWitnessed.Clear();
+            }
+            else if (HasSeenDistressedPed)
+            {
+                Player.AddMedicalEvent(PositionLastSeenDistressedPed);
+                HasSeenDistressedPed = false;
+            }
+        }
+        else if (!Pedestrian.Exists())
+        {
+            if (PlayerCrimesWitnessed.Any())
+            {
+                Crime ToReport = PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
+                List<Crime> toCheck = PlayerCrimesWitnessed.Copy();
+                foreach (Crime toReport in toCheck)
+                {
+                    Player.AddCrime(ToReport, false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 10f, true, true);
+                }
+                PlayerCrimesWitnessed.Clear();
+            }
+            else if (OtherCrimesWitnessed.Any())
+            {
+                WitnessedCrime toReport = OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
+                if (toReport != null)
+                {
+                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
+                }
+                OtherCrimesWitnessed.Clear();
+            }
+            else if (HasSeenDistressedPed)
+            {
+                Player.AddMedicalEvent(PositionLastSeenDistressedPed);
+                HasSeenDistressedPed = false;
+            }
+        }
+
+    }
+
+
 }

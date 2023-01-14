@@ -61,14 +61,14 @@ public class ScaredCallIn : ComplexTask
             NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
             if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
-                ReportCrime();
+                 Ped.ReportCrime(Player);
             }
         }
         else
         {
             if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
-                ReportCrime();
+                Ped.ReportCrime(Player);
             }
         }
         GameTimeLastRan = Game.GameTime;
@@ -81,64 +81,6 @@ public class ScaredCallIn : ComplexTask
     {
 
     }
-    private void ReportCrime()
-    {
-        if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.Pedestrian.IsRagdoll)
-        {
-            if(Ped.PlayerCrimesWitnessed.Any())
-            {
-                Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
-                foreach (Crime toReport in toCheck)
-                {
-                    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
-
-                }
-                Ped.PlayerCrimesWitnessed.Clear();
-            }
-            else if (Ped.OtherCrimesWitnessed.Any())
-            {
-                WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-                if (toReport != null)
-                {
-                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, false);// true);//why was this set to true?
-                }
-                Ped.OtherCrimesWitnessed.Clear();
-            }
-            else if (Ped.HasSeenDistressedPed)
-            {
-                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
-                Ped.HasSeenDistressedPed = false;
-            }
-        }
-        else if(!Ped.Pedestrian.Exists())
-        {
-            if (Ped.PlayerCrimesWitnessed.Any())
-            {
-                Crime ToReport = Ped.PlayerCrimesWitnessed.OrderBy(x => x.Priority).FirstOrDefault();
-                List<Crime> toCheck = Ped.PlayerCrimesWitnessed.Copy();
-                foreach (Crime toReport in toCheck)
-                {
-                    Player.AddCrime(ToReport, false, Ped.PositionLastSeenCrime, Ped.VehicleLastSeenPlayerIn, Ped.WeaponLastSeenPlayerWith, Ped.EverSeenPlayer && Ped.ClosestDistanceToPlayer <= 10f, true, true);
-                }
-                Ped.PlayerCrimesWitnessed.Clear();
-            }
-            else if (Ped.OtherCrimesWitnessed.Any())
-            {
-                WitnessedCrime toReport = Ped.OtherCrimesWitnessed.Where(x => x.Perpetrator.Pedestrian.Exists() && !x.Perpetrator.IsBusted && x.Perpetrator.Pedestrian.IsAlive).OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
-                if (toReport != null)
-                {
-                    Player.AddCrime(toReport.Crime, false, toReport.Location, toReport.Vehicle, toReport.Weapon, false, true, true);
-                }
-                Ped.OtherCrimesWitnessed.Clear();
-            }
-            else if (Ped.HasSeenDistressedPed)
-            {
-                Player.AddMedicalEvent(Ped.PositionLastSeenDistressedPed);
-                Ped.HasSeenDistressedPed = false;
-            }
-        }
-        
-    }
+    
 }
 

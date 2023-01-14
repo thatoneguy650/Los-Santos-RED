@@ -51,6 +51,7 @@ namespace LosSantosRED.lsr.Interface
         bool RecentlySeenPlayer { get; }
         bool IsAmbientSpawn { get; }
 
+        void ReportCrime(ITargetable player);
         void SetWantedLevel(int v);
     }
 }
