@@ -308,7 +308,7 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
                     ped.WillCallPolice = false;

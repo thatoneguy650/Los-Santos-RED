@@ -20,7 +20,9 @@ public class SecurityGuardSpawnTask : SpawnTask
     private string UnitCode;
     private IWeapons Weapons;
     private IEntityProvideable World;
-    public SecurityGuardSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world) : base(spawnLocation, vehicleType, personType)
+    private ICrimes Crimes;
+    public SecurityGuardSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, 
+        bool addOptionalPassengers, IEntityProvideable world, ICrimes crimes) : base(spawnLocation, vehicleType, personType)
     {
         Agency = agency;
         AddBlip = addBlip;
@@ -29,6 +31,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
+        Crimes = crimes;
     }
     public bool ClearArea { get; set; } = false;
     private bool HasAgency => Agency != null;
@@ -272,7 +275,7 @@ public class SecurityGuardSpawnTask : SpawnTask
     {
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        RelationshipGroup rg = new RelationshipGroup("SECURITY");
+        RelationshipGroup rg = new RelationshipGroup("SECURITY_GUARD");
         ped.RelationshipGroup = rg;
         bool isMale;
         if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
@@ -283,7 +286,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         {
             isMale = ped.IsMale;
         }
-        SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.WasModSpawned = true;
         if (primarySecurityGuard != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())

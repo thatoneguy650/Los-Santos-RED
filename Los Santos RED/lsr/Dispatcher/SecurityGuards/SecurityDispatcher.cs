@@ -30,8 +30,9 @@ public class SecurityDispatcher
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
+    private ICrimes Crimes;
 
-    public SecurityDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
+    public SecurityDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, ICrimes crimes)
     {
         Player = player;
         World = world;
@@ -43,6 +44,7 @@ public class SecurityDispatcher
         Weapons = weapons;
         Names = names;
         PlacesOfInterest = placesOfInterest;
+        Crimes = crimes;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<SecurityGuard> DeletableOfficers => World.Pedestrians.SecurityGuardList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -213,7 +215,7 @@ public class SecurityDispatcher
         try
         {
             EntryPoint.WriteToConsole($"Security Dispatcher, SPAWN TASK STARTING");
-            SecurityGuardSpawnTask eMTSpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
+            SecurityGuardSpawnTask eMTSpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes);
             eMTSpawnTask.AllowAnySpawn = allowAny;
             eMTSpawnTask.AllowBuddySpawn = allowBuddy;
             eMTSpawnTask.ClearArea = clearArea;

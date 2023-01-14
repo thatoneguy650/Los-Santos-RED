@@ -316,7 +316,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     UpdateVehicleState();
                     if (!IsCop && !IsUnconscious)
                     {
-                        if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                        if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                         {
                             if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
                             {
@@ -326,7 +326,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                             {
                                 GameFiber.Yield();//TR TEST 28
                             }
-                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                            if (ShouldCheckCrimes)
+                            {
+                                PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                            }
                             if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
                             {
                                 GameFiber.Yield();//TR TEST 28

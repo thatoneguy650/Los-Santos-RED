@@ -12,12 +12,12 @@ public class SecurityGuard : PedExt, IWeaponIssuable
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;
     private bool WasAlreadySetPersistent = false;
-    public SecurityGuard(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Security", world)
+    public SecurityGuard(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, true,true,false,false,name, crimes, weapons, "Security", world,false )
     {
-        WillCallPolice = true;
-        WillCallPoliceIntense = true;
-        WillFight = true;
-        WillFightPolice = false;
+        //WillCallPolice = true;
+        //WillCallPoliceIntense = true;
+        //WillFight = true;
+        //WillFightPolice = false;
 
         IsCop = false;
         Health = health;
@@ -113,54 +113,54 @@ public class SecurityGuard : PedExt, IWeaponIssuable
             }
         }
     }
-    public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
-    {
-        PlayerToCheck = policeRespondable;
-        if (Pedestrian.Exists())
-        {
-            if (Pedestrian.IsAlive)
-            {
-                if (NeedsFullUpdate)
-                {
-                    IsInWrithe = Pedestrian.IsInWrithe;
-                    UpdatePositionData();
-                    PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    UpdateVehicleState();
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                    {
-                        LookForDistressedPeds(world);
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (HasSeenDistressedPed)
-                    {
-                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                        HasSeenDistressedPed = false;
-                    }
-                    GameTimeLastUpdated = Game.GameTime;
-                }
-            }
-            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
-        }
-    }
+    //public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    //{
+    //    PlayerToCheck = policeRespondable;
+    //    if (Pedestrian.Exists())
+    //    {
+    //        if (Pedestrian.IsAlive)
+    //        {
+    //            if (NeedsFullUpdate)
+    //            {
+    //                IsInWrithe = Pedestrian.IsInWrithe;
+    //                UpdatePositionData();
+    //                PlayerPerception.Update(perceptable, placeLastSeen);
+    //                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+    //                {
+    //                    GameFiber.Yield();//TR TEST 30
+    //                }
+    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
+    //                {
+    //                    GameFiber.Yield();//TR TEST 30
+    //                }
+    //                UpdateVehicleState();
+    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
+    //                {
+    //                    GameFiber.Yield();//TR TEST 30
+    //                }
+    //                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+    //                {
+    //                    GameFiber.Yield();//TR TEST 30
+    //                }
+    //                if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+    //                {
+    //                    LookForDistressedPeds(world);
+    //                }
+    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
+    //                {
+    //                    GameFiber.Yield();//TR TEST 30
+    //                }
+    //                if (HasSeenDistressedPed)
+    //                {
+    //                    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+    //                    HasSeenDistressedPed = false;
+    //                }
+    //                GameTimeLastUpdated = Game.GameTime;
+    //            }
+    //        }
+    //        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+    //    }
+    //}
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
