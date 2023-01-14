@@ -40,7 +40,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool ShowLegacyActionMenu { get; set; }
     public bool ShowLegacyInventoryMenu { get; set; }
     public bool ShowFullscreenWarnings { get; set; }
-
+    public bool ShowFakeWantedLevelStars { get; set; }
 
     public UIGeneralSettings()
     {
@@ -86,6 +86,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         ShowLegacyInventoryMenu = false;
 
         ShowFullscreenWarnings = true;
+        ShowFakeWantedLevelStars = true;
 
     }
 }

@@ -49,17 +49,13 @@ public class StaticPlaces
         {
             basicLocation.StoreData(Zones, Streets);
         }
+        foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
+        {
+            tl.StoreData(ShopMenus, Agencies);
+        }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
             tl.StoreData(Gangs,ShopMenus);
-        }
-        foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
-        {
-            tl.StoreData(ShopMenus);
-        }
-        foreach (ILocationAgencyAssignable ps in PlacesOfInterest.AgencyAssignableLocations())
-        {
-            ps.StoreData(Agencies);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {

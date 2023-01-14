@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 public class CopVoice
 {
-    private Cop Cop;
+    private PedExt Cop;
     private bool IsInFiber = false;
     private ISettingsProvideable Settings;
 
@@ -40,7 +40,7 @@ public class CopVoice
     private uint GameTimeLastForcedRadioSpeech;
     private bool Spoke;
 
-    public CopVoice(Cop cop, string modelName, ISettingsProvideable settings)
+    public CopVoice(PedExt cop, string modelName, ISettingsProvideable settings)
     {
         Cop = cop;
         Settings = settings;

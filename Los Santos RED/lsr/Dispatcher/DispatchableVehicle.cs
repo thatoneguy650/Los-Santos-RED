@@ -9,6 +9,10 @@ public class DispatchableVehicle
     public string DebugName { get; set; }
     public string ModelName { get; set; }
     public string RequiredPedGroup { get; set; } = "";
+
+    public string GroupName { get; set; } = "";
+
+
     public int MinOccupants { get; set; } = 1;
     public int MaxOccupants { get; set; } = 2;
     public int AmbientSpawnChance { get; set; } = 0;

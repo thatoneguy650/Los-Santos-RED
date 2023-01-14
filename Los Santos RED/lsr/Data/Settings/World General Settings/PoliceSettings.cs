@@ -11,9 +11,27 @@ public class PoliceSettings : ISettingsDefaultable
     public bool TakeExclusiveControlOverWantedLevel { get; set; }
     [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
-    [Description("If enabled, any observed crime that results in deadly chase will automatically increase the wanted level to 3.")]
-    public bool DeadlyChaseRequiresThreeStars { get; set; }
-    [Description("Maximum wanted level allowed. Maximum = 6.")]
+
+
+
+
+
+
+
+
+
+
+
+
+    //[Description("If enabled, any observed crime that results in deadly chase will automatically increase the wanted level to a set number (if less)")]
+    //public bool DeadlyChaseRequiresWantedLevel { get; set; }
+
+    [Description("Any observed crime that results in deadly chase will automatically increase the wanted level to this number if less than current.")]
+    public int DeadlyChaseWantedLevelRequirement { get; set; }
+
+
+
+    [Description("Maximum wanted level allowed. Default/Recommended = 6. Maximum = 10.")]
     public int MaxWantedLevel { get; set; }
     [Description("Enable or Disable accuracy override")]
     public bool OverrideAccuracy { get; set; }
@@ -71,12 +89,36 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
 
 
+
+    [Description("Time (in ms) at wanted level 6 required to increase wanted level to 7.")]
+    public uint WantedLevelIncreaseTime_FromWanted6 { get; set; }
+    [Description("Time (in ms) at wanted level 7 required to increase wanted level to 8).")]
+    public uint WantedLevelIncreaseTime_FromWanted7 { get; set; }
+    [Description("Time (in ms) at wanted level 8 required to increase wanted level to 9.")]
+    public uint WantedLevelIncreaseTime_FromWanted8 { get; set; }
+    [Description("Time (in ms) at wanted level 9 required to increase wanted level to 10.")]
+    public uint WantedLevelIncreaseTime_FromWanted9 { get; set; }
+
+
+
+
+
     [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
     public uint SearchTimeMultiplier { get; set; }
 
 
     public bool ForceDefaultWeaponAnimations { get; set; }
     public bool AllowPoliceToCallEMTsOnBodies { get; set; }
+
+
+
+
+
+
+
+    public int MediumResponseInvestigationActiveCrimePriorityRequirement { get; set; }
+    public int FullResponseWantedLevelRequirement { get; set; }
+    public int HighResponseWantedLevelRequirement { get; set; }
 
     public PoliceSettings()
     {
@@ -118,12 +160,22 @@ public class PoliceSettings : ISettingsDefaultable
         WantedLevelIncreaseTime_FromWanted4 = 360000;//6 minutes
         WantedLevelIncreaseTime_FromWanted5 = 600000;//10 minutes
 
+
+        WantedLevelIncreaseTime_FromWanted6 = 600000;//10 minutes
+        WantedLevelIncreaseTime_FromWanted7 = 600000;//10 minutes
+        WantedLevelIncreaseTime_FromWanted8 = 600000;//10 minutes
+        WantedLevelIncreaseTime_FromWanted9 = 600000;//10 minutes
+
+
         SightDistance = 90f;//70f;
         GunshotHearingDistance = 125f;
         SightDistance_Helicopter = 175f;
         SightDistance_Helicopter_AdditionalAtWanted = 100f;
 
-        DeadlyChaseRequiresThreeStars = true;
+     //   DeadlyChaseRequiresWantedLevel = true;
+
+        DeadlyChaseWantedLevelRequirement = 3;
+
         MaxWantedLevel = 6;
 
         KnowsShootingSourceLocation = true;
@@ -145,5 +197,12 @@ public class PoliceSettings : ISettingsDefaultable
         SearchTimeMultiplier = 20000;
 
         AllowPoliceToCallEMTsOnBodies = true;
+
+
+
+        MediumResponseInvestigationActiveCrimePriorityRequirement = 8;
+        FullResponseWantedLevelRequirement = 4;
+        HighResponseWantedLevelRequirement = 2;
+
     }
 }

@@ -379,6 +379,7 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("s_m_m_marine_02",0,0) { DebugName = "ARMYNormalMale3" },
             new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) { 
                 DebugName = "ARMYSoldierMale"
+                ,MaxWantedLevelSpawn = 10
                 ,AllowRandomizeBeforeVariationApplied = true
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },

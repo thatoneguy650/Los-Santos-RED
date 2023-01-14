@@ -72,7 +72,7 @@ namespace LosSantosRED.lsr
                 {
                     if (Player.Investigation.IsActive)
                     {
-                        if (CrimesReported.Any(x => x.AssociatedCrime.Priority <= 8))
+                        if (CrimesReported.Any(x => x.AssociatedCrime.Priority <= Settings.SettingsManager.PoliceSettings.MediumResponseInvestigationActiveCrimePriorityRequirement))// 8))
                         {
                             return ResponsePriority.Medium;
                         }
@@ -88,11 +88,11 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    if (Player.WantedLevel > 4)
+                    if (Player.WantedLevel > Settings.SettingsManager.PoliceSettings.FullResponseWantedLevelRequirement)//4)
                     {
                         return ResponsePriority.Full;
                     }
-                    else if (Player.WantedLevel >= 2)
+                    else if (Player.WantedLevel >= Settings.SettingsManager.PoliceSettings.HighResponseWantedLevelRequirement)//  2)
                     {
                         return ResponsePriority.High;
                     }
@@ -128,6 +128,26 @@ namespace LosSantosRED.lsr
                 {
                     return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted5;
                 }
+
+
+                else if (Player.WantedLevel == 6)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted6;
+                }
+                else if (Player.WantedLevel == 7)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted7;
+                }
+                else if (Player.WantedLevel == 8)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted8;
+                }
+                else if (Player.WantedLevel == 9)
+                {
+                    return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted9;
+                }
+
+
                 else 
                 {
                     return Settings.SettingsManager.PoliceSettings.WantedLevelIncreaseTime_FromWanted5;
@@ -391,7 +411,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                if (Player.WantedLevel <= 3)
+                if (Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement)// 3)
                 {
                     if (LethalForceAuthorized)
                     {
@@ -490,16 +510,20 @@ namespace LosSantosRED.lsr
                     PlayerSeenInVehicleDuringWanted = true;
                 }
             }
-            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= 5)
+            if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel-1)// 5)
             {
                 GameTimeLastRequestedBackup = Game.GameTime;
                 Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
                 Player.OnRequestedBackUp();
             }
-            if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresThreeStars && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
+            if(CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement)
             {
-                Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
+                Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement}+ wanted level", true);
             }
+            //if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresWantedLevel && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
+            //{
+            //    Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
+            //}
             PoliceKilledUpdate();     
         }
         private void PoliceKilledUpdate()
@@ -509,26 +533,27 @@ namespace LosSantosRED.lsr
                 return;
             }
             int PoliceKilled = InstancesOfCrime("KillingPolice");
-            if (PoliceKilled > 0)
+            if(PoliceKilled == 0)
             {
-                if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
-                {
-                    Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
-                    IsWeaponsFree = true;
-                    Player.OnWeaponsFree();
-                }
-                if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
-                {
-                    Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
-                    IsWeaponsFree = true;
-                    Player.OnWeaponsFree();
-                }
-                else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
-                {
-                    Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
-                    IsWeaponsFree = true;
-                    Player.OnWeaponsFree();
-                }
+                return;
+            }    
+            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+            {
+                Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+            {
+                Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
+            {
+                Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
             }
         }
     }

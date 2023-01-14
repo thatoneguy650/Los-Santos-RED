@@ -108,6 +108,11 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public bool EnableConfigFlagDiveFromApproachingVehicles { get; set; }
     public bool AllowMinorReactions { get; set; }
 
+
+
+    public int RecklessVehicleChaseWantedLevelRequirement { get; set; }
+    public bool AllowVeryRecklessVehicleChaseWithLethalForce { get; set; }
+
     public PoliceTaskSettings()
     {
         SetDefault();
@@ -195,6 +200,10 @@ public class PoliceTaskSettings : ISettingsDefaultable
         EnableConfigFlagAlwaysSeeAproachingVehicles = true;
         EnableConfigFlagDiveFromApproachingVehicles = true;
         AllowMinorReactions = true;
+
+
+        RecklessVehicleChaseWantedLevelRequirement = 3;
+        AllowVeryRecklessVehicleChaseWithLethalForce = true;
 
     }
 }

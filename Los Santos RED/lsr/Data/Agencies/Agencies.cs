@@ -38,6 +38,7 @@ public class Agencies : IAgencies
     private Agency LSFDFire;
     private Agency LSFD;
     private Agency NYSP;
+    private Agency GRPSECHS;
     private Agency UNK;
     private Agency LSMC;
     private Agency MRH;
@@ -135,12 +136,15 @@ public class Agencies : IAgencies
         SASPA = new Agency("~o~", "SASPA", "SASPA", "San Andreas State Prison Authority", "Orange", Classification.State, "PrisonPeds", "PrisonVehicles", "SASPA ", "Tasers", "AllSidearms", "AllLongGuns", "SASPA Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 2, HeadDataGroupID = "AllHeads" };
         SAPR = new Agency("~g~", "SAPR", "SAPR", "San Andreas Park Ranger", "Green", Classification.State, "ParkRangers", "ParkRangerVehicles", "", "Tasers", "AllSidearms", "AllLongGuns", "SA Park Ranger") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
         SACG = new Agency("~o~", "SACG", "SACG", "San Andreas Coast Guard", "DarkOrange", Classification.State, "CoastGuardPeds", "CoastGuardVehicles", "SACG ", "Tasers", "LimitedSidearms", "LimitedLongGuns", "Coast Guard Officer") { MaxWantedLevelSpawn = 3, SpawnLimit = 3, HeadDataGroupID = "AllHeads" };
-        ARMY = new Agency("~u~", "ARMY", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "", "Tasers", "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };        
+        ARMY = new Agency("~u~", "ARMY", "ARMY", "Army", "Black", Classification.Military, "MilitaryPeds", "ArmyVehicles", "", "Tasers", "MilitarySidearms", "MilitaryLongGuns", "Soldier") { MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };        
         LSFDFire = new Agency("~r~", "LSFD", "LSFD", "Los Santos Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "LSFD ", null, null, null, "LSFD Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         LSMC = new Agency("~w~", "LSMC", "LSMC", "Los Santos Medical Center", "White", Classification.EMS, "GreenEMTs", "Amublance1", "LSMC ", null, null, null, "LSMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         MRH = new Agency("~w~", "MRH", "MRH", "Mission Row Hospital", "White", Classification.EMS, "BlueEMTs", "Amublance2", "MRH ", null, null, null, "MRH Officer") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         LSFD = new Agency("~w~", "LSFD", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "GreenEMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
+
+        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", "LimitedSidearms", "LimitedLongGuns", "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+
 
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }
@@ -179,6 +183,8 @@ public class Agencies : IAgencies
             LSFD,
             UNK,
             NYSP,
+
+            GRPSECHS,
         };
 
         Serialization.SerializeParams(AgenciesList, ConfigFileName);
@@ -212,6 +218,8 @@ public class Agencies : IAgencies
             ARMY,
             LSFDFire,LSMC,MRH,LSFD,UNK,
             NYSP,
+
+            GRPSECHS,
         };
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
@@ -233,7 +241,7 @@ public class Agencies : IAgencies
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,LSSD2008,LSSDASD2008,NOOSE2008,FIB2008,DOA2008,SAHP2008,SASPA2008,SAPR2008,SACG2008,ARMY2008,LSFDFire,LSMC,MRH,LSFD,UNK,
-            NYSP,
+            NYSP,GRPSECHS,
         };
         foreach(Agency ag in AgenciesList2008)
         {
@@ -252,7 +260,7 @@ public class Agencies : IAgencies
             new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LSSDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
            NOOSE,FIB,DOA,ARMY,
-            NYSP,
+            NYSP,GRPSECHS,
             new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ",null,null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "LCMC","LCMC", "Liberty City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~s~", "UNK","UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
@@ -270,7 +278,7 @@ public class Agencies : IAgencies
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
             LSPD,LSPDASD,LSSD,LSSDASD,NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,ARMY,LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,UNK,
-            NYSP
+            NYSP,GRPSECHS
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
     }

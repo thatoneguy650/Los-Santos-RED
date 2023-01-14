@@ -6,8 +6,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
-public class Landmark : InteractableLocation
+public class Landmark : InteractableLocation, ILocationDispatchable
 {
     public Landmark(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -22,6 +23,17 @@ public class Landmark : InteractableLocation
     public override int MapIcon { get; set; } = 162;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;
+
+
+
+
+
+
+
+
+
+
+
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Interact With {Name}";

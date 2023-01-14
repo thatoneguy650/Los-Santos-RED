@@ -33,6 +33,17 @@ public class InteractableLocation : BasicLocation
     protected uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
 
+
+
+    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+    public string AssignedAgencyID { get; set; }
+    [XmlIgnore]
+    public Agency AssignedAgency { get; set; }
+    [XmlIgnore]
+    public bool IsDispatchFilled { get; set; } = false;
+
+
     public string MenuID { get; set; }
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
@@ -61,6 +72,13 @@ public class InteractableLocation : BasicLocation
     public MenuPool MenuPool { get; private set; }
     [XmlIgnore]
     public bool VendorAbandoned { get; set; } = false;
+
+
+
+
+
+
+
 
 
 
@@ -170,8 +188,12 @@ public class InteractableLocation : BasicLocation
         }
         CanInteract = true;
     }
-    public void StoreData(IShopMenus shopMenus)
+    public void StoreData(IShopMenus shopMenus, IAgencies agencies)
     {
+        if (AssignedAgencyID != null)
+        {
+            AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+        }
         Menu = shopMenus.GetMenu(MenuID);
     }
     public void ProcessInteractionMenu()

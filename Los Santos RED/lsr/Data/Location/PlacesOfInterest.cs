@@ -48,9 +48,6 @@ public class PlacesOfInterest : IPlacesOfInterest
     public List<InteractableLocation> InteractableLocations()
     {
         List<InteractableLocation> AllLocations = new List<InteractableLocation>();
-
-
-
         AllLocations.AddRange(PossibleLocations.PoliceStations);
         AllLocations.AddRange(PossibleLocations.Hospitals);
         AllLocations.AddRange(PossibleLocations.FireStations);
@@ -59,7 +56,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Landmarks);
         AllLocations.AddRange(PossibleLocations.Prisons);
         AllLocations.AddRange(PossibleLocations.SubwayStations);
-
         AllLocations.AddRange(PossibleLocations.DeadDrops);
         AllLocations.AddRange(PossibleLocations.ScrapYards);
         AllLocations.AddRange(PossibleLocations.CarCrushers);
@@ -86,12 +82,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.BusStops);
         AllLocations.AddRange(PossibleLocations.Morgues);
         AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
-
         AllLocations.AddRange(PossibleLocations.Airports);
-
         return AllLocations;   
     }
-
     public List<ILocationSetupable> LocationsToSetup()
     {
         List<ILocationSetupable> AllLocations = new List<ILocationSetupable>();
@@ -117,15 +110,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.PoliceStations);
         AllLocations.AddRange(PossibleLocations.Prisons);
         return AllLocations;
-    }
-    public List<ILocationAgencyAssignable> AgencyAssignableLocations()
-    {
-        List<ILocationAgencyAssignable> AllLocations = new List<ILocationAgencyAssignable>();
-        AllLocations.AddRange(PossibleLocations.PoliceStations);
-        AllLocations.AddRange(PossibleLocations.Prisons);
-        AllLocations.AddRange(PossibleLocations.Hospitals);
-        AllLocations.AddRange(PossibleLocations.FireStations);
-        return AllLocations;    
     }
     public List<ILocationGangAssignable> GangAssignableLocations()
     {
@@ -190,8 +174,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             //new CarCrusher(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
             //new CarCrusher(new Vector3(-195.9066f, 6264.628f, 31.48937f), 41.33705f, "Red's Machine Supplies", "Parts Bought and Sold!") { OpenTime = 0, CloseTime = 24 },
         };
-
-
         List<ScrapYard> ScrapYards = new List<ScrapYard>() {
             new ScrapYard(new Vector3(1520.797f, -2113.375f, 76.86716f), 270.4797f, "Wesley's Scrap Yard", "Don't Ask, Don't Tell!") { OpenTime = 0, CloseTime = 24 },
             new ScrapYard(new Vector3(909.7432f, 3554.745f, 33.81702f), 211.2794f, "Marina Drive Scrap", "Top value for your 'questionable' provenance ") { OpenTime = 0, CloseTime = 24 },
@@ -704,11 +686,25 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24, 
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, 50f),
-                new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 50f),
-                new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 50f),
-            },PossibleVehicleSpawns = new List<ConditionalLocation>() {
+
+#if DEBUG
+                     new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 100f) { AssociationID = "LSPD", RequiredGroup = "Detective" },
+                     new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 100f) { AssociationID = "SAHP", RequiredGroup = "MotorcycleCop" },   
+#else
+                    new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 50f),
+                    new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 50f),
+#endif
+                },PossibleVehicleSpawns = new List<ConditionalLocation>() {
+
+
+#if DEBUG
+                new ConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,100f)  { AssociationID = "LSPD", RequiredGroup = "Unmarked" },
+                new ConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,100f) { AssociationID = "SAHP", RequiredGroup = "Motorcycle" },  
+#else
                 new ConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,50f),
                 new ConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),
+#endif
+
                 new ConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,50f),
                 new ConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,50f),
             }
@@ -1218,7 +1214,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<Landmark> Landmarks = new List<Landmark>()
         {
-            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338 },
+            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338, AssignedAgencyID = "GRP6", 
+                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f),
+new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f), } },
 
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },

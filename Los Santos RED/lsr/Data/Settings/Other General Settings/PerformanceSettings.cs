@@ -43,6 +43,7 @@ public class PerformanceSettings : ISettingsDefaultable
     public int CivilianUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
+    public int SecurityGuardsUpdateBatch { get; set; }
     public int MerchantsUpdateBatch { get; set; }
     public uint TaskAssignmentCheckFrequency { get; set; }
     public int CopUpdateIntervalClose { get; set; }
@@ -75,6 +76,7 @@ public class PerformanceSettings : ISettingsDefaultable
         GangUpdateBatch = 1;//10;
         MerchantsUpdateBatch = 1;//10;
         EMTsUpdateBatch = 1;//10;
+        SecurityGuardsUpdateBatch = 1;
         TaskAssignmentCheckFrequency = 500;
 
 

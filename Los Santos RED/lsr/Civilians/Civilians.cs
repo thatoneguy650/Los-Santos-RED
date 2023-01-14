@@ -32,6 +32,9 @@ public class Civilians
     private uint GameTimeLastUpdatedEMTPeds;
     private uint GameTimeLastUpdatedMerchantPeds;
     private uint GameTimeLastUpdatedGangMemberPeds;
+    private uint GameTimeLastUpdatedSecurityPeds;
+    private int TotalSecurityGuardsChecked;
+    private int TotalSecurityGuardsRan;
 
     public Civilians(IEntityProvideable world, IPoliceRespondable policeRespondable, IPerceptable perceptable, ISettingsProvideable settings, IGangs gangs)
     {
@@ -288,6 +291,54 @@ public class Civilians
     }
 
 
+    public void UpdateSecurityGuards()
+    {
+        int localRan = 0;
+        TotalSecurityGuardsRan = 0;
+        TotalSecurityGuardsChecked = 0;
+        foreach (SecurityGuard ped in World.Pedestrians.SecurityGuardList.OrderBy(x => x.GameTimeLastUpdated))
+        {
+            try
+            {
+                bool yield = false;
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
+                {
+                    yield = true;
+                    TotalSecurityGuardsRan++;
+                    localRan++;
+                }
+                ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                {
+                    ped.CanBeAmbientTasked = false;
+                    ped.WillCallPolice = false;
+                    ped.WillCallPoliceIntense = false;
+                    ped.WillFight = false;
+                    ped.WasEverSetPersistent = true;
+                }
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.SecurityGuardsUpdateBatch)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalSecurityGuardsChecked++;
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
+            }
+        }
+
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.UpdateSecurityGuards Ran Time Since {Game.GameTime - GameTimeLastUpdatedSecurityPeds} TotalRan: {TotalSecurityGuardsRan} TotalChecked: {TotalSecurityGuardsChecked}", 5);
+        }
+        GameTimeLastUpdatedSecurityPeds = Game.GameTime;
+
+
+
+    }
 
     public void UpdateTotalWanted()
     {

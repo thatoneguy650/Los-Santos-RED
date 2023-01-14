@@ -85,6 +85,23 @@ public class LEDispatcher
             {
                 return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted6;
             }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Wanted10;
+            }
+
             else
             {
                 return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfAnySpawn_Default;
@@ -118,6 +135,22 @@ public class LEDispatcher
             else if (World.TotalWantedLevel == 6)
             {
                 return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted6;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.LikelyHoodOfCountySpawn_Wanted10;
             }
             else
             {
@@ -178,8 +211,8 @@ public class LEDispatcher
             float MinWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseen;
             float MinWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeen;
             float MinNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_NotWanted;
-
-
+            float MinScalerUnseen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedUnseenScalar; //40f;
+            float MinScalerSeen = Settings.SettingsManager.PoliceSpawnSettings.MinDistanceToSpawn_WantedSeenScalar; //40f;
             if (World.TotalWantedLevel > Player.WantedLevel)
             {
                 return MinWantedUnseen;
@@ -188,11 +221,13 @@ public class LEDispatcher
             {
                 if (!Player.AnyPoliceRecentlySeenPlayer)
                 {
-                    return MinWantedUnseen - (World.TotalWantedLevel * -40);
+                    float calcDistance = MinWantedUnseen - (World.TotalWantedLevel * MinScalerUnseen);
+                    return calcDistance < 150f ? 150f : calcDistance;
                 }
                 else
                 {
-                    return MinWantedSeen - (World.TotalWantedLevel * -40);
+                    float calcDistance = MinWantedSeen - (World.TotalWantedLevel * MinScalerSeen);
+                    return calcDistance < 150f ? 150f : calcDistance;
                 }
             }
             else if (Player.Investigation.IsActive)
@@ -209,50 +244,57 @@ public class LEDispatcher
     {
         get
         {
-            int Limit6 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted6;
-            int Limit5 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted5;
-            int Limit4 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted4;
-            int Limit3 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3;
-            int Limit2 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted2;
-            int Limit1 = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted1;
-            int LimitInvestigation = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Investigation;
-            int LimitDefault = Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
-
-            if (World.TotalWantedLevel == 6)
+            if (World.TotalWantedLevel == 10)
             {
-                return Limit6;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted10;
             }
-            if (World.TotalWantedLevel == 5)
+            else if (World.TotalWantedLevel == 9)
             {
-                return Limit5;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted6;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted5;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return Limit4;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted4;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return Limit3;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted3;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return Limit2;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted2;
             }
             else if (World.TotalWantedLevel == 1)
             {
-                return Limit1;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Wanted1;
             }
             else if (Player.Investigation.IsActive)
             {
-                return LimitInvestigation;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Investigation;
             }
-            if (World.TotalWantedLevel == 0)
+            else if (World.TotalWantedLevel == 0)
             {
-                return LimitDefault;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
             }
             else
             {
-                return LimitDefault;
+                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
             }
         }
     }
@@ -260,41 +302,57 @@ public class LEDispatcher
     {
         get
         {
+            if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted10;// return 2;
+            }
+            if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted9;// return 2;
+            }
+            if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted8;// return 2;
+            }
+            if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted7;// return 2;
+            }
             if (World.TotalWantedLevel == 6)
             {
-                return 2;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted6;// return 2;
             }
-            if (World.TotalWantedLevel == 5)
+            else if (World.TotalWantedLevel == 5)
             {
-                return 2;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted5;//return 2;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted4;//return 1;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted3;//return 1;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted2;//return 0;
             }
             else if (World.TotalWantedLevel == 1)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Wanted1;//return 0;
             }
             else if (Player.Investigation.IsActive)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Investigation;//return 0;
             }
-            if (World.TotalWantedLevel == 0)
+            else if (World.TotalWantedLevel == 0)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Default;//return 0;
             }
             else
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.HeliSpawnLimit_Default;//return 0;
             }
         }
     }
@@ -302,41 +360,58 @@ public class LEDispatcher
     {
         get
         {
-            if (World.TotalWantedLevel == 6)
+
+            if (World.TotalWantedLevel == 10)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted10; //1;
             }
-            if (World.TotalWantedLevel == 5)
+            else if (World.TotalWantedLevel == 9)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted9; //1;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted8; //1;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted7; //1;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted6; //1;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted5; //return 1;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted4; //return 1;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return 1;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted3; //return 1;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted2; //return 0;
             }
             else if (World.TotalWantedLevel == 1)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Wanted1; //return 0;
             }
             else if (Player.Investigation.IsActive)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Investigation; //return 0;
             }
-            if (World.TotalWantedLevel == 0)
+            else if (World.TotalWantedLevel == 0)
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Default; //return 0;
             }
             else
             {
-                return 0;
+                return Settings.SettingsManager.PoliceSpawnSettings.BoatSpawnLimit_Default; //return 0;
             }
         }
     }
@@ -344,50 +419,57 @@ public class LEDispatcher
     {
         get
         {
-            int Limit6 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted6;
-            int Limit5 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted5;
-            int Limit4 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted4;
-            int Limit3 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted3;
-            int Limit2 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted2;
-            int Limit1 = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted1;
-            int LimitInvestigation = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Investigation;
-            int LimitDefault = Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
-
-            if (World.TotalWantedLevel == 6)
+            if (World.TotalWantedLevel == 10)
             {
-                return Limit6;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted10;
             }
-            if (World.TotalWantedLevel == 5)
+            else if (World.TotalWantedLevel == 9)
             {
-                return Limit5;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted9;
+            }
+            else if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted8;
+            }
+            else if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted7;
+            }
+            else if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted6;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted5;
             }
             else if (World.TotalWantedLevel == 4)
             {
-                return Limit4;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted4;
             }
             else if (World.TotalWantedLevel == 3)
             {
-                return Limit3;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted3;
             }
             else if (World.TotalWantedLevel == 2)
             {
-                return Limit2;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted2;
             }
             else if (World.TotalWantedLevel == 1)
             {
-                return Limit1;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Wanted1;
             }
             else if (Player.Investigation.IsActive)
             {
-                return LimitInvestigation;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Investigation;
             }
-            if (World.TotalWantedLevel == 0)
+            else if (World.TotalWantedLevel == 0)
             {
-                return LimitDefault;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
             }
             else
             {
-                return LimitDefault;
+                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
             }
         }
     }
@@ -399,11 +481,6 @@ public class LEDispatcher
             int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
 
-            //if (Player.CurrentLocation.CurrentZone?.IsLowPop == true)
-            //{
-
-            //}
-
             if (World.TotalWantedLevel > Player.WantedLevel)
             {
                 return UnseenTime;
@@ -414,7 +491,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
             }
         }
     }
@@ -436,7 +513,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
             }
         }
     }
@@ -454,7 +531,7 @@ public class LEDispatcher
             }
             else
             {
-                return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
             }
         }
     }
@@ -511,7 +588,7 @@ public class LEDispatcher
         if (IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;
-            if (GetSpawnLocation() && GetSpawnTypes(false,false, null))
+            if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
             {
                 LastAgencySpawned = Agency;
                 CallSpawnTask(false, true, false, false);
@@ -539,7 +616,15 @@ public class LEDispatcher
                                 SpawnLocation.Heading = cl.Heading;
                                 SpawnLocation.StreetPosition = cl.Location;
                                 SpawnLocation.SidewalkPosition = cl.Location;
-                                Agency toSpawn = ps.AssignedAgency;
+                                Agency toSpawn = null;
+                                if (!string.IsNullOrEmpty(cl.AssociationID))
+                                {
+                                    toSpawn = Agencies.GetAgency(cl.AssociationID);
+                                }
+                                if (toSpawn == null)
+                                {
+                                    toSpawn = ps.AssignedAgency;
+                                }
                                 if (toSpawn == null)
                                 {
                                     Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
@@ -549,7 +634,7 @@ public class LEDispatcher
                                         toSpawn = ZoneAgency;
                                     }
                                 }
-                                if (GetSpawnTypes(true, false, toSpawn))
+                                if (GetSpawnTypes(true, false, toSpawn, cl.RequiredGroup))
                                 {
                                     LastAgencySpawned = Agency;
                                     CallSpawnTask(true, false, true, false);
@@ -563,6 +648,7 @@ public class LEDispatcher
                     {
                         foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                         {
+
                             if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
                             {
                                 HasDispatchedThisTick = true;
@@ -570,7 +656,15 @@ public class LEDispatcher
                                 SpawnLocation.Heading = cl.Heading;
                                 SpawnLocation.StreetPosition = cl.Location;
                                 SpawnLocation.SidewalkPosition = cl.Location;
-                                Agency toSpawn = ps.AssignedAgency;
+                                Agency toSpawn = null;
+                                if (!string.IsNullOrEmpty(cl.AssociationID))
+                                {
+                                    toSpawn = Agencies.GetAgency(cl.AssociationID);
+                                }
+                                if (toSpawn == null)
+                                {
+                                    toSpawn = ps.AssignedAgency;
+                                }
                                 if (toSpawn == null)
                                 {
                                     Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
@@ -580,7 +674,7 @@ public class LEDispatcher
                                         toSpawn = ZoneAgency;
                                     }
                                 }
-                                if (GetSpawnTypes(false, true, toSpawn))
+                                if (GetSpawnTypes(false, true, toSpawn, cl.RequiredGroup))
                                 {
                                     LastAgencySpawned = Agency;
                                     CallSpawnTask(true, false, true, true);
@@ -650,7 +744,7 @@ public class LEDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Agency forceAgency)
+    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Agency forceAgency, string requiredGroup)
     {
         Agency = null;
         VehicleType = null;
@@ -660,17 +754,17 @@ public class LEDispatcher
         {
             if (forcePed)
             {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, "");
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
                 return PersonType != null;
             }
             else if (forceVehicle)
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, requiredGroup);
                 return VehicleType != null;        
             }
             else
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true);
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, "");
                 if (VehicleType != null)
                 {
                     string RequiredGroup = "";
@@ -892,7 +986,7 @@ public class LEDispatcher
             GameFiber.Yield();
             if (ToSpawn != null)
             {
-                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false);
+                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false, "");
                 GameFiber.Yield();
                 if (VehicleToUse != null)
                 {
@@ -1013,7 +1107,7 @@ public class LEDispatcher
         }
         if (!onFoot)
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true);
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "");
         }
         if (VehicleType != null || onFoot)
         {

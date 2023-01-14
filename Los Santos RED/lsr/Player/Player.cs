@@ -1408,7 +1408,10 @@ namespace Mod
                     if (Settings.SettingsManager.PoliceSettings.UseFakeWantedLevelSystem)
                     {
                         NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
-                        NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
+                        if (Settings.SettingsManager.UIGeneralSettings.ShowFakeWantedLevelStars && desiredWantedLevel <= 6)
+                        {
+                            NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(desiredWantedLevel);
+                        }
                     }
                     else
                     {
@@ -1475,7 +1478,7 @@ namespace Mod
                 Game.LocalPlayer.WantedLevel = 0;
                 NativeFunction.CallByName<bool>("SET_MAX_WANTED_LEVEL", 0);
             }
-            if (NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
+            if (Settings.SettingsManager.UIGeneralSettings.ShowFakeWantedLevelStars && NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>() != wantedLevel)
             {
                 NativeFunction.Natives.SET_FAKE_WANTED_LEVEL(wantedLevel);
             }

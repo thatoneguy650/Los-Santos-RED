@@ -51,6 +51,7 @@ public class Pedestrians : ITaskerReportable
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
+    public List<SecurityGuard> SecurityGuards { get; private set; } = new List<SecurityGuard>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
     public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
@@ -60,6 +61,11 @@ public class Pedestrians : ITaskerReportable
     public List<Zombie> ZombieList => Zombies.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Cop> PoliceList => Police.Where(x => x.Pedestrian.Exists()).ToList();
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
+
+
+    public List<SecurityGuard> SecurityGuardList => SecurityGuards.Where(x => x.Pedestrian.Exists()).ToList();
+
+
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
     public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
@@ -74,6 +80,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(EMTList);
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
+            myList.AddRange(SecurityGuardList);
             return myList;
         }
     }
@@ -85,6 +92,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(CivilianList);
             myList.AddRange(GangMemberList);
             myList.AddRange(MerchantList);
+            myList.AddRange(SecurityGuardList);
             return myList;
         }
     }
@@ -100,6 +108,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(PoliceList);
             myList.AddRange(FirefighterList);
             myList.AddRange(DeadPeds);
+            myList.AddRange(SecurityGuardList);
             return myList;
         }
     }
@@ -394,14 +403,17 @@ public class Pedestrians : ITaskerReportable
             }
         }
         Zombies.Clear();
-        foreach (GangMember gangMember in GangMembers)
+        ClearGangMembers();
+
+        foreach (SecurityGuard securityGuard in SecurityGuards)
         {
-            if (gangMember.Pedestrian.Exists() && gangMember.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            if (securityGuard.Pedestrian.Exists() && securityGuard.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
             {
-                gangMember.Pedestrian.Delete();
+                securityGuard.Pedestrian.Delete();
             }
         }
-        GangMembers.Clear();
+        SecurityGuards.Clear();
+
     }
     public void ClearGangMembers()
     {
@@ -447,6 +459,26 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Cop);
             }
         }
+        foreach (SecurityGuard SecurityGuard in SecurityGuards.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        {
+            bool hasBlip = false;
+            Blip myblip = SecurityGuard.Pedestrian.GetAttachedBlip();
+            if (myblip.Exists())
+            {
+                hasBlip = true;
+                myblip.Delete();
+            }
+            SecurityGuard.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            EntryPoint.WriteToConsole($"Pedestrians: SecurityGuard {SecurityGuard.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            if (!DeadPeds.Any(x => x.Handle == SecurityGuard.Handle))
+            {
+                SecurityGuard.IsDead = true;
+                DeadPeds.Add(SecurityGuard);
+            }
+        }
+
+
         foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             bool hasBlip = false;
@@ -641,6 +673,13 @@ public class Pedestrians : ITaskerReportable
                 if (!GangMembers.Any(x => x.Handle == pedExt.Handle))
                 {
                     GangMembers.Add((GangMember)pedExt);
+                }
+            }
+            else if (pedExt.GetType() == typeof(SecurityGuard))
+            {
+                if (!SecurityGuards.Any(x => x.Handle == pedExt.Handle))
+                {
+                    SecurityGuards.Add((SecurityGuard)pedExt);
                 }
             }
             else

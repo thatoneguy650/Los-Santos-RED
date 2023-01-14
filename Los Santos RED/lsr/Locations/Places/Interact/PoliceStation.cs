@@ -22,13 +22,13 @@ public class PoliceStation : InteractableLocation, ILocationDispatchable, ILocat
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
-    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-    public string AssignedAgencyID { get; set; }
-    [XmlIgnore]
-    public Agency AssignedAgency { get; set; }
-    [XmlIgnore]
-    public bool IsDispatchFilled { get; set; } = false;
+    //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+    //public string AssignedAgencyID { get; set; }
+    //[XmlIgnore]
+    //public Agency AssignedAgency { get; set; }
+    //[XmlIgnore]
+    //public bool IsDispatchFilled { get; set; } = false;
 
 
     public Vector3 RespawnLocation { get; set; }

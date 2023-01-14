@@ -520,22 +520,14 @@ public class DebugMenu : Menu
         CrimeItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various crime items.";
 
-
-
-
-
-
-
-
-
-
-
-
-        UIMenuListScrollerItem<int>  SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6 });
+        UIMenuListScrollerItem<int>  SetWantedLevel = new UIMenuListScrollerItem<int>("Set Wanted Level", "Set wanted at the desired level", new List<int>() { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
         SetWantedLevel.Activated += (menu, item) =>
         {
-            Player.SetWantedLevel(SetWantedLevel.SelectedItem, "Debug Menu", true);
-            menu.Visible = false;
+            if (SetWantedLevel.SelectedItem <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel)
+            {
+                Player.SetWantedLevel(SetWantedLevel.SelectedItem, "Debug Menu", true);
+                menu.Visible = false;
+            }
         };
         UIMenuItem ToggleInvestigation = new UIMenuItem("Toggle Investigation", "Start or stop an investigation.");
         ToggleInvestigation.Activated += (menu, item) =>

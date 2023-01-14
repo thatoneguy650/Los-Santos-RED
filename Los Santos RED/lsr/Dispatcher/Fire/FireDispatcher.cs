@@ -200,7 +200,7 @@ public class FireDispatcher
         {
             if (!forcePed)
             {
-                VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false);
+                VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false, "");
             }
             if (VehicleType != null)
             {

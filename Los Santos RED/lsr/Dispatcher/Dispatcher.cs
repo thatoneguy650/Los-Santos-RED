@@ -20,6 +20,7 @@ public class Dispatcher
     private EMSDispatcher EMSDispatcher;
     private FireDispatcher FireDispatcher;
     private ZombieDispatcher ZombieDispatcher;
+    private SecurityDispatcher SecurityDispatcher;
     private GangDispatcher GangDispatcher;
     private IWeapons Weapons;
     private INameProvideable Names;
@@ -55,6 +56,7 @@ public class Dispatcher
     {
         LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest);
         EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest);
+        SecurityDispatcher = new SecurityDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest);
         FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest);
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
         GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest);
@@ -71,7 +73,10 @@ public class Dispatcher
             {
                 if(!FireDispatcher.Dispatch())
                 {
-                    
+                    if(!SecurityDispatcher.Dispatch())
+                    {
+
+                    }
                 }
             }
         }
@@ -95,6 +100,8 @@ public class Dispatcher
             GameFiber.Yield();
             GangDispatcher.LocationDispatch();
             GameFiber.Yield();
+            SecurityDispatcher.LocationDispatch();
+            GameFiber.Yield();
             hasLocationDispatched = true;
         }
         else
@@ -107,6 +114,7 @@ public class Dispatcher
         LEDispatcher.Recall();
         EMSDispatcher.Recall();
         FireDispatcher.Recall();
+        SecurityDispatcher.Recall();
         if (World.IsZombieApocalypse)
         {
             GameFiber.Yield();
@@ -148,6 +156,11 @@ public class Dispatcher
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {
         EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);
+    }
+
+    public void DebugSpawnSecurityGuard(string agencyID, bool onFoot, bool isEmpty)
+    {
+        SecurityDispatcher.DebugSpawnSecurity(agencyID, onFoot, isEmpty);
     }
 }
 

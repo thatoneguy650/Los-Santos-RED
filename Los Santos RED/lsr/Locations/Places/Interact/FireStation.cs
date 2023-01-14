@@ -23,19 +23,6 @@ public class FireStation : InteractableLocation, ILocationAgencyAssignable
     public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
 
-
-    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
-    public string AssignedAgencyID { get; set; }
-
-    [XmlIgnore]
-    public Agency AssignedAgency { get; set; }
-
-    [XmlIgnore]
-    public bool IsDispatchFilled { get; set; } = false;
-
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAgencyID != null)
