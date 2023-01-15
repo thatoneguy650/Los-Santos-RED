@@ -11,7 +11,7 @@ public class PedPerception
 {
     private PedExt PedExt;
     private bool EverCommittedCrime = false;
-    private List<WitnessedCrime> OtherPedCrimesObserved = new List<WitnessedCrime>();
+    //private List<WitnessedCrime> OtherPedCrimesObserved = new List<WitnessedCrime>();
     private ICrimes Crimes;
     private ISettingsProvideable Settings;
     private uint GameTimeLastWitnessedCivilianCrime;
@@ -33,10 +33,10 @@ public class PedPerception
         Weapons = weapons;
         World = world;
     }
-    public List<WitnessedCrime> OtherCrimesWitnessed => OtherPedCrimesObserved;
+    public List<WitnessedCrime> NPCCrimesWitnessed { get; set; } = new List<WitnessedCrime>();
     public void Reset()
     {
-        OtherPedCrimesObserved.Clear();
+        NPCCrimesWitnessed.Clear();
     }
     public void Update()
     {
@@ -145,16 +145,16 @@ public class PedPerception
     }
     private void RemoveExpiredWitnessedCrimes()
     {
-        OtherPedCrimesObserved.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
+        NPCCrimesWitnessed.RemoveAll(x => x.Perpetrator != null && x.Perpetrator.Pedestrian.Exists() && x.Perpetrator.Pedestrian.IsDead);
     }
     private void AddOtherPedObserved(Crime crime, PedExt perpetrator, VehicleExt vehicle, WeaponInformation weapon, Vector3 location)
     {
         if (crime != null && crime.Enabled)
         {
-            WitnessedCrime ExistingEvent = OtherPedCrimesObserved.FirstOrDefault(x => x.Crime?.ID == crime.ID && x.Perpetrator.Handle == perpetrator.Handle);
+            WitnessedCrime ExistingEvent = NPCCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == crime.ID && x.Perpetrator.Handle == perpetrator.Handle);
             if (ExistingEvent == null)
             {
-                OtherPedCrimesObserved.Add(new WitnessedCrime(crime, perpetrator, vehicle, weapon, location));
+                NPCCrimesWitnessed.Add(new WitnessedCrime(crime, perpetrator, vehicle, weapon, location));
             }
             else
             {

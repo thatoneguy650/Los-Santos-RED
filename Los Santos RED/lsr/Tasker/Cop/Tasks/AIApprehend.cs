@@ -86,6 +86,7 @@ public class AIApprehend : ComplexTask
         SimpleLook,
 
     }
+    public bool UseWantedLevel = true;
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
     private bool ShouldChasePedInVehicle => DistanceToTarget >= 30f;//55f
@@ -716,8 +717,10 @@ public class AIApprehend : ComplexTask
                 //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanChaseTargetOnFoot, false);
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_Aggressive, true);
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanUseCover, true);
-
-
+                if (!UseWantedLevel)
+                {
+                    Cop.WeaponInventory.SetDeadly(false);
+                }
                 // NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
                 NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, 0, 16);
             }
@@ -732,12 +735,28 @@ public class AIApprehend : ComplexTask
 
             if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < 10f && shouldAttackWithLessLethal && shouldAimTaser)//7f
             {
-                Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+                if (UseWantedLevel)
+                {
+                    Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+                }
+                else
+                {
+                    Cop.WeaponInventory.SetLessLethal();
+                }
+                //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
                 TaskAttackWithLessLethal();
             }
             else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < 10f && !shouldAttackWithLessLethal && shouldAimTaser && Cop.HasTaser)//7f
             {
-                Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+                if (UseWantedLevel)
+                {
+                    Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+                }
+                else
+                {
+                    Cop.WeaponInventory.SetLessLethal();
+                }
+                //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
                 TaskAimTaser();
             }
             else if (LocalDistance < 10f && !shouldAttackWithLessLethal && !shouldAimTaser)

@@ -18,7 +18,7 @@ public class WitnessedCrime
         Location = location;
         GameTimeLastWitnessed = Game.GameTime;
     }
-
+    public bool IsPlayerWitnessedCrime => Perpetrator == null;
     public Crime Crime { get; set; }
     public PedExt Perpetrator { get; set; }
     public VehicleExt Vehicle { get; set; }

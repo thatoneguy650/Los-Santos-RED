@@ -91,23 +91,23 @@ public class EMTTasker
             bool SeenAngryCrime = false;
             bool SeenMundaneCrime = false;
             int PlayerCrimePriority = 99;
-            foreach (Crime crime in emt.PlayerCrimesWitnessed.Where(x => x.CanBeReportedByCivilians))
+            foreach (WitnessedCrime witnessedCrime in emt.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReportedByCivilians))
             {
-                if (crime.AngersCivilians)
+                if (witnessedCrime.Crime.AngersCivilians)
                 {
                     SeenAngryCrime = true;
                 }
-                if (crime.ScaresCivilians)
+                if (witnessedCrime.Crime.ScaresCivilians)
                 {
                     SeenScaryCrime = true;
                 }
-                if (!crime.ScaresCivilians && !crime.AngersCivilians)
+                if (!witnessedCrime.Crime.ScaresCivilians && !witnessedCrime.Crime.AngersCivilians)
                 {
                     SeenMundaneCrime = true;
                 }
-                if (crime.Priority < PlayerCrimePriority)
+                if (witnessedCrime.Crime.Priority < PlayerCrimePriority)
                 {
-                    PlayerCrimePriority = crime.Priority;
+                    PlayerCrimePriority = witnessedCrime.Crime.Priority;
                 }
             }
             if (PlayerCrimePriority < HighestPriority?.Crime?.Priority)

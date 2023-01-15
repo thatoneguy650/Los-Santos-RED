@@ -141,15 +141,15 @@ public class GangTasker
 
             bool WillAttackPlayer = false;
             bool WillFleeFromPlayer = false;
-            bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.ScaresCivilians || x.AngersCivilians) && x.CanBeReportedByCivilians);
+            bool SeenPlayerReactiveCrime = GangMember.PlayerCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
             bool SeenOtherReactiveCrime = GangMember.OtherCrimesWitnessed.Any(x => (x.Crime.ScaresCivilians || x.Crime.AngersCivilians) && x.Crime.CanBeReportedByCivilians);
             WitnessedCrime HighestPriorityOtherCrime = GangMember.OtherCrimesWitnessed.OrderBy(x => x.Crime.Priority).ThenByDescending(x => x.GameTimeLastWitnessed).FirstOrDefault();
             int PlayerCrimePriority = 99;
-            foreach (Crime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.CanBeReportedByCivilians))
+            foreach (WitnessedCrime playerCrime in GangMember.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReportedByCivilians))
             {
-                if (playerCrime.Priority < PlayerCrimePriority)
+                if (playerCrime.Crime.Priority < PlayerCrimePriority)
                 {
-                    PlayerCrimePriority = playerCrime.Priority;
+                    PlayerCrimePriority = playerCrime.Crime.Priority;
                 }
             }
             if (PlayerCrimePriority < HighestPriorityOtherCrime?.Crime?.Priority)

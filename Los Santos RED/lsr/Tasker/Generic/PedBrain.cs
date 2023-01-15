@@ -100,7 +100,7 @@ public class PedBrain
         }
         else if (PedExt.DistanceToPlayer <= 75f)//50f
         {
-            PedExt.PedReactions.Update();
+            PedExt.PedReactions.Update(Player);
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
                 if (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime))

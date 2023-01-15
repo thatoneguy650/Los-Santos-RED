@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 public class PlayerPerception
 {
     private uint GameTimeLastSeenTargetCommitCrime;
-    //private uint GameTimeBehindTarget;
     private uint GameTimeContinuoslySeenTargetSince;
     private uint GameTimeLastDistanceCheck;
     private uint GameTimeLastLOSCheck;
@@ -55,46 +54,7 @@ public class PlayerPerception
     public bool HasSpokenWithTarget { get; set; }
     public bool IsFedUpWithTarget => TimesInsultedByTarget >= Originator.InsultLimit;
     public bool NeedsDistanceCheck => true;
-    //{
-    //    get
-    //    {
-    //        if (GameTimeLastDistanceCheck == 0)
-    //        {
-    //            return true;
-    //        }
-    //        else if (Game.GameTime > GameTimeLastDistanceCheck + DistanceUpdate)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //}
     public bool NeedsLOSCheck => true;
-    //{
-    //    get
-    //    {
-    //        //if (DistanceToTarget >= 100)
-    //        //{
-    //        //    return false;
-    //        //}
-    //        //else 
-    //        if (GameTimeLastLOSCheck == 0)
-    //        {
-    //            return true;
-    //        }
-    //        else if (Game.GameTime > GameTimeLastLOSCheck + LosUpdate)
-    //        {
-    //            return true;
-    //        }
-    //        else
-    //        {
-    //            return false;
-    //        }
-    //    }
-    //}
     public Vector3 PositionLastSeenTarget { get; private set; }
     public bool RecentlySeenTarget => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= 10000;
     public uint TimeContinuoslySeenTarget => GameTimeContinuoslySeenTargetSince == 0 ? 0 : Game.GameTime - GameTimeContinuoslySeenTargetSince;
@@ -102,151 +62,24 @@ public class PlayerPerception
     public VehicleExt VehicleLastSeenTargetIn { get; set; }
     public WeaponInformation WeaponLastSeenTargetWith { get; set; }
     public bool WithinWeaponsAudioRange { get; private set; } = false;
-    public List<Crime> CrimesWitnessed { get; private set; } = new List<Crime>();
-    public bool HasSeenTargetCommitCrime => CrimesWitnessed.Any();
+
+
+
+
+
+
+
+
+
+    public List<WitnessedCrime> PlayerCrimesWitnessed { get; private set; } = new List<WitnessedCrime>();
+
+
+
+
+    public bool HasSeenTargetCommitCrime => PlayerCrimesWitnessed.Any();
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
-    private int DistanceUpdate//also need to change the full update interval for this to work
-    {
-        get
-        {
-            if (Originator.IsCop)
-            {
-                if (DistanceToTarget >= 300f)
-                {
-                    return 3000;
-                }
-                else if (DistanceToTarget >= 200f)
-                {
-                    return 2000;
-                }
-                else if (DistanceToTarget >= 50f)
-                {
-                    return 750;
-                }
-                else
-                {
-                    return 500;//150
-                }
-            }
-            else
-            {
-
-                if (DistanceToTarget >= 300f)
-                {
-                    return 4000;
-                }
-                else if (DistanceToTarget >= 200f)
-                {
-                    return 3000;
-                }
-                else if (DistanceToTarget >= 50f)
-                {
-                    return 1000;
-                }
-                else
-                {
-                    return 500;
-                }
-            }
-        }
-    }
-    private int LosUpdate//also need to change the full update interval for this to work
-    {
-        get
-        {
-            if (DistanceToTarget >= 300f)
-            {
-                return 2000;
-            }
-            else if (DistanceToTarget >= 100f)
-            {
-                return 500;
-            }
-            else if (DistanceToTarget >= 50f)
-            {
-                return 500;
-            }
-            else
-            {
-                return 350;
-            }
-        }
-    }
-
-    //private int DistanceUpdate//also need to change the full update interval for this to work
-    //{
-    //    get
-    //    {
-    //        if (Originator.IsCop)//IsCop)
-    //        {
-    //            if (DistanceToTarget >= 300f)
-    //            {
-    //                return 1500;
-    //            }
-    //            else if (DistanceToTarget >= 80f)
-    //            {
-    //                return 300;
-    //            }
-    //            else
-    //            {
-    //                return 250;//150
-    //            }
-    //        }
-    //        else
-    //        {
-
-    //            if (DistanceToTarget >= 300f)
-    //            {
-    //                return 2000;
-    //            }
-    //            else if (DistanceToTarget >= 80f)
-    //            {
-    //                return 300;
-    //            }
-    //            else
-    //            {
-    //                return 250;
-    //            }
-    //        }
-    //    }
-    //}
-    //private int LosUpdate//also need to change the full update interval for this to work
-    //{
-    //    get
-    //    {
-    //        if (DistanceToTarget >= 300f)
-    //        {
-    //            return 2000;
-    //        }
-    //        else if (DistanceToTarget >= 100f)
-    //        {
-    //            return 500;//750
-    //        }
-    //        else
-    //        {
-    //            return 350;
-    //        }
-    //    }
-    //}
-    public bool NeedsUpdate
-    {
-        get
-        {
-            if ((NeedsDistanceCheck || NeedsLOSCheck) && Originator.Pedestrian.IsAlive)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-    }
-
+    public bool NeedsUpdate => Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive;
     public bool RanSightThisUpdate { get; private set; }
-
-    // private int LosUpdate => 750;
     public bool SeenTargetWithin(int msSince) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= msSince;
     public void Update(IPerceptable target, Vector3 placeLastSeen)
     {
@@ -503,101 +336,29 @@ public class PlayerPerception
         }
         return false;
     }
-    private bool UpdateTargetLineOfSight_Old(bool IsWanted)
-    {
-        if (DistanceToTarget >= 100f || Originator.IsUnconscious || !Target.Character.IsVisible)//this is new
-        {
-            SetTargetUnseen();
-            return false;
-        }
-        if (NeedsLOSCheck && Target.Character.Exists() && Originator.Pedestrian.Exists())
-        {
-            bool TargetInVehicle = Target.Character.IsInAnyVehicle(false);
-            Entity ToCheck = TargetInVehicle ? (Entity)Target.Character.CurrentVehicle : (Entity)Target.Character;
-            if (TargetInVehicle && DistanceToTarget <= 20f && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//this is new...., cops should be able to see behind themselves a short distance
-            {
-                SetTargetSeen();
-            }
-            else if (!TargetInVehicle && DistanceToTarget <= 8f && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//this is new...., cops should be able to see behind themselves a short distance
-            {
-                SetTargetSeen();
-            }
-            else if (Originator.IsCop && !Originator.Pedestrian.IsInHelicopter)
-            {
-                if (DistanceToTarget <= Settings.SettingsManager.PoliceSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)//55f
-                {
-                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
-                    {
-                        SetTargetSeen();
-                    }
-                    else
-                    {
-                        SetTargetUnseen();
-                    }
-                    GameFiber.Yield();//TR New 8 Test 1
-                }
-                else
-                {
-                    SetTargetUnseen();
-                }
-            }
-            else if (Originator.Pedestrian.IsInHelicopter)
-            {
-                float DistanceToSee = Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter;
-                if (IsWanted)
-                {
-                    DistanceToSee += Settings.SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted;
-                }
-                if (DistanceToTarget <= DistanceToSee && !Originator.Pedestrian.IsDead && !Originator.IsUnconscious)
-                {
-                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY", Originator.Pedestrian, ToCheck, 17))
-                    {
-                        SetTargetSeen();
-                    }
-                    else
-                    {
-                        SetTargetUnseen();
-                    }
-                    GameFiber.Yield();//TR New 8 Test 1
-                }
-                else
-                {
-                    SetTargetUnseen();
-                }
-            }
-            else
-            {
-                if (DistanceToTarget <= Settings.SettingsManager.CivilianSettings.SightDistance && IsInFrontOf(Target.Character) && !Originator.Pedestrian.IsDead)//55f
-                {
-                    if (NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Originator.Pedestrian, ToCheck))
-                    {
-                        SetTargetSeen();
-                    }
-                    else
-                    {
-                        SetTargetUnseen();
-                    }
-                    GameFiber.Yield();//TR New 8 Test 1
-                }
-                else
-                {
-                    SetTargetUnseen();
-                }
-            }
-            GameTimeLastLOSCheck = Game.GameTime;
-            //GameFiber.Yield();//TR Yield RemovedTest 2
-            return true;
-        }
-        return false;
-    }
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
-        if (!CrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
+        //if (!PlayerCrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
+        //{
+        //    PlayerCrimesWitnessed.Add(CrimeToAdd);
+        //    PositionLastSeenCrime = PositionToReport;
+        //    GameTimeLastSeenTargetCommitCrime = Game.GameTime;
+        //}
+
+        PositionLastSeenCrime = PositionToReport;
+        GameTimeLastSeenTargetCommitCrime = Game.GameTime;
+        WitnessedCrime ExistingEvent = PlayerCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == CrimeToAdd.ID );
+        if (ExistingEvent == null)
         {
-            CrimesWitnessed.Add(CrimeToAdd);
-            PositionLastSeenCrime = PositionToReport;
-            GameTimeLastSeenTargetCommitCrime = Game.GameTime;
+            PlayerCrimesWitnessed.Add(new WitnessedCrime(CrimeToAdd, null, VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport));
         }
+        else
+        {
+            ExistingEvent.UpdateWitnessed(VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport);
+        }
+
+
+
     }
     public void UpdateWitnessedCrimes()
     {

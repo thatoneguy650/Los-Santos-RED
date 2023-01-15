@@ -74,14 +74,14 @@ public class SecurityGuardBrain : PedBrain
     }
     private void UpdateCurrentTask()
     {
-        if (PedExt.DistanceToPlayer <= 75f)//50f
+        if (PedExt.DistanceToPlayer <= 100f)//50f
         {
-            PedExt.PedReactions.Update();
-            if(PedExt.PedReactions.HasSeenIntenseCrime)
+            PedExt.PedReactions.Update(Player);
+            if(PedExt.PedReactions.RecentlySeenIntenseCrime)
             {
                 SetFight();
             }
-            else if(PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
+            else if(PedExt.PedReactions.RecentlySeenScaryCrime || PedExt.PedReactions.RecentlySeenAngryCrime)
             {
                 SetApprehend();
             }
@@ -132,7 +132,7 @@ public class SecurityGuardBrain : PedBrain
         {
             return;
         }
-        SecurityGuard.CurrentTask = new AIApprehend(SecurityGuard, Player, SecurityGuard, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+        SecurityGuard.CurrentTask = new AIApprehend(SecurityGuard, Player, SecurityGuard, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator, UseWantedLevel = false };
         SecurityGuard.WeaponInventory.Reset();
         GameFiber.Yield();//TR Added back 4
         SecurityGuard.CurrentTask.Start();
@@ -170,6 +170,7 @@ public class SecurityGuardBrain : PedBrain
             return;
         }
         PedExt.CurrentTask = new Fight(PedExt, Player, null) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };//gang memebrs already have guns
+        SecurityGuard.WeaponInventory.SetDeadly(false);
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
         EntryPoint.WriteToConsole($"SECURITY SET FIGHT {PedExt.Handle}");
@@ -192,6 +193,7 @@ public class SecurityGuardBrain : PedBrain
             return;
         }
         PedExt.CurrentTask = new GenericIdle(PedExt, Player, World, PlacesOfInterest);
+        SecurityGuard.WeaponInventory.SetDefault();
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
         EntryPoint.WriteToConsole($"SECURITY SET IDLE {PedExt.Handle}");
