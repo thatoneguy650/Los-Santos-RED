@@ -31,7 +31,7 @@ public class LESpawnTask : SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
-
+    public SpawnRequirement SpawnRequirement { get; set; }
     public bool ClearArea { get; set; } = false;
     public bool SpawnWithAllWeapons { get; set; } = false;
     private bool HasAgency => Agency != null;

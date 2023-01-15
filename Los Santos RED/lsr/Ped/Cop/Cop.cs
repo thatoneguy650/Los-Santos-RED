@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Cop : PedExt, IWeaponIssuable
+public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;

@@ -308,6 +308,14 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                //if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
+                //{
+                //    ped.WeaponInventory.UpdateLoadout(PoliceRespondable);
+                //}
+                if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
+                {
+                    ped.UpdateSpeech(PoliceRespondable);
+                }
                 if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;

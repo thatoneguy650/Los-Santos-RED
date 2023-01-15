@@ -153,8 +153,8 @@ public class SecurityDispatcher
         EntryPoint.WriteToConsole($"Security Dispatcher, GETTING SPAWN TYPES FOR {toSpawn.FullName} isPed{isPed} cl.RequiredGroup {cl.RequiredGroup}");
         if (GetSpawnTypes(isPed, !isPed, toSpawn, cl.RequiredGroup))
         {
-            EntryPoint.WriteToConsole($"Security Dispatcher, CALLING SPAWN TASK FOR {toSpawn.FullName}");
-            CallSpawnTask(true, false, !isPed);
+            EntryPoint.WriteToConsole($"Security Dispatcher, CALLING SPAWN TASK FOR {toSpawn.FullName} SpawnRequirement {cl.SpawnRequirement}");
+            CallSpawnTask(true, false, !isPed, cl.SpawnRequirement);
         }      
     }
     private bool GetSpawnLocation()
@@ -210,7 +210,7 @@ public class SecurityDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool clearArea)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool clearArea, SpawnRequirement spawnRequirement)
     {
         try
         {
@@ -219,6 +219,7 @@ public class SecurityDispatcher
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
             securitySpawnTask.ClearArea = clearArea;
+            securitySpawnTask.SpawnRequirement = spawnRequirement;
             securitySpawnTask.AttemptSpawn();
             securitySpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
@@ -379,7 +380,7 @@ public class SecurityDispatcher
         {
             PersonType = null;
         }
-        CallSpawnTask(true, false, false);
+        CallSpawnTask(true, false, false, SpawnRequirement.None);
     }
 
 }

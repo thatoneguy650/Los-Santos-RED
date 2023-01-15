@@ -56,10 +56,7 @@ public class GangDispatcher
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
     private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit && (Settings.SettingsManager.GangSettings.AllowAmbientSpawningWhenPlayerWanted || Player.IsNotWanted);// && (Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted || Player.IsNotWanted);//not wanted is new, do i need to spawn in more peds when ur alreadywanted?
-
-
     private bool HasNeedToDispatchToDens => Settings.SettingsManager.GangSettings.AllowDenSpawning && (Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted || Player.IsNotWanted);
-
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;
@@ -77,7 +74,6 @@ public class GangDispatcher
         }
         return HasDispatchedThisTick;
     }
-
     public void LocationDispatch()
     {
         if (Settings.SettingsManager.GangSettings.ManageDispatching)
@@ -85,7 +81,6 @@ public class GangDispatcher
             HandleDenSpawns();
         }
     }
-
     public void Dispose()
     {
 
@@ -112,7 +107,7 @@ public class GangDispatcher
             HasDispatchedThisTick = true;//up here for now, might be better down low
             if (GetSpawnLocation() && GetSpawnTypes(false,false, null))
             {
-                CallSpawnTask(false, true, false, false);
+                CallSpawnTask(false, true, false, false, SpawnRequirement.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -138,7 +133,7 @@ public class GangDispatcher
                                 SpawnLocation.StreetPosition = cl.Location;
                                 if (GetSpawnTypes(true, false, ps.AssociatedGang))
                                 {
-                                    CallSpawnTask(true, false, true, false);
+                                    CallSpawnTask(true, false, true, false, cl.SpawnRequirement);
                                     spawnedsome = true;
                                     HasDispatchedThisTick = true;
                                 }
@@ -160,7 +155,7 @@ public class GangDispatcher
                                 SpawnLocation.SidewalkPosition = cl.Location;
                                 if (GetSpawnTypes(false, true, ps.AssociatedGang))
                                 {
-                                    CallSpawnTask(true, false, true, true);
+                                    CallSpawnTask(true, false, true, true, cl.SpawnRequirement);
                                     spawnedsome = true;
                                 }
                             }
@@ -294,13 +289,14 @@ public class GangDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, SpawnRequirement spawnRequirement)
     {
         try
         {
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = allowAny;
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
+            gangSpawnTask.SpawnRequirement = spawnRequirement;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
@@ -471,7 +467,7 @@ public class GangDispatcher
             }
             PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
-        CallSpawnTask(true, true, false, false);
+        CallSpawnTask(true, true, false, false, SpawnRequirement.None);
     }
     
 }

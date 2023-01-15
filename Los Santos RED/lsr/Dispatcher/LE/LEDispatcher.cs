@@ -158,6 +158,7 @@ public class LEDispatcher
             }
         }
     }
+    public SpawnRequirement SpawnRequirement { get; set; }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
@@ -591,7 +592,7 @@ public class LEDispatcher
             if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
             {
                 LastAgencySpawned = Agency;
-                CallSpawnTask(false, true, false, false);
+                CallSpawnTask(false, true, false, false, SpawnRequirement.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -637,7 +638,7 @@ public class LEDispatcher
                                 if (GetSpawnTypes(true, false, toSpawn, cl.RequiredGroup))
                                 {
                                     LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true, false);
+                                    CallSpawnTask(true, false, true, false, cl.SpawnRequirement);
                                     spawnedsome = true;
                                 }
                             }
@@ -677,7 +678,7 @@ public class LEDispatcher
                                 if (GetSpawnTypes(false, true, toSpawn, cl.RequiredGroup))
                                 {
                                     LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true, true);
+                                    CallSpawnTask(true, false, true, true, cl.SpawnRequirement);
                                     spawnedsome = true;
                                 }
                             }
@@ -705,7 +706,7 @@ public class LEDispatcher
             SpawnRoadblock(false,300f);
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, SpawnRequirement spawnRequirement)
     {
         try
         {
@@ -713,6 +714,7 @@ public class LEDispatcher
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
+            spawnTask.SpawnRequirement = spawnRequirement;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
@@ -1123,6 +1125,6 @@ public class LEDispatcher
             PersonType = null;
         }
 
-        CallSpawnTask(true, true, true, false);
+        CallSpawnTask(true, true, true, false, SpawnRequirement.None);
     }
 }

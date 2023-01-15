@@ -8,15 +8,12 @@ using System.Threading.Tasks;
 public enum SpawnRequirement
 {
     None = 0,
-
-    ForceNoScenario = 1 << 0,
-    ForceScenario = 1 << 1,
-    ForcePatrol = 1 << 2,
-
-
-    //Asian = 1 << 3,
-    //Mexican = 1 << 4,
-    //Korean = 1 << 5,
+    Guard = 1 << 0,
+    Patrol = 1 << 1,
+    AnyScenario = 1 << 2,
+    LocalScenario = 1 << 3,
+    StandardScenario = 1 << 4,
+    //ForceGu = 1 << 5,
     //Chinese = 1 << 6,
     //Japanese = 1 << 7,
     //Snack = 1 << 8,

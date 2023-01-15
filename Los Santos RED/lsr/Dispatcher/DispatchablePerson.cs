@@ -251,7 +251,7 @@ public class DispatchablePerson
         }
         if (RequiredHelmetType != -1)
         {
-            EntryPoint.WriteToConsole($"HELMET REQUIRED: PersonType.RequiredHelmetType {RequiredHelmetType}");
+            //EntryPoint.WriteToConsole($"HELMET REQUIRED: PersonType.RequiredHelmetType {RequiredHelmetType}");
             ped.GiveHelmet(false, (HelmetTypes)RequiredHelmetType, 4096);
         }
         return variationToSet;
@@ -337,7 +337,7 @@ public class DispatchablePerson
                 pedVariation.EyeColor = EyeColor;
                 NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
             }
-            EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");
+           // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");
         }
     }
 

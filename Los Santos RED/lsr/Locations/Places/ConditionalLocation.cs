@@ -27,7 +27,7 @@ public class ConditionalLocation
     public string AssociationID { get; set; }
     public string RequiredGroup { get; set; }
 
-    //public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
+    public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
 
     //[XmlIgnore]
     //public ILocationDispatchable LocationDispatchable { get; set; }

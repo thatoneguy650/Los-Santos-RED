@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 public class FootChase
 {
-    private Cop Cop;
+    private IPlayerChaseable Cop;
     private float RunSpeed;
     private IEntityProvideable World;
     private IComplexTaskable Ped;
@@ -23,6 +23,9 @@ public class FootChase
     private float CloseDistance;
     private ISettingsProvideable Settings;
 
+    public bool UseWantedLevel = true;
+
+
     private enum SubTask
     {
         AttackWithLessLethal,
@@ -33,9 +36,9 @@ public class FootChase
         WriteTicket,
         SimpleLook,
     }
-    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
-    private bool ShouldAimTaser => Player.WantedLevel > 1;
-    public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings)
+    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && (!UseWantedLevel || Player.WantedLevel > 1) && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+    private bool ShouldAimTaser => !UseWantedLevel || Player.WantedLevel > 1;
+    public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings)
     {
         World = world;
         Ped = ped;
@@ -47,17 +50,12 @@ public class FootChase
     {
         CurrentSubTask = SubTask.None;
         MoveRate = (float)(RandomItems.MyRand.NextDouble() * (1.175 - 1.1) + 1.1);
-
-
         if(!Cop.HasTaser)
         {
             MoveRate = 1.15f;
         }
         RunSpeed = 500f;
-
-
         AnimationDictionary.RequestAnimationDictionay("random@arrests");
-
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
         //Cop.WeaponInventory.SetLessLethal();
     }
@@ -103,16 +101,30 @@ public class FootChase
         bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
         bool shouldAimTaser = ShouldAimTaser;
         GameFiber.Yield();
-
+        EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimTaser} UseWantedLevel {UseWantedLevel}");
         if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimTaser)//7f
         {
-            Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            if (UseWantedLevel)
+            {
+                Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            }
+            else
+            {
+                Cop.WeaponInventory.SetLessLethal();
+            }
             TaskAttackWithLessLethal();
            // EntryPoint.WriteToConsole("TaskAttackWithLessLethal");
         }
         else if (CurrentSubTask != SubTask.AimTaser && LocalDistance < CloseDistance && !shouldAttackWithLessLethal && shouldAimTaser && (Cop.HasTaser || Player.IsDangerouslyArmed))//7f
         {
-            Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            if (UseWantedLevel)
+            {
+                Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
+            }
+            else
+            {
+                Cop.WeaponInventory.SetLessLethal();
+            }
             TaskAimTaser();
             //EntryPoint.WriteToConsole("TaskAimTaser");
         }
@@ -299,7 +311,7 @@ public class FootChase
                 }
             }
         }
-        //EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Attack With Less Lethal");
+        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Attack With Less Lethal");
     }
     private void TaskAimTaser()
     {
@@ -356,7 +368,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-        //EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Aim Taser");
+       // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Aim Taser");
     }
     private void TaskLookAt()
     {
@@ -437,7 +449,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-        //EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Look At");
+       // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Look At");
     }
     private void TaskLookAtSimple()
     {
@@ -472,7 +484,7 @@ public class FootChase
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-        //EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Look At Simple");
+       // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Look At Simple");
     }
     private void TaskWriteTicket()
     {
@@ -534,7 +546,7 @@ public class FootChase
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
-        //EntryPoint.WriteToConsole($"Cop {Cop.Pedestrian.Handle} Doing Task Go TO");
+       // EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} Doing Task Go TO");
     }
 }
 

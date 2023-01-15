@@ -100,7 +100,7 @@ public class EMSDispatcher
             HasDispatchedThisTick = true;
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false, true);
+                CallSpawnTask(false, true, SpawnRequirement.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -135,7 +135,7 @@ public class EMSDispatcher
                             }
                             if (GetSpawnTypes(true, toSpawn))
                             {
-                                CallSpawnTask(true, false);
+                                CallSpawnTask(true, false, cl.SpawnRequirement);
                                 spawnedsome = true;
                             }
                         }
@@ -214,13 +214,14 @@ public class EMSDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, SpawnRequirement spawnRequirement)
     {
         try
         {
             EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
             eMTSpawnTask.AllowAnySpawn = allowAny;
             eMTSpawnTask.AllowBuddySpawn = allowBuddy;
+            eMTSpawnTask.SpawnRequirement = spawnRequirement;
             eMTSpawnTask.AttemptSpawn();
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
@@ -381,7 +382,7 @@ public class EMSDispatcher
         {
             PersonType = null;
         }
-        CallSpawnTask(true, false);
+        CallSpawnTask(true, false, SpawnRequirement.None);
     }
 
 }

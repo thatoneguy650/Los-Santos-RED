@@ -280,7 +280,7 @@ public class InteractableLocation : BasicLocation
                 }
                 Merchant.AssociatedStore = this;
                 Merchant.SpawnPosition = VendorPosition;
-                EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
+                //EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
 
 
                 //if (1 == 1)//PlacePedOnGround)

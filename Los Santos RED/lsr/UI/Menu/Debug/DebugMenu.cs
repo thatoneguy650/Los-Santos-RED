@@ -117,6 +117,7 @@ public class DebugMenu : Menu
         }
         CreatePlateMenuItem();
         CreateLiveryMenuItem();
+        CreateExtraMenuItem();
     }
     private void CreateVehicleMenu()
     {
@@ -130,6 +131,22 @@ public class DebugMenu : Menu
 
     }
 
+    private void CreateExtraMenuItem()
+    {
+        UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 14, 1);
+        VehicleExtraMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                bool isOn = NativeFunction.Natives.IS_VEHICLE_EXTRA_TURNED_ON<bool>(Player.CurrentVehicle.Vehicle, VehicleExtraMenuItem.Value);
+                NativeFunction.Natives.SET_VEHICLE_EXTRA(Player.CurrentVehicle.Vehicle, VehicleExtraMenuItem.Value, isOn);
+                Game.DisplaySubtitle($"SET EXTRA {VehicleExtraMenuItem.Value} Disabled:{isOn}");
+            }
+        };
+        vehicleItemsMenu.AddItem(VehicleExtraMenuItem);
+    }
+
+
     private void CreateLiveryMenuItem()
     {
         int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
@@ -137,7 +154,7 @@ public class DebugMenu : Menu
         {
             return;
         }
-        UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery", "Set the vehicle Livery", 0, Total, 1);
+        UIMenuNumericScrollerItem<int> LogLocationMenu = new UIMenuNumericScrollerItem<int>("Set Livery", "Set the vehicle Livery", 0, Total-1, 1);
         LogLocationMenu.Activated += (menu, item) =>
         {
             if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
@@ -149,6 +166,7 @@ public class DebugMenu : Menu
         };
         vehicleItemsMenu.AddItem(LogLocationMenu);
     }
+
 
     private void CreatePlateMenuItem()
     {

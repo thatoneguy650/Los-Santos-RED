@@ -280,7 +280,6 @@ public class Pedestrians : ITaskerReportable
             EntryPoint.WriteToConsole($"Pedestrians.CreateNew Ran Time Since {Game.GameTime - GameTimeLastCreatedPeds}", 5);
         }
         GameTimeLastCreatedPeds = Game.GameTime;
-        EntryPoint.WriteToConsole("CREATE NEW PEDS END");
     }
     public void Prune()
     {
@@ -907,7 +906,7 @@ public class Pedestrians : ITaskerReportable
                 Pedestrian.Money = 0;// toCreate.Money;
                 NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
-            EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
+            //EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
         }
     }
     private void SetCivilianStats(Ped Pedestrian)

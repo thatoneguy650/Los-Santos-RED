@@ -37,6 +37,7 @@ public class GangSpawnTask : SpawnTask
         ShopMenus = shopMenus;
         World = world;
     }
+    public SpawnRequirement SpawnRequirement { get; set; }
     private bool HasGang => Gang != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;

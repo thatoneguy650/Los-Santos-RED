@@ -21,6 +21,7 @@ public class PedReactions
     public bool HasSeenMundaneCrime { get; set; }
     public WitnessedCrime HighestPriorityCrime { get; set; }
 
+
     public void Update()
     {
 

@@ -30,6 +30,7 @@ public class EMTSpawnTask :SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
+    public SpawnRequirement SpawnRequirement { get; set; }
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
@@ -184,7 +185,7 @@ public class EMTSpawnTask :SpawnTask
     {
         try
         {
-            EntryPoint.WriteToConsole($"EMTSpawn: Attempting to spawn {VehicleType.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"EMTSpawn: Attempting to spawn {VehicleType.ModelName}", 3);
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
@@ -229,7 +230,7 @@ public class EMTSpawnTask :SpawnTask
                         }
                     }
                     NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
-                    EntryPoint.WriteToConsole($"EMTSpawn: SPAWNED {VehicleType.ModelName}", 3);
+                    //EntryPoint.WriteToConsole($"EMTSpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;
                 }

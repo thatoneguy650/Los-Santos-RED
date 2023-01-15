@@ -7,7 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SecurityGuard : PedExt, IWeaponIssuable
+public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;

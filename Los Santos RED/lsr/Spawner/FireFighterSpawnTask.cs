@@ -28,6 +28,7 @@ public class FireFighterSpawnTask : SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
+    public SpawnRequirement SpawnRequirement { get; set; }
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;

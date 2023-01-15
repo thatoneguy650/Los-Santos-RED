@@ -165,6 +165,9 @@
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\SpawnRequirement.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
+    <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
+    <Compile Include="lsr\Tasker\Other\GenericIdle.cs" />
+    <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />
     <Compile Include="lsr\Ped\PedInventory.cs" />
     <Compile Include="lsr\Ped\SecurityGuard\SecurityGuard.cs" />
     <Compile Include="lsr\Tasker\Generic\PedBrain.cs" />
@@ -524,7 +527,7 @@
     <Compile Include="lsr\Tasker\Other\Experiement\WanderInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\Experiement\WanderOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Other\SeatAssigner.cs" />
-    <Compile Include="lsr\Tasker\Cop\SubTasks\FootChase.cs" />
+    <Compile Include="lsr\Tasker\PlayerChaseable\SubTasks\FootChase.cs" />
     <Compile Include="lsr\Tasker\EMT\Tasks\EMTFlee.cs" />
     <Compile Include="lsr\Tasker\EMT\Tasks\EMTIdle.cs" />
     <Compile Include="lsr\Tasker\EMT\Tasks\EMTRespond.cs" />
@@ -726,7 +729,7 @@
     <Compile Include="lsr\Player\Interface\IWeaponDroppable.cs" />
     <Compile Include="lsr\Player\Interface\IRespawning.cs" />
     <Compile Include="lsr\Tasker\Other\AIDynamic.cs" />
-    <Compile Include="lsr\Tasker\Cop\Tasks\Chase.cs" />
+    <Compile Include="lsr\Tasker\PlayerChaseable\Chase.cs" />
     <Compile Include="lsr\Tasker\Other\ComplexTask.cs" />
     <Compile Include="lsr\Player\Interface\IComplexTaskable.cs" />
     <Compile Include="lsr\Player\Interface\ITargetable.cs" />

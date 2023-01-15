@@ -50,6 +50,7 @@ namespace LosSantosRED.lsr.Interface
         //List<uint> BlackListedVehicles { get; }
         bool RecentlySeenPlayer { get; }
         bool IsAmbientSpawn { get; }
+        SpawnRequirement SpawnRequirement { get; }
 
         void ReportCrime(ITargetable player);
         void SetWantedLevel(int v);

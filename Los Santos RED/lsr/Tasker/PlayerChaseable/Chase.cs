@@ -8,7 +8,7 @@ using System.Linq;
 public class Chase : ComplexTask
 {
     private float ChaseDistance = 5f;
-    private Cop Cop;
+    private IPlayerChaseable Cop;
     private Vehicle CopsVehicle;
     private int CopsSeat = -1;
 
@@ -30,8 +30,8 @@ public class Chase : ComplexTask
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private SeatAssigner SeatAssigner;
-
-    public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, Cop cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
+    public bool UseWantedLevel = true;
+    public Chase(IComplexTaskable myPed, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings) : base(player, myPed, 500)//was 500
     {
         Name = "Chase";
         SubTaskName = "";
@@ -83,8 +83,8 @@ public class Chase : ComplexTask
     }
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
-    private bool ShouldAim => Player.WantedLevel > 1;
-    private bool ShouldCarJackPlayer => Player.WantedLevel > 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true);
+    private bool ShouldAim => !UseWantedLevel || Player.WantedLevel > 1;
+    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true);
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
     private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
     private bool ShouldChaseRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.RecklessVehicleChaseWantedLevelRequirement && !Player.PoliceResponse.LethalForceAuthorized;
@@ -208,7 +208,6 @@ public class Chase : ComplexTask
         IsFirstRun = false;
         CurrentSubTask = SubTask.None;
     }
-
     private Task GetCurrentTaskDynamic()
     {
         if (CurrentDynamic == AIDynamic.Cop_InVehicle_Player_InVehicle)
@@ -373,7 +372,6 @@ public class Chase : ComplexTask
         }
         GameTimeLastRan = Game.GameTime;
     }
-
     private void EnterVehicle()
     {
         if (Ped.Pedestrian.Exists())
@@ -395,8 +393,6 @@ public class Chase : ComplexTask
         }
         //EntryPoint.WriteToConsole(string.Format("Started Enter Old Car: {0}", Ped.Pedestrian.Handle));
     }
-
-
     private void ExitVehicle()
     {
         if (Ped.Pedestrian.Exists())
@@ -455,18 +451,15 @@ public class Chase : ComplexTask
     private void FootChase()
     {
         NeedsUpdates = false;
-
-
-
         if(Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber)
         {
             return;
         }
-
         hasOwnFiber = true;
         Ped.IsRunningOwnFiber = true;
         CurrentSubTask = SubTask.None;
         FootChase footChase = new FootChase(Ped, Player, World, Cop, Settings);
+        footChase.UseWantedLevel = UseWantedLevel;
         footChase.Setup();
         GameFiber.Yield();
         GameFiber.StartNew(delegate
@@ -476,16 +469,9 @@ public class Chase : ComplexTask
                 EntryPoint.WriteToConsole($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
                 while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber)
                 {
-
                     footChase.Update();
-
-
                     GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));
                     //GameFiber.Sleep(500);//GameFiber.Yield();
-
-
-
-
                 }
                 footChase.Dispose();
                 Ped.IsRunningOwnFiber = false;
@@ -498,7 +484,6 @@ public class Chase : ComplexTask
             }
         }, "Run Cop Chase Logic");
     }
-
     private void GoToPlayersCar()
     {
         if (Ped.Pedestrian.Exists())

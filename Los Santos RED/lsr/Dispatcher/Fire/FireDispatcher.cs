@@ -98,7 +98,7 @@ public class FireDispatcher
             HasDispatchedThisTick = true;//up here for now, might be better down low
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false, true);
+                CallSpawnTask(false, true, SpawnRequirement.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -133,7 +133,7 @@ public class FireDispatcher
                             }
                             if (GetSpawnTypes(true, toSpawn))
                             {
-                                CallSpawnTask(true, false);
+                                CallSpawnTask(true, false, cl.SpawnRequirement);
                                 spawnedsome = true;
                             }
                         }
@@ -151,13 +151,14 @@ public class FireDispatcher
             }
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, SpawnRequirement spawnRequirement)
     {
         try
         {
             FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
             fireFighterSpawnTask.AllowAnySpawn = allowAny;
             fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
+            fireFighterSpawnTask.SpawnRequirement = spawnRequirement;
             fireFighterSpawnTask.AttemptSpawn();
             fireFighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));

@@ -117,7 +117,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
     public bool HasSeenPlayerCommitCrime => PlayerPerception.CrimesWitnessed.Any();
     public bool HasBeenTreatedByEMTs { get; set; }
-    public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x=> x.AngersCivilians || x.ScaresCivilians);
+    public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.CrimesWitnessed.Any(x => x.AngersCivilians || x.ScaresCivilians);
     public bool HasSeenPlayerCommitTrafficCrime => PlayerPerception.CrimesWitnessed.Any(x => x.IsTrafficViolation);
     public bool PlayerKnownsName { get; set; }
     public bool HatesPlayer { get; set; } = false;
@@ -144,7 +144,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInWrithe { get; set; } = false;
     public bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
-    public bool IsNearSpawnPosition =>  Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;//15f
+    public bool IsNearSpawnPosition => Pedestrian.DistanceTo2D(SpawnPosition) <= 15f;//15f
     public bool IsOnBike { get; private set; } = false;
     public bool IsRunningOwnFiber { get; set; } = false;
     public bool IsStill { get; private set; }
@@ -686,7 +686,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu)
     {
-        EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
+       // EntryPoint.WriteToConsole($"SetupTransactionItems START {Handle} HasMenu:{shopMenu == null} {shopMenu?.Name}");
         ShopMenu = shopMenu;
         if (shopMenu == null)
         {

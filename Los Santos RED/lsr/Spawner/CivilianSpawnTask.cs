@@ -34,6 +34,7 @@ public class CivilianSpawnTask : SpawnTask
         World = world;
         Crimes = crimes;
     }
+    public SpawnRequirement SpawnRequirement { get; set; }
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
     private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
