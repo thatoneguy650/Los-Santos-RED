@@ -53,6 +53,8 @@ namespace LosSantosRED.lsr.Interface
         ActivityManager ActivityManager { get; }
         bool IsOnFoot { get; }
         bool IsAliveAndFree { get; }
+        int CellX { get; }
+        int CellY { get; }
         //bool IsHostile(Gang gang);
     }
 }

@@ -7,6 +7,7 @@ using System.Linq;
 
 public class Chase : ComplexTask
 {
+    private bool IsCancelled = false;
     private float ChaseDistance = 5f;
     private IPlayerChaseable Cop;
     private Vehicle CopsVehicle;
@@ -133,7 +134,7 @@ public class Chase : ComplexTask
     }
     public override void Update()
     {
-        if(!Ped.Pedestrian.Exists() || !ShouldUpdate)
+        if(!Ped.Pedestrian.Exists() || !ShouldUpdate || IsCancelled)
         {
             return;
         }
@@ -467,7 +468,7 @@ public class Chase : ComplexTask
             try
             {
                 EntryPoint.WriteToConsole($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
-                while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber)
+                while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber && !IsCancelled)
                 {
                     footChase.Update();
                     GameFiber.Sleep(RandomItems.GetRandomNumberInt(500, 600));

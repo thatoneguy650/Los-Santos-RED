@@ -87,6 +87,8 @@ public class AIApprehend : ComplexTask
 
     }
     public bool UseWantedLevel = true;
+    private bool IsCancelled;
+
     private bool ShouldChaseRecklessly => OtherTarget.IsDeadlyChase;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && OtherTarget.IsInVehicle;
     private bool ShouldChasePedInVehicle => DistanceToTarget >= 30f;//55f
@@ -639,7 +641,7 @@ public class AIApprehend : ComplexTask
     }
     public override void Stop()
     {
-
+        IsCancelled = true;
     }
     private void FootChaseLoop()
     {
@@ -655,7 +657,7 @@ public class AIApprehend : ComplexTask
         {
             try
             {
-                while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase)
+                while (hasOwnFiber && Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "AIApprehend" && CurrentTask == Task.FootChase && !IsCancelled)
                 {
                     if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                     {

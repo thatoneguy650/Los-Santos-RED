@@ -166,6 +166,9 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson.EmptyHolster, dispatchablePerson.FullHolster);
+        WeaponInventory.SetDefault();
+
+
         Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
         ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
         CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);

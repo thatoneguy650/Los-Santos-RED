@@ -93,7 +93,7 @@ public class FootChase
     }
     public void Dispose()
     {
-
+        Cop.WeaponInventory.Reset();
     }
     private void UpdateTasking()
     {
@@ -101,7 +101,7 @@ public class FootChase
         bool shouldAttackWithLessLethal = ShouldAttackWithLessLethal;
         bool shouldAimTaser = ShouldAimTaser;
         GameFiber.Yield();
-        EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimTaser} UseWantedLevel {UseWantedLevel}");
+        //EntryPoint.WriteToConsole($"Cop {Ped.Pedestrian.Handle} shouldAttackWithLessLethal {shouldAttackWithLessLethal} shouldAimTaser {shouldAimTaser} UseWantedLevel {UseWantedLevel}");
         if (CurrentSubTask != SubTask.AttackWithLessLethal && LocalDistance < CloseDistance && shouldAttackWithLessLethal && shouldAimTaser)//7f
         {
             if (UseWantedLevel)

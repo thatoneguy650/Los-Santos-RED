@@ -3263,15 +3263,36 @@ public class Debug
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
 
 
+            string weaponinventorystring = "";
+            if(ped.WeaponInventory.IsSetLessLethal)
+            { 
+                weaponinventorystring = "IsSetLessLethal";
+            }
+            else if (ped.WeaponInventory.IsSetDeadly)
+            {
+                weaponinventorystring = "IsSetDeadly";
+            }
+            else if (ped.WeaponInventory.IsSetUnarmed)
+            {
+                weaponinventorystring = "IsSetUnarmed";
+            }
+            else if (ped.WeaponInventory.IsSetDefault)
+            {
+                weaponinventorystring = "IsSetDefault";
+            }
 
-
-
-
-
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} " +
+            if(ped.WeaponInventory.HasPistol)
+            {
+                weaponinventorystring += " Has Pistol";
+            }
+            if (ped.WeaponInventory.LongGun != null)
+            {
+                weaponinventorystring += " Has Long Gun";
+            }
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} IsUnconscious:{ped.IsUnconscious} " +
                 $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
-                $"WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} " +
-                $"Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
+                $"IsInVehicle {ped.IsInVehicle} ReactionTier: {ped.PedReactions.ReactionTier} WeaponSet {weaponinventorystring} DebugWeaponState {ped.WeaponInventory.DebugWeaponState}" +
+                $"Weapon {currentWeapon} Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
                 $"Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} HasTaser {ped.HasTaser} SpawnRequirement {ped.SpawnRequirement}";
 
             if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)

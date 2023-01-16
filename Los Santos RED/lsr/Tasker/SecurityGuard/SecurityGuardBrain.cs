@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 public class SecurityGuardBrain : PedBrain
 {
     private SecurityGuard SecurityGuard;
-    private uint GameTimeFirstSeenCrime;
+    private uint GameTimeLastSeenCrime;
 
     public SecurityGuardBrain(SecurityGuard securityGuard, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons) : base(securityGuard,settings,world, weapons)
     {
@@ -77,11 +77,11 @@ public class SecurityGuardBrain : PedBrain
         if (PedExt.DistanceToPlayer <= 100f)//50f
         {
             PedExt.PedReactions.Update(Player);
-            if(PedExt.PedReactions.RecentlySeenIntenseCrime)
+            if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)
             {
                 SetFight();
             }
-            else if(PedExt.PedReactions.RecentlySeenScaryCrime || PedExt.PedReactions.RecentlySeenAngryCrime)
+            else if (PedExt.PedReactions.ReactionTier == ReactionTier.Alerted)
             {
                 SetApprehend();
             }
@@ -89,11 +89,11 @@ public class SecurityGuardBrain : PedBrain
             {
                 SetChase();// SetFight();
             }
-            else if (PedExt.PedReactions.HasSeenMundaneCrime)
+            else if (PedExt.PedReactions.ReactionTier == ReactionTier.Mundane)
             {
                 SetCalmCallIn();
             }
-            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+            else if (PedExt.WasModSpawned && PedExt.PedReactions.ReactionTier == ReactionTier.None)
             {
                 SetIdle();
             }
@@ -104,7 +104,7 @@ public class SecurityGuardBrain : PedBrain
 
     private void SetApprehend()
     {
-        if(PedExt.PedReactions.HighestPriorityCrime?.Perpetrator != null)
+        if(PedExt.PedReactions.PrimaryPedReaction?.IsReactingToPlayer == false)//  PedExt.PedReactions.HighestPriorityCrime?.Perpetrator != null)
         {
             SetAIApprehend();
         }
@@ -115,12 +115,12 @@ public class SecurityGuardBrain : PedBrain
     }
     private void SetChase()
     {
+        SecurityGuard.WeaponInventory.SetLessLethal();
         if (PedExt.CurrentTask?.Name == "Chase")
         {
             return;
         }
         SecurityGuard.CurrentTask = new Chase(SecurityGuard, Player, World, SecurityGuard, Settings) { UseWantedLevel = false };
-
         SecurityGuard.WeaponInventory.Reset();
         GameFiber.Yield();//TR Added back 4
         SecurityGuard.CurrentTask.Start();
@@ -128,11 +128,12 @@ public class SecurityGuardBrain : PedBrain
     }
     private void SetAIApprehend()
     {
+        SecurityGuard.WeaponInventory.SetLessLethal();
         if (PedExt.CurrentTask?.Name == "AIApprehend")
         {
             return;
         }
-        SecurityGuard.CurrentTask = new AIApprehend(SecurityGuard, Player, SecurityGuard, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator, UseWantedLevel = false };
+        SecurityGuard.CurrentTask = new AIApprehend(SecurityGuard, Player, SecurityGuard, Settings) { OtherTarget = PedExt.PedReactions.PrimaryPedReaction?.ReactingToPed, UseWantedLevel = false };
         SecurityGuard.WeaponInventory.Reset();
         GameFiber.Yield();//TR Added back 4
         SecurityGuard.CurrentTask.Start();
@@ -140,17 +141,17 @@ public class SecurityGuardBrain : PedBrain
     }
     private void HandleCrimeReports()
     {
-        //if (GameTimeFirstSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.HasSeenDistressedPed))
-        //{
-        //    GameTimeFirstSeenCrime = Game.GameTime;
-        //    EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME");
-        //}
-        //if (Game.GameTime - GameTimeFirstSeenCrime >= 10000)
-        //{
-        //    GameTimeFirstSeenCrime = 0;
-        //    PedExt.ReportCrime(Player);
-        //    EntryPoint.WriteToConsole("SECURITY REPORTED CRIME");
-        //}
+        if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.HasSeenDistressedPed))
+        {
+            GameTimeLastSeenCrime = Game.GameTime;
+            EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME");
+        }
+        if (GameTimeLastSeenCrime != 0 && Game.GameTime - GameTimeLastSeenCrime >= 10000)
+        {
+            GameTimeLastSeenCrime = 0;
+            PedExt.ReportCrime(Player);
+            EntryPoint.WriteToConsole("SECURITY REPORTED CRIME");
+        }
     }
     private void SetFlee()
     {
@@ -165,12 +166,15 @@ public class SecurityGuardBrain : PedBrain
     }
     private void SetFight()
     {
+        SecurityGuard.WeaponInventory.SetDeadly(false);
         if (PedExt.CurrentTask?.Name == "Fight")
         {
             return;
         }
+        PedExt.CurrentTask?.Stop();
         PedExt.CurrentTask = new Fight(PedExt, Player, null) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };//gang memebrs already have guns
-        SecurityGuard.WeaponInventory.SetDeadly(false);
+        //SecurityGuard.WeaponInventory.ShouldAutoSetWeaponState = false;
+        //SecurityGuard.WeaponInventory.SetDeadly(false);
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
         EntryPoint.WriteToConsole($"SECURITY SET FIGHT {PedExt.Handle}");

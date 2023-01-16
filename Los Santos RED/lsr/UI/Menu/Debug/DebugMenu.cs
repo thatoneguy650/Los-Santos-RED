@@ -935,12 +935,16 @@ public class DebugMenu : Menu
     {
         UIMenu DispatcherMenu = MenuPool.AddSubMenu(Debug, "Dispatcher");
         DispatcherMenu.SetBannerType(EntryPoint.LSRedColor);
-        UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Cop Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
+        UIMenuListScrollerItem<Agency> SpawnAgencyFoot = new UIMenuListScrollerItem<Agency>("Agency Random On-Foot Spawn", "Spawn a random agency ped on foot", Agencies.GetAgencies());
         SpawnAgencyFoot.Activated += (menu, item) =>
         {
             if (SpawnAgencyFoot.SelectedItem.Classification == Classification.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true, false);
+            }
+            else if (SpawnAgencyFoot.SelectedItem.Classification == Classification.Security)
+            {
+                Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
             else
             {
@@ -948,12 +952,16 @@ public class DebugMenu : Menu
             }
             menu.Visible = false;
         };
-        UIMenuListScrollerItem<Agency> SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
+        UIMenuListScrollerItem<Agency> SpawnAgencyVehicle = new UIMenuListScrollerItem<Agency>("Agency Random Vehicle Spawn", "Spawn a random agency ped with a vehicle", Agencies.GetAgencies());
         SpawnAgencyVehicle.Activated += (menu, item) =>
         {
             if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false, false);
+            }
+            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
+            {
+                Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
             else
             {
@@ -961,7 +969,7 @@ public class DebugMenu : Menu
             }
             menu.Visible = false;
         };
-        UIMenuListScrollerItem<Agency> SpawnEmptyAgencyVehicle = new UIMenuListScrollerItem<Agency>("Cop Random Empty Vehicle Spawn", "Spawn a random agency empty vehicle", Agencies.GetAgencies());
+        UIMenuListScrollerItem<Agency> SpawnEmptyAgencyVehicle = new UIMenuListScrollerItem<Agency>("Agency Random Empty Vehicle Spawn", "Spawn a random agency empty vehicle", Agencies.GetAgencies());
         SpawnEmptyAgencyVehicle.Activated += (menu, item) =>
         {
             if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.EMS)

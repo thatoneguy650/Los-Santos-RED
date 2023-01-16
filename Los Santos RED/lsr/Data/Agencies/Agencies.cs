@@ -143,7 +143,7 @@ public class Agencies : IAgencies
         LSFD = new Agency("~w~", "LSFD", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "GreenEMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
 
-        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", null, null, "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", "LimitedSidearms", null, "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 
 
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };

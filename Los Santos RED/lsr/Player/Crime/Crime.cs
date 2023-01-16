@@ -49,6 +49,16 @@ public class Crime
         return Name;
     }
 
+
+
+    public ReactionTier ReactionTier => IsIntense ? ReactionTier.Intense : IsAngerInducing || IsScary ? ReactionTier.Alerted : IsMundane ? ReactionTier.Mundane : ReactionTier.None;
+    public bool IsScary => ScaresCivilians;
+    public bool IsAngerInducing => AngersCivilians;
+    public bool IsIntense => ResultingWantedLevel >= 3 || ResultsInLethalForce || Priority <= 10;
+    public bool IsMundane => CanBeReportedByCivilians && !ScaresCivilians && !AngersCivilians;
+
+
+
     public void DisplayWarning()
     {
         if(ShowsWarning && (!HasShownWarning || (TimeBetweenWarnings > 0 && Game.GameTime - GameTimeLastShownWarning >= TimeBetweenWarnings)) && WarningMessage != "")

@@ -25,6 +25,12 @@ public class WitnessedCrime
     public WeaponInformation Weapon { get; set; }
     public uint GameTimeLastWitnessed { get; private set; }
     public Vector3 Location { get; set; }
+
+    public bool HasBeenReactedTo { get; private set; }
+    public void SetReactedTo()
+    {
+        HasBeenReactedTo = true;
+    }
     public void UpdateWitnessed(VehicleExt vehicle, WeaponInformation weapon, Vector3 location)
     {
         if(vehicle != null)
@@ -40,6 +46,7 @@ public class WitnessedCrime
             Location = location;
         }
         GameTimeLastWitnessed = Game.GameTime;
+        HasBeenReactedTo = false;
     }
 }
 
