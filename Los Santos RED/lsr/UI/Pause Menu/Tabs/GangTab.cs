@@ -135,7 +135,7 @@ public class GangTab
         {
             ShopMenu dealerMenu;
             ShopMenu denMenu;
-            dealerMenu = ShopMenus.GetRandomMenu(gr.Gang.DealerMenuGroup);
+            dealerMenu = ShopMenus.GetWeightedRandomMenuFromGroup(gr.Gang.DealerMenuGroup);
             denMenu = myDen?.Menu;
             List<string> Drugs = new List<string>();
             List<string> Guns = new List<string>();

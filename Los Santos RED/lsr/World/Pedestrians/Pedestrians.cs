@@ -701,54 +701,7 @@ public class Pedestrians : ITaskerReportable
     }
     private ShopMenu GetIllicitMenu()
     {
-        if (EntryPoint.FocusZone != null)
-        {
-            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
-            {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageRichZones))
-                {
-                    return ShopMenus.GetRandomDrugDealerMenu();
-                }
-                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageRichZones))
-                {
-                    return ShopMenus.GetRandomDrugCustomerMenu();
-                }
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
-            {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageMiddleZones))
-                {
-                    return ShopMenus.GetRandomDrugDealerMenu();
-                }
-                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageMiddleZones))
-                {
-                    return ShopMenus.GetRandomDrugCustomerMenu();
-                }
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
-            {
-                if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentagePoorZones))
-                {
-                    return ShopMenus.GetRandomDrugDealerMenu();
-                }
-                else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentagePoorZones))
-                {
-                    return ShopMenus.GetRandomDrugCustomerMenu();
-                }
-            }
-        }
-        else
-        {
-            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugDealerPercentageMiddleZones))
-            {
-                return ShopMenus.GetRandomDrugDealerMenu();
-            }
-            else if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.DrugCustomerPercentageMiddleZones))
-            {
-                return ShopMenus.GetRandomDrugCustomerMenu();
-            }
-        }
-        return null;
+        return EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);
     }
     private float CivilianCallPercentage()
     {
@@ -897,7 +850,7 @@ public class Pedestrians : ITaskerReportable
             {
                 myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
             }
-            ShopMenu toAdd = GetIllicitMenu();
+            ShopMenu toAdd = EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);// GetIllicitMenu();
             PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
             toCreate.SetupTransactionItems(toAdd);
             Civilians.Add(toCreate);

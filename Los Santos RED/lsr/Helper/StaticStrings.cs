@@ -13,80 +13,97 @@ using static DispatchScannerFiles;
 
 public static class StaticStrings
 {
+    //Zones and Locations
     public static readonly string LosSantosCountyID = "LosSantosCounty";
     public static readonly string CityOfLosSantosCountyID = "CityOfLosSantos";
     public static readonly string BlaineCountyID = "BlaineCounty";
     public static readonly string MajesticCountyID = "MajesticCounty";
     public static readonly string SanAndreasStateID = "San Andreas";
-
     public static readonly string NorthYanktonCountyID = "NorthYankton";
     public static readonly string NorthYanktonStateID = "North Yankton";
-
     public static readonly string PacificOceanCountyID = "PacificOcean";
-
     public static readonly string AlderneyCountyID = "Alderney";
-    public static readonly string AlderneyStateID = "Alderney";
-    
+    public static readonly string AlderneyStateID = "Alderney";  
     public static readonly string LibertyCityCountyID = "LibertyCity";
     public static readonly string LibertyStateID = "Liberty";
+    public static readonly string ColombiaStateID = "Colombia";
+    public static readonly string FloridaStateID = "Florida";
 
-    public static string ColombiaStateID => "Colombia";
-    public static string FloridaStateID => "Florida";
+    //Contacts
+    public static readonly string OfficerFriendlyContactName = "Officer Friendly";//these have gotta go, but where?
+    public static readonly string UndergroundGunsContactName = "Underground Guns";//these have gotta go, but where?
+    public static readonly string EmergencyServicesContactName = "911 - Emergency Services";//these have gotta go, but where?  
 
-    public static string OfficerFriendlyContactName => "Officer Friendly";//these have gotta go, but where?
-    public static string UndergroundGunsContactName => "Underground Guns";//these have gotta go, but where?
-    public static string EmergencyServicesContactName => "911 - Emergency Services";//these have gotta go, but where?  
+    //Crimes
+    public static readonly string KillingPoliceCrimeID = "KillingPolice";
+    public static readonly string TerroristActivityCrimeID = "TerroristActivity";
+    public static readonly string FiringWeaponNearPoliceCrimeID = "FiringWeaponNearPolice";
+    public static readonly string AimingWeaponAtPoliceCrimeID = "AimingWeaponAtPolice";
+    public static readonly string HurtingPoliceCrimeID = "HurtingPolice";
+    public static readonly string BrandishingHeavyWeaponCrimeID = "BrandishingHeavyWeapon";
+    public static readonly string TrespessingOnGovtPropertyCrimeID = "TrespessingOnGovtProperty";
+    public static readonly string GotInAirVehicleDuringChaseCrimeID = "GotInAirVehicleDuringChase";
+    public static readonly string FiringWeaponCrimeID = "FiringWeapon";
+    public static readonly string KidnappingCrimeID = "Kidnapping";
+    public static readonly string KillingCiviliansCrimeID = "KillingCivilians";
+    public static readonly string ArmedRobberyCrimeID = "ArmedRobbery";
+    public static readonly string MuggingCrimeID = "Mugging";
+    public static readonly string AttemptingSuicideCrimeID = "AttemptingSuicide";
+    public static readonly string HitPedWithCarCrimeID = "HitPedWithCar";
+    public static readonly string HurtingCiviliansCrimeID = "HurtingCivilians";
+    public static readonly string GrandTheftAutoCrimeID = "GrandTheftAuto";
+    public static readonly string BrandishingWeaponCrimeID = "BrandishingWeapon";
+    public static readonly string ResistingArrestCrimeID = "ResistingArrest";
+    public static readonly string BrandishingCloseCombatWeaponCrimeID = "BrandishingCloseCombatWeapon";
+    public static readonly string DrunkDrivingCrimeID = "DrunkDriving";
+    public static readonly string AssaultingWithDeadlyWeaponCrimeID = "AssaultingWithDeadlyWeapon";
+    public static readonly string AssaultingCiviliansCrimeID = "AssaultingCivilians";
+    public static readonly string DealingDrugsCrimeID = "DealingDrugs";
+    public static readonly string DealingGunsCrimeID = "DealingGuns";
+    public static readonly string HitCarWithCarCrimeID = "HitCarWithCar";
+    public static readonly string PublicIntoxicationCrimeID = "PublicIntoxication";
+    public static readonly string ChangingPlatesCrimeID = "ChangingPlates";
+    public static readonly string DrivingAgainstTrafficCrimeID = "DrivingAgainstTraffic";
+    public static readonly string DrivingOnPavementCrimeID = "DrivingOnPavement";
+    public static readonly string NonRoadworthyVehicleCrimeID = "NonRoadworthyVehicle";
+    public static readonly string RunningARedLightCrimeID = "RunningARedLight";
+    public static readonly string FelonySpeedingCrimeID = "FelonySpeeding";
+    public static readonly string DrivingStolenVehicleCrimeID = "DrivingStolenVehicle";
+    public static readonly string SuspiciousActivityCrimeID = "SuspiciousActivity";
+    public static readonly string InsultingOfficerCrimeID = "InsultingOfficer";
+    public static readonly string HarassmentCrimeID = "Harassment";
+    public static readonly string SpeedingCrimeID = "Speeding";
+    public static readonly string PublicNuisanceCrimeID = "PublicNuisance";
+    public static readonly string PublicVagrancyCrimeID = "PublicVagrancy";
+    public static readonly string OfficersNeededCrimeID = "OfficersNeeded";
 
+    //Air Carriers
+    public static readonly string AirHerlerCarrierID = "AirHerler";
+    public static readonly string CaipiraAirwaysCarrierID = "CaipiraAirways";
+    public static readonly string SanFierroAirCarrierID = "SanFierroAir";
+    public static readonly string LosSantosAirCarrierID = "LosSantosAir";
+    public static readonly string FlyUSCarrierID = "FlyUS";
+    public static readonly string AdiosAirlinesCarrierID = "Adios Airlines";
 
-    public static string KillingPoliceCrimeID => "KillingPolice";
-    public static string TerroristActivityCrimeID => "TerroristActivity";
-    public static string FiringWeaponNearPoliceCrimeID => "FiringWeaponNearPolice";
-    public static string AimingWeaponAtPoliceCrimeID => "AimingWeaponAtPolice";
-    public static string HurtingPoliceCrimeID => "HurtingPolice";
-    public static string BrandishingHeavyWeaponCrimeID => "BrandishingHeavyWeapon";
-    public static string TrespessingOnGovtPropertyCrimeID => "TrespessingOnGovtProperty";
-    public static string GotInAirVehicleDuringChaseCrimeID => "GotInAirVehicleDuringChase";
-    public static string FiringWeaponCrimeID => "FiringWeapon";
-    public static string KidnappingCrimeID => "Kidnapping";
-    public static string KillingCiviliansCrimeID => "KillingCivilians";
-    public static string ArmedRobberyCrimeID => "ArmedRobbery";
-    public static string MuggingCrimeID => "Mugging";
-    public static string AttemptingSuicideCrimeID => "AttemptingSuicide";
-    public static string HitPedWithCarCrimeID => "HitPedWithCar";
-    public static string HurtingCiviliansCrimeID => "HurtingCivilians";
-    public static string GrandTheftAutoCrimeID => "GrandTheftAuto";
-    public static string BrandishingWeaponCrimeID => "BrandishingWeapon";
-    public static string ResistingArrestCrimeID => "ResistingArrest";
-    public static string BrandishingCloseCombatWeaponCrimeID => "BrandishingCloseCombatWeapon";
-    public static string DrunkDrivingCrimeID => "DrunkDriving";
-    public static string AssaultingWithDeadlyWeaponCrimeID => "AssaultingWithDeadlyWeapon";
-    public static string AssaultingCiviliansCrimeID => "AssaultingCivilians";
-    public static string DealingDrugsCrimeID => "DealingDrugs";
-    public static string DealingGunsCrimeID => "DealingGuns";
-    public static string HitCarWithCarCrimeID => "HitCarWithCar";
-    public static string PublicIntoxicationCrimeID => "PublicIntoxication";
-    public static string ChangingPlatesCrimeID => "ChangingPlates";
-    public static string DrivingAgainstTrafficCrimeID => "DrivingAgainstTraffic";
-    public static string DrivingOnPavementCrimeID => "DrivingOnPavement";
-    public static string NonRoadworthyVehicleCrimeID => "NonRoadworthyVehicle";
-    public static string RunningARedLightCrimeID => "RunningARedLight";
-    public static string FelonySpeedingCrimeID => "FelonySpeeding";
-    public static string DrivingStolenVehicleCrimeID => "DrivingStolenVehicle";
-    public static string SuspiciousActivityCrimeID => "SuspiciousActivity";
-    public static string InsultingOfficerCrimeID => "InsultingOfficer";
-    public static string HarassmentCrimeID => "Harassment";
-    public static string SpeedingCrimeID => "Speeding";
-    public static string PublicNuisanceCrimeID => "PublicNuisance";
-    public static string PublicVagrancyCrimeID => "PublicVagrancy";
-    public static string OfficersNeededCrimeID => "OfficersNeeded";
+    //Menus
+    public static readonly string DrugDealerMenuID = "DrugDealerMenu";
+    public static readonly string DrugCustomerMenuID = "DrugCustomerMenu";
 
-    public static string AirHerlerCarrierID => "AirHerler";
-    public static string CaipiraAirwaysCarrierID => "CaipiraAirways";
-    public static string SanFierroAirCarrierID => "SanFierroAir";
-    public static string LosSantosAirCarrierID => "LosSantosAir";
-    public static string FlyUSCarrierID => "FlyUS";
-    public static string AdiosAirlinesCarrierID => "Adios Airlines";
+    public static readonly string MarijuanaDealerMenuGroupID = "MarijuanaDealerMenu";
+    public static readonly string ToiletCleanerDealerMenuGroupID = "ToiletCleanerDealerMenu";
+    public static readonly string SPANKDealerMenuGroupID = "SPANKDealerMenu";
+    public static readonly string MethamphetamineDealerMenuGroupID = "MethamphetamineDealerMenu";
+    public static readonly string HeroinDealerMenuGroupID = "HeroinDealerMenu";
+    public static readonly string CrackDealerMenuGroupID = "CrackDealerMenu";
+    public static readonly string CokeDealerMenuGroupID = "CokeDealerMenu";
 
+    public static readonly string MarijuanaCustomerMenuGroupID = "MarijuanaCustomerMenu";
+    public static readonly string ToiletCleanerCustomerMenuGroupID = "ToiletCleanerCustomerMenu";
+    public static readonly string SPANKCustomerMenuGroupID = "SPANKCustomerMenu";
+    public static readonly string MethamphetamineCustomerMenuGroupID = "MethamphetamineCustomerMenu";
+    public static readonly string HeroinCustomerMenuGroupID = "HeroinCustomerMenu";
+    public static readonly string CrackCustomerMenuGroupID = "CrackCustomerMenu";
+    public static readonly string CokeCustomerMenuGroupID = "CokeCustomerMenu";
 
 
 }

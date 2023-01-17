@@ -4,6 +4,7 @@ using Rage.Native;
 using RAGENativeUI;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -68,6 +69,7 @@ public class Transaction
             RemoveBanner = Store.RemoveBanner;
             BannerImage = Store.BannerImage;
         }
+
         foreach (MenuItem mi in ShopMenu.Items)
         {
             ModItem modItem = modItems.Get(mi.ModItemName);

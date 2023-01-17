@@ -51,7 +51,7 @@ public class Crime
 
 
 
-    public ReactionTier ReactionTier => IsIntense ? ReactionTier.Intense : IsAngerInducing || IsScary ? ReactionTier.Alerted : IsMundane ? ReactionTier.Mundane : ReactionTier.None;
+    public ReactionTier ReactionTier => IsIntense ? ReactionTier.Intense : IsAngerInducing || IsScary ? ReactionTier.Alerted : IsMundane ? ReactionTier.Mundane : ReactionTier.None;//maybe jus thvae this set on a per crime basis>?
     public bool IsScary => ScaresCivilians;
     public bool IsAngerInducing => AngersCivilians;
     public bool IsIntense => ResultingWantedLevel >= 3 || ResultsInLethalForce || Priority <= 10;

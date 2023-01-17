@@ -286,7 +286,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     }
     public void StoreData(IGangs gangs,IShopMenus shopMenus)
     {
-        Menu = shopMenus.GetMenu(MenuID);
+        Menu = shopMenus.GetSpecificMenu(MenuID);
         AssociatedGang = gangs.GetGang(GangID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
     }

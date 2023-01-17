@@ -174,6 +174,17 @@ public class InteractableLocation : BasicLocation
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{BannerImagePath}");
             InteractionMenu.SetBannerType(BannerImage);
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+            RemoveBanner = false;
+            EntryPoint.WriteToConsole($"BANNER REGULAR {BannerImagePath} {HasBannerImage}");
+        }
+        else if (!string.IsNullOrEmpty(Menu.BannerOverride))
+        {
+            BannerImagePath = $"Plugins\\LosSantosRED\\images\\{Menu.BannerOverride}";// = true;
+            BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Menu.BannerOverride}");
+            InteractionMenu.SetBannerType(BannerImage);
+            RemoveBanner = false;
+            Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
+            EntryPoint.WriteToConsole($"BANNER OVERRIDE {BannerImagePath} {HasBannerImage}");
         }
         //InteractionMenu.OnItemSelect += OnItemSelect;
         MenuPool.Add(InteractionMenu);
@@ -194,7 +205,7 @@ public class InteractableLocation : BasicLocation
         {
             AssignedAgency = agencies.GetAgency(AssignedAgencyID);
         }
-        Menu = shopMenus.GetMenu(MenuID);
+        Menu = shopMenus.GetSpecificMenu(MenuID);
     }
     public void ProcessInteractionMenu()
     {

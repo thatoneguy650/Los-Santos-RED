@@ -137,10 +137,15 @@ public class VanillaWorldManager
     }
     private void TerminateHealthRecharge()
     {
-        NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
+       // NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
+
+        NativeFunction.Natives.SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER(Game.LocalPlayer, 0.0f);
+        NativeFunction.Natives.SET_PLAYER_HEALTH_RECHARGE_MAX_PERCENT(Game.LocalPlayer,0.01f);
+       // NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
+
       //  NativeFunction.CallByName<bool>("DISABLE_PLAYER_HEALTH_RECHARGE", Game.LocalPlayer);
       //  NativeFunction.Natives.xBCB06442F7E52666(Game.LocalPlayer);
-       //NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
+      //NativeFunction.Natives.DISABLE_PLAYER_HEALTH_RECHARGE(Game.LocalPlayer);
     }
     private void TerminateRespawnController()
     {

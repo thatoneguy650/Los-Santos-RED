@@ -89,8 +89,18 @@ public class Zones : IZones
             //new Zone("BRADT", "Braddock Tunnel", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             //new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             //new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
+
             //Ventura County is now blaine county
-            new Zone("PROCOB", "Procopio Beach", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
+            new Zone("PROCOB", "Procopio Beach", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness) 
+            //{ 
+            //    DealerMenus = new List<ZoneMenu>() { 
+            //        new ZoneMenu(StaticStrings.HeroinDealerMenuGroupID, 10),
+            //    } ,
+            //    CustomerMenus = new List<ZoneMenu>() {
+            //        new ZoneMenu(StaticStrings.HeroinCustomerMenuGroupID, 10),
+            //    },
+            //},
+            ,
             new Zone("MTCHIL", "Mount Chiliad", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("PALETO", "Paleto Bay", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("PALCOV", "Paleto Cove", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),

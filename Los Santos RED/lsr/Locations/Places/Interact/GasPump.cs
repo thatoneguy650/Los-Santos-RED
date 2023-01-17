@@ -169,8 +169,10 @@ public class GasPump : InteractableLocation
     }
     public override void OnItemPurchased(ModItem modItem, MenuItem menuItem, int totalItems)
     {
+        MenuPool.CloseAllMenus();
         StartMachineBuyAnimation();
         base.OnItemPurchased(modItem, menuItem, totalItems);
+        Transaction.PurchaseMenu?.Show();
     }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

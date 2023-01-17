@@ -174,6 +174,18 @@ public class CivilianSettings : ISettingsDefaultable
         PercentageToGetRandomItems = 80f;
         MaxRandomItemsToGet = 6;
         MaxRandomItemsAmount = 2;
+
+
+#if DEBUG
+        DrugDealerPercentageRichZones = 25f;
+        DrugDealerPercentageMiddleZones = 25f;
+        DrugDealerPercentagePoorZones = 25f;
+
+        DrugCustomerPercentageRichZones = 50f;
+        DrugCustomerPercentageMiddleZones = 50f;
+        DrugCustomerPercentagePoorZones = 50f;
+
+#endif
     }
 
 }

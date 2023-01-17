@@ -126,7 +126,7 @@ public class GangMember : PedExt, IWeaponIssuable
         WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
-            ShopMenu toadd = shopMenus.GetRandomMenu(Gang.DealerMenuGroup);
+            ShopMenu toadd = shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup);
             SetupTransactionItems(toadd);
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }

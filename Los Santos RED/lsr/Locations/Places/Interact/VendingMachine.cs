@@ -108,8 +108,10 @@ public class VendingMachine : InteractableLocation
     }
     public override void OnItemPurchased(ModItem modItem,MenuItem menuItem, int totalItems)
     {
+        MenuPool.CloseAllMenus();
         StartMachineBuyAnimation(modItem, false);
         base.OnItemPurchased(modItem, menuItem, totalItems);
+        Transaction.PurchaseMenu?.Show();
     }
     private void InteractionMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
