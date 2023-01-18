@@ -5,14 +5,19 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class PossibleShopMenus
+public class ShopMenuTypes
 {
-    public PossibleShopMenus()
+    public ShopMenuTypes()
     {
     }
-
     public List<ShopMenu> ShopMenuList { get; private set; } = new List<ShopMenu>();
-    public List<ShopMenuGroup> ShopMenuGroups { get; private set; } = new List<ShopMenuGroup>();
+    public List<ShopMenuGroup> ShopMenuGroupList { get; private set; } = new List<ShopMenuGroup>();
+    public List<ShopMenuGroupContainer> ShopMenuGroupContainers { get; private set; } = new List<ShopMenuGroupContainer>();
+
+
+
+
     public List<PropShopMenu> PropShopMenus { get; private set; } = new List<PropShopMenu>();
+    
 }
 

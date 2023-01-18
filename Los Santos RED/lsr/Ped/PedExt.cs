@@ -45,6 +45,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedReactions = new PedReactions(this);
         PedInventory = new PedInventory(this, Settings);
         PedBrain = new PedBrain(this, settings, world, weapons);
+        PedDesires = new PedDesires(this, settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
     }
@@ -65,7 +66,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PedInventory PedInventory { get; private set; }
 
     public PedBrain PedBrain { get; set; }
-
+    public PedDesires PedDesires { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
@@ -686,13 +687,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
         }
     }
-    public virtual void OnItemPurchased(ILocationInteractable player, int amountPurchased)
+    public virtual void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-
+        PedDesires.OnItemsSoldToPlayer(modItem, numberPurchased);
     }
-    public virtual void OnItemSold(ILocationInteractable player, int amountSold)
+    public virtual void OnItemSold(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-
+        PedDesires.OnItemsBoughtFromPlayer(modItem, numberPurchased);
     }
     public virtual void SetupTransactionItems(ShopMenu shopMenu)
     {
@@ -700,13 +701,16 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         ShopMenu = shopMenu;
         if (shopMenu == null)
         {
-            //EntryPoint.WriteToConsole("SetupTransactionItems END NO MENU");
             return;
         }
-        foreach (MenuItem menuItem in ShopMenu.Items.Where(x => x.NumberOfItemsToSellToPlayer > 0))
+        foreach (MenuItem menuItem in ShopMenu.Items)
         {
-            PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
+            if (menuItem.NumberOfItemsToSellToPlayer > 0)
+            {
+                PedInventory.Add(menuItem.ModItem, menuItem.NumberOfItemsToSellToPlayer);
+            }
         }
+        PedDesires.AddDesiredItem(shopMenu);
         //EntryPoint.WriteToConsole("SetupTransactionItems END");
     }
     public string LootInventory(IInteractionable player)

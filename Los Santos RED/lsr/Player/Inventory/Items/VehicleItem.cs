@@ -325,7 +325,9 @@ public class VehicleItem : ModItem
             Vehicle NewVehicle = new Vehicle(ModelItem.ModelName, ChosenSpawn.Position, ChosenSpawn.Heading);
             if (NewVehicle.Exists())
             {
-                CurrentMenuItem.ItemsSoldToPlayer += 1;
+                //CurrentMenuItem.ItemsSoldToPlayer += 1;
+
+
                 if(SetPrimaryColor || SetSecondaryColor || !SetLivery1)
                 {
                     NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, FinalPrimaryColor, FinalSecondaryColor);

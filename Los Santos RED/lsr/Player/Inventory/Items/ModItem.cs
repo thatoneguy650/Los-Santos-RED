@@ -178,16 +178,15 @@ public class ModItem
             MaxSell = PlayerInventoryItem.Amount;
         }
         int RemainingToSell = MaxSell;
+        int itemsBoughtFromPlayer = 0;
         if (menuItem.NumberOfItemsToPurchaseFromPlayer != -1)
         {
-            //int numberOfItemsPedHas = 0;
-            //InventoryItem PedInventoryItem = Transaction.PersonTransaction?.TransactionPed?.PedInventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
-            //if (PedInventoryItem != null)
-            //{
-            //    numberOfItemsPedHas = PedInventoryItem.Amount;
-            //}
-            //RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - numberOfItemsPedHas;
-            RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - menuItem.ItemsBoughtFromPlayer;
+            DesiredItem di = Transaction.PersonTransaction?.TransactionPed?.PedDesires.Get(this);
+            if(di != null)
+            {
+                itemsBoughtFromPlayer = di.ItemsBoughtFromPlayer;
+            }
+            RemainingToSell = menuItem.NumberOfItemsToPurchaseFromPlayer - itemsBoughtFromPlayer;
             if(RemainingToSell < 0)
             {
                 RemainingToSell = 0;
@@ -231,7 +230,7 @@ public class ModItem
         sellScroller.Maximum = MaxSell;
         sellScroller.Enabled = isEnabled;
         sellScroller.Description = description;
-        EntryPoint.WriteToConsole($"SELL Item: {Name} formattedSalesPrice {formattedPurchasePrice} NumberOfItemsToPurchaseFromPlayer: {menuItem.NumberOfItemsToPurchaseFromPlayer} ItemsBoughtFromPlayer {menuItem.ItemsBoughtFromPlayer}");
+        EntryPoint.WriteToConsole($"SELL Item: {Name} formattedSalesPrice {formattedPurchasePrice} NumberOfItemsToPurchaseFromPlayer: {menuItem.NumberOfItemsToPurchaseFromPlayer} ItemsBoughtFromPlayer {itemsBoughtFromPlayer}");
     }
     private bool SellItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
     {
@@ -241,7 +240,7 @@ public class ModItem
             player.BankAccounts.GiveMoney(TotalPrice);
             Transaction.MoneySpent += TotalPrice;
             Transaction.PersonTransaction?.TransactionPed?.PedInventory.Add(this, TotalItems);
-            menuItem.ItemsBoughtFromPlayer += TotalItems;
+            //menuItem.ItemsBoughtFromPlayer += TotalItems;
             Transaction.OnAmountChanged(this);
             Transaction.OnItemSold(this, menuItem, TotalItems);
             while (player.ActivityManager.IsPerformingActivity)
@@ -317,20 +316,15 @@ public class ModItem
             bool enabled = true;
             int RemainingToBuy = 99;
             int MaxBuy = 99;
+            int itemsSoldToPlayer = 0;
             if (menuItem.NumberOfItemsToSellToPlayer != -1)
             {
-                //int numberOfItemsPedHas = 0;
-                //InventoryItem PedInventoryItem = Transaction.PersonTransaction?.TransactionPed?.PedInventory.ItemsList.Where(x => x.ModItem.Name == menuItem.ModItemName).FirstOrDefault();
-                //if (PedInventoryItem != null)
-                //{
-                //    numberOfItemsPedHas = PedInventoryItem.Amount;
-                //}
-                //RemainingToBuy = numberOfItemsPedHas;// menuItem.NumberOfItemsToSellToPlayer - numberOfItemsPedHas;
-                //if (RemainingToBuy < 0)
-                //{
-                //    RemainingToBuy = 0;
-                //}
-                RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - menuItem.ItemsSoldToPlayer;
+                DesiredItem di = Transaction.PersonTransaction?.TransactionPed?.PedDesires.Get(this);
+                if (di != null)
+                {
+                    itemsSoldToPlayer = di.ItemsSoldToPlayer;
+                }
+                RemainingToBuy = menuItem.NumberOfItemsToSellToPlayer - itemsSoldToPlayer;// menuItem.ItemsSoldToPlayer;
                 if (RemainingToBuy <= 0)
                 {
                     MaxBuy = 0;
@@ -351,17 +345,16 @@ public class ModItem
             purchaseScroller.Maximum = RemainingToBuy;
             purchaseScroller.Enabled = enabled;
             purchaseScroller.Description = description;
-            EntryPoint.WriteToConsole($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {menuItem.ItemsSoldToPlayer}");
+            EntryPoint.WriteToConsole($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {itemsSoldToPlayer}");
         }
     }
     private bool PurchaseItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
     {
         int TotalPrice = menuItem.PurchasePrice * TotalItems;
         if (player.BankAccounts.Money >= TotalPrice || isStealing)
-        {
-            
+        {      
             Transaction?.PersonTransaction?.TransactionPed?.PedInventory.Remove(this, TotalItems);
-            menuItem.ItemsSoldToPlayer += TotalItems;
+            //menuItem.ItemsSoldToPlayer += TotalItems;
             if (ConsumeOnPurchase)
             {
                 player.ActivityManager.UseInventoryItem(this, false);

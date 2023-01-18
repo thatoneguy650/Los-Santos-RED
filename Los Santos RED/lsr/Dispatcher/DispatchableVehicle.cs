@@ -23,6 +23,11 @@ public class DispatchableVehicle
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
+
+
+    public VehicleVariation RequiredVariation { get; set; }
+
+
     public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));

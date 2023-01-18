@@ -507,6 +507,8 @@ namespace LosSantosRED.lsr.Helper
                 vehicleVariation.Mod2PaintType = mod2paintType;
                 vehicleVariation.Mod2Color = mod2color;
                 vehicleVariation.Livery = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(vehicle);
+                vehicleVariation.Livery2 = NativeFunction.Natives.GET_VEHICLE_LIVERY2<int>(vehicle);
+
                 vehicleVariation.LicensePlate = new LSR.Vehicles.LicensePlate();
                 vehicleVariation.LicensePlate.PlateNumber = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT<string>(vehicle);
                 vehicleVariation.LicensePlate.PlateType = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(vehicle);
@@ -561,8 +563,8 @@ namespace LosSantosRED.lsr.Helper
                 }
 
 
-                vehicleVariation.DirtLevel = NativeFunction.Natives.GET_VEHICLE_DIRT_LEVEL<int>(vehicle);
-
+                vehicleVariation.DirtLevel = NativeFunction.Natives.GET_VEHICLE_DIRT_LEVEL<float>(vehicle);
+                vehicleVariation.FuelLevel = vehicle.FuelLevel;
 
                 return vehicleVariation;
             }

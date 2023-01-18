@@ -243,7 +243,7 @@ public class GangSpawnTask : SpawnTask
                         }
                     }
                     NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
-                    //EntryPoint.WriteToConsole($"GangSpawn: SPAWNED {VehicleType.ModelName}", 3);
+                    VehicleType.RequiredVariation?.Apply(CreatedVehicle);
                     GameFiber.Yield();
                     return CreatedVehicle;
                 }

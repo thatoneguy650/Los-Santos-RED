@@ -265,6 +265,9 @@ public class LESpawnTask : SpawnTask
                     }
 
 
+                    VehicleType.RequiredVariation?.Apply(CreatedVehicle);
+
+
 
 
                     //EntryPoint.WriteToConsole($"LESpawn: SPAWNED {VehicleType.ModelName}", 3);

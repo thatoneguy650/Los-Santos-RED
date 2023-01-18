@@ -233,7 +233,7 @@ public class WeaponItem : ModItem
         {
             if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
             {
-                menuItem.ItemsBoughtFromPlayer++;
+                //menuItem.ItemsBoughtFromPlayer++;
                 NativeFunction.Natives.REMOVE_WEAPON_FROM_PED(player.Character, WeaponInformation.Hash);   
                 player.WeaponEquipment.SetUnarmed();
                 transaction.OnItemSold(this, menuItem, 1);
@@ -559,7 +559,7 @@ public class WeaponItem : ModItem
         {
             if (WeaponInformation.Category == WeaponCategory.Throwable || !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
             {
-                menuItem.ItemsSoldToPlayer++;
+                //menuItem.ItemsSoldToPlayer++;
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(player.Character, WeaponInformation.Hash, WeaponInformation.AmmoAmount, false, false);
                 if (CurrentWeaponVariation != null)
                 {

@@ -230,6 +230,7 @@ public class EMTSpawnTask :SpawnTask
                         }
                     }
                     NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
+                    VehicleType.RequiredVariation?.Apply(CreatedVehicle);
                     //EntryPoint.WriteToConsole($"EMTSpawn: SPAWNED {VehicleType.ModelName}", 3);
                     GameFiber.Yield();
                     return CreatedVehicle;

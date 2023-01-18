@@ -1,23 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
 
-public class ZoneMenu
+public class PercentageSelectShopMenu
 {
-    public ZoneMenu()
+    public PercentageSelectShopMenu()
     {
     }
 
-    public ZoneMenu(string menuGroupID, int selectChance)
+    public PercentageSelectShopMenu(ShopMenu shopMenu, int selectChance)
     {
-        MenuGroupID = menuGroupID;
+        ShopMenu = shopMenu;
         SelectChance = selectChance;
     }
-    public string MenuGroupID { get; set; }
+    public ShopMenu ShopMenu { get; set; }
     public int SelectChance { get; set; } = 0;
 }
 

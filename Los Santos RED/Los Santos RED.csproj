@@ -145,13 +145,14 @@
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
-    <Compile Include="lsr\Data\Location\ZoneMenu.cs" />
+    <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Data\Peds\PossibleNames.cs" />
     <Compile Include="lsr\Data\Settings\World General Settings\SecuritySettings.cs" />
     <Compile Include="lsr\Dispatcher\SecurityGuards\SecurityDispatcher.cs" />
     <Compile Include="lsr\Helper\StaticStrings.cs" />
-    <Compile Include="lsr\Locations\Menus\PossibleShopMenus.cs" />
+    <Compile Include="lsr\Locations\Menus\ShopMenuGroupContainer.cs" />
+    <Compile Include="lsr\Locations\Menus\ShopMenuTypes.cs" />
     <Compile Include="lsr\Locations\Menus\PropShopMenu.cs" />
     <Compile Include="lsr\Locations\Menus\ShopMenuGroup.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
@@ -169,7 +170,9 @@
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\SpawnRequirement.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
-    <Compile Include="lsr\Locations\Menus\DispatchableShopMenu.cs" />
+    <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
+    <Compile Include="lsr\Ped\DesiredItem.cs" />
+    <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />

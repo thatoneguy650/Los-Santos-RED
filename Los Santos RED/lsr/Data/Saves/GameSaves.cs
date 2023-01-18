@@ -249,7 +249,7 @@ public class GameSaves : IGameSaves
                     new VehicleExtra(0,false),
                     new VehicleExtra(1,false),
                     new VehicleExtra(2,false),
-                    new VehicleExtra(3,false),
+                    new VehicleExtra(3,true),
                     new VehicleExtra(4,false),
                     new VehicleExtra(5,false),
                     new VehicleExtra(6,false),

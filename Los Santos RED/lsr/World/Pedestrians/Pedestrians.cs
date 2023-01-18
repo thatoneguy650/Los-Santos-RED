@@ -699,10 +699,10 @@ public class Pedestrians : ITaskerReportable
             AddEntity(pedExt);
         }
     }
-    private ShopMenu GetIllicitMenu()
-    {
-        return EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);
-    }
+    //private ShopMenu GetIllicitMenu()
+    //{
+    //    return EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);
+    //}
     private float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)

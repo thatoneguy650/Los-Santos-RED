@@ -82,6 +82,9 @@ public class HealthState
 
     public bool WasShot { get; private set; }
     public bool WasMeleeAttacked { get; private set; }
+
+    private uint GameTimeLastModifiedDamage;
+
     public bool WasHitByVehicle { get; private set; }
 
     public void Update(IPoliceRespondable CurrentPlayer)
@@ -324,10 +327,11 @@ public class HealthState
     }
     private void ModifyDamage()
     {
-        if (!Settings.SettingsManager.DamageSettings.ModifyDamage || !MyPed.Pedestrian.Exists())
+        if (!Settings.SettingsManager.DamageSettings.ModifyDamage || !MyPed.Pedestrian.Exists() || Game.GameTime - GameTimeLastModifiedDamage <= 100)
         {
             return;
         }
+        GameTimeLastModifiedDamage = Game.GameTime;
         WasHitByVehicle = false;
         WasShot = false;
         WasMeleeAttacked = false;
@@ -410,6 +414,10 @@ public class HealthState
             {
                 MyPed.Pedestrian.Health = 0;
             }
+
+
+
+
             if (Armor - NewArmorDamage > 0)
             {
                 MyPed.Pedestrian.Armor = Armor - NewArmorDamage;
@@ -418,21 +426,7 @@ public class HealthState
             {
                 MyPed.Pedestrian.Armor = 0;
             }
-           // string DisplayString = "";
-            //if (MyPed.IsCop)
-            //{
-            //    //DisplayString = string.Format("  Cop: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-            //     //MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
-            //}
-            //else
-            //{
-            //    //DisplayString = string.Format("  Ped: {0}, {1}-{2}-{3} Damage {4}/{5} Health {6}/{7}",
-            //      //MyPed.Pedestrian.Handle, HealthInjury, DamagedLocation, category, NewHealthDamage, NewArmorDamage, MyPed.Pedestrian.Health, MyPed.Pedestrian.Armor);
-            //}
-            //if(MyPed.HasBeenHurtByPlayer)
-            //{
-            //    EntryPoint.WriteToConsole("PedWoundSystem" + DisplayString);
-            //}
+
         }
         if (Health != CurrentHealth && MyPed.Pedestrian.Health > 0)
         {

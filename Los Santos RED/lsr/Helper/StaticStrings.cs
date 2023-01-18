@@ -106,5 +106,15 @@ public static class StaticStrings
     public static readonly string CokeCustomerMenuGroupID = "CokeCustomerMenu";
 
 
+    //Area Dealer Menus
+    public static readonly string PoorAreaDrugDealerMenuGroupID = "PoorAreaDrugDealerMenuGroupID";
+    public static readonly string PoorAreaDrugCustomerMenuGroupID = "PoorAreaDrugCustomerMenuGroupID";
+
+    public static readonly string MiddleAreaDrugDealerMenuGroupID = "MiddleAreaDrugDealerMenuGroupID";
+    public static readonly string MiddleAreaDrugCustomerMenuGroupID = "MiddleAreaDrugCustomerMenuGroupID";
+
+    public static readonly string RichAreaDrugDealerMenuGroupID = "RichAreaDrugDealerMenuGroupID";
+    public static readonly string RichAreaDrugCustomerMenuGroupID = "RichAreaDrugCustomerMenuGroupID";
+
 }
 

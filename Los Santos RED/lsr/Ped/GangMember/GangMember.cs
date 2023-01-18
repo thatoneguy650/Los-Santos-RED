@@ -178,12 +178,14 @@ public class GangMember : PedExt, IWeaponIssuable
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
         }
     }
-    public override void OnItemPurchased(ILocationInteractable player, int amountPurchased)
+    public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, amountPurchased, true);    
+        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, moneySpent, true);
+        base.OnItemPurchased(player, modItem, numberPurchased, moneySpent);
     }
-    public override void OnItemSold(ILocationInteractable player, int amountSold)
+    public override void OnItemSold(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {
-        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, amountSold, true);
+        player.RelationshipManager.GangRelationships.ChangeReputation(Gang, moneySpent, true);
+        base.OnItemSold(player, modItem, numberPurchased, moneySpent);
     }
 }

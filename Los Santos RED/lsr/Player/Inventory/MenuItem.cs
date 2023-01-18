@@ -38,15 +38,8 @@ public class MenuItem
     public int SubAmount { get; set; } = 30;
     public int NumberOfItemsToSellToPlayer { get; set; } = -1;
     public int NumberOfItemsToPurchaseFromPlayer { get; set; } = -1;
-
-
     [XmlIgnore]
     public ModItem ModItem { get; set; }
-    [XmlIgnore]
-    public int ItemsSoldToPlayer { get; set; } = 0;
-    [XmlIgnore]
-    public int ItemsBoughtFromPlayer { get; set; } = 0;
-
     public void SetFree()
     {
         if (!isSetFree)

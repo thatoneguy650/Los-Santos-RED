@@ -172,9 +172,7 @@ public class ButtonPrompts
             {
                 toSell = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable);
                 toBuy = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Purchaseable);
-
                 toSellPlayerHas = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable && Player.Inventory.Get(x.ModItem) != null && x.NumberOfItemsToPurchaseFromPlayer > 0);
-
             }
             RemovePrompts("StartTransaction");
             string promptText = $"Purchase from {Player.CurrentLookedAtPed.FormattedName}";

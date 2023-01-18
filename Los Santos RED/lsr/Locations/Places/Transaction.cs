@@ -425,4 +425,6 @@ public class Transaction
             NotificationHandle = Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Store?.Name, header, message);
         }
     }
+
+
 }

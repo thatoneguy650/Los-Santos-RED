@@ -216,7 +216,104 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("voodoo2", 33, 33){ RequiredPrimaryColorID = 55,RequiredSecondaryColorID = 55 },//matte lime green
         };
         DiablosVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("stalion", 100, 100){ RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28 },//red
+            new DispatchableVehicle("stalion", 100, 100){ RequiredPrimaryColorID = 28,RequiredSecondaryColorID = 28, },
+            new DispatchableVehicle("stalion", 5, 5){ 
+            RequiredVariation = new VehicleVariation() {
+                PrimaryColor = 28, SecondaryColor = 0
+                ,PearlescentColor = 28
+                ,WheelColor = 156
+                ,Mod1PaintType = 0
+                ,Mod1PearlescentColor = 0
+                ,Mod1Color = 0
+                ,Mod2PaintType = 1
+                ,WheelType = 7
+                ,HasCustomWheels = true
+                ,VehicleExtras = new List<VehicleExtra>()
+                {
+                    new VehicleExtra(0,false),
+                    new VehicleExtra(1,false),
+                    new VehicleExtra(2,false),
+                    new VehicleExtra(3,true),
+                    new VehicleExtra(4,false),
+                    new VehicleExtra(5,false),
+                    new VehicleExtra(6,false),
+                    new VehicleExtra(7,false),
+                    new VehicleExtra(8,false),
+                    new VehicleExtra(9,false),
+                    new VehicleExtra(10,false),
+                    new VehicleExtra(11,false),
+                    new VehicleExtra(12,false),
+                    new VehicleExtra(13,false),
+                    new VehicleExtra(14,false),
+                    new VehicleExtra(15,false),
+                }
+                ,VehicleToggles =  new List<VehicleToggle>()
+                {
+                    new VehicleToggle(17,false),
+                    new VehicleToggle(18,true),
+                    new VehicleToggle(19,false),
+                    new VehicleToggle(20,false),
+                    new VehicleToggle(21,false),
+                    new VehicleToggle(22,true),
+                }
+                , VehicleMods = new List<VehicleMod>()
+                {
+                    new VehicleMod(0,-1),
+                    new VehicleMod(1,-1),
+                    new VehicleMod(2,-1),
+                    new VehicleMod(3,-1),
+                    new VehicleMod(4,-1),
+                    new VehicleMod(5,-1),
+                    new VehicleMod(6,-1),
+                    new VehicleMod(7,-1),
+                    new VehicleMod(8,-1),
+                    new VehicleMod(9,-1),
+                    new VehicleMod(10,-1),
+                    new VehicleMod(11,3),
+                    new VehicleMod(12,2),
+                    new VehicleMod(13,2),
+                    new VehicleMod(14,-1),
+                    new VehicleMod(15,3),
+                    new VehicleMod(16,-1),
+                    new VehicleMod(17,-1),
+                    new VehicleMod(18,-1),
+                    new VehicleMod(19,-1),
+                    new VehicleMod(20,-1),
+                    new VehicleMod(21,-1),
+                    new VehicleMod(22,-1),
+                    new VehicleMod(23,2),
+                    new VehicleMod(24,-1),
+                    new VehicleMod(25,-1),
+                    new VehicleMod(26,-1),
+                    new VehicleMod(27,-1),
+                    new VehicleMod(28,-1),
+                    new VehicleMod(29,-1),
+                    new VehicleMod(30,-1),
+                    new VehicleMod(31,-1),
+                    new VehicleMod(32,-1),
+                    new VehicleMod(33,-1),
+                    new VehicleMod(34,-1),
+                    new VehicleMod(35,-1),
+                    new VehicleMod(36,-1),
+                    new VehicleMod(37,-1),
+                    new VehicleMod(38,-1),
+                    new VehicleMod(39,-1),
+                    new VehicleMod(40,-1),
+                    new VehicleMod(41,-1),
+                    new VehicleMod(42,-1),
+                    new VehicleMod(43,-1),
+                    new VehicleMod(44,-1),
+                    new VehicleMod(45,-1),
+                    new VehicleMod(46,-1),
+                    new VehicleMod(47,-1),
+                    new VehicleMod(48,-1),
+                    new VehicleMod(49,-1),
+                    new VehicleMod(50,3),
+
+                }
+                , LicensePlate = new LSR.Vehicles.LicensePlate("5GNU769", 0, false)
+            }
+            },//red
         };
         MafiaVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("sentinel", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black

@@ -333,7 +333,7 @@ public class PersonTransaction : Interaction
         {
             MenuPool.CloseAllMenus();
             StartBuyAnimation(modItem, menuItem, totalItems);
-            Ped.OnItemPurchased(Player, menuItem.PurchasePrice * totalItems);
+            Ped.OnItemPurchased(Player, modItem,totalItems, menuItem.PurchasePrice * totalItems);
             Transaction.PurchaseMenu?.Show();
         }
     }
@@ -343,7 +343,7 @@ public class PersonTransaction : Interaction
         {
             MenuPool.CloseAllMenus();
             StartSellAnimation(modItem, menuItem, totalItems);
-            Ped.OnItemSold(Player, menuItem.SalesPrice * totalItems);
+            Ped.OnItemSold(Player, modItem, totalItems, menuItem.SalesPrice * totalItems);
             Transaction.SellMenu?.Show();
         }
     }
