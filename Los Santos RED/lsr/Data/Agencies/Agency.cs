@@ -142,7 +142,7 @@ public class Agency
             {
                 ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel) && x.IsMotorcycle).ToList());
             }
-            if (requiredGroup != "")
+            if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
             {
                 ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
             }
