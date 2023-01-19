@@ -36,6 +36,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
+    public override bool KnownsDrugAreas => true;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

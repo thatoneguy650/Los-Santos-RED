@@ -52,7 +52,7 @@ public class Places
     {
         foreach (Zone zone in Zones.ZoneList)
         {
-            zone.StoreData(GangTerritories, Jurisdictions);
+            zone.StoreData(GangTerritories, Jurisdictions, ShopMenus);
             GameFiber.Yield();
         }
         StaticPlaces.Setup();

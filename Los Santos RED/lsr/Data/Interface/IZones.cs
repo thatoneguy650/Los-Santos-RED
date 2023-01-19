@@ -14,6 +14,7 @@ namespace LosSantosRED.lsr.Interface
 
         Zone GetZone(Vector3 ZonePosition);
         Zone GetZone(string InternalGameName);
+        List<Zone> GetZoneByItem(ModItem selectedItem, IShopMenus shopMenus, bool v);
         //string GetZoneName(Vector3 entrancePosition);
     }
 }

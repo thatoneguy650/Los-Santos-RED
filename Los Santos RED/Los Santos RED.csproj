@@ -175,6 +175,7 @@
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Other\GenericIdle.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />
@@ -437,7 +438,7 @@
     <Compile Include="lsr\Player\HumanState\SleepNeed.cs" />
     <Compile Include="lsr\Player\HumanState\ThirstNeed.cs" />
     <Compile Include="lsr\Player\HumanState\Injuries.cs" />
-    <Compile Include="lsr\Player\Interaction\Conversation_Simple.cs" />
+    <Compile Include="lsr\Player\Interaction\Conversation\Conversation_Simple.cs" />
     <Compile Include="lsr\Player\Interaction\Drag.cs" />
     <Compile Include="lsr\Player\Interaction\HumanShield.cs" />
     <Compile Include="lsr\Player\Interaction\Loot.cs" />
@@ -704,7 +705,7 @@
     <Compile Include="lsr\UI\Other\DistanceSelect.cs" />
     <Compile Include="lsr\UI\Menu\Main\MainMenu.cs" />
     <Compile Include="lsr\Player\Button Prompts\ButtonPrompt.cs" />
-    <Compile Include="lsr\Player\Interaction\Conversation.cs" />
+    <Compile Include="lsr\Player\Interaction\Conversation\Conversation.cs" />
     <Compile Include="lsr\Player\Interaction\Interaction.cs" />
     <Compile Include="lsr\Player\Interaction\Interface\IInteractionable.cs" />
     <Compile Include="lsr\Player\Interaction\HoldUp.cs" />

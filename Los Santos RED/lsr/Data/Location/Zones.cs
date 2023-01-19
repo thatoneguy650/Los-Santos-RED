@@ -62,6 +62,31 @@ public class Zones : IZones
     {
         return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
     }
+
+
+    public List<Zone> GetZoneByItem(ModItem modItem, IShopMenus shopMenus, bool isPurchase)
+    {
+        List<Zone> MatchingZones = new List<Zone>();
+        foreach(Zone zone in ZoneList)
+        {
+            if(isPurchase)
+            {
+                if (zone.DealerMenus != null && zone.DealerMenus.HasItem(modItem, shopMenus))
+                {
+                    MatchingZones.Add(zone);    
+                }
+            }
+            else
+            {
+                if (zone.CustomerMenus != null && zone.CustomerMenus.HasItem(modItem, shopMenus))
+                {
+                    MatchingZones.Add(zone);
+                }
+            }
+        }
+        return MatchingZones;
+    }
+
     private string GetInternalZoneString(Vector3 ZonePosition)
     {
         IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
@@ -91,18 +116,7 @@ public class Zones : IZones
             //new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
 
             //Ventura County is now blaine county
-            new Zone("PROCOB", "Procopio Beach", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness)
-            //{
-            //    DealerMenus = new ShopMenuGroupContainer("ProcopioDealerContainer","Procopio Dealer Container",
-            //        new List<PercentageSelectGroupMenuContainer>() { 
-            //            new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID,100), 
-            //        }),
-            //    CustomerMenus = new ShopMenuGroupContainer("ProcopioCustomerContainer","Procopio Customer Container",
-            //        new List<PercentageSelectGroupMenuContainer>() {
-            //            new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID,100),
-            //        }),
-            //}
-            ,
+            new Zone("PROCOB", "Procopio Beach", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("MTCHIL", "Mount Chiliad", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("PALETO", "Paleto Bay", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("PALCOV", "Paleto Cove", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
@@ -135,7 +149,7 @@ public class Zones : IZones
             new Zone("LAGO", "Lago Zancudo", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("MTJOSE", "Mount Josiah", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
             new Zone("NCHU", "North Chumash", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("SLAB", "Slab City", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Rural),
+            new Zone("SLAB", "Slab City", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Rural) { DealerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID },
             new Zone("ZANCUDO", "Zancudo River", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Wilderness),
 
             //Vespucci
@@ -149,44 +163,44 @@ public class Zones : IZones
             new Zone("DELSOL", "Puerto Del Sol", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
 
             //Central
-            new Zone("BANNING", "Banning", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("CHAMH", "Chamberlain Hills", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("DAVIS", "Davis", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("BANNING", "Banning", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown) { DealerMenuContainerID = StaticStrings.CrackAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CrackAreaDrugCustomerMenuGroupID },
+            new Zone("CHAMH", "Chamberlain Hills", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown) { DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID },
+            new Zone("DAVIS", "Davis", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown) { DealerMenuContainerID = StaticStrings.CrackAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CrackAreaDrugCustomerMenuGroupID },
             new Zone("DOWNT", "Downtown", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("PBOX", "Pillbox Hill", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("RANCHO", "Rancho", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("SKID", "Mission Row", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("STAD", "Maze Bank Arena", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Industrial),
-            new Zone("STRAW", "Strawberry", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("TEXTI", "Textile City", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
-            new Zone("LEGSQU", "Legion Square", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Downtown),
+            new Zone("PBOX", "Pillbox Hill", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.HeroinAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.HeroinAreaDrugCustomerMenuGroupID } ,
+            new Zone("RANCHO", "Rancho", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown) { DealerMenuContainerID = StaticStrings.CrackAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CrackAreaDrugCustomerMenuGroupID },
+            new Zone("SKID", "Mission Row", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.HeroinAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.HeroinAreaDrugCustomerMenuGroupID } ,
+            new Zone("STAD", "Maze Bank Arena", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Industrial) { DealerMenuContainerID = StaticStrings.CrackAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CrackAreaDrugCustomerMenuGroupID },
+            new Zone("STRAW", "Strawberry", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID },
+            new Zone("TEXTI", "Textile City", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.HeroinAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.HeroinAreaDrugCustomerMenuGroupID } ,
+            new Zone("LEGSQU", "Legion Square", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.HeroinAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.HeroinAreaDrugCustomerMenuGroupID } ,
 
             //East LS
-            new Zone("CYPRE", "Cypress Flats", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("LMESA", "La Mesa", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("MIRR", "Mirror Park", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Suburb),
-            new Zone("MURRI", "Murrieta Heights", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("EBURO", "El Burro Heights", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("CYPRE", "Cypress Flats", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial){ DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID },
+            new Zone("LMESA", "La Mesa", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial) { DealerMenuContainerID = StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID },
+            new Zone("MIRR", "Mirror Park", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { DealerMenuContainerID = StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID },
+            new Zone("MURRI", "Murrieta Heights", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial){ DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID },
+            new Zone("EBURO", "El Burro Heights", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial){ DealerMenuContainerID = StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID },
 
             //Vinewood
             new Zone("ALTA", "Alta", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("DTVINE", "Downtown Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("EAST_V", "East Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Suburb),
-            new Zone("HAWICK", "Hawick", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
+            new Zone("DTVINE", "Downtown Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.CokeAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CokeAreaDrugCustomerMenuGroupID },
+            new Zone("EAST_V", "East Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { DealerMenuContainerID = StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID },
+            new Zone("HAWICK", "Hawick", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.CokeAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CokeAreaDrugCustomerMenuGroupID },
             new Zone("HORS", "Vinewood Racetrack", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Rural),
-            new Zone("VINE", "Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("VINE", "Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown){ DealerMenuContainerID = StaticStrings.CokeAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.CokeAreaDrugCustomerMenuGroupID },
             new Zone("WVINE", "West Vinewood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Suburb),
 
             //PortOfLosSantos
-            new Zone("ELYSIAN", "Elysian Island", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("ZP_ORT", "Port of South Los Santos", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Industrial),
-            new Zone("TERMINA", "Terminal", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
+            new Zone("ELYSIAN", "Elysian Island", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial) { DealerMenuContainerID = StaticStrings.SPANKAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.SPANKAreaDrugCustomerMenuGroupID },
+            new Zone("ZP_ORT", "Port of South Los Santos", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Poor, eLocationType.Industrial){ DealerMenuContainerID = StaticStrings.SPANKAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.SPANKAreaDrugCustomerMenuGroupID },
+            new Zone("TERMINA", "Terminal", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Industrial){ DealerMenuContainerID = StaticStrings.SPANKAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.SPANKAreaDrugCustomerMenuGroupID },
             new Zone("AIRP", "Los Santos International Airport", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Industrial) { IsRestrictedDuringWanted = true },
 
             //Rockford Hills
             new Zone("BURTON", "Burton", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Downtown),
             new Zone("GOLF", "GWC and Golfing Society", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Rich, eLocationType.Downtown),
-            new Zone("KOREAT", "Little Seoul", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("KOREAT", "Little Seoul", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { DealerMenuContainerID = StaticStrings.HeroinAreaDrugDealerMenuGroupID, CustomerMenuContainerID = StaticStrings.HeroinAreaDrugCustomerMenuGroupID } ,
             new Zone("MORN", "Morningwood", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
             new Zone("MOVIE", "Richards Majestic", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Rich, eLocationType.Downtown),
             new Zone("RICHM", "Richman", StaticStrings.CityOfLosSantosCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Rich, eLocationType.Suburb),

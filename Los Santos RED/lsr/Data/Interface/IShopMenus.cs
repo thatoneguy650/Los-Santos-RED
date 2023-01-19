@@ -9,6 +9,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IShopMenus
     {
+        ShopMenuGroupContainer GetSpecificGroupContainer(string containerID);
         ShopMenu GetSpecificMenu(string menuID);
         ShopMenu GetVendingMenu(string modelName);
         ShopMenu GetWeightedRandomMenuFromGroup(string groupID);
@@ -16,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
        // ShopMenu GetWeightedRandomMenuFromGroupByCategory(string drugDealerMenuID);
         ShopMenu GetRandomDrugCustomerMenu();
         ShopMenu GetWeightedRandomMenuFromContainer(string lookingForID);
+        ShopMenuGroup GetSpecificMenuGroup(string shopMenuGroupID);
     }
 }

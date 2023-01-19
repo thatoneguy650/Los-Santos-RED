@@ -12,6 +12,7 @@ public class Conversation_Simple : Interaction
 {
     private uint GameTimeStartedConversing;
     private bool IsActivelyConversing;
+
     private bool IsTasked;
     private bool IsBlockedEvents;
     private PedExt Ped;
@@ -20,16 +21,29 @@ public class Conversation_Simple : Interaction
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
     private dynamic pedHeadshotHandle;
-    public Conversation_Simple(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes)
+    private AdvancedConversation AdvancedConversation;
+    private IModItems ModItems;
+    private IZones Zones;
+    private IShopMenus ShopMenus;
+
+    public Conversation_Simple(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus)
     {
         Player = player;
         Ped = ped;
         Settings = settings;
         Crimes = crimes;
+        ModItems = modItems;
+        Zones = zones;
+        ShopMenus = shopMenus;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.ActivityManager.CanConverse;
+    public PedExt ConversingPed => Ped;
+    public void OnAdvancedConversationStopped()
+    {
+        IsActivelyConversing = false;
+    }
     public override void Dispose()
     {
         Player.ButtonPrompts.RemovePrompts("Conversation");
@@ -77,6 +91,7 @@ public class Conversation_Simple : Interaction
     {
         while (CanContinueConversation)
         {
+            UpdateButtonPrompts();
             CheckInput();
             if (CancelledConversation)
             {
@@ -279,6 +294,35 @@ public class Conversation_Simple : Interaction
     }
     private void CheckInput()
     {
+        if (Player.ButtonPrompts.IsPressed("Cancel"))
+        {
+            CancelledConversation = true;
+        }
+        else if (Player.ButtonPrompts.IsPressed("PositiveReply"))
+        {
+            Positive();
+        }
+        else if (Player.ButtonPrompts.IsPressed("NegativeReply"))
+        {
+            Negative();
+        }
+        else if (Player.ButtonPrompts.IsPressed("AskQuestion"))
+        {
+            AskQuestion();
+        }
+    }
+
+    private void AskQuestion()
+    {
+        AdvancedConversation = new AdvancedConversation(this, ModItems, Zones, ShopMenus);
+        AdvancedConversation.Setup();
+        AdvancedConversation.Show();
+        IsActivelyConversing = true;
+        //GameFiber.Sleep(500);
+    }
+
+    private void UpdateButtonPrompts()
+    {
         if (IsActivelyConversing)
         {
             Player.ButtonPrompts.RemovePrompts("Conversation");
@@ -289,21 +333,9 @@ public class Conversation_Simple : Interaction
             {
                 Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
                 Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
-                Player.ButtonPrompts.AddPrompt("Conversation", "Cancel", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 3);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Ask a Question", "AskQuestion", Settings.SettingsManager.KeySettings.InteractStart, 5);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Cancel", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 90);
             }
-        }
-        if (Player.ButtonPrompts.IsPressed("Cancel"))
-        {
-            CancelledConversation = true;
-            //Dispose();
-        }
-        else if (Player.ButtonPrompts.IsPressed("PositiveReply"))
-        {
-            Positive();
-        }
-        else if (Player.ButtonPrompts.IsPressed("NegativeReply"))
-        {
-            Negative();
         }
     }
     private bool CanSay(Ped ToSpeak, string Speech)
@@ -356,7 +388,7 @@ public class Conversation_Simple : Interaction
             }, true, isPlayer);
         }
     }
-    private void Negative()
+    public void Negative()
     {
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
@@ -386,7 +418,7 @@ public class Conversation_Simple : Interaction
         }
         IsActivelyConversing = false;
     }
-    private void Positive()
+    public void Positive()
     {
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
@@ -408,6 +440,16 @@ public class Conversation_Simple : Interaction
             //Ped.TimesInsultedByPlayer--;
             Ped.ApolgizedToPlayer();
         }
+        GameFiber.Sleep(200);
+        IsActivelyConversing = false;
+    }
+    public void PedReply(string toDisplay)
+    {
+        IsActivelyConversing = true;
+        Player.ButtonPrompts.Clear();
+        SaySmallTalk(Player.Character, false, true);
+        Game.DisplaySubtitle(toDisplay);
+        SaySmallTalk(Ped.Pedestrian, true, false);
         GameFiber.Sleep(200);
         IsActivelyConversing = false;
     }

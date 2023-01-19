@@ -116,5 +116,25 @@ public static class StaticStrings
     public static readonly string RichAreaDrugDealerMenuGroupID = "RichAreaDrugDealerMenuGroupID";
     public static readonly string RichAreaDrugCustomerMenuGroupID = "RichAreaDrugCustomerMenuGroupID";
 
+    public static readonly string HeroinAreaDrugDealerMenuGroupID = "HeroinAreaDrugDealerMenuGroupID";
+    public static readonly string HeroinAreaDrugCustomerMenuGroupID = "HeroinAreaDrugCustomerMenuGroupID";
+
+    public static readonly string MarijuanaAreaDrugDealerMenuGroupID = "MarijuanaAreaDrugDealerMenuGroupID";
+    public static readonly string MarijuanaAreaDrugCustomerMenuGroupID = "MarijuanaAreaDrugCustomerMenuGroupID";
+
+    public static readonly string ToiletCleanerAreaDrugDealerMenuGroupID = "ToiletCleanerAreaDrugDealerMenuGroupID";
+    public static readonly string ToiletCleanerAreaDrugCustomerMenuGroupID = "ToiletCleanerAreaDrugCustomerMenuGroupID";
+
+    public static readonly string SPANKAreaDrugDealerMenuGroupID = "SPANKAreaDrugDealerMenuGroupID";
+    public static readonly string SPANKAreaDrugCustomerMenuGroupID = "SPANKAreaDrugCustomerMenuGroupID";
+
+    public static readonly string MethamphetamineAreaDrugDealerMenuGroupID = "MethamphetamineAreaDrugDealerMenuGroupID";
+    public static readonly string MethamphetamineAreaDrugCustomerMenuGroupID = "MethamphetamineAreaDrugCustomerMenuGroupID";
+
+    public static readonly string CrackAreaDrugDealerMenuGroupID = "CrackAreaDrugDealerMenuGroupID";
+    public static readonly string CrackAreaDrugCustomerMenuGroupID = "CrackAreaDrugCustomerMenuGroupID";
+
+    public static readonly string CokeAreaDrugDealerMenuGroupID = "CokeAreaDrugDealerMenuGroupID";
+    public static readonly string CokeAreaDrugCustomerMenuGroupID = "CokeAreaDrugCustomerMenuGroupID";
 }
 

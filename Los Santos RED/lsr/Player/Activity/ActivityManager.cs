@@ -38,6 +38,8 @@ public class ActivityManager
     private ISpeeches Speeches;
     private ISeats Seats;
     private IWeapons Weapons;
+    private IZones Zones;
+    private IShopMenus ShopMenus;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -123,7 +125,7 @@ public class ActivityManager
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
-        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest)
+        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus)
     {
         Player = player;
         Settings = settings;
@@ -144,6 +146,8 @@ public class ActivityManager
         Seats = seats;
         Weapons = weapons;
         PlacesOfInterest = placesOfInterest;
+        Zones = zones;
+        ShopMenus = shopMenus;
     }
     public void Setup()
     {
@@ -559,7 +563,7 @@ public class ActivityManager
             }
             if (Settings.SettingsManager.ActivitySettings.UseSimpleConversation)
             {
-                Interaction = new Conversation_Simple(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes);
+                Interaction = new Conversation_Simple(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus);
                 Interaction.Start();
             }
             else

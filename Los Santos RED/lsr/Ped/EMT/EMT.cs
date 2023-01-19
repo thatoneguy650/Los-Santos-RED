@@ -21,6 +21,7 @@ public class EMT : PedExt
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
+    public override bool KnownsDrugAreas => false;
 
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {

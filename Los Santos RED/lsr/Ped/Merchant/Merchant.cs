@@ -15,6 +15,7 @@ public class Merchant : PedExt
     {
         Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.CivilianSettings.MerchantMoneyMin, settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
     }
+    public override bool KnownsDrugAreas => false;
 
 }
 

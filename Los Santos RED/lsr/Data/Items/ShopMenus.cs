@@ -17,10 +17,8 @@ using System.Threading.Tasks;
 
 public class ShopMenus : IShopMenus
 {
-
     private readonly string ConfigFileName = "Plugins\\LosSantosRED\\ShopMenus.xml";
     public ShopMenuTypes PossibleShopMenus { get; private set; }
-
     public ShopMenus()
     {
         PossibleShopMenus = new ShopMenuTypes();
@@ -53,6 +51,14 @@ public class ShopMenus : IShopMenus
     {
         return PossibleShopMenus.ShopMenuGroupList.Where(x => x.ID == groupID).FirstOrDefault()?.GetRandomMenu();
     }
+
+
+
+    public ShopMenuGroup GetSpecificMenuGroup(string groupID)
+    {
+        return PossibleShopMenus.ShopMenuGroupList.Where(x => x.ID == groupID).FirstOrDefault();
+    }
+
     public ShopMenu GetWeightedRandomMenuFromContainer(string containerID)
     {
        // EntryPoint.WriteToConsole($"GetWeightedRandomMenuFromOverallGroup {containerID}");
@@ -71,37 +77,15 @@ public class ShopMenus : IShopMenus
         return PossibleShopMenus.ShopMenuGroupList.Where(x => x.CategoryID == StaticStrings.DrugCustomerMenuID).PickRandom()?.GetRandomMenu();
     }
 
-    //private ShopMenu CopyShopMenu(ShopMenu Possible)
-    //{
-    //    if (Possible == null)
-    //    {
-    //        return null;
-    //    }
-    //    List<MenuItem> newMenuItems = new List<MenuItem>() { };
-    //    foreach (MenuItem mi in Possible.Items)
-    //    {
-    //        List<MenuItemExtra> newMenuExtraItems = new List<MenuItemExtra>();
-    //        if (mi.Extras != null)
-    //        {
-    //            newMenuExtraItems = new List<MenuItemExtra>() { };
-    //            foreach (MenuItemExtra mie in mi.Extras)
-    //            {
-    //                newMenuExtraItems.Add(new MenuItemExtra(mie.ExtraName, mie.PurchasePrice, mie.SalesPrice) { HasItem = mie.HasItem });
-    //            }
-    //        }
-    //        newMenuItems.Add(new MenuItem(mi.ModItemName, mi.PurchasePrice, mi.SalesPrice) { 
-    //            ModItem = mi.ModItem, 
-    //            IsIllicilt = mi.IsIllicilt, 
-    //            SubPrice = mi.SubPrice, 
-    //            SubAmount = mi.SubAmount, 
-    //            Extras = newMenuExtraItems, 
-    //            NumberOfItemsToPurchaseFromPlayer = mi.NumberOfItemsToPurchaseFromPlayer, 
-    //            NumberOfItemsToSellToPlayer = mi.NumberOfItemsToSellToPlayer,
-    //        });//need to add extras in here
-    //    }
-    //    ShopMenu toReturn = new ShopMenu(Possible.ID, Possible.Name, newMenuItems) { BannerOverride = Possible.BannerOverride, GroupName = Possible.GroupName };
-    //    return toReturn;
-    //}
+    public ShopMenuGroupContainer GetSpecificGroupContainer(string containerID)
+    {
+        if(string.IsNullOrEmpty(containerID) || containerID == "")
+        {
+            return null;
+        }
+        return PossibleShopMenus.ShopMenuGroupContainers.Where(x => x.ID == containerID).FirstOrDefault();
+    }
+
     public Tuple<int, int> GetPrices(string itemName)
     {
         int LowestPrice = 9999;
@@ -5629,12 +5613,122 @@ public class ShopMenus : IShopMenus
                     new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 1),
             });
 
+        ShopMenuGroupContainer MethamphetamineAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugDealerMenuGroupID, "Methamphetamine Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer MethamphetamineAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MethamphetamineAreaDrugCustomerMenuGroupID, "Methamphetamine Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 85),
+            });
+
+        ShopMenuGroupContainer ToiletCleanerAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugDealerMenuGroupID, "Toilet Cleaner Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer ToiletCleanerAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.ToiletCleanerAreaDrugCustomerMenuGroupID, "Toilet Cleaner Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MethamphetamineCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.ToiletCleanerCustomerMenuGroupID, 85),
+            });
+
+        ShopMenuGroupContainer MarijuanaAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugDealerMenuGroupID, "Marijuana Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 100),
+            });
+        ShopMenuGroupContainer MarijuanaAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.MarijuanaAreaDrugCustomerMenuGroupID, "Marijuana Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 100),
+            });
+
+        ShopMenuGroupContainer CokeAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugDealerMenuGroupID, "Coke Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.CokeDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer CokeAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CokeAreaDrugCustomerMenuGroupID, "Coke Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.CokeCustomerMenuGroupID, 85),
+            });
+
+        ShopMenuGroupContainer CrackAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugDealerMenuGroupID, "Crack Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.CrackDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer CrackAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.CrackAreaDrugCustomerMenuGroupID, "Crack Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.CrackCustomerMenuGroupID, 85),
+            });
+
+        ShopMenuGroupContainer HeroinAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugDealerMenuGroupID, "Heroin Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.HeroinDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer HeroinAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.HeroinAreaDrugCustomerMenuGroupID, "Heroin Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.HeroinCustomerMenuGroupID, 85),
+            });
+
+        ShopMenuGroupContainer SPANKAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugDealerMenuGroupID, "SPANK Area Dealer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaDealerMenuGroupID, 10),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.SPANKDealerMenuGroupID, 90),
+            });
+        ShopMenuGroupContainer SPANKAreaCustomerMenuGroup = new ShopMenuGroupContainer(StaticStrings.SPANKAreaDrugCustomerMenuGroupID, "SPANK Area Customer Menu",
+            new List<PercentageSelectGroupMenuContainer>()
+            {
+                    new PercentageSelectGroupMenuContainer(StaticStrings.MarijuanaCustomerMenuGroupID, 15),
+                    new PercentageSelectGroupMenuContainer(StaticStrings.SPANKCustomerMenuGroupID, 85),
+            });
+
         PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaDealerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(PoorAreaCustomerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaDealerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(MiddleAreaCustomerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaDealerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(RichAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MethamphetamineAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(ToiletCleanerAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(MarijuanaAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CokeAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(CrackAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(HeroinAreaCustomerMenuGroup);
+
+        PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaDealerMenuGroup);
+        PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaCustomerMenuGroup);
     }
 
     public void Setup(IModItems modItems)

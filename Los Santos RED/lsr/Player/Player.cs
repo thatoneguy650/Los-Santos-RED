@@ -135,7 +135,7 @@ namespace Mod
             GPSManager = new GPSManager(this, World);
             VehicleOwnership = new VehicleOwnership(this,World);
             BankAccounts = new BankAccounts(this, Settings);
-            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest);
+            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus);
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);

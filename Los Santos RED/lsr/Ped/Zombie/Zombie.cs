@@ -18,5 +18,6 @@ public class Zombie : PedExt
         IsZombie = true;
     }
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-   // public bool WasModSpawned { get; private set; }
+    public override bool KnownsDrugAreas => false;
+    // public bool WasModSpawned { get; private set; }
 }

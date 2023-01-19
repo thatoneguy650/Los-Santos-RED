@@ -68,12 +68,16 @@ public class Zone
     [XmlIgnore]
     public List<Agency> Agencies { get; set; }
 
-
+    [XmlIgnore]
     public ShopMenuGroupContainer DealerMenus { get; set; }
+    [XmlIgnore]
     public ShopMenuGroupContainer CustomerMenus { get; set; }
 
+    public string DealerMenuContainerID { get; set; }
+    public string CustomerMenuContainerID { get; set; }
+
     public bool IsLowPop => Type == eLocationType.Rural || Type == eLocationType.Wilderness;
-    public void StoreData(IGangTerritories gangTerritories, IJurisdictions jurisdictions)
+    public void StoreData(IGangTerritories gangTerritories, IJurisdictions jurisdictions, IShopMenus shopMenus)
     {
         Gangs = new List<Gang>();
         List<Gang> GangStuff = gangTerritories.GetGangs(InternalGameName, 0);
@@ -116,6 +120,8 @@ public class Zone
         {
             AssignedSecondLEAgencyInitials = "";
         }
+        DealerMenus = shopMenus.GetSpecificGroupContainer(DealerMenuContainerID);
+        CustomerMenus = shopMenus.GetSpecificGroupContainer(CustomerMenuContainerID);
     }
     public ShopMenu GetIllicitMenu(ISettingsProvideable Settings, IShopMenus ShopMenus)
     {

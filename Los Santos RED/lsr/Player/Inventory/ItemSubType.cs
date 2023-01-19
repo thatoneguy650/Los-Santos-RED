@@ -15,6 +15,9 @@ public enum ItemSubType
     Snack,
     Entree,
     Narcotic,
+
+
+
     Cigarette,
     Cigar,
     Tool,
@@ -28,4 +31,6 @@ public enum ItemSubType
     Pizza,
     Painkiller,
     Medication,
+
+
 }

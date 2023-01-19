@@ -452,5 +452,9 @@ public class ModItem
             Game.DisplayNotification($"Error Displaying Model {ex.Message} {ex.StackTrace}");
         }
     }
+    public override string ToString()
+    {
+        return Name;
+    }
 }
 

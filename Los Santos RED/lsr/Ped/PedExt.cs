@@ -303,6 +303,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasModSpawned { get; set; } = false;
     public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
+    public virtual bool KnownsDrugAreas => HasMenu;// (HasMenu || IsGangMember) && !IsMerchant && !IsCop && !Isem;
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

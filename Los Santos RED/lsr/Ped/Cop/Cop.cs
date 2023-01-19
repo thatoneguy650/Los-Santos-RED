@@ -67,6 +67,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public string UnityType { get; set; } = "Lincoln";
     public int BeatNumber { get; set; } = 1;
     public uint GameTimeLastUpdatedTarget { get; set; }
+    public override bool KnownsDrugAreas => false;
     public PedExt CurrentTarget { get; set; }
     public override bool NeedsFullUpdate
     {
