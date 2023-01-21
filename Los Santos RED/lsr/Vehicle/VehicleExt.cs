@@ -224,7 +224,7 @@ namespace LSR.Vehicles
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
-            FuelTank = new FuelTank(this);
+            FuelTank = new FuelTank(this, Settings);
             Engine = new Engine(this, Settings);
         }
         public void SetAsEntered()

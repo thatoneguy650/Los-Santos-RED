@@ -56,5 +56,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsShowingActionWheel { get; set; }
         bool IsInAutomobile { get; }
         bool IsOnMotorcycle { get; }
+        RelationshipManager RelationshipManager { get; }
     }
 }

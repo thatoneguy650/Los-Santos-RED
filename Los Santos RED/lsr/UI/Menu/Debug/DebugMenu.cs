@@ -472,8 +472,14 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
-
-
+        //spawn taxi
+        UIMenuItem ScamText = new UIMenuItem("Scam Text", "Add a random scam text");
+        ScamText.Activated += (menu, item) =>
+        {
+            Player.CellPhone.AddScamText();
+            menu.Visible = false;
+        };
+        
 
 
         PlayerStateItemsMenu.AddItem(KillPlayer);
@@ -497,6 +503,7 @@ public class DebugMenu : Menu
 
         PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
         PlayerStateItemsMenu.AddItem(TaxiSpawn);
+        PlayerStateItemsMenu.AddItem(ScamText);
 
     }
     private void CreateRelationshipsMenu()

@@ -101,6 +101,7 @@ namespace LosSantosRED.lsr.Locations
                 }
             }
         }
+
         private void UpdateZone()
         {
             if (EntityToLocate.Exists())
@@ -117,7 +118,6 @@ namespace LosSantosRED.lsr.Locations
                 }
             }
         }
-
         private void OnChangedState()
         {
             string prevState = "";
@@ -132,7 +132,6 @@ namespace LosSantosRED.lsr.Locations
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: STATE CHANGED FROM {prevState} TO {currState}");
         }
-
         private void UpdateInterior()
         {
             InteriorID = NativeFunction.Natives.GET_INTERIOR_FROM_ENTITY<int>(EntityToLocate);

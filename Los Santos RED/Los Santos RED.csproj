@@ -175,6 +175,12 @@
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhone.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneApp.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneContactsApp.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneFlashlightApp.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneMessagesApp.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneSettingsApp.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Other\GenericIdle.cs" />
@@ -413,8 +419,8 @@
     <Compile Include="lsr\Player\Activity\UmbrellaActivity.cs" />
     <Compile Include="lsr\Player\Money\BankAccounts.cs" />
     <Compile Include="lsr\Player\Button Prompts\ButtonPrompts.cs" />
-    <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone.cs" />
-    <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone_Simple.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone_Old.cs" />
+    <Compile Include="lsr\Old\BurnerPhone_Simple_Old.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\SoftKey.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\SoftKeyIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Contacts\PhoneContact.cs" />

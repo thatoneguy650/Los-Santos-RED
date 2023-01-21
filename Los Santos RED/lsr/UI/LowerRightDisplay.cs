@@ -367,7 +367,7 @@ public class LowerRightDisplay
                         {
                             if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
-                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)}~s~ ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}MPH)";
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)}{UI.CurrentDefaultTextColor} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitMPH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}MPH)";
                             }
                             else
                             {
@@ -378,7 +378,7 @@ public class LowerRightDisplay
                         {
                             if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
-                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)}~s~ {UI.CurrentDefaultTextColor}MPH";
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedMPH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}MPH";
                             }
                             else
                             {
@@ -392,7 +392,7 @@ public class LowerRightDisplay
                         {
                             if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
-                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)}~s~ ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}KM/H)";
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)}{UI.CurrentDefaultTextColor} ({Math.Round(DisplayablePlayer.CurrentLocation.CurrentStreet.SpeedLimitKMH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}KM/H)";
                             }
                             else
                             {
@@ -403,7 +403,7 @@ public class LowerRightDisplay
                         {
                             if (Settings.SettingsManager.LSRHUDSettings.VehicleDisplayIncludeCurrentSpeed)
                             {
-                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)}~s~ {UI.CurrentDefaultTextColor}KM/H";
+                                CurrentSpeedDisplay = $"{ColorPrefx}{Math.Round(DisplayablePlayer.VehicleSpeedKMH, MidpointRounding.AwayFromZero)} {UI.CurrentDefaultTextColor}KM/H";
                             }
                             else
                             {
@@ -415,19 +415,19 @@ public class LowerRightDisplay
             }
             if (DisplayablePlayer.Violations.TrafficViolations.IsViolatingAnyTrafficLaws)
             {
-                CurrentSpeedDisplay += " ~r~!~s~";
+                CurrentSpeedDisplay += $" ~r~!{UI.CurrentDefaultTextColor}";
             }
             if (DisplayablePlayer.CurrentVehicle.Indicators.HazardsOn)
             {
-                CurrentSpeedDisplay += " ~o~(HAZ)~s~";
+                CurrentSpeedDisplay += $" ~o~(HAZ){UI.CurrentDefaultTextColor}";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.RightBlinkerOn)
             {
-                CurrentSpeedDisplay += " ~y~(RI)~s~";
+                CurrentSpeedDisplay += $" ~y~(RI){UI.CurrentDefaultTextColor}";
             }
             else if (DisplayablePlayer.CurrentVehicle.Indicators.LeftBlinkerOn)
             {
-                CurrentSpeedDisplay += " ~y~(LI)~s~";
+                CurrentSpeedDisplay += $" ~y~(LI){UI.CurrentDefaultTextColor}";
             }
             if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && DisplayablePlayer.CurrentVehicle.RequiresFuel)
             {
@@ -443,24 +443,7 @@ public class LowerRightDisplay
     }
     private string GetZoneDisplay()
     {
-        string toDisplay = "";
-        if (DisplayablePlayer.CurrentLocation.CurrentZone != null)
-        {
-            toDisplay = $"{UI.CurrentDefaultTextColor}" + DisplayablePlayer.CurrentLocation.CurrentZone.FullDisplayName(Counties);
-            if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials != "")
-            {
-                toDisplay += $"{UI.CurrentDefaultTextColor} / " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedLEAgencyInitials;
-            }
-            if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials != string.Empty)
-            {
-                toDisplay += $"{UI.CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedGangInitials;
-            }
-            else if (Settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials != string.Empty)
-            {
-                toDisplay += $"{UI.CurrentDefaultTextColor} - " + DisplayablePlayer.CurrentLocation.CurrentZone.AssignedSecondLEAgencyInitials;
-            }
-        }
-        return toDisplay;
+        return DisplayablePlayer.CurrentLocation.CurrentZone?.GetFullLocationName(DisplayablePlayer,Settings, UI.CurrentDefaultTextColor, Counties);
     }
     private string GetViolationsText()
     {

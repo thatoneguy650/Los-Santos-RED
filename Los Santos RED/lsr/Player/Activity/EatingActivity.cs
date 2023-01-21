@@ -22,10 +22,9 @@ namespace LosSantosRED.lsr.Player
         private string PlayingDict;
         private ISettingsProvideable Settings;
         private int TimesAte;
-        private float PrevAnimationTime;
-        private uint GameTimeLastCheckedAnimation;
         private FoodItem FoodItem;
         private ConsumableRefresher ConsumableItemNeedGain;
+        private AnimationWatcher AnimationWatcher;
 
         public EatingActivity(IActionable consumable, ISettingsProvideable settings, FoodItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -75,74 +74,12 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
-        private void AttachFoodToHand()
-        {
-            CreateFood();
-            if (Food.Exists() && !IsAttachedToHand)
-            {
-                Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
-                IsAttachedToHand = true;
-                Player.AttachedProp.Add(Food);
-            }
-        }
-        private void CreateFood()
-        {
-            if (!Food.Exists() && Data.PropModelName != "")
-            {
-                try
-                {
-                    Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
-                }
-                if(!Food.Exists())
-                {
-                    IsCancelled = true;
-                }
-            }
-        }
         private void Enter()
-        {
+        {    
             Player.WeaponEquipment.SetUnarmed();
             AttachFoodToHand();
             Player.ActivityManager.IsPerformingActivity = true;
             Idle();
-        }
-        private void Idle_Old()
-        {
-            ConsumableItemNeedGain = new ConsumableRefresher(Player,FoodItem,Settings);
-            StartNewIdleAnimation();
-            EntryPoint.WriteToConsole($"Eating Activity Playing {PlayingDict} {PlayingAnim}", 5);
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
-            {
-                Player.WeaponEquipment.SetUnarmed();
-                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 1.0f)
-                {
-                    if (TimesAte >= 5 && ConsumableItemNeedGain.IsFinished)
-                    {
-                        if (Food.Exists())
-                        {
-                            Food.Delete();
-                        }
-                        IsCancelled = true;
-                    }
-                    else
-                    {
-                        TimesAte++;
-                        StartNewIdleAnimation();
-                    }
-                }
-                if (!IsAnimationRunning(AnimationTime))
-                {
-                    IsCancelled = true;
-                }
-                ConsumableItemNeedGain.Update();
-                GameFiber.Yield();
-            }
-            Exit();
         }
         private void Idle()
         {
@@ -177,7 +114,7 @@ namespace LosSantosRED.lsr.Player
                         EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte}", 5);
                     }
                 }
-                bool isAnimRunning = IsAnimationRunning(AnimationTime);
+                bool isAnimRunning = AnimationWatcher.IsAnimationRunning(AnimationTime);
                 if (!isAnimRunning && !IsFinishedWithBite)
                 {
                     IsCancelled = true;
@@ -205,34 +142,47 @@ namespace LosSantosRED.lsr.Player
                 Food.Delete();
             }
         }
+        private void AttachFoodToHand()
+        {
+            CreateFood();
+            if (Food.Exists() && !IsAttachedToHand)
+            {
+                Food.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
+                IsAttachedToHand = true;
+                Player.AttachedProp.Add(Food);
+            }
+        }
+        private void CreateFood()
+        {
+            if (!Food.Exists() && Data.PropModelName != "")
+            {
+                try
+                {
+                    Food = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                }
+                if (!Food.Exists())
+                {
+                    IsCancelled = true;
+                }
+            }
+        }
         private void StartNewIdleAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            AnimationWatcher.Reset();
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -2.0f, -1, 50, 0, false, false, false);
         }
         private void StartBaseAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            AnimationWatcher.Reset();
             PlayingDict = Data.AnimBaseDictionary;
             PlayingAnim = Data.AnimBase;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false);
-        }
-        private bool IsAnimationRunning(float AnimationTime)
-        {
-            if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
-            {
-                if (PrevAnimationTime == AnimationTime)
-                {
-                    return false;
-                }
-                PrevAnimationTime = AnimationTime;
-                GameTimeLastCheckedAnimation = Game.GameTime;
-            }
-            return true;
         }
         private void Setup()
         {
@@ -279,6 +229,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimEnterDictionary);
             AnimationDictionary.RequestAnimationDictionay(AnimIdleDictionary);
             Data = new EatingData(AnimBase, AnimBaseDictionary, AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
+            AnimationWatcher = new AnimationWatcher();
         }
     }
 }

@@ -111,7 +111,7 @@ public class GangTasker
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(GangMember.Gang);
         bool isPlayerGang = Player.RelationshipManager.GangRelationships.CurrentGang?.ID == GangMember.Gang?.ID;
         bool isHostile = gr.GangRelationship == GangRespect.Hostile;
-        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 100f;
+        bool arePoliceNearby = Player.ClosestPoliceDistanceToPlayer <= 150f;// 100f;
         bool isNearHomeTerritory = false;
         if(Player.CurrentLocation.CurrentZone?.Gangs?.Any(x=>x.ID == GangMember.Gang?.ID) == true)
         {

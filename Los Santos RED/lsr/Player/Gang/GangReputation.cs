@@ -323,6 +323,30 @@ public class GangReputation
         }
         return ending;
     }
+
+    public string ToZoneString()
+    {
+        string ending = "";
+        if (GangRelationship == GangRespect.Member)
+        {
+            ending = " ~s~(~g~Member~s~)";
+        }
+        else if (IsEnemy)
+        {
+            ending = " ~s~(~r~Enemy~s~)";
+        }
+        else if (GangRelationship == GangRespect.Friendly)
+        {
+            ending = " ~s~(~g~Friendly~s~)";
+        }
+        else if (GangRelationship == GangRespect.Hostile)
+        {
+            ending = " ~s~(~r~Hostile~s~)";
+        }
+        return ending;
+    }
+
+
     public string ToBlip()
     {
         string ending = "";

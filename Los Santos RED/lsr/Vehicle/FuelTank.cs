@@ -1,16 +1,6 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr;
+﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
-using Rage.Native;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 
 public class FuelTank
@@ -19,10 +9,14 @@ public class FuelTank
     private uint GameTimeLastCheckedFuel;
     private float FuelLevel;
     private float prevFuelLevel;
+    private ISettingsProvideable Settings;
     public bool IsLeaking { get; set; }
-    public FuelTank(VehicleExt vehicleToMonitor)
+    public FuelTank(VehicleExt vehicleToMonitor, ISettingsProvideable settings)
     {
         VehicleExt = vehicleToMonitor;
+        Settings = settings;
+
+        
     }
     public string UIText
     {
@@ -30,9 +24,9 @@ public class FuelTank
         {
             if(VehicleExt.Vehicle.Exists())
             {
-                return string.Format(" Fuel: {0}", (VehicleExt.Vehicle.FuelLevel / 100f).ToString("P2"));
+                return string.Format(" Fuel: {0}", (VehicleExt.Vehicle.FuelLevel / Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax).ToString("P2"));
             }
-            return string.Format(" Fuel: {0}", (100f).ToString("P2"));
+            return string.Format(" Fuel: {0}", (Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax).ToString("P2"));
         }
     }   
     public void Update()
@@ -80,7 +74,7 @@ public class FuelTank
     {
         if (VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.IsEngineOn)
         {
-            float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f;
+            float AmountToSubtract = 0.001f + VehicleExt.Vehicle.Speed * 0.0001f * Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelConsumptionScalar;
             FuelLevel -= AmountToSubtract;
             if (FuelLevel < 0)
             {

@@ -35,7 +35,7 @@ public class Refueling
     public int UnitsOfFuelNeeded { get; private set; }
     public float PercentFilledPerUnit { get; private set; }
     public float AmountToFill { get; private set; }
-    public bool CanRefuel => VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel < 100f && VehicleExt.RequiresFuel;
+    public bool CanRefuel => VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel < Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax && VehicleExt.RequiresFuel;
     public void Setup()
     {
         if(VehicleExt != null && VehicleExt.Vehicle.Exists())
@@ -50,7 +50,7 @@ public class Refueling
     }
     public void GetFuelStatus()
     {
-        PercentFuelNeeded = (100f - VehicleExt.Vehicle.FuelLevel) / 100f;
+        PercentFuelNeeded = (Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - VehicleExt.Vehicle.FuelLevel) / Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
         UnitsOfFuelNeeded = (int)Math.Ceiling(PercentFuelNeeded * VehicleToFillFuelTankCapacity);
         if (VehicleToFillFuelTankCapacity == 0)
         {
@@ -58,7 +58,7 @@ public class Refueling
         }
         else
         {
-            PercentFilledPerUnit = 100f / VehicleToFillFuelTankCapacity;
+            PercentFilledPerUnit = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax / VehicleToFillFuelTankCapacity;
         }
         AmountToFill = UnitsOfFuelNeeded * PricePerUnit;
     }
@@ -103,9 +103,9 @@ public class Refueling
                         {
                             UnitsAdded++;
                             GameTimeAddedUnit = Game.GameTime;
-                            if (VehicleExt.Vehicle.FuelLevel + PercentFilledPerUnit > 100f)
+                            if (VehicleExt.Vehicle.FuelLevel + PercentFilledPerUnit > Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax)
                             {
-                                VehicleExt.Vehicle.FuelLevel = 100f;
+                                VehicleExt.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
                             }
                             else
                             {
@@ -157,9 +157,9 @@ public class Refueling
             if (VehicleExt != null && VehicleExt.Vehicle.Exists())
             {
                 VehicleExt.Vehicle.FuelLevel += PercentFilledPerUnit * UnitsToAdd;
-                if (VehicleExt.Vehicle.FuelLevel >= 99.9f)
+                if (VehicleExt.Vehicle.FuelLevel >= Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax-0.01f)
                 {
-                    VehicleExt.Vehicle.FuelLevel = 100.0f;
+                    VehicleExt.Vehicle.FuelLevel = Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax;
                 }
                 Player.BankAccounts.GiveMoney(-1 * PricePerUnit * UnitsToAdd);
                 if (UnitsToAdd > 0)
@@ -197,7 +197,7 @@ public class Refueling
             Shop.PlayErrorSound();
             Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle engine is still on");
         }
-        else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel >= 100f)
+        else if (VehicleExt != null && VehicleExt.Vehicle.Exists() && !VehicleExt.Vehicle.IsEngineOn && VehicleExt.Vehicle.FuelLevel >= Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax)
         {
             Shop.PlayErrorSound();
             Shop.DisplayMessage("~r~Fueling Failed", $"Vehicle fuel tank is already full");

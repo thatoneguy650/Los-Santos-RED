@@ -21,25 +21,10 @@ namespace LosSantosRED.lsr.Player
         private ISettingsProvideable Settings;
         private IIntoxicants Intoxicants;
         private Intoxicant CurrentIntoxicant;
-        private bool hasGainedHP = false;
-        private uint GameTimeLastGivenHealth;
-       //private int HealthGiven;
         private int TimesDrank;
-
-        private uint GameTimeLastCheckedAnimation;
-        private float LastAnimationValue;
-        private uint GameTimeLastGivenNeeds;
-        //private float HungerGiven;
-        //private float ThirstGiven;
-        //private int SleepGiven;
-        //private bool GivenFullHealth;
-        //private bool GivenFullHunger;
-        //private bool GivenFullThirst;
-        //private bool GivenFullSleep;
-        private float PrevAnimationTime;
-
         private DrinkItem DrinkItem;
         private ConsumableRefresher ConsumableItemNeedGain;
+        private AnimationWatcher aw;
 
         public DrinkingActivity(IActionable consumable, ISettingsProvideable settings, DrinkItem modItem, IIntoxicants intoxicants) : base()
         {
@@ -96,36 +81,9 @@ namespace LosSantosRED.lsr.Player
             Game.DisplayHelp($"Cannot Start Activity: {ModItem?.Name}");
             return false;
         }
-        private void AttachBottleToHand()
-        {
-            CreateBottle();
-            if (Bottle.Exists() && !IsAttachedToHand)
-            {
-                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
-                IsAttachedToHand = true;
-                Player.AttachedProp.Add(Bottle);
-            }
-        }
-        private void CreateBottle()
-        {
-            if (!Bottle.Exists() && Data.PropModelName != "")
-            {
-                try 
-                {
-                    Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
-                }
-                if (!Bottle.Exists())
-                {
-                    IsCancelled = true;
-                }
-            }
-        }
         private void Enter()
         {
+            aw = new AnimationWatcher();
             Player.WeaponEquipment.SetUnarmed();
             AttachBottleToHand();
             Player.ActivityManager.IsPerformingActivity = true;
@@ -138,13 +96,56 @@ namespace LosSantosRED.lsr.Player
                 {
                     break;
                 }
-                if (!IsAnimationRunning(AnimationTime))
+                if (!aw.IsAnimationRunning(AnimationTime))
                 {
                     IsCancelled = true;
                 }
                 GameFiber.Yield();
             }
             Idle();
+        }
+        private void Idle()
+        {
+            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
+            uint GameTimeLastChangedIdle = Game.GameTime;
+            bool IsFinishedWithSip = false;
+            StartNewIdleAnimation();
+            ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            {
+                Player.WeaponEquipment.SetUnarmed();
+                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
+                if (AnimationTime >= 1.0f || IsFinishedWithSip)
+                {
+                    if (!IsFinishedWithSip)
+                    {
+                        StartBaseAnimation();
+                        GameTimeLastChangedIdle = Game.GameTime;
+                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
+                        IsFinishedWithSip = true;
+                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
+                    }
+                    if (TimesDrank >= 5 && ConsumableItemNeedGain.IsFinished)
+                    {
+                        IsCancelled = true;
+                    }
+                    else if (IsFinishedWithSip && Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenDrinks)
+                    {
+                        TimesDrank++;
+                        StartNewIdleAnimation();
+                        IsFinishedWithSip = false;
+                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}", 5);
+                    }
+                }
+                bool isAnimRunning = aw.IsAnimationRunning(AnimationTime);
+                if (!isAnimRunning && !IsFinishedWithSip)
+                {
+                    IsCancelled = true;
+                }
+                ConsumableItemNeedGain.Update();
+                GameFiber.Yield();
+            }
+            Exit();
         }
         private void Exit()
         {
@@ -164,92 +165,58 @@ namespace LosSantosRED.lsr.Player
                 Bottle.Delete();
             }
         }
-        private void Idle()
+        private void AttachBottleToHand()
         {
-            uint GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
-            uint GameTimeLastChangedIdle = Game.GameTime;
-            bool IsFinishedWithSip = false;
-            StartNewIdleAnimation();
-
-            ConsumableItemNeedGain = new ConsumableRefresher(Player, DrinkItem, Settings);
-
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            CreateBottle();
+            if (Bottle.Exists() && !IsAttachedToHand)
             {
-                Player.WeaponEquipment.SetUnarmed();
-                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
-                if (AnimationTime >= 1.0f || IsFinishedWithSip)
+                Bottle.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Data.HandBoneName), Data.HandOffset, Data.HandRotator);
+                IsAttachedToHand = true;
+                Player.AttachedProp.Add(Bottle);
+            }
+        }
+        private void CreateBottle()
+        {
+            if (!Bottle.Exists() && Data.PropModelName != "")
+            {
+                try
                 {
-                    if(!IsFinishedWithSip)
-                    {
-                        StartBaseAnimation();
-                        GameTimeLastChangedIdle = Game.GameTime;
-                        GameTimeBetweenDrinks = RandomItems.GetRandomNumber(1500, 2500);
-                        IsFinishedWithSip = true;
-                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
-                    }
-                    if (TimesDrank >= 5 && ConsumableItemNeedGain.IsFinished)
-                    {
-                        IsCancelled = true;
-                    }
-                    else if(IsFinishedWithSip && Game.GameTime - GameTimeLastChangedIdle >= GameTimeBetweenDrinks)
-                    {
-                        TimesDrank++;
-                        StartNewIdleAnimation();
-                        IsFinishedWithSip = false;
-                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}", 5);
-                    }
+                    Bottle = new Rage.Object(Data.PropModelName, Player.Character.GetOffsetPositionUp(50f));
                 }
-                bool isAnimRunning = IsAnimationRunning(AnimationTime);
-                if (!isAnimRunning && !IsFinishedWithSip)
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                }
+                if (!Bottle.Exists())
                 {
                     IsCancelled = true;
                 }
-                ConsumableItemNeedGain.Update();
-                GameFiber.Yield();
             }
-            Exit();
-        }
-        private bool IsAnimationRunning(float AnimationTime)
-        {
-            if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
-            {
-                if (PrevAnimationTime == AnimationTime)
-                {
-                    return false;
-                }
-                PrevAnimationTime = AnimationTime;
-                GameTimeLastCheckedAnimation = Game.GameTime;
-            }
-            return true;
         }
         private void StartNewEnterAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            aw.Reset();
             PlayingDict = Data.AnimEnterDictionary;
             PlayingAnim = Data.AnimEnter;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
         private void StartNewIdleAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            aw.Reset();
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
         private void StartExitAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            aw.Reset();
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, -1, 50, 0, false, false, false);
         }
         private void StartBaseAnimation()
         {
-            GameTimeLastCheckedAnimation = Game.GameTime;
-            PrevAnimationTime = 0.0f;
+            aw.Reset();
             PlayingDict = Data.AnimExitDictionary;
             PlayingAnim = Data.AnimExit;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 1.0f, -1.0f, 1.0f, (int)(AnimationFlags.SecondaryTask | AnimationFlags.UpperBodyOnly | AnimationFlags.StayInEndFrame), 0, false, false, false); 
@@ -285,7 +252,6 @@ namespace LosSantosRED.lsr.Player
                     HandBoneName = pa.BoneName;
                 }
             }
-
             if (Player.IsInVehicle || Player.ActivityManager.IsSitting)
             {
                 if (Player.IsDriver)
@@ -363,7 +329,5 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(AnimExitDictionary);
             Data = new DrinkingData(AnimEnter, AnimEnterDictionary, AnimExit, AnimExitDictionary, AnimIdle, AnimIdleDictionary, HandBoneName, HandOffset, HandRotator, PropModel);
         }
-
-
     }
 }

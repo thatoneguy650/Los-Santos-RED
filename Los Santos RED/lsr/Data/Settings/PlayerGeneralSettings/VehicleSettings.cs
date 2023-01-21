@@ -23,12 +23,25 @@ public class VehicleSettings : ISettingsDefaultable
     public string AutoTuneRadioStation { get; set; }
     [Description("Disable the character automatically turning over the engine on entry. Used with the ignition hot key (Shift + Z Default)")]
     public bool DisableAutoEngineStart { get; set; }
+
+
+
+
+
     [Description("Set a random amount of fuel on each vehicle and calculates consumption rates on use.")]
     public bool UseCustomFuelSystem { get; set; }
     [Description("Minimum fuel in cars. 0 is minimum")]
     public float CustomFuelSystemFuelMin { get; set; }
     [Description("Maximum fuel in cars. 100 is maximum.")]
     public float CustomFuelSystemFuelMax { get; set; }
+    [Description("Scalar amount for the custom fuel system. Default is 1.0. A Value of 2.0 would consume fuel twice as fast as default. A Value of 0.5 would consume fuel half as fast as default.")]
+    public float CustomFuelSystemFuelConsumptionScalar { get; set; }
+
+
+
+
+
+
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems")]
     public bool AllowSetEngineState { get; set; }
     [Description("Allow the mod to set the engine as enabled or disabled to work with the ignition and fuel systems, but only for cars (requires AllowSetEngineState)")]
@@ -60,6 +73,7 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, the player will not be able to fly aircraft until they have a pilots license.")]
     public bool DisableAircraftWithoutLicense { get; set; }
 
+
     public VehicleSettings()
     {
         SetDefault();
@@ -76,7 +90,8 @@ public class VehicleSettings : ISettingsDefaultable
         DisableAutoEngineStart = true;
         UseCustomFuelSystem = true;
         CustomFuelSystemFuelMin = 10f;
-        CustomFuelSystemFuelMax = 100f;
+        CustomFuelSystemFuelMax = 65f;
+        CustomFuelSystemFuelConsumptionScalar = 1.0f;
         AllowSetEngineState = true;
         AllowSetEngineStateOnlyCars = false;
         ScaleEngineDamage = true;

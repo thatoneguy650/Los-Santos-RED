@@ -99,7 +99,7 @@ public class Gangs : IGangs
     private void SetupDefaults()
     {
         DefaultGang = new Gang("~s~", "UNK", "Unknown Gang", "Unk", "White", null, null, "", null, null, null, "Gang Member") { MaxWantedLevelSpawn = 0 };
-        LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPeds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC President", "CHAR_MP_BIKER_BOSS", "LOST Member")
+        LOST = new Gang("~w~", "AMBIENT_GANG_LOST", "The Lost MC", "LOST MC", "White", "LostMCPeds", "LostMCVehicles", "LOST ", "MeleeWeapons", "LostSidearms", "LostLongGuns", "LOST MC", "CHAR_BLANK_ENTRY", "LOST Member")
         {
             DenName = "Clubhouse",
             AmbientMemberMoneyMin = 100,
@@ -130,7 +130,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 40f,
         };//Meth
-        Vagos = new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Orange", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos O.G.", "CHAR_MP_MEX_BOSS", "Vagos Member")
+        Vagos = new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Orange", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -161,7 +161,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 55f,
         };//marijuana
-        Families = new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Families", "Green", "FamiliesPeds", "FamiliesVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Families O.G.", "CHAR_MP_FAM_BOSS", "Families Member")
+        Families = new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Families", "Green", "FamiliesPeds", "FamiliesVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Families", "CHAR_BLANK_ENTRY", "Families Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -191,7 +191,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2500,
             DrugDealerPercentage = 60f,
         };//marijuana
-        Ballas = new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas", "Ballas", "Purple", "BallasPeds", "BallasVehicles", "", "MeleeWeapons", "BallasSidearms", "BallasLongGuns", "Ballas O.G.", "CHAR_MP_JULIO", "Ballas Member")
+        Ballas = new Gang("~p~", "AMBIENT_GANG_BALLAS", "Ballas", "Ballas", "Purple", "BallasPeds", "BallasVehicles", "", "MeleeWeapons", "BallasSidearms", "BallasLongGuns", "Ballas", "CHAR_BLANK_ENTRY", "Ballas Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -222,7 +222,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 60f,
         };//crack
-        Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta O.G.", "CHAR_MP_MEX_LT", "Marabunta Member")
+        Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta", "CHAR_BLANK_ENTRY", "Marabunta Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -253,7 +253,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 70f,
         };//marijuana
-        Varrios = new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Yellow", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios O.G.", "CHAR_ORTEGA", "Varrios Member")
+        Varrios = new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Yellow", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios", "CHAR_BLANK_ENTRY", "Varrios Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -284,7 +284,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 50f,
         };//crack
-        Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triad Leader", "CHAR_CHENGSR", "Triad Member")
+        Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triads", "CHAR_BLANK_ENTRY", "Triad Member")
         {
             DenName = "Meeting Spot",
             AmbientMemberMoneyMin = 100,
@@ -315,7 +315,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 40f,
         };//heroin
-        Redneck = new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Rednecks", "Black", "RedneckPeds", "RedneckVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Redneck Leader", "CHAR_ONEIL", "Redneck")
+        Redneck = new Gang("~b~", "AMBIENT_GANG_HILLBILLY", "Rednecks", "Rednecks", "Black", "RedneckPeds", "RedneckVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Rednecks", "CHAR_BLANK_ENTRY", "Redneck")
         {
             DenName = "Clubhouse",
             AmbientMemberMoneyMin = 5,
@@ -346,7 +346,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 40f,
         };//TOILET CLEANER
-        Korean = new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae", "Kkangpae", "Pink", "KoreanPeds", "KoreanVehicles", "", "MeleeWeapons", "KkangpaeSidearms", "KkangpaeLongGuns", "Kkangpae Leader", "CHAR_CHENG", "Kkangpae Member")
+        Korean = new Gang("~q~", "AMBIENT_GANG_KKANGPAE", "Kkangpae", "Kkangpae", "Pink", "KoreanPeds", "KoreanVehicles", "", "MeleeWeapons", "KkangpaeSidearms", "KkangpaeLongGuns", "Kkangpae", "CHAR_BLANK_ENTRY", "Kkangpae Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -376,7 +376,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3200,
             DrugDealerPercentage = 40f,
         };//heroin
-        Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti Boss", "CHAR_TOM", "Gambetti Associate")
+        Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti", "CHAR_BLANK_ENTRY", "Gambetti Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -407,7 +407,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 6000,
             DrugDealerPercentage = 35f,
         };//cocaine
-        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano Boss", "CHAR_DOM", "Pavano Assocaite")
+        Pavano = new Gang("~g~", "AMBIENT_GANG_PAVANO", "Pavano Crime Family", "Pavano", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Pavano", "CHAR_BLANK_ENTRY", "Pavano Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -438,7 +438,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5500,
             DrugDealerPercentage = 35f,
         };//cocaine
-        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella Boss", "CHAR_AGENT14", "Lupisella Assocaite")
+        Lupisella = new Gang("~g~", "AMBIENT_GANG_LUPISELLA", "Lupisella Crime Family", "Lupisella", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Lupisella", "CHAR_BLANK_ENTRY", "Lupisella Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -469,7 +469,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5700,
             DrugDealerPercentage = 35f,
         };//cocaine
-        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina Boss", "CHAR_BARRY", "Messina Assocaite")
+        Messina = new Gang("~g~", "AMBIENT_GANG_MESSINA", "Messina Crime Family", "Messina", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Messina", "CHAR_BLANK_ENTRY", "Messina Assocaite")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -500,7 +500,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5200,
             DrugDealerPercentage = 35f,
         };//cocaine
-        Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti Boss", "CHAR_DREYFUSS", "Ancelotti Associate")
+        Ancelotti = new Gang("~g~", "AMBIENT_GANG_ANCELOTTI", "Ancelotti Crime Family", "Ancelotti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Ancelotti", "CHAR_BLANK_ENTRY", "Ancelotti Associate")
         {
             DenName = "Safehouse",
             AmbientMemberMoneyMin = 200,
@@ -531,7 +531,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 5500,
             DrugDealerPercentage = 35f,
         };//cocaine
-        Cartel = new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel", "Cartel", "Red", "CartelPeds", "CartelVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Madrazo", "CHAR_MANUEL", "Cartel Member")
+        Cartel = new Gang("~r~", "AMBIENT_GANG_MADRAZO", "Madrazo Cartel", "Cartel", "Red", "CartelPeds", "CartelVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Cartel", "CHAR_BLANK_ENTRY", "Cartel Member")
         {
             DenName = "Mansion",
             AmbientMemberMoneyMin = 100,
@@ -562,7 +562,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 55f,
         };//Meth
-        Armenian = new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob", "Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Armenian Leader", "CHAR_MP_PROF_BOSS", "Armenian Member")
+        Armenian = new Gang("~b~", "AMBIENT_GANG_ARMENIAN", "Armenian Mob", "Armenian", "Black", "ArmenianPeds", "ArmeniaVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Armenians", "CHAR_BLANK_ENTRY", "Armenian Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -593,7 +593,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 55f,
         };//heroin
-        Yardies = new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies", "Yardies", "Green", "YardiesPeds", "YardieVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Yardie O.G.", "CHAR_MP_GERALD", "Yardie Member")
+        Yardies = new Gang("~g~", "AMBIENT_GANG_YARDIES", "Yardies", "Yardies", "Green", "YardiesPeds", "YardieVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Yardies", "CHAR_BLANK_ENTRY", "Yardie Member")
            {
                DenName = "Chill Spot",
                AmbientMemberMoneyMin = 100,
@@ -624,7 +624,7 @@ public class Gangs : IGangs
 
                 DrugDealerPercentage = 90f,
         };//marijuana
-        Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "VagosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablo Leader", "CHAR_TW", "Diablo Soldier")
+        Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "VagosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablos", "CHAR_BLANK_ENTRY", "Diablo Soldier")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 20,

@@ -100,7 +100,6 @@ public class UI : IMenuProvideable
         MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
         LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this, Counties);
         TopRightMenu = new TopRightMenu(DisplayablePlayer, Time, Settings, this);
-
     }
     public void Setup()
     {
@@ -203,27 +202,21 @@ public class UI : IMenuProvideable
         {
             ActionPopUpMenu.Draw();
         }
-
         DisplayablePlayer.IsShowingActionWheel = ActionPopUpMenu.IsActive;
-
     }
     private void DisplayButtonPrompts()
     {
         if (Settings.SettingsManager.UIGeneralSettings.DisplayButtonPrompts && !DisplayablePlayer.ButtonPrompts.IsSuspended)
         {
             instructional.Buttons.Clear();
-
             if (DisplayablePlayer.ButtonPrompts.Prompts.Any())
             {
                 foreach (ButtonPrompt buttonPrompt in DisplayablePlayer.ButtonPrompts.Prompts.OrderByDescending(x => x.Order))
                 {
                     if(buttonPrompt.HasGameControl && buttonPrompt.GameControl != GameControl.NextCamera)
                     {
-
                         InstructionalButton mybutt = new InstructionalButton(buttonPrompt.GameControl, buttonPrompt.Text);
                         instructional.Buttons.Add(mybutt);
-
-                        //instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text,));// InstructionalButton.GetButtonId(buttonPrompt.GameControl)));
                     }
                     else if (buttonPrompt.Key != Keys.None)
                     {
@@ -240,11 +233,7 @@ public class UI : IMenuProvideable
                     {
                         instructional.Buttons.Add(new InstructionalButtonGroup(buttonPrompt.Text, buttonPrompt.ModifierKey.GetInstructionalKey()));
                     }
-
                 }
-
-
-               // string stuff = InstructionalButton.GetButtonId(GameControl.Enter);
             }
             instructional.Update();
             if (DisplayablePlayer.ButtonPrompts.Prompts.Any())
@@ -337,16 +326,6 @@ public class UI : IMenuProvideable
                 Show(BustedMenu);
             }
         }
-        //else if (DisplayablePlayer.Character.Health <= 130)
-        //{
-        //    if(Game.GameTime - GameTimeStartedLowHealthUI >= 5000)
-        //    {
-        //        NativeFunction.Natives.x80C8B1846639BB19(1);
-        //        NativeFunction.Natives.x2206BF9A37B7F724("DeathFailMPDark", 0, 0);
-        //        IsShowingCustomOverlay = true;
-        //        GameTimeStartedLowHealthUI = Game.GameTime;
-        //    }
-        //}
         else
         {
             GameTimeLastDied = 0;
@@ -367,8 +346,6 @@ public class UI : IMenuProvideable
         {
             NativeFunction.Natives.xB9EFD5C25018725A("DISPLAY_HUD", true);
         }
-
-
         if (DisplayablePlayer.ActivityManager.IsInteractingWithLocation)
         {
             ShowRadar = false;
@@ -428,11 +405,7 @@ public class UI : IMenuProvideable
                 ShowRadar = false;
             }
         }
-        
-
         NativeFunction.CallByName<bool>("DISPLAY_RADAR", ShowRadar);
-
-
         if (Settings.SettingsManager.PoliceSettings.ShowVanillaBlips)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
@@ -441,21 +414,10 @@ public class UI : IMenuProvideable
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", false);
         }
-
-
         if (Settings.SettingsManager.UIGeneralSettings.DisableVanillaCashDisplay)
         {
             NativeFunction.CallByName<bool>("DISPLAY_CASH", false);
         }
-
-        //if (Settings.SettingsManager.UIGeneralSettings.AlwaysShowCash)
-        //{
-        //    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
-        //}
-        //else if ((Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || DisplayablePlayer.CharacterModelIsPrimaryCharacter) && (DisplayablePlayer.IsTransacting || DisplayablePlayer.RecentlyChangedMoney || DisplayablePlayer.IsBusted || IsDrawingWheelMenu))
-        //{
-        //    NativeFunction.CallByName<bool>("DISPLAY_CASH", true);
-        //}
         if (!Settings.SettingsManager.UIGeneralSettings.ShowVanillaAreaUI)
         {
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_AREA_NAME);
@@ -467,12 +429,6 @@ public class UI : IMenuProvideable
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_NAME);
             NativeFunction.CallByName<bool>("HIDE_HUD_COMPONENT_THIS_FRAME", (int)GTAHudComponent.HUD_VEHICLE_CLASS);
         }
-
-        //VanillaDiplayedLines = 0;
-        //IsVanillaStarsHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(1);
-        //IsVanillaWeaponHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(2);
-        //IsVanillaCashHUDVisible = NativeFunction.Natives.IS_HUD_COMPONENT_ACTIVE<bool>(3);
-
         NativeFunction.Natives.FLASH_WANTED_DISPLAY(DisplayablePlayer.IsWanted && DisplayablePlayer.IsInSearchMode);
     }
     private void Show(Menu toShow)

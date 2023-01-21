@@ -316,9 +316,17 @@ public class DispatchableVehicles : IDispatchableVehicles
             },//red
         };
         MafiaVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("sentinel", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
-            new DispatchableVehicle("sentinel2", 50, 50) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("sentinel", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("sentinel2", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cognoscenti", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("cogcabrio", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            new DispatchableVehicle("huntley", 20, 20) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
+            //cogcabrio
+            //cognoscenti
+            //huntley
         };
+
+
         ArmeniaVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("schafter2", 100, 100) { RequiredPrimaryColorID = 0,RequiredSecondaryColorID = 0 },//black
         };
@@ -328,7 +336,9 @@ public class DispatchableVehicles : IDispatchableVehicles
 
         };
         RedneckVehicles = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("rumpo", 33, 33),
+
+            new DispatchableVehicle("sandking2",10,10),
+            new DispatchableVehicle("rebel", 33, 33),
             new DispatchableVehicle("bison", 33, 33),
             new DispatchableVehicle("sanchez2",33,33) {MaxOccupants = 1 },
         };

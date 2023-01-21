@@ -69,6 +69,7 @@ public class CellPhone
         Crimes = crimes;
         World = world;
         BurnerPhone = new BurnerPhone(Player, Time, Settings, modItems);
+        //BurnerPhone = new BurnerPhone_Old(Player, Time, Settings, modItems);
         phoneAudioPlayer = new NAudioPlayer(Settings);
     }
     public void Setup()

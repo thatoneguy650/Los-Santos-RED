@@ -9,13 +9,13 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static BurnerPhone;
+using static BurnerPhone_Old;
 
 //needs to be cleaned up into classes, contacts app, messages app, home app, controller class etc. main class should mostly handle the player interaction (take out phone, do tasks set flags etc.)
-public class BurnerPhone
+public class BurnerPhone_Old
 {
     private bool isDialActive;
-        private bool isBusyActive;
+    private bool isBusyActive;
     private int dialSoundID = -1;
     private int busySoundID = -1;
     private int callTimer;
@@ -38,8 +38,10 @@ public class BurnerPhone
     private bool IsDisplayingCall;
     private PhoneContact LastCalledContact;
     private IModItems ModItems;
+
+    public int GlobalScaleformID => globalScaleformID;
     public bool IsActive => isPhoneActive;
-    public BurnerPhone(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems)
+    public BurnerPhone_Old(ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, IModItems modItems)
     {
         Player = player;
         Time = time;
@@ -62,30 +64,7 @@ public class BurnerPhone
         {
             DetectInput();
             UpdatePhone();
-            if (prevCurrentRow != CurrentRow)
-            {
-                EntryPoint.WriteToConsole($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
-                //Game.DisplaySubtitle($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
-                prevCurrentRow = CurrentRow;
-            }
-            if (prevCurrentColumn != CurrentColumn)
-            {
-                EntryPoint.WriteToConsole($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
-                //Game.DisplaySubtitle($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
-                prevCurrentColumn = CurrentColumn;
-            }
-            if (prevCurrentApp != CurrentApp)
-            {
-                EntryPoint.WriteToConsole($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
-                //Game.DisplaySubtitle($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
-                prevCurrentApp = CurrentApp;
-            }
-            if (prevCurrentIndex != CurrentIndex)
-            {
-                EntryPoint.WriteToConsole($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
-               // Game.DisplaySubtitle($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
-                prevCurrentIndex = CurrentIndex;
-            }
+            DebugCheck();
         }
         UpdateMessagesApp();
         UpdateContactsApp();
@@ -122,7 +101,6 @@ public class BurnerPhone
         SetHomeMenuApp(globalScaleformID, 0, 2, "Texts", Player.CellPhone.TextList.Where(x => !x.IsRead).Count(), 100);
         SetHomeMenuApp(globalScaleformID, 1, 5, "Contacts", 0, 100);
         SetHomeMenuApp(globalScaleformID, 2, 0, "Flashlight", 0, 100);
-
 
         isPhoneActive = true;
         CurrentApp = 1;
@@ -252,6 +230,8 @@ public class BurnerPhone
         Game.DisableControlAction(3, GameControl.CellphoneSelect, true);
         Game.DisableControlAction(3, GameControl.CellphoneCancel, true);
     }
+
+
     private void HandleHomeInput()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172))//UP
@@ -339,6 +319,10 @@ public class BurnerPhone
             ActivateFlashlight();
         }
     }
+
+
+
+
     private void UpdateMessagesApp()
     {
 
@@ -486,6 +470,10 @@ public class BurnerPhone
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
     }
+
+
+
+
     public void DisplayTextUI(PhoneText text)
     {
         if (text != null)
@@ -640,18 +628,7 @@ public class BurnerPhone
     }
 
 
-   
-    private void SetSoftKeys()
-    {
-        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
-        SetSoftKeyColor((int)SoftKey.Left, Color.FromArgb(46,204,113));
 
-        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
-        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
-
-        SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Blank);
-        SetSoftKeyColor((int)SoftKey.Right, Color.Black);
-    }
     public void SetSoftKeyIcon(int buttonID, SoftKeyIcon icon)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS");
@@ -669,6 +646,9 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(color.B);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
+
+
+
     private void DrawContact(PhoneContact contact)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_DATA_SLOT");
@@ -789,6 +769,8 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(4);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
+
+
     private int GetCurrentIndex(int column, int row)
     {
         if (row == 1 && column == 1)
@@ -812,17 +794,7 @@ public class BurnerPhone
         else
             return 1;
     }
-    private int GetSelectedIndex()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "GET_CURRENT_SELECTION");
-        int num = NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE<int>();
-        while (!NativeFunction.Natives.x768FF8961BA904D6<bool>(num))         //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_BOOL
-        {
-            GameFiber.Wait(0);
-        }
-        int data = NativeFunction.Natives.x2DE7EFA66B906036<int>(num);       //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_INT
-        return data+1;
-    }
+
     private void NavigateMenu(int index)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_INPUT_EVENT");
@@ -833,6 +805,31 @@ public class BurnerPhone
     private void MoveFinger(int index)
     {
         NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
+    }
+
+
+    private void DebugCheck()
+    {
+        if (prevCurrentRow != CurrentRow)
+        {
+            EntryPoint.WriteToConsole($"CurrentRow Changed from {prevCurrentRow} to {CurrentRow}");
+            prevCurrentRow = CurrentRow;
+        }
+        if (prevCurrentColumn != CurrentColumn)
+        {
+            EntryPoint.WriteToConsole($"CurrentColumn Changed from {prevCurrentColumn} to {CurrentColumn}");
+            prevCurrentColumn = CurrentColumn;
+        }
+        if (prevCurrentApp != CurrentApp)
+        {
+            EntryPoint.WriteToConsole($"CurrentApp Changed from {prevCurrentApp} to {CurrentApp}");
+            prevCurrentApp = CurrentApp;
+        }
+        if (prevCurrentIndex != CurrentIndex)
+        {
+            EntryPoint.WriteToConsole($"CurrentIndex Changed from {prevCurrentIndex} to {CurrentIndex}");
+            prevCurrentIndex = CurrentIndex;
+        }
     }
 }
 

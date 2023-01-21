@@ -57,12 +57,19 @@ public class Zone
         }
         return DisplayName;
     }
+
+
     [XmlIgnore]
-    public string AssignedLEAgencyInitials { get; set; }
+    public Agency AssignedLEAgency { get; set; }
     [XmlIgnore]
-    public string AssignedSecondLEAgencyInitials { get; set; }
+    public Agency AssignedSecondLEAgeny { get; set; }
     [XmlIgnore]
-    public string AssignedGangInitials { get; set; }
+    public Gang AssignedGang { get; set; }
+
+
+
+
+
     [XmlIgnore]
     public List<Gang> Gangs { get; set; }
     [XmlIgnore]
@@ -101,24 +108,24 @@ public class Zone
         {
             Agencies.AddRange(FireAgencies);
         }
-        AssignedLEAgencyInitials = jurisdictions.GetMainAgency(InternalGameName, ResponseType.LawEnforcement)?.ColorInitials;
+        AssignedLEAgency = jurisdictions.GetMainAgency(InternalGameName, ResponseType.LawEnforcement);
         Gang mainGang = gangTerritories.GetMainGang(InternalGameName);
         if (mainGang != null)
         {
-            AssignedGangInitials = mainGang.ColorInitials;
+            AssignedGang = mainGang;
         }
         else
         {
-            AssignedGangInitials = "";
+            AssignedGang = null;
         }
         Agency secondaryAgency = jurisdictions.GetNthAgency(InternalGameName, ResponseType.LawEnforcement, 2);
         if (secondaryAgency != null)
         {
-            AssignedSecondLEAgencyInitials = secondaryAgency.ColorInitials;
+            AssignedSecondLEAgeny = secondaryAgency;
         }
         else
         {
-            AssignedSecondLEAgencyInitials = "";
+            AssignedSecondLEAgeny = null;
         }
         DealerMenus = shopMenus.GetSpecificGroupContainer(DealerMenuContainerID);
         CustomerMenus = shopMenus.GetSpecificGroupContainer(CustomerMenuContainerID);
@@ -174,6 +181,27 @@ public class Zone
         }
         return null;
     }
-
+    public string GetFullLocationName(IDisplayable Player, ISettingsProvideable settings, string CurrentDefaultTextColor, ICounties counties)
+    {
+        string toDisplay = $"{CurrentDefaultTextColor}" + FullDisplayName(counties);
+        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
+        {
+            toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
+        }
+        if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryGang && AssignedGang != null)
+        {
+            toDisplay += $"{CurrentDefaultTextColor} - " + AssignedGang.ColorInitials;
+            GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(AssignedGang);
+            if(gr != null) 
+            {
+                toDisplay += gr.ToZoneString();
+            }
+        }
+        else if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowSecondaryAgency && AssignedSecondLEAgeny != null)
+        {
+            toDisplay += $"{CurrentDefaultTextColor} - " + AssignedSecondLEAgeny.ColorInitials;
+        }
+        return toDisplay;
+    }
 
 }

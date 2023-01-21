@@ -1199,28 +1199,28 @@ public class Debug
     }
     private void DebugNumpad9()
     {
-        foreach (ModItem modItem in ModItems.AllItems())
-        {
-            if (modItem.Name == "Marijuana" || modItem.Name == "Cocaine" || modItem.Name == "Heroin" || modItem.Name == "Methamphetamine" || modItem.Name == "Crack" || modItem.Name == "SPANK" || modItem.Name == "Toilet Cleaner")
-            {
-                EntryPoint.WriteToConsole($"ITEM {modItem.Name} CHECKING");
-                List<Zone> foundDealer = Zones.GetZoneByItem(modItem, ShopMenus, true);
-                List<Zone> foundCustomer = Zones.GetZoneByItem(modItem, ShopMenus, false);
+        //foreach (ModItem modItem in ModItems.AllItems())
+        //{
+        //    if (modItem.Name == "Marijuana" || modItem.Name == "Cocaine" || modItem.Name == "Heroin" || modItem.Name == "Methamphetamine" || modItem.Name == "Crack" || modItem.Name == "SPANK" || modItem.Name == "Toilet Cleaner")
+        //    {
+        //        EntryPoint.WriteToConsole($"ITEM {modItem.Name} CHECKING");
+        //        List<Zone> foundDealer = Zones.GetZoneByItem(modItem, ShopMenus, true);
+        //        List<Zone> foundCustomer = Zones.GetZoneByItem(modItem, ShopMenus, false);
 
-                if(foundDealer != null)
-                {
-                    EntryPoint.WriteToConsole($"ITEM {modItem.Name} DEALER AREA(S) FOUND {string.Join(",", foundDealer.Select(x=>x.DisplayName))}");
-                }
-                if (foundCustomer != null)
-                {
-                    EntryPoint.WriteToConsole($"ITEM {modItem.Name} CUSTOMER AREA(S) FOUND {string.Join(",", foundCustomer.Select(x => x.DisplayName))}");
-                }
-            }
-        }
+        //        if(foundDealer != null)
+        //        {
+        //            EntryPoint.WriteToConsole($"ITEM {modItem.Name} DEALER AREA(S) FOUND {string.Join(",", foundDealer.Select(x=>x.DisplayName))}");
+        //        }
+        //        if (foundCustomer != null)
+        //        {
+        //            EntryPoint.WriteToConsole($"ITEM {modItem.Name} CUSTOMER AREA(S) FOUND {string.Join(",", foundCustomer.Select(x => x.DisplayName))}");
+        //        }
+        //    }
+        //}
         //CarChanePos();
-       // SpawnAttachedRagdoll();
+        // SpawnAttachedRagdoll();
 
-
+        Player.CellPhone.CloseBurner();
 
         //PrintRelationships();
         //AlertMessage();

@@ -39,7 +39,7 @@ public class GangRelationships
     }
     public void Update()
     {
-        string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGangInitials;//might need the key here instead of just iniitilas
+        //string CurrentGangTerritoryID = Player.CurrentLocation.CurrentZone.AssignedGang;//might need the key here instead of just iniitilas
         foreach (GangReputation rg in GangReputations)
         {
             if (!rg.IsMember)
@@ -47,7 +47,7 @@ public class GangRelationships
                 int WantedRep = rg.Gang.RemoveRepOnWantedInTerritoryScalar * Player.WantedLevel;
                 if (Player.IsWanted)
                 {
-                    if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ColorInitials == CurrentGangTerritoryID && rg.ReputationLevel >= WantedRep)
+                    if (rg.Gang.RemoveRepOnWantedInTerritory && rg.Gang.ID == Player.CurrentLocation.CurrentZone?.AssignedGang?.ID && rg.ReputationLevel >= WantedRep)
                     {
                         ChangeReputation(rg.Gang, -1 * WantedRep, false);
                     }

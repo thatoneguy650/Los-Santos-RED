@@ -32,6 +32,10 @@ public class AnimationWatcher
         return true;
     }
 
-
+    public void Reset()
+    {
+        GameTimeLastCheckedAnimation = Game.GameTime;
+        PrevAnimationTime = 0.0f;
+    }
 }
 
