@@ -275,8 +275,13 @@ public class PopUpMenu
         MouseState mouseState = Game.GetMouseState();
         if (mouseState != null)
         {
-            float XPercent = (float)mouseState.X /(float)Game.Resolution.Width;
-            float YPercent = (float)mouseState.Y /(float)Game.Resolution.Height;
+            float XPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX); //(float)mouseState.X /(float)Game.Resolution.Width;
+            float YPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY); //(float)mouseState.Y /(float)Game.Resolution.Height;
+
+
+            //float mouseX = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX);
+            //float mouseY = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY);
+
             float ClosestDistance = 1.0f;
             ClosestPositionMap = null;
             foreach (PositionMap positionMap2 in PositionMaps)
