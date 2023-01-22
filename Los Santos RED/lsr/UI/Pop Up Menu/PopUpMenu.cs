@@ -275,19 +275,21 @@ public class PopUpMenu
         MouseState mouseState = Game.GetMouseState();
         if (mouseState != null)
         {
-            float XPercent = (float)mouseState.X / (float)Game.Resolution.Width;
-            float YPercent = (float)mouseState.Y / (float)Game.Resolution.Height;
+            float XPercent = (float)mouseState.X /(float)Game.Resolution.Width;
+            float YPercent = (float)mouseState.Y /(float)Game.Resolution.Height;
             float ClosestDistance = 1.0f;
             ClosestPositionMap = null;
             foreach (PositionMap positionMap2 in PositionMaps)
             {
                 float distanceToMouse = (float)Math.Sqrt(Math.Pow(positionMap2.PositionX - XPercent, 2) + Math.Pow(positionMap2.PositionY - YPercent, 2));
-                if (distanceToMouse <= ClosestDistance && distanceToMouse <= 0.15f)
+                if (distanceToMouse <= ClosestDistance && distanceToMouse <= Settings.SettingsManager.ActionWheelSettings.SelectedItemMinimumDistance)// 0.15f)
                 {
                     ClosestDistance = distanceToMouse;
                     ClosestPositionMap = positionMap2;
                 }
             }
+            //Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
+
         }
     }
     private void UpdateSelection()

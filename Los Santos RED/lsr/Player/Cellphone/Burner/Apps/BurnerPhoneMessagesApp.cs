@@ -17,17 +17,24 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
     public BurnerPhoneMessagesApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index) : base(burnerPhone, player, time, settings, index, "Messages", 2)
     {
     }
-    public override void Open()
+    public override void Update()
     {
-        EntryPoint.WriteToConsole("BurnerPhoneMessagesApp OPEN");
+        Notifications = Player.CellPhone.TextList.Where(x => !x.IsRead).Count();
+        base.Update();
+    }
+    public override void Open(bool Reset)
+    {
         IsDisplayingTextMessage = false;
-        CurrentRow = 0;
+        if (Reset)
+        {
+            CurrentRow = 0;
+        }
+        BurnerPhone.SetHeader(Name);
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "SET_DATA_SLOT_EMPTY");
         NativeFunction.Natives.xC3D0841A0CC546A6(6);//2
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         foreach (PhoneText text in Player.CellPhone.TextList.OrderBy(x => x.Index))
         {
-            EntryPoint.WriteToConsole($"Adding Message {text.ContactName} {text.Index}");
             DrawMessage(text);
         }
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
@@ -39,18 +46,14 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !IsDisplayingTextMessage)//UP
         {
-            EntryPoint.WriteToConsole("Burner Phone: Pressed UP APP MESSAGES");
             BurnerPhone.MoveFinger(1);
             BurnerPhone.NavigateMenu(1);
-            //CurrentIndex = GetSelectedIndex();
             CurrentRow = CurrentRow - 1;
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 173) && !IsDisplayingTextMessage)//DOWN
         {
-            EntryPoint.WriteToConsole("Burner Phone: Pressed DOWN APP MESSAGES");
             BurnerPhone.MoveFinger(2);
             BurnerPhone.NavigateMenu(3);
-            //CurrentIndex = GetSelectedIndex();
             CurrentRow = CurrentRow + 1;
         }
         int TotalMessages = Player.CellPhone.TextList.Count();
@@ -65,57 +68,38 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
         {
             CurrentRow = 0;
         }
-
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176) && !IsDisplayingTextMessage)//SELECT
         {
-            EntryPoint.WriteToConsole($"Burner Phone: Pressed MESSAGES CurrentIndex {CurrentIndex} OpenApp {CurrentIndex + 1}");
             BurnerPhone.MoveFinger(5);
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
+            BurnerPhone.PlayAcceptedSound();
             IsDisplayingTextMessage = true;
             DisplayTextUI(Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault());
         }
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
+            BurnerPhone.PlayBackSound();
             if (IsDisplayingTextMessage)
             {
-                EntryPoint.WriteToConsole("Burner Phone: Pressed CLOSE APP READING MESSAGES");
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 0);
                 IsDisplayingTextMessage = false;
-                Open();
+                Open(false);
             }
             else
             {
-                EntryPoint.WriteToConsole("Burner Phone: Pressed CLOSE APP MESSAGES");
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 0);
-                NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
-                NativeFunction.Natives.xC3D0841A0CC546A6(1);
-                NativeFunction.Natives.xC3D0841A0CC546A6(0);
-                NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-                GameFiber.Sleep(200);
-                BurnerPhone.ReturnHome();
+                //GameFiber.Sleep(200);
+                BurnerPhone.ReturnHome(Index);
             }
         }
         if (!IsDisplayingTextMessage)
         {
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Left, Color.LightBlue);
-
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
-
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
+            BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Select, Color.LightBlue);
+            BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Blank, Color.Black);
+            BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
         }
         else
         {
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Delete);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Left, Color.Red);
-
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Call);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Middle, Color.LightBlue);
-
-            BurnerPhone.SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
-            BurnerPhone.SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
+            BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Delete, Color.Red);
+            BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Call, Color.LightBlue);
+            BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
         }
     }
     private void DrawMessage(PhoneText text)

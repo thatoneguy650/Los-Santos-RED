@@ -27,14 +27,18 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
     public BurnerPhoneContactsApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index) : base(burnerPhone, player, time, settings, index, "Contacts", 5)
     {
     }
-    public override void Open()
+    public override void Open(bool Reset)
     {
+        BurnerPhone.SetHeader(Name);
+        if(Reset)
+        {
+            CurrentRow = 0;
+         } 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "SET_DATA_SLOT_EMPTY");
         NativeFunction.Natives.xC3D0841A0CC546A6(2);//2
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         foreach (PhoneContact contact in Player.CellPhone.ContactList.OrderBy(x => x.Index))
         {
-            EntryPoint.WriteToConsole($"Adding Contact {contact.Name} {contact.Index}");
             DrawContact(contact);
         }
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
@@ -46,26 +50,20 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 172) && !IsDisplayingCall)//UP
         {
-            EntryPoint.WriteToConsole("Burner Phone: Pressed UP APP CONTACTS");
             BurnerPhone.MoveFinger(1);
             BurnerPhone.NavigateMenu(1);
-            //CurrentIndex = GetSelectedIndex();
             CurrentRow = CurrentRow - 1;
         }
         else if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 173) && !IsDisplayingCall)//DOWN
         {
-            EntryPoint.WriteToConsole("Burner Phone: Pressed DOWN APP CONTACTS");
             BurnerPhone.MoveFinger(2);
             BurnerPhone.NavigateMenu(3);
-            //CurrentIndex = GetSelectedIndex();
             CurrentRow = CurrentRow + 1;
         }
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176) && !IsDisplayingCall)//SELECT
         {
-            EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT CurrentIndex {CurrentIndex} OpenApp {CurrentIndex + 1}");
             BurnerPhone.MoveFinger(5);
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
-            //Game.DisplaySubtitle($"SELECTED {CurrentRow}");
+            BurnerPhone.PlayAcceptedSound();
             PhoneContact contact = Player.CellPhone.ContactList.Where(x => x.Index == CurrentRow).FirstOrDefault();
             if (contact != null)
             {
@@ -93,30 +91,19 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
         }
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
-            EntryPoint.WriteToConsole("Burner Phone: Pressed CLOSE APP CONTACTS");
+            BurnerPhone.PlayBackSound();
             if (IsDisplayingCall)
             {
-                NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 0);
                 IsDisplayingCall = false;
                 NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, false);
             }
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 0);
-            NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
-            NativeFunction.Natives.xC3D0841A0CC546A6(1);
-            NativeFunction.Natives.xC3D0841A0CC546A6(1);
-            NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
             OnLeftCall();
-            GameFiber.Sleep(200);
-            BurnerPhone.ReturnHome();
+            //GameFiber.Sleep(200);
+            BurnerPhone.ReturnHome(Index);
         }
-        BurnerPhone.SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Call);
-        BurnerPhone.SetSoftKeyColor((int)SoftKey.Left, Color.LightBlue);
-
-        BurnerPhone.SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
-        BurnerPhone.SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
-
-        BurnerPhone.SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
-        BurnerPhone.SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
+        BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Call, Color.LightBlue);
+        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Blank, Color.Black);
+        BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
     }
     public override void Update()
     {
@@ -182,13 +169,12 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             }
             else
             {
-                if (BurnerPhone.IsActive)// && CurrentApp == 3)
+                if (BurnerPhone.IsActive)
                 {
                     DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper()); // Displays "CONNECTED"
                     Player.CellPhone.ContactAnswered(contact);
                     EntryPoint.WriteToConsole("BURNER PHONE UPDATE CALL CALLED!!!!");
                 }
-                //OnAnswered(this); // Answer the phone
             }
             isDialActive = false;
         }
@@ -251,9 +237,5 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
         NativeFunction.Natives.xC3D0841A0CC546A6(4);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-
-
-
-
 }
 

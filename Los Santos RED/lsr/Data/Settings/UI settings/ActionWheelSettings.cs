@@ -27,6 +27,7 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float ItemScale { get; set; }
     public string ItemColor { get; set; }
     public string SelectedItemColor { get; set; }
+    public float SelectedItemMinimumDistance { get; set; }
     public float ItemCenterX { get; set; }
     public float ItemCenterY { get; set; }
     public float ItemDistanceFromCenter { get; set; }
@@ -87,6 +88,8 @@ public class ActionWheelSettings : ISettingsDefaultable
 
 
     public float ControllerCursorScale { get; set; }
+
+
     public ActionWheelSettings()
     {
         SetDefault();
@@ -174,6 +177,8 @@ public class ActionWheelSettings : ISettingsDefaultable
         SetSlowMoOnActivateControllerOnly = false;
         PlayTransitionSoundsOnActivate = true;
         SlowMoScale = 0.2f;
+
+        SelectedItemMinimumDistance = 0.15f;
 
     }
 }

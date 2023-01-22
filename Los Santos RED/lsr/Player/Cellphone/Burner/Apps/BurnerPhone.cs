@@ -9,6 +9,7 @@ using System.Data.Common;
 using System.Diagnostics.Contracts;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,7 +56,7 @@ public class BurnerPhone
     private bool pressedDirection;
 
     public PhoneContact LastCalledContact { get; set; }
-   
+
     public int GlobalScaleformID => globalScaleformID;
     public bool IsActive => isPhoneActive;
     private int CurrentIndex => (3 * CurrentRow) + CurrentColumn;
@@ -71,6 +72,9 @@ public class BurnerPhone
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         PhoneApps = new List<BurnerPhoneApp>();
         MessagesApp = new BurnerPhoneMessagesApp(this, Player, Time, Settings, 0);
+
+
+
         ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1);
         FlashlightApp = new BurnerPhoneFlashlightApp(this, Player, Time, Settings, 2, ModItems);
         SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 3);
@@ -81,9 +85,9 @@ public class BurnerPhone
         PhoneApps.Add(SettingsApp);
 
         MaxColumns = 3;//hardcoded to the phone
-        MaxRows = 1 + (PhoneApps.Count()/ 3);
+        MaxRows = 1 + (PhoneApps.Count() / 3);
 
-        foreach(BurnerPhoneApp burnerPhoneApp in PhoneApps)
+        foreach (BurnerPhoneApp burnerPhoneApp in PhoneApps)
         {
             burnerPhoneApp.Setup();
         }
@@ -93,7 +97,7 @@ public class BurnerPhone
         if (isPhoneActive)
         {
             DisabledVanillaControls();
-            if(CurrentBurnerApp == null)
+            if (CurrentBurnerApp == null)
             {
                 UpdateHomeScreen();
             }
@@ -112,10 +116,11 @@ public class BurnerPhone
     {
         if (isPhoneActive)
         {
-            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Put_Away", "Phone_SoundSet_Michael", 0);
+            PlayPutAwaySound();
         }
         ContactsApp.OnLeftCall();
         isPhoneActive = false;
+       // NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(0f, 0f, 0f);
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         Game.DisableControlAction(0, GameControl.Sprint, false);
         if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts && !Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
@@ -123,6 +128,7 @@ public class BurnerPhone
             NativeHelper.StartScript("cellphone_flashhand", 1424);
             NativeHelper.StartScript("cellphone_controller", 1424);
         }
+        //NativeFunction.Natives.SCRIPT_IS_MOVING_MOBILE_PHONE_OFFSCREEN(true);
     }
     public void OpenPhone()
     {
@@ -139,15 +145,11 @@ public class BurnerPhone
             bpa.SetHomeMenu();
             Index++;
         }
-
         isPhoneActive = true;
-
         CurrentBurnerApp = null;
         CurrentApp = 0;
         CurrentColumn = 0;
         CurrentRow = 0;
-        //CurrentIndex = 0;
-
         NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(Settings.SettingsManager.CellphoneSettings.BurnerCellPositionX, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionY, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionZ);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
@@ -156,12 +158,64 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(1);
         NativeFunction.Natives.xC3D0841A0CC546A6(0);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Pull_Out", "Phone_SoundSet_Michael", 0);
+        PlayPullOutSound();
         isVanillaPhoneDisabled = true;
+
+
+        //NativeFunction.Natives.SCRIPT_IS_MOVING_MOBILE_PHONE_OFFSCREEN(false);
+
     }
-    public void ReturnHome()
+    public void ReturnHome(int Index)
     {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(GlobalScaleformID, "DISPLAY_VIEW");
+        NativeFunction.Natives.xC3D0841A0CC546A6(1);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Index);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+
+        //int CurrentSelectedIndex = GetSelectedIndex();
+        //CurrentRow = CurrentSelectedIndex / MaxColumns;
+        //CurrentColumn = CurrentSelectedIndex % MaxColumns;
+        //EntryPoint.WriteToConsole($"ReturnHome CurrentSelectedIndex:{CurrentSelectedIndex} CurrentRow {CurrentRow} CurrentColumn {CurrentColumn}");
         CurrentBurnerApp = null;
+    }
+    public int GetSelectedIndex()
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(GlobalScaleformID, "GET_CURRENT_SELECTION");
+        int num = NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE<int>();
+        while (!NativeFunction.Natives.x768FF8961BA904D6<bool>(num))         //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_BOOL
+        {
+            GameFiber.Wait(0);
+        }
+        int data = NativeFunction.Natives.x2DE7EFA66B906036<int>(num);       //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_INT
+        return data;
+    }
+    public void SetHeader(string Header)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(GlobalScaleformID, "SET_HEADER");
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SCALEFORM_STRING("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(Header);
+        NativeFunction.Natives.END_TEXT_COMMAND_SCALEFORM_STRING();
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+    }
+    public void PlayAcceptedSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
+    }
+    public void PlayBackSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Back", "Phone_SoundSet_Michael", 0);
+    }
+    public void PlayPutAwaySound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Put_Away", "Phone_SoundSet_Michael", 0);
+    }
+    public void PlayPullOutSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Pull_Out", "Phone_SoundSet_Michael", 0);
+    }
+    public void PlayNavigateSound()
+    {
+        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Navigate", "Phone_SoundSet_Michael", 0);
     }
     private void UpdatePhone()
     {
@@ -319,7 +373,7 @@ public class BurnerPhone
     {
         EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         MoveFinger(5);
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
+        PlayAcceptedSound();
         OpenApp(CurrentIndex);
     }
     private void PressedBack()
@@ -346,9 +400,14 @@ public class BurnerPhone
     private void OpenApp(int Index)
     {
         CurrentBurnerApp = PhoneApps.FirstOrDefault(x => x.Index == Index);
-        CurrentBurnerApp?.Open();
+        CurrentBurnerApp?.Open(true);
     }
-    public void SetSoftKeyIcon(int buttonID, SoftKeyIcon icon)
+    public void SetSoftKey(int buttonID, SoftKeyIcon icon, Color color)
+    {
+        SetSoftKeyIcon(buttonID, icon);
+        SetSoftKeyColor(buttonID, color);
+    }
+    private void SetSoftKeyIcon(int buttonID, SoftKeyIcon icon)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS");
         NativeFunction.Natives.xC3D0841A0CC546A6(buttonID);
@@ -356,7 +415,7 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6((int)icon);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-    public void SetSoftKeyColor(int buttonID, Color color)
+    private void SetSoftKeyColor(int buttonID, Color color)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SOFT_KEYS_COLOUR");
         NativeFunction.Natives.xC3D0841A0CC546A6(buttonID);
@@ -370,7 +429,7 @@ public class BurnerPhone
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_INPUT_EVENT");
         NativeFunction.Natives.xC3D0841A0CC546A6(index);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Navigate", "Phone_SoundSet_Michael", 0);
+        PlayNavigateSound();
     }
     public void MoveFinger(int index)
     {
@@ -383,6 +442,10 @@ public class BurnerPhone
         {
             GameFiber.Yield();
         }
+    }
+    public void PlayRingtone()
+    {
+        Player.CellPhone.PreviewTextSound();
     }
 }
 

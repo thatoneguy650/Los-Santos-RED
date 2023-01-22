@@ -10,10 +10,11 @@ using System.Drawing;
 using System.Reflection;
 using System.Xml.Linq;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
 public class BurnerPhoneApp
 {
-    protected BurnerPhone BurnerPhone;
+    //protected BurnerPhone BurnerPhone;
     protected ICellPhoneable Player;
     protected ITimeReportable Time;
     protected ISettingsProvideable Settings;
@@ -22,7 +23,7 @@ public class BurnerPhoneApp
     public string Name { get; set; } = "App";
     public int Notifications { get; set; } = 0;
 
-
+    public BurnerPhone BurnerPhone { get; private set; }
 
     public BurnerPhoneApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index, string name, int icon)
     {
@@ -34,10 +35,14 @@ public class BurnerPhoneApp
         Name = name;
         Icon = icon;
     }
-    public virtual void Open()
+    public virtual void Open(bool Reset)
     {
         EntryPoint.WriteToConsole("BurnerPhoneApp OPEN");
-        BurnerPhone.ReturnHome();
+        if(Reset)
+        {
+
+        }
+        BurnerPhone.ReturnHome(Index);
     }
     public virtual void Update()
     {

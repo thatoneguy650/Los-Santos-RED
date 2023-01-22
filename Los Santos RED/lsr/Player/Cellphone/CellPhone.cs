@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -7,6 +8,7 @@ using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using static DispatchScannerFiles;
 
 public class CellPhone
@@ -349,9 +351,16 @@ public class CellPhone
         }
         return false;
     }
-    private void PlayTextReceivedSound()
+    public void StopAudio()
     {
-
+        if(!phoneAudioPlayer.IsAudioPlaying)
+        {
+            return;
+        }
+        phoneAudioPlayer.Abort();
+    }
+    public void PlayTextReceivedSound()
+    {
         if (Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
         {
             string AudioPath = $"ringtones\\{Settings.SettingsManager.CellphoneSettings.CustomRingtoneName}";
@@ -366,12 +375,23 @@ public class CellPhone
                     phoneAudioPlayer.Play(AudioPath, 0.5f, false, false);
                 }
             }
-            //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
         }
         else
         {
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
         }
+    }
+    public void PreviewTextSound()
+    {
+        GameFiber.StartNew(delegate
+        {
+            StopAudio();
+            GameFiber.Sleep(100);
+            if (!phoneAudioPlayer.IsAudioPlaying)
+            {
+                PlayTextReceivedSound();
+            }
+        }, "Run Debug Logic");
     }
     private void PlayPhoneResponseSound()
     {

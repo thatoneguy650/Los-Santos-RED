@@ -14,11 +14,11 @@ public class BurnerPhoneFlashlightApp : BurnerPhoneApp
     private IModItems ModItems;
     private ModItem ModItem;
 
-    public BurnerPhoneFlashlightApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index, IModItems modItems) : base(burnerPhone, player, time, settings, index, "Flashlight", 0)
+    public BurnerPhoneFlashlightApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index, IModItems modItems) : base(burnerPhone, player, time, settings, index, "Flashlight", 1)
     {
         ModItems = modItems;
     }
-    public override void Open()
+    public override void Open(bool Reset)
     {
         BurnerPhone.ClosePhone();
         GameFiber.Sleep(500);
