@@ -147,12 +147,13 @@ public class UI : IMenuProvideable
             TopRightMenu.Display();
         }
         MenuUpdate();
-        MarkerManager.Update();
+        //MarkerManager.Update();
     }
     public void Tick2()
     {
         DisplayButtonPrompts();
         ForceVanillaUI();
+        MarkerManager.Update();
     }
     public void Tick3()
     {

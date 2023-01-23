@@ -368,6 +368,8 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
         {
             SetGangScenarioBlocking(Settings.SettingsManager.VanillaSettings.BlockGangScenarios);
         }
+
+
         if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
         {
             SupressVanillaGangPeds();
@@ -451,6 +453,7 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
         {
             NativeFunction.Natives.REMOVE_SCENARIO_BLOCKING_AREAS();
         }
+        isGangScenarioBlocked = IsBlocked;
     }
 }
 

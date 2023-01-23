@@ -15,14 +15,14 @@ using System.Drawing.Imaging;
 public class BurnerPhoneApp
 {
     //protected BurnerPhone BurnerPhone;
-    protected ICellPhoneable Player;
+   // protected ICellPhoneable Player;
     protected ITimeReportable Time;
     protected ISettingsProvideable Settings;
     public int Index { get; set; } = 0;
     public int Icon { get; set; } = 0;
     public string Name { get; set; } = "App";
     public int Notifications { get; set; } = 0;
-
+    public ICellPhoneable Player { get; private set; }
     public BurnerPhone BurnerPhone { get; private set; }
 
     public BurnerPhoneApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index, string name, int icon)

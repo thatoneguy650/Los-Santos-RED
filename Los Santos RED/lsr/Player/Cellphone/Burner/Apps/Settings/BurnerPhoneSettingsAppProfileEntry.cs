@@ -10,11 +10,11 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-public class BurnerPhoneSettingsRingtoneEntry : BurnerPhoneSettingsAppEntry
+public class BurnerPhoneSettingsProfileEntry : BurnerPhoneSettingsAppEntry
 {
     private List<BurnerPhoneSettingTracker> BurnerPhoneSettingTrackers;
-
-    public BurnerPhoneSettingsRingtoneEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
+    private List<Tuple<int, string>> Backgrounds = new List<Tuple<int, string>>();
+    public BurnerPhoneSettingsProfileEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
     {
 
     }
@@ -29,7 +29,7 @@ public class BurnerPhoneSettingsRingtoneEntry : BurnerPhoneSettingsAppEntry
         NativeFunction.Natives.xC3D0841A0CC546A6(22);//2
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-        DisplayTones();
+        DisplayVolume();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhoneSettingsApp.BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
         NativeFunction.Natives.xC3D0841A0CC546A6(22);
@@ -40,55 +40,48 @@ public class BurnerPhoneSettingsRingtoneEntry : BurnerPhoneSettingsAppEntry
     public override void HandleInput()
     {
         HandleIndex();
-        HandleRingtoneSelection();
+        HandleThemeSelection();
         HandleBack();
         SetRingtoneSoftKeys();
     }
-    private void DisplayTones()
+    private void DisplayVolume()
     {
-        DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED\\audio\\ringtones");
-        List<FileInfo> RingtoneFiles = LSRDirectory.GetFiles("*.*").OrderBy(x => x.Name).ToList();
         BurnerPhoneSettingTrackers = new List<BurnerPhoneSettingTracker>();
-        int Index = 0;
-        foreach(FileInfo fileInfo in RingtoneFiles)
-        {
-            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(Index, fileInfo.Name);
-            if(Settings.SettingsManager.CellphoneSettings.CustomRingtoneName == fileInfo.Name)
-            {
-                burnerPhoneSettingTracker.IsSelected = true;
-            }
-            BurnerPhoneSettingTrackers.Add(burnerPhoneSettingTracker);
-            DrawSettingsItem(burnerPhoneSettingTracker.IsSelected ? 48 : 20,Index,fileInfo.Name);
-            Index++;
-        }
-        TotalItems = Index;
+
+        BurnerPhoneSettingTracker NormalMode = new BurnerPhoneSettingTracker(0, "Normal Mode") { IntegerValue = 0, IsSelected = !BurnerPhoneSettingsApp.Player.CellPhone.SleepMode };
+        BurnerPhoneSettingTracker SleepMode = new BurnerPhoneSettingTracker(1, "Sleep Mode") { IntegerValue = 1, IsSelected = BurnerPhoneSettingsApp.Player.CellPhone.SleepMode };
+        BurnerPhoneSettingTrackers.Add(NormalMode);
+        BurnerPhoneSettingTrackers.Add(SleepMode);
+        DrawSettingsItem(NormalMode.IsSelected ? (int)BurnerPhoneSettingsIcon.Ticked : (int)BurnerPhoneSettingsIcon.Profile, NormalMode.Index, NormalMode.Name);
+        DrawSettingsItem(SleepMode.IsSelected ? (int)BurnerPhoneSettingsIcon.Ticked : (int)BurnerPhoneSettingsIcon.SleepMode, SleepMode.Index, SleepMode.Name);
+        TotalItems = 2;
     }
-    private void HandleRingtoneSelection()
+    private void HandleThemeSelection()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176))//SELECT
         {
             BurnerPhoneSettingsApp.BurnerPhone.MoveFinger(5);
             BurnerPhoneSettingsApp.BurnerPhone.PlayAcceptedSound();
             BurnerPhoneSettingTracker selectedItem = BurnerPhoneSettingTrackers.FirstOrDefault(x => x.Index == CurrentRow);
-            if(selectedItem == null)
+            if (selectedItem == null)
             {
                 return;
             }
             BurnerPhoneSettingTracker oldSelected = BurnerPhoneSettingTrackers.FirstOrDefault(x => x.IsSelected);
-            if(oldSelected != null)
+            if (oldSelected != null)
             {
                 oldSelected.IsSelected = false;
             }
             selectedItem.IsSelected = true;
-            Settings.SettingsManager.CellphoneSettings.CustomRingtoneName = selectedItem.Name;
-            BurnerPhoneSettingsApp.BurnerPhone.PlayRingtone();
+            BurnerPhoneSettingsApp.Player.CellPhone.SleepMode = selectedItem.IntegerValue == 1 ? true : false;
+            BurnerPhoneSettingsApp.BurnerPhone.UpdateThemeItems();
             Open(false);
         }
     }
     protected void SetRingtoneSoftKeys()
     {
         BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Blank, Color.Red);
-        BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Open, Color.LightGreen);
+        BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightGreen);
         BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Red);
     }
 }

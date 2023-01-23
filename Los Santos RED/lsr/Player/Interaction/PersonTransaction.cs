@@ -56,6 +56,10 @@ public class PersonTransaction : Interaction
     public override string DebugString => "";
     public override bool CanPerformActivities { get; set; } = false;
 
+
+    public bool DoGreet { get; set; } = true;
+
+
     public PersonTransaction(ILocationInteractable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
@@ -69,23 +73,12 @@ public class PersonTransaction : Interaction
     }
     public override void Start()
     {
-
         if (ShopMenu == null)
         {
             EntryPoint.WriteToConsole("Shop Menu is null for some fucking reason !");
-
         }
-        //else
-        //{
-
-        //}
-
-
         Player.ActivityManager.IsConversing = true;
         Player.IsTransacting = true;
-
-
-
         GameFiber.StartNew(delegate
         {
             try
@@ -95,7 +88,6 @@ public class PersonTransaction : Interaction
                 if (Ped != null && Ped.Pedestrian.Exists())
                 {
                     PedWasPersistent = Ped.WasEverSetPersistent;
-
 
                     //Ped.Pedestrian.IsPersistent = true;
                     Player.ActivityManager.IsConversing = true;
@@ -564,6 +556,10 @@ public class PersonTransaction : Interaction
     private void Greet()
     {
         if (IsDisposed)
+        {
+            return;
+        }
+        if(!DoGreet)
         {
             return;
         }

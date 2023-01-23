@@ -16,19 +16,12 @@ using System.Threading.Tasks;
 using static BurnerPhone_Old;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
-//needs to be cleaned up into classes, contacts app, messages app, home app, controller class etc. main class should mostly handle the player interaction (take out phone, do tasks set flags etc.)
 public class BurnerPhone
 {
     private int MaxColumns = 3;
     private int MaxRows = 1;
     private int ColMax => MaxColumns - 1;
     private int RowMax => MaxRows - 1;
-    //private bool isDialActive;
-    //private bool isBusyActive;
-    //private int dialSoundID = -1;
-    //private int busySoundID = -1;
-    //private int callTimer;
-    //private int busyTimer;
     private ICellPhoneable Player;
     private ITimeReportable Time;
     private int globalScaleformID;
@@ -36,7 +29,6 @@ public class BurnerPhone
     private int CurrentApp;
     private int CurrentColumn;
     private int CurrentRow;
-    //private int CurrentIndex;
     private bool isVanillaPhoneDisabled;
     private int prevCurrentRow;
     private int prevCurrentColumn;
@@ -72,9 +64,6 @@ public class BurnerPhone
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         PhoneApps = new List<BurnerPhoneApp>();
         MessagesApp = new BurnerPhoneMessagesApp(this, Player, Time, Settings, 0);
-
-
-
         ContactsApp = new BurnerPhoneContactsApp(this, Player, Time, Settings, 1);
         FlashlightApp = new BurnerPhoneFlashlightApp(this, Player, Time, Settings, 2, ModItems);
         SettingsApp = new BurnerPhoneSettingsApp(this, Player, Time, Settings, 3);
@@ -120,7 +109,6 @@ public class BurnerPhone
         }
         ContactsApp.OnLeftCall();
         isPhoneActive = false;
-       // NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(0f, 0f, 0f);
         NativeFunction.Natives.DESTROY_MOBILE_PHONE();
         Game.DisableControlAction(0, GameControl.Sprint, false);
         if (Settings.SettingsManager.CellphoneSettings.AllowTerminateVanillaCellphoneScripts && !Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
@@ -128,7 +116,6 @@ public class BurnerPhone
             NativeHelper.StartScript("cellphone_flashhand", 1424);
             NativeHelper.StartScript("cellphone_controller", 1424);
         }
-        //NativeFunction.Natives.SCRIPT_IS_MOVING_MOBILE_PHONE_OFFSCREEN(true);
     }
     public void OpenPhone()
     {
@@ -160,10 +147,6 @@ public class BurnerPhone
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
         PlayPullOutSound();
         isVanillaPhoneDisabled = true;
-
-
-        //NativeFunction.Natives.SCRIPT_IS_MOVING_MOBILE_PHONE_OFFSCREEN(false);
-
     }
     public void ReturnHome(int Index)
     {
@@ -178,17 +161,6 @@ public class BurnerPhone
         //EntryPoint.WriteToConsole($"ReturnHome CurrentSelectedIndex:{CurrentSelectedIndex} CurrentRow {CurrentRow} CurrentColumn {CurrentColumn}");
         CurrentBurnerApp = null;
     }
-    public int GetSelectedIndex()
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(GlobalScaleformID, "GET_CURRENT_SELECTION");
-        int num = NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD_RETURN_VALUE<int>();
-        while (!NativeFunction.Natives.x768FF8961BA904D6<bool>(num))         //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_BOOL
-        {
-            GameFiber.Wait(0);
-        }
-        int data = NativeFunction.Natives.x2DE7EFA66B906036<int>(num);       //UI::_GET_SCALEFORM_MOVIE_FUNCTION_RETURN_INT
-        return data;
-    }
     public void SetHeader(string Header)
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(GlobalScaleformID, "SET_HEADER");
@@ -200,6 +172,10 @@ public class BurnerPhone
     public void PlayAcceptedSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Menu_Accept", "Phone_SoundSet_Michael", 0);
+    }
+    public void UpdateThemeItems()
+    {
+        SetHomeScreen();
     }
     public void PlayBackSound()
     {
@@ -241,15 +217,15 @@ public class BurnerPhone
     private void SetHomeScreen()
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_THEME");
-        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellThemeID);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Player.CellPhone.Theme);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_BACKGROUND_IMAGE");
-        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellBackgroundID);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Player.CellPhone.Background);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SLEEP_MODE");
-        NativeFunction.Natives.xC3D0841A0CC546A6(0);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Player.CellPhone.SleepMode ? 1 : 0);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
     private void DisabledVanillaControls()
@@ -402,6 +378,17 @@ public class BurnerPhone
         CurrentBurnerApp = PhoneApps.FirstOrDefault(x => x.Index == Index);
         CurrentBurnerApp?.Open(true);
     }
+    public void NavigateMenu(int index)
+    {
+        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_INPUT_EVENT");
+        NativeFunction.Natives.xC3D0841A0CC546A6(index);
+        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
+        PlayNavigateSound();
+    }
+    public void MoveFinger(int index)
+    {
+        NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
+    }
     public void SetSoftKey(int buttonID, SoftKeyIcon icon, Color color)
     {
         SetSoftKeyIcon(buttonID, icon);
@@ -424,17 +411,7 @@ public class BurnerPhone
         NativeFunction.Natives.xC3D0841A0CC546A6(color.B);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
     }
-    public void NavigateMenu(int index)
-    {
-        NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_INPUT_EVENT");
-        NativeFunction.Natives.xC3D0841A0CC546A6(index);
-        NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
-        PlayNavigateSound();
-    }
-    public void MoveFinger(int index)
-    {
-        NativeFunction.Natives.x95C9E72F3D7DEC9B(index);
-    }
+
     private void RequestScaleform()
     {
         globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName);
@@ -442,10 +419,6 @@ public class BurnerPhone
         {
             GameFiber.Yield();
         }
-    }
-    public void PlayRingtone()
-    {
-        Player.CellPhone.PreviewTextSound();
     }
 }
 

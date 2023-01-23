@@ -10,13 +10,22 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
+public class BurnerPhoneSettingsThemeEntry : BurnerPhoneSettingsAppEntry
 {
     private List<BurnerPhoneSettingTracker> BurnerPhoneSettingTrackers;
-
-    public BurnerPhoneSettingsVolumeEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
+    private List<Tuple<int, string>> Themes = new List<Tuple<int, string>>();
+    public BurnerPhoneSettingsThemeEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
     {
-        SelectedItemIcon = (int)BurnerPhoneSettingsIcon.Volume;
+        SelectedItemIcon = (int)BurnerPhoneSettingsIcon.Ticked;// 39;
+        NonSelectedItemIcon = (int)BurnerPhoneSettingsIcon.Edit; //0;
+
+        Themes.Add(new Tuple<int, string>(1, "Blue"));
+        Themes.Add(new Tuple<int, string>(2, "Green"));
+        Themes.Add(new Tuple<int, string>(3, "Red"));
+        Themes.Add(new Tuple<int, string>(4, "Orange"));
+        Themes.Add(new Tuple<int, string>(5, "Gray"));
+        Themes.Add(new Tuple<int, string>(6, "Purple"));
+        Themes.Add(new Tuple<int, string>(7, "Pink"));
     }
     public override void Open(bool Reset)
     {
@@ -40,28 +49,27 @@ public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
     public override void HandleInput()
     {
         HandleIndex();
-        HandleVolumeSelection();
+        HandleThemeSelection();
         HandleBack();
         SetRingtoneSoftKeys();
     }
     private void DisplayVolume()
     {
         BurnerPhoneSettingTrackers = new List<BurnerPhoneSettingTracker>();
-        for (int i = 0; i < 21; i++)
+
+        foreach(Tuple<int,string> thingo in Themes.OrderBy(x => x.Item1))
         {
-            float percentValue = ((float)i) / 20.0f;
-            string percentString = percentValue.ToString("P0");
-            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(i, percentString) { Value = percentValue };
-            if(BurnerPhoneSettingsApp.Player.CellPhone.Volume == percentValue)// if (Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume == percentValue)
+            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(thingo.Item1 - 1, thingo.Item2) { IntegerValue = thingo.Item1 };
+            if (BurnerPhoneSettingsApp.Player.CellPhone.Theme == thingo.Item1)
             {
                 burnerPhoneSettingTracker.IsSelected = true;
             }
             BurnerPhoneSettingTrackers.Add(burnerPhoneSettingTracker);
             DrawSettingsItem(burnerPhoneSettingTracker.IsSelected ? SelectedItemIcon : NonSelectedItemIcon, burnerPhoneSettingTracker.Index, burnerPhoneSettingTracker.Name);
         }
-        TotalItems = 21;
+        TotalItems = Themes.Count();
     }
-    private void HandleVolumeSelection()
+    private void HandleThemeSelection()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176))//SELECT
         {
@@ -78,8 +86,8 @@ public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
                 oldSelected.IsSelected = false;
             }
             selectedItem.IsSelected = true;
-            BurnerPhoneSettingsApp.Player.CellPhone.CustomVolume = selectedItem.Value;
-            BurnerPhoneSettingsApp.Player.CellPhone.PreviewRingtoneSound();
+            BurnerPhoneSettingsApp.Player.CellPhone.CustomTheme = selectedItem.IntegerValue;
+            BurnerPhoneSettingsApp.BurnerPhone.UpdateThemeItems();
             Open(false);
         }
     }

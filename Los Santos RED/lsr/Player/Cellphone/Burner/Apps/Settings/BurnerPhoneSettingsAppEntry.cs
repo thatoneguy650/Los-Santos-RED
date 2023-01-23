@@ -29,6 +29,10 @@ public class BurnerPhoneSettingsAppEntry
     public string Text { get; set; } = "Setting";
     public int Index { get; set; } = 0;
     public int Icon { get; set; } = -1;
+
+    public int SelectedItemIcon { get; set; } = 48;
+    public int NonSelectedItemIcon { get; set; } = 0;
+
     public void DrawSettingOnMainPage()
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhoneSettingsApp.BurnerPhone.GlobalScaleformID, "SET_DATA_SLOT");
@@ -53,8 +57,8 @@ public class BurnerPhoneSettingsAppEntry
         NativeFunction.Natives.xC3D0841A0CC546A6(22);//2
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
-        DrawSettingsItem(0, 0, "Setting 1");
-        DrawSettingsItem(48, 1, "Setting 2");
+        DrawSettingsItem(NonSelectedItemIcon, 0, "Setting 1");
+        DrawSettingsItem(SelectedItemIcon, 1, "Setting 2");
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(BurnerPhoneSettingsApp.BurnerPhone.GlobalScaleformID, "DISPLAY_VIEW");
         NativeFunction.Natives.xC3D0841A0CC546A6(22);
@@ -111,7 +115,7 @@ public class BurnerPhoneSettingsAppEntry
     protected void SetSoftKeys()
     {
         BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Blank, Color.Red);
-        BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightBlue);
+        BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightGreen);
         BurnerPhoneSettingsApp.BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
     }
 

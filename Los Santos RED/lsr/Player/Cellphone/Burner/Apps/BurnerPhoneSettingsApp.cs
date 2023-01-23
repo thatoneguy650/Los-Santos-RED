@@ -12,10 +12,12 @@ public class BurnerPhoneSettingsApp : BurnerPhoneApp
 {
     private int CurrentRow;
     private int CurrentIndex;
-    private BurnerPhoneSettingsRingtoneEntry RingtoneSetting;
-    private BurnerPhoneSettingsRingtoneEntry TexttoneSetting;
+    private BurnerPhoneSettingsToneEntry RingtoneSetting;
+    private BurnerPhoneSettingsToneEntry TexttoneSetting;
     private BurnerPhoneSettingsAppEntry ProfileSetting;
     private BurnerPhoneSettingsVolumeEntry VolumeSetting;
+    private BurnerPhoneSettingsThemeEntry ThemeSetting;
+    private BurnerPhoneSettingsBackgroundEntry BackgroundSetting;
     private List<BurnerPhoneSettingsAppEntry> SettingsEntries;
     private BurnerPhoneSettingsAppEntry CurrentActiveSetting;
 
@@ -37,11 +39,13 @@ public class BurnerPhoneSettingsApp : BurnerPhoneApp
     }
     public BurnerPhoneSettingsApp(BurnerPhone burnerPhone, ICellPhoneable player, ITimeReportable time, ISettingsProvideable settings, int index) : base(burnerPhone, player, time, settings, index, "Settings", 24)
     {
-        RingtoneSetting = new BurnerPhoneSettingsRingtoneEntry(this, settings, "Ringtone", 0, 18);
-        TexttoneSetting = new BurnerPhoneSettingsRingtoneEntry(this, settings, "TextTone", 1, 19);
-        ProfileSetting = new BurnerPhoneSettingsAppEntry(this, settings, "Profile", 2, 25);
-        VolumeSetting = new BurnerPhoneSettingsVolumeEntry(this, settings, "Volume", 3, 22);
-        SettingsEntries = new List<BurnerPhoneSettingsAppEntry>() { RingtoneSetting, TexttoneSetting, ProfileSetting, VolumeSetting };
+        RingtoneSetting = new BurnerPhoneSettingsToneEntry(this, settings, "Ringtone", 0, 18, true);
+        TexttoneSetting = new BurnerPhoneSettingsToneEntry(this, settings, "TextTone", 1, 19, false);
+        VolumeSetting = new BurnerPhoneSettingsVolumeEntry(this, settings, "Volume", 2, 22);
+        ProfileSetting = new BurnerPhoneSettingsProfileEntry(this, settings, "Profile", 3, 25);   
+        ThemeSetting = new BurnerPhoneSettingsThemeEntry(this, settings, "Theme", 4, 23);
+        BackgroundSetting = new BurnerPhoneSettingsBackgroundEntry(this, settings, "Background", 5, 23);
+        SettingsEntries = new List<BurnerPhoneSettingsAppEntry>() { RingtoneSetting, TexttoneSetting, ProfileSetting, VolumeSetting, ThemeSetting, BackgroundSetting };
     }
     public override void Open(bool Reset)
     {
@@ -101,12 +105,11 @@ public class BurnerPhoneSettingsApp : BurnerPhoneApp
         if (NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(3, 177))//CLOSE
         {
             BurnerPhone.PlayBackSound();
-            //GameFiber.Sleep(200);
             BurnerPhone.ReturnHome(Index);
         }
         BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Blank, Color.Red);
-        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightBlue);
-        BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
+        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightGreen);
+        BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Red);
  
     }
 

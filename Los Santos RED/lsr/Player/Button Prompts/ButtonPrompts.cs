@@ -161,50 +161,19 @@ public class ButtonPrompts
         if (!HasPrompt($"Talk {Player.CurrentLookedAtPed.Handle}"))
         {
             RemovePrompts("StartConversation");
-            AddPrompt("StartConversation", $"Talk to {Player.CurrentLookedAtPed.FormattedName}", $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
+            string promptText = Player.CurrentLookedAtPed.InteractPrompt(Player);
+            AddPrompt("StartConversation", promptText, $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
-        if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
-        {
-            bool toSell = false;
-            bool toSellPlayerHas = false;
-            bool toBuy = false;
-            if (Player.CurrentLookedAtPed.HasMenu)
-            {
-                toSell = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable);
-                toBuy = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Purchaseable);
-                toSellPlayerHas = Player.CurrentLookedAtPed.ShopMenu.Items.Any(x => x.Sellable && Player.Inventory.Get(x.ModItem) != null && x.NumberOfItemsToPurchaseFromPlayer > 0);
-            }
-            RemovePrompts("StartTransaction");
-            string promptText = $"Purchase from {Player.CurrentLookedAtPed.FormattedName}";
-            if (toSell && toBuy)
-            {
-                promptText = $"Transact with {Player.CurrentLookedAtPed.FormattedName}";
-            }
-            else if (toBuy)
-            {
-                promptText = $"Buy from {Player.CurrentLookedAtPed.FormattedName}";
-            }
-            else if (toSell)
-            {
-                promptText = $"Sell to {Player.CurrentLookedAtPed.FormattedName}";
-            }
-            else
-            {
-                promptText = $"Transact with {Player.CurrentLookedAtPed.FormattedName}";
-            }
-
-
-            if(toSellPlayerHas && Settings.SettingsManager.ActivitySettings.ShowInPromptWhenPedsWantToBuyItemsYouHave)
-            {
-                promptText += " (!)" ;
-            }
-
-            AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
-        }
-        else
-        {
-            RemovePrompts("StartTransaction");
-        }
+        //if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
+        //{
+        //    RemovePrompts("StartTransaction");
+            //string promptText = Player.CurrentLookedAtPed.TransactionPrompt(Player);
+        //    AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
+        //}
+        //else
+        //{
+        //    RemovePrompts("StartTransaction");
+        //}
     }
     private void PersonLootingPrompts()
     {

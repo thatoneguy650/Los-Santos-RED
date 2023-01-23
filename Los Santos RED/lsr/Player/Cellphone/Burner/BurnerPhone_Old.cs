@@ -183,11 +183,11 @@ public class BurnerPhone_Old
     private void SetHomeScreen()
     {
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_THEME");
-        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellThemeID);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellThemeID);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_BACKGROUND_IMAGE");
-        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.BurnerCellBackgroundID);
+        NativeFunction.Natives.xC3D0841A0CC546A6(Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellBackgroundID);
         NativeFunction.Natives.END_SCALEFORM_MOVIE_METHOD();
 
         NativeFunction.Natives.BEGIN_SCALEFORM_MOVIE_METHOD(globalScaleformID, "SET_SLEEP_MODE");

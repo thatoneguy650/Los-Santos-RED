@@ -17,5 +17,6 @@ public class BurnerPhoneSettingTracker
     public string Name { get; set; }
     public bool IsSelected { get; set; }
     public float Value { get; set; }
+    public int IntegerValue { get; set; }
 }
 

@@ -49,6 +49,23 @@ public class CellPhone
     private uint GameTimeBetweenCheckScheduledItems = 15000;
     private NAudioPlayer phoneAudioPlayer;
 
+
+
+
+    public string RingTone => !string.IsNullOrEmpty(CustomRingtone) ? CustomRingtone : Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
+    public string TextTone => !string.IsNullOrEmpty(CustomTextTone) ? CustomTextTone : Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneName;
+    public int Theme => CustomTheme != -1 ? CustomTheme : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellThemeID;
+    public int Background => CustomBackground != -1 ? CustomBackground : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellBackgroundID;
+    public float Volume => CustomVolume != -1.0f ? CustomVolume : Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume;
+    public bool SleepMode { get; set; } = false;
+
+    public string CustomRingtone { get; set; } = "";
+    public string CustomTextTone { get; set; } = "";
+    public int CustomTheme { get; set; } = -1;
+    public int CustomBackground { get; set; } = -1;
+    public float CustomVolume { get; set; } = -1.0f;
+
+
     private bool ShouldCheckScheduledItems => GameTimeLastCheckedScheduledItems == 0 || Game.GameTime - GameTimeLastCheckedScheduledItems >= GameTimeBetweenCheckScheduledItems;
     public bool IsActive => BurnerPhone?.IsActive == true;
     public List<PhoneText> TextList => AddedTexts;
@@ -125,6 +142,11 @@ public class CellPhone
     }
     public void Reset()
     {
+        CustomRingtone = "";
+        CustomTextTone = "";
+        CustomTheme = -1;
+        CustomBackground = -1;
+        CustomVolume = -1.0f;
         ContactIndex = 0;
         AddedTexts = new List<PhoneText>();
         AddedContacts = new List<PhoneContact>();
@@ -212,9 +234,9 @@ public class CellPhone
         "URGENT! Your grandson was arrested last night in New Armadillo. Need bail money immediately! Wire Eastern Confederacy at econfed.utg/legit",
 
         };
+        Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(), 0);
+        CheckScheduledTexts();     
 
-        Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(),0);
-        CheckScheduledTexts();
     }
     private void CheckScheduledItems()
     {
@@ -225,7 +247,7 @@ public class CellPhone
             {
                 CheckScheduledContacts();
             }
-            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(15000, 25000);
+            GameTimeBetweenCheckScheduledItems = RandomItems.GetRandomNumber(5000, 12000);
             GameTimeLastCheckedScheduledItems = Game.GameTime;
         }
     }
@@ -234,13 +256,13 @@ public class CellPhone
         for (int i = ScheduledTexts.Count - 1; i >= 0; i--)
         {
             ScheduledText sc = ScheduledTexts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 15000)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 10000)
             {
                 if (!AddedTexts.Any(x => x.ContactName == sc.ContactName && x.Message == sc.Message))
                 {
                     AddText(sc.ContactName, sc.IconName, sc.Message, Time.CurrentHour, Time.CurrentMinute, false);
                     NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, sc.ContactName, "~g~Text Received~s~", sc.Message, NotificationIconTypes.ChatBox, false);
-                    PlayTextReceivedSound();
+                    PlayTexttone();
                     AddContact(sc.PhoneContact, true);
                 }
                 ScheduledTexts.RemoveAt(i);
@@ -254,12 +276,12 @@ public class CellPhone
         for (int i = ScheduledContacts.Count - 1; i >= 0; i--)
         {
             ScheduledContact sc = ScheduledContacts[i];
-            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 15000)
+            if (DateTime.Compare(Time.CurrentDateTime, sc.TimeToSend) >= 0 && Game.GameTime - sc.GameTimeSent >= 10000)
             {
                 if (!AddedContacts.Any(x => x.Name == sc.ContactName))
                 {
                     AddContact(sc.PhoneContact, true);
-                    PlayTextReceivedSound();
+                    PlayTexttone();
                     if (sc.Message == "")
                     {
                         NativeHelper.DisplayNotificationCustom(sc.IconName, sc.IconName, "New Contact", sc.ContactName, NotificationIconTypes.AddFriendRequest, true);
@@ -283,7 +305,7 @@ public class CellPhone
             if (displayNotification)
             {
                 NativeHelper.DisplayNotificationCustom(phoneContact.IconName, phoneContact.IconName, "New Contact", phoneContact.Name, NotificationIconTypes.AddFriendRequest, true);
-                PlayTextReceivedSound();
+                PlayTexttone();
             }
         }
     }
@@ -359,21 +381,51 @@ public class CellPhone
         }
         phoneAudioPlayer.Abort();
     }
-    public void PlayTextReceivedSound()
+
+
+    public void PlayRingtone()
     {
-        if (Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
+        if(SleepMode)
         {
-            string AudioPath = $"ringtones\\{Settings.SettingsManager.CellphoneSettings.CustomRingtoneName}";
+            return;
+        }
+        float volumeToUse = Volume.Clamp(0.0f,1.0f);
+        string ringToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
+        if (!string.IsNullOrEmpty(CustomRingtone))
+        {
+            ringToneToUse = CustomRingtone;
+        }
+        if(Settings.SettingsManager.CellphoneSettings.UseCustomRingtone)
+        {
+            string AudioPath = $"tones\\{ringToneToUse}";
             if (!phoneAudioPlayer.IsAudioPlaying)
             {
-                if (Settings.SettingsManager.CellphoneSettings.SetCustomRingtoneVolume)
-                {
-                    phoneAudioPlayer.Play(AudioPath, Settings.SettingsManager.CellphoneSettings.CustomRingtoneVolume, false, false);
-                }
-                else
-                {
-                    phoneAudioPlayer.Play(AudioPath, 0.5f, false, false);
-                }
+                phoneAudioPlayer.Play(AudioPath, volumeToUse, false, false);
+            }
+        }
+        else
+        {
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Text_Arrive_Tone", "Phone_SoundSet_Default", 0);
+        }
+    }
+    public void PlayTexttone()
+    {
+        if (SleepMode)
+        {
+            return;
+        }
+        float volumeToUse = Volume.Clamp(0.0f, 1.0f);
+        string textToneToUse = Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneName;
+        if (!string.IsNullOrEmpty(CustomTextTone))
+        {
+            textToneToUse = CustomTextTone;
+        }
+        if (Settings.SettingsManager.CellphoneSettings.UseCustomTexttone)
+        {
+            string AudioPath = $"tones\\{textToneToUse}";
+            if (!phoneAudioPlayer.IsAudioPlaying)
+            {
+                phoneAudioPlayer.Play(AudioPath, volumeToUse, false, false);
             }
         }
         else
@@ -389,14 +441,33 @@ public class CellPhone
             GameFiber.Sleep(100);
             if (!phoneAudioPlayer.IsAudioPlaying)
             {
-                PlayTextReceivedSound();
+                PlayTexttone();
             }
-        }, "Run Debug Logic");
+        }, "PreviewTextSound");
+    }
+    public void PreviewRingtoneSound()
+    {
+        GameFiber.StartNew(delegate
+        {
+            StopAudio();
+            GameFiber.Sleep(100);
+            if (!phoneAudioPlayer.IsAudioPlaying)
+            {
+                PlayRingtone();
+            }
+        }, "PreviewTextSound");
     }
     private void PlayPhoneResponseSound()
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "Hang_Up", "Phone_SoundSet_Default", 0);
     }
+
+
+
+
+
+
+
     private class ScheduledContact
     {
         public ScheduledContact(DateTime timeToSend, PhoneContact phoneContact, string message)

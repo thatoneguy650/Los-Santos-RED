@@ -18,6 +18,9 @@ public class Conversation_Simple : Interaction
     private PedExt Ped;
     private IInteractionable Player;
     private bool CancelledConversation;
+
+    private bool IsDisposed;
+
     private ISettingsProvideable Settings;
     private ICrimes Crimes;
     private dynamic pedHeadshotHandle;
@@ -25,8 +28,11 @@ public class Conversation_Simple : Interaction
     private IModItems ModItems;
     private IZones Zones;
     private IShopMenus ShopMenus;
+    private IPlacesOfInterest PlacesOfInterest;
+    private IGangs Gangs;
+    private IGangTerritories GangTerritories;
 
-    public Conversation_Simple(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus)
+    public Conversation_Simple(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories)
     {
         Player = player;
         Ped = ped;
@@ -35,9 +41,14 @@ public class Conversation_Simple : Interaction
         ModItems = modItems;
         Zones = zones;
         ShopMenus = shopMenus;
+        PlacesOfInterest = placesOfInterest;
+        Gangs = gangs;
+        GangTerritories = gangTerritories;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
+
+
     private bool CanContinueConversation => Ped.Pedestrian.Exists() && Player.Character.DistanceTo2D(Ped.Pedestrian) <= 6f && Ped.CanConverse && Player.ActivityManager.CanConverse;
     public PedExt ConversingPed => Ped;
     public void OnAdvancedConversationStopped()
@@ -46,24 +57,34 @@ public class Conversation_Simple : Interaction
     }
     public override void Dispose()
     {
+        if (!IsDisposed)
+        {
+            Player.ButtonPrompts.RemovePrompts("Conversation");
+            Player.ActivityManager.IsConversing = false;
+            if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+                Ped.Pedestrian.KeepTasks = false;
+                EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 1");
+                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            }
+            else if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+                Ped.Pedestrian.KeepTasks = false;
+                EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 2");
+                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+            }
+            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+            IsDisposed = true;
+        }
+    }
+    public void TransitionToTransaction()
+    {
+        CancelledConversation = true;
+        IsDisposed = true;
         Player.ButtonPrompts.RemovePrompts("Conversation");
         Player.ActivityManager.IsConversing = false;
-        if (Ped != null && Ped.Pedestrian.Exists() && IsTasked && Ped.GetType() != typeof(Merchant))
-        {
-            Ped.Pedestrian.BlockPermanentEvents = false;
-            Ped.Pedestrian.KeepTasks = false;
-            EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 1");
-            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-        }
-        else if (Ped != null && Ped.Pedestrian.Exists() && IsTasked)
-        {
-
-            Ped.Pedestrian.BlockPermanentEvents = false;
-            Ped.Pedestrian.KeepTasks = false;
-            EntryPoint.WriteToConsole("CONVERSATION UNBLOCKED EVENTS 2");
-            NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-        }
-        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
     }
     public override void Start()
     {
@@ -91,17 +112,17 @@ public class Conversation_Simple : Interaction
     {
         while (CanContinueConversation)
         {
-            UpdateButtonPrompts();
-            CheckInput();
             if (CancelledConversation)
             {
                 Dispose();
                 break;
             }
+            UpdateButtonPrompts();
+            CheckInput();
             GameFiber.Yield();
         }
         Dispose();
-        GameFiber.Sleep(1000);
+        //GameFiber.Sleep(1000);
     }
     private bool SayAvailableAmbient(Ped ToSpeak, List<string> Possibilities, bool WaitForComplete, bool isPlayer)
     {
@@ -174,14 +195,7 @@ public class Conversation_Simple : Interaction
         {
             return;
         }
-
-
-
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
-
-
-
-
         if (!Ped.IsFedUpWithPlayer)
         {
             if (Ped.IsInVehicle)
@@ -311,16 +325,13 @@ public class Conversation_Simple : Interaction
             AskQuestion();
         }
     }
-
     private void AskQuestion()
     {
-        AdvancedConversation = new AdvancedConversation(this, ModItems, Zones, ShopMenus);
+        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest,Gangs,GangTerritories);
         AdvancedConversation.Setup();
         AdvancedConversation.Show();
         IsActivelyConversing = true;
-        //GameFiber.Sleep(500);
     }
-
     private void UpdateButtonPrompts()
     {
         if (IsActivelyConversing)
@@ -333,7 +344,7 @@ public class Conversation_Simple : Interaction
             {
                 Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Chat" : "Apologize", "PositiveReply", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
                 Player.ButtonPrompts.AddPrompt("Conversation", Ped.TimesInsultedByPlayer <= 0 ? "Insult" : "Antagonize", "NegativeReply", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 2);
-                Player.ButtonPrompts.AddPrompt("Conversation", "Ask a Question", "AskQuestion", Settings.SettingsManager.KeySettings.InteractStart, 5);
+                Player.ButtonPrompts.AddPrompt("Conversation", "Transact/Question", "AskQuestion", Settings.SettingsManager.KeySettings.InteractStart, 5);
                 Player.ButtonPrompts.AddPrompt("Conversation", "Cancel", "Cancel", Settings.SettingsManager.KeySettings.InteractCancel, 90);
             }
         }

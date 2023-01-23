@@ -182,10 +182,14 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneMessagesApp.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneSettingsApp.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsAppEntry.cs" />
-    <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsRingtoneEntry.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsAppProfileEntry.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsAppThemeEntry.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsBackgroundEntry.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsToneEntry.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingsVolumeEntry.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingTracker.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
+    <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Other\GenericIdle.cs" />

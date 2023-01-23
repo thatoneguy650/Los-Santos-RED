@@ -43,6 +43,9 @@ public class InteractableLocation : BasicLocation
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
 
+    [XmlIgnore]
+    public float EntranceGroundZ { get; set; } = 0.0f;
+
 
     public string MenuID { get; set; }
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
@@ -52,14 +55,18 @@ public class InteractableLocation : BasicLocation
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public bool CanInteractWhenWanted { get; set; } = false;
-   // public virtual bool InteractsWithVendor { get; set; } = true;
+
+
+    public virtual bool ShowsMarker { get; set; } = true;
+
+    // public virtual bool InteractsWithVendor { get; set; } = true;
 
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     [XmlIgnore]
     public virtual string ButtonPromptText { get; set; }
     [XmlIgnore]
-    public Merchant Merchant { get; set; }
+    public Merchant Vendor { get; set; }
     [XmlIgnore]
     public bool HasVendor => VendorPosition != Vector3.Zero;
     [XmlIgnore]
@@ -72,14 +79,6 @@ public class InteractableLocation : BasicLocation
     public MenuPool MenuPool { get; private set; }
     [XmlIgnore]
     public bool VendorAbandoned { get; set; } = false;
-
-
-
-
-
-
-
-
 
 
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
@@ -230,7 +229,7 @@ public class InteractableLocation : BasicLocation
             }
             GameFiber.Yield();
         }
-        World.Pedestrians.AddEntity(Merchant);
+        World.Pedestrians.AddEntity(Vendor);
         if (!World.Places.ActiveInteractableLocations.Contains(this))
         {
             World.Places.ActiveInteractableLocations.Add(this);
@@ -239,9 +238,9 @@ public class InteractableLocation : BasicLocation
     }
     public override void Deactivate()
     {
-        if (Merchant != null && Merchant.Pedestrian.Exists())
+        if (Vendor != null && Vendor.Pedestrian.Exists())
         {
-            Merchant.Pedestrian.Delete();
+            Vendor.Pedestrian.Delete();
         }
         if (World != null && World.Places != null && World.Places.ActiveInteractableLocations != null && World.Places.ActiveInteractableLocations.Contains(this))
         {
@@ -283,14 +282,15 @@ public class InteractableLocation : BasicLocation
             GameFiber.Yield();
             if (ped.Exists())
             {
-                Merchant = new Merchant(ped, settings, false, true, false, "Vendor", crimes, weapons, World, false);
+                Vendor = new Merchant(ped, settings, false, true, false, "Vendor", crimes, weapons, World, false);
                 if (addMenu)
                 {
                     //Merchant.ShopMenu = Menu;
-                    Merchant.SetupTransactionItems(Menu);
+                    Vendor.SetupTransactionItems(Menu);
                 }
-                Merchant.AssociatedStore = this;
-                Merchant.SpawnPosition = VendorPosition;
+                Vendor.AssociatedStore = this;
+                
+                Vendor.SpawnPosition = VendorPosition;
                 //EntryPoint.WriteToConsole($"MERCHANT SPAWNED? Menu: {Menu == null} HANDLE {ped.Handle}");
 
 

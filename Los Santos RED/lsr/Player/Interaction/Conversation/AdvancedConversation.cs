@@ -12,19 +12,26 @@ using ExtensionsMethods;
 
 public class AdvancedConversation
 {
+    private IInteractionable Player;
     private IShopMenus ShopMenus;
     private IModItems ModItems;
     private IZones Zones;
     private Conversation_Simple ConversationSimple;
     private MenuPool MenuPool;
     private UIMenu ConversationMenu;
-
-    public AdvancedConversation(Conversation_Simple conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus)
+    private IPlacesOfInterest PlacesOfInterest;
+    private IGangs Gangs;
+    private IGangTerritories GangTerritories;
+    public AdvancedConversation(IInteractionable player, Conversation_Simple conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories)
     {
+        Player = player;
         ConversationSimple = conversation_Simple;
         ModItems = modItems;
         Zones = zones;
         ShopMenus = shopMenus;
+        PlacesOfInterest = placesOfInterest;
+        Gangs = gangs;
+        GangTerritories = gangTerritories;
     }
     public void Setup()
     {
@@ -68,27 +75,18 @@ public class AdvancedConversation
     }
     private void UpdateMenuItems()
     {
-        List<ModItem> dealerItems = ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic).ToList();
-        UIMenuListScrollerItem<ModItem> AskForItemDealer = new UIMenuListScrollerItem<ModItem>("Dealers", "Ask where to find dealers for an item", dealerItems);
-        AskForItemDealer.Activated += (menu, item) =>
+        UIMenuItem transactionInteract = new UIMenuItem("Start Transact", "Start a transaction with the current ped.");
+        transactionInteract.Activated += (menu, item) =>
         {
-            AskForItem(AskForItemDealer.SelectedItem, true);
+            menu.Visible = false;
+            StartTransactionWithPed();
         };
-        if (dealerItems.Any())
+        if (ConversationSimple.ConversingPed?.HasMenu == true)
         {
-            ConversationMenu.AddItem(AskForItemDealer);
+            ConversationMenu.AddItem(transactionInteract);
         }
-        List<ModItem> customerItems = ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic).ToList();
-        UIMenuListScrollerItem<ModItem> AskForItemCustomer = new UIMenuListScrollerItem<ModItem>("Customers", "Ask where to find customers for an item", customerItems);
-        AskForItemCustomer.Activated += (menu, item) =>
-        {
-            AskForItem(AskForItemCustomer.SelectedItem, false);
-        };
-        if (customerItems.Any())
-        {
-            ConversationMenu.AddItem(AskForItemCustomer);
-        }
-
+        AddDrugItemQuestions();
+        AddGangItemQuestions();
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
         Cancel.Activated += (menu, item) =>
         {
@@ -96,9 +94,109 @@ public class AdvancedConversation
         };
         ConversationMenu.AddItem(Cancel);
     }
+    private void StartTransactionWithPed()
+    {
+        ConversationSimple?.TransitionToTransaction();
+        Player.ActivityManager.StartTransaction(ConversationSimple.ConversingPed);
+    }
+    private void AddGangItemQuestions()
+    {
+        UIMenuListScrollerItem<Gang> AskAboutGangDenScroller = new UIMenuListScrollerItem<Gang>("Gang Hangouts", "Ask where to find a specific gang hangout", Gangs.AllGangs);
+        AskAboutGangDenScroller.Activated += (menu, item) =>
+        {
+            AskAboutGangDen(AskAboutGangDenScroller.SelectedItem);
+        };
+        UIMenuListScrollerItem<Gang> AskAboutGangTerritoryScroller = new UIMenuListScrollerItem<Gang>("Gang Territory", "Ask about the gangs territory", Gangs.AllGangs);
+        AskAboutGangTerritoryScroller.Activated += (menu, item) =>
+        {
+            AskAboutGangTerritory(AskAboutGangTerritoryScroller.SelectedItem);
+        };
+        ConversationMenu.AddItem(AskAboutGangDenScroller);
+        ConversationMenu.AddItem(AskAboutGangTerritoryScroller);      
+    }
+    private void AskAboutGangDen(Gang gang)
+    {
+        if (ConversationSimple.ConversingPed == null || !ConversationSimple.ConversingPed.KnowsGangAreas || gang == null)
+        {
+            ReplyUnknown();
+            return;
+        }
+        GangDen foundDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang != null && x.AssociatedGang.ID == gang.ID).FirstOrDefault();
+        if(foundDen == null)
+        {
+            ReplyUnknown();
+            return;
+        }     
+        List<string> PossibleReplies = new List<string>() {
+            $"Check out ~p~{foundDen.ZoneName}~s~",
+            $"I heard its near ~p~{foundDen.ZoneName}~s~",
+            $"Go ask around ~p~{foundDen.ZoneName}~s~",
+            $"Might get lucky in ~p~{foundDen.ZoneName}~s~",
+            $"Go look around ~p~{foundDen.ZoneName}~s~",
+            $"Scope out ~p~{foundDen.ZoneName}~s~",
+            };
+        ConversationSimple.PedReply(PossibleReplies.PickRandom());
+    }
+    private void AskAboutGangTerritory(Gang gang)
+    {
+        if (ConversationSimple.ConversingPed == null || !ConversationSimple.ConversingPed.KnowsGangAreas)
+        {
+            ReplyUnknown();
+            return;
+        }
+        List<ZoneJurisdiction> foundTerritory = GangTerritories.GetGangTerritory(gang.ID);
+        if (foundTerritory == null || !foundTerritory.Any())
+        {
+            ReplyUnknown();
+            return;
+        }
+        List<Zone> FoundZones = new List<Zone>();
+        foreach (ZoneJurisdiction zoneJurisdiction in foundTerritory)
+        {
+            Zone foundZone = Zones.GetZone(zoneJurisdiction.ZoneInternalGameName);
+            if(foundZone != null)
+            {
+                FoundZones.Add(foundZone);
+            }
+        }
+        if(!FoundZones.Any())
+        {
+            ReplyUnknown();
+            return;
+        }
+        string zoneList = string.Join(", ", FoundZones.Select(x => x.DisplayName).Take(3));
+        List<string> PossibleReplies = new List<string>() {
+            $"Normally they hang out near ~p~{zoneList}~s~",
+            $"I've seen them in ~p~{zoneList}~s~",
+            $"You can check out ~p~{zoneList}~s~",
+            $"I'd go visit ~p~{zoneList}~s~",
+            $"Go look around ~p~{zoneList}~s~",
+            $"They should be near ~p~{zoneList}~s~",
+            };
+        ConversationSimple.PedReply(PossibleReplies.PickRandom());
+    }
+    private void AddDrugItemQuestions()
+    {
+        List<ModItem> dealerItems = ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic).ToList();
+        UIMenuListScrollerItem<ModItem> AskForItemDealer = new UIMenuListScrollerItem<ModItem>("Dealers", "Ask where to find dealers for an item", dealerItems);
+        AskForItemDealer.Activated += (menu, item) =>
+        {
+            AskForItem(AskForItemDealer.SelectedItem, true);
+        };
+        UIMenuListScrollerItem<ModItem> AskForItemCustomer = new UIMenuListScrollerItem<ModItem>("Customers", "Ask where to find customers for an item", dealerItems);
+        AskForItemCustomer.Activated += (menu, item) =>
+        {
+            AskForItem(AskForItemCustomer.SelectedItem, false);
+        };
+        if (dealerItems.Any())
+        {
+            ConversationMenu.AddItem(AskForItemDealer);
+            ConversationMenu.AddItem(AskForItemCustomer);
+        }
+    }
     private void AskForItem(ModItem modItem, bool isPurchase)
     {
-        if(ConversationSimple.ConversingPed == null || !ConversationSimple.ConversingPed.KnownsDrugAreas)
+        if(ConversationSimple.ConversingPed == null || !ConversationSimple.ConversingPed.KnowsDrugAreas)
         {
             ReplyUnknown();
             return;
@@ -117,7 +215,7 @@ public class AdvancedConversation
     }
     private void ReplyUnknown()
     {
-        List<string> PossibleReplies = new List<string>() { "I don't know", "How the fuck would I know?","I really have no idea", "I just live here man", "Not sure", "Maybe ask someone else?" };
+        List<string> PossibleReplies = new List<string>() { "I don't know", "How the fuck would I know?","I really have no idea", "I just live here man", "Not sure", "Maybe ask someone else?", "Why would I know that?", "Leave me alone" };
         ConversationSimple.PedReply(PossibleReplies.PickRandom());
         //Game.DisplaySubtitle(PossibleReplies.PickRandom());
     }
@@ -157,8 +255,6 @@ public class AdvancedConversation
             };
         }
         ConversationSimple.PedReply(PossibleReplies.PickRandom());
-        //Game.DisplaySubtitle(PossibleReplies.PickRandom());
-        //string zoneName = $"{string.Join(",", PossibleZones.Select(x => x.DisplayName))}";
     }
 
 

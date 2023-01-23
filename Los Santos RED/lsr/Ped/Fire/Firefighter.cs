@@ -19,6 +19,7 @@ public class Firefighter : PedExt
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public override bool KnownsDrugAreas => false;
+    public override bool KnowsDrugAreas => false;
+    public override bool KnowsGangAreas => false;
     //public bool WasModSpawned { get; private set; }
 }

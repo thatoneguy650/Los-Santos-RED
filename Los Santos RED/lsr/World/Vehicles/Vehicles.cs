@@ -343,6 +343,7 @@ public class Vehicles
             return null;
         }
     }
+
     public VehicleExt GetVehicleExt(Vehicle vehicle)
     {
         VehicleExt ToReturn = null;

@@ -89,7 +89,7 @@ public class DynamicPlaces
                     }
                     else if (GasPumpsModelNames.Contains(modelName) || GasPumpsModelHashes.Contains(hash))
                     {
-                        ActivateGasPump(obj, modelName, position, heading);
+                        ActivateGasPump(obj, modelName, position, heading, true);
                         GameFiber.Yield();
                     }
                 }
@@ -118,14 +118,15 @@ public class DynamicPlaces
             if (!ActiveVendingMachines.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
             {
                 ShopMenu vendingMenu = ShopMenus.GetVendingMenu(modelName);
-                VendingMachine newVend = new VendingMachine(position, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
+                Vector3 EntrancePos = obj.GetOffsetPositionFront(0.5f);
+                VendingMachine newVend = new VendingMachine(EntrancePos, heading, vendingMenu.Name, vendingMenu.Name, vendingMenu.ID, obj) { Menu = vendingMenu, OpenTime = 0, CloseTime = 24 };
                 newVend.CanInteractWhenWanted = true;
                 newVend.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                 ActiveVendingMachines.Add(newVend);
             }
         }
     }
-    private void ActivateGasPump(Rage.Object obj, string modelName, Vector3 position, float heading)
+    private void ActivateGasPump(Rage.Object obj, string modelName, Vector3 position, float heading, bool IsDoubleSided)
     {
         float distanceTo = obj.DistanceTo(Game.LocalPlayer.Character.Position);
         if (distanceTo <= 50f)
@@ -133,18 +134,40 @@ public class DynamicPlaces
             if (!ActiveGasPumps.Any(x => x.EntrancePosition.DistanceTo2D(obj.Position) <= 0.2f))
             {
                 GasStation ClosestStation = (GasStation)Places.ActiveLocations.Where(x => x.GetType() == typeof(GasStation)).OrderBy(x => x.EntrancePosition.DistanceTo2D(obj)).FirstOrDefault();//maybe store anyothe list of stations?
+                Vector3 EntrancePos = obj.Position;
+                //Vector3 EntrancePos2 = obj.GetOffsetPositionFront(-0.5f);
+
+
+
                 GasPump newGasPump;
                 if (ClosestStation != null)
                 {
-                    newGasPump = new GasPump(position, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
+                    newGasPump = new GasPump(EntrancePos, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
                 }
                 else
                 {
-                    newGasPump = new GasPump(position, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
+                    newGasPump = new GasPump(EntrancePos, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
                 }
                 newGasPump.CanInteractWhenWanted = true;
                 newGasPump.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                 ActiveGasPumps.Add(newGasPump);
+
+                //if (IsDoubleSided)
+                //{
+                //    GasPump newGasPump2;
+                //    if (ClosestStation != null)
+                //    {
+                //        newGasPump2 = new GasPump(EntrancePos2, heading, ClosestStation.Name, ClosestStation.Description, "None", obj, ClosestStation) { BannerImagePath = ClosestStation.BannerImagePath, OpenTime = 0, CloseTime = 24 };
+                //    }
+                //    else
+                //    {
+                //        newGasPump2 = new GasPump(EntrancePos2, heading, "Gas Pump", "Gas Pump", "None", obj, null) { OpenTime = 0, CloseTime = 24 };
+                //    }
+                //    newGasPump2.CanInteractWhenWanted = true;
+                //    newGasPump2.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
+                //    ActiveGasPumps.Add(newGasPump2);
+                //}
+
             }
         }
     }

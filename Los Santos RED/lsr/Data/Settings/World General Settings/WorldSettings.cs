@@ -31,7 +31,7 @@ public class WorldSettings : ISettingsDefaultable
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier { get; set; }
     [Description("If enabled, ALL static blips will be added to the map.")]
     public bool ShowAllBlipsOnMap { get; set; }
-    [Description("If enabled, there will be a 3D entrance marker around location entrances.")]
+    [Description("If enabled, there will be a 3D entrance marker around location entrances. Performance Intensive")]
     public bool ShowMarkersOnLocationEntrances { get; set; }
     [Description("If enabled, hotels will use specific rooms (if available).")]
     public bool HotelsUsesRooms { get; set; }
@@ -72,6 +72,7 @@ public class WorldSettings : ISettingsDefaultable
 #if DEBUG
         RandomVehiclePlatesPercent = 15f;
         RandomVehicleVanityPlatesPercent = 10f;
+        //ShowMarkersOnLocationEntrances = true;
 #endif
         ShowAllBlipsOnMap = true;
 

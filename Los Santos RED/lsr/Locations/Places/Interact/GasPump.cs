@@ -111,6 +111,11 @@ public class GasPump : InteractableLocation
     private void SetupGeneral()
     {
         VehicleToFill = World.Vehicles.GetClosestVehicleExt(EntrancePosition, true, 6f);
+
+
+
+
+
         if (AssociatedStation != null)
         {
             pricePerUnit = AssociatedStation.PricePerGallon;

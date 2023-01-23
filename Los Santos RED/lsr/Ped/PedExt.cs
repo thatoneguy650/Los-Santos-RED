@@ -106,6 +106,80 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public float HeightToPlayer => PlayerPerception.HeightToTarget;
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
     public string FormattedName => (PlayerKnownsName ? Name : GroupName);
+
+
+    public string InteractPrompt(IButtonPromptable player)
+    {
+        bool toSell = false;
+        bool toSellPlayerHas = false;
+        bool toBuy = false;
+        if (HasMenu)
+        {
+            toSell = ShopMenu.Items.Any(x => x.Sellable);
+            toBuy = ShopMenu.Items.Any(x => x.Purchaseable);
+            toSellPlayerHas = ShopMenu.Items.Any(x => x.Sellable && player.Inventory.Get(x.ModItem) != null && x.NumberOfItemsToPurchaseFromPlayer > 0);
+        }
+        string promptText;
+        if (toSell && toBuy)
+        {
+            promptText = $"Transact with";
+        }
+        else if (toBuy)
+        {
+            promptText = $"Buy from";
+        }
+        else if (toSell)
+        {
+            promptText = $"Sell to";
+        }
+        else
+        {
+            promptText = $"Talk to";
+        }
+        promptText += $" {FormattedName}";
+        if (toSellPlayerHas && Settings.SettingsManager.ActivitySettings.ShowInPromptWhenPedsWantToBuyItemsYouHave)
+        {
+            promptText += " (!)";
+        }
+        return promptText;
+    }
+    public string TransactionPrompt(IButtonPromptable player)
+    {
+        bool toSell = false;
+        bool toSellPlayerHas = false;
+        bool toBuy = false;
+        if (HasMenu)
+        {
+            toSell = ShopMenu.Items.Any(x => x.Sellable);
+            toBuy = ShopMenu.Items.Any(x => x.Purchaseable);
+            toSellPlayerHas = ShopMenu.Items.Any(x => x.Sellable && player.Inventory.Get(x.ModItem) != null && x.NumberOfItemsToPurchaseFromPlayer > 0);
+        }
+        string promptText;
+        if (toSell && toBuy)
+        {
+            promptText = $"Transact with";
+        }
+        else if (toBuy)
+        {
+            promptText = $"Buy from";
+        }
+        else if (toSell)
+        {
+            promptText = $"Sell to";
+        }
+        else
+        {
+            promptText = $"Transact with";
+        }
+        promptText += $" {FormattedName}";
+        if (toSellPlayerHas && Settings.SettingsManager.ActivitySettings.ShowInPromptWhenPedsWantToBuyItemsYouHave)
+        {
+            promptText += " (!)";
+        }
+        return promptText;
+    }
+
+
     public string GroupName { get; set; } = "Person";
     public uint GameTimeLastUpdated { get; set; }
     public uint GameTimeLastUpdatedTask { get; set; }
@@ -303,7 +377,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasModSpawned { get; set; } = false;
     public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
-    public virtual bool KnownsDrugAreas => HasMenu;// (HasMenu || IsGangMember) && !IsMerchant && !IsCop && !Isem;
+    public virtual bool KnowsDrugAreas => HasMenu;// (HasMenu || IsGangMember) && !IsMerchant && !IsCop && !Isem;
+    public virtual bool KnowsGangAreas => HasMenu;
 
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {

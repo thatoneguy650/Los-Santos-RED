@@ -135,7 +135,7 @@ namespace Mod
             GPSManager = new GPSManager(this, World);
             VehicleOwnership = new VehicleOwnership(this,World);
             BankAccounts = new BankAccounts(this, Settings);
-            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus);
+            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories);
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
@@ -359,7 +359,18 @@ namespace Mod
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
+
+
+
+
+
+
         public int SpeechSkill { get; set; }
+
+
+
+
+
         public uint TargettingHandle
         {
             get => targettingHandle;

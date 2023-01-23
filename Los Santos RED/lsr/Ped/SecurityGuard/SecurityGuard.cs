@@ -63,7 +63,8 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public bool IsRespondingToWanted { get; set; }
     public bool IsRespondingToCitizenWanted { get; set; }
     public bool HasTaser { get; set; } = false;
-    public override bool KnownsDrugAreas => false;
+    public override bool KnowsDrugAreas => false;
+    public override bool KnowsGangAreas => true;
     public uint GameTimeLastUpdatedTarget { get; set; }
     public PedExt CurrentTarget { get; set; }
     public override bool NeedsFullUpdate

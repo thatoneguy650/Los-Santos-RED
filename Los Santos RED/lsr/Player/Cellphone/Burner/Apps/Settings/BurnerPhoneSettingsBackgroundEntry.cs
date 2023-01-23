@@ -9,14 +9,38 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
-public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
+public class BurnerPhoneSettingsBackgroundEntry : BurnerPhoneSettingsAppEntry
 {
     private List<BurnerPhoneSettingTracker> BurnerPhoneSettingTrackers;
-
-    public BurnerPhoneSettingsVolumeEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
+    private List<Tuple<int, string>> Backgrounds = new List<Tuple<int, string>>();
+    public BurnerPhoneSettingsBackgroundEntry(BurnerPhoneSettingsApp burnerPhoneSettingsApp, ISettingsProvideable settings, string name, int index, int icon) : base(burnerPhoneSettingsApp, settings, name, index, icon)
     {
-        SelectedItemIcon = (int)BurnerPhoneSettingsIcon.Volume;
+        SelectedItemIcon = (int)BurnerPhoneSettingsIcon.Ticked;// 39;
+        NonSelectedItemIcon = (int)BurnerPhoneSettingsIcon.Edit; //0;
+
+        Backgrounds.Add(new Tuple<int, string>(0, "Default"));
+        Backgrounds.Add(new Tuple<int, string>(10, "Blue Angles"));
+        Backgrounds.Add(new Tuple<int, string>(11, "Blue Shards"));
+        Backgrounds.Add(new Tuple<int, string>(12, "Blue Circles"));
+        Backgrounds.Add(new Tuple<int, string>(13, "Diamonds"));
+        Backgrounds.Add(new Tuple<int, string>(14, "Green Glow"));
+        Backgrounds.Add(new Tuple<int, string>(9, "Green Shards"));
+        Backgrounds.Add(new Tuple<int, string>(5, "Green Squares"));
+
+        Backgrounds.Add(new Tuple<int, string>(8, "Green Triangles"));
+        Backgrounds.Add(new Tuple<int, string>(15, "Orange 8-Bit"));
+        Backgrounds.Add(new Tuple<int, string>(7, "Orange Halftone"));
+        Backgrounds.Add(new Tuple<int, string>(6, "Orange Herringbone"));
+        Backgrounds.Add(new Tuple<int, string>(16, "Orange Triangles"));
+        Backgrounds.Add(new Tuple<int, string>(4, "Purple Glow"));
+        Backgrounds.Add(new Tuple<int, string>(17, "Purple Tartan"));
+        //Backgrounds.Add(new Tuple<int, string>(15, "Background 15"));
+       // Backgrounds.Add(new Tuple<int, string>(16, "Background 16"));
+        //Backgrounds.Add(new Tuple<int, string>(17, "Background 17"));
+
+
     }
     public override void Open(bool Reset)
     {
@@ -40,28 +64,29 @@ public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
     public override void HandleInput()
     {
         HandleIndex();
-        HandleVolumeSelection();
+        HandleThemeSelection();
         HandleBack();
         SetRingtoneSoftKeys();
     }
     private void DisplayVolume()
     {
         BurnerPhoneSettingTrackers = new List<BurnerPhoneSettingTracker>();
-        for (int i = 0; i < 21; i++)
+
+        int Index = 0;
+        foreach(Tuple<int, string> thingo in Backgrounds.OrderBy(x=> x.Item1))
         {
-            float percentValue = ((float)i) / 20.0f;
-            string percentString = percentValue.ToString("P0");
-            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(i, percentString) { Value = percentValue };
-            if(BurnerPhoneSettingsApp.Player.CellPhone.Volume == percentValue)// if (Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume == percentValue)
+            BurnerPhoneSettingTracker burnerPhoneSettingTracker = new BurnerPhoneSettingTracker(Index, thingo.Item2) { IntegerValue = thingo.Item1 };
+            if (BurnerPhoneSettingsApp.Player.CellPhone.Background == thingo.Item1)
             {
                 burnerPhoneSettingTracker.IsSelected = true;
             }
             BurnerPhoneSettingTrackers.Add(burnerPhoneSettingTracker);
             DrawSettingsItem(burnerPhoneSettingTracker.IsSelected ? SelectedItemIcon : NonSelectedItemIcon, burnerPhoneSettingTracker.Index, burnerPhoneSettingTracker.Name);
+            Index++;
         }
-        TotalItems = 21;
+        TotalItems = Backgrounds.Count();
     }
-    private void HandleVolumeSelection()
+    private void HandleThemeSelection()
     {
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176))//SELECT
         {
@@ -78,8 +103,10 @@ public class BurnerPhoneSettingsVolumeEntry : BurnerPhoneSettingsAppEntry
                 oldSelected.IsSelected = false;
             }
             selectedItem.IsSelected = true;
-            BurnerPhoneSettingsApp.Player.CellPhone.CustomVolume = selectedItem.Value;
-            BurnerPhoneSettingsApp.Player.CellPhone.PreviewRingtoneSound();
+            BurnerPhoneSettingsApp.Player.CellPhone.CustomBackground = selectedItem.IntegerValue;
+            EntryPoint.WriteToConsole($"SETTING BACKGROUND TO {selectedItem.IntegerValue} {BurnerPhoneSettingsApp.Player.CellPhone.CustomBackground}");
+
+            BurnerPhoneSettingsApp.BurnerPhone.UpdateThemeItems();
             Open(false);
         }
     }

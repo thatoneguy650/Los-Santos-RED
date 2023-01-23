@@ -479,7 +479,6 @@ public class DebugMenu : Menu
             Player.CellPhone.AddScamText();
             menu.Visible = false;
         };
-        
 
 
         PlayerStateItemsMenu.AddItem(KillPlayer);

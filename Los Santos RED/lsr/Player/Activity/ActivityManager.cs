@@ -40,6 +40,8 @@ public class ActivityManager
     private IWeapons Weapons;
     private IZones Zones;
     private IShopMenus ShopMenus;
+    private IGangs Gangs;
+    private IGangTerritories GangTerritories;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -67,6 +69,12 @@ public class ActivityManager
 
     public bool CanConverse => !Player.IsIncapacitated && !Player.IsVisiblyArmed && Player.IsAliveAndFree && !Player.IsMovingDynamically && ((Player.IsInVehicle && Player.VehicleSpeedMPH <= 5f) || !Player.IsMovingFast) && !IsLootingBody && !IsDraggingBody && !IsHoldingHostage && !IsDancing;
     public bool CanConverseWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && Player.CurrentLookedAtPed.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!Player.CurrentLookedAtPed.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
+   
+    
+   // public bool CanConverseWithPed(PedExt ped) => ped != null && Player.CurrentTargetedPed == null && ped.CanConverse && !Player.RelationshipManager.GangRelationships.IsHostile(Player.CurrentLookedAtGangMember?.Gang) && (!ped.IsCop || (Player.IsNotWanted && !Player.Investigation.IsActive)) && CanConverse;
+
+
+
     public bool CanTakeHostageWithLookedAtPed => Player.CurrentLookedAtPed != null && Player.CurrentTargetedPed == null && CanTakeHostage && !Player.CurrentLookedAtPed.IsInVehicle && !Player.CurrentLookedAtPed.IsUnconscious && !Player.CurrentLookedAtPed.IsDead && Player.CurrentLookedAtPed.DistanceToPlayer <= 5.0f && Player.CurrentLookedAtPed.Pedestrian.Exists() && Player.CurrentLookedAtPed.Pedestrian.IsThisPedInFrontOf(Player.Character) && !Player.Character.IsThisPedInFrontOf(Player.CurrentLookedAtPed.Pedestrian);
     public bool CanTakeHostage => !Player.IsCop && !Player.IsInVehicle && !Player.IsIncapacitated && !IsLootingBody && !IsDancing && !IsHoldingHostage && Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.CanPistolSuicide;
     public bool CanHoldUpTargettedPed => Player.CurrentTargetedPed != null && !Player.IsCop && Player.CurrentTargetedPed.CanBeMugged && Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.IsGettingIntoAVehicle && !Player.IsBreakingIntoCar && Player.IsVisiblyArmed && Player.CurrentTargetedPed.DistanceToPlayer <= 15f;
@@ -125,7 +133,7 @@ public class ActivityManager
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
-        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus)
+        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories)
     {
         Player = player;
         Settings = settings;
@@ -148,6 +156,8 @@ public class ActivityManager
         PlacesOfInterest = placesOfInterest;
         Zones = zones;
         ShopMenus = shopMenus;
+        Gangs = gangs;
+        GangTerritories = gangTerritories;
     }
     public void Setup()
     {
@@ -563,7 +573,7 @@ public class ActivityManager
             }
             if (Settings.SettingsManager.ActivitySettings.UseSimpleConversation)
             {
-                Interaction = new Conversation_Simple(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus);
+                Interaction = new Conversation_Simple(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories);
                 Interaction.Start();
             }
             else
@@ -601,22 +611,41 @@ public class ActivityManager
             {
                 Interaction.Dispose();
             }
-            //IsConversing = true;
             Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == Player.CurrentLookedAtPed.Handle);
             try
             {
+                InteractableLocation associatedStore = null;
                 if (merchant != null)
                 {
-                    EntryPoint.WriteToConsole("Transaction: 1 Start Ran", 5);
-                    Interaction = new PersonTransaction(LocationInteractable, merchant, merchant.ShopMenu, ModItems, World, Settings, Weapons, Time) { AssociatedStore = merchant.AssociatedStore };// Settings, ModItems, TimeControllable, World, Weapons); 
-                    Interaction.Start();
+                    associatedStore = merchant.AssociatedStore;
                 }
-                else
+                Interaction = new PersonTransaction(LocationInteractable, Player.CurrentLookedAtPed, Player.CurrentLookedAtPed.ShopMenu, ModItems, World, Settings, Weapons, Time) { AssociatedStore = associatedStore };
+                Interaction.Start();
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Interaction: " + e.StackTrace + e.Message, 0);
+            }
+        }
+    }
+    public void StartTransaction(PedExt pedExt)
+    {
+        if (!IsInteracting)
+        {
+            if (Interaction != null)
+            {
+                Interaction.Dispose();
+            }
+            Merchant merchant = World.Pedestrians.Merchants.FirstOrDefault(x => x.Handle == pedExt.Handle);
+            try
+            {
+                InteractableLocation associatedStore = null;
+                if (merchant != null)
                 {
-                    EntryPoint.WriteToConsole("Transaction: 2 Start Ran", 5);
-                    Interaction = new PersonTransaction(LocationInteractable, Player.CurrentLookedAtPed, Player.CurrentLookedAtPed.ShopMenu, ModItems, World, Settings, Weapons, Time);// Settings, ModItems, TimeControllable, World, Weapons);
-                    Interaction.Start();
+                    associatedStore = merchant.AssociatedStore;
                 }
+                Interaction = new PersonTransaction(LocationInteractable, pedExt, pedExt.ShopMenu, ModItems, World, Settings, Weapons, Time) { AssociatedStore = associatedStore, DoGreet = false };
+                Interaction.Start();
             }
             catch (Exception e)
             {

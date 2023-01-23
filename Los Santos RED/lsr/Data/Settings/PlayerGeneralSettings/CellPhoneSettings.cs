@@ -21,23 +21,54 @@ public class CellphoneSettings : ISettingsDefaultable
     public float BurnerCellPositionZ { get; set; }
     [Description("Burner cell scale.")]
     public float BurnerCellScale { get; set; }
+
+
+
+
+
     [Description("Type of phone to use as the burner. Choose 0-4. 0 - Default phone / Michael's phone, 1 - Trevor's phone, 2 - Franklin's phone, 3 - Unused police phone, 4 - Prologue phone.")]
     public int BurnerCellPhoneTypeID { get; set; }
     [Description("Choose burner phone scaleform. Choices: cellphone_ifruit, cellphone_facade, or cellphone_badget")]
     public string BurnerCellScaleformName { get; set; }
+
+
+
+
+
+
+
+
+
     [Description("Choose burner phone theme (1-8)")]
-    public int BurnerCellThemeID { get; set; }
+    public int DefaultBurnerCellThemeID { get; set; }
     [Description("Choose burner phone background (0-17)")]
-    public int BurnerCellBackgroundID { get; set; }
+    public int DefaultBurnerCellBackgroundID { get; set; }
+
+
+
+
     [Description("Enable or disable custom ringtones.")]
     public bool UseCustomRingtone { get; set; }
-    [Description("Set the custom ringtone filename. Use the filename from the LosSantosRED\audio\ringtones folder. Ex. STTHOMAS.wav")]
-    public string CustomRingtoneName { get; set; }
+    [Description("Set the default custom ringtone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.wav")]
+    public string DefaultCustomRingtoneName { get; set; }
 
-    [Description("Enable or disable custom ringtones volume control")]
-    public bool SetCustomRingtoneVolume { get; set; }
-    [Description("Set volume of custom ringtones. Min 0.0 Max 1.0")]
-    public float CustomRingtoneVolume { get; set; }
+
+
+
+    [Description("Enable or disable custom texttones.")]
+    public bool UseCustomTexttone { get; set; }
+    [Description("Set the default custom texttone filename. Use the filename from the LosSantosRED\audio\tones folder. Ex. STTHOMAS.wav")]
+    public string DefaultCustomTexttoneName { get; set; }
+
+
+
+    [Description("Set volume of custom tones. Min 0.0 Max 1.0")]
+    public float DefaultCustomToneVolume { get; set; }
+
+
+
+
+
     public CellphoneSettings()
     {
         SetDefault();
@@ -55,11 +86,16 @@ public class CellphoneSettings : ISettingsDefaultable
         AllowTerminateVanillaCellphoneScripts = true;
         BurnerCellScaleformName = "cellphone_ifruit";
         TerminateVanillaCellphone = false;
-        BurnerCellThemeID = 1;
-        BurnerCellBackgroundID = 0;
+
+
+        DefaultBurnerCellThemeID = 1;
+        DefaultBurnerCellBackgroundID = 0;
+
         UseCustomRingtone = true;
-        CustomRingtoneName = "GTA5TONE7.wav";
-        SetCustomRingtoneVolume = true;
-        CustomRingtoneVolume = 0.25f;
+        DefaultCustomRingtoneName = "GTA5TONE2.wav";
+        UseCustomTexttone = true;
+        DefaultCustomTexttoneName = "GTA5TONE7.wav";
+        DefaultCustomToneVolume = 0.25f;
+
     }
 }
