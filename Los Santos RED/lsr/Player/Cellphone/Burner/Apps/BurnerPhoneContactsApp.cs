@@ -67,14 +67,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             PhoneContact contact = Player.CellPhone.ContactList.Where(x => x.Index == CurrentRow).FirstOrDefault();
             if (contact != null)
             {
-                BurnerPhone.LastCalledContact = contact;
-                if (contact.RandomizeDialTimeout)
-                {
-                    contact.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
-                }
-                IsDisplayingCall = true;
                 Call(contact);
-                DisplayCallUI(contact.Name, "CELL_211", contact.IconName.ToUpper());
             }
         }
         int TotalContacts = Player.CellPhone.ContactList.Count();
@@ -98,12 +91,11 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
                 NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, false);
             }
             OnLeftCall();
-            //GameFiber.Sleep(200);
             BurnerPhone.ReturnHome(Index);
         }
-        BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Call, Color.LightBlue);
-        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Blank, Color.Black);
-        BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Purple);
+        BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Keypad, Color.LightBlue);
+        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Call, Color.LightGreen);
+        BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Red);
     }
     public override void Update()
     {
@@ -181,6 +173,18 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
     }
     public void Call(PhoneContact contact)
     {
+        if(contact == null)
+        {
+            return;
+        }
+        BurnerPhone.LastCalledContact = contact;
+        if (contact.RandomizeDialTimeout)
+        {
+            contact.DialTimeout = RandomItems.GetRandomNumberInt(1000, 5000);
+        }
+        IsDisplayingCall = true;
+
+
         // Cannot call if already on call or contact is busy (Active == false)
         if (isDialActive || isBusyActive)
         {
@@ -204,6 +208,10 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             Player.CellPhone.ContactAnswered(contact);
             //OnAnswered(this); // Answer the phone instantly
         }
+
+
+        DisplayCallUI(contact.Name, "CELL_211", contact.IconName.ToUpper());
+
     }
     public void DisplayCallUI(string contactName, string statusText = "CELL_211", string picName = "CELL_300")
     {

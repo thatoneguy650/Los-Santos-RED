@@ -66,6 +66,7 @@ namespace LosSantosRED.lsr.Data
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
+        public CellPhoneSave CellPhoneSave { get; set; } = new CellPhoneSave();
         public void Save(ISaveable player, IWeapons weapons, ITimeReportable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             PlayerName = player.PlayerName;
@@ -189,6 +190,7 @@ namespace LosSantosRED.lsr.Data
             SpeechSkill = player.SpeechSkill;
             IsCop = player.IsCop;
             VoiceName = player.FreeModeVoice;
+            CellPhoneSave = new CellPhoneSave(player.CellPhone.CustomRingtone,player.CellPhone.CustomTextTone,player.CellPhone.CustomTheme,player.CellPhone.CustomBackground,player.CellPhone.CustomVolume,player.CellPhone.SleepMode, player.CellPhone.CustomPhoneType,player.CellPhone.CustomPhoneOS);
         }
         public void Load(IWeapons weapons,IPedSwap pedSwap, IInventoryable player, ISettingsProvideable settings, IEntityProvideable world, IGangs gangs, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
@@ -207,6 +209,7 @@ namespace LosSantosRED.lsr.Data
                 LoadLicenses(player);
                 LoadResidences(player, placesOfInterest);
                 LoadHumanState(player);
+                LoadCellPhoneSettings(player);
                 player.SetCopStatus(IsCop, null);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
@@ -219,6 +222,19 @@ namespace LosSantosRED.lsr.Data
                 Game.DisplayNotification("Error Loading Save");
             }
         }
+
+        private void LoadCellPhoneSettings(IInventoryable player)
+        {
+            player.CellPhone.CustomRingtone = CellPhoneSave.CustomRingtone;
+            player.CellPhone.CustomTextTone = CellPhoneSave.CustomTextTone;
+            player.CellPhone.CustomTheme = CellPhoneSave.CustomTheme;
+            player.CellPhone.CustomBackground = CellPhoneSave.CustomBackground;
+            player.CellPhone.CustomVolume = CellPhoneSave.CustomVolume;
+            player.CellPhone.SleepMode = CellPhoneSave.SleepMode;
+            player.CellPhone.CustomPhoneType = CellPhoneSave.CustomPhoneType;
+            player.CellPhone.CustomPhoneOS = CellPhoneSave.CustomPhoneOS;
+        }
+
         public override string ToString()
         {
             return $"{PlayerName}";//base.ToString();

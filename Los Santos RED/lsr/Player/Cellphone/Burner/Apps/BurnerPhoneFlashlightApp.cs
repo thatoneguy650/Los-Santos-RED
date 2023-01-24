@@ -32,11 +32,11 @@ public class BurnerPhoneFlashlightApp : BurnerPhoneApp
     public override void Setup()
     {
         string modItemName = "iFruit Cellphone";
-        if (Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID == 1)
+        if (Player.CellPhone.PhoneType == 1)
         {
             modItemName = "Facade Cellphone";
         }
-        else if (Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID == 2)
+        else if (Player.CellPhone.PhoneType == 2)
         {
             modItemName = "Badger Cellphone";
         }

@@ -88,7 +88,7 @@ public class ActionWheelSettings : ISettingsDefaultable
 
 
     public float ControllerCursorScale { get; set; }
-
+    public bool UseNewClosest { get; set; }
 
     public ActionWheelSettings()
     {
@@ -179,6 +179,8 @@ public class ActionWheelSettings : ISettingsDefaultable
         SlowMoScale = 0.2f;
 
         SelectedItemMinimumDistance = 0.15f;
+
+        UseNewClosest = true;
 
     }
 }

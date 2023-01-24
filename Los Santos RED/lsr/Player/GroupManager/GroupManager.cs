@@ -203,16 +203,12 @@ public class GroupManager
         uint bestWeapon = NativeFunction.Natives.GET_BEST_PED_WEAPON<uint>(groupMember.Pedestrian, 0);
         WeaponInformation wi = Weapons.GetWeapon(bestWeapon);
 
-        string weaponInfo;
-        if(wi != null)
+        string weaponString = "Unarmed";
+        if (wi != null)
         {
-            weaponInfo = $"Weapon: {wi.Category}";
+            weaponString = $"Weapon: {wi.Category}";
         }
-        else
-        {
-            weaponInfo = "Unarmed";
-        }
-        Game.DisplayHelp($"Recruited {Player.CurrentLookedAtPed.FormattedName} {weaponInfo}");
+        Game.DisplayHelp($"Recruited {Player.CurrentLookedAtPed?.FormattedName} {weaponString}");
 
     }
     private void OnLeftGroup(PedExt groupMember)

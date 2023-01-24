@@ -33,6 +33,11 @@ public class ViolationSettings : ISettingsDefaultable
     public uint RecentlyHitPedTime { get; set; }
     [Description("Additional time peds will react to you hitting a peds car with a car. Used for when they only see you directly after you hit a ped.")]
     public uint RecentlyHitVehicleTime { get; set; }
+    [Description("Additional time peds will react to you running a red light. Used for when they only see you directly after you ran the light.")]
+    public uint RecentlyRanRedLightTime { get; set; }
+
+
+
     [Description("Time resisting arrest will trigger when you are moving fast.")]
     public uint ResistingArrestFastTriggerTime { get; set; }
     [Description("Time resisting arrest will trigger when you are moving at a medium pace.")]
@@ -67,6 +72,7 @@ public class ViolationSettings : ISettingsDefaultable
         RecentlySpeedingTime = 2000;
         RecentlyHitPedTime = 1500;
         RecentlyHitVehicleTime = 1500;
+        RecentlyRanRedLightTime = 1500;
         ResistingArrestFastTriggerTime = 2000;
         ResistingArrestMediumTriggerTime = 10000;
         ResistingArrestSlowTriggerTime = 25000;

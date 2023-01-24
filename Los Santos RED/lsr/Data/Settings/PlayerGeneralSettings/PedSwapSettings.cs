@@ -33,7 +33,8 @@ public class PedSwapSettings : ISettingsDefaultable
     public float PercentageToGetCCWLicense { get; set; }
     [Description("Enable randomly setting needs values after takeover. If diabled you will start with full needs. Requires PlayerSettings.NeedsSettings.ApplyNeeds")]
     public bool SetRandomNeeds { get; set; }
-
+    [Description("Percentage of time you will get a randomized phone when taking over a random ped. 0 is never 100 is always.")]
+    public float PercentageToGetRandomPhone { get; set; }
 
     public float NamePositionX { get; set; }
     public float NamePositionY { get; set; }
@@ -49,6 +50,7 @@ public class PedSwapSettings : ISettingsDefaultable
     public string AffiliationColor { get; set; }
     public int AffiliationFont { get; set; }
     public int AffiliationJustificationID { get; set; }
+
 
     public PedSwapSettings()
     {
@@ -91,5 +93,6 @@ public class PedSwapSettings : ISettingsDefaultable
         AffiliationColor = "RoyalBlue";
         AffiliationFont = (int)GTAFont.FontHouseScript;
         AffiliationJustificationID = 2;
+        PercentageToGetRandomPhone = 100f;
     }
 }

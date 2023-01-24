@@ -145,6 +145,7 @@
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Data\Peds\PossibleNames.cs" />
@@ -767,6 +768,7 @@
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
     <Compile Include="lsr\Weather\eWeatherTypeHash.cs" />
     <Compile Include="lsr\Weather\WeatherForecast.cs" />
+    <Compile Include="lsr\World\eRandomEventType.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
     <Compile Include="lsr\Time\ITimeControllable.cs" />
     <Compile Include="lsr\World\Interface\IEntityLoggable.cs" />

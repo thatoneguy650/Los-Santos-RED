@@ -97,6 +97,7 @@ public class PopUpMenu
 
     private bool SetSlowMo;
     private bool SetPaused;
+    private float prevXPercent;
 
     public bool IsActive { get; private set; }
     public bool RecentlyClosed => Game.GameTime - GameTimeLastClosed <= 500;
@@ -175,6 +176,7 @@ public class PopUpMenu
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
         CursorXPos = 0.5f;
         CursorYPos = 0.5f;
+        prevXPercent = 0.0f;
 
 
         if (Settings.SettingsManager.ActionWheelSettings.SetPauseOnActivate || (NativeHelper.IsUsingController && Settings.SettingsManager.ActionWheelSettings.SetPauseOnActivateControllerOnly))
@@ -267,21 +269,15 @@ public class PopUpMenu
     }
     private void FindClosestPositionMap()
     {
-        //if(Game.GameTime - GameTimeStartedDisplaying <= 20)
-        //{
-        //    ClosestPositionMap = null;
-        //    return;
-        //}
-        MouseState mouseState = Game.GetMouseState();
-        if (mouseState != null)
+        if (Settings.SettingsManager.ActionWheelSettings.UseNewClosest)
         {
-            float XPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX); //(float)mouseState.X /(float)Game.Resolution.Width;
-            float YPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY); //(float)mouseState.Y /(float)Game.Resolution.Height;
-
-
-            //float mouseX = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX);
-            //float mouseY = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY);
-
+            float XPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX);
+            float YPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY);
+            if(XPercent == 0.0f)
+            {
+                XPercent = prevXPercent;
+            }
+            prevXPercent = XPercent;//will randomly get set to 0.0 when you click for a single frame, when inside a vehicle. Need a better fix
             float ClosestDistance = 1.0f;
             ClosestPositionMap = null;
             foreach (PositionMap positionMap2 in PositionMaps)
@@ -293,9 +289,61 @@ public class PopUpMenu
                     ClosestPositionMap = positionMap2;
                 }
             }
-            //Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
-
+            //Game.DisplaySubtitle($"XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");  
         }
+        else
+        {
+            MouseState mouseState = Game.GetMouseState();
+            if (mouseState != null)
+            {
+                float XPercent = (float)mouseState.X / (float)Game.Resolution.Width;
+                float YPercent = (float)mouseState.Y / (float)Game.Resolution.Height;
+                float ClosestDistance = 1.0f;
+                ClosestPositionMap = null;
+                foreach (PositionMap positionMap2 in PositionMaps)
+                {
+                    float distanceToMouse = (float)Math.Sqrt(Math.Pow(positionMap2.PositionX - XPercent, 2) + Math.Pow(positionMap2.PositionY - YPercent, 2));
+                    if (distanceToMouse <= ClosestDistance && distanceToMouse <= Settings.SettingsManager.ActionWheelSettings.SelectedItemMinimumDistance)// 0.15f)
+                    {
+                        ClosestDistance = distanceToMouse;
+                        ClosestPositionMap = positionMap2;
+                    }
+                }
+                //Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
+            }
+        }
+
+
+
+        //MouseState mouseState = Game.GetMouseState();
+        //if (mouseState != null)
+        //{
+
+        //    //float XPercent = (float)mouseState.X /(float)Game.Resolution.Width;
+        //    //float YPercent = (float)mouseState.Y /(float)Game.Resolution.Height;
+
+
+        //    float XPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX); //(float)mouseState.X /(float)Game.Resolution.Width;
+        //    float YPercent = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY); //(float)mouseState.Y /(float)Game.Resolution.Height;
+
+
+        //    //float mouseX = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorX);
+        //    //float mouseY = NativeFunction.Natives.GET_CONTROL_NORMAL<float>(2, (int)GameControl.CursorY);
+
+        //    float ClosestDistance = 1.0f;
+        //    ClosestPositionMap = null;
+        //    foreach (PositionMap positionMap2 in PositionMaps)
+        //    {
+        //        float distanceToMouse = (float)Math.Sqrt(Math.Pow(positionMap2.PositionX - XPercent, 2) + Math.Pow(positionMap2.PositionY - YPercent, 2));
+        //        if (distanceToMouse <= ClosestDistance && distanceToMouse <= Settings.SettingsManager.ActionWheelSettings.SelectedItemMinimumDistance)// 0.15f)
+        //        {
+        //            ClosestDistance = distanceToMouse;
+        //            ClosestPositionMap = positionMap2;
+        //        }
+        //    }
+        //    Game.DisplaySubtitle($" X:{(float)mouseState.X} Y:{(float)mouseState.Y} XPercent {XPercent} YPercent {YPercent} ClosestDistance {ClosestDistance} ClosestPositionMap {ClosestPositionMap?.Display} {(float)Game.Resolution.Width}X{(float)Game.Resolution.Height}");
+
+        //}
     }
     private void UpdateSelection()
     {
@@ -322,10 +370,15 @@ public class PopUpMenu
             }
             if (popUpBox != null && popUpBox.IsCurrentlyValid())
             {
+                
                 if ((popUpBox.Action != null || popUpBox.ChildMenuID != ""))
                 {
+                    //EntryPoint.WriteToConsole($"ACTION WHEEL POP UP BOX IS VALID {popUpBox.Description} ChildMenuID: {popUpBox.ChildMenuID} HasAction:{popUpBox.Action != null}");
                     if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)))// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
+
+                        EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT 2");
+
                         if (popUpBox.ClosesMenu)
                         {
                             CloseMenu();
@@ -335,6 +388,7 @@ public class PopUpMenu
                         if (popUpBox.Action != null)
                         {
                             popUpBox.Action();
+                            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT ACTION RAN");
                         }
                         else if (popUpBox.ChildMenuID != "")
                         {
@@ -342,7 +396,7 @@ public class PopUpMenu
                             CurrentPopUpBoxGroupID = popUpBox.ChildMenuID;
                             CurrentPage = 0;
                             TotalPages = 0;
-
+                            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT SUB MENU DRAWN");
                         }
                         //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
                     }
@@ -374,12 +428,14 @@ public class PopUpMenu
         bool isPressingAim = (Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25));
         if (!IsCurrentPopUpBoxGroupDefault && isPressingAim)
         {
+            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, GOING TO HOMEPAGE");
             UpdateDefaultMapping(true);
             CurrentPage = 0;
             TotalPages = 0;
         }
         else if(IsCurrentPopUpBoxGroupDefault && !Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && isPressingAim)
         {
+            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, CLOSING MENU");
             CloseMenu();
         }
         else if (!Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && UI.IsPressingActionWheelButton && HasStoppedPressingDisplayKey)

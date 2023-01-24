@@ -15,7 +15,8 @@ using System.Runtime.InteropServices;
 namespace Mod
 {
     public class World : IEntityLoggable, IEntityProvideable
-    {     
+    {
+        private int totalWantedLevel;
         private IZones Zones;
         private IJurisdictions Jurisdictions;
         private ISettingsProvideable Settings;
@@ -109,6 +110,12 @@ namespace Mod
                     TotalWantedBlip.Delete();
                 }
             }
+
+            if(TotalWantedLevel != totalWantedLevel)
+            {
+                OnTotalWantedLevelChanged();
+            }
+
         }
         public void Dispose()
         {
@@ -174,7 +181,24 @@ namespace Mod
         public void SetDensity()
         {
             CurrentSpawnMultiplier = 1.0f;
-            if(TotalWantedLevel >= 6)
+
+            if (TotalWantedLevel >= 10)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier;
+            }
+            else if (TotalWantedLevel >= 9)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier;
+            }
+            else if (TotalWantedLevel >= 8)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted8Multiplier;
+            }
+            else if (TotalWantedLevel >= 7)
+            {
+                CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted7Multiplier;
+            }
+            else if (TotalWantedLevel >= 6)
             {
                 CurrentSpawnMultiplier = Settings.SettingsManager.WorldSettings.LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier;
             }
@@ -233,6 +257,33 @@ namespace Mod
                 NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)TotalWantedBlip.Handle, true);
             }
         }
-
+        private void OnTotalWantedLevelChanged()
+        {
+            if(TotalWantedLevel == 0)
+            {
+                OnTotalWantedLevelRemoved();
+            }
+            else if(totalWantedLevel == 0)
+            {
+                OnTotalWantedLevelAdded();
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"OnTotalWantedLevelChanged {TotalWantedLevel}");
+            }
+            totalWantedLevel = TotalWantedLevel;
+        }
+        private void OnTotalWantedLevelRemoved()
+        {
+            if (Settings.SettingsManager.WorldSettings.AllowSettingDistantSirens)
+            {
+                NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(false);
+                EntryPoint.WriteToConsole($"OnTotalWantedLevelRemoved Distant Sirens Removed");
+            }
+        }
+        private void OnTotalWantedLevelAdded()
+        {
+            EntryPoint.WriteToConsole($"OnTotalWantedLevelAdded {TotalWantedLevel}");
+        }
     }
 }

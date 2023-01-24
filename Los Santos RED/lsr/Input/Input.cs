@@ -329,18 +329,11 @@ namespace LosSantosRED.lsr
                 {
                     MenuProvider.ToggleDebugMenu();
                 }
-
-
-
             }
-
-
             if(!MenuProvider.IsPressingActionWheelButton && !CanToggleAltMenu)
             {
                 CanToggleAltMenu = true;
             }
-
-
         }
         private void ProcessButtonPrompts()
         {

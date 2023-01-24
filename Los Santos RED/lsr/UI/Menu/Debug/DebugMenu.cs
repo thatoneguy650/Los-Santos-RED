@@ -480,6 +480,15 @@ public class DebugMenu : Menu
             menu.Visible = false;
         };
 
+        //spawn taxi
+        UIMenuItem RandomizePhone = new UIMenuItem("Randomize Phone", "Randomize the phone settings");
+        RandomizePhone.Activated += (menu, item) =>
+        {
+            Player.CellPhone.RandomizeSettings();
+            menu.Visible = false;
+        };
+
+
 
         PlayerStateItemsMenu.AddItem(KillPlayer);
         PlayerStateItemsMenu.AddItem(GiveMoney);
@@ -503,7 +512,7 @@ public class DebugMenu : Menu
         PlayerStateItemsMenu.AddItem(RemoveButtonPrompts);
         PlayerStateItemsMenu.AddItem(TaxiSpawn);
         PlayerStateItemsMenu.AddItem(ScamText);
-
+        PlayerStateItemsMenu.AddItem(RandomizePhone);
     }
     private void CreateRelationshipsMenu()
     {
@@ -613,6 +622,18 @@ public class DebugMenu : Menu
 
 
 
+
+        UIMenuListScrollerItem<string> SetDistantSirens = new UIMenuListScrollerItem<string>("Set Distant Sirens", "Set distance sirens play or stop", new List<string>() { "Start","Stop"});
+        SetDistantSirens.Activated += (menu, item) =>
+        {
+            bool value = SetDistantSirens.SelectedItem == "Start" ? true : false;
+            NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(value);
+            Game.DisplaySubtitle($"DISTANT_COP_CAR_SIRENS SET {value}");
+
+        };
+
+
+
         CrimeItemsMenu.AddItem(SetWantedLevel);
         CrimeItemsMenu.AddItem(ToggleInvestigation);
         CrimeItemsMenu.AddItem(SpawnGunAttackersMenu);
@@ -621,6 +642,7 @@ public class DebugMenu : Menu
         CrimeItemsMenu.AddItem(GiveClosesetGun);
         CrimeItemsMenu.AddItem(SetNearestWanted);
         CrimeItemsMenu.AddItem(ToggleCopTasking);
+        CrimeItemsMenu.AddItem(SetDistantSirens);
     }
     private void CreateOtherItems()
     {

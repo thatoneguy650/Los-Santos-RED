@@ -339,6 +339,8 @@ public class Debug
         //    EntryPoint.WriteToConsole($"Scanned for Stands Found {standsfound}", 5);
         //    GameTimeLastScannedForStands = Game.GameTime;
         //}
+        //bool runningRed = NativeFunction.Natives.GET_IS_PLAYER_DRIVING_WRECKLESS<bool>(Game.LocalPlayer, 1);
+        //Game.DisplaySubtitle($"Running Red: {runningRed}");
 
     }
     public void Setup()

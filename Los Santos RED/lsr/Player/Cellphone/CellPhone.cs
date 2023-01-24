@@ -7,9 +7,12 @@ using Rage.Native;
 using RAGENativeUI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using static DispatchScannerFiles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrayNotify;
 
 public class CellPhone
 {
@@ -58,12 +61,19 @@ public class CellPhone
     public int Background => CustomBackground != -1 ? CustomBackground : Settings.SettingsManager.CellphoneSettings.DefaultBurnerCellBackgroundID;
     public float Volume => CustomVolume != -1.0f ? CustomVolume : Settings.SettingsManager.CellphoneSettings.DefaultCustomToneVolume;
     public bool SleepMode { get; set; } = false;
+    public int PhoneType => CustomPhoneType != -1 ? CustomPhoneType : Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID;
+    public string PhoneOS => CustomPhoneOS != "" ? CustomPhoneOS : Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName;
+
 
     public string CustomRingtone { get; set; } = "";
     public string CustomTextTone { get; set; } = "";
     public int CustomTheme { get; set; } = -1;
     public int CustomBackground { get; set; } = -1;
     public float CustomVolume { get; set; } = -1.0f;
+
+    public int CustomPhoneType { get; set; } = -1;
+    public string CustomPhoneOS { get; set; } = "";
+
 
 
     private bool ShouldCheckScheduledItems => GameTimeLastCheckedScheduledItems == 0 || Game.GameTime - GameTimeLastCheckedScheduledItems >= GameTimeBetweenCheckScheduledItems;
@@ -237,6 +247,25 @@ public class CellPhone
         Player.CellPhone.AddScheduledText(new PhoneContact(ScammerNames.PickRandom(), "CHAR_BLANK_ENTRY"), ScammerMessages.PickRandom(), 0);
         CheckScheduledTexts();     
 
+    }
+    public void RandomizeSettings()
+    {
+        var dir = new DirectoryInfo("Plugins\\LosSantosRED\\audio\\tones");
+        List<FileInfo> files = dir.GetFiles().ToList();
+        if(files != null)
+        {
+            CustomRingtone = files.PickRandom()?.Name;
+            CustomTextTone = files.PickRandom()?.Name;
+        }
+        else
+        {
+            CustomRingtone = "";
+            CustomTextTone = "";
+        }
+        CustomTheme = RandomItems.GetRandomNumberInt(1, 8);
+        CustomBackground = new List<int>() { 0,4,5,6,7,8,9,10,11,12,13,14,15,16,17 }.PickRandom();
+        CustomPhoneType = RandomItems.GetRandomNumberInt(0,3);
+        CustomPhoneOS = CustomPhoneType == 0 ? "cellphone_ifruit" : CustomPhoneType == 1 ? "cellphone_facade" : CustomPhoneType == 2 ? "cellphone_badger" : "cellphone_ifruit";// new List<string>() { "cellphone_ifruit", "cellphone_facade", "cellphone_badger" }.PickRandom();
     }
     private void CheckScheduledItems()
     {

@@ -130,6 +130,7 @@ public class Residence : InteractableLocation
     {
         IsOwned = false;
         IsRented = false;
+        
         UpdateStoredData();
     }
     public void ReRent()

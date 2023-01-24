@@ -653,6 +653,10 @@ public class PedSwap : IPedSwap
                 Player.HumanState.Reset();
             }
         }
+        if(RandomItems.RandomPercent(Settings.SettingsManager.PedSwapSettings.PercentageToGetRandomPhone))
+        {
+            Player.CellPhone.RandomizeSettings();
+        }
     }
     private void HandlePreviousPed(bool deleteOld, Ped TargetPed)
     {

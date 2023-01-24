@@ -29,6 +29,20 @@ public class WorldSettings : ISettingsDefaultable
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier { get; set; }
     [Description("Civilian ped density multiplier at 6 stars.")]
     public float LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 7 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted7Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 8 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted8Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 9 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier { get; set; }
+    [Description("Civilian ped density multiplier at 10 stars.")]
+    public float LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier { get; set; }
+
+
+
+
+
+
     [Description("If enabled, ALL static blips will be added to the map.")]
     public bool ShowAllBlipsOnMap { get; set; }
     [Description("If enabled, there will be a 3D entrance marker around location entrances. Performance Intensive")]
@@ -44,6 +58,7 @@ public class WorldSettings : ISettingsDefaultable
     public float AirportsOwnedPlanesLocalDistance { get; set; }
     [Description("If enabled, airports will require you to have a valid pilots license to take off.")]
     public bool AirportsRequireLicenseForPrivateFlights { get; set; }
+    public bool AllowSettingDistantSirens { get; set; }
 
     public WorldSettings()
     {
@@ -55,7 +70,7 @@ public class WorldSettings : ISettingsDefaultable
         UpdateVehiclePlates = true;
         CleanupVehicles = true;
         ReplaceVanillaShopKeepers = true;
-        RandomVehiclePlatesPercent = 10f;
+        RandomVehiclePlatesPercent = 5f;
         AllowRandomVanityPlates = true;
         RandomVehicleVanityPlatesPercent = 2f;
         ShowAllLocationsOnDirectory = false;
@@ -65,7 +80,12 @@ public class WorldSettings : ISettingsDefaultable
         LowerPedSpawnsAtHigherWantedLevels_Wanted5Multiplier = 0.3f;
         LowerPedSpawnsAtHigherWantedLevels_Wanted6Multiplier = 0.1f;
 
-       // ShowAllBlipsOnMap = false;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted7Multiplier = 0.1f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted8Multiplier = 0.1f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted9Multiplier = 0.1f;
+        LowerPedSpawnsAtHigherWantedLevels_Wanted10Multiplier = 0.1f;
+
+        // ShowAllBlipsOnMap = false;
         ShowMarkersOnLocationEntrances = false;
         HotelsUsesRooms = false;
         AllowPoliceBackupBlip = true;
@@ -79,6 +99,7 @@ public class WorldSettings : ISettingsDefaultable
         AirportsRequireOwnedPlanesLocal = true;
         AirportsOwnedPlanesLocalDistance = 1000f;
         AirportsRequireLicenseForPrivateFlights = true;
+        AllowSettingDistantSirens = true;
     }
 
 }

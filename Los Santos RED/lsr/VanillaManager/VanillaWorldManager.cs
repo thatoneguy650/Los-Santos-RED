@@ -17,6 +17,7 @@ public class VanillaWorldManager
     private bool isVanillaShopsActive = true;
     private bool isVanillaBlipsActive = true;
 
+
     public VanillaWorldManager(ISettingsProvideable settings)
     {
         Settings = settings;
@@ -65,17 +66,17 @@ public class VanillaWorldManager
             TerminateScenarioPeds();
         }
 
-        if (Settings.SettingsManager.VanillaSettings.TerminateRandomEvents)
-        {
-            if (!isRandomEventsDisabled)
-            {
-                TerminateRandomEvents();
-            }
-        }
-        else if (isRandomEventsDisabled)
-        {
-            ActivateRandomEvents();
-        }
+        //if (Settings.SettingsManager.VanillaSettings.TerminateRandomEvents)
+        //{
+        //    if (!isRandomEventsDisabled)
+        //    {
+        //        SetRandomEventsFlagDisabled();
+        //    }
+        //}
+        //else if (isRandomEventsDisabled)
+        //{
+        //    SetRandomEventsFlagEnabled();
+        //}
 
 
         if(Settings.SettingsManager.VanillaSettings.TerminateVanillaShops)
@@ -109,17 +110,29 @@ public class VanillaWorldManager
         }
 
         TerminateAudio();
+        //if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
+        //{
+        //    SuppressRandomEvents();
+        //}
     }
-    private void ActivateRandomEvents()
-    {
-        NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
-        isRandomEventsDisabled = false;
-    }
-    private void TerminateRandomEvents()
-    {
-        NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
-        isRandomEventsDisabled = true;
-    }
+
+    //private void SuppressRandomEvents()
+    //{
+    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_PURSUE, true);
+    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_PURSUE_VEHICLE_FLEE_SPAWNED, true);
+    //    NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)RANDOM_EVENT.RC_COP_VEHICLE_DRIVING_FAST, true);
+
+    //}
+    //private void SetRandomEventsFlagEnabled()
+    //{
+    //    NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
+    //    isRandomEventsDisabled = false;
+    //}
+    //private void SetRandomEventsFlagDisabled()
+    //{
+    //    NativeFunction.Natives.SET_RANDOM_EVENT_FLAG(false);
+    //    isRandomEventsDisabled = true;
+    //}
     private void TerminateScenarioPeds()
     {
         NativeFunction.Natives.SET_SCENARIO_PED_DENSITY_MULTIPLIER_THIS_FRAME(0f);

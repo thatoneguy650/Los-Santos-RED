@@ -17,7 +17,7 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateScenarioCops { get; set; }
     public bool SuppressVanillaGangPeds { get; set; }
     public bool TerminateScenarioPeds { get; set; }
-    public bool TerminateRandomEvents { get; set; }
+    public bool SupressRandomPoliceEvents { get; set; }
     public bool BlockGangScenarios { get; set; }
     public bool BlockVanillaPoliceCarGenerators { get; set; }
     public bool BlockVanillaPoliceScenarios { get; set; }
@@ -44,7 +44,7 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateScenarioCops = true;
         SuppressVanillaGangPeds = false;
         TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
-        TerminateRandomEvents = true;
+        SupressRandomPoliceEvents = true;
         BlockGangScenarios = true;
         BlockGangScenariosAroundDensDistance = 200f;
         BlockVanillaPoliceCarGenerators = true;

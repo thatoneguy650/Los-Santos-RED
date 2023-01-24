@@ -108,7 +108,7 @@ public class BurnerPhoneSettingsApp : BurnerPhoneApp
             BurnerPhone.ReturnHome(Index);
         }
         BurnerPhone.SetSoftKey((int)SoftKey.Left, SoftKeyIcon.Blank, Color.Red);
-        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.LightGreen);
+        BurnerPhone.SetSoftKey((int)SoftKey.Middle, SoftKeyIcon.Select, Color.Green);
         BurnerPhone.SetSoftKey((int)SoftKey.Right, SoftKeyIcon.Back, Color.Red);
  
     }

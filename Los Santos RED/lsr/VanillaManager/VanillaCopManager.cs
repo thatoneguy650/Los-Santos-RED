@@ -71,6 +71,18 @@ public class VanillaCopManager
                 ActivateScenarioCops();
             }
         }
+        if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
+        {
+            SuppressRandomEvents();
+        }
+
+    }
+    private void SuppressRandomEvents()
+    {
+        NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopChase, true);
+        NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopChaseFlee, true);
+        NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopFast, true);
+
     }
     private void TerminateDispatch()
     {

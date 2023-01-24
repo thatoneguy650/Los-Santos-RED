@@ -176,7 +176,7 @@ public class InteractableLocation : BasicLocation
             RemoveBanner = false;
             EntryPoint.WriteToConsole($"BANNER REGULAR {BannerImagePath} {HasBannerImage}");
         }
-        else if (!string.IsNullOrEmpty(Menu.BannerOverride))
+        else if (Menu != null && !string.IsNullOrEmpty(Menu.BannerOverride))
         {
             BannerImagePath = $"Plugins\\LosSantosRED\\images\\{Menu.BannerOverride}";// = true;
             BannerImage = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\{Menu.BannerOverride}");

@@ -195,6 +195,11 @@ public class Conversation_Simple : Interaction
         {
             return;
         }
+
+
+
+
+
         pedHeadshotHandle = NativeFunction.Natives.RegisterPedheadshot<uint>(Ped.Pedestrian);
         if (!Ped.IsFedUpWithPlayer)
         {
@@ -213,6 +218,12 @@ public class Conversation_Simple : Interaction
             }
             else
             {
+
+                if (!(Ped.Pedestrian.Inventory.EquippedWeapon == null))
+                {
+                    NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Ped.Pedestrian, (uint)2725352035, true);
+                }
+
                 IsTasked = true;
                 unsafe
                 {

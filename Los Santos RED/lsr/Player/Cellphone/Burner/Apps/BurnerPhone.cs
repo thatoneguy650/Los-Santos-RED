@@ -40,10 +40,10 @@ public class BurnerPhone
     private IModItems ModItems;
 
     private List<BurnerPhoneApp> PhoneApps = new List<BurnerPhoneApp>();
-    private BurnerPhoneMessagesApp MessagesApp;
-    private BurnerPhoneContactsApp ContactsApp;
-    private BurnerPhoneFlashlightApp FlashlightApp;
-    private BurnerPhoneSettingsApp SettingsApp;
+    public BurnerPhoneMessagesApp MessagesApp { get; private set; }
+    public BurnerPhoneContactsApp ContactsApp { get; private set; }
+    public BurnerPhoneFlashlightApp FlashlightApp { get; private set; }
+    public BurnerPhoneSettingsApp SettingsApp { get; private set; }
     private BurnerPhoneApp CurrentBurnerApp;
     private bool pressedDirection;
 
@@ -137,7 +137,7 @@ public class BurnerPhone
         CurrentApp = 0;
         CurrentColumn = 0;
         CurrentRow = 0;
-        NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
+        NativeFunction.Natives.CREATE_MOBILE_PHONE(Player.CellPhone.PhoneType);
         NativeFunction.Natives.SET_MOBILE_PHONE_POSITION(Settings.SettingsManager.CellphoneSettings.BurnerCellPositionX, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionY, Settings.SettingsManager.CellphoneSettings.BurnerCellPositionZ);
         NativeFunction.Natives.SET_MOBILE_PHONE_ROTATION(-90f, 0f, 0f);
         NativeFunction.Natives.SET_MOBILE_PHONE_SCALE(Settings.SettingsManager.CellphoneSettings.BurnerCellScale);
@@ -359,14 +359,14 @@ public class BurnerPhone
     }
     private void SetDefaultSoftKeys()
     {
-        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Select);
-        SetSoftKeyColor((int)SoftKey.Left, Color.FromArgb(46, 204, 113));
+        SetSoftKeyIcon((int)SoftKey.Left, SoftKeyIcon.Blank);
+        SetSoftKeyColor((int)SoftKey.Left, Color.Black);
 
-        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Blank);
-        SetSoftKeyColor((int)SoftKey.Middle, Color.Black);
+        SetSoftKeyIcon((int)SoftKey.Middle, SoftKeyIcon.Select);
+        SetSoftKeyColor((int)SoftKey.Middle, Color.LightGreen);
 
         SetSoftKeyIcon((int)SoftKey.Right, SoftKeyIcon.Back);
-        SetSoftKeyColor((int)SoftKey.Right, Color.Purple);
+        SetSoftKeyColor((int)SoftKey.Right, Color.Red);
     }
     private void UpdateHomeScreen()
     {
@@ -414,7 +414,7 @@ public class BurnerPhone
 
     private void RequestScaleform()
     {
-        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Settings.SettingsManager.CellphoneSettings.BurnerCellScaleformName);
+        globalScaleformID = NativeFunction.Natives.REQUEST_SCALEFORM_MOVIE<int>(Player.CellPhone.PhoneOS);
         while (!NativeFunction.Natives.HAS_SCALEFORM_MOVIE_LOADED<bool>(globalScaleformID))
         {
             GameFiber.Yield();
