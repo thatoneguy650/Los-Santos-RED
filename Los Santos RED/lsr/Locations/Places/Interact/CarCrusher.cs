@@ -24,7 +24,6 @@ public class CarCrusher : InteractableLocation
     }
     public override string TypeName { get; set; } = "Car Crusher";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public CarCrusher(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

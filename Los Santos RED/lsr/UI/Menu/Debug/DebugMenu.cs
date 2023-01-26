@@ -722,7 +722,7 @@ public class DebugMenu : Menu
         UnSetArrested.Activated += (menu, item) =>
         {
             Game.TimeScale = 1.0f;
-            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true);
+            Player.Reset(true, false, true, true, true, false, false, false, false, false, false, false, false, false, false, true, false);
             Player.Surrendering.UnSetArrestedAnimation();
             menu.Visible = false;
         };

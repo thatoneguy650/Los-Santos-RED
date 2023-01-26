@@ -22,8 +22,6 @@ public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAge
     }
     public override string TypeName { get; set; } = "Hospital";
     public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
 
 
 

@@ -19,8 +19,6 @@ public class BeautyShop : InteractableLocation
     }
     public override string TypeName { get; set; } = "Beauty Shop";
     public override int MapIcon { get; set; } = (int)BlipSprite.Barber;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Shop At {Name}";

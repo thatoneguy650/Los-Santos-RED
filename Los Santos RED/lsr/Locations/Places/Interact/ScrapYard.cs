@@ -24,7 +24,6 @@ public class ScrapYard : InteractableLocation
     }
     public override string TypeName { get; set; } = "Scrap Yard";
     public override int MapIcon { get; set; } = (int)BlipSprite.CriminalCarsteal;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public ScrapYard(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)

@@ -53,7 +53,6 @@ public class Residence : InteractableLocation
     public override string TypeName => IsOwnedOrRented ? "Residence" : "For Sale/Rental";
 
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
 
@@ -371,7 +370,7 @@ public class Residence : InteractableLocation
         if (IsOwned)
         {
             MapIcon = (int)BlipSprite.Garage;
-            MapIconColor = Color.Green;
+            MapIconColorString = "Green";
 
             if (Blip.Exists())
             {
@@ -382,7 +381,7 @@ public class Residence : InteractableLocation
         else if(IsRented)
         {
             MapIcon = (int)BlipSprite.Garage;
-            MapIconColor = Color.Yellow;
+            MapIconColorString = "Yellow";
 
             if (Blip.Exists())
             {
@@ -393,7 +392,7 @@ public class Residence : InteractableLocation
         else
         {
             MapIcon = (int)BlipSprite.PropertyForSale;
-            MapIconColor = Color.White;
+            MapIconColorString = "White";
             if (Blip.Exists())
             {
                 Blip.Color = Color.White;

@@ -27,7 +27,7 @@ namespace LosSantosRED.lsr
         private ISettingsProvideable Settings;
         private ITimeReportable Time;
         private IEntityProvideable World;
-
+        private HashSet<Crime> GracePeriodCrimes = new HashSet<Crime>();
 
         private enum PoliceState
         {
@@ -175,6 +175,7 @@ namespace LosSantosRED.lsr
             }
             GameFiber.Yield();//TR 05
             UpdateBlip();
+            UpdateGracePeriod();
         }
         public void Dispose()
         {
@@ -190,7 +191,7 @@ namespace LosSantosRED.lsr
             //dont really care that it was assocaited with THIS crime, just if im going to report the crime and what the info IS
             //EntryPoint.WriteToConsole($"PLAYER EVENT: ADD CRIME: {CrimeInstance.Name} ByPolice: {crimeSceneDescription.SeenByOfficers} PlaceLastReportedCrime {PlaceLastReportedCrime} New PlaceLastReportedCrime {crimeSceneDescription.PlaceSeen} HaveDescription {crimeSceneDescription.HaveDescription}", 3);
             PlaceLastReportedCrime = crimeSceneDescription.PlaceSeen;
-            if (Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
+            if (Player.IsAlive)//Player.IsAliveAndFree)// && !CurrentPlayer.RecentlyBribedPolice)
             {
                 if (crimeSceneDescription.HaveDescription && isForPlayer)
                 {
@@ -303,14 +304,21 @@ namespace LosSantosRED.lsr
         {
             GameTimeWantedLevelStarted = Game.GameTime;
         }
-        public string PrintCrimes()
+        public string PrintCrimes(bool withInstances)
         {
             string CrimeString = "";
             foreach (CrimeEvent MyCrime in CrimesObserved.Where(x => x.Instances > 0).OrderBy(x => x.AssociatedCrime.Priority).Take(3))
             {
-                CrimeString += string.Format("~n~{0} ({1})~s~", MyCrime.AssociatedCrime.Name, MyCrime.Instances);
+                if (withInstances)
+                {
+                    CrimeString += string.Format("~n~{0} ({1})~s~", MyCrime.AssociatedCrime.Name, MyCrime.Instances);
+                }
+                else
+                {
+                    CrimeString += string.Format("{0} ", MyCrime.AssociatedCrime.Name);
+                }
             }
-            return CrimeString;
+            return CrimeString.Trim();
         }
         public void Reset()
         { 
@@ -555,6 +563,36 @@ namespace LosSantosRED.lsr
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
+        }
+
+
+        public bool IsWithinGracePeriod(Crime crime) => GracePeriodCrimes.Any(x => x.ID == crime.ID);
+        public void AddToGracePeriod()
+        {
+            //GracePeriodCrimes.Clear();
+            foreach(Crime crime in CrimesObserved.Where(x=> x.AssociatedCrime?.GracePeriod != 0).Select(x=> x.AssociatedCrime))
+            {
+                if(!GracePeriodCrimes.Contains(crime))
+                {
+                    GracePeriodCrimes.Add(crime);
+                }
+            }
+            EntryPoint.WriteToConsole("AddToGracePeriod");
+        }
+        private void UpdateGracePeriod()
+        {
+            if(Player.IsWanted)
+            {
+                GracePeriodCrimes.Clear();
+                return;
+            }
+            GracePeriodCrimes.RemoveWhere(x => HasBeenNotWantedFor >= x.GracePeriod); 
+        }
+
+        public void ResetGracePeriod()
+        {
+            GracePeriodCrimes.Clear();
+            EntryPoint.WriteToConsole("ResetGracePeriod");
         }
     }
 

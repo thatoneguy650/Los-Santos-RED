@@ -21,7 +21,6 @@ public class Landmark : InteractableLocation, ILocationDispatchable
     }
     public override string TypeName { get; set; } = "Landmark";
     public override int MapIcon { get; set; } = 162;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;
 
 

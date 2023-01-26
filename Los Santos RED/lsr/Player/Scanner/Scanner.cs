@@ -924,7 +924,7 @@ namespace LosSantosRED.lsr
         }
         private void AddRapSheet(DispatchEvent dispatchEvent)
         {
-            dispatchEvent.NotificationText = "Wanted For:" + Player.PoliceResponse.PrintCrimes();
+            dispatchEvent.NotificationText = "Wanted For:" + Player.PoliceResponse.PrintCrimes(true);
         }
         private void AddRequestAirSupport(DispatchEvent dispatchEvent)
         {

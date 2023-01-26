@@ -145,5 +145,11 @@ public class OtherViolations
             Violations.AddViolating(StaticStrings.MuggingCrimeID);
         }
     }
+
+    public bool AddFoundIllegalItem()
+    {
+        Violations.AddViolatingAndObserved(StaticStrings.DealingDrugsCrimeID);
+        return true;
+    }
 }
 

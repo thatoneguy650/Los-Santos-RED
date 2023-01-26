@@ -90,7 +90,11 @@ public class BasicLocation
     public bool RemoveBanner { get; set; } = false;
     public bool IsBlipEnabled { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
-    public virtual Color MapIconColor { get; set; } = Color.White;
+
+
+    public Color MapIconColor => Color.FromName(MapIconColorString);
+    public virtual string MapIconColorString { get; set; } = "White";
+    //public virtual Color MapIconColor { get; set; } = Color.White;
     public virtual float MapIconScale { get; set; } = 1.0f;
     public virtual float MapIconRadius { get; set; } = 1.0f;
     public virtual float MapOpenIconAlpha { get; set; } = 1.0f;
@@ -305,7 +309,7 @@ public class BasicLocation
         Blip locationBlip;
         if (MapIconRadius != 1.0f)
         {
-            locationBlip = new Blip(EntrancePosition, MapIconRadius){ Name = Name };
+            locationBlip = new Blip(EntrancePosition, MapIconRadius){ Name = Name, Color = MapIconColor };
         }
         else
         {

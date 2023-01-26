@@ -20,8 +20,6 @@ public class FireStation : InteractableLocation, ILocationAgencyAssignable
     }
     public override string TypeName { get; set; } = "Fire Station";
     public override int MapIcon { get; set; } = 436;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
 
     public void StoreData(IAgencies agencies)
     {

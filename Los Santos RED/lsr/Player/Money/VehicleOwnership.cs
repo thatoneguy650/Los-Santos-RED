@@ -116,7 +116,13 @@ public class VehicleOwnership
         }
         else
         {
-            toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
+
+            bool allowPolice = false;
+#if DEBUG
+            allowPolice = true;
+#endif
+
+            toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, allowPolice, 10f);
         }
         if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
         {

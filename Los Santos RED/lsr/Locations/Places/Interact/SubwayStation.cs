@@ -20,8 +20,6 @@ public class SubwayStation : InteractableLocation
     }
     public override string TypeName { get; set; } = "Subway Station";
     public override int MapIcon { get; set; } = 777;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Shop At {Name}";

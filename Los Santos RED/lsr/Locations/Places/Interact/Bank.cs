@@ -19,8 +19,6 @@ public class Bank : InteractableLocation
     }
     public override string TypeName { get; set; } = "Bank";
     public override int MapIcon { get; set; } = (int)BlipSprite.Devin;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Bank At {Name}";

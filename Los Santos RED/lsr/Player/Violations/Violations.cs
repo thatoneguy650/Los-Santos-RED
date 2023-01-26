@@ -89,7 +89,7 @@ namespace LosSantosRED.lsr
         public void AddViolating(string crimeID)
         {
             Crime crime = Crimes.GetCrime(crimeID);
-            if (crime != null && crime.Enabled)
+            if (crime != null && crime.Enabled && !Player.PoliceResponse.IsWithinGracePeriod(crime))
             {
                 if (Settings.SettingsManager.ViolationSettings.ShowCrimeWarnings && Player.IsAliveAndFree && Player.IsNotWanted)
                 {
@@ -97,6 +97,15 @@ namespace LosSantosRED.lsr
                 }
                 CrimesViolating.Add(crime);
             }
+        }
+        public void AddViolatingAndObserved(string crimeID) 
+        {
+            Crime crime = Crimes.GetCrime(crimeID);
+            if(crime == null)
+            {
+                return;
+            }
+            Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
         }
         private void AddObservedAndReported()
         {

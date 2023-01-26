@@ -44,6 +44,10 @@ public class Crime
     public bool ShowsWarning { get; set; } = false;
     public string WarningMessage { get; set; } = "";
     public uint TimeBetweenWarnings { get; set; } = 1800000;//900000;
+
+    public uint GracePeriod { get; set; } = 0;
+
+
     public override string ToString()
     {
         return Name;

@@ -17,8 +17,6 @@ public class BusStop : InteractableLocation
     }
     public override string TypeName { get; set; } = "Bus Stop";
     public override int MapIcon { get; set; } = 464;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public BusStop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

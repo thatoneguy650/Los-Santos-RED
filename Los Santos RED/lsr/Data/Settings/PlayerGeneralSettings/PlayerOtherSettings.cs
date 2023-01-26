@@ -13,19 +13,14 @@ public class PlayerOtherSettings : ISettingsDefaultable
     public uint Recognize_NightPenalty { get; set; }
     [Description("Additional Time an NPC needs to have seen you to determine if they can recognize you when you are in an unknown vehicle")]
     public uint Recognize_VehiclePenalty { get; set; }
-
-
-
-
-
-
-
-
-
     [Description("Set slow mo when you are wasted and using the wasted menu.")]
     public bool SetSlowMoOnDeath { get; set; }
+    [Description("Slow mo speed when you are wasted and using the wasted menu. Minimum 0.2 Maximum 1.0")]
+    public float SlowMoOnDeathSpeed { get; set; }
     [Description("Set slow mo when you are busted and using the busted menu.")]
     public bool SetSlowMoOnBusted { get; set; }
+    [Description("Slow mo speed when you are busted and using the busted menu. Minimum 0.2 Maximum 1.0")]
+    public float SlowMoOnBustedSpeed { get; set; }
     [Description("Allow the weapon dropping system to drop weapons.")]
     public bool AllowWeaponDropping { get; set; }
     [Description("If enabled, recently dropped weapons will be uncollectable until the WeaponDroppingTimeToSuppress has elapsed.")]
@@ -72,7 +67,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
         Recognize_VehiclePenalty = 750;
 
         SetSlowMoOnDeath = true;
+        SlowMoOnDeathSpeed = 0.4f;
         SetSlowMoOnBusted = true;
+        SlowMoOnBustedSpeed = 0.4f;
         AllowWeaponDropping = true;
         WeaponDroppingSupressPickups = true;
         WeaponDroppingTimeToSuppress = 15000;

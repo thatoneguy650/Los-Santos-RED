@@ -41,7 +41,6 @@ public class GasPump : InteractableLocation
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Gas Pump";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.5f;
     public override string ButtonPromptText { get; set; }
     public bool IsFueling { get; set; } = false;

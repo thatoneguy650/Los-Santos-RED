@@ -281,7 +281,6 @@ namespace Mod
         public bool IsInAirVehicle { get; private set; }
         public bool IsInAutomobile { get; private set; }
         public bool IsOnBicycle { get; private set; }
-
         public bool IsIncapacitated => IsStunned || IsRagdoll;
         public bool IsInCover { get; private set; }
         public bool IsInFirstPerson { get; private set; }
@@ -359,18 +358,7 @@ namespace Mod
         public List<VehicleExt> ReportedStolenVehicles => TrackedVehicles.Where(x => x.NeedsToBeReportedStolen && !x.HasBeenDescribedByDispatch && !x.AddedToReportedStolenQueue).ToList();
         public float SearchModePercentage => SearchMode.SearchModePercentage;
         public bool ShouldCheckViolations => !Settings.SettingsManager.ViolationSettings.TreatAsCop && !IsCop && !RecentlyStartedPlaying;
-
-
-
-
-
-
         public int SpeechSkill { get; set; }
-
-
-
-
-
         public uint TargettingHandle
         {
             get => targettingHandle;
@@ -413,8 +401,6 @@ namespace Mod
         public bool VeryRecentlyShot => GameTimeLastShot != 0 && Game.GameTime - GameTimeLastShot <= 500;
         public int WantedLevel => wantedLevel;
         public bool WasDangerouslyArmedWhenBusted { get; private set; }
-
-
         public bool IsUsingController { get; set; }
         public bool IsShowingActionWheel { get; set; }
         public bool IsInPoliceVehicle { get; private set; }
@@ -526,7 +512,8 @@ namespace Mod
             BeingArrested = false;
             IsBusted = false;
         }
-        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites)
+        public void Reset(bool resetWanted, bool resetTimesDied, bool resetWeapons, bool resetCriminalHistory, bool resetInventory, bool resetIntoxication, bool resetRelationships, bool resetOwnedVehicles, bool resetCellphone, bool resetActiveTasks, bool resetProperties, 
+            bool resetHealth, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
         {
             IsDead = false;
             IsBusted = false;
@@ -543,6 +530,17 @@ namespace Mod
             GPSManager.Reset();
             NativeFunction.Natives.SET_MOBILE_RADIO_ENABLED_DURING_GAMEPLAY(false);
             IsMobileRadioEnabled = false;
+
+
+            if(resetGracePeriod)
+            {
+                PoliceResponse.ResetGracePeriod();
+            }
+            else
+            {
+                PoliceResponse.AddToGracePeriod();
+            }
+
             if (resetWanted)
             {
                 GameTimeStartedPlaying = Game.GameTime;
@@ -693,7 +691,7 @@ namespace Mod
             string NotifcationText = "Warrants: ~g~None~s~";
             if (PoliceResponse.HasObservedCrimes)
             {
-                NotifcationText = "Wanted For:" + PoliceResponse.PrintCrimes();
+                NotifcationText = "Wanted For:" + PoliceResponse.PrintCrimes(true);
             }
             else if (CriminalHistory.HasHistory)
             {
@@ -1215,13 +1213,10 @@ namespace Mod
             ActivityManager.OnPlayerBusted();
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
             {
-                Game.TimeScale = 0.4f;
+                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;// 0.4f;
             }
             NativeHelper.DisablePlayerControl();
             //Game.LocalPlayer.HasControl = false;
-
-
-
             Scanner.OnPlayerBusted();
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
         }
@@ -1237,7 +1232,7 @@ namespace Mod
             Game.LocalPlayer.Character.IsInvincible = true;
             if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnDeath)
             {
-                Game.TimeScale = 0.4f;
+                Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnDeathSpeed;// 0.4f;
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();

@@ -241,7 +241,7 @@ namespace Mod
                 CurrentMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
                 CurrentYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();
                 CurrentDateTime = new DateTime(CurrentYear, CurrentMonth, CurrentDay, CurrentHour, CurrentMinute, CurrentSecond);
-                if (CurrentHour > 19 || (CurrentHour == 19 && CurrentMinute >= 45) || CurrentHour < 6 || (CurrentHour == 6 && CurrentMinute <= 40))//7:45pm to 6:40 am lights need to be on
+                if (CurrentHour >= 20 || CurrentHour <= 6) //EXCLUDING DUSK NOW, ONLY NIGHT //if (CurrentHour > 19 || (CurrentHour == 19 && CurrentMinute >= 45) || CurrentHour < 6 || (CurrentHour == 6 && CurrentMinute <= 40))//7:45pm to 6:40 am lights need to be on
                 {
                     IsNight = true;
                 }

@@ -43,8 +43,6 @@ public class Airport : InteractableLocation, ILocationSetupable
     }
     public override string TypeName { get; set; } = "Airport";
     public override int MapIcon { get; set; } = (int)BlipSprite.Airport;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
 
 

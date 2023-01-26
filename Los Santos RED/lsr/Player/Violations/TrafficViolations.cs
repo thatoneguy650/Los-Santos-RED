@@ -272,51 +272,58 @@ public class TrafficViolations
         {
             return false;
         }
-        if (myCar.Vehicle.Health <= 300 || (myCar.Vehicle.EngineHealth <= 300 && myCar.Engine.IsRunning))//can only see smoke and shit if its running
+
+        if (myCar.Vehicle.Health <= Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleHealthLimit || (myCar.Vehicle.EngineHealth <= Settings.SettingsManager.VehicleSettings.NonRoadworthyEngineHealthLimit && myCar.Engine.IsRunning))//can only see smoke and shit if its running
         {
             return true;
         }
-        if (!NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar.Vehicle))
+        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedWindows && !NativeFunction.CallByName<bool>("ARE_ALL_VEHICLE_WINDOWS_INTACT", myCar.Vehicle))
         {
             return true;
         }
-        foreach (VehicleDoor myDoor in myCar.Vehicle.GetDoors())
+        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedDoors)
         {
-            if (myDoor.IsDamaged)
+            foreach (VehicleDoor myDoor in myCar.Vehicle.GetDoors())
             {
-                return true;
+                if (myDoor.IsDamaged)
+                {
+                    return true;
+                }
             }
         }
-        if (Time.IsNight)
+        if (Time.IsNight && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights)
         {
             if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
             {
                 return true;
             }
         }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 0, false))
+        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedTires)
         {
-            return true;
-        }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 1, false))
-        {
-            return true;
-        }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 2, false))
-        {
-            return true;
-        }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 3, false))
-        {
-            return true;
-        }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 4, false))
-        {
-            return true;
-        }
-        if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 5, false))
-        {
-            return true;
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 0, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 1, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 2, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 3, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 4, false))
+            {
+                return true;
+            }
+            if (NativeFunction.CallByName<bool>("IS_VEHICLE_TYRE_BURST", myCar.Vehicle, 5, false))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -330,20 +337,20 @@ public class TrafficViolations
             {
                 NativeFunction.CallByName<bool>("GET_VEHICLE_LIGHTS_STATE", myCar.Vehicle, &LightsOn, &HighbeamsOn);
             }
-            if (!LightsOn)
+            if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoHeadlights && !LightsOn)
             {
                 return false;
             }
-            if (HighbeamsOn)
-            {
-                return false;
-            }
-            if (myCar.IsCar && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
+            //if (HighbeamsOn)
+            //{
+            //    return false;
+            //}
+            if (myCar.IsCar && Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckDamagedHeadlights && NativeFunction.CallByName<bool>("GET_IS_RIGHT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle) || NativeFunction.CallByName<bool>("GET_IS_LEFT_VEHICLE_HEADLIGHT_DAMAGED", myCar.Vehicle))
             {
                 return false;
             }
         }
-        if (myCar.Vehicle.LicensePlate == "        ")
+        if (Settings.SettingsManager.VehicleSettings.NonRoadworthyVehicleCheckNoPlate && myCar.Vehicle.LicensePlate == "        ")
         {
             return false;
         }

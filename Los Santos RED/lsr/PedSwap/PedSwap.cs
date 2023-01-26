@@ -1139,7 +1139,7 @@ public class PedSwap : IPedSwap
 
     public void NewPlayer(string modelName, bool isMale)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 
 
         Player.SetDemographics(
@@ -1153,7 +1153,7 @@ public class PedSwap : IPedSwap
     }
     public void NewPlayer(string modelName, bool isMale, string playerName, int moneyToSpawnWith, int speechSkill, string voiceName)//gotta go
     {
-        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
+        Player.Reset(true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true);
         Player.SetDemographics(
             modelName, 
             isMale, 

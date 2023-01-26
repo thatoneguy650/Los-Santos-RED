@@ -1,4 +1,6 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
@@ -24,6 +26,8 @@ public class BustedMenu : Menu
     private ITimeReportable Time;
     private UIMenuItem TalkItOut;
     private UIMenuItem GetBooked;
+    private UIMenuItem AskForCrimes;
+    private UIMenuItem ConsentToSearch;
 
     public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
@@ -53,19 +57,6 @@ public class BustedMenu : Menu
             Create();
             Player.ButtonPrompts.RemovePrompts("MenuShowDead");
             Player.ButtonPrompts.RemovePrompts("MenuShowBusted");
-
-            //if (NativeHelper.IsUsingController)
-            //{
-            //    EntryPoint.WriteToConsole("Busted Menu Controller Prompt Added");
-            //    Player.ButtonPrompts.AddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.ControllerActionDisplayModifier,Settings.SettingsManager.KeySettings.ControllerActionDisplay, 999);
-            //}
-            //else
-            //{
-                //EntryPoint.WriteToConsole("Busted Menu Regular Prompt Added");
-                //Player.ButtonPrompts.AttemptAddPrompt("MenuShowBusted", "Toggle Busted Menu", "MenuShowBusted", Settings.SettingsManager.KeySettings.MenuKey, 999);
-            //}
-
-            
             Menu.Visible = true;
         }
     }
@@ -107,6 +98,31 @@ public class BustedMenu : Menu
     }
     private void CreateLowLevelItems()
     {
+
+        AskForCrimes = new UIMenuItem("Ask About Crimes", "Ask the officer what crimes you are suspected of committing.");
+        AskForCrimes.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        AskForCrimes.Activated += (sender, selectedItem) =>
+        {
+            Menu.Visible = false;
+            Respawning.Respawning.AskAboutCrimes();
+            Show();
+        };
+        Menu.AddItem(AskForCrimes);
+
+        if (Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.RequiresSearch))
+        {
+            ConsentToSearch = new UIMenuItem("Consent To Search", "Consent to a search of your person. You have nothing to hide right?");
+            ConsentToSearch.RightBadge = UIMenuItem.BadgeStyle.Alert;
+            ConsentToSearch.Activated += (sender, selectedItem) =>
+            {
+                Menu.Visible = false;
+                if(!Respawning.Respawning.ConsentToSearch())
+                {
+                    Show();
+                }
+            };
+            Menu.AddItem(ConsentToSearch);
+        }
         TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket.");
         TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         TalkItOut.Activated += (sender, selectedItem) =>
@@ -114,12 +130,10 @@ public class BustedMenu : Menu
             Menu.Visible = false;
             Respawning.Respawning.TalkOutOfTicket();
         };
-
         if (Respawning.Respawning.TimesTalked <= 0)
         {
             Menu.AddItem(TalkItOut);
         }
-
         PayFine = new UIMenuItem("Pay Citation", $"Pay the citation to be on your way.") { RightLabel = $"{Player.FineAmount():C0}" };
         PayFine.Activated += (sender, selectedItem) =>
         {
@@ -213,4 +227,9 @@ public class BustedMenu : Menu
         };
         Menu.AddItem(TakeoverRandomPed);
     }
+
+
+
+
+
 }

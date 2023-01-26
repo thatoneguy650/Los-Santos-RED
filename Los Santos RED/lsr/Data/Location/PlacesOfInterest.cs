@@ -235,7 +235,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new ConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
 
             } },//beachhousein chumash
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { CanInteractWhenWanted = true, BannerImagePath = "yardies.png", MapIconColor = Color.Green, OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { CanInteractWhenWanted = true, BannerImagePath = "yardies.png", MapIconColorString = "Green", OpenTime = 0,CloseTime = 24, IsEnabled = false, PossiblePedSpawns = new List<ConditionalLocation>() {
 
                 new ConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 50f),
                 new ConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 50f),

@@ -352,6 +352,10 @@ public class ModItems : IModItems
             new IngestItem("Delladamol","Gives A Time You Won't Recall", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
 
+
+            new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay!", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindPercentage = 5 },
+
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
         {

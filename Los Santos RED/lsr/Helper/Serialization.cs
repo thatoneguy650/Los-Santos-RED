@@ -22,6 +22,15 @@ namespace LosSantosRED.lsr.Helper
             writer.Close();
             File.WriteAllText(FileName, doc.ToString());
         }
+        public static void SerializeHashSetParams<T>(HashSet<T> paramList, string FileName)
+        {
+            XDocument doc = new XDocument();
+            XmlSerializer serializer = new XmlSerializer(paramList.GetType());
+            XmlWriter writer = doc.CreateWriter();
+            serializer.Serialize(writer, paramList);
+            writer.Close();
+            File.WriteAllText(FileName, doc.ToString());
+        }
         public static void SerializeParam<T>(T param, string FileName)
         {
             XDocument doc = new XDocument();
@@ -40,6 +49,18 @@ namespace LosSantosRED.lsr.Helper
             reader.Close();
             return result;
         }
+
+        public static HashSet<T> DeserializeHashSetParams<T>(string FileName)
+        {
+            XDocument doc = new XDocument(XDocument.Load(FileName));
+            XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
+            XmlReader reader = doc.CreateReader();
+            HashSet<T> result = (HashSet<T>)serializer.Deserialize(reader);
+            reader.Close();
+            return result;
+        }
+
+
         public static T DeserializeParam<T>(string FileName)
         {
             XDocument doc = new XDocument(XDocument.Load(FileName));

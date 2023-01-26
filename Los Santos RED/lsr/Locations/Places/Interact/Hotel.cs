@@ -19,8 +19,6 @@ public class Hotel : InteractableLocation
     }
     public override string TypeName { get; set; } = "Hotel";
     public override int MapIcon { get; set; } = 475;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
 
     public List<HotelRoom> HotelRooms { get; set; } = new List<HotelRoom>();

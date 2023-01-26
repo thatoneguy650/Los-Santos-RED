@@ -102,5 +102,34 @@ public class WeaponViolations
             return false;
         }
     }
+
+    public bool AddFoundWeapon(WeaponInformation weaponInformation)
+    {
+        bool foundWeapon = false;
+        if(weaponInformation == null)
+        {
+            EntryPoint.WriteToConsole("AddFoundWeapon WEAPONIFNO IS NULL");
+            return false;
+        }
+        if (weaponInformation.WeaponLevel >= 4)
+        {
+            Violations.AddViolatingAndObserved("TerroristActivity");
+            EntryPoint.WriteToConsole("AddFoundWeapon TerroristActivity");
+            foundWeapon = true;
+        }
+        else if (weaponInformation.WeaponLevel >= 3)
+        {
+            Violations.AddViolatingAndObserved("BrandishingHeavyWeapon");
+            EntryPoint.WriteToConsole("AddFoundWeapon BrandishingHeavyWeapon");
+            foundWeapon = true;
+        }
+        else if (!weaponInformation.IsLegal)
+        {
+            Violations.AddViolatingAndObserved("BrandishingWeapon");
+            EntryPoint.WriteToConsole("AddFoundWeapon !IsLegal");
+            foundWeapon = true;
+        }
+        return foundWeapon;
+    }
 }
 

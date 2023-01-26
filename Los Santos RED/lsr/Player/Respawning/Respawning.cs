@@ -14,6 +14,12 @@ using System.Threading.Tasks;
 
 public class Respawning// : IRespawning
 {
+    private readonly string LesterContactPicture = "CHAR_LESTER";
+    private readonly string BankContactPicture = "CHAR_BANK_FLEECA";
+    private readonly string PoliceContactPicture = "CHAR_CALL911";
+    private readonly string BlankContactPicture = "CHAR_BLANK_ENTRY";
+    private readonly string BribeFailedResponse = "Thats it? ~r~${0}~s~?";
+
     private int BailFee;
     private int BailFeePastDue;
     private IRespawnable CurrentPlayer;
@@ -79,18 +85,21 @@ public class Respawning// : IRespawning
             "Pleasure doing business douchebag. You've got ~r~30 seconds~s~ to fuck off.",
         };
 
+
+
+
     }
     public bool BribePolice(int Amount)
     {
         CalculateBribe();
         if (CurrentPlayer.BankAccounts.Money < Amount)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
+            Game.DisplayNotification(BankContactPicture, BankContactPicture, "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
             return false;
         }
         else if (Amount < RequiredBribeAmount)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format("Thats it? ~r~${0}~s~?", Amount));
+            Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "Expedited Service Fee", string.Format(BribeFailedResponse, Amount));
             if (Settings.SettingsManager.RespawnSettings.DeductMoneyOnFailedBribe)
             {
                 CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
@@ -99,11 +108,10 @@ public class Respawning// : IRespawning
         }
         else
         {
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            Game.DisplayNotification(BlankContactPicture, BlankContactPicture, StaticStrings.OfficerFriendlyContactName, "~r~Expedited Service Fee", BribedCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             GameTimeLastBribedPolice = Game.GameTime;
-
             List<string> OfficerFriendlyResponses = new List<string>() { 
             "Thanks for the donation, give me a call if you are in a jam with the cops.",
             "Pleasure doing business. Hit me up when you've got issues with johnny law.",
@@ -112,10 +120,10 @@ public class Respawning// : IRespawning
             "As long as you've got the cash, I can take care of the cops.",
 
             };
-
-            CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1);
-
-
+            if (!CurrentPlayer.CellPhone.ContactList.Any(x => x.Name == StaticStrings.OfficerFriendlyContactName))
+            {
+                CurrentPlayer.CellPhone.AddScheduledText(new CorruptCopContact(StaticStrings.OfficerFriendlyContactName), OfficerFriendlyResponses.PickRandom(), 1);
+            }
             //CurrentPlayer.CellPhone.AddScheduledContact(EntryPoint.OfficerFriendlyContactName, "CHAR_BLANK_ENTRY", "", Time.CurrentDateTime.AddMinutes(2));
             CurrentPlayer.Scanner.OnBribedPolice();
             return true;
@@ -132,29 +140,28 @@ public class Respawning// : IRespawning
         if (CurrentPlayer.BankAccounts.Money < FineAmount)
         {
             BailFeePastDue += FineAmount;
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", StaticStrings.OfficerFriendlyContactName, "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
             GameTimeLastPaidFine = Game.GameTime;
             CurrentPlayer.Scanner.OnPaidFine();
             return true;
         }
         else
         {
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
             CitationCopResponses = new List<string>()
                 {
                     $"Thank you for paying the citation amount of ~r~${FineAmount}~s~. Fuck off before you regret it.",
                     $"You have paid the citation amount of ~r~${FineAmount}~s~, now fuck off.",
                     $"Citation of ~r~${FineAmount}~s~ paid. Move along."
                 };
-            Game.DisplayNotification("CHAR_CALL911", "CHAR_CALL911", StaticStrings.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
+            Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
             GameTimeLastPaidFine = Game.GameTime;
             CurrentPlayer.Scanner.OnPaidFine();
             return true;
         }
     }
-
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
         CalculateBail();
@@ -178,7 +185,7 @@ public class Respawning// : IRespawning
                     {
                         CheckWeapons();
                     }
-                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true);//if you pass clear weapons here it will just remover everything anwyays
+                    ResetPlayer(true, true, false, false, true, false, true, false, false, false, false, false, true, true, false, true, true);//if you pass clear weapons here it will just remover everything anwyays
                     CurrentPlayer.PlayerTasks.OnStandardRespawn();
                     if (respawnableLocation == null)
                     {
@@ -190,7 +197,7 @@ public class Respawning// : IRespawning
                     SetPlayerAtLocation(respawnableLocation);
                     if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
                     {
-                        RemoveIllicitInventoryItems();
+                        CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
                     }
                     Time.SetDateTime(BailPostingTime);
                     GameFiber.Sleep(2000);
@@ -212,6 +219,24 @@ public class Respawning// : IRespawning
             }
         }, "Booking");
     }
+    public void AskAboutCrimes()
+    {
+        List<string> AttemptTalkOut = new List<string>()
+            {
+                //$"What seems to be the problem officer?",
+                $"What did I ~y~allegedly~s~ do?",
+            };
+        Game.DisplaySubtitle("You: ~s~" + AttemptTalkOut.PickRandom());
+        GameFiber.Sleep(4000);
+        string CrimeDisplay = CurrentPlayer.PoliceResponse.PrintCrimes(false);
+        List<string> TalkOutResponsePositive = new List<string>()
+            {
+                "{0}",
+            };
+        Game.DisplaySubtitle("~g~Cop: ~s~" + string.Format(TalkOutResponsePositive.PickRandom(), CrimeDisplay));
+        GameFiber.Sleep(4000);
+    }
+
     public bool TalkOutOfTicket()
     {
         TimesTalked++;
@@ -249,9 +274,7 @@ public class Respawning// : IRespawning
                 };
             Game.DisplaySubtitle("~g~Cop: ~s~" + TalkOutResponsePositive.PickRandom());
             GameFiber.Sleep(4000);
-
-
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false);
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
             CurrentPlayer.Scanner.OnTalkedOutOfTicket();
             return true;
         }
@@ -273,12 +296,11 @@ public class Respawning// : IRespawning
                 };
             Game.DisplaySubtitle("~r~Cop: ~s~" + TalkOutResponseNegative.PickRandom());
             return false;
-        }
-        
+        }     
     }
     public void ResistArrest()
     {
-        ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false);
+        ResetPlayer(false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, true);
         GameTimeLastResistedArrest = Game.GameTime;
     }
     public void RespawnAtCurrentLocation(bool withInvicibility, bool resetWanted, bool clearCriminalHistory, bool clearInventory)
@@ -286,11 +308,10 @@ public class Respawning// : IRespawning
         if (CanUndie)
         {
             int wantedLevel = CurrentPlayer.WantedLevel;
-            Respawn(resetWanted, true, false, false, clearCriminalHistory, clearInventory, false, false, false, false, false, false, false, false, false, false);
+            Respawn(resetWanted, true, false, false, clearCriminalHistory, clearInventory, false, false, false, false, false, false, false, false, false, false, false);
             CurrentPlayer.SetWantedLevel(wantedLevel, "RespawnAtCurrentLocation", true);
             if (withInvicibility & Settings.SettingsManager.RespawnSettings.InvincibilityOnRespawn)
             {
-               // CurrentPlayer.BigMessage.ShowMissionPassedMessage("Invincible", Settings.SettingsManager.RespawnSettings.RespawnInvincibilityTime);
                 Game.LocalPlayer.Character.IsInvincible = true;
                 GameFiber.StartNew(delegate
                 {
@@ -309,7 +330,7 @@ public class Respawning// : IRespawning
             CheckWeapons();
         }
         CalculateHospitalStay();
-        Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true,true, false, true);//we are already removing the weapons above, done need to do it twice with the old bug
+        Respawn(true, true, true, false, true, false, true, false, false, false, false, false, true,true, false, true, true);//we are already removing the weapons above, done need to do it twice with the old bug
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (respawnableLocation == null)
         {
@@ -318,7 +339,7 @@ public class Respawning// : IRespawning
         SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnDeath)
         {
-            RemoveIllicitInventoryItems();
+            CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
         }
         Time.SetDateTime(HospitalDischargeDate);
         GameFiber.Sleep(2000);
@@ -339,7 +360,7 @@ public class Respawning// : IRespawning
         }
         CalculateBail();
         //CurrentPlayer.Surrendering.RaiseHands();
-        ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true);//if you pass clear weapons here it will just remover everything anwyays
+        ResetPlayer(true, true, false, false, true, false, true,false, false, false, false, false,true, true, false, true, true);//if you pass clear weapons here it will just remover everything anwyays
         CurrentPlayer.PlayerTasks.OnStandardRespawn();
         if (respawnableLocation == null)
         {
@@ -351,7 +372,7 @@ public class Respawning// : IRespawning
         SetPlayerAtLocation(respawnableLocation);
         if (Settings.SettingsManager.RespawnSettings.ClearIllicitInventoryOnSurrender)
         {
-            RemoveIllicitInventoryItems();
+            CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
         }
         Time.SetDateTime(BailPostingTime);
         GameFiber.Sleep(2000);
@@ -391,7 +412,7 @@ public class Respawning// : IRespawning
     {
         if (CurrentPlayer.Licenses.HasValidCCWLicense(Time))//need to add something like this back
         {
-            RemoveIllegalWeapons();
+            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons();
         }
         else
         {
@@ -408,23 +429,16 @@ public class Respawning// : IRespawning
         Game.FadeScreenOut(1500);
         GameFiber.Wait(1500);
     }
-    private void RemoveIllicitInventoryItems()
-    {
-        foreach(InventoryItem ii in CurrentPlayer.Inventory.ItemsList.ToList())
-        {
-            if(ii.ModItem != null && ii.ModItem.IsPossessionIllicit)
-            {
-                CurrentPlayer.Inventory.Remove(ii.ModItem);
-            }
-        }
-    }
     private void CalculateHospitalStay()
     {
         int HighestWantedLevel = CurrentPlayer.WantedLevel;
         int DaysToStay = RandomItems.GetRandomNumberInt(Settings.SettingsManager.RespawnSettings.HospitalStayMinDays, Settings.SettingsManager.RespawnSettings.HospitalStayMaxDays);
         HospitalFee = Settings.SettingsManager.RespawnSettings.HospitalStayDailyFee * DaysToStay;
         HospitalDischargeDate = Time.CurrentDateTime.AddDays(DaysToStay);
+
         HospitalStayReport = $"~s~Hospitalized Days: ~g~{DaysToStay}~s~~n~Released: {HospitalDischargeDate:g}~s~";
+
+
         EntryPoint.WriteToConsole($"CalculateHospitalStay(): HighestWantedLevel {HighestWantedLevel} HospitalFee {HospitalFee} HospitalDischargeDate {HospitalDischargeDate:g}");
     }
     private void CalculateBail()
@@ -449,6 +463,9 @@ public class Respawning// : IRespawning
         BailPostingTime = new DateTime(BailPostingTime.Year, BailPostingTime.Month, BailPostingTime.Day, 9, 0, 0);
 
         BailReport = $"~s~Incarcerated Days: ~r~{BailDuration}~s~~n~Released: {BailPostingTime:g}~s~";
+
+
+
         EntryPoint.WriteToConsole($"CalculateBail(): HighestWantedLevel {HighestWantedLevel} PoliceKilled {PoliceKilled} PoliceInjured {PoliceInjured} CiviliansKilled {CiviliansKilled} BailFee {BailFee} BailDuration {BailDuration} BailPostingTime {BailPostingTime:g}");
     }
     public void CalculateBribe()
@@ -462,35 +479,9 @@ public class Respawning// : IRespawning
         RequiredBribeAmount += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceKilledMultiplier;
         RequiredBribeAmount += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBribePoliceInjuredMultiplier;
     }
-    private void RemoveIllegalWeapons()
+    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
     {
-        //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
-        //Make a list of my old guns
-        List<StoredWeapon> MyOldGuns = new List<StoredWeapon>();
-        WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
-        foreach (WeaponDescriptor Weapon in CurrentWeapons)
-        {
-            WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
-            StoredWeapon MyGun = new StoredWeapon((uint)Weapon.Hash, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
-            MyOldGuns.Add(MyGun);
-        }
-        //Totally clear our guns
-        Game.LocalPlayer.Character.Inventory.Weapons.Clear();
-        //Add out guns back with variations
-        foreach (StoredWeapon MyNewGun in MyOldGuns)
-        {
-            WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.WeaponHash);
-            if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
-            {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
-                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
-                NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
-            }
-        }
-    }
-    private void ResetPlayer(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearVehicleOwnership, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites)
-    {
-        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds, resetGroup, resetLicenses, resetActivites);
+        CurrentPlayer.Reset(resetWanted, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearVehicleOwnership, resetCellphone, clearActiveTasks, clearProperties, resetHealth, resetNeeds, resetGroup, resetLicenses, resetActivites, resetGracePeriod);
         // CurrentPlayer.UnSetArrestedAnimation();
 
         NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Game.LocalPlayer.Character, false);
@@ -521,12 +512,12 @@ public class Respawning// : IRespawning
         NativeFunction.CallByName<bool>("SET_PLAYER_HEALTH_RECHARGE_MULTIPLIER", Game.LocalPlayer, 0f);
         CurrentPlayer.Surrendering.UnSetArrestedAnimation();
     }
-    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites)
+    private void Respawn(bool resetWanted, bool resetHealth, bool resetTimesDied, bool clearWeapons, bool clearCriminalHistory, bool clearInventory, bool clearIntoxication, bool resetGangRelationships, bool clearOwnedVehicles, bool resetCellphone, bool clearActiveTasks, bool clearProperties, bool resetNeeds, bool resetGroup, bool resetLicenses, bool resetActivites, bool resetGracePeriod)
     {
         try
         {
             ResurrectPlayer(resetTimesDied);
-            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearOwnedVehicles, resetCellphone, clearActiveTasks, clearProperties, resetNeeds, resetGroup, resetLicenses, resetActivites);
+            ResetPlayer(resetWanted, resetHealth, resetTimesDied, clearWeapons, clearCriminalHistory, clearInventory, clearIntoxication, resetGangRelationships, clearOwnedVehicles, resetCellphone, clearActiveTasks, clearProperties, resetNeeds, resetGroup, resetLicenses, resetActivites, resetGracePeriod);
             Game.HandleRespawn();
             Time.UnPauseTime();
             GameTimeLastRespawned = Game.GameTime;
@@ -572,7 +563,7 @@ public class Respawning// : IRespawning
             HospitalBillPastDue = 0;
             TodaysPayment = TotalNeededPayment;
         }
-        Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
+        Game.DisplayNotification(BankContactPicture, BankContactPicture, HospitalName, "Hospital Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", HospitalFee, TodaysPayment, HospitalBillPastDue, HospitalStayReport));
         CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
     }
     private void SetPlayerAtLocation(ILocationRespawnable ToSet)
@@ -615,22 +606,72 @@ public class Respawning// : IRespawning
         bool LesterHelp = RandomItems.RandomPercent(1);
         if (!LesterHelp)
         {
-            Game.DisplayNotification("CHAR_BANK_FLEECA", "CHAR_BANK_FLEECA", PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", BailFee, TodaysPayment, BailFeePastDue, BailReport));
+            Game.DisplayNotification(BankContactPicture, BankContactPicture, PoliceStationName, "Bail Fees", string.Format("Todays Bill: ~r~${0}~s~~n~Payment Today: ~g~${1}~s~~n~Outstanding: ~r~${2}~s~ ~n~{3}", BailFee, TodaysPayment, BailFeePastDue, BailReport));
             CurrentPlayer.BankAccounts.GiveMoney(-1 * TodaysPayment);
         }
         else
         {
-            Game.DisplayNotification("CHAR_LESTER", "CHAR_LESTER", PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
+            Game.DisplayNotification(LesterContactPicture, LesterContactPicture, PoliceStationName, "Bail Fees", string.Format("~g~${0} ~s~", 0));
         }
     }
     public void OnPlayerBusted()
     {
         TimesTalked = 0;
     }
-
-    internal void CalulateBribe()
+    public void CalulateBribe()
     {
         CalculateBribe();
+    }
+    public bool ConsentToSearch()
+    {
+        bool foundAnything = false;
+        List<string> foundWeaponResponse = new List<string>()
+                {
+                    $"Got enough weapons on you?",
+                    $"Seems you are starting a little weapon collection.",
+                    $"Might need to add this to my drop gun collection.",
+                };
+        List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons();
+        WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x=> x.WeaponLevel).FirstOrDefault();
+        if(worstWeapon != null && CurrentPlayer.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
+        {
+            foundAnything = true;
+            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons();
+            Game.DisplayHelp("Illegal Weapons Found");
+            Game.DisplaySubtitle("~g~Cop: ~s~" + foundWeaponResponse.PickRandom());
+            GameFiber.Sleep(4000);
+        }
+        List<string> foundItemResponse = new List<string>()
+                {
+                    $"I don't think these are legal.",
+                    $"Seems you've got some illegal items here.",
+                    $"Guess you didn't want us to find that.",
+                };
+        List<ModItem> IllegalItems = CurrentPlayer.Inventory.GetIllicitItems();
+        if (IllegalItems != null && IllegalItems.Any() && CurrentPlayer.Violations.OtherViolations.AddFoundIllegalItem())
+        {
+            foundAnything = true;
+            CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
+            Game.DisplayHelp("Illegal Items Found");
+            Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
+            GameFiber.Sleep(4000);
+        }
+        List<string> foundNothingResponse = new List<string>()
+                {
+                    $"I guess you are clean. Don't hang around.",
+                    $"You're clean. Get lost.",
+                    $"Nothing? Really? Beat your feet.",
+                    $"Keep your nose clean. Get outta here.",
+                };
+        if (!foundAnything)
+        {
+            Game.DisplaySubtitle("~g~Cop: ~s~" + foundNothingResponse.PickRandom());
+            GameFiber.Sleep(4000);
+            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            CurrentPlayer.Scanner.OnTalkedOutOfTicket();
+            return true;
+        }
+        return false;
     }
 }
 

@@ -523,7 +523,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Hingmyralgan", 45, 0),
                 new MenuItem("Deludamol", 85, 0),
                 new MenuItem("Delladamol", 55, 0),
-
+                new MenuItem("Wach-Auf Caffeine Pills", 35, 0),
                 new MenuItem("Lax to the Max", 24, 0),
                 new MenuItem("Bull Shark Testosterone", 25, 0),
                 new MenuItem("Alco Patch", 55, 0),

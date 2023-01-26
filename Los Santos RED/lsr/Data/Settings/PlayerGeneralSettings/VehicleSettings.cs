@@ -73,6 +73,22 @@ public class VehicleSettings : ISettingsDefaultable
     [Description("If enabled, the player will not be able to fly aircraft until they have a pilots license.")]
     public bool DisableAircraftWithoutLicense { get; set; }
 
+    [Description("Limit of vehicle health before the vehicle is considered damaged/non-roadworthy.")]
+    public int NonRoadworthyVehicleHealthLimit { get; set; }
+    [Description("Limit of vehicle engine health before the vehicle is considered damaged/non-roadworthy.")]
+    public int NonRoadworthyEngineHealthLimit { get; set; }
+    [Description("If enabled, any broken windows will mark the vehicle as damaged/non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckDamagedWindows { get; set; }
+    [Description("If enabled, any damaged doors will mark the vehicle as damaged/non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckDamagedDoors { get; set; }
+    [Description("If enabled, any broken headlights will mark the vehicle as damaged/non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckDamagedHeadlights { get; set; }
+    [Description("If enabled, any burst tires will mark the vehicle as damaged/non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckDamagedTires { get; set; }
+    [Description("If enabled, not having lights on at night will mark the vehicle as non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckNoHeadlights { get; set; }
+    [Description("If enabled, not having a license plate will mark the vehicle as non-roadworthy.")]
+    public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
 
     public VehicleSettings()
     {
@@ -107,5 +123,14 @@ public class VehicleSettings : ISettingsDefaultable
         DisableRolloverFlip = true;
         UseBetterLightStateOnAI = false;
         DisableAircraftWithoutLicense = false;
+
+        NonRoadworthyVehicleHealthLimit = 300;
+        NonRoadworthyEngineHealthLimit = 300;
+        NonRoadworthyVehicleCheckDamagedWindows = true;
+        NonRoadworthyVehicleCheckDamagedDoors = true;
+        NonRoadworthyVehicleCheckDamagedHeadlights = true;
+        NonRoadworthyVehicleCheckDamagedTires = true;
+        NonRoadworthyVehicleCheckNoHeadlights = true;
+        NonRoadworthyVehicleCheckNoPlate = true;
     }
 }

@@ -18,8 +18,6 @@ public class Morgue : InteractableLocation
     }
     public override string TypeName { get; set; } = "Morgue";
     public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
     public Morgue(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {

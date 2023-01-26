@@ -31,7 +31,6 @@ public class VendingMachine : InteractableLocation
     public override bool ShowsOnDirectory { get; set; } = false;
     public override string TypeName { get; set; } = "Vending Machine";
     public override int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
-    public override Color MapIconColor { get; set; } = Color.White;
     public override float MapIconScale { get; set; } = 0.25f;
     public override string ButtonPromptText { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player) 

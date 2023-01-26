@@ -1,4 +1,5 @@
 ﻿using Rage;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,6 +42,7 @@ public class ModDataFileManager
     public Counties Counties;
     public WeatherForecasts WeatherForecasts;
     public ClothesNames ClothesNames;
+    public LanguageStrings LanguageStrings;
 
     public ModDataFileManager()
     {
@@ -156,6 +158,13 @@ public class ModDataFileManager
         ClothesNames = new ClothesNames();
         ClothesNames.DefaultConfig();
         GameFiber.Yield();
+
+
+
+        //LanguageStrings = new LanguageStrings();
+        //LanguageStrings.DefaultConfig();
+        //GameFiber.Yield();
+
     }
     private void SetupAlternateConfigs()
     {

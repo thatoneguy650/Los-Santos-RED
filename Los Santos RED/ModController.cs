@@ -31,7 +31,7 @@ namespace LosSantosRED.lsr
         private Weather Weather;
         private Mod.World World;
         
-        private ModDataFileManager ModDataFileManager;
+        public ModDataFileManager ModDataFileManager { get; private set; }
         private WeatherManager WeatherManager;
 
         public ModController()

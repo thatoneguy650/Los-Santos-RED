@@ -20,8 +20,6 @@ public class PoliceStation : InteractableLocation, ILocationDispatchable, ILocat
     }
     public override string TypeName { get; set; } = "Police Station";
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
-    public override Color MapIconColor { get; set; } = Color.White;
-    public override float MapIconScale { get; set; } = 1.0f;
     //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
     //public string AssignedAgencyID { get; set; }
