@@ -222,18 +222,52 @@ public class PopUpMenu
         int CategoryID = 0;
         int ItemID = 0;
         List<PopUpBox> InventoryCategoriesSubMenu = new List<PopUpBox>();
+
+
+
         foreach (ItemType mi in Player.Inventory.ItemsList.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x => x.Value))
         {
             InventoryCategoriesSubMenu.Add(new PopUpBox(CategoryID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
+            
+            
+            
             ItemID = 0;
             List<PopUpBox> InventoryCategorySubMenu = new List<PopUpBox>();
+
+
+
+
             foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
             {
-                InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), ii.Description));
+                //InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), ii.Description));
+
+
+
+                InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
+
+                List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
+                InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
+                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Game.DisplaySubtitle($"DISACRD {ii.ModItem.Name}")), $"Discard {ii.ModItem.Name} ({ii.Amount})"));//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
+                PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
+
                 ItemID++;
             }
+
+
+
+
+
+
+
+
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi}SubMenu", InventoryCategorySubMenu) { IsChild = true, Group = "Inventory" });
             CategoryID++;
+
+
+
+
+
+
         }
         PopUpMenuGroups.Add(new PopUpBoxGroup(InventoryCategoriesSubMenuName, InventoryCategoriesSubMenu) { IsChild = true, Group = "Inventory" });
     }
@@ -245,6 +279,10 @@ public class PopUpMenu
         foreach (GroupMember mi in Player.GroupManager.CurrentGroupMembers)
         {
             GroupMembersSubMenu.Add(new PopUpBox(GroupMemberID, mi.PedExt.Name, $"{mi.PedExt.Name}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
+
+
+
+
             List<PopUpBox> GroupMemberSubMenu = new List<PopUpBox>();
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));

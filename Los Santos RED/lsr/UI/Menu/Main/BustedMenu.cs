@@ -8,7 +8,7 @@ using RAGENativeUI.Elements;
 using System.Collections.Generic;
 using System.Linq;
 
-public class BustedMenu : Menu
+public class BustedMenu : ModUIMenu
 {
     private MenuPool MenuPool;
     private UIMenuItem Bribe;
@@ -87,7 +87,7 @@ public class BustedMenu : Menu
     }
     private void AddGeneralItems()
     {
-        ResistArrest = new UIMenuItem("Resist Arrest", "Better hope you're strapped.");
+        ResistArrest = new UIMenuItem("Resist Arrest", "Immediately attempt to escape from police custody. Got ten angry cops around? Better hope you're ~r~strapped~s~.");
         ResistArrest.RightBadge = UIMenuItem.BadgeStyle.Alert;
         ResistArrest.Activated += (sender, selectedItem) =>
         {
@@ -98,9 +98,7 @@ public class BustedMenu : Menu
     }
     private void CreateLowLevelItems()
     {
-
-        AskForCrimes = new UIMenuItem("Ask About Crimes", "Ask the officer what crimes you are suspected of committing.");
-        AskForCrimes.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        AskForCrimes = new UIMenuItem("List Offenses", "Ask the officer to list the crimes your are ~y~suspected~s~ of committing. Innocent until proven guilty!");
         AskForCrimes.Activated += (sender, selectedItem) =>
         {
             Menu.Visible = false;
@@ -109,53 +107,86 @@ public class BustedMenu : Menu
         };
         Menu.AddItem(AskForCrimes);
 
-        if (Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.RequiresSearch))
+        bool hasOption = false;
+
+        CrimeEvent highestPriorityCrimeEvent = Player.PoliceResponse.CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
+        if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCleanSearch) //Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnCleanSearch))
         {
-            ConsentToSearch = new UIMenuItem("Consent To Search", "Consent to a search of your person. You have nothing to hide right?");
-            ConsentToSearch.RightBadge = UIMenuItem.BadgeStyle.Alert;
+            ConsentToSearch = new UIMenuItem("Consent To Search", "Consent to a ~y~search~s~ of your person. You have nothing to hide right?");
+            ConsentToSearch.RightBadge = UIMenuItem.BadgeStyle.Ammo;
             ConsentToSearch.Activated += (sender, selectedItem) =>
             {
                 Menu.Visible = false;
-                if(!Respawning.Respawning.ConsentToSearch())
-                {
-                    Show();
-                }
+                Respawning.Respawning.ConsentToSearchNew(this);
             };
             Menu.AddItem(ConsentToSearch);
+            hasOption = true;
         }
-        TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket.");
-        TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-        TalkItOut.Activated += (sender, selectedItem) =>
+
+        if (Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnTalkItOut) && Respawning.Respawning.TimesTalked <= 0)
         {
-            Menu.Visible = false;
-            Respawning.Respawning.TalkOutOfTicket();
-        };
-        if (Respawning.Respawning.TimesTalked <= 0)
-        {
+            TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket. Better be charming, others bring ~g~cash~s~.");
+            TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+            TalkItOut.Activated += (sender, selectedItem) =>
+            {
+                Menu.Visible = false;
+                Respawning.Respawning.TalkOutOfTicket(this);
+            };
             Menu.AddItem(TalkItOut);
+            hasOption = true;
         }
-        PayFine = new UIMenuItem("Pay Citation", $"Pay the citation to be on your way.") { RightLabel = $"{Player.FineAmount():C0}" };
-        PayFine.Activated += (sender, selectedItem) =>
+
+        if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCite)
         {
-            Respawning.Respawning.PayFine();
-            Menu.Visible = false;
-        };
-        Menu.AddItem(PayFine);
-
-
+            PayFine = new UIMenuItem("Pay Citation", $"Pay the citation to be on your way. The LSPD slush fund isn't going to grow itself is it? Help feed the ~o~beast~s~!") { RightLabel = $"{Player.FineAmount():C0}" };
+            PayFine.RightBadge = UIMenuItem.BadgeStyle.Crown;
+            PayFine.Activated += (sender, selectedItem) =>
+            {
+                Respawning.Respawning.PayFine();
+                Menu.Visible = false;
+            };
+            Menu.AddItem(PayFine);
+            hasOption = true;
+        }   
+        if(!hasOption)
+        {
+            AddSurrenderOptions();
+        }
     }
     private void CreateHighLevelItems()
     {
+        AddBribeItems();
+        AddSurrenderOptions();
+    }
+    private void AddRespawningOptions()
+    {
+        TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>("Takeover Random Pedestrian", "Takes over a random pedestrian around the player. Feel the need to ruin another person's life?", Distances);
+        TakeoverRandomPed.Activated += (sender, selectedItem) =>
+        {
+            if (TakeoverRandomPed.SelectedItem.Distance == -1f)
+            {
+                PedSwap.BecomeExistingPed(500f, true, false, true, false);
+            }
+            else
+            {
+                PedSwap.BecomeExistingPed(TakeoverRandomPed.SelectedItem.Distance, false, false, true, false);
+            }
+            Menu.Visible = false;
+        };
+        Menu.AddItem(TakeoverRandomPed);
+    }
+    private void AddBribeItems()
+    {
         Respawning.Respawning.CalulateBribe();
-        Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Don't be cheap.");
+        Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Can't buy a boat on a cop's salary can you? Don't be cheap or you will regret it.");
 
-        if (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount ||  (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmountControllerOnly && Respawning.IsUsingController))
+        if (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount || (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmountControllerOnly && Respawning.IsUsingController))
         {
             Bribe.RightBadge = UIMenuItem.BadgeStyle.None;
-            Bribe.RightLabel = $"~r~${Respawning.Respawning.RequiredBribeAmount}~s~" ;
+            Bribe.RightLabel = $"~r~${Respawning.Respawning.RequiredBribeAmount}~s~";
             Bribe.Activated += (sender, selectedItem) =>
             {
-                Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount);
+                Respawning.Respawning.BribePolice(Respawning.Respawning.RequiredBribeAmount, this);
                 Menu.Visible = false;
             };
         }
@@ -167,15 +198,16 @@ public class BustedMenu : Menu
             {
                 if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int BribeAmount))
                 {
-                    Respawning.Respawning.BribePolice(BribeAmount);
+                    Respawning.Respawning.BribePolice(BribeAmount, this);
                 }
                 Menu.Visible = false;
             };
         }
         Menu.AddItem(Bribe);
-
-
-        if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1==0)
+    }
+    private void AddSurrenderOptions()//fallback, always works
+    {
+        if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1 == 0)
         {
             if (Player.IsBeingBooked)
             {
@@ -200,7 +232,7 @@ public class BustedMenu : Menu
         }
         else
         {
-            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Lose bail money and your guns.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~San Andreas~s~ does't it? Lose bail money, guns, and drugs at least.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
             Surrender.Activated += (sender, selectedItem) =>
             {
                 Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
@@ -208,28 +240,5 @@ public class BustedMenu : Menu
             };
             Menu.AddItem(Surrender);
         }
-
     }
-    private void AddRespawningOptions()
-    {
-        TakeoverRandomPed = new UIMenuListScrollerItem<DistanceSelect>("Takeover Random Pedestrian", "Takes over a random pedestrian around the player.", Distances);
-        TakeoverRandomPed.Activated += (sender, selectedItem) =>
-        {
-            if (TakeoverRandomPed.SelectedItem.Distance == -1f)
-            {
-                PedSwap.BecomeExistingPed(500f, true, false, true, false);
-            }
-            else
-            {
-                PedSwap.BecomeExistingPed(TakeoverRandomPed.SelectedItem.Distance, false, false, true, false);
-            }
-            Menu.Visible = false;
-        };
-        Menu.AddItem(TakeoverRandomPed);
-    }
-
-
-
-
-
 }

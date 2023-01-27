@@ -6,7 +6,7 @@ using RAGENativeUI.Elements;
 using System.Collections.Generic;
 using System.Linq;
 
-public class DeathMenu : Menu
+public class DeathMenu : ModUIMenu
 {
     private UIMenu Menu;
     private IPedSwap PedSwap;

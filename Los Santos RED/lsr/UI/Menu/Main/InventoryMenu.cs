@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InventoryMenu : Menu
+public class InventoryMenu : ModUIMenu
 {
     private MenuPool MenuPool;
     private UIMenu ParentMenu;

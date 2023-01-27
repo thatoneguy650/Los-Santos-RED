@@ -33,7 +33,7 @@ public class UI : IMenuProvideable
     private BigMessageThread BigMessage;
     
     private MenuPool MenuPool;
-    private List<Menu> MenuList;
+    private List<ModUIMenu> MenuList;
     private MainMenu MainMenu;
     private BustedMenu BustedMenu;
     private DeathMenu DeathMenu;
@@ -90,7 +90,7 @@ public class UI : IMenuProvideable
         BustedMenu = new BustedMenu(MenuPool, pedSwap, respawning, placesOfInterest, Settings, policeRespondable, time);
         MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable,agencies, crimes, intoxicants, shopMenus);
         DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems, crimes, plateTypes, names);
-        MenuList = new List<Menu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
+        MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
         PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, Counties);
         SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, Counties, gameSaves, pedSwap,playerinventory, saveablePlayer);
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
@@ -432,9 +432,9 @@ public class UI : IMenuProvideable
         }
         NativeFunction.Natives.FLASH_WANTED_DISPLAY(DisplayablePlayer.IsWanted && DisplayablePlayer.IsInSearchMode);
     }
-    private void Show(Menu toShow)
+    private void Show(ModUIMenu toShow)
     {
-        foreach (Menu menu in MenuList)
+        foreach (ModUIMenu menu in MenuList)
         {
             if (menu != toShow)
             {
@@ -443,9 +443,9 @@ public class UI : IMenuProvideable
         }
         toShow.Show();
     }
-    private void Toggle(Menu toToggle)
+    private void Toggle(ModUIMenu toToggle)
     {
-        foreach (Menu menu in MenuList)
+        foreach (ModUIMenu menu in MenuList)
         {
             if (menu != toToggle)
             {

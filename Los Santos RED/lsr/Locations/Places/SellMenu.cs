@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class SellMenu : Menu
+public class SellMenu : ModUIMenu
 {
     private UIMenu ParentMenu;
     private UIMenu sellMenuRNUI;

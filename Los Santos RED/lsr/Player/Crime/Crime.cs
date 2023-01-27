@@ -39,22 +39,18 @@ public class Crime
     public bool AngersCivilians { get; set; } = false;
     public bool ScaresCivilians { get; set; } = true;
     public float MaxReportingDistance { get; set; } = 999f;
-    public bool RequiresCitation { get; set; } = false;
-    public bool RequiresSearch { get; set; } = false;
+    public bool CanReleaseOnCite { get; set; } = false;
+    public bool CanReleaseOnCleanSearch { get; set; } = false;
+    public bool CanReleaseOnTalkItOut { get; set; } = false;
+
     public bool ShowsWarning { get; set; } = false;
     public string WarningMessage { get; set; } = "";
-    public uint TimeBetweenWarnings { get; set; } = 1800000;//900000;
-
+    public uint TimeBetweenWarnings { get; set; } = 1800000;
     public uint GracePeriod { get; set; } = 0;
-
-
     public override string ToString()
     {
         return Name;
     }
-
-
-
     public ReactionTier ReactionTier => IsIntense ? ReactionTier.Intense : IsAngerInducing || IsScary ? ReactionTier.Alerted : IsMundane ? ReactionTier.Mundane : ReactionTier.None;//maybe jus thvae this set on a per crime basis>?
     public bool IsScary => ScaresCivilians;
     public bool IsAngerInducing => AngersCivilians;

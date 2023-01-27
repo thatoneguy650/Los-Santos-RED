@@ -183,7 +183,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
     }
     public void CallPolice()
     {
-        Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == "OfficersNeeded");
+        Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.OfficersNeededCrimeID);
         PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
 
 

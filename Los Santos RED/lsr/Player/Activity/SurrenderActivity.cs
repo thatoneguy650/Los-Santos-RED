@@ -73,6 +73,9 @@ public class SurrenderActivity : DynamicActivity
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }
+
+
+
     private void LowerHands()
     {
         if (!Player.IsBusted)

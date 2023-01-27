@@ -3,7 +3,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System.Linq;
 
-public class MainMenu : Menu
+public class MainMenu : ModUIMenu
 {
     private MenuPool MenuPool;
     private UIMenu Main;

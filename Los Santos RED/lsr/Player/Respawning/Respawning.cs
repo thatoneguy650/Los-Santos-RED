@@ -4,6 +4,7 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
@@ -89,12 +90,13 @@ public class Respawning// : IRespawning
 
 
     }
-    public bool BribePolice(int Amount)
+    public bool BribePolice(int Amount, ModUIMenu menu)
     {
         CalculateBribe();
         if (CurrentPlayer.BankAccounts.Money < Amount)
         {
             Game.DisplayNotification(BankContactPicture, BankContactPicture, "FLEECA Bank", "Overdrawn Notice", string.Format("Current transaction would overdraw account. Denied.", Amount));
+            menu?.Show();
             return false;
         }
         else if (Amount < RequiredBribeAmount)//(CurrentPlayer.WantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBribeWantedLevelScale))
@@ -104,6 +106,7 @@ public class Respawning// : IRespawning
             {
                 CurrentPlayer.BankAccounts.GiveMoney(-1 * Amount);
             }
+            menu?.Show();
             return false;
         }
         else
@@ -134,21 +137,17 @@ public class Respawning// : IRespawning
         GameTimeLastBribedPolice = Game.GameTime;
         CurrentPlayer.Scanner.OnBribedPolice();
     }
-    public bool PayFine()
+    public void PayFine()
     {
         int FineAmount = CurrentPlayer.FineAmount();
+        ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
         if (CurrentPlayer.BankAccounts.Money < FineAmount)
         {
-            BailFeePastDue += FineAmount;
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+            BailFeePastDue += FineAmount;       
             Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", $"Citation of ~r~${FineAmount}~s~ has been added to your debt.");
-            GameTimeLastPaidFine = Game.GameTime;
-            CurrentPlayer.Scanner.OnPaidFine();
-            return true;
         }
         else
         {
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
             CitationCopResponses = new List<string>()
                 {
                     $"Thank you for paying the citation amount of ~r~${FineAmount}~s~. Fuck off before you regret it.",
@@ -157,10 +156,9 @@ public class Respawning// : IRespawning
                 };
             Game.DisplayNotification(PoliceContactPicture, PoliceContactPicture, StaticStrings.OfficerFriendlyContactName, "~o~Citation", CitationCopResponses.PickRandom());
             CurrentPlayer.BankAccounts.GiveMoney(-1 * FineAmount);
-            GameTimeLastPaidFine = Game.GameTime;
-            CurrentPlayer.Scanner.OnPaidFine();
-            return true;
         }
+        GameTimeLastPaidFine = Game.GameTime;
+        CurrentPlayer.Scanner.OnPaidFine();
     }
     public void GetBooked(ILocationRespawnable respawnableLocation)
     {
@@ -237,7 +235,7 @@ public class Respawning// : IRespawning
         GameFiber.Sleep(4000);
     }
 
-    public bool TalkOutOfTicket()
+    public bool TalkOutOfTicket(ModUIMenu menu)
     {
         TimesTalked++;
         List<string> AttemptTalkOut = new List<string>()
@@ -295,6 +293,7 @@ public class Respawning// : IRespawning
                     $"Keep being smart with me and you'll be eating the pavement.",
                 };
             Game.DisplaySubtitle("~r~Cop: ~s~" + TalkOutResponseNegative.PickRandom());
+            menu?.Show();
             return false;
         }     
     }
@@ -672,6 +671,41 @@ public class Respawning// : IRespawning
             return true;
         }
         return false;
+    }
+    public void ConsentToSearchNew(ModUIMenu menu)
+    {
+
+        SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings);
+        searchActivity.Setup();
+        searchActivity.Start();
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (searchActivity.IsActive)
+                {
+                    GameFiber.Yield();
+                }
+                if(searchActivity.CompletedSearch && !searchActivity.FoundIllegalItems)
+                {
+                    ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+                    CurrentPlayer.Scanner.OnTalkedOutOfTicket();
+                }
+                else
+                {
+                    if (Settings.SettingsManager.PlayerOtherSettings.SetSlowMoOnBusted)
+                    {
+                        Game.TimeScale = Settings.SettingsManager.PlayerOtherSettings.SlowMoOnBustedSpeed;
+                    }
+                    menu?.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "Searching");
     }
 }
 

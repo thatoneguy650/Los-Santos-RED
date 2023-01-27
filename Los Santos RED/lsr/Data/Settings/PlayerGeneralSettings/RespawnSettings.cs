@@ -71,7 +71,7 @@ public class RespawnSettings : ISettingsDefaultable
     public int HospitalStayMaxDays { get; set; }
     [Description("Clears all illicit items from inventory when you die")]
     public bool ClearIllicitInventoryOnDeath { get; set; }
-    [Description("Remove weapons from player after respawning at a hostpital")]
+    [Description("Remove weapons from player after respawning at a hospital")]
     public bool RemoveWeaponsOnDeath { get; set; }
     [Description("If enabled, the player will need to get booked at the closest station instead of being able to surrender to any station. If disabled, advanced booking is unavailable. CURRENTLY DISABLED")]
     public bool ForceBooking { get; set; }

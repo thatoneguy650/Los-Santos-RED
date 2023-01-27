@@ -1222,7 +1222,9 @@ public class Debug
         //CarChanePos();
         // SpawnAttachedRagdoll();
 
-        Player.CellPhone.CloseBurner();
+        EntryPoint.WriteToConsole($"HandsAreUp: {Player.Surrendering.HandsAreUp}");
+
+        //Player.CellPhone.CloseBurner();
 
         //PrintRelationships();
         //AlertMessage();

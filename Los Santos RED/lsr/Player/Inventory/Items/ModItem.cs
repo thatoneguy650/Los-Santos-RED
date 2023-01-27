@@ -91,6 +91,9 @@ public class ModItem
     public bool ConsumeOnPurchase { get; set; } = false;
     public virtual bool CanConsume { get; set; } = false;//no no
 
+
+
+
     public int FindPercentage { get; set; } = 0;
 
 
@@ -253,7 +256,12 @@ public class ModItem
     }
     public virtual void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
-        purchaseScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 99, 1)
+        int maxscroller = 10;
+        if(ConsumeOnPurchase)
+        {
+            maxscroller = 1;
+        }
+        purchaseScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, maxscroller, 1)
         {
             Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}" +
             $"{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}" +

@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class CustomizePedMenu : Menu
+public class CustomizePedMenu : ModUIMenu
 {
     private UIMenuItem BecomeModel;
     private UIMenuItem ChangeModel;

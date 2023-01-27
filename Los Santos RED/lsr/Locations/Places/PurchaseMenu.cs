@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 
-public class PurchaseMenu : Menu
+public class PurchaseMenu : ModUIMenu
 {
     private UIMenu ParentMenu;
     private MenuPool MenuPool;

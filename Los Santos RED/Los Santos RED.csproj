@@ -194,6 +194,7 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
+    <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Other\GenericIdle.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />
@@ -734,7 +735,7 @@
     <Compile Include="lsr\Tasker\Cop\Tasks\Kill.cs" />
     <Compile Include="lsr\Tasker\Cop\Tasks\Locate.cs" />
     <Compile Include="lsr\Time\ITimeReportable.cs" />
-    <Compile Include="lsr\UI\Menu\Main\Menu.cs" />
+    <Compile Include="lsr\UI\Menu\Main\ModUIMenu.cs" />
     <Compile Include="lsr\ModController\ModTask.cs" />
     <Compile Include="lsr\Helper\NativeHelper.cs" />
     <Compile Include="lsr\Helper\Serialization.cs" />

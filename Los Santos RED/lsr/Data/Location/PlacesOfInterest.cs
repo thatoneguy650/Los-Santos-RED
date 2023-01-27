@@ -687,23 +687,23 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 PossiblePedSpawns = new List<ConditionalLocation>() {
                 new ConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, 50f),
 
-#if DEBUG
-                     new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 100f) { AssociationID = "LSPD", RequiredGroup = "Detective" },
-                     new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 100f) { AssociationID = "SAHP", RequiredGroup = "MotorcycleCop" },   
-#else
+//#if DEBUG
+//                     new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 100f) { AssociationID = "LSPD", RequiredGroup = "Detective" },
+//                     new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 100f) { AssociationID = "SAHP", RequiredGroup = "MotorcycleCop" },   
+//#else
                     new ConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, 50f),
                     new ConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, 50f),
-#endif
+//#endif
                 },PossibleVehicleSpawns = new List<ConditionalLocation>() {
 
 
-#if DEBUG
-                new ConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,100f)  { AssociationID = "LSPD", RequiredGroup = "Unmarked" },
-                new ConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,100f) { AssociationID = "SAHP", RequiredGroup = "Motorcycle" },  
-#else
+//#if DEBUG
+//                new ConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,100f)  { AssociationID = "LSPD", RequiredGroup = "Unmarked" },
+//                new ConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,100f) { AssociationID = "SAHP", RequiredGroup = "Motorcycle" },  
+//#else
                 new ConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,50f),
                 new ConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),
-#endif
+//#endif
 
                 new ConditionalLocation(new Vector3(399.393f, -1621.396f, 29.20119f), 50f,50f),
                 new ConditionalLocation(new Vector3(351.3006f, -1556.711f, 29.24393f), 230f,50f),

@@ -548,6 +548,8 @@ namespace Mod
                 Investigation.Reset();
                 Violations.Reset();            
                 Scanner.Reset();
+                //Surrendering.Reset();
+
                 Update();
             }
             if (resetTimesDied)

@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public abstract class Menu
+public abstract class ModUIMenu
 {
-    public Menu()
+    public ModUIMenu()
     {
 
     }

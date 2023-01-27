@@ -6,7 +6,7 @@ using RAGENativeUI.Elements;
 using System.Collections.Generic;
 using System.Linq;
 
-public class ActionMenu : Menu
+public class ActionMenu : ModUIMenu
 {
     private MenuPool MenuPool;
     private UIMenu ParentMenu;

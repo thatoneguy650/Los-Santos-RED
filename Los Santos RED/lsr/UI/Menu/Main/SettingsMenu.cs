@@ -9,7 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
-public class SettingsMenu : Menu//needs lots of cleanup still
+public class SettingsMenu : ModUIMenu//needs lots of cleanup still
 {
     private MenuPool MenuPool;
     private UIMenu ParentMenu;

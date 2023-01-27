@@ -14,7 +14,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 
-public class DebugMenu : Menu
+public class DebugMenu : ModUIMenu
 {
 
     private UIMenu Debug;
