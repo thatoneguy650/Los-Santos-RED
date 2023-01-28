@@ -148,6 +148,8 @@
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
+    <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
+    <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Data\Peds\PossibleNames.cs" />

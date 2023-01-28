@@ -30,7 +30,7 @@ public class GangMember : PedExt, IWeaponIssuable
     public int VehicleShootRate { get; set; } = 100;
     public int TurretAccuracy { get; set; } = 10;
     public int TurretShootRate { get; set; } = 1000;
-
+    public bool IsUsingMountedWeapon { get; set; } = false;
     public WeaponInventory WeaponInventory { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);

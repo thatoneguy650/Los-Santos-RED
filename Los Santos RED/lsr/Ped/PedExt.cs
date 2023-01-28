@@ -232,6 +232,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsZombie { get; set; } = false;
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
+    public bool StayInVehicle { get; set; } = false;
     public string Name { get; set; }
     public virtual bool NeedsFullUpdate
     {

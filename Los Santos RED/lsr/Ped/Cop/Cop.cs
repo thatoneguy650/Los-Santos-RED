@@ -9,6 +9,7 @@ using System.Linq;
 
 public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
+    private bool IsSetStayInVehicle;
     private uint GameTimeSpawned;
     private ISettingsProvideable Settings;
     private bool WasAlreadySetPersistent = false;
@@ -56,11 +57,8 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 20;
-
-
     public int TurretAccuracy { get; set; } = 30;
     public int TurretShootRate { get; set; } = 1000;
-
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
@@ -74,6 +72,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public uint GameTimeLastUpdatedTarget { get; set; }
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => true;
+    public bool IsUsingMountedWeapon { get; set; } = false;
     public PedExt CurrentTarget { get; set; }
     public override bool NeedsFullUpdate
     {
@@ -157,6 +156,9 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                         perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
                         HasSeenDistressedPed = false;
                     }
+
+                    UpdateCombatFlags();
+
                     GameTimeLastUpdated = Game.GameTime;
                 }
             }
@@ -264,6 +266,28 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         if(Settings.SettingsManager.PoliceTaskSettings.AllowMinorReactions)
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
+        }
+    }
+
+    private void UpdateCombatFlags()
+    {
+        if (StayInVehicle && IsUsingMountedWeapon)
+        {
+            if (!IsSetStayInVehicle)
+            {
+                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, false);
+                IsSetStayInVehicle = true;
+                EntryPoint.WriteToConsole($"COP {Handle} SET CA_LEAVE_VEHICLES FALSE");
+            }
+        }
+        else
+        {
+            if(IsSetStayInVehicle)
+            {
+                NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, true);
+                IsSetStayInVehicle = false;
+                EntryPoint.WriteToConsole($"COP {Handle} SET CA_LEAVE_VEHICLES TRUE");
+            }
         }
     }
 }

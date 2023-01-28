@@ -389,7 +389,7 @@ public class Chase : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, 9);
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);// 9);
             }
         }
         //EntryPoint.WriteToConsole(string.Format("Started Enter Old Car: {0}", Ped.Pedestrian.Handle));
@@ -515,7 +515,7 @@ public class Chase : ComplexTask
 
 
                     //TaskedSeatIndex = Player.Character.SeatIndex;
-                    NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, 9);//caused them to get confused about getting back in thier car
+                    NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, Player.CurrentVehicle.Vehicle, -1, Player.Character.SeatIndex, 5.0f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_JACK_ANYONE | (int)eEnter_Exit_Vehicle_Flags.ECF_JUST_PULL_PED_OUT );//   9);//caused them to get confused about getting back in thier car
                     CurrentSubTask = SubTask.CarJackPlayer;
                 }
             }

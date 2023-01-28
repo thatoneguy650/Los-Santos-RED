@@ -47,6 +47,7 @@ namespace LosSantosRED.lsr.Interface
        // List<LicensePlate> SpareLicensePlates { get; }
         bool IsOnFoot { get; }
         ButtonPrompts ButtonPrompts { get; }
+        VehicleExt CurrentLookedAtVehicle { get; }
 
         void PlaySpeech(string v1, bool v2);
     }

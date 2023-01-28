@@ -69,6 +69,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public override bool KnowsGangAreas => true;
     public uint GameTimeLastUpdatedTarget { get; set; }
     public PedExt CurrentTarget { get; set; }
+    public bool IsUsingMountedWeapon { get; set; } = false;
     public override bool NeedsFullUpdate
     {
         get

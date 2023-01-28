@@ -372,7 +372,7 @@ public class PersonTransaction : Interaction
             int? seatIndex = vehicleToEnter.GetFreePassengerSeatIndex();
             if (seatIndex != null)
             {
-                NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, -1, seatIndex, 0.5f, 0);
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, -1, seatIndex, 0.5f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);// 0);
                 //NativeFunction.Natives.TASK_ENTER_VEHICLE(passenegerToAdd, vehicleToEnter, 5000, seatIndex, 1f, 9);
             }
         }

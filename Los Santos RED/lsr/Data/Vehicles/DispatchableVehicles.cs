@@ -146,17 +146,18 @@ public class DispatchableVehicles : IDispatchableVehicles
          new DispatchableVehicle("valkyrie2", 0,50) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         ArmyVehicles = new List<DispatchableVehicle>() {
 
-#if DEBUG
-            new DispatchableVehicle("rhino", 100, 100) { MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("valkyrie2", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
-#else
+//#if DEBUG
+//            new DispatchableVehicle("insurgent", 95, 75) { ForceStayInSeats = new List<int>() { -1,1 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
+//            new DispatchableVehicle("rhino", 5, 25) { ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
+//            new DispatchableVehicle("valkyrie2", 0,50) { ForceStayInSeats = new List<int>() { -1,0,1,2 }, MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
+//#else
             new DispatchableVehicle("crusader", 85,25) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 15,75) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("rhino", 0, 25) { MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             //new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("valkyrie2", 0,100) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
 
-#endif
+//#endif
             };
         Firetrucks = new List<DispatchableVehicle>() {
             new DispatchableVehicle("firetruk", 100, 100) };

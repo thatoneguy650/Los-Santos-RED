@@ -247,7 +247,7 @@ public class PopUpMenu
 
                 List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                 InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
-                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Game.DisplaySubtitle($"DISACRD {ii.ModItem.Name}")), $"Discard {ii.ModItem.Name} ({ii.Amount})"));//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
+                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Player.Inventory.Remove(ii.ModItem)), $"Discard {ii.ModItem.Name} ({ii.Amount})"));;;//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
                 PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
 
                 ItemID++;
@@ -1047,6 +1047,10 @@ public class PopUpMenu
             new PopUpBox(6,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
             new PopUpBox(7,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),
             new PopUpBox(8,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
+
+
+            new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
+
         };
         List<PopUpBox> SitSubMenu = new List<PopUpBox>()
         {
@@ -1054,6 +1058,20 @@ public class PopUpMenu
             new PopUpBox(1,"Sit Here Facing Front", new Action(() => Player.ActivityManager.StartSittingDown(false,true)),"Sit here facing forwards"),
             new PopUpBox(2,"Sit Here Facing Back", new Action(() => Player.ActivityManager.StartSittingDown(false,false)),"Sit here facing forwards"),
         };
+
+        List<PopUpBox> EnterSeatSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,-1)),"Sit in the drivers seat"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,0)),"Sit in the passenger seat"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,1)),"Sit in the left rear seat"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2)),"Sit in the right rear seat"),
+            new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3)),"Sit in the first extra seat"),
+            new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4)),"Sit in the second extra seat"),
+        };
+
+
+
+
         List<PopUpBox> WeaponsSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Selector",Player.WeaponEquipment.ToggleSelector,"Toggle current weapon selector") { ClosesMenu = false, IsCurrentlyValid = new Func<bool>(() => Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment.CurrentWeapon.Category != WeaponCategory.Melee) },
@@ -1119,6 +1137,7 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("IndicatorsSubMenu", IndicatorsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("SitSubMenu", SitSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup("EnterSeatSubMenu", EnterSeatSubMenu) { IsChild = true });
     }
     private void SetupTextures()
     {

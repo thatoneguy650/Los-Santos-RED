@@ -675,10 +675,39 @@ public class ActivityManager
                     }
                 }
                 Player.LastFriendlyVehicle = toEnter.Vehicle;
-                NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, 9);
+                NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
             }
         }
     }
+
+    public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex)
+    {
+        VehicleExt toEnter = Player.CurrentLookedAtVehicle;
+        if(toEnter == null)
+        {
+            toEnter = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
+        }
+        if (toEnter == null || !toEnter.Vehicle.Exists() || !toEnter.Vehicle.IsSeatFree(seatIndex))
+        {
+            return;
+        }
+        if (withBlocking)
+        {
+            foreach (Ped passenger in toEnter.Vehicle.Occupants)
+            {
+                if (passenger.Exists())
+                {
+                    //passenger.CanBePulledOutOfVehicles = false;//when does this get turned off  ?
+                    passenger.StaysInVehiclesWhenJacked = true;
+                    passenger.BlockPermanentEvents = true;
+                }
+            }
+        }
+        Player.LastFriendlyVehicle = toEnter.Vehicle;
+        NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);         
+    }
+
+
     public void YellInPain()
     {
         if (CanYell)

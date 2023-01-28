@@ -1062,7 +1062,12 @@ namespace Mod
                 {
                     Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
                     VehicleGettingInto = CurrentVehicle;
-                    if (VehicleOwnership.OwnedVehicles.Any(x => x.Handle == CurrentVehicle.Handle) && CurrentVehicle.Vehicle.Exists())//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
+
+                    if(CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.IS_TURRET_SEAT<bool>(VehicleTryingToEnter, SeatTryingToEnter))
+                    {
+                        EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
+                    }
+                    else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
                     {
                         CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                         CurrentVehicle.Vehicle.MustBeHotwired = false;

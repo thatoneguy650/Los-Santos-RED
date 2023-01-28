@@ -293,6 +293,13 @@ public class LESpawnTask : SpawnTask
         Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = seat;
+
+        if(VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(seat))
+        {
+            Person.StayInVehicle = true;
+            EntryPoint.WriteToConsole($"COP {Person.Handle} SET STAY IN VEHICLE Vehicle:{VehicleType.ModelName} seat:{seat}");
+        }
+
         Person.UpdateVehicleState();
     }
     private void Setup()
@@ -328,6 +335,9 @@ public class LESpawnTask : SpawnTask
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
+
+
+
 
         if(SpawnWithAllWeapons)
         {
