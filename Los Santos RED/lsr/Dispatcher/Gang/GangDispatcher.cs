@@ -55,8 +55,8 @@ public class GangDispatcher
     private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => 300f;
     private float DistanceToDeleteOnFoot => 250f;
-    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit && (Settings.SettingsManager.GangSettings.AllowAmbientSpawningWhenPlayerWanted || Player.IsNotWanted);// && (Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted || Player.IsNotWanted);//not wanted is new, do i need to spawn in more peds when ur alreadywanted?
-    private bool HasNeedToDispatchToDens => Settings.SettingsManager.GangSettings.AllowDenSpawning && (Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted || Player.IsNotWanted);
+    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedGangMembers <= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit && ((Settings.SettingsManager.GangSettings.AllowAmbientSpawningWhenPlayerWanted && Player.WantedLevel <= Settings.SettingsManager.GangSettings.AmbientSpawningWhenPlayerWantedMaxWanted) || Player.IsNotWanted);// && (Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted || Player.IsNotWanted);//not wanted is new, do i need to spawn in more peds when ur alreadywanted?
+    private bool HasNeedToDispatchToDens => Settings.SettingsManager.GangSettings.AllowDenSpawning && ((Settings.SettingsManager.GangSettings.AllowDenSpawningWhenPlayerWanted && Player.WantedLevel <= Settings.SettingsManager.GangSettings.DenSpawningWhenPlayerWantedMaxWanted) || Player.IsNotWanted);
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
     private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;

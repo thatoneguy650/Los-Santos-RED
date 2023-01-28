@@ -19,14 +19,16 @@ namespace LosSantosRED.lsr
         private IItemEquipable ItemEquipablePlayer;
         private uint GameTimeLastUpdatedSearchLocation;
         private bool PrevAnyPoliceKnowInteriorLocation;
+        private ITimeReportable Time;
 
-        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer)
+        public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer, ITimeReportable time)
         {
             World = world;
             Player = currentPlayer;
             Settings = settings;
             Perceptable = perceptable;
             ItemEquipablePlayer = itemEquipablePlayer;
+            Time = time;
         }
         public void Update()
         {
@@ -66,7 +68,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            Cop.WeaponInventory.UpdateLoadout(Player);
+                            Cop.WeaponInventory.UpdateLoadout(Player, Time.IsNight);
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                         {

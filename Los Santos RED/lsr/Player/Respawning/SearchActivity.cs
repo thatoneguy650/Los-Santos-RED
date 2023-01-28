@@ -264,7 +264,7 @@ public class SearchActivity
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
             Cop.WeaponInventory.RemoveHeavyWeapon();
-            Cop.WeaponInventory.UpdateLoadout(PoliceRespondable);
+            Cop.WeaponInventory.UpdateLoadout(PoliceRespondable, false);
             endLoop = false;
             while (Cop.Pedestrian.Exists() && !endLoop)
             {

@@ -23,7 +23,7 @@ namespace LSR.Vehicles
         private ISettingsProvideable Settings;
         private int Health = 1000;      
         private bool IsOnFire;
-
+        private uint GameTimeBecameEmpty;
 
         public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
@@ -48,6 +48,7 @@ namespace LSR.Vehicles
         public LicensePlate OriginalLicensePlate { get; set; }
         public Gang AssociatedGang { get; set; }
         public uint HasExistedFor => Game.GameTime - GameTimeSpawned;
+        public uint HasBeenEmptyFor => Game.GameTime - GameTimeBecameEmpty;
         public uint GameTimeSpawned { get; set; }
         public bool WasModSpawned { get; set; } = false;
         public bool ManuallyRolledDriverWindowDown { get; set; }
@@ -780,8 +781,18 @@ namespace LSR.Vehicles
                 }
             }
         }
-
-
+        public void ResetBecameEmpty()
+        {
+            GameTimeBecameEmpty = 0;
+            
+        }
+        public void SetBecameEmpty()
+        {
+            if(GameTimeBecameEmpty == 0)
+            {
+                GameTimeBecameEmpty = Game.GameTime;
+            }    
+        }
 
     }
 }

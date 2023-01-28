@@ -28,6 +28,8 @@ public class GangMember : PedExt, IWeaponIssuable
     public int TaserShootRate { get; set; } = 100;
     public int VehicleAccuracy { get; set; } = 10;
     public int VehicleShootRate { get; set; } = 100;
+    public int TurretAccuracy { get; set; } = 10;
+    public int TurretShootRate { get; set; } = 1000;
 
     public WeaponInventory WeaponInventory { get; private set; }
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
@@ -153,6 +155,8 @@ public class GangMember : PedExt, IWeaponIssuable
         TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
         VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
         VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
+        TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
+        TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
         if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
         {
             VoiceName = dispatchablePerson.OverrideVoice.PickRandom();

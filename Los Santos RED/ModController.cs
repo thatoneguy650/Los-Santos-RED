@@ -76,7 +76,7 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies);
             Player.Setup();
             GameFiber.Yield();
-            Police = new Police(World, Player, Player, ModDataFileManager.Settings, Player);
+            Police = new Police(World, Player, Player, ModDataFileManager.Settings, Player, Time);
             GameFiber.Yield();
             Civilians = new Civilians(World, Player, Player, ModDataFileManager.Settings, ModDataFileManager.Gangs);
             GameFiber.Yield();

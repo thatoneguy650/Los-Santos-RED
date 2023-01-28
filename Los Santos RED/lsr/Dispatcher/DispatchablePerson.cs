@@ -41,6 +41,12 @@ public class DispatchablePerson
     public int VehicleShootRateMin { get; set; } = 10;//20
     public int VehicleShootRateMax { get; set; } = 15;//20
 
+
+    public int TurretAccuracyMin { get; set; } = 10;
+    public int TurretAccuracyMax { get; set; } = 30;
+    public int TurretShootRateMin { get; set; } = 500;
+    public int TurretShootRateMax { get; set; } = 1000;
+
     public string UnitCode { get; set; } = "";
     public int RequiredHelmetType { get; set; } = -1;
 
