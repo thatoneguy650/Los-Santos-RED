@@ -77,7 +77,7 @@ public class GeneralFollow : ComplexTask
                 {
                     if (Ped.Pedestrian.Exists() && Ped.Pedestrian.IsInAnyVehicle(false) && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(Ped.Pedestrian.CurrentVehicle), Ped.Pedestrian.SeatIndex))
                     {
-                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings);
+                        CurrentTaskState = new WaitInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, false);
                     }
                     else
                     {
@@ -100,7 +100,7 @@ public class GeneralFollow : ComplexTask
         {
             if(ShouldGetInVehicle && SeatAssigner.IsAssignmentValid())
             {
-                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings) { IsGang = true };
+                CurrentTaskState = new GetInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings,false) { IsGang = true };
 
             }
             else

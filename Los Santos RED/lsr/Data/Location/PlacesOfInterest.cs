@@ -861,9 +861,18 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
 
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { AssignedAgencyID = "NOOSE", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+
+
+#if DEBUG
+                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.LocalScenario },
+                new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ SpawnRequirement = SpawnRequirement.Patrol },
+                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol | SpawnRequirement.AnyScenario },
+
+#else
                 new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 75f),
                 new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 75f),
                 new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 75f),
+#endif
 
 
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
@@ -1216,12 +1225,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         {
             new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338, AssignedAgencyID = "GRP6", 
                 PossiblePedSpawns = new List<ConditionalLocation>() { 
-                    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.LocalScenario },
-                    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = SpawnRequirement.Patrol },
-                    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol | SpawnRequirement.AnyScenario },
-
-
-
+                    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
+                    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol| SpawnRequirement.StandardScenario },
+                    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
                 } },
 
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },

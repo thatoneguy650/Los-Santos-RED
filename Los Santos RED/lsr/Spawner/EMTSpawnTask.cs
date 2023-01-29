@@ -270,6 +270,7 @@ public class EMTSpawnTask :SpawnTask
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
+
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
 
@@ -299,6 +300,7 @@ public class EMTSpawnTask :SpawnTask
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
         }
+        PrimaryEmt.SpawnRequirement = SpawnRequirement;
         return PrimaryEmt;
     }
     private void SetupCallSigns()

@@ -663,7 +663,7 @@ public class AIApprehend : ComplexTask
                     {
                         FootChaseUpdateParameters();
                         GameFiber.Yield();
-                        if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
+                        if (Ped != null && OtherTarget != null && Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                         {
                             if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringAIChase)
                             {
@@ -676,7 +676,7 @@ public class AIApprehend : ComplexTask
                             Ped.Pedestrian.KeepTasks = true;
                             LocalDistance = Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian);
                             GameFiber.Yield();
-                            if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
+                            if (Ped != null && OtherTarget != null && Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
                             {
                                 if (OtherTarget.IsBusted)
                                 {

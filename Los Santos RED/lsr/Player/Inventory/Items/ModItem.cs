@@ -81,7 +81,7 @@ public class ModItem
     public virtual bool CanConsume { get; set; } = false;//no no
 
     public int FindDuringLootingPercentage { get; set; } = 0;
-    public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 25;
+    public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {

@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangIdle2 : ComplexTask
+public class GangIdle2_Old : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
@@ -41,7 +41,7 @@ public class GangIdle2 : ComplexTask
             return Task.Wander;
         }
     }
-    public GangIdle2(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GangIdle2_Old(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "GangIdle";
         SubTaskName = "";

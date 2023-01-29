@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GenericIdle : ComplexTask
+public class GenericIdle_Old : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
@@ -29,7 +29,6 @@ public class GenericIdle : ComplexTask
     private uint GameTimeBetweenWanderDecision = 60000;
     private uint GameTimeLastExitedVehicle;
 
-
     private bool hasBeenVehiclePatrolTasked;
     private uint GameTimeLastStartedFootPatrol;
     private uint GameTimeBetweenFootPatrols;
@@ -37,8 +36,6 @@ public class GenericIdle : ComplexTask
     private uint MaxGameTimeBetweenFootPatrols = 90000;
     private uint MinGameTimeBetweenGuarding = 30000;
     private uint MaxGameTimeBetweenGuarding = 90000;
-
-
 
     private float PercentageToTransitionToPatrol = 15f;
     private float PercentageToTransitionToGuard = 15f;
@@ -76,7 +73,7 @@ public class GenericIdle : ComplexTask
                     return Task.GuardArea;
                 }
             }
-            else if(IsPatrolling)
+            else if (IsPatrolling)
             {
                 if (Ped.Pedestrian.IsInAnyVehicle(false))
                 {
@@ -93,7 +90,7 @@ public class GenericIdle : ComplexTask
             }
         }
     }
-    public GenericIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GenericIdle_Old(IComplexTaskable ped, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, ped, 1500)//1500
     {
         Name = "GenericIdle";
         SubTaskName = "";
@@ -108,16 +105,16 @@ public class GenericIdle : ComplexTask
         MinGameTimeBetweenGuarding = 10000;
         MaxGameTimeBetweenGuarding = 20000;
 #endif
-}
+    }
     public override void Start()
     {
-        if(!Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
             return;
         }
-        if(Ped.SpawnRequirement.Equals(SpawnRequirement.None))
+        if (Ped.SpawnRequirement.Equals(SpawnRequirement.None))
         {
-            if(Ped.IsAmbientSpawn)
+            if (Ped.IsAmbientSpawn)
             {
                 canGuard = true;
             }
@@ -138,7 +135,7 @@ public class GenericIdle : ComplexTask
                 canPatrol = true;
             }
         }
-        if(canGuard)
+        if (canGuard)
         {
             IsGuarding = true;
         }
@@ -149,11 +146,11 @@ public class GenericIdle : ComplexTask
         //EntryPoint.WriteToConsole($"PED {Ped.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} shouldGuard {shouldGuard} shouldPatrol {shouldPatrol} HasSpawnRequirements {HasSpawnRequirements}");
         ClearTasks(true);
         Update();
-        
+
     }
     public override void Update()
     {
-        if(!Ped.Pedestrian.Exists() || !ShouldUpdate)
+        if (!Ped.Pedestrian.Exists() || !ShouldUpdate)
         {
             return;
         }
@@ -165,7 +162,7 @@ public class GenericIdle : ComplexTask
         else if (NeedsUpdates)
         {
             ExecuteCurrentSubTask(false);
-        }      
+        }
     }
     public override void Stop()
     {
@@ -230,15 +227,15 @@ public class GenericIdle : ComplexTask
         if (!hasBeenVehiclePatrolTasked)
         {
             VehiclePatrolTask();
-        }      
+        }
     }
     private void VehiclePatrolTask()
     {
-        if(!Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
             return;
         }
-        if(!(Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) || !Ped.Pedestrian.CurrentVehicle.Exists())
+        if (!(Ped.IsDriver || Ped.Pedestrian.SeatIndex == -1) || !Ped.Pedestrian.CurrentVehicle.Exists())
         {
             return;
         }
@@ -260,11 +257,11 @@ public class GenericIdle : ComplexTask
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-        } 
+        }
     }
     private void GuardArea(bool IsFirstRun)
     {
-        if(!Ped.Pedestrian.Exists())
+        if (!Ped.Pedestrian.Exists())
         {
             return;
         }
@@ -300,13 +297,13 @@ public class GenericIdle : ComplexTask
         List<string> AllScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD", "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" };
         List<string> NormalScenarios = new List<string>() { "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" };
         string ScenarioChosen = "WORLD_HUMAN_STAND_IMPATIENT";
-        if(HasSpawnRequirements)
+        if (HasSpawnRequirements)
         {
             if (Ped.SpawnRequirement.HasFlag(SpawnRequirement.AnyScenario))
             {
                 ScenarioChosen = AllScenarios.PickRandom();
             }
-            else if(Ped.SpawnRequirement.HasFlag(SpawnRequirement.StandardScenario))
+            else if (Ped.SpawnRequirement.HasFlag(SpawnRequirement.StandardScenario))
             {
                 ScenarioChosen = NormalScenarios.PickRandom();
             }
@@ -329,7 +326,7 @@ public class GenericIdle : ComplexTask
         bool ScenarioInArea = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 3f, true);
         if (useLocal && ScenarioInArea)
         {
-            NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z,3f, 0);
+            NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 3f, 0);
         }
         else
         {
@@ -337,7 +334,7 @@ public class GenericIdle : ComplexTask
         }
         GameTimeBetweenScenarios = RandomItems.GetRandomNumber(MinGameTimeBetweenGuarding, MaxGameTimeBetweenGuarding);
         GameTimeLastStartedScenario = Game.GameTime;
-        
+
     }
     private void FootPatrol(bool IsFirstRun)
     {
@@ -355,7 +352,7 @@ public class GenericIdle : ComplexTask
         {
             if (GameTimeLastStartedFootPatrol > 0 && Game.GameTime - GameTimeLastStartedFootPatrol >= GameTimeBetweenFootPatrols)
             {
-                if(canGuard && RandomItems.RandomPercent(PercentageToTransitionToGuard))
+                if (canGuard && RandomItems.RandomPercent(PercentageToTransitionToGuard))
                 {
                     IsGuarding = true;
                     IsPatrolling = false;
@@ -364,7 +361,6 @@ public class GenericIdle : ComplexTask
                 GameTimeLastStartedFootPatrol = Game.GameTime;
             }
         }
-        
     }
     private void FootPatrolTask()
     {
@@ -462,7 +458,7 @@ public class GenericIdle : ComplexTask
         else
         {
             WanderDecisionTask();
-        }       
+        }
     }
     private void WanderDecisionTask()
     {
@@ -529,7 +525,7 @@ public class GenericIdle : ComplexTask
         else if (VehicleTryingToEnter != null && VehicleTaskedToEnter.Exists() && VehicleTaskedToEnter.Speed > 1.0f)// && (VehicleTryingToEnter.Vehicle.Handle != VehicleTaskedToEnter.Handle || SeatTaskedToEnter != SeatTryingToEnter) && Ped.Pedestrian.Exists() && !Ped.Pedestrian.IsInAnyVehicle(true))
         {
             GetInCarTask();
-        }      
+        }
     }
     private void GetInCarTask()
     {
@@ -551,7 +547,7 @@ public class GenericIdle : ComplexTask
             NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
             NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
-        
+
     }
     private void Nothing(bool IsFirstRun)
     {
@@ -569,6 +565,6 @@ public class GenericIdle : ComplexTask
         {
             NativeFunction.Natives.SET_PED_ALERTNESS(Ped.Pedestrian, 0);
         }
-        
+
     }
 }

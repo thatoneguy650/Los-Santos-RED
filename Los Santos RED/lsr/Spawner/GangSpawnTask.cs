@@ -297,6 +297,7 @@ public class GangSpawnTask : SpawnTask
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
+        GangMember.SpawnRequirement = SpawnRequirement;
         return GangMember;
     }
     private void SetupPed(Ped ped)

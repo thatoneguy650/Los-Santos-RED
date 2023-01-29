@@ -18,13 +18,15 @@ class GetInVehicleTaskState : TaskState
     private int TaskedSeat;
     private ISettingsProvideable Settings;
     private ITargetable Player;
-    public GetInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
+    private bool BlockPermanentEvents = false;
+    public GetInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents)
     {
         PedGeneral = pedGeneral;
         Player = player;
         World = world;
         SeatAssigner = seatAssigner;
         Settings = settings;
+        BlockPermanentEvents = blockPermanentEvents;
     }
     public bool IsGang { get; set; } = false;
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && (!IsGang || Player.IsInVehicle) && PedGeneral.Pedestrian.Exists() && SeatAssigner != null && SeatAssigner.IsAssignmentValid();

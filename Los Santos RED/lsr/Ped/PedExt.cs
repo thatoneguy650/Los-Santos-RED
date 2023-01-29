@@ -745,6 +745,37 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedViolations.Reset();
         PedPerception.Reset();
     }
+
+
+    public void ClearTasks(bool resetAlertness)
+    {
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        int seatIndex = 0;
+        Vehicle CurrentVehicle = null;
+        bool WasInVehicle = false;
+        if (Pedestrian.IsInAnyVehicle(false))
+        {
+            WasInVehicle = true;
+            CurrentVehicle = Pedestrian.CurrentVehicle;
+            seatIndex = Pedestrian.SeatIndex;
+        }
+        NativeFunction.Natives.CLEAR_PED_TASKS(Pedestrian);
+        Pedestrian.BlockPermanentEvents = false;
+        Pedestrian.KeepTasks = false;
+        NativeFunction.Natives.CLEAR_PED_TASKS(Pedestrian);
+        if (resetAlertness)
+        {
+            NativeFunction.Natives.SET_PED_ALERTNESS(Pedestrian, 0);
+        }
+        if (WasInVehicle && !Pedestrian.IsInAnyVehicle(false) && CurrentVehicle != null)
+        {
+            Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
+        }
+    }
+
     private void PlaySpeech(string speechName, bool useMegaphone)
     {
         if (VoiceName != "")

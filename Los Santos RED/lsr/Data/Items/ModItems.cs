@@ -324,63 +324,73 @@ public class ModItems : IModItems
         PossibleItems.IngestItems.AddRange(new List<IngestItem>
         {
             new IngestItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1,ThirstChangeAmount = -5, HungerChangeAmount = -5, SleepChangeAmount = 20 },
+            
             new IngestItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1,ThirstChangeAmount = -5, SleepChangeAmount = -15 },
+            
             new IngestItem("Lax to the Max","Lubricated suppositories. Get flowing again!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, HungerChangeAmount = -10, ThirstChangeAmount = -10 },
+            
             new IngestItem("Mollis","For outstanding erections. Get the performance you've always dreamed of", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 2 },
+            
             new IngestItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 10 },
+            
             new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. May cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 5 },
+            
             new IngestItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
-            new IngestItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
-            new IngestItem("Toilet Cleaner","The hot new legal high that takes you to places you never imagined and leaves you forever changed.", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 50 },
+            
+            new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay! Remember, sleep is for the weak!", ItemType.Drugs) { AmountPerPackage = 25,
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindDuringLootingPercentage = 5 },
 
-            new IngestItem("Hingmyralgan","For Brain-Ache and other pains", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+            new IngestItem("Hingmyralgan","For Brain-Ache and other pains!", ItemType.Drugs) { AmountPerPackage = 25,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 20, FindDuringLootingPercentage = 15, AlwaysChangesHealth = true },
 
 
-            new IngestItem("Deludamol","For a Night You'll Never Remember", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+            new IngestItem("Deludamol","For a Night You'll Never Remember. Extra Strength Painkiller.", ItemType.Drugs) { AmountPerPackage = 25,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindDuringLootingPercentage = 5, AlwaysChangesHealth = true },
 
-            new IngestItem("Delladamol","Gives A Time You Won't Recall", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
+
+
+            new IngestItem("Delladamol","Extra Strength Painkiller. Extra Legit Packaging.", ItemType.Drugs) { AmountPerPackage = 12,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindDuringLootingPercentage = 5, AlwaysChangesHealth = true },
 
 
-            new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay!", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindDuringLootingPercentage = 5 },
 
+
+            new IngestItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?", ItemType.Drugs) { IsPossessionIllicit = true,
+                ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 20 },
+            new IngestItem("Toilet Cleaner","The hot new legal high that takes you to places you never imagined and leaves you forever changed.", ItemType.Drugs) { IsPossessionIllicit = true,
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
         {
             new InhaleItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "ba_prop_battle_sniffing_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
+                ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 12 },
         });
         PossibleItems.InjectItems.AddRange(new List<InjectItem>
         {
-            new InjectItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy", ItemType.Drugs) { IsPossessionIllicit = true,
+            new InjectItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy. Things have gone downhill since then.", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_syringe_01"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
+                ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 25 },
         });
         PossibleItems.PipeSmokeItems.AddRange(new List<PipeSmokeItem>
         {
             new PipeSmokeItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_meth_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
-            new PipeSmokeItem("Crack", ItemType.Drugs) { IsPossessionIllicit = true,
+                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
+            new PipeSmokeItem("Crack", "Too cheap for cocaine? Find out what it means when they say things are 'like crack'", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_crackpipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
+                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1, PoliceFindDuringPlayerSearchPercentage = 15 },
         });
 
     }
@@ -1348,9 +1358,9 @@ public class ModItems : IModItems
     {
         PossibleItems.WeaponItems.AddRange(new List<WeaponItem>
         {
-            new WeaponItem("Flint Hammer","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false, ItemType.Weapons) { ModelName = "weapon_hammer"},
+            new WeaponItem("Flint Hammer","A robust, multi-purpose hammer with wooden handle and curved claw, this old classic still nails the competition.", false, ItemType.Weapons) { ModelName = "weapon_hammer" },
             new WeaponItem("Flint Hatchet","Add a good old-fashioned hatchet to your armory, and always have a back up for when ammo is hard to come by.", false, ItemType.Weapons) { ModelName = "weapon_hatchet"},
-            new WeaponItem("Flint Heavy Duty Pipe Wrench","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false, ItemType.Weapons) { ModelName = "weapon_wrench"},  
+            new WeaponItem("Flint Heavy Duty Pipe Wrench","Perennial favourite of apocalyptic survivalists and violent fathers the world over, apparently it also doubles as some kind of tool.", false, ItemType.Weapons) { ModelName = "weapon_wrench" },  
             new WeaponItem("Flint Crowbar","Heavy-duty crowbar forged from high quality, tempered steel for that extra leverage you need to get the job done.", false, ItemType.Weapons) { ModelName = "weapon_crowbar"},
             
             new WeaponItem("Vom Feuer Machete","America's West African arms trade isn't just about giving. Rediscover the simple life with this rusty cleaver.", false, ItemType.Weapons) { ModelName = "weapon_machete"},
@@ -1359,90 +1369,90 @@ public class ModItems : IModItems
             new WeaponItem("ProLaps Five Iron Golf Club","Standard length, mid iron golf club with rubber grip for a lethal short game.", false, ItemType.Weapons) { ModelName = "weapon_golfclub"},
 
             //Melee
-            new WeaponItem("Brass Knuckles","Perfect for knocking out gold teeth, or as a gift to the trophy partner who has everything.", false, ItemType.Weapons) { ModelName = "weapon_knuckle"},
-            new WeaponItem("Combat Knife","This carbon steel 7 inch bladed knife is dual edged with a serrated spine to provide improved stabbing and thrusting capabilities.", false, ItemType.Weapons) { ModelName = "weapon_knife"},
-            new WeaponItem("Switchblade","From your pocket to hilt-deep in the other guy's ribs in under a second: folding knives will never go out of style.", false, ItemType.Weapons) { ModelName = "weapon_switchblade" },
-            new WeaponItem("Nightstick","24 inch polycarbonate side-handled nightstick.", false, ItemType.Weapons) { ModelName = "weapon_nightstick"},
-            new WeaponItem("Pool Cue","Ah, there's no sound as satisfying as the crack of a perfect break, especially when it's the other guy's spine.", false, ItemType.Weapons) { ModelName = "weapon_poolcue"},
+            new WeaponItem("Brass Knuckles","Perfect for knocking out gold teeth, or as a gift to the trophy partner who has everything.", false, ItemType.Weapons) { ModelName = "weapon_knuckle",PoliceFindDuringPlayerSearchPercentage = 15 },
+            new WeaponItem("Combat Knife","This carbon steel 7 inch bladed knife is dual edged with a serrated spine to provide improved stabbing and thrusting capabilities.", false, ItemType.Weapons) { ModelName = "weapon_knife",PoliceFindDuringPlayerSearchPercentage = 25},
+            new WeaponItem("Switchblade","From your pocket to hilt-deep in the other guy's ribs in under a second: folding knives will never go out of style.", false, ItemType.Weapons) { ModelName = "weapon_switchblade",PoliceFindDuringPlayerSearchPercentage = 15 },
+            new WeaponItem("Nightstick","24 inch polycarbonate side-handled nightstick.", false, ItemType.Weapons) { ModelName = "weapon_nightstick" },
+            new WeaponItem("Pool Cue","Ah, there's no sound as satisfying as the crack of a perfect break, especially when it's the other guy's spine.", false, ItemType.Weapons) { ModelName = "weapon_poolcue" },
 
             //Pistola
-            new WeaponItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false, ItemType.Weapons) { ModelName = "weapon_pistol"},
-            new WeaponItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true, ItemType.Weapons) { ModelName = "weapon_pistol_mk2"},
-            new WeaponItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false, ItemType.Weapons) { ModelName = "weapon_combatpistol"},
-            new WeaponItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false, ItemType.Weapons) { ModelName = "weapon_pistol50"},
-            new WeaponItem("Vom Feuer P69","Not your grandma's ceramics. Although this pint-sized pistol is small enough to fit into her purse and won't set off a metal detector.", true, ItemType.Weapons) { ModelName = "weapon_ceramicpistol"},
-            new WeaponItem("Vom Feuer SCRAMP","High-penetration, fully-automatic pistol. Holds 18 rounds in magazine with option to extend to 36 rounds.", false, ItemType.Weapons) { ModelName = "weapon_appistol"},
-            new WeaponItem("Hawk & Little 1919","The heavyweight champion of the magazine fed, semi-automatic handgun world. Delivers accuracy and a serious forearm workout every time.", false, ItemType.Weapons) { ModelName = "weapon_heavypistol"},
-            new WeaponItem("Hawk & Little Raging Mare","A handgun with enough stopping power to drop a crazed rhino, and heavy enough to beat it to death if you're out of ammo.", true, ItemType.Weapons) { ModelName = "weapon_revolver"},
-            new WeaponItem("Hawk & Little Raging Mare Dx","If you can lift it, this is the closest you'll get to shooting someone with a freight train.", true, ItemType.Weapons) { ModelName = "weapon_revolver_mk2"},
-            new WeaponItem("Shrewsbury S7","Like condoms or hairspray, this fits in your pocket for a night on the town. The price of a bottle at a club, it's half as accurate as a champagne cork, and twice as deadly.", false, ItemType.Weapons) { ModelName = "weapon_snspistol"},
-            new WeaponItem("Shrewsbury S7A","The ultimate purse-filler: if you want to make Saturday Night really special, this is your ticket.", true, ItemType.Weapons) { ModelName = "weapon_snspistol_mk2"},
-            new WeaponItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false, ItemType.Weapons) { ModelName = "weapon_stungun"},
-            new WeaponItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true, ItemType.Weapons) { ModelName = "weapon_vintagepistol"},
-            new WeaponItem("Vom Feuer Gruber","If you think shooting off without lifting a finger is a problem, there's a pill for that. But if you think it's a plus, we've got you covered.", true, ItemType.Weapons) { ModelName = "weapon_pistolxm3"},
+            new WeaponItem("Hawk & Little PTF092F","Standard handgun. A 9mm combat pistol with a magazine capacity of 12 rounds that can be extended to 16.", false, ItemType.Weapons) { ModelName = "weapon_pistol",PoliceFindDuringPlayerSearchPercentage = 35 },
+            new WeaponItem("Hawk & Little Thunder","Balance, simplicity, precision: nothing keeps the peace like an extended barrel in the other guy's mouth.", true, ItemType.Weapons) { ModelName = "weapon_pistol_mk2",PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("Hawk & Little Combat Pistol","A compact, lightweight semi-automatic pistol designed for law enforcement and personal defense use. 12-round magazine with option to extend to 16 rounds.", false, ItemType.Weapons) { ModelName = "weapon_combatpistol",PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("Hawk & Little Desert Slug","High-impact pistol that delivers immense power but with extremely strong recoil. Holds 9 rounds in magazine.", false, ItemType.Weapons) { ModelName = "weapon_pistol50",PoliceFindDuringPlayerSearchPercentage = 55},
+            new WeaponItem("Vom Feuer P69","Not your grandma's ceramics. Although this pint-sized pistol is small enough to fit into her purse and won't set off a metal detector.", true, ItemType.Weapons) { ModelName = "weapon_ceramicpistol",PoliceFindDuringPlayerSearchPercentage = 25 },
+            new WeaponItem("Vom Feuer SCRAMP","High-penetration, fully-automatic pistol. Holds 18 rounds in magazine with option to extend to 36 rounds.", false, ItemType.Weapons) { ModelName = "weapon_appistol" ,PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("Hawk & Little 1919","The heavyweight champion of the magazine fed, semi-automatic handgun world. Delivers accuracy and a serious forearm workout every time.", false, ItemType.Weapons) { ModelName = "weapon_heavypistol",PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("Hawk & Little Raging Mare","A handgun with enough stopping power to drop a crazed rhino, and heavy enough to beat it to death if you're out of ammo.", true, ItemType.Weapons) { ModelName = "weapon_revolver",PoliceFindDuringPlayerSearchPercentage = 75},
+            new WeaponItem("Hawk & Little Raging Mare Dx","If you can lift it, this is the closest you'll get to shooting someone with a freight train.", true, ItemType.Weapons) { ModelName = "weapon_revolver_mk2",PoliceFindDuringPlayerSearchPercentage = 75},
+            new WeaponItem("Shrewsbury S7","Like condoms or hairspray, this fits in your pocket for a night on the town. The price of a bottle at a club, it's half as accurate as a champagne cork, and twice as deadly.", false, ItemType.Weapons) { ModelName = "weapon_snspistol",PoliceFindDuringPlayerSearchPercentage = 25},
+            new WeaponItem("Shrewsbury S7A","The ultimate purse-filler: if you want to make Saturday Night really special, this is your ticket.", true, ItemType.Weapons) { ModelName = "weapon_snspistol_mk2",PoliceFindDuringPlayerSearchPercentage = 25},
+            new WeaponItem("Coil Tesla","Fires a projectile that administers a voltage capable of temporarily stunning an assailant. It's like, literally stunning.", false, ItemType.Weapons) { ModelName = "weapon_stungun",PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("BS M1922","What you really need is a more recognisable gun. Stand out from the crowd at an armed robbery with this engraved pistol.", true, ItemType.Weapons) { ModelName = "weapon_vintagepistol",PoliceFindDuringPlayerSearchPercentage = 35},
+            new WeaponItem("Vom Feuer Gruber","If you think shooting off without lifting a finger is a problem, there's a pill for that. But if you think it's a plus, we've got you covered.", true, ItemType.Weapons) { ModelName = "weapon_pistolxm3",PoliceFindDuringPlayerSearchPercentage = 20},
 
             //Shotgun
-            new WeaponItem("Shrewsbury 420 Sawed-Off","This single-barrel, sawed-off shotgun compensates for its low range and ammo capacity with devastating efficiency in close combat.", false, ItemType.Weapons) { ModelName = "weapon_sawnoffshotgun"},
-            new WeaponItem("Shrewsbury 420","Standard shotgun ideal for short-range combat. A high-projectile spread makes up for its lower accuracy at long range.", false, ItemType.Weapons) { ModelName = "weapon_pumpshotgun"},
-            new WeaponItem("Vom Feuer 569","Only one thing pumps more action than a pump action: watch out, the recoil is almost as deadly as the shot.", true, ItemType.Weapons) { ModelName = "weapon_pumpshotgun_mk2"},
-            new WeaponItem("Vom Feuer IBS-12","Fully automatic shotgun with 8 round magazine and high rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_assaultshotgun"},
-            new WeaponItem("Hawk & Little HLSG","More than makes up for its slow, pump-action rate of fire with its range and spread. Decimates anything in its projectile path.", false, ItemType.Weapons) { ModelName = "weapon_bullpupshotgun"},
-            new WeaponItem("Shrewsbury Taiga-12","The weapon to reach for when you absolutely need to make a horrible mess of the room. Best used near easy-wipe surfaces only.", true, ItemType.Weapons) { ModelName = "weapon_heavyshotgun"},
-            new WeaponItem("Toto 12 Guage Sawed-Off","Do one thing, do it well. Who needs a high rate of fire when your first shot turns the other guy into a fine mist?.", true, ItemType.Weapons) { ModelName = "weapon_dbshotgun"},
-            new WeaponItem("Shrewsbury Defender","How many effective tools for riot control can you tuck into your pants? Ok, two. But this is the other one.", true, ItemType.Weapons) { ModelName = "weapon_autoshotgun"},
-            new WeaponItem("Leotardo SPAZ-11","There's only one semi-automatic shotgun with a fire rate that sets the LSFD alarm bells ringing, and you're looking at it.", true, ItemType.Weapons) { ModelName = "weapon_combatshotgun"},
+            new WeaponItem("Shrewsbury 420 Sawed-Off","This single-barrel, sawed-off shotgun compensates for its low range and ammo capacity with devastating efficiency in close combat.", false, ItemType.Weapons) { ModelName = "weapon_sawnoffshotgun",PoliceFindDuringPlayerSearchPercentage = 45},
+            new WeaponItem("Shrewsbury 420","Standard shotgun ideal for short-range combat. A high-projectile spread makes up for its lower accuracy at long range.", false, ItemType.Weapons) { ModelName = "weapon_pumpshotgun",PoliceFindDuringPlayerSearchPercentage = 95 },
+            new WeaponItem("Vom Feuer 569","Only one thing pumps more action than a pump action: watch out, the recoil is almost as deadly as the shot.", true, ItemType.Weapons) { ModelName = "weapon_pumpshotgun_mk2",PoliceFindDuringPlayerSearchPercentage = 95},
+            new WeaponItem("Vom Feuer IBS-12","Fully automatic shotgun with 8 round magazine and high rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_assaultshotgun",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Hawk & Little HLSG","More than makes up for its slow, pump-action rate of fire with its range and spread. Decimates anything in its projectile path.", false, ItemType.Weapons) { ModelName = "weapon_bullpupshotgun",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Shrewsbury Taiga-12","The weapon to reach for when you absolutely need to make a horrible mess of the room. Best used near easy-wipe surfaces only.", true, ItemType.Weapons) { ModelName = "weapon_heavyshotgun",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Toto 12 Guage Sawed-Off","Do one thing, do it well. Who needs a high rate of fire when your first shot turns the other guy into a fine mist?.", true, ItemType.Weapons) { ModelName = "weapon_dbshotgun",PoliceFindDuringPlayerSearchPercentage = 75},
+            new WeaponItem("Shrewsbury Defender","How many effective tools for riot control can you tuck into your pants? Ok, two. But this is the other one.", true, ItemType.Weapons) { ModelName = "weapon_autoshotgun",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Leotardo SPAZ-11","There's only one semi-automatic shotgun with a fire rate that sets the LSFD alarm bells ringing, and you're looking at it.", true, ItemType.Weapons) { ModelName = "weapon_combatshotgun",PoliceFindDuringPlayerSearchPercentage = 100},
 
             //SMG
-            new WeaponItem("Shrewsbury Luzi","Combines compact design with a high rate of fire at approximately 700-900 rounds per minute.", false, ItemType.Weapons) { ModelName = "weapon_microsmg"},
-            new WeaponItem("Hawk & Little MP6","This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false, ItemType.Weapons) { ModelName = "weapon_smg"},
+            new WeaponItem("Shrewsbury Luzi","Combines compact design with a high rate of fire at approximately 700-900 rounds per minute.", false, ItemType.Weapons) { ModelName = "weapon_microsmg",PoliceFindDuringPlayerSearchPercentage = 55 },
+            new WeaponItem("Hawk & Little MP6","This is known as a good all-around submachine gun. Lightweight with an accurate sight and 30-round magazine capacity.", false, ItemType.Weapons) { ModelName = "weapon_smg",PoliceFindDuringPlayerSearchPercentage = 100},
             new WeaponItem("Hawk & Little XPM","Lightweight, compact, with a rate of fire to die very messily for: turn any confined space into a kill box at the click of a well-oiled trigger.", true, ItemType.Weapons) { ModelName = "weapon_smg_mk2"},
-            new WeaponItem("Vom Feuer Fisher","A high-capacity submachine gun that is both compact and lightweight. Holds up to 30 bullets in one magazine.", false, ItemType.Weapons) { ModelName = "weapon_assaultsmg"},
-            new WeaponItem("Coil PXM","Who said personal weaponry couldn't be worthy of military personnel? Thanks to our lobbyists, not Congress. Integral suppressor.", false, ItemType.Weapons) { ModelName = "weapon_combatpdw"},
-            new WeaponItem("Vom Feuer KEK-9","This fully automatic is the snare drum to your twin-engine V8 bass: no drive-by sounds quite right without it.", false, ItemType.Weapons) { ModelName = "weapon_machinepistol"},
-            new WeaponItem("Hawk & Little Millipede","Increasingly popular since the marketing team looked beyond spec ops units and started caring about the little guys in low income areas.", false, ItemType.Weapons) { ModelName = "weapon_minismg"},
+            new WeaponItem("Vom Feuer Fisher","A high-capacity submachine gun that is both compact and lightweight. Holds up to 30 bullets in one magazine.", false, ItemType.Weapons) { ModelName = "weapon_assaultsmg",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Coil PXM","Who said personal weaponry couldn't be worthy of military personnel? Thanks to our lobbyists, not Congress. Integral suppressor.", false, ItemType.Weapons) { ModelName = "weapon_combatpdw",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer KEK-9","This fully automatic is the snare drum to your twin-engine V8 bass: no drive-by sounds quite right without it.", false, ItemType.Weapons) { ModelName = "weapon_machinepistol",PoliceFindDuringPlayerSearchPercentage = 55},
+            new WeaponItem("Hawk & Little Millipede","Increasingly popular since the marketing team looked beyond spec ops units and started caring about the little guys in low income areas.", false, ItemType.Weapons) { ModelName = "weapon_minismg",PoliceFindDuringPlayerSearchPercentage = 55},
 
             //AR
-            new WeaponItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false, ItemType.Weapons) { ModelName = "weapon_assaultrifle"},
-            new WeaponItem("Shrewsbury A2-1K","The definitive revision of an all-time classic: all it takes is a little work, and looks can kill after all.", true, ItemType.Weapons) { ModelName = "weapon_assaultrifle_mk2"},
-            new WeaponItem("Vom Feuer A5-1R","Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false, ItemType.Weapons) { ModelName = "weapon_carbinerifle"},
-            new WeaponItem("Vom Feuer A5-1R MK2","This is bespoke, artisan firepower: you couldn't deliver a hail of bullets with more love and care if you inserted them by hand.", true, ItemType.Weapons) { ModelName = "weapon_carbinerifle_mk2" },
-            new WeaponItem("Vom Feuer BFR","The most lightweight and compact of all assault rifles, without compromising accuracy and rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_advancedrifle"},
-            new WeaponItem("Vom Feuer SL6","Combining accuracy, maneuverability, firepower and low recoil, this is an extremely versatile assault rifle for any combat situation.", false, ItemType.Weapons) { ModelName = "weapon_specialcarbine"},
-            new WeaponItem("Vom Feuer SL6 MK2","The jack of all trades just got a serious upgrade: bow to the master.", true, ItemType.Weapons) { ModelName = "weapon_specialcarbine_mk2"},
-            new WeaponItem("Hawk & Little ZBZ-23","The latest Chinese import taking America by storm, this rifle is known for its balanced handling. Lightweight and very controllable in automatic fire.", false, ItemType.Weapons) { ModelName = "weapon_bullpuprifle"},
-            new WeaponItem("Hawk & Little ZBZ-25X","So precise, so exquisite, it's not so much a hail of bullets as a symphony.", true, ItemType.Weapons) { ModelName = "weapon_bullpuprifle_mk2"},
-            new WeaponItem("Shrewsbury Stinkov","Half the size, all the power, double the recoil: there's no riskier way to say 'I'm compensating for something'.", false, ItemType.Weapons) { ModelName = "weapon_compactrifle"},
-            new WeaponItem("Vom Feuer GUH-B4","This immensely powerful assault rifle was designed for highly qualified, exceptionally skilled soldiers. Yes, you can buy it.", false, ItemType.Weapons) { ModelName = "weapon_militaryrifle"},
-            new WeaponItem("Vom Feuer POCK","The no-holds barred 30-round answer to that eternal question: how do I get this guy off my back?", true, ItemType.Weapons) { ModelName = "weapon_heavyrifle"},
+            new WeaponItem("Shrewsbury A7-4K","This standard assault rifle boasts a large capacity magazine and long distance accuracy.", false, ItemType.Weapons) { ModelName = "weapon_assaultrifle",PoliceFindDuringPlayerSearchPercentage = 100 },
+            new WeaponItem("Shrewsbury A2-1K","The definitive revision of an all-time classic: all it takes is a little work, and looks can kill after all.", true, ItemType.Weapons) { ModelName = "weapon_assaultrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer A5-1R","Combining long distance accuracy with a high capacity magazine, the Carbine Rifle can be relied on to make the hit.", false, ItemType.Weapons) { ModelName = "weapon_carbinerifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer A5-1R MK2","This is bespoke, artisan firepower: you couldn't deliver a hail of bullets with more love and care if you inserted them by hand.", true, ItemType.Weapons) { ModelName = "weapon_carbinerifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100 },
+            new WeaponItem("Vom Feuer BFR","The most lightweight and compact of all assault rifles, without compromising accuracy and rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_advancedrifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer SL6","Combining accuracy, maneuverability, firepower and low recoil, this is an extremely versatile assault rifle for any combat situation.", false, ItemType.Weapons) { ModelName = "weapon_specialcarbine",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer SL6 MK2","The jack of all trades just got a serious upgrade: bow to the master.", true, ItemType.Weapons) { ModelName = "weapon_specialcarbine_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Hawk & Little ZBZ-23","The latest Chinese import taking America by storm, this rifle is known for its balanced handling. Lightweight and very controllable in automatic fire.", false, ItemType.Weapons) { ModelName = "weapon_bullpuprifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Hawk & Little ZBZ-25X","So precise, so exquisite, it's not so much a hail of bullets as a symphony.", true, ItemType.Weapons) { ModelName = "weapon_bullpuprifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Shrewsbury Stinkov","Half the size, all the power, double the recoil: there's no riskier way to say 'I'm compensating for something'.", false, ItemType.Weapons) { ModelName = "weapon_compactrifle",PoliceFindDuringPlayerSearchPercentage = 90},
+            new WeaponItem("Vom Feuer GUH-B4","This immensely powerful assault rifle was designed for highly qualified, exceptionally skilled soldiers. Yes, you can buy it.", false, ItemType.Weapons) { ModelName = "weapon_militaryrifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer POCK","The no-holds barred 30-round answer to that eternal question: how do I get this guy off my back?", true, ItemType.Weapons) { ModelName = "weapon_heavyrifle",PoliceFindDuringPlayerSearchPercentage = 100},
 
 
-            new WeaponItem("Vom Feuer DP1 Carbine","This season's must-have hardware for law enforcement, military personnel and anyone locked in a fight to the death with either law enforcement or military personnel.", true, ItemType.Weapons) { ModelName = "weapon_tacticalrifle"},//old school m16
+            new WeaponItem("Vom Feuer DP1 Carbine","This season's must-have hardware for law enforcement, military personnel and anyone locked in a fight to the death with either law enforcement or military personnel.", true, ItemType.Weapons) { ModelName = "weapon_tacticalrifle",PoliceFindDuringPlayerSearchPercentage = 100},//old school m16
 
             //LMG
-            new WeaponItem("Shrewsbury PDA","General purpose machine gun that combines rugged design with dependable performance. Long range penetrative power. Very effective against large groups.", false, ItemType.Weapons) { ModelName = "weapon_mg"},
-            new WeaponItem("Vom Feuer BAT","Lightweight, compact machine gun that combines excellent maneuverability with a high rate of fire to devastating effect.", false, ItemType.Weapons) { ModelName = "weapon_combatmg"},
-            new WeaponItem("Vom Feuer M70E1","You can never have too much of a good thing: after all, if the first shot counts, then the next hundred or so must count for double.", true, ItemType.Weapons) { ModelName = "weapon_combatmg_mk2"},
-            new WeaponItem("Hawk & Little Kenan","Complete your look with a Prohibition gun. Looks great being fired from an Albany Roosevelt or paired with a pinstripe suit.", false, ItemType.Weapons) { ModelName = "weapon_gusenberg"},
+            new WeaponItem("Shrewsbury PDA","General purpose machine gun that combines rugged design with dependable performance. Long range penetrative power. Very effective against large groups.", false, ItemType.Weapons) { ModelName = "weapon_mg",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer BAT","Lightweight, compact machine gun that combines excellent maneuverability with a high rate of fire to devastating effect.", false, ItemType.Weapons) { ModelName = "weapon_combatmg",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer M70E1","You can never have too much of a good thing: after all, if the first shot counts, then the next hundred or so must count for double.", true, ItemType.Weapons) { ModelName = "weapon_combatmg_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Hawk & Little Kenan","Complete your look with a Prohibition gun. Looks great being fired from an Albany Roosevelt or paired with a pinstripe suit.", false, ItemType.Weapons) { ModelName = "weapon_gusenberg",PoliceFindDuringPlayerSearchPercentage = 100},
 
             //SNIPER
-            new WeaponItem("Shrewsbury PWN","Standard sniper rifle. Ideal for situations that require accuracy at long range. Limitations include slow reload speed and very low rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_sniperrifle"},
-            new WeaponItem("Bartlett M92","Features armor-piercing rounds for heavy damage. Comes with laser scope as standard.", false, ItemType.Weapons) { ModelName = "weapon_heavysniper"},
-            new WeaponItem("Bartlett M92 Mk2","Far away, yet always intimate: if you're looking for a secure foundation for that long-distance relationship, this is it.", true, ItemType.Weapons) { ModelName = "weapon_heavysniper_mk2"},
-            new WeaponItem("Vom Feuer M23 DBS","Whether you're up close or a disconcertingly long way away, this weapon will get the job done. A multi-range tool for tools.", false, ItemType.Weapons) { ModelName = "weapon_marksmanrifle"},
-            new WeaponItem("Vom Feuer M23 DBS Scout","Known in military circles as The Dislocator, this mod set will destroy both the target and your shoulder, in that order.", true, ItemType.Weapons) { ModelName = "weapon_marksmanrifle_mk2"},
+            new WeaponItem("Shrewsbury PWN","Standard sniper rifle. Ideal for situations that require accuracy at long range. Limitations include slow reload speed and very low rate of fire.", false, ItemType.Weapons) { ModelName = "weapon_sniperrifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Bartlett M92","Features armor-piercing rounds for heavy damage. Comes with laser scope as standard.", false, ItemType.Weapons) { ModelName = "weapon_heavysniper",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Bartlett M92 Mk2","Far away, yet always intimate: if you're looking for a secure foundation for that long-distance relationship, this is it.", true, ItemType.Weapons) { ModelName = "weapon_heavysniper_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer M23 DBS","Whether you're up close or a disconcertingly long way away, this weapon will get the job done. A multi-range tool for tools.", false, ItemType.Weapons) { ModelName = "weapon_marksmanrifle",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Vom Feuer M23 DBS Scout","Known in military circles as The Dislocator, this mod set will destroy both the target and your shoulder, in that order.", true, ItemType.Weapons) { ModelName = "weapon_marksmanrifle_mk2",PoliceFindDuringPlayerSearchPercentage = 100},
 
-            new WeaponItem("Vom Feuer 699 PCR","A rifle for perfectionists. Because why settle for right-between-the-eyes, when you could have right-through-the-superior-frontal-gyrus.", true, ItemType.Weapons) { ModelName = "weapon_precisionrifle"},
+            new WeaponItem("Vom Feuer 699 PCR","A rifle for perfectionists. Because why settle for right-between-the-eyes, when you could have right-through-the-superior-frontal-gyrus.", true, ItemType.Weapons) { ModelName = "weapon_precisionrifle",PoliceFindDuringPlayerSearchPercentage = 100},
 
             //new WeaponItem("Shrewsbury BFD Dragmeout","Want to give the impression of accuracy while still having greater than 1 MOA? Dragmeout.", true, ItemType.Weapons) { ModelName = "weapon_russiansniper"},
 
 
             //OTHER
-            new WeaponItem("RPG-7","A portable, shoulder-launched, anti-tank weapon that fires explosive warheads. Very effective for taking down vehicles or large groups of assailants.", false, ItemType.Weapons) { ModelName = "weapon_rpg"},
-            new WeaponItem("Hawk & Little MGL","A compact, lightweight grenade launcher with semi-automatic functionality. Holds up to 10 rounds.", false, ItemType.Weapons) { ModelName = "weapon_grenadelauncher"},
-            new WeaponItem("M61 Grenade","Standard fragmentation grenade. Pull pin, throw, then find cover. Ideal for eliminating clustered assailants.", false, ItemType.Weapons) { ModelName = "weapon_grenade"},
-            new WeaponItem("Improvised Incendiary","Crude yet highly effective incendiary weapon. No happy hour with this cocktail.", false, ItemType.Weapons) { ModelName = "weapon_molotov"},
-            new WeaponItem("BZ Gas Grenade","BZ gas grenade, particularly effective at incapacitating multiple assailants.", false, ItemType.Weapons) { ModelName = "weapon_bzgas"},
-            new WeaponItem("Tear Gas Grenade","Tear gas grenade, particularly effective at incapacitating multiple assailants. Sustained exposure can be lethal.", false, ItemType.Weapons) { ModelName = "weapon_smokegrenade"},
+            new WeaponItem("RPG-7","A portable, shoulder-launched, anti-tank weapon that fires explosive warheads. Very effective for taking down vehicles or large groups of assailants.", false, ItemType.Weapons) { ModelName = "weapon_rpg",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("Hawk & Little MGL","A compact, lightweight grenade launcher with semi-automatic functionality. Holds up to 10 rounds.", false, ItemType.Weapons) { ModelName = "weapon_grenadelauncher",PoliceFindDuringPlayerSearchPercentage = 100},
+            new WeaponItem("M61 Grenade","Standard fragmentation grenade. Pull pin, throw, then find cover. Ideal for eliminating clustered assailants.", false, ItemType.Weapons) { ModelName = "weapon_grenade",PoliceFindDuringPlayerSearchPercentage = 85},
+            new WeaponItem("Improvised Incendiary","Crude yet highly effective incendiary weapon. No happy hour with this cocktail.", false, ItemType.Weapons) { ModelName = "weapon_molotov",PoliceFindDuringPlayerSearchPercentage = 85},
+            new WeaponItem("BZ Gas Grenade","BZ gas grenade, particularly effective at incapacitating multiple assailants.", false, ItemType.Weapons) { ModelName = "weapon_bzgas",PoliceFindDuringPlayerSearchPercentage = 85},
+            new WeaponItem("Tear Gas Grenade","Tear gas grenade, particularly effective at incapacitating multiple assailants. Sustained exposure can be lethal.", false, ItemType.Weapons) { ModelName = "weapon_smokegrenade",PoliceFindDuringPlayerSearchPercentage = 85},
         });
     }
 

@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -79,7 +80,14 @@ public class SecurityGuardBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)
             {
-                SetFight();
+                if (SecurityGuard.IsArmedSecurity)
+                {
+                    SetFight();
+                }
+                else
+                {
+                    SetFlee();
+                }
             }
             else if (PedExt.PedReactions.ReactionTier == ReactionTier.Alerted)
             {
@@ -192,15 +200,27 @@ public class SecurityGuardBrain : PedBrain
     }
     private void SetIdle()
     {
-        if (PedExt.CurrentTask?.Name == "GenericIdle")
+        if (PedExt.CurrentTask?.Name == "Idle")
         {
             return;
         }
-        PedExt.CurrentTask = new GenericIdle(PedExt, Player, World, PlacesOfInterest);
+        PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle },  PlacesOfInterest, Settings,false,false,false, true);
         SecurityGuard.WeaponInventory.SetDefault();
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
         EntryPoint.WriteToConsole($"SECURITY SET IDLE {PedExt.Handle}");
+
+
+
+        //if (PedExt.CurrentTask?.Name == "GenericIdle")
+        //{
+        //    return;
+        //}
+        //PedExt.CurrentTask = new GenericIdle(PedExt, Player, World, PlacesOfInterest);
+        //SecurityGuard.WeaponInventory.SetDefault();
+        //GameFiber.Yield();//TR Added back 4
+        //PedExt.CurrentTask.Start();
+        //EntryPoint.WriteToConsole($"SECURITY SET IDLE {PedExt.Handle}");
     }
 }
 

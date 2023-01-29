@@ -19,14 +19,16 @@ class WanderInVehicleTaskState : TaskState
     private bool IsReturningToStation;
     private Vector3 taskedPosition;
     private ISettingsProvideable Settings;
+    private bool BlockPermanentEvents = false;
 
-    public WanderInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public WanderInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents)
     {
         PedGeneral = pedGeneral;
         World = world;
         SeatAssigner = seatAssigner;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        BlockPermanentEvents = blockPermanentEvents;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle;
@@ -51,8 +53,7 @@ class WanderInVehicleTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-
-            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
+            if (BlockPermanentEvents)
             {
                 PedGeneral.Pedestrian.BlockPermanentEvents = true;
             }

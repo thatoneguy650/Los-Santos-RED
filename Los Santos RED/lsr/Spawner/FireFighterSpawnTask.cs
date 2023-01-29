@@ -293,6 +293,7 @@ public class FireFighterSpawnTask : SpawnTask
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
         }
+        PrimaryFirefighter.SpawnRequirement = SpawnRequirement;
         return PrimaryFirefighter;
     }
     private void SetupPed(Ped ped)

@@ -194,7 +194,7 @@ public class PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new GangIdle(PedExt, Player, World, PlacesOfInterest);
+        PedExt.CurrentTask = new GangIdle_Old(PedExt, Player, World, PlacesOfInterest);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }

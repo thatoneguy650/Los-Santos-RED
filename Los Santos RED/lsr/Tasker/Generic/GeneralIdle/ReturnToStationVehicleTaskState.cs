@@ -19,13 +19,15 @@ class ReturnToStationVehicleTaskState : TaskState
     private bool HasArrivedAtStation;
     private Vector3 taskedPosition;
     private ISettingsProvideable Settings;
+    private bool BlockPermanentEvents = false;
 
-    public ReturnToStationVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public ReturnToStationVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents)
     {
         PedGeneral = pedGeneral;
         World = world;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
+        BlockPermanentEvents = blockPermanentEvents;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && HasArrestedPassengers() && !HasArrivedAtStation;
@@ -47,7 +49,6 @@ class ReturnToStationVehicleTaskState : TaskState
         if (!HasArrivedAtStation && PedGeneral.Pedestrian.DistanceTo2D(taskedPosition) < 10f && PedGeneral.Pedestrian.CurrentVehicle.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Speed <= 1.0f && !PedGeneral.Pedestrian.CurrentVehicle.IsEngineOn)//arrived, wait then drive away
         {
             HasArrivedAtStation = true;
-
             foreach (Ped ped in PedGeneral.Pedestrian.CurrentVehicle.Passengers)
             {
                 if(ped.Exists())
@@ -55,7 +56,6 @@ class ReturnToStationVehicleTaskState : TaskState
                     ped.Delete();
                 }
             }
-
             EntryPoint.WriteToConsole($"EVENT: ReturnToStationVehicleTaskState HasArrivedAtStation {PedGeneral.Pedestrian.Handle}", 3);
         }
     }
@@ -63,7 +63,7 @@ class ReturnToStationVehicleTaskState : TaskState
     {
         if (PedGeneral.Pedestrian.Exists())
         {
-            if(Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle)
+            if(BlockPermanentEvents)
             {
                 PedGeneral.Pedestrian.BlockPermanentEvents = true;
             }

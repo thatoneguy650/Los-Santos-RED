@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 public class GangTasker
 {
-    private IEntityProvideable PedProvider;
+    private IEntityProvideable World;
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
@@ -21,7 +22,7 @@ public class GangTasker
     public GangTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
-        PedProvider = pedProvider;
+        World = pedProvider;
         Player = player;
         Weapons = weapons;
         Settings = settings;
@@ -36,19 +37,11 @@ public class GangTasker
     {
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
-            PedProvider.Pedestrians.ExpireSeatAssignments();
-            foreach (GangMember gangMember in PedProvider.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
+            World.Pedestrians.ExpireSeatAssignments();
+            foreach (GangMember gangMember in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
             {
                 try
                 {
-                    //if(gangMember.IsGroupMember)
-                    //{
-                    //    continue;
-                    //}
-
-
-
-
                     if (gangMember.IsGroupMember && !gangMember.IsBusted)
                     {
                         if (gangMember.CurrentTask != null && gangMember.CurrentTask.ShouldUpdate)
@@ -242,24 +235,40 @@ public class GangTasker
             GangMember.CurrentTask?.Start();
         }
     }
-    private void SetIdle(GangMember GangMember)
-    {
-        if (GangMember.CurrentTask?.Name != "GangIdle")
-        {
-            EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to Idle", 3);
-            GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
-            GameFiber.Yield();//TR Added back 4
-            GangMember.CurrentTask?.Start();
-        }
-    }
+
     private void SetArrested(GangMember GangMember)
     {
         if (GangMember.CurrentTask?.Name != "GetArrested")
         {
-            GangMember.CurrentTask = new GetArrested(GangMember, Player, PedProvider);
+            GangMember.CurrentTask = new GetArrested(GangMember, Player, World);
             GameFiber.Yield();//TR Added back 7
             GangMember.CurrentTask?.Start();
         }
+    }
+    private void SetIdle(GangMember GangMember)
+    {
+
+        if (GangMember.CurrentTask?.Name != "Idle")
+        {
+            EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to GeneralIdle", 3);
+            GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World,new List<VehicleExt>() { GangMember.AssignedVehicle },PlacesOfInterest,Settings,false,false,false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
+            GameFiber.Yield();//TR Added back 4
+            GangMember.CurrentTask?.Start();
+        }
+
+        //if (GangMember.CurrentTask?.Name != "GenericIdle")
+        //{
+        //    EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to GenericIdle", 3);
+        //    GangMember.CurrentTask = new GenericIdle(GangMember, Player, World, PlacesOfInterest);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
+        //    GameFiber.Yield();//TR Added back 4
+        //    GangMember.CurrentTask?.Start();
+        //}
+
+
+
+
+
+
     }
 }
 

@@ -314,9 +314,7 @@ public class CopTasker
         {
             // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Idle", 3);
             //Cop.CurrentTask = new Idle(Cop, Player, World, PlacesOfInterest, Cop);
-
-            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest, Settings);
-
+            Cop.CurrentTask = new GeneralIdle(Cop, Cop, Player, World, World.Vehicles.PoliceVehicleList, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringIdle, true ,Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState, true);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

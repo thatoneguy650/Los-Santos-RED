@@ -336,7 +336,7 @@ public class LESpawnTask : SpawnTask
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
 
-
+        PrimaryCop.SpawnRequirement = SpawnRequirement;
 
 
         if(SpawnWithAllWeapons)

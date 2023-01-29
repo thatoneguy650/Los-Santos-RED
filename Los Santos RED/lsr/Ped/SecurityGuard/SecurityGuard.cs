@@ -70,6 +70,9 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public uint GameTimeLastUpdatedTarget { get; set; }
     public PedExt CurrentTarget { get; set; }
     public bool IsUsingMountedWeapon { get; set; } = false;
+
+    public bool IsArmedSecurity { get; set; } = false;
+
     public override bool NeedsFullUpdate
     {
         get
@@ -172,6 +175,10 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson.EmptyHolster, dispatchablePerson.FullHolster);
         WeaponInventory.SetDefault();
 
+        if(WeaponInventory.HasPistol || WeaponInventory.HasLongGun)
+        {
+            IsArmedSecurity = true;
+        }
 
         Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
         ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);

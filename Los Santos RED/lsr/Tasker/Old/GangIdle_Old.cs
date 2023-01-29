@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GangIdle : ComplexTask
+public class GangIdle_Old : ComplexTask
 {
     private bool NeedsUpdates;
     private Task CurrentTask = Task.Nothing;
@@ -73,7 +73,7 @@ public class GangIdle : ComplexTask
             }
         }
     }
-    public GangIdle(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
+    public GangIdle_Old(IComplexTaskable cop, ITargetable player, IEntityProvideable world, IPlacesOfInterest placesOfInterest) : base(player, cop, 1500)//1500
     {
         Name = "GangIdle";
         SubTaskName = "";

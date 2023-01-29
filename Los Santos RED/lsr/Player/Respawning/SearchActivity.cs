@@ -5,6 +5,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -338,9 +339,20 @@ public class SearchActivity
         }
         foreach (WeaponInformation weapon in IllegalWeapons)
         {
+            int TimesToCheck = 1;
             WeaponItem wi = ModItems.PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName == weapon.ModelName);
-            EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM {wi != null} %:{wi?.PoliceFindDuringPlayerSearchPercentage}");
-            if (wi != null && RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage))
+            if(wi == null)
+            {
+                EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
+                continue;
+            }
+            if(weapon.Category == WeaponCategory.Throwable)
+            {
+                TimesToCheck = NativeFunction.Natives.GET_AMMO_IN_PED_WEAPON<int>(Player.Character, weapon.Hash);
+                TimesToCheck.Clamp(1, 10);
+            }
+            EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
+            if (RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage * TimesToCheck))
             {
                 Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon);
                 FoundIllegalWeapons = true;

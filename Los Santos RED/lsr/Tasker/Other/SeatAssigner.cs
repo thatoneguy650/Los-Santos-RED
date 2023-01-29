@@ -53,7 +53,7 @@ public class SeatAssigner
                
                 else if (includeNonAssigned)
                 {
-                    foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
+                    foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x != null && x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
                     {
                         float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
                         if (DistanceTo <= 125f)
@@ -136,7 +136,7 @@ public class SeatAssigner
                 }
                 else if (includeNonAssigned)
                 {
-                    foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
+                    foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x => x != null && x.Vehicle.Exists() && x.Vehicle.Speed < 0.5f).OrderBy(x => x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
                     {
                         float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
                         if (DistanceTo <= 125f)
@@ -181,7 +181,7 @@ public class SeatAssigner
     {
         VehicleAssigned = null;
         SeatAssigned = -99;
-        foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x=> x.Vehicle.Exists() && x.Vehicle.Model.NumberOfSeats >= 4 && x.Vehicle.Speed < 0.5f).OrderBy(x=> x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
+        foreach (VehicleExt possibleVehicle in VehiclesToTest.Where(x=> x != null && x.Vehicle.Exists() && x.Vehicle.Model.NumberOfSeats >= 4 && x.Vehicle.Speed < 0.5f).OrderBy(x=> x.Vehicle.DistanceTo2D(Ped.Pedestrian)))
         {
             float DistanceTo = possibleVehicle.Vehicle.DistanceTo2D(Ped.Pedestrian);
             if (DistanceTo <= 75f)

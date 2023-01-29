@@ -34,6 +34,7 @@ public class WeaponInventory
     public bool ShouldAutoSetWeaponState { get; set; } = true;
     public string DebugWeaponState { get; set; }
     public bool HasPistol => Sidearm != null;
+    public bool HasLongGun => LongGun != null;
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;

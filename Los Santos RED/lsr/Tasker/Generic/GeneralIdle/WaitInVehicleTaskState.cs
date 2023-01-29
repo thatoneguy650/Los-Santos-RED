@@ -15,14 +15,16 @@ class WaitInVehicleTaskState : TaskState
     private SeatAssigner SeatAssigner;
     private ISettingsProvideable Settings;
     private ITargetable Player;
+    private bool BlockPermanentEvents = false;
 
-    public WaitInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings)
+    public WaitInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents)
     {
         PedGeneral = pedGeneral;
         Player = player;
         World = world;
         SeatAssigner = seatAssigner;
         Settings = settings;
+        BlockPermanentEvents = blockPermanentEvents;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.CurrentVehicle.Exists() && SeatAssigner.HasPedsWaitingToEnter(World.Vehicles.GetVehicleExt(PedGeneral.Pedestrian.CurrentVehicle), PedGeneral.Pedestrian.SeatIndex);
