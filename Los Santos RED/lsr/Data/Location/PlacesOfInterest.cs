@@ -1585,6 +1585,26 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-833.0579f, -1397.259f, 0.1287543f), 290.7657f),
                 } },
 
+
+            //From discord
+            new Dealership(new Vector3(396.8023f, -1170.86f, 57.61f), 358.55f, "Outlaw Motors", "Ride like an outlaw","OutlawMotorMenu") {
+                OpenTime = 6, CloseTime = 20,
+                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(1122.58f, 784.47f, 57.68f), 91.32f),
+                    new SpawnPlace(new Vector3(1121.96f, -773.24f, 57.75f), 359.68f),
+                } },
+
+            new Dealership(new Vector3(-205.69f, -1308.52f, 31.29f), 0.65f, "Benny's Original Motorworks", "True OG style wheels","LowriderMenu") {
+                OpenTime = 6, CloseTime = 20,
+                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-209.46f, -1302.07f, 31.30f), 86.83f),
+                    new SpawnPlace(new Vector3(-199.34f, -1306.15f, 31.34f), 356.98f),
+                } },
+
         };
         List<DriveThru> DriveThrus = new List<DriveThru>()
         {

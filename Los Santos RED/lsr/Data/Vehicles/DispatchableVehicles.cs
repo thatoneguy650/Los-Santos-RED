@@ -52,6 +52,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> Amublance2;
     private List<DispatchableVehicle> Amublance3;
     private List<DispatchableVehicle> NYSPVehicles;
+    private List<DispatchableVehicle> MerryweatherPatrolVehicles;
 
     public void ReadConfig()
     {
@@ -170,6 +171,13 @@ public class DispatchableVehicles : IDispatchableVehicles
         NYSPVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("policeold1", 50, 50),
             new DispatchableVehicle("policeold2", 50, 50), };
+
+
+        MerryweatherPatrolVehicles = new List<DispatchableVehicle>()
+        { 
+            new DispatchableVehicle("dilettante2", 100, 100), 
+        };
+
 
         //Gangs
         GenericGangVehicles = new List<DispatchableVehicle>() {
@@ -390,6 +398,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
+        VehicleGroupLookup.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
 
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
         VehicleGroupLookup.Add(new DispatchableVehicleGroup("AllGangVehicles", AllGangVehicles));
@@ -469,6 +478,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
+        OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
 
         //Gang
         OldVehicleLookupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
@@ -511,6 +521,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
+        SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
 
         //Gang
         SimpleVehicleLoopupGroup.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));
@@ -682,6 +693,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Amublance2", Amublance2));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("Amublance3", Amublance3));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("NYSPVehicles", NYSPVehicles));
+        VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("MerryweatherPatrolVehicles", MerryweatherPatrolVehicles));
 
         //Gang stuff
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("GenericGangVehicles", GenericGangVehicles));

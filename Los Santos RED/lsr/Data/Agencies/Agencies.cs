@@ -39,6 +39,9 @@ public class Agencies : IAgencies
     private Agency LSFD;
     private Agency NYSP;
     private Agency GRPSECHS;
+    private Agency SECURO;
+    private Agency MERRY;
+    private Agency BOBCAT;
     private Agency UNK;
     private Agency LSMC;
     private Agency MRH;
@@ -143,8 +146,10 @@ public class Agencies : IAgencies
         LSFD = new Agency("~w~", "LSFD", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "GreenEMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
 
-        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "SecurityPeds", "UnmarkedVehicles", "GS ","Tasers", null, null, "Gruppe Sechs Guard") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
-
+        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "GruppeSechsPeds", "UnmarkedVehicles", "GS ","Tasers", null, null, "Gruppe Sechs Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };  
+        SECURO = new Agency("~b~", "SECURO", "SecuroServ", "SecuroServ", "Black", Classification.Security, "SecuroservPeds", "UnmarkedVehicles", "SS ", "Tasers", null, null, "SecuroServ Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        MERRY = new Agency("~w~", "MERRY", "Merryweather", "Merryweather Security", "White", Classification.Security, "SecurityPeds", "MerryweatherPatrolVehicles", "MW ", "Tasers", null, null, "Merryweather Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        BOBCAT = new Agency("~w~", "BOBCAT", "Bobcat", "Bobcat Security", "White", Classification.Security, "SecurityPeds", "UnmarkedVehicles", "BC ", "Tasers", null, null, "Bobcat Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }
@@ -185,6 +190,9 @@ public class Agencies : IAgencies
             NYSP,
 
             GRPSECHS,
+            SECURO,
+            MERRY,
+            BOBCAT,
         };
 
         Serialization.SerializeParams(AgenciesList, ConfigFileName);
@@ -220,6 +228,9 @@ public class Agencies : IAgencies
             NYSP,
 
             GRPSECHS,
+            SECURO,
+            MERRY,
+            BOBCAT,
         };
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\Agencies_FullExpandedJurisdiction.xml");
         Serialization.SerializeParams(FullAgenciesList, "Plugins\\LosSantosRED\\AlternateConfigs\\EUP\\Agencies_EUP.xml");
@@ -238,13 +249,15 @@ public class Agencies : IAgencies
         Agency SAPR2008 = Extensions.DeepCopy(SAPR);
         Agency SACG2008 = Extensions.DeepCopy(SACG);
         Agency ARMY2008 = Extensions.DeepCopy(ARMY);
-
         Agency GRPSECHS2008 = Extensions.DeepCopy(GRPSECHS);
+        Agency SECURO2008 = Extensions.DeepCopy(SECURO);
+        Agency MERRY2008 = Extensions.DeepCopy(MERRY);
+        Agency BOBCAT2008 = Extensions.DeepCopy(BOBCAT);
 
         List<Agency> AgenciesList2008 = new List<Agency>
         {
             LSPD2008,LSPDASD2008,LSSD2008,LSSDASD2008,NOOSE2008,FIB2008,DOA2008,SAHP2008,SASPA2008,SAPR2008,SACG2008,ARMY2008,LSFDFire,LSMC,MRH,LSFD,UNK,
-            NYSP,GRPSECHS2008,
+            NYSP,GRPSECHS2008,SECURO2008,MERRY2008,BOBCAT2008,
         };
         foreach(Agency ag in AgenciesList2008)
         {
@@ -264,6 +277,9 @@ public class Agencies : IAgencies
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
            NOOSE,FIB,DOA,ARMY,
             NYSP,GRPSECHS,
+            SECURO,
+            MERRY,
+            BOBCAT,
             new Agency("~r~", "FDLC","FDLC", "Liberty City Fire Department", "Red", Classification.Fire, "Firefighters", "Firetrucks", "FD ",null,null, null, "FDLC Firefighter") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~w~", "LCMC","LCMC", "Liberty City Medical Center", "White", Classification.EMS, "BlueEMTs", "Amublance1", "MC ",null,null, null, "LCMC EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads"  },
             new Agency("~s~", "UNK","UNK", "Unknown Agency", "White", Classification.Other, null, null, "",null,null,null,"Officer") { MaxWantedLevelSpawn = 0 },
@@ -278,10 +294,27 @@ public class Agencies : IAgencies
         LSMC_Simple.PersonnelID = "EMTs";
         MRH_Simple.PersonnelID = "EMTs";
         LSFD_Simple.PersonnelID = "EMTs";
+
+        Agency GRPSECHS_Simple = GRPSECHS.Copy();
+        Agency SECURO_Simple = SECURO.Copy();
+        Agency MERRY_Simple = MERRY.Copy();
+        Agency BOBCAT_Simple = BOBCAT.Copy();
+
+
+        GRPSECHS_Simple.PersonnelID = "SecurityPeds";
+        SECURO_Simple.PersonnelID = "SecurityPeds";
+        MERRY_Simple.PersonnelID = "SecurityPeds";
+        BOBCAT_Simple.PersonnelID = "SecurityPeds";
+
+        GRPSECHS_Simple.VehiclesID = "UnmarkedVehicles";
+        SECURO_Simple.VehiclesID = "UnmarkedVehicles";
+        MERRY_Simple.VehiclesID = "UnmarkedVehicles";
+        BOBCAT_Simple.VehiclesID = "UnmarkedVehicles";
+
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
             LSPD,LSPDASD,LSSD,LSSDASD,NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,ARMY,LSFDFire,LSMC_Simple,MRH_Simple,LSFD_Simple,UNK,
-            NYSP,GRPSECHS
+            NYSP,GRPSECHS_Simple,SECURO_Simple,MERRY_Simple,BOBCAT_Simple,
         };
         Serialization.SerializeParams(SimpleAgenicesList, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\Agencies_Simple.xml");
     }

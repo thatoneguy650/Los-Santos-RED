@@ -864,10 +864,13 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Gallivanter Baller 2",90000,56000),
                 new MenuItem("Gallivanter Baller LE",149000,76000),
                 new MenuItem("Gallivanter Baller LE LWB",247000,125000),
+
+                new MenuItem("Gallivanter Baller LE (Armored)",320000,160000),
+
                 new MenuItem("Benefactor Schafter",65000,34000),
                 new MenuItem("Benefactor Schafter LWB",75000,52000),
                 new MenuItem("Benefactor Schafter V12",112000,81000),
-
+                new MenuItem("Benefactor Schafter V12 (Armored)",200000,100000),
                 new MenuItem("Benefactor Feltzer",145000,90500),
                 new MenuItem("Benefactor Schwartzer",48000,27000),
                 new MenuItem("Benefactor Surano",110000,78000),
@@ -875,6 +878,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Benefactor Dubsta",110000,78000),
                 new MenuItem("Benefactor Dubsta 2",120000,89000),
                 new MenuItem("Benefactor XLS",151000,11000),
+                new MenuItem("Benefactor XLS (Armored)",250000,125000),
+
+                
+
                 new MenuItem("Benefactor Streiter",156000,105000),
                 new MenuItem("Benefactor Schlagen GT",500000,250000),
                 new MenuItem("Benefactor Krieger",750000,500000),
@@ -1085,6 +1092,7 @@ public class ShopMenus : IShopMenus
             }),
 
 
+
             new ShopMenu("GetAweighMenu","Get Aweigh",new List<MenuItem>() {
 
                 //Boat
@@ -1136,6 +1144,28 @@ public class ShopMenus : IShopMenus
 
                 new MenuItem("JoBuilt Mammatus",320000),
                 new MenuItem("JoBuilt Velum",550000),
+            }),
+
+
+
+            new ShopMenu("LowriderMenu","Benny's Motorworks Menu",new List<MenuItem>() {
+                new MenuItem("Albany Buccaneer Custom",55000, 25000),
+                new MenuItem("Albany Manana Custom",45000, 27000),
+                new MenuItem("Benefactor Glendale Custom",39000, 15000),
+                new MenuItem("Declasse Tornado Custom",54000, 14000),
+                new MenuItem("Declasse Voodoo Custom",43000, 20000),
+                new MenuItem("Dundreary Virgo Classic Custom",55000, 25000),
+                new MenuItem("Vapid Chino Custom",45000, 20000),
+            }),
+
+            new ShopMenu("OutlawMotorMenu","Outlaw Motors Menu",new List<MenuItem>() {
+                new MenuItem("Western Bagger",25000, 12500),
+                new MenuItem("LCC Hexer",37000, 23000),
+                new MenuItem("LCC Innovation",35000, 21000),
+                new MenuItem("Western Zombie Bobber",40000, 26000),
+                new MenuItem("Western Zombie Chopper",35000, 23000),
+                new MenuItem("Western Daemon",26000, 19000),
+                new MenuItem("Vapid Chino Custom",45000, 20000),
             }),
 
         });
