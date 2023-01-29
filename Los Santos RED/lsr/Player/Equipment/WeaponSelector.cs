@@ -221,7 +221,7 @@ public class WeaponSelector
             canShoot = true;
             roundsFired = 0;
 
-            EntryPoint.WriteToConsole("Started Reloading");
+            //EntryPoint.WriteToConsole("Started Reloading");
         }
         SetShootingEnabled(canShoot);
     }

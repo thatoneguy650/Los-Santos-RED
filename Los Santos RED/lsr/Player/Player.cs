@@ -119,7 +119,7 @@ namespace Mod
             Inventory = new Inventory(this, Settings, ModItems);
             Sprinting = new Sprinting(this, Settings);
             Intoxication = new Intoxication(this);
-            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this);
+            Respawning = new Respawning(TimeControllable, World, this, Weapons, PlacesOfInterest, Settings, this, this, ModItems);
             RelationshipManager = new RelationshipManager(gangs, Settings, PlacesOfInterest, TimeControllable, this, this);
             CellPhone = new CellPhone(this, this, jurisdictions, Settings, TimeControllable, gangs, PlacesOfInterest, Zones, streets, GangTerritories, Crimes, World, ModItems);
             PlayerTasks = new PlayerTasks(this, TimeControllable, gangs, PlacesOfInterest, Settings, World, Crimes, names, Weapons, shopMenus, ModItems, pedGroups);

@@ -37,6 +37,7 @@ public class Respawning// : IRespawning
     private ITimeControllable Time;
     private IWeapons Weapons;
     private IEntityProvideable World;
+    private IModItems ModItems;
     private List<string> BribedCopResponses;
     private List<string> CitationCopResponses;
     
@@ -49,7 +50,7 @@ public class Respawning// : IRespawning
     private uint GameTimeLastPlacedAtLocation;
     private IPoliceRespondable PoliceRespondable;
     private ISeatAssignable SeatAssignable;
-    public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable)
+    public Respawning(ITimeControllable time, IEntityProvideable world, IRespawnable currentPlayer, IWeapons weapons, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, IModItems modItems)
     {
         Time = time;
         World = world;
@@ -59,6 +60,7 @@ public class Respawning// : IRespawning
         Settings = settings;
         PoliceRespondable = policeRespondable;
         SeatAssignable = seatAssignable;
+        ModItems = modItems;
     }
     public bool RecentlyRespawned => GameTimeLastRespawned != 0 && Game.GameTime - GameTimeLastRespawned <= Settings.SettingsManager.RespawnSettings.RecentlyRespawnedTime;
     public bool RecentlyResistedArrest => GameTimeLastResistedArrest != 0 && Game.GameTime - GameTimeLastResistedArrest <= Settings.SettingsManager.RespawnSettings.RecentlyResistedArrestTime;
@@ -409,14 +411,13 @@ public class Respawning// : IRespawning
     }
     private void CheckWeapons()
     {
-        if (CurrentPlayer.Licenses.HasValidCCWLicense(Time))//need to add something like this back
-        {
-            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons();
-        }
-        else
-        {
-            Game.LocalPlayer.Character.Inventory.Weapons.Clear();//ResetPlayer is also doing this already......, if you add the above need to stop that from clearing everything anyways (this was that old bug lol), removed from doing that
-        }      
+
+            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
+        //}
+        //else
+        //{
+        //    Game.LocalPlayer.Character.Inventory.Weapons.Clear();//ResetPlayer is also doing this already......, if you add the above need to stop that from clearing everything anyways (this was that old bug lol), removed from doing that
+        //}      
     }
     private void FadeIn()
     {
@@ -630,12 +631,12 @@ public class Respawning// : IRespawning
                     $"Seems you are starting a little weapon collection.",
                     $"Might need to add this to my drop gun collection.",
                 };
-        List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons();
+        List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
         WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x=> x.WeaponLevel).FirstOrDefault();
         if(worstWeapon != null && CurrentPlayer.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
         {
             foundAnything = true;
-            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons();
+            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
             Game.DisplayHelp("Illegal Weapons Found");
             Game.DisplaySubtitle("~g~Cop: ~s~" + foundWeaponResponse.PickRandom());
             GameFiber.Sleep(4000);
@@ -675,7 +676,7 @@ public class Respawning// : IRespawning
     public void ConsentToSearchNew(ModUIMenu menu)
     {
 
-        SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings);
+        SearchActivity searchActivity = new SearchActivity(CurrentPlayer, World, PoliceRespondable, SeatAssignable, Settings, Time, ModItems);
         searchActivity.Setup();
         searchActivity.Start();
         GameFiber.StartNew(delegate

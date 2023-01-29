@@ -125,7 +125,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
-        return AllItems.Where(x => x.FindPercentage > 0).ToList();
+        return AllItems.Where(x => x.FindDuringLootingPercentage > 0).ToList();
     }
     public List<ModItem> InventoryItems()
     {
@@ -163,11 +163,11 @@ public class ModItems : IModItems
     public ModItem GetRandomItem()// List<string> RequiredModels)
     {
         List<ModItem> ToPickFrom = PossibleFoundItems();
-        int Total = ToPickFrom.Sum(x => x.FindPercentage);
+        int Total = ToPickFrom.Sum(x => x.FindDuringLootingPercentage);
         int RandomPick = RandomItems.MyRand.Next(0, Total);
         foreach (ModItem modItem in ToPickFrom)
         {
-            int SpawnChance = modItem.FindPercentage;
+            int SpawnChance = modItem.FindDuringLootingPercentage;
             if (RandomPick < SpawnChance)
             {
                 return modItem;
@@ -199,46 +199,46 @@ public class ModItems : IModItems
             //Drinks
             //Bottles
             new DrinkItem("Bottle of Raine Water", "The water that rich people drink, and the main reason why there are now entire continents of plastic bottles floating in the ocean", ItemType.Drinks) { 
-                ModelItemID = "ba_prop_club_water_bottle",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//slight clipping, no issyes
+                ModelItemID = "ba_prop_club_water_bottle",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindDuringLootingPercentage = 10 },//slight clipping, no issyes
             new DrinkItem("Bottle of GREY Water", "Expensive water that tastes worse than tap!", ItemType.Drinks){
-                ModelItemID = "h4_prop_battle_waterbottle_01a",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//lotsa clipping, does not have gravity
+                ModelItemID = "h4_prop_battle_waterbottle_01a",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindDuringLootingPercentage = 10 },//lotsa clipping, does not have gravity
             new DrinkItem("Bottle of JUNK Energy", "The Quick Fix!", ItemType.Drinks){
-                ModelItemID = "prop_energy_drink",HealthChangeAmount = 30, ThirstChangeAmount = 20.0f,SleepChangeAmount = 10.0f, ItemSubType = ItemSubType.Soda, FindPercentage = 10 },//fine
+                ModelItemID = "prop_energy_drink",HealthChangeAmount = 30, ThirstChangeAmount = 20.0f,SleepChangeAmount = 10.0f, ItemSubType = ItemSubType.Soda, FindDuringLootingPercentage = 10 },//fine
             //Beer
             new DrinkItem("Bottle of PiBwasser", "Cheap 11% ABV fighting lager brewed in Germany for export only from rice, barley, hops and the fresh urine of Bavarian virgins", ItemType.Drinks){
-                ModelItemID = "prop_amb_beer_bottle",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5 },//is perfecto
+                ModelItemID = "prop_amb_beer_bottle",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5 },//is perfecto
             new DrinkItem("Bottle of A.M.", "Mornings Golden Shower", ItemType.Drinks){
-                ModelItemID = "prop_beer_am",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_am",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Barracho", "Es Playtime!", ItemType.Drinks){
-                ModelItemID = "prop_beer_bar",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_bar",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Blarneys", "Making your mouth feel lucky", ItemType.Drinks){
-                ModelItemID = "prop_beer_blr", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_blr", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Jakeys", "Drink Outdoors With Jakey's", ItemType.Drinks){
-                ModelItemID = "prop_beer_jakey", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_jakey", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Logger", "A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned", ItemType.Drinks){
-                ModelItemID = "prop_beer_logger",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_logger",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Patriot", "Never refuse a patriot", ItemType.Drinks){
-                ModelItemID = "prop_beer_patriot", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_patriot", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Pride", "Swallow Me", ItemType.Drinks){
-                ModelItemID = "prop_beer_pride", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_pride", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Stronzo", "Birra forte d'Italia", ItemType.Drinks){
-                ModelItemID = "prop_beer_stz", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beer_stz", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             new DrinkItem("Bottle of Dusche", "Das Ist Gut Ja!", ItemType.Drinks){
-                ModelItemID = "prop_beerdusche", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 5},//Does not have gravity, attachmentis too far down
+                ModelItemID = "prop_beerdusche", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 5},//Does not have gravity, attachmentis too far down
             //Liquor
             new DrinkItem("Bottle of 40 oz", "Drink like a true thug!", ItemType.Drinks){
-                ModelItemID = "prop_cs_beer_bot_40oz", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindPercentage = 1},
+                ModelItemID = "prop_cs_beer_bot_40oz", IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Beer, FindDuringLootingPercentage = 1},
             new DrinkItem("Bottle of Sinsimito Tequila", "Extra Anejo 100% De Agave. 42% Alcohol by volume", ItemType.Drinks){
-                PackageItemID = "h4_prop_h4_t_bottle_02a", IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Liquor, FindPercentage = 1},
+                PackageItemID = "h4_prop_h4_t_bottle_02a", IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Liquor, FindDuringLootingPercentage = 1},
             new DrinkItem("Bottle of Cazafortuna Tequila", "Tequila Anejo. 100% Blue Agave 40% Alcohol by volume", ItemType.Drinks){
-                PackageItemID = "h4_prop_h4_t_bottle_01a", IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Liquor, FindPercentage = 1},
+                PackageItemID = "h4_prop_h4_t_bottle_01a", IntoxicantName = "High Proof Alcohol",HealthChangeAmount = 15, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, ItemSubType= ItemSubType.Liquor, FindDuringLootingPercentage = 1},
             //Cups & Cans
             new DrinkItem("Can of eCola", "Deliciously Infectious!", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacan_01a", HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda, FindPercentage = 10 },
+                ModelItemID = "ng_proc_sodacan_01a", HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda, FindDuringLootingPercentage = 10 },
             new DrinkItem("Can of Sprunk", "Slurp Sprunk Mmm! Delicious", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacan_01b", HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda, FindPercentage = 10},
+                ModelItemID = "ng_proc_sodacan_01b", HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda, FindDuringLootingPercentage = 10},
             new DrinkItem("Can of Orang-O-Tang", "Orange AND Tang! Orang-O-Tang!", ItemType.Drinks){
-                ModelItemID = "prop_orang_can_01",HealthChangeAmount = 10, ItemSubType= ItemSubType.Soda, FindPercentage = 10},//needs better attachment
+                ModelItemID = "prop_orang_can_01",HealthChangeAmount = 10, ItemSubType= ItemSubType.Soda, FindDuringLootingPercentage = 10},//needs better attachment
             new DrinkItem("Carton of Milk", "Full Fat. Farmed and produced in U.S.A.", ItemType.Drinks) { HealthChangeAmount = 10, ThirstChangeAmount = 10.0f, HungerChangeAmount = 5.0f, ItemSubType= ItemSubType.Milk },
             new DrinkItem("Cup of eCola", "Deliciously Infectious!", ItemType.Drinks){
                 ModelItemID = "ng_proc_sodacup_01a",HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda},//has no gravity, too far down
@@ -249,9 +249,9 @@ public class ModItems : IModItems
             new DrinkItem("Can of Hoplivion Double IPA", "So many hops it should be illegal.", ItemType.Drinks){
                 ModelItemID = "h4_prop_h4_can_beer_01a",IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f,},//pretty good, maybeslightly off
             new DrinkItem("Can of Blarneys", "Making your mouth feel lucky", ItemType.Drinks) 
-                { IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, FindPercentage = 1 },
+                { IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, FindDuringLootingPercentage = 1 },
             new DrinkItem("Can of Logger", "A classic American tasteless, watery beer, made by Rednecks for Rednecks. Now Chinese owned", ItemType.Drinks) 
-                { IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, FindPercentage = 1 },
+                { IntoxicantName = "Low Proof Alcohol",HealthChangeAmount = 5, SleepChangeAmount = -2.0f,HungerChangeAmount = 2.0f,ThirstChangeAmount = 5.0f, FindDuringLootingPercentage = 1 },
             //Bean Machine
             new DrinkItem("High Noon Coffee", "Drip coffee, carbonated water, fruit syrup and taurine.", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",HealthChangeAmount = 10, SleepChangeAmount = 10.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Coffee},//perfecto
@@ -288,31 +288,31 @@ public class ModItems : IModItems
             //Cigarettes/Cigars
             new SmokeItem("Redwood Regular", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 15 },
+                PackageItemID = "v_ret_ml_cigs",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 15 },
             new SmokeItem("Redwood Mild", "Tobacco products for real men who don't go to the doctors or read fear-mongering, left-wing so-called medical propaganda. Milder version", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs2",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 5 },
+                PackageItemID = "v_ret_ml_cigs2",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 5 },
             new SmokeItem("Debonaire", "Tobacco products marketed at the more sophisticated smoker, whoever that is", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs3",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 2 },
+                PackageItemID = "v_ret_ml_cigs3",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 2 },
             new SmokeItem("Debonaire Menthol", "Tobacco products marketed at the more sophisticated smoker, whoever that is. With Menthol!", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs4",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 2 },
+                PackageItemID = "v_ret_ml_cigs4",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 2 },
             new SmokeItem("Caradique", "Fine Napoleon Cigarettes", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs5",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 2 },
+                PackageItemID = "v_ret_ml_cigs5",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 2 },
             new SmokeItem("69 Brand","Don't let an embargo stop you", ItemType.Drugs) {
                 ModelItemID = "ng_proc_cigarette01a",
-                PackageItemID = "v_ret_ml_cigs6",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindPercentage = 2 },
+                PackageItemID = "v_ret_ml_cigs6",AmountPerPackage = 20, HealthChangeAmount = -10,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigarette, FindDuringLootingPercentage = 2 },
             //new Vector3(-0.025f,0.01f,0.004f),new Rotator(0f, 0f, 90f) female mouth attach?
             new SmokeItem("Estancia Cigar","Medium Cut. Hand Rolled.", ItemType.Drugs) {
                 ModelItemID = "prop_cigar_02",
-                PackageItemID = "p_cigar_pack_02_s",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigar, FindPercentage = 1 },
+                PackageItemID = "p_cigar_pack_02_s",AmountPerPackage = 20, HealthChangeAmount = -5,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Cigar, FindDuringLootingPercentage = 1 },
             //new ModItem("ElectroToke Vape","The Electrotoke uses highly sophisticated micro-molecule atomization technology to make the ingestion of hard drugs healthy, dscreet, pleasurable and, best of all, completely safe.", ItemType.Drugs) {
             //    ModelItemID = "h4_prop_battle_vape_01"), IntoxicantName = "Marijuana", PercentLostOnUse = 0.05f },
             new SmokeItem("Marijuana","Little Jacob Tested, Truth Approved", ItemType.Drugs) {
                 ModelItemID = "p_cs_joint_01"//p_amb_joint_01
-                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f },
+                ,PackageItemID = "sf_prop_sf_bag_weed_01a", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 2, HungerChangeAmount = -5.0f, ThirstChangeAmount = -2.0f },
             //new SmokeItem("White Widow","Among the most famous strains worldwide is White Widow, a balanced hybrid first bred in the Netherlands by Green House Seeds.", ItemType.Drugs) {
             //    ModelItemID = "p_cs_joint_01",PackageItemID = "prop_weed_bottle", PercentLostOnUse = 0.25f, MeasurementName = "Gram", IntoxicantName = "Marijuana", ItemSubType = ItemSubType.Narcotic, FindPercentage = 2, SubItemName = "Marijuana"},
             //new SmokeItem("OG Kush","OG Kush, also known as 'Premium OG Kush', was first cultivated in Florida in the early '90s when a marijuana strain from Northern California was supposedly crossed with Chemdawg, Lemon Thai and a Hindu Kush plant from Amsterdam.", ItemType.Drugs) {
@@ -324,37 +324,37 @@ public class ModItems : IModItems
         PossibleItems.IngestItems.AddRange(new List<IngestItem>
         {
             new IngestItem("Bull Shark Testosterone","More bite than bush elephant testosterone. Become more aggressive, hornier, and irresistible to women! The ultimate man!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Bull Shark Testosterone" , AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
             new IngestItem("Alco Patch","The Alco Patch. It's the same refreshing feeling of your favorite drink, but delivered transdermally and discreetly. Pick up the Alco Patch at your local pharmacy.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
             new IngestItem("Lax to the Max","Lubricated suppositories. Get flowing again!", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Alco Patch",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
             new IngestItem("Mollis","For outstanding erections. Get the performance you've always dreamed of", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1},
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Mollis",AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1},
             new IngestItem("Chesty","Cough suppressant manufactured by Good Aids Pharmacy. Gives 24-hour relief and is available in honey flavour.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Chesty", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
             new IngestItem("Equanox","Combats dissatisfaction, lethargy, depression, melancholy, sexual dysfunction. May cause nausea, loss of sleep, blurred vision, leakage, kidney problems and breathing irregularities.", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Equanox", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
             new IngestItem("Zombix","Painkiller and antidepressant manufactured by O'Deas Pharmacy. ~n~'Go straight for the head.'", ItemType.Drugs) {
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1 },
             new IngestItem("SPANK","You looking for some fun? a little.. hmmm? Some SPANK?", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "SPANK", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
             new IngestItem("Toilet Cleaner","The hot new legal high that takes you to places you never imagined and leaves you forever changed.", ItemType.Drugs) { IsPossessionIllicit = true,
-                ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ModelItemID = "prop_cs_pills",IntoxicantName = "Toilet Cleaner", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
 
             new IngestItem("Hingmyralgan","For Brain-Ache and other pains", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 20, FindPercentage = 15, AlwaysChangesHealth = true },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 20, FindDuringLootingPercentage = 15, AlwaysChangesHealth = true },
 
 
             new IngestItem("Deludamol","For a Night You'll Never Remember", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindPercentage = 5, AlwaysChangesHealth = true },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 25,ThirstChangeAmount = -1, FindDuringLootingPercentage = 5, AlwaysChangesHealth = true },
 
             new IngestItem("Delladamol","Gives A Time You Won't Recall", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindPercentage = 5, AlwaysChangesHealth = true },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 15,ThirstChangeAmount = -3, FindDuringLootingPercentage = 5, AlwaysChangesHealth = true },
 
 
             new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay!", ItemType.Drugs) { IsPossessionIllicit = false,AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindPercentage = 5 },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindDuringLootingPercentage = 5 },
 
         });
         PossibleItems.InhaleItems.AddRange(new List<InhaleItem>
@@ -362,25 +362,25 @@ public class ModItems : IModItems
             new InhaleItem("Cocaine","Also known as coke, crack, girl, lady, charlie, caine, tepung, and snow", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "ba_prop_battle_sniffing_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ,IntoxicantName = "Cocaine", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
         });
         PossibleItems.InjectItems.AddRange(new List<InjectItem>
         {
             new InjectItem("Heroin","Heroin was first made by C. R. Alder Wright in 1874 from morphine, a natural product of the opium poppy", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_syringe_01"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ,IntoxicantName = "Heroin", PercentLostOnUse = 0.5f, MeasurementName = "Gram", ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
         });
         PossibleItems.PipeSmokeItems.AddRange(new List<PipeSmokeItem>
         {
             new PipeSmokeItem("Methamphetamine","Also referred to as Speed, Sabu, Crystal and Meth", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_meth_pipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ,IntoxicantName = "Methamphetamine", PercentLostOnUse = 0.25f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
             new PipeSmokeItem("Crack", ItemType.Drugs) { IsPossessionIllicit = true,
                 ModelItemID = "prop_cs_crackpipe"
                 ,PackageItemID = "prop_meth_bag_01"
-                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindPercentage = 1 },
+                ,IntoxicantName = "Crack", PercentLostOnUse = 0.5f, MeasurementName = "Gram",  ItemSubType = ItemSubType.Narcotic, FindDuringLootingPercentage = 1 },
         });
 
     }
@@ -463,22 +463,22 @@ public class ModItems : IModItems
                 PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 75, HungerChangeAmount = 75.0f, ItemSubType = ItemSubType.Pizza } ,
             //Chips
             new FoodItem("Sticky Rib Phat Chips","They are extra phat. Sticky Rib Flavor.", ItemType.Food) {
-                ModelItemID = "v_ret_ml_chips1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "v_ret_ml_chips1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("Habanero Phat Chips","They are extra phat. Habanero flavor", ItemType.Food) {
-                ModelItemID = "v_ret_ml_chips2", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "v_ret_ml_chips2", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("Supersalt Phat Chips","They are extra phat. Supersalt flavor.", ItemType.Food) {
-                ModelItemID = "v_ret_ml_chips3", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "v_ret_ml_chips3", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("Big Cheese Phat Chips","They are extra phat. Big Cheese flavor.", ItemType.Food) {
-                ModelItemID = "v_ret_ml_chips4", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "v_ret_ml_chips4", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             //Candy
             new FoodItem("Ego Chaser Energy Bar","Contains 20,000 Calories! ~n~'It's all about you'", ItemType.Food) {
-                ModelItemID = "prop_choc_ego", HealthChangeAmount = 20, HungerChangeAmount = 20.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "prop_choc_ego", HealthChangeAmount = 20, HungerChangeAmount = 20.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("King Size P's & Q's","The candy bar that kids and stoners love. EXTRA Large", ItemType.Food) {
-                ModelItemID = "prop_candy_pqs", HealthChangeAmount = 15, HungerChangeAmount = 15.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "prop_candy_pqs", HealthChangeAmount = 15, HungerChangeAmount = 15.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("P's & Q's","The candy bar that kids and stoners love", ItemType.Food) {
-                ModelItemID = "prop_choc_pq", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "prop_choc_pq", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             new FoodItem("Meteorite Bar","Dark chocolate with a GOOEY core", ItemType.Food) {
-                ModelItemID = "prop_choc_meto", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
+                ModelItemID = "prop_choc_meto", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindDuringLootingPercentage = 10 },
             //UPNATOM
             new FoodItem("Triple Burger", "Three times the meat, three times the cholesterol", ItemType.Food) {
                 ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
@@ -639,17 +639,17 @@ public class ModItems : IModItems
         PossibleItems.RadioItems.AddRange(new List<RadioItem>
         {
             new RadioItem("Schmidt & Priss TL6 Scanner","Ever wonder what the LSPD talks about behind your back? Wonder no further.") {
-                ModelItemID = "prop_cs_hand_radio", FindPercentage = 10 },
+                ModelItemID = "prop_cs_hand_radio", FindDuringLootingPercentage = 10 },
         });
         PossibleItems.ScrewdriverItems.AddRange(new List<ScrewdriverItem>
         {
             //Generic Tools
             new ScrewdriverItem("Flint Phillips Screwdriver","Might get you into some locked things. No relation.") {
-                ModelItemID = "prop_tool_screwdvr01", FindPercentage = 10 },
+                ModelItemID = "prop_tool_screwdvr01", FindDuringLootingPercentage = 10 },
             new ScrewdriverItem("Flint Flathead Screwdriver","Might get you into some locked things. With a nice flat head.") {
-                ModelItemID = "gr_prop_gr_sdriver_01", FindPercentage = 10 },
+                ModelItemID = "gr_prop_gr_sdriver_01", FindDuringLootingPercentage = 10 },
             new ScrewdriverItem("Flint Multi-Bit Screwdriver","Might get you into some locked things. Now multi-bit!") {
-                ModelItemID = "gr_prop_gr_sdriver_02", FindPercentage = 10 },
+                ModelItemID = "gr_prop_gr_sdriver_02", FindDuringLootingPercentage = 10 },
         });
         PossibleItems.DrillItems.AddRange(new List<DrillItem>
         {
@@ -663,25 +663,25 @@ public class ModItems : IModItems
         PossibleItems.PliersItems.AddRange(new List<PliersItem>
         {
             new PliersItem("Flint Pliers","For mechanics, pipe bomb makers, and amateur dentists alike. When you really need to grab something.") {
-                ModelItemID = "prop_tool_pliers", FindPercentage = 10  },      
+                ModelItemID = "prop_tool_pliers", FindDuringLootingPercentage = 10  },      
         });
         PossibleItems.LighterItems.AddRange(new List<LighterItem>
         {
             new LighterItem("DIC Lighter","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged") {
-                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.01f, FindPercentage = 10 },
+                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.01f, FindDuringLootingPercentage = 10 },
             new LighterItem("DIC Lighter Ultra","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Long burn version.") {
-                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.005f, FindPercentage = 2 },
+                ModelItemID = "p_cs_lighter_01", PercentLostOnUse = 0.005f, FindDuringLootingPercentage = 2 },
             new LighterItem("Dippo Lighter","Want to have all the hassle of carrying a lighter only for it to be out of fluid when you need it? Dippo is for you!") {
-                ModelItemID = "v_res_tt_lighter", PercentLostOnUse = 0.05f, FindPercentage = 2 },
+                ModelItemID = "v_res_tt_lighter", PercentLostOnUse = 0.05f, FindDuringLootingPercentage = 2 },
             new LighterItem("DIC Lighter Silver","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Too poor for gold?") {
-                ModelItemID = "ex_prop_exec_lighter_01", PercentLostOnUse = 0.02f, FindPercentage = 1 },
+                ModelItemID = "ex_prop_exec_lighter_01", PercentLostOnUse = 0.02f, FindDuringLootingPercentage = 1 },
             new LighterItem("DIC Lighter Gold","A disposable lighter in production by Société Dic since 1973. Arson strongly discouraged. Golden so it must be good!") {
-                ModelItemID = "lux_prop_lighter_luxe",  PercentLostOnUse = 0.02f, FindPercentage = 1 },
+                ModelItemID = "lux_prop_lighter_luxe",  PercentLostOnUse = 0.02f, FindDuringLootingPercentage = 1 },
         });
         PossibleItems.TapeItems.AddRange(new List<TapeItem>
         {
             new TapeItem("Flint Duct Tape","~r~CURRENTLY UNUSED~s~ Sticks to anything! Ducts, wrists, windows, mouths, and more.") {
-                ModelItemID = "gr_prop_gr_tape_01", FindPercentage = 10 },
+                ModelItemID = "gr_prop_gr_tape_01", FindDuringLootingPercentage = 10 },
         });
         PossibleItems.HammerItems.AddRange(new List<HammerItem>
         {
@@ -708,7 +708,7 @@ public class ModItems : IModItems
             },
             new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.") {
                 ModelItemID = "prop_cs_police_torch",
-                EmissiveRadius = 10f, EmissiveDistance = 75f,EmissiveBrightness = 0.75f, FindPercentage = 1 },
+                EmissiveRadius = 10f, EmissiveDistance = 75f,EmissiveBrightness = 0.75f, FindDuringLootingPercentage = 1 },
             new FlashlightItem("Flint Handle Flashlight","Light up the jobsite, or the dead hookers.") {
                 ModelItemID = "prop_tool_torch",
                 EmissiveRadius = 15f, EmissiveDistance = 100f,EmissiveBrightness = 1.0f, },
@@ -725,13 +725,13 @@ public class ModItems : IModItems
         });
         PossibleItems.BinocularsItems.AddRange(new List<BinocularsItem> {
             new BinocularsItem("SCHEISS BS Binoculars","Not just for peeping toms. Basic and Trusted.") {
-                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 15f,MidFOV = 35f,MaxFOV = 55f, FindPercentage = 1  },
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 15f,MidFOV = 35f,MaxFOV = 55f, FindDuringLootingPercentage = 1  },
             new BinocularsItem("SCHEISS AS Binoculars","Need to spy on a spouse or loved one? Now with more ZOOM!") {
-                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 12f,MidFOV = 20f,MaxFOV = 50f, FindPercentage = 1  },
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = false, MinFOV = 12f,MidFOV = 20f,MaxFOV = 50f, FindDuringLootingPercentage = 1  },
             new BinocularsItem("SCHEISS DS Binoculars","Need to spy on spouse or loved one, but in the dark? We have you covered!") {
-                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = true, MinFOV = 10f,MidFOV = 20f,MaxFOV = 50f, FindPercentage = 1  },
+                ModelItemID = "prop_binoc_01",HasThermalVision = false,HasNightVision = true, MinFOV = 10f,MidFOV = 20f,MaxFOV = 50f, FindDuringLootingPercentage = 1  },
             new BinocularsItem("SCHEISS RP Binoculars","All the bells and whistles. They will never see you coming!") {
-                ModelItemID = "prop_binoc_01",HasThermalVision = true,HasNightVision = true, MinFOV = 8f,MidFOV = 20f,MaxFOV = 50f, FindPercentage = 1  },
+                ModelItemID = "prop_binoc_01",HasThermalVision = true,HasNightVision = true, MinFOV = 8f,MidFOV = 20f,MaxFOV = 50f, FindDuringLootingPercentage = 1  },
         });
     }
     private void DefaultConfig_Vehicles()

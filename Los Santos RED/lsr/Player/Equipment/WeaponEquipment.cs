@@ -1,6 +1,7 @@
 ﻿using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI.PauseMenu;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -132,21 +133,22 @@ public class WeaponEquipment
     public void ToggleSelector() => WeaponSelector.ToggleSelector();
 
 
-    public List<WeaponInformation> GetIllegalWeapons()
+    public List<WeaponInformation> GetIllegalWeapons(bool hasValidCCW)
     {
         List<WeaponInformation> illegalWeapons = new List<WeaponInformation>();
         WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
         foreach (WeaponDescriptor Weapon in CurrentWeapons)
         {
             WeaponInformation weaponInfo = Weapons.GetWeapon((ulong)Weapon.Hash);
-            if(weaponInfo != null && !weaponInfo.IsLegal)
+            if(weaponInfo == null || weaponInfo.IsLegalWithoutCCW || (hasValidCCW && weaponInfo.IsLegal))
             {
-                illegalWeapons.Add(weaponInfo);
+                continue;
             }
+            illegalWeapons.Add(weaponInfo);  
         }
         return illegalWeapons;
     }
-    public bool RemoveIllegalWeapons()
+    public bool RemoveIllegalWeapons(bool hasValidCCW)
     {
         bool foundItems = false;
         //Needed cuz for some reason the other weapon list just forgets your last gun in in there and it isnt applied, so until I can find it i can only remove all
@@ -165,13 +167,13 @@ public class WeaponEquipment
         foreach (StoredWeapon MyNewGun in MyOldGuns)
         {
             WeaponInformation MyGTANewGun = Weapons.GetWeapon((ulong)MyNewGun.WeaponHash);
-            if (MyGTANewGun == null || MyGTANewGun.IsLegal)//or its an addon gun
+            if (MyGTANewGun == null || MyGTANewGun.IsLegalWithoutCCW || (hasValidCCW && MyGTANewGun.IsLegal))//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
                 MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
                 NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
             }
-            else if (MyGTANewGun != null && !MyGTANewGun.IsLegal)
+            if (!MyGTANewGun.IsLegal)
             {
                 foundItems = true;
             }

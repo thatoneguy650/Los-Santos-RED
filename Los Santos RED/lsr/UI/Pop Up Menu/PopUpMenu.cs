@@ -247,7 +247,7 @@ public class PopUpMenu
 
                 List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                 InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
-                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Player.Inventory.Remove(ii.ModItem)), $"Discard {ii.ModItem.Name} ({ii.Amount})"));;;//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
+                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem)), $"Discard {ii.ModItem.Name} ({ii.Amount})"));;;//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
                 PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
 
                 ItemID++;

@@ -180,6 +180,8 @@
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Player\Activity\ItemDropping.cs" />
+    <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneApp.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneContactsApp.cs" />

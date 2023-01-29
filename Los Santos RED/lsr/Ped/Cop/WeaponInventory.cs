@@ -320,7 +320,7 @@ public class WeaponInventory
         {
             HolsterPistol();
         }
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEFAULT");
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEFAULT");
         DebugWeaponState = "Set Default";
         GameTimeLastWeaponCheck = Game.GameTime;      
     }
@@ -399,7 +399,7 @@ public class WeaponInventory
         IsSetUnarmed = false;
         IsSetDeadly = true;
         IsSetDefault = false;
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEADLY");
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET DEADLY");
         DebugWeaponState = "Set Deadly";
         GameTimeLastWeaponCheck = Game.GameTime;    
     }
@@ -443,7 +443,7 @@ public class WeaponInventory
         IsSetUnarmed = false;
         IsSetDeadly = false;
         IsSetDefault = false;
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET LESS LETHAL");
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET LESS LETHAL");
         DebugWeaponState = "Set Less Lethal";
         GameTimeLastWeaponCheck = Game.GameTime;     
     }
@@ -468,7 +468,7 @@ public class WeaponInventory
         IsSetUnarmed = true;
         IsSetDeadly = false;
         IsSetDefault = false;
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET UNARMED");
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET UNARMED");
         DebugWeaponState = "Set Unarmed";
         GameTimeLastWeaponCheck = Game.GameTime;    
     }
@@ -495,7 +495,7 @@ public class WeaponInventory
         IsSetUnarmed = true;
         IsSetDeadly = false;
         IsSetDefault = false;
-        EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET FULLY UNARMED");
+        //EntryPoint.WriteToConsole($"{WeaponOwner.Handle} SET FULLY UNARMED");
         DebugWeaponState = "Set Unarmed";
         GameTimeLastWeaponCheck = Game.GameTime;   
     }

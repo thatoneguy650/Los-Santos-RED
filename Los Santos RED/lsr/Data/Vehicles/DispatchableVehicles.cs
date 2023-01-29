@@ -153,9 +153,9 @@ public class DispatchableVehicles : IDispatchableVehicles
 //#else
             new DispatchableVehicle("crusader", 85,25) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 15,75) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("rhino", 0, 25) { MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
+            new DispatchableVehicle("rhino", 0, 25) {  ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             //new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            new DispatchableVehicle("valkyrie2", 0,100) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
+            new DispatchableVehicle("valkyrie2", 0,100) { ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
 
 //#endif
             };

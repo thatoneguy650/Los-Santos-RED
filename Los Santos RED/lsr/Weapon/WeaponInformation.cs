@@ -19,7 +19,6 @@ public class WeaponInformation
     public bool IsLegal { get; set; } = false;
     public bool IsRegular { get; set; } = true;
 
-
     public float MinVerticalRecoil { get; set; } = 0.0f;
     public float MaxVerticalRecoil { get; set; } = 0.0f;
     public float MinHorizontalRecoil { get; set; } = 0.0f;
@@ -30,7 +29,14 @@ public class WeaponInformation
     public float MinVerticaSway { get; set; } = 0.0f;
     public float MaxVerticaSway { get; set; } = 0.0f;
     public List<WeaponComponent> PossibleComponents { get; set; } = new List<WeaponComponent>();
+
+
+
+
     public SelectorOptions SelectorOptions { get; set; } = SelectorOptions.Safe | SelectorOptions.SemiAuto;
+
+    public bool IsLegalWithoutCCW => Category == WeaponCategory.Melee && IsLegal ? true : false;
+    
     public WeaponInformation()
     {
 
@@ -83,6 +89,9 @@ public class WeaponInformation
             }
         }
     }
+
+
+
     public void ApplyWeaponVariation(Ped WeaponOwner, WeaponVariation weaponVariation)
     {
         if (weaponVariation == null)

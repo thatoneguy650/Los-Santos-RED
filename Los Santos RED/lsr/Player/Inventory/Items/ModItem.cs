@@ -11,6 +11,7 @@ using System.Xml.Serialization;
 using Mod;
 using System.Runtime;
 using static DispatchScannerFiles;
+using LosSantosRED.lsr.Player;
 
 [Serializable()]
 [XmlInclude(typeof(ClothingItem))]
@@ -58,7 +59,6 @@ public class ModItem
     }
 
 
-
     [XmlIgnore]
     public string MenuCategory { get; set; }
     [XmlIgnore]
@@ -66,38 +66,22 @@ public class ModItem
     [XmlIgnore]
     public PhysicalItem PackageItem { get; set; }
 
-
-
-
     public string Name { get; set; }
     public string Description { get; set; } = "";
 
-
-
     public ItemType ItemType { get; set; } = ItemType.None;
     public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
-
-
     public string MeasurementName { get; set; } = "Item";
     public int AmountPerPackage { get; set; } = 1;
     public string ModelItemID { get; set; }
     public string PackageItemID { get; set; }
     public bool IsPossessionIllicit { get; set; } = false;
-
-
-
-
     public float PercentLostOnUse { get; set; } = 0.0f;
     public bool ConsumeOnPurchase { get; set; } = false;
     public virtual bool CanConsume { get; set; } = false;//no no
 
-
-
-
-    public int FindPercentage { get; set; } = 0;
-
-
-  //  public string SubItemName { get; set; }
+    public int FindDuringLootingPercentage { get; set; } = 0;
+    public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 25;
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
@@ -111,7 +95,6 @@ public class ModItem
         }
         MenuCategory = ItemType.ToString();
     }
-
     public virtual string FullDescription(ISettingsProvideable Settings)
     {
         return $"{Description}~n~" 
@@ -148,7 +131,6 @@ public class ModItem
     {
 
     }
-
     public virtual void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         sellScroller = new UIMenuNumericScrollerItem<int>(menuItem.ModItemName, "", 1, 1, 1) { Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.SalesPrice)}", Value = 1 };
@@ -224,8 +206,11 @@ public class ModItem
         }
         description += SellMenuDescription(settings);
         description += $"~n~{RemainingToSell} {MeasurementName}(s) Wanted~s~";
-        description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
 
+        if (!ConsumeOnPurchase)
+        {
+            description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
+        }
         if (sellScroller == null)
         {
             return;
@@ -322,8 +307,8 @@ public class ModItem
             description += PurchaseMenuDescription(settings);
 
             bool enabled = true;
-            int RemainingToBuy = 99;
-            int MaxBuy = 99;
+            int RemainingToBuy = 10;
+            int MaxBuy = 10;
             int itemsSoldToPlayer = 0;
             if (menuItem.NumberOfItemsToSellToPlayer != -1)
             {
@@ -345,7 +330,15 @@ public class ModItem
                 }
                 description += $"~n~{MaxBuy} {MeasurementName}(s) For Purchase~s~";
             }
-            description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
+            else if (ConsumeOnPurchase)
+            {
+                RemainingToBuy = 1;
+            }
+
+            if (!ConsumeOnPurchase)
+            { 
+                description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
+            }
             if (purchaseScroller == null)
             {
                 return;
@@ -463,6 +456,16 @@ public class ModItem
     public override string ToString()
     {
         return Name;
+    }
+    public bool DropItem(IActionable actionable, ISettingsProvideable settings)
+    {
+        ItemDroppingActivity activity = new ItemDroppingActivity(actionable, settings, this);
+        if (activity.CanPerform(actionable))
+        {
+            actionable.ActivityManager.StartUpperBodyActivity(activity);
+            return true;
+        }
+        return false;
     }
 }
 

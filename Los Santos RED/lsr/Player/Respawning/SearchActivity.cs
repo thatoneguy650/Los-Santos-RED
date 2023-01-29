@@ -17,6 +17,8 @@ public class SearchActivity
     private IPoliceRespondable PoliceRespondable;
     private ISettingsProvideable Settings;
     private ISeatAssignable SeatAssignable;
+    private ITimeReportable Time;
+    private IModItems ModItems;
 
     private AnimationWatcher AnimationWatcher;
     private Cop Cop;
@@ -46,14 +48,15 @@ public class SearchActivity
     public bool FoundIllegalItems { get; private set; }
     public bool CompletedSearch { get; private set; } = false;
 
-    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings)
+    public SearchActivity(IRespawnable player, IEntityProvideable world, IPoliceRespondable policeRespondable, ISeatAssignable seatAssignable, ISettingsProvideable settings, ITimeReportable time, IModItems modItems)
     {
         Player = player;
         World = world;
         PoliceRespondable = policeRespondable;
         Settings = settings;
         SeatAssignable = seatAssignable;
-
+        Time = time;
+        ModItems = modItems;
     }
     public void Setup()
     {
@@ -327,24 +330,49 @@ public class SearchActivity
     private void DoWeaponSearch()
     {
         DidWeaponSearch = true;
-        List<WeaponInformation> IllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons();
+        List<WeaponInformation> IllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time));
         WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x => x.WeaponLevel).FirstOrDefault();
-        if (worstWeapon != null && Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
+        if(worstWeapon == null)
         {
-            FoundIllegalWeapons = true;
-            FoundIllegalItems = true;
-            Player.WeaponEquipment.RemoveIllegalWeapons();
+            return;
+        }
+        foreach (WeaponInformation weapon in IllegalWeapons)
+        {
+            WeaponItem wi = ModItems.PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName == weapon.ModelName);
+            EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM {wi != null} %:{wi?.PoliceFindDuringPlayerSearchPercentage}");
+            if (wi != null && RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage))
+            {
+                Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon);
+                FoundIllegalWeapons = true;
+                FoundIllegalItems = true;
+                Player.WeaponEquipment.RemoveIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time));
+                EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
+                break;
+            }
         }
     }
     private void DoItemSearch()
     {
         DidItemsSearch = true;
         List<ModItem> IllegalItems = Player.Inventory.GetIllicitItems();
-        if (IllegalItems != null && IllegalItems.Any() && Player.Violations.OtherViolations.AddFoundIllegalItem())
+        foreach (ModItem modItem in IllegalItems)
         {
-            FoundIllegalDrugs = true;
-            FoundIllegalItems = true;
-            Player.Inventory.RemoveIllicitInventoryItems();
+            int ItemsOwned = 1;
+            InventoryItem ii = Player.Inventory.Get(modItem);
+            if(ii != null)
+            {
+                ItemsOwned = ii.Amount;
+            }
+            EntryPoint.WriteToConsole($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
+            if (RandomItems.RandomPercent(modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned))
+            {
+                Player.Violations.OtherViolations.AddFoundIllegalItem();
+                FoundIllegalDrugs = true;
+                FoundIllegalItems = true;
+                Player.Inventory.RemoveIllicitInventoryItems();
+                EntryPoint.WriteToConsole($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
+                break;
+            }
         }
     }
 }

@@ -565,19 +565,27 @@ public class DebugMenu : ModUIMenu
         UIMenuItem ToggleInvestigation = new UIMenuItem("Toggle Investigation", "Start or stop an investigation.");
         ToggleInvestigation.Activated += (menu, item) =>
         {
-            if (Player.IsNotWanted)
+            if (Player.Investigation.IsActive)
             {
-                if (Player.Investigation.IsActive)
-                {
-                    Player.Investigation.Start(Player.Character.Position, false, true, false, false);
-                }
-                else
-                {
-                    Player.Investigation.Expire();
-                }
+                Player.Investigation.Start(Player.Character.Position, false, true, false, false);
+            }
+            else
+            {
+                Player.Investigation.Expire();
             }
             menu.Visible = false;
         };
+
+
+        UIMenuItem CallInCrime = new UIMenuItem("Call Cops On Yourself", "Call the cops on yourself with description.");
+        CallInCrime.Activated += (menu, item) =>
+        {
+            CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true);
+            Player.PoliceResponse.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == StaticStrings.FiringWeaponCrimeID), description, true);
+            menu.Visible = false;
+        };
+
+
         UIMenuItem SpawnGunAttackersMenu = new UIMenuItem("Spawn Gun Attacker", "spawns some peds with guns that will attack you");
         SpawnGunAttackersMenu.Activated += (menu, item) =>
         {
@@ -643,6 +651,7 @@ public class DebugMenu : ModUIMenu
         CrimeItemsMenu.AddItem(SetNearestWanted);
         CrimeItemsMenu.AddItem(ToggleCopTasking);
         CrimeItemsMenu.AddItem(SetDistantSirens);
+        CrimeItemsMenu.AddItem(CallInCrime);
     }
     private void CreateOtherItems()
     {

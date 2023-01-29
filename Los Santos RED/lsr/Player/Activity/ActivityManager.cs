@@ -450,6 +450,17 @@ public class ActivityManager
             modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
         }
     }
+
+    public void DropInventoryItem(ModItem modItem)
+    {
+        if (IsPerformingActivity)
+        {
+            Game.DisplayHelp("Cancel existing activity to start");
+            return;
+        }
+        modItem.DropItem(Actionable, Settings); 
+    }
+
     public void StartScenario()
     {
         if (IsPerformingActivity)
