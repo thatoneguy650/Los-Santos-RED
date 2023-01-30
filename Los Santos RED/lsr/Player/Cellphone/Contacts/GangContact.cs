@@ -19,6 +19,7 @@ public class GangContact : PhoneContact
     }
     public override void OnAnswered(IContactInteractable player, CellPhone cellPhone, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IJurisdictions jurisdictions, ICrimes crimes, IEntityProvideable world)
     {
+        EntryPoint.WriteToConsole("GangContact OnAnswered");
         Gang myGang = gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == Name);
         if (myGang != null)
         {

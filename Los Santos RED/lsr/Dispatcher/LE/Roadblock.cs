@@ -355,7 +355,7 @@ public class Roadblock
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
         pos1.Heading = heading;
-        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle.Copy(), null, false, Settings, Weapons, Names, false, World);
+        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World);//had .Copy() on the vehicle and ped for some reason?
         spawnTask.AllowAnySpawn = AllowAnySpawn;
         spawnTask.AttemptSpawn();
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
@@ -366,7 +366,7 @@ public class Roadblock
         {
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
-            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person.Copy(), Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
+            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.SpawnWithAllWeapons = true;
             pedSpawn.AttemptSpawn();

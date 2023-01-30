@@ -18,6 +18,7 @@ public class Crimes : ICrimes
     private Crime TrespessingOnGovtProperty;
     private Crime GotInAirVehicleDuringChase;
     private Crime FiringWeapon;
+    private Crime FiringSilencedWeapon;
     private Crime Kidnapping;
     private Crime KillingCivilians;
     private Crime ArmedRobbery;
@@ -103,6 +104,11 @@ public class Crimes : ICrimes
         TrespessingOnGovtProperty = new Crime(StaticStrings.TrespessingOnGovtPropertyCrimeID, "Trespassing on Government Property", 3, false, 7, false, false, true);
         GotInAirVehicleDuringChase = new Crime(StaticStrings.GotInAirVehicleDuringChaseCrimeID, "Stealing an Air Vehicle", 3, false, 8, false, false, true);
         FiringWeapon = new Crime(StaticStrings.FiringWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true };
+
+        FiringSilencedWeapon = new Crime(StaticStrings.FiringSilencedWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { MaxReportingDistance = 15f };
+
+
+
         Kidnapping = new Crime(StaticStrings.KidnappingCrimeID, "Kidnapping", 2, false, 10, true, false, true);
         KillingCivilians = new Crime(StaticStrings.KillingCiviliansCrimeID, "Civilian Fatality", 2, false, 11, true, true, true);
         ArmedRobbery = new Crime(StaticStrings.ArmedRobberyCrimeID, "Armed Robbery", 2, false, 12, true, true, true);
@@ -171,6 +177,7 @@ public class Crimes : ICrimes
              TrespessingOnGovtProperty,
              GotInAirVehicleDuringChase,
              FiringWeapon,
+             FiringSilencedWeapon,
              Kidnapping,
              KillingCivilians,
              ArmedRobbery,
@@ -228,6 +235,7 @@ public class Crimes : ICrimes
              TrespessingOnGovtProperty,
              GotInAirVehicleDuringChase,
              FiringWeapon,
+             FiringSilencedWeapon,
              Kidnapping,
              KillingCivilians,
              ArmedRobbery,
@@ -270,7 +278,6 @@ public class Crimes : ICrimes
         FelonySpeeding.CanBeReportedByCivilians = false;
 
     }
-
     public void SetHard()
     {
         IsBackendChanged = true;
@@ -282,7 +289,6 @@ public class Crimes : ICrimes
         RunningARedLight.CanBeReportedByCivilians = true;
         FelonySpeeding.CanBeReportedByCivilians = true;
     }
-
     public void SetPreferred()
     {
         IsBackendChanged = true;

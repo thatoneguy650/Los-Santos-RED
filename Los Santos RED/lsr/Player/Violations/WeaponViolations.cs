@@ -41,14 +41,32 @@ public class WeaponViolations
     {
         if (Player.RecentlyShot)
         {
-            if (!(Player.Character.IsCurrentWeaponSilenced || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable))
+
+
+
+            if (!(Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable)) //if (!(Player.Character.IsCurrentWeaponSilenced || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable))
             {
-                Violations.AddViolating("FiringWeapon");//.IsCurrentlyViolating = true;
-                if (Player.AnyPoliceRecentlySeenPlayer || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop) || (Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= 30f))
+                if (Player.Character.IsCurrentWeaponSilenced)
                 {
-                    Violations.AddViolating("FiringWeaponNearPolice");//.IsCurrentlyViolating = true;
+                    Violations.AddViolating(StaticStrings.FiringSilencedWeaponCrimeID);
+                    if (Player.AnyPoliceRecentlySeenPlayer || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop))
+                    {
+                        Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
+                    }
+                }
+                else
+                {
+                    Violations.AddViolating(StaticStrings.FiringWeaponCrimeID);//.IsCurrentlyViolating = true;
+                    if (Player.AnyPoliceRecentlySeenPlayer || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop) || (Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= 30f))
+                    {
+                        Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
+                    }
                 }
             }
+
+
+
+
         }
         bool isBrandishing = CheckBrandishing();
         if (isBrandishing && Player.Character.Inventory.EquippedWeapon != null && !Player.IsInVehicle)

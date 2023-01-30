@@ -934,6 +934,10 @@ public class IssueableWeapons : IIssuableWeapons
 
     public List<IssuableWeapon> GetWeaponData(string issuableWeaponsID)
     {
+        if (string.IsNullOrEmpty(issuableWeaponsID))
+        {
+            return null;
+        }
         IssuableWeaponsGroup weaponsGroup = IssuableWeaponsGroupLookup.FirstOrDefault(x => x.IssuableWeaponsID == issuableWeaponsID);
         if(weaponsGroup == null)
         {

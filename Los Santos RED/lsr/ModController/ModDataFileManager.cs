@@ -96,11 +96,12 @@ public class ModDataFileManager
         DispatchableVehicles = new DispatchableVehicles();
         DispatchableVehicles.ReadConfig();
         GameFiber.Yield();
-        DispatchablePeople = new DispatchablePeople();
-        DispatchablePeople.ReadConfig();
-        GameFiber.Yield();
         IssueableWeapons = new IssueableWeapons();
         IssueableWeapons.ReadConfig();
+        GameFiber.Yield();
+        DispatchablePeople = new DispatchablePeople();
+        DispatchablePeople.ReadConfig();
+        DispatchablePeople.Setup(IssueableWeapons);
         GameFiber.Yield();
         Agencies = new Agencies();
         Agencies.ReadConfig();

@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,163 +50,186 @@ public class PedVariation
     public int SecondaryHairColor { get; set; } = -1;
     public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
     public int EyeColor { get; set; } = -1;
-    public void ApplyToPed(Ped ped, bool setDefaultFirst)
+
+
+
+
+    public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst)
     {
         if (setDefaultFirst)
         {
             NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
-            //GameFiber.Yield();
         }
-        ApplyToPed(ped);
+        return ApplyToPed(ped);
     }
-    public void ApplyToPed(Ped ped)
+    public PedVariation ApplyToPed(Ped ped)
     {
         try
         {
-            //NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+            PedVariation setVariation = new PedVariation();
             foreach (PedComponent Component in Components)
             {
                 NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+                setVariation.Components.Add(new PedComponent(Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID));
             }
             NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
             foreach (PedPropComponent Prop in Props)
             {
                 NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+                setVariation.Props.Add(new PedPropComponent(Prop.PropID, Prop.DrawableID, Prop.TextureID));
             }
             //Freemode only below
             if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
             {
                 EntryPoint.WriteToConsole("FREEMODE APPLY");
                 NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix, false);
+                setVariation.HeadBlendData = new HeadBlendData(HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix);
                 if (PrimaryHairColor != -1 && SecondaryHairColor != -1)
                 {
                     NativeFunction.Natives.x4CFFC65454C93A49(ped, PrimaryHairColor, SecondaryHairColor);
+                    setVariation.PrimaryHairColor = PrimaryHairColor;
+                    setVariation.SecondaryHairColor = SecondaryHairColor;
                 }
                 foreach (HeadOverlayData headOverlayData in HeadOverlays)
                 {
                     EntryPoint.WriteToConsole($"FREEMODE APPLY OVERLAYS {headOverlayData.OverlayID} {headOverlayData.Index} {headOverlayData.PrimaryColor} {headOverlayData.SecondaryColor} {headOverlayData.Opacity}");
                     NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
                     NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
+                    setVariation.HeadOverlays.Add(new HeadOverlayData(headOverlayData.OverlayID, headOverlayData.Part) { ColorType = headOverlayData.ColorType, Index = headOverlayData.Index, Opacity = headOverlayData.Opacity, OverlayID = headOverlayData.OverlayID, PrimaryColor = headOverlayData.PrimaryColor, SecondaryColor = headOverlayData.SecondaryColor });
                 }
                 foreach(FaceFeature faceFeature in FaceFeatures)
                 {
                     EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
                     NativeFunction.Natives.SET_PED_MICRO_MORPH(ped, faceFeature.Index, faceFeature.Scale);
-                    //GameFiber.Yield();
+                    setVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = faceFeature.Scale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
                 }
-
                 if (EyeColor != -1)
                 {
                     NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
+                    setVariation.EyeColor = EyeColor;
                 }
-
-
             }
+            return setVariation;
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"ReplacePedComponentVariation Error {ex.Message} {ex.StackTrace}", 0);
         }
+        return null;
     }
-    public void ApplyToPedSlow(Ped ped, bool setDefaultFirst)
+    public PedVariation ApplyToPedSlow(Ped ped, bool setDefaultFirst)
     {
         try
         {
-            if (ped.Exists())
+            if (!ped.Exists())
             {
-                if (setDefaultFirst)
+                return null;
+            }
+            PedVariation setVariation = new PedVariation();
+            if (setDefaultFirst)
+            {
+                NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+                GameFiber.Yield();
+            }
+            if (!ped.Exists())
+            {
+                return setVariation;
+            }
+            foreach (PedComponent Component in Components)
+            {
+                GameFiber.Yield();
+                if (!ped.Exists())
                 {
-                    NativeFunction.Natives.SET_PED_DEFAULT_COMPONENT_VARIATION(ped);
+                    return setVariation;
+                }
+                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
+                setVariation.Components.Add(new PedComponent(Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID));
+            }
+            if (!ped.Exists())
+            {
+                return setVariation;
+            }
+            if (setDefaultFirst)
+            {
+                NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
+            }
+            foreach (PedPropComponent Prop in Props)
+            {
+                GameFiber.Yield();
+                if (!ped.Exists())
+                {
+                    return setVariation;
+                }
+                NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
+                setVariation.Props.Add(new PedPropComponent(Prop.PropID, Prop.DrawableID, Prop.TextureID));
+            }
+            if (!ped.Exists())
+            {
+                return setVariation;
+            }
+            //Freemode only below
+            if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
+            {
+                NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix, false);
+                setVariation.HeadBlendData = new HeadBlendData(HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix);
+                GameFiber.Yield();
+                if (!ped.Exists())
+                {
+                    return setVariation;
+                }
+                if (PrimaryHairColor != -1 && SecondaryHairColor != -1)
+                {
+                    NativeFunction.Natives.x4CFFC65454C93A49(ped, PrimaryHairColor, SecondaryHairColor);
+                    setVariation.PrimaryHairColor = PrimaryHairColor;
+                    setVariation.SecondaryHairColor = SecondaryHairColor;
                     GameFiber.Yield();
                 }
-                if (ped.Exists())
+                if (!ped.Exists())
                 {
-                    foreach (PedComponent Component in Components)
+                    return setVariation;
+                }
+                foreach (HeadOverlayData headOverlayData in HeadOverlays)
+                {
+                    if (!ped.Exists())
                     {
-                        GameFiber.Yield();
-                        if (ped.Exists())
-                        {
-                            NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, Component.ComponentID, Component.DrawableID, Component.TextureID, Component.PaletteID);
-                            GameFiber.Yield();
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        return setVariation;
                     }
-                    if (setDefaultFirst)
+                    NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
+                    NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
+                    setVariation.HeadOverlays.Add(new HeadOverlayData(headOverlayData.OverlayID, headOverlayData.Part) { ColorType = headOverlayData.ColorType, Index = headOverlayData.Index, Opacity = headOverlayData.Opacity, OverlayID = headOverlayData.OverlayID, PrimaryColor = headOverlayData.PrimaryColor, SecondaryColor = headOverlayData.SecondaryColor });
+                    GameFiber.Yield();
+                }
+                if (!ped.Exists())
+                {
+                    return setVariation;
+                }
+                foreach (FaceFeature faceFeature in FaceFeatures)
+                {
+                    if (!ped.Exists())
                     {
-                        NativeFunction.Natives.CLEAR_ALL_PED_PROPS(ped);
+                        return setVariation;
                     }
-                    foreach (PedPropComponent Prop in Props)
-                    {
-                        GameFiber.Yield();
-                        if (ped.Exists())
-                        {
-                            NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
-                            GameFiber.Yield();
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-                    //Freemode only below
-                    if (ped.Exists() && HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
-                    {
-                        NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix, false);
-                        GameFiber.Yield();
-                        if (ped.Exists())
-                        {
-                            if (PrimaryHairColor != -1 && SecondaryHairColor != -1)
-                            {
-                                NativeFunction.Natives.x4CFFC65454C93A49(ped, PrimaryHairColor, SecondaryHairColor);
-                                GameFiber.Yield();
-                            }
-                            if (ped.Exists())
-                            {
-                                GameFiber.Yield();
-                                foreach (HeadOverlayData headOverlayData in HeadOverlays)
-                                {
-                                    if (ped.Exists())
-                                    {
-                                        NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
-                                        NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
-
-
-
-                                        foreach (FaceFeature faceFeature in FaceFeatures)
-                                        {
-                                            EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
-                                            NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
-                                        }
-
-
-
-                                    }
-                                    else
-                                    {
-                                        break;
-                                    }
-                                    GameFiber.Yield();
-                                }
-                                if(ped.Exists())
-                                {
-                                    if (EyeColor != -1)
-                                    {
-                                        NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, faceFeature.Scale);
+                    setVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = faceFeature.Scale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
+                    GameFiber.Yield();
+                }
+                if (!ped.Exists())
+                {
+                    return setVariation;
+                }
+                if (EyeColor != -1)
+                {
+                    NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
+                    setVariation.EyeColor = EyeColor;
                 }
             }
+            return setVariation;
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"ReplacePedComponentVariation Error {ex.Message} {ex.StackTrace}", 0);
         }
+        return null;
     }
     public override string ToString()
     {

@@ -289,7 +289,7 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            DispatchablePerson toBecome = agency.Personnel.PickRandom()?.Copy();
+            DispatchablePerson toBecome = agency.Personnel.PickRandom();//?.Copy();
             if(toBecome == null)
             {
                 return;
@@ -355,7 +355,7 @@ public class PedSwap : IPedSwap
             {
                 return;
             }
-            DispatchablePerson toBecome = gang.Personnel.PickRandom()?.Copy();
+            DispatchablePerson toBecome = gang.Personnel.PickRandom();//?.Copy();
             if(toBecome == null)
             {
                 return;

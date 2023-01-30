@@ -71,7 +71,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public PedExt CurrentTarget { get; set; }
     public bool IsUsingMountedWeapon { get; set; } = false;
 
-    public bool IsArmedSecurity { get; set; } = false;
+
 
     public override bool NeedsFullUpdate
     {
@@ -172,14 +172,8 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
-        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson.EmptyHolster, dispatchablePerson.FullHolster);
+        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
         WeaponInventory.SetDefault();
-
-        if(WeaponInventory.HasPistol || WeaponInventory.HasLongGun)
-        {
-            IsArmedSecurity = true;
-        }
-
         Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
         ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
         CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);

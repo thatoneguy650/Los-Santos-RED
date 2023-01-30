@@ -134,7 +134,7 @@ public class GangMember : PedExt, IWeaponIssuable
             SetupTransactionItems(toadd);
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
-        WeaponInventory.IssueWeapons(weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson?.EmptyHolster, dispatchablePerson?.FullHolster);
+        WeaponInventory.IssueWeapons(weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
         if (addBlip)
         {
             Blip myBlip = Pedestrian.AttachBlip();

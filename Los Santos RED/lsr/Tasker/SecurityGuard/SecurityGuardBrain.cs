@@ -80,7 +80,7 @@ public class SecurityGuardBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)
             {
-                if (SecurityGuard.IsArmedSecurity)
+                if (SecurityGuard.WeaponInventory.IsArmed)
                 {
                     SetFight();
                 }

@@ -46,11 +46,20 @@ public class GangInteraction : IContactMenuInteraction
     {
         if(phoneContact != null)
         {
+            EntryPoint.WriteToConsole($"GangInteraction phoneContact {phoneContact.Name}");
             Start(Gangs.GetGangByContact(phoneContact.Name));
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("GangInteraction phoneContact IS NULL");
         }
     }
     public void Start(Gang gang)
     {
+        if(gang == null)
+        {
+            EntryPoint.WriteToConsole("GangInteraction GANG IS NULL");
+        }
         if (gang != null)
         {
             ActiveGang = gang;
@@ -113,6 +122,10 @@ public class GangInteraction : IContactMenuInteraction
                     GangMenu.AddItem(PayoffGangFriendly);
                 }
                 GangMenu.Visible = true;
+            }
+            else
+            {
+                GangHangUp();
             }
         }
         GameFiber.StartNew(delegate
@@ -201,6 +214,16 @@ public class GangInteraction : IContactMenuInteraction
                     "I'm not even going to respond to this shit.",
                     "You are a stupid motherfucker aren't you?",
                     "Good luck dickhead.",
+                    };
+        Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
+        //CustomiFruit.Close();
+    }
+    private void GangHangUp()
+    {
+        List<string> Replies = new List<string>() {
+                    "Fuck off prick.",
+                    "Go fuck yourself prick.",
+                    "(click)",
                     };
         Player.CellPhone.AddPhoneResponse(ActiveGang.ContactName, ActiveGang.ContactIcon, Replies.PickRandom());
         //CustomiFruit.Close();

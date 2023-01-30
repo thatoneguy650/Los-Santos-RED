@@ -22,10 +22,7 @@ public class FootChase
     private float prevRunSpeed;
     private float CloseDistance;
     private ISettingsProvideable Settings;
-
     public bool UseWantedLevel = true;
-
-
     private enum SubTask
     {
         AttackWithLessLethal,
@@ -36,7 +33,20 @@ public class FootChase
         WriteTicket,
         SimpleLook,
     }
-    private bool ShouldAttackWithLessLethal => !Player.IsBusted && !Player.IsAttemptingToSurrender && (!UseWantedLevel || Player.WantedLevel > 1) && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+    private bool ShouldAttackWithLessLethal// => !Player.IsBusted && !Player.IsAttemptingToSurrender && (!UseWantedLevel || Player.WantedLevel > 1) && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+    {
+        get
+        {
+            if(UseWantedLevel)
+            {
+                return !Player.IsBusted && !Player.IsAttemptingToSurrender && Player.WantedLevel > 1 && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide && !Player.IsDangerouslyArmed;
+            }
+            else
+            {
+                return !Player.IsBusted && !Player.IsAttemptingToSurrender && !Player.ActivityManager.IsHoldingHostage && !Player.ActivityManager.IsCommitingSuicide;
+            }
+        }
+    }
     private bool ShouldAimTaser => !UseWantedLevel || Player.WantedLevel > 1;
     public FootChase(IComplexTaskable ped, ITargetable player, IEntityProvideable world, IPlayerChaseable cop, ISettingsProvideable settings)
     {

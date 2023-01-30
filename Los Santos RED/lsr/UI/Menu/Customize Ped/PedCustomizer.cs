@@ -312,7 +312,8 @@ public class PedCustomizer
     {
         if (Player.CurrentModelVariation != null)
         {
-            Player.CurrentModelVariation.Copy().ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
+            //Player.CurrentModelVariation.Copy().ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
+            Player.CurrentModelVariation.ApplyToPed(ModelPed);//this makes senese, but it isnt going to include headblend shit most of the time
             WorkingVariation = Player.CurrentModelVariation.Copy();
             InitialVariation = Player.CurrentModelVariation.Copy();
         }

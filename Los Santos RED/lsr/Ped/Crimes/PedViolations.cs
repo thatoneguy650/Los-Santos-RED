@@ -203,7 +203,7 @@ public class PedViolations
                 ShootingChecker();
                 if (IsShooting)
                 {
-                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeapon"));
+                    AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.FiringWeaponCrimeID));
                     if (World.Pedestrians.PoliceList.Any(x => x.DistanceToPlayer <= 60f))//maybe store and do the actual one?
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "FiringWeaponNearPolice"));

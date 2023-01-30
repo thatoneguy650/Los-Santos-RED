@@ -289,8 +289,6 @@ public class Civilians
         GameTimeLastUpdatedGangMemberPeds = Game.GameTime;
 
     }
-
-
     public void UpdateSecurityGuards()
     {
         int localRan = 0;
@@ -338,16 +336,27 @@ public class Civilians
             }
         }
 
+        if (PoliceRespondable.IsNotWanted)
+        {
+            if (PoliceRespondable.IsBustable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsStill)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldBustPlayer))
+            {
+                GameFiber.Yield();
+                PoliceRespondable.Arrest();
+            }
+            if (PoliceRespondable.IsBustable && PoliceRespondable.IsAttemptingToSurrender && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.DistanceToPlayer <= 10f && x.HeightToPlayer <= 5f))
+            {
+                GameFiber.Yield();
+                PoliceRespondable.Arrest();
+            }
+        }
+
+
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.UpdateSecurityGuards Ran Time Since {Game.GameTime - GameTimeLastUpdatedSecurityPeds} TotalRan: {TotalSecurityGuardsRan} TotalChecked: {TotalSecurityGuardsChecked}", 5);
         }
         GameTimeLastUpdatedSecurityPeds = Game.GameTime;
-
-
-
     }
-
     public void UpdateTotalWanted()
     {
         PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();

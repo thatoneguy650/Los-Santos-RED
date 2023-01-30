@@ -44,6 +44,7 @@ public static class StaticStrings
     public static readonly string TrespessingOnGovtPropertyCrimeID = "TrespessingOnGovtProperty";
     public static readonly string GotInAirVehicleDuringChaseCrimeID = "GotInAirVehicleDuringChase";
     public static readonly string FiringWeaponCrimeID = "FiringWeapon";
+    public static readonly string FiringSilencedWeaponCrimeID = "FiringSilencedWeapon";
     public static readonly string KidnappingCrimeID = "Kidnapping";
     public static readonly string KillingCiviliansCrimeID = "KillingCivilians";
     public static readonly string ArmedRobberyCrimeID = "ArmedRobbery";

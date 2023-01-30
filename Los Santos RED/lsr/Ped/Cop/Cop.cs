@@ -180,7 +180,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string UnitCode)
     {
-        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson.EmptyHolster, dispatchablePerson.FullHolster);
+        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
         Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
         ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
         CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);

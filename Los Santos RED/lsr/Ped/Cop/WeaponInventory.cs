@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -35,6 +36,9 @@ public class WeaponInventory
     public string DebugWeaponState { get; set; }
     public bool HasPistol => Sidearm != null;
     public bool HasLongGun => LongGun != null;
+
+    public bool IsArmed => HasPistol || HasLongGun;
+
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;
@@ -47,11 +51,19 @@ public class WeaponInventory
         EmptyHolster = emptyHolster;
         FullHolster = fullHolster;
     }
-    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, PedComponent emptyHolster, PedComponent fullHolster)
+    public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
         if (issueMelee)
         {
-            Melee = WeaponOwner.GetRandomMeleeWeapon(weapons);
+            if(dispatchablePerson?.OverrideAgencyLessLethalWeapons == true)
+            {
+                Melee = dispatchablePerson?.OverrideLessLethalWeapons?.PickRandom();
+                EntryPoint.WriteToConsole($"IssueWeapons Melee Override {Melee?.ModelName}");
+            }
+            else
+            {
+                Melee = WeaponOwner.GetRandomMeleeWeapon(weapons);
+            }     
             if (Melee != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), false))//(uint)WeaponHash.StunGun
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Melee.GetHash(), 100, false, false);
@@ -67,7 +79,15 @@ public class WeaponInventory
         }
         if (issueSidearm)
         {
-            Sidearm = WeaponOwner.GetRandomWeapon(true, weapons);
+            if (dispatchablePerson?.OverrideAgencySideArms == true)
+            {
+                Sidearm = dispatchablePerson?.OverrideSideArms?.PickRandom();
+                EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
+            }
+            else
+            {
+                Sidearm = WeaponOwner.GetRandomWeapon(true, weapons);
+            }    
             if (Sidearm != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
@@ -76,16 +96,26 @@ public class WeaponInventory
         }
         if (issueLongGun)
         {
-            LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
+            if (dispatchablePerson?.OverrideAgencyLongGuns == true)
+            {
+                LongGun = dispatchablePerson?.OverrideLongGuns?.PickRandom();
+                EntryPoint.WriteToConsole($"IssueWeapons LongGun Override {LongGun?.ModelName}");
+            }
+            else
+            {
+                LongGun = WeaponOwner.GetRandomWeapon(false, weapons);
+            }     
             if (LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(WeaponOwner.Pedestrian);
             }
         }
-
-        EmptyHolster = emptyHolster;
-        FullHolster = fullHolster;
+        if (dispatchablePerson != null)
+        {
+            EmptyHolster = dispatchablePerson.EmptyHolster;
+            FullHolster = dispatchablePerson.FullHolster;
+        }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
 

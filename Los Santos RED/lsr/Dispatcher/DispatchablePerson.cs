@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Xml.Serialization;
 
 [Serializable]
 public class DispatchablePerson
@@ -52,6 +53,23 @@ public class DispatchablePerson
 
     public bool AllowRandomizeBeforeVariationApplied { get; set; } = false;
     public bool RandomizeHead { get; set; } = false;
+
+    public bool OverrideAgencyLessLethalWeapons { get; set; } = false;
+    public bool OverrideAgencySideArms { get; set; } = false;
+    public bool OverrideAgencyLongGuns { get; set; } = false;
+
+    public string OverrideLessLethalWeaponsID { get; set; }
+    public string OverrideSideArmsID { get; set; }
+    public string OverrideLongGunsID { get; set; }
+    [XmlIgnore]
+    public List<IssuableWeapon> OverrideSideArms { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<IssuableWeapon> OverrideLongGuns { get; set; } = new List<IssuableWeapon>();
+    [XmlIgnore]
+    public List<IssuableWeapon> OverrideLessLethalWeapons { get; set; } = new List<IssuableWeapon>();
+
+
+
 
     public PedVariation RequiredVariation { get; set; }
     public List<PedPropComponent> OptionalProps { get; set; }
@@ -151,10 +169,6 @@ public class DispatchablePerson
         CombatAbilityMin = combatAbilityMin;
         CombatAbilityMax = combatAbilityMax;
     }
-    
-    
-    
-    
     public PedVariation SetPedVariation(Ped ped, List<RandomHeadData> PossibleHeads, bool isSlow)
     {
         PedVariation variationToSet = new PedVariation();
@@ -164,7 +178,6 @@ public class DispatchablePerson
         }
         else
         {
-            variationToSet = RequiredVariation.Copy();
             if (AllowRandomizeBeforeVariationApplied)
             {
                 ped.RandomizeVariation();
@@ -177,11 +190,11 @@ public class DispatchablePerson
             }
             if (isSlow)
             {
-                RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
+                variationToSet = RequiredVariation.ApplyToPedSlow(ped, setDefaultFirst);
             }
             else
             {
-                RequiredVariation.ApplyToPed(ped, setDefaultFirst);
+                variationToSet = RequiredVariation.ApplyToPed(ped, setDefaultFirst);
             }
             if (RandomizeHead)//need to have a variation for this as its just freemode otherwise
             {
@@ -265,87 +278,87 @@ public class DispatchablePerson
     public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation)
     {
         GameFiber.Yield();
-        if (ped.Exists())
+        if(!ped.Exists())
         {
-            if(pedVariation == null)
-            {
-                pedVariation = new PedVariation();
-            }
-            int HairColor = myHead.HairColors.PickRandom();
-            int HairID = myHead.HairComponents.PickRandom();
-            int EyeColor = myHead.EyeColors.PickRandom();
-            if (ped.Exists())
-            {
-                NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, 2, HairID, 0, 0);
-                pedVariation.Components.Add(new PedComponent(2, HairID, 0, 0));
-                GameFiber.Yield();
-            }
-            if (ped.Exists())
-            {
-                NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
-                if (blendHead == null)
-                {
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
-                    pedVariation.HeadBlendData = new HeadBlendData(myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0);
-                }
-                else
-                {
-                    float Mix1 = RandomItems.GetRandomNumber(0.6f, 1.0f);
-                    float Mix2 = 1.0f - Mix1;
-                    NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, 0, Mix1, Mix2, 0, false);
-                    pedVariation.HeadBlendData = new HeadBlendData(myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, 0, Mix1, Mix2, 0);
-                }
-                
-                GameFiber.Yield();
-            }
-            if (ped.Exists())
-            {
-                pedVariation.PrimaryHairColor = HairColor;
-                pedVariation.SecondaryHairColor = HairColor;
-                NativeFunction.Natives.x4CFFC65454C93A49(ped, HairColor, HairColor);
-                GameFiber.Yield();
-            }
-            if (ped.Exists())//set eyebrows
-            {
-                //always set eyebrows
-                pedVariation.HeadOverlays.Add(new HeadOverlayData(2, "Eyebrows") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 33), Opacity = 1.0f, PrimaryColor = HairColor, SecondaryColor = HairColor });
-                if (RandomItems.RandomPercent(myHead.AgingPercentage))
-                {
-                    pedVariation.HeadOverlays.Add(new HeadOverlayData(3, "Ageing") { Index = RandomItems.GetRandomNumberInt(0, 12), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
-                }
-                if (myHead.IsMale)
-                {
-                    if (RandomItems.RandomPercent(myHead.FacialHairPercentage))
-                    {
-                        pedVariation.HeadOverlays.Add(new HeadOverlayData(1, "Facial Hair") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 28), Opacity = RandomItems.GetRandomNumber(0.5f, 1.0f), PrimaryColor = HairColor, SecondaryColor = HairColor });
-                    }
-                }
-                else
-                {
-                    if (RandomItems.RandomPercent(myHead.LipstickAndMakeupPercentage))
-                    {
-                        pedVariation.HeadOverlays.Add(new HeadOverlayData(4, "Makeup") { Index = RandomItems.GetRandomNumberInt(0, 15), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
-                        int LipstickColor = RandomItems.GetRandomNumberInt(0, 13);
-                        pedVariation.HeadOverlays.Add(new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = RandomItems.GetRandomNumberInt(0, 7), Opacity = RandomItems.GetRandomNumber(0.25f,1.0f), PrimaryColor = LipstickColor, SecondaryColor = LipstickColor });
-                    }
-                }
-                foreach (HeadOverlayData hod in pedVariation.HeadOverlays)
-                {
-                    NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, hod.OverlayID, hod.Index, hod.Opacity);
-                    NativeFunction.Natives.x497BF74A7B9CB952(ped, hod.OverlayID, hod.ColorType, hod.ColorType, hod.ColorType);//colors?
-                }
-                //NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, 2, EyebrowIndex, 1.0f);
-                //NativeFunction.Natives.x497BF74A7B9CB952(ped, 2, 1, HairColor, HairColor);//colors?
-                GameFiber.Yield();
-            }
-            if (ped.Exists())
-            {
-                pedVariation.EyeColor = EyeColor;
-                NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
-            }
-           // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");
+            return;
         }
+        if(pedVariation == null)
+        {
+            pedVariation = new PedVariation();
+        }
+        int HairColor = myHead.HairColors.PickRandom();
+        int HairID = myHead.HairComponents.PickRandom();
+        int EyeColor = myHead.EyeColors.PickRandom();
+
+        NativeFunction.Natives.SET_PED_COMPONENT_VARIATION(ped, 2, HairID, 0, 0);
+        pedVariation.Components.Add(new PedComponent(2, HairID, 0, 0));
+        GameFiber.Yield();
+
+        if (!ped.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+        if (blendHead == null)
+        {
+            NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0, false);
+            pedVariation.HeadBlendData = new HeadBlendData(myHead.HeadID, myHead.HeadID, 0, myHead.HeadID, myHead.HeadID, 0, 1.0f, 0, 0);
+        }
+        else
+        {
+            float Mix1 = RandomItems.GetRandomNumber(0.6f, 1.0f);
+            float Mix2 = 1.0f - Mix1;
+            NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, 0, Mix1, Mix2, 0, false);
+            pedVariation.HeadBlendData = new HeadBlendData(myHead.HeadID, blendHead.HeadID, 0, myHead.HeadID, blendHead.HeadID, 0, Mix1, Mix2, 0);
+        }            
+        GameFiber.Yield();
+        if (!ped.Exists())
+        {
+            return;
+        }
+        pedVariation.PrimaryHairColor = HairColor;
+        pedVariation.SecondaryHairColor = HairColor;
+        NativeFunction.Natives.x4CFFC65454C93A49(ped, HairColor, HairColor);
+        GameFiber.Yield();
+        if (!ped.Exists())
+        {
+            return;
+        }
+        //set eyebrows
+        //always set eyebrows
+        pedVariation.HeadOverlays.Add(new HeadOverlayData(2, "Eyebrows") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 33), Opacity = 1.0f, PrimaryColor = HairColor, SecondaryColor = HairColor });
+        if (RandomItems.RandomPercent(myHead.AgingPercentage))
+        {
+            pedVariation.HeadOverlays.Add(new HeadOverlayData(3, "Ageing") { Index = RandomItems.GetRandomNumberInt(0, 12), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
+        }
+        if (myHead.IsMale)
+        {
+            if (RandomItems.RandomPercent(myHead.FacialHairPercentage))
+            {
+                pedVariation.HeadOverlays.Add(new HeadOverlayData(1, "Facial Hair") { ColorType = 1, Index = RandomItems.GetRandomNumberInt(0, 28), Opacity = RandomItems.GetRandomNumber(0.5f, 1.0f), PrimaryColor = HairColor, SecondaryColor = HairColor });
+            }
+        }
+        else
+        {
+            if (RandomItems.RandomPercent(myHead.LipstickAndMakeupPercentage))
+            {
+                pedVariation.HeadOverlays.Add(new HeadOverlayData(4, "Makeup") { Index = RandomItems.GetRandomNumberInt(0, 15), Opacity = RandomItems.GetRandomNumber(0.25f, 1.0f) });
+                int LipstickColor = RandomItems.GetRandomNumberInt(0, 13);
+                pedVariation.HeadOverlays.Add(new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = RandomItems.GetRandomNumberInt(0, 7), Opacity = RandomItems.GetRandomNumber(0.25f,1.0f), PrimaryColor = LipstickColor, SecondaryColor = LipstickColor });
+            }
+        }
+        foreach (HeadOverlayData hod in pedVariation.HeadOverlays)
+        {
+            NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, hod.OverlayID, hod.Index, hod.Opacity);
+            NativeFunction.Natives.x497BF74A7B9CB952(ped, hod.OverlayID, hod.ColorType, hod.ColorType, hod.ColorType);//colors?
+        }
+        GameFiber.Yield();
+        if (!ped.Exists())
+        {
+            return;
+        }
+        pedVariation.EyeColor = EyeColor;
+        NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);    
+        // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");      
     }
-
-
 }

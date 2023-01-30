@@ -360,23 +360,7 @@ namespace LosSantosRED.lsr.Data
         {
             foreach (PhoneContact ifc in Contacts.OrderBy(x => x.Index))
             {
-                //Gang gang = gangs.GetGangByContact(ifc.Name);
-                //if (ifc.Name == StaticStrings.UndergroundGunsContactName)
-                //{
-                //    player.CellPhone.AddGunDealerContact(false);
-                //}
-                //else if (ifc.Name == StaticStrings.OfficerFriendlyContactName)
-                //{
-                //    player.CellPhone.AddCopContact(false);//mess with this and need to test contacts after loading
-                //}
-                //else if (gang != null)
-                //{
-                //    player.CellPhone.AddContact(gang, false);
-                //}
-                //else
-                //{
-                //    player.CellPhone.AddContact(ifc.Name, ifc.IconName, false);
-                //}
+                player.CellPhone.AddContact(ifc,false);
             }
             foreach (SavedTextMessage ifc in TextMessages)
             {
