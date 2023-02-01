@@ -26,6 +26,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private int TimeBetweenYelling = 5000;
     private uint GameTimeLastYelled;
     private RelationshipGroup originalGroup;
+    private bool HasDrugAreaKnowledge;
+    private bool HasGangAreaKnowledge;
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
@@ -46,7 +48,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedInventory = new PedInventory(this, Settings);
         PedBrain = new PedBrain(this, settings, world, weapons);
         PedDesires = new PedDesires(this, settings);
+        //PedKnowledge = new PedKnowledge(this, settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
+        HasDrugAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyDrugTerritory);
+        HasGangAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyGangTerritory);
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
     }
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
@@ -64,7 +69,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public HealthState CurrentHealthState { get; private set; }
     public PedReactions PedReactions { get; set; }
     public PedInventory PedInventory { get; private set; }
-
+  //  public PedKnowledge PedKnowledge { get; private set; }
     public PedBrain PedBrain { get; set; }
     public PedDesires PedDesires { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
@@ -93,6 +98,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
+
+
+
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }
@@ -189,7 +197,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
-    public bool HasMenu => ShopMenu != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
+    public bool HasMenu => ShopMenu != null && ShopMenu.Items != null && ShopMenu.Items.Any();// TransactionMenu != null && TransactionMenu.Any();
     public bool HasSeenPlayerCommitCrime => PlayerPerception.PlayerCrimesWitnessed.Any();
     public bool HasBeenTreatedByEMTs { get; set; }
     public bool HasSeenPlayerCommitMajorCrime => PlayerPerception.PlayerCrimesWitnessed.Any(x => x.Crime.AngersCivilians || x.Crime.ScaresCivilians);
@@ -378,9 +386,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasModSpawned { get; set; } = false;
     public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
-    public virtual bool KnowsDrugAreas => HasMenu;// (HasMenu || IsGangMember) && !IsMerchant && !IsCop && !Isem;
-    public virtual bool KnowsGangAreas => HasMenu;
-
+    public virtual bool KnowsDrugAreas => HasMenu || HasDrugAreaKnowledge;
+    public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

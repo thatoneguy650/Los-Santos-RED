@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Forms;
 
 public class PersonTransaction : Interaction
 {
@@ -18,16 +18,12 @@ public class PersonTransaction : Interaction
     private Transaction Transaction;
     private MenuPool MenuPool;
     private UIMenu InteractionMenu;
-   // private Texture BannerImage;
-
     private IModItems ModItems;
     private IEntityProvideable World;
     private ISettingsProvideable Settings;
     private IWeapons Weapons;
     private ITimeControllable Time;
     private bool IsDoingTransactionAnimation = false;
-
-
     private bool IsActivelyConversing = false;
     private uint GameTimeStartedConversing;
     private bool IsVendorTasked = false;
@@ -39,27 +35,19 @@ public class PersonTransaction : Interaction
     private bool PedWasPersistent = false;
     private bool isPaused;
     private bool isFollowing;
-
     private bool PanickedByPlayer = false;
     private bool PlayerEnteringOtherVehicle;
     private bool PedEnteringPlayerVehicle;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
     private uint NotificationHandle;
-
+    private bool IsCancelled = false;
     public InteractableLocation AssociatedStore { get; set; }
-
     public PedExt TransactionPed => Ped;
     private bool CanContinueConversation => Player.IsAliveAndFree && Ped.CanConverse && Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 15f;// && Ped.Pedestrian.Speed <= 3.0f;// ((AssociatedStore != null && AssociatedStore.HasVendor && Player.Character.DistanceTo2D(AssociatedStore.VendorPosition) <= 6f) && (Ped.Pedestrian.Exists() && Ped.Pedestrian.DistanceTo2D(Player.Character) <= 6f)) && Player.CanConverse && Ped.CanConverse;
-    //was Player.CanConverse
-    
     public override string DebugString => "";
     public override bool CanPerformActivities { get; set; } = false;
-
-
     public bool DoGreet { get; set; } = true;
-
-
     public PersonTransaction(ILocationInteractable player, PedExt ped, ShopMenu shopMenu, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time)
     {
         Player = player;
@@ -73,10 +61,6 @@ public class PersonTransaction : Interaction
     }
     public override void Start()
     {
-        if (ShopMenu == null)
-        {
-            EntryPoint.WriteToConsole("Shop Menu is null for some fucking reason !");
-        }
         Player.ActivityManager.IsConversing = true;
         Player.IsTransacting = true;
         GameFiber.StartNew(delegate
@@ -84,110 +68,30 @@ public class PersonTransaction : Interaction
             try
             {
                 CreateInteractionMenu();
-
-                if (Ped != null && Ped.Pedestrian.Exists())
+                if(Ped == null || !Ped.Pedestrian.Exists())
                 {
-                    PedWasPersistent = Ped.WasEverSetPersistent;
-
-                    //Ped.Pedestrian.IsPersistent = true;
-                    Player.ActivityManager.IsConversing = true;
-                    Player.IsTransacting = true;
-
-                    PedCanBeTasked = Ped.CanBeTasked;
-                    PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
-
-
-                    Ped.CanBeTasked = false;
-                    Ped.CanBeAmbientTasked = false;
-
-                    AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
-                    AnimationDictionary.RequestAnimationDictionay("mp_common");
-
-                    NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-
-
-
-                    Transaction = new Transaction(MenuPool, InteractionMenu, ShopMenu, AssociatedStore);
-                    Transaction.PreviewItems = false;
-                    Transaction.PersonTransaction = this;
-                    Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
-
-                    AddAdditionalOptions();
-                    StopVehicleActions();
-
-                    Greet();
-
-
-                    if (InteractionMenu != null)
-                    {
-
-                        EntryPoint.WriteToConsole("PERSON TRANSACTION START");
-
-
-
-
-
-                        InteractionMenu.Visible = true;
-                        InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-                        //Transaction.ProcessTransactionMenu();
-                        while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer)
-                        {
-                            UpdateOptions();
-
-
-                            if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle) && PedCanBeTasked && PedCanBeAmbientTasked)
-                            {
-                                PanickedByPlayer = true;
-                                EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
-                            }
-                            if (isPaused && Player.ButtonPrompts.IsPressed("ContinueTransaction"))
-                            {
-                                RemovePauseButtonPrompts();
-                                isPaused = false;
-
-                                if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
-                                {
-                                    NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
-                                }
-
-
-                                InteractionMenu.Visible = true;
-                                if (!Ped.IsInVehicle)
-                                {
-                                    HavePedLookAtPlayer();
-                                }
-                                if (!Player.IsInVehicle)
-                                {
-                                    HavePlayerLookAtPed();
-                                }
-                                EntryPoint.WriteToConsole("Unpased Person Transaction");
-                            }
-
-                            if (isPaused && Player.ButtonPrompts.IsPressed("CancelTransaction"))
-                            {
-                                EntryPoint.WriteToConsole("Cancelled Paused Person Transaction");
-                                break;
-                            }
-
-
-                            MenuPool.ProcessMenus();
-
-                            Transaction?.Update();
-
-                            //Transaction.PurchaseMenu?.Update();
-                            //Transaction.SellMenu?.Update();
-                            GameFiber.Yield();
-                        }
-
-
-                    }
-                    else
-                    {
-                        EntryPoint.WriteToConsole("Person Transaction Dispose 1");
-                        Dispose();
-                    }
+                    return;
                 }
-                EntryPoint.WriteToConsole("Person Transaction Dispose 2");
+                Setup();              
+                AddAdditionalOptions();
+                StopVehicleActions();
+                Greet();
+                if(InteractionMenu == null)
+                {
+                    Dispose();
+                    return;
+                }
+                InteractionMenu.Visible = true;
+                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+                while ((MenuPool.IsAnyMenuOpen() || isPaused) && CanContinueConversation && !PanickedByPlayer && !IsCancelled)
+                {
+                    UpdateOptions();
+                    CheckPedPanicLevel();
+                    CheckButtonPrompts();
+                    MenuPool.ProcessMenus();
+                    Transaction?.Update();
+                    GameFiber.Yield();
+                }
                 Dispose();
             }
             catch (Exception ex)
@@ -201,55 +105,108 @@ public class PersonTransaction : Interaction
     public override void Dispose()
     {
         EntryPoint.WriteToConsole($"PERSON TRANSACTION Dispose IsDisposed {IsDisposed}");
-        if (!IsDisposed)
+        if(IsDisposed)
         {
-            IsDisposed = true;
-            Player.ActivityManager.IsConversing = false;
-            Player.IsTransacting = false;
-            Transaction?.DisposeTransactionMenu();
-            DisposeInteractionMenu();
-            Player.LastFriendlyVehicle = null;
+            return;
+        }
+        IsDisposed = true;
+        Player.ActivityManager.IsConversing = false;
+        Player.IsTransacting = false;
+        Transaction?.DisposeTransactionMenu();
+        DisposeInteractionMenu();
+        Player.LastFriendlyVehicle = null;
 
-            if(PedCanBeTasked && Ped != null)
+        if(PedCanBeTasked && Ped != null)
+        {
+            Ped.CanBeTasked = true;
+        }
+        if(PedCanBeAmbientTasked && Ped != null)
+        {
+            Ped.CanBeAmbientTasked = true;
+        }
+        RemovePauseButtonPrompts();
+        if (Ped != null && Ped.Pedestrian.Exists())
+        {
+            if(PanickedByPlayer)
             {
-                Ped.CanBeTasked = true;
+                NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Player.Character, 100f, -1, false, false);
+                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
             }
-            if(PedCanBeAmbientTasked && Ped != null)
+            else if(Ped.Pedestrian.IsInAnyVehicle(false) && PedEnteringPlayerVehicle && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
             {
-                Ped.CanBeAmbientTasked = true;
+                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                Ped.Pedestrian.BlockPermanentEvents = false;
+                Ped.Pedestrian.KeepTasks = false; 
+                NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
+                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
             }
+            else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
+            {
+                Ped.Pedestrian.BlockPermanentEvents = false;
+                Ped.Pedestrian.KeepTasks = false;
+                NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, AssociatedStore.VendorHeading, -1);
+                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading", 3);
+            }
+            else
+            {
+                NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+                Ped.Pedestrian.BlockPermanentEvents = false;
+                Ped.Pedestrian.KeepTasks = false;
+                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking", 3);
+            }
+        }
+        NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);     
+    }
+    private void Setup()
+    {
+        PedWasPersistent = Ped.WasEverSetPersistent;
+        Player.ActivityManager.IsConversing = true;
+        Player.IsTransacting = true;
+        PedCanBeTasked = Ped.CanBeTasked;
+        PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
+        Ped.CanBeTasked = false;
+        Ped.CanBeAmbientTasked = false;
+        AnimationDictionary.RequestAnimationDictionay("mp_safehousevagos@");
+        AnimationDictionary.RequestAnimationDictionay("mp_common");
+        NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
+        Transaction = new Transaction(MenuPool, InteractionMenu, ShopMenu, AssociatedStore);
+        Transaction.PreviewItems = false;
+        Transaction.PersonTransaction = this;
+        Transaction.CreateTransactionMenu(Player, ModItems, World, Settings, Weapons, Time);
+    }
+    private void CheckButtonPrompts()
+    {
+        if (isPaused && Player.ButtonPrompts.IsPressed("ContinueTransaction"))
+        {
             RemovePauseButtonPrompts();
-            if (Ped != null && Ped.Pedestrian.Exists())
+            isPaused = false;
+            if (Ped != null && Ped.Pedestrian.Exists() && !Ped.IsInVehicle && !Player.IsInVehicle)
             {
-                if(PanickedByPlayer)
-                {
-                    NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Player.Character, 100f, -1, false, false);
-                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
-                }
-                else if(Ped.Pedestrian.IsInAnyVehicle(false) && PedEnteringPlayerVehicle && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
-                {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false; 
-                    NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
-                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
-                }
-                else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
-                {
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
-                    NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, AssociatedStore.VendorHeading, -1);
-                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading", 3);
-                }
-                else
-                {
-                    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                    Ped.Pedestrian.KeepTasks = false;
-                    EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking", 3);
-                }
+                NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
             }
-            NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
+            InteractionMenu.Visible = true;
+            if (!Ped.IsInVehicle)
+            {
+                HavePedLookAtPlayer();
+            }
+            if (!Player.IsInVehicle)
+            {
+                HavePlayerLookAtPed();
+            }
+            EntryPoint.WriteToConsole("Unpased Person Transaction");
+        }
+        if (isPaused && Player.ButtonPrompts.IsPressed("CancelTransaction"))
+        {
+            EntryPoint.WriteToConsole("Cancelled Paused Person Transaction");
+            IsCancelled = true;
+        }
+    }
+    private void CheckPedPanicLevel()
+    {
+        if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle) && PedCanBeTasked && PedCanBeAmbientTasked)
+        {
+            PanickedByPlayer = true;
+            EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
         }
     }
     private void StopVehicleActions()
@@ -339,7 +296,6 @@ public class PersonTransaction : Interaction
             Transaction.SellMenu?.Show();
         }
     }
-
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if (selectedItem.Text == "Buy")
@@ -470,8 +426,7 @@ public class PersonTransaction : Interaction
     }
     public void CreateInteractionMenu()
     {
-        MenuPool = new MenuPool();
-        
+        MenuPool = new MenuPool();  
         if (AssociatedStore != null && AssociatedStore.HasBannerImage)
         {
             InteractionMenu = new UIMenu(AssociatedStore.Name, AssociatedStore.Description);

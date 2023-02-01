@@ -3,8 +3,10 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -1761,7 +1763,7 @@ public class DispatchablePeople : IDispatchablePeople
                 RequiredVariation = new PedVariation(
                     new List<PedComponent>() {
                         new PedComponent(1, 101, 0, 0),
-                        new PedComponent(3, 4, 0, 0),
+                        new PedComponent(3, 11, 0, 0),//new PedComponent(3, 4, 0, 0),//Peter Badoingy — Today at 8:01 AM Fixed an armless cop in the FEJ dispatchable people on line 773 under ped Component ID 3 i changed the DrawableID from 4 to 11, he now has elbows and forearms.
                         new PedComponent(4, 35, 0, 0),
                         new PedComponent(5, 52, 0, 0),
                         new PedComponent(6, 51, 0, 0),

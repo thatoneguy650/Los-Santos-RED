@@ -14,16 +14,17 @@ namespace LosSantosRED.lsr.Player
         private bool IsCancelled;
         private IActionable Player;
         private ISettingsProvideable Settings;
-        private uint GameTimeStartedGesturing;
+        private uint GameTimeStartedDropping;
         private string DropItemDictionary;
         private string DropItemAnimation;
-       
+        private int Amount;
 
-        public ItemDroppingActivity(IActionable player, ISettingsProvideable settings, ModItem modItem) : base()
+        public ItemDroppingActivity(IActionable player, ISettingsProvideable settings, ModItem modItem, int amount) : base()
         {
             Player = player;
             Settings = settings;
             ModItem = modItem;
+            Amount = amount;
         }
 
         public override ModItem ModItem { get; set; }
@@ -31,9 +32,9 @@ namespace LosSantosRED.lsr.Player
         public override bool CanPause { get; set; } = false;
         public override bool CanCancel { get; set; } = true;
         public override bool IsUpperBodyOnly { get; set; } = true;
-        public override string PausePrompt { get; set; } = "Pause Item Drop";
-        public override string CancelPrompt { get; set; } = "Stop Item Drop";
-        public override string ContinuePrompt { get; set; } = "Continue Item Drop";
+        public override string PausePrompt { get; set; } = "Pause Discard";
+        public override string CancelPrompt { get; set; } = "Cancel Discard";
+        public override string ContinuePrompt { get; set; } = "Continue Discard";
 
         public bool CompletedAnimation { get; private set; }
         public override void Cancel()
@@ -85,29 +86,24 @@ namespace LosSantosRED.lsr.Player
         }
         private void PerformDrop()
         {
-            EntryPoint.WriteToConsole($"Drop Item Perform", 5);
-            GameTimeStartedGesturing = Game.GameTime;
+            GameTimeStartedDropping = Game.GameTime;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DropItemDictionary, DropItemAnimation, 8.0f, -8.0f, -1, 56, 0, false, false, false);//-1
-            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedDropping <= 500)
             {
                 Player.WeaponEquipment.SetUnarmed();
-                float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DropItemDictionary, DropItemAnimation);
-                if (AnimationTime >= 1.0f)
-                {
-                    CompletedAnimation = true;
-                    break;
-                }
                 GameFiber.Yield();
             }     
             Exit();
         }
         private void Exit()
         {
-            if(CompletedAnimation)
-            {
-                Player.Inventory.Remove(ModItem);
-            }
             Player.ActivityManager.IsPerformingActivity = false;
+            if (IsCancelled)
+            {
+                return;
+            }
+            Player.Inventory.Remove(ModItem, Amount);
+            Game.DisplayHelp($"Discarded {ModItem.Name} ({Amount})");
         }
         private void Setup()
         {

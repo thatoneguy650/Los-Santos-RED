@@ -12,10 +12,12 @@ public class ActivitySettings : ISettingsDefaultable
     public bool TeleportWhenSitting { get; set; }
     [Description("Allow the player to start converstaions with random peds.")]
     public bool AllowPedConversations { get; set; }
-    [Description("Use the simplified conversation system (Similar to RDR2).")]
-    public bool UseSimpleConversation { get; set; }
     [Description("Allow the player to loot dead or unconscious peds.")]
     public bool AllowPedLooting { get; set; }
+    [Description("Allow the player to hold up peds.")]
+    public bool AllowPedHoldUps { get; set; }
+    [Description("Maximum distance in meters that you can hold up a ped.")]
+    public float HoldUpDistance { get; set; }
     [Description("Allow the player to drag dead or unconscious peds.")]
     public bool AllowDraggingOtherPeds { get; set; }
     [Description("Plays an animation the dragged ped.")]
@@ -43,22 +45,22 @@ public class ActivitySettings : ISettingsDefaultable
     [Description("Will add an exclamation point to the prompt if the ped wants to buy an item you have")]
     public bool ShowInPromptWhenPedsWantToBuyItemsYouHave { get; set; }
 
+
     public ActivitySettings()
     {
         SetDefault();
-
     }
     public void SetDefault()
     {
         TeleportWhenSitting = false;
         AllowPedConversations = true;
         AllowPedLooting = true;
+        AllowPedHoldUps = true;
         AllowDraggingOtherPeds = true;
         AllowTakingOtherPedsHostage = true;
         AllowStartingScenarios = false;
         AllowPlayerCrouching = true;
         PlayDraggingPedAnimation = true;
-        UseSimpleConversation = true;
         CrouchingAdjustsMovementSpeed = true;
         CrouchMovementSpeedOverride = 5.0f;
         UseAltCameraWhenSitting = false;
@@ -67,5 +69,6 @@ public class ActivitySettings : ISettingsDefaultable
         ForceSitDistance = 0.7f;
         SittingSlideDistance = 0.5f;//0.1f
         ShowInPromptWhenPedsWantToBuyItemsYouHave = true;
+        HoldUpDistance = 15f;
     }
 }

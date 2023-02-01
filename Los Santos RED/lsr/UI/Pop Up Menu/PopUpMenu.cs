@@ -228,46 +228,24 @@ public class PopUpMenu
         foreach (ItemType mi in Player.Inventory.ItemsList.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x => x.Value))
         {
             InventoryCategoriesSubMenu.Add(new PopUpBox(CategoryID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false });
-            
-            
-            
             ItemID = 0;
             List<PopUpBox> InventoryCategorySubMenu = new List<PopUpBox>();
-
-
-
-
             foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi))
             {
-                //InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), ii.Description));
-
-
-
                 InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
-
                 List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                 InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
-                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem)), $"Discard {ii.ModItem.Name} ({ii.Amount})"));;;//maybe have ANOTHER SUB ITEM with amounts you want to delete? (one, half, all, etc.)
+                InventoryActionSubMenu.Add(new PopUpBox(1, "Discard All", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, ii.Amount)), $"Discard All {ii.ModItem.Name} ({ii.Amount})"));
+                InventoryActionSubMenu.Add(new PopUpBox(2, "Discard One", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 1)), $"Discard {ii.ModItem.Name}"));
+                if (ii.Amount > 5)
+                {
+                    InventoryActionSubMenu.Add(new PopUpBox(3, "Discard Five", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 5)), $"Discard {ii.ModItem.Name} ({5})"));
+                }
                 PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
-
                 ItemID++;
             }
-
-
-
-
-
-
-
-
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi}SubMenu", InventoryCategorySubMenu) { IsChild = true, Group = "Inventory" });
             CategoryID++;
-
-
-
-
-
-
         }
         PopUpMenuGroups.Add(new PopUpBoxGroup(InventoryCategoriesSubMenuName, InventoryCategoriesSubMenu) { IsChild = true, Group = "Inventory" });
     }

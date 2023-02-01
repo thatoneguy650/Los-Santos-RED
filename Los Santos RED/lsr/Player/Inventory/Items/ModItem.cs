@@ -457,9 +457,9 @@ public class ModItem
     {
         return Name;
     }
-    public bool DropItem(IActionable actionable, ISettingsProvideable settings)
+    public bool DropItem(IActionable actionable, ISettingsProvideable settings, int amount)
     {
-        ItemDroppingActivity activity = new ItemDroppingActivity(actionable, settings, this);
+        ItemDroppingActivity activity = new ItemDroppingActivity(actionable, settings, this, amount);
         if (activity.CanPerform(actionable))
         {
             actionable.ActivityManager.StartUpperBodyActivity(activity);

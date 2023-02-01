@@ -16,13 +16,15 @@ public class AdvancedConversation
     private IShopMenus ShopMenus;
     private IModItems ModItems;
     private IZones Zones;
-    private Conversation_Simple ConversationSimple;
+    private IAdvancedConversationable ConversationSimple;
     private MenuPool MenuPool;
     private UIMenu ConversationMenu;
     private IPlacesOfInterest PlacesOfInterest;
     private IGangs Gangs;
     private IGangTerritories GangTerritories;
-    public AdvancedConversation(IInteractionable player, Conversation_Simple conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories)
+    private ISpeeches Speeches;
+    public bool IsShowingMenu => ConversationMenu?.Visible == true;
+    public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches)
     {
         Player = player;
         ConversationSimple = conversation_Simple;
@@ -32,6 +34,7 @@ public class AdvancedConversation
         PlacesOfInterest = placesOfInterest;
         Gangs = gangs;
         GangTerritories = gangTerritories;
+        Speeches = speeches;
     }
     public void Setup()
     {
@@ -45,7 +48,7 @@ public class AdvancedConversation
         {
             try
             {
-                while(EntryPoint.ModController.IsRunning && ConversationMenu.Visible)
+                while(EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen())
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
@@ -65,7 +68,6 @@ public class AdvancedConversation
         ConversationMenu.Visible = false;
         ConversationSimple.OnAdvancedConversationStopped();
     }
-
     private void CreateMenu()
     {
         MenuPool = new MenuPool();
@@ -85,6 +87,7 @@ public class AdvancedConversation
         {
             ConversationMenu.AddItem(transactionInteract);
         }
+        AddAdvancedItems();
         AddDrugItemQuestions();
         AddGangItemQuestions();
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
@@ -99,16 +102,47 @@ public class AdvancedConversation
         ConversationSimple?.TransitionToTransaction();
         Player.ActivityManager.StartTransaction(ConversationSimple.ConversingPed);
     }
+    private void AddAdvancedItems()
+    {
+        UIMenu speechSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Specific Replies");
+        speechSubMenu.RemoveBanner();
+        foreach (var speechGroup in Speeches.SpeechLookups.Where(x=> x.CanUseInConversation).GroupBy(x => x.GroupName).Select(x => x))
+        {
+            UIMenu GroupMenu = MenuPool.AddSubMenu(speechSubMenu, speechGroup.Key);
+            GroupMenu.RemoveBanner();
+            foreach (var SpeechData in speechGroup.OrderBy(x => x.Description).ThenBy(x => x.Description))
+            {
+                bool PlayerCanSay = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Player.Character, SpeechData.Name, true);
+                bool PedCanSay = false;
+                if(ConversationSimple?.ConversingPed?.Pedestrian.Exists() == true)
+                {
+                    PedCanSay = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(ConversationSimple.ConversingPed.Pedestrian, SpeechData.Name, true);
+                }
+                if (PlayerCanSay || PedCanSay)
+                {
+                    UIMenuItem speechMenuItem = new UIMenuItem(SpeechData.Description, $"{SpeechData.Description}");
+                    speechMenuItem.Activated += (menu, item) =>
+                    {
+                        menu.Visible = false;
+                        ConversationSimple.SaySpeech(SpeechData);
+                    };
+                    GroupMenu.AddItem(speechMenuItem);
+                }
+            }
+        }
+    }
     private void AddGangItemQuestions()
     {
         UIMenuListScrollerItem<Gang> AskAboutGangDenScroller = new UIMenuListScrollerItem<Gang>("Gang Hangouts", "Ask where to find a specific gang hangout", Gangs.AllGangs);
         AskAboutGangDenScroller.Activated += (menu, item) =>
         {
+            menu.Visible = false;
             AskAboutGangDen(AskAboutGangDenScroller.SelectedItem);
         };
         UIMenuListScrollerItem<Gang> AskAboutGangTerritoryScroller = new UIMenuListScrollerItem<Gang>("Gang Territory", "Ask about the gangs territory", Gangs.AllGangs);
         AskAboutGangTerritoryScroller.Activated += (menu, item) =>
         {
+            menu.Visible = false;
             AskAboutGangTerritory(AskAboutGangTerritoryScroller.SelectedItem);
         };
         ConversationMenu.AddItem(AskAboutGangDenScroller);
@@ -164,7 +198,7 @@ public class AdvancedConversation
             ReplyUnknown();
             return;
         }
-        string zoneList = string.Join(", ", FoundZones.Select(x => x.DisplayName).Take(3));
+        string zoneList = string.Join(" ", FoundZones.Select(x => x.DisplayName).Take(3));
         List<string> PossibleReplies = new List<string>() {
             $"Normally they hang out near ~p~{zoneList}~s~",
             $"I've seen them in ~p~{zoneList}~s~",
@@ -181,11 +215,13 @@ public class AdvancedConversation
         UIMenuListScrollerItem<ModItem> AskForItemDealer = new UIMenuListScrollerItem<ModItem>("Dealers", "Ask where to find dealers for an item", dealerItems);
         AskForItemDealer.Activated += (menu, item) =>
         {
+            menu.Visible = false;
             AskForItem(AskForItemDealer.SelectedItem, true);
         };
         UIMenuListScrollerItem<ModItem> AskForItemCustomer = new UIMenuListScrollerItem<ModItem>("Customers", "Ask where to find customers for an item", dealerItems);
         AskForItemCustomer.Activated += (menu, item) =>
         {
+            menu.Visible = false;
             AskForItem(AskForItemCustomer.SelectedItem, false);
         };
         if (dealerItems.Any())
@@ -256,7 +292,5 @@ public class AdvancedConversation
         }
         ConversationSimple.PedReply(PossibleReplies.PickRandom());
     }
-
-
 }
 

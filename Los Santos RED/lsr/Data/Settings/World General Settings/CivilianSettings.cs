@@ -101,8 +101,22 @@ public class CivilianSettings : ISettingsDefaultable
     public int MoneyMin { get; set; }
     [Description("Maximum amount of money a civilian will surrender upon mugging.")]
     public int MoneyMax { get; set; }
+
+
+
+
+
     [Description("Percentage of civilians that will follow you to do deals. Maximum value of 100.")]
     public float PercentageTrustingOfPlayer { get; set; }
+
+
+
+
+
+
+
+
+
 
 
     [Description("Percentage of time you will get random items when looting a random ped (weapons and vehicles excluded)")]
@@ -111,6 +125,13 @@ public class CivilianSettings : ISettingsDefaultable
     public int MaxRandomItemsToGet { get; set; }
     [Description("Max amount to get for each random item when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
     public int MaxRandomItemsAmount { get; set; }
+
+
+
+
+    public float PercentageKnowsAnyGangTerritory { get; set; }
+    public float PercentageKnowsAnyDrugTerritory { get; set; }
+
 
     public CivilianSettings()
     {
@@ -186,6 +207,8 @@ public class CivilianSettings : ISettingsDefaultable
         DrugCustomerPercentagePoorZones = 50f;
 
 #endif
+        PercentageKnowsAnyGangTerritory = 45f;
+        PercentageKnowsAnyDrugTerritory = 45f;
     }
 
 }

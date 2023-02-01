@@ -38,40 +38,149 @@ public class Speeches : ISpeeches
     {
         SpeechLookups = new List<SpeechData>()
         {
-            new SpeechData("ACTIVITY_LEAVING","Leaving Activity","ACTIVITY_LEAVING",true,false)
+            //Greetings
+            new SpeechData("GENERIC_HI","Hi (1)","Greetings",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_HI_FEMALE","Hi (2)","Greetings",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_HI_MALE","Hi (3)","Greetings",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_HOWS_IT_GOING","Hows it going","Greetings",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_BYE","Bye","Greetings",false,false) { CanUseInConversation = true }
+            ,new SpeechData("KIFFLOM_GREET","Kifflom Greet","Greetings",false,false) { CanUseInConversation = true }
+         
+
+            //Insults
+            ,new SpeechData("CHALLENGE_ACCEPTED_BUMPED_INTO","Challenge Accepted Bumpped Into","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("CHALLENGE_ACCEPTED_GENERIC","Challenege Accepted Generic","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("CHALLENGE_ACCEPTED_HIT_CAR","Challenege Accepted Hit Car","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("CHALLENGE_THREATEN","Challenge Threaten","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("BUMP","Bump","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_FUCK_YOU","Fuck You","Insults",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_INSULT_HIGH","Insult (High)","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_INSULT_MED","Insult (Med)","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_CURSE_HIGH","Curse (High)","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_CURSE_MED","Curse (Med)","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("WON_DISPUTE","Won Dispute","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("BLOCKED_GENERIC","Blocked Generic","Insults",false,false) { CanUseInConversation = true }
+            ,new SpeechData("APOLOGY_NO_TROUBLE","Apology No Trouble","Insults",false,false) { CanUseInConversation = true }
+
+            //Small Talk
+            ,new SpeechData("CHAT_RESP","Chat Response","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("CHAT_STATE","Chat State","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_BUY","Buy (1)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_BUY_REPEAT","Buy (2)","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_WHATEVER","Whatever","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_YES","Yes","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_DRINK","Drink","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_EAT","Eat","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_FRUSTRATED_HIGH","Frustrated (High)","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_FRUSTRATED_MED","Frustrated (Med)","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_NO","No","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_OUT_OF_MY_WAY","Out Of My Way","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_THANKS","Thanks","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PED_RANT_01","Rant","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PED_RANT_RESP","Rant Response","General",true,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_SHOCKED_HIGH","Shocked (High)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GENERIC_SHOCKED_MED","Shocked (Med)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("GUN_COOL","Cool Gun","General",false,false) { CanUseInConversation = true }
+
+
+            ,new SpeechData("PHONE_CONV1_INTRO","Conversation 1 Intro","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV1_CHAT1","Conversation 1 Chat (1)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV1_CHAT2","Conversation 1 Chat (2)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV1_CHAT3","Conversation 1 Chat (3)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV1_OUTRO","Conversation 1 Outro","General",false,false) { CanUseInConversation = true }
+
+            ,new SpeechData("PHONE_CONV2_INTRO","Conversation 2 Intro","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV2_CHAT1","Conversation 2 Chat (1)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV2_CHAT2","Conversation 2 Chat (2)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV2_CHAT3","Conversation 2 Chat (3)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV2_OUTRO","Conversation 2 Outro","General",false,false) { CanUseInConversation = true }
+
+            ,new SpeechData("PHONE_CONV3_INTRO","Conversation 3 Intro","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV3_CHAT1","Conversation 3 Chat (1)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV3_CHAT2","Conversation 3 Chat (2)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV3_CHAT3","Conversation 3 Chat (3)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV3_OUTRO","Conversation 3 Outro","General",false,false) { CanUseInConversation = true }
+
+            ,new SpeechData("PHONE_CONV4_INTRO","Conversation 4 Intro","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV4_CHAT1","Conversation 4 Chat (1)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV4_CHAT2","Conversation 4 Chat (2)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV4_CHAT3","Conversation 4 Chat (3)","General",false,false) { CanUseInConversation = true }
+            ,new SpeechData("PHONE_CONV4_OUTRO","Conversation 4 Outro","General",false,false) { CanUseInConversation = true }
+
+
+
+
+
+
+            ,new SpeechData("GENERIC_INSULT_OLD","GENERIC_NO","Insults",true,false)
+            ,new SpeechData("GENERIC_INSULT_MALE","GENERIC_INSULT_MED","Insults",true,false) 
+            ,new SpeechData("GENERIC_INSULT_FEMALE","Insult (","Insults",true,false)
+            ,new SpeechData("HOWS_IT_GOING_FEMALE","HOWS_IT_GOING_GENERIC","Greetings",true,false)
+            ,new SpeechData("HOWS_IT_GOING_GENERIC","HOWS_IT_GOING_MALE","Greetings",true,false) 
+            ,new SpeechData("HOWS_IT_GOING_MALE","HURRY_UP","Greetings",true,false)
+            ,new SpeechData("GREET_ATTRACTIVE_F","GREET_BUM","Greetings",true,false) 
+            ,new SpeechData("GREET_BUM","GREET_COP","Greetings",true,false)
+            ,new SpeechData("GREET_COP","GREET_COP_OUTFIT","Greetings",true,false) 
+            ,new SpeechData("GREET_COP_OUTFIT","GREET_CREEPY_OUTFIT","Greetings",true,false) 
+            ,new SpeechData("GREET_CREEPY_OUTFIT","GREET_GANG_BALLAS_M","Greetings",true,false) 
+            ,new SpeechData("GREET_GANG_BALLAS_M","GREET_GANG_FAMILIES_M","Greetings",true,false) 
+            ,new SpeechData("GREET_GANG_FAMILIES_M","GREET_GANG_VAGOS_M","Greetings",true,false)
+            ,new SpeechData("GREET_GANG_VAGOS_M","GREET_HILLBILLY_M","Greetings",true,false) 
+            ,new SpeechData("GREET_HILLBILLY_M","GREET_HIPPY_F","Greetings",true,false)
+            ,new SpeechData("GREET_HIPPY_F","GREET_HIPPY_M","Greetings",true,false) 
+            ,new SpeechData("GREET_HIPPY_M","GREET_HIPSTER_F","Greetings",true,false) 
+            ,new SpeechData("GREET_HIPSTER_F","GREET_HIPSTER_M","Greetings",true,false) 
+            ,new SpeechData("GREET_HIPSTER_M","GREET_JUNKIE","Greetings",true,false) 
+            ,new SpeechData("GREET_JUNKIE","GREET_KOREAN","Greetings",true,false) 
+            ,new SpeechData("GREET_KOREAN","GREET_STRONG_M","Greetings",true,false) 
+            ,new SpeechData("GREET_STRONG_M","GREET_TRANSVESTITE","Greetings",true,false) 
+            ,new SpeechData("GREET_TRANSVESTITE","GUN_BEG","Greetings",true,false)
+             ,new SpeechData("CANT_LOSE_ENEMY","Cant Lose Enemy","Combat",true,false)
+            ,new SpeechData("COMBAT_TAUNT","Combat Taunt","Combat",false,true)
+            ,new SpeechData("COVER_ME","Cover Me","Combat",false,true)
+            ,new SpeechData("COVER_YOU","Cover You","Combat",false,true)
+            ,new SpeechData("DUCK","ENEMY_NOT_SPOTTED","Combat",false,true)
+            ,new SpeechData("ENEMY_NOT_SPOTTED","ENEMY_SPOTTED","Combat",true,false)
+            ,new SpeechData("ENEMY_SPOTTED","ENEMY_SPOTTED_BEHIND","ENEMY_SPOTTED",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_BEHIND","ENEMY_SPOTTED_DOWN","ENEMY_SPOTTED_BEHIND",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_DOWN","ENEMY_SPOTTED_FRONT","ENEMY_SPOTTED_DOWN",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_FRONT","ENEMY_SPOTTED_LEFT","ENEMY_SPOTTED_FRONT",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_LEFT","ENEMY_SPOTTED_RIGHT","ENEMY_SPOTTED_LEFT",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_RIGHT","ENEMY_SPOTTED_UP","ENEMY_SPOTTED_RIGHT",true,false)
+            ,new SpeechData("ENEMY_SPOTTED_UP","EPSILON_SITE_VISIT_BACKOUT","ENEMY_SPOTTED_UP",true,false)
+            ,new SpeechData("GENERIC_WAR_CRY","GENERIC_WHATEVER","GENERIC_WAR_CRY",false,true)
+            ,new SpeechData("GENERIC_FRIGHTENED_HIGH","GENERIC_FRIGHTENED_MED","GENERIC_FRIGHTENED_HIGH",false,false)
+            ,new SpeechData("GENERIC_FRIGHTENED_MED","GENERIC_FRUSTRATED_HIGH","GENERIC_FRIGHTENED_MED",false,false)
+            ,new SpeechData("GUN_BEG","GUN_COOL","GUN_BEG",false,false)
+            ,new SpeechData("CAR_HIT_PED","Car Hit Ped","CAR_HIT_PED",true,false)
+            ,new SpeechData("CAR_HIT_PED_DRIVEN","Car Hit Ped Driven","CAR_HIT_PED_DRIVEN",true,false)
+            ,new SpeechData("CRASH_CAR","Crash Car","CRASH_CAR",false,false)
+            ,new SpeechData("CRASH_CAR_BASS","Crash Car BAss","CRASH_CAR_BASS",true,false)
+            ,new SpeechData("CRASH_CAR_DRIVEN","Crash Car Driven","CRASH_CAR_DRIVEN",true,false)
+            ,new SpeechData("CRASH_GENERIC","Crash Generic","CRASH_GENERIC",false,false)
+            ,new SpeechData("CRASH_GENERIC_DRIVEN","Crash Generic Driven","CRASH_GENERIC_DRIVEN",true,false)
+            ,new SpeechData("CRASH_GENERIC_INTERRUPT","Crash Generic Interrupt","CRASH_GENERIC_INTERRUPT",true,false)
+            ,new SpeechData("ACTIVITY_LEAVING","Leaving Activity","ACTIVITY_LEAVING",true,false)
             ,new SpeechData("AGREE_ACROSS_STREET","Agree Across Street","AGREE_ACROSS_STREET",false,false)
             ,new SpeechData("AIMED_AT_BY_PLAYER","Aimed at by Player","AIMED_AT_BY_PLAYER",true,false)
             ,new SpeechData("ANGRY_WITH_PLAYER_TREVOR","Angry with Trevor","ANGRY_WITH_PLAYER_TREVOR",false,false)
-            ,new SpeechData("APOLOGY_NO_TROUBLE","Apology No Trouble","APOLOGY_NO_TROUBLE",false,false)
             ,new SpeechData("ARREST_PLAYER","Arrest Player","ARREST_PLAYER",false,true)
             ,new SpeechData("ARRESTED","Arrested","ARRESTED",true,false)
             ,new SpeechData("BASEJUMP_ABOUT_TO_JUMP","About to Basejump","BASEJUMP_ABOUT_TO_JUMP",true,false)
             ,new SpeechData("BASEJUMP_FAIL","Basejump Fail","BASEJUMP_FAIL",true,false)
             ,new SpeechData("BASEJUMP_SUCCESS","Basejump SUccess","BASEJUMP_SUCCESS",true,false)
             ,new SpeechData("BLIND_RAGE","Blind Rage","BLIND_RAGE",true,false)
-            ,new SpeechData("BLOCKED_GENERIC","Blocked Generic","BLOCKED_GENERIC",false,false)
             ,new SpeechData("BLOCKED_IN_PURSUIT","Blocked In Pursuit","BLOCKED_IN_PURSUIT",false,true)
             ,new SpeechData("BOOTY_FLIRT_RESP","Booty Flirt Response","BOOTY_FLIRT_RESP",true,false)
             ,new SpeechData("BUDDY_DOWN","Buddy Down","BUDDY_DOWN",false,true)
             ,new SpeechData("BUDDY_SEES_FRANKLIN_DEATH","Buddy Sees Franklin Die","BUDDY_SEES_FRANKLIN_DEATH",true,false)
             ,new SpeechData("BUDDY_SEES_TREVOR_DEATH","Buddy Sees Trevor Die","BUDDY_SEES_TREVOR_DEATH",true,false)
-            ,new SpeechData("BUMP","Bump","BUMP",false,false)
-            ,new SpeechData("CANT_LOSE_ENEMY","Cant Lose Enemy","CANT_LOSE_ENEMY",true,false)
-            ,new SpeechData("CAR_HIT_PED","Car Hit Ped","CAR_HIT_PED",true,false)
-            ,new SpeechData("CAR_HIT_PED_DRIVEN","Car Hit Ped Driven","CAR_HIT_PED_DRIVEN",true,false)
-            ,new SpeechData("CHALLENGE_ACCEPTED_BUMPED_INTO","Challeneg Accepted Bumpped Into","CHALLENGE_ACCEPTED_BUMPED_INTO",false,false)
-            ,new SpeechData("CHALLENGE_ACCEPTED_GENERIC","Challenege Accepted Generic","CHALLENGE_ACCEPTED_GENERIC",false,false)
-            ,new SpeechData("CHALLENGE_ACCEPTED_HIT_CAR","Challenege Accepted Hit Car","CHALLENGE_ACCEPTED_HIT_CAR",false,false)
-            ,new SpeechData("CHALLENGE_THREATEN","Challenge Threaten","CHALLENGE_THREATEN",false,false)
             ,new SpeechData("CHASE_VEHICLE_MEGAPHONE","Chase Vehicle Megaphone","CHASE_VEHICLE_MEGAPHONE",false,true)
             ,new SpeechData("CHASED_BY_POLICE","Chased by Police","CHASED_BY_POLICE",true,false)
             ,new SpeechData("CHAT_ACROSS_STREET_RESP","Chat Across Street Response","CHAT_ACROSS_STREET_RESP",false,false)
             ,new SpeechData("CHAT_ACROSS_STREET_STATE","Chat Acress Street State","CHAT_ACROSS_STREET_STATE",false,false)
-            ,new SpeechData("CHAT_RESP","Chat Response","CHAT_RESP",false,false)
-            ,new SpeechData("CHAT_STATE","Chat State","CHAT_STATE",false,false)
             ,new SpeechData("CLEAR_AREA_MEGAPHONE","Clear Area Megaphone","CLEAR_AREA_MEGAPHONE",false,true)
             ,new SpeechData("CLEAR_AREA_PANIC_MEGAPHONE","Clear Area Megaphone Panic","CLEAR_AREA_PANIC_MEGAPHONE",false,true)
-            ,new SpeechData("COMBAT_TAUNT","Combat Taunt","COMBAT_TAUNT",false,true)
             ,new SpeechData("COP_ARRIVAL_ANNOUNCE","Arrival Announce","COP_ARRIVAL_ANNOUNCE",false,true)
             ,new SpeechData("COP_ARRIVAL_ANNOUNCE_MEGAPHONE","Arrival Announce Megaphone","COP_ARRIVAL_ANNOUNCE_MEGAPHONE",false,true)
             ,new SpeechData("COP_PEEK","Peek","COP_PEEK",false,true)
@@ -81,14 +190,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("COP_SEES_MINI_GUN","Sees minigun","COP_SEES_MINI_GUN",false,true)
             ,new SpeechData("COP_SEES_ROCKET_LAUNCHER","Sees Rocket Launcher","COP_SEES_ROCKET_LAUNCHER",false,true)
             ,new SpeechData("COP_SEES_WEAPON","Sees Weapon","COP_SEES_WEAPON",false,true)
-            ,new SpeechData("COVER_ME","Cover Me","COVER_ME",false,true)
-            ,new SpeechData("COVER_YOU","Cover You","COVER_YOU",false,true)
-            ,new SpeechData("CRASH_CAR","Crash Car","CRASH_CAR",false,false)
-            ,new SpeechData("CRASH_CAR_BASS","Crash Car BAss","CRASH_CAR_BASS",true,false)
-            ,new SpeechData("CRASH_CAR_DRIVEN","Crash Car Driven","CRASH_CAR_DRIVEN",true,false)
-            ,new SpeechData("CRASH_GENERIC","Crash Generic","CRASH_GENERIC",false,false)
-            ,new SpeechData("CRASH_GENERIC_DRIVEN","Crash Generic Driven","CRASH_GENERIC_DRIVEN",true,false)
-            ,new SpeechData("CRASH_GENERIC_INTERRUPT","Crash Generic Interrupt","CRASH_GENERIC_INTERRUPT",true,false)
             ,new SpeechData("CRIMINAL_APPREHENDED","CRIMINAL_GET_IN_CAR","CRIMINAL_APPREHENDED",false,true)
             ,new SpeechData("CRIMINAL_GET_IN_CAR","CRIMINAL_WARNING","CRIMINAL_GET_IN_CAR",false,true)
             ,new SpeechData("CRIMINAL_WARNING","CULT_TALK","CRIMINAL_WARNING",false,true)
@@ -117,15 +218,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("DRINK_GOOD","DRIVEN_FAST","DRINK_GOOD",true,false)
             ,new SpeechData("DRIVEN_FAST","DRIVEN_SLOW","DRIVEN_FAST",true,false)
             ,new SpeechData("DRIVEN_SLOW","DUCK","DRIVEN_SLOW",true,false)
-            ,new SpeechData("DUCK","ENEMY_NOT_SPOTTED","DUCK",false,true)
-            ,new SpeechData("ENEMY_NOT_SPOTTED","ENEMY_SPOTTED","ENEMY_NOT_SPOTTED",true,false)
-            ,new SpeechData("ENEMY_SPOTTED","ENEMY_SPOTTED_BEHIND","ENEMY_SPOTTED",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_BEHIND","ENEMY_SPOTTED_DOWN","ENEMY_SPOTTED_BEHIND",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_DOWN","ENEMY_SPOTTED_FRONT","ENEMY_SPOTTED_DOWN",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_FRONT","ENEMY_SPOTTED_LEFT","ENEMY_SPOTTED_FRONT",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_LEFT","ENEMY_SPOTTED_RIGHT","ENEMY_SPOTTED_LEFT",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_RIGHT","ENEMY_SPOTTED_UP","ENEMY_SPOTTED_RIGHT",true,false)
-            ,new SpeechData("ENEMY_SPOTTED_UP","EPSILON_SITE_VISIT_BACKOUT","ENEMY_SPOTTED_UP",true,false)
             ,new SpeechData("EPSILON_SITE_VISIT_BACKOUT","EXPLOSION_IS_IMMINENT","EPSILON_SITE_VISIT_BACKOUT",true,false)
             ,new SpeechData("EXPLOSION_IS_IMMINENT","EXTREME_GRIEFING","EXPLOSION_IS_IMMINENT",false,true)
             ,new SpeechData("EXTREME_GRIEFING","FALL_BACK","EXTREME_GRIEFING",true,false)
@@ -156,35 +248,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("GAME_WAS_FUN","GAME_WIN_SELF","GAME_WAS_FUN",true,false)
             ,new SpeechData("GAME_WIN_SELF","GASMASK_CHOKE","GAME_WIN_SELF",true,false)
             ,new SpeechData("GASMASK_CHOKE","GENERIC_BUY","GASMASK_CHOKE",true,false)
-            ,new SpeechData("GENERIC_BUY","GENERIC_BUY_REPEAT","GENERIC_BUY",false,false)
-            ,new SpeechData("GENERIC_BUY_REPEAT","GENERIC_BYE","GENERIC_BUY_REPEAT",true,false)
-            ,new SpeechData("GENERIC_BYE","GENERIC_CURSE_HIGH","GENERIC_BYE",false,false)
-            ,new SpeechData("GENERIC_CURSE_HIGH","GENERIC_CURSE_MED","GENERIC_CURSE_HIGH",false,false)
-            ,new SpeechData("GENERIC_CURSE_MED","GENERIC_DRINK","GENERIC_CURSE_MED",false,false)
-            ,new SpeechData("GENERIC_DRINK","GENERIC_EAT","GENERIC_DRINK",true,false)
-            ,new SpeechData("GENERIC_EAT","GENERIC_FRIGHTENED_HIGH","GENERIC_EAT",true,false)
-            ,new SpeechData("GENERIC_FRIGHTENED_HIGH","GENERIC_FRIGHTENED_MED","GENERIC_FRIGHTENED_HIGH",false,false)
-            ,new SpeechData("GENERIC_FRIGHTENED_MED","GENERIC_FRUSTRATED_HIGH","GENERIC_FRIGHTENED_MED",false,false)
-            ,new SpeechData("GENERIC_FRUSTRATED_HIGH","GENERIC_FRUSTRATED_MED","GENERIC_FRUSTRATED_HIGH",true,false)
-            ,new SpeechData("GENERIC_FRUSTRATED_MED","GENERIC_FUCK_YOU","GENERIC_FRUSTRATED_MED",true,false)
-            ,new SpeechData("GENERIC_FUCK_YOU","GENERIC_HI","GENERIC_FUCK_YOU",true,false)
-            ,new SpeechData("GENERIC_HI","GENERIC_HI_FEMALE","GENERIC_HI",false,false)
-            ,new SpeechData("GENERIC_HI_FEMALE","GENERIC_HI_MALE","GENERIC_HI_FEMALE",true,false)
-            ,new SpeechData("GENERIC_HI_MALE","GENERIC_HOWS_IT_GOING","GENERIC_HI_MALE",true,false)
-            ,new SpeechData("GENERIC_HOWS_IT_GOING","GENERIC_INSULT_FEMALE","GENERIC_HOWS_IT_GOING",false,false)
-            ,new SpeechData("GENERIC_INSULT_FEMALE","GENERIC_INSULT_HIGH","GENERIC_INSULT_FEMALE",true,false)
-            ,new SpeechData("GENERIC_INSULT_HIGH","GENERIC_INSULT_MALE","GENERIC_INSULT_HIGH",false,false)
-            ,new SpeechData("GENERIC_INSULT_MALE","GENERIC_INSULT_MED","GENERIC_INSULT_MALE",true,false)
-            ,new SpeechData("GENERIC_INSULT_MED","GENERIC_INSULT_OLD","GENERIC_INSULT_MED",false,false)
-            ,new SpeechData("GENERIC_INSULT_OLD","GENERIC_NO","GENERIC_INSULT_OLD",true,false)
-            ,new SpeechData("GENERIC_NO","GENERIC_OUT_OF_MY_WAY","GENERIC_NO",false,false)
-            ,new SpeechData("GENERIC_OUT_OF_MY_WAY","GENERIC_SHOCKED_HIGH","GENERIC_OUT_OF_MY_WAY",true,false)
-            ,new SpeechData("GENERIC_SHOCKED_HIGH","GENERIC_SHOCKED_MED","GENERIC_SHOCKED_HIGH",false,false)
-            ,new SpeechData("GENERIC_SHOCKED_MED","GENERIC_THANKS","GENERIC_SHOCKED_MED",false,false)
-            ,new SpeechData("GENERIC_THANKS","GENERIC_WAR_CRY","GENERIC_THANKS",false,false)
-            ,new SpeechData("GENERIC_WAR_CRY","GENERIC_WHATEVER","GENERIC_WAR_CRY",false,true)
-            ,new SpeechData("GENERIC_WHATEVER","GENERIC_YES","GENERIC_WHATEVER",false,false)
-            ,new SpeechData("GENERIC_YES","GET_HIM","GENERIC_YES",false,false)
             ,new SpeechData("GET_HIM","GET_IN_VEHICLE","GET_HIM",false,true)
             ,new SpeechData("GET_IN_VEHICLE","GET_OUT_OF_HERE","GET_IN_VEHICLE",true,false)
             ,new SpeechData("GET_OUT_OF_HERE","GET_UP_FROM_FALL","GET_OUT_OF_HERE",true,false)
@@ -211,25 +274,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("GOLF_SINK_PUTT_SELF","GOODBYE_ACROSS_STREET","GOLF_SINK_PUTT_SELF",true,false)
             ,new SpeechData("GOODBYE_ACROSS_STREET","GREET_ACROSS_STREET","GOODBYE_ACROSS_STREET",false,false)
             ,new SpeechData("GREET_ACROSS_STREET","GREET_ATTRACTIVE_F","GREET_ACROSS_STREET",false,false)
-            ,new SpeechData("GREET_ATTRACTIVE_F","GREET_BUM","GREET_ATTRACTIVE_F",true,false)
-            ,new SpeechData("GREET_BUM","GREET_COP","GREET_BUM",true,false)
-            ,new SpeechData("GREET_COP","GREET_COP_OUTFIT","GREET_COP",true,false)
-            ,new SpeechData("GREET_COP_OUTFIT","GREET_CREEPY_OUTFIT","GREET_COP_OUTFIT",true,false)
-            ,new SpeechData("GREET_CREEPY_OUTFIT","GREET_GANG_BALLAS_M","GREET_CREEPY_OUTFIT",true,false)
-            ,new SpeechData("GREET_GANG_BALLAS_M","GREET_GANG_FAMILIES_M","GREET_GANG_BALLAS_M",true,false)
-            ,new SpeechData("GREET_GANG_FAMILIES_M","GREET_GANG_VAGOS_M","GREET_GANG_FAMILIES_M",true,false)
-            ,new SpeechData("GREET_GANG_VAGOS_M","GREET_HILLBILLY_M","GREET_GANG_VAGOS_M",true,false)
-            ,new SpeechData("GREET_HILLBILLY_M","GREET_HIPPY_F","GREET_HILLBILLY_M",true,false)
-            ,new SpeechData("GREET_HIPPY_F","GREET_HIPPY_M","GREET_HIPPY_F",true,false)
-            ,new SpeechData("GREET_HIPPY_M","GREET_HIPSTER_F","GREET_HIPPY_M",true,false)
-            ,new SpeechData("GREET_HIPSTER_F","GREET_HIPSTER_M","GREET_HIPSTER_F",true,false)
-            ,new SpeechData("GREET_HIPSTER_M","GREET_JUNKIE","GREET_HIPSTER_M",true,false)
-            ,new SpeechData("GREET_JUNKIE","GREET_KOREAN","GREET_JUNKIE",true,false)
-            ,new SpeechData("GREET_KOREAN","GREET_STRONG_M","GREET_KOREAN",true,false)
-            ,new SpeechData("GREET_STRONG_M","GREET_TRANSVESTITE","GREET_STRONG_M",true,false)
-            ,new SpeechData("GREET_TRANSVESTITE","GUN_BEG","GREET_TRANSVESTITE",true,false)
-            ,new SpeechData("GUN_BEG","GUN_COOL","GUN_BEG",false,false)
-            ,new SpeechData("GUN_COOL","HAIL_CAB","GUN_COOL",false,false)
             ,new SpeechData("HAIL_CAB","HELI_APPROACHING_DISPATCH","HAIL_CAB",true,false)
             ,new SpeechData("HELI_APPROACHING_DISPATCH","HELI_MAYDAY_DISPATCH","HELI_APPROACHING_DISPATCH",false,true)
             ,new SpeechData("HELI_MAYDAY_DISPATCH","HELI_NO_VISUAL_DISPATCH","HELI_MAYDAY_DISPATCH",false,true)
@@ -246,9 +290,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("HOOKER_STORY_REVULSION_RESP","HOOKER_STORY_SARCASTIC_RESP","HOOKER_STORY_REVULSION_RESP",true,false)
             ,new SpeechData("HOOKER_STORY_SARCASTIC_RESP","HOOKER_STORY_SYMPATHETIC_RESP","HOOKER_STORY_SARCASTIC_RESP",true,false)
             ,new SpeechData("HOOKER_STORY_SYMPATHETIC_RESP","HOWS_IT_GOING_FEMALE","HOOKER_STORY_SYMPATHETIC_RESP",true,false)
-            ,new SpeechData("HOWS_IT_GOING_FEMALE","HOWS_IT_GOING_GENERIC","HOWS_IT_GOING_FEMALE",true,false)
-            ,new SpeechData("HOWS_IT_GOING_GENERIC","HOWS_IT_GOING_MALE","HOWS_IT_GOING_GENERIC",true,false)
-            ,new SpeechData("HOWS_IT_GOING_MALE","HURRY_UP","HOWS_IT_GOING_MALE",true,false)
             ,new SpeechData("HURRY_UP","I_GOT_THIS","HURRY_UP",true,false)
             ,new SpeechData("I_GOT_THIS","IN_COVER_DODGE_BULLETS","I_GOT_THIS",true,false)
             ,new SpeechData("IN_COVER_DODGE_BULLETS","INSULT_DEAD_PED","IN_COVER_DODGE_BULLETS",true,false)
@@ -262,7 +303,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("JACKING_DEAD_PED","JACKING_GENERIC","JACKING_DEAD_PED",true,false)
             ,new SpeechData("JACKING_GENERIC","JACKING_ORDER","JACKING_GENERIC",true,false)
             ,new SpeechData("JACKING_ORDER","KIFFLOM_GREET","JACKING_ORDER",true,false)
-            ,new SpeechData("KIFFLOM_GREET","KIFFLOM_RUNNING","KIFFLOM_GREET",false,false)
             ,new SpeechData("KIFFLOM_RUNNING","KIFFLOM_SPRINTING","KIFFLOM_RUNNING",true,false)
             ,new SpeechData("KIFFLOM_SPRINTING","KIFFLOM_WALKING","KIFFLOM_SPRINTING",true,false)
             ,new SpeechData("KIFFLOM_WALKING","KILLED_ALL","KIFFLOM_WALKING",true,false)
@@ -387,28 +427,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("NO_LOITERING_MEGAPHONE","OFFICER_DOWN","NO_LOITERING_MEGAPHONE",false,true)
             ,new SpeechData("OFFICER_DOWN","OVER_THERE","OFFICER_DOWN",false,true)
             ,new SpeechData("OVER_THERE","PED_RANT_01","OVER_THERE",false,false)
-            ,new SpeechData("PED_RANT_01","PED_RANT_RESP","PED_RANT_01",false,false)
-            ,new SpeechData("PED_RANT_RESP","PHONE_CONV1_CHAT1","PED_RANT_RESP",true,false)
-            ,new SpeechData("PHONE_CONV1_CHAT1","PHONE_CONV1_CHAT2","PHONE_CONV1_CHAT1",false,false)
-            ,new SpeechData("PHONE_CONV1_CHAT2","PHONE_CONV1_CHAT3","PHONE_CONV1_CHAT2",false,false)
-            ,new SpeechData("PHONE_CONV1_CHAT3","PHONE_CONV1_INTRO","PHONE_CONV1_CHAT3",false,false)
-            ,new SpeechData("PHONE_CONV1_INTRO","PHONE_CONV1_OUTRO","PHONE_CONV1_INTRO",false,false)
-            ,new SpeechData("PHONE_CONV1_OUTRO","PHONE_CONV2_CHAT1","PHONE_CONV1_OUTRO",false,false)
-            ,new SpeechData("PHONE_CONV2_CHAT1","PHONE_CONV2_CHAT2","PHONE_CONV2_CHAT1",false,false)
-            ,new SpeechData("PHONE_CONV2_CHAT2","PHONE_CONV2_CHAT3","PHONE_CONV2_CHAT2",false,false)
-            ,new SpeechData("PHONE_CONV2_CHAT3","PHONE_CONV2_INTRO","PHONE_CONV2_CHAT3",false,false)
-            ,new SpeechData("PHONE_CONV2_INTRO","PHONE_CONV2_OUTRO","PHONE_CONV2_INTRO",false,false)
-            ,new SpeechData("PHONE_CONV2_OUTRO","PHONE_CONV3_CHAT1","PHONE_CONV2_OUTRO",false,false)
-            ,new SpeechData("PHONE_CONV3_CHAT1","PHONE_CONV3_CHAT2","PHONE_CONV3_CHAT1",false,false)
-            ,new SpeechData("PHONE_CONV3_CHAT2","PHONE_CONV3_CHAT3","PHONE_CONV3_CHAT2",false,false)
-            ,new SpeechData("PHONE_CONV3_CHAT3","PHONE_CONV3_INTRO","PHONE_CONV3_CHAT3",false,false)
-            ,new SpeechData("PHONE_CONV3_INTRO","PHONE_CONV3_OUTRO","PHONE_CONV3_INTRO",false,false)
-            ,new SpeechData("PHONE_CONV3_OUTRO","PHONE_CONV4_CHAT1","PHONE_CONV3_OUTRO",false,false)
-            ,new SpeechData("PHONE_CONV4_CHAT1","PHONE_CONV4_CHAT2","PHONE_CONV4_CHAT1",false,false)
-            ,new SpeechData("PHONE_CONV4_CHAT2","PHONE_CONV4_CHAT3","PHONE_CONV4_CHAT2",false,false)
-            ,new SpeechData("PHONE_CONV4_CHAT3","PHONE_CONV4_INTRO","PHONE_CONV4_CHAT3",false,false)
-            ,new SpeechData("PHONE_CONV4_INTRO","PHONE_CONV4_OUTRO","PHONE_CONV4_INTRO",false,false)
-            ,new SpeechData("PHONE_CONV4_OUTRO","PHONE_SURPRISE_EXPLOSION","PHONE_CONV4_OUTRO",false,false)
             ,new SpeechData("PHONE_SURPRISE_EXPLOSION","PHONE_SURPRISE_GUNFIRE","PHONE_SURPRISE_EXPLOSION",false,false)
             ,new SpeechData("PHONE_SURPRISE_GUNFIRE","PHONE_SURPRISE_PLAYER_APPEARANCE","PHONE_SURPRISE_GUNFIRE",false,false)
             ,new SpeechData("PHONE_SURPRISE_PLAYER_APPEARANCE","PINNED_DOWN","PHONE_SURPRISE_PLAYER_APPEARANCE",false,false)
@@ -562,7 +580,6 @@ public class Speeches : ISpeeches
             ,new SpeechData("WAIT","WAIT_FOR_ME","WAIT",false,true)
             ,new SpeechData("WAIT_FOR_ME","WHISTLES","WAIT_FOR_ME",true,false)
             ,new SpeechData("WHISTLES","WON_DISPUTE","WHISTLES",true,false)
-            ,new SpeechData("WON_DISPUTE","WORKOUT_FINISHED","WON_DISPUTE",false,false)
             ,new SpeechData("WORKOUT_FINISHED","YOU_DRIVE","WORKOUT_FINISHED",true,false)
             ,new SpeechData("YOU_DRIVE","","YOU_DRIVE",true,false)
 

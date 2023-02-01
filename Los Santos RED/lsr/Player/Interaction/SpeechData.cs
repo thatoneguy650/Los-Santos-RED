@@ -46,5 +46,6 @@ public class SpeechData
 
     public bool IsPlayerOnly { get; set; } = false;
     public bool IsCopOnly { get; set; } = false;
+    public bool CanUseInConversation { get; set; } = false;
 }
 
