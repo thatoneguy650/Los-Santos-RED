@@ -199,7 +199,7 @@ public class BasicLocation
         World = world;
         if (HasInterior)
         {
-            interior = interiors.GetInterior(InteriorID);
+            interior = interiors.GetInteriorByLocalID(InteriorID);
             if (interior != null)
             {
                 interior.Load();

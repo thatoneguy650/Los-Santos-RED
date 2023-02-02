@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 [Serializable()]
 public class Interior
@@ -16,20 +17,20 @@ public class Interior
     public Interior(int iD, string name, List<string> requestIPLs)
     {
         Name = name;
-        ID = iD;
+        LocalID = iD;
         RequestIPLs = requestIPLs;
     }
     public Interior(int iD, string name, List<string> requestIPLs, List<string> removeIPLs)
     {
         Name = name;
-        ID = iD;
+        LocalID = iD;
         RequestIPLs = requestIPLs;
         RemoveIPLs = removeIPLs;
     }
     public Interior(int iD, string name, List<string> requestIPLs, List<string> removeIPLs, List<string> interiorSets)
     {
         Name = name;
-        ID = iD;
+        LocalID = iD;
         RequestIPLs = requestIPLs;
         RemoveIPLs = removeIPLs;
         InteriorSets = interiorSets;
@@ -37,17 +38,22 @@ public class Interior
     public Interior(int iD, string name, List<string> requestIPLs, List<string> removeIPLs, List<InteriorDoor> interiorDoors)
     {
         Name = name;
-        ID = iD;
+        LocalID = iD;
         RequestIPLs = requestIPLs;
         RemoveIPLs = removeIPLs;
         Doors = interiorDoors;
     }
     public Interior(int iD, string name)
     {
-        ID = iD;
+        LocalID = iD;
         Name = name;
     }
-    public int ID { get; set; }
+    [XmlIgnore]
+    public int InternalID { get; private set; }
+    [XmlIgnore]
+    public int DisabledInteriorID { get; private set; }
+    public int LocalID { get; set; }
+    public Vector3 InternalInteriorCoordinates { get; set; }
     public string Name { get; set; }
     public bool IsMPOnly { get; set; } = false;
     public bool IsSPOnly { get; set; } = false;
@@ -60,12 +66,33 @@ public class Interior
     //public bool IsActive { get; set; } = false;
     public Vector3 InteriorEgressPosition { get; set; }
     public float InteriorEgressHeading { get; set; }
+    public bool NeedsActivation { get; set; } = false;
+
+
+
     public void Load()
     {
         GameFiber.StartNew(delegate
         {
             try
             {
+                if (InternalInteriorCoordinates != Vector3.Zero)
+                {
+                    InternalID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(InternalInteriorCoordinates.X, InternalInteriorCoordinates.Y, InternalInteriorCoordinates.Z);
+                }
+                else
+                {
+                    InternalID = LocalID;
+                }
+                if(NeedsActivation)
+                {
+                    NativeFunction.Natives.PIN_INTERIOR_IN_MEMORY(InternalID);
+                    NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, true);
+                    if(NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
+                    {
+                        NativeFunction.Natives.CAP_INTERIOR(InternalID, false);
+                    }
+                }
                 foreach (string iplName in RequestIPLs)
                 {
                     NativeFunction.Natives.REQUEST_IPL(iplName);
@@ -78,38 +105,34 @@ public class Interior
                 }
                 foreach (string interiorSet in InteriorSets)
                 {
-                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(ID, interiorSet);
+                    NativeFunction.Natives.ACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
                     GameFiber.Yield();
                 }
-
                 foreach (InteriorDoor door in Doors)
                 {
-                    NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
+                    NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0, 50.0f);//NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
                     door.IsLocked = false;
-                    //GameFiber.Yield();
                 }
+
+
+
+
+
                 if (DisabledInteriorCoords != Vector3.Zero)
                 {
-                    if (ID < 0)
-                    {
-                        ID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
-                    }
-                    NativeFunction.Natives.DISABLE_INTERIOR(ID, false);
-                    NativeFunction.Natives.CAP_INTERIOR(ID, false);
+                    DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                    NativeFunction.Natives.DISABLE_INTERIOR(DisabledInteriorID, false);
+                    NativeFunction.Natives.CAP_INTERIOR(DisabledInteriorID, false);
+                    NativeFunction.Natives.REFRESH_INTERIOR(DisabledInteriorID);
                     GameFiber.Yield();
-                    //NativeFunction.Natives.DISABLE_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), false);
-                    //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), false);
                 }
-                NativeFunction.Natives.REFRESH_INTERIOR(ID);
-               // IsActive = true;
+                NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                 GameFiber.Yield();
             }
             catch (Exception ex)
             {
                 EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                //EntryPoint.ModController.CrashUnload();
             }
-            //EntryPoint.WriteToConsole($"Interior LOADED {Name} {ID}");
         }, "Load Interior");
     }
     public void Unload()
@@ -118,6 +141,15 @@ public class Interior
             {
                 try
                 {
+                    if (NeedsActivation)
+                    {
+                        NativeFunction.Natives.UNPIN_INTERIOR(InternalID);
+                        NativeFunction.Natives.SET_INTERIOR_ACTIVE(InternalID, false);
+                        if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(InternalID))
+                        {
+                            NativeFunction.Natives.CAP_INTERIOR(InternalID, true);
+                        }
+                    }
                     foreach (string iplName in RequestIPLs)
                     {
                         NativeFunction.Natives.REMOVE_IPL(iplName);
@@ -130,30 +162,24 @@ public class Interior
                     }
                     foreach (string interiorSet in InteriorSets)
                     {
-                        NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(ID, interiorSet);
+                        NativeFunction.Natives.DEACTIVATE_INTERIOR_ENTITY_SET(InternalID, interiorSet);
                         GameFiber.Yield();
                     }
                     foreach (InteriorDoor door in Doors)
                     {
-                        NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
+                        NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, 0.0f, 50.0f); //NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, true, door.Rotation.Pitch, door.Rotation.Roll, door.Rotation.Yaw);
                         door.IsLocked = true;
                         GameFiber.Yield();
                     }
                     if (DisabledInteriorCoords != Vector3.Zero)
                     {
-                        if (ID < 0)
-                        {
-                            ID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
-                        }
-
-                        NativeFunction.Natives.DISABLE_INTERIOR(ID, true);
-                        NativeFunction.Natives.CAP_INTERIOR(ID, true);
+                        DisabledInteriorID = NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z);
+                        NativeFunction.Natives.DISABLE_INTERIOR(DisabledInteriorID, true);
+                        NativeFunction.Natives.CAP_INTERIOR(DisabledInteriorID, true);
+                        NativeFunction.Natives.REFRESH_INTERIOR(DisabledInteriorID);
                         GameFiber.Yield();
-                        //NativeFunction.Natives.DISABLE_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), true);
-                        //NativeFunction.Natives.CAP_INTERIOR(NativeFunction.Natives.GET_INTERIOR_AT_COORDS<int>(DisabledInteriorCoords.X, DisabledInteriorCoords.Y, DisabledInteriorCoords.Z), true);
                     }
-                    NativeFunction.Natives.REFRESH_INTERIOR(ID);
-                   // IsActive = false;
+                    NativeFunction.Natives.REFRESH_INTERIOR(InternalID);
                     GameFiber.Yield();
                 }
                 catch (Exception ex)
@@ -161,7 +187,6 @@ public class Interior
                     EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
                     EntryPoint.ModController.CrashUnload();
                 }
-                //EntryPoint.WriteToConsole($"Interior UNLOADED {Name} {ID}");
             }, "Unload Interiors");
     }
 

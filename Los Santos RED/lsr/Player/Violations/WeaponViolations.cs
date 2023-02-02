@@ -121,33 +121,41 @@ public class WeaponViolations
         }
     }
 
-    public bool AddFoundWeapon(WeaponInformation weaponInformation)
+    public bool AddFoundWeapon(WeaponInformation weaponInformation, bool hasCCW)
     {
-        bool foundWeapon = false;
         if(weaponInformation == null)
         {
             EntryPoint.WriteToConsole("AddFoundWeapon WEAPONIFNO IS NULL");
+            return false;
+        }
+        if(weaponInformation.IsLegalWithoutCCW)
+        {
+            EntryPoint.WriteToConsole("AddFoundWeapon Legal without CCW");
+            return false;
+        }
+        else if (weaponInformation.IsLegal && hasCCW)
+        {
+            EntryPoint.WriteToConsole("AddFoundWeapon Legal and have CCW");
             return false;
         }
         if (weaponInformation.WeaponLevel >= 4)
         {
             Violations.AddViolatingAndObserved("TerroristActivity");
             EntryPoint.WriteToConsole("AddFoundWeapon TerroristActivity");
-            foundWeapon = true;
+            return true;
         }
         else if (weaponInformation.WeaponLevel >= 3)
         {
             Violations.AddViolatingAndObserved("BrandishingHeavyWeapon");
             EntryPoint.WriteToConsole("AddFoundWeapon BrandishingHeavyWeapon");
-            foundWeapon = true;
+            return true;
         }
-        else if (!weaponInformation.IsLegal)
+        else 
         {
             Violations.AddViolatingAndObserved("BrandishingWeapon");
             EntryPoint.WriteToConsole("AddFoundWeapon !IsLegal");
-            foundWeapon = true;
+            return true;
         }
-        return foundWeapon;
     }
 }
 

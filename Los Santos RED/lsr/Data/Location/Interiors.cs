@@ -40,10 +40,16 @@ public class Interiors : IInteriors
     {
         return LocationsList;
     }
-    public Interior GetInterior(int id)
+    public Interior GetInteriorByLocalID(int id)
     {
-        return LocationsList.Where(x => x.ID == id).FirstOrDefault();
+        return LocationsList.Where(x => x.LocalID == id).FirstOrDefault();
     }
+    public Interior GetInteriorByInternalID(int id)
+    {
+        return LocationsList.Where(x => x.InternalID == id).FirstOrDefault();
+    }
+
+
     public Interior GetInterior(string name)
     {
         return LocationsList.Where(x => x.Name == name).FirstOrDefault();
@@ -389,6 +395,28 @@ public class Interiors : IInteriors
             //new Interior(171777,"Apartment"){ RemoveIPLs = new List<string>() { "vb_30_crimetape"}, InteriorSets = new List<string>() { "swap_clean_apt", "layer_debra_pic", "layer_whiskey", "swap_sofa_A","swap_mrJam_A" } },
             //new Interior(92674,"Darnell Bros. Garments",new List<string>() { "id2_14_during1","id2_14_during_door" },new List<string>() {"id2_14_during_door","id2_14_during1","id2_14_during2","id2_14_on_fire","id2_14_post_no_int","id2_14_pre_no_int" }),//top floor works and doors are open, but no interiror>?
             //new Interior(-103,"Rogers Salvage & Scrap",new List<string>() { "sp1_03_interior_v_recycle_milo_","sp1_03","sp1_03_critical_0","sp1_03_grass_0","sp1_03_long_0","sp1_03_strm_0","sp1_03_strm_1" },new List<string>() { }),//doesnt work at all, does nothing
+            new Interior(-103,"Rogers Salvage & Scrap",new List<string>() {  },new List<string>() { }) { 
+                Doors = new List<InteriorDoor>() { 
+                    new InteriorDoor(812467272,new Vector3(-589.5225f, -1621.513f, 33.16225f)),//Inside
+                    new InteriorDoor(812467272,new Vector3(-590.8179f, -1621.425f, 33.16282f)),//Inside
+
+                    new InteriorDoor(2667367614,new Vector3(-611.32f, -1610.089f, 27.15894f)),//Front Outside R
+                    new InteriorDoor(1099436502,new Vector3(-608.7289f, -1610.315f, 27.15894f)),//Front Ouitside L
+
+                    new InteriorDoor(2667367614,new Vector3(-592.7109f, -1628.986f, 27.15931f)),//Rear Outside R
+                    new InteriorDoor(1099436502,new Vector3(-592.9376f, -1631.577f, 27.15931f)),//Rear Ouitside L
+                    //doors dont stay open
+
+                }, 
+                InternalInteriorCoordinates = new Vector3(-609.962f, -1612.49f, 27.0105f), 
+                NeedsActivation = true },
+
+
+
+
+
+
+            //.
 
             //Old Generic Stuff, i dont think we are loading any of this 
             new Interior(25090,"Mission Carpark") { IsSPOnly = true } ,

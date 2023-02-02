@@ -183,6 +183,14 @@ public class PoliceTaskSettings : ISettingsDefaultable
         DriverAbility = 1.0f;
         DriverRacing = 0.0f;
 
+
+#if DEBUG
+        DriverAggressiveness = 1.0f;
+        DriverAbility = 1.0f;
+        DriverRacing = 1.0f;
+
+#endif
+
         SetSteerAround = false;
 
         TargetUpdateTime = 1000;

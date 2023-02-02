@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
+//using System.Windows.Media;
 using static DispatchScannerFiles;
 
 public class Debug
@@ -1201,6 +1202,23 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+
+        Cop cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 25f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(cop == null || !cop.Pedestrian.Exists())
+        {
+            return;
+        }
+        cop.Pedestrian.BlockPermanentEvents = true;
+        cop.Pedestrian.KeepTasks = true;
+        NativeFunction.Natives.CLEAR_PED_TASKS(cop.Pedestrian);
+        NativeFunction.Natives.TASK_GOTO_ENTITY_OFFSET(cop.Pedestrian, Player.Character, -1, 1.0f, -180f, 1.0f, 0);
+
+
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(cop.Pedestrian,1.0f,-1,0.25f,4 | 16);
+            //PED_INDEX PedIndex, VECTOR VecCoors, FLOAT MoveBlendRatio, INT Time , FLOAT Radius, ENAV_SCRIPT_FLAGS iNavFlags, NAVDATA navDataStruct, FLOAT FinalHeading = DEFAULT_NAVMESH_FINAL_HEADING ) = "0x72f317bc03266125"
+
+        GameFiber.Sleep(1000);
+        //OpenDoors();
         //foreach (ModItem modItem in ModItems.AllItems())
         //{
         //    if (modItem.Name == "Marijuana" || modItem.Name == "Cocaine" || modItem.Name == "Heroin" || modItem.Name == "Methamphetamine" || modItem.Name == "Crack" || modItem.Name == "SPANK" || modItem.Name == "Toilet Cleaner")
@@ -1222,7 +1240,7 @@ public class Debug
         //CarChanePos();
         // SpawnAttachedRagdoll();
 
-        EntryPoint.WriteToConsole($"HandsAreUp: {Player.Surrendering.HandsAreUp}");
+        // EntryPoint.WriteToConsole($"HandsAreUp: {Player.Surrendering.HandsAreUp}");
 
         //Player.CellPhone.CloseBurner();
 
@@ -1234,7 +1252,19 @@ public class Debug
         //Player.CellPhone.AddScamText();
     }
 
-
+    private void OpenDoors()
+    {
+        Interior int1 = Interiors.GetInteriorByLocalID(-103);
+        if(int1 == null)
+        {
+            return;
+        }
+        foreach (InteriorDoor door in int1.Doors)
+        {
+            NativeFunction.Natives.x9B12F9A24FABEDB0(door.ModelHash, door.Position.X, door.Position.Y, door.Position.Z, false, 0.0f, 50.0f);
+            door.IsLocked = false;
+        }
+    }
     private void SpawnAttachedRagdoll()
     {
         GameFiber.StartNew(delegate

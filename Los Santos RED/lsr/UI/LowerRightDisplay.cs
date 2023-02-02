@@ -330,7 +330,7 @@ public class LowerRightDisplay
                 if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
                 {
 #if DEBUG
-                    StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.ID}) {UI.CurrentDefaultTextColor}";
+                    StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.LocalID}) {UI.CurrentDefaultTextColor}";
 #endif
                 }
                 else

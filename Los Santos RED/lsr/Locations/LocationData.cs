@@ -374,7 +374,7 @@ namespace LosSantosRED.lsr.Locations
             }
             else
             {
-                CurrentInterior = Interiors?.GetInterior(InteriorID);
+                CurrentInterior = Interiors?.GetInteriorByInternalID(InteriorID);
                 if (CurrentInterior == null)
                 {
                     CurrentInterior = new Interior(InteriorID, "");

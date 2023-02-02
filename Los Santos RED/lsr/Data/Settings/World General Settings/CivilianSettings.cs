@@ -209,6 +209,8 @@ public class CivilianSettings : ISettingsDefaultable
 #endif
         PercentageKnowsAnyGangTerritory = 45f;
         PercentageKnowsAnyDrugTerritory = 45f;
+
+
     }
 
 }

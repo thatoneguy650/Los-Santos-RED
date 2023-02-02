@@ -105,7 +105,7 @@ public class Crimes : ICrimes
         GotInAirVehicleDuringChase = new Crime(StaticStrings.GotInAirVehicleDuringChaseCrimeID, "Stealing an Air Vehicle", 3, false, 8, false, false, true);
         FiringWeapon = new Crime(StaticStrings.FiringWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { CanReportBySound = true };
 
-        FiringSilencedWeapon = new Crime(StaticStrings.FiringSilencedWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true) { MaxReportingDistance = 15f };
+        FiringSilencedWeapon = new Crime(StaticStrings.FiringSilencedWeaponCrimeID, "Firing Weapon", 2, false, 9, true, true, true);
 
 
 

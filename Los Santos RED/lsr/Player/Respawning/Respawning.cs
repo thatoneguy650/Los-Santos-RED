@@ -622,57 +622,57 @@ public class Respawning// : IRespawning
     {
         CalculateBribe();
     }
-    public bool ConsentToSearch()
-    {
-        bool foundAnything = false;
-        List<string> foundWeaponResponse = new List<string>()
-                {
-                    $"Got enough weapons on you?",
-                    $"Seems you are starting a little weapon collection.",
-                    $"Might need to add this to my drop gun collection.",
-                };
-        List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
-        WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x=> x.WeaponLevel).FirstOrDefault();
-        if(worstWeapon != null && CurrentPlayer.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
-        {
-            foundAnything = true;
-            CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
-            Game.DisplayHelp("Illegal Weapons Found");
-            Game.DisplaySubtitle("~g~Cop: ~s~" + foundWeaponResponse.PickRandom());
-            GameFiber.Sleep(4000);
-        }
-        List<string> foundItemResponse = new List<string>()
-                {
-                    $"I don't think these are legal.",
-                    $"Seems you've got some illegal items here.",
-                    $"Guess you didn't want us to find that.",
-                };
-        List<ModItem> IllegalItems = CurrentPlayer.Inventory.GetIllicitItems();
-        if (IllegalItems != null && IllegalItems.Any() && CurrentPlayer.Violations.OtherViolations.AddFoundIllegalItem())
-        {
-            foundAnything = true;
-            CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
-            Game.DisplayHelp("Illegal Items Found");
-            Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
-            GameFiber.Sleep(4000);
-        }
-        List<string> foundNothingResponse = new List<string>()
-                {
-                    $"I guess you are clean. Don't hang around.",
-                    $"You're clean. Get lost.",
-                    $"Nothing? Really? Beat your feet.",
-                    $"Keep your nose clean. Get outta here.",
-                };
-        if (!foundAnything)
-        {
-            Game.DisplaySubtitle("~g~Cop: ~s~" + foundNothingResponse.PickRandom());
-            GameFiber.Sleep(4000);
-            ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
-            CurrentPlayer.Scanner.OnTalkedOutOfTicket();
-            return true;
-        }
-        return false;
-    }
+    //public bool ConsentToSearch()
+    //{
+    //    bool foundAnything = false;
+    //    List<string> foundWeaponResponse = new List<string>()
+    //            {
+    //                $"Got enough weapons on you?",
+    //                $"Seems you are starting a little weapon collection.",
+    //                $"Might need to add this to my drop gun collection.",
+    //            };
+    //    List<WeaponInformation> IllegalWeapons = CurrentPlayer.WeaponEquipment.GetIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
+    //    WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x=> x.WeaponLevel).FirstOrDefault();
+    //    if(worstWeapon != null && CurrentPlayer.Violations.WeaponViolations.AddFoundWeapon(worstWeapon))
+    //    {
+    //        foundAnything = true;
+    //        CurrentPlayer.WeaponEquipment.RemoveIllegalWeapons(CurrentPlayer.Licenses.HasValidCCWLicense(Time));
+    //        Game.DisplayHelp("Illegal Weapons Found");
+    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundWeaponResponse.PickRandom());
+    //        GameFiber.Sleep(4000);
+    //    }
+    //    List<string> foundItemResponse = new List<string>()
+    //            {
+    //                $"I don't think these are legal.",
+    //                $"Seems you've got some illegal items here.",
+    //                $"Guess you didn't want us to find that.",
+    //            };
+    //    List<ModItem> IllegalItems = CurrentPlayer.Inventory.GetIllicitItems();
+    //    if (IllegalItems != null && IllegalItems.Any() && CurrentPlayer.Violations.OtherViolations.AddFoundIllegalItem())
+    //    {
+    //        foundAnything = true;
+    //        CurrentPlayer.Inventory.RemoveIllicitInventoryItems();
+    //        Game.DisplayHelp("Illegal Items Found");
+    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundItemResponse.PickRandom());
+    //        GameFiber.Sleep(4000);
+    //    }
+    //    List<string> foundNothingResponse = new List<string>()
+    //            {
+    //                $"I guess you are clean. Don't hang around.",
+    //                $"You're clean. Get lost.",
+    //                $"Nothing? Really? Beat your feet.",
+    //                $"Keep your nose clean. Get outta here.",
+    //            };
+    //    if (!foundAnything)
+    //    {
+    //        Game.DisplaySubtitle("~g~Cop: ~s~" + foundNothingResponse.PickRandom());
+    //        GameFiber.Sleep(4000);
+    //        ResetPlayer(true, false, false, false, true, false, false, false, false, false, false, false, false, false, false, false, false);
+    //        CurrentPlayer.Scanner.OnTalkedOutOfTicket();
+    //        return true;
+    //    }
+    //    return false;
+    //}
     public void ConsentToSearchNew(ModUIMenu menu)
     {
 

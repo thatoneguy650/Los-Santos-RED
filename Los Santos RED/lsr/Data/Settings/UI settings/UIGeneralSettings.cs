@@ -28,6 +28,7 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool SetDeathEffect { get; set; }
     public bool DisplayBustedMessage { get; set; }
     public string BustedMessageText { get; set; }
+    public string DetainedMessageText { get; set; }
     public bool SetBustedEffect { get; set; }
     public bool SetRadarZoomDistance { get; set; }
     public float RadarZoomDistance_Wanted { get; set; }
@@ -64,6 +65,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         DisplayWastedMessage = true;
         WastedMessageText = "WASTED";
         BustedMessageText = "BUSTED";
+        DetainedMessageText = "DETAINED";
         AllowScreenEffectReset = true;
 
         DisplayButtonPrompts = true;

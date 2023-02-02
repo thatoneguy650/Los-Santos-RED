@@ -13,6 +13,11 @@ public class SecuritySettings : ISettingsDefaultable
     public bool ManageTasking { get; set; }
     [Description("Attach a blip to any spawned security pedestrian")]
     public bool ShowSpawnedBlips { get; set; }
+    [Description("Distance (in meters) security need to be within to detain the player.")]
+    public float DetainDistance { get; set; }
+    [Description("Allows detaining of the player by security.")]
+    public bool AllowDetainment { get; set; }
+
     public SecuritySettings()
     {
         SetDefault();
@@ -26,6 +31,9 @@ public class SecuritySettings : ISettingsDefaultable
 #if DEBUG
         ManageDispatching = true;
         ShowSpawnedBlips = true;
+        AllowDetainment = true;
 #endif
+        DetainDistance = 4.0f;
+        AllowDetainment = false;
     }
 }

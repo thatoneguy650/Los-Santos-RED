@@ -5,6 +5,7 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -28,6 +29,7 @@ public class BustedMenu : ModUIMenu
     private UIMenuItem GetBooked;
     private UIMenuItem AskForCrimes;
     private UIMenuItem ConsentToSearch;
+    private bool IsDetained => Player.WantedLevel == 0;
 
     public BustedMenu(MenuPool menuPool, IPedSwap pedSwap, IRespawning respawning, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, IPoliceRespondable policeRespondable, ITimeReportable time)
     {
@@ -75,7 +77,11 @@ public class BustedMenu : ModUIMenu
     {
         Menu.Clear();
         AddGeneralItems();
-        if (Player.WantedLevel <= 1)
+        if(IsDetained)
+        {
+            CreateDetainItems();
+        }
+        else if (Player.WantedLevel <= 1)
         {
             CreateLowLevelItems();
         }
@@ -85,78 +91,49 @@ public class BustedMenu : ModUIMenu
         }
         AddRespawningOptions();    
     }
+
+    private void CreateDetainItems()
+    {
+        AddListOffenses();
+        CrimeEvent highestPriorityCrimeEvent = Player.PoliceResponse.CrimesReported.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
+        if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCleanSearch) //Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnCleanSearch))
+        {
+            AddConsentToSearch();
+        }
+    }
     private void AddGeneralItems()
     {
-        ResistArrest = new UIMenuItem("Resist Arrest", "Immediately attempt to escape from police custody. Got ten angry cops around? Better hope you're ~r~strapped~s~.");
-        ResistArrest.RightBadge = UIMenuItem.BadgeStyle.Alert;
-        ResistArrest.Activated += (sender, selectedItem) =>
-        {
-            Respawning.Respawning.ResistArrest();
-            Menu.Visible = false;
-        };
-        Menu.AddItem(ResistArrest);
+        AddResist();
     }
     private void CreateLowLevelItems()
     {
-        AskForCrimes = new UIMenuItem("List Offenses", "Ask the officer to list the crimes your are ~y~suspected~s~ of committing. Innocent until proven guilty!");
-        AskForCrimes.Activated += (sender, selectedItem) =>
-        {
-            Menu.Visible = false;
-            Respawning.Respawning.AskAboutCrimes();
-            Show();
-        };
-        Menu.AddItem(AskForCrimes);
-
+        AddListOffenses();
         bool hasOption = false;
-
         CrimeEvent highestPriorityCrimeEvent = Player.PoliceResponse.CrimesObserved.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
         if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCleanSearch) //Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnCleanSearch))
         {
-            ConsentToSearch = new UIMenuItem("Consent To Search", "Consent to a ~y~search~s~ of your person. You have nothing to hide right?");
-            ConsentToSearch.RightBadge = UIMenuItem.BadgeStyle.Ammo;
-            ConsentToSearch.Activated += (sender, selectedItem) =>
-            {
-                Menu.Visible = false;
-                Respawning.Respawning.ConsentToSearchNew(this);
-            };
-            Menu.AddItem(ConsentToSearch);
+            AddConsentToSearch();
             hasOption = true;
         }
-
         if (Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnTalkItOut) && Respawning.Respawning.TimesTalked <= 0)
         {
-            TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket. Better be charming, others bring ~g~cash~s~.");
-            TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-            TalkItOut.Activated += (sender, selectedItem) =>
-            {
-                Menu.Visible = false;
-                Respawning.Respawning.TalkOutOfTicket(this);
-            };
-            Menu.AddItem(TalkItOut);
+            AddTalkItOut();
             hasOption = true;
         }
-
         if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCite)
         {
-            PayFine = new UIMenuItem("Pay Citation", $"Pay the citation to be on your way. The LSPD slush fund isn't going to grow itself is it? Help feed the ~o~beast~s~!") { RightLabel = $"{Player.FineAmount():C0}" };
-            PayFine.RightBadge = UIMenuItem.BadgeStyle.Crown;
-            PayFine.Activated += (sender, selectedItem) =>
-            {
-                Respawning.Respawning.PayFine();
-                Menu.Visible = false;
-            };
-            Menu.AddItem(PayFine);
+            AddPayCitation();
             hasOption = true;
         }   
         if(!hasOption)
         {
-            AddSurrenderOptions();
+            AddSurrenderToPolice();
         }
     }
     private void CreateHighLevelItems()
     {
-        AddBribeItems();
-        AddSurrenderOptions();
+        AddBribeOptions();
+        AddSurrenderToPolice();
     }
     private void AddRespawningOptions()
     {
@@ -175,10 +152,91 @@ public class BustedMenu : ModUIMenu
         };
         Menu.AddItem(TakeoverRandomPed);
     }
-    private void AddBribeItems()
+
+
+
+    private void AddResist()
     {
+        string resistArrestText = "Resist Arrest";
+        string resistArrestDescription = "Immediately attempt to escape from police custody. Got ten angry cops around? Better hope you're ~r~strapped~s~.";
+        if (IsDetained)
+        {
+            resistArrestText = "Resist Detainment";
+            resistArrestDescription = "Immediately attempt to escape from custody. They wouldn't shoot you in the back would they?";
+        }
+        ResistArrest = new UIMenuItem(resistArrestText, resistArrestDescription);
+        ResistArrest.RightBadge = UIMenuItem.BadgeStyle.Alert;
+        ResistArrest.Activated += (sender, selectedItem) =>
+        {
+            Respawning.Respawning.ResistArrest();
+            Menu.Visible = false;
+        };
+        Menu.AddItem(ResistArrest);
+    }
+    private void AddListOffenses()
+    {
+        AskForCrimes = new UIMenuItem("List Offenses", "Ask the officer to list the crimes your are ~y~suspected~s~ of committing. Innocent until proven guilty!");
+        AskForCrimes.Activated += (sender, selectedItem) =>
+        {
+            Menu.Visible = false;
+            Respawning.Respawning.AskAboutCrimes();
+            Show();
+        };
+        Menu.AddItem(AskForCrimes);
+    }
+    private void AddConsentToSearch()
+    {
+        ConsentToSearch = new UIMenuItem("Consent To Search", "Consent to a ~y~search~s~ of your person. You have nothing to hide right?");
+        ConsentToSearch.RightBadge = UIMenuItem.BadgeStyle.Ammo;
+        ConsentToSearch.Activated += (sender, selectedItem) =>
+        {
+            Menu.Visible = false;
+            Respawning.Respawning.ConsentToSearchNew(this);
+        };
+        Menu.AddItem(ConsentToSearch);
+    }
+    private void AddPayCitation()
+    {
+        string payCitationText = "Pay Citation";
+        string payCitationDescription = $"Pay the citation to be on your way. The LSPD slush fund isn't going to grow itself is it? Help feed the ~o~beast~s~!";
+        if (IsDetained)
+        {
+            payCitationText = "Pay Citation";
+            payCitationDescription = "Pay the citation to be on your way.";
+        }
+        PayFine = new UIMenuItem(payCitationText, payCitationDescription) { RightLabel = $"{Player.FineAmount():C0}" };
+        PayFine.RightBadge = UIMenuItem.BadgeStyle.Crown;
+        PayFine.Activated += (sender, selectedItem) =>
+        {
+            Respawning.Respawning.PayFine();
+            Menu.Visible = false;
+        };
+        Menu.AddItem(PayFine);
+    }
+    private void AddTalkItOut()
+    {
+        TalkItOut = new UIMenuItem("Talk It Out", $"Attempt to talk your way out of the ticket. Better be charming, others bring ~g~cash~s~.");
+        TalkItOut.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        TalkItOut.Activated += (sender, selectedItem) =>
+        {
+            Menu.Visible = false;
+            Respawning.Respawning.TalkOutOfTicket(this);
+        };
+        Menu.AddItem(TalkItOut);
+    }
+
+
+    private void AddBribeOptions()
+    {
+        string bribeText = "Bribe Police";
+        string bribeDescription = "Bribe the police to let you go. Can't buy a boat on a cop's salary can you? Don't be cheap or you will regret it.";
+        if (IsDetained)
+        {
+            bribeText = "Bribe";
+            bribeDescription = "Pay a Bribe to get out of trouble. Don't be cheap or you will regret it.";
+        }
         Respawning.Respawning.CalulateBribe();
-        Bribe = new UIMenuItem("Bribe Police", "Bribe the police to let you go. Can't buy a boat on a cop's salary can you? Don't be cheap or you will regret it.");
+        Bribe = new UIMenuItem(bribeText, bribeDescription);
 
         if (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmount || (Settings.SettingsManager.RespawnSettings.ShowRequiredBribeAmountControllerOnly && Respawning.IsUsingController))
         {
@@ -205,8 +263,16 @@ public class BustedMenu : ModUIMenu
         }
         Menu.AddItem(Bribe);
     }
-    private void AddSurrenderOptions()//fallback, always works
+    private void AddSurrenderToPolice()//fallback, always works
     {
+        string surrenderText = "Surrender";
+        string surrenderDescription = "Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~San Andreas~s~ does't it? Lose bail money, guns, and drugs at least.";
+        if (IsDetained)
+        {
+            surrenderText = "Surrender";
+            surrenderDescription = "Get transferred to police custody. Lose bail money, guns, and drugs at least.";
+        }
+
         if (Settings.SettingsManager.RespawnSettings.ForceBooking && 1 == 0)
         {
             if (Player.IsBeingBooked)
@@ -232,7 +298,7 @@ public class BustedMenu : ModUIMenu
         }
         else
         {
-            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Surrender", "Surrender and get out on bail. Due to jail overcrowding, bail is granted regardless of the offense. Makes you feel safe in ~p~San Andreas~s~ does't it? Lose bail money, guns, and drugs at least.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
             Surrender.Activated += (sender, selectedItem) =>
             {
                 Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
@@ -241,4 +307,6 @@ public class BustedMenu : ModUIMenu
             Menu.AddItem(Surrender);
         }
     }
+
+
 }

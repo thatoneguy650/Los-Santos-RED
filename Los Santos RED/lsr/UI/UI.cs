@@ -317,7 +317,7 @@ public class UI : IMenuProvideable
                 }
                 if (Settings.SettingsManager.UIGeneralSettings.DisplayBustedMessage)
                 {
-                    BigMessage.MessageInstance.ShowColoredShard(Settings.SettingsManager.UIGeneralSettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
+                    BigMessage.MessageInstance.ShowColoredShard(DisplayablePlayer.IsNotWanted ? Settings.SettingsManager.UIGeneralSettings.DetainedMessageText : Settings.SettingsManager.UIGeneralSettings.BustedMessageText, "", HudColor.Black, HudColor.Blue, 2000);
                 }
                 StartedBustedEffect = true;
             }

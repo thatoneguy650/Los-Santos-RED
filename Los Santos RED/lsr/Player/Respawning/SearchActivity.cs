@@ -167,6 +167,15 @@ public class SearchActivity
     private void TaskCopToDesiredPosition()
     {
         NativeFunction.Natives.CLEAR_PED_TASKS(Cop.Pedestrian);
+
+        //NativeFunction.Natives.TASK_GOTO_ENTITY_OFFSET(Cop.Pedestrian, Player.Character,-1,1.0f,-180f,1.0f,0);//does the same as below, but worse
+        //TASK_GOTO_ENTITY_OFFSET( PED_INDEX PedIndex, ENTITY_INDEX EntityIndex,
+        //INT Time = DEFAULT_TIME_BEFORE_WARP,
+        //FLOAT SeekRadius = DEFAULT_SEEK_RADIUS,
+        //FLOAT SeekAngle = 0.0,
+        //FLOAT MoveBlendRatio = PEDMOVEBLENDRATIO_RUN,
+        //ESEEK_ENTITY_OFFSET_FLAGS OffsetFlags = ESEEK_DEFAULT ) = "0x6624b56c8f9a7bbf"
+
         NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Cop.Pedestrian, CopTargetPosition.X, CopTargetPosition.Y, CopTargetPosition.Z, 1.0f, -1, CopTargetHeading, 0.1f);
     }
     private void CopMoveLoop()
@@ -330,8 +339,9 @@ public class SearchActivity
     }
     private void DoWeaponSearch()
     {
+        bool hasCCW = Player.Licenses.HasValidCCWLicense(Time);
         DidWeaponSearch = true;
-        List<WeaponInformation> IllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time));
+        List<WeaponInformation> IllegalWeapons = Player.WeaponEquipment.GetIllegalWeapons(hasCCW);
         WeaponInformation worstWeapon = IllegalWeapons.OrderByDescending(x => x.WeaponLevel).FirstOrDefault();
         if(worstWeapon == null)
         {
@@ -354,10 +364,10 @@ public class SearchActivity
             EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
             if (RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage * TimesToCheck))
             {
-                Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon);
+                Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon, hasCCW);
                 FoundIllegalWeapons = true;
                 FoundIllegalItems = true;
-                Player.WeaponEquipment.RemoveIllegalWeapons(Player.Licenses.HasValidCCWLicense(Time));
+                Player.WeaponEquipment.RemoveIllegalWeapons(hasCCW);
                 EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
                 break;
             }

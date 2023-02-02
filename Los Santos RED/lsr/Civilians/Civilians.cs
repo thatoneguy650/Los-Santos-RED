@@ -336,17 +336,19 @@ public class Civilians
             }
         }
 
-        if (PoliceRespondable.IsNotWanted)
+        if (Settings.SettingsManager.SecuritySettings.AllowDetainment && PoliceRespondable.IsNotWanted)
         {
-            if (PoliceRespondable.IsBustable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsStill)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldBustPlayer))
+            if (PoliceRespondable.IsDetainable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsStill)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldDetainPlayer))
             {
                 GameFiber.Yield();
                 PoliceRespondable.Arrest();
+                EntryPoint.WriteToConsole("Security Detain 1");
             }
-            if (PoliceRespondable.IsBustable && PoliceRespondable.IsAttemptingToSurrender && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.DistanceToPlayer <= 10f && x.HeightToPlayer <= 5f))
+            if (PoliceRespondable.IsDetainable && PoliceRespondable.IsAttemptingToSurrender && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.DistanceToPlayer <= 10f && x.HeightToPlayer <= 5f))
             {
                 GameFiber.Yield();
                 PoliceRespondable.Arrest();
+                EntryPoint.WriteToConsole("Security Detain 2");
             }
         }
 

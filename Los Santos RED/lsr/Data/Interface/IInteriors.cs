@@ -8,6 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IInteriors
     {
-        Interior GetInterior(int interiorID);
+        Interior GetInteriorByInternalID(int interiorID);
+        Interior GetInteriorByLocalID(int interiorID);
     }
 }

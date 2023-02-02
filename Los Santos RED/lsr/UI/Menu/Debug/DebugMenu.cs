@@ -1195,7 +1195,7 @@ public class DebugMenu : ModUIMenu
     private void LogGameInterior()
     {
         string text1 = NativeHelper.GetKeyboardInput("Name");
-        string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.ID}, \"{text1}\"),";
+        string toWrite = $"new Interior({Player.CurrentLocation?.CurrentInterior?.LocalID}, \"{text1}\"),";
         WriteToLogInteriors(toWrite);
     }
     private void WriteToLogCameraPosition(String TextToLog)
@@ -1402,8 +1402,11 @@ public class DebugMenu : ModUIMenu
             Vector3 DesiredPos = ClosestEntity.GetOffsetPositionFront(-0.5f);
             EntryPoint.WriteToConsole($"Closest Object = {ClosestEntity.Model.Name} {ClosestEntity.Model.Hash}", 5);
             EntryPoint.WriteToConsole($"Closest Object X {ClosestEntity.Model.Dimensions.X} Y {ClosestEntity.Model.Dimensions.Y} Z {ClosestEntity.Model.Dimensions.Z}", 5);
+
+            EntryPoint.WriteToConsole($"Closest: {ClosestEntity.Model.Hash},new Vector3({ClosestEntity.Position.X}f, {ClosestEntity.Position.Y}f, {ClosestEntity.Position.Z}f)", 5);
+
             uint GameTimeStartedDisplaying = Game.GameTime;
-            while (Game.GameTime - GameTimeStartedDisplaying <= 5000)
+            while (Game.GameTime - GameTimeStartedDisplaying <= 2000)
             {
                 Rage.Debug.DrawArrowDebug(DesiredPos + new Vector3(0f, 0f, 0.5f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
                 GameFiber.Yield();

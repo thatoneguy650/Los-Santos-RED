@@ -443,7 +443,11 @@ public class Chase : ComplexTask
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
+                    }//NATIVE PROC TASK_GO_TO_ENTITY(PED_INDEX PedIndex, ENTITY_INDEX EntityIndex, INT Time = DEFAULT_TIME_BEFORE_WARP,
+                     //FLOAT SeekRadius = DEFAULT_SEEK_RADIUS,
+                     //FLOAT MoveBlendRatio = PEDMOVEBLENDRATIO_RUN,
+                     //FLOAT SlowDownDistance = 2.0,
+                     //EGOTO_ENTITY_FLAGS GotoFlags = EGOTO_ENTITY_DEFAULT) = "0xc149e50fbb27dd70"
                 }
                 //EntryPoint.WriteToConsole(string.Format("Started Exit Car: {0}", Ped.Pedestrian.Handle));
             }
