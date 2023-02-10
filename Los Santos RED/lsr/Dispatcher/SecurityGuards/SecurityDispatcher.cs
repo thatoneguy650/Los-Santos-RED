@@ -94,7 +94,6 @@ public class SecurityDispatcher
     }
     private void HandleStationSpawns()
     {
-        //List<InteractableLocation> possibleSpawnLocations = PlacesOfInterest.InteractableLocations().ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList();
         if (HasNeedToDispatchToStations)
         {
             foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())

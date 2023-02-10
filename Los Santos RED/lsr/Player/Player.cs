@@ -723,7 +723,7 @@ namespace Mod
         }
         public void LocationUpdate()
         {
-            CurrentLocation.Update(Character);
+            CurrentLocation.Update(Character, IsInVehicle);
             if (CurrentLocation.HasBeenOnHighway && !HasThrownGotOnFreeway)
             {
                 OnGotOnFreeway();

@@ -10,8 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAgencyAssignable
+public class Hospital : InteractableLocation, ILocationRespawnable
 {
+    private List<MedicalTreatment> MedicalTreatments;
     public Hospital(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -22,16 +23,8 @@ public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAge
     }
     public override string TypeName { get; set; } = "Hospital";
     public override int MapIcon { get; set; } = (int)BlipSprite.Hospital;
-
-
-
-    private List<MedicalTreatment> MedicalTreatments;
-
-
-
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAgencyID != null)
@@ -90,7 +83,6 @@ public class Hospital : InteractableLocation, ILocationRespawnable, ILocationAge
             }, "BarInteract");
         }
     }
-
     private void CreateHospitalMenu()
     {
         UIMenu treatmentOptionsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Treatment Options");

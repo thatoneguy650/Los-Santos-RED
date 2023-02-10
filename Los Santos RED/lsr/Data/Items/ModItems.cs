@@ -345,7 +345,7 @@ public class ModItems : IModItems
                 ModelItemID = "prop_cs_pills",IntoxicantName = "Zombix", AmountPerPackage = 10, ItemSubType = ItemSubType.Medication, FindDuringLootingPercentage = 1, AlwaysChangesHealth = true, HealthChangeAmount = 50 },
             
             new IngestItem("Wach-Auf Caffeine Pills","When you need to Wach-Auf, but there's no time to delay! Remember, sleep is for the weak!", ItemType.Drugs) { AmountPerPackage = 25,
-                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Narcotic,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindDuringLootingPercentage = 5 },
+                ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Medication,SleepChangeAmount = 35,ThirstChangeAmount = -5,HungerChangeAmount = -5, FindDuringLootingPercentage = 5 },
 
             new IngestItem("Hingmyralgan","For Brain-Ache and other pains!", ItemType.Drugs) { AmountPerPackage = 25,
                 ModelItemID = "prop_cs_pills", ItemSubType = ItemSubType.Painkiller,HealthChangeAmount = 20, FindDuringLootingPercentage = 15, AlwaysChangesHealth = true },

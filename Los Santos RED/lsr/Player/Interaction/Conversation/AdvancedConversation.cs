@@ -23,6 +23,7 @@ public class AdvancedConversation
     private IGangs Gangs;
     private IGangTerritories GangTerritories;
     private ISpeeches Speeches;
+    private UIMenu QuestionSubMenu;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
     public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches)
     {
@@ -77,7 +78,7 @@ public class AdvancedConversation
     }
     private void UpdateMenuItems()
     {
-        UIMenuItem transactionInteract = new UIMenuItem("Start Transact", "Start a transaction with the current ped.");
+        UIMenuItem transactionInteract = new UIMenuItem("Begin Transaction", "Buy or sell with the current ped.");
         transactionInteract.Activated += (menu, item) =>
         {
             menu.Visible = false;
@@ -88,6 +89,8 @@ public class AdvancedConversation
             ConversationMenu.AddItem(transactionInteract);
         }
         AddAdvancedItems();
+        QuestionSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Ask A Question");
+        QuestionSubMenu.RemoveBanner();
         AddDrugItemQuestions();
         AddGangItemQuestions();
         UIMenuItem Cancel = new UIMenuItem("Cancel", "Stop asking questions");
@@ -104,7 +107,7 @@ public class AdvancedConversation
     }
     private void AddAdvancedItems()
     {
-        UIMenu speechSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Specific Replies");
+        UIMenu speechSubMenu = MenuPool.AddSubMenu(ConversationMenu, "Say Specific Reply");
         speechSubMenu.RemoveBanner();
         foreach (var speechGroup in Speeches.SpeechLookups.Where(x=> x.CanUseInConversation).GroupBy(x => x.GroupName).Select(x => x))
         {
@@ -133,20 +136,20 @@ public class AdvancedConversation
     }
     private void AddGangItemQuestions()
     {
-        UIMenuListScrollerItem<Gang> AskAboutGangDenScroller = new UIMenuListScrollerItem<Gang>("Gang Hangouts", "Ask where to find a specific gang hangout", Gangs.AllGangs);
+        UIMenuListScrollerItem<Gang> AskAboutGangDenScroller = new UIMenuListScrollerItem<Gang>("Ask About Hangouts", "Ask where to find a specific gang hangout", Gangs.AllGangs);
         AskAboutGangDenScroller.Activated += (menu, item) =>
         {
             menu.Visible = false;
             AskAboutGangDen(AskAboutGangDenScroller.SelectedItem);
         };
-        UIMenuListScrollerItem<Gang> AskAboutGangTerritoryScroller = new UIMenuListScrollerItem<Gang>("Gang Territory", "Ask about the gangs territory", Gangs.AllGangs);
+        UIMenuListScrollerItem<Gang> AskAboutGangTerritoryScroller = new UIMenuListScrollerItem<Gang>("Ask About Territory", "Ask about the gangs territory", Gangs.AllGangs);
         AskAboutGangTerritoryScroller.Activated += (menu, item) =>
         {
             menu.Visible = false;
             AskAboutGangTerritory(AskAboutGangTerritoryScroller.SelectedItem);
         };
-        ConversationMenu.AddItem(AskAboutGangDenScroller);
-        ConversationMenu.AddItem(AskAboutGangTerritoryScroller);      
+        QuestionSubMenu.AddItem(AskAboutGangDenScroller);
+        QuestionSubMenu.AddItem(AskAboutGangTerritoryScroller);      
     }
     private void AskAboutGangDen(Gang gang)
     {
@@ -212,13 +215,13 @@ public class AdvancedConversation
     private void AddDrugItemQuestions()
     {
         List<ModItem> dealerItems = ModItems.AllItems().Where(x => x.ItemType == ItemType.Drugs && x.ItemSubType == ItemSubType.Narcotic).ToList();
-        UIMenuListScrollerItem<ModItem> AskForItemDealer = new UIMenuListScrollerItem<ModItem>("Dealers", "Ask where to find dealers for an item", dealerItems);
+        UIMenuListScrollerItem<ModItem> AskForItemDealer = new UIMenuListScrollerItem<ModItem>("Ask About Dealers", "Ask where to find dealers for an item", dealerItems);
         AskForItemDealer.Activated += (menu, item) =>
         {
             menu.Visible = false;
             AskForItem(AskForItemDealer.SelectedItem, true);
         };
-        UIMenuListScrollerItem<ModItem> AskForItemCustomer = new UIMenuListScrollerItem<ModItem>("Customers", "Ask where to find customers for an item", dealerItems);
+        UIMenuListScrollerItem<ModItem> AskForItemCustomer = new UIMenuListScrollerItem<ModItem>("Ask About Customers", "Ask where to find customers for an item", dealerItems);
         AskForItemCustomer.Activated += (menu, item) =>
         {
             menu.Visible = false;
@@ -226,8 +229,8 @@ public class AdvancedConversation
         };
         if (dealerItems.Any())
         {
-            ConversationMenu.AddItem(AskForItemDealer);
-            ConversationMenu.AddItem(AskForItemCustomer);
+            QuestionSubMenu.AddItem(AskForItemDealer);
+            QuestionSubMenu.AddItem(AskForItemCustomer);
         }
     }
     private void AskForItem(ModItem modItem, bool isPurchase)

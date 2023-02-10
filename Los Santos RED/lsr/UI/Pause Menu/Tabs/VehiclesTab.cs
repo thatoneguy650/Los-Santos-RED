@@ -71,7 +71,7 @@ public class VehiclesTab
             if (car.Vehicle.Exists())
             {
                 LocationData myData = new LocationData(car.Vehicle, Streets, Zones, Interiors);
-                myData.Update(car.Vehicle);
+                myData.Update(car.Vehicle, false);
 
                 string StreetText = "";
                 if (myData.CurrentStreet != null)

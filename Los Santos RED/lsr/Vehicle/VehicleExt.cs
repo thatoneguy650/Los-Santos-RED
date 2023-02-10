@@ -21,7 +21,7 @@ namespace LSR.Vehicles
         private uint GameTimeEntered = 0;
         private bool HasAttemptedToLock;
         private ISettingsProvideable Settings;
-        private int Health = 1000;      
+        private int Health = 1000;
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
 
@@ -41,8 +41,8 @@ namespace LSR.Vehicles
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
         public Indicators Indicators { get; set; }
-       public Engine Engine { get; set; }
-        public FuelTank FuelTank { get; set; }  
+        public Engine Engine { get; set; }
+        public FuelTank FuelTank { get; set; }
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -125,9 +125,9 @@ namespace LSR.Vehicles
         {
             get
             {
-                if (vehicleClass == VehicleClass.Compact || vehicleClass == VehicleClass.Coupe || vehicleClass == VehicleClass.Muscle || vehicleClass == VehicleClass.OffRoad || vehicleClass == VehicleClass.Sedan || vehicleClass == VehicleClass.Sport 
-                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle 
-                    || vehicleClass == VehicleClass.Emergency || vehicleClass == VehicleClass.Industrial || vehicleClass == VehicleClass.Utility || vehicleClass == VehicleClass.Boat || vehicleClass == VehicleClass.Helicopter 
+                if (vehicleClass == VehicleClass.Compact || vehicleClass == VehicleClass.Coupe || vehicleClass == VehicleClass.Muscle || vehicleClass == VehicleClass.OffRoad || vehicleClass == VehicleClass.Sedan || vehicleClass == VehicleClass.Sport
+                    || vehicleClass == VehicleClass.SportClassic || vehicleClass == VehicleClass.Super || vehicleClass == VehicleClass.SUV || vehicleClass == VehicleClass.Van || vehicleClass == VehicleClass.Motorcycle
+                    || vehicleClass == VehicleClass.Emergency || vehicleClass == VehicleClass.Industrial || vehicleClass == VehicleClass.Utility || vehicleClass == VehicleClass.Boat || vehicleClass == VehicleClass.Helicopter
                     || vehicleClass == VehicleClass.Plane || vehicleClass == VehicleClass.Service || vehicleClass == VehicleClass.Military || vehicleClass == VehicleClass.Commercial)
                 {
                     return true;
@@ -345,11 +345,11 @@ namespace LSR.Vehicles
         {
             IsStolen = false;
             WasReportedStolen = false;
-            if(CarPlate != null)
+            if (CarPlate != null)
             {
                 CarPlate.IsWanted = false;
             }
-            if(OriginalLicensePlate != null)
+            if (OriginalLicensePlate != null)
             {
                 OriginalLicensePlate.IsWanted = false;
             }
@@ -517,7 +517,7 @@ namespace LSR.Vehicles
                 if (Vehicle.Exists())
                 {
                     //EntryPoint.WriteToConsole(string.Format("ChangeLivery! No Match for Vehicle {0} for {1}", Vehicle.Model.Name, AssignedAgency.Initials));
-                    if(Vehicle.IsPersistent)
+                    if (Vehicle.IsPersistent)
                     {
                         EntryPoint.PersistentVehiclesDeleted++;
                     }
@@ -784,14 +784,58 @@ namespace LSR.Vehicles
         public void ResetBecameEmpty()
         {
             GameTimeBecameEmpty = 0;
-            
+
         }
         public void SetBecameEmpty()
         {
-            if(GameTimeBecameEmpty == 0)
+            if (GameTimeBecameEmpty == 0)
             {
                 GameTimeBecameEmpty = Game.GameTime;
-            }    
+            }
+        }
+
+        public float GetLightEmissive(Vehicle vehicle, LightID index)//from +Vincent in discord
+        {
+            unsafe
+            {
+                IntPtr v = vehicle.MemoryAddress;
+                IntPtr drawHandler = *(IntPtr*)((IntPtr)v + 0x48);
+                if (drawHandler == IntPtr.Zero)
+                {
+                    return -1f;
+                }
+
+                IntPtr customShaderEffect = *(IntPtr*)(drawHandler + 0x20);
+                if (customShaderEffect == IntPtr.Zero)
+                {
+                    return -1f;
+                }
+
+                float* lightEmissives = (float*)(customShaderEffect + 0x20);
+                return lightEmissives[(int)index];
+            }
+        }
+
+        public enum LightID
+        {
+            defaultlight = 0,
+            headlight_l = 1,
+            headlight_r = 2,
+            taillight_l = 3,
+            taillight_r = 4,
+            indicator_lf = 5,
+            indicator_rf = 6,
+            indicator_lr = 7,
+            indicator_rr = 8,
+            brakelight_l = 9,
+            brakelight_r = 10,
+            brakelight_m = 11,
+            reversinglight_l = 12,
+            reversinglight_r = 13,
+            extralight_1 = 14,
+            extralight_2 = 15,
+            extralight_3 = 16,
+            extralight_4 = 17
         }
 
     }

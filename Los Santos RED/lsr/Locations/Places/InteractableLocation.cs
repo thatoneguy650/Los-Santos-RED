@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 
-public class InteractableLocation : BasicLocation
+public class InteractableLocation : BasicLocation, ILocationDispatchable
 {
 
 

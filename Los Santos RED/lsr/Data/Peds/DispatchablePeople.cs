@@ -1263,6 +1263,7 @@ public class DispatchablePeople : IDispatchablePeople
             //Dark Grey Unbuttoned Suit with Red Tie and buttoned undershirt
             new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) { 
                 RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
                  ,RequiredVariation = new PedVariation(new List<PedComponent>() {
                      new PedComponent(3, 4, 0, 0),
                      new PedComponent(4, 10, 0, 0),
@@ -1308,6 +1309,7 @@ public class DispatchablePeople : IDispatchablePeople
             //Dark Grey Unbuttoned Suit with unbuttoned undershirt
             new DispatchablePerson("mp_m_freemode_01",100,100,5,10,400,600,0,1) { 
                 RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" }
                 ,RequiredVariation = new PedVariation(new List<PedComponent>() {
                      new PedComponent(3, 4, 0, 0),
                      new PedComponent(4, 10, 0, 0),

@@ -912,7 +912,7 @@ public class AIApprehend : ComplexTask
                     {
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 4.0f, true, false, (uint)FiringPattern.DelayFireByOneSecond); //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                         NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, OtherTarget.Pedestrian, 2000, (uint)FiringPattern.DelayFireByOneSecond);
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -926,7 +926,7 @@ public class AIApprehend : ComplexTask
                     {
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
+                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 4.0f, true, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                         NativeFunction.CallByName<bool>("TASK_SHOOT_AT_ENTITY", 0, OtherTarget.Pedestrian, 2000, (uint)FiringPattern.DelayFireByOneSecond);
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -974,14 +974,15 @@ public class AIApprehend : ComplexTask
         if (Ped.Pedestrian.Exists() && OtherTarget.Pedestrian.Exists())
         {
             CurrentSubTask = SubTask.AimTaser;
+
+
             if (LocalDistance > 5f)
             {
                 unsafe
                 {
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, GoToDistance, 20f);
-                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
+                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, false, GoToDistance, 4.0f, true, false, (uint)FiringPattern.DelayFireByOneSecond); //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -994,13 +995,45 @@ public class AIApprehend : ComplexTask
                 {
                     int lol = 0;
                     NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
+                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, false, GoToDistance, 4.0f, true, false, (uint)FiringPattern.DelayFireByOneSecond);//NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, OtherTarget.Pedestrian, OtherTarget.Pedestrian, 200f, true, GoToDistance, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                     NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                     NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
             }
+
+
+
+
+
+            //if (LocalDistance > 5f)
+            //{
+            //    unsafe
+            //    {
+            //        int lol = 0;
+            //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //        NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, OtherTarget.Pedestrian, GoToDistance, 20f);
+            //        NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
+            //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //    }
+            //}
+            //else
+            //{
+            //    unsafe
+            //    {
+            //        int lol = 0;
+            //        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //        NativeFunction.CallByName<bool>("TASK_AIM_GUN_AT_ENTITY", 0, OtherTarget.Pedestrian, -1, false);
+            //        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            //        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //    }
+            //}
         }
     }
     private void TaskLookAt()

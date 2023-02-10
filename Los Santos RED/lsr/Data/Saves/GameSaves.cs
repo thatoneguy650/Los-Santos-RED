@@ -72,7 +72,6 @@ public class GameSaves : IGameSaves
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     public bool IsPlaying(GameSave toCheck) => PlayingSave != null && toCheck != null && PlayingSave == toCheck;
-
     private void DefaultConfig()
     {
         GameSaveList = new List<GameSave>();
@@ -617,8 +616,6 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(gameSave);
     }
-
-
     private void SetDefault(GameSave ExampleGameSave)
     {
         //Position
@@ -715,7 +712,6 @@ public class GameSaves : IGameSaves
 
         GameSaveList.Add(ExampleGameSave);
     }
-
     public void DeleteSave_Obsolete(string playerName, string modelName)
     {
         GameSave toDelete = GameSaveList.FirstOrDefault(x => x.PlayerName == playerName && x.ModelName == modelName);

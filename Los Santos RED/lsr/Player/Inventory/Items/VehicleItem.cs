@@ -422,6 +422,12 @@ public class VehicleItem : ModItem
             return;
         }
         HasLivery1 = true;
+
+        if(VehicleMenu == null)
+        {
+            return;
+        }
+
         liveryFullMenu = Transaction.MenuPool.AddSubMenu(VehicleMenu, "Liveries");
         liveryFullMenu.SubtitleText = "LIVERIES";
         VehicleMenu.MenuItems[VehicleMenu.MenuItems.Count() - 1].Description = "Pick Livery";

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Prison : InteractableLocation, ILocationDispatchable, ILocationRespawnable, ILocationAgencyAssignable
+public class Prison : InteractableLocation, ILocationRespawnable
 {
     public Prison(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -20,21 +20,8 @@ public class Prison : InteractableLocation, ILocationDispatchable, ILocationResp
     }
     public override string TypeName { get; set; } = "Prison";
     public override int MapIcon { get; set; } = 188;
-    //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
-    //public string AssignedAgencyID { get; set; }
-
-    //[XmlIgnore]
-    //public Agency AssignedAgency { get; set; }
-
-    //[XmlIgnore]
-    //public bool IsDispatchFilled { get; set; } = false;
-
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAgencyID != null)

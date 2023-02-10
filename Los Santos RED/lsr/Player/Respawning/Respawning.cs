@@ -449,13 +449,13 @@ public class Respawning// : IRespawning
         int HighestWantedLevel = CurrentPlayer.WantedLevel;
 
         BailFee = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
-        BailFee += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailWantedLevelScale;
+        BailFee += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailPoliceKilledMultiplier;
         BailFee += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailPoliceInjuredMultiplier;
         BailFee += CiviliansKilled * Settings.SettingsManager.RespawnSettings.PoliceBailCiviliansKilledMultiplier;
 
 
         BailDuration = HighestWantedLevel * Settings.SettingsManager.RespawnSettings.PoliceBailDurationWantedLevelScale;//max wanted last life wil get reset when calling resetplayer
-        BailDuration += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationWantedLevelScale;
+        BailDuration += PoliceKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationPoliceKilledMultiplier;
         BailDuration += PoliceInjured * Settings.SettingsManager.RespawnSettings.PoliceBailDurationPoliceInjuredMultiplier;
         BailDuration += CiviliansKilled * Settings.SettingsManager.RespawnSettings.PoliceBailDurationCiviliansKilledMultiplier;
 

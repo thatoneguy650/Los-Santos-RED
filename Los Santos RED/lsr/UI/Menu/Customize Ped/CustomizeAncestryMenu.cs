@@ -107,7 +107,10 @@ public class CustomizeAncestryMenu
         AncestrySubMenu.Clear();
         if (PedCustomizer.PedModelIsFreeMode)
         {
-            PedCustomizer.WorkingVariation.HeadBlendData = new HeadBlendData(0, 0, 0, 0, 0, 0, 1.0f, 1.0f, 0.0f);
+            if (PedCustomizer.WorkingVariation.HeadBlendData == null)
+            {
+                PedCustomizer.WorkingVariation.HeadBlendData = new HeadBlendData(0, 0, 0, 0, 0, 0, 1.0f, 1.0f, 0.0f);
+            }
         }
         RandomizeHead = new UIMenuItem("Randomize", "Randomize head data");
         RandomizeHead.Activated += (sender, selectedItem) =>

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class PoliceStation : InteractableLocation, ILocationDispatchable, ILocationRespawnable, ILocationAgencyAssignable
+public class PoliceStation : InteractableLocation, ILocationRespawnable
 {
     public PoliceStation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -20,18 +20,8 @@ public class PoliceStation : InteractableLocation, ILocationDispatchable, ILocat
     }
     public override string TypeName { get; set; } = "Police Station";
     public override int MapIcon { get; set; } = (int)BlipSprite.PoliceStation;
-    //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-    //public string AssignedAgencyID { get; set; }
-    //[XmlIgnore]
-    //public Agency AssignedAgency { get; set; }
-    //[XmlIgnore]
-    //public bool IsDispatchFilled { get; set; } = false;
-
-
     public Vector3 RespawnLocation { get; set; }
     public float RespawnHeading { get; set; }
-
     public void StoreData(IAgencies agencies)
     {
         if (AssignedAgencyID != null)

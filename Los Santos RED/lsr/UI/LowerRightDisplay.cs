@@ -302,43 +302,37 @@ public class LowerRightDisplay
     private string GetStreetDisplay(bool includeAddress)
     {
         string StreetDisplay = "";
-        if (1 == 0)//DisplayablePlayer.CurrentShop != null)//add back in some capacity?
+        if (DisplayablePlayer.CurrentLocation.IsInside && !DisplayablePlayer.IsInVehicle)
         {
-            //StreetDisplay += $"{UI.CurrentDefaultTextColor}Inside ~p~{DisplayablePlayer.CurrentShop.Name}{UI.CurrentDefaultTextColor}";
-        }
-        else
-        {
-            if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
+            if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
             {
-                StreetDisplay = $"{UI.CurrentDefaultTextColor}";
-                if (includeAddress)
-                {
-                    StreetDisplay += $"{NativeHelper.CellToStreetNumber(DisplayablePlayer.CellX, DisplayablePlayer.CellY)}";
-                }
-                if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
-                {
-                    StreetDisplay += "~y~";
-                }
-                StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{UI.CurrentDefaultTextColor}";
-                if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
-                {
-                    StreetDisplay += $" at {UI.CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {UI.CurrentDefaultTextColor}";
-                }
-            }
-            else if (DisplayablePlayer.CurrentLocation.IsInside)
-            {
-                if (DisplayablePlayer.CurrentLocation.CurrentInterior?.Name == "")
-                {
 #if DEBUG
-                    StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.LocalID}) {UI.CurrentDefaultTextColor}";
+                StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name} ({DisplayablePlayer.CurrentLocation.CurrentInterior?.LocalID}) {UI.CurrentDefaultTextColor}";
 #endif
-                }
-                else
-                {
-                    StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{UI.CurrentDefaultTextColor}";
-                }
+            }
+            else
+            {
+                StreetDisplay += $"{UI.CurrentDefaultTextColor} {DisplayablePlayer.CurrentLocation.CurrentInterior?.Name}{UI.CurrentDefaultTextColor}";
             }
         }
+        else if (DisplayablePlayer.CurrentLocation.CurrentStreet != null)
+        {
+            StreetDisplay = $"{UI.CurrentDefaultTextColor}";
+            if (includeAddress)
+            {
+                StreetDisplay += $"{NativeHelper.CellToStreetNumber(DisplayablePlayer.CellX, DisplayablePlayer.CellY)}";
+            }
+            if (DisplayablePlayer.CurrentLocation.CurrentStreet.IsHighway)
+            {
+                StreetDisplay += "~y~";
+            }
+            StreetDisplay += $" {DisplayablePlayer.CurrentLocation.CurrentStreet.Name}{UI.CurrentDefaultTextColor}";
+            if (DisplayablePlayer.CurrentLocation.CurrentCrossStreet != null)
+            {
+                StreetDisplay += $" at {UI.CurrentDefaultTextColor}{DisplayablePlayer.CurrentLocation.CurrentCrossStreet.Name} {UI.CurrentDefaultTextColor}";
+            }
+        }
+        
         return StreetDisplay;
     }
     private string GetVehicleStatusDisplay()
@@ -477,10 +471,10 @@ public class LowerRightDisplay
 
             if (outline)
             {
-                NativeFunction.Natives.SET_TEXT_OUTLINE(true);
+                NativeFunction.Natives.SET_TEXT_OUTLINE();
 
 
-                NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
+                //NativeFunction.Natives.SET_TEXT_EDGE(1, 0, 0, 0, 255);
             }
             NativeFunction.Natives.SET_TEXT_DROP_SHADOW();
             //NativeFunction.Natives.SetTextDropshadow(20, 255, 255, 255, 255);//NativeFunction.Natives.SetTextDropshadow(2, 2, 0, 0, 0);

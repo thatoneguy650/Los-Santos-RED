@@ -167,7 +167,6 @@ public class PlacesOfInterest : IPlacesOfInterest
             new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
         };
-
         List<CarCrusher> CarCrushers = new List<CarCrusher>() {
             new CarCrusher(new Vector3(-538.0128f, -1720.554f, 19.4278f), 324.869f, "The Crushinator", "Dead skunk in the trunk?") { OpenTime = 0, CloseTime = 24, 
                 CameraPosition = new Vector3(-527.7763f, -1704.601f, 27.12083f), CameraDirection = new Vector3(0.005943439f, -0.9625598f, -0.2710043f), CameraRotation = new Rotator(-15.72404f, 1.940237E-07f, -179.6462f) },
@@ -1223,12 +1222,15 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         };
         List<Landmark> Landmarks = new List<Landmark>()
         {
-            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338, AssignedAgencyID = "GRP6", 
-                PossiblePedSpawns = new List<ConditionalLocation>() { 
-                    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
-                    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol| SpawnRequirement.StandardScenario },
-                    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
-                } },
+            new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338, 
+                //AssignedAgencyID = "GRP6", 
+                //PossiblePedSpawns = new List<ConditionalLocation>() { 
+                //    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
+                //    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol| SpawnRequirement.StandardScenario },
+                //    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario },
+                //} 
+            
+            },
 
             new Landmark(new Vector3(2469.03f, 4955.278f, 45.11892f), 0f,"O'Neil Ranch","Need some meth?") { OpenTime = 0,CloseTime = 24, InteriorID = 31746, ScannerFilePath = "01_specific_location\\0x1E2AE79B.wav" },
             new Landmark(new Vector3(-1045.065f, -230.3523f, 39.01435f), 294.2673f,"Lifeinvader","Get Stalked") {OpenTime = 0,CloseTime = 24, InteriorID = 3330 },
@@ -1478,24 +1480,20 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-76.91218f, 94.65022f, 72.13159f), 249.3525f),
                     new SpawnPlace(new Vector3(-62.50578f, 88.61669f, 72.6437f), 247.8105f),
                 } },
-
             new Dealership(new Vector3(-176.7741f, -1158.648f, 23.81366f), 359.6327f, "Vapid of Los Santos", "Low quality mass produced vehicles","VapidMenu") { BannerImagePath = "vapid.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(-223.3041f, -1166.967f, 22.99067f), 347.7626f),
-
                     new SpawnPlace(new Vector3(-237.1176f, -1176.55f, 22.12655f), 322.7791f),
                     new SpawnPlace(new Vector3(-237.2399f, -1165.014f, 22.14342f), 272.7086f),
                     new SpawnPlace(new Vector3(-224.3428f, -1177.964f, 22.16829f), 13.04972f),
                 } },
-
             new Dealership(new Vector3(286.8117f, -1148.615f, 29.29189f), 0.5211872f,"Sanders Motorcycles", "Feeling Old? Buy a Bike!","SandersMenu") { BannerImagePath = "sanders.png", ScannerFilePath = "01_specific_location\\0x16677E71.wav"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(259.3008f, -1150.141f, 29.29169f), 358.0416f),
-
                     new SpawnPlace(new Vector3(262.3277f, -1161.748f, 28.36098f), 177.7536f),
                     new SpawnPlace(new Vector3(262.2397f, -1149.571f, 28.46074f), 180.2331f),
                     new SpawnPlace(new Vector3(256.4698f, -1161.971f, 28.34791f), 175.3772f),
@@ -1504,26 +1502,22 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(250.2824f, -1150.506f, 28.44035f), 177.726f),
                     new SpawnPlace(new Vector3(247.0185f, -1162.408f, 28.32439f), 175.2579f),
                 } },
-
             new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { BannerImagePath = "helmut.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(-214.548f, 6195.725f, 31.48873f), 314.937f),
-
                     new SpawnPlace(new Vector3(-229.8454f, 6197.135f, 30.65802f), 312.3795f),
                     new SpawnPlace(new Vector3(-240.5559f, 6199.209f, 30.65911f), 320.0063f),
                     new SpawnPlace(new Vector3(-245.7337f, 6203.578f, 30.65917f), 312.8283f),
                     new SpawnPlace(new Vector3(-247.8804f, 6205.941f, 30.65889f), 317.6494f),
                     new SpawnPlace(new Vector3(-204.6075f, 6204.576f, 30.65833f), 312.9748f),
                 } },
-
             new Dealership(new Vector3(-38.83289f, -1108.61f, 26.46652f), 158.283f, "Premium Deluxe Motorsport", "Let's make a deal","PremiumDeluxeMenu") { BannerImagePath = "pdx.png", ScannerFilePath = "01_specific_location\\0x122B5EFF.wav",
                 CameraPosition = new Vector3(-46.13059f, -1103.091f, 27.9145f), CameraDirection = new Vector3(0.3461686f, 0.9154226f, -0.2053503f), CameraRotation = new Rotator(-11.85001f, -8.374705E-05f, -20.7142f),
                 ItemPreviewPosition = new Vector3(-43.94203f, -1096.923f, 26.44f), ItemPreviewHeading = 165.1469f,InteriorID = 7170,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(-56.35966f, -1116.532f, 26.4349f), 2.403779f),
-
                     new SpawnPlace(new Vector3(-57.66466f, -1107.103f, 25.60543f), 65.5113f),
                     new SpawnPlace(new Vector3(-47.87741f, -1115.788f, 25.60351f), 3.64787f),
                     new SpawnPlace(new Vector3(-50.5764f, -1116.585f, 25.60393f), 0.4485914f),
@@ -1532,7 +1526,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-48.28887f, -1078.742f, 25.9386f), 260.1963f),
                     new SpawnPlace(new Vector3(-15.29717f, -1094.516f, 25.84302f), 173.1287f),
                 } },
-
             new Dealership(new Vector3(-802.8875f, -223.7307f, 37.21824f), 117.6851f, "Luxury Autos", "You sure you can afford this?","LuxuryAutosMenu") {BannerImagePath = "luxuryautos.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
@@ -1544,27 +1537,18 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-755.7492f, -242.3515f, 36.36629f), 281.1064f),
                     new SpawnPlace(new Vector3(-760.1515f, -232.0841f, 36.45313f), 204.9191f),
                 } },
-
             new Dealership(new Vector3(1224.667f, 2728.353f, 38.00491f), 181.2344f, "Larry's RV Sales", "Need to disappear for a while?", "LarrysRVMenu"){BannerImagePath = "larrysrv.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
-
-             //CameraPosition = new Vector3(1224.612f, 2711.322f, 39.84733f), CameraDirection = new Vector3(0.03426333f, 0.9912365f, -0.1275782f), CameraRotation = new Rotator(-7.329671f, 2.152019E-07f, -1.979712f),
-
-              //  ItemPreviewPosition = new Vector3(1224.737f, 2720.088f, 37.65635f), ItemPreviewHeading = 90.58456f,
-
-
-
+                //CameraPosition = new Vector3(1224.612f, 2711.322f, 39.84733f), CameraDirection = new Vector3(0.03426333f, 0.9912365f, -0.1275782f), CameraRotation = new Rotator(-7.329671f, 2.152019E-07f, -1.979712f),
+                //ItemPreviewPosition = new Vector3(1224.737f, 2720.088f, 37.65635f), ItemPreviewHeading = 90.58456f,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(1236.887f, 2709.858f, 38.00579f), 201.5402f),
-
                     new SpawnPlace(new Vector3(1246.11f, 2712.359f, 37.17435f), 200.71f),
                     new SpawnPlace(new Vector3(1232.931f, 2699.977f, 37.18208f), 94.271f),
                     new SpawnPlace(new Vector3(1210.044f, 2706.118f, 37.17501f), 173.5784f),
                     new SpawnPlace(new Vector3(1254.536f, 2692.278f, 36.79386f), 224.2466f),
                 } },
-
-
             new Dealership(new Vector3(-703.8819f, -1398.048f, 5.495286f), 137.6665f, "Elitás Travel", "There's first class and then there's Elital","ElitasMenu") {
                 CameraPosition = new Vector3(-702.0489f, -1431.725f, 9.647567f), CameraDirection = new Vector3(-0.9063408f, -0.336776f, -0.2552025f), CameraRotation = new Rotator(-14.78558f, -0.03792449f, 110.3839f),
                 ItemPreviewPosition = new Vector3(-714.89f, -1435.682f, 5.102043f), ItemPreviewHeading = 227.1837f,
@@ -1573,7 +1557,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-1066.172f, -3397.097f, 14.54819f), 330.6479f),
                     new SpawnPlace(new Vector3(-1091.473f, -3384.792f, 14.54814f), 330.6455f),
                 } },
-
             new Dealership(new Vector3(396.8023f, -1170.86f, 29.39787f), 359.2079f, "Get Aweigh", "We can help you Get Aweigh!","GetAweighMenu") {
                 CameraPosition = new Vector3(-759.6039f, -1370.657f, 3.687305f), CameraDirection = new Vector3(0.4598052f, 0.8650874f, -0.2005067f), CameraRotation = new Rotator(-11.56659f, 2.701561E-05f, -27.99123f),
                 ItemPreviewPosition = new Vector3(-755.6831f, -1361.648f, -0.0738305f), ItemPreviewHeading = 229.675f,
@@ -1584,18 +1567,15 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(-832.6543f, -1406.055f, 0.09211653f), 293.3259f),
                     new SpawnPlace(new Vector3(-833.0579f, -1397.259f, 0.1287543f), 290.7657f),
                 } },
-
-
             //From discord
             new Dealership(new Vector3(1130.419f, -776.9326f, 57.60993f), 357.4348f, "Outlaw Motors", "Ride like an outlaw","OutlawMotorMenu") {
-                OpenTime = 6, CloseTime = 20,
+                OpenTime = 6, CloseTime = 20,BannerImagePath = "outlaw.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1122.58f, 784.47f, 57.68f), 91.32f),
                     new SpawnPlace(new Vector3(1121.96f, -773.24f, 57.75f), 359.68f),
                 } },
-
             //new Dealership(new Vector3(-205.69f, -1308.52f, 31.29f), 0.65f, "Lazy Lenny's Lowriders", "All my friends know the low rider","LowriderMenu") {
             //    OpenTime = 6, CloseTime = 20,
             //    CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
@@ -1902,19 +1882,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 "~n~State: ~p~Florida~s~") { IsEnabled = false,StateLocation = StaticStrings.FloridaStateID },
 
             };
-
-        /*
- *                     new AirportFlights("NYRA","Air Herler","For the utmost in luxury", 5000, 4),//shamal, high end regional
-            new AirportFlights("NYRA","Caipira Airways","You'll get there when you get there", 599, 12),
-
-            new AirportFlights("NYRA","San Fierro Air","Its the San Fierro Treat!", 599, 12),//regional low end
-            new AirportFlights("NYRA","Air Emu","Take our birds anywhere you like", 599, 12),//shamal, high end regional
-
-            new AirportFlights("NYRA","MyFly","Optimal Service, for a price", 599, 12),//shamal, high end regional
-            new AirportFlights("NYRA","Adios Airlines","Say your goodbyes!", 599, 12),//low end, major carrier
-
-            new AirportFlights("NYRA","FlyUS","Live A Little, Fly With US", 599, 12),//low end, major carrier
-            new AirportFlights("NYRA","Los Santos Air","You'll get there when you get there", 599, 12),//regional low end*/
         PossibleLocations.DeadDrops.AddRange(DeadDrops);
         PossibleLocations.ScrapYards.AddRange(ScrapYards);
         PossibleLocations.CarCrushers.AddRange(CarCrushers);
@@ -1945,16 +1912,11 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         PossibleLocations.ClothingShops.AddRange(ClothingShops);
         PossibleLocations.BusStops.AddRange(BusStops);
         PossibleLocations.Prisons.AddRange(Prisons);
-
         PossibleLocations.SubwayStations.AddRange(SubwayStations);
         PossibleLocations.Morgues.AddRange(Morgues);
         PossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
         PossibleLocations.Airports.AddRange(Airports);
-        //PossibleLocations.YanktonAiports.AddRange(YanktonAiports);
-
-
         Serialization.SerializeParam(PossibleLocations, ConfigFileName);
-
         PossibleLocations OldPossibleLocations = new PossibleLocations();
         List<GangDen> GangDens2008 = new List<GangDen>();
         foreach(GangDen gd in GangDens)
@@ -2023,7 +1985,6 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
         OldPossibleLocations.Airports.AddRange(Airports);
         Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
-
     }
     private void DefaultConfig_LibertyCity()
     {

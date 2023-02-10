@@ -81,6 +81,10 @@ public class CustomizeModelMenu
         {
             int itemsAdded = 0;
             FilterString = NativeHelper.GetKeyboardInput("");
+            if (string.IsNullOrEmpty(FilterString)) 
+            {
+                FilterString = "";
+            }
             for (int i = ModelSearchSubMenu.MenuItems.Count; i-- > 0;)
             {
                 if (ModelSearchSubMenu.MenuItems[i].Text != "Input Name")// && ModelSubMenu.MenuItems[i].Text != removeGPSTTI.Title)

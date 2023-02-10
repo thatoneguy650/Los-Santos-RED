@@ -118,16 +118,17 @@ public class Vehicles
                     if (!PoliceCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                     {
                         PoliceCar.SetBecameEmpty();
-
-
-
-
-
                         float distanceTo = PoliceCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character);
-                        if (TotalPoliceCars >= 15 && distanceTo >= 50f && PoliceCar.HasBeenEmptyFor >= 35000 && PoliceCar.Vehicle.IsPersistent)
+                        if(TotalPoliceCars >= 20 && PoliceCar.HasBeenEmptyFor >= 60000 && PoliceCar.Vehicle.Exists() && !PoliceCar.Vehicle.IsOnScreen)
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
-                            EntryPoint.WriteToConsole("MARKED POLICE CAR NON PERSIST");
+                            EntryPoint.WriteToConsole("MARKED POLICE CAR NON PERSIST 1");
+                            GameFiber.Yield();
+                        }
+                        else if (TotalPoliceCars >= 15 && distanceTo >= 50f && PoliceCar.HasBeenEmptyFor >= 35000 && PoliceCar.Vehicle.IsPersistent)
+                        {
+                            PoliceCar.Vehicle.IsPersistent = false;
+                            EntryPoint.WriteToConsole("MARKED POLICE CAR NON PERSIST 2");
                             GameFiber.Yield();
                         }
                         else if (distanceTo >= 250f)

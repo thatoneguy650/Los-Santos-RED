@@ -69,7 +69,10 @@ public class Transaction
             RemoveBanner = Store.RemoveBanner;
             BannerImage = Store.BannerImage;
         }
-
+        if(ShopMenu == null || ShopMenu.Items == null || !ShopMenu.Items.Any())
+        {
+            return;
+        }
         foreach (MenuItem mi in ShopMenu.Items)
         {
             ModItem modItem = modItems.Get(mi.ModItemName);
@@ -81,8 +84,8 @@ public class Transaction
             {
                 mi.ResetPrice();
             }
-        }
-        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Purchaseable))
+        }    
+        if (ShopMenu.Items.Any(x => x.Purchaseable))
         {
             if (Store != null)
             {
@@ -98,7 +101,7 @@ public class Transaction
             }
             PurchaseMenu.Setup();
         }
-        if (ShopMenu != null && ShopMenu.Items.Any(x => x.Sellable))
+        if (ShopMenu.Items.Any(x => x.Sellable))
         {
             if (Store != null && !Store.VendorAbandoned)
             {

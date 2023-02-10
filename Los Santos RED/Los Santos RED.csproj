@@ -336,7 +336,6 @@
     <Compile Include="lsr\Locations\ILocationGangAssignable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Prison.cs" />
     <Compile Include="lsr\Locations\Places\Interact\SubwayStation.cs" />
-    <Compile Include="lsr\Locations\Places\ILocationAgencyAssignable.cs" />
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
