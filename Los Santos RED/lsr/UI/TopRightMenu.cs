@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,11 @@ public class TopRightMenu
     private bool IsVanillaStarsHUDVisible;
     private bool IsVanillaCashHUDVisible;
     private string lastWeaponDisplay;
+    private Texture WantedRegular;
+    private Texture WantedRed;
+    private Texture WantedGreyed;
+    private bool willShowCustomStars;
+    private float CustomStarsPosition;
 
     public TopRightMenu(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI uI)
     {
@@ -31,11 +37,14 @@ public class TopRightMenu
 
     public void Setup()
     {
-
+        WantedRegular = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarwhite.png");
+        WantedRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarred.png");
+        WantedGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstargreyed.png");
+        Game.RawFrameRender += DrawSprites;
     }
     public void Dispose()
     {
-
+        Game.RawFrameRender -= DrawSprites;
     }
     public void CacheData()
     {
@@ -68,8 +77,14 @@ public class TopRightMenu
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
         bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
+        willShowCustomStars = //!IsVanillaStarsHUDVisible && 
+            
+            (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu)
+            &&
+            
+            Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars && DisplayablePlayer.IsWanted;
 
-
+        CustomStarsPosition = 0.0f;
         float WeaponPosition = 0.0f;
         float CashPosition = 0.0f;
         float CashChangePosition = 0.0f;
@@ -85,6 +100,12 @@ public class TopRightMenu
         }
         if (IsVanillaCashHUDVisible)
         {
+            StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;//0.035f;
+        }
+
+        if(willShowCustomStars)
+        {
+            CustomStarsPosition = StartingPosition;
             StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;//0.035f;
         }
         if (willShowWeapon)
@@ -109,6 +130,10 @@ public class TopRightMenu
             NeedsPosition = StartingPosition;
             StartingPosition += Settings.SettingsManager.LSRHUDSettings.TopDisplaySpacing;//0.035f;
         }
+
+
+
+
         if (willShowWeapon)
         {
             DisplayTextOnScreen(lastWeaponDisplay, WeaponPosition, Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY, Settings.SettingsManager.LSRHUDSettings.TopDisplayScale, Color.White, GTAFont.FontPricedown, (GTATextJustification)2, false);
@@ -308,5 +333,55 @@ public class TopRightMenu
     }
 
 
+    private void GetStuff(GraphicsEventArgs args)
+    {
+        if(!willShowCustomStars)
+        {
+            return;
+        }
+        float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
+        float InitialPosX = Game.Resolution.Width * Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY;
+        float InitialPosY = Game.Resolution.Height * CustomStarsPosition;
+        float Scale = ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsScale;
+
+        List<int> wantedLevels = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
+        foreach(int wantedLevelStar in wantedLevels.OrderBy(x=> x))
+        {
+            Texture toShow;
+            if (wantedLevelStar <= DisplayablePlayer.WantedLevel)
+            {
+                if(wantedLevelStar >= Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsRedColorLimit)
+                {
+                    toShow = WantedRed;
+                }
+                else
+                {
+                    toShow = WantedRegular;
+                }
+            }
+            else
+            {
+                toShow = WantedGreyed;
+            }
+            float FinalPosX = InitialPosX - (wantedLevelStar * ((toShow.Size.Width - Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
+            float FinalPosY = InitialPosY;
+            if (toShow != null && toShow.Size != null)
+            {
+                args.Graphics.DrawTexture(toShow, new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale));
+            }
+        }
+    }
+
+    private void DrawSprites(object sender, GraphicsEventArgs args)
+    {
+        try
+        {
+            GetStuff(args);
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"UI: Draw ERROR {ex.Message} {ex.StackTrace} ", 0);
+        }
+    }
 }
 

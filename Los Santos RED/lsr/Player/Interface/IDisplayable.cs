@@ -57,5 +57,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsInAutomobile { get; }
         bool IsOnMotorcycle { get; }
         RelationshipManager RelationshipManager { get; }
+        int WantedLevel { get; }
+        bool IsAlive { get; }
     }
 }

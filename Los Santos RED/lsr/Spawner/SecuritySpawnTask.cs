@@ -194,54 +194,24 @@ public class SecurityGuardSpawnTask : SpawnTask
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();
-            if (SpawnedVehicle.Exists())
+            if (!SpawnedVehicle.Exists())
             {
-                VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
-                if (CreatedVehicle == null)
-                {
-                    CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
-                    CreatedVehicle.Setup();
-                }
-                CreatedVehicle.WasModSpawned = true;
-               // CreatedVehicle.IsEMT = true;
-                if (Agency != null)
-                {
-                    World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
-                }
-                if (SpawnedVehicle.Exists())
-                {
-                    CreatedVehicle.WasModSpawned = true;
-                    SpawnedVehicle.IsPersistent = true;
-                    EntryPoint.PersistentVehiclesCreated++;
-
-                    if (Agency != null)
-                    {
-                        CreatedVehicle.UpdateLivery(Agency);
-                        CreatedVehicle.UpgradePerformance();
-                    }
-                    CreatedVehicles.Add(CreatedVehicle);
-                    if (SpawnedVehicle.Exists() && VehicleType.RequiredPrimaryColorID != -1)
-                    {
-                        NativeFunction.Natives.SET_VEHICLE_COLOURS(SpawnedVehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
-                    }
-                    if (VehicleType.VehicleExtras != null)
-                    {
-                        foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras)
-                        {
-                            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(SpawnedVehicle, extra))
-                            {
-                                NativeFunction.Natives.SET_VEHICLE_EXTRA(SpawnedVehicle, extra, 0);
-                            }
-                        }
-                    }
-                    NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(SpawnedVehicle, RandomItems.GetRandomNumberInt(0, 15));
-                    VehicleType.RequiredVariation?.Apply(CreatedVehicle);
-                    EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: SPAWNED {VehicleType.ModelName}", 3);
-                    GameFiber.Yield();
-                    return CreatedVehicle;
-                }
+                return null;
             }
-            return null;
+            VehicleExt CreatedVehicle = World.Vehicles.GetVehicleExt(SpawnedVehicle);
+            if (CreatedVehicle == null)
+            {
+                CreatedVehicle = new VehicleExt(SpawnedVehicle, Settings);
+                CreatedVehicle.Setup();
+            }
+            CreatedVehicle.WasModSpawned = true;
+            if (Agency != null)
+            {
+                World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
+            }
+            CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
+            CreatedVehicles.Add(CreatedVehicle);
+            return CreatedVehicle;  
         }
         catch (Exception ex)
         {

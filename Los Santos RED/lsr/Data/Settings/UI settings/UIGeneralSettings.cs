@@ -43,6 +43,12 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool ShowFullscreenWarnings { get; set; }
     public bool ShowFakeWantedLevelStars { get; set; }
 
+
+    public bool UseCustomWantedLevelStars { get; set; }
+    public float CustomWantedLevelStarsScale { get; set; }  
+    public float CustomWantedLevelStarsSpacingPixelReduction { get; set; }
+    public int CustomWantedLevelStarsRedColorLimit { get; set; }
+
     public UIGeneralSettings()
     {
         SetDefault();
@@ -80,15 +86,24 @@ public class UIGeneralSettings : ISettingsDefaultable
         ShowRadarOnFootWhenCellPhoneActiveOnly = false;
         HideLSRUIUnlessActionWheelActive = false;
         HideRadarUnlessActionWheelActive = false;
-#if DEBUG
-        ShowDebug = true;
-#endif
+
         UseLegacySaveMenu = false;
         ShowLegacyActionMenu = false;
         ShowLegacyInventoryMenu = false;
 
         ShowFullscreenWarnings = true;
         ShowFakeWantedLevelStars = true;
+
+        CustomWantedLevelStarsScale = 0.6f;
+        UseCustomWantedLevelStars = false;
+        CustomWantedLevelStarsSpacingPixelReduction = 10f;
+#if DEBUG
+        ShowDebug = true;
+        ShowFakeWantedLevelStars = false;
+        UseCustomWantedLevelStars = true;
+#endif
+        CustomWantedLevelStarsRedColorLimit = 6;
+
 
     }
 }

@@ -187,14 +187,20 @@ namespace LosSantosRED.lsr.Player
                     PlayingAnim = Data.AnimExit;
                     Vector3 Position = Game.LocalPlayer.Character.Position;
                     float Heading = Game.LocalPlayer.Character.Heading;
+                    uint GameTimeStartedExiting = Game.GameTime;
                     PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
                     NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
                     NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
                     float AnimationTime = 0f;
-                    while (AnimationTime < 1.0f)
+                    AnimationWatcher aw = new AnimationWatcher();
+                    while (AnimationTime < 1.0f && Game.GameTime - GameTimeStartedExiting <= 5000)
                     {
                         AnimationTime = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
+                        if(!aw.IsAnimationRunning(AnimationTime))
+                        {
+                            break;
+                        }
                         Player.WeaponEquipment.SetUnarmed();
                         GameFiber.Yield();
                     }

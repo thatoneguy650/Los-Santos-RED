@@ -9,9 +9,7 @@ public class DispatchableVehicle
     public string DebugName { get; set; }
     public string ModelName { get; set; }
     public string RequiredPedGroup { get; set; } = "";
-
     public string GroupName { get; set; } = "";
-
 
     public int MinOccupants { get; set; } = 1;
     public int MaxOccupants { get; set; } = 2;
@@ -19,6 +17,9 @@ public class DispatchableVehicle
     public int WantedSpawnChance { get; set; } = 0;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 6;
+
+    public List<int> ForceStayInSeats { get; set; }
+
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;
     public List<int> RequiredLiveries { get; set; } = new List<int>();
@@ -27,7 +28,6 @@ public class DispatchableVehicle
 
     public VehicleVariation RequiredVariation { get; set; }
 
-    public List<int> ForceStayInSeats { get; set; }
 
     public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
