@@ -581,7 +581,7 @@ public class DebugMenu : ModUIMenu
         CallInCrime.Activated += (menu, item) =>
         {
             CrimeSceneDescription description = new CrimeSceneDescription(!Player.IsInVehicle, false, Player.Character.Position, true);
-            Player.PoliceResponse.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == StaticStrings.FiringWeaponCrimeID), description, true);
+            Player.PoliceResponse.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == StaticStrings.ArmedRobberyCrimeID), description, true);
             menu.Visible = false;
         };
 

@@ -33,10 +33,7 @@ namespace LSR.Vehicles
         public bool IsFire { get; set; } = false;
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
-
-
         public bool IsDisabled { get; set; } = false;
-
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -158,6 +155,8 @@ namespace LSR.Vehicles
             }
         }
         public bool IsCar { get; private set; }
+        public bool IsBicycle { get; private set; } = false;
+        public bool IsMotorcycle { get; private set; } = false;
         private void GetFuelTankCapacity()
         {
             if (vehicleClass == VehicleClass.Compact) // "Compact":
@@ -207,6 +206,47 @@ namespace LSR.Vehicles
             else
                 FuelTankCapacity = 20;
         }
+        private void GetOwnedBlipID()
+        {
+            if(vehicleClass == VehicleClass.Helicopter)
+            {
+                OwnedBlipID = 64; //radar_helicopter
+            }
+            else if (vehicleClass == VehicleClass.Plane)
+            {
+                OwnedBlipID = 307; //radar_plane_drop
+            }
+            else if (IsMotorcycle)
+            {
+                OwnedBlipID = 226; //radar_gang_vehicle_bikers
+            }
+            else if (IsBicycle)
+            {
+                OwnedBlipID = 226; //radar_gang_vehicle_bikers
+            }
+            else if (vehicleClass == VehicleClass.Service)
+            {
+                OwnedBlipID = 410; //radar_boat
+            }
+            else if (vehicleClass == VehicleClass.Industrial)
+            {
+                OwnedBlipID = 477; //radar_truck
+            }
+            else if (vehicleClass == VehicleClass.Boat)
+            {
+                OwnedBlipID = 427; //radar_player_boat
+            }
+            else if (vehicleClass == VehicleClass.Emergency && IsPolice)
+            {
+                OwnedBlipID = 56; //radar_cop_patrol
+            }
+            else
+            {
+                OwnedBlipID = 326;//getawaycar?
+            }
+            
+        }
+        public int OwnedBlipID { get; private set; } = 326;//getawaycar?
         public bool HasBeenEnteredByPlayer => GameTimeEntered != 0;
         public VehicleExt(Vehicle vehicle, ISettingsProvideable settings)
         {
@@ -218,7 +258,6 @@ namespace LSR.Vehicles
                 DescriptionColor = Vehicle.PrimaryColor;
                 CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
                 OriginalLicensePlate = CarPlate;
-
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
                 GameTimeSpawned = Game.GameTime;
@@ -284,9 +323,6 @@ namespace LSR.Vehicles
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
             return ClassInt;
         }
-
-
-
         public string ClassName()
         {
             int ClassInt = NativeFunction.CallByName<int>("GET_VEHICLE_CLASS", Vehicle);
@@ -340,7 +376,6 @@ namespace LSR.Vehicles
                     return "";
             }
         }
-
         public void SetNotWanted()
         {
             IsStolen = false;
@@ -571,8 +606,6 @@ namespace LSR.Vehicles
             VehicleType.RequiredVariation?.Apply(this);
             GameFiber.Yield();           
         }
-
-
         public void SetDriverWindow(bool RollDown)
         {
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
@@ -598,10 +631,8 @@ namespace LSR.Vehicles
             }
         }
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
-
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool OwnedByPlayer { get; internal set; }
-
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -728,27 +759,18 @@ namespace LSR.Vehicles
             //EntryPoint.WriteToConsole($"PLAYER EVENT Vehicle Crashed Damage {Damage} Collided {Collided}", 5);
             Health = Vehicle.Health;
         }
-
         public void Setup()
         {
-            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem)
+            if(!Vehicle.Exists())
             {
-                if (RequiresFuel)
-                {
-                    Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);
-                }
+                return;
             }
-            vehicleClass = (VehicleClass)ClassInt();
-            if (Vehicle.Exists())
+            SetupClassAndCategory();
+            if (Settings.SettingsManager.VehicleSettings.UseCustomFuelSystem && RequiresFuel)
             {
-                IsCar = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
-            }
-            else
-            {
-                IsCar = false;
+                Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
             }
             GetFuelTankCapacity();
-
         }
         public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes)//this might need to come out of here.... along with the two bools
         {
@@ -834,6 +856,66 @@ namespace LSR.Vehicles
             }
         }
 
+        private void SetupClassAndCategory()
+        {
+            vehicleClass = (VehicleClass)ClassInt();
+            IsCar = NativeFunction.CallByName<bool>("IS_THIS_MODEL_A_CAR", Vehicle?.Model.Hash);
+            bool isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Vehicle?.Model.Hash);
+            bool isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BICYCLE<bool>((uint)Vehicle?.Model.Hash);
+            IsBicycle = isModelBicycle && isModelBike;
+            IsMotorcycle = !isModelBicycle && isModelBike;
+            GetOwnedBlipID();
+        }
+
+        public void RemoveOwnershipBlip()
+        {
+            if (!AttachedBlip.Exists() || !Vehicle.Exists())
+            {
+                return;
+            }
+            AttachedBlip.Delete();
+            AttachedBlip = null;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: RemoveOwnershipBlip", 5);
+            //Blip attachedBlip = car.Vehicle.GetAttachedBlip();
+            //if (attachedBlip.Exists())
+            //{
+            //    attachedBlip.Delete();
+            //}
+            //if (car.AttachedBlip.Exists())
+            //{
+            //    car.AttachedBlip.Delete();
+            //}
+        }
+        public void AddOwnershipBlip()
+        {
+            if (AttachedBlip.Exists() || !Vehicle.Exists())
+            {
+                return;
+            }
+            AttachedBlip = Vehicle.AttachBlip();
+            AttachedBlip.Sprite = (BlipSprite)OwnedBlipID;
+            AttachedBlip.Color = Color.Red;
+            EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
+        }
+        public void AddOwnership()
+        {
+            OwnedByPlayer = true;
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            Vehicle.IsStolen = false;
+            Vehicle.IsPersistent = true;
+        }
+        public void RemoveOwnership()
+        {
+            OwnedByPlayer = false;
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            Vehicle.IsPersistent = false;
+        }
         public float GetLightEmissive(Vehicle vehicle, LightID index)//from +Vincent in discord
         {
             unsafe
@@ -855,7 +937,6 @@ namespace LSR.Vehicles
                 return lightEmissives[(int)index];
             }
         }
-
         public enum LightID
         {
             defaultlight = 0,
@@ -877,6 +958,5 @@ namespace LSR.Vehicles
             extralight_3 = 16,
             extralight_4 = 17
         }
-
     }
 }

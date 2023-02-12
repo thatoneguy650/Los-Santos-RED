@@ -3,6 +3,7 @@ using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,14 @@ public class VehicleOwnership
 {
     private IVehicleOwnable Player;
     private IEntityProvideable World;
+    private ISettingsProvideable Settings;
     public List<VehicleExt> OwnedVehicles { get; set; } = new List<VehicleExt>();
 
-    public VehicleOwnership(IVehicleOwnable player, IEntityProvideable world)
+    public VehicleOwnership(IVehicleOwnable player, IEntityProvideable world, ISettingsProvideable settings)
     {
         Player = player;
         World = world;
+        Settings = settings;
     }
 
     public void Reset()
@@ -38,24 +41,12 @@ public class VehicleOwnership
     {
         ClearVehicleOwnership();
     }
-
     public void ClearVehicleOwnership()
     {
         foreach (VehicleExt car in OwnedVehicles)
         {
-            if (car.Vehicle.Exists())
-            {
-                Blip attachedBlip = car.Vehicle.GetAttachedBlip();
-                if (attachedBlip.Exists())
-                {
-                    attachedBlip.Delete();
-                }
-                if (car.AttachedBlip.Exists())
-                {
-                    car.AttachedBlip.Delete();
-                }
-                car.Vehicle.IsPersistent = false;
-            }
+            car.RemoveOwnership();
+            car.RemoveOwnershipBlip();       
         }
         OwnedVehicles.Clear();
         EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLEs CLEARED", 5);
@@ -74,7 +65,6 @@ public class VehicleOwnership
         if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
         {
             RemoveOwnershipOfVehicle(toTakeOwnershipOf);
-            //DisplayPlayerNotification();
         }
         else
         {
@@ -83,29 +73,18 @@ public class VehicleOwnership
     }
     public void RemoveOwnershipOfVehicle(VehicleExt toOwn)
     {
-        if (toOwn != null && toOwn.Vehicle.Exists())
+        if(toOwn == null)
         {
-            Blip attachedBlip = toOwn.Vehicle.GetAttachedBlip();
-            if (attachedBlip.Exists())
-            {
-                attachedBlip.Delete();
-            }
-
-            if (toOwn.AttachedBlip.Exists())
-            {
-                toOwn.AttachedBlip.Delete();
-            }
-
-            toOwn.Vehicle.IsPersistent = false;
-            toOwn.OwnedByPlayer = false;
-            
+            return;
         }
+        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}", 5);
         if (OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
         {
             OwnedVehicles.Remove(toOwn);
         }
-        UpdateOwnedBlips();
-        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}", 5);
+        toOwn.RemoveOwnership();
+        toOwn.RemoveOwnershipBlip();
+        UpdateOwnedBlips();     
     }
     public void TakeOwnershipOfNearestCar()
     {
@@ -116,128 +95,90 @@ public class VehicleOwnership
         }
         else
         {
-
             bool allowPolice = false;
 #if DEBUG
             allowPolice = true;
 #endif
-
             toTakeOwnershipOf = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, allowPolice, 10f);
         }
-        if (toTakeOwnershipOf != null && toTakeOwnershipOf.Vehicle.Exists())
-        {
-            TakeOwnershipOfVehicle(toTakeOwnershipOf, true);
-            //DisplayPlayerNotification();
-        }
-        else
+        if (toTakeOwnershipOf == null || !toTakeOwnershipOf.Vehicle.Exists())
         {
             Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~b~Personal Info", string.Format("~y~{0}", Player.PlayerName), "No Vehicle Found");
+            return;
         }
+        TakeOwnershipOfVehicle(toTakeOwnershipOf, true); 
     }
     public void TakeOwnershipOfVehicle(VehicleExt toOwn, bool showNotification)
     {
-        if (toOwn != null && toOwn.Vehicle.Exists() && !OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
-        {
-            toOwn.SetNotWanted();
-            toOwn.Vehicle.IsStolen = false;
-            toOwn.Vehicle.IsPersistent = true;
-            toOwn.OwnedByPlayer = true;
-
-            OwnedVehicles.Add(toOwn);
-            UpdateOwnedBlips();
-            if (showNotification)
-            {
-                DisplayPlayerVehicleNotification(toOwn);
-            }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}", 5);
+        if(toOwn == null || !toOwn.Vehicle.Exists() || OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
+        { 
+            return; 
         }
+        toOwn.SetNotWanted();
+        toOwn.AddOwnership();
+        //toOwn.AddOwnershipBlip();
+        OwnedVehicles.Add(toOwn);
+        UpdateOwnedBlips();
+        if (showNotification)
+        {
+            DisplayPlayerVehicleNotification(toOwn);
+        }
+        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}", 5);    
     }
-
     private void UpdateOwnedBlips()
     {
-        //EntryPoint.WriteToConsole($"PLAYER EVENT: UpdateOwnedBlips CurrentVehicle {CurrentVehicle != null}", 5);
         foreach (VehicleExt car in OwnedVehicles)
         {
-            if (car.Vehicle.Exists())
+            if(!car.Vehicle.Exists())
             {
-                if (Player.CurrentVehicle?.Handle == car.Handle)
-                {
-                    if (car.AttachedBlip.Exists())
-                    {
-                        car.AttachedBlip.Delete();
-                    }
-                }
-                else
-                {
-                    if (!car.AttachedBlip.Exists())
-                    {
-                        car.AttachedBlip = car.Vehicle.AttachBlip();
-                        car.AttachedBlip.Sprite = BlipSprite.GetawayCar;
-                        car.AttachedBlip.Color = System.Drawing.Color.Red;
-                    }
-                }
+                continue;
+            }
+
+            if (Player.CurrentVehicle?.Handle == car.Handle)
+            {
+                car.RemoveOwnershipBlip();
+            }
+            else if (Settings.SettingsManager.VehicleSettings.AttachOwnedVehicleBlips)
+            {
+                car.AddOwnershipBlip();
             }
         }
-        //}
     }
-
-
     public void DisplayPlayerVehicleNotification(VehicleExt toDescribe)
     {
-        string NotifcationText = "";
-        VehicleExt VehicleToDescribe = toDescribe;
+        Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{Player.PlayerName}", GetVehicleNotificationText(toDescribe));
+    }
+    private string GetVehicleNotificationText(VehicleExt toDescribe)
+    {
+        string NotifcationText = "~s~Vehicle: None";
         bool usingOwned = true;
-        if (VehicleToDescribe != null)
+        if(toDescribe == null)
         {
-            //string Make = VehicleToDescribe.MakeName();
-            //string Model = VehicleToDescribe.ModelName();
-            //string VehicleName = "";
-            //if (Make != "")
-            //{
-            //    VehicleName = Make;
-            //}
-            //if (Model != "")
-            //{
-            //    VehicleName += " " + Model;
-            //}
-
-            string VehicleName = VehicleToDescribe.FullName(false);
-
-
-            //string VehicleNameColor = "~p~";
-            //string VehicleString = "";
-            if (usingOwned)
-            {
-                NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
-            }
-            else if (!VehicleToDescribe.IsStolen)
-            {
-                NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
-            }
-            else
-            {
-                NotifcationText += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
-            }
-            if (VehicleToDescribe.CarPlate != null && VehicleToDescribe.CarPlate.IsWanted)
-            {
-                NotifcationText += $"~n~Plate: ~r~{VehicleToDescribe.CarPlate.PlateNumber} ~r~(Wanted)~s~";
-            }
-            else
-            {
-                NotifcationText += $"~n~Plate: ~p~{VehicleToDescribe.CarPlate.PlateNumber} ~s~";
-            }
+            return NotifcationText;
         }
-
-        if (NotifcationText != "")
+        NotifcationText = "";
+        string VehicleName = toDescribe.FullName(false);
+        if (usingOwned)
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{Player.PlayerName}", NotifcationText);
+            NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Owned~s~";
+        }
+        else if (!toDescribe.IsStolen)
+        {
+            NotifcationText += $"Vehicle: ~p~{VehicleName}~n~~s~Status: ~p~Unknown~s~";
         }
         else
         {
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~g~Vehicle Info", $"~y~{Player.PlayerName}", "~s~Vehicle: None");
+            NotifcationText += $"Vehicle: ~r~{VehicleName}~n~~s~Status: ~r~Stolen~s~";
         }
+        if (toDescribe.CarPlate != null && toDescribe.CarPlate.IsWanted)
+        {
+            NotifcationText += $"~n~Plate: ~r~{toDescribe.CarPlate.PlateNumber} ~r~(Wanted)~s~";
+        }
+        else
+        {
+            NotifcationText += $"~n~Plate: ~p~{toDescribe.CarPlate.PlateNumber} ~s~";
+        }   
+        return NotifcationText;
     }
-
-
 }
 

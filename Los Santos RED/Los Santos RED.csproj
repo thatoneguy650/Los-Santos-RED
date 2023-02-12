@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Camera\CameraControl.cs" />
+    <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
+    <Compile Include="lsr\Data\Interface\IWantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
@@ -197,6 +199,7 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingTracker.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
+    <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />

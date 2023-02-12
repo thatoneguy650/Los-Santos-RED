@@ -49,6 +49,14 @@ public class UIGeneralSettings : ISettingsDefaultable
     public float CustomWantedLevelStarsSpacingPixelReduction { get; set; }
     public int CustomWantedLevelStarsRedColorLimit { get; set; }
 
+
+
+    public bool UseCustomInvestigationMarks { get; set; }
+    public float CustomInvestigationMarksScale { get; set; }
+    public float CustomInvestigationMarksSpacingPixelReduction { get; set; }
+    public int CustomInvestigationMarksRedColorLimit { get; set; }
+
+
     public UIGeneralSettings()
     {
         SetDefault();
@@ -97,12 +105,18 @@ public class UIGeneralSettings : ISettingsDefaultable
         CustomWantedLevelStarsScale = 0.6f;
         UseCustomWantedLevelStars = false;
         CustomWantedLevelStarsSpacingPixelReduction = 10f;
+        CustomInvestigationMarksSpacingPixelReduction = 0f;
+        UseCustomInvestigationMarks = false;
+        CustomInvestigationMarksScale = 0.6f;
 #if DEBUG
         ShowDebug = true;
         ShowFakeWantedLevelStars = false;
         UseCustomWantedLevelStars = true;
+        UseCustomInvestigationMarks = true;
+        CustomInvestigationMarksRedColorLimit = 3;
 #endif
         CustomWantedLevelStarsRedColorLimit = 6;
+        CustomInvestigationMarksRedColorLimit = 6;
 
 
     }

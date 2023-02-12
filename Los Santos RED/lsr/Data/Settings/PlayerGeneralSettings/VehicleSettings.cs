@@ -89,6 +89,7 @@ public class VehicleSettings : ISettingsDefaultable
     public bool NonRoadworthyVehicleCheckNoHeadlights { get; set; }
     [Description("If enabled, not having a license plate will mark the vehicle as non-roadworthy.")]
     public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
+    public bool AttachOwnedVehicleBlips { get; set; }
 
     public VehicleSettings()
     {
@@ -132,5 +133,6 @@ public class VehicleSettings : ISettingsDefaultable
         NonRoadworthyVehicleCheckDamagedTires = true;
         NonRoadworthyVehicleCheckNoHeadlights = true;
         NonRoadworthyVehicleCheckNoPlate = true;
+        AttachOwnedVehicleBlips = true;
     }
 }

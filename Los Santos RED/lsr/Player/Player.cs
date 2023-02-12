@@ -133,7 +133,7 @@ namespace Mod
             Stance = new Stance(this, Settings);
             WeaponEquipment = new WeaponEquipment(this, this, Weapons, Settings, this, this, this);
             GPSManager = new GPSManager(this, World);
-            VehicleOwnership = new VehicleOwnership(this,World);
+            VehicleOwnership = new VehicleOwnership(this,World, Settings);
             BankAccounts = new BankAccounts(this, Settings);
             ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories);
             HealthManager = new HealthManager(this, Settings);
@@ -1742,19 +1742,19 @@ namespace Mod
 
                 bool isModelBike = false;
                 bool isModelBicycle = false;
-
-                if (Character.CurrentVehicle.Exists())
-                {
-                    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
-                    isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BICYCLE<bool>((uint)Character.CurrentVehicle.Model.Hash);
-                }
-                IsOnBicycle = isModelBicycle && isModelBike;
-                IsOnMotorcycle = !isModelBicycle && isModelBike;
-                IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || IsOnBicycle || IsOnMotorcycle || Game.LocalPlayer.Character.IsInHelicopter);
+                //if (Character.CurrentVehicle.Exists())
+                //{
+                //    isModelBike = NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>((uint)Character.CurrentVehicle.Model.Hash);
+                //    isModelBicycle = NativeFunction.Natives.IS_THIS_MODEL_A_BICYCLE<bool>((uint)Character.CurrentVehicle.Model.Hash);
+                //}
                 UpdateCurrentVehicle();
                 GameFiber.Yield();
                 if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists())
                 {
+                    IsOnBicycle = CurrentVehicle.IsBicycle;
+                    IsOnMotorcycle = CurrentVehicle.IsMotorcycle;
+                    IsInAutomobile = !(IsInAirVehicle || Game.LocalPlayer.Character.IsInSeaVehicle || IsOnBicycle || IsOnMotorcycle || Game.LocalPlayer.Character.IsInHelicopter);
+
                     VehicleSpeed = CurrentVehicle.Vehicle.Speed;
                     IsHotWiring = CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.IsStolen && CurrentVehicle.Vehicle.MustBeHotwired;
                     CurrentVehicleRoll = NativeFunction.Natives.GET_ENTITY_ROLL<float>(CurrentVehicle.Vehicle); ;
@@ -1770,6 +1770,9 @@ namespace Mod
                 }
                 else
                 {
+                    IsOnBicycle = false;
+                    IsOnMotorcycle = false;
+                    IsInAutomobile = false;
                     CurrentVehicleIsRolledOver = false;
                     VehicleSpeed = 0f;
                 }
@@ -1891,6 +1894,7 @@ namespace Mod
                 IsDriver = false;
                 IsOnMotorcycle = false;
                 IsInAutomobile = false;
+                IsOnBicycle = false;
                 IsInPoliceVehicle = false;
                 IsHotWiring = false;
                 PreviousVehicle = CurrentVehicle;

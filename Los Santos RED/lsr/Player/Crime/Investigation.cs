@@ -46,7 +46,7 @@ public class Investigation
             }
         }
     }
-    private Color blipColor => World.TotalWantedLevel > 0 ? Color.DarkOrange : RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
+    public Color BlipColor => World.TotalWantedLevel > 0 ? Color.DarkOrange : RequiresPolice && IsSuspicious ? Color.Orange : RequiresPolice ? Color.Yellow : Color.White;
     public Investigation(IPoliceRespondable player, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
@@ -131,7 +131,7 @@ public class Investigation
                     InvestigationBlip = new Blip(Position, 250f)
                     {
                         Name = "Investigation Center",
-                        Color = blipColor,
+                        Color = BlipColor,
                         Alpha = 0.25f
                     };
                     NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
@@ -243,7 +243,7 @@ public class Investigation
                 InvestigationBlip = new Blip(Position, 250f)
                 {
                     Name = "Investigation Center",
-                    Color = blipColor,//Color.Yellow,
+                    Color = BlipColor,//Color.Yellow,
                     Alpha = 0.25f
                 };
                 NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
@@ -255,7 +255,7 @@ public class Investigation
             else
             {
                 InvestigationBlip.Position = Position;
-                InvestigationBlip.Color = blipColor;
+                InvestigationBlip.Color = BlipColor;
             }
         }
         else

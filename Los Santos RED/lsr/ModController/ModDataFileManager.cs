@@ -43,6 +43,7 @@ public class ModDataFileManager
     public WeatherForecasts WeatherForecasts;
     public ClothesNames ClothesNames;
     public LanguageStrings LanguageStrings;
+    private WantedLevels WantedLevels;
 
     public ModDataFileManager()
     {
@@ -160,7 +161,12 @@ public class ModDataFileManager
         ClothesNames.DefaultConfig();
         GameFiber.Yield();
 
-
+#if DEBUG
+        WantedLevels = new WantedLevels();
+        WantedLevels.ReadConfig();
+        WantedLevels.Setup(Heads, DispatchableVehicles, DispatchablePeople, IssueableWeapons);
+        GameFiber.Yield();
+#endif 
 
         //LanguageStrings = new LanguageStrings();
         //LanguageStrings.DefaultConfig();
@@ -219,7 +225,16 @@ public class ModDataFileManager
             "to the end of " 
             + Environment.NewLine + 
             "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'" 
-            + Environment.NewLine + 
+            + Environment.NewLine
+            + Environment.NewLine +
+            "NOTE: To set the correct handling of the Police Gresley"
+            + Environment.NewLine +
+            "Copy the sheriff entry from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
+            + Environment.NewLine +
+            "and overwrite the existing sheriff entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            + Environment.NewLine
+            + Environment.NewLine +
+
             "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" 
             + Environment.NewLine 
             + Environment.NewLine +

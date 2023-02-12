@@ -24,8 +24,18 @@ public class TopRightMenu
     private Texture WantedRegular;
     private Texture WantedRed;
     private Texture WantedGreyed;
+
+    private Texture QuestionGreyed;
+    private Texture QuestionWhite;
+    private Texture QuestionYellow;
+    private Texture QuestionOrange;
+    private Texture QuestionDarkOrange;
+    private Texture QuestionRed;
+
     private bool willShowCustomStars;
     private float CustomStarsPosition;
+    private uint lastGameTime;
+    private bool isPaused;
 
     public TopRightMenu(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI uI)
     {
@@ -40,6 +50,13 @@ public class TopRightMenu
         WantedRegular = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarwhite.png");
         WantedRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarred.png");
         WantedGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstargreyed.png");
+
+        QuestionGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkgrey.png");
+        QuestionWhite = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkwhite.png");
+        QuestionYellow = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkyellow.png");
+        QuestionOrange = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkorange.png");
+        QuestionDarkOrange = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkdarkorange.png");
+        QuestionRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkred.png");
         Game.RawFrameRender += DrawSprites;
     }
     public void Dispose()
@@ -52,9 +69,12 @@ public class TopRightMenu
         {
             lastWeaponDisplay = GetWeaponDisplay();
         }
+
     }
     public void Display()
     {
+        isPaused = lastGameTime == Game.GameTime;
+        lastGameTime = Game.GameTime;
         if (UI.IsDrawingWheelMenu && DisplayablePlayer.WeaponEquipment.CurrentWeapon != null)
         {
             NativeFunction.Natives.SHOW_HUD_COMPONENT_THIS_FRAME(2);//WEAPON_ICON
@@ -77,12 +97,9 @@ public class TopRightMenu
 
         bool willShowCashChange = willShowCash && DisplayablePlayer.BankAccounts.RecentlyChangedMoney;
         bool willShowNeeds = (UI.IsDrawingWheelMenu || DisplayablePlayer.HumanState.RecentlyChangedNeed || DisplayablePlayer.HealthManager.RecentlyDrainedHealth || DisplayablePlayer.HealthManager.RecentlyRegenedHealth || DisplayablePlayer.IsSleeping) && Settings.SettingsManager.NeedsSettings.ApplyNeeds;
-        willShowCustomStars = //!IsVanillaStarsHUDVisible && 
-            
-            (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu)
-            &&
-            
-            Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars && DisplayablePlayer.IsWanted;
+        willShowCustomStars = !IsVanillaStarsHUDVisible 
+            && (DisplayablePlayer.IsAlive || UI.IsDrawingWheelMenu) 
+            && ((DisplayablePlayer.IsWanted && Settings.SettingsManager.UIGeneralSettings.UseCustomWantedLevelStars) || (DisplayablePlayer.Investigation.IsActive && Settings.SettingsManager.UIGeneralSettings.UseCustomInvestigationMarks));
 
         CustomStarsPosition = 0.0f;
         float WeaponPosition = 0.0f;
@@ -335,22 +352,30 @@ public class TopRightMenu
 
     private void GetStuff(GraphicsEventArgs args)
     {
-        if(!willShowCustomStars)
+        if(!willShowCustomStars || isPaused)
         {
             return;
         }
         float ConsistencyScale = (float)Game.Resolution.Width / 2160f;
         float InitialPosX = Game.Resolution.Width * Settings.SettingsManager.LSRHUDSettings.TopDisplayPositionY;
         float InitialPosY = Game.Resolution.Height * CustomStarsPosition;
-        float Scale = ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsScale;
-
-        List<int> wantedLevels = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-        foreach(int wantedLevelStar in wantedLevels.OrderBy(x=> x))
+        if (DisplayablePlayer.IsWanted)
+        {
+            DisplayWantedLevel(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsScale);
+        }
+        else if (DisplayablePlayer.Investigation.IsActive)
+        {
+            DisplayInvestigationMarks(args, InitialPosX, InitialPosY, ConsistencyScale * Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksScale);
+        }
+    }
+    private void DisplayWantedLevel(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
+    {
+        for (int wantedLevelStar = 1; wantedLevelStar <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel; wantedLevelStar++)
         {
             Texture toShow;
             if (wantedLevelStar <= DisplayablePlayer.WantedLevel)
             {
-                if(wantedLevelStar >= Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsRedColorLimit)
+                if (wantedLevelStar >= Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsRedColorLimit)
                 {
                     toShow = WantedRed;
                 }
@@ -371,11 +396,54 @@ public class TopRightMenu
             }
         }
     }
-
+    private void DisplayInvestigationMarks(GraphicsEventArgs args, float InitialPosX, float InitialPosY, float Scale)
+    {    
+        for (int possibleWantedLevel = 1; possibleWantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel; possibleWantedLevel++)
+        {
+            Texture toShow;
+            if (possibleWantedLevel <= DisplayablePlayer.Investigation.InvestigationWantedLevel)
+            {   
+                if (possibleWantedLevel >= Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksRedColorLimit)
+                {
+                    toShow = QuestionRed;
+                }
+                else if(DisplayablePlayer.Investigation.BlipColor == Color.Orange)
+                {
+                    toShow = QuestionOrange;
+                }
+                else if (DisplayablePlayer.Investigation.BlipColor == Color.DarkOrange)
+                {
+                    toShow = QuestionDarkOrange;
+                }
+                else if (DisplayablePlayer.Investigation.BlipColor == Color.Yellow)
+                {
+                    toShow = QuestionYellow;
+                }
+                else
+                {
+                    toShow = QuestionWhite;
+                }
+            }
+            else
+            {
+                toShow = QuestionGreyed;
+            }
+            float FinalPosX = InitialPosX - (possibleWantedLevel * ((toShow.Size.Width - Settings.SettingsManager.UIGeneralSettings.CustomInvestigationMarksSpacingPixelReduction) * Scale));//InitialPosX - (i * (toShow.Size.Width * Scale));
+            float FinalPosY = InitialPosY;
+            if (toShow != null && toShow.Size != null)
+            {
+                args.Graphics.DrawTexture(toShow, new RectangleF(FinalPosX, FinalPosY, toShow.Size.Width * Scale, toShow.Size.Height * Scale));
+            }
+        }
+    }
     private void DrawSprites(object sender, GraphicsEventArgs args)
     {
         try
         {
+            if(isPaused) 
+            { 
+                return; 
+            }
             GetStuff(args);
         }
         catch (Exception ex)

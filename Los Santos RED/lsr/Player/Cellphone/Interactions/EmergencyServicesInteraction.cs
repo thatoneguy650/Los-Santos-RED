@@ -185,9 +185,6 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
     {
         Crime ToCallIn = Crimes.CrimeList.FirstOrDefault(x => x.ID == StaticStrings.OfficersNeededCrimeID);
         PedExt violatingCiv = World.Pedestrians.Citizens.Where(x => x.DistanceToPlayer <= 200f).OrderByDescending(x => x.CurrentlyViolatingWantedLevel).FirstOrDefault();
-
-
-
         CrimeSceneDescription description;
         if (violatingCiv != null && violatingCiv.Pedestrian.Exists() && violatingCiv.CrimesCurrentlyViolating.Any())
         {
@@ -198,7 +195,6 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         {
             description = new CrimeSceneDescription(false, Player.IsCop, Player.Position);
         }
-
         if (Player.IsCop)
         {
             Player.Scanner.Reset();
