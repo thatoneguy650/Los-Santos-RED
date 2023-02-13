@@ -146,10 +146,10 @@ public class Agencies : IAgencies
         LSFD = new Agency("~w~", "LSFD", "LSFD", "Los Santos Fire Department", "White", Classification.EMS, "GreenEMTs", "Amublance3", "LSFD ", null, null, null, "LSFD EMT") { MaxWantedLevelSpawn = 0, CanSpawnAnywhere = true, HeadDataGroupID = "AllHeads" };
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
 
-        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "GruppeSechsPeds", "UnmarkedVehicles", "GS ","Tasers", "LimitedSidearms", null, "Gruppe Sechs Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };  
+        GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "GruppeSechsPeds", "GroupSechsVehicles", "GS ","Tasers", "LimitedSidearms", null, "Gruppe Sechs Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };  
         SECURO = new Agency("~b~", "SECURO", "SecuroServ", "SecuroServ", "Black", Classification.Security, "SecuroservPeds", "UnmarkedVehicles", "SS ", "Tasers", "LimitedSidearms", null, "SecuroServ Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
         MERRY = new Agency("~w~", "MERRY", "Merryweather", "Merryweather Security", "White", Classification.Security, "MerryweatherSecurityPeds", "MerryweatherPatrolVehicles", "MW ", "Tasers", "LimitedSidearms", null, "Merryweather Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
-        BOBCAT = new Agency("~w~", "BOBCAT", "Bobcat", "Bobcat Security", "White", Classification.Security, "BobcatPeds", "UnmarkedVehicles", "BC ", "Tasers", "LimitedSidearms", null, "Bobcat Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        BOBCAT = new Agency("~w~", "BOBCAT", "Bobcat", "Bobcat Security", "White", Classification.Security, "BobcatPeds", "BobcatSecurityVehicles", "BC ", "Tasers", "LimitedSidearms", null, "Bobcat Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }

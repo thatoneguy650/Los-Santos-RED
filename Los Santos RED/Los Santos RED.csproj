@@ -94,17 +94,17 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NAudio, Version=1.9.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\NAudio.dll</HintPath>
+    <Reference Include="NAudio">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\NAudio.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="RAGENativeUI">
-      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\RAGENativeUI.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="RagePluginHookSDK">
-      <HintPath>F:\Old D drive SDD Games\common\Grand Theft Auto V\SDK\RagePluginHookSDK.dll</HintPath>
+    <Reference Include="RagePluginHook">
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Grand Theft Auto V\SDK\RagePluginHook.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -295,6 +295,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
+    <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />
     <Compile Include="lsr\UI\Pop Up Menu\DrawableIcon.cs" />
     <Compile Include="lsr\UI\TopRightMenu.cs" />
     <Compile Include="lsr\Vehicle\DispatchableVehicleExtra.cs" />

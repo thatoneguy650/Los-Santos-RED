@@ -841,6 +841,17 @@ public class DebugMenu : ModUIMenu
         };
         HelperMenuItem.AddItem(particleAttachMenu);
 
+
+        UIMenuItem VehicleShowcaseMenu = new UIMenuItem("Showcase Vehicle", "Showcase the current looked at vehicle");
+        VehicleShowcaseMenu.Activated += (menu, item) =>
+        {
+            VehicleShowcase vs = new VehicleShowcase(World.Vehicles.GetClosestVehicleExt(Player.Character.Position,true,15f), Settings);
+            vs.Start();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(VehicleShowcaseMenu);
+        //VehicleShowcase
+
     }
     private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
     {
@@ -1013,6 +1024,10 @@ public class DebugMenu : ModUIMenu
             {
                 Dispatcher.DebugSpawnEMT(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }
+            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
+            {
+                Dispatcher.DebugSpawnSecurityGuard(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
+            }
             else
             {
                 Dispatcher.DebugSpawnCop(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
@@ -1060,7 +1075,13 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
 
-
+        UIMenuItem ClearSpawned = new UIMenuItem("Clear Spawned", "Removes all spawned items");
+        ClearSpawned.Activated += (menu, item) =>
+        {
+            World.Pedestrians.ClearSpawned();
+            World.Vehicles.ClearSpawned(true);
+            menu.Visible = false;
+        };
 
 
         DispatcherMenu.AddItem(SpawnAgencyFoot);
@@ -1072,6 +1093,7 @@ public class DebugMenu : ModUIMenu
         DispatcherMenu.AddItem(DespawnRockblock);
         DispatcherMenu.AddItem(PlayScanner);
         DispatcherMenu.AddItem(RemoveCops);
+        DispatcherMenu.AddItem(ClearSpawned);
     }
     private void Frecam()
     {

@@ -1093,6 +1093,11 @@ public class LEDispatcher
         EntryPoint.WriteToConsole($"DEBUG SPAWN COP agencyID: {agencyID} onFoot: {onFoot}");
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
+        if (Game.LocalPlayer.Character.DistanceTo2D(new Vector3(682.6665f, 668.7299f, 128.4526f)) <= 30f)
+        {
+            SpawnLocation.InitialPosition = new Vector3(682.6665f, 668.7299f, 128.4526f);
+            SpawnLocation.Heading = 189.3264f;
+        }
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
         if (agencyID == "")
         {
@@ -1125,6 +1130,6 @@ public class LEDispatcher
             PersonType = null;
         }
 
-        CallSpawnTask(true, true, true, false, SpawnRequirement.None);
+        CallSpawnTask(true, true, true, true, SpawnRequirement.None);
     }
 }

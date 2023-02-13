@@ -1202,19 +1202,20 @@ public class Debug
     }
     private void DebugNumpad9()
     {
+        World.Pedestrians.ClearSpawned();
+        World.Vehicles.ClearSpawned(true);
+        //Cop cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 25f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        //if(cop == null || !cop.Pedestrian.Exists())
+        //{
+        //    return;
+        //}
+        //cop.Pedestrian.BlockPermanentEvents = true;
+        //cop.Pedestrian.KeepTasks = true;
+        //NativeFunction.Natives.CLEAR_PED_TASKS(cop.Pedestrian);
+        //NativeFunction.Natives.TASK_GOTO_ENTITY_OFFSET(cop.Pedestrian, Player.Character, -1, 1.0f, -180f, 1.0f, 0);
 
-        Cop cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 25f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(cop == null || !cop.Pedestrian.Exists())
-        {
-            return;
-        }
-        cop.Pedestrian.BlockPermanentEvents = true;
-        cop.Pedestrian.KeepTasks = true;
-        NativeFunction.Natives.CLEAR_PED_TASKS(cop.Pedestrian);
-        NativeFunction.Natives.TASK_GOTO_ENTITY_OFFSET(cop.Pedestrian, Player.Character, -1, 1.0f, -180f, 1.0f, 0);
 
-
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(cop.Pedestrian,1.0f,-1,0.25f,4 | 16);
+        //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD_ADVANCED(cop.Pedestrian,1.0f,-1,0.25f,4 | 16);
             //PED_INDEX PedIndex, VECTOR VecCoors, FLOAT MoveBlendRatio, INT Time , FLOAT Radius, ENAV_SCRIPT_FLAGS iNavFlags, NAVDATA navDataStruct, FLOAT FinalHeading = DEFAULT_NAVMESH_FINAL_HEADING ) = "0x72f317bc03266125"
 
         GameFiber.Sleep(1000);
