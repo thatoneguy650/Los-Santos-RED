@@ -10,6 +10,7 @@ using ExtensionsMethods;
 using LosSantosRED.lsr.Helper;
 using System.Windows.Forms;
 using LosSantosRED.lsr.Interface;
+using RAGENativeUI.Elements;
 
 public class VehicleShowcase
 {
@@ -27,10 +28,16 @@ public class VehicleShowcase
     private ISettingsProvideable Settings;
     private bool hidelsrUI;
     private bool hideRadar;
-    public VehicleShowcase(VehicleExt toShow, ISettingsProvideable settings)
+    private float distanceAwayX = 4.0f;
+    private float distanceAwayY = 4.0f;
+    private float distanceAwayZ = 1.5f;
+    private ITimeControllable Time;
+    private int LiveryToSet = 0;
+    public VehicleShowcase(VehicleExt toShow, ISettingsProvideable settings, ITimeControllable time)
     {
         HighlightedVehicle = toShow;
         Settings = settings;
+        Time = time;
     }
 
     public VehicleExt HighlightedVehicle { get; set; }
@@ -42,6 +49,7 @@ public class VehicleShowcase
             EntryPoint.WriteToConsole("VehicleShowcase Failed 1");
             return;
         }
+        Time.PauseTime();
         SetupPositions();
         IsRunning = true;
         hidelsrUI = Settings.SettingsManager.UIGeneralSettings.HideLSRUIUnlessActionWheelActive;
@@ -63,29 +71,69 @@ public class VehicleShowcase
             try
             {
                 Game.LocalPlayer.Character.IsVisible = false;
-                HighlightEntity();
+                HighlightEntity(false);
                 while (!Game.IsKeyDownRightNow(Keys.RButton))
                 {
                     if (Game.IsKeyDownRightNow(Keys.LButton))
                     {
-                        HighlightEntity();
+                        HighlightEntity(true);
                     }
-                    if (Game.IsKeyDownRightNow(Keys.K))
+
+
+
+                    if (Game.IsKeyDownRightNow(Keys.O))
                     {
-                        IsBig = !IsBig;
-                        Game.DisplaySubtitle($"Force Big {IsBig}");
-                        GameFiber.Sleep(500);
+                        distanceAwayZ += 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayZ {distanceAwayZ}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
                     }
                     if (Game.IsKeyDownRightNow(Keys.L))
                     {
-                        IsSmall = !IsSmall;
-                        Game.DisplaySubtitle($"Force Small {IsSmall}");
-                        GameFiber.Sleep(500);
+                        distanceAwayZ -= 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayZ {distanceAwayZ}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.U))
+                    {
+                        distanceAwayX += 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayX {distanceAwayX}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.J))
+                    {
+                        distanceAwayX -= 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayX {distanceAwayX}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
+                    }
+
+                    if (Game.IsKeyDownRightNow(Keys.I))
+                    {
+                        distanceAwayY += 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayY {distanceAwayY}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.K))
+                    {
+                        distanceAwayY -= 0.5f;
+                        Game.DisplaySubtitle($"distanceAwayY {distanceAwayY}");
+                        GameFiber.Sleep(100);
+                        HighlightEntity(false);
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.OemSemicolon))
+                    {
+                        SetNewLivery();
+                        GameFiber.Sleep(100);
                     }
                     GameFiber.Yield();
                 }
                 StopImmediately();
                 IsRunning = false;
+                Time.UnPauseTime();
             }
             catch (Exception ex)
             {
@@ -94,6 +142,26 @@ public class VehicleShowcase
             }
         }, "VehicleShowcase");
     }
+
+    private void SetNewLivery()
+    {
+        int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(HighlightedVehicle.Vehicle);
+        if (Total == -1)
+        {
+            return;
+        }
+        if (HighlightedVehicle != null && HighlightedVehicle.Vehicle.Exists())
+        {
+            NativeFunction.Natives.SET_VEHICLE_LIVERY(HighlightedVehicle.Vehicle, LiveryToSet);
+            //Game.DisplaySubtitle($"SET LIVERY {LiveryToSet}");
+            LiveryToSet++;
+            if(LiveryToSet > Total)
+            {
+                LiveryToSet = 0;
+            }
+        }
+    }
+
     public void StopImmediately()
     {
         IsRunning = false;
@@ -127,7 +195,7 @@ public class VehicleShowcase
         Game.DisableControlAction(0, GameControl.Attack2, true);
         Game.DisableControlAction(0, GameControl.Aim, true);
     }
-    public void HighlightEntity()
+    public void HighlightEntity(bool getNewOffset)
     {
         if(HighlightedVehicle == null || !HighlightedVehicle.Vehicle.Exists())
         {
@@ -139,7 +207,9 @@ public class VehicleShowcase
         {
             StoreCam = new Camera(false);
         }
-        GetNewOffset();
+
+        GetNewOffset(getNewOffset);
+        
         StoreCam.Position = InitialCameraPosition;
         Vector3 ToLookAt = new Vector3(HighlightedVehicle.Vehicle.Position.X, HighlightedVehicle.Vehicle.Position.Y, HighlightedVehicle.Vehicle.Position.Z + 0.5f);
         _direction = (ToLookAt - InitialCameraPosition).ToNormalized();
@@ -163,12 +233,12 @@ public class VehicleShowcase
             CameraTo.Rotation = new Rotator(r.X, r.Y, r.Z);
             CameraTo.Active = true;
         }
-        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 1500, true, true);
-        GameFiber.Sleep(1500);
+        NativeFunction.Natives.SET_CAM_ACTIVE_WITH_INTERP(StoreCam, CameraTo, 500, true, true);
+        GameFiber.Sleep(500);
     }
 
 
-    private void GetNewOffset()
+    private void GetNewOffset(bool increase)
     {
 
         HighlightPosition hp = OffsetVectorList.FirstOrDefault(x => x.PositionNumber == CurrentPosition);
@@ -176,26 +246,18 @@ public class VehicleShowcase
         float width = HighlightedVehicle.Vehicle.Model.Dimensions.X;
         float length = HighlightedVehicle.Vehicle.Model.Dimensions.Y;
         float height = HighlightedVehicle.Vehicle.Model.Dimensions.Z;
-        Vector3 ToShowVector = new Vector3(hp.OffsetVector.X, hp.OffsetVector.Y, hp.OffsetVector.Z);
-        if (IsBig)//is big
-        {
-            float newX = ToShowVector.X < 0 ? ToShowVector.X - 3.0f : ToShowVector.X + 3.0f;
-            float newY = ToShowVector.Y < 0 ? ToShowVector.Y - 3.0f : ToShowVector.Y + 3.0f;
+        Vector3 ToShowVector = new Vector3(hp.OffsetVector.X * distanceAwayX, hp.OffsetVector.Y * distanceAwayY, hp.OffsetVector.Z * distanceAwayZ);
 
-            ToShowVector = new Vector3(newX, newY, ToShowVector.Z);
-        }
-        else if(IsSmall)
-        {
-            float newX = ToShowVector.X < 0 ? ToShowVector.X + 3.0f : ToShowVector.X - 3.0f;
-            float newY = ToShowVector.Y < 0 ? ToShowVector.Y + 3.0f : ToShowVector.Y - 3.0f;
-            ToShowVector = new Vector3(newX, newY, ToShowVector.Z);
-        }
         EntryPoint.WriteToConsole($"CurrentPosition {CurrentPosition} ToShowVector {ToShowVector}");
         InitialCameraPosition = HighlightedVehicle.Vehicle.GetOffsetPosition(ToShowVector);
-        CurrentPosition++;
-        if (CurrentPosition > MaxPositions)
+
+        if (increase)
         {
-            CurrentPosition = 0;
+            CurrentPosition++;
+            if (CurrentPosition > MaxPositions)
+            {
+                CurrentPosition = 0;
+            }
         }
     }
     private void SetupPositions()
@@ -203,15 +265,15 @@ public class VehicleShowcase
         OffsetVectorList = new List<HighlightPosition>() 
         { 
 
-            new HighlightPosition(0, new Vector3(4f, 4f, 1f)),//FL
-            new HighlightPosition(1, new Vector3(4f, -4f, 1f)),//FR
-            new HighlightPosition(2, new Vector3(-4f, 4f, 1f)),//RL
-            new HighlightPosition(3, new Vector3(-4f, -4f, 1f)),//RR
+            new HighlightPosition(0, new Vector3(1f, 1f, 1f)),//FL
+            new HighlightPosition(1, new Vector3(1f, -1f, 1f)),//FR
+            new HighlightPosition(2, new Vector3(-1f, 1f, 1f)),//RL
+            new HighlightPosition(3, new Vector3(-1f, -1f, 1f)),//RR
 
-            new HighlightPosition(4, new Vector3(6f, 0, 0.5f)),//FRONT
-            new HighlightPosition(5, new Vector3(-6f, 0, 0.5f)),//REAR
-            new HighlightPosition(6, new Vector3(0, 6f, 0.5f)),//LEFT
-            new HighlightPosition(7, new Vector3(0, -6f, 0.5f)),//RIGHT
+            new HighlightPosition(4, new Vector3(1f, 0, 1f)),//FRONT
+            new HighlightPosition(5, new Vector3(-1f, 0, 1f)),//REAR
+            new HighlightPosition(6, new Vector3(0, 1f, 1f)),//LEFT
+            new HighlightPosition(7, new Vector3(0, -1f, 1f)),//RIGHT
 
         };
         MaxPositions = OffsetVectorList.Max(x => x.PositionNumber);

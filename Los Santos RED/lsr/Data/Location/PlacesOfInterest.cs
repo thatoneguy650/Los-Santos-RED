@@ -1984,7 +1984,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
         OldPossibleLocations.Morgues.AddRange(Morgues);
         OldPossibleLocations.SportingGoodsStores.AddRange(SportingGoodsStores);
         OldPossibleLocations.Airports.AddRange(Airports);
-        Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
+        //Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
     }
     private void DefaultConfig_LibertyCity()
     {

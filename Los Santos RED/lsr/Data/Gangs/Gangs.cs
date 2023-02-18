@@ -130,7 +130,7 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 40f,
         };//Meth
-        Vagos = new Gang("~o~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Orange", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
+        Vagos = new Gang("~y~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Yellow", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 100,
@@ -161,6 +161,74 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 55f,
         };//marijuana
+        Varrios = new Gang("~b~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Blue", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios", "CHAR_BLANK_ENTRY", "Varrios Member")
+        {
+            DenName = "Hangout",
+            AmbientMemberMoneyMin = 100,
+            AmbientMemberMoneyMax = 300,
+            DealerMemberMoneyMin = 350,
+            DealerMemberMoneyMax = 1100,
+            EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" },
+            DealerMenuGroup = "CrackDealerMenu",
+            PickupPaymentMin = 200,
+            PickupPaymentMax = 500,
+            TheftPaymentMin = 1000,
+            TheftPaymentMax = 3000,
+            HitPaymentMin = 10000,
+            HitPaymentMax = 27000,
+            DeliveryPaymentMin = 1000,
+            DeliveryPaymentMax = 4000
+                                         ,
+            NeutralRepLevel = 0,
+            FriendlyRepLevel = 1500,
+            StartingRep = 0,
+            MaximumRep = 5000,
+            MinimumRep = -5000
+                                         ,
+            PercentageWithMelee = 25f,
+            PercentageWithSidearms = 25f,
+            PercentageWithLongGuns = 10f,
+            MemberKickUpAmount = 2200,
+
+            DrugDealerPercentage = 50f,
+        };//crack//Varrios are light blue
+        Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta", "CHAR_BLANK_ENTRY", "Marabunta Member")
+        {
+            DenName = "Hangout",
+            AmbientMemberMoneyMin = 100,
+            AmbientMemberMoneyMax = 250,
+            DealerMemberMoneyMin = 250,
+            DealerMemberMoneyMax = 850,
+            EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO" },
+            DealerMenuGroup = "MarijuanaDealerMenu",
+            PickupPaymentMin = 200,
+            PickupPaymentMax = 1000,
+            TheftPaymentMin = 1000,
+            TheftPaymentMax = 5000,
+            HitPaymentMin = 10000,
+            HitPaymentMax = 30000,
+            DeliveryPaymentMin = 1000,
+            DeliveryPaymentMax = 4000
+                                        ,
+            NeutralRepLevel = 0,
+            FriendlyRepLevel = 1500,
+            StartingRep = 0,
+            MaximumRep = 5000,
+            MinimumRep = -5000
+                                        ,
+            PercentageWithMelee = 20f,
+            PercentageWithSidearms = 20f,
+            PercentageWithLongGuns = 5f,
+            MemberKickUpAmount = 2000,
+
+            DrugDealerPercentage = 70f,
+        };//marijuana
+
+
+
+
+
+
         Families = new Gang("~g~", "AMBIENT_GANG_FAMILY", "The Families", "Families", "Green", "FamiliesPeds", "FamiliesVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Families", "CHAR_BLANK_ENTRY", "Families Member")
         {
             DenName = "Hangout",
@@ -222,68 +290,8 @@ public class Gangs : IGangs
 
             DrugDealerPercentage = 60f,
         };//crack
-        Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta", "CHAR_BLANK_ENTRY", "Marabunta Member")
-        {
-            DenName = "Hangout",
-            AmbientMemberMoneyMin = 100,
-            AmbientMemberMoneyMax = 250,
-            DealerMemberMoneyMin = 250,
-            DealerMemberMoneyMax = 850,
-            EnemyGangs = new List<string>() { "AMBIENT_GANG_MADRAZO" },
-            DealerMenuGroup = "MarijuanaDealerMenu",
-            PickupPaymentMin = 200,
-            PickupPaymentMax = 1000,
-            TheftPaymentMin = 1000,
-            TheftPaymentMax = 5000,
-            HitPaymentMin = 10000,
-            HitPaymentMax = 30000,
-            DeliveryPaymentMin = 1000,
-            DeliveryPaymentMax = 4000
-                                        ,
-            NeutralRepLevel = 0,
-            FriendlyRepLevel = 1500,
-            StartingRep = 0,
-            MaximumRep = 5000,
-            MinimumRep = -5000
-                                        ,
-            PercentageWithMelee = 20f,
-            PercentageWithSidearms = 20f,
-            PercentageWithLongGuns = 5f,
-            MemberKickUpAmount = 2000,
 
-            DrugDealerPercentage = 70f,
-        };//marijuana
-        Varrios = new Gang("~y~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Yellow", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios", "CHAR_BLANK_ENTRY", "Varrios Member")
-        {
-            DenName = "Hangout",
-            AmbientMemberMoneyMin = 100,
-            AmbientMemberMoneyMax = 300,
-            DealerMemberMoneyMin = 350,
-            DealerMemberMoneyMax = 1100,
-            EnemyGangs = new List<string>() { "AMBIENT_GANG_WEICHENG" },
-            DealerMenuGroup = "CrackDealerMenu",
-            PickupPaymentMin = 200,
-            PickupPaymentMax = 500,
-            TheftPaymentMin = 1000,
-            TheftPaymentMax = 3000,
-            HitPaymentMin = 10000,
-            HitPaymentMax = 27000,
-            DeliveryPaymentMin = 1000,
-            DeliveryPaymentMax = 4000
-                                         ,
-            NeutralRepLevel = 0,
-            FriendlyRepLevel = 1500,
-            StartingRep = 0,
-            MaximumRep = 5000,
-            MinimumRep = -5000
-                                         ,
-            PercentageWithMelee = 25f,
-            PercentageWithSidearms = 25f,
-            PercentageWithLongGuns = 10f,
-            MemberKickUpAmount = 2200,
 
-            DrugDealerPercentage = 50f,
-        };//crack
         Triads = new Gang("~r~", "AMBIENT_GANG_WEICHENG", "Triads", "Triads", "Red", "TriadsPeds", "TriadVehicles", "", "MeleeWeapons", "TriadsSidearms", "TriadsLongGuns", "Triads", "CHAR_BLANK_ENTRY", "Triad Member")
         {
             DenName = "Meeting Spot",

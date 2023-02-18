@@ -845,7 +845,7 @@ public class DebugMenu : ModUIMenu
         UIMenuItem VehicleShowcaseMenu = new UIMenuItem("Showcase Vehicle", "Showcase the current looked at vehicle");
         VehicleShowcaseMenu.Activated += (menu, item) =>
         {
-            VehicleShowcase vs = new VehicleShowcase(World.Vehicles.GetClosestVehicleExt(Player.Character.Position,true,15f), Settings);
+            VehicleShowcase vs = new VehicleShowcase(World.Vehicles.GetClosestVehicleExt(Player.Character.Position,true,15f), Settings, Time);
             vs.Start();
             menu.Visible = false;
         };

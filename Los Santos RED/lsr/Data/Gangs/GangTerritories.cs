@@ -34,7 +34,7 @@ public class GangTerritories : IGangTerritories
         else
         {
             EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
             DefaultConfig();
         }
@@ -156,7 +156,7 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("ARMY","ARMYB", 0, 100, 100),
             //new ZoneJurisdiction("LSMC","BANHAMC", 0, 100, 100),
             // new ZoneJurisdiction("AMBIENT_GANG_BALLAS","BANNING", 0, 50, 50),//Banning
-            //new ZoneJurisdiction("AMBIENT_GANG_SALVA","BANNING", 1, 50, 50),//Banning
+            //new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","BANNING", 0, 100, 100),//Banning
             //new ZoneJurisdiction("LSMC","BAYTRE", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEACH", 0, 100, 100),//Vespucci Beach
             //new ZoneJurisdiction("LSMC","BHAMCA", 0, 100, 100),
@@ -218,7 +218,14 @@ public class GangTerritories : IGangTerritories
             //new ZoneJurisdiction("LSMC","PBLUFF", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","PBOX", 0, 100, 100),//Pillbox Hill
             //new ZoneJurisdiction("LSMC","PROCOB", 0, 100, 100),
-            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","RANCHO", 1, 50, 50),//south rancho?
+            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 50, 50),//north rancho?
+
+
+
+
             //new ZoneJurisdiction("AMBIENT_GANG_BALLAS","RANCHO", 1, 50, 50),
             //new ZoneJurisdiction("LSMC","RGLEN", 0, 100, 100),
             new ZoneJurisdiction("AMBIENT_GANG_MESSINA","RICHM", 0, 100, 100),//Richman
@@ -269,7 +276,11 @@ public class GangTerritories : IGangTerritories
             new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","EBURO", 0, 100, 100),//el burro heights
             new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","MURRI", 0, 100, 100),//Murrieta Heights
             new ZoneJurisdiction("AMBIENT_GANG_SALVA","STAD", 0, 100, 100),//Maze Bank
-            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+
+            //new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","RANCHO", 1, 50, 50),//south rancho?
+            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 50, 50),//north rancho?
+
             new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","DTVINE", 0, 100, 100),//Downtown Vinewood
             new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","WVINE", 0, 100, 100),//West Vinewood
             new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","CHU", 0, 100, 100),//Chumash
@@ -308,7 +319,12 @@ public class GangTerritories : IGangTerritories
             new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","MURRI", 0, 100, 100),//Murrieta Heights
             new ZoneJurisdiction("AMBIENT_GANG_LOST","PALFOR", 0, 100, 100),//Paleto Forest
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","PBOX", 0, 100, 100),//Pillbox Hill
-            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+
+            //new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 100, 100),
+            new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","RANCHO", 1, 50, 50),//south rancho?
+            new ZoneJurisdiction("AMBIENT_GANG_SALVA","RANCHO", 0, 50, 50),//north rancho?
+
+
             new ZoneJurisdiction("AMBIENT_GANG_MESSINA","RICHM", 0, 100, 100),//Richman
             new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","SANAND", 0, 100, 100),//broken zone in east LS
             new ZoneJurisdiction("AMBIENT_GANG_HILLBILLY","SANDY", 0, 100, 100),//Sandy Shores

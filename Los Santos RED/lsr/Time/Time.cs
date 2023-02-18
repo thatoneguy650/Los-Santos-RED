@@ -47,11 +47,7 @@ namespace Mod
         public Time(ISettingsProvideable settings)
         {
             Settings = settings;
-            if (Settings.SettingsManager.TimeSettings.ScaleTime)
-            {
-                NativeFunction.CallByName<int>("PAUSE_CLOCK", true);
-                isClockPaused = true;
-            }
+
         }
         public string CurrentTime => Settings.SettingsManager.LSRHUDSettings.PlayerStatusSimpleTime ? CurrentDateTime.ToString("ddd hh:mm tt") : CurrentDateTime.ToString("ddd, dd MMM yyyy hh:mm tt");// + (CurrentTimeMultiplier != "1x" ? " (" + CurrentTimeMultiplier + ")" : "");
         public string CurrentTimeMultiplier => (ClockMultiplier * 1000 / Interval).ToString() + "x";
@@ -230,7 +226,7 @@ namespace Mod
                         Interval = DefaultInterval;
                     }
                 }
-                if (Settings.SettingsManager.TimeSettings.ScaleTime || IsFastForwarding)
+                if (Settings.SettingsManager.TimeSettings.ScaleTime || IsFastForwarding || Settings.SettingsManager.TimeSettings.SetRealTime)
                 {
                     NativeFunction.CallByName<int>("ADD_TO_CLOCK_TIME", 0, 0, ClockMultiplier);
                 }

@@ -40,9 +40,9 @@ public class PlayerOtherSettings : ISettingsDefaultable
     [Description("Cost to remove your wanted level using the corrupt cop interaction. Number is multiplied by your current wanted level to get the total cost. Ex. 5000 at 2 starts would cost $10000")]
     public int CorruptCopWantedClearCostScalar { get; set; }
     [Description("Hours needed to wait between contact tasks after completing the previous task.")]
-    public double HoursBetweenTasksWhenCompleted { get; set; }
+    public float HoursBetweenTasksWhenCompleted { get; set; }
     [Description("Hours needed to wait between contact tasks after failing the previous task.")]
-    public double HoursBetweenTasksWhenFailed { get; set; }
+    public float HoursBetweenTasksWhenFailed { get; set; }
     [Description("Allows mobile radio when on foot.")]
     public bool AllowMobileRadioOnFoot { get; set; }
     [Description("Attempts to disable being hassled by vanilla spawned gang peds.")]

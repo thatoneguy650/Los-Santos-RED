@@ -354,6 +354,11 @@ public class SecurityDispatcher
             SpawnLocation.InitialPosition = new Vector3(682.6665f, 668.7299f, 128.4526f);
             SpawnLocation.Heading = 189.3264f;
         }
+        if (Game.LocalPlayer.Character.DistanceTo2D(new Vector3(229.028f, -988.8007f, -99.52672f)) <= 30f)
+        {
+            SpawnLocation.InitialPosition = new Vector3(229.028f, -988.8007f, -99.52672f);
+            SpawnLocation.Heading = 358.3758f;
+        }
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
         if (agencyID == "")
         {

@@ -179,7 +179,7 @@ public class ModDataFileManager
         SetupAddonPlatesConfig();
         SetupEUP();
         SetupFullExpandedJurisdiction();
-        SetupLosSantos2008();
+        //SetupLosSantos2008();
         SetupLibertyCity();
         SetupSimple();
     }
@@ -205,39 +205,45 @@ public class ModDataFileManager
     private void SetupFullExpandedJurisdiction()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction");
-        string Description = 
-            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1 & Lt.Caine's mapped default police vehicles." 
-            + Environment.NewLine + 
-            "These are all replace vehicles for police, police2, police3, sheriff, and sheriff2. No custom gameconfig should be required." 
-            + Environment.NewLine + 
+        string Description =
+            "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, and AllenKennedy's mapped default police vehicles."
+            + Environment.NewLine +
+            "These are all replace vehicles for police, police2, police3, sheriff, sheriff2, policeb, and asea2. No custom gameconfig should be required."
+            + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
-            + Environment.NewLine + 
-            "https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/" 
             + Environment.NewLine +
-            "Expanded Department Liveries Installation: " 
+            "Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/ (the add-on items are not needed)"
+            + Environment.NewLine + Environment.NewLine +
+            "Expanded Department Liveries Installation: "
             + Environment.NewLine +
-            "Copy greskfej folder to '\\mods\\update\\x64\\dlcpacks'" 
-            + Environment.NewLine + 
-            "Add" 
-            + Environment.NewLine + 
-            "<Item>dlcpacks:/greskfej/</Item>" 
-            + Environment.NewLine + 
-            "to the end of " 
-            + Environment.NewLine + 
-            "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'" 
-            + Environment.NewLine
-            + Environment.NewLine +
-            "NOTE: To set the correct handling of the Police Gresley"
-            + Environment.NewLine +
-            "Copy the sheriff entry from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
-            + Environment.NewLine +
-            "and overwrite the existing sheriff entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
-            + Environment.NewLine
-            + Environment.NewLine +
+            "Install the greskfejinstaller.oiv with OpenIV"
+            + Environment.NewLine + Environment.NewLine +
+            "Finally, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
 
-            "To use, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" 
-            + Environment.NewLine 
+
+
+            "MANUAL INSTALL (Optional)"
             + Environment.NewLine +
+            "extract the greskfejinstaller.oiv as a zip file and open the content folder"
+            + Environment.NewLine +
+            "Copy greskfej folder to '\\mods\\update\\x64\\dlcpacks'"
+            + Environment.NewLine +
+            "Add"
+            + Environment.NewLine +
+            "<Item>dlcpacks:/greskfej/</Item>"
+            + Environment.NewLine +
+            "to the end of "
+            + Environment.NewLine +
+            "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'"
+            + Environment.NewLine
+            + Environment.NewLine +
+            "Copy the sheriff, asea, and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
+            + Environment.NewLine +
+            "and overwrite the existing sheriff, asea, and policeb entries in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            + Environment.NewLine + Environment.NewLine + Environment.NewLine +
+
+
             "Model Credits:" 
             + Environment.NewLine +
             "Stanier - Model by Rockstar Games, UV-Map by LtMattJeter, template by Lt.Caine, mirror lights by Netman, lightbars, assembly and skins by Yard1" 
@@ -250,27 +256,21 @@ public class ModDataFileManager
             + Environment.NewLine +
             "Gresley - Model by Rockstar Games, UV-Map, template, lightbar, assembly and skins by Yard1." 
             + Environment.NewLine +
+            "Torrence - AllenKennedy - Everything, except the front bumper and the spotlight. actuallyтoхιc - Front bumper and the spotlight. Jacobmaate - LED spotlight texture and vital assistance with figuring out audio files. Vx5 Voltage - For creating the Original Torrence SSO mod which inspired me to develop this one. 11john11 - Help finding good civilian wheels from Watch Dogs to use. Boywond - Converting Watch Dogs wheels. w/ - Help figuring out how to do 3D text in Blender."
+            + Environment.NewLine +
+            "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
+            + Environment.NewLine + Environment.NewLine + 
+            "Creator Links"
+            + Environment.NewLine +
+            "Yard1 - https://www.gta5-mods.com/users/Yard1/files"
+            + Environment.NewLine +
+            "Lt.Caine - https://www.lcpdfr.com/profile/143082-ltcaine/content/?type=downloads_file"
+            + Environment.NewLine +
+            "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
+            + Environment.NewLine +
+
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
-
-
-
-
-        //"Stanier (police)" + Environment.NewLine + 
-        //   "Copy police_hi.yft, police+hi.ytd, police.ytd, and police.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-        //"Buffalo (police2)" + Environment.NewLine + "" +
-        //   "Copy police2_hi.yft, police2.ytd, police2.yft, and police2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine +
-        //"Granger (sheriff2)" + Environment.NewLine + 
-        //   "Copy sheriff2_hi.yft, sheriff2.ytd, sheriff2.yft, and sheriff2+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday3ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
-
-        //"Interceptor (police3)" + Environment.NewLine + 
-        //   "Copy police3_hi.yft, police3.ytd, police3.yft, and police3+hi.ytd from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\patchday4ng\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'" + Environment.NewLine + Environment.NewLine +
-
-        //"Gresley (police5)" + Environment.NewLine + 
-        //   "Copy police5_hi.yft, police5.ytd, and police5.yft from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\x64\\levels\\gta5\\vehicles.rpf\\'." + Environment.NewLine + 
-        //   "Copy vehicles.meta from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\common\\data\\levels\\gta5\\' and replace the existing entry." + Environment.NewLine + 
-        //   "Copy carvariations.meta from AlternateConfigs\\FullExpandedJurisdiction\\Files to '\\mods\\update\\x64\\dlcpacks\\mpchristmas2\\dlc.rpf\\common\\data\\ and replace the existing entry'." + Environment.NewLine + Environment.NewLine + Environment.NewLine +
-
     }
     private void SetupLosSantos2008()
     {

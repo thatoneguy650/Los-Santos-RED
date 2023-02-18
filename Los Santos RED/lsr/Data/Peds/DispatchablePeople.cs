@@ -99,7 +99,7 @@ public class DispatchablePeople : IDispatchablePeople
         {
             EntryPoint.WriteToConsole($"No Dispatchable People config found, creating default", 0);
             SetupDefault();
-            DefaultConfig_LosSantos2008();
+           // DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
             DefaultConfig_FullExpandedJurisdiction();
             DefaultConfig();
@@ -3804,7 +3804,7 @@ public class DispatchablePeople : IDispatchablePeople
                                                             new PedComponent(3, 7, 0),
                                                             new PedComponent(10, 0, 0),
                                                             new PedComponent(8, 217, 12),
-                                                            new PedComponent(4, 3, 63),
+                                                            new PedComponent(4, 3, 6),
                                                             new PedComponent(6, 29, 0),
                                                             new PedComponent(7, 6, 0),
                                                             new PedComponent(9, 21, 0),

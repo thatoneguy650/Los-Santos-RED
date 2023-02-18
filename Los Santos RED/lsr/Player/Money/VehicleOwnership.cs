@@ -78,12 +78,12 @@ public class VehicleOwnership
             return;
         }
         EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}", 5);
+        toOwn.RemoveOwnershipBlip();
         if (OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
         {
             OwnedVehicles.Remove(toOwn);
-        }
-        toOwn.RemoveOwnership();
-        toOwn.RemoveOwnershipBlip();
+        }  
+        toOwn.RemoveOwnership();     
         UpdateOwnedBlips();     
     }
     public void TakeOwnershipOfNearestCar()

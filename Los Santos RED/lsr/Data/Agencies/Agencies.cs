@@ -70,7 +70,7 @@ public class Agencies : IAgencies
             SetupDefault();
             DefaultConfig_Simple();
             DefaultConfig_FullExpanded();
-            DefaultConfig_LosSantos2008();
+            //DefaultConfig_LosSantos2008();
             DefaultConfig_LibertyCity();
             DefaultConfig();
         }
@@ -147,7 +147,7 @@ public class Agencies : IAgencies
         NYSP = new Agency("~b~", "NYSP", "NYSP", "North Yankton State Patrol", "Blue", Classification.Police, "NYSPPeds", "NYSPVehicles", "NYSP ", "Nightsticks", "LimitedSidearms", "LimitedLongGuns", "NYSP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads" };
 
         GRPSECHS = new Agency("~g~", "GRP6", "G6", "Gruppe Sechs", "Green",Classification.Security, "GruppeSechsPeds", "GroupSechsVehicles", "GS ","Tasers", "LimitedSidearms", null, "Gruppe Sechs Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };  
-        SECURO = new Agency("~b~", "SECURO", "SecuroServ", "SecuroServ", "Black", Classification.Security, "SecuroservPeds", "UnmarkedVehicles", "SS ", "Tasers", "LimitedSidearms", null, "SecuroServ Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
+        SECURO = new Agency("~b~", "SECURO", "SecuroServ", "SecuroServ", "Black", Classification.Security, "SecuroservPeds", "SecuroservVehicles", "SS ", "Tasers", "LimitedSidearms", null, "SecuroServ Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
         MERRY = new Agency("~w~", "MERRY", "Merryweather", "Merryweather Security", "White", Classification.Security, "MerryweatherSecurityPeds", "MerryweatherPatrolVehicles", "MW ", "Tasers", "LimitedSidearms", null, "Merryweather Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
         BOBCAT = new Agency("~w~", "BOBCAT", "Bobcat", "Bobcat Security", "White", Classification.Security, "BobcatPeds", "BobcatSecurityVehicles", "BC ", "Tasers", "LimitedSidearms", null, "Bobcat Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 

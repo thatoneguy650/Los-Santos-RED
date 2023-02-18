@@ -38,7 +38,7 @@ public class Jurisdictions : IJurisdictions
         {
             EntryPoint.WriteToConsole($"No Zone Jurisdiction config found, creating default", 0);
             DefaultZoneConfig_FullExpandedJurisdiction();
-            DefaultZoneConfig_LosSantos2008();
+            //DefaultZoneConfig_LosSantos2008();
             DefaultZoneConfig_LibertyCity();
             DefaultZoneConfig_Simple();
             DefaultZoneConfig();
@@ -60,7 +60,7 @@ public class Jurisdictions : IJurisdictions
         {
             EntryPoint.WriteToConsole($"No County Jurisdiction config found, creating default", 0);
             DefaultCountyConfig_FullExpandedJurisdiction();
-            DefaultCountyConfig_LosSantos2008();
+            //DefaultCountyConfig_LosSantos2008();
             DefaultCountyConfig_LibertyCity();
             DefaultCountyConfig_Simple();
             DefaultCountyConfig();
