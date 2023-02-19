@@ -269,6 +269,11 @@ public class FireFighterSpawnTask : SpawnTask
             myBlip.Scale = 0.6f;
         }
         PrimaryFirefighter.SpawnRequirement = SpawnRequirement;
+        if (ped.Exists())
+        {
+            PrimaryFirefighter.SpawnPosition = ped.Position;
+            PrimaryFirefighter.SpawnHeading = ped.Heading;
+        }
         return PrimaryFirefighter;
     }
     private void SetupPed(Ped ped)

@@ -42,6 +42,7 @@ public class Transaction
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
     public bool RotatePreview { get; set; }
+    public Dealership Dealership { get; set; }
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
     {

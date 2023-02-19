@@ -45,6 +45,7 @@ class WanderOnFootTaskState : TaskState
     private bool HasSpawnRequirements = false;
     private bool ForceStandardScenarios = false;
 
+
     public WanderOnFootTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, bool forceStandardScenarios)
     {
         PedGeneral = pedGeneral;
@@ -53,14 +54,14 @@ class WanderOnFootTaskState : TaskState
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
         ForceStandardScenarios = forceStandardScenarios;
-#if DEBUG
-        PercentageToTransitionToPatrol = 90f;
-        PercentageToTransitionToGuard = 90f;
-        MinGameTimeBetweenFootPatrols = 10000;
-        MaxGameTimeBetweenFootPatrols = 20000;
-        MinGameTimeBetweenGuarding = 10000;
-        MaxGameTimeBetweenGuarding = 20000;
-#endif
+//#if DEBUG
+//        PercentageToTransitionToPatrol = 90f;
+//        PercentageToTransitionToGuard = 90f;
+//        MinGameTimeBetweenFootPatrols = 10000;
+//        MaxGameTimeBetweenFootPatrols = 20000;
+//        MinGameTimeBetweenGuarding = 10000;
+//        MaxGameTimeBetweenGuarding = 20000;
+//#endif
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && !PedGeneral.IsInVehicle;

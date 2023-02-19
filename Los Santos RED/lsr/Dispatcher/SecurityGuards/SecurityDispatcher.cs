@@ -13,7 +13,7 @@ public class SecurityDispatcher
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
     private readonly int LikelyHoodOfAnySpawn = 5;
-    private readonly float MinimumDeleteDistance = 150f;//200f
+    private readonly float MinimumDeleteDistance = 125f;//200f
     private readonly uint MinimumExistingTime = 20000;
     private readonly ISettingsProvideable Settings;
     private readonly IStreets Streets;
@@ -48,15 +48,18 @@ public class SecurityDispatcher
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<SecurityGuard> DeletableOfficers => World.Pedestrians.SecurityGuardList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-    private float DistanceToDelete => Player.IsWanted ? 600f : 800f;
-    private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 500f;
+    private float DistanceToDelete => Player.IsWanted ? 400f : 600f;// Player.IsWanted ? 600f : 800f;
+    private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 300f;
    // private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedEMTs == 0;
     private bool HasNeedToDispatchToStations => true;// Settings.SettingsManager.SecuritySettings.AllowStationSpawning;
    // private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
-    private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenSpawn;
+    private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private float MaxDistanceToSpawn => 650f;
     private float MinDistanceToSpawn => 350f;
     private int TimeBetweenSpawn => 60000;
+
+
+    private int TimeBetweenRecall => 10000;
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -96,7 +99,7 @@ public class SecurityDispatcher
     {
         if (HasNeedToDispatchToStations)
         {
-            foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsActivated && x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
+            foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
             {
                 EntryPoint.WriteToConsole($"Security Dispatcher, Spawning at {ps.Name}");
                 if(ps.PossiblePedSpawns != null)
@@ -120,8 +123,9 @@ public class SecurityDispatcher
                 ps.IsDispatchFilled = true;
             }
         }
-        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
+        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
         {
+            EntryPoint.WriteToConsole($"Security Dispatcher, CLEARED AT {ps.Name}");
             ps.IsDispatchFilled = false;
         }
     }
@@ -149,8 +153,19 @@ public class SecurityDispatcher
         {
             return;
         }
+
+
+        bool forcePed = isPed;
+        bool forceVehicle = !isPed;
+        if (!cl.IsEmpty && !isPed)
+        {
+            forcePed = false;
+            forceVehicle = false;
+        }
+
+
         EntryPoint.WriteToConsole($"Security Dispatcher, GETTING SPAWN TYPES FOR {toSpawn.FullName} isPed{isPed} cl.RequiredGroup {cl.RequiredGroup}");
-        if (GetSpawnTypes(isPed, !isPed, toSpawn, cl.RequiredGroup))
+        if (GetSpawnTypes(forcePed, forceVehicle, toSpawn, cl.RequiredGroup))
         {
             EntryPoint.WriteToConsole($"Security Dispatcher, CALLING SPAWN TASK FOR {toSpawn.FullName} SpawnRequirement {cl.SpawnRequirement}");
             CallSpawnTask(true, false, !isPed, cl.SpawnRequirement);

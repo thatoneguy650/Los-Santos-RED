@@ -153,7 +153,15 @@ public class GangDispatcher
                                 SpawnLocation.Heading = cl.Heading;
                                 SpawnLocation.StreetPosition = cl.Location;
                                 SpawnLocation.SidewalkPosition = cl.Location;
-                                if (GetSpawnTypes(false, true, ps.AssociatedGang))
+
+
+                                bool forceVehicle = true;
+                                if (!cl.IsEmpty)
+                                {
+                                    forceVehicle = false;
+                                }
+
+                                if (GetSpawnTypes(false, forceVehicle, ps.AssociatedGang))
                                 {
                                     CallSpawnTask(true, false, true, true, cl.SpawnRequirement);
                                     spawnedsome = true;

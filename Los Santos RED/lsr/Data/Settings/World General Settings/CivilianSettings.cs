@@ -197,16 +197,16 @@ public class CivilianSettings : ISettingsDefaultable
         MaxRandomItemsAmount = 2;
 
 
-#if DEBUG
-        DrugDealerPercentageRichZones = 25f;
-        DrugDealerPercentageMiddleZones = 25f;
-        DrugDealerPercentagePoorZones = 25f;
+//#if DEBUG
+//        DrugDealerPercentageRichZones = 25f;
+//        DrugDealerPercentageMiddleZones = 25f;
+//        DrugDealerPercentagePoorZones = 25f;
 
-        DrugCustomerPercentageRichZones = 50f;
-        DrugCustomerPercentageMiddleZones = 50f;
-        DrugCustomerPercentagePoorZones = 50f;
+//        DrugCustomerPercentageRichZones = 50f;
+//        DrugCustomerPercentageMiddleZones = 50f;
+//        DrugCustomerPercentagePoorZones = 50f;
 
-#endif
+//#endif
         PercentageKnowsAnyGangTerritory = 45f;
         PercentageKnowsAnyDrugTerritory = 45f;
 

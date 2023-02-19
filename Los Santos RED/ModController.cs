@@ -133,6 +133,10 @@ namespace LosSantosRED.lsr
 
             UI.SetupDebugMenu();
 
+
+            Game.FadeScreenIn(500, true);
+
+
             DisplayLoadSuccessfulMessage();
         }
         public void Dispose()

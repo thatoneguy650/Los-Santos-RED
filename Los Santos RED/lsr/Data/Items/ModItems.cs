@@ -876,7 +876,7 @@ public class ModItems : IModItems
             new VehicleItem("Coil Voltic", ItemType.Vehicles) { ModelName = "voltic" },
             new VehicleItem("Coil Rocket Voltic", true, ItemType.Vehicles) { ModelName = "voltic2" },
             new VehicleItem("Declasse Asea", ItemType.Vehicles) { ModelName = "asea" },
-            new VehicleItem("Declasse Asea", ItemType.Vehicles) { ModelName = "asea2" },
+            new VehicleItem("Declasse Asea2", ItemType.Vehicles) { ModelName = "asea2" },
             new VehicleItem("Declasse Apocalypse Brutus", true, ItemType.Vehicles) { ModelName = "brutus" },
             new VehicleItem("Declasse Future Shock Brutus", true, ItemType.Vehicles) { ModelName = "brutus2" },
             new VehicleItem("Declasse Nightmare Brutus", true, ItemType.Vehicles) { ModelName = "brutus3" },

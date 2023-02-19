@@ -504,10 +504,7 @@ namespace Mod
             MeleeManager.Update();
             GameFiber.Yield();//TR Yield RemovedTest 1
             PlayerVoice.Update();
-
             ActivityManager.Update();
-
-
         }
         public void SetNotBusted()
         {
@@ -1567,10 +1564,15 @@ namespace Mod
                 ClosestDistance = 999f;
                 foreach (InteractableLocation gl in World.Places.ActiveInteractableLocations)// PlacesOfInterest.GetAllStores())
                 {
-                    if (gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
+                    if (gl.DistanceToPlayer <= 5.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     //if (gl.IsOpen(TimeControllable.CurrentHour) && gl.DistanceToPlayer <= 3.0f && gl.CanInteract && !ActivityManager.IsInteractingWithLocation && gl.CanCurrentlyInteract(this))
                     {
-                        if (gl.DistanceToPlayer < ClosestDistance)
+
+                        float liveDistance = gl.EntrancePosition.DistanceTo2D(Position);
+
+
+
+                        if (liveDistance <= 3.0f && gl.DistanceToPlayer < ClosestDistance)
                         {
                             ClosestInteractableLocation = gl;
                             ClosestDistance = gl.DistanceToPlayer;
@@ -2075,7 +2077,7 @@ namespace Mod
         }
         private void UpdateLookedAtPed()
         {
-            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 500)//750)//750)//750
+            if (Game.GameTime - GameTimeLastUpdatedLookedAtPed >= 200)// 500)//750)//750)//750
             {
                 GameFiber.Yield();
                 Vector3 RayStart = Game.LocalPlayer.Character.GetBonePosition(PedBoneId.Head);

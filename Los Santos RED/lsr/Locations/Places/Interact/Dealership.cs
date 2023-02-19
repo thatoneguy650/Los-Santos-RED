@@ -21,7 +21,7 @@ public class Dealership : InteractableLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
 
-
+    public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
 
@@ -70,7 +70,7 @@ public class Dealership : InteractableLocation
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-
+                    Transaction.Dealership = this;
                     Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
 
                     Transaction.ItemPreviewPosition = ItemPreviewPosition;

@@ -279,6 +279,11 @@ public class GangSpawnTask : SpawnTask
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
         GangMember.SpawnRequirement = SpawnRequirement;
+        if (ped.Exists())
+        {
+            GangMember.SpawnPosition = ped.Position;
+            GangMember.SpawnHeading = ped.Heading;
+        }
         return GangMember;
     }
     private void SetupPed(Ped ped)

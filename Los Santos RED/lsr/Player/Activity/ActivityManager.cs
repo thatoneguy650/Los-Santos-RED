@@ -190,7 +190,10 @@ public class ActivityManager
     {
         UpperBodyActivity = null;
         LowerBodyActivity = null;
-        PausedActivites.Add(da);
+        if (!PausedActivites.Contains(da))
+        {
+            PausedActivites.Add(da);
+        }
     }
     public void ForceCancelAllActivities()
     {

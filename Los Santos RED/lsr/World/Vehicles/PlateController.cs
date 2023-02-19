@@ -34,7 +34,7 @@ public class PlateController
                 {
                     if (MyCar.Vehicle.Exists())
                     {
-                        MyCar.UpdatePlateType(false, Zones, PlateTypes);
+                        MyCar.UpdatePlateType(false, Zones, PlateTypes, true);
                     }
                     VehiclesUpdated++;
                     GameFiber.Yield();

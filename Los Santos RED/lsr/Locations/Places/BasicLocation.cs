@@ -37,13 +37,13 @@ public class BasicLocation
             {
                 return 5000;
             }
-            else if (DistanceToPlayer >= 200)
+            else if (DistanceToPlayer >= 20)
             {
                 return 2000;
             }
             else
             {
-                return 1000;
+                return 200;
             }
         }
     }

@@ -7,6 +7,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -256,11 +257,16 @@ namespace LSR.Vehicles
             {
                 Handle = vehicle.Handle;
                 DescriptionColor = Vehicle.PrimaryColor;
-                CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Vehicle), false);
+                CarPlate = new LicensePlate(Vehicle.LicensePlate, NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(Vehicle), false);
                 OriginalLicensePlate = CarPlate;
                 Health = Vehicle.Health;
                 VehicleModelName = vehicle.Model.Name;
                 GameTimeSpawned = Game.GameTime;
+            }
+            else
+            {
+                CarPlate = new LicensePlate("UNKNOWN", 0, false);
+                OriginalLicensePlate = CarPlate;
             }
             Radio = new Radio(this);
             Indicators = new Indicators(this);
@@ -633,6 +639,7 @@ namespace LSR.Vehicles
         public void SetRadioStation(string stationName) => Radio.SetRadioStation(stationName);
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool OwnedByPlayer { get; internal set; }
+        public bool AllowVanityPlates { get; set; } = true;
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -772,7 +779,25 @@ namespace LSR.Vehicles
             }
             GetFuelTankCapacity();
         }
-        public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes)//this might need to come out of here.... along with the two bools
+        public void ForcePlateType(string text, int index)
+        {
+            if (!Vehicle.Exists() || string.IsNullOrEmpty(text) || index < 0)
+            {
+                return;
+            }
+            HasUpdatedPlateType = true;      
+            string cleanedText = text.Left(8);
+            Vehicle.LicensePlate = cleanedText;
+            OriginalLicensePlate.PlateNumber = cleanedText;
+            CarPlate.PlateNumber = cleanedText;       
+            if (index <= NativeFunction.Natives.GET_NUMBER_OF_VEHICLE_NUMBER_PLATES<int>())
+            {
+                NativeFunction.Natives.SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX(Vehicle, index);
+                OriginalLicensePlate.PlateType = index;
+                CarPlate.PlateType = index;
+            }
+        }
+        public void UpdatePlateType(bool force, IZones Zones, IPlateTypes PlateTypes, bool allowVanity)//this might need to come out of here.... along with the two bools
         {
             if (!Vehicle.Exists())
             {
@@ -831,7 +856,7 @@ namespace LSR.Vehicles
             else
             {
                 string NewPlateNumber;
-                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent))
+                if (Settings.SettingsManager.WorldSettings.AllowRandomVanityPlates && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.RandomVehicleVanityPlatesPercent) && allowVanity && AllowVanityPlates)
                 {
                     NewPlateNumber = PlateTypes.GetRandomVanityPlateText();
                     if (NewPlateNumber != "")

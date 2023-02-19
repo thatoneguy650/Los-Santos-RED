@@ -208,7 +208,7 @@ public class ModDataFileManager
         string Description =
             "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, and AllenKennedy's mapped default police vehicles."
             + Environment.NewLine +
-            "These are all replace vehicles for police, police2, police3, sheriff, sheriff2, policeb, and asea2. No custom gameconfig should be required."
+            "These are all replace vehicles for police, police2, police3, sheriff, sheriff2, policeb, and lurcher. No custom gameconfig should be required."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
@@ -238,9 +238,9 @@ public class ModDataFileManager
             "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'"
             + Environment.NewLine
             + Environment.NewLine +
-            "Copy the sheriff, asea, and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
+            "Copy the sheriff, lurcher, and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
             + Environment.NewLine +
-            "and overwrite the existing sheriff, asea, and policeb entries in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            "and overwrite the existing sheriff, lurcher, and policeb entries in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
 
 
@@ -275,7 +275,7 @@ public class ModDataFileManager
     private void SetupLosSantos2008()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008");
-        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LS with Niko. Includes a custom vehiclemodelsets.meta and popgroups.ymt to give you a 2008 feel using existing GTA 5 vehicles. More to come!" + Environment.NewLine + Environment.NewLine +
+        string Description = "PreMade config for 2008 Los Santos. See what LS was like when we were in LC with Niko. Includes a custom vehiclemodelsets.meta and popgroups.ymt to give you a 2008 feel using existing GTA 5 vehicles. More to come!" + Environment.NewLine + Environment.NewLine +
         "Los Santos 2008 Installation: " + Environment.NewLine +
         "Copy popgroups.ymt from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\x64\\levels\\gta5\\'" + Environment.NewLine +
         "Copy vehiclemodelsets.meta from AlternateConfigs\\LosSantos2008\\Files to '\\mods\\update\\update.rpf\\common\\data\\ai\\'" + Environment.NewLine +

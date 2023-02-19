@@ -262,6 +262,11 @@ public class SecurityGuardSpawnTask : SpawnTask
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
         primarySecurityGuard.SpawnRequirement = SpawnRequirement;
+        if (ped.Exists())
+        {
+            primarySecurityGuard.SpawnPosition = ped.Position;
+            primarySecurityGuard.SpawnHeading = ped.Heading;
+        }
         return primarySecurityGuard;
     }
     private void SetupPed(Ped ped)

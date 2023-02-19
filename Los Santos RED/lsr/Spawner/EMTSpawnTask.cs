@@ -276,6 +276,11 @@ public class EMTSpawnTask :SpawnTask
             myBlip.Scale = 0.6f;
         }
         PrimaryEmt.SpawnRequirement = SpawnRequirement;
+        if (ped.Exists())
+        {
+            PrimaryEmt.SpawnPosition = ped.Position;
+            PrimaryEmt.SpawnHeading = ped.Heading;
+        }
         return PrimaryEmt;
     }
     private void SetupCallSigns()

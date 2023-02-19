@@ -187,11 +187,7 @@ public class PoliceSettings : ISettingsDefaultable
 
 
 
-
-#if DEBUG
         DropWeaponWhenBusted = true;
-#endif
-
 
 
         SearchTimeMultiplier = 20000;

@@ -675,7 +675,13 @@ public class LEDispatcher
                                         toSpawn = ZoneAgency;
                                     }
                                 }
-                                if (GetSpawnTypes(false, true, toSpawn, cl.RequiredGroup))
+
+                                bool forceVehicle = true;
+                                if (!cl.IsEmpty)
+                                {
+                                    forceVehicle = false;
+                                }
+                                if (GetSpawnTypes(false, forceVehicle, toSpawn, cl.RequiredGroup))
                                 {
                                     LastAgencySpawned = Agency;
                                     CallSpawnTask(true, false, true, true, cl.SpawnRequirement);

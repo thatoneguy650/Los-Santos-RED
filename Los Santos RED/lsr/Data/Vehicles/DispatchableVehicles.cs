@@ -707,22 +707,22 @@ public class DispatchableVehicles : IDispatchableVehicles
         List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>()
         {
             new DispatchableVehicle("dilettante2", 50, 50),
-            new DispatchableVehicle("asea2", 50, 50) {  RequiredLiveries = new List<int>() { 1 } },
+            new DispatchableVehicle("lurcher", 50, 50) {  RequiredLiveries = new List<int>() { 1 } },
         };
 
         List<DispatchableVehicle> BobcatSecurityVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("asea2", 100, 100){  RequiredLiveries = new List<int>() { 2,3 } },
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 2,3 } },
         };
 
         List<DispatchableVehicle> GroupSechsVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("asea2", 100, 100){  RequiredLiveries = new List<int>() { 0 } },
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 0 } },
         };
 
         List<DispatchableVehicle> SecuroservVehicles_FEJ = new List<DispatchableVehicle>()
         {
-            new DispatchableVehicle("asea2", 100, 100){  RequiredLiveries = new List<int>() { 4 } },
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 4 } },
         };
 
 

@@ -58,7 +58,10 @@ namespace ExtensionsMethods
         };
 
 
-
+        public static string Left(this string input, int count)
+        {
+            return input.Substring(0, Math.Min(input.Length, count));
+        }
         public static T Clamp<T>(this T val, T min, T max) where T : IComparable<T>
         {
             if (val.CompareTo(min) < 0) return min;

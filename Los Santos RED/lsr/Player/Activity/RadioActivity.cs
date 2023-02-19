@@ -113,6 +113,7 @@ namespace LosSantosRED.lsr.Player
         public override void Continue()
         {
             Player.ActivityManager.PausedActivites.Remove(this);
+            Player.ActivityManager.PausedActivites.RemoveAll(x => x.ModItem != null && ModItem != null && x.ModItem.Name == ModItem.Name);
             isPaused = false;
             Start();
         }

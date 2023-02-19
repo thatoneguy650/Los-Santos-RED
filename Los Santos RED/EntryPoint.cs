@@ -64,6 +64,9 @@ public static class EntryPoint
                 {
                     Game.RemoveNotification(NotificationID);
                 }
+
+                Game.FadeScreenOut(500, true);
+
                 ModController = new ModController();
                 ModController.Setup();
             }

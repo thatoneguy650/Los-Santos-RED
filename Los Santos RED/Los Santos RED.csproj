@@ -149,6 +149,7 @@
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
+    <Compile Include="lsr\Data\Peds\DispatchablePeopleExtra.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />

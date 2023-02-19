@@ -7,6 +7,7 @@ using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -36,7 +37,6 @@ public class VehicleItem : ModItem
     public VehicleItem()
     {
     }
-
     public VehicleItem(string name, string description, ItemType itemType) : base(name, description, itemType)
     {
 
@@ -326,8 +326,6 @@ public class VehicleItem : ModItem
             if (NewVehicle.Exists())
             {
                 //CurrentMenuItem.ItemsSoldToPlayer += 1;
-
-
                 if(SetPrimaryColor || SetSecondaryColor || !SetLivery1)
                 {
                     NativeFunction.Natives.SET_VEHICLE_COLOURS(NewVehicle, FinalPrimaryColor, FinalSecondaryColor);
@@ -337,12 +335,14 @@ public class VehicleItem : ModItem
                     NativeFunction.Natives.SET_VEHICLE_LIVERY(NewVehicle, Livery1);
                 }
                 NewVehicle.Wash();
-                NewVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();
+                //NewVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();
                 VehicleExt MyNewCar = world.Vehicles.GetVehicleExt(NewVehicle);
                 if (MyNewCar == null)
                 {
                     MyNewCar = new VehicleExt(NewVehicle, settings);
                     MyNewCar.Setup();
+                    MyNewCar.HasUpdatedPlateType = false;
+                    MyNewCar.AllowVanityPlates = false;
                     EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
                 }
                 world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
@@ -387,7 +387,6 @@ public class VehicleItem : ModItem
         {
             Transaction.RotatePreview = true;
         }
-
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
         world.Vehicles.AddEntity(Car, ResponseType.None);
@@ -407,7 +406,7 @@ public class VehicleItem : ModItem
             }
         }
         NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
-        Transaction.SellingVehicle.LicensePlate = new PlateType(0, "", "San Andreas", 0, "12ABC345").GenerateNewLicensePlateNumber();     
+        Car.ForcePlateType(Transaction?.Dealership?.LicensePlatePreviewText, 0);
     }
     private void CreateLiveryMenuOne(Transaction Transaction)
     {

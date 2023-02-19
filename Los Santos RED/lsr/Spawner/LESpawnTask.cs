@@ -287,9 +287,13 @@ public class LESpawnTask : SpawnTask
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
 
         PrimaryCop.SpawnRequirement = SpawnRequirement;
+        if (ped.Exists())
+        {
+            PrimaryCop.SpawnPosition = ped.Position;
+            PrimaryCop.SpawnHeading = ped.Heading;
+        }
 
-
-        if(SpawnWithAllWeapons)
+        if (SpawnWithAllWeapons)
         {
             PrimaryCop.WeaponInventory.GiveHeavyWeapon();
         }

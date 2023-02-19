@@ -265,9 +265,7 @@ public class PopUpMenu
             GroupMemberSubMenu.Add(new PopUpBox(0, "Give Weapon", new Action(() => Player.GroupManager.GiveCurrentWeapon(mi.PedExt)), "Give Current Weapon"));
             GroupMemberSubMenu.Add(new PopUpBox(1, "Remove Member", new Action(() => Player.GroupManager.Remove(mi.PedExt)), "Remove the Member"));
             GroupMemberSubMenu.Add(new PopUpBox(2, "Rest Tasks", new Action(() => Player.GroupManager.ResetStatus(mi.PedExt)), "Reset the member's tasks"));
-#if DEBUG
             GroupMemberSubMenu.Add(new PopUpBox(3, "Set Follow", new Action(() => Player.GroupManager.SetFollow(mi.PedExt)), "Tell the member to escort you around"));
-#endif
             PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi.PedExt.Name}SubMenu", GroupMemberSubMenu) { IsChild = true, Group = "Group" });
             GroupMemberID++;
         }

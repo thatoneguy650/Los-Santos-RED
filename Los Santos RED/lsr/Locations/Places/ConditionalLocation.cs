@@ -23,6 +23,10 @@ public class ConditionalLocation
     public float Percentage { get; set; }
     public string AssociationID { get; set; }
     public string RequiredGroup { get; set; }
+
+
+    public bool IsEmpty { get; set; } = true;
+
     public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
 }
 
