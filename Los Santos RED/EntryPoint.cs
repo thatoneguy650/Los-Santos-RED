@@ -28,6 +28,7 @@ public static class EntryPoint
     public static float CellSize { get; private set; } = 50f;
     public static int FocusCellX { get; set; } = 0;
     public static int FocusCellY { get; set; } = 0;
+    public static Vector3 FocusPosition { get; set; }
     public static Zone FocusZone { get; set; } = null;
     public static ModController ModController { get; set; }
     public static List<Entity> SpawnedEntities { get; set; } = new List<Entity>();
@@ -78,7 +79,7 @@ public static class EntryPoint
     }
     private static void CheckDependencies()
     {
-        RageNativeUIChecker = new DependencyChecker("RAGENativeUI.dll", "1.9.0.0");
+        RageNativeUIChecker = new DependencyChecker("RAGENativeUI.dll", "1.9.2.0");
         RageNativeUIChecker.Verify();
         if (!RageNativeUIChecker.IsValid)
         {

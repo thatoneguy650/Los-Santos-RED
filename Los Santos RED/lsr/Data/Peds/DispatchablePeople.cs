@@ -6089,6 +6089,14 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSPDASDPeds", LSPDASDPeds_FEJ));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LSSDASDPeds", LSSDASDPeds_FEJ));
 
+
+        //Security
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("SecurityPeds", SecurityPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("GruppeSechsPeds", GruppeSechsPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("SecuroservPeds", SecuroservPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("BobcatPeds", BobcatPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("MerryweatherSecurityPeds", MerryweatherSecurityPeds));
+
         //Gangs
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));

@@ -136,8 +136,13 @@ public class PersonTransaction : Interaction
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                 Ped.Pedestrian.BlockPermanentEvents = false;
-                Ped.Pedestrian.KeepTasks = false; 
-                NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 64);
+                Ped.Pedestrian.KeepTasks = false;
+                NativeFunction.Natives.TASK_LEAVE_VEHICLE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int) eEnter_Exit_Vehicle_Flags.ECF_WAIT_FOR_ENTRY_POINT_TO_BE_CLEAR);//64);
+                Ped.Pedestrian.ClearLastVehicle();
+                if (!Ped.BlackListedVehicles.Any(x => x == Player.CurrentVehicle.Vehicle.Handle))
+                {
+                    Ped.BlackListedVehicles.Add(Player.CurrentVehicle.Vehicle.Handle);
+                }
                 EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
             }
             else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)

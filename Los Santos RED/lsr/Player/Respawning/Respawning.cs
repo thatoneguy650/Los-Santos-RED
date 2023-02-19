@@ -574,6 +574,7 @@ public class Respawning// : IRespawning
             Game.LocalPlayer.Character.Heading = ToSet.EntranceHeading;
             EntryPoint.FocusCellX = (int)(ToSet.EntrancePosition.X / EntryPoint.CellSize);
             EntryPoint.FocusCellY = (int)(ToSet.EntrancePosition.Y / EntryPoint.CellSize);
+            EntryPoint.FocusPosition = ToSet.EntrancePosition;
         }
         else
         {
@@ -581,6 +582,7 @@ public class Respawning// : IRespawning
             Game.LocalPlayer.Character.Heading = ToSet.RespawnHeading;
             EntryPoint.FocusCellX = (int)(ToSet.RespawnLocation.X / EntryPoint.CellSize);
             EntryPoint.FocusCellY = (int)(ToSet.RespawnLocation.Y / EntryPoint.CellSize);
+            EntryPoint.FocusPosition = ToSet.RespawnLocation;
         }
 
         World.ClearSpawned(false);

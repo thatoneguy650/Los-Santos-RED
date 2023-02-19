@@ -43,19 +43,19 @@ public class PedReaction
         {
             if (ReactionTier == ReactionTier.None)
             {
-                return Game.GameTime - GameTimeLastReacted >= 5000;
+                return Game.GameTime - GameTimeLastReacted >= 15000;
             }
             else if (ReactionTier == ReactionTier.Mundane)
             {
-                return Game.GameTime - GameTimeLastReacted >= 10000;
+                return Game.GameTime - GameTimeLastReacted >= 25000;
             }
             else if (ReactionTier == ReactionTier.Alerted)
             {
-                return Game.GameTime - GameTimeLastReacted >= 15000;
+                return Game.GameTime - GameTimeLastReacted >= 60000;
             }
             else if (ReactionTier == ReactionTier.Intense)
             {
-                return Game.GameTime - GameTimeLastReacted >= 20000;
+                return Game.GameTime - GameTimeLastReacted >= 90000;
             }
             return false;
         }

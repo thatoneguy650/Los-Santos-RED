@@ -55,7 +55,7 @@ public class StaticPlaces
         }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
-            tl.StoreData(Gangs,ShopMenus);
+            tl.StoreData(Gangs, ShopMenus);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {

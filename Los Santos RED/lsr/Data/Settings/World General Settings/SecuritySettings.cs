@@ -24,16 +24,14 @@ public class SecuritySettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        ManageDispatching = false;
+        ManageDispatching = true;
         ManageTasking = true;
         ShowSpawnedBlips = false;
 
 #if DEBUG
-        ManageDispatching = true;
         ShowSpawnedBlips = true;
-        AllowDetainment = true;
 #endif
         DetainDistance = 4.0f;
-        AllowDetainment = false;
+        AllowDetainment = true;
     }
 }

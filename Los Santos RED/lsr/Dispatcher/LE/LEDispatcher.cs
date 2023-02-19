@@ -601,7 +601,7 @@ public class LEDispatcher
     {
         if (HasNeedToDispatchToStations)
         {
-            foreach (ILocationDispatchable ps in PlacesOfInterest.PoliceDispatchLocations().Where(x => x.IsEnabled && x.DistanceToPlayer <= 200f && x.IsNearby && !x.IsDispatchFilled))
+            foreach (ILocationDispatchable ps in PlacesOfInterest.PoliceDispatchLocations().Where(x => x.IsEnabled && x.IsActivated && x.DistanceToPlayer <= 200f && x.IsNearby && !x.IsDispatchFilled))
             {
                 if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
                 {

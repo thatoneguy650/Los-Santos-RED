@@ -96,7 +96,7 @@ public class SecurityDispatcher
     {
         if (HasNeedToDispatchToStations)
         {
-            foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
+            foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsActivated && x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
             {
                 EntryPoint.WriteToConsole($"Security Dispatcher, Spawning at {ps.Name}");
                 if(ps.PossiblePedSpawns != null)
@@ -120,7 +120,7 @@ public class SecurityDispatcher
                 ps.IsDispatchFilled = true;
             }
         }
-        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().ToList().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
+        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
         {
             ps.IsDispatchFilled = false;
         }

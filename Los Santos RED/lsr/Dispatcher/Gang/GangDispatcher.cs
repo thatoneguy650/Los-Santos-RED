@@ -116,7 +116,7 @@ public class GangDispatcher
     {
         if (!HasDispatchedThisTick && HasNeedToDispatchToDens)
         {
-            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(Game.LocalPlayer.Character) <= 200f))
+            foreach (GangDen ps in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby && !x.IsDispatchFilled && x.EntrancePosition.DistanceTo(EntryPoint.FocusPosition) <= 200f))
             {
                 if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
                 {

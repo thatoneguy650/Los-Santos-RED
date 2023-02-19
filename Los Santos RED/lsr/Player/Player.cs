@@ -1534,7 +1534,7 @@ namespace Mod
             EntryPoint.FocusCellX = CellX;
             EntryPoint.FocusCellY = CellY;
             EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
-
+            EntryPoint.FocusPosition = position;
 
             if (IsSleeping && IsNotWanted && !Investigation.IsActive && !Investigation.IsSuspicious)
             {

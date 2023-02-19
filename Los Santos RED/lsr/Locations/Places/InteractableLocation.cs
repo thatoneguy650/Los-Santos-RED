@@ -29,7 +29,6 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
 
 
 
-    //private IEntityProvideable World;
     protected uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
 
@@ -42,9 +41,11 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public Agency AssignedAgency { get; set; }
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
-
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
+
+
+
 
 
     public string MenuID { get; set; }
@@ -55,12 +56,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public Vector3 CameraDirection { get; set; } = Vector3.Zero;
     public Rotator CameraRotation { get; set; }
     public bool CanInteractWhenWanted { get; set; } = false;
-
-
     public virtual bool ShowsMarker { get; set; } = true;
-
-    // public virtual bool InteractsWithVendor { get; set; } = true;
-
     public bool IsAnyMenuVisible => MenuPool.IsAnyMenuOpen();
     public bool HasCustomCamera => CameraPosition != Vector3.Zero;
     [XmlIgnore]

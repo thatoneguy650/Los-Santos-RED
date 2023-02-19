@@ -17,5 +17,6 @@ public interface ILocationDispatchable
     float DistanceToPlayer { get; }
     bool IsNearby { get; }
     string AssignedAgencyID { get; }
+    bool IsActivated { get; }
 }
 

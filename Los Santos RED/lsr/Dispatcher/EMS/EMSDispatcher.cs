@@ -109,7 +109,7 @@ public class EMSDispatcher
     {
         if (HasNeedToDispatchToStations)
         {
-            foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
+            foreach (ILocationDispatchable ps in PlacesOfInterest.EMSDispatchLocations().Where(x => x.IsEnabled && x.IsActivated && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.EMS))
             {
                 if (ps.PossiblePedSpawns != null)
                 {
@@ -149,7 +149,7 @@ public class EMSDispatcher
                 }
             }
         }
-        foreach (Hospital ps in PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
+        foreach (ILocationDispatchable ps in PlacesOfInterest.EMSDispatchLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
         {
             ps.IsDispatchFilled = false;
         }
