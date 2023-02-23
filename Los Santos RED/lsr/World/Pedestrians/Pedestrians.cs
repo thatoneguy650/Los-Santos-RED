@@ -857,7 +857,7 @@ public class Pedestrians : ITaskerReportable
             if (Pedestrian.Exists())
             {
                 Pedestrian.Money = 0;// toCreate.Money;
-                NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+                //NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
             }
             //EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
         }

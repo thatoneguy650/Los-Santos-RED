@@ -115,4 +115,13 @@ public static class EntryPoint
         ModController?.Dispose();
     }
 
+
+#if DEBUG
+    [ConsoleCommand]
+    public static void Command_CreateConfig()
+    {
+        ModController = new ModController();
+        ModController.SetupFileOnly();
+    }
+#endif
 }

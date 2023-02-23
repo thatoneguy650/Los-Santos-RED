@@ -45,7 +45,7 @@ public class Agencies : IAgencies
     private Agency UNK;
     private Agency LSMC;
     private Agency MRH;
-
+    private Agency LCPD;
     public Agencies()
     {
 
@@ -151,6 +151,9 @@ public class Agencies : IAgencies
         MERRY = new Agency("~w~", "MERRY", "Merryweather", "Merryweather Security", "White", Classification.Security, "MerryweatherSecurityPeds", "MerryweatherPatrolVehicles", "MW ", "Tasers", "LimitedSidearms", null, "Merryweather Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
         BOBCAT = new Agency("~w~", "BOBCAT", "Bobcat", "Bobcat Security", "White", Classification.Security, "BobcatPeds", "BobcatSecurityVehicles", "BC ", "Tasers", "LimitedSidearms", null, "Bobcat Officer") { MaxWantedLevelSpawn = 2, HeadDataGroupID = "AllHeads" };
 
+
+        LCPD = new Agency("~b~", "LCPD", "LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LCPDVehicles", "LC ", "Tasers", "AllSidearms", "AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 };
+
         UNK = new Agency("~s~", "UNK", "UNK", "Unknown Agency", "White", Classification.Other, null, null, "", null, null, null, "Officer") { MaxWantedLevelSpawn = 0 };
     }
 
@@ -188,7 +191,7 @@ public class Agencies : IAgencies
             LSFD,
             UNK,
             NYSP,
-
+            LCPD,
             GRPSECHS,
             SECURO,
             MERRY,
@@ -225,7 +228,7 @@ public class Agencies : IAgencies
             NOOSE,FIB,DOA,SAHP,SASPA,SAPR,SACG,
             ARMY,
             LSFDFire,LSMC,MRH,LSFD,UNK,
-            NYSP,
+            NYSP,LCPD,
 
             GRPSECHS,SECURO,MERRY,BOBCAT,
         };
@@ -269,8 +272,8 @@ public class Agencies : IAgencies
     {
         List<Agency> SimpleAgenicesList = new List<Agency>
         {
-            new Agency("~b~", "LCPD","LCPD", "Liberty City Police Department", "Blue", Classification.Police, "StandardCops", "LSPDVehicles", "LC ","Tasers","AllSidearms","AllLongGuns", "LCPD Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
-            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LSSDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
+            LCPD,
+            new Agency("~b~", "ASP","ASP", "Alderney State Police", "Blue", Classification.Police, "SheriffPeds", "LCPDVehicles", "ASP ","Tasers","AllSidearms","AllLongGuns", "ASP Officer") { MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 1 },
             new Agency("~b~", "LCPD-ASD","LCPD-ASD", "Liberty City Police Department - Air Support Division", "Blue", Classification.Police, "StandardCops", "PoliceHeliVehicles", "ASD ","Tasers","HeliSidearms","HeliLongGuns", "LSPD Officer") { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 3, HeadDataGroupID = "AllHeads", Division = 6  },
            NOOSE,FIB,DOA,ARMY,
             NYSP,GRPSECHS,

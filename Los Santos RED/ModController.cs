@@ -139,7 +139,18 @@ namespace LosSantosRED.lsr
 
             DisplayLoadSuccessfulMessage();
         }
-        public void Dispose()
+
+
+        public void SetupFileOnly()
+        {
+            while (Game.IsLoading)
+            {
+                GameFiber.Yield();
+            }
+            ModDataFileManager = new ModDataFileManager();
+            ModDataFileManager.Setup();
+        }
+            public void Dispose()
         {
             IsRunning = false;
             //GameFiber.Sleep(500);
