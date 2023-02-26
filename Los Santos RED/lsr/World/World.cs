@@ -139,6 +139,8 @@ namespace Mod
                 Game.FadeScreenIn(1500, true);
                 IsMPMapLoaded = true;
             }
+
+            
         }
         public void LoadSPMap()
         {

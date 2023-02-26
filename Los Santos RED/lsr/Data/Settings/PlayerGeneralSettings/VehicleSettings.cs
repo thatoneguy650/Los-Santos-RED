@@ -62,6 +62,13 @@ public class VehicleSettings : ISettingsDefaultable
     public bool RequireScrewdriverForLockPickEntry { get; set; }
     [Description("Require the screwdriver item to be in your inventory before you can hotwire any vehicles.")]
     public bool RequireScrewdriverForHotwire { get; set; }
+
+
+    [Description("Allows vehicles to be locked by the game automatically.")]
+    public bool AllowLockVehicles { get; set; }
+    [Description("Percentage of available vehicles that will be locked by LSR.")]
+    public float LockVehiclePercentage { get; set; }
+
     [Description("Allows mission (persistent) vehicles to be locked by the game automatically. If disabled, only ambient vehicles will be locked by the mod.")]
     public bool AllowLockMissionVehicles { get;  set; }
     [Description("Stops the player ped from automatically putting on a helmet when on a motorcycle.")]
@@ -91,6 +98,7 @@ public class VehicleSettings : ISettingsDefaultable
     public bool NonRoadworthyVehicleCheckNoPlate { get; set; }
     public bool AttachOwnedVehicleBlips { get; set; }
 
+
     public VehicleSettings()
     {
         SetDefault();
@@ -119,6 +127,11 @@ public class VehicleSettings : ISettingsDefaultable
         InjureOnWindowBreak = true;
         RequireScrewdriverForLockPickEntry = false;
         RequireScrewdriverForHotwire = false;
+
+
+        AllowLockVehicles = true;
+        LockVehiclePercentage = 90f;
+
         AllowLockMissionVehicles = false;
         DisableAutoHelmet = true;
         DisableRolloverFlip = true;

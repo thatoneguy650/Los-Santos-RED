@@ -163,7 +163,9 @@ public class HealthState
             int prevHealth = Health;
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
+
                 GameFiber.Yield();
+                
                 EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
                 if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
                 {
@@ -335,14 +337,19 @@ public class HealthState
         WasHitByVehicle = false;
         WasShot = false;
         WasMeleeAttacked = false;
-
         HurtByPed = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_PED", MyPed.Pedestrian);
         HurtByVehicle = NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ANY_VEHICLE", MyPed.Pedestrian);
         if (HurtByPed || HurtByVehicle)
         {
-            int TotalDamage = Health - CurrentHealth + Armor - CurrentArmor;
             int HealthDamage = Health - CurrentHealth;
             int ArmorDamage = Armor - CurrentArmor;
+
+
+            if(HealthDamage == 0 && ArmorDamage == 0)
+            {
+                return;
+            }
+
             BodyLocation DamagedLocation = GetDamageLocation(MyPed.Pedestrian);
             WeaponCategory category = WeaponCategory.Unknown;
             if (NativeFunction.CallByName<bool>("HAS_PED_BEEN_DAMAGED_BY_WEAPON", MyPed.Pedestrian, 0, 1))
@@ -394,38 +401,22 @@ public class HealthState
             float ArmorDamageModifier = GetDamageModifier(ArmorInjury, true);
 
             int NewHealthDamage = Convert.ToInt32(HealthDamage * HealthDamageModifier);
-
-            if (!ArmorWillProtect)
-            {
-                NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
-            }
-
             int NewArmorDamage = 0;
             if (ArmorWillProtect)
             {
                 NewArmorDamage = Convert.ToInt32(ArmorDamage * ArmorDamageModifier);
             }
-
-            if (Health - NewHealthDamage > 0)
-            {
-                MyPed.Pedestrian.Health = Health - NewHealthDamage;
-            }
             else
             {
-                MyPed.Pedestrian.Health = 0;
+                NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
             }
 
+            Health = (Health - NewHealthDamage).Clamp(0, 900);
+            MyPed.Pedestrian.Health = Health;
+            Armor = (Armor - NewArmorDamage).Clamp(0, 200);
+            MyPed.Pedestrian.Armor = Armor;
+            EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 
-
-
-            if (Armor - NewArmorDamage > 0)
-            {
-                MyPed.Pedestrian.Armor = Armor - NewArmorDamage;
-            }
-            else
-            {
-                MyPed.Pedestrian.Armor = 0;
-            }
 
         }
         if (Health != CurrentHealth && MyPed.Pedestrian.Health > 0)

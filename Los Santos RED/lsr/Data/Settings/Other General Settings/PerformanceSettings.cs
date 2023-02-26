@@ -59,8 +59,10 @@ public class PerformanceSettings : ISettingsDefaultable
     public bool CopGetPedToAttackDisable { get; set; }
   //  public bool CopGetPedToAttackYield1 { get; set; }
     public bool CopDisableFootChaseFiber { get; set; }
-   // public bool FootChaseFiberSetSleep { get; set; }
-   // public int FootChaseFiberSleepTime { get; set; }
+
+
+    // public bool FootChaseFiberSetSleep { get; set; }
+    // public int FootChaseFiberSleepTime { get; set; }
 
     public PerformanceSettings()
     {
@@ -132,8 +134,8 @@ public class PerformanceSettings : ISettingsDefaultable
        // CopGetPedToAttackYield1 = false;
         CopDisableFootChaseFiber = false;
 
-     //   FootChaseFiberSetSleep = false;
-      //  FootChaseFiberSleepTime = 500;
+        //   FootChaseFiberSetSleep = false;
+        //  FootChaseFiberSleepTime = 500;
 
         /*
  *         CivilianUpdateBatch = 10;

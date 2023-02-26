@@ -43,7 +43,7 @@ namespace LosSantosRED.lsr
         public WeaponViolations WeaponViolations { get; private set; }
         public TheftViolations TheftViolations { get; private set; }
         public OtherViolations OtherViolations { get; private set; }
-        public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReportedByCivilians).ToList();
+        public List<Crime> CivilianReportableCrimesViolating => CrimesViolating.Where(x => x.CanBeReactedToByCivilians).ToList();
         public string LawsViolatingDisplay => string.Join(", ", CrimesViolating.OrderBy(x=>x.Priority).Select(x => x.Name));
         public void Setup()
         {

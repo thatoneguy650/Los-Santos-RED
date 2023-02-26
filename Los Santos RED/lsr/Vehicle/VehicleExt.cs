@@ -588,7 +588,7 @@ namespace LSR.Vehicles
             AssociatedGang = gang; 
             if (VehicleType.VehicleExtras != null)
             {
-                foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras)
+                foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras.OrderBy(x=> x.ExtraID).ThenBy(x=>x.IsOn))
                 {
                     if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Vehicle, extra.ExtraID))
                     {

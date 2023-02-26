@@ -850,6 +850,19 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
         HelperMenuItem.AddItem(VehicleShowcaseMenu);
+
+
+        UIMenuItem ShowcaseLocations = new UIMenuItem("Showcase Teleport", "Teleport to showcase location");
+        ShowcaseLocations.Activated += (menu, item) =>
+        {
+            Game.LocalPlayer.Character.Position = new Vector3(229.028f, -988.8007f, -99.52672f);
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(ShowcaseLocations);
+
+
+        //
+
         //VehicleShowcase
 
     }
@@ -1034,6 +1047,11 @@ public class DebugMenu : ModUIMenu
             }
             menu.Visible = false;
         };
+
+
+     
+
+
         UIMenuListScrollerItem<Gang> SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
         SpawnGangFoot.Activated += (menu, item) =>
         {

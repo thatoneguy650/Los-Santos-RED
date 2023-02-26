@@ -78,7 +78,7 @@ public class PedViolations
     public string CurrentlyViolatingWantedLevelReason => CrimesViolating.OrderBy(x=> x.Priority).FirstOrDefault()?.Name;
     public List<Crime> CrimesCurrentlyViolating => CrimesViolating;
     public bool IsCurrentlyViolatingAnyCrimes => CrimesViolating.Any();
-    public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => CrimesViolating.Any(x=> x.CanBeReportedByCivilians);
+    public bool IsCurrentlyViolatingAnyCivilianReportableCrimes => CrimesViolating.Any(x=> x.CanBeReactedToByCivilians);
     public Crime WorstObservedCrime => CrimesObservedViolating.OrderBy(x => x.Priority).FirstOrDefault();
     public List<Crime> CrimesObservedViolating => CrimesObserved;
     public void Update(IPoliceRespondable player)

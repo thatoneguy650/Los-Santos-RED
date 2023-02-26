@@ -127,7 +127,7 @@ public class AdvancedConversation
                     speechMenuItem.Activated += (menu, item) =>
                     {
                         menu.Visible = false;
-                        ConversationSimple.SaySpeech(SpeechData);
+                        ConversationSimple.SaySpeech(SpeechData, menu);
                     };
                     GroupMenu.AddItem(speechMenuItem);
                 }

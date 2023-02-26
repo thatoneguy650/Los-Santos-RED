@@ -28,6 +28,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private RelationshipGroup originalGroup;
     private bool HasDrugAreaKnowledge;
     private bool HasGangAreaKnowledge;
+    private ICrimes Crimes;
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
@@ -39,6 +40,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         Name = _Name;
         GameTimeCreated = Game.GameTime;
         GroupName = groupName;
+        Crimes = crimes;
         CurrentHealthState = new HealthState(this, settings, false);
         Settings = settings;
         PedViolations = new PedViolations(this, crimes, settings, weapons, world);
@@ -483,9 +485,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
-    public void ApolgizedToPlayer()
+    public void ApolgizedToByPlayer()
     {
-        if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
+        if ((GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000) && TimesInsultedByPlayer > 0)
         {
             TimesInsultedByPlayer -= 1;
             GameTimeLastInsultedByPlayer = Game.GameTime;
@@ -548,17 +550,18 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //return false;
         }
     }
-    public void InsultedByPlayer()
+    public virtual void InsultedByPlayer(IInteractionable player)
     {
         if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
         {
             TimesInsultedByPlayer += 1;
             GameTimeLastInsultedByPlayer = Game.GameTime;
-            if (this.GetType() == typeof(GangMember))
+            if(IsFedUpWithPlayer && player != null && Crimes != null)
             {
-                GangMember gm = (GangMember)this;
-                PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, -100, true);
+                AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
+                EntryPoint.WriteToConsole("Insulted by Player FED UP Adding Crime");
             }
+
         }
     }
     public void LogSourceOfDeath()

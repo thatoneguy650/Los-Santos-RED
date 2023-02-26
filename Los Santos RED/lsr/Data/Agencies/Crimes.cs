@@ -270,24 +270,24 @@ public class Crimes : ICrimes
              OfficersNeeded,
             });
 
-        HitCarWithCar.CanBeReportedByCivilians = false;
-        DrivingAgainstTraffic.CanBeReportedByCivilians = false;
-        DrivingOnPavement.CanBeReportedByCivilians = false;
-        NonRoadworthyVehicle.CanBeReportedByCivilians = false;
-        RunningARedLight.CanBeReportedByCivilians = false;
-        FelonySpeeding.CanBeReportedByCivilians = false;
+        HitCarWithCar.CanBeReactedToByCivilians = false;
+        DrivingAgainstTraffic.CanBeReactedToByCivilians = false;
+        DrivingOnPavement.CanBeReactedToByCivilians = false;
+        NonRoadworthyVehicle.CanBeReactedToByCivilians = false;
+        RunningARedLight.CanBeReactedToByCivilians = false;
+        FelonySpeeding.CanBeReactedToByCivilians = false;
 
     }
     public void SetHard()
     {
         IsBackendChanged = true;
         SetDefault();
-        HitCarWithCar.CanBeReportedByCivilians = true;
-        DrivingAgainstTraffic.CanBeReportedByCivilians = true;
-        DrivingOnPavement.CanBeReportedByCivilians = true;
-        NonRoadworthyVehicle.CanBeReportedByCivilians = true;
-        RunningARedLight.CanBeReportedByCivilians = true;
-        FelonySpeeding.CanBeReportedByCivilians = true;
+        HitCarWithCar.CanBeReactedToByCivilians = true;
+        DrivingAgainstTraffic.CanBeReactedToByCivilians = true;
+        DrivingOnPavement.CanBeReactedToByCivilians = true;
+        NonRoadworthyVehicle.CanBeReactedToByCivilians = true;
+        RunningARedLight.CanBeReactedToByCivilians = true;
+        FelonySpeeding.CanBeReactedToByCivilians = true;
     }
     public void SetPreferred()
     {

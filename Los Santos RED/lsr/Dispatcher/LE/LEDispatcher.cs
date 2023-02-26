@@ -1091,7 +1091,7 @@ public class LEDispatcher
 
         }
     }
-    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty)
+    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
     {
         VehicleType = null;
         PersonType = null;
@@ -1143,6 +1143,16 @@ public class LEDispatcher
         if(isEmpty)
         {
             PersonType = null;
+        }
+
+
+        if(vehicleType != null)
+        {
+            VehicleType = vehicleType;
+        }
+        if(personType != null) 
+        { 
+            PersonType = personType; 
         }
 
         CallSpawnTask(true, true, true, true, SpawnRequirement.None);

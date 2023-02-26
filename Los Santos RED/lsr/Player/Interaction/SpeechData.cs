@@ -11,41 +11,30 @@ public class SpeechData
     {
 
     }
-    public SpeechData(string name, string description, bool isInsult, string groupName, string simpleName, string subName, bool isGeneric)
+    public SpeechData(string name, string description, string groupName, string simpleName, string subName)
     {
         Name = name;
         Description = description;
-        IsInsult = isInsult;
         GroupName = groupName;
         SimpleName = simpleName;
         SubName = subName;
-        IsGeneric = isGeneric;
     }
 
 
-    public SpeechData(string name, string description, string groupName, bool isPlayerOnly, bool isCopOnly)
+    public SpeechData(string name, string description, string groupName)
     {
         Name = name;
         Description = description;
         GroupName = groupName;
         SimpleName = name;
         SubName = name;
-        IsPlayerOnly = isPlayerOnly;
-        IsCopOnly = isCopOnly;
     }
-
-
-
     public string Name { get; set; }
-    public string Description { get; set; }
-    public bool IsInsult { get; set; } = false;
+    public string Description { get; set; }   
     public string GroupName { get; set; }
     public string SimpleName { get; set; }
     public string SubName { get; set; }
-    public bool IsGeneric { get; set; } = false;
-
-    public bool IsPlayerOnly { get; set; } = false;
-    public bool IsCopOnly { get; set; } = false;
     public bool CanUseInConversation { get; set; } = false;
+    public eSpeechType SpeechType { get; set; } = eSpeechType.None;
 }
 

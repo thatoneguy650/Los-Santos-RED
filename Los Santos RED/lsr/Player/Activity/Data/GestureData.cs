@@ -29,6 +29,9 @@
     public string AnimationExit { get; set; } = "";
     public bool IsInsulting { get; set; } = false;
     public bool IsOnActionWheel { get; set; } = false;
+    public bool SetRepeat { get; set; } = false;
+    public bool IsWholeBody { get; set; } = false;
+
     public override string ToString()
     {
         return Name;

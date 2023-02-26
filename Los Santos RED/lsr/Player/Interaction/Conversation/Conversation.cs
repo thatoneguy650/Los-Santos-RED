@@ -111,14 +111,60 @@ public class Conversation : Interaction, IAdvancedConversationable
     {
         IsActivelyConversing = false;
     }
-    public void SaySpeech(SpeechData tosay)
+    public void SaySpeech(SpeechData tosay, UIMenu toShow)
     {
         IsActivelyConversing = true;
         Player.ButtonPrompts.Clear();
         SayAvailableAmbient(Player.Character, new List<string>() { tosay.Name }, true, true);
-        SayAvailableAmbient(Ped.Pedestrian, new List<string>() { tosay.Name }, true, false);
+        GenerateReply(tosay);
         GameFiber.Sleep(200);
         IsActivelyConversing = false;
+        if(!IsDisposed && !CancelledConversation && toShow != null)
+        {
+            toShow.Visible = true;
+        }
+    }
+    private void GenerateReply(SpeechData tosay)
+    {
+        if(tosay.SpeechType == eSpeechType.Insult)
+        {
+            SayInsult(Ped.Pedestrian, false);
+            Ped.InsultedByPlayer(Player);
+            if (Ped.IsFedUpWithPlayer)
+            {
+                if (Ped.IsCop)
+                {
+                    Player.SetAngeredCop();
+                }
+                else
+                {
+                    
+                }
+                CancelledConversation = true;
+            }
+        }
+        else if(tosay.SpeechType == eSpeechType.Apology)
+        {
+            SayApology(Ped.Pedestrian, true, false);
+            Ped.ApolgizedToByPlayer();
+        }
+        else 
+        {
+            SayAvailableAmbient(Ped.Pedestrian, GetSpeechReplies(tosay).Select(x=>x.Name).ToList(), true, false);
+        }
+    }
+    private List<SpeechData> GetSpeechReplies(SpeechData tosay)
+    {
+        List<SpeechData> SpeechesList = new List<SpeechData>();
+        if (tosay.SpeechType == eSpeechType.Greeting || tosay.SpeechType == eSpeechType.Goodbye || tosay.SpeechType == eSpeechType.Reaction || tosay.SpeechType == eSpeechType.AgreeDisagree || tosay.SpeechType == eSpeechType.General)
+        {
+            SpeechesList.AddRange(Speeches.SpeechLookups.Where(x => x.SpeechType == tosay.SpeechType));
+        }
+        if (!SpeechesList.Any())
+        {
+            SpeechesList.Add(tosay);
+        }
+        return SpeechesList;
     }
     private void Tick()
     {
@@ -415,9 +461,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         SayInsult(Ped.Pedestrian, false);
 
         //Ped.TimesInsultedByPlayer++;
-        Ped.InsultedByPlayer();
-
-        GameFiber.Sleep(200);
+        Ped.InsultedByPlayer(Player);
         if (Ped.IsFedUpWithPlayer)
         {
             if (Ped.IsCop)
@@ -430,6 +474,8 @@ public class Conversation : Interaction, IAdvancedConversationable
             }
             CancelledConversation = true;
         }
+        GameFiber.Sleep(200);
+
         IsActivelyConversing = false;
     }
     public void Positive()
@@ -452,7 +498,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         if (Ped.TimesInsultedByPlayer > 0)
         {
             //Ped.TimesInsultedByPlayer--;
-            Ped.ApolgizedToPlayer();
+            Ped.ApolgizedToByPlayer();
         }
         GameFiber.Sleep(200);
         IsActivelyConversing = false;

@@ -144,12 +144,15 @@
     <Compile Include="lsr\Data\Interface\IShopMenus.cs" />
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
+    <Compile Include="lsr\Data\Interface\ITattooNames.cs" />
     <Compile Include="lsr\Data\Interface\IWantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeopleExtra.cs" />
+    <Compile Include="lsr\Data\Peds\eSpeechType.cs" />
+    <Compile Include="lsr\Data\Peds\TattooNames.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />
@@ -206,6 +209,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\GeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Old\GenericIdle_Old.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />
     <Compile Include="lsr\Ped\PedInventory.cs" />
@@ -294,6 +298,7 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\TattooOverlay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />
     <Compile Include="lsr\UI\Other\VehicleShowcase.cs" />

@@ -75,8 +75,23 @@ public class Gestures : IGestures
             new GestureData("Nod Yes (Hard)","gesture_nod_yes_hard") { IsOnActionWheel = true },
             new GestureData("Nod Yes (Soft)","gesture_nod_yes_soft"),
             new GestureData("Pleased","gesture_pleased"),
+
+
+#if DEBUG
+            new GestureData("Point","gesture_point") { IsOnActionWheel = true,SetRepeat = true },
+            new GestureData("Shrug (Hard)","gesture_shrug_hard") { IsOnActionWheel = true,IsWholeBody = true,SetRepeat = true },
+             new GestureData("What (Hard)","gesture_what_hard") { IsOnActionWheel = true,IsWholeBody = true },
+#else
             new GestureData("Point","gesture_point") { IsOnActionWheel = true },
             new GestureData("Shrug (Hard)","gesture_shrug_hard") { IsOnActionWheel = true },
+             new GestureData("What (Hard)","gesture_what_hard") { IsOnActionWheel = true },
+#endif
+
+
+
+
+
+
             new GestureData("Shrug (Soft)","gesture_shrug_soft"),
             new GestureData("What (Hard)","gesture_what_hard") { IsOnActionWheel = true },
             new GestureData("What (Soft)","gesture_what_soft"),

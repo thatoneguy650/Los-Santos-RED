@@ -44,7 +44,7 @@ public class ModDataFileManager
     public ClothesNames ClothesNames;
     public LanguageStrings LanguageStrings;
     private WantedLevels WantedLevels;
-
+    private TattooNames TattooNames;
     public ModDataFileManager()
     {
 
@@ -160,6 +160,11 @@ public class ModDataFileManager
         ClothesNames = new ClothesNames();
         ClothesNames.DefaultConfig();
         GameFiber.Yield();
+
+        TattooNames = new TattooNames();
+        TattooNames.DefaultConfig();
+        GameFiber.Yield();
+
 
 #if DEBUG
         WantedLevels = new WantedLevels();

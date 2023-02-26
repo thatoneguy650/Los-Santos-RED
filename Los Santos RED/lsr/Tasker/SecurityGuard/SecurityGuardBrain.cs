@@ -80,9 +80,20 @@ public class SecurityGuardBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)
             {
+
+
+
+
                 if (SecurityGuard.WeaponInventory.IsArmed)
                 {
-                    SetFight();
+                    if (SecurityGuard.PlayerPerception.HasSeenTargetWithin(30000))
+                    {
+                        SetFight();
+                    }
+                    else
+                    {
+                        SetLocate();
+                    }
                 }
                 else
                 {
@@ -91,11 +102,28 @@ public class SecurityGuardBrain : PedBrain
             }
             else if (PedExt.PedReactions.ReactionTier == ReactionTier.Alerted)
             {
-                SetApprehend();
+
+                if (SecurityGuard.PlayerPerception.HasSeenTargetWithin(30000))
+                {
+                    SetApprehend();
+                }
+                else
+                {
+                    SetLocate();
+                }
+
+                
             }
             else if (PedExt.CanAttackPlayer)
             {
-                SetChase();// SetFight();
+                if (SecurityGuard.PlayerPerception.HasSeenTargetWithin(30000))
+                {
+                    SetChase();// SetFight();
+                }
+                else
+                {
+                    SetLocate();
+                }
             }
             else if (PedExt.PedReactions.ReactionTier == ReactionTier.Mundane)
             {
@@ -172,6 +200,20 @@ public class SecurityGuardBrain : PedBrain
         PedExt.CurrentTask?.Start();
         EntryPoint.WriteToConsole($"SECURITY SET FLEE {PedExt.Handle}");
     }
+
+    private void SetLocate()
+    {
+        if (PedExt.CurrentTask?.Name == "GeneralLocate")
+        {
+            return;
+        }
+        PedExt.CurrentTask = new GeneralLocate(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+        GameFiber.Yield();//TR Added back 7
+        PedExt.CurrentTask?.Start();
+        EntryPoint.WriteToConsole($"SECURITY SET GeneralLocate {PedExt.Handle}");
+    }
+
+
     private void SetFight()
     {
         SecurityGuard.WeaponInventory.SetDeadly(false);

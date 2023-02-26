@@ -56,7 +56,7 @@ public class PedReactions
     }
     private void UpdateCrimes(ITargetable Player)
     {       
-        foreach (WitnessedCrime witnessedCrime in Civilian.CrimesWitnessed.Where(x => x.Crime.CanBeReportedByCivilians && !x.HasBeenReactedTo))
+        foreach (WitnessedCrime witnessedCrime in Civilian.CrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians && !x.HasBeenReactedTo))
         {
             if(witnessedCrime.IsPlayerWitnessedCrime && (!Player.IsAliveAndFree || Player.WantedLevel >= 3))
             {

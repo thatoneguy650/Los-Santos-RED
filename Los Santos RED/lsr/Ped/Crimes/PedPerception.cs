@@ -107,7 +107,7 @@ public class PedPerception
     {
         if (DistanceToCurrentCriminal <= 40f && CurrentCriminal.Pedestrian.IsThisPedInFrontOf(PedExt.Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", PedExt.Pedestrian, CurrentCriminal.Pedestrian))//60f
         {
-            foreach (Crime crime in CurrentCriminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians))
+            foreach (Crime crime in CurrentCriminal.CrimesCurrentlyViolating.Where(x => x.CanBeReactedToByCivilians))
             {
                 if (DistanceToCurrentCriminal <= crime.MaxReportingDistance)
                 {
@@ -118,7 +118,7 @@ public class PedPerception
         }
         else if (DistanceToCurrentCriminal <= 100f)
         {
-            foreach (Crime crime in CurrentCriminal.CrimesCurrentlyViolating.Where(x => x.CanBeReportedByCivilians && x.CanReportBySound))
+            foreach (Crime crime in CurrentCriminal.CrimesCurrentlyViolating.Where(x => x.CanBeReactedToByCivilians && x.CanReportBySound))
             {
                 if (DistanceToCurrentCriminal <= crime.MaxReportingDistance)
                 {

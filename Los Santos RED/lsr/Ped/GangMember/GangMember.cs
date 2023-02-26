@@ -194,4 +194,9 @@ public class GangMember : PedExt, IWeaponIssuable
         player.RelationshipManager.GangRelationships.ChangeReputation(Gang, moneySpent, true);
         base.OnItemSold(player, modItem, numberPurchased, moneySpent);
     }
+    public override void InsultedByPlayer(IInteractionable player)
+    {
+        base.InsultedByPlayer(player);
+        PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
+    }
 }

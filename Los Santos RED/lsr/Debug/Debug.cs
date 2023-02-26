@@ -70,6 +70,7 @@ public class Debug
     private ModDataFileManager ModDataFileManager;
     private bool isRunning;
     private uint GameTimeLastAttached;
+    private bool Test;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -401,6 +402,13 @@ public class Debug
         SetupTimecycles();
 
     }
+
+
+    private void OneLiners()
+    {
+        // if (Game.LocalPlayer.Character.CurrentVehicle.Exists()) { NativeFunction.Natives.SET_VEHICLE_LIVERY(Game.LocalPlayer.Character.CurrentVehicle, 17);  }//Set Livery
+    }
+
     private void DebugNumpad0()
     {
         Game.LocalPlayer.IsInvincible = true;
@@ -665,6 +673,7 @@ public class Debug
         //SetInRandomInterior();
         //BrowseTimecycles();
 
+       // if (Game.LocalPlayer.Character.CurrentVehicle.Exists()) { NativeFunction.Natives.SET_VEHICLE_LIVERY(Game.LocalPlayer.Character.CurrentVehicle, 17);  }
 
         // Dispatcher.RemoveRoadblock();
         //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
@@ -675,7 +684,14 @@ public class Debug
         //        int LiveryNumber = RandomItems.GetRandomNumberInt(0, TotalLiveries-1);
         //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
         //    }
-
+        //if(Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    int TotalLiveries = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
+        //    if (TotalLiveries > -1)
+        //    {
+        //        int LiveryNumber = RandomItems.GetRandomNumberInt(0, TotalLiveries-1);
+        //        NativeFunction.Natives.SET_VEHICLE_LIVERY(Player.CurrentVehicle.Vehicle, LiveryNumber);
+        //    }
         //}
         //NativeFunction.Natives.SET_PED_COMPONENT_VARIATION<bool>(Game.LocalPlayer.Character, 3, 1, 0, 0);
 
@@ -995,7 +1011,18 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        DoUiCustomzierFont();
+        if (!Test)
+        {
+            NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
+            Game.DisplaySubtitle("added DECOR");
+        }
+        else
+        {
+            NativeFunction.Natives.CLEAR_PED_DECORATIONS(Game.LocalPlayer.Character);
+            Game.DisplaySubtitle("removed DECOR");
+        }
+        Test = !Test;
+        //DoUiCustomzierFont();
         //ParticleTest1();
         //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
         //NAudioPlayer nAudio = new NAudioPlayer(Settings);

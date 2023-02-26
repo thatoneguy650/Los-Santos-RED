@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class Locate : ComplexTask
+public class GeneralLocate : ComplexTask
 {
     private bool NeedsUpdates;
     private Vector3 CurrentTaskedPosition;
@@ -17,8 +17,24 @@ public class Locate : ComplexTask
     private bool isSetCode3Close;
     private bool hasSixthSense = false;
     private ISettingsProvideable Settings;
-    private Vector3 PlaceToGoTo => hasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
-
+    private Vector3 PlaceToGoTo// => hasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget; // Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
+    {
+        get
+        {
+            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
+            {
+                return OtherTarget.Pedestrian.Position;
+            }
+            if (hasSixthSense)
+            {
+                return Player.Character.Position;
+            }
+            else
+            {
+               return Ped.PlayerPerception.PositionLastSeenTarget;
+            }
+        }
+    }
     private enum Task
     {
         Wander,
@@ -39,9 +55,9 @@ public class Locate : ComplexTask
             }
         }
     }
-    public Locate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
+    public GeneralLocate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
-        Name = "Locate";
+        Name = "GeneralLocate";
         SubTaskName = "";
         Settings = settings;
     }
@@ -56,7 +72,7 @@ public class Locate : ComplexTask
                 hasSixthSense = true;
             }
 
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
+            EntryPoint.WriteToConsole($"GeneralLocate TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();
         }
     }
@@ -185,17 +201,17 @@ public class Locate : ComplexTask
             {
                 if (DistanceToCoordinates <= 150f)
                 {
-                   NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
                 }
                 else
                 {
                     NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 50f);
-                    
+
                 }
             }
             if (DistanceToCoordinates <= 25f)
             {
-                if(hasSixthSense && Player.SearchMode.IsInStartOfSearchMode)
+                if (hasSixthSense && Player.SearchMode.IsInStartOfSearchMode)
                 {
 
                 }
@@ -203,7 +219,7 @@ public class Locate : ComplexTask
                 {
                     HasReachedReportedPosition = true;
                 }
-                
+
                 EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
             if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)

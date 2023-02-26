@@ -91,7 +91,7 @@ public class EMTTasker
             bool SeenAngryCrime = false;
             bool SeenMundaneCrime = false;
             int PlayerCrimePriority = 99;
-            foreach (WitnessedCrime witnessedCrime in emt.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReportedByCivilians))
+            foreach (WitnessedCrime witnessedCrime in emt.PlayerCrimesWitnessed.Where(x => x.Crime.CanBeReactedToByCivilians))
             {
                 if (witnessedCrime.Crime.AngersCivilians)
                 {

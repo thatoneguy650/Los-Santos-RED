@@ -63,7 +63,7 @@ public class PlayerPerception
     public WeaponInformation WeaponLastSeenTargetWith { get; set; }
     public bool WithinWeaponsAudioRange { get; private set; } = false;
 
-
+    public bool HasSeenTargetWithin(uint time) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= time;
 
 
 

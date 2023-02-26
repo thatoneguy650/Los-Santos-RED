@@ -78,6 +78,9 @@ namespace Mod
         private ISeats Seats;
         private IAgencies Agencies;
         private uint GameTimeLastRaiseHandsEmote;
+        private Vehicle VehicleTryingToEnter;
+        private int SeatTryingToEnter;
+        private bool currentlyHasScrewdriver;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -1046,119 +1049,147 @@ namespace Mod
         }
         private void OnGettingIntoAVehicleChanged()
         {
-            //GameFiber.Yield();//TR Yield RemovedTest 2
             if (IsGettingIntoAVehicle)
             {
-                Vehicle VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
-                int SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
-                if (VehicleTryingToEnter == null)
+                VehicleTryingToEnter = Game.LocalPlayer.Character.VehicleTryingToEnter;
+                SeatTryingToEnter = Game.LocalPlayer.Character.SeatIndexTryingToEnter;
+                if (VehicleTryingToEnter != null)
                 {
-                    return;
+                    UpdateCurrentVehicle();
+                    HandleVehicleEntry();
                 }
-                UpdateCurrentVehicle();
-                //GameFiber.Yield();//TR Yield RemovedTest 2
-                if (CurrentVehicle != null)
-                {
-                    Blip attachedBlip = CurrentVehicle.Vehicle.GetAttachedBlip();
-                    VehicleGettingInto = CurrentVehicle;
-
-                    if(CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.IS_TURRET_SEAT<bool>(VehicleTryingToEnter, SeatTryingToEnter))
-                    {
-                        EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
-                    }
-                    else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))//if (OwnedVehicle != null && CurrentVehicle.Handle == OwnedVehicle.Handle && CurrentVehicle.Vehicle.Exists())
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && CurrentVehicle.Vehicle.GetAttachedBlip()?.Sprite == BlipSprite.GangVehicle)//vanilla owned vehicles?
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)//vanilla owned vehicles?
-                    {
-                        CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                        CurrentVehicle.Vehicle.MustBeHotwired = false;
-                    }
-                    else
-                    {
-                        if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)//vanilla owned vehicles?
-                        {
-                            CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                            CurrentVehicle.Vehicle.MustBeHotwired = false;
-                        }
-                        if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
-                        {
-                            CurrentVehicle.AttemptToLock();
-                            //GameFiber.Yield();//TR Yield RemovedTest 2
-                        }
-                        bool hasScrewDriver = Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
-                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
-                        {
-                            if (CurrentVehicle.Vehicle.MustBeHotwired)
-                            {
-                                CurrentVehicle.IsHotWireLocked = true;
-                                CurrentVehicle.Vehicle.MustBeHotwired = false;
-                            }
-                            if (CurrentVehicle.IsHotWireLocked && hasScrewDriver)
-                            {
-                                CurrentVehicle.IsHotWireLocked = false;
-                                CurrentVehicle.Vehicle.MustBeHotwired = true;
-                            }
-                        }
-
-                        if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !hasScrewDriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
-                        {
-                            Game.DisplayHelp("Screwdriver required to lockpick");
-                        }
-
-
-                        if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || hasScrewDriver))//no driver && Unlocked
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
-                            CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
-                            MyLockPick.PickLock();
-                        }
-                        else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
-                            PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
-                            Violations.TheftViolations.AddCarJacked(jackedPed);
-                            CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, WeaponEquipment.CurrentWeapon);
-                            MyJack.Start();
-                        }
-                        else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
-                        {
-                            EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                            CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
-                            MyBreakIn.BreakIn();
-                        }
-                        //else if (SeatTryingToEnter != -1)
-                        //{
-                        //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
-                        //    {
-                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-                        //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
-                        //        MyBusRide.Start();
-                        //    }
-                        //    else
-                        //    {
-                        //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
-                        //    }
-                        //}
-                    }
-                }
-                else
-                {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
-                }
-            }
-            else
-            {
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
             EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
+        }
+
+
+
+        private void HandleVehicleEntry()
+        {
+            if(CurrentVehicle == null)
+            {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
+                return;
+            }
+            VehicleGettingInto = CurrentVehicle;
+            if(IsFreeToEnter())
+            {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
+                return;
+            }
+            if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
+            {
+                CurrentVehicle.AttemptToLock();
+            }
+            HandleScrewdriver();
+            if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
+            {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
+                CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
+                MyLockPick.PickLock();
+            }
+            else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
+            {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
+                PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
+                Violations.TheftViolations.AddCarJacked(jackedPed);
+                CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, WeaponEquipment.CurrentWeapon);
+                MyJack.Start();
+            }
+            else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
+            {
+                EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
+                MyBreakIn.BreakIn();
+            }
+            //else if (SeatTryingToEnter != -1)
+            //{
+            //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
+            //    {
+            //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+            //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
+            //        MyBusRide.Start();
+            //    }
+            //    else
+            //    {
+            //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
+            //    }
+            //}     
+        }
+        private bool IsFreeToEnter()
+        {
+            if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.IS_TURRET_SEAT<bool>(VehicleTryingToEnter, SeatTryingToEnter))
+            {
+                EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
+                return true;
+            }
+            else if (!Settings.SettingsManager.VehicleSettings.AllowLockVehicles)
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Disallow Lock");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Owned Vehicle");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Last Friendly");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Mission Lock");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.DECOR_EXIST_ON<bool>(CurrentVehicle.Vehicle,"Player_Vehicle"))//From Dot. on discord
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Decorator Unlock");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            else if (CurrentVehicle.Vehicle.Exists() && !RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");
+                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+                CurrentVehicle.Vehicle.MustBeHotwired = false;
+                return true;
+            }
+            return false;
+        }
+        private void HandleScrewdriver()
+        {
+            currentlyHasScrewdriver = Inventory.Has(typeof(ScrewdriverItem)); //Inventory.HasTool(ToolTypes.Screwdriver);
+
+            if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForHotwire)
+            {
+                if (CurrentVehicle.Vehicle.MustBeHotwired)
+                {
+                    CurrentVehicle.IsHotWireLocked = true;
+                    CurrentVehicle.Vehicle.MustBeHotwired = false;
+                }
+                if (CurrentVehicle.IsHotWireLocked && currentlyHasScrewdriver)
+                {
+                    CurrentVehicle.IsHotWireLocked = false;
+                    CurrentVehicle.Vehicle.MustBeHotwired = true;
+                }
+            }
+
+            if (Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry && !currentlyHasScrewdriver && IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn)
+            {
+                Game.DisplayHelp("Screwdriver required to lockpick");
+            }
         }
         private void OnIsInVehicleChanged()
         {
@@ -1621,7 +1652,7 @@ namespace Mod
 
             if (IsMakingInsultingGesture && CurrentLookedAtPed != null)// && !CurrentLookedAtPed.IsFedUpWithPlayer)
             {
-                CurrentLookedAtPed.InsultedByPlayer();
+                CurrentLookedAtPed.InsultedByPlayer(this);
             }
 
 
