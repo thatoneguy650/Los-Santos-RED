@@ -151,10 +151,7 @@ public class Investigation
         if (IsActive && Player.IsNotWanted)
         {
             AssignCops();
-            if (World.CitizenWantedLevel == 0 && (IsTimedOut && (!RequiresPolice || World.TotalWantedLevel > 0) && (!RequiresEMS || !World.Pedestrians.AnyInjuredPeopleNearPlayer)) || IsOutsideInvestigationRange) //remove after 3 minutes
-            {
-                Expire();
-            }
+            CheckExpired();
             if (IsSuspicious && Player.AnyPoliceCanRecognizePlayer && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)
             {
                 Player.PoliceResponse.ApplyReportedCrimes();
@@ -167,6 +164,21 @@ public class Investigation
         }
         GameTimeLastUpdatedInvestigation = Game.GameTime;
     }
+
+    private void CheckExpired()
+    {
+        if(IsOutsideInvestigationRange)
+        {
+            EntryPoint.WriteToConsole("Investigation Expire OUTSIDE RANGE");
+            Expire();
+        }
+        else if ((IsTimedOut || World.Pedestrians.Police.Any(x=>x.IsRespondingToInvestigation && x.GameTimeReachedInvestigationPosition > 0 && Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring)) && World.TotalWantedLevel == 0 && !World.Pedestrians.AnyInjuredPeopleNearPlayer)
+        {
+            EntryPoint.WriteToConsole("Investigation Expire TIME OUT");
+            Expire();
+        }
+    }
+
     private void AssignCops()
     {
         if (RequiresPolice)
@@ -219,8 +231,6 @@ public class Investigation
                     }
                 }
             }
-
-
             CurrentRespondingPoliceCount = tasked;
             // EntryPoint.WriteToConsole($"Investigation Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");
         }
@@ -282,6 +292,7 @@ public class Investigation
         foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
         {
             cop.IsRespondingToInvestigation = false;
+            cop.GameTimeReachedInvestigationPosition = 0;
         }
         InvestigationWantedLevel = 0;
         CurrentRespondingPoliceCount = 0;

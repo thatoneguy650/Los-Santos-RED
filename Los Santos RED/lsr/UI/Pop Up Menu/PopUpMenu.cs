@@ -56,6 +56,7 @@ public class PopUpMenu
     private PopUpBox PrevPageMenuMap;
     private PopUpBox MainMenuMenuMap;
     private PopUpBox DebugMenuMenuMap;
+    private PopUpBox BurnerPhoneMenuMap;
     private List<PopUpBox> ButtonPromptItems;
     private List<PopUpBox> AlwaysShownItems;
     private Texture Sign10;
@@ -556,6 +557,7 @@ public class PopUpMenu
         }
         DrawPopUpBox(MainMenuMenuMap, Settings.SettingsManager.ActionWheelSettings.MainMenuCenterX, Settings.SettingsManager.ActionWheelSettings.MainMenuCenterY);
         DrawPopUpBox(DebugMenuMenuMap, Settings.SettingsManager.ActionWheelSettings.DebugMenuCenterX, Settings.SettingsManager.ActionWheelSettings.DebugMenuCenterY);
+        DrawPopUpBox(BurnerPhoneMenuMap, Settings.SettingsManager.ActionWheelSettings.BurnerPhoneOpenCenterX, Settings.SettingsManager.ActionWheelSettings.BurnerPhoneOpenCenterY);
     }
     private void DrawCurrentMenuMap()
     {
@@ -1092,6 +1094,7 @@ public class PopUpMenu
 
         MainMenuMenuMap = new PopUpBox(997, "Main Menu", new Action(() => UI.ToggleMenu()), "") { ClosesMenu = true };
         DebugMenuMenuMap = new PopUpBox(996, "Debug Menu", new Action(() => UI.ToggleDebugMenu()), "") { ClosesMenu = true };
+        BurnerPhoneMenuMap = new PopUpBox(995, "Burner Phone", new Action(() => Player.CellPhone.OpenBurner()), "") { ClosesMenu = true };
 
         ButtonPromptItems = new List<PopUpBox>();
         AlwaysShownItems = new List<PopUpBox>
@@ -1099,7 +1102,8 @@ public class PopUpMenu
             NextPageMenuMap,
             PrevPageMenuMap,
             MainMenuMenuMap,
-            DebugMenuMenuMap
+            DebugMenuMenuMap,
+            BurnerPhoneMenuMap,
         };
 
         PopUpMenuGroups.Add(new PopUpBoxGroup(DefaultOnFootGroupName, OnFootMenuMaps));

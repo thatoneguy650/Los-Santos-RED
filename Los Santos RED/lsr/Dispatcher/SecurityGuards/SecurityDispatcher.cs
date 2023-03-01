@@ -234,6 +234,7 @@ public class SecurityDispatcher
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
             securitySpawnTask.ClearArea = clearArea;
             securitySpawnTask.SpawnRequirement = spawnRequirement;
+            
             securitySpawnTask.AttemptSpawn();
             securitySpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));

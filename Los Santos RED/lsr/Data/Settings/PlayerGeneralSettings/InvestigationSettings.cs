@@ -17,6 +17,9 @@ public class InvestigationSettings : ISettingsDefaultable
     public float SuspiciousDistance { get; set; }
     [Description("Enable or disable the mini-map investigation circle")]
     public bool CreateBlip { get; set; }
+
+    [Description("Extra time after a cop arrives at the center before the investigation can expire.")]
+    public uint ExtraTimeAfterReachingInvestigationCenterBeforeExpiring { get; set; }
     public InvestigationSettings()
     {
         SetDefault();
@@ -24,10 +27,11 @@ public class InvestigationSettings : ISettingsDefaultable
     public void SetDefault()
     {
         ActiveDistance = 700f;// 800f;
-        TimeLimit = 20000;//60000;
+        TimeLimit = 900000;//60000;
         MaxDistance = 1000f;// 1500f;
         SuspiciousDistance = 250f;
         CreateBlip = true;
+        ExtraTimeAfterReachingInvestigationCenterBeforeExpiring = 15000;
     }
 
 }

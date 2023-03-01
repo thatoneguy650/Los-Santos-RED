@@ -45,7 +45,7 @@ public class CellPhone
     private CorruptCopInteraction CorruptCopInteraction;
     private EmergencyServicesInteraction EmergencyServicesInteraction;
     private bool isRunningForcedMobileTask;
-    private BurnerPhone BurnerPhone;
+
     private IEntityProvideable World;
     private ICrimes Crimes;
     private uint GameTimeLastCheckedScheduledItems;
@@ -53,7 +53,7 @@ public class CellPhone
     private NAudioPlayer phoneAudioPlayer;
 
 
-
+    public BurnerPhone BurnerPhone { get; private set; }
 
     public string RingTone => !string.IsNullOrEmpty(CustomRingtone) ? CustomRingtone : Settings.SettingsManager.CellphoneSettings.DefaultCustomRingtoneName;
     public string TextTone => !string.IsNullOrEmpty(CustomTextTone) ? CustomTextTone : Settings.SettingsManager.CellphoneSettings.DefaultCustomTexttoneName;
@@ -110,18 +110,7 @@ public class CellPhone
     {
         if (!BurnerPhone.IsActive)
         {
-            //NativeFunction.Natives.CREATE_MOBILE_PHONE(Settings.SettingsManager.CellphoneSettings.BurnerCellPhoneTypeID);
-            //isRunningForcedMobileTask = true;
-            //NativeFunction.Natives.TASK_USE_MOBILE_PHONE(Game.LocalPlayer.Character, true);
-            //Player.Character.KeepTasks = true;
-            //if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
-            //{
-            //    BurnerPhone.DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper());
-            //}
-            //else
-            //{
-            //    BurnerPhone.SetOffScreen();
-            //}
+
         }
         else
         {
@@ -144,10 +133,6 @@ public class CellPhone
         foreach(PhoneContact phoneContact in ContactList)
         {
             phoneContact.MenuInteraction?.Update();
-        }
-        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
-        {
-            BurnerPhone.Update();
         }
     }
     public void Reset()

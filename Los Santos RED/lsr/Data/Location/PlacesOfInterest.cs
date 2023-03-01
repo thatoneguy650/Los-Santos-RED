@@ -1237,7 +1237,10 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new ConditionalLocation(new Vector3(-217.3633f, -2046.552f, 27.62042f), 140.1676f, 100f) { IsEmpty = false, RequiredGroup = "UnarmedSecurity" },
-                    new ConditionalLocation(new Vector3(-231.8785f, -2072.353f, 27.07749f), 215.4204f, 100) { RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-231.8785f, -2072.353f, 27.07749f), 215.4204f, 50f) {  },
+                    new ConditionalLocation(new Vector3(-217.1458f, -2034.899f, 27.0688f), 241.1897f, 50f) {  },
+                    new ConditionalLocation(new Vector3(-212.0767f, -2051.947f, 27.06881f), 238.1569f, 50f) {  },
+
                 },
             },
 
@@ -1606,6 +1609,15 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                     new SpawnPlace(new Vector3(1122.58f, 784.47f, 57.68f), 91.32f),
                     new SpawnPlace(new Vector3(1121.96f, -773.24f, 57.75f), 359.68f),
                 } },
+            new Dealership(new Vector3(-41.04f, -1675.14f, 29.45f), 139.44f, "Albany", "From Liberty City with Love","AlbanyMenu") {
+                OpenTime = 6, CloseTime = 20,BannerImagePath = "albany.png",
+                CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
+                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "ALBANY",
+                ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(-45.12f, -1690.65f, 29.39f), 22.31f),
+                    new SpawnPlace(new Vector3(-40.71f, -1687.56f, 29.39f), 20.33f),
+                } },
+
             //new Dealership(new Vector3(-205.69f, -1308.52f, 31.29f), 0.65f, "Lazy Lenny's Lowriders", "All my friends know the low rider","LowriderMenu") {
             //    OpenTime = 6, CloseTime = 20,
             //    CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),

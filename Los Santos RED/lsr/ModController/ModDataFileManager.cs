@@ -213,7 +213,7 @@ public class ModDataFileManager
         string Description =
             "PreMade config for 'Emergency uniforms pack - Law & Order 8.3' by Alex_Ashford and expanded department liveries (RHPD, BCSO, LSIA, etc.) made by me for Yard1, Lt.Caine, and AllenKennedy's mapped default police vehicles."
             + Environment.NewLine +
-            "These are all replace vehicles for police, police2, police3, sheriff, sheriff2, policeb, and lurcher. No custom gameconfig should be required."
+            "These are all replace vehicles for police (Stanier), police2 (Buffalo), police3 (Interceptor), sheriff (Gresley Police), sheriff2 (Granger Police), policeb (Police Bike), policeold1 (Merit Police), and lurcher (Security Torrence). No custom gameconfig should be required."
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
@@ -243,9 +243,9 @@ public class ModDataFileManager
             "'\\mods\\update\\update.rpf\\common\\data\\dlclist.xml'"
             + Environment.NewLine
             + Environment.NewLine +
-            "Copy the sheriff, lurcher, and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
+            "Copy the sheriff, lurcher, policeold1, and policeb entries from '\\mods\\update\\x64\\dlcpacks\\greskfej\\dlc.rpf\\data\\vehicles.meta'"
             + Environment.NewLine +
-            "and overwrite the existing sheriff, lurcher, and policeb entries in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
+            "and overwrite the existing sheriff, policeold1, and policeb entries and add a new lurcher entry in '\\mods\\update\\update.rpf\\common\\data\\levels\\gta5\\vehicles.meta'"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
 
 
@@ -264,7 +264,9 @@ public class ModDataFileManager
             "Torrence - AllenKennedy - Everything, except the front bumper and the spotlight. actuallyтoхιc - Front bumper and the spotlight. Jacobmaate - LED spotlight texture and vital assistance with figuring out audio files. Vx5 Voltage - For creating the Original Torrence SSO mod which inspired me to develop this one. 11john11 - Help finding good civilian wheels from Watch Dogs to use. Boywond - Converting Watch Dogs wheels. w/ - Help figuring out how to do 3D text in Blender."
             + Environment.NewLine +
             "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
-            + Environment.NewLine + Environment.NewLine + 
+            + Environment.NewLine + Environment.NewLine +
+            "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
+            + Environment.NewLine + Environment.NewLine +
             "Creator Links"
             + Environment.NewLine +
             "Yard1 - https://www.gta5-mods.com/users/Yard1/files"
@@ -291,7 +293,7 @@ public class ModDataFileManager
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        string Description = "For use with liberty city (centered)";
+        string Description = "For use with liberty city (centered). The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
     }
     private void SetupSimple()

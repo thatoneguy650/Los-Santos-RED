@@ -52,6 +52,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAmbientSpawn { get; }
         SpawnRequirement SpawnRequirement { get; }
         PlayerPerception PlayerPerception { get; }
+        uint GameTimeReachedInvestigationPosition { get; set; }
 
         void ReportCrime(ITargetable player);
         void SetWantedLevel(int v);

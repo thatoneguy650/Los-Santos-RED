@@ -157,31 +157,22 @@ public class Vehicles
             }
             GameFiber.Yield();//TR 29
             updated = 0;
-            foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.Vehicle.Exists() && x.Vehicle.IsPersistent && x.HasExistedFor >= 15000).ToList())
+            foreach (VehicleExt civilianCar in CivilianVehicles.Where(x => !x.OwnedByPlayer && x.WasModSpawned && !x.WasSpawnedEmpty && x.HasExistedFor >= 15000 && x.Vehicle.Exists() && x.Vehicle.IsPersistent ).ToList())
             {
-                if (civilianCar.Vehicle.Exists())
+                if(!civilianCar.Vehicle.Exists() || civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
                 {
-                    if (!civilianCar.Vehicle.Occupants.Any(x => x.Exists() && x.IsAlive))
+                    continue;
+                }
+                if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
+                {
+                    if (civilianCar.Vehicle.IsPersistent)
                     {
-                        if (civilianCar.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) >= 250f)
-                        {
-                            if (civilianCar.Vehicle.IsPersistent)
-                            {
-                                EntryPoint.PersistentVehiclesDeleted++;
-                            }
-                            EntryPoint.WriteToConsole($"RemoveAbandonedGangVehicles {civilianCar.Vehicle.Handle}", 5);
-                            civilianCar.Vehicle.Delete();
-                            GameFiber.Yield();
-                        }
-                        GameFiber.Yield();
+                        EntryPoint.PersistentVehiclesDeleted++;
                     }
-                    //GameFiber.Yield();//TR 29
+                    EntryPoint.WriteToConsole($"Remove Abandoned Non Police {civilianCar.Vehicle.Handle}", 5);
+                    civilianCar.Vehicle.Delete();
                 }
-                if (updated > 10)
-                {
-                    GameFiber.Yield();
-                    updated = 0;
-                }
+                GameFiber.Yield();
             }
         }
         catch(InvalidOperationException ex)

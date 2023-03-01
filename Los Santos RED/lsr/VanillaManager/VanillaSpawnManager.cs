@@ -213,24 +213,34 @@ public class VanillaSpawnManager
             new Vector3(1759.357f, 2514.872f, 54.3591f),//prison
             new Vector3(1761.915f, 2521.84f, 54.39047f),//prison
 
+            //Maze Bank security
+            new Vector3(-256.2089f, -2029.314f, 28.94582f),
+            new Vector3(-252.9283f, -2025.2f, 28.94582f),
+            new Vector3(-241.3938f, -2023.062f, 28.94582f),
+            new Vector3(-285.3585f, -2056.294f, 28.94583f),
+            new Vector3(-336.9773f, -2046.85f, 28.94642f),
+            new Vector3(-372.0268f, -2018.85f, 28.94642f),
+            new Vector3(-395.8358f, -1997.162f, 28.94642f),
+            new Vector3(-402.0461f, -1905.517f, 28.94614f),
+            new Vector3(-337.9023f, -1880.646f, 28.94614f),
+            new Vector3(-309.1234f, -1891.761f, 28.94639f),
+            new Vector3(-283.2107f, -1913.418f, 28.94639f),
+            new Vector3(-277.8984f, -1918.732f, 28.94639f),
+            new Vector3(-233.965f, -1973.487f, 28.94639f),
+            //Luxury AUtos Security
+            new Vector3(-802.0435f, -225.7791f, 36.20076f),
         };
 
-
-
-
-        if(Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceScenarios)
+        if(Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios)
         {
             float ScenarioBlockingDistance = 2f;
-            foreach (Vector3 carScenario in ScenariosToDisable)
+            foreach (Vector3 scenario in ScenariosToDisable)
             {
-                NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(carScenario.X - ScenarioBlockingDistance, carScenario.Y - ScenarioBlockingDistance, carScenario.Z - ScenarioBlockingDistance, carScenario.X + ScenarioBlockingDistance, carScenario.Y + ScenarioBlockingDistance, carScenario.Z + ScenarioBlockingDistance, false, true, true, true);
+                NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
             }
-
             Vector3 PrisonMainBlock = new Vector3(1862.066f, 2593.06f, 45.67203f);
             float largeBlockingRange = 50f;
             NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(PrisonMainBlock.X - largeBlockingRange, PrisonMainBlock.Y - largeBlockingRange, PrisonMainBlock.Z - largeBlockingRange, PrisonMainBlock.X + largeBlockingRange, PrisonMainBlock.Y + largeBlockingRange, PrisonMainBlock.Z + largeBlockingRange, false, true, true, true);
-
-
         }
 
     }

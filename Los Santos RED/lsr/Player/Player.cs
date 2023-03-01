@@ -474,6 +474,25 @@ namespace Mod
                     EntryPoint.ModController.CrashUnload();
                 }
             }, "CellPhone");
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (isActive)
+                    {
+                        if (Settings.SettingsManager.CellphoneSettings.AllowBurnerPhone)
+                        {
+                            CellPhone.BurnerPhone.Update();
+                        }
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "BurnerPhone");
             if (Settings.SettingsManager.CellphoneSettings.TerminateVanillaCellphone)
             {
                 NativeFunction.Natives.TERMINATE_ALL_SCRIPTS_WITH_THIS_NAME("cellphone_flashhand");

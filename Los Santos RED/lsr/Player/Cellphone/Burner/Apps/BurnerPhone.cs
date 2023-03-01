@@ -13,8 +13,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using static BurnerPhone_Old;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+//using static BurnerPhone_Old;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 public class BurnerPhone
 {

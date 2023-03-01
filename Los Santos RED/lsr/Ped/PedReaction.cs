@@ -55,7 +55,7 @@ public class PedReaction
             }
             else if (ReactionTier == ReactionTier.Intense)
             {
-                return Game.GameTime - GameTimeLastReacted >= 90000;
+                return Game.GameTime - GameTimeLastReacted >= 120000;
             }
             return false;
         }
@@ -98,7 +98,7 @@ public class PedReaction
             EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - busted");
             return;
         }
-        if(!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY,ReactingToPed.CellX,ReactingToPed.CellY,3))
+        if(!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY,ReactingToPed.CellX,ReactingToPed.CellY,4))
         {
             IsDistanceExpired = true;
             EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - distance");

@@ -112,7 +112,7 @@ public class Pedestrians : ITaskerReportable
             return myList;
         }
     }
-    public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
+    public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
     public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
     public bool AnyArmyUnitsSpawned

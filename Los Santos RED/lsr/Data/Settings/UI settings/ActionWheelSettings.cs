@@ -70,6 +70,10 @@ public class ActionWheelSettings : ISettingsDefaultable
     public float DebugMenuCenterX { get; set; }
     public float DebugMenuCenterY { get; set; }
 
+    public float BurnerPhoneOpenCenterX { get; set; }
+    public float BurnerPhoneOpenCenterY { get; set; }
+
+
     public float ButtonPromptXStart { get; set; }
     public float ButtonPromptYStart { get; set; }
 
@@ -89,6 +93,7 @@ public class ActionWheelSettings : ISettingsDefaultable
 
     public float ControllerCursorScale { get; set; }
     public bool UseNewClosest { get; set; }
+
 
     public ActionWheelSettings()
     {
@@ -162,11 +167,16 @@ public class ActionWheelSettings : ISettingsDefaultable
         DebugMenuCenterX = 0.92f;
         DebugMenuCenterY = 0.5f;
 
+        BurnerPhoneOpenCenterX = 0.92f;
+        BurnerPhoneOpenCenterY = 0.55f;
+
+
+
         AffiliationCenterX = 0.92f;
-        AffiliationCenterY = 0.575f;
+        AffiliationCenterY = 0.65f;// 0.575f;
 
         ButtonPromptXStart = 0.92f;
-        ButtonPromptYStart = 0.625f;
+        ButtonPromptYStart = 0.75f;//0.625f;
 
 
 

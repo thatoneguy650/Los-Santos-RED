@@ -150,19 +150,10 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("buzzard2", 0,50) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 }, //};
          new DispatchableVehicle("valkyrie2", 0,50) { MinWantedLevelSpawn = 3,MaxWantedLevelSpawn = 4,MinOccupants = 4,MaxOccupants = 4 } };
         ArmyVehicles = new List<DispatchableVehicle>() {
-
-//#if DEBUG
-//            new DispatchableVehicle("insurgent", 95, 75) { ForceStayInSeats = new List<int>() { -1,1 },MinOccupants = 3,MaxOccupants = 3,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
-//            new DispatchableVehicle("rhino", 5, 25) { ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
-//            new DispatchableVehicle("valkyrie2", 0,50) { ForceStayInSeats = new List<int>() { -1,0,1,2 }, MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 10 },
-//#else
             new DispatchableVehicle("crusader", 85,25) { MinOccupants = 1,MaxOccupants = 2,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("barracks", 15,75) { MinOccupants = 3,MaxOccupants = 5,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("rhino", 0, 25) {  ForceStayInSeats = new List<int>() { -1 },MinOccupants = 1,MaxOccupants = 1,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
-            //new DispatchableVehicle("valkyrie", 0,50) { MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 },
             new DispatchableVehicle("valkyrie2", 0,100) { ForceStayInSeats = new List<int>() { -1,0,1,2 },MinOccupants = 4,MaxOccupants = 4,MinWantedLevelSpawn = 6, MaxWantedLevelSpawn = 10 }
-
-//#endif
             };
 
 
@@ -581,6 +572,8 @@ public class DispatchableVehicles : IDispatchableVehicles
         //Cops
         List<DispatchableVehicle> UnmarkedVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100)};
+
+        //Federal
         List<DispatchableVehicle> CoastGuardVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("predator", 75, 50),
             new DispatchableVehicle("dinghy", 0, 25),
@@ -588,58 +581,80 @@ public class DispatchableVehicles : IDispatchableVehicles
         List<DispatchableVehicle> ParkRangerVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("pranger", 100, 100) };
         List<DispatchableVehicle> FIBVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("fbi", 0, 70) { MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("frogger2", 0, 30) { RequiredLiveries = new List<int>() { 0 }, MinWantedLevelSpawn = 5 ,MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 }, };
+            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
+            new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
+
+            new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("fbi", 0, 70) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("frogger2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 0 } }, };  
         List<DispatchableVehicle> NOOSEVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 15,10){ RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 15,10){ RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police3", 70, 70){ RequiredLiveries = new List<int>() { 11 }, MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("sheriff", 70, 70){ RequiredLiveries = new List<int>() { 11 }, MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("sheriff2", 30, 30) { RequiredLiveries = new List<int>() { 11 },MinWantedLevelSpawn = 0 , MaxWantedLevelSpawn = 3 },
-            new DispatchableVehicle("police2", 35, 35) { RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("police2", 0, 40) { RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("police3", 0, 40) { RequiredLiveries = new List<int>() { 11 },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
-            new DispatchableVehicle("sheriff", 0, 40) { RequiredLiveries = new List<int>() { 11 },MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("police", 15,10){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 15,10){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police3", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 }, },
+            new DispatchableVehicle("sheriff", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 }, },
+            new DispatchableVehicle("sheriff2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3, RequiredLiveries = new List<int>() { 11 }, },
 
+            new DispatchableVehicle("police2", 35, 35) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 11 }, VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) }, },
+            new DispatchableVehicle("riot", 0, 25) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4 },
+            new DispatchableVehicle("police2", 0, 40) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 11 }, VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) }, },
+            new DispatchableVehicle("police3", 0, 40) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 11 }, },
+            new DispatchableVehicle("sheriff", 0, 40) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5,MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 11 }, },
+            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 }};   
 
-            new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4 ,MaxWantedLevelSpawn = 5,MinOccupants = 4,MaxOccupants = 5 }};
-        List<DispatchableVehicle> PrisonVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policet", 0, 25),
-            new DispatchableVehicle("police", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
-            new DispatchableVehicle("sheriff", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
-            new DispatchableVehicle("sheriff2", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
-
-
-        };
+        //Police
         List<DispatchableVehicle> LSPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 10,5){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("police3", 48,35) { RequiredLiveries = new List<int>() { 1 } },
             new DispatchableVehicle("sheriff", 48,35) { RequiredLiveries = new List<int>() { 1 } },
             new DispatchableVehicle("police2", 25, 20){ RequiredLiveries = new List<int>() { 1 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
             new DispatchableVehicle("sheriff2", 15, 12){ RequiredLiveries = new List<int>() { 1 } },
             new DispatchableVehicle("police4", 1,1),
-            new DispatchableVehicle("fbi2", 1,1),
             new DispatchableVehicle("policet", 0, 25) { MinOccupants = 3, MaxOccupants = 4,MinWantedLevelSpawn = 3},
-            new DispatchableVehicle("policeb", 15, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },
+            new DispatchableVehicle("policeb", 15, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } }, };
+        List<DispatchableVehicle> EastLSPDVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 25,25){ RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 15,10){ RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 10, 10){RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 10, 10){RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle("sheriff", 10, 10){RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 3 } },
+            new DispatchableVehicle("policeb", 15, 5) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
+        List<DispatchableVehicle> VWPDVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 5,5){ RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 25, 25){RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 50, 50){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 2 } },
+            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
 
-        };
-        List<DispatchableVehicle> SAHPVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,15){ RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,15){ RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeb", 45, 20) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
-            new DispatchableVehicle("police2", 30, 45) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } ,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50) } },
-            new DispatchableVehicle("police3", 20, 30) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
-            new DispatchableVehicle("sheriff", 20, 30) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
-            new DispatchableVehicle("sheriff2", 15, 10) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
-        };
+        List<DispatchableVehicle> RHPDVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 5,2){ RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 50, 50){RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 25, 25){RequiredLiveries = new List<int>() { 5 } },
+            new DispatchableVehicle("sheriff", 25, 25){RequiredLiveries = new List<int>() { 5 } },
+            new DispatchableVehicle("sheriff2", 15, 15){RequiredLiveries = new List<int>() { 5 } },   };
+        List<DispatchableVehicle> DPPDVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 5,2){ RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 25, 25){RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 50, 50){RequiredLiveries = new List<int>() { 6 } },
+            new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 6 } },
+            new DispatchableVehicle("sheriff2", 15, 15){RequiredLiveries = new List<int>() { 6 } },};
+
+
+        //Sheriff
+        List<DispatchableVehicle> BCSOVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 25,20){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 15,15){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 10, 10) {RequiredLiveries = new List<int>() {0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 10, 10) {RequiredLiveries = new List<int>() {0 } },
+            new DispatchableVehicle("sheriff", 25, 25) {RequiredLiveries = new List<int>() {0 } },
+            new DispatchableVehicle("sheriff2", 25, 25) {RequiredLiveries = new List<int>() {0 } },
+            new DispatchableVehicle("policeb", 10, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 2 } },};
+
         List<DispatchableVehicle> LSSDVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 7 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -647,15 +662,7 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("police3", 50, 50) {RequiredLiveries = new List<int>() { 7 } },
             new DispatchableVehicle("sheriff", 50, 50) {RequiredLiveries = new List<int>() { 7 } },
             new DispatchableVehicle("sheriff2", 50, 50) {RequiredLiveries = new List<int>() {7 } },
-            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
-        List<DispatchableVehicle> BCSOVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() {0 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 25, 25) {RequiredLiveries = new List<int>() {0 } },
-            new DispatchableVehicle("sheriff", 25, 25) {RequiredLiveries = new List<int>() {0 } },
-            new DispatchableVehicle("sheriff2", 50, 50) {RequiredLiveries = new List<int>() {0 } },
-            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 2 } },};
+            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};     
         List<DispatchableVehicle> MajesticLSSDVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 8 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 8 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -680,88 +687,48 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sheriff", 25, 25)  {RequiredLiveries = new List<int>() { 10 } },
             new DispatchableVehicle("sheriff2", 50, 50)  {RequiredLiveries = new List<int>() { 10 }, },
             new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 3 } },};
+
         List<DispatchableVehicle> LSIAPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 12 } },
-            new DispatchableVehicle("sheriff", 50, 50)  {RequiredLiveries = new List<int>() { 12 } },
-            new DispatchableVehicle("sheriff2", 25, 25)  {RequiredLiveries = new List<int>() { 12 } }, };
-        List<DispatchableVehicle> RHPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,10){ RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 50, 50){RequiredLiveries = new List<int>() { 5 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 25, 25){RequiredLiveries = new List<int>() { 5 } },
-            new DispatchableVehicle("sheriff", 25, 25){RequiredLiveries = new List<int>() { 5 } },
-            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 5 } },   };
-        List<DispatchableVehicle> DPPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,10){ RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25){RequiredLiveries = new List<int>() { 6 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 50, 50){RequiredLiveries = new List<int>() { 6 } },
-            new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 6 } },
-            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 6 } },};
-        List<DispatchableVehicle> EastLSPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 25,25){ RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 25,25){ RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 15, 15){RequiredLiveries = new List<int>() { 3 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 15, 15){RequiredLiveries = new List<int>() { 3 } },
-            new DispatchableVehicle("sheriff", 15, 15){RequiredLiveries = new List<int>() { 3 } },
-            new DispatchableVehicle("sheriff2", 33, 33){RequiredLiveries = new List<int>() { 3 } },
-            new DispatchableVehicle("policeb", 15, 5) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
-        List<DispatchableVehicle> VWPDVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,10){ RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25){RequiredLiveries = new List<int>() { 2 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 50, 50){RequiredLiveries = new List<int>() { 2 } },
-            new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 2 } },
-            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 2 } },
-            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 0 } },};
+            new DispatchableVehicle("police", 5,5){ RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 5,5){ RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 15, 15) {RequiredLiveries = new List<int>() { 12 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 25, 25)  {RequiredLiveries = new List<int>() { 12 } },
+            new DispatchableVehicle("sheriff", 10, 10)  {RequiredLiveries = new List<int>() { 12 } },
+            new DispatchableVehicle("sheriff2", 5, 5)  {RequiredLiveries = new List<int>() { 12 } }, };
         List<DispatchableVehicle> LSPPVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,10){ RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 50, 50) {RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 50, 50)  {RequiredLiveries = new List<int>() { 13 } },
-            new DispatchableVehicle("sheriff", 50, 50)  {RequiredLiveries = new List<int>() { 13 } },
-            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 13 } },
-            new DispatchableVehicle("policeb", 20, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 4 } },};
+            new DispatchableVehicle("police", 25,25){ RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 5,5){ RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 10, 10) {RequiredLiveries = new List<int>() { 13 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 10, 10)  {RequiredLiveries = new List<int>() { 13 } },
+            new DispatchableVehicle("sheriff", 10, 10)  {RequiredLiveries = new List<int>() { 13 } },
+            new DispatchableVehicle("sheriff2", 10, 10){RequiredLiveries = new List<int>() { 13 } },
+            new DispatchableVehicle("policeb", 10, 5) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 4 } },};
 
 
-
+        //State
+        List<DispatchableVehicle> SAHPVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("police", 20,15){ RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 20,15){ RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1, false, 100), new DispatchableVehicleExtra(1, true, 50), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeb", 45, 20) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 1 } },
+            new DispatchableVehicle("police2", 45, 45) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } ,VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(1, true, 50) } },
+            new DispatchableVehicle("police3", 20, 30) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
+            new DispatchableVehicle("sheriff", 20, 25) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },
+            new DispatchableVehicle("sheriff2", 10, 5) {RequiredPedGroup = "StandardSAHP",RequiredLiveries = new List<int>() { 4 } },};
+        List<DispatchableVehicle> PrisonVehicles_FEJ = new List<DispatchableVehicle>() {
+            new DispatchableVehicle("policet", 0, 25),
+            new DispatchableVehicle("police", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 25, 25) {RequiredLiveries = new List<int>() { 14 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
+            new DispatchableVehicle("sheriff", 25, 25) {RequiredLiveries = new List<int>() { 14 } },
+            new DispatchableVehicle("sheriff2", 25, 25) {RequiredLiveries = new List<int>() { 14 } },};
         List<DispatchableVehicle> NYSPVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("police", 20,10){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("policeold1", 20,10){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
-            new DispatchableVehicle("police2", 25, 25){RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
-            new DispatchableVehicle("police3", 25, 50){RequiredLiveries = new List<int>() { 16 } },
-            new DispatchableVehicle("sheriff", 50, 50){RequiredLiveries = new List<int>() { 16 } },
-            new DispatchableVehicle("sheriff2", 50, 25){RequiredLiveries = new List<int>() { 16 } },           
-        };
-
-
-
-        List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>()
-        {
-            new DispatchableVehicle("dilettante2", 50, 50),
-            new DispatchableVehicle("lurcher", 50, 50) {  RequiredLiveries = new List<int>() { 1 } },
-        };
-
-        List<DispatchableVehicle> BobcatSecurityVehicles_FEJ = new List<DispatchableVehicle>()
-        {
-            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 2,3 } },
-        };
-
-        List<DispatchableVehicle> GroupSechsVehicles_FEJ = new List<DispatchableVehicle>()
-        {
-            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 0 } },
-        };
-
-        List<DispatchableVehicle> SecuroservVehicles_FEJ = new List<DispatchableVehicle>()
-        {
-            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 4 } },
-        };
-
-
-
+            new DispatchableVehicle("police", 20,20){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("policeold1", 20,20){ RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
+            new DispatchableVehicle("police2", 10, 10){RequiredLiveries = new List<int>() { 16 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100) } },
+            new DispatchableVehicle("police3", 10, 10){RequiredLiveries = new List<int>() { 16 } },
+            new DispatchableVehicle("sheriff", 10, 10){RequiredLiveries = new List<int>() { 16 } },
+            new DispatchableVehicle("sheriff2", 25, 25){RequiredLiveries = new List<int>() { 16 } },           };
         List<DispatchableVehicle> LCPDVehicles_FEJ = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police", 20,15){ RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
             new DispatchableVehicle("policeold1", 20,15){ RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,true,100), new DispatchableVehicleExtra(2, false, 100) } },
@@ -771,11 +738,18 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("sheriff2", 15, 12){ RequiredLiveries = new List<int>() { 15 } },
             new DispatchableVehicle("police4", 1,1),
             new DispatchableVehicle("fbi2", 1,1),
-            new DispatchableVehicle("policeb", 15, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 5 } },
+            new DispatchableVehicle("policeb", 15, 10) { MaxOccupants = 1, RequiredPedGroup = "MotorcycleCop",MaxWantedLevelSpawn = 2, RequiredLiveries = new List<int>() { 5 } },};
 
-        };
-
-
+        //Security
+        List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>(){
+            new DispatchableVehicle("dilettante2", 50, 50),
+            new DispatchableVehicle("lurcher", 50, 50) {  RequiredLiveries = new List<int>() { 1 } },};
+        List<DispatchableVehicle> BobcatSecurityVehicles_FEJ = new List<DispatchableVehicle>(){
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 2,3 } },};
+        List<DispatchableVehicle> GroupSechsVehicles_FEJ = new List<DispatchableVehicle>(){
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 0 } },};
+        List<DispatchableVehicle> SecuroservVehicles_FEJ = new List<DispatchableVehicle>(){
+            new DispatchableVehicle("lurcher", 100, 100){  RequiredLiveries = new List<int>() { 4 } },};
 
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("UnmarkedVehicles", UnmarkedVehicles_FEJ));
         VehicleGroupLookupFEJ.Add(new DispatchableVehicleGroup("CoastGuardVehicles", CoastGuardVehicles_FEJ));

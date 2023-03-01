@@ -447,7 +447,7 @@
     <Compile Include="lsr\Player\Activity\UmbrellaActivity.cs" />
     <Compile Include="lsr\Player\Money\BankAccounts.cs" />
     <Compile Include="lsr\Player\Button Prompts\ButtonPrompts.cs" />
-    <Compile Include="lsr\Player\Cellphone\Burner\BurnerPhone_Old.cs" />
+    <Compile Include="lsr\Old\BurnerPhone_Old.cs" />
     <Compile Include="lsr\Old\BurnerPhone_Simple_Old.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\SoftKey.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\SoftKeyIcon.cs" />

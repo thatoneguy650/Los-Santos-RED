@@ -392,6 +392,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
     public virtual bool KnowsDrugAreas => HasMenu || HasDrugAreaKnowledge;
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
+
+    public uint GameTimeReachedInvestigationPosition { get; set; }
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
