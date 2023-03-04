@@ -217,13 +217,13 @@ public class ModDataFileManager
             + Environment.NewLine + Environment.NewLine +
             "EUP Installation: "
             + Environment.NewLine +
-            "Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/ (the add-on items are not needed)"
+            "1. Follow the instructions at https://www.lcpdfr.com/downloads/gta5mods/character/8151-emergency-uniforms-pack-law-order/ (the add-on items are not needed)"
             + Environment.NewLine + Environment.NewLine +
             "Expanded Department Liveries Installation: "
             + Environment.NewLine +
-            "Install the greskfejinstaller.oiv with OpenIV"
-            + Environment.NewLine + Environment.NewLine +
-            "Finally, copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
+            "1. Install the greskfejinstaller.oiv with OpenIV"
+            + Environment.NewLine +
+            "2. Copy all of the .xml files from the AlternateConfigs\\FullExpandedJurisdiction folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)"
             + Environment.NewLine + Environment.NewLine + Environment.NewLine +
 
 
@@ -264,7 +264,7 @@ public class ModDataFileManager
             "Torrence - AllenKennedy - Everything, except the front bumper and the spotlight. actuallyтoхιc - Front bumper and the spotlight. Jacobmaate - LED spotlight texture and vital assistance with figuring out audio files. Vx5 Voltage - For creating the Original Torrence SSO mod which inspired me to develop this one. 11john11 - Help finding good civilian wheels from Watch Dogs to use. Boywond - Converting Watch Dogs wheels. w/ - Help figuring out how to do 3D text in Blender."
             + Environment.NewLine +
             "Police Bike Retro - Model: Rockstar Games. Mapping: AllenKennedy"
-            + Environment.NewLine + Environment.NewLine +
+            + Environment.NewLine +
             "Merit - Model by Rockstar Games, converted to GTA V by _CP_, HQ interior by _CP_, template by Lt.Caine, UV-Map, thin LED lightbar, assembly and skins by Yard1."
             + Environment.NewLine + Environment.NewLine +
             "Creator Links"

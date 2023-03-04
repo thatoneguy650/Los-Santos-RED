@@ -28,7 +28,7 @@ public class Properties
     {
         foreach (Residence residence in Residences)
         {
-            if (!residence.IsOwned && residence.IsRented && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
+            if (!residence.IsOwned && residence.IsRented && residence.DateRentalPaymentDue != null && DateTime.Compare(Time.CurrentDateTime, residence.DateRentalPaymentDue) >= 0)
             {
                 residence.ReRent();
             }

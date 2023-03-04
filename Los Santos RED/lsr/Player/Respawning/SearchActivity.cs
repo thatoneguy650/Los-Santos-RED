@@ -92,12 +92,12 @@ public class SearchActivity
                 {
                     SetupCop();
                     SetupWorld();
+                    SetupPlayer();
                     MoveCopBehindPlayer();
                     if (isCopInPosition)
                     {
                         PlayEntryAnimation();
                         ReleaseCop();
-                        
                         EndSearch();
                         EntryPoint.WriteToConsole("Search Activity, Finished Searching Player");
                     }
@@ -141,6 +141,21 @@ public class SearchActivity
     private void SetupWorld()
     {
         Game.TimeScale = 1.0f;
+    }
+    private void SetupPlayer()
+    {
+        if (Player.Character.IsInAnyVehicle(false))
+        {
+            Vehicle oldVehicle = Player.Character.CurrentVehicle;
+            if (Player.Character.Exists() && oldVehicle.Exists())
+            {
+                NativeFunction.Natives.TASK_LEAVE_VEHICLE(Player.Character, oldVehicle, (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR);
+                while (Player.Character.IsInAnyVehicle(false) && CanContinueSearch)
+                {
+                    GameFiber.Yield();
+                }
+            }
+        }
     }
     private void ReleaseCop()
     {

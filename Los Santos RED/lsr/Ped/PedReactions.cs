@@ -140,7 +140,7 @@ public class PedReactions
             GameTimeLastSeenScaryCrime = witnessedCrime.GameTimeLastWitnessed;
             HasSeenScaryCrime = true;
         }
-        if (!witnessedCrime.Crime.IsMundane)
+        if(witnessedCrime.Crime.IsMundane)
         {
             GameTimeLastSeenMundaneCrime = witnessedCrime.GameTimeLastWitnessed;
             HasSeenMundaneCrime = true;

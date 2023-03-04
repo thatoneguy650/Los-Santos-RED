@@ -1171,14 +1171,14 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
-            else if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.DECOR_EXIST_ON<bool>(CurrentVehicle.Vehicle,"Player_Vehicle"))//From Dot. on discord
-            {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Decorator Unlock");
-                CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-                CurrentVehicle.Vehicle.MustBeHotwired = false;
-                return true;
-            }
-            else if (CurrentVehicle.Vehicle.Exists() && !RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
+            //else if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.DECOR_EXIST_ON<bool>(CurrentVehicle.Vehicle,"Player_Vehicle"))//From Dot. on discord
+            //{
+            //    EntryPoint.WriteToConsole($"IsFreeToEnter: Decorator Unlock");
+            //    CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
+            //    CurrentVehicle.Vehicle.MustBeHotwired = false;
+            //    return true;
+            //}
+            else if (CurrentVehicle.Vehicle.Exists() && !CurrentVehicle.IsRandomlyLocked)// RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
             {
                 EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;

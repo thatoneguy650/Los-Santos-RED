@@ -68,6 +68,10 @@ public class TheftViolations
     }
     public void AddCarJacked(PedExt myPed)
     {
+        if(myPed == null)
+        {
+            return;
+        }
         if (myPed.IsGangMember)
         {
             if (myPed.GetType() == typeof(GangMember))
@@ -81,6 +85,10 @@ public class TheftViolations
     }
     private void AddCarjackedGang(GangMember gm)
     {
+        if(gm == null)
+        {
+            return;
+        }
         int RepToRemove = -2500;
         GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
         if (gr != null)

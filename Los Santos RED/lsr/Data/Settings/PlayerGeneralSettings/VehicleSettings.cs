@@ -66,7 +66,7 @@ public class VehicleSettings : ISettingsDefaultable
 
     [Description("Allows vehicles to be locked by the game automatically.")]
     public bool AllowLockVehicles { get; set; }
-    [Description("Percentage of available vehicles that will be locked by LSR.")]
+    [Description("Percentage of available vehicles that will be locked by LSR. Maximum 100")]
     public float LockVehiclePercentage { get; set; }
 
     [Description("Allows mission (persistent) vehicles to be locked by the game automatically. If disabled, only ambient vehicles will be locked by the mod.")]

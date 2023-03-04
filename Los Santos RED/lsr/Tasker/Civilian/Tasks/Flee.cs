@@ -44,7 +44,7 @@ public class Flee : ComplexTask
         }
         if(isInVehicle && Ped.IsDriver)
         {
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Panic);
+            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Alerted);
             NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);
@@ -68,8 +68,9 @@ public class Flee : ComplexTask
             if (isInVehicle && Ped.IsDriver)
             {
                 Vector3 CurrentPos = Ped.Pedestrian.Position;
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle,100f, (int)eCustomDrivingStyles.Panic);
-                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Panic);
+                //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 100f, (int)eCustomDrivingStyles.Alerted);
+                NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
+                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Alerted);
                 NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 100f);//new
                 NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, 1.0f);
                 NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, 1.0f);

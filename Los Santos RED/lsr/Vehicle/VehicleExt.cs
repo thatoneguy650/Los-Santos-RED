@@ -158,6 +158,7 @@ namespace LSR.Vehicles
         public bool IsCar { get; private set; }
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
+        public bool IsRandomlyLocked { get; set; } = false;
         private void GetFuelTankCapacity()
         {
             if (vehicleClass == VehicleClass.Compact) // "Compact":
@@ -778,6 +779,7 @@ namespace LSR.Vehicles
                 Vehicle.FuelLevel = RandomItems.GetRandomNumber(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin, Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax);// (float)(Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin + RandomItems.MyRand.NextDouble() * (settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMax - Settings.SettingsManager.VehicleSettings.CustomFuelSystemFuelMin));//RandomItems.MyRand.Next(8, 100);  
             }
             GetFuelTankCapacity();
+            IsRandomlyLocked = RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage);
         }
         public void ForcePlateType(string text, int index)
         {

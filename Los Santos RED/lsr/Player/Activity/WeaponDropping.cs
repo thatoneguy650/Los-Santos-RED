@@ -106,20 +106,21 @@ public class WeaponDropping
     }
     public void DisableWeaponPickup(uint weaponHash)
     {
-        if (Settings.SettingsManager.PlayerOtherSettings.WeaponDroppingSupressPickups)
+        if (!Settings.SettingsManager.PlayerOtherSettings.WeaponDroppingSupressPickups)
         {
-            uint modelHash = NativeFunction.Natives.GET_WEAPONTYPE_MODEL<uint>((uint)weaponHash);
-            if (modelHash != 0 && !Suppressed.Any(x => x.ModelHash == modelHash))
+            return;
+        }   
+        uint modelHash = NativeFunction.Natives.GET_WEAPONTYPE_MODEL<uint>((uint)weaponHash);
+        if (modelHash != 0 && !Suppressed.Any(x => x.ModelHash == modelHash))
+        {
+            SuppressedPickup sp = new SuppressedPickup(modelHash, Game.GameTime, Settings);
+            if (!Suppressed.Any(x => x.ModelHash == sp.ModelHash))
             {
-                SuppressedPickup sp = new SuppressedPickup(modelHash, Game.GameTime, Settings);
-                if (!Suppressed.Any(x => x.ModelHash == sp.ModelHash))
-                {
-                    Suppressed.Add(sp);
-                    sp.Supress();
-                    EntryPoint.WriteToConsole($"Started Supressing");
-                }
+                Suppressed.Add(sp);
+                sp.Supress();
+                EntryPoint.WriteToConsole($"Started Supressing");
             }
-        }
+        }    
     }
     public void Update()
     {

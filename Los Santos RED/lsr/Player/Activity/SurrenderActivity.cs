@@ -248,6 +248,10 @@ public class SurrenderActivity : DynamicActivity
     }
     private void DropWeapon(bool isLow)
     {
+        if(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null)
+        {
+            return;
+        }
         Vector3 HandPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));
         Vector3 RootPosition = NativeFunction.CallByName<Vector3>("GET_WORLD_POSITION_OF_ENTITY_BONE", Player.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 0));
         Vector3 ResultPosition = HandPosition - RootPosition;
@@ -259,7 +263,7 @@ public class SurrenderActivity : DynamicActivity
         }
         Player.WeaponEquipment.DisableWeaponPickup((uint)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash);
         NativeFunction.Natives.SET_PED_DROPS_INVENTORY_WEAPON(Game.LocalPlayer.Character, (int)Game.LocalPlayer.Character.Inventory.EquippedWeapon.Hash, ResultPosition.X, ResultPosition.Y, ResultPosition.Z, -1);
-        if (!(Game.LocalPlayer.Character.Inventory.EquippedWeapon == null))
+        if (Game.LocalPlayer.Character.Inventory.EquippedWeapon != null)
         {
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Game.LocalPlayer.Character, (uint)2725352035, true);
         }

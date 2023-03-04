@@ -25,10 +25,10 @@ public enum eCustomDrivingStyles
 	Code3Close = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | (int)VehicleDrivingFlags.DriveBySight | 524288,
 	Panic = (int)VehicleDrivingFlags.DriveAroundVehicles | (int)VehicleDrivingFlags.DriveAroundPeds | 8 | (int)VehicleDrivingFlags.DriveAroundObjects | (int)VehicleDrivingFlags.AllowWrongWay | (int)VehicleDrivingFlags.AllowMedianCrossing | 524288,
 	
-	
-	
-	//Code3 = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
-	//Code3Close = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_PreferNavmeshRoute | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
+	Alerted = (int)786469,
+
+    //Code3 = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
+    //Code3Close = eDrivingMode.DF_SwerveAroundAllCars | eDrivingMode.DF_SteerAroundObjects | eDrivingMode.DF_SteerAroundPeds | eDrivingMode.DF_UseShortCutLinks | eDrivingMode.DF_ChangeLanesAroundObstructions | eDrivingMode.DF_PreferNavmeshRoute | eDrivingMode.DF_DriveIntoOncomingTraffic | eDrivingMode.DF_StopForCars,
 
 
 
@@ -36,11 +36,11 @@ public enum eCustomDrivingStyles
 
 
 
-	//8 = avoid empty vehicles
-	//256 use blinkers
-	//AllowMedianCrossing is mostly called take shortest path
+    //8 = avoid empty vehicles
+    //256 use blinkers
+    //AllowMedianCrossing is mostly called take shortest path
 
-	//524288 Reckless (Previously named: Allow overtaking vehicles if possible)
+    //524288 Reckless (Previously named: Allow overtaking vehicles if possible)
 
 
 

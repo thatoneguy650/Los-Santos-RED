@@ -33,7 +33,6 @@ public class Residence : InteractableLocation
     {
 
     }
-
     [XmlIgnore]
     public bool IsOwned { get; set; } = false;
     [XmlIgnore]
@@ -42,11 +41,9 @@ public class Residence : InteractableLocation
     public DateTime DateRentalPaymentDue { get; set; }
     [XmlIgnore]
     public DateTime DateRentalPaymentPaid { get; set; }
-
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
-
     public int RentalDays { get; set; }
     public int RentalFee { get; set; }
     public int PurchasePrice { get; set; }
@@ -55,9 +52,7 @@ public class Residence : InteractableLocation
     public override int MapIcon { get; set; } = (int)BlipSprite.PropertyForSale;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-
     public override int SortOrder => IsOwnedOrRented ? 1 : 999;
-
 
     public Residence(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
@@ -78,48 +73,43 @@ public class Residence : InteractableLocation
         {
             return;
         }
-
-
-        if (CanInteract)
+        if(!CanInteract)
         {
-            Player.ActivityManager.IsInteractingWithLocation = true;
-            CanInteract = false;
-
-            GameFiber.StartNew(delegate
-            {
-                try
-                {
-                    StoreCamera = new LocationCamera(this, Player);
-                    StoreCamera.SayGreeting = false;
-                    StoreCamera.Setup();
-                    CreateInteractionMenu();
-                    InteractionMenu.Visible = true;
-                    InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
-                    GenerateResidenceMenu();
-
-                    while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
-                    {
-                        MenuPool.ProcessMenus();
-                        GameFiber.Yield();
-                    }
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
-
-
-                    DisposeInteractionMenu();
-                    StoreCamera.Dispose();
-
-
-                    Player.ActivityManager.IsInteractingWithLocation = false;
-                    CanInteract = true;
-                }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "ResidenceInteract");
+            return;
         }
+        Player.ActivityManager.IsInteractingWithLocation = true;
+        CanInteract = false;
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                StoreCamera = new LocationCamera(this, Player);
+                StoreCamera.SayGreeting = false;
+                StoreCamera.Setup();
+                CreateInteractionMenu();
+                InteractionMenu.Visible = true;
+                InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
+
+                GenerateResidenceMenu();
+
+                while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
+                {
+                    MenuPool.ProcessMenus();
+                    GameFiber.Yield();
+                }
+                EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
+                DisposeInteractionMenu();
+                StoreCamera.Dispose();
+                Player.ActivityManager.IsInteractingWithLocation = false;
+                CanInteract = true;
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole("Location Interaction" + ex.Message + " " + ex.StackTrace, 0);
+                EntryPoint.ModController.CrashUnload();
+            }
+        }, "ResidenceInteract");
+        
     }
     public void RefreshUI()
     {
@@ -128,8 +118,7 @@ public class Residence : InteractableLocation
     public void Reset()
     {
         IsOwned = false;
-        IsRented = false;
-        
+        IsRented = false;   
         UpdateStoredData();
     }
     public void ReRent()
@@ -159,12 +148,7 @@ public class Residence : InteractableLocation
         {
             Rest(RestMenuItem.Value);
         }
-        else if (selectedItem == InventoryMenuItem)
-        {
-            //Rest(RestMenuItem.Value);
-        }
     }
-
     private void GenerateResidenceMenu()
     {
         if(!IsOwned || !IsRented)
@@ -173,11 +157,11 @@ public class Residence : InteractableLocation
             {
                 OfferSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Make an Offer");
                 string offerDescription = "";
-                if (!IsOwned && CanBuy)
+                if (CanBuy)
                 {
                     offerDescription += "buy ";
                 }
-                if (!IsRented && CanRent)
+                if (CanRent)
                 {
                     if (offerDescription != "")
                     {
@@ -193,19 +177,15 @@ public class Residence : InteractableLocation
                     OfferSubMenu.SetBannerType(BannerImage);
                 }
                 OfferSubMenu.OnItemSelect += OfferMenu_OnItemSelect;
-                OfferSubMenu.OnIndexChange += OfferMenu_OnIndexChange;
-                OfferSubMenu.OnMenuOpen += OfferMenu_OnMenuOpen;
-                OfferSubMenu.OnMenuClose += OfferMenu_OnMenuClose;
 
-
-                if (!IsOwned && CanBuy)
+                PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
+                if (CanBuy)
                 {
-                    PurchaseResidenceMenuItem = new UIMenuItem("Purchase", "Select to purchase this residence") { RightLabel = CanPurchaseRightLabel };
                     OfferSubMenu.AddItem(PurchaseResidenceMenuItem);
                 }
-                if (!IsRented && CanRent)
+                RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
+                if (CanRent)
                 {
-                    RentResidenceMenuItem = new UIMenuItem("Rent", $"Select to rent this residence for {RentalDays} days") { RightLabel = CanRentRightLabel };
                     OfferSubMenu.AddItem(RentResidenceMenuItem);
                 }
             }
@@ -214,30 +194,19 @@ public class Residence : InteractableLocation
     }
     private void AddInteractionItems()
     {
-        if (IsOwned || IsRented)
+        if(!IsOwned && !IsRented)
         {
-            if (IsRented)
-            {
-                RentDisplayItem = new UIMenuItem("Rental Period", IsRentedDescription) { RightLabel = IsRentedRightLabel };
-                InteractionMenu.AddItem(RentDisplayItem);
-            }
-            RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
-            InteractionMenu.AddItem(RestMenuItem);
-            InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
+            return;
         }
-    }
-    private void OfferMenu_OnMenuClose(UIMenu sender)
-    {
-
-    }
-    private void OfferMenu_OnMenuOpen(UIMenu sender)
-    {
-
-    }
-    private void OfferMenu_OnIndexChange(UIMenu sender, int newIndex)
-    {
-
-
+        if (IsRented)
+        {
+            RentDisplayItem = new UIMenuItem("Rental Period", IsRentedDescription) { RightLabel = IsRentedRightLabel };
+            InteractionMenu.AddItem(RentDisplayItem);
+        }
+        RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
+        InteractionMenu.AddItem(RestMenuItem);
+        InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
+        
     }
     private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -245,17 +214,14 @@ public class Residence : InteractableLocation
         {
             if (Rent())
             {
-                RentResidenceMenuItem.Enabled = false;
-                //sender.Visible = false;
+                MenuPool.CloseAllMenus();
             }
         }
         else if (selectedItem == PurchaseResidenceMenuItem)
         {
             if(Purchase())
             {
-                PurchaseResidenceMenuItem.Enabled = false;
-                RentResidenceMenuItem.Enabled = false;
-                //sender.Visible = false;
+                MenuPool.CloseAllMenus();
             }
         }
     }
@@ -330,16 +296,10 @@ public class Residence : InteractableLocation
         DateRentalPaymentPaid = Time.CurrentDateTime;
         IsRented = true;
         DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
-
-
-
         UpdateStoredData();
-
         Player.Properties.AddResidence(this);
-
         AddInteractionItems();
         OfferSubMenu.Close(true);
-
         PlaySuccessSound();
         DisplayMessage("~g~Rented", $"Thank you for renting {Name}");
     }
@@ -347,15 +307,9 @@ public class Residence : InteractableLocation
     {
         Player.BankAccounts.GiveMoney(-1 * PurchasePrice);
         IsOwned = true;
-        
-
-
+        IsRented = false;
         UpdateStoredData();
-
         Player.Properties.AddResidence(this);
-
-
-
         if (!IsRented)
         {
             AddInteractionItems();
@@ -411,7 +365,6 @@ public class Residence : InteractableLocation
             return $"Inquire About {Name}";
         }
     }
-
     public override List<Tuple<string, string>> DirectoryInfo(int currentHour, float distanceTo)
     {
         List<Tuple<string, string>> BaseList = base.DirectoryInfo(currentHour, distanceTo).ToList();
@@ -439,8 +392,5 @@ public class Residence : InteractableLocation
             }
         }
         return BaseList;
-
     }
-
-
 }

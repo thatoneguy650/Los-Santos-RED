@@ -95,10 +95,26 @@ public class BustedMenu : ModUIMenu
     private void CreateDetainItems()
     {
         AddListOffenses();
+        bool hasOption = false;
         CrimeEvent highestPriorityCrimeEvent = Player.PoliceResponse.CrimesReported.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
         if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCleanSearch) //Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnCleanSearch))
         {
+            hasOption = true;
             AddConsentToSearch();
+        }
+        if (Player.PoliceResponse.CrimesObserved.All(x => x.AssociatedCrime.CanReleaseOnTalkItOut) && Respawning.Respawning.TimesTalked <= 0)
+        {
+            AddTalkItOut();
+            hasOption = true;
+        }
+        if (highestPriorityCrimeEvent != null && highestPriorityCrimeEvent.AssociatedCrime.CanReleaseOnCite)
+        {
+            AddPayCitation();
+            hasOption = true;
+        }
+        if (!hasOption)
+        {
+            AddSurrenderToPolice();
         }
     }
     private void AddGeneralItems()
