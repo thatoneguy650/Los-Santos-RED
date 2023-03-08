@@ -72,7 +72,7 @@ public class PedSwap : IPedSwap
     {
         SetPlayerOffset();
     }
-    public void BecomeCustomPed()
+    public void BecomeCustomPed()//OLD
     {
         GameFiber.StartNew(delegate
         {
@@ -130,10 +130,6 @@ public class PedSwap : IPedSwap
                         }
                         GameFiber.Yield();
                     }
-
-
-
-
                     if(!PedCustomizer.ChoseToClose)
                     {
                         PedCustomizer.Dispose(true);
@@ -423,6 +419,7 @@ public class PedSwap : IPedSwap
                 SetPlayerOffset();
                 NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
                 NativeHelper.ChangeModel(modelName);
+                Game.LocalPlayer.Character.ResetVariation();
             }
             if (variation != null)
             {
@@ -803,6 +800,7 @@ public class PedSwap : IPedSwap
             SetPlayerOffset();
             NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
             NativeHelper.ChangeModel(ModelToChange);
+            Game.LocalPlayer.Character.ResetVariation();
         }
         variation.ApplyToPed(Game.LocalPlayer.Character);
 
@@ -937,10 +935,10 @@ public class PedSwap : IPedSwap
     }
     private void ResetOffsetForCurrentModel()
     {
-        EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+        EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
         {
-            EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+            EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
             unsafe
             {
                 var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
@@ -955,7 +953,7 @@ public class PedSwap : IPedSwap
         {
             return;
         }
-        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
+        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
         //bigbruh in discord, supplied the below, seems to work just fine
         unsafe
         {
@@ -983,7 +981,7 @@ public class PedSwap : IPedSwap
         {
             ModelHash = 2608926626;
         }
-        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset 2 RAN CurrentModelPlayerIs{CurrentModelPlayerIs} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset 2 RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
 
         if (ModelHash != 0)
         {

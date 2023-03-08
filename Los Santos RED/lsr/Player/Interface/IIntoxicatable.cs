@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsOnMuscleRelaxants { get; set; }
         HumanState HumanState { get; }
         string Gender { get; }
-       // void PauseCurrentActivity();
+        ClipsetManager ClipsetManager { get; }
+        // void PauseCurrentActivity();
     }
 }

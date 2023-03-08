@@ -254,11 +254,7 @@ public class Injuries
             if (CurrentClipset != ClipsetAtCurrentIntensity && ClipsetAtCurrentIntensity != "NONE")
             {
                 CurrentClipset = ClipsetAtCurrentIntensity;
-                if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
-                {
-                    NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
-                }
-                NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
+                Player.ClipsetManager.SetMovementClipset(CurrentClipset);
             }
             NativeFunction.CallByName<int>("SET_GAMEPLAY_CAM_SHAKE_AMPLITUDE", CurrentIntensity);
             NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
@@ -298,17 +294,11 @@ public class Injuries
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, true);
         if (CurrentClipset != "NONE" && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
         {
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
-            {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
-            }
-            NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character, CurrentClipset, 0x3E800000);
+            Player.ClipsetManager.SetMovementClipset(CurrentClipset);
         }
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER", OverLayEffect);
         NativeFunction.CallByName<int>("SET_TIMECYCLE_MODIFIER_STRENGTH", CurrentIntensity / 5.0f);
-        //NativeFunction.Natives.x5096FD9CCB49056D(OverLayEffect);
-        //NativeFunction.Natives.x2C328AF17210F009(CurrentIntensity / 5.0f);
         NativeFunction.Natives.x80C8B1846639BB19(1);
         NativeFunction.CallByName<int>("SHAKE_GAMEPLAY_CAM", "DRUNK_SHAKE", CurrentIntensity);
         GameTimeUntilNextSwerve = Game.GameTime + RandomItems.GetRandomNumber(15000, 30000);
@@ -321,14 +311,13 @@ public class Injuries
             NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Game.LocalPlayer.Character, false);
             if (ResetClipset)
             {
-                NativeFunction.CallByName<bool>("RESET_PED_MOVEMENT_CLIPSET", Game.LocalPlayer.Character);
+                Player.ClipsetManager.ResetMovementClipset();
             }
             NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Game.LocalPlayer.Character, (int)PedConfigFlags.PED_FLAG_DRUNK, false);
             NativeFunction.CallByName<int>("CLEAR_TIMECYCLE_MODIFIER");
             NativeFunction.Natives.x80C8B1846639BB19(0);
             NativeFunction.CallByName<int>("STOP_GAMEPLAY_CAM_SHAKING", true);
         }
-        //EntryPoint.WriteToConsole("Player Made Sober");
     }
 }
 

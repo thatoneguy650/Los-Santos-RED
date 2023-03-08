@@ -339,14 +339,11 @@ public class CommitCrime : ComplexTask
         Ped.IsDrunk = true;
         string CurrentClipset = "move_m@drunk@verydrunk";
         NativeFunction.CallByName<bool>("SET_PED_IS_DRUNK", Ped.Pedestrian, true);
-        if (CurrentClipset != "NONE")
+        if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
         {
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", CurrentClipset))
-            {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
-            }
-            NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Ped.Pedestrian, CurrentClipset, 0x3E800000);
+            NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", CurrentClipset);
         }
+        NativeFunction.CallByName<bool>("SET_PED_MOVEMENT_CLIPSET", Ped.Pedestrian, CurrentClipset, 0x3E800000);    
         NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Ped.Pedestrian, (int)PedConfigFlags.PED_FLAG_DRUNK, true);
         NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
     }

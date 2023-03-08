@@ -71,6 +71,7 @@ public class Debug
     private bool isRunning;
     private uint GameTimeLastAttached;
     private bool Test;
+    private bool OnOff1;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1036,26 +1037,27 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        SpawnLocation taxiSpawn = new SpawnLocation(Game.LocalPlayer.Character.Position);
-        taxiSpawn.GetClosestStreet(true);
-        DispatchableVehicle taxiVehicle = new DispatchableVehicle("taxi", 100, 100);
-        DispatchablePerson taxiPed = new DispatchablePerson("a_m_m_socenlat_01", 100, 100);
-        if (taxiSpawn.StreetPosition != null)
-        {
-            CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(taxiSpawn, taxiVehicle, taxiPed, false, false, true, Settings, Crimes, Weapons, ModDataFileManager.Names, World);
-            civilianSpawnTask.AllowAnySpawn = true;
-            civilianSpawnTask.AllowBuddySpawn = false;
-            civilianSpawnTask.AttemptSpawn();
-            civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
-            civilianSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
-            PedExt taxiDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
-            if (taxiDriver != null && taxiDriver.Pedestrian.Exists() && taxiDriver.Pedestrian.CurrentVehicle.Exists())
-            {
-                taxiDriver.CanBeTasked = true;
-                taxiDriver.CanBeAmbientTasked = true;
-                NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(taxiDriver.Pedestrian, taxiDriver.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);
-            }
-        }
+        Test222();
+        //SpawnLocation taxiSpawn = new SpawnLocation(Game.LocalPlayer.Character.Position);
+        //taxiSpawn.GetClosestStreet(true);
+        //DispatchableVehicle taxiVehicle = new DispatchableVehicle("taxi", 100, 100);
+        //DispatchablePerson taxiPed = new DispatchablePerson("a_m_m_socenlat_01", 100, 100);
+        //if (taxiSpawn.StreetPosition != null)
+        //{
+        //    CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(taxiSpawn, taxiVehicle, taxiPed, false, false, true, Settings, Crimes, Weapons, ModDataFileManager.Names, World);
+        //    civilianSpawnTask.AllowAnySpawn = true;
+        //    civilianSpawnTask.AllowBuddySpawn = false;
+        //    civilianSpawnTask.AttemptSpawn();
+        //    civilianSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+        //    civilianSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
+        //    PedExt taxiDriver = civilianSpawnTask.CreatedPeople.FirstOrDefault();
+        //    if (taxiDriver != null && taxiDriver.Pedestrian.Exists() && taxiDriver.Pedestrian.CurrentVehicle.Exists())
+        //    {
+        //        taxiDriver.CanBeTasked = true;
+        //        taxiDriver.CanBeAmbientTasked = true;
+        //        NativeFunction.Natives.TASK_VEHICLE_DRIVE_WANDER(taxiDriver.Pedestrian, taxiDriver.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);
+        //    }
+        //}
 
 
         // WeaponTest1();
@@ -4880,7 +4882,30 @@ public class Debug
         return angles;
     }
 
+    private void Test222()
+    {
+        //seems to work when in cover and using ANY WEAPON, need to make sure its just the ones we want!
+        //"cover@move@ai@base@1h" two handed pistol, held with both hands, does some transition stuffo
+        //"cover@move@ai@base@2h" two handed long gun, held with both hands
+        string animSet = "cover@move@ai@base@1h";
+        if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>(animSet))
+        {
+            NativeFunction.Natives.REQUEST_ANIM_SET<bool>(animSet);
+            GameFiber.Sleep(200);
+        }
 
+        if (!OnOff1)
+        {
+            NativeFunction.Natives.SET_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Game.LocalPlayer.Character, animSet);
+            Game.DisplaySubtitle("SET CLIPSET");
+        }
+        else
+        {
+            NativeFunction.Natives.CLEAR_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Game.LocalPlayer.Character);
+            Game.DisplaySubtitle("RESET CLIPSET");
+        }
+        OnOff1 = !OnOff1;
+    }
     public class InteriorPosition
     {
         public string Name { get; set; }

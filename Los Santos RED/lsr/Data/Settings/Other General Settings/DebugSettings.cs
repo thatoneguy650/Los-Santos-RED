@@ -62,6 +62,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool DragFixedRotation { get; set; }
     public float PlateTheftFloat { get; set; }
 
+
     public DebugSettings()
     {
         SetDefault();
@@ -116,7 +117,6 @@ public class DebugSettings : ISettingsDefaultable
 
         DragFixedRotation = true;
         PlateTheftFloat = 1.0f;
-
 }
 
 }

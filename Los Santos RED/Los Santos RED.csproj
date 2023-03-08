@@ -204,9 +204,11 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
+    <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
+    <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GeneralLocate.cs" />

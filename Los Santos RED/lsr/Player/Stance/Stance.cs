@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 
 public class Stance
 {
+    private readonly string CrouchSet = "move_ped_crouched";
+    private readonly string StrafeCrouchSet = "move_ped_crouched_strafing";
     private IStanceable Player;
     private ISettingsProvideable Settings;
     public bool IsCrouched { get; set; }
@@ -26,32 +28,22 @@ public class Stance
     }
     public void Crouch()
     {
-        string CrouchSet = "move_ped_crouched";
-        string StrafeCrouchSet = "move_ped_crouched_strafing";
         if (!Player.IsInVehicle)
         {
             if (IsCrouched)
             {
-                NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET(Player.Character, 0.5f);
-                NativeFunction.Natives.RESET_PED_STRAFE_CLIPSET(Player.Character);
-                NativeFunction.Natives.RESET_PED_WEAPON_MOVEMENT_CLIPSET(Player.Character);
+                Player.ClipsetManager.ResetMovementClipset();
+                Player.ClipsetManager.ResetStrafeClipset();
+                Player.ClipsetManager.ResetWeaponMovementClipset();
+                Player.ClipsetManager.ResetWeaponAnimationOverride();
                 IsCrouched = false;
             }
             else
             {
-                if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>(CrouchSet))
-                {
-                    NativeFunction.Natives.REQUEST_ANIM_SET(CrouchSet);
-                }
-
-                if (!NativeFunction.Natives.HAS_ANIM_SET_LOADED<bool>(StrafeCrouchSet))
-                {
-                    NativeFunction.Natives.REQUEST_ANIM_SET(StrafeCrouchSet);
-                }
                 SetActionMode(false);
-                NativeFunction.Natives.SET_PED_MOVEMENT_CLIPSET(Player.Character, CrouchSet, 0.5f);
-                NativeFunction.Natives.SET_PED_STRAFE_CLIPSET(Player.Character, StrafeCrouchSet);
-                NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Player.Character, "Ballistic");
+                Player.ClipsetManager.SetMovementClipset(CrouchSet);
+                Player.ClipsetManager.SetStrafeClipset(StrafeCrouchSet);
+                Player.ClipsetManager.SetWeaponAnimationOverride("Ballistic");
                 IsCrouched = true;
             }
         }

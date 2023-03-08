@@ -56,6 +56,10 @@ public class PlayerOtherSettings : ISettingsDefaultable
     [Description("Maximum Possible value for player speech skill. Speech skill is used to talk your way out of tickets and other things. Possible Values are from 0 (Low Skill) to 100 (Full Skill).")]
     public int PlayerSpeechSkill_Max { get; set; }
 
+
+    public bool AllowSetCharacterClipsets { get; set; }
+    public bool AutoSetClipsets { get; set; }
+
     public PlayerOtherSettings()
     {
         SetDefault();
@@ -87,6 +91,13 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AllowDLCVehiclesInStores = false;
         PlayerSpeechSkill_Min = 15;
         PlayerSpeechSkill_Max = 55;
+        AllowSetCharacterClipsets = false;
+        AutoSetClipsets = false;
+
+#if DEBUG
+        AllowSetCharacterClipsets = true;
+        AutoSetClipsets = true;
+#endif
     }
 
 }

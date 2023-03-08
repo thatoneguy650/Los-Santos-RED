@@ -20,7 +20,7 @@ namespace Mod
     public class Player : IDispatchable, IActivityPerformable, IIntoxicatable, ITargetable, IPoliceRespondable, IInputable, IPedSwappable, IMuggable, IRespawnable, IViolateable, IWeaponDroppable, IDisplayable,
                           ICarStealable, IPlateChangeable, IActionable, IInteractionable, IInventoryable, IRespawning, ISaveable, IPerceptable, ILocateable, IDriveable, ISprintable, IWeatherReportable,
                           IBusRideable, IGangRelateable, IWeaponSwayable, IWeaponRecoilable, IWeaponSelectable, ICellPhoneable, ITaskAssignable, IContactInteractable, IGunDealerRelateable, ILicenseable, IPropertyOwnable, ILocationInteractable, IButtonPromptable, IHumanStateable, IStanceable,
-                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable
+                          IItemEquipable, IDestinateable, IVehicleOwnable, IBankAccountHoldable, IActivityManageable, IHealthManageable, IGroupManageable, IMeleeManageable, ISeatAssignable, ICameraControllable, IPlayerVoiceable, IClipsetManageable
     {
         public int UpdateState = 0;
         private float CurrentVehicleRoll;
@@ -143,6 +143,7 @@ namespace Mod
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
             PlayerVoice = new PlayerVoice(this, Settings, Speeches);
+            ClipsetManager = new ClipsetManager(this, Settings);
         }
         public RelationshipManager RelationshipManager { get; private set; }
         public GPSManager GPSManager { get; private set; }
@@ -175,6 +176,7 @@ namespace Mod
         public GroupManager GroupManager { get; private set; }
         public MeleeManager MeleeManager { get; private set; }
         public PlayerVoice PlayerVoice { get; private set; }
+        public ClipsetManager ClipsetManager { get; private set; }
         public float ActiveDistance => Investigation.IsActive ? Investigation.Distance : 500f + (WantedLevel * 200f);
         public bool AnyGangMemberCanHearPlayer { get; set; }
         public bool AnyGangMemberCanSeePlayer { get; set; }
@@ -669,6 +671,7 @@ namespace Mod
             Violations.Dispose();
             PlayerVoice.Dispose();
             ActivityManager.Dispose();
+            ClipsetManager.Dispose();
 
             NativeFunction.Natives.SET_PED_RESET_FLAG(Game.LocalPlayer.Character, 186, true);
 
@@ -2033,6 +2036,7 @@ namespace Mod
             GameFiber.Yield();
             UpdateLookedAtPed();
             GameFiber.Yield();
+            ClipsetManager.Update();
             IsShooting = RecentlyShot;
         }
         private void UpdateCurrentVehicle() //should this be public?

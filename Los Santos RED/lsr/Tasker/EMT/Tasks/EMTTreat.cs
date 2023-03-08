@@ -66,6 +66,10 @@ public class EMTTreat : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
+            {
+                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
+            }
             NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
             Update();
         }
@@ -103,10 +107,7 @@ public class EMTTreat : ComplexTask
                 SayAvailableAmbient(Ped.Pedestrian, new List<string>() { "GENERIC_SHOCKED_MED" }, false, false);
                 GameTimeLastSpoke = Game.GameTime;
             }
-            if (!NativeFunction.CallByName<bool>("HAS_ANIM_SET_LOADED", "move_m@drunk@verydrunk"))
-            {
-                NativeFunction.CallByName<bool>("REQUEST_ANIM_SET", "move_m@drunk@verydrunk");
-            }
+
         }
         if (Ped.Pedestrian.Exists() && HasReachedVictim && Game.GameTime - GameTimeStartedTreatingVictim >= 15000 && OtherTarget != null && GameTimeFinishedTreatingVictim == 0)
         {

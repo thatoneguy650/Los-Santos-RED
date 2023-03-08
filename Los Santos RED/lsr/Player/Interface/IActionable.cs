@@ -70,6 +70,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsIncapacitated { get; }
         bool IsSleepingOutside { get; set; }
         bool IsShowingActionWheel { get; }
+        ClipsetManager ClipsetManager { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

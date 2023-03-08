@@ -282,6 +282,7 @@ public class PedCustomizer
                 ModelPed.IsVisible = true;
                 ModelPed.BlockPermanentEvents = true;
                 ModelPedExt = null;
+                ModelPed.ResetVariation();
             }
         }
         catch (Exception ex)
