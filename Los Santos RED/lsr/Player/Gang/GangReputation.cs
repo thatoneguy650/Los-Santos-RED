@@ -111,6 +111,7 @@ public class GangReputation
     public int MembersHurtInTerritory { get; set; }
     public int MembersKilledInTerritory { get; set; }
     public int MembersCarJackedInTerritory { get; set; }
+    public int TasksCompleted { get; set; }
     public int PlayerDebt { get; set; } = 0;
     public void ResetRelationshipGroups()
     {

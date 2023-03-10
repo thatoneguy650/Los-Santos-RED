@@ -48,6 +48,7 @@ public class Places
     public List<BasicLocation> ActiveLocations { get; private set; } = new List<BasicLocation>();
     public DynamicPlaces DynamicPlaces { get; private set; }
     public StaticPlaces StaticPlaces { get; private set; }
+
     public void Setup()
     {
         foreach (Zone zone in Zones.ZoneList)

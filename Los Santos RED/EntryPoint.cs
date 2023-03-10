@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
@@ -52,6 +53,7 @@ public static class EntryPoint
     {
         GetVersionInfo();
         CheckDependencies();
+        CheckForUpdates();
         NotificationID = Game.DisplayNotification($"{PreStartMessage}");
     }
     private static void Loop()
@@ -100,6 +102,44 @@ public static class EntryPoint
         }
         WriteToConsole($"{NaudioChecker.LogMessage}", 0);
 
+    }
+    private static void CheckForUpdates()
+    {
+        WebClient webClient = new WebClient();
+        string receivedData = string.Empty;
+        try
+        {
+            receivedData = webClient.DownloadString("https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=36665&textOnly=1").Trim();
+        }
+        catch (WebException)
+        {
+            PreStartMessage = $"{PreStartMessage} ~n~~n~~r~UPDATE CHECK FAILED~s~";
+            WriteToConsole($"Failed to check for updates", 0);
+        }
+        string WebLatestVersionFixed = FixWebVersionString(receivedData);
+        if (WebLatestVersionFixed != LSRInstalledVersionInfo.FileVersion)
+        {
+            PreStartMessage = $"{PreStartMessage} ~n~~r~Update Available:~s~ v{WebLatestVersionFixed}~s~~n~Current Version: v{LSRInstalledVersionInfo.FileVersion}";
+            WriteToConsole($"New Version Available: New: {WebLatestVersionFixed} Installed: {LSRInstalledVersionInfo.FileVersion}", 0);
+        }
+    }
+    private static string FixWebVersionString(string webVersionString)
+    {
+        string fixedString = "";
+        int Character = 1;
+        foreach (char c in webVersionString)
+        {
+            if (webVersionString.Length == Character)
+            {
+                fixedString += c;
+            }
+            else if (c != '.')
+            { 
+                fixedString += c + ".";
+            }
+            Character++;
+        }
+        return fixedString;
     }
     public static void WriteToConsole(string Message) => WriteToConsole(Message, 5);
     public static void WriteToConsole(string Message, int level)

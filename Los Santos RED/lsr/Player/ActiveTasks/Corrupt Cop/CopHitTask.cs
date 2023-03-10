@@ -192,7 +192,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void StartDeadDropPayment()
         {
-            myDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
+            myDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded);
             if (myDrop != null)
             {
                 myDrop.SetupDrop(MoneyToRecieve, false);

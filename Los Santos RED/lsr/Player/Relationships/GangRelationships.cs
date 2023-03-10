@@ -144,7 +144,10 @@ public class GangRelationships
         }
         gr.PlayerDebt = Math.Abs(amount);
     }
-    public void SetRepStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy)
+
+
+
+    public void SetRepStats(Gang gang, int hurt, int hurtInTerritory, int killed, int killedInTerritory, int carjacked, int carjackedInTerritory, int playerDebt, bool isMember, bool isEnemy, int tasksCompleted)
     {
         if (gang == null)
         {
@@ -165,6 +168,7 @@ public class GangRelationships
         gr.PlayerDebt = playerDebt;
         gr.IsMember = isMember;
         gr.IsEnemy = isEnemy;
+        gr.TasksCompleted = tasksCompleted;
     }
     public void SetKickStatus(Gang gang, DateTime kickDueDate, int kickMissedPeriods, int kickMissedAmount)
     {
@@ -380,5 +384,33 @@ public class GangRelationships
         }
     }
 
+    public void SetCompletedTask(Gang gang)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.TasksCompleted++;
+    }
+    public void SetFailedTask(Gang gang)
+    {
+        if (gang == null)
+        {
+            return;
+        }
+        GangReputation gr = GangReputations.Where(x => x.Gang.ID == gang.ID).FirstOrDefault();
+        if (gr == null)
+        {
+            gr = new GangReputation(gang, Player);
+            GangReputations.Add(gr);
+        }
+        gr.TasksCompleted--;
+    }
 }
 

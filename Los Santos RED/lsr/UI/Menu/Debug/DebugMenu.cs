@@ -324,6 +324,17 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
 
+        UIMenuItem CheckMapLoaded = new UIMenuItem("Loaded Map", "Diaply the current loaded map (MP/SP)");
+        CheckMapLoaded.Activated += (menu, item) =>
+        {
+            string iplName = "bkr_bi_hw1_13_int";
+            NativeFunction.Natives.REQUEST_IPL(iplName);
+            GameFiber.Sleep(500);
+            Game.DisplaySubtitle(NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName) ? "MP Map" : "SP Map");
+            menu.Visible = false;
+        };
+
+        //
 
 
 
@@ -333,6 +344,7 @@ public class DebugMenu : ModUIMenu
         LocationItemsMenu.AddItem(LogInteriorMenu);
         LocationItemsMenu.AddItem(LogCameraPositionMenu);
         LocationItemsMenu.AddItem(FreeCamMenu);
+        LocationItemsMenu.AddItem(CheckMapLoaded);
         LocationItemsMenu.AddItem(LoadSPMap);
         LocationItemsMenu.AddItem(LoadMPMap);
         LocationItemsMenu.AddItem(AddAllBlips);
@@ -343,6 +355,7 @@ public class DebugMenu : ModUIMenu
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Teleport Menu");
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
+        LocationItemsMenu.Width = 0.6f;
         List<BasicLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
@@ -355,7 +368,7 @@ public class DebugMenu : ModUIMenu
                     Game.LocalPlayer.Character.Position = toTele.EntrancePosition;
                     Game.LocalPlayer.Character.Heading = toTele.EntranceHeading;
                 }
-                menu.Visible = false;
+                //menu.Visible = false;
             };
             LocationItemsMenu.AddItem(myLocationType);
         }
@@ -549,7 +562,13 @@ public class DebugMenu : ModUIMenu
             Player.CellPhone.RandomizeSettings();
             menu.Visible = false;
         };
-
+        //spawn taxi
+        UIMenuItem ToggleInvisible = new UIMenuItem("Toggle Invisible", "Toggle player invisibility");
+        ToggleInvisible.Activated += (menu, item) =>
+        {
+            Player.Character.IsVisible = !Player.Character.IsVisible;
+            menu.Visible = false;
+        };
 
 
         PlayerStateItemsMenu.AddItem(KillPlayer);
@@ -575,6 +594,7 @@ public class DebugMenu : ModUIMenu
         PlayerStateItemsMenu.AddItem(TaxiSpawn);
         PlayerStateItemsMenu.AddItem(ScamText);
         PlayerStateItemsMenu.AddItem(RandomizePhone);
+        PlayerStateItemsMenu.AddItem(ToggleInvisible);
     }
     private void CreateRelationshipsMenu()
     {
@@ -1117,13 +1137,19 @@ public class DebugMenu : ModUIMenu
         UIMenuListScrollerItem<Gang> SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
         SpawnGangFoot.Activated += (menu, item) =>
         {
-            Dispatcher.DebugSpawnGang(SpawnGangFoot.SelectedItem.ID, true);
+            Dispatcher.DebugSpawnGang(SpawnGangFoot.SelectedItem.ID, true, false);
             menu.Visible = false;
         };
         UIMenuListScrollerItem<Gang> SpawnGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Vehicle Spawn", "Spawn a random gang ped with a vehicle", Gangs.GetAllGangs());
         SpawnGangVehicle.Activated += (menu, item) =>
         {
-            Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false);
+            Dispatcher.DebugSpawnGang(SpawnGangVehicle.SelectedItem.ID, false, false);
+            menu.Visible = false;
+        };
+        UIMenuListScrollerItem<Gang> SpawnEmptyGangVehicle = new UIMenuListScrollerItem<Gang>("Gang Random Empty Vehicle Spawn", "Spawn a random empty gang vehicle", Gangs.GetAllGangs());
+        SpawnEmptyGangVehicle.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugSpawnGang(SpawnEmptyGangVehicle.SelectedItem.ID, false, true);
             menu.Visible = false;
         };
         UIMenuNumericScrollerItem<float> SpawnRockblock = new UIMenuNumericScrollerItem<float>("Spawn Roadblock", "Spawn roadblock",10f,200f,10f);
@@ -1169,6 +1195,7 @@ public class DebugMenu : ModUIMenu
         DispatcherMenu.AddItem(SpawnEmptyAgencyVehicle);
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
+        DispatcherMenu.AddItem(SpawnEmptyGangVehicle);
         DispatcherMenu.AddItem(SpawnRockblock);
         DispatcherMenu.AddItem(DespawnRockblock);
         DispatcherMenu.AddItem(PlayScanner);

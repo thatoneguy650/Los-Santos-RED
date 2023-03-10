@@ -181,7 +181,7 @@ public class MainMenu : ModUIMenu
         };
         VehicleItems.AddItem(RemoveVehicleOwnership);
 
-        UIMenuItem UnloadMod = new UIMenuItem("Unload Mod", "Unload mod and change back to vanilla. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
+        UIMenuItem UnloadMod = new UIMenuItem("Deactivate Mod", "Deactivate mod and change back to vanilla. Can be restarted with Shift+F10. Does not unload from RPH. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
         UnloadMod.Activated += (s, e) =>
         {

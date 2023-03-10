@@ -503,7 +503,7 @@
     <Compile Include="lsr\Player\Licenses\Licenses.cs" />
     <Compile Include="lsr\Player\HumanState\MeleeManager.cs" />
     <Compile Include="lsr\Player\Relationships\OfficerFriendlyRelationship.cs" />
-    <Compile Include="lsr\Player\Crime\PlayerTasks.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\PlayerTasks.cs" />
     <Compile Include="lsr\Player\ActiveTasks\PlayerTask.cs" />
     <Compile Include="lsr\Player\Activity\BusRide.cs" />
     <Compile Include="lsr\Player\Activity\Data\GestureData.cs" />

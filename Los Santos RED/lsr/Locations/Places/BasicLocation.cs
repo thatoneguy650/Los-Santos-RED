@@ -1,19 +1,11 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
-using LosSantosRED.lsr.Util.Locations;
 using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Serialization;
-using static System.Windows.Forms.AxHost;
 
 [Serializable()]
 public class BasicLocation
@@ -105,6 +97,8 @@ public class BasicLocation
     public int CloseTime { get; set; } = 20;
     public int InteriorID { get; set; } = -1;
     public bool IsWalkup { get; set; } = false;
+    public bool IsOnSPMap { get; set; } = true;
+    public bool IsOnMPMap { get; set; } = true;
     public virtual bool ShowsOnDirectory { get; set; } = true;
     public virtual string TypeName { get; set; } = "Location";
     public virtual int SortOrder { get; set; } = 999;
@@ -367,6 +361,15 @@ public class BasicLocation
         toreturn.Add(Tuple.Create("Distance:", Math.Round(distanceTo * 0.000621371, 2).ToString() + " Miles away"));
         return toreturn;
 
+    }
+
+    public bool IsCorrectMap(bool isMPMapLoaded)
+    {
+        if(isMPMapLoaded)
+        {
+            return IsOnMPMap;
+        }
+        return IsOnSPMap;
     }
 }
 

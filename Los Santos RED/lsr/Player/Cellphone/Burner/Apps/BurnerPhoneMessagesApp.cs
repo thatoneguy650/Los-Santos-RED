@@ -84,7 +84,7 @@ public class BurnerPhoneMessagesApp : BurnerPhoneApp
                 { 
                     BurnerPhone.ContactsApp.Call(phoneContact); 
                 }
-                Game.DisplaySubtitle($"CALL FROM MESSAGE {Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault()?.ContactName}");
+                //Game.DisplaySubtitle($"CALL FROM MESSAGE {Player.CellPhone.TextList.Where(x => x.Index == CurrentRow).FirstOrDefault()?.ContactName}");
             }
         }
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 179) && IsDisplayingTextMessage)//EXTRA OPTION

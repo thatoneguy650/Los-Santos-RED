@@ -125,7 +125,7 @@ namespace LosSantosRED.lsr.Data
             GangReputationsSave = new List<GangRepSave>();
             foreach (GangReputation gr in player.RelationshipManager.GangRelationships.GangReputations)
             {
-                GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy));
+                GangReputationsSave.Add(new GangRepSave(gr.Gang.ID, gr.ReputationLevel, gr.MembersHurt, gr.MembersKilled, gr.MembersCarJacked, gr.MembersHurtInTerritory, gr.MembersKilledInTerritory, gr.MembersCarJackedInTerritory, gr.PlayerDebt, gr.IsMember, gr.IsEnemy,gr.TasksCompleted));
             }
 
             if(player.RelationshipManager.GangRelationships.CurrentGang != null && player.RelationshipManager.GangRelationships.CurrentGangKickUp != null)
@@ -334,17 +334,13 @@ namespace LosSantosRED.lsr.Data
                 if (myGang != null)
                 {
                     player.RelationshipManager.GangRelationships.SetReputation(myGang, gangRepSave.Reputation, false);
-                    player.RelationshipManager.GangRelationships.SetRepStats(myGang, gangRepSave.MembersHurt, gangRepSave.MembersHurtInTerritory, gangRepSave.MembersKilled, gangRepSave.MembersKilledInTerritory, gangRepSave.MembersCarJacked, gangRepSave.MembersCarJackedInTerritory, gangRepSave.PlayerDebt, gangRepSave.IsMember, gangRepSave.IsEnemy);
+                    player.RelationshipManager.GangRelationships.SetRepStats(myGang, gangRepSave.MembersHurt, gangRepSave.MembersHurtInTerritory, gangRepSave.MembersKilled, gangRepSave.MembersKilledInTerritory, gangRepSave.MembersCarJacked, gangRepSave.MembersCarJackedInTerritory, gangRepSave.PlayerDebt, gangRepSave.IsMember, gangRepSave.IsEnemy, gangRepSave.TasksCompleted);
                     if (gangRepSave.IsMember)
                     {
                         player.RelationshipManager.GangRelationships.SetGang(myGang, false);
                         if(GangKickSave != null)
                         {
                             player.RelationshipManager.GangRelationships.SetKickStatus(myGang, GangKickSave.KickDueDate, GangKickSave.KickMissedPeriods, GangKickSave.KickMissedAmount);
-                        }
-                        else
-                        {
-
                         }
                     }
                 }

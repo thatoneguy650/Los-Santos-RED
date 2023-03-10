@@ -95,8 +95,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         AutoSetClipsets = false;
 
 #if DEBUG
-        AllowSetCharacterClipsets = true;
-        AutoSetClipsets = true;
+        AllowSetCharacterClipsets = false;
+        AutoSetClipsets = false;
 #endif
     }
 

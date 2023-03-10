@@ -69,6 +69,7 @@ namespace Mod
         public string DebugString => "";
         public void Setup()
         {
+            DetermineMap();
             Pedestrians.Setup();
             Places.Setup();
             Vehicles.Setup();
@@ -114,6 +115,10 @@ namespace Mod
             if(TotalWantedLevel != totalWantedLevel)
             {
                 OnTotalWantedLevelChanged();
+            }
+            if (Settings.SettingsManager.WorldSettings.AllowSettingDistantSirens)
+            {
+                NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(false);
             }
 
         }
@@ -242,6 +247,14 @@ namespace Mod
                 }, $"Density Runner");
             }
 
+        }
+        private void DetermineMap()
+        {
+            string iplName = "bkr_bi_hw1_13_int";
+            NativeFunction.Natives.REQUEST_IPL(iplName);
+            GameFiber.Sleep(100);
+            IsMPMapLoaded = NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName);
+            EntryPoint.WriteToConsole($"MP Map Loaded: {IsMPMapLoaded}");
         }
         private void CreateTotalWantedBlip()
         {

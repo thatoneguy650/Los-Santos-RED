@@ -251,7 +251,7 @@ public class GangTasker
         if (GangMember.CurrentTask?.Name != "Idle")
         {
             EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to GeneralIdle", 3);
-            GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World,new List<VehicleExt>() { GangMember.AssignedVehicle },PlacesOfInterest,Settings,false,false,false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
+            GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World,World.Vehicles.CivilianVehicleList.Where(x=> x.AssociatedGang != null && GangMember.Gang != null && x.AssociatedGang.ID == GangMember.Gang.ID).ToList(),PlacesOfInterest,Settings,false,false,false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
             GameFiber.Yield();//TR Added back 4
             GangMember.CurrentTask?.Start();
         }

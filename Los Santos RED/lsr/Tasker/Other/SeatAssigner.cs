@@ -21,6 +21,7 @@ public class SeatAssigner
         World = world;
         VehiclesToTest = vehiclesToTest;
     }
+    public bool AllowLastVehicle { get; set; } = false;
 
     public VehicleExt VehicleAssigned { get; set; }
     public int SeatAssigned { get; set; }
@@ -38,7 +39,7 @@ public class SeatAssigner
             VehicleExt LastVehicle = null;//
             if (Ped.Pedestrian.Exists())
             {
-                if (Ped.Pedestrian.LastVehicle.Exists())
+                if (AllowLastVehicle && Ped.Pedestrian.LastVehicle.Exists())
                 {
                     if (!Ped.BlackListedVehicles.Any(x => x == Ped.Pedestrian.LastVehicle.Handle))
                     {
@@ -112,7 +113,7 @@ public class SeatAssigner
             VehicleExt LastVehicle = null;//
             if (Ped.Pedestrian.Exists())
             {
-                if (Ped.Pedestrian.LastVehicle.Exists())
+                if (AllowLastVehicle && Ped.Pedestrian.LastVehicle.Exists())
                 {
                     if (!Ped.BlackListedVehicles.Any(x => x == Ped.Pedestrian.LastVehicle.Handle))
                     {

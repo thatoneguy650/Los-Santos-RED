@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         List<ILocationGangAssignable> GangAssignableLocations();
         List<ILocationSetupable> LocationsToSetup();
         List<ILocationDispatchable> EMSDispatchLocations();
+        DeadDrop GetUsableDeadDrop(bool IsOnMPMap);
     }
 }

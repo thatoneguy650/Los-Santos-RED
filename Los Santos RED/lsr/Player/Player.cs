@@ -1167,20 +1167,18 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
-            else if (CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles)
+            else if (!CurrentVehicle.WasModSpawned && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent)
             {
                 EntryPoint.WriteToConsole($"IsFreeToEnter: Mission Lock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
-            //else if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.DECOR_EXIST_ON<bool>(CurrentVehicle.Vehicle,"Player_Vehicle"))//From Dot. on discord
-            //{
-            //    EntryPoint.WriteToConsole($"IsFreeToEnter: Decorator Unlock");
-            //    CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
-            //    CurrentVehicle.Vehicle.MustBeHotwired = false;
-            //    return true;
-            //}
+            else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())
+            {
+                EntryPoint.WriteToConsole($"IsFreeToEnter: FALSE SERVICE OR GANG, SET LOCKED");
+                return false;
+            }
             else if (CurrentVehicle.Vehicle.Exists() && !CurrentVehicle.IsRandomlyLocked)// RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
             {
                 EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");

@@ -58,6 +58,7 @@ public class RelationshipManager
                 GangRelationships.ChangeReputation(myGang, repAmountOnCompletion, false);
             }
             GangRelationships.SetDebt(myGang, 0);
+            GangRelationships.SetCompletedTask(myGang);
         }
         else if (contactName == StaticStrings.UndergroundGunsContactName)
         {
@@ -89,6 +90,7 @@ public class RelationshipManager
             {
                 GangRelationships.AddDebt(myGang, debtAmountOnFail);
             }
+            GangRelationships.SetFailedTask(myGang);
         }
         else if (contactName == StaticStrings.UndergroundGunsContactName)
         {

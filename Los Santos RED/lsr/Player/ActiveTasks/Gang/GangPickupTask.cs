@@ -129,7 +129,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetDeadDrop()
         {
-            DeadDrop = PlacesOfInterest.PossibleLocations.DeadDrops.Where(x => !x.IsEnabled).PickRandom();
+            DeadDrop = PlacesOfInterest.GetUsableDeadDrop(World.IsMPMapLoaded);
         }
         private void GetHiringDen()
         {

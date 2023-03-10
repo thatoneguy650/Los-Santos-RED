@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr;
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
@@ -125,55 +126,62 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.GangDens);
         return AllLocations;
     }
+    public DeadDrop GetUsableDeadDrop(bool IsMPMap)
+    {
+        return PossibleLocations.DeadDrops.Where(x => x.CanUse && x.IsCorrectMap(IsMPMap)).PickRandom();// IsMPMap == x.IsOnMPMap).PickRandom();
+    }
     private void DefaultConfig()
     {
         List<DeadDrop> DeadDrops = new List<DeadDrop>() {
 
-            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "the Daily Rag newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "the Las Mietras newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(76.75777f,-605.3703f,43.22094f), 68.89698f, "Dead Drop", "the trash can by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+
+
+            new DeadDrop(new Vector3(76.75777f,-605.3703f,43.22094f), 68.89698f, "Dead Drop", "the trash can by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
             new DeadDrop(new Vector3(-174.7691f,-674.9272f,33.27862f), 249.5148f, "Dead Drop", "the phone booth by the Arcadius Center" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-223.6883f,-703.9772f,32.59268f), 70.00474f, "Dead Drop", "the mailbox by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-251.0725f,-739.3169f,31.99848f), 187.8322f, "Dead Drop", "the Daily Rag newspaper stand by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-263.7065f,-850.4099f,30.48533f), 160.0125f, "Dead Drop", "the Daily Rag newspaper stand by Go Postal" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(-1460.144f,-627.849f,29.69636f), 209.8004f, "Dead Drop", "the dumpster by Swallow" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(-1438.361f,-722.1968f,22.61556f), 171.4681f, "Dead Drop", "the daily rag newspaper stand by Pescado Rojo" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-1364.685f,-795.9746f,18.32434f), 140.7789f, "Dead Drop", "the trash can in front of the Hedera Hotel" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-1183.647f,-1257.851f,5.911644f), 260.6368f, "Dead Drop", "the trash can by Taco Libre" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-1205.34f,-1377.286f,3.174809f), 76.95641f, "Dead Drop", "the trash can by Steamboat Beers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(803.5943f,-2052.02f,28.30254f), 275.8022f, "Dead Drop", "the trash can by the PiBwasser Plant" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(1047.76f,-2464.003f,27.51101f), 44.61864f, "Dead Drop", "the dumpster by the gun dealers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+            new DeadDrop(new Vector3(1047.76f,-2464.003f,27.51101f), 44.61864f, "Dead Drop", "the dumpster by the gun dealers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true, },
             new DeadDrop(new Vector3(1382.768f,-2042.507f,51.00203f), 30.00222f, "Dead Drop", "the dumpster by Covington Engineering" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(1316.705f,-1657.766f,50.23988f), 309.4677f, "Dead Drop", "the dumpster behind Los Santos Tattoos" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(373.6489f, 351.1104f, 102.8209f), 257.8268f,"Dead Drop", "the dumpster behind 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(207.6413f, 337.0614f, 105.5466f), 164.1638f, "Dead Drop", "the dumpster behind Pitchers") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(98.17767f, 298.2877f, 110.0032f), 162.2623f, "Dead Drop", "the dumpster behind Up-N-Atom") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-69.79692f, 282.6463f, 105.0663f), 329.5786f, "Dead Drop", "the trash can outside The Gentry Manor Hotel") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-391.8292f, 294.4202f, 84.89133f), 86.40096f, "Dead Drop", "the dumpster behind The Last Train Diner") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-515.2796f, 26.77622f, 44.57598f), 85.66344f, "Dead Drop", "the Daily Rag newspaper stand by Serentiy Wellness") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-480.7322f, -12.00511f, 45.27599f), 358.5777f, "Dead Drop", "the mailbox in front of Fruit Machine") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-514.0649f, -40.31401f, 44.51626f), 353.1382f, "Dead Drop", "the dumpster behind The Little Teapot") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-792.2766f, -250.7747f, 37.20045f), 121.051f, "Dead Drop", "the mailbox in front of Luxury Autos") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-1237.857f, -554.2683f, 28.91684f), 127.322f, "Dead Drop", "the mailbox in front of City Hall") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-1323.729f, -675.4391f, 26.51783f), 36.19815f, "Dead Drop", "the Los Santos Meteor newspaper stand in front of Astro Theater") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(-1125.012f, -1616.193f, 4.398425f), 197.6703f, "Dead Drop", "the dumpster behind Vitamin Seaside Juice Bar") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(2544.616f, 378.9412f, 108.6173f), 264.3849f, "Dead Drop", "the boxes behind the 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(2569.69f, 2727.281f, 43.17296f), 300.3225f, "Dead Drop", "the port-o-potty at Davis Quartz") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(1532.096f, 3797.162f, 33.51709f), 203.1575f, "Dead Drop", "the back of the Boathouse") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(1987.924f, 3789.832f, 32.18082f), 128.6473f, "Dead Drop", "the toolbox behind Sandy's Gas") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(923.066f, 3652.77f, 32.59369f), 91.28005f, "Dead Drop", "the dumpster behind the Liquor Market") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-678.5425f, 5833.054f, 17.33131f), 310.8695f, "Dead Drop", "the mailbox in front of The BayviewLodge") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(-125.5132f, 6345.283f, 31.49037f), 231.2274f, "Dead Drop", "the dumpster behind the Dream View Motel") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(1725.162f, 4732.389f, 42.1343f), 103.1211f, "Dead Drop", "the boxes behind The Feed Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(1731.202f, 4758.293f, 41.89993f), 265.2589f, "Dead Drop", "the dumpster behind the supermarket") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(1692.661f, 6431.451f, 32.76194f), 336.9627f, "Dead Drop", "the payphone by 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
             new DeadDrop(new Vector3(-3165.1f, 1114.949f, 20.79292f), 334.1037f, "Dead Drop", "the dumpster behind Nelsons General Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(-2297.884f, 248.9572f, 169.6021f), 213.5057f, "Dead Drop", "the trash can near the parking lot of the Kortz Center") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
-            new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true },
+
+            new DeadDrop(new Vector3(74.97916f,-608.9933f,43.22042f), 249.4708f, "Dead Drop", "the LS 24 newspaper stand near the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(75.60421f,-607.5473f,43.22063f), 249.4708f, "Dead Drop", "the Daily Rag newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(75.88783f,-606.5583f,43.22063f), 249.4708f, "Dead Drop", "the Las Mietras newspaper stand by the IAA building" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-223.6883f,-703.9772f,32.59268f), 70.00474f, "Dead Drop", "the mailbox by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-251.0725f,-739.3169f,31.99848f), 187.8322f, "Dead Drop", "the Daily Rag newspaper stand by Schlongberg & Sachs" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-263.7065f,-850.4099f,30.48533f), 160.0125f, "Dead Drop", "the Daily Rag newspaper stand by Go Postal" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-1364.685f,-795.9746f,18.32434f), 140.7789f, "Dead Drop", "the trash can in front of the Hedera Hotel" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-1183.647f,-1257.851f,5.911644f), 260.6368f, "Dead Drop", "the trash can by Taco Libre" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-1205.34f,-1377.286f,3.174809f), 76.95641f, "Dead Drop", "the trash can by Steamboat Beers" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(803.5943f,-2052.02f,28.30254f), 275.8022f, "Dead Drop", "the trash can by the PiBwasser Plant" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(1316.705f,-1657.766f,50.23988f), 309.4677f, "Dead Drop", "the dumpster behind Los Santos Tattoos" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(426.0467f,100.2095f,99.24073f), 337.0558f, "Dead Drop", "the mailbox by Stargaze" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(436.3528f,88.48115f,98.49297f), 159.5108f, "Dead Drop", "the dumpster by Wandlust" ) { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-69.79692f, 282.6463f, 105.0663f), 329.5786f, "Dead Drop", "the trash can outside The Gentry Manor Hotel") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-391.8292f, 294.4202f, 84.89133f), 86.40096f, "Dead Drop", "the dumpster behind The Last Train Diner") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-515.2796f, 26.77622f, 44.57598f), 85.66344f, "Dead Drop", "the Daily Rag newspaper stand by Serentiy Wellness") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-480.7322f, -12.00511f, 45.27599f), 358.5777f, "Dead Drop", "the mailbox in front of Fruit Machine") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-514.0649f, -40.31401f, 44.51626f), 353.1382f, "Dead Drop", "the dumpster behind The Little Teapot") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-792.2766f, -250.7747f, 37.20045f), 121.051f, "Dead Drop", "the mailbox in front of Luxury Autos") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-1237.857f, -554.2683f, 28.91684f), 127.322f, "Dead Drop", "the mailbox in front of City Hall") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-1323.729f, -675.4391f, 26.51783f), 36.19815f, "Dead Drop", "the Los Santos Meteor newspaper stand in front of Astro Theater") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(2544.616f, 378.9412f, 108.6173f), 264.3849f, "Dead Drop", "the boxes behind the 24/7") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-678.5425f, 5833.054f, 17.33131f), 310.8695f, "Dead Drop", "the mailbox in front of The BayviewLodge") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(1725.162f, 4732.389f, 42.1343f), 103.1211f, "Dead Drop", "the boxes behind The Feed Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(-2297.884f, 248.9572f, 169.6021f), 213.5057f, "Dead Drop", "the trash can near the parking lot of the Kortz Center") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(172.9656f, -1799.744f, 29.20135f), 133.2921f, "Dead Drop", "the mailbox in front of The Locksmith") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
+            new DeadDrop(new Vector3(88.87651f, -1662.244f, 29.29333f), 28.54718f, "Dead Drop", "the Daily Rag newspaper stand near the Convenience Store") { OpenTime = 0,CloseTime = 24, IsEnabled = false,CanInteractWhenWanted = true,IsOnMPMap = false, },
         };
         List<CarCrusher> CarCrushers = new List<CarCrusher>() {
             new CarCrusher(new Vector3(-538.0128f, -1720.554f, 19.4278f), 324.869f, "The Crushinator", "Dead skunk in the trunk?") { OpenTime = 0, CloseTime = 24, 
@@ -1135,7 +1143,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Restaurant(new Vector3(189.0311f, -231.234f, 54.07472f), 340.4597f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(273.174f, -833.0611f, 29.41237f), 185.6476f, "Crucial Fix Coffee", "Get your fix","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(-576.6631f, -677.8674f, 32.36259f), 306.9058f, "Hit-N-Run Coffee", "Vehicular assault discouraged","CoffeeMenu", FoodType.Coffee),
-            new Restaurant(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, "{java.update();}", "Real coffee made by fake programmers","CoffeeMenu", FoodType.Coffee),
+            new Restaurant(new Vector3(-1253.337f, -296.6488f, 37.31522f), 206.5786f, "{java.update();}", "Real coffee made by fake programmers","CoffeeMenu", FoodType.Coffee) { IsOnMPMap = false },
             new Restaurant(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, "Little Teapot", "The finest organic & free range teas exploited from the third world","CoffeeMenu", FoodType.Coffee) {ScannerFilePath = "01_specific_location\\0x1980DD57.wav" },
             //Mexican
             new Restaurant(new Vector3(10.96682f, -1605.874f, 29.3931f), 229.8729f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu", FoodType.Mexican) { OpenTime = 0, CloseTime = 24 },
@@ -1328,13 +1336,13 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new ConvenienceStore(new Vector3(201.8985f, -26.30606f, 69.90953f), 249.8224f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
             new ConvenienceStore(new Vector3(528.017f, -152.1372f, 57.20173f), 44.64286f,  "24/7", "As fast as you","TwentyFourSevenMenu"){ OpenTime = 0, CloseTime = 24,BannerImagePath = "247.png" },
             new ConvenienceStore(new Vector3(-1264.064f, -1162.599f, 6.764161f), 161.218f,  "Fruit Of The Vine", "Not just for winos","FruitVineMenu"),
-            new ConvenienceStore(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f,  "Fruit Of The Vine", "Not just for winose","FruitVineMenu"),
+            new ConvenienceStore(new Vector3(-1270.649f, -304.9037f, 37.06938f), 257.2106f,  "Fruit Of The Vine", "Not just for winose","FruitVineMenu") { IsOnMPMap = false},
             new ConvenienceStore(new Vector3(164.9962f, 351.1263f, 109.6859f), 4.847032f,  "Fruit Of The Vine", "Not just for winos","FruitVineMenu") ,
             new ConvenienceStore(new Vector3(-144.3732f, -65.01408f, 54.60635f), 159.0404f,  "Fruit Of The Vine", "Not just for winos","FruitVineMenu") ,
             new ConvenienceStore(new Vector3(-1412.015f, -320.1292f, 44.37897f), 92.48502f,  "The Grain Of Truth", "Seek the truth","GrainOfTruthMenu"),
             new ConvenienceStore(new Vector3(-1370.819f, -684.5463f, 25.01069f), 214.6929f,  "The Grain Of Truth", "Seek the truth","GrainOfTruthMenu"),
             new ConvenienceStore(new Vector3(1707.748f, 4792.387f, 41.98377f), 90.42564f,  "Supermarket", "","ConvenienceStoreMenu"),
-            new ConvenienceStore(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,  "Del Perro Food Market","No Robberies Please!","ConvenienceStoreMenu"),
+            new ConvenienceStore(new Vector3(-1539.045f, -900.472f, 10.16951f), 129.0318f,  "Del Perro Food Market","No Robberies Please!","ConvenienceStoreMenu") { IsOnMPMap = false },
             new ConvenienceStore(new Vector3(-1359.607f, -963.3494f, 9.699487f), 124.3222f,  "A&R Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(53.28459f, -1478.863f, 29.28546f), 187.4217f,  "Gabriela's Market", "","ConvenienceStoreMenu"),
             new ConvenienceStore(new Vector3(-551.5444f, -855.8014f, 28.28332f), 2.39254f,  "Save-A-Cent", "","ConvenienceStoreMenu"),
@@ -1531,7 +1539,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 } },
             new Dealership(new Vector3(-247.2263f, 6213.266f, 31.93902f), 143.0866f, "Helmut's European Autos", "Only the best eurotrash","HelmutMenu") { BannerImagePath = "helmut.png"
                 ,CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f),
-                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "HELMUTEU",
+                ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "HELMUTEU", IsOnMPMap = false,
                 ItemDeliveryLocations = new List<SpawnPlace>() { 
                     new SpawnPlace(new Vector3(-214.548f, 6195.725f, 31.48873f), 314.937f),
                     new SpawnPlace(new Vector3(-229.8454f, 6197.135f, 30.65802f), 312.3795f),

@@ -183,7 +183,7 @@ public class GameSaves : IGameSaves
         AlexisGameSave.CCWLicense = new CCWLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12) };
         AlexisGameSave.PilotsLicense = new PilotsLicense() { IssueDate = AlexisGameSave.CurrentDateTime, ExpirationDate = AlexisGameSave.CurrentDateTime.AddMonths(12),IsFixedWingEndorsed = true,IsLighterThanAirEndorsed = true,IsRotaryEndorsed = true };
         AlexisGameSave.SavedResidences.Add(new SavedResidence("70W Carcer Way Apt 343", false, true) { RentalPaymentDate = AlexisGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = AlexisGameSave.CurrentDateTime });
-        AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false,0) };
         AlexisGameSave.SaveNumber = 1;
         AlexisGameSave.VoiceName = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
         GameSaveList.Add(AlexisGameSave);
@@ -344,11 +344,11 @@ public class GameSaves : IGameSaves
             
             
             
-            new GangRepSave("AMBIENT_GANG_MARABUNTE", 3000, 0, 0, 0, 0, 0, 0, 0, false, false),
-        new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false),
-        new GangRepSave("AMBIENT_GANG_ARMENIAN", 3000, 0, 0, 0, 0, 0, 0, 0, false, false),
-        new GangRepSave("AMBIENT_GANG_YARDIES", -3000, 3, 1, 0, 3, 1, 0, 0, false, false),
-        new GangRepSave("AMBIENT_GANG_DIABLOS", -3000, 5, 3, 3, 5, 3, 3, 0, false, false),
+            new GangRepSave("AMBIENT_GANG_MARABUNTE", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_ARMENIAN", 3000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_YARDIES", -3000, 3, 1, 0, 3, 1, 0, 0, false, false,0),
+        new GangRepSave("AMBIENT_GANG_DIABLOS", -3000, 5, 3, 3, 5, 3, 3, 0, false, false,0),
 
 
         };
@@ -411,9 +411,9 @@ public class GameSaves : IGameSaves
         ExampleGameSave.SavedResidences.Add(new SavedResidence("280S Forum Dr No 1", true, false) { });
         //Gang Items
         ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { 
-            new GangRepSave("AMBIENT_GANG_FAMILY", 5000, 0, 0, 0, 0, 0, 0, 0, false, false), 
-            new GangRepSave("AMBIENT_GANG_BALLAS", -5000, 5, 1, 0, 0, 0, 0, 0, false, false),
-            new GangRepSave("AMBIENT_GANG_WEICHENG", 5000, 0, 0, 0, 0, 0, 0, 0, false, false),
+            new GangRepSave("AMBIENT_GANG_FAMILY", 5000, 0, 0, 0, 0, 0, 0, 0, false, false,0), 
+            new GangRepSave("AMBIENT_GANG_BALLAS", -5000, 5, 1, 0, 0, 0, 0, 0, false, false,0),
+            new GangRepSave("AMBIENT_GANG_WEICHENG", 5000, 0, 0, 0, 0, 0, 0, 0, false, false,0),
 
 
         };
@@ -655,7 +655,7 @@ public class GameSaves : IGameSaves
         TestGameSave.CCWLicense = new CCWLicense() { IssueDate = TestGameSave.CurrentDateTime, ExpirationDate = TestGameSave.CurrentDateTime.AddMonths(12) };
         TestGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = TestGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = TestGameSave.CurrentDateTime });
         TestGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
-        TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        TestGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false, 0) };
         TestGameSave.HungerValue = 75.0f;
         TestGameSave.ThirstValue = 75.0f;
         TestGameSave.SleepValue = 75.0f;
@@ -701,7 +701,7 @@ public class GameSaves : IGameSaves
         ExampleGameSave.SavedResidences.Add(new SavedResidence("566 Ineseno Road", false, true) { RentalPaymentDate = ExampleGameSave.CurrentDateTime.AddDays(28), DateOfLastRentalPayment = ExampleGameSave.CurrentDateTime });
         ExampleGameSave.SavedResidences.Add(new SavedResidence("805 Ineseno Road", true, false) { });
         //Gang Items
-        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false) };
+        ExampleGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("AMBIENT_GANG_LOST", 3000, 0, 0, 0, 0, 0, 0, 0, false, false, 0) };
         //Needs
         ExampleGameSave.HungerValue = 75.0f;
         ExampleGameSave.ThirstValue = 75.0f;

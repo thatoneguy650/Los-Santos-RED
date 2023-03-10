@@ -151,11 +151,11 @@ public class Dispatcher
     }
     public void DebugSpawnGang()
     {
-        GangDispatcher.DebugSpawnGangMember("",false);
+        GangDispatcher.DebugSpawnGangMember("",false, false);
     }
-    public void DebugSpawnGang(string agencyID, bool onFoot)
+    public void DebugSpawnGang(string agencyID, bool onFoot, bool isEmpty)
     {
-        GangDispatcher.DebugSpawnGangMember(agencyID, onFoot);
+        GangDispatcher.DebugSpawnGangMember(agencyID, onFoot, isEmpty);
     }
     public void DebugSpawnEMT(string agencyID, bool onFoot, bool isEmpty)
     {

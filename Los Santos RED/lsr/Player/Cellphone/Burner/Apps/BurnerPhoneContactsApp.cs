@@ -29,6 +29,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
     }
     public override void Open(bool Reset)
     {
+        IsDisplayingCall = false;
         BurnerPhone.SetHeader(Name);
         if(Reset)
         {

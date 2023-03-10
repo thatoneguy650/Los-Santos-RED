@@ -35,6 +35,7 @@ public class DeadDrop : InteractableLocation
     public bool IsDropOff { get; set; } = true;
     [XmlIgnore]
     public int MoneyAmount { get; set; } = 500;
+    public bool CanUse => !IsEnabled;
 
 
 
@@ -43,7 +44,7 @@ public class DeadDrop : InteractableLocation
 
 
 
-  //  public Gang AssociatedGang { get; set; }
+    //  public Gang AssociatedGang { get; set; }
     public DeadDrop(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
 
@@ -248,6 +249,10 @@ public class DeadDrop : InteractableLocation
         IsEnabled = false;
         IsDropOff = false;
         MoneyAmount = 0;
+    }
+    public override string ToString()
+    {
+        return Description;
     }
 }
 

@@ -441,7 +441,7 @@ public class GangDispatcher
         }
         return true;
     }
-    public void DebugSpawnGangMember(string gangID, bool onFoot)
+    public void DebugSpawnGangMember(string gangID, bool onFoot, bool isEmpty)
     {
         VehicleType = null;
         PersonType = null;
@@ -475,6 +475,12 @@ public class GangDispatcher
             }
             PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
         }
+
+        if(isEmpty)
+        {
+            PersonType = null;
+        }
+
         CallSpawnTask(true, true, false, false, SpawnRequirement.None);
     }
     

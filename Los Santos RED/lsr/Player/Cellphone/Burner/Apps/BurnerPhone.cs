@@ -35,7 +35,7 @@ public class BurnerPhone
     private int prevCurrentApp;
     private int prevCurrentIndex;
     private ISettingsProvideable Settings;
-    private bool IsDisplayingCall;
+    //private bool IsDisplayingCall;
 
     private IModItems ModItems;
 
@@ -377,6 +377,12 @@ public class BurnerPhone
     {
         CurrentBurnerApp = PhoneApps.FirstOrDefault(x => x.Index == Index);
         CurrentBurnerApp?.Open(true);
+#if DEBUG
+        if(CurrentBurnerApp != null)
+        {
+            Game.DisplaySubtitle($"{CurrentBurnerApp.Name} APP OPENED");
+        }
+#endif
     }
     public void NavigateMenu(int index)
     {

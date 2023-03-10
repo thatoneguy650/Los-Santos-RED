@@ -34,7 +34,24 @@ public class VanillaCopManager
 
     public void Setup()
     {
-
+        GameFiber.StartNew(delegate
+        {
+            try
+            {
+                while (EntryPoint.ModController.IsRunning)
+                {
+                    if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
+                    {
+                        SuppressRandomEvents();
+                    }
+                    GameFiber.Yield();
+                }
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error: " + e.Message + " : " + e.StackTrace, 0);
+            }
+        }, $"Supress Logic Ran");
     }
     public void Dispose()
     {
@@ -71,10 +88,7 @@ public class VanillaCopManager
                 ActivateScenarioCops();
             }
         }
-        if (Settings.SettingsManager.VanillaSettings.SupressRandomPoliceEvents)
-        {
-            SuppressRandomEvents();
-        }
+
 
     }
     private void SuppressRandomEvents()
