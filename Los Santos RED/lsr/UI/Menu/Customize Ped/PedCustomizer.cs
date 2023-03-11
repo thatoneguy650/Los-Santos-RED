@@ -60,7 +60,8 @@ public class PedCustomizer
     public PedVariation InitialVariation { get; set; } = new PedVariation();
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
     public IClothesNames ClothesNames { get; private set; }
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies)
+    public ITattooNames TattooNames { get; private set; }
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -74,7 +75,8 @@ public class PedCustomizer
         CharCam = new Camera(false);
         Agencies= agencies;
         Gangs= gangs;
-    }
+        TattooNames = tattooNames;
+    }   
     public bool ChoseNewModel { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
     public PedCustomizerMenu PedCustomizerMenu { get; private set; }

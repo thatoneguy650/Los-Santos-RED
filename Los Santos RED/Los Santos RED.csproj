@@ -187,6 +187,7 @@
     <Compile Include="lsr\Ped\PedKnowledge.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhone.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhoneApp.cs" />
@@ -297,9 +298,11 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeFaceMorphMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeHairMenu.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeOverlaysMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizePropsMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\CustomizeVoiceMenu.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionItemLookup.cs" />
+    <Compile Include="lsr\UI\Menu\Customize Ped\Other\OverlayZoneComponent.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\TattooOverlay.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedFashionAlias.cs" />
     <Compile Include="lsr\UI\Other\UIMenuItemExt.cs" />

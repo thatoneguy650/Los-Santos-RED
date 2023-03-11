@@ -18,6 +18,34 @@ public class SecuritySettings : ISettingsDefaultable
     [Description("Allows detaining of the player by security.")]
     public bool AllowDetainment { get; set; }
 
+
+
+
+
+
+    [Description("Enable or Disable accuracy override")]
+    public bool OverrideAccuracy { get; set; }
+    [Description("Enable or disable health override")]
+    public bool OverrideHealth { get; set; }
+    [Description("Enable or disable armor override")]
+    public bool OverrideArmor { get; set; }
+    [Description("Enable or disable auto load setting. (Not recommended to disable)")]
+    public bool ManageLoadout { get; set; }
+
+
+
+
+    public bool ForceDefaultWeaponAnimations { get; set; }
+    public bool EnableCombatAttributeCanInvestigate { get; set; }
+    public bool EnableCombatAttributeDisableEntryReactions { get; set; }
+    public bool EnableCombatAttributeCanFlank { get; set; }
+    public bool EnableCombatAttributeCanChaseOnFoot { get; set; }
+    public bool OverrrideTargetLossResponse { get; set; }
+    public int OverrrideTargetLossResponseValue { get; set; }
+    public bool EnableConfigFlagAlwaysSeeAproachingVehicles { get; set; }
+    public bool EnableConfigFlagDiveFromApproachingVehicles { get; set; }
+    public bool AllowMinorReactions { get; set; }
+
     public SecuritySettings()
     {
         SetDefault();
@@ -33,5 +61,24 @@ public class SecuritySettings : ISettingsDefaultable
 #endif
         DetainDistance = 4.0f;
         AllowDetainment = true;
+
+
+        OverrideAccuracy = true;
+        ManageLoadout = true;
+        OverrideHealth = true;
+        OverrideArmor = true;
+
+
+        EnableCombatAttributeCanInvestigate = true;
+        EnableCombatAttributeDisableEntryReactions = true;
+        EnableCombatAttributeCanFlank = true;
+        EnableCombatAttributeCanChaseOnFoot = true;
+
+        OverrrideTargetLossResponse = true;
+        OverrrideTargetLossResponseValue = 2;
+
+        EnableConfigFlagAlwaysSeeAproachingVehicles = true;
+        EnableConfigFlagDiveFromApproachingVehicles = true;
+        AllowMinorReactions = true;
     }
 }

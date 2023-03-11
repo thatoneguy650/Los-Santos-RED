@@ -21,8 +21,6 @@ public class TattooOverlay
 
     public string CollectionName { get; set; }
     public uint CollectionHash { get; set; }
-
-
     public string OverlayName { get; set; }
     public uint OverlayHash { get; set; }
     public string Gender { get; set; }
@@ -34,6 +32,10 @@ public class TattooOverlay
     public string CustomZoneNameDetailed { get; set; }
     public string UpdateGroup { get; set; }
     public string Facing { get; set; }
+    public override string ToString()
+    {
+        return $"{CollectionName}-{OverlayName}";
+    }
 }
 
 public class TattooRoot

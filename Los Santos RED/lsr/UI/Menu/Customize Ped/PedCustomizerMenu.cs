@@ -23,6 +23,7 @@ public class PedCustomizerMenu
     private CustomizeModelMenu CustomizeModelMenu;
     private CustomizeHeadMenu CustomizeHeadMenu;
     private CustomizeComponentsMenu CustomizeComponentsMenu;
+    private CustomizeOverlaysMenu CustomizeOverlaysMenu;
     private CustomizePropsMenu CustomizePropsMenu;
     private CustomizeExistingVariationsMenu CustomizeExistingVariationsMenu;
     private CustomizeAffiliationMenu CustomizeAffiliationMenu;
@@ -41,6 +42,7 @@ public class PedCustomizerMenu
         CustomizeModelMenu = new CustomizeModelMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeHeadMenu = new CustomizeHeadMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeComponentsMenu = new CustomizeComponentsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
+        CustomizeOverlaysMenu = new CustomizeOverlaysMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
         CustomizeAffiliationMenu = new CustomizeAffiliationMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this,gangs,agencies);
@@ -57,6 +59,7 @@ public class PedCustomizerMenu
         CustomizeModelMenu.Setup(CustomizeMainMenu);
         CustomizeHeadMenu.Setup(CustomizeMainMenu);
         CustomizeComponentsMenu.Setup(CustomizeMainMenu);
+        CustomizeOverlaysMenu.Setup(CustomizeMainMenu);
         CustomizePropsMenu.Setup(CustomizeMainMenu);
         CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
         CustomizeAffiliationMenu.Setup(CustomizeMainMenu);
@@ -101,6 +104,7 @@ public class PedCustomizerMenu
         CustomizeDemographicsMenu.OnModelChanged();
         CustomizeHeadMenu.OnModelChanged();
         CustomizeComponentsMenu.OnModelChanged();
+        CustomizeOverlaysMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();
         CustomizeAffiliationMenu.OnModelChanged();
         CustomizeVoiceMenu.OnModelChanged();

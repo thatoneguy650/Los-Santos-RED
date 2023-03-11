@@ -1014,6 +1014,7 @@ public class Debug
     {
         if (!Test)
         {
+            //NativeFunction.Natives.ADD_PED_DECORATION(Game.LocalPlayer.Character, "multiplayer_overlays", "FM_Tat_F_003");
             NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
             Game.DisplaySubtitle("added DECOR");
         }

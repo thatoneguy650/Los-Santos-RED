@@ -53,6 +53,7 @@ public class WeaponInventory
     }
     public void IssueWeapons(IWeapons weapons, bool issueMelee, bool issueSidearm, bool issueLongGun, DispatchablePerson dispatchablePerson)// PedComponent emptyHolster, PedComponent fullHolster,IssuableWeapon meleeOverride,IssuableWeapon sidearmOverride,IssuableWeapon longGunOverride)
     {
+        bool hasOVerride = false;
         if (issueMelee)
         {
             if(dispatchablePerson?.OverrideAgencyLessLethalWeapons == true)
@@ -82,6 +83,11 @@ public class WeaponInventory
             if (dispatchablePerson?.OverrideAgencySideArms == true)
             {
                 Sidearm = dispatchablePerson?.OverrideSideArms?.PickRandom();
+                WeaponInformation WeaponLookup = weapons.GetWeapon(Sidearm.ModelName);
+                if (WeaponLookup != null)
+                {
+                    Sidearm.SetIssued(Game.GetHashKey(Sidearm.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                }
                 EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
             }
             else
@@ -98,7 +104,13 @@ public class WeaponInventory
         {
             if (dispatchablePerson?.OverrideAgencyLongGuns == true)
             {
+                hasOVerride = true;
                 LongGun = dispatchablePerson?.OverrideLongGuns?.PickRandom();
+                WeaponInformation WeaponLookup = weapons.GetWeapon(LongGun.ModelName);
+                if (WeaponLookup != null)
+                {
+                    LongGun.SetIssued(Game.GetHashKey(LongGun.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                }
                 EntryPoint.WriteToConsole($"IssueWeapons LongGun Override {LongGun?.ModelName}");
             }
             else
@@ -109,6 +121,7 @@ public class WeaponInventory
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(WeaponOwner.Pedestrian);
+                EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
             }
         }
         if (dispatchablePerson != null)
@@ -122,7 +135,7 @@ public class WeaponInventory
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 3, true);//can leave vehicle
 
     }
-    public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, bool isNightTime)
+    public void UpdateLoadout(IPoliceRespondable policeRespondablePlayer, bool isNightTime, bool overrideAccuracy)
     {
         Player = policeRespondablePlayer;
         if(!WeaponOwner.Pedestrian.Exists() || Player == null)
@@ -164,7 +177,7 @@ public class WeaponInventory
                     }
                 }
             }
-            if (Settings.SettingsManager.PoliceSettings.OverrideAccuracy)
+            if (overrideAccuracy)
             {
                 UpdateSettings();
             }

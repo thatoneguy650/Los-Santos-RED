@@ -68,7 +68,7 @@ namespace LosSantosRED.lsr
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
-                            Cop.WeaponInventory.UpdateLoadout(Player, Time.IsNight);
+                            Cop.WeaponInventory.UpdateLoadout(Player, Time.IsNight, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                         {

@@ -16,6 +16,12 @@ public class TattooNames : ITattooNames
     {
 
     }
+
+    public List<TattooOverlay> GetOverlaysByZone(string zoneName)
+    {
+        return TattooOverlays.Where(x=>x.ZoneName == zoneName).ToList();
+    }
+
     //public string GetName(bool isProp, int ItemID, int DrawableID, int TextureID, string Gender)
     //{
     //    TattooOverlay di = GetItemFast(isProp, ItemID, DrawableID, TextureID, Gender);

@@ -51,7 +51,7 @@ public class PedVariation
     public List<FaceFeature> FaceFeatures { get; set; } = new List<FaceFeature>();
     public int EyeColor { get; set; } = -1;
 
-
+    public List<AppliedOverlay> AppliedOverlays { get; set; } = new List<AppliedOverlay>();
 
 
     public PedVariation ApplyToPed(Ped ped, bool setDefaultFirst)
@@ -77,6 +77,15 @@ public class PedVariation
             {
                 NativeFunction.Natives.SET_PED_PROP_INDEX(ped, Prop.PropID, Prop.DrawableID, Prop.TextureID, false);
                 setVariation.Props.Add(new PedPropComponent(Prop.PropID, Prop.DrawableID, Prop.TextureID));
+            }
+            NativeFunction.Natives.CLEAR_PED_DECORATIONS(ped);
+            if (AppliedOverlays != null && AppliedOverlays.Any())
+            {
+                //NativeFunction.Natives.CLEAR_PED_DECORATIONS(ped);
+                foreach(AppliedOverlay ao in AppliedOverlays)
+                {
+                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, Game.GetHashKey(ao.CollectionName), Game.GetHashKey(ao.OverlayName));
+                }
             }
             //Freemode only below
             if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
@@ -166,6 +175,14 @@ public class PedVariation
             if (!ped.Exists())
             {
                 return setVariation;
+            }
+            if (AppliedOverlays != null && AppliedOverlays.Any())
+            {
+                NativeFunction.Natives.CLEAR_PED_DECORATIONS(ped);
+                foreach (AppliedOverlay ao in AppliedOverlays)
+                {
+                    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(ped, Game.GetHashKey(ao.CollectionName), Game.GetHashKey(ao.OverlayName));
+                }
             }
             //Freemode only below
             if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))

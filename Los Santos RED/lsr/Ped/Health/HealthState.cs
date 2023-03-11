@@ -84,6 +84,7 @@ public class HealthState
     public bool WasMeleeAttacked { get; private set; }
 
     private uint GameTimeLastModifiedDamage;
+    private uint GameTimeLastYelledInPain;
 
     public bool WasHitByVehicle { get; private set; }
 
@@ -126,10 +127,11 @@ public class HealthState
                 {
                     SetUnconscious();
                 }
-                if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
+                if(Settings.SettingsManager.DamageSettings.AllowAIPainYells && (HurtByPed || HurtByVehicle) && !MyPed.IsUnconscious && Health - prevHealth >= Settings.SettingsManager.DamageSettings.AIPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000 && Game.GameTime - GameTimeLastYelledInPain >= 5000)
                 {
                     MyPed.YellInPain(true);
                     MyPed.GameTimeLastInjured = Game.GameTime;
+                    GameTimeLastYelledInPain = Game.GameTime;
                     //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
                 }
             }
@@ -382,7 +384,7 @@ public class HealthState
             }
 
             bool ArmorWillProtect = false;
-            if (DamagedLocation == BodyLocation.UpperTorso)
+            if (MyPed.HasFullBodyArmor || DamagedLocation == BodyLocation.UpperTorso)
             {
                 ArmorWillProtect = true;
             }
@@ -411,9 +413,9 @@ public class HealthState
                 NewHealthDamage = Convert.ToInt32((HealthDamage + ArmorDamage) * HealthDamageModifier);
             }
 
-            Health = (Health - NewHealthDamage).Clamp(0, 900);
+            Health = (Health - NewHealthDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Health = Health;
-            Armor = (Armor - NewArmorDamage).Clamp(0, 200);
+            Armor = (Armor - NewArmorDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Armor = Armor;
             EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 

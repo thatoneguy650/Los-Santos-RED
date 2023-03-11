@@ -9,7 +9,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface IWeaponIssuable
     {
-
+        WeaponInventory WeaponInventory { get; }
         Ped Pedestrian { get; }
         ComplexTask CurrentTask { get; }
         bool IsInVehicle { get; }

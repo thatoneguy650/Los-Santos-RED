@@ -1,4 +1,5 @@
 ﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -80,6 +81,12 @@ public class DispatchablePerson
     public PedComponent FullHolster { get; set; }
     public List<string> OverrideVoice { get; set; }
     public List<CustomPropAttachment> CustomPropAttachments { get; set; }
+
+    public bool DisableCriticalHits { get; set; } = false;
+    public bool DisableBulletRagdoll { get; set; } = false;
+    public bool HasFullBodyArmor { get; set; } = false;
+    public int FiringPatternHash { get; set; } = 0;
+
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -121,6 +128,8 @@ public class DispatchablePerson
         }
     }
     public bool IsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
+
+
     public DispatchablePerson()
     {
 
@@ -361,4 +370,11 @@ public class DispatchablePerson
         NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);    
         // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");      
     }
+
+
+
+
+
+
+
 }

@@ -463,6 +463,13 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_bullpupshotgun", new WeaponVariation()),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation()),
         };
+        List<IssuableWeapon> Minigun = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_minigun", new WeaponVariation()),
+        };
+
+        
+
 
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms));
@@ -485,6 +492,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
+        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Minigun", Minigun));
 
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }
@@ -907,6 +915,11 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation()),
         };
 
+        List<IssuableWeapon> Minigun = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_minigun", new WeaponVariation()),
+        };
+
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllGangSidearms", AllGangSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("AllGangLongGuns", AllGangLongGuns));
@@ -928,6 +941,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("KkangpaeLongGuns", KkangpaeLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
+        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Minigun", Minigun));
 
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }

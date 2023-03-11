@@ -394,7 +394,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
 
     public uint GameTimeReachedInvestigationPosition { get; set; }
-
+    public bool HasFullBodyArmor { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

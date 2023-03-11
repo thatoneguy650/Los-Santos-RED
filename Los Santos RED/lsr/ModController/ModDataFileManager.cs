@@ -43,8 +43,8 @@ public class ModDataFileManager
     public WeatherForecasts WeatherForecasts;
     public ClothesNames ClothesNames;
     public LanguageStrings LanguageStrings;
-    private WantedLevels WantedLevels;
-    private TattooNames TattooNames;
+    public WantedLevels WantedLevels;
+    public TattooNames TattooNames;
     public ModDataFileManager()
     {
 

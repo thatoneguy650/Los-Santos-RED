@@ -162,6 +162,20 @@ public class GangMember : PedExt, IWeaponIssuable
             VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
         }
         Pedestrian.Money = 0;
+        if (dispatchablePerson.DisableBulletRagdoll)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        }
+        if (dispatchablePerson.DisableCriticalHits)
+        {
+            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        }
+        HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
+        if (dispatchablePerson.FiringPatternHash != 0)
+        {
+            NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+        }
+
         //if (Settings.SettingsManager.GangSettings.DisableCriticalHits)
         //{
         //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);

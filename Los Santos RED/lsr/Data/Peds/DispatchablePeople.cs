@@ -50,6 +50,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> CartelPeds;
     private List<DispatchablePerson> MafiaPeds;
     private List<DispatchablePerson> YardiesPeds;
+    private List<DispatchablePerson> OtherPeds;
     private List<DispatchablePerson> StandardCops_Old;
     private List<DispatchablePerson> FIBPeds_Old;
     private List<DispatchablePerson> NOOSEPeds_Old;
@@ -265,7 +266,6 @@ public class DispatchablePeople : IDispatchablePeople
                     new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },
                     new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })
             },
-
             new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
                 DebugName = "NOOSEMPMale1"
                 ,RandomizeHead = true
@@ -1372,6 +1372,33 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("a_m_y_soucent_02",30,30,5,10,400,600,0,1) { DebugName = "YardiesMale3" },
         };
 
+
+        //Other Peds
+        OtherPeds = new List<DispatchablePerson>() {
+
+            new DispatchablePerson("u_m_y_juggernaut_01", 100,100){
+                DebugName = "Juggernautmale"
+                ,HasFullBodyArmor = true
+                ,DisableBulletRagdoll = true
+                ,DisableCriticalHits = true
+                ,FiringPatternHash = -957453492//fullauto
+                ,HealthMin = 700
+                ,HealthMax = 700
+                ,ArmorMin = 1500
+                ,ArmorMax = 1500
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,OverrideAgencySideArms = true
+                ,OverrideSideArmsID = "Minigun"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "Minigun"
+                ,ShootRateMin = 500
+                ,ShootRateMax = 500
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+            },
+        };
+
+
         ////  ,CustomPropAttachments = new List<CustomPropAttachment>() { new CustomPropAttachment("prop_holster_01", "BONETAG_PELVIS", new Vector3(-0.04f, 0f, 0.19f), new Rotator(-90f, -90f, 0f)) { SpawnChance = 100f } }
 
         //LSPD//
@@ -1460,6 +1487,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
+
+        //Other
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
 
         Serialization.SerializeParams(PeopleGroupLookup, ConfigFileName);
     }
@@ -1571,6 +1601,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
+        //Other
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
+
         Serialization.SerializeParams(PeopleGroupLookup_Old, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\DispatchablePeople_LosSantos2008.xml");
     }
     private void DefaultConfig_Simple()
@@ -1665,6 +1698,9 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("RedneckPeds", RedneckPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("ArmenianPeds", ArmenianPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("CartelPeds", CartelPeds));
+
+        //Other
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
 
         Serialization.SerializeParams(PeopleGroupLookup_Simple, "Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\DispatchablePeople_Simple.xml");
     }
@@ -6527,6 +6563,8 @@ public class DispatchablePeople : IDispatchablePeople
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MafiaPeds", MafiaPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("YardiesPeds", YardiesPeds));
 
+        //Other
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("OtherPeds", OtherPeds));
 
         DefaultConfig_FullExpandedJurisdictionEXTRA(PeopleConfig_EUP);
 

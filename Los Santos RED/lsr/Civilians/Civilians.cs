@@ -306,9 +306,9 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                //if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
+                //if (Settings.SettingsManager.SecuritySettings.ManageLoadout)
                 //{
-                //    ped.WeaponInventory.UpdateLoadout(PoliceRespondable);
+                //    ped.WeaponInventory.UpdateLoadout(PoliceRespondable, World., Settings.SettingsManager.SecuritySettings.OverrideAccuracy);
                 //}
                 if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                 {

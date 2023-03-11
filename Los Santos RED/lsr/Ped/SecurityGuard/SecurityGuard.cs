@@ -195,13 +195,26 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         {
             return;
         }
-        if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
+        if (dispatchablePerson.DisableBulletRagdoll)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        }
+        if (dispatchablePerson.DisableCriticalHits)
+        {
+            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        }
+        HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
+        if (dispatchablePerson.FiringPatternHash != 0)
+        {
+            NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+        }
+        if (Settings.SettingsManager.SecuritySettings.OverrideHealth)
         {
             int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
             Pedestrian.MaxHealth = health;
             Pedestrian.Health = health;
         }
-        if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
+        if (Settings.SettingsManager.SecuritySettings.OverrideArmor)
         {
             int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
             Pedestrian.Armor = armor;
@@ -215,41 +228,47 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
             myBlip.Color = AssignedAgency.Color;
             myBlip.Scale = 0.6f;
         }
-        if (Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
+        if (Settings.SettingsManager.SecuritySettings.ForceDefaultWeaponAnimations)
         {
             NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Pedestrian, Game.GetHashKey("Default"));
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableCombatAttributeCanInvestigate)
+        if (Settings.SettingsManager.SecuritySettings.EnableCombatAttributeCanInvestigate)
         {
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_CAN_INVESTIGATE, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableCombatAttributeCanChaseOnFoot)
+        if (Settings.SettingsManager.SecuritySettings.EnableCombatAttributeCanChaseOnFoot)
         {
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_CAN_CHASE_TARGET_ON_FOOT, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableCombatAttributeCanFlank)
+        if (Settings.SettingsManager.SecuritySettings.EnableCombatAttributeCanFlank)
         {
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_CAN_FLANK, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableCombatAttributeDisableEntryReactions)
+        if (Settings.SettingsManager.SecuritySettings.EnableCombatAttributeDisableEntryReactions)
         {
             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_DISABLE_ENTRY_REACTIONS, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.OverrrideTargetLossResponse)
+        if (Settings.SettingsManager.SecuritySettings.OverrrideTargetLossResponse)
         {
             NativeFunction.Natives.SET_PED_TARGET_LOSS_RESPONSE(Pedestrian, Settings.SettingsManager.PoliceTaskSettings.OverrrideTargetLossResponseValue);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableConfigFlagAlwaysSeeAproachingVehicles)
+        if (Settings.SettingsManager.SecuritySettings.EnableConfigFlagAlwaysSeeAproachingVehicles)
         {
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)171, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.EnableConfigFlagDiveFromApproachingVehicles)
+        if (Settings.SettingsManager.SecuritySettings.EnableConfigFlagDiveFromApproachingVehicles)
         {
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)172, true);
         }
-        if (Settings.SettingsManager.PoliceTaskSettings.AllowMinorReactions)
+        if (Settings.SettingsManager.SecuritySettings.AllowMinorReactions)
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
+        }
+        if (Settings.SettingsManager.SecuritySettings.OverrideAccuracy)
+        {
+            Pedestrian.Accuracy = Accuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
         }
     }
 }

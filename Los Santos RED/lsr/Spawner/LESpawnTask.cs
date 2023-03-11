@@ -285,14 +285,12 @@ public class LESpawnTask : SpawnTask
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
-
         PrimaryCop.SpawnRequirement = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryCop.SpawnPosition = ped.Position;
             PrimaryCop.SpawnHeading = ped.Heading;
         }
-
         if (SpawnWithAllWeapons)
         {
             PrimaryCop.WeaponInventory.GiveHeavyWeapon();

@@ -208,10 +208,30 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
         }
+
+
+
+
         if(!Pedestrian.Exists())
         {
             return;
         }
+
+        if (dispatchablePerson.DisableBulletRagdoll)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        }
+        if (dispatchablePerson.DisableCriticalHits)
+        {
+            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        }
+        HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
+        if(dispatchablePerson.FiringPatternHash != 0)
+        {
+            NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+        }
+
+
         if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
         {
             int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
@@ -268,6 +288,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
+
     }
 
     private void UpdateCombatFlags()

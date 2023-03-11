@@ -8,5 +8,6 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ITattooNames
     {
+        List<TattooOverlay> GetOverlaysByZone(string zoneName);
     }
 }

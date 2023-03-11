@@ -47,8 +47,9 @@ public class PedSwap : IPedSwap
     private IClothesNames ClothesNames;
     private IGangs Gangs;
     private IAgencies Agencies;
+    private ITattooNames TattooNames;
     public PedSwap(ITimeControllable time, IPedSwappable player, ISettingsProvideable settings, IEntityProvideable entities, IWeapons weapons, ICrimes crimes, INameProvideable names, IModItems modItems, IEntityProvideable world, 
-        IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies)
+        IPedGroups pedGroups, IShopMenus shopMenus, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames)
     {
         Time = time;
         Player = player;
@@ -66,6 +67,7 @@ public class PedSwap : IPedSwap
         ClothesNames = clothesNames;
         Gangs = gangs;
         Agencies = agencies;
+        TattooNames = tattooNames;
     }
     public int CurrentPedMoney { get; private set; }
     public void AddOffset()
@@ -116,7 +118,7 @@ public class PedSwap : IPedSwap
                     ResetOffsetForCurrentModel();
                     Player.IsCustomizingPed = true;
                     MenuPool menuPool = new MenuPool();
-                    PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings, DispatchablePeople, Heads, ClothesNames, Gangs, Agencies);
+                    PedCustomizer PedCustomizer = new PedCustomizer(menuPool, this, Names, Player, Entities, Settings, DispatchablePeople, Heads, ClothesNames, Gangs, Agencies, TattooNames);
                     PedCustomizer.Setup();
                     PedCustomizer.Start();
                     GameFiber.Yield();
