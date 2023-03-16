@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -1283,6 +1284,10 @@ public class Debug
         //Player.CellPhone.AddScamText();
     }
 
+
+
+   
+
     private void OpenDoors()
     {
         Interior int1 = Interiors.GetInteriorByLocalID(-103);
@@ -1652,6 +1657,12 @@ public class Debug
 
 
     }
+
+
+
+
+
+
     public enum PathnodeFlags
     {
         Slow = 1,

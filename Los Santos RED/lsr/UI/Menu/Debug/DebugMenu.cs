@@ -1,15 +1,18 @@
 ﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -39,6 +42,7 @@ public class DebugMenu : ModUIMenu
     private INameProvideable Names;
 
     private IPlateTypes PlateTypes;
+    private ModDataFileManager ModDataFileManager;
 
     private Vector3 Offset;
     private Rotator Rotation;
@@ -49,7 +53,7 @@ public class DebugMenu : ModUIMenu
     private List<string> MovementClipsetsList;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
-        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names)
+        IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
     {
         Gangs = gangs;
         Dispatcher = dispatcher;
@@ -67,6 +71,7 @@ public class DebugMenu : ModUIMenu
         Crimes = crimes;
         PlateTypes = plateTypes;
         Names = names;
+        ModDataFileManager = modDataFileManager;
         Debug = new UIMenu("Debug", "Debug Settings");
         Debug.SetBannerType(EntryPoint.LSRedColor);
         menuPool.Add(Debug);      
@@ -943,6 +948,16 @@ public class DebugMenu : ModUIMenu
         HelperMenuItem.AddItem(ShowcaseLocations);
 
 
+
+        UIMenuItem PrintClassStuffMenu = new UIMenuItem("Print Class Stuff", "Print some select class stuff to the log");
+        PrintClassStuffMenu.Activated += (menu, item) =>
+        {
+            PrintClassStuff();
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintClassStuffMenu);
+        
+
         //
 
         //VehicleShowcase
@@ -1348,6 +1363,17 @@ public class DebugMenu : ModUIMenu
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
+
+    private void WriteToClassCreator(String TextToLog, int test)
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.Append(TextToLog + System.Environment.NewLine);
+        File.AppendAllText("Plugins\\LosSantosRED\\" + "ClassCreator.txt", sb.ToString());
+        sb.Clear();
+    }
+
+
+
     private void SpawnGunAttackers()
     {
         GameFiber.StartNew(delegate
@@ -1918,7 +1944,115 @@ public class DebugMenu : ModUIMenu
         }
 
     }
+    private void PrintClassStuff()
+    {
+        WriteToClassCreator($"PRINT CLASSES VEHICLES START++++++++++++++++++++++++++++++", 0);
+        foreach (DispatchableVehicleGroup dvg in ModDataFileManager.DispatchableVehicles.AllVehicles)
+        {
 
+            foreach (DispatchableVehicle dv in dvg.DispatchableVehicles)
+            {
+                WriteToClassCreator($"DispatchableVehicle TestVehicle = new DispatchableVehicle() {{", 0);
+                PrintClass(dv);
+                WriteToClassCreator($"}};", 0);
+            }
+         
+        }
+        WriteToClassCreator($"PRINT CLASSES VEHICLES END++++++++++++++++++++++++++++++", 0);
+        WriteToClassCreator($"PRINT CLASSES GANG START++++++++++++++++++++++++++++++", 0);
+        foreach (GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
+        {
+            WriteToClassCreator($"GangDen {gangDen.Name.Replace(" ", String.Empty)} = new GangDen() {{", 0);
+            PrintClass(gangDen);
+            WriteToClassCreator($"}};", 0);
+        }
+        WriteToClassCreator($"PRINT CLASSES GANG END++++++++++++++++++++++++++++++", 0);
+    }
+    private void PrintClass(object dv)
+    {
+        if (dv == null)
+        {
+            return;
+        }
+        PropertyInfo[] properties = dv.GetType().GetProperties();
+        foreach (PropertyInfo property in properties)
+        {
+            if(!property.CanWrite)
+            {
+                continue;
+            }
+            if (property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
+            {
+                WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0);
+            }
+            else if (property.PropertyType == typeof(float))
+            {
+                WriteToClassCreator($"{property.Name} = {property.GetValue(dv)}f,", 0);
+            }
+            else if (property.PropertyType == typeof(Vector3))
+            {
+                WriteToClassCreator($"{property.Name} = new Vector3({property.GetValue(dv)}),", 0);
+            }
+            else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(bool))
+            {
+                if (property.CanWrite)
+                {
+                    WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0);
+                }
+            }
+            else if (property.PropertyType == typeof(VehicleVariation) || property.PropertyType == typeof(LicensePlate))
+            {
+                WriteToClassCreator($"{property.Name} = new {property.PropertyType}() {{", 0);
+                PrintClass(property.GetValue(dv));
+                WriteToClassCreator($"}},", 0);
+            }
+            else if (property.PropertyType == typeof(List<int>))
+            {
+                DoListItem(property, dv, "List<int>");
+            }
+            else if (property.PropertyType == typeof(List<SpawnPlace>))
+            {
+                DoListItem(property, dv, "List<SpawnPlace>");
+            }
+            else if (property.PropertyType == typeof(List<ConditionalLocation>))
+            {
+                DoListItem(property, dv, "List<ConditionalLocation>");
+            }
+            //
+            else if (property.PropertyType == typeof(List<VehicleExtra>))
+            {
+                DoListItem(property, dv, "List<VehicleExtra>");
+            }
+            else if (property.PropertyType == typeof(List<DispatchableVehicleExtra>))
+            {
+                DoListItem(property, dv, "List<DispatchableVehicleExtra>");
+            }
+            else if (property.PropertyType == typeof(List<VehicleToggle>))
+            {
+                DoListItem(property, dv, "List<VehicleToggle>");
+            }
+            else if (property.PropertyType == typeof(List<VehicleMod>))
+            {
+                DoListItem(property, dv, "List<VehicleMod>");
+            }
+            else
+            {
+                //WriteToClassCreator($"{property.Name} {property.PropertyType}", 0);
+            }
+        }
+    }
+    private void DoListItem(PropertyInfo property, object dv, string ListType)
+    {
+        WriteToClassCreator($"{property.Name} = new {ListType}() {{", 0);
+        var collection = (IEnumerable)property.GetValue(dv, null);
+        foreach (object obj in collection)
+        {
+            WriteToClassCreator($"new {obj.GetType()}() {{", 0);
+            PrintClass(obj);
+            WriteToClassCreator($"}},", 0);
+        }
+        WriteToClassCreator($"}},", 0);
+    }
 
 
     private void LongListStruff()
@@ -2477,4 +2611,10 @@ public class DebugMenu : ModUIMenu
 
         };
     }
+
+
+
+
+
+
 }

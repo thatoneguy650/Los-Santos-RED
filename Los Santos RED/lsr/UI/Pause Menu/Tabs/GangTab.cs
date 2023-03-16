@@ -25,8 +25,8 @@ public class GangTab
     private TabView TabView;
     private List<TabItem> items;
     private bool addedItems;
-
-    public GangTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeReportable time, ISettingsProvideable settings)
+    private IEntityProvideable World;
+    public GangTab(IGangRelateable player, IPlacesOfInterest placesOfInterest, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, IGangTerritories gangTerritories, IZones zones, TabView tabView, ITimeReportable time, ISettingsProvideable settings, IEntityProvideable world)
     {
         Player = player;
         PlacesOfInterest = placesOfInterest;
@@ -38,6 +38,7 @@ public class GangTab
         TabView = tabView;
         Time = time;
         Settings = settings;
+        World = world;
     }
     public void AddItems()
     {
@@ -56,7 +57,7 @@ public class GangTab
     {
 
 
-        GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
+        GangDen myDen = PlacesOfInterest.GetMainDen(gr.Gang.ID, World.IsMPMapLoaded);//PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == gr.Gang.ID);
         MissionLogo missionLogo = null;
         if (myDen.HasBannerImage)
         {

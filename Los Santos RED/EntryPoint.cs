@@ -119,8 +119,11 @@ public static class EntryPoint
         string WebLatestVersionFixed = FixWebVersionString(receivedData);
         if (WebLatestVersionFixed != LSRInstalledVersionInfo.FileVersion)
         {
-            PreStartMessage = $"{PreStartMessage} ~n~~r~Update Available:~s~ v{WebLatestVersionFixed}~s~~n~Current Version: v{LSRInstalledVersionInfo.FileVersion}";
-            WriteToConsole($"New Version Available: New: {WebLatestVersionFixed} Installed: {LSRInstalledVersionInfo.FileVersion}", 0);
+            Version webLatest = new Version(WebLatestVersionFixed);
+            Version installed = new Version(LSRInstalledVersionInfo.FileVersion);
+            string description = webLatest > installed ? "~r~Update Available:~s~" : "~o~Released:~s~";
+            PreStartMessage = $"{PreStartMessage} ~n~{description} v{WebLatestVersionFixed}~s~~n~Current Version: v{LSRInstalledVersionInfo.FileVersion}";
+            WriteToConsole($"{description}: New: {WebLatestVersionFixed} Installed: {LSRInstalledVersionInfo.FileVersion}", 0);
         }
     }
     private static string FixWebVersionString(string webVersionString)

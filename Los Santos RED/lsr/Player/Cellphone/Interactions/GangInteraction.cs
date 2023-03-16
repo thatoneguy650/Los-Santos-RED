@@ -33,14 +33,16 @@ public class GangInteraction : IContactMenuInteraction
     private IPlacesOfInterest PlacesOfInterest;
     private UIMenuItem PayoffDebt;
     private GangContact GangContact;
+    private IEntityProvideable World;
 
-    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact)
+    public GangInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, GangContact gangContact, IEntityProvideable world)
     {
         Player = player;
         Gangs = gangs;
         PlacesOfInterest = placesOfInterest;
         MenuPool = new MenuPool();
         GangContact = gangContact;
+        World = world;
     }
     public void Start(PhoneContact phoneContact)
     {
@@ -230,7 +232,7 @@ public class GangInteraction : IContactMenuInteraction
     }
     private void RequestDenAddress()
     {
-        GangDen myDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == ActiveGang.ID);
+        GangDen myDen = PlacesOfInterest.GetMainDen(ActiveGang.ID, World.IsMPMapLoaded);
         if (myDen != null)
         {
             Player.GPSManager.AddGPSRoute(myDen.Name, myDen.EntrancePosition);

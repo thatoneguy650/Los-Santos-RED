@@ -33,8 +33,8 @@ public class Conversation : Interaction, IAdvancedConversationable
     private List<string> GreetPlayerPositivePossibilities;
     private List<string> GreetPedNegativePossibilites;
     private List<string> GreetPedPositivePossibilities;
-
-    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches)
+    private IEntityProvideable World;
+    public Conversation(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, IEntityProvideable world)
     {
         Player = player;
         Ped = ped;
@@ -52,6 +52,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         GreetPedNegativePossibilites = new List<string>() { "GENERIC_WHATEVER" };
         GreetPedPositivePossibilities = new List<string>() { "GENERIC_HOWS_IT_GOING", "GENERIC_HI" };
         Speeches = speeches;
+        World = world;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override bool CanPerformActivities { get; set; } = true;
@@ -384,7 +385,7 @@ public class Conversation : Interaction, IAdvancedConversationable
     }
     private void AskQuestion()
     {
-        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches);
+        AdvancedConversation = new AdvancedConversation(Player, this, ModItems, Zones, ShopMenus, PlacesOfInterest, Gangs, GangTerritories, Speeches, World);
         AdvancedConversation.Setup();
         AdvancedConversation.Show();
         IsActivelyConversing = true;

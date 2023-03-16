@@ -133,7 +133,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetHiringDen()
         {
-            HiringGangDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == HiringGang.ID);
+            HiringGangDen = PlacesOfInterest.GetMainDen(HiringGang.ID, World.IsMPMapLoaded);
         }
         private void GetRequiredPayment()
         {

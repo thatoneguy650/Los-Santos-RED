@@ -36,6 +36,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public float ItemPreviewHeading { get; set; } = 0f;
     public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
 
+    public bool IsPrimaryGangDen { get; set; } = false;
 
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
@@ -45,10 +46,10 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public int ExpectedItemAmount { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
-    [XmlIgnore]
-    public bool IsDispatchFilled { get; set; } = false;
-    public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+    //[XmlIgnore]
+    //public bool IsDispatchFilled { get; set; } = false;
+    //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
+    //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";

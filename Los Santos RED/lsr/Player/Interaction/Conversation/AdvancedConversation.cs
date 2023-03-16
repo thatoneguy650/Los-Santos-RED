@@ -24,8 +24,9 @@ public class AdvancedConversation
     private IGangTerritories GangTerritories;
     private ISpeeches Speeches;
     private UIMenu QuestionSubMenu;
+    private IEntityProvideable World;
     public bool IsShowingMenu => ConversationMenu?.Visible == true;
-    public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches)
+    public AdvancedConversation(IInteractionable player, IAdvancedConversationable conversation_Simple, IModItems modItems, IZones zones, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, ISpeeches speeches, IEntityProvideable world)
     {
         Player = player;
         ConversationSimple = conversation_Simple;
@@ -36,6 +37,7 @@ public class AdvancedConversation
         Gangs = gangs;
         GangTerritories = gangTerritories;
         Speeches = speeches;
+        World = world;
     }
     public void Setup()
     {
@@ -158,8 +160,8 @@ public class AdvancedConversation
             ReplyUnknown();
             return;
         }
-        GangDen foundDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang != null && x.AssociatedGang.ID == gang.ID).FirstOrDefault();
-        if(foundDen == null)
+        GangDen foundDen = PlacesOfInterest.GetMainDen(gang.ID, World.IsMPMapLoaded);
+        if (foundDen == null)
         {
             ReplyUnknown();
             return;

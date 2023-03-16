@@ -23,7 +23,7 @@ public class GangContact : PhoneContact
         Gang myGang = gangs.GetAllGangs().FirstOrDefault(x => x.ContactName == Name);
         if (myGang != null)
         {
-            MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this);
+            MenuInteraction = new GangInteraction(player, gangs, placesOfInterest, this, world);
             MenuInteraction.Start(this);
         }
         else

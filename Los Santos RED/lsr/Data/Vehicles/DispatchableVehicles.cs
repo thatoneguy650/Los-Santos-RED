@@ -57,7 +57,7 @@ public class DispatchableVehicles : IDispatchableVehicles
     private List<DispatchableVehicle> GroupSechsVehicles;
     private List<DispatchableVehicle> SecuroservVehicles;
     private List<DispatchableVehicle> LCPDVehicles;
-
+    public List<DispatchableVehicleGroup> AllVehicles => VehicleGroupLookup;
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -379,7 +379,331 @@ public class DispatchableVehicles : IDispatchableVehicles
             new DispatchableVehicle("nemesis",15,15) {MaxOccupants = 1 },
             new DispatchableVehicle("buccaneer",15,15) { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
             new DispatchableVehicle("manana",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
-            new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green
+            new DispatchableVehicle("tornado",15,15)  { RequiredPrimaryColorID = 53,RequiredSecondaryColorID = 53 },//green       
+            // new DispatchableVehicle() {
+            //  DebugName = "PeterBadoingypeyote3",
+            //    ModelName = "peyote3",
+            //    RequiredPedGroup = "",
+            //    GroupName = "",
+            //    MinOccupants = 1,
+            //    MaxOccupants = 2,
+            //    AmbientSpawnChance = 15,
+            //    WantedSpawnChance = 15,
+            //    MinWantedLevelSpawn = 0,
+            //    MaxWantedLevelSpawn = 6,
+            //    ForceStayInSeats = new List < int > () {},
+            //    RequiredPrimaryColorID = 53,
+            //    RequiredSecondaryColorID = 0,
+            //    RequiredLiveries = new List < int > () {},
+            //    VehicleExtras = new List < DispatchableVehicleExtra > () {},
+            //    RequiredVariation = new VehicleVariation() {
+            //      PrimaryColor = 53,
+            //        SecondaryColor = 53,
+            //        IsPrimaryColorCustom = false,
+            //        IsSecondaryColorCustom = false,
+            //        PearlescentColor = 0,
+            //        WheelColor = 156,
+            //        Mod1PaintType = 7,
+            //        Mod1Color = -1,
+            //        Mod1PearlescentColor = 0,
+            //        Mod2PaintType = 7,
+            //        Mod2Color = -1,
+            //        Livery = -1,
+            //        Livery2 = -1,
+            //        LicensePlate = new LSR.Vehicles.LicensePlate() {
+            //          PlateNumber = "FAMILIES",
+            //            IsWanted = false,
+            //            PlateType = 10,
+            //        },
+            //        WheelType = 2,
+            //        WindowTint = -1,
+            //        HasCustomWheels = true,
+            //        VehicleExtras = new List < VehicleExtra > () {
+            //          new VehicleExtra() {
+            //              ID = 0,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 1,
+            //                IsTurnedOn = true,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 2,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 3,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 4,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 5,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 6,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 7,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 8,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 9,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 10,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 11,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 12,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 13,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 14,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleExtra() {
+            //              ID = 15,
+            //                IsTurnedOn = false,
+            //            },
+            //        },
+            //        VehicleToggles = new List < VehicleToggle > () {
+            //          new VehicleToggle() {
+            //              ID = 17,
+            //                IsTurnedOn = true,
+            //            },
+            //            new VehicleToggle() {
+            //              ID = 18,
+            //                IsTurnedOn = true,
+            //            },
+            //            new VehicleToggle() {
+            //              ID = 19,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleToggle() {
+            //              ID = 20,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleToggle() {
+            //              ID = 21,
+            //                IsTurnedOn = false,
+            //            },
+            //            new VehicleToggle() {
+            //              ID = 22,
+            //                IsTurnedOn = false,
+            //            },
+            //        },
+            //        VehicleMods = new List < VehicleMod > () {
+            //          new VehicleMod() {
+            //              ID = 0,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 1,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 2,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 3,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 4,
+            //                Output = 0,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 5,
+            //                Output = 0,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 6,
+            //                Output = 2,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 7,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 8,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 9,
+            //                Output = 0,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 10,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 11,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 12,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 13,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 14,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 15,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 16,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 23,
+            //                Output = 2,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 24,
+            //                Output = 3,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 25,
+            //                Output = 4,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 26,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 27,
+            //                Output = 7,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 28,
+            //                Output = 5,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 29,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 30,
+            //                Output = 0,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 31,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 32,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 33,
+            //                Output = 1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 34,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 35,
+            //                Output = 2,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 36,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 37,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 38,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 39,
+            //                Output = 1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 40,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 41,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 42,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 43,
+            //                Output = 0,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 44,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 45,
+            //                Output = 1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 46,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 47,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 48,
+            //                Output = 1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 49,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 50,
+            //                Output = -1,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 66,
+            //                Output = 55,
+            //            },
+            //            new VehicleMod() {
+            //              ID = 67,
+            //                Output = 0,
+            //            },
+            //        },
+            //        FuelLevel = 65f,
+            //        DirtLevel = 0f,
+            //    },
+            //},
         };
     }
     private void DefaultConfig()
