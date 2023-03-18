@@ -14,9 +14,12 @@ public class OverlayZoneComponent
 {
     private Ped Ped;
     private PedCustomizer PedCustomizer;
+    private UIMenu componentMenu;
     private UIMenuItem ResetMenu;
     private List<TattooOverlay> PossibleTattoos;
     private UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList;
+    private MenuPool MenuPool;
+    private UIMenuItem ResetZoneMenu;
 
     public int ID { get; set; }
     public string ZoneName { get; set; }
@@ -30,11 +33,12 @@ public class OverlayZoneComponent
         ZoneName = zoneName;
         ZoneDisplay = zoneDisplay;
     }
-    public void AddCustomizeMenu(MenuPool MenuPool, UIMenu topMenu, Ped ped, PedCustomizer pedCustomizer)
+    public void AddCustomizeMenu(MenuPool menuPool, UIMenu topMenu, Ped ped, PedCustomizer pedCustomizer)
     {
+        MenuPool = menuPool;
         Ped = ped;
         PedCustomizer = pedCustomizer;
-        UIMenu componentMenu = MenuPool.AddSubMenu(topMenu, ZoneDisplay);
+        componentMenu = MenuPool.AddSubMenu(topMenu, ZoneDisplay);
         topMenu.MenuItems[topMenu.MenuItems.Count() - 1].Description = $"Customize the {ZoneDisplay}";
         topMenu.MenuItems[topMenu.MenuItems.Count() - 1].RightLabel = "";
         componentMenu.SetBannerType(EntryPoint.LSRedColor);
@@ -46,34 +50,59 @@ public class OverlayZoneComponent
     private void AddMenuItems(UIMenu componentMenu)
     {
         AddResetMenuItem(componentMenu);
+        PossibleTattoos = PedCustomizer.TattooNames.GetOverlaysByZone(ZoneName);
+        foreach (var speechGroup in PossibleTattoos.GroupBy(x => x.CollectionName).Select(x => x))
+        {
+            UIMenu GroupMenu = MenuPool.AddSubMenu(componentMenu, speechGroup.Key);
+            GroupMenu.SetBannerType(EntryPoint.LSRedColor);
+            UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList = new UIMenuListScrollerItem<TattooOverlay>("Item", "Select item", PossibleTattoos.Where(x => x.CollectionName == speechGroup.Key));
+            TattooOverlayMenuList.Activated += (sender, selectedItem) =>
+            {
+                OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
+            };
+            GroupMenu.AddItem(TattooOverlayMenuList);
 
-        AddDrawableItem(componentMenu);
+
+            //foreach (var SpeechData in speechGroup.OrderBy(x => x.OverlayName).ThenBy(x => x.OverlayName))
+            //{
+            //    UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList = new UIMenuListScrollerItem<TattooOverlay>("Item", "Select item", PossibleTattoos.Where(x=>x.CollectionName == speechGroup.Key));
+            //    TattooOverlayMenuList.IndexChanged += (Sender, oldIndex, newIndex) =>
+            //    {
+
+            //    };
+            //    TattooOverlayMenuList.Activated += (sender, selectedItem) =>
+            //    {
+            //        OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
+            //    };
+            //    GroupMenu.AddItem(TattooOverlayMenuList);
+            //}
+        }
     }
     private void AddResetMenuItem(UIMenu componentMenu)
     {
-        ResetMenu = new UIMenuItem("Reset", "Reset the overlays for the given zone");
+
+        ResetMenu = new UIMenuItem("Reset All", "Reset all the overlays applied");
+        ResetMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         ResetMenu.Activated += (sender, e) =>
+        {
+            PedCustomizer.WorkingVariation.AppliedOverlays?.Clear();
+            PedCustomizer.OnVariationChanged();
+        };
+        componentMenu.AddItem(ResetMenu);
+
+
+
+        ResetZoneMenu = new UIMenuItem("Reset Zone", "Reset the overlays for the given zone");
+        ResetZoneMenu.RightBadge = UIMenuItem.BadgeStyle.Tatoo;
+        ResetZoneMenu.Activated += (sender, e) =>
         {
             PedCustomizer.WorkingVariation.AppliedOverlays?.RemoveAll(x => x.ZoneName == ZoneName);
             PedCustomizer.OnVariationChanged();
         };
-        componentMenu.AddItem(ResetMenu);
-    }
-    private void AddDrawableItem(UIMenu componentMenu)
-    {
-        PossibleTattoos = PedCustomizer.TattooNames.GetOverlaysByZone(ZoneName);
-        TattooOverlayMenuList = new UIMenuListScrollerItem<TattooOverlay>("Item", "Select item", PossibleTattoos);
-        TattooOverlayMenuList.IndexChanged += (Sender, oldIndex, newIndex) =>
-        {
-           
-        };
-        TattooOverlayMenuList.Activated += (sender, selectedItem) =>
-        {
-            OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
-        };
-        componentMenu.AddItem(TattooOverlayMenuList);
-    }
+        componentMenu.AddItem(ResetZoneMenu);
 
+
+    }
     private void OnOverlayChanged(TattooOverlay selectedItem)
     {
         if(selectedItem == null)

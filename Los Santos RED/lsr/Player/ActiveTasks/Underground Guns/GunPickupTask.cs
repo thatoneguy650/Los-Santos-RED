@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Windows.Media.Animation;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
@@ -202,7 +203,9 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             CurrentTask.OnReadyForPayment(true);
             Player.LastFriendlyVehicle = null;
-            SpawnedVehicle.SetLock((VehicleLockStatus)10);
+           // SpawnedVehicle.SetLock((VehicleLockStatus)10);
+            //
+            SpawnedVehicle.LockStatus = (VehicleLockStatus)10;
             EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");
 
             Game.DisplayHelp($"{StaticStrings.UndergroundGunsContactName} You have arrived, leave the vehicle");

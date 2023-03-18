@@ -28,14 +28,18 @@ public class DispatchableVehicle
 
     public VehicleVariation RequiredVariation { get; set; }
 
-
+    public bool RequiresDLC { get; set; } = false;
     public bool IsBoat => NativeFunction.Natives.IS_THIS_MODEL_A_BOAT<bool>(Game.GetHashKey(ModelName));
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
-    public bool CanCurrentlySpawn(int WantedLevel) => CurrentSpawnChance(WantedLevel) > 0;
-    public int CurrentSpawnChance(int WantedLevel)
+    public bool CanCurrentlySpawn(int WantedLevel, bool allowDLC) => CurrentSpawnChance(WantedLevel, allowDLC) > 0;
+    public int CurrentSpawnChance(int WantedLevel, bool allowDLC)
     {
+        if(RequiresDLC && !allowDLC)
+        {
+            return 0;
+        }
         if (WantedLevel > 0)
         {
             if (WantedLevel >= MinWantedLevelSpawn && WantedLevel <= MaxWantedLevelSpawn)

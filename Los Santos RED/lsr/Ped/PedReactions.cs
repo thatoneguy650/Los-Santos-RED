@@ -43,11 +43,16 @@ public class PedReactions
 
     public void Update(ITargetable Player)
     {
-        Reset();
+        ResetCrimeStatus();
         UpdateCrimes(Player);
         UpdateReactions();
     }
-    private void Reset()
+    public void Reset()
+    {
+        PedReactionList.Clear();
+        UpdateReactions();
+    }
+    private void ResetCrimeStatus()
     {
         HasSeenScaryCrime = false;
         HasSeenAngryCrime = false;

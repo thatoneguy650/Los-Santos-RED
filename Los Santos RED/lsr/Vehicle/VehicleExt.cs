@@ -523,18 +523,15 @@ namespace LSR.Vehicles
             //maybe call this onentrycar lock status?
             //in here check who the owner is, if it is a regular car, if it can be locked, etc.
 
-            if (!HasAttemptedToLock)
+            if(HasAttemptedToLock || Vehicle.HasOccupants)
             {
-                //EntryPoint.WriteToConsole($"AttemptToLock Vehicle: {Vehicle.Handle}");
-                if (!Vehicle.HasOccupants)
-                {
-                    if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
-                    {
-                        HasAttemptedToLock = true;
-                        Vehicle.MustBeHotwired = true;
-                        //EntryPoint.WriteToConsole($"AttemptToLock! Locked & Hotwired Vehicle: {Vehicle.Handle}");
-                    }
-                }
+                return;
+            }
+            if (Vehicle.SetLock((VehicleLockStatus)7) && !Vehicle.IsEngineOn)
+            {
+                HasAttemptedToLock = true;
+                Vehicle.MustBeHotwired = true;
+                //EntryPoint.WriteToConsole($"AttemptToLock! Locked & Hotwired Vehicle: {Vehicle.Handle}");
             }
         }
         public void UpgradePerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 

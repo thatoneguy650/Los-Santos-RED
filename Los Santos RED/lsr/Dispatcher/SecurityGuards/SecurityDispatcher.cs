@@ -204,12 +204,12 @@ public class SecurityDispatcher
             }
             else if (forceVehicle)
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, requiredGroup);
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, requiredGroup, Settings);
                 return VehicleType != null;
             }
             else
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "");
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "", Settings);
                 if (VehicleType != null)
                 {
                     string RequiredGroup = "";
@@ -390,7 +390,7 @@ public class SecurityDispatcher
         }
         if (!onFoot)
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "");
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "", Settings);
         }
         if (VehicleType != null || onFoot)
         {

@@ -767,12 +767,12 @@ public class LEDispatcher
             }
             else if (forceVehicle)
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, requiredGroup);
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, requiredGroup, Settings);
                 return VehicleType != null;        
             }
             else
             {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, "");
+                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, "", Settings);
                 if (VehicleType != null)
                 {
                     string RequiredGroup = "";
@@ -994,7 +994,7 @@ public class LEDispatcher
             GameFiber.Yield();
             if (ToSpawn != null)
             {
-                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false, "");
+                DispatchableVehicle VehicleToUse = ToSpawn.GetRandomVehicle(World.TotalWantedLevel, false, false, false, "", Settings);
                 GameFiber.Yield();
                 if (VehicleToUse != null)
                 {
@@ -1129,7 +1129,7 @@ public class LEDispatcher
         }
         if (!onFoot)
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "");
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "", Settings);
         }
         if (VehicleType != null || onFoot)
         {

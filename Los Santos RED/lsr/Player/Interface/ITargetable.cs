@@ -55,6 +55,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsAliveAndFree { get; }
         int CellX { get; }
         int CellY { get; }
+        bool IsDead { get; }
         //bool IsHostile(Gang gang);
     }
 }

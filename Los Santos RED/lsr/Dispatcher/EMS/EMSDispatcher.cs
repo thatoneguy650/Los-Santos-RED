@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 
 public class EMSDispatcher
 {
@@ -185,7 +186,7 @@ public class EMSDispatcher
         }
         if (Agency != null)
         {
-            VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false, "");
+            VehicleType = Agency.GetRandomVehicle(Player.WantedLevel, false, false, false, "", Settings);
             if (forcePed)
             {
                 VehicleType = null;
@@ -367,7 +368,7 @@ public class EMSDispatcher
         }
         if (!onFoot)
         {
-            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "");
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, false, false, true, "", Settings);
         }
         if (VehicleType != null || onFoot)
         {

@@ -92,7 +92,7 @@ public class PedReaction
         //    EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - wanted level");
         //    return;
         //}
-        if(ReactingToPed.IsBusted)
+        if(ReactingToPed.IsBusted && ReactingPed.WantedLevel > 0)
         {
             IsOtherExpired = true;
             EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - busted");
@@ -107,10 +107,16 @@ public class PedReaction
     }
     private void UpdatePlayer()
     {
-        if(!Player.IsAliveAndFree)
+        if(Player.IsDead)
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired General State");
+            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired DEAD");
+            return;
+        }
+        if(Player.IsBusted && Player.WantedLevel > 0)
+        {
+            IsOtherExpired = true;
+            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired BUSTED AND WANTED BY POLICE");
             return;
         }
         if (!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY, Player.CellX, Player.CellY, 3))

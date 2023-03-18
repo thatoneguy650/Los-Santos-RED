@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr.Data
                     //}
                     //bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
                     VehicleSaveStatus vss;
-                    if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash))//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
+                    if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash) && car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower())//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
                     {
                         vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
                     }

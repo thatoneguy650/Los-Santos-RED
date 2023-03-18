@@ -191,6 +191,9 @@ namespace LosSantosRED.lsr
                 new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
                 new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                 new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
+
+
+                new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),
             }),
                 new ModTaskGroup("RG3:World Gen", new List<ModTask>()//something in here is causing a hang on some crapola computers
             {

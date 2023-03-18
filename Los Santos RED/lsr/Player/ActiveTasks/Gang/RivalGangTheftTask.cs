@@ -138,7 +138,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             }
             if (TargetGang != null)
             {
-                VehicleToSteal = TargetGang.GetRandomVehicle(0, false, false, true);
+                VehicleToSteal = TargetGang.GetRandomVehicle(0, false, false, true, Settings);
                 if (VehicleToSteal != null)
                 {
                     VehicleToStealMakeName = NativeHelper.VehicleMakeName(Game.GetHashKey(VehicleToSteal.ModelName));

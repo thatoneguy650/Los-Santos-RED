@@ -324,7 +324,7 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "")?.Copy(), null, false, Settings, Weapons, Names, false, World);
+                    SpawnTask carSpawn = new LESpawnTask(agency, vehicleSpawn, agency.GetRandomVehicle(0, false, false, true, "", Settings)?.Copy(), null, false, Settings, Weapons, Names, false, World);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.AttemptSpawn();
                     carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
@@ -386,7 +386,7 @@ public class PedSwap : IPedSwap
                 vehicleSpawn.GetClosestStreet(false);
                 if (vehicleSpawn.HasSpawns)
                 {
-                    SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
+                    SpawnTask carSpawn = new GangSpawnTask(gang, vehicleSpawn, gang.GetRandomVehicle(0, false, false, true, Settings), null, false, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
                     carSpawn.AllowAnySpawn = true;
                     carSpawn.AttemptSpawn();
                     carSpawn.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));

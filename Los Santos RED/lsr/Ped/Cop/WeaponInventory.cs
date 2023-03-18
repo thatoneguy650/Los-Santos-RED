@@ -83,12 +83,15 @@ public class WeaponInventory
             if (dispatchablePerson?.OverrideAgencySideArms == true)
             {
                 Sidearm = dispatchablePerson?.OverrideSideArms?.PickRandom();
-                WeaponInformation WeaponLookup = weapons.GetWeapon(Sidearm.ModelName);
-                if (WeaponLookup != null)
+                if (Sidearm != null)
                 {
-                    Sidearm.SetIssued(Game.GetHashKey(Sidearm.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(Sidearm?.ModelName);
+                    if (WeaponLookup != null)
+                    {
+                        Sidearm.SetIssued(Game.GetHashKey(Sidearm.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                    }
+                    EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
                 }
-                EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
             }
             else
             {
@@ -106,10 +109,13 @@ public class WeaponInventory
             {
                 hasOVerride = true;
                 LongGun = dispatchablePerson?.OverrideLongGuns?.PickRandom();
-                WeaponInformation WeaponLookup = weapons.GetWeapon(LongGun.ModelName);
-                if (WeaponLookup != null)
+                if (LongGun != null)
                 {
-                    LongGun.SetIssued(Game.GetHashKey(LongGun.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                    WeaponInformation WeaponLookup = weapons.GetWeapon(LongGun?.ModelName);
+                    if (WeaponLookup != null)
+                    {
+                        LongGun.SetIssued(Game.GetHashKey(LongGun.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
+                    }
                 }
                 EntryPoint.WriteToConsole($"IssueWeapons LongGun Override {LongGun?.ModelName}");
             }

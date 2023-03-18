@@ -1949,14 +1949,14 @@ public class DebugMenu : ModUIMenu
         WriteToClassCreator($"PRINT CLASSES VEHICLES START++++++++++++++++++++++++++++++", 0);
         foreach (DispatchableVehicleGroup dvg in ModDataFileManager.DispatchableVehicles.AllVehicles)
         {
-
+            WriteToClassCreator($"START {dvg.DispatchableVehicleGroupID}++++++++++++++++++++++++++++++", 0);
             foreach (DispatchableVehicle dv in dvg.DispatchableVehicles)
             {
                 WriteToClassCreator($"DispatchableVehicle TestVehicle = new DispatchableVehicle() {{", 0);
                 PrintClass(dv);
                 WriteToClassCreator($"}};", 0);
             }
-         
+            WriteToClassCreator($"END {dvg.DispatchableVehicleGroupID}++++++++++++++++++++++++++++++", 0);
         }
         WriteToClassCreator($"PRINT CLASSES VEHICLES END++++++++++++++++++++++++++++++", 0);
         WriteToClassCreator($"PRINT CLASSES GANG START++++++++++++++++++++++++++++++", 0);

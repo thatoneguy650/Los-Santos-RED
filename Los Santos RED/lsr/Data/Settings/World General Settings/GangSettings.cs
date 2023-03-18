@@ -31,12 +31,47 @@ public class GangSettings : ISettingsDefaultable
     public int PercentSpawnOutsideTerritory { get; set; }
     [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
+
+    public int TimeBetweenSpawn_DowntownAdditional { get; set; }
+    public int TimeBetweenSpawn_WildernessAdditional { get; set; }
+    public int TimeBetweenSpawn_RuralAdditional { get; set; }
+    public int TimeBetweenSpawn_SuburbAdditional { get; set; }
+    public int TimeBetweenSpawn_IndustrialAdditional { get; set; }
+
+
+
+
+
     [Description("Minimum distance in meters to spawn from the player.")]
     public float MinDistanceToSpawn { get; set; }
     [Description("Maximum distance in meters to spawn from the player.")]
     public float MaxDistanceToSpawn { get; set; }
     [Description("Total limit of spawned gang members between all gangs. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
+
+
+    [Description("Total limit of ambient spawned gang members between all gangs. Does not include vanilla members or gang members spawned by location.")]
+    public int TotalSpawnedAmbientMembersLimit { get; set; }
+    public int TotalSpawnedAmbientMembersLimit_Downtown { get; set; }
+    public int TotalSpawnedAmbientMembersLimit_Wilderness { get; set; }
+    public int TotalSpawnedAmbientMembersLimit_Rural { get; set; }
+    public int TotalSpawnedAmbientMembersLimit_Suburb { get; set; }
+    public int TotalSpawnedAmbientMembersLimit_Industrial { get; set; }
+
+
+
+    [Description("Percentage of the time to allow an ambient spawn. Minimum 0, maximum 100.")]
+    public int AmbientSpawnPercentage { get; set; }
+    public int AmbientSpawnPercentage_Wilderness { get; set; }
+    public int AmbientSpawnPercentage_Rural { get; set; }
+    public int AmbientSpawnPercentage_Suburb { get; set; }
+    public int AmbientSpawnPercentage_Industrial { get; set; }
+    public int AmbientSpawnPercentage_Downtown { get; set; }
+
+
+
+
+
     [Description("Percentage of the time to spawn a gang outside of the den when near.")]
     public int PercentageSpawnNearDen { get; set; }
     [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
@@ -66,6 +101,7 @@ public class GangSettings : ISettingsDefaultable
     public float EscortOffsetValue { get; set; }
     public float EscortSpeed { get; set; }
 
+
     public GangSettings()
     {
         SetDefault();
@@ -82,11 +118,40 @@ public class GangSettings : ISettingsDefaultable
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
 
-        TimeBetweenSpawn = 10000;
+        TimeBetweenSpawn = 30000;//10000;
+
+        TimeBetweenSpawn_DowntownAdditional = 10000;
+        TimeBetweenSpawn_WildernessAdditional = 90000;
+        TimeBetweenSpawn_RuralAdditional = 60000;
+        TimeBetweenSpawn_SuburbAdditional = 20000;
+        TimeBetweenSpawn_IndustrialAdditional = 20000;
+
+
+
+
         MinDistanceToSpawn = 75f;// 50f;
         MaxDistanceToSpawn = 200f;// 150f;
-        TotalSpawnedMembersLimit = 8;//5
-        OverrideArmor = true;
+
+        TotalSpawnedMembersLimit = 20;//5
+        TotalSpawnedAmbientMembersLimit = 5;// 8;
+
+        TotalSpawnedAmbientMembersLimit_Downtown = 5;
+        TotalSpawnedAmbientMembersLimit_Wilderness = 2;
+        TotalSpawnedAmbientMembersLimit_Rural = 3;
+        TotalSpawnedAmbientMembersLimit_Suburb = 4;
+        TotalSpawnedAmbientMembersLimit_Industrial = 4;
+
+        AmbientSpawnPercentage = 40;
+        AmbientSpawnPercentage_Wilderness = 5;
+        AmbientSpawnPercentage_Rural = 20;
+        AmbientSpawnPercentage_Suburb = 30;
+        AmbientSpawnPercentage_Industrial = 40;
+        AmbientSpawnPercentage_Downtown = 50;
+
+
+
+
+    OverrideArmor = true;
         OverrideHealth = true;
         OverrideAccuracy = true;
         PercentageSpawnNearDen = 10;

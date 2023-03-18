@@ -118,6 +118,7 @@ namespace Mod
             Investigation = new Investigation(this, Settings, provider);
             CriminalHistory = new CriminalHistory(this, Settings, TimeControllable);
             PoliceResponse = new PoliceResponse(this, Settings, TimeControllable, World);
+            SecurityResponse = new SecurityResponse(this, Settings, TimeControllable, World);
             SearchMode = new SearchMode(this, Settings);
             Inventory = new Inventory(this, Settings, ModItems);
             Sprinting = new Sprinting(this, Settings);
@@ -150,6 +151,7 @@ namespace Mod
         public CriminalHistory CriminalHistory { get; private set; }
         public PlayerTasks PlayerTasks { get; private set; }
         public PoliceResponse PoliceResponse { get; private set; }
+        public SecurityResponse SecurityResponse { get; private set; }
         public ButtonPrompts ButtonPrompts { get; private set; }
         public CellPhone CellPhone { get; private set; }
         public LocationData CurrentLocation { get; set; }
@@ -571,6 +573,7 @@ namespace Mod
                 Investigation.Reset();
                 Violations.Reset();            
                 Scanner.Reset();
+                SecurityResponse.Reset();
                 //Surrendering.Reset();
 
                 Update();

@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+using System.Windows.Media.Animation;
 //using System.Windows.Media;
 //using System.Windows.Media;
 using static DispatchScannerFiles;
@@ -1546,17 +1547,13 @@ public class Debug
                 bool isWeaponReadyToShoot = NativeFunction.Natives.IS_PED_WEAPON_READY_TO_SHOOT<bool>(ped.Pedestrian);
 
                 EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} Weapon {currentWeapon} EntityIndexIsValid {EntityIndexIsValid} isWeaponReadyToShoot {isWeaponReadyToShoot}", 5);
-
-
-
-
             }
-
-
-
-
         }
+
+        bool test = NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(Game.LocalPlayer.Character.CurrentVehicle, false); Game.DisplaySubtitle(test.ToString());
+
     }
+
     private void DisableAllSpawning()
     {
         Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;

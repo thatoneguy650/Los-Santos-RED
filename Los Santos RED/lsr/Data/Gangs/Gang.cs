@@ -178,28 +178,28 @@ public class Gang
         }
         return null;
     }
-    public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles)
+    public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, ISettingsProvideable settings)
     {
         if (Vehicles != null && Vehicles.Any())
         {
-            List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel) && !x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
+            List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && !x.IsHelicopter && !x.IsBoat && !x.IsMotorcycle).ToList();
             if (includeBoats)
             {
-                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel) && x.IsBoat).ToList());
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && x.IsBoat).ToList());
             }
             if (includeHelicopters)
             {
-                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel) && x.IsHelicopter).ToList());
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && x.IsHelicopter).ToList());
             }
             if (includeMotorcycles)
             {
-                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel) && x.IsMotorcycle).ToList());
+                ToPickFrom.AddRange(Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && x.IsMotorcycle).ToList());
             }
-            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel));
+            int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch));
             int RandomPick = RandomItems.MyRand.Next(0, Total);
             foreach (DispatchableVehicle Vehicle in ToPickFrom)
             {
-                int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel);
+                int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch);
                 if (RandomPick < SpawnChance)
                 {
                     return Vehicle;

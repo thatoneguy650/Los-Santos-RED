@@ -219,6 +219,7 @@ public class LESpawnTask : SpawnTask
                 CreatedVehicle.Setup();
             }
             CreatedVehicle.IsPolice = true;
+            CreatedVehicle.WasModSpawned = true;
             if (Agency != null)
             {
                 World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);

@@ -149,7 +149,7 @@ public class CarLockPick
     {
         Player.IsLockPicking = true;
         bool Continue = true;
-
+        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation START");
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
 
         AnimationDictionary.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
@@ -161,6 +161,7 @@ public class CarLockPick
             GameFiber.Yield();
             if (Player.IsMoveControlPressed || TargetVehicle.Doors[DoorIndex].IsOpen)
             {
+                EntryPoint.WriteToConsole($"LOCK PICK ENTRY: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
                 Continue = false;
                 break;
             }
@@ -176,6 +177,7 @@ public class CarLockPick
             }
             Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
+            EntryPoint.WriteToConsole($"LOCK PICK ENTRY: CANNOT CONTINUE");
             return false;
         }
 
@@ -185,7 +187,7 @@ public class CarLockPick
         {
             TargetVehicle.Doors[DoorIndex].Open(true, false);
         }
-
+        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
         return true;
     }
     private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)

@@ -34,7 +34,7 @@ public class TattooOverlay
     public string Facing { get; set; }
     public override string ToString()
     {
-        return $"{CollectionName}-{OverlayName}";
+        return $"{OverlayName}";
     }
 }
 

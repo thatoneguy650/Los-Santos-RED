@@ -182,7 +182,7 @@ public class SecurityGuardBrain : PedBrain
             GameTimeLastSeenCrime = Game.GameTime;
             EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME");
         }
-        if (GameTimeLastSeenCrime != 0 && Game.GameTime - GameTimeLastSeenCrime >= 10000)
+        if (GameTimeLastSeenCrime != 0 && Game.GameTime - GameTimeLastSeenCrime >= 10000 && PedExt.Pedestrian.Exists() && !PedExt.IsDead && !PedExt.IsUnconscious && !PedExt.Pedestrian.IsRagdoll && PedExt.DistanceToPlayer <= 40f)
         {
             GameTimeLastSeenCrime = 0;
             PedExt.ReportCrime(Player);
