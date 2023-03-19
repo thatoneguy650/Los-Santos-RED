@@ -32,7 +32,7 @@ public class VehicleSettings : ISettingsDefaultable
     public bool UseCustomFuelSystem { get; set; }
     [Description("Minimum fuel in cars. 0 is minimum")]
     public float CustomFuelSystemFuelMin { get; set; }
-    [Description("Maximum fuel in cars. 100 is maximum.")]
+    [Description("Maximum fuel in cars. 65 is maximum.")]
     public float CustomFuelSystemFuelMax { get; set; }
     [Description("Scalar amount for the custom fuel system. Default is 1.0. A Value of 2.0 would consume fuel twice as fast as default. A Value of 0.5 would consume fuel half as fast as default.")]
     public float CustomFuelSystemFuelConsumptionScalar { get; set; }

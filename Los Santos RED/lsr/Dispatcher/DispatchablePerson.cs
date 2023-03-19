@@ -213,7 +213,7 @@ public class DispatchablePerson
                 if (rhd != null)
                 {
                     RandomHeadData rhd2 = PossibleHeads.Where(x => x.IsMale == isMale && x.Name != rhd.Name).PickRandom();
-                    SetRandomizeHead(ped, rhd, rhd2, variationToSet);
+                    SetRandomizeHead(ped, rhd, rhd2, variationToSet, true);
                 }
             }
             if (OptionalProps != null)
@@ -284,7 +284,7 @@ public class DispatchablePerson
         }
         return variationToSet;
     }
-    public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation)
+    public void SetRandomizeHead(Ped ped, RandomHeadData myHead, RandomHeadData blendHead, PedVariation pedVariation, bool allowMorph)
     {
         GameFiber.Yield();
         if(!ped.Exists())
@@ -368,6 +368,50 @@ public class DispatchablePerson
         }
         pedVariation.EyeColor = EyeColor;
         NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);    
+
+
+
+        if(!allowMorph || !ped.Exists())
+        {
+            return;
+        }
+        List<FaceFeature>  FaceFeatures = new List<FaceFeature>() {
+            new FaceFeature(0,"Nose Width"),
+            new FaceFeature(1, "Nose Peak"),
+            new FaceFeature(2, "Nose Length"),
+            new FaceFeature(3, "Nose Bone Curveness"),
+            new FaceFeature(4, "Nose Tip"),
+            new FaceFeature(5, "Nose Bone Twist"),
+            new FaceFeature(6, "Eyebrow Up/Down"),
+            new FaceFeature(7, "Eyebrow In/Out"),
+            new FaceFeature(8, "Cheek Bones Up/Down"),
+            new FaceFeature(9, "Cheek Sideways Bone Size"),
+            new FaceFeature(10, "Cheek Bones Width"),
+            new FaceFeature(11, "Eye Opening"),
+            new FaceFeature(12, "Lip Thickness"),
+            new FaceFeature(13, "Jaw Bone Width"),
+            new FaceFeature(14, "Jaw Bone Shape"),
+            new FaceFeature(15, "Chin Bone"),
+            new FaceFeature(16, "Chin Bone Length"),
+            new FaceFeature(17, "Chin Bone Shape"),
+            new FaceFeature(18, "Chin Hole") { RangeLow = 0.0f },
+            new FaceFeature(19, "Neck Thickness") { RangeLow = 0.0f },
+        };
+        foreach (FaceFeature faceFeature in FaceFeatures)
+        {
+            if (!ped.Exists())
+            {
+                return;
+            }
+            if(RandomItems.RandomPercent(40f))
+            {
+                float newScale = RandomItems.GetRandomNumber(faceFeature.RangeLow, faceFeature.RangeHigh);
+                NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, newScale);
+                pedVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = newScale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
+                GameFiber.Yield();
+            }
+
+        }
         // EntryPoint.WriteToConsole($"myHead {myHead.HeadID} {myHead.Name} HairID {HairID} HairColor {HairColor}");      
     }
 

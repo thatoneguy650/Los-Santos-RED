@@ -150,7 +150,7 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
         }
-            public void Dispose()
+        public void Dispose()
         {
             IsRunning = false;
             //GameFiber.Sleep(500);

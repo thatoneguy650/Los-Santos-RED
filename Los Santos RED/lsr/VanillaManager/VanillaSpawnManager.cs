@@ -16,6 +16,7 @@ public class VanillaSpawnManager
     private ISettingsProvideable Settings;
     private List<Vector3> CarGeneratorsToDisable;
     private List<Vector3> ScenariosToDisable;
+    private uint GameTimeLastDisabledVehicles;
 
     public VanillaSpawnManager(ISettingsProvideable settings)
     {
@@ -103,25 +104,10 @@ public class VanillaSpawnManager
         new Vector3(857.2202f, -1393.802f, 26.21234f),
         new Vector3(854.2248f, -1398.952f, 26.21234f),
 
-
         //Boilingbroke
         new Vector3(1855.314f, 2578.854f, 46.42464f),
         new Vector3(1799.826f, 2600.908f, 45.58898f),
         };
-
-
-        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
-        {
-            foreach (Vector3 carGenSPot in CarGeneratorsToDisable)
-            {
-                NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
-
-
-                NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
-            }
-        }
-
-
 
         ScenariosToDisable = new List<Vector3>()
         {
@@ -231,7 +217,34 @@ public class VanillaSpawnManager
             new Vector3(-802.0435f, -225.7791f, 36.20076f),
         };
 
-        if(Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios)
+        DisableScenariosAndGenerators();
+
+    }
+    public void Dispose()
+    {
+        NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE();
+        NativeFunction.Natives.REMOVE_SCENARIO_BLOCKING_AREAS();
+    }
+    public void Tick()
+    {
+      if(Game.GameTime - GameTimeLastDisabledVehicles >= 15000)
+        {
+            DisableScenariosAndGenerators();
+            GameTimeLastDisabledVehicles = Game.GameTime;
+            EntryPoint.WriteToConsole("SCENARIO AND GENERATOR DISABLE RAN");
+        }
+    }
+    private void DisableScenariosAndGenerators()
+    {
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
+        {
+            foreach (Vector3 carGenSPot in CarGeneratorsToDisable)
+            {
+                NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
+                NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
+            }
+        }
+        if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios)
         {
             float ScenarioBlockingDistance = 2f;
             foreach (Vector3 scenario in ScenariosToDisable)
@@ -242,16 +255,6 @@ public class VanillaSpawnManager
             float largeBlockingRange = 50f;
             NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(PrisonMainBlock.X - largeBlockingRange, PrisonMainBlock.Y - largeBlockingRange, PrisonMainBlock.Z - largeBlockingRange, PrisonMainBlock.X + largeBlockingRange, PrisonMainBlock.Y + largeBlockingRange, PrisonMainBlock.Z + largeBlockingRange, false, true, true, true);
         }
-
-    }
-    public void Dispose()
-    {
-        NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE();
-        NativeFunction.Natives.REMOVE_SCENARIO_BLOCKING_AREAS();
-    }
-    public void Tick()
-    {
-      
     }
 }
 

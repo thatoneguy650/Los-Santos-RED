@@ -963,10 +963,7 @@ public class DebugMenu : ModUIMenu
         //VehicleShowcase
 
     }
-    private void RunUI_CheckboxEvent(UIMenuCheckboxItem sender, bool Checked)
-    {
-        throw new NotImplementedException();
-    }
+
     private void CreateTimeMenu()
     {
         UIMenu TimeItems = MenuPool.AddSubMenu(Debug, "Time Menu");

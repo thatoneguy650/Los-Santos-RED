@@ -47,6 +47,7 @@ public class VanillaManager
         //GameFiber.Yield();
         VanillaGangManager.Tick();
         //GameFiber.Yield();
+        VanillaCarGeneratorManager.Tick();
     }
 
 }
