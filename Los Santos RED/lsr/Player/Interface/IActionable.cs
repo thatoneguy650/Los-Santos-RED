@@ -71,6 +71,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsSleepingOutside { get; set; }
         bool IsShowingActionWheel { get; }
         ClipsetManager ClipsetManager { get; }
+        bool IsWanted { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

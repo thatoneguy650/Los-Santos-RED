@@ -77,7 +77,7 @@ public class PedCustomizer
         Gangs= gangs;
         TattooNames = tattooNames;
     }   
-    public bool ChoseNewModel { get; private set; } = false;
+    public bool SetupAsNewPlayer { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
     public PedCustomizerMenu PedCustomizerMenu { get; private set; }
     public bool PedModelIsFreeMode => ModelPed != null && ModelPed.Exists() && ModelPed.Model != null && (ModelPed.Model.Name.ToLower() == "mp_f_freemode_01" || ModelPed.Model.Name.ToLower() == "mp_m_freemode_01");
@@ -309,7 +309,11 @@ public class PedCustomizer
             WorkingName = Names.GetRandomName(false);
         }
         WorkingMoney = 5000;
-        ChoseNewModel = true;
+        SetupAsNewPlayer = true;
+    }
+    public void SetAsNewPlayer()
+    {
+        SetupAsNewPlayer = true;
     }
     private void SetModelAsCharacter()
     {
@@ -353,48 +357,50 @@ public class PedCustomizer
     {
         SimpleWarning popUpWarning = new SimpleWarning("Become Ped", "Are you sure you want to become the current model ped", "", Player.ButtonPrompts, Settings);
         popUpWarning.Show();
-        if (popUpWarning.IsAccepted)
+        if(!popUpWarning.IsAccepted)
         {
-            ChoseToClose = true;
-            if (ModelPed.Exists())
+            return;
+        }
+        ChoseToClose = true;
+        if (ModelPed.Exists())
+        {
+            Game.FadeScreenOut(0, false);
+
+
+            if(SetupAsNewPlayer)
             {
-                Game.FadeScreenOut(0, false);
-                //Game.FadeScreenOut(1500, true);
-                if (!ChoseNewModel)
-                {
-                    PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
-                }
-                else
-                {
-                    PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max), WorkingVoice);
-                }
-
-
-                if(AssignedAgency != null)
-                {
-                    Player.SetCopStatus(true, AssignedAgency);
-                }
-                else
-                {
-                    Player.SetCopStatus(false, null);
-                }
-
-
-                if (AssignedGang != null)
-                {
-                    Player.RelationshipManager.GangRelationships.SetGang(AssignedGang, true);
-                }
-                else
-                {
-                    Player.RelationshipManager.GangRelationships.ResetGang(false);
-                }
-                Dispose(false);
+                PedSwap.BecomeExistingPed(ModelPed, WorkingModelName, WorkingName, WorkingMoney, WorkingVariation, RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max), WorkingVoice);
             }
             else
             {
-                Dispose(true);
+                PedSwap.BecomeSamePed(WorkingModelName, WorkingName, WorkingMoney, WorkingVariation);
             }
+
+
+            if(AssignedAgency != null)
+            {
+                Player.SetCopStatus(true, AssignedAgency);
+            }
+            else
+            {
+                Player.SetCopStatus(false, null);
+            }
+
+            if (AssignedGang != null)
+            {
+                Player.RelationshipManager.GangRelationships.SetGang(AssignedGang, true);
+            }
+            else if(SetupAsNewPlayer)
+            {
+                Player.RelationshipManager.GangRelationships.ResetGang(false);
+            }
+            Dispose(false);
         }
+        else
+        {
+            Dispose(true);
+        }
+        
     }
     public void Exit()
     {

@@ -56,19 +56,15 @@ public class Pedestrians : ITaskerReportable
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
     public List<Zombie> Zombies { get; private set; } = new List<Zombie>();
     public List<GangMember> GangMembers { get; private set; } = new List<GangMember>();
+    public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
     public List<PedExt> CivilianList => Civilians.Where(x => x.Pedestrian.Exists()).ToList();
     public List<GangMember> GangMemberList => GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Zombie> ZombieList => Zombies.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Cop> PoliceList => Police.Where(x => x.Pedestrian.Exists()).ToList();
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
-
-
     public List<SecurityGuard> SecurityGuardList => SecurityGuards.Where(x => x.Pedestrian.Exists()).ToList();
-
-
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Merchant> MerchantList => Merchants.Where(x => x.Pedestrian.Exists()).ToList();
-    public List<PedExt> DeadPeds { get; private set; } = new List<PedExt>();
     public List<PedExt> LivingPeople
     {
         get
@@ -115,48 +111,12 @@ public class Pedestrians : ITaskerReportable
     public bool AnyInjuredPeopleNearPlayer => PedExts.Any(x => !x.IsDead && (x.IsUnconscious || x.IsInWrithe) && x.DistanceToPlayer <= 150f);
     public bool AnyWantedPeopleNearPlayer => CivilianList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || GangMemberList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f) || MerchantList.Any(x => x.WantedLevel > 0 && !x.IsBusted && x.DistanceToPlayer <= 150f);
     public string DebugString { get; set; } = "";
-    public bool AnyArmyUnitsSpawned
-    {
-        get
-        {
-            return Police.Any(x => x.AssignedAgency.ID == "ARMY" && x.WasModSpawned);
-        }
-    }
-    public bool AnyHelicopterUnitsSpawned
-    {
-        get
-        {
-            return Police.Any(x => x.IsInHelicopter && x.WasModSpawned);
-        }
-    }
-    public bool AnyNooseUnitsSpawned
-    {
-        get
-        {
-            return Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
-        }
-    }
-    public int TotalSpawnedPolice
-    {
-        get
-        {
-            return Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-        }
-    }
-    public int TotalSpawnedEMTs
-    {
-        get
-        {
-            return EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-        }
-    }
-    public int TotalSpawnedGangMembers
-    {
-        get
-        {
-            return GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-        }
-    }
+    public bool AnyArmyUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "ARMY" && x.WasModSpawned);
+    public bool AnyHelicopterUnitsSpawned => Police.Any(x => x.IsInHelicopter && x.WasModSpawned);
+    public bool AnyNooseUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
+    public int TotalSpawnedPolice => Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public void Setup()
@@ -215,7 +175,6 @@ public class Pedestrians : ITaskerReportable
                 continue;
             }
             uint localHandle = Pedestrian.Handle;
-
             if (DeadPeds.Any(x => x.Handle == localHandle))
             {
                 continue;
@@ -226,12 +185,7 @@ public class Pedestrians : ITaskerReportable
                 {
                     continue;
                 }
-                if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice)
-                {
-                    Delete(Pedestrian);
-                    continue;
-                }
-                else if (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent)
+                if (Settings.SettingsManager.PoliceSpawnSettings.RemoveNonSpawnedPolice || (Settings.SettingsManager.PoliceSpawnSettings.RemoveAmbientPolice && !Pedestrian.IsPersistent))
                 {
                     Delete(Pedestrian);
                     continue;
@@ -241,18 +195,32 @@ public class Pedestrians : ITaskerReportable
             }
             else
             {
-                if (Pedestrian.IsGangMember())
+                if(Pedestrian.IsSecurity())
+                {
+                    if (SecurityGuards.Any(x => x.Handle == localHandle))
+                    {
+                        continue;
+                    }
+                    if (Settings.SettingsManager.SecuritySettings.RemoveNonSpawnedSecurity || (Settings.SettingsManager.SecuritySettings.RemoveAmbientSecurity && !Pedestrian.IsPersistent))
+                    {
+                        Delete(Pedestrian);
+                        continue;
+                    }
+                    AddAmbientSecurityGuard(Pedestrian);
+                    GameFiber.Yield();
+                }
+                else if (Pedestrian.IsGangMember())
                 {
                     if (GangMembers.Any(x => x.Handle == localHandle))
                     {
                         continue;
                     }
-                    if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPeds)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
+                    if (Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembers)// || modelName == "s_m_y_ammucity_01" || modelName == "s_m_m_ammucountry"))
                     {
                         Delete(Pedestrian);
                         continue;
                     }
-                    else if (Settings.SettingsManager.GangSettings.RemoveVanillaSpawnedPedsOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
+                    else if (Settings.SettingsManager.GangSettings.RemoveNonSpawnedGangMembersOnFoot && Pedestrian.Exists() && !Pedestrian.IsInAnyVehicle(false))
                     {
                         Delete(Pedestrian);
                         continue;
@@ -291,17 +259,7 @@ public class Pedestrians : ITaskerReportable
         GameFiber.Yield();//TR 29
         DeadPeds.RemoveAll(x => !x.Pedestrian.Exists());
     }
-    public bool AnyCopsNearPosition(Vector3 Position, float Distance)
-    {
-        if (Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance))
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    public bool AnyCopsNearPosition(Vector3 Position, float Distance) => Position != Vector3.Zero && Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Position) <= Distance);
     public bool AnyCopsNearCop(Cop cop, int CellsAway)
     {
         if (cop != null && cop.Pedestrian.Exists())
@@ -699,10 +657,6 @@ public class Pedestrians : ITaskerReportable
             AddEntity(pedExt);
         }
     }
-    //private ShopMenu GetIllicitMenu()
-    //{
-    //    return EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);
-    //}
     private float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
@@ -937,7 +891,7 @@ public class Pedestrians : ITaskerReportable
     }
     private void AddAmbientCop(Ped Pedestrian)
     {
-        var AgencyData = GetAgencyData(Pedestrian, 0);
+        var AgencyData = GetAgencyData(Pedestrian, 0, ResponseType.LawEnforcement);
         Agency AssignedAgency = AgencyData.agency;
         DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
         if(AssignedAgency == null || AssignedPerson == null || !Pedestrian.Exists())
@@ -951,7 +905,7 @@ public class Pedestrians : ITaskerReportable
             return;
         }
         Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
-        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.ShowVanillaBlips, "Lincoln");
+        myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln");
         if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
         {
             Police.Add(myCop);
@@ -959,20 +913,48 @@ public class Pedestrians : ITaskerReportable
         }
         EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
     }
-    public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped Cop, int WantedLevel)
+    private void AddAmbientSecurityGuard(Ped Pedestrian)
     {
-        string ZoneName = GetInternalZoneString(Cop.Position);
+        if(!Pedestrian.Exists())
+        {
+            return;
+        }
+        var AgencyData = GetAgencyData(Pedestrian, 0, ResponseType.Security);
+        Agency AssignedAgency = AgencyData.agency;
+        DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
+        if (AssignedAgency == null || AssignedPerson == null || !Pedestrian.Exists())
+        {
+            if (Pedestrian.IsPersistent)
+            {
+                EntryPoint.PersistentPedsDeleted++;
+            }
+            Delete(Pedestrian);
+            EntryPoint.WriteToConsole($"PEDESTRIANS: Add SECURITY FAIL, DELETING", 2);
+            return;
+        }
+        SecurityGuard mySecurityGuard = new SecurityGuard(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
+        mySecurityGuard.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.SecuritySettings.AttachBlipsToAmbientPeds);
+        if (!SecurityGuards.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
+        {
+            SecurityGuards.Add(mySecurityGuard);
+            mySecurityGuard.Pedestrian.IsPersistent = true;
+        }
+        EntryPoint.WriteToConsole($"PEDESTRIANS: Add SECURITY {Pedestrian.Handle}", 2);        
+    }
+    public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped ped, int WantedLevel, ResponseType responseType)
+    {
+        string ZoneName = GetInternalZoneString(ped.Position);
         List<Agency> ZoneAgencies = new List<Agency>();
         if (ZoneName != "")
         {
-            ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel, ResponseType.LawEnforcement);
+            ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel, responseType);
         }
         if (ZoneAgencies != null)
         {
             DispatchablePerson dispatchablePerson;
             foreach (Agency agency in ZoneAgencies)
             {
-                dispatchablePerson = agency.GetSpecificPed(Cop);
+                dispatchablePerson = agency.GetSpecificPed(ped);
                 if (dispatchablePerson != null)
                 {
                     return (agency, dispatchablePerson);
@@ -980,7 +962,7 @@ public class Pedestrians : ITaskerReportable
             }
             foreach (Agency agency in Agencies.GetAgencies())
             {
-                dispatchablePerson = agency.GetSpecificPed(Cop);
+                dispatchablePerson = agency.GetSpecificPed(ped);
                 if (dispatchablePerson != null)
                 {
                     return (agency, dispatchablePerson);

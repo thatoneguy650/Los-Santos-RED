@@ -35,7 +35,7 @@ public class CivilianSpawnTask : SpawnTask
         Crimes = crimes;
     }
     public bool ClearArea { get; set; } = false;
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
     private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);

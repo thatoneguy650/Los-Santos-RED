@@ -42,6 +42,7 @@ public class OverlayZoneComponent
         topMenu.MenuItems[topMenu.MenuItems.Count() - 1].Description = $"Customize the {ZoneDisplay}";
         topMenu.MenuItems[topMenu.MenuItems.Count() - 1].RightLabel = "";
         componentMenu.SetBannerType(EntryPoint.LSRedColor);
+        componentMenu.Width = 0.35f;
         if (Ped.Exists())
         {
             AddMenuItems(componentMenu);
@@ -55,6 +56,7 @@ public class OverlayZoneComponent
         {
             UIMenu GroupMenu = MenuPool.AddSubMenu(componentMenu, speechGroup.Key);
             GroupMenu.SetBannerType(EntryPoint.LSRedColor);
+            GroupMenu.Width = 0.35f;
             UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList = new UIMenuListScrollerItem<TattooOverlay>("Item", "Select item", PossibleTattoos.Where(x => x.CollectionName == speechGroup.Key));
             TattooOverlayMenuList.Activated += (sender, selectedItem) =>
             {

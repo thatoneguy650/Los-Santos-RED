@@ -24,7 +24,7 @@ namespace LosSantosRED.lsr.Player
         private Vector3 StoredPlayerPosition;
         private float StoredPlayerHeading;
         private bool UseRegularAnimations;
-
+        private ITimeControllable Time;
 
 
         private bool IsUsingVehicleAnimations;
@@ -33,10 +33,11 @@ namespace LosSantosRED.lsr.Player
         private float MaxExit = 1.0f;
         private uint GameTimeLastDidThing;
         
-        public SleepingActivity(IActionable player, ISettingsProvideable settings) : base()
+        public SleepingActivity(IActionable player, ISettingsProvideable settings, ITimeControllable time) : base()
         {
             Player = player;
             Settings = settings;
+            Time = time;
         }
         public override ModItem ModItem { get; set; }
         public override string DebugString => "";
@@ -148,19 +149,15 @@ namespace LosSantosRED.lsr.Player
                 Player.IsResting = true;
                 Player.IsSleeping = true;
                 Player.IsSleepingOutside = true;
-                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+                if (!Time.IsFastForwarding)
                 {
-                    if (Player.HumanState.Sleep.IsMax)
-                    {
-                        IsCancelled = true;
-                    }
-                    if (Player.IsMoveControlPressed)
-                    {
-                        IsCancelled = true;
-                    }
-                    //Player.WeaponEquipment.SetUnarmed();
-                    GameFiber.Yield();
+                    Time.FastForward(999);
                 }
+                SleepLoop();
+            }
+            if (Time.IsFastForwarding)
+            {
+                Time.StopFastForwarding();
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
@@ -175,8 +172,6 @@ namespace LosSantosRED.lsr.Player
             Player.ActivityManager.IsLayingDown = false;
             EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle) 1", 5);
         }
-
-
         private void LayDown_Foot()
         {
             PlayingDict = Data.AnimEnterDictionary;
@@ -225,19 +220,15 @@ namespace LosSantosRED.lsr.Player
                 Player.IsResting = true;
                 Player.IsSleeping = true;
                 Player.IsSleepingOutside = true;
-                while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+                if (!Time.IsFastForwarding)
                 {
-                    if (Player.IsMoveControlPressed)
-                    {
-                        IsCancelled = true;
-                    }
-                    if (Player.HumanState.Sleep.IsMax)
-                    {
-                        IsCancelled = true;
-                    }
-                    //Player.WeaponEquipment.SetUnarmed();
-                    GameFiber.Yield();
+                    Time.FastForward(999);
                 }
+                SleepLoop();
+            }
+            if (Time.IsFastForwarding)
+            {
+                Time.StopFastForwarding();
             }
             Player.IsResting = false;
             Player.IsSleeping = false;
@@ -293,28 +284,33 @@ namespace LosSantosRED.lsr.Player
             }
         }
 
-
-        //private void StartNewBaseScene()
-        //{
-        //    PlayingDict = Data.AnimBaseDictionary;
-        //    PlayingAnim = Data.AnimBase;
-        //    AnimationDictionary.RequestAnimationDictionay(PlayingDict);
-        //    Vector3 Position = Game.LocalPlayer.Character.Position;
-        //    float Heading = Game.LocalPlayer.Character.Heading;
-        //    if (UseRegularAnimations)
-        //    {
-        //        NativeFunction.Natives.TASK_PLAY_ANIM_ADVANCED(Player.Character, PlayingDict, PlayingAnim, Player.Character.Position.X, Player.Character.Position.Y, Player.Character.Position.Z, Player.Character.Rotation.Pitch, Player.Character.Rotation.Roll, Player.Character.Rotation.Yaw, 8.0f, -8.0f, -1, 1, 0.0f, 0, 0);
-        //        //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, Data.AnimBaseBlendIn, Data.AnimBaseBlendOut, -1, Data.AnimBaseFlag, 0, false, false, false);//-1
-        //    }
-        //    else
-        //    {
-        //        PlayerScene = NativeFunction.CallByName<int>("CREATE_SYNCHRONIZED_SCENE", Position.X, Position.Y, Game.LocalPlayer.Character.Position.Z, 0.0f, 0.0f, Heading, 2);//270f //old
-        //        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_LOOPED", PlayerScene, false);
-        //        NativeFunction.CallByName<bool>("TASK_SYNCHRONIZED_SCENE", Game.LocalPlayer.Character, PlayerScene, PlayingDict, PlayingAnim, 1000.0f, -4.0f, 64, 0, 0x447a0000, 0);//std_perp_ds_a
-        //        NativeFunction.CallByName<bool>("SET_SYNCHRONIZED_SCENE_PHASE", PlayerScene, 0.0f);
-        //    }
-        //    EntryPoint.WriteToConsole($"Sitting Activity Started New Base {PlayingAnim}", 5);
-        //}
+        private void SleepLoop()
+        {
+            while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
+            {
+                if (Player.IsMoveControlPressed)
+                {
+                    IsCancelled = true;
+                }
+                if (Player.HumanState.Sleep.IsMax)
+                {
+                    IsCancelled = true;
+                }
+                if (Player.IsWanted)
+                {
+                    IsCancelled = true;
+                }
+                if (!Player.IsAliveAndFree)
+                {
+                    IsCancelled = true;
+                }
+                if (Player.Investigation.IsSuspicious)
+                {
+                    IsCancelled = true;
+                }
+                GameFiber.Yield();
+            }
+        }
         private void Setup()
         {
             EntryPoint.WriteToConsole("Sitting Activity SETUP RAN", 5);

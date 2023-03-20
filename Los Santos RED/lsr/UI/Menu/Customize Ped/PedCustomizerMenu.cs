@@ -55,26 +55,29 @@ public class PedCustomizerMenu
         CustomizeMainMenu.InstructionalButtonsEnabled = false;
         CustomizeMainMenu.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(CustomizeMainMenu);
-        CustomizeDemographicsMenu.Setup(CustomizeMainMenu);
-        CustomizeModelMenu.Setup(CustomizeMainMenu);
-        CustomizeHeadMenu.Setup(CustomizeMainMenu);
-        CustomizeComponentsMenu.Setup(CustomizeMainMenu);
-        CustomizeOverlaysMenu.Setup(CustomizeMainMenu);
-        CustomizePropsMenu.Setup(CustomizeMainMenu);
-        CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
-        CustomizeAffiliationMenu.Setup(CustomizeMainMenu);
-        CustomizeVoiceMenu.Setup(CustomizeMainMenu);
 
+        CustomizeDemographicsMenu.Setup(CustomizeMainMenu);
+        
+        CustomizeModelMenu.Setup(CustomizeMainMenu);
+
+        CustomizeHeadMenu.Setup(CustomizeMainMenu);
+        CustomizeVoiceMenu.Setup(CustomizeMainMenu);
+        CustomizeAffiliationMenu.Setup(CustomizeMainMenu);
+
+        CustomizeComponentsMenu.Setup(CustomizeMainMenu);
+        CustomizePropsMenu.Setup(CustomizeMainMenu);
+        CustomizeOverlaysMenu.Setup(CustomizeMainMenu);
+
+        CustomizeExistingVariationsMenu.Setup(CustomizeMainMenu);
+        
+        
         UIMenuItem PrintVariation = new UIMenuItem("Print Variation", "Print the variation out to the log");
-        PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        PrintVariation.RightBadge = UIMenuItem.BadgeStyle.Armour;
         PrintVariation.Activated += (sender, e) =>
         {
             PedCustomizer.PrintVariation();
         };
         CustomizeMainMenu.AddItem(PrintVariation);
-
-        
-        //CustomizeMainMenu.AddInstructionalButton(new InstructionalButton() { a });
 
         UIMenuItem BecomeModel = new UIMenuItem("Become Character", "Return to gameplay as displayed character");
         BecomeModel.RightBadge = UIMenuItem.BadgeStyle.Clothes;

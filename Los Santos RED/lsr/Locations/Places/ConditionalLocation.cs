@@ -27,6 +27,6 @@ public class ConditionalLocation
 
     public bool IsEmpty { get; set; } = true;
 
-    public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
+    public TaskRequirements SpawnRequirement { get; set; } = TaskRequirements.None;
 }
 

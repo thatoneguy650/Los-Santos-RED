@@ -98,7 +98,7 @@ public class FireDispatcher
             HasDispatchedThisTick = true;//up here for now, might be better down low
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false, true, SpawnRequirement.None);
+                CallSpawnTask(false, true, TaskRequirements.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -151,7 +151,7 @@ public class FireDispatcher
             }
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, SpawnRequirement spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, TaskRequirements spawnRequirement)
     {
         try
         {

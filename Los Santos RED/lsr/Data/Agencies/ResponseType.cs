@@ -11,4 +11,5 @@ public enum ResponseType
     Fire = 2,
     Other = 3,
     None = 4,
+    Security = 5,
 }

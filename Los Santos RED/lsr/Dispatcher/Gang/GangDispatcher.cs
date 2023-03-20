@@ -205,7 +205,7 @@ public class GangDispatcher
             HandleDenSpawns();
         }
 
-        EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
+       // EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
 
 
         return HasDispatchedThisTick;
@@ -257,7 +257,7 @@ public class GangDispatcher
         if (shouldRun && GetSpawnLocation() && GetSpawnTypes(false,false, null))
         {
             EntryPoint.WriteToConsole($"AMBIENT GANG CALLED SPAWN TASK");
-            CallSpawnTask(false, true, false, false, SpawnRequirement.None);
+            CallSpawnTask(false, true, false, false, TaskRequirements.None);
         }
         GameTimeAttemptedDispatch = Game.GameTime;     
     }
@@ -441,7 +441,7 @@ public class GangDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, SpawnRequirement spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -625,7 +625,7 @@ public class GangDispatcher
             PersonType = null;
         }
 
-        CallSpawnTask(true, true, false, false, SpawnRequirement.None);
+        CallSpawnTask(true, true, false, false, TaskRequirements.None);
     }
     
 }

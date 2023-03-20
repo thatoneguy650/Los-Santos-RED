@@ -407,7 +407,7 @@ public class UI : IMenuProvideable
             }
         }
         NativeFunction.CallByName<bool>("DISPLAY_RADAR", ShowRadar);
-        if (Settings.SettingsManager.PoliceSettings.ShowVanillaBlips)
+        if (Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds)
         {
             NativeFunction.CallByName<bool>("SET_POLICE_RADAR_BLIPS", true);
         }

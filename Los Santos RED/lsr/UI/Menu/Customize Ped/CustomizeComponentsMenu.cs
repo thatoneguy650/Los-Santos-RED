@@ -55,7 +55,7 @@ public class CustomizeComponentsMenu
 
         PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Components");
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the components of the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+       // CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickComponentMenu.SetBannerType(EntryPoint.LSRedColor);
         PickComponentMenu.InstructionalButtonsEnabled = false;
 

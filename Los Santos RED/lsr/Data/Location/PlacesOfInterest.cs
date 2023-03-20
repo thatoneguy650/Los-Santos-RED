@@ -1572,7 +1572,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(-591.665f, -98.11681f, 51.31879f), CameraDirection = new Vector3(-0.9335647f, -0.06657825f, -0.3521709f), CameraRotation = new Rotator(-20.62015f, -7.411738E-06f, 94.07921f),
                 AssignedAgencyID = "SECURO",
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new ConditionalLocation(new Vector3(-605.2585f, -94.14611f, 42.93483f), 241.535f, 100f){ SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol| SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-605.2585f, -94.14611f, 42.93483f), 241.535f, 100f){ SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
                 },
             },
             new CityHall(new Vector3(233.2825f, -411.1329f, 48.11194f), 338.9129f, "Los Santos City Hall", "") { OpenTime = 9,CloseTime = 18, CameraPosition = new Vector3(236.4192f, -348.1718f, 79.68157f), CameraDirection = new Vector3(0.0002627021f, -0.9024973f, -0.4306954f), CameraRotation = new Rotator(-25.5117f, 6.462261E-07f, -179.9833f)},
@@ -1762,9 +1762,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
 
 
 #if DEBUG
-                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.LocalScenario },
-                new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ SpawnRequirement = SpawnRequirement.Patrol },
-                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol | SpawnRequirement.AnyScenario },
+                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ SpawnRequirement = TaskRequirements.Guard | TaskRequirements.LocalScenario },
+                new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ SpawnRequirement = TaskRequirements.Patrol },
+                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.AnyScenario },
 
 #else
                 new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 75f),
@@ -2124,9 +2124,9 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(-248.491f, -2010.509f, 34.574f), 0f,"Maze Bank Arena","I heard Fame or Shame was filming there") {OpenTime = 0,CloseTime = 24, InteriorID = 78338,
                 AssignedAgencyID = "GRP6",
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
-                    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol| SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
-                    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-259.8679f, -2034.324f, 29.94604f), 223.56f, 100f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-247.7519f, -2021.055f, 29.94604f), 234.7717f, 100f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-246.484f, -2050.29f, 27.75544f), 272.5661f, 100f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
                 },
                 PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new ConditionalLocation(new Vector3(-217.3633f, -2046.552f, 27.62042f), 140.1676f, 100f) { IsEmpty = false, RequiredGroup = "UnarmedSecurity" },
@@ -2149,7 +2149,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Landmark(new Vector3(-232.18f, -914.93f, 32.77f), 338.4021f,"Post Op Headquarters","No longer just mail") { IsTemporarilyClosed = true, OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x02967EFD.wav" },
             new Landmark(new Vector3(-3022.02f, 83.00665f, 10.64196f), 0f,"Pacific Bluffs Country Club","Members only") { OpenTime = 0,CloseTime = 24,ScannerFilePath = "01_specific_location\\0x0431FE2B.wav",
                 AssignedAgencyID = "GRP6",
-                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-3018.087f, 82.32686f, 11.6775f), 342.6718f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.Patrol | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" }, },
+                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-3018.087f, 82.32686f, 11.6775f), 342.6718f, 100f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" }, },
             
             },
 
@@ -2381,7 +2381,7 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
             new Dealership(new Vector3(-69.16984f, 63.42498f, 71.89044f), 150.3918f, "Benefactor/Gallivanter", "Take control","BenefactorGallavanterMenu") { BannerImagePath = "benefactorgallivanter.png",
                 CameraPosition = new Vector3(231.7523f, -993.08f, -97.99996f), CameraDirection = new Vector3(-0.9534805f, 0.1368595f, -0.2685973f), CameraRotation = new Rotator(-15.58081f, 0f, 81.83174f), LicensePlatePreviewText = "BENE GALA",
                 AssignedAgencyID = "BOBCAT",
-                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-72.16306f, 64.89938f, 71.84079f), 150.1162f, 100f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" } },
+                PossiblePedSpawns = new List<ConditionalLocation>() { new ConditionalLocation(new Vector3(-72.16306f, 64.89938f, 71.84079f), 150.1162f, 100f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" } },
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,
                 ItemDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-83.40893f, 80.80059f, 71.08399f),150.8571f),
@@ -2451,8 +2451,8 @@ new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Car
                 ItemPreviewPosition = new Vector3(226.205f, -992.613f, -98.99996f), ItemPreviewHeading = 177.2006f,LicensePlatePreviewText = "LUX AUTO",
                 AssignedAgencyID = "MERRY",
                 PossiblePedSpawns = new List<ConditionalLocation>() { 
-                    new ConditionalLocation(new Vector3(-802.0759f, -227.486f, 37.19593f), 120.1107f, 75f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
-                    new ConditionalLocation(new Vector3(-805.9191f, -220.9726f, 37.25732f), 121.415f, 75f) { SpawnRequirement = SpawnRequirement.Guard | SpawnRequirement.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-802.0759f, -227.486f, 37.19593f), 120.1107f, 75f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
+                    new ConditionalLocation(new Vector3(-805.9191f, -220.9726f, 37.25732f), 121.415f, 75f) { SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario, RequiredGroup = "UnarmedSecurity" },
                 },
                 
                 ItemDeliveryLocations = new List<SpawnPlace>() { 

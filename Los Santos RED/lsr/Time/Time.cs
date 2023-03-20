@@ -15,11 +15,6 @@ namespace Mod
     public class Time : ITimeControllable, ITimeReportable
     {
         private int ClockMultiplier = 1;
-
-        //private int FastForwardMultiplier = 10;
-
-        //private int FastForwardReducedMultiplier = 3;
-
         private uint GameTimeLastSetClock;
         private int Interval = 1000;
         private bool IsPaused;
@@ -29,15 +24,8 @@ namespace Mod
         private ISettingsProvideable Settings;
         private int DefaultMultiplier = 1;
         private int DefaultInterval = 1000;
-
-
-
-
         private int FastForwardMultiplier => Settings.SettingsManager.TimeSettings.FastForwardMultiplier;// = 300;
         private int FastForwardInterval => Settings.SettingsManager.TimeSettings.FastForwardInterval; //= 10;
-
-
-
         private DateTime TimeToStopFastForwarding;
         private bool isClockPaused = false;
         private int StoredClockDay;
@@ -138,8 +126,6 @@ namespace Mod
                 IsFastForwarding = true;
                 GetIntervalAndMultiplier();
                 TimeToStopFastForwarding = untilTime;
-
-
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
                     while (IsFastForwarding)
@@ -183,7 +169,6 @@ namespace Mod
                 IsFastForwarding = true;
                 GetIntervalAndMultiplier();
                 TimeToStopFastForwarding = CurrentDateTime.AddHours(999);
-
                 GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
                 {
                     try
@@ -312,14 +297,9 @@ namespace Mod
         {
             NativeFunction.Natives.SET_CLOCK_DATE(StoredClockDay, StoredClockMonth - 1, StoredClockYear);
             NativeFunction.CallByName<int>("SET_CLOCK_TIME", StoredClockHours, StoredClockMinutes, StoredClockSeconds);
-
-
-  
-
         }
         private void StoreTime()
         {
-
             StoredClockDay = NativeFunction.Natives.GET_CLOCK_DAY_OF_MONTH<int>();
             StoredClockMonth = NativeFunction.Natives.GET_CLOCK_MONTH<int>() + 1;
             StoredClockYear = NativeFunction.Natives.GET_CLOCK_YEAR<int>();

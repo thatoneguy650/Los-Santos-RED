@@ -28,7 +28,7 @@ public class FireFighterSpawnTask : SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     public bool ClearArea { get; set; } = false;
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
@@ -268,7 +268,7 @@ public class FireFighterSpawnTask : SpawnTask
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
         }
-        PrimaryFirefighter.SpawnRequirement = SpawnRequirement;
+        PrimaryFirefighter.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryFirefighter.SpawnPosition = ped.Position;

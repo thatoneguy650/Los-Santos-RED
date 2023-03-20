@@ -224,7 +224,7 @@ public class SecurityDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool clearArea, SpawnRequirement spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -405,7 +405,7 @@ public class SecurityDispatcher
         {
             PersonType = null;
         }
-        CallSpawnTask(true, false, true, SpawnRequirement.None);
+        CallSpawnTask(true, false, true, TaskRequirements.None);
     }
 
 }

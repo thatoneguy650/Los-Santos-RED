@@ -63,7 +63,7 @@ namespace LosSantosRED.lsr
         public int PoliceHurt => InstancesOfCrime("HurtingPolice");
         public int CiviliansKilled => InstancesOfCrime("KillingCivilians");
         public string ReportedCrimesDisplay => string.Join(",", CrimesReported.Select(x => x.AssociatedCrime.Name));
-        public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
+        public float ResponseDrivingSpeed => CurrentResponse == ResponsePriority.Full ? 30f : CurrentResponse == ResponsePriority.High || CurrentResponse == ResponsePriority.Medium ? 25f : 20f;
         private ResponsePriority CurrentResponse
         {
             get

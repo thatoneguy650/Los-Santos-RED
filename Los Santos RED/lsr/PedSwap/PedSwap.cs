@@ -136,7 +136,7 @@ public class PedSwap : IPedSwap
                     {
                         PedCustomizer.Dispose(true);
                     }
-                    if (!PedCustomizer.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
+                    if (!PedCustomizer.SetupAsNewPlayer && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
                     {
                         AddOffset();
                     }

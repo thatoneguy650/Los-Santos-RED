@@ -31,7 +31,7 @@ public class LESpawnTask : SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     public bool ClearArea { get; set; } = false;
     public bool SpawnWithAllWeapons { get; set; } = false;
     private bool HasAgency => Agency != null;
@@ -286,7 +286,7 @@ public class LESpawnTask : SpawnTask
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
-        PrimaryCop.SpawnRequirement = SpawnRequirement;
+        PrimaryCop.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryCop.SpawnPosition = ped.Position;

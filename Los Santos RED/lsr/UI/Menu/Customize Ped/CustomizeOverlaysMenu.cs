@@ -48,9 +48,9 @@ public class CustomizeOverlaysMenu
             new OverlayZoneComponent(5, "ZONE_RIGHT_LEG","Right Leg"),
          };
 
-        PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Overlays");
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the overlays of the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Decorations");
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the decorations of the current ped. These include tattoos and clothing logos.";
+        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickComponentMenu.SetBannerType(EntryPoint.LSRedColor);
         PickComponentMenu.InstructionalButtonsEnabled = false;
 

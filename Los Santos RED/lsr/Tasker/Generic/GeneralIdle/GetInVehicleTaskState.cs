@@ -37,11 +37,12 @@ class GetInVehicleTaskState : TaskState
     }
     public void Start()
     {
+        PedGeneral.ClearTasks(true);
         TaskEntry();
     }
     public void Stop()
     {
-
+        PedGeneral.ClearTasks(true);
     }
     public void Update()
     {
@@ -49,6 +50,15 @@ class GetInVehicleTaskState : TaskState
     }
     private void TaskEntry()
     {
+        if(!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (BlockPermanentEvents)
+        {
+            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            PedGeneral.Pedestrian.KeepTasks = true;
+        }
         if (SeatAssigner.VehicleAssigned != null && SeatAssigner.VehicleAssigned.Vehicle.Exists())
         {
             TaskedVehicle = SeatAssigner.VehicleAssigned;

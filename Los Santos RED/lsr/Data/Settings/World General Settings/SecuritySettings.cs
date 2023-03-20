@@ -7,6 +7,27 @@ using System.Threading.Tasks;
 
 public class SecuritySettings : ISettingsDefaultable
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     [Description("Allows mod spawning of security services in the world.")]
     public bool ManageDispatching { get; set; }
     [Description("Allows tasking of ambient security pedestrians in the world.")]
@@ -18,9 +39,13 @@ public class SecuritySettings : ISettingsDefaultable
     [Description("Allows detaining of the player by security.")]
     public bool AllowDetainment { get; set; }
 
+    [Description("Enable of disable removing all security peds not spawned by LSR.")]   
+    public bool RemoveNonSpawnedSecurity { get; set; }
+    [Description("Enable of disable removing all security peds not spawned by LSR that are non persistent.")]
+    public bool RemoveAmbientSecurity { get; set; }
 
-
-
+    [Description("Attach a blip to any ambient security peds.")]
+    public bool AttachBlipsToAmbientPeds { get; set; }
 
 
     [Description("Enable or Disable accuracy override")]
@@ -61,7 +86,7 @@ public class SecuritySettings : ISettingsDefaultable
 #endif
         DetainDistance = 4.0f;
         AllowDetainment = true;
-
+        AttachBlipsToAmbientPeds = false;
 
         OverrideAccuracy = true;
         ManageLoadout = true;
@@ -80,5 +105,7 @@ public class SecuritySettings : ISettingsDefaultable
         EnableConfigFlagAlwaysSeeAproachingVehicles = true;
         EnableConfigFlagDiveFromApproachingVehicles = true;
         AllowMinorReactions = true;
+        RemoveNonSpawnedSecurity = false;
+        RemoveAmbientSecurity = false;
     }
 }

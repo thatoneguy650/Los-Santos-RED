@@ -30,7 +30,7 @@ public class EMTSpawnTask :SpawnTask
         AddOptionalPassengers = addOptionalPassengers;
         World = world;
     }
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     public bool ClearArea { get; set; } = false;
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
@@ -275,7 +275,7 @@ public class EMTSpawnTask :SpawnTask
             myBlip.Color = Agency.Color;
             myBlip.Scale = 0.6f;
         }
-        PrimaryEmt.SpawnRequirement = SpawnRequirement;
+        PrimaryEmt.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryEmt.SpawnPosition = ped.Position;

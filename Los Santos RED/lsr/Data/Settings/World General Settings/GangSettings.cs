@@ -24,7 +24,7 @@ public class GangSettings : ISettingsDefaultable
     [Description("Check and enforce crimes committed by ambient gang members. Required for police to react to gang member crimes.")]
     public bool CheckCrimes { get; set; }
     [Description("Attempt to remove all non-mod spawned gang members from the world. (Not Currently Recommended)")]
-    public bool RemoveVanillaSpawnedPeds { get; set; }
+    public bool RemoveNonSpawnedGangMembers { get; set; }
     [Description("Attempt to remove all non-mod spawned gang members outside of their defined territories from the world. (Not Currently Recommended)")]
     public bool RemoveVanillaSpawnedPedsOutsideTerritory { get; set; }
     [Description("Percentage of the time to spawn a gang outside of their regular territory.")]
@@ -75,7 +75,7 @@ public class GangSettings : ISettingsDefaultable
     [Description("Percentage of the time to spawn a gang outside of the den when near.")]
     public int PercentageSpawnNearDen { get; set; }
     [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
-    public bool RemoveVanillaSpawnedPedsOnFoot { get; set; }
+    public bool RemoveNonSpawnedGangMembersOnFoot { get; set; }
     [Description("Enable or disable the ability for gangs to fight each other over crimes observed in the world.")]
     public bool AllowFightingOtherCriminals { get; set; }
     [Description("If enabled, peds will be forced to flee and all tasking will be blocked. If disabled, they will be tasked to flee, but let vanilla AI decide what to do.")]
@@ -112,17 +112,17 @@ public class GangSettings : ISettingsDefaultable
         CheckCrimes = true;
         ShowSpawnedBlip = false;
         ShowAmbientBlips = false;
-        RemoveVanillaSpawnedPeds = false;
+        RemoveNonSpawnedGangMembers = false;
         RemoveVanillaSpawnedPedsOutsideTerritory = false;
-        RemoveVanillaSpawnedPedsOnFoot = false;
+        RemoveNonSpawnedGangMembersOnFoot = false;
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
 
-        TimeBetweenSpawn = 30000;//10000;
+        TimeBetweenSpawn = 15000;//10000;
 
         TimeBetweenSpawn_DowntownAdditional = 10000;
-        TimeBetweenSpawn_WildernessAdditional = 90000;
-        TimeBetweenSpawn_RuralAdditional = 60000;
+        TimeBetweenSpawn_WildernessAdditional = 80000;
+        TimeBetweenSpawn_RuralAdditional = 50000;
         TimeBetweenSpawn_SuburbAdditional = 20000;
         TimeBetweenSpawn_IndustrialAdditional = 20000;
 
@@ -142,16 +142,16 @@ public class GangSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Industrial = 4;
 
         AmbientSpawnPercentage = 40;
-        AmbientSpawnPercentage_Wilderness = 5;
-        AmbientSpawnPercentage_Rural = 20;
-        AmbientSpawnPercentage_Suburb = 30;
+        AmbientSpawnPercentage_Wilderness = 15;
+        AmbientSpawnPercentage_Rural = 25;
+        AmbientSpawnPercentage_Suburb = 35;
         AmbientSpawnPercentage_Industrial = 40;
         AmbientSpawnPercentage_Downtown = 50;
 
 
 
 
-    OverrideArmor = true;
+        OverrideArmor = true;
         OverrideHealth = true;
         OverrideAccuracy = true;
         PercentageSpawnNearDen = 10;

@@ -50,7 +50,7 @@ public class CustomizeAffiliationMenu
         AffiliationSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Affiliation");
         AffiliationSubMenuItem = CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1];
         AffiliationSubMenuItem.Description = "Change affiliation for the current ped";
-        AffiliationSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Lock;
+        //AffiliationSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Lock;
         AffiliationSubMenu.SetBannerType(EntryPoint.LSRedColor);
         AffiliationSubMenu.InstructionalButtonsEnabled = false;
 

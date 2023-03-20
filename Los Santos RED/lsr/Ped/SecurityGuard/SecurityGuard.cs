@@ -270,5 +270,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
             NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
         }
+        Pedestrian.Money = 0;
     }
 }

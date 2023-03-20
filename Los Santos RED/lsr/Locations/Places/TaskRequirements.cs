@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 [Flags]
-public enum SpawnRequirement
+public enum TaskRequirements
 {
     None = 0,
     Guard = 1 << 0,
@@ -13,7 +13,7 @@ public enum SpawnRequirement
     AnyScenario = 1 << 2,
     LocalScenario = 1 << 3,
     StandardScenario = 1 << 4,
-    //ForceGu = 1 << 5,
+    BasicScenario = 1 << 5,
     //Chinese = 1 << 6,
     //Japanese = 1 << 7,
     //Snack = 1 << 8,

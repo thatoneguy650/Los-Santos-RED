@@ -35,17 +35,31 @@ class WaitInVehicleTaskState : TaskState
     {
 
     }
-    public void Start()
-    {
-
-    }
-    public void Stop()
-    {
-    }
 
     public void Update()
     {
 
+    }
+    public void Start()
+    {
+        PedGeneral.ClearTasks(true);
+        TaskEntry();
+    }
+    public void Stop()
+    {
+        PedGeneral.ClearTasks(true);
+    }
+    private void TaskEntry()
+    {
+        if (!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (BlockPermanentEvents)
+        {
+            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            PedGeneral.Pedestrian.KeepTasks = true;
+        }
     }
 
 }

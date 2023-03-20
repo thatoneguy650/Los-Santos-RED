@@ -44,7 +44,7 @@ public class CustomizeExistingVariationsMenu
     {
         UIMenu ModelSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Saved Variations");
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Choose from a list of saved variations";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
         ModelSubMenu.InstructionalButtonsEnabled = false;
         ModelSubMenu.OnMenuOpen += (sender) =>

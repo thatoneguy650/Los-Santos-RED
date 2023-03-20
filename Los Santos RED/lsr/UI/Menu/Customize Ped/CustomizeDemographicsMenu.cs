@@ -23,6 +23,7 @@ public class CustomizeDemographicsMenu
     private UIMenuItem RandomizeName;
     private UIMenuItem ChangeMoney;
     private PedCustomizerMenu PedCustomizerMenu;
+    private UIMenuItem NewPlayerMenu;
 
     public CustomizeDemographicsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
     {
@@ -38,8 +39,8 @@ public class CustomizeDemographicsMenu
     public void Setup(UIMenu CustomizeMainMenu)
     {
         UIMenu DemographicsSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Demographics");
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change demographics for the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change demographics for the current ped. Items include name and money. Can also set a new player.";
+        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Lock;
         DemographicsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         DemographicsSubMenu.InstructionalButtonsEnabled = false;
 
@@ -51,6 +52,18 @@ public class CustomizeDemographicsMenu
         {
             PedCustomizer.CameraCycler.SetDefault();
         };
+
+
+
+        NewPlayerMenu = new UIMenuItem("Set New Player", "Set a new player for the existing model. Will reset the name, money, contacts, weapons, etc. upon becoming the ped even without changing the model.");
+        NewPlayerMenu.Activated += (sender, selectedItem) =>
+        {
+            PedCustomizer.SetAsNewPlayer();
+            RandomizeWorkingName();
+            PedCustomizer.WorkingMoney = 5000;
+            OnMoneyChanged();
+        };
+        DemographicsSubMenu.AddItem(NewPlayerMenu);
 
 
         ChangeName = new UIMenuItem("Change Name", "Current: " + PedCustomizer.WorkingName);

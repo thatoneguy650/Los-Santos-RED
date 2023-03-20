@@ -118,69 +118,56 @@ public class Hotel : InteractableLocation
     }
     private void StayAtHotel(int Price, int Nights)
     {
-        if (Player.BankAccounts.Money >= Price)
-        {
-            Player.BankAccounts.GiveMoney(-1 * Price);
-            Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
-            Player.IsResting = true;
-            Player.IsSleeping = true;
-            KeepInteractionGoing = true;
-            InteractionMenu.Visible = false;
-
-            bool isInRoom = false;
-
-            if(HotelRooms.Any() && Settings.SettingsManager.WorldSettings.HotelsUsesRooms)
-            {
-                
-                HotelRoom hotelRoom = HotelRooms.PickRandom();
-                if(hotelRoom != null)
-                {
-                    isInRoom = true;
-                    StoreCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation);
-                }
-
-            }
-
-            Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);
-            GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
-            {
-                while (Time.IsFastForwarding)
-                {
-                    if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
-                    {
-                        Player.HealthManager.ChangeHealth(1);
-                    }
-                    if (Player.ButtonPrompts.IsPressed("CancelHotelStay"))
-                    {
-                        Time.StopFastForwarding();
-                    }
-                    GameFiber.Yield();
-                }
-                Player.IsResting = false;
-                Player.IsSleeping = false;
-                Player.ButtonPrompts.RemovePrompts("HotelStay");
-
-                PlaySuccessSound();
-                DisplayMessage("~g~Purchased", $"Thank you for staying at {Name}");
-
-                InteractionMenu.Visible = true;
-                KeepInteractionGoing = false;
-
-
-                if(isInRoom)
-                {
-                    isInRoom = false;
-                    StoreCamera.ReHighlightStoreWithCamera();
-                }
-
-            }, "FastForwardWatcher");
-        }
-        else
+        if(Player.BankAccounts.Money < Price)
         {
             PlayErrorSound();
             DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation. Please make sure you have the funds.");
+            return;
         }
-    
+        Player.BankAccounts.GiveMoney(-1 * Price);
+        Time.FastForward(new DateTime(Time.CurrentYear, Time.CurrentMonth, Time.CurrentDay + Nights, 11, 0, 0));
+        Player.IsResting = true;
+        Player.IsSleeping = true;
+        KeepInteractionGoing = true;
+        InteractionMenu.Visible = false;
+        bool isInRoom = false;
+        if(HotelRooms.Any() && Settings.SettingsManager.WorldSettings.HotelsUsesRooms)
+        {          
+            HotelRoom hotelRoom = HotelRooms.PickRandom();
+            if(hotelRoom != null)
+            {
+                isInRoom = true;
+                StoreCamera.MoveToPosition(hotelRoom.CameraPosition, hotelRoom.CameraDirection, hotelRoom.CameraRotation);
+            }
+        }
+        Player.ButtonPrompts.AddPrompt("HotelStay", "Cancel Stay", "CancelHotelStay", Settings.SettingsManager.KeySettings.InteractCancel, 99);
+        GameFiber FastForwardWatcher = GameFiber.StartNew(delegate
+        {
+            while (Time.IsFastForwarding)
+            {
+                if (!Settings.SettingsManager.NeedsSettings.ApplyNeeds)
+                {
+                    Player.HealthManager.ChangeHealth(1);
+                }
+                if (Player.ButtonPrompts.IsPressed("CancelHotelStay"))
+                {
+                    Time.StopFastForwarding();
+                }
+                GameFiber.Yield();
+            }
+            Player.IsResting = false;
+            Player.IsSleeping = false;
+            Player.ButtonPrompts.RemovePrompts("HotelStay");
+            PlaySuccessSound();
+            DisplayMessage("~g~Purchased", $"Thank you for staying at {Name}");
+            InteractionMenu.Visible = true;
+            KeepInteractionGoing = false;
+            if(isInRoom)
+            {
+                isInRoom = false;
+                StoreCamera.ReHighlightStoreWithCamera();
+            }
+        }, "FastForwardWatcher");    
     }
 }
 

@@ -1587,20 +1587,20 @@ namespace Mod
             EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
             EntryPoint.FocusPosition = position;
 
-            if (IsSleeping && IsNotWanted && !Investigation.IsActive && !Investigation.IsSuspicious)
-            {
-                if (!TimeControllable.IsFastForwarding)
-                {
-                    TimeControllable.FastForward(999);
-                }
-            }
-            else
-            {
-                if (TimeControllable.IsFastForwarding)
-                {
-                    TimeControllable.StopFastForwarding();
-                }
-            }
+            //if (IsSleeping && IsNotWanted && !Investigation.IsActive && !Investigation.IsSuspicious)
+            //{
+            //    if (!TimeControllable.IsFastForwarding)
+            //    {
+            //        TimeControllable.FastForward(999);
+            //    }
+            //}
+            //else
+            //{
+            //    if (TimeControllable.IsFastForwarding)
+            //    {
+            //        TimeControllable.StopFastForwarding();
+            //    }
+            //}
 
 
 

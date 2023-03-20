@@ -48,8 +48,8 @@ public class CustomizeHeadMenu
         HeadSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Head");
         HeadSubMenuItem = CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1];
 
-        HeadSubMenuItem.Description = "Change the head features of the current ped";
-        HeadSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        HeadSubMenuItem.Description = "Change the head features of the current ped. Only available for the freemode peds. Other peds change head items through the components menu.";
+        //HeadSubMenuItem.RightBadge = UIMenuItem.BadgeStyle.Makeup;
         HeadSubMenu.SetBannerType(EntryPoint.LSRedColor);
         HeadSubMenu.InstructionalButtonsEnabled = false;
         HeadSubMenu.OnMenuOpen += (sender) =>

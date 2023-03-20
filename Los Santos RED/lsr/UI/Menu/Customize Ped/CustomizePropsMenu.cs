@@ -49,7 +49,7 @@ public class CustomizePropsMenu
 
         PickPropMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Props");
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the props of the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
         PickPropMenu.SetBannerType(EntryPoint.LSRedColor);
         PickPropMenu.InstructionalButtonsEnabled = false;
         PickPropMenu.OnMenuOpen += (sender) =>

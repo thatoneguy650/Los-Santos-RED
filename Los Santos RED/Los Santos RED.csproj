@@ -179,7 +179,7 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
     <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
-    <Compile Include="lsr\Locations\Places\SpawnRequirement.cs" />
+    <Compile Include="lsr\Locations\Places\TaskRequirements.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />

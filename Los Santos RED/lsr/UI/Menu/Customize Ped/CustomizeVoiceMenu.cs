@@ -26,12 +26,13 @@ public class CustomizeVoiceMenu
     private UIMenuItem SearchModel;
     private PedCustomizerMenu PedCustomizerMenu;
     private UIMenu ModelSearchSubMenu;
-    private string FilterString;
+    private string FilterString = "";
     private List<string> SpeechList;
     private List<string> VoiceList;
     private UIMenuListScrollerItem<string> PreviewVoice;
     private UIMenu VoiceSubMenu;
     private UIMenuItem VoiceSubMenuItem;
+    private UIMenuListScrollerItem<string> FilteredVoices;
 
     public CustomizeVoiceMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu)
     {
@@ -47,8 +48,8 @@ public class CustomizeVoiceMenu
     public void Setup(UIMenu CustomizeMainMenu)
     {
         VoiceSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Voice");
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the voice of the current ped";
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Crown;
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the voice of the current ped. Only available for the freemode peds. Other peds will use their built in voice.";
+        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Crown;
         VoiceSubMenuItem = CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1];
         VoiceSubMenu.SetBannerType(EntryPoint.LSRedColor);
         VoiceSubMenu.InstructionalButtonsEnabled = false;
@@ -67,64 +68,46 @@ public class CustomizeVoiceMenu
 
 
         CurrentVoice = new UIMenuItem("Current Voice", $"Current voice {PedCustomizer.WorkingVoice}") { RightLabel = PedCustomizer.WorkingVoice };
-        //InputModel.Activated += (sender, selectedItem) =>
-        //{
-        //    SetVoiceFromInput();
-        //};
         CurrentVoice.Enabled = false;
         VoiceSubMenu.AddItem(CurrentVoice);
-
-        //SelectModel = new UIMenuListScrollerItem<string>("Select Voice", "Select the voice from a list", VoiceList);
-        //SelectModel.Activated += (sender, selectedItem) =>
-        //{
-        //    SetVoiceFromString(SelectModel.SelectedItem);
-        //};
-        //VoiceSubMenu.AddItem(SelectModel);
+        VoiceSubMenu.Width = 0.35f;
 
 
-        ModelSearchSubMenu = MenuPool.AddSubMenu(VoiceSubMenu, "Search Voice");
-        VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].Description = "Search for the voice by name";
-        VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].RightLabel = "";
-        ModelSearchSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        ModelSearchSubMenu.InstructionalButtonsEnabled = false;
-        ModelSearchSubMenu.Width = 0.35f;
 
-        SearchModel = new UIMenuItem("Input Voice", "Input the voice name");
+        //ModelSearchSubMenu = MenuPool.AddSubMenu(VoiceSubMenu, "Search Voice");
+        //VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].Description = "Search for the voice by name";
+        //VoiceSubMenu.MenuItems[VoiceSubMenu.MenuItems.Count() - 1].RightLabel = "";
+        //ModelSearchSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        //ModelSearchSubMenu.InstructionalButtonsEnabled = false;
+        //ModelSearchSubMenu.Width = 0.35f;
+
+        SearchModel = new UIMenuItem("Search Value", "Input the search string for the voice");
         SearchModel.Activated += (sender, selectedItem) =>
         {
-            int itemsAdded = 0;
             FilterString = NativeHelper.GetKeyboardInput("");
             if (string.IsNullOrEmpty(FilterString))
             {
                 FilterString = "";
             }
-            for (int i = ModelSearchSubMenu.MenuItems.Count; i-- > 0;)
-            {
-                if (ModelSearchSubMenu.MenuItems[i].Text != "Input Voice")// && ModelSubMenu.MenuItems[i].Text != removeGPSTTI.Title)
-                {
-                    ModelSearchSubMenu.MenuItems.RemoveAt(i);
-                }
-            }
-            ModelSearchSubMenu.RefreshIndex();
-            foreach (string modelName in VoiceList)
-            {
-                if (FilterString == "" || modelName.ToLower().Contains(FilterString.ToLower()))
-                {
-                    UIMenuItem test = new UIMenuItem(modelName, "");
-                    test.Activated += (sender2, selecteditem2) =>
-                    {
-                        Game.DisplaySubtitle($"Voice Set to {test.Text}");
-                        SetVoiceFromString(test.Text);
-                    };
-                    ModelSearchSubMenu.AddItem(test);
-                    itemsAdded++;
-                }
-            }
-
+            FilteredVoices.Items = VoiceList.Where(x => FilterString == "" || x.ToLower().Contains(FilterString.ToLower())).OrderBy(x => x).ToList();
+            SearchModel.RightLabel = FilterString;
         };
-        ModelSearchSubMenu.AddItem(SearchModel);
+        VoiceSubMenu.AddItem(SearchModel);
 
-        PreviewVoice = new UIMenuListScrollerItem<string>("Preview Voice", "Preview the voice", SpeechList);
+
+
+        FilteredVoices = new UIMenuListScrollerItem<string>("Filtered Voice List", "Update the current set voice from a list of filtered items.", VoiceList.Where(x => FilterString == "" || x.ToLower().Contains(FilterString.ToLower())).OrderBy(x => x));
+        FilteredVoices.Activated += (sender, selectedItem) =>
+        {
+            Game.DisplaySubtitle($"Voice Set to {FilteredVoices.SelectedItem}");
+            SetVoiceFromString(FilteredVoices.SelectedItem);
+        };
+        VoiceSubMenu.AddItem(FilteredVoices);
+
+
+
+
+        PreviewVoice = new UIMenuListScrollerItem<string>("Preview Voice", "Preview the currently set voice.", SpeechList);
         PreviewVoice.Activated += (sender, selectedItem) =>
         {
             PlayVoicePreview(PreviewVoice.SelectedItem);

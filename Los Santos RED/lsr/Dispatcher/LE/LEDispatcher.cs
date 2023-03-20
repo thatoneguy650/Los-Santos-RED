@@ -158,7 +158,7 @@ public class LEDispatcher
             }
         }
     }
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
@@ -291,7 +291,30 @@ public class LEDispatcher
             }
             else if (World.TotalWantedLevel == 0)
             {
-                return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
+                if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default_Wilderness;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default_Rural;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default_Suburb;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default_Industrial;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default_Downtown;
+                }
+                else
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
+                }
             }
             else
             {
@@ -466,7 +489,30 @@ public class LEDispatcher
             }
             else if (World.TotalWantedLevel == 0)
             {
-                return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
+                if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default_Wilderness;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default_Rural;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default_Suburb;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default_Industrial;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default_Downtown;
+                }
+                else
+                {
+                    return Settings.SettingsManager.PoliceSpawnSettings.VehicleSpawnLimit_Default;
+                }
             }
             else
             {
@@ -592,7 +638,7 @@ public class LEDispatcher
             if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
             {
                 LastAgencySpawned = Agency;
-                CallSpawnTask(false, true, false, false, SpawnRequirement.None);
+                CallSpawnTask(false, true, false, false, TaskRequirements.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -712,7 +758,7 @@ public class LEDispatcher
             SpawnRoadblock(false,300f);
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, SpawnRequirement spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -1155,6 +1201,6 @@ public class LEDispatcher
             PersonType = personType; 
         }
 
-        CallSpawnTask(true, true, true, true, SpawnRequirement.None);
+        CallSpawnTask(true, true, true, true, TaskRequirements.None);
     }
 }

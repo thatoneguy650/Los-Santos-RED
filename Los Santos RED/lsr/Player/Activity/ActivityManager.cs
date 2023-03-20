@@ -533,7 +533,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        SleepingActivity sleeping = new SleepingActivity(Actionable, Settings);
+        SleepingActivity sleeping = new SleepingActivity(Actionable, Settings, Time);
         if (sleeping.CanPerform(Actionable))
         {
             ForceCancelAllActive();

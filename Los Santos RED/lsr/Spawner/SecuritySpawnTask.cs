@@ -34,7 +34,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         Crimes = crimes;
     }
     public bool ClearArea { get; set; } = false;
-    public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
+    public TaskRequirements SpawnRequirement { get; set; } = TaskRequirements.None;
     private bool HasAgency => Agency != null;
     private bool HasPersonToSpawn => PersonType != null;
     private bool HasVehicleToSpawn => VehicleType != null;
@@ -261,7 +261,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
-        primarySecurityGuard.SpawnRequirement = SpawnRequirement;
+        primarySecurityGuard.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             primarySecurityGuard.SpawnPosition = ped.Position;

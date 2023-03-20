@@ -60,6 +60,21 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active.")]
     public int PedSpawnLimit_Default { get; set; }
+
+
+    [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the wilderness zones")]
+    public int PedSpawnLimit_Default_Wilderness { get; set; }
+    [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the rural zones")]
+    public int PedSpawnLimit_Default_Rural { get; set; }
+    [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the suburb zones")]
+    public int PedSpawnLimit_Default_Suburb { get; set; }
+    [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the industrial zones")]
+    public int PedSpawnLimit_Default_Industrial { get; set; }
+    [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the downtown zones")]
+    public int PedSpawnLimit_Default_Downtown { get; set; }
+
+
+
     [Description("Maximum police peds that can be spawned when you are not wanted and an investigation is active.")]
     public int PedSpawnLimit_Investigation { get; set; }
     [Description("Maximum police peds that can be spawned when you are at wanted level 1.")]
@@ -74,8 +89,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int PedSpawnLimit_Wanted5 { get; set; }
     [Description("Maximum police peds that can be spawned when you are at wanted level 6.")]
     public int PedSpawnLimit_Wanted6 { get; set; }
-
-
     [Description("Maximum police peds that can be spawned when you are at wanted level 7.")]
     public int PedSpawnLimit_Wanted7 { get; set; }
     [Description("Maximum police peds that can be spawned when you are at wanted level 8.")]
@@ -89,6 +102,21 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active.")]
     public int VehicleSpawnLimit_Default { get; set; }
+
+
+    [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the wilderness zones")]
+    public int VehicleSpawnLimit_Default_Wilderness { get; set; }
+    [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the rural zones")]
+    public int VehicleSpawnLimit_Default_Rural { get; set; }
+    [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the suburb zones")]
+    public int VehicleSpawnLimit_Default_Suburb { get; set; }
+    [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the industrial zones")]
+    public int VehicleSpawnLimit_Default_Industrial { get; set; }
+    [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the downtown zones")]
+    public int VehicleSpawnLimit_Default_Downtown { get; set; }
+
+
+
     [Description("Maximum police vehicles that can be spawned when you are not wanted and an investigation is active.")]
     public int VehicleSpawnLimit_Investigation { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are at wanted level 1.")]
@@ -103,7 +131,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int VehicleSpawnLimit_Wanted5 { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are at wanted level 6.")]
     public int VehicleSpawnLimit_Wanted6 { get; set; }
-
     [Description("Maximum police vehicles that can be spawned when you are at wanted level 7.")]
     public int VehicleSpawnLimit_Wanted7 { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are at wanted level 8.")]
@@ -232,6 +259,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         ManageDispatching = true;
      
         PedSpawnLimit_Default = 7;
+        PedSpawnLimit_Default_Wilderness = 2;
+        PedSpawnLimit_Default_Rural = 3;
+        PedSpawnLimit_Default_Suburb = 4;
+        PedSpawnLimit_Default_Industrial = 5;
+        PedSpawnLimit_Default_Downtown = 7;
+
+
         PedSpawnLimit_Investigation = 8;
         PedSpawnLimit_Wanted1 = 9;
         PedSpawnLimit_Wanted2 = 10;
@@ -246,6 +280,12 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         PedSpawnLimit_Wanted10 = 26;
 
         VehicleSpawnLimit_Default = 9;
+        VehicleSpawnLimit_Default_Wilderness = 2;
+        VehicleSpawnLimit_Default_Rural = 3;
+        VehicleSpawnLimit_Default_Suburb = 3;
+        VehicleSpawnLimit_Default_Industrial = 4;
+        VehicleSpawnLimit_Default_Downtown = 9;
+
         VehicleSpawnLimit_Investigation = 10;
         VehicleSpawnLimit_Wanted1 = 11;
         VehicleSpawnLimit_Wanted2 = 12;

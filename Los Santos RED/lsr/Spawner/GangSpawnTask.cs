@@ -37,7 +37,7 @@ public class GangSpawnTask : SpawnTask
         ShopMenus = shopMenus;
         World = world;
     }
-    public SpawnRequirement SpawnRequirement { get; set; }
+    public TaskRequirements SpawnRequirement { get; set; }
     public bool ClearArea { get; set; } = false;
     private bool HasGang => Gang != null;
     private bool HasPersonToSpawn => PersonType != null;
@@ -279,7 +279,7 @@ public class GangSpawnTask : SpawnTask
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
-        GangMember.SpawnRequirement = SpawnRequirement;
+        GangMember.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;

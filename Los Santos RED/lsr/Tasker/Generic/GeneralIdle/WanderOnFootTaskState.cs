@@ -76,7 +76,7 @@ class WanderOnFootTaskState : TaskState
         {
             return;
         }
-        if (PedGeneral.SpawnRequirement.Equals(SpawnRequirement.None))
+        if (PedGeneral.TaskRequirements.Equals(TaskRequirements.None))
         {
             if (PedGeneral.IsAmbientSpawn)
             {
@@ -90,11 +90,11 @@ class WanderOnFootTaskState : TaskState
         else
         {
             HasSpawnRequirements = true;
-            if (PedGeneral.SpawnRequirement.HasFlag(SpawnRequirement.Guard))
+            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.Guard))
             {
                 canGuard = true;
             }
-            if (PedGeneral.SpawnRequirement.HasFlag(SpawnRequirement.Patrol))
+            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.Patrol))
             {
                 canPatrol = true;
             }
@@ -167,21 +167,33 @@ class WanderOnFootTaskState : TaskState
         List<string> NonDealerScenarios = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" };
         List<string> AllScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD", "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" };
         List<string> NormalScenarios = new List<string>() { "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" };
+        List<string> BasicScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" };
+
         string ScenarioChosen = "WORLD_HUMAN_STAND_IMPATIENT";
-        
+
+        if (BlockPermanentEvents)
+        {
+            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            PedGeneral.Pedestrian.KeepTasks = true;
+        }
+
         if (HasSpawnRequirements)
         {
-            if (PedGeneral.SpawnRequirement.HasFlag(SpawnRequirement.AnyScenario))
+            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.AnyScenario))
             {
                 ScenarioChosen = AllScenarios.PickRandom();
             }
-            else if (PedGeneral.SpawnRequirement.HasFlag(SpawnRequirement.StandardScenario))
+            else if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.StandardScenario))
             {
                 ScenarioChosen = NormalScenarios.PickRandom();
             }
-            else if (PedGeneral.SpawnRequirement.HasFlag(SpawnRequirement.LocalScenario))
+            else if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.LocalScenario))
             {
                 useLocal = true;
+            }
+            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.BasicScenario))
+            {
+                ScenarioChosen = BasicScenarios.PickRandom();
             }
         }
         else if (ForceStandardScenarios)
@@ -236,18 +248,15 @@ class WanderOnFootTaskState : TaskState
         {
             return;
         }
-        if (PedGeneral.Pedestrian.Exists())
+        if (BlockPermanentEvents)
         {
-            if (BlockPermanentEvents)
-            {
-                PedGeneral.Pedestrian.BlockPermanentEvents = true;
-                PedGeneral.Pedestrian.KeepTasks = true;
-            }
-            NativeFunction.Natives.TASK_WANDER_STANDARD(PedGeneral.Pedestrian, 0, 0);
-            //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
-            GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(MinGameTimeBetweenFootPatrols, MaxGameTimeBetweenFootPatrols);
-            GameTimeLastStartedFootPatrol = Game.GameTime;
+            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            PedGeneral.Pedestrian.KeepTasks = true;
         }
+        NativeFunction.Natives.TASK_WANDER_STANDARD(PedGeneral.Pedestrian, 0, 0);
+        //NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
+        GameTimeBetweenFootPatrols = RandomItems.GetRandomNumber(MinGameTimeBetweenFootPatrols, MaxGameTimeBetweenFootPatrols);
+        GameTimeLastStartedFootPatrol = Game.GameTime;     
     }
 }
 

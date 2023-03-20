@@ -68,7 +68,7 @@ public class Agency
     public List<IssuableWeapon> LessLethalWeapons { get; set; } = new List<IssuableWeapon>();
     public string ColorInitials => ColorPrefix + ShortName;
     public Color Color => Color.FromName(ColorString);
-    public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : ResponseType.LawEnforcement;
+    public ResponseType ResponseType => Classification == Classification.EMS ? ResponseType.EMS : Classification == Classification.Fire ? ResponseType.Fire : Classification == Classification.Security ? ResponseType.Security : ResponseType.LawEnforcement;
     public bool CanSpawn(int wantedLevel) => wantedLevel >= MinWantedLevelSpawn && wantedLevel <= MaxWantedLevelSpawn;
     public DispatchablePerson GetSpecificPed(Ped ped)// List<string> RequiredModels)
     {

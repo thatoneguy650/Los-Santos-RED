@@ -3,8 +3,9 @@
 public class PoliceSettings : ISettingsDefaultable
 {
 
-    [Description("Show the vanilla police blip")]
-    public bool ShowVanillaBlips { get; set; }
+    [Description("Attach a blip to any ambient police peds.")]
+    public bool AttachBlipsToAmbientPeds { get; set; }
+
     [Description("Enable or disable the non-vanilla wanted system. (Not recommended to disable)")]
     public bool UseFakeWantedLevelSystem { get; set; }
     [Description("If enabled, only LSR will be able to set the wanted level.")]
@@ -12,27 +13,12 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
 
-
-
-
-
-
-
-
-
-
-
-
-    //[Description("If enabled, any observed crime that results in deadly chase will automatically increase the wanted level to a set number (if less)")]
-    //public bool DeadlyChaseRequiresWantedLevel { get; set; }
-
     [Description("Any observed crime that results in deadly chase will automatically increase the wanted level to this number if less than current.")]
     public int DeadlyChaseWantedLevelRequirement { get; set; }
-
-
-
     [Description("Maximum wanted level allowed. Default/Recommended = 6. Maximum = 10.")]
     public int MaxWantedLevel { get; set; }
+
+
     [Description("Enable or Disable accuracy override")]
     public bool OverrideAccuracy { get; set; }
     [Description("Enable or disable health override")]
@@ -89,7 +75,6 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
 
 
-
     [Description("Time (in ms) at wanted level 6 required to increase wanted level to 7.")]
     public uint WantedLevelIncreaseTime_FromWanted6 { get; set; }
     [Description("Time (in ms) at wanted level 7 required to increase wanted level to 8).")]
@@ -100,24 +85,21 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted9 { get; set; }
 
 
-
-
-
     [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
     public uint SearchTimeMultiplier { get; set; }
 
-
+    [Description("Force the default weapon animation set on spawned or ambient police. Mostly used for freemode police.")]
     public bool ForceDefaultWeaponAnimations { get; set; }
+    [Description("Allows police to be aware of hurt peds in the world. Required for police to call EMS.")]
     public bool AllowPoliceToCallEMTsOnBodies { get; set; }
 
 
-
-
-
-
-
+    [Description("Minimum crime priority reported to trigger a medium response from the police during investigation.")]
     public int MediumResponseInvestigationActiveCrimePriorityRequirement { get; set; }
+
+    [Description("Minimum wanted level required to trigger a full response from the polce. Determines how fast they will drive to the wanted area.")]
     public int FullResponseWantedLevelRequirement { get; set; }
+    [Description("Minimum wanted level required to trigger a high response from the polce. Determines how fast they will drive to the wanted area.")]
     public int HighResponseWantedLevelRequirement { get; set; }
 
     public PoliceSettings()
@@ -137,7 +119,7 @@ public class PoliceSettings : ISettingsDefaultable
         TakeExclusiveControlOverWantedLevel = true;
         TakeExclusiveControlOverWantedLevelOneStarAndBelow = false;
 
-        ShowVanillaBlips = false;
+        AttachBlipsToAmbientPeds = false;
         OverrideAccuracy = true;
         AutoRecognizeDistance = 15f;
         AlwaysRecognizeDistance = 7f;

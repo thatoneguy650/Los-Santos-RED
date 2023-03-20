@@ -386,7 +386,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
     public bool WasModSpawned { get; set; } = false;
-    public SpawnRequirement SpawnRequirement { get; set; } = SpawnRequirement.None;
+    public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
     public Vector3 SpawnLocation { get; set; }
     public float SpawnHeading { get; set; }
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
