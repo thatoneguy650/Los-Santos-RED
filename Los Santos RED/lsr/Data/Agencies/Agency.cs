@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 using static DispatchScannerFiles;
 
 [Serializable()]
-public class Agency
+public class Agency : IPlatePrefixable
 {
     private int beatNumber = 0;
     public Agency()

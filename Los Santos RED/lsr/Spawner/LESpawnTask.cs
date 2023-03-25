@@ -224,7 +224,10 @@ public class LESpawnTask : SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
             }
-            CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
+            VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
+            CreatedVehicle.UpgradePerformance();
+            CreatedVehicle.UpdatePlatePrefix(Agency);
+            //CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
             CreatedVehicles.Add(CreatedVehicle);           
             return CreatedVehicle;
         }

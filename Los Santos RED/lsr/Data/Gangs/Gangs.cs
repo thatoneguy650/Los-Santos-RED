@@ -129,6 +129,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2500,
 
             DrugDealerPercentage = 40f,
+            LicensePlatePrefix = "LOST",
         };//Meth
         Vagos = new Gang("~y~", "AMBIENT_GANG_MEXICAN", "Vagos", "Vagos", "Yellow", "VagosPeds", "VagosVehicles", "", "MeleeWeapons", "VagosSidearms", "VagosLongGuns", "Vagos", "CHAR_BLANK_ENTRY", "Vagos Member")
         {
@@ -160,6 +161,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2200,
 
             DrugDealerPercentage = 55f,
+            LicensePlatePrefix = "VAGOS",
         };//marijuana
         Varrios = new Gang("~b~", "AMBIENT_GANG_SALVA", "Varrios Los Aztecas", "Varrios", "Blue", "VarriosPeds", "VarriosVehicles", "", "MeleeWeapons", "VarriosSidearms", "VarriosLongGuns", "Varrios", "CHAR_BLANK_ENTRY", "Varrios Member")
         {
@@ -191,6 +193,7 @@ public class Gangs : IGangs
             MemberKickUpAmount = 2200,
 
             DrugDealerPercentage = 50f,
+            LicensePlatePrefix = "VARRIOS",
         };//crack//Varrios are light blue
         Marabunte = new Gang("~b~", "AMBIENT_GANG_MARABUNTE", "Marabunta Grande", "Marabunta", "Blue", "MarabuntaPeds", "MarabuntaVehicles", "", "MeleeWeapons", "MarabuntaSidearms", "MarabuntaLongGuns", "Marabunta", "CHAR_BLANK_ENTRY", "Marabunta Member")
         {

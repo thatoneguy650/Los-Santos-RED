@@ -1,8 +1,12 @@
-﻿using Rage;
+﻿using ExtensionsMethods;
+using LSR.Vehicles;
+using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+
 [Serializable]
 public class DispatchableVehicle
 {
@@ -65,5 +69,93 @@ public class DispatchableVehicle
         AmbientSpawnChance = ambientSpawnChance;
         WantedSpawnChance = wantedSpawnChance;
     }
+
+
+    public void SetVehicleExtPermanentStats(VehicleExt vehicleExt, bool SetPersistent)
+    {
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (SetPersistent)
+        {
+            vehicleExt.Vehicle.IsPersistent = true;
+            EntryPoint.PersistentVehiclesCreated++;
+        }
+        else
+        {
+            vehicleExt.Vehicle.IsPersistent = false;
+        }
+        //if (agency != null)
+        //{
+        //    UpdateLivery(vehicleExt, agency);
+        //    GameFiber.Yield();
+        //    UpgradePerformance(vehicleExt);
+        //    GameFiber.Yield();
+        //}
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+
+        if (RequiredLiveries == null || !RequiredLiveries.Any())
+        {
+            return;
+        }
+        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
+
+
+        //AssociatedGang = gang;
+        if (VehicleExtras != null)
+        {
+            foreach (DispatchableVehicleExtra extra in VehicleExtras.OrderBy(x => x.ExtraID).ThenBy(x => x.IsOn))
+            {
+                if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(vehicleExt.Vehicle, extra.ExtraID))
+                {
+                    int toSet = extra.IsOn ? 0 : 1;
+                    if (RandomItems.RandomPercent(extra.Percentage))
+                    {
+                        NativeFunction.Natives.SET_VEHICLE_EXTRA(vehicleExt.Vehicle, extra.ExtraID, toSet);
+                    }
+                }
+            }
+        }
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+        if (RequiredPrimaryColorID != -1)
+        {
+            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
+        }
+        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, 15.0f));
+        RequiredVariation?.Apply(vehicleExt);
+        GameFiber.Yield();
+    }
+    //public void UpgradePerformance(VehicleExt vehicleExt)//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
+    //{
+    //    if (vehicleExt.Vehicle.Exists() || vehicleExt.Vehicle.IsHelicopter)
+    //    {
+    //        return;
+    //    }
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", vehicleExt.Vehicle, 0);//Required to work
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 11) - 1, true);//Engine
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 12) - 1, true);//Brakes
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 13) - 1, true);//Tranny
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 15) - 1, true);//Suspension
+    //}
+    //public void UpdateLivery(VehicleExt vehicleExt,Agency AssignedAgency)
+    //{
+    //    if (AssignedAgency == null)
+    //    {
+    //        return;
+    //    }
+    //    vehicleExt.Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
+    //    if (RequiredLiveries == null || !RequiredLiveries.Any())
+    //    {
+    //        return;
+    //    }
+    //    NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
+    //}
 
 }

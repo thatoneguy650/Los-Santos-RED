@@ -49,14 +49,10 @@ public class EMSDispatcher
     private List<EMT> DeletableOfficers => World.Pedestrians.EMTList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => Player.IsWanted ? 600f : 1300f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 500f;
-    //private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedEMTs == 0;
-    //private bool HasNeedToDispatchToStations => Settings.SettingsManager.EMSSettings.AllowStationSpawning;
     private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;
     private float MaxDistanceToSpawn => Settings.SettingsManager.EMSSettings.MaxDistanceToSpawn;//150f;
     private float MinDistanceToSpawn => Settings.SettingsManager.EMSSettings.MinDistanceToSpawn;//50f;
-                                                                                                // private int TimeBetweenSpawn => 60000;
-
     private bool HasNeedToDispatch
     {
         get
@@ -73,7 +69,7 @@ public class EMSDispatcher
             {
                 return false;
             }
-            if (World.Pedestrians.TotalSpawnedEMTs > AmbientMemberLimitForZoneType)
+            if (World.Pedestrians.TotalSpawnedEMTs >= AmbientMemberLimitForZoneType)
             {
                 return false;
             }
@@ -95,6 +91,10 @@ public class EMSDispatcher
             if (Settings.SettingsManager.EMSSettings.AllowStationSpawningWhenPlayerWanted && Player.WantedLevel > Settings.SettingsManager.EMSSettings.StationSpawningWhenPlayerWantedMaxWanted)
             {
                 return false;
+            }
+            if(Settings.SettingsManager.EMSSettings.StationSpawningIgnoresLimits)
+            {
+                return true;
             }
             if (World.Pedestrians.TotalSpawnedEMTs > Settings.SettingsManager.EMSSettings.TotalSpawnedMembersLimit)
             {
@@ -129,6 +129,10 @@ public class EMSDispatcher
             {
                 AmbientMemberLimit = Settings.SettingsManager.EMSSettings.TotalSpawnedAmbientMembersLimit_Downtown;
             }
+            if(Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+            {
+                AmbientMemberLimit = Settings.SettingsManager.EMSSettings.TotalSpawnedAmbientMembersLimit_Investigation;
+            }
             return AmbientMemberLimit;
         }
     }
@@ -138,7 +142,11 @@ public class EMSDispatcher
         get
         {
             int TotalTimeBetweenSpawns = Settings.SettingsManager.EMSSettings.TimeBetweenSpawn;
-            if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+            if(Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+            {
+                TotalTimeBetweenSpawns += 0;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
                 TotalTimeBetweenSpawns += Settings.SettingsManager.EMSSettings.TimeBetweenSpawn_WildernessAdditional;
             }
@@ -166,7 +174,11 @@ public class EMSDispatcher
         get
         {
             int ambientSpawnPercent = Settings.SettingsManager.EMSSettings.AmbientSpawnPercentage;
-            if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+            if (Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.EMSSettings.AmbientSpawnPercentage_Investigation;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {
                 ambientSpawnPercent = Settings.SettingsManager.EMSSettings.AmbientSpawnPercentage_Wilderness;
             }
@@ -240,21 +252,13 @@ public class EMSDispatcher
             return;
         }  
         bool shouldRun = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
-        if (shouldRun)
-        {
-            EntryPoint.WriteToConsole($"AMBIENT EMS SPAWN RUNNING: %{PercentageOfAmbientSpawn}");
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"AMBIENT EMS SPAWN CANCELLED: %{PercentageOfAmbientSpawn}");
-        }
+        EntryPoint.WriteToConsole($"AMBIENT EMS SPAWN shouldRun{shouldRun}: %{PercentageOfAmbientSpawn}");
         HasDispatchedThisTick = true;
         if (shouldRun && GetSpawnLocation() && GetSpawnTypes(false, null))
         {
             CallSpawnTask(false, true, TaskRequirements.None);
-        }
-        GameTimeAttemptedDispatch = Game.GameTime;
-        
+            GameTimeAttemptedDispatch = Game.GameTime;
+        }   
     }
     private void HandleStationSpawns()
     {
@@ -267,7 +271,7 @@ public class EMSDispatcher
                     bool spawnedsome = false;
                     foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                     {
-                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.EMSSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
+                        if (RandomItems.RandomPercent(cl.Percentage) && HasNeedToDispatchToStations)
                         {
                             HasDispatchedThisTick = true;
                             SpawnLocation = new SpawnLocation(cl.Location);

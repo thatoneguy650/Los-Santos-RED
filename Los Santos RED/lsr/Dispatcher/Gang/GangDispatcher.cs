@@ -99,7 +99,11 @@ public class GangDispatcher
             {
                 return false;
             }
-            if (World.Pedestrians.TotalSpawnedGangMembers > Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit)
+            if(Settings.SettingsManager.GangSettings.DenSpawningIgnoresLimits)
+            {
+                return true;
+            }
+            if (World.Pedestrians.TotalSpawnedGangMembers >= Settings.SettingsManager.GangSettings.TotalSpawnedMembersLimit)
             {
                 return false;
             }
@@ -196,18 +200,14 @@ public class GangDispatcher
     public int LikelyHoodOfAnySpawn => Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     public int LikelyHoodOfDenSpawnWhenNear => Settings.SettingsManager.GangSettings.PercentageSpawnNearDen;
     public bool Dispatch()
-    {
-        
+    {      
         HasDispatchedThisTick = false;
         if (Settings.SettingsManager.GangSettings.ManageDispatching)
         {
             HandleAmbientSpawns();
             HandleDenSpawns();
         }
-
        // EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
-
-
         return HasDispatchedThisTick;
     }
     public void LocationDispatch()
@@ -224,18 +224,20 @@ public class GangDispatcher
     }
     public void Recall()
     {
-        if (IsTimeToRecall)
+        if(!IsTimeToRecall)
         {
-            foreach (GangMember emt in DeleteableGangMembers)
-            {
-                if (ShouldBeRecalled(emt))
-                {
-                    Delete(emt);
-                    GameFiber.Yield();
-                }
-            }
-            GameTimeAttemptedRecall = Game.GameTime;
+            return;
         }
+        foreach (GangMember emt in DeleteableGangMembers)
+        {
+            if (ShouldBeRecalled(emt))
+            {
+                Delete(emt);
+                GameFiber.Yield();
+            }
+        }
+        GameTimeAttemptedRecall = Game.GameTime;
+        
     }
     private void HandleAmbientSpawns()
     {
@@ -245,21 +247,15 @@ public class GangDispatcher
         }
         HasDispatchedThisTick = true;//up here for now, might be better down low
         bool shouldRun = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
-        if(shouldRun)
-        {
-            EntryPoint.WriteToConsole($"AMBIENT GANG SPAWN RUNNING: %{PercentageOfAmbientSpawn}");
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"AMBIENT GANG SPAWN CANCELLED: %{PercentageOfAmbientSpawn}");
-        }
-
+        EntryPoint.WriteToConsole($"AMBIENT GANG SPAWN shouldRun{shouldRun}: %{PercentageOfAmbientSpawn}");
         if (shouldRun && GetSpawnLocation() && GetSpawnTypes(false,false, null))
         {
             EntryPoint.WriteToConsole($"AMBIENT GANG CALLED SPAWN TASK");
-            CallSpawnTask(false, true, false, false, TaskRequirements.None);
-        }
-        GameTimeAttemptedDispatch = Game.GameTime;     
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
+            {
+                GameTimeAttemptedDispatch = Game.GameTime;
+            }
+        }     
     }
     private void HandleDenSpawns()
     {
@@ -276,7 +272,7 @@ public class GangDispatcher
                 {
                     foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                     {
-                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.GangSettings.DenSpawningIgnoresLimits || HasNeedToDispatch))
+                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.GangSettings.DenSpawningIgnoresLimits || HasNeedToDispatchToDens))
                         {
                             HasDispatchedThisTick = true;
                             SpawnLocation = new SpawnLocation(cl.Location);
@@ -297,7 +293,7 @@ public class GangDispatcher
                 {
                     foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                     {
-                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.GangSettings.DenSpawningIgnoresLimits || HasNeedToDispatch))
+                        if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.GangSettings.DenSpawningIgnoresLimits || HasNeedToDispatchToDens))
                         {
                             HasDispatchedThisTick = true;
                             SpawnLocation = new SpawnLocation(cl.Location);
@@ -441,7 +437,7 @@ public class GangDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -457,10 +453,12 @@ public class GangDispatcher
             gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
             gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
             HasDispatchedThisTick = true;
+            return gangSpawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());
         }
         catch (Exception ex)
         {
             EntryPoint.WriteToConsole($"Gang Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return false;
         }
     }
     private bool ShouldBeRecalled(GangMember emt)

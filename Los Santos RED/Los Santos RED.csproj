@@ -122,6 +122,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="lsr\Camera\CameraControl.cs" />
+    <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\Refueling.cs" />
     <Compile Include="lsr\Locations\Places\Interact\CarCrusher.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hospital\MedicalTreatment.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\IllicitMarketplace.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ILocationSetupable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
@@ -204,6 +206,8 @@
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\Settings\BurnerPhoneSettingTracker.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneAppIcon.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Other\BurnerPhoneSettingsIcon.cs" />
+    <Compile Include="lsr\Player\Cellphone\Contacts\KillerContact.cs" />
+    <Compile Include="lsr\Player\Cellphone\Interactions\KillerInteraction.cs" />
     <Compile Include="lsr\Player\Crime\WantedLevel.cs" />
     <Compile Include="lsr\Player\Equipment\ClipsetManager.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\AdvancedConversation.cs" />

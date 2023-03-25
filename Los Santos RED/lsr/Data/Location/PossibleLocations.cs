@@ -45,5 +45,6 @@ public class PossibleLocations
     public List<Morgue> Morgues { get; private set; } = new List<Morgue>();
     public List<SportingGoodsStore> SportingGoodsStores { get; private set; } = new List<SportingGoodsStore>();
     public List<Airport> Airports { get; private set; } = new List<Airport>();
+    public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
 }
 

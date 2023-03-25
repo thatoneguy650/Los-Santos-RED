@@ -603,7 +603,7 @@ public class WeaponItem : ModItem
                     }
                     foreach (WeaponComponent wc in WeaponInformation.PossibleComponents.Where(x => x.ComponentSlot == myComponent.ComponentSlot))
                     {
-                        if (NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, wc.Hash))
+                        if (transaction.SellingProp.Exists() && NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, wc.Hash))
                         {
                             NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(transaction.SellingProp, wc.Hash);
                         }
@@ -616,7 +616,7 @@ public class WeaponItem : ModItem
                     {
                         if (NativeFunction.Natives.DOES_WEAPON_TAKE_WEAPON_COMPONENT<bool>(WeaponInformation.Hash, myComponent.Hash))
                         {
-                            if (!NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, myComponent.Hash))
+                            if (transaction.SellingProp.Exists() && !NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, myComponent.Hash))
                             {
                                 NativeFunction.Natives.GIVE_WEAPON_COMPONENT_TO_WEAPON_OBJECT(transaction.SellingProp, myComponent.Hash);
                             }
@@ -631,7 +631,7 @@ public class WeaponItem : ModItem
                 {
                     foreach (WeaponComponent wc in WeaponInformation.PossibleComponents.Where(x => x.ComponentSlot.ToString() == item.Text))
                     {
-                        if (NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, wc.Hash))
+                        if (transaction.SellingProp.Exists() && NativeFunction.Natives.HAS_WEAPON_GOT_WEAPON_COMPONENT<bool>(transaction.SellingProp, wc.Hash))
                         {
                             NativeFunction.Natives.REMOVE_WEAPON_COMPONENT_FROM_WEAPON_OBJECT(transaction.SellingProp, wc.Hash);
                         }

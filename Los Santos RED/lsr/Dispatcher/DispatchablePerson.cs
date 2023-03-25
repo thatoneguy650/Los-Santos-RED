@@ -130,6 +130,58 @@ public class DispatchablePerson
     public bool IsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
 
 
+    public void SetPedExtPermanentStats(PedExt pedExt, bool overrideHealth, bool overrideArmor, bool overrideAccuracy)
+    {
+        pedExt.Accuracy = RandomItems.GetRandomNumberInt(AccuracyMin, AccuracyMax);
+        pedExt.ShootRate = RandomItems.GetRandomNumberInt(ShootRateMin, ShootRateMax);
+        pedExt.CombatAbility = RandomItems.GetRandomNumberInt(CombatAbilityMin, CombatAbilityMax);
+        pedExt.TaserAccuracy = RandomItems.GetRandomNumberInt(TaserAccuracyMin, TaserAccuracyMax);
+        pedExt.TaserShootRate = RandomItems.GetRandomNumberInt(TaserShootRateMin, TaserShootRateMax);
+        pedExt.VehicleAccuracy = RandomItems.GetRandomNumberInt(VehicleAccuracyMin, VehicleAccuracyMax);
+        pedExt.VehicleShootRate = RandomItems.GetRandomNumberInt(VehicleShootRateMin, VehicleShootRateMax);
+        pedExt.TurretAccuracy = RandomItems.GetRandomNumberInt(TurretAccuracyMin, TurretAccuracyMax);
+        pedExt.TurretShootRate = RandomItems.GetRandomNumberInt(TurretShootRateMin, TurretShootRateMax);
+        if (OverrideVoice != null && OverrideVoice.Any())
+        {
+            pedExt.VoiceName = OverrideVoice.PickRandom();
+        }
+        if (!pedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (DisableBulletRagdoll)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(pedExt.Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        }
+        if (DisableCriticalHits)
+        {
+            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(pedExt.Pedestrian, false);
+        }
+        pedExt.HasFullBodyArmor = HasFullBodyArmor;
+        if (FiringPatternHash != 0)
+        {
+            NativeFunction.Natives.SET_PED_FIRING_PATTERN(pedExt.Pedestrian, FiringPatternHash);
+        }
+        if (overrideHealth)
+        {
+            int health = RandomItems.GetRandomNumberInt(HealthMin, HealthMax) + 100;
+            pedExt.Pedestrian.MaxHealth = health;
+            pedExt.Pedestrian.Health = health;
+        }
+        if (overrideArmor)
+        {
+            int armor = RandomItems.GetRandomNumberInt(ArmorMin, ArmorMax);
+            pedExt.Pedestrian.Armor = armor;
+        }
+        if (overrideAccuracy)
+        {
+            pedExt.Pedestrian.Accuracy = pedExt.Accuracy;
+            NativeFunction.Natives.SET_PED_SHOOT_RATE(pedExt.Pedestrian, pedExt.ShootRate);
+            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
+        }
+    }
+
+
     public DispatchablePerson()
     {
 

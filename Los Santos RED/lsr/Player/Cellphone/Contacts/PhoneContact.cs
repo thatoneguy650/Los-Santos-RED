@@ -9,6 +9,7 @@ using System.Xml.Serialization;
 [XmlInclude(typeof(GunDealerContact))]
 [XmlInclude(typeof(EmergencyServicesContact))]
 [XmlInclude(typeof(CorruptCopContact))]
+[XmlInclude(typeof(KillerContact))]
 public class PhoneContact
 {
     public string Name { get; set; } = "Unknown"; 

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class Gang
+public class Gang : IPlatePrefixable
 {
     public Gang()
     {

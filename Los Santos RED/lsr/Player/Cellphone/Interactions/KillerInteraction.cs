@@ -10,10 +10,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GunDealerInteraction : IContactMenuInteraction
+public class KillerInteraction : IContactMenuInteraction
 {
     private IContactInteractable Player;
-    private UIMenu GunDealerMenu;
+    private UIMenu KillerMenu;
     private MenuPool MenuPool;
     private IGangs Gangs;
     private IPlacesOfInterest PlacesOfInterest;
@@ -25,9 +25,7 @@ public class GunDealerInteraction : IContactMenuInteraction
     private UIMenuItem GunPickup;
     private ISettingsProvideable Settings;
 
-    private GunDealerContact GunDealerContact;
-
-    public GunDealerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
+    public KillerInteraction(IContactInteractable player, IGangs gangs, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings)
     {
         Player = player;
         Gangs = gangs;
@@ -37,11 +35,11 @@ public class GunDealerInteraction : IContactMenuInteraction
     }
     public void Start(PhoneContact contact)
     {
-        AnsweredContact = GunDealerContact;
-        GunDealerMenu = new UIMenu("", "Select an Option");
-        GunDealerMenu.RemoveBanner();
-        MenuPool.Add(GunDealerMenu);
-        GunDealerMenu.OnItemSelect += OnTopItemSelect;
+        AnsweredContact = contact;
+        KillerMenu = new UIMenu("", "Select an Option");
+        KillerMenu.RemoveBanner();
+        MenuPool.Add(KillerMenu);
+        KillerMenu.OnItemSelect += OnTopItemSelect;
 
 
         GunPickup = new UIMenuItem("Gun Pickup", "Pickup some guns and bring them to a shop. ~r~WIP~s~") { RightLabel = $"~HUD_COLOUR_GREENDARK~{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMin:C0}-{Settings.SettingsManager.TaskSettings.UndergroundGunsGunPickupPaymentMax:C0}~s~" };
@@ -49,20 +47,20 @@ public class GunDealerInteraction : IContactMenuInteraction
         if (Player.PlayerTasks.HasTask(AnsweredContact.Name))
         {
             TaskCancel = new UIMenuItem("Cancel Task", "Tell the gun dealer you can't complete the task.") { RightLabel = "~o~$?~s~" };
-            GunDealerMenu.AddItem(TaskCancel);
+            KillerMenu.AddItem(TaskCancel);
         }
         else
         {
-            GunDealerMenu.AddItem(GunPickup);
+            KillerMenu.AddItem(GunPickup);
         }
         foreach (GunStore gl in PlacesOfInterest.PossibleLocations.GunStores)
         {
             if (gl.ContactName == AnsweredContact.Name && gl.IsEnabled)
             {
-                GunDealerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.FullStreetAddress));
+                KillerMenu.AddItem(new UIMenuItem(gl.Name, gl.Description + "~n~Address: " + gl.FullStreetAddress));
             }
         }
-        GunDealerMenu.Visible = true;
+        KillerMenu.Visible = true;
         GameFiber.StartNew(delegate
         {
             try

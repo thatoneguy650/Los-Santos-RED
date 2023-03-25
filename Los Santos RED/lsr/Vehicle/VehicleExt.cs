@@ -536,7 +536,7 @@ namespace LSR.Vehicles
         }
         public void UpgradePerformance()//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
         {
-            if(Vehicle.Exists() || Vehicle.IsHelicopter)
+            if (Vehicle.Exists() || Vehicle.IsHelicopter)
             {
                 return;
             }
@@ -546,72 +546,72 @@ namespace LSR.Vehicles
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 13) - 1, true);//Tranny
             NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", Vehicle, 15) - 1, true);//Suspension
         }
-        public void UpdateLivery(Agency AssignedAgency, DispatchableVehicle MyVehicle)
+        public void UpdatePlatePrefix(IPlatePrefixable AssignedAgency)
         {
-            if(AssignedAgency == null)
+            if (AssignedAgency == null)
             {
                 return;
             }
             Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
-            if (MyVehicle == null || MyVehicle.RequiredLiveries == null || !MyVehicle.RequiredLiveries.Any())
-            {
-                return;
-            }
-            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
+            //if (MyVehicle == null || MyVehicle.RequiredLiveries == null || !MyVehicle.RequiredLiveries.Any())
+            //{
+            //    return;
+            //}
+            //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
         }
-        public void SetSpawnItems(DispatchableVehicle VehicleType, Agency agency, Gang gang, bool SetPersistent)
-        {
-            if (!Vehicle.Exists())
-            {
-                return;
-            }
-            if (SetPersistent)
-            {
-                Vehicle.IsPersistent = true;
-                EntryPoint.PersistentVehiclesCreated++;
-            }
-            else
-            {
-                Vehicle.IsPersistent = false;
-            }
-            if (agency != null)
-            {
-                UpdateLivery(agency, VehicleType);
-                GameFiber.Yield();
-                UpgradePerformance();
-                GameFiber.Yield();
-            }
-            if (!Vehicle.Exists())
-            {
-                return;
-            }
-            AssociatedGang = gang; 
-            if (VehicleType.VehicleExtras != null)
-            {
-                foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras.OrderBy(x=> x.ExtraID).ThenBy(x=>x.IsOn))
-                {
-                    if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Vehicle, extra.ExtraID))
-                    {
-                        int toSet = extra.IsOn ? 0 : 1;
-                        if (RandomItems.RandomPercent(extra.Percentage))
-                        {
-                            NativeFunction.Natives.SET_VEHICLE_EXTRA(Vehicle, extra.ExtraID, toSet);
-                        }
-                    }
-                }
-            }
-            if (!Vehicle.Exists())
-            {
-                return;
-            }
-            if (VehicleType.RequiredPrimaryColorID != -1)
-            {
-                NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
-            }
-            NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Vehicle, RandomItems.GetRandomNumber(0.0f, 15.0f));
-            VehicleType.RequiredVariation?.Apply(this);
-            GameFiber.Yield();           
-        }
+        //public void SetSpawnItems(DispatchableVehicle VehicleType, Agency agency, Gang gang, bool SetPersistent)
+        //{
+        //    if (!Vehicle.Exists())
+        //    {
+        //        return;
+        //    }
+        //    if (SetPersistent)
+        //    {
+        //        Vehicle.IsPersistent = true;
+        //        EntryPoint.PersistentVehiclesCreated++;
+        //    }
+        //    else
+        //    {
+        //        Vehicle.IsPersistent = false;
+        //    }
+        //    if (agency != null)
+        //    {
+        //        UpdateLivery(agency, VehicleType);
+        //        GameFiber.Yield();
+        //        UpgradePerformance();
+        //        GameFiber.Yield();
+        //    }
+        //    if (!Vehicle.Exists())
+        //    {
+        //        return;
+        //    }
+        //    AssociatedGang = gang; 
+        //    if (VehicleType.VehicleExtras != null)
+        //    {
+        //        foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras.OrderBy(x=> x.ExtraID).ThenBy(x=>x.IsOn))
+        //        {
+        //            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Vehicle, extra.ExtraID))
+        //            {
+        //                int toSet = extra.IsOn ? 0 : 1;
+        //                if (RandomItems.RandomPercent(extra.Percentage))
+        //                {
+        //                    NativeFunction.Natives.SET_VEHICLE_EXTRA(Vehicle, extra.ExtraID, toSet);
+        //                }
+        //            }
+        //        }
+        //    }
+        //    if (!Vehicle.Exists())
+        //    {
+        //        return;
+        //    }
+        //    if (VehicleType.RequiredPrimaryColorID != -1)
+        //    {
+        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
+        //    }
+        //    NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Vehicle, RandomItems.GetRandomNumber(0.0f, 15.0f));
+        //    VehicleType.RequiredVariation?.Apply(this);
+        //    GameFiber.Yield();           
+        //}
         public void SetDriverWindow(bool RollDown)
         {
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))

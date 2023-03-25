@@ -50,15 +50,15 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
-    public int ShootRate { get; set; } = 500;
-    public int Accuracy { get; set; } = 40;
-    public int CombatAbility { get; set; } = 1;
-    public int TaserAccuracy { get; set; } = 30;
-    public int TaserShootRate { get; set; } = 100;
-    public int VehicleAccuracy { get; set; } = 10;
-    public int VehicleShootRate { get; set; } = 20;
-    public int TurretAccuracy { get; set; } = 30;
-    public int TurretShootRate { get; set; } = 1000;
+    public override int ShootRate { get; set; } = 500;
+    public override int Accuracy { get; set; } = 40;
+    public override int CombatAbility { get; set; } = 1;
+    public override int TaserAccuracy { get; set; } = 30;
+    public override int TaserShootRate { get; set; } = 100;
+    public override int VehicleAccuracy { get; set; } = 10;
+    public override int VehicleShootRate { get; set; } = 20;
+    public override int TurretAccuracy { get; set; } = 30;
+    public override int TurretShootRate { get; set; } = 1000;
     public CopAssistManager AssistManager { get; private set;}
     public CopVoice Voice { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
@@ -182,16 +182,18 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string UnitCode)
     {
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
-        Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
-        ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
-        CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
-        TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
-        TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
-        VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
-        VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
+        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+       
+        //Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
+        //ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
+        //CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
+        //TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
+        //TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
+        //VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
+        //VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
 
-        TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
-        TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
+        //TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
+        //TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
 
         if (AssignedAgency.Division != -1)
         {
@@ -204,10 +206,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GroupName = AssignedAgency.MemberName;
         }
-        if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
-        {
-            VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
-        }
+        //if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
+        //{
+        //    VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
+        //}
 
 
 
@@ -217,32 +219,32 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             return;
         }
 
-        if (dispatchablePerson.DisableBulletRagdoll)
-        {
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
-        }
-        if (dispatchablePerson.DisableCriticalHits)
-        {
-            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-        }
-        HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
-        if(dispatchablePerson.FiringPatternHash != 0)
-        {
-            NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
-        }
+        //if (dispatchablePerson.DisableBulletRagdoll)
+        //{
+        //    NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        //}
+        //if (dispatchablePerson.DisableCriticalHits)
+        //{
+        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        //}
+        //HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
+        //if(dispatchablePerson.FiringPatternHash != 0)
+        //{
+        //    NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+        //}
 
 
-        if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
-        {
-            int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
-            Pedestrian.MaxHealth = health;
-            Pedestrian.Health = health;
-        }
-        if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
-        {
-            int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
-            Pedestrian.Armor = armor;
-        }
+        //if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
+        //{
+        //    int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
+        //    Pedestrian.MaxHealth = health;
+        //    Pedestrian.Health = health;
+        //}
+        //if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
+        //{
+        //    int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
+        //    Pedestrian.Armor = armor;
+        //}
         if (addBlip)
         {
             Blip myBlip = Pedestrian.AttachBlip();

@@ -57,7 +57,7 @@ public class EMSSettings : ISettingsDefaultable
     public int TotalSpawnedAmbientMembersLimit_Suburb { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Industrial { get; set; }
 
-
+    public int TotalSpawnedAmbientMembersLimit_Investigation { get; set; }
 
     [Description("Percentage of the time to allow an ambient spawn. Minimum 0, maximum 100.")]
     public int AmbientSpawnPercentage { get; set; }
@@ -67,7 +67,7 @@ public class EMSSettings : ISettingsDefaultable
     public int AmbientSpawnPercentage_Industrial { get; set; }
     public int AmbientSpawnPercentage_Downtown { get; set; }
 
-
+    public int AmbientSpawnPercentage_Investigation { get; set; }
 
 
     [Description("If enabled, ambient spawns will happen regardless of the player wanted level. If disabled, gangs will not have ambient spawns when you are wanted.")]
@@ -102,33 +102,34 @@ public class EMSSettings : ISettingsDefaultable
 
 
 
-        TimeBetweenSpawn = 30000;//10000;
-        TimeBetweenSpawn_DowntownAdditional = 10000;
-        TimeBetweenSpawn_WildernessAdditional = 80000;
-        TimeBetweenSpawn_RuralAdditional = 60000;
-        TimeBetweenSpawn_SuburbAdditional = 20000;
-        TimeBetweenSpawn_IndustrialAdditional = 20000;
+        TimeBetweenSpawn = 60000;//10000;
+        TimeBetweenSpawn_DowntownAdditional = 20000;
+        TimeBetweenSpawn_WildernessAdditional = 90000;
+        TimeBetweenSpawn_RuralAdditional = 70000;
+        TimeBetweenSpawn_SuburbAdditional = 30000;
+        TimeBetweenSpawn_IndustrialAdditional = 30000;
 
 
         MinDistanceToSpawn = 350f;// 50f;
         MaxDistanceToSpawn = 1000f;// 150f;
 
         TotalSpawnedMembersLimit = 6;//5
-        TotalSpawnedAmbientMembersLimit = 4;// 8;
+        TotalSpawnedAmbientMembersLimit = 2;// 8;
 
-        TotalSpawnedAmbientMembersLimit_Downtown = 4;
+        TotalSpawnedAmbientMembersLimit_Downtown = 2;
         TotalSpawnedAmbientMembersLimit_Wilderness = 0;
         TotalSpawnedAmbientMembersLimit_Rural = 1;
         TotalSpawnedAmbientMembersLimit_Suburb = 2;
         TotalSpawnedAmbientMembersLimit_Industrial = 2;
+        TotalSpawnedAmbientMembersLimit_Investigation = 2;
 
-        AmbientSpawnPercentage = 40;
+        AmbientSpawnPercentage = 30;
         AmbientSpawnPercentage_Wilderness = 0;
-        AmbientSpawnPercentage_Rural = 10;
-        AmbientSpawnPercentage_Suburb = 25;
-        AmbientSpawnPercentage_Industrial = 35;
-        AmbientSpawnPercentage_Downtown = 50;
-
+        AmbientSpawnPercentage_Rural = 5;
+        AmbientSpawnPercentage_Suburb = 15;
+        AmbientSpawnPercentage_Industrial = 25;
+        AmbientSpawnPercentage_Downtown = 40;
+        AmbientSpawnPercentage_Investigation = 70;
 
         AllowStationSpawningWhenPlayerWanted = true;
         StationSpawningWhenPlayerWantedMaxWanted = 2;

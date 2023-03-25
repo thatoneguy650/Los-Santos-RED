@@ -209,7 +209,8 @@ public class EMTSpawnTask :SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
             }
-            CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
+            VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
+            CreatedVehicle.UpdatePlatePrefix(Agency);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }
@@ -241,7 +242,7 @@ public class EMTSpawnTask :SpawnTask
         {
             OccupantsToAdd = 0;
         }
-        SetupCallSigns();
+        //SetupCallSigns();
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
@@ -262,10 +263,14 @@ public class EMTSpawnTask :SpawnTask
         }
         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
-        if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        {
-            PrimaryEmt.VoiceName = PersonType.OverrideVoice.PickRandom();
-        }
+
+        PersonType.SetPedExtPermanentStats(PrimaryEmt, true, true, false);
+
+
+        //if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
+        //{
+        //    PrimaryEmt.VoiceName = PersonType.OverrideVoice.PickRandom();
+        //}
         if (AddBlip && ped.Exists())
         {
             Blip myBlip = ped.AttachBlip();
@@ -283,43 +288,43 @@ public class EMTSpawnTask :SpawnTask
         }
         return PrimaryEmt;
     }
-    private void SetupCallSigns()
-    {
-        if (PersonType.UnitCode != "")
-        {
-            UnitCode = PersonType.UnitCode;
-            NextBeatNumber = Agency.GetNextBeatNumber();
-        }
-        if (Agency != null && Agency.Division != -1)
-        {
-            if (VehicleType?.IsMotorcycle == true)
-            {
-                UnitCode = "Mary";
-            }
-            else if (VehicleType?.IsHelicopter == true)
-            {
-                UnitCode = "David";
-            }
-            else if (WillAddPassengers && OccupantsToAdd > 0 && VehicleType != null)
-            {
-                UnitCode = "Adam";
-            }
-            else if (VehicleType == null)
-            {
-                UnitCode = "Frank";
-            }
-            else
-            {
-                UnitCode = "Lincoln";
-            }
-            NextBeatNumber = Agency.GetNextBeatNumber();
-        }
-        else
-        {
-            UnitCode = "";
-            NextBeatNumber = 0;
-        }
-    }
+    //private void SetupCallSigns()
+    //{
+    //    if (PersonType.UnitCode != "")
+    //    {
+    //        UnitCode = PersonType.UnitCode;
+    //        NextBeatNumber = Agency.GetNextBeatNumber();
+    //    }
+    //    if (Agency != null && Agency.Division != -1)
+    //    {
+    //        if (VehicleType?.IsMotorcycle == true)
+    //        {
+    //            UnitCode = "Mary";
+    //        }
+    //        else if (VehicleType?.IsHelicopter == true)
+    //        {
+    //            UnitCode = "David";
+    //        }
+    //        else if (WillAddPassengers && OccupantsToAdd > 0 && VehicleType != null)
+    //        {
+    //            UnitCode = "Adam";
+    //        }
+    //        else if (VehicleType == null)
+    //        {
+    //            UnitCode = "Frank";
+    //        }
+    //        else
+    //        {
+    //            UnitCode = "Lincoln";
+    //        }
+    //        NextBeatNumber = Agency.GetNextBeatNumber();
+    //    }
+    //    else
+    //    {
+    //        UnitCode = "";
+    //        NextBeatNumber = 0;
+    //    }
+    //}
     private void SetupPed(Ped ped)
     {
         if (PlacePedOnGround)

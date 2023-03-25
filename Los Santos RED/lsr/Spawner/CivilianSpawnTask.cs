@@ -194,7 +194,10 @@ public class CivilianSpawnTask : SpawnTask
                 CreatedVehicle.Setup();
             }
             CreatedVehicle.WasModSpawned = true;
-            CreatedVehicle.SetSpawnItems(VehicleType, null, null, SetPersistent);
+            VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, SetPersistent);
+
+
+            //CreatedVehicle.SetSpawnItems(VehicleType, null, null, SetPersistent);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }

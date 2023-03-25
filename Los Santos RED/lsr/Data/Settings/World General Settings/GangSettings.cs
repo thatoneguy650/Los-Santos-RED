@@ -164,7 +164,7 @@ public class GangSettings : ISettingsDefaultable
         AllowAmbientSpawningWhenPlayerWanted = true;
 
         AllowDenSpawning = true;
-        DenSpawningIgnoresLimits = true;
+        DenSpawningIgnoresLimits = false;
         AllowDenSpawningWhenPlayerWanted = true;
 
 

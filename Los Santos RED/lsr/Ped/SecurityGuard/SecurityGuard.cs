@@ -174,51 +174,52 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     {
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
         WeaponInventory.SetDefault();
-        Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
-        ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
-        CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
-        TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
-        TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
-        VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
-        VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
-        TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
-        TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
+        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.SecuritySettings.OverrideHealth, Settings.SettingsManager.SecuritySettings.OverrideArmor, Settings.SettingsManager.SecuritySettings.OverrideAccuracy);
+        //Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
+        //ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
+        //CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
+        //TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
+        //TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
+        //VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
+        //VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
+        //TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
+        //TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
         if (AssignedAgency.MemberName != "")
         {
             GroupName = AssignedAgency.MemberName;
         }
-        if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
-        {
-            VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
-        }
+        //if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
+        //{
+        //    VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
+        //}
         if (!Pedestrian.Exists())
         {
             return;
         }
-        if (dispatchablePerson.DisableBulletRagdoll)
-        {
-            NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
-        }
-        if (dispatchablePerson.DisableCriticalHits)
-        {
-            NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-        }
-        HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
-        if (dispatchablePerson.FiringPatternHash != 0)
-        {
-            NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
-        }
-        if (Settings.SettingsManager.SecuritySettings.OverrideHealth)
-        {
-            int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
-            Pedestrian.MaxHealth = health;
-            Pedestrian.Health = health;
-        }
-        if (Settings.SettingsManager.SecuritySettings.OverrideArmor)
-        {
-            int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
-            Pedestrian.Armor = armor;
-        }
+        //if (dispatchablePerson.DisableBulletRagdoll)
+        //{
+        //    NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+        //}
+        //if (dispatchablePerson.DisableCriticalHits)
+        //{
+        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+        //}
+        //HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
+        //if (dispatchablePerson.FiringPatternHash != 0)
+        //{
+        //    NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+        //}
+        //if (Settings.SettingsManager.SecuritySettings.OverrideHealth)
+        //{
+        //    int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
+        //    Pedestrian.MaxHealth = health;
+        //    Pedestrian.Health = health;
+        //}
+        //if (Settings.SettingsManager.SecuritySettings.OverrideArmor)
+        //{
+        //    int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
+        //    Pedestrian.Armor = armor;
+        //}
         if (addBlip)
         {
             Blip myBlip = Pedestrian.AttachBlip();
@@ -264,12 +265,12 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
-        if (Settings.SettingsManager.SecuritySettings.OverrideAccuracy)
-        {
-            Pedestrian.Accuracy = Accuracy;
-            NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
-        }
+        //if (Settings.SettingsManager.SecuritySettings.OverrideAccuracy)
+        //{
+        //    Pedestrian.Accuracy = Accuracy;
+        //    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
+        //    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
+        //}
         Pedestrian.Money = 0;
     }
 }

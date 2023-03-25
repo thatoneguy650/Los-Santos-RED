@@ -227,7 +227,9 @@ public class GangSpawnTask : SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, ResponseType.None);
             }
-            CreatedVehicle.SetSpawnItems(VehicleType, null, Gang, true);
+            VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
+            CreatedVehicle.AssociatedGang = Gang;
+            CreatedVehicle.UpdatePlatePrefix(Gang);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
 
