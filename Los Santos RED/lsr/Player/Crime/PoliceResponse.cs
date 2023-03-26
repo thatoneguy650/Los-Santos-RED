@@ -405,7 +405,7 @@ namespace LosSantosRED.lsr
             }
             GameFiber.Yield();//TR 05
             CurrentRespondingPoliceCount = tasked;
-            //EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  
+            //EntryPoint.WriteToConsole($"Wanted Active, RespondingPolice {RespondingPolice} Total Tasked {tasked}");  //
         }
         private PoliceState GetPoliceState()
         {
