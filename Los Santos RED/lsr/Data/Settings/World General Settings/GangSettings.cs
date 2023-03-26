@@ -142,11 +142,11 @@ public class GangSettings : ISettingsDefaultable
         TotalSpawnedAmbientMembersLimit_Industrial = 4;
 
         AmbientSpawnPercentage = 40;
-        AmbientSpawnPercentage_Wilderness = 15;
-        AmbientSpawnPercentage_Rural = 25;
-        AmbientSpawnPercentage_Suburb = 35;
-        AmbientSpawnPercentage_Industrial = 40;
-        AmbientSpawnPercentage_Downtown = 50;
+        AmbientSpawnPercentage_Wilderness = 20;
+        AmbientSpawnPercentage_Rural = 35;
+        AmbientSpawnPercentage_Suburb = 45;
+        AmbientSpawnPercentage_Industrial = 45;
+        AmbientSpawnPercentage_Downtown = 55;
 
 
 

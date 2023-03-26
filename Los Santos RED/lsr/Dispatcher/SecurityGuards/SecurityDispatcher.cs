@@ -168,7 +168,7 @@ public class SecurityDispatcher
         if (GetSpawnTypes(forcePed, forceVehicle, toSpawn, cl.RequiredGroup))
         {
             EntryPoint.WriteToConsole($"Security Dispatcher, CALLING SPAWN TASK FOR {toSpawn.FullName} SpawnRequirement {cl.SpawnRequirement}");
-            CallSpawnTask(true, false, !isPed, cl.SpawnRequirement);
+            CallSpawnTask(true, false, true, !isPed, cl.SpawnRequirement);
         }      
     }
     private bool GetSpawnLocation()
@@ -224,7 +224,7 @@ public class SecurityDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool clearArea, TaskRequirements spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -233,10 +233,9 @@ public class SecurityDispatcher
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
             securitySpawnTask.ClearArea = clearArea;
-            securitySpawnTask.SpawnRequirement = spawnRequirement;
-            
+            securitySpawnTask.SpawnRequirement = spawnRequirement;  
             securitySpawnTask.AttemptSpawn();
-            securitySpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
         }
         catch (Exception ex)
@@ -405,7 +404,7 @@ public class SecurityDispatcher
         {
             PersonType = null;
         }
-        CallSpawnTask(true, false, true, TaskRequirements.None);
+        CallSpawnTask(true, false, false, true, TaskRequirements.None);
     }
 
 }

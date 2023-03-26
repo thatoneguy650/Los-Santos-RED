@@ -1177,7 +1177,7 @@ namespace Mod
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
-            else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())
+            else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())//maybe unlock friendly gang vehicles?maybe not
             {
                 EntryPoint.WriteToConsole($"IsFreeToEnter: FALSE SERVICE OR GANG, SET LOCKED");
                 return false;
@@ -1586,25 +1586,6 @@ namespace Mod
             EntryPoint.FocusCellY = CellY;
             EntryPoint.FocusZone = CurrentLocation?.CurrentZone;
             EntryPoint.FocusPosition = position;
-
-            //if (IsSleeping && IsNotWanted && !Investigation.IsActive && !Investigation.IsSuspicious)
-            //{
-            //    if (!TimeControllable.IsFastForwarding)
-            //    {
-            //        TimeControllable.FastForward(999);
-            //    }
-            //}
-            //else
-            //{
-            //    if (TimeControllable.IsFastForwarding)
-            //    {
-            //        TimeControllable.StopFastForwarding();
-            //    }
-            //}
-
-
-
-
 
 
 

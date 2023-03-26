@@ -240,12 +240,12 @@ public class TrafficViolations
                 if(IsRegularSpeeding)
                 {
                     GameTimeStartedSpeeding = Game.GameTime;
-                    EntryPoint.WriteToConsole("STARTED REGULAR SPEEDING");
+                    //EntryPoint.WriteToConsole("STARTED REGULAR SPEEDING");
                 }
                 else
                 {
                     GameTimeStartedSpeeding = 0;
-                    EntryPoint.WriteToConsole("ENDED REGULAR SPEEDING");
+                    //EntryPoint.WriteToConsole("ENDED REGULAR SPEEDING");
                 }
                 isRegularSpeeding = IsRegularSpeeding;
             }
@@ -255,12 +255,12 @@ public class TrafficViolations
                 if (IsFelonySpeeding)
                 {
                     GameTimeStartedFelonySpeeding = Game.GameTime;
-                    EntryPoint.WriteToConsole("STARTED FELONY SPEEDING");
+                    //EntryPoint.WriteToConsole("STARTED FELONY SPEEDING");
                 }
                 else
                 {
                     GameTimeStartedFelonySpeeding = 0;
-                    EntryPoint.WriteToConsole("ENDED FELONY SPEEDING");
+                    //EntryPoint.WriteToConsole("ENDED FELONY SPEEDING");
                 }
                 isFelonySpeeding = IsFelonySpeeding;
             }

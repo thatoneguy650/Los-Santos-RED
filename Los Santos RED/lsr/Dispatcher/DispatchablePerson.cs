@@ -87,6 +87,12 @@ public class DispatchablePerson
     public bool HasFullBodyArmor { get; set; } = false;
     public int FiringPatternHash { get; set; } = 0;
 
+
+    public List<PedConfigFlagToSet> PedConfigFlagsToSet { get; set; }
+    public List<CombatAttributeToSet> CombatAttributesToSet { get; set; }
+    public List<CombatFloatToSet> CombatFloatsToSet { get; set; }
+    public float FaceFeatureRandomizePercentage { get; set; } = 90f;
+
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -179,6 +185,20 @@ public class DispatchablePerson
             NativeFunction.Natives.SET_PED_SHOOT_RATE(pedExt.Pedestrian, pedExt.ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
         }
+        if(PedConfigFlagsToSet != null && PedConfigFlagsToSet.Any())
+        {
+            PedConfigFlagsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
+        }
+        if (CombatAttributesToSet != null && CombatAttributesToSet.Any())
+        {
+            CombatAttributesToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
+        }
+        if (CombatFloatsToSet != null && CombatFloatsToSet.Any())
+        {
+            CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
+        }
+        //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_DISABLE_ENTRY_REACTIONS, true);
+
     }
 
 
@@ -455,7 +475,7 @@ public class DispatchablePerson
             {
                 return;
             }
-            if(RandomItems.RandomPercent(40f))
+            if(RandomItems.RandomPercent(FaceFeatureRandomizePercentage))
             {
                 float newScale = RandomItems.GetRandomNumber(faceFeature.RangeLow, faceFeature.RangeHigh);
                 NativeFunction.Natives.x71A5C1DBA060049E(ped, faceFeature.Index, newScale);

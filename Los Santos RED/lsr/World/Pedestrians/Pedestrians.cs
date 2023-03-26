@@ -116,7 +116,9 @@ public class Pedestrians : ITaskerReportable
     public bool AnyNooseUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
     public int TotalSpawnedPolice => Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedAmbientEMTs => EMTs.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedAmbientGangMembers => GangMembers.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedFirefighters => Firefighters.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedZombies => Zombies.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public void Setup()
@@ -949,9 +951,9 @@ public class Pedestrians : ITaskerReportable
         {
             ZoneAgencies = Jurisdictions.GetAgencies(ZoneName, WantedLevel, responseType);
         }
+        DispatchablePerson dispatchablePerson;
         if (ZoneAgencies != null)
         {
-            DispatchablePerson dispatchablePerson;
             foreach (Agency agency in ZoneAgencies)
             {
                 dispatchablePerson = agency.GetSpecificPed(ped);
@@ -960,15 +962,16 @@ public class Pedestrians : ITaskerReportable
                     return (agency, dispatchablePerson);
                 }
             }
-            foreach (Agency agency in Agencies.GetAgencies())
+        }
+        foreach (Agency agency in Agencies.GetAgenciesByResponse(responseType))
+        {
+            dispatchablePerson = agency.GetSpecificPed(ped);
+            if (dispatchablePerson != null)
             {
-                dispatchablePerson = agency.GetSpecificPed(ped);
-                if (dispatchablePerson != null)
-                {
-                    return (agency, dispatchablePerson);
-                }
+                return (agency, dispatchablePerson);
             }
         }
+
         return (null, null);
     }
     private string GetInternalZoneString(Vector3 ZonePosition)

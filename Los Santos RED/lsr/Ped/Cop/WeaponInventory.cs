@@ -59,7 +59,7 @@ public class WeaponInventory
             if(dispatchablePerson?.OverrideAgencyLessLethalWeapons == true)
             {
                 Melee = dispatchablePerson?.OverrideLessLethalWeapons?.PickRandom();
-                EntryPoint.WriteToConsole($"IssueWeapons Melee Override {Melee?.ModelName}");
+               // EntryPoint.WriteToConsole($"IssueWeapons Melee Override {Melee?.ModelName}");
             }
             else
             {
@@ -90,7 +90,7 @@ public class WeaponInventory
                     {
                         Sidearm.SetIssued(Game.GetHashKey(Sidearm.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
                     }
-                    EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
+                   // EntryPoint.WriteToConsole($"IssueWeapons Sidearm Override {Sidearm?.ModelName}");
                 }
             }
             else
@@ -117,7 +117,7 @@ public class WeaponInventory
                         LongGun.SetIssued(Game.GetHashKey(LongGun.ModelName), WeaponLookup.PossibleComponents, WeaponLookup.IsTaser);
                     }
                 }
-                EntryPoint.WriteToConsole($"IssueWeapons LongGun Override {LongGun?.ModelName}");
+                //EntryPoint.WriteToConsole($"IssueWeapons LongGun Override {LongGun?.ModelName}");
             }
             else
             {
@@ -127,7 +127,7 @@ public class WeaponInventory
             {
                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
                 LongGun.ApplyVariation(WeaponOwner.Pedestrian);
-                EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
+                //EntryPoint.WriteToConsole($"IssueWeapons LongGun GIVING WEAPON TO PED hasOVerride?{hasOVerride} {LongGun.ModelName} HASH{(uint)LongGun.GetHash()}");
             }
         }
         if (dispatchablePerson != null)
@@ -137,7 +137,6 @@ public class WeaponInventory
         }
         NativeFunction.CallByName<bool>("SET_PED_CAN_SWITCH_WEAPON", WeaponOwner.Pedestrian, true);//was false, but might need them to switch in vehicles and if hanging outside vehicle
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 2, true);//can do drivebys    
-
         NativeFunction.CallByName<bool>("SET_PED_COMBAT_ATTRIBUTES", WeaponOwner.Pedestrian, 3, true);//can leave vehicle
 
     }

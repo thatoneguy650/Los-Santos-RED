@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 public class FireDispatcher
 {
@@ -98,7 +99,7 @@ public class FireDispatcher
             HasDispatchedThisTick = true;//up here for now, might be better down low
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {
-                CallSpawnTask(false, true, TaskRequirements.None);
+                CallSpawnTask(false, true, false, false, TaskRequirements.None);
             }
             GameTimeAttemptedDispatch = Game.GameTime;
         }
@@ -133,7 +134,7 @@ public class FireDispatcher
                             }
                             if (GetSpawnTypes(true, toSpawn))
                             {
-                                CallSpawnTask(true, false, cl.SpawnRequirement);
+                                CallSpawnTask(true, false, true,false, cl.SpawnRequirement);
                                 spawnedsome = true;
                             }
                         }
@@ -151,7 +152,7 @@ public class FireDispatcher
             }
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, TaskRequirements spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -159,8 +160,9 @@ public class FireDispatcher
             fireFighterSpawnTask.AllowAnySpawn = allowAny;
             fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
             fireFighterSpawnTask.SpawnRequirement = spawnRequirement;
+            fireFighterSpawnTask.ClearArea = clearArea;
             fireFighterSpawnTask.AttemptSpawn();
-            fireFighterSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
+            fireFighterSpawnTask.CreatedPeople.ForEach(x =>{ World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
         }
         catch (Exception ex)

@@ -120,7 +120,7 @@ namespace ExtensionsMethods
         public static bool IsSecurity(this Ped myPed)
         {
             string Nameo = myPed.RelationshipGroup.Name;
-            if (!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securityguard"))
+            if ((!string.IsNullOrEmpty(Nameo) && !string.IsNullOrWhiteSpace(Nameo) && Nameo.ToLower().Contains("securityguard")) || (myPed.Model.Name.ToLower() == "s_m_m_security_01"))
             {
                 return true;
             }
@@ -203,11 +203,11 @@ namespace ExtensionsMethods
                 EntryPoint.WriteToConsole($"SetLock IS CONVERTIBLE AND LOWERED IsConvertible:{ToLock.IsConvertible} ConvertibleRoofState:{ToLock.ConvertibleRoofState}");
                 return false;
             }
-            if(!NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock, false) && NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock,true))
-            {
-                EntryPoint.WriteToConsole($"SetLock IS CONVERTIBLE WITH EXTRAS");
-                return false;
-            }
+            //if(!NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock, false) && NativeFunction.Natives.IS_VEHICLE_A_CONVERTIBLE<bool>(ToLock,true))
+            //{
+            //    EntryPoint.WriteToConsole($"SetLock IS CONVERTIBLE WITH EXTRAS");
+            //    return false;
+            //}
             if (ToLock.IsBike || ToLock.IsPlane || ToLock.IsHelicopter)
             {
                 EntryPoint.WriteToConsole("SetLock IS BIKE PLANE OR HELICOPTER");

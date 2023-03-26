@@ -108,14 +108,14 @@ public class GeneralFollow : ComplexTask
                 CurrentTaskState = new FollowOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, GroupManager);
             }
         }
-        if (CurrentTaskState != null)
-        {
-            EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState {CurrentTaskState.DebugName}");
-        }
-        else
-        {
-            EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState NONE");
-        }
+        //if (CurrentTaskState != null)
+        //{
+        //    EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState {CurrentTaskState.DebugName}");
+        //}
+        //else
+        //{
+        //    EntryPoint.WriteToConsole($"{PedGeneral?.Handle} GetNewTaskState NONE");
+        //}
     }
 }
 

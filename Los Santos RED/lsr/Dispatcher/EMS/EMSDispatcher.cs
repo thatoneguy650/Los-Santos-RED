@@ -31,6 +31,7 @@ public class EMSDispatcher
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
+    private bool ShouldRunAmbientDispatch;
 
     public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
     {
@@ -53,11 +54,11 @@ public class EMSDispatcher
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;
     private float MaxDistanceToSpawn => Settings.SettingsManager.EMSSettings.MaxDistanceToSpawn;//150f;
     private float MinDistanceToSpawn => Settings.SettingsManager.EMSSettings.MinDistanceToSpawn;//50f;
-    private bool HasNeedToDispatch
+    private bool HasNeedToAmbientDispatch
     {
         get
         {
-            if (World.Pedestrians.TotalSpawnedEMTs > Settings.SettingsManager.EMSSettings.TotalSpawnedAmbientMembersLimit)
+            if (World.Pedestrians.TotalSpawnedEMTs > Settings.SettingsManager.EMSSettings.TotalSpawnedMembersLimit)
             {
                 return false;
             }
@@ -69,14 +70,14 @@ public class EMSDispatcher
             {
                 return false;
             }
-            if (World.Pedestrians.TotalSpawnedEMTs >= AmbientMemberLimitForZoneType)
+            if (World.Pedestrians.TotalSpawnedAmbientEMTs >= AmbientMemberLimitForZoneType)
             {
                 return false;
             }
             return true;
         }
     }
-    private bool HasNeedToDispatchToStations
+    private bool HasNeedToLocationDispatch
     {
         get
         {
@@ -247,22 +248,55 @@ public class EMSDispatcher
     }
     private void HandleAmbientSpawns()
     {
-        if (!IsTimeToDispatch || !HasNeedToDispatch)
+        if (!IsTimeToDispatch || !HasNeedToAmbientDispatch)
         {
             return;
         }  
         bool shouldRun = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
-        EntryPoint.WriteToConsole($"AMBIENT EMS SPAWN shouldRun{shouldRun}: %{PercentageOfAmbientSpawn}");
+        //EntryPoint.WriteToConsole($"AMBIENT EMS SPAWN shouldRun{shouldRun}: %{PercentageOfAmbientSpawn}");
         HasDispatchedThisTick = true;
-        if (shouldRun && GetSpawnLocation() && GetSpawnTypes(false, null))
+
+
+
+        if (ShouldRunAmbientDispatch)
         {
-            CallSpawnTask(false, true, TaskRequirements.None);
-            GameTimeAttemptedDispatch = Game.GameTime;
-        }   
+            EntryPoint.WriteToConsole($"AMBIENT EMS RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
+            RunAmbientDispatch();
+        }
+        else
+        {
+            ShouldRunAmbientDispatch = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
+            if (ShouldRunAmbientDispatch)
+            {
+                EntryPoint.WriteToConsole($"AMBIENT EMS RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
+                RunAmbientDispatch();
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"AMBIENT EMS Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
+                GameTimeAttemptedDispatch = Game.GameTime;
+            }
+        }
+
+
+
+
+
+
     }
+
+    private void RunAmbientDispatch()
+    {
+        if (GetSpawnLocation() && GetSpawnTypes(false, null))
+        {
+            CallSpawnTask(false, true, false, false, TaskRequirements.None);
+            GameTimeAttemptedDispatch = Game.GameTime;
+        }
+    }
+
     private void HandleStationSpawns()
     {
-        if (HasNeedToDispatchToStations)
+        if (HasNeedToLocationDispatch)
         {
             foreach (ILocationDispatchable ps in PlacesOfInterest.EMSDispatchLocations().Where(x => x.IsEnabled && x.IsActivated && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.EMS))
             {
@@ -271,7 +305,7 @@ public class EMSDispatcher
                     bool spawnedsome = false;
                     foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                     {
-                        if (RandomItems.RandomPercent(cl.Percentage) && HasNeedToDispatchToStations)
+                        if (RandomItems.RandomPercent(cl.Percentage) && HasNeedToLocationDispatch)
                         {
                             HasDispatchedThisTick = true;
                             SpawnLocation = new SpawnLocation(cl.Location);
@@ -290,7 +324,7 @@ public class EMSDispatcher
                             }
                             if (GetSpawnTypes(true, toSpawn))
                             {
-                                CallSpawnTask(true, false, cl.SpawnRequirement);
+                                CallSpawnTask(true, false, true, false, cl.SpawnRequirement);
                                 spawnedsome = true;
                             }
                         }
@@ -369,7 +403,7 @@ public class EMSDispatcher
         }
         return false;
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, TaskRequirements spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -377,7 +411,9 @@ public class EMSDispatcher
             eMTSpawnTask.AllowAnySpawn = allowAny;
             eMTSpawnTask.AllowBuddySpawn = allowBuddy;
             eMTSpawnTask.SpawnRequirement = spawnRequirement;
-            eMTSpawnTask.AttemptSpawn();
+            eMTSpawnTask.ClearArea = clearArea;
+            eMTSpawnTask.AttemptSpawn();  
+            eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
         }
@@ -537,7 +573,7 @@ public class EMSDispatcher
         {
             PersonType = null;
         }
-        CallSpawnTask(true, false, TaskRequirements.None);
+        CallSpawnTask(true, false, false, false, TaskRequirements.None);
     }
 
 }

@@ -166,7 +166,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
                 {
                     DisplayCallUI(contact.Name, "CELL_219", contact.IconName.ToUpper()); // Displays "CONNECTED"
                     Player.CellPhone.ContactAnswered(contact);
-                    EntryPoint.WriteToConsole("BURNER PHONE UPDATE CALL CALLED!!!!");
+                    //EntryPoint.WriteToConsole("BURNER PHONE UPDATE CALL CALLED!!!!");
                 }
             }
             isDialActive = false;
@@ -201,7 +201,7 @@ public class BurnerPhoneContactsApp : BurnerPhoneApp
             NativeFunction.Natives.PLAY_SOUND_FRONTEND(dialSoundID, "Dial_and_Remote_Ring", "Phone_SoundSet_Default", 1);
             callTimer = (int)Game.GameTime + contact.DialTimeout;
             isDialActive = true;
-            EntryPoint.WriteToConsole("BURNER PHONE CALL CALLED!!!!");
+            //EntryPoint.WriteToConsole("BURNER PHONE CALL CALLED!!!!");
         }
         else
         {

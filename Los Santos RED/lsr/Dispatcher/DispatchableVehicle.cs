@@ -86,26 +86,15 @@ public class DispatchableVehicle
         {
             vehicleExt.Vehicle.IsPersistent = false;
         }
-        //if (agency != null)
-        //{
-        //    UpdateLivery(vehicleExt, agency);
-        //    GameFiber.Yield();
-        //    UpgradePerformance(vehicleExt);
-        //    GameFiber.Yield();
-        //}
         if (!vehicleExt.Vehicle.Exists())
         {
             return;
         }
-
         if (RequiredLiveries == null || !RequiredLiveries.Any())
         {
             return;
         }
         NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
-
-
-        //AssociatedGang = gang;
         if (VehicleExtras != null)
         {
             foreach (DispatchableVehicleExtra extra in VehicleExtras.OrderBy(x => x.ExtraID).ThenBy(x => x.IsOn))

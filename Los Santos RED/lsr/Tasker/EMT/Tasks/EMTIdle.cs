@@ -40,7 +40,7 @@ public class EMTIdle : ComplexTask
     {
         get
         {
-            if (EMT.IsAmbientSpawn)
+            if (EMT.IsLocationSpawned)
             {
                 return Task.Wander;
             }
@@ -234,7 +234,7 @@ public class EMTIdle : ComplexTask
             {
 
                 Vector3 pedPos = Ped.Pedestrian.Position;
-                if (EMT.IsAmbientSpawn || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
+                if (EMT.IsLocationSpawned || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
                 {
                     //NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
                     List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_INSPECT_STAND", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };

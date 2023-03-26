@@ -407,10 +407,11 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("s_m_y_armymech_01",25,0) { DebugName = "ARMYNormalMale1" },
             new DispatchablePerson("s_m_m_marine_01",50,0) { DebugName = "ARMYNormalMale2" },
             new DispatchablePerson("s_m_m_marine_02",0,0) { DebugName = "ARMYNormalMale3" },
-            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 100, 30, 50, 400, 500, 2, 2) {
+            new DispatchablePerson("s_m_y_marine_03",100,100, 100, 100, 100, 150, 35, 55, 450, 550, 2, 2) {
                 DebugName = "ARMYSoldierMale"
                 ,MaxWantedLevelSpawn = 10
                 ,AllowRandomizeBeforeVariationApplied = true
+                ,FiringPatternHash = -957453492//fullauto
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(2, 1, 0, 0),new PedComponent(8, 0, 0, 0) },
                     new List<PedPropComponent>() { new PedPropComponent(3, 1, 0), new PedPropComponent(1, 0, 0)})
@@ -1024,6 +1025,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OverrideLongGunsID = null
                 ,GroupName = "UnarmedSecurity"
             },
+            new DispatchablePerson("s_m_m_security_01",0,0)  { DebugName = "SecurityMale",GroupName = "ArmedSecurity" },
         };
         SecuroservPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("mp_m_securoguard_01",20,20)  { DebugName = "DLCSecuroGuard 01",GroupName = "ArmedSecurity" },

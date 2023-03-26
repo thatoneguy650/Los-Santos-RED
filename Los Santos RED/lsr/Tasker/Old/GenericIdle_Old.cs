@@ -114,7 +114,7 @@ public class GenericIdle_Old : ComplexTask
         }
         if (Ped.TaskRequirements.Equals(TaskRequirements.None))
         {
-            if (Ped.IsAmbientSpawn)
+            if (Ped.IsLocationSpawned)
             {
                 canGuard = true;
             }

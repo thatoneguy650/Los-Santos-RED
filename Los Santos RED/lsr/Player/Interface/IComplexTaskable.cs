@@ -49,7 +49,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsOnBike { get; }
         //List<uint> BlackListedVehicles { get; }
         bool RecentlySeenPlayer { get; }
-        bool IsAmbientSpawn { get; }
+        bool IsLocationSpawned { get; }
         TaskRequirements TaskRequirements { get; }
         PlayerPerception PlayerPerception { get; }
         uint GameTimeReachedInvestigationPosition { get; set; }

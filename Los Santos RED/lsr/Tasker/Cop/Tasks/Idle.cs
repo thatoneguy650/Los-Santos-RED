@@ -52,7 +52,7 @@ public class Idle : ComplexTask
     {
         get
         {
-            if(Cop.IsAmbientSpawn && ForceGuard)
+            if(Cop.IsLocationSpawned && ForceGuard)
             {
                 if(Ped.Pedestrian.IsInAnyVehicle(false))
                 {
@@ -98,7 +98,7 @@ public class Idle : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if(Cop.IsAmbientSpawn && Cop.HasBeenSpawnedFor <= 10000)
+            if(Cop.IsLocationSpawned && Cop.HasBeenSpawnedFor <= 10000)
             {
                 ForceGuard = true;
             }
@@ -279,7 +279,7 @@ public class Idle : ComplexTask
             else
             {
                 Vector3 pedPos = Ped.Pedestrian.Position;
-                if (Cop.IsAmbientSpawn || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
+                if (Cop.IsLocationSpawned || (Game.GameTime - GameTimeLastStartedScenario >= GameTimeBetweenScenarios && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(pedPos.X, pedPos.Y, pedPos.Z, 10f, true)))
                 {
                     List<string> PossibleScenarios = new List<string>() { "WORLD_HUMAN_COP_IDLES", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_STAND_MOBILE_UPRIGHT", "WORLD_HUMAN_SMOKING" };
                     string ScenarioChosen = PossibleScenarios.PickRandom();
@@ -309,7 +309,7 @@ public class Idle : ComplexTask
             {
                 if (GameTimeLastStartedFootPatrol > 0 && Game.GameTime - GameTimeLastStartedFootPatrol >= GameTimeBetweenFootPatrols)
                 {
-                    if (Cop.IsAmbientSpawn && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
+                    if (Cop.IsLocationSpawned && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
                     {
                         ForceGuard = true;
                     }

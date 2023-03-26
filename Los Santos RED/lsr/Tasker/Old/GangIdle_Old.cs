@@ -84,7 +84,7 @@ public class GangIdle_Old : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (Ped.IsAmbientSpawn)
+            if (Ped.IsLocationSpawned)
             {
                 ForceGuard = true;
             }
@@ -306,7 +306,7 @@ public class GangIdle_Old : ComplexTask
             {
                 if (GameTimeLastStartedFootPatrol > 0 && Game.GameTime - GameTimeLastStartedFootPatrol >= GameTimeBetweenFootPatrols)
                 {
-                    if (Ped.IsAmbientSpawn && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
+                    if (Ped.IsLocationSpawned && RandomItems.RandomPercent(10f))//10 percent let tham transition to foot patrol people
                     {
                         ForceGuard = true;
                     }

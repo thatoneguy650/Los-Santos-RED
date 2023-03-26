@@ -248,6 +248,11 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSettings.KillLimit_Wanted4 = 3;
         SettingsManager.PoliceSettings.KillLimit_Wanted5 = 5;
         SettingsManager.PoliceSettings.KillLimit_Wanted6 = 8;
+        SettingsManager.PoliceSettings.KillLimit_Wanted7 = 15;
+        SettingsManager.PoliceSettings.KillLimit_Wanted8 = 25;
+        SettingsManager.PoliceSettings.KillLimit_Wanted9 = 35;
+        SettingsManager.PoliceSettings.KillLimit_Wanted10 = 45;
+
         SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime = true;
 
         SettingsManager.PoliceSettings.SightDistance_Helicopter_AdditionalAtWanted = 200f;

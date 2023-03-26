@@ -544,8 +544,32 @@ namespace LosSantosRED.lsr
             if(PoliceKilled == 0)
             {
                 return;
-            }    
-            if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+            }  
+            if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 10 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted10 && Player.WantedLevel < 10)
+            {
+                Player.SetWantedLevel(10, "You killed too many cops 10 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 9 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted9 && Player.WantedLevel < 9)
+            {
+                Player.SetWantedLevel(9, "You killed too many cops 9 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 8 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted8 && Player.WantedLevel < 8)
+            {
+                Player.SetWantedLevel(8, "You killed too many cops 8 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 7 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted7 && Player.WantedLevel < 7)
+            {
+                Player.SetWantedLevel(7, "You killed too many cops 7 Stars", true);
+                IsWeaponsFree = true;
+                Player.OnWeaponsFree();
+            }
+            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
             {
                 Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
                 IsWeaponsFree = true;

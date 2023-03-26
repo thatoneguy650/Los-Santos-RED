@@ -151,8 +151,11 @@
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
+    <Compile Include="lsr\Data\Peds\CombatAttributeToSet.cs" />
+    <Compile Include="lsr\Data\Peds\CombatFloatToSet.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeopleExtra.cs" />
     <Compile Include="lsr\Data\Peds\eSpeechType.cs" />
+    <Compile Include="lsr\Data\Peds\PedConfigFlagToSet.cs" />
     <Compile Include="lsr\Data\Peds\TattooNames.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />

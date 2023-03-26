@@ -538,7 +538,26 @@ public class LEDispatcher
             }
             else
             {
-                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                if(World.TotalWantedLevel <= 6)
+                {
+                    return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                }
+                else
+                {
+                    return SeenMinTime;
+                }
+
+                //if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel > 6 && World.TotalWantedLevel >= 6)
+                //{
+                //    return SeenMinTime;
+                //}
+                //else
+                //{
+                //    float percentage = 6 * (float)World.TotalWantedLevel / Settings.SettingsManager.PoliceSettings.MaxWantedLevel;
+
+
+                //    return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                //}
             }
         }
     }
@@ -632,6 +651,7 @@ public class LEDispatcher
     }
     private void HandleAmbientSpawns()
     {
+        EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
         if (IsTimeToDispatch && HasNeedToDispatch)
         {
             HasDispatchedThisTick = true;
@@ -758,7 +778,7 @@ public class LEDispatcher
             SpawnRoadblock(false,300f);
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isAmbientSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -769,7 +789,7 @@ public class LEDispatcher
             spawnTask.SpawnRequirement = spawnRequirement;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
-            spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsAmbientSpawn = isAmbientSpawn; });
+            spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             HasDispatchedThisTick = true;
             Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);

@@ -78,7 +78,7 @@ class WanderOnFootTaskState : TaskState
         }
         if (PedGeneral.TaskRequirements.Equals(TaskRequirements.None))
         {
-            if (PedGeneral.IsAmbientSpawn)
+            if (PedGeneral.IsLocationSpawned)
             {
                 canGuard = true;
             }
@@ -107,7 +107,7 @@ class WanderOnFootTaskState : TaskState
         {
             IsPatrolling = true;
         }
-        //EntryPoint.WriteToConsole($"PED {Ped.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} shouldGuard {shouldGuard} shouldPatrol {shouldPatrol} HasSpawnRequirements {HasSpawnRequirements}");   
+        EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements}");   
         SetTasking();
     }
     public void Stop()

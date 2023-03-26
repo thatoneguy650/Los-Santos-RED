@@ -100,7 +100,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
-
+   // public bool WasLocationSpawned { get; set; } = false;
 
 
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
@@ -252,7 +252,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsStill { get; private set; }
     public bool IsSuicidal { get; set; } = false;
     public bool IsUnconscious { get; set; }
-    public bool IsAmbientSpawn { get; set; } = false;
+    public bool IsLocationSpawned { get; set; } = false;
     public bool IsSuspicious { get; set; } = false;
     public bool IsWanted => PedViolations.IsWanted;
     public bool IsNotWanted => PedViolations.IsNotWanted;
@@ -806,6 +806,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
         }
+        EntryPoint.WriteToConsole($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
     }
 
     private void PlaySpeech(string speechName, bool useMegaphone)

@@ -115,6 +115,10 @@ public class Agencies : IAgencies
     {
         return AgenciesList;
     }
+    public List<Agency> GetAgenciesByResponse(ResponseType responseType)
+    {
+        return AgenciesList.Where(x => x.ResponseType == responseType).ToList();
+    }
 
     private void SetupDefault()
     {

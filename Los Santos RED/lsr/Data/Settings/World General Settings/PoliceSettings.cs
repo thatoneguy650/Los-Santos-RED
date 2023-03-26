@@ -61,6 +61,22 @@ public class PoliceSettings : ISettingsDefaultable
     public int KillLimit_Wanted5 { get; set; }
     [Description("Minimum police killed before being given a six star wanted level.")]
     public int KillLimit_Wanted6 { get; set; }
+
+
+    [Description("Minimum police killed before being given a seven star wanted level.")]
+    public int KillLimit_Wanted7 { get; set; }
+    [Description("Minimum police killed before being given a eight star wanted level.")]
+    public int KillLimit_Wanted8 { get; set; }
+    [Description("Minimum police killed before being given a nine star wanted level.")]
+    public int KillLimit_Wanted9 { get; set; }
+    [Description("Minimum police killed before being given a ten star wanted level.")]
+    public int KillLimit_Wanted10 { get; set; }
+
+
+
+
+
+
     [Description("Enable or diable wanted level increasing over time.")]
     public bool WantedLevelIncreasesOverTime { get; set; }
     [Description("Time (in ms) at wanted level 1 required to increase wanted level to 2.")]
@@ -71,7 +87,7 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted3 { get; set; }
     [Description("Time (in ms) at wanted level 4 required to increase wanted level to 5.")]
     public uint WantedLevelIncreaseTime_FromWanted4 { get; set; }
-    [Description("Time (in ms) at wanted level 5 required to increase wanted level to 6 (maximum).")]
+    [Description("Time (in ms) at wanted level 5 required to increase wanted level to 6 (default maximum).")]
     public uint WantedLevelIncreaseTime_FromWanted5 { get; set; }
 
 
@@ -81,7 +97,7 @@ public class PoliceSettings : ISettingsDefaultable
     public uint WantedLevelIncreaseTime_FromWanted7 { get; set; }
     [Description("Time (in ms) at wanted level 8 required to increase wanted level to 9.")]
     public uint WantedLevelIncreaseTime_FromWanted8 { get; set; }
-    [Description("Time (in ms) at wanted level 9 required to increase wanted level to 10.")]
+    [Description("Time (in ms) at wanted level 9 required to increase wanted level to 10 (optional maximum).")]
     public uint WantedLevelIncreaseTime_FromWanted9 { get; set; }
 
 
@@ -134,6 +150,10 @@ public class PoliceSettings : ISettingsDefaultable
         KillLimit_Wanted4 = 5;
         KillLimit_Wanted5 = 10;
         KillLimit_Wanted6 = 20;
+        KillLimit_Wanted7 = 30;
+        KillLimit_Wanted8 = 40;
+        KillLimit_Wanted9 = 50;
+        KillLimit_Wanted10 = 60;
 
         WantedLevelIncreasesOverTime = true;
         WantedLevelIncreaseTime_FromWanted1 = 90000;//1.5 min
