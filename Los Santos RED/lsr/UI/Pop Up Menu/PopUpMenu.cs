@@ -236,6 +236,11 @@ public class PopUpMenu
                 InventoryCategorySubMenu.Add(new PopUpBox(ItemID, ii.ModItem.Name, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
                 List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
                 InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
+
+
+
+
+
                 InventoryActionSubMenu.Add(new PopUpBox(1, "Discard All", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, ii.Amount)), $"Discard All {ii.ModItem.Name} ({ii.Amount})"));
                 InventoryActionSubMenu.Add(new PopUpBox(2, "Discard One", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 1)), $"Discard {ii.ModItem.Name}"));
                 if (ii.Amount > 5)
@@ -1028,6 +1033,7 @@ public class PopUpMenu
 
 
             new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
+            new PopUpBox(10,"Open Door", "OpenDoorSubMenu","Open the door of the vehicle you are looking at") { ClosesMenu = false },
 
         };
         List<PopUpBox> SitSubMenu = new List<PopUpBox>()
@@ -1045,6 +1051,18 @@ public class PopUpMenu
             new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,2)),"Sit in the right rear seat"),
             new PopUpBox(4,"Seat Extra 1", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,3)),"Sit in the first extra seat"),
             new PopUpBox(5,"Seat Extra 2", new Action(() => Player.ActivityManager.EnterVehicleInSpecificSeat(false,4)),"Sit in the second extra seat"),
+        };
+
+
+        List<PopUpBox> OpenDoorSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.ToggleDoor(0)),"Toggle the driver door"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.ToggleDoor(1)),"Toggle the passenger door"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.ToggleDoor(2)),"Toggle the left rear door"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.ToggleDoor(3)),"Toggle the right rear door"),
+            new PopUpBox(4,"Hood", new Action(() => Player.ActivityManager.ToggleDoor(4)),"Toggle the hood (bonnet)"),
+            new PopUpBox(5,"Trunk", new Action(() => Player.ActivityManager.ToggleDoor(5)),"Toggle the trunk (boot)"),
+            new PopUpBox(6,"Other", new Action(() => Player.ActivityManager.ToggleDoor(6)),"Toggle the other door"),
         };
 
 
@@ -1118,6 +1136,7 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("IndicatorsSubMenu", IndicatorsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("SitSubMenu", SitSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("EnterSeatSubMenu", EnterSeatSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup("OpenDoorSubMenu", OpenDoorSubMenu) { IsChild = true });
     }
     private void SetupTextures()
     {

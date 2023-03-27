@@ -2142,12 +2142,7 @@ namespace Mod
                     {
                         CurrentLookedAtVehicle = World.Vehicles.GetVehicleExt(myCar);
                     }
-                    else
-                    {
-                        CurrentLookedAtVehicle = null;
-                    }
-
-
+   
                     if (myCar.Exists() && Character.CurrentVehicle.Exists() && myCar.Handle == Character.CurrentVehicle.Handle)
                     {
                         CurrentLookedAtObject = null;
@@ -2157,7 +2152,6 @@ namespace Mod
                     }
                     else
                     {
-
                         if (myCar.Exists() && myCar.Driver.Exists())
                         {
                             Ped closestPed = null;
@@ -2189,7 +2183,7 @@ namespace Mod
                         }
                         else
                         {
-                            CurrentLookedAtVehicle = null;
+                            //CurrentLookedAtVehicle = null;
                             CurrentLookedAtPed = null;
                             CurrentLookedAtGangMember = null;
                             CurrentLookedAtObject = null;
@@ -2217,26 +2211,6 @@ namespace Mod
                         CurrentLookedAtObject = null;
                     }
                 }
-
-
-
-
-                //else if (result.Hit && result.HitEntity is Rage.Object)
-                //{
-                //    Rage.Object objectHit = (Rage.Object)result.HitEntity;
-                //    CurrentLookedAtObject = objectHit;
-                //    CurrentLookedAtVehicle = null;
-                //    CurrentLookedAtPed = null;
-                //    CurrentLookedAtGangMember = null;
-                //    //EntryPoint.WriteToConsole("HIT OBJECT");
-                //}
-                //else
-                //{
-                //    CurrentLookedAtVehicle = null;
-                //    CurrentLookedAtPed = null;
-                //    CurrentLookedAtGangMember = null;
-                //    CurrentLookedAtObject = null;
-                //}
                 GameTimeLastUpdatedLookedAtPed = Game.GameTime;
                 GameFiber.Yield();
             }

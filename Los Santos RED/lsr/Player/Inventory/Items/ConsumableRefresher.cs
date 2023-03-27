@@ -89,7 +89,7 @@ public class ConsumableRefresher
     }
     private void UpdateHealthGain()
     {
-        if (Game.GameTime - GameTimeLastGivenHealth >= 1000)
+        if (Game.GameTime - GameTimeLastGivenHealth >= Settings.SettingsManager.NeedsSettings.TimeBetweenGain)
         {
             if (ConsumableItem.ChangesHealth && (!Settings.SettingsManager.NeedsSettings.ApplyNeeds || ConsumableItem.AlwaysChangesHealth))
             {
@@ -114,7 +114,7 @@ public class ConsumableRefresher
     }
     private void UpdateNeeds()
     {
-        if (Game.GameTime - GameTimeLastGivenNeeds >= 1000)
+        if (Game.GameTime - GameTimeLastGivenNeeds >= Settings.SettingsManager.NeedsSettings.TimeBetweenGain)
         {
             if (ConsumableItem.ChangesNeeds)
             {

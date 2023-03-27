@@ -35,6 +35,7 @@ public class Vehicles
     public List<VehicleExt> FireVehicleList => FireVehicles;
     public List<VehicleExt> EMSVehicleList => EMSVehicles;
     public int SpawnedPoliceVehiclesCount => PoliceVehicles.Where(x=> x.WasModSpawned).Count();
+    public int SpawnedAmbientPoliceVehiclesCount => PoliceVehicles.Where(x => x.WasModSpawned && !x.WasSpawnedEmpty).Count();
     public int PoliceHelicoptersCount
     {
         get

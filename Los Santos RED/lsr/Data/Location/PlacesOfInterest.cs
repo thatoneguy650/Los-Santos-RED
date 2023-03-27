@@ -1093,6 +1093,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         Restaurants = new List<Restaurant>()
         {
             //Generic and Sit Down
+            new Restaurant(new Vector3(-2188.348f,-408.6776f, 13.17961f), 226.5375f, "Pipeline Inn", "Take a look, just take a look...","FancyFishMenu", FoodType.Seafood) { CloseTime = 24,OpenTime = 0 },
             new Restaurant(new Vector3(980.0559f, -1396.695f, 31.68536f), 219.9515f, "La Taqueria", "Autentica Comida Mexicana","TacoFarmerMenu", FoodType.Mexican),
             new Restaurant(new Vector3(-1487.163f, -308.0127f, 47.02639f), 231.5184f, "Las Cuadras Restaurant", "No horsing around!","FancyDeliMenu", FoodType.Mexican),
             new Restaurant(new Vector3(-1473.121f, -329.6028f, 44.81668f), 319.3725f, "Las Cuadras Deli", "No horsing around!","FancyDeliMenu", FoodType.Mexican | FoodType.Sandwiches),
@@ -1560,26 +1561,20 @@ public class PlacesOfInterest : IPlacesOfInterest
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
             { new ConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,100f), } },
 
-
-
-
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { AssignedAgencyID = "NOOSE", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-
-#if DEBUG
-                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ SpawnRequirement = TaskRequirements.Guard | TaskRequirements.LocalScenario },
+                new ConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 75f){ AssociationID = "NOOSE-BP", SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario },
+                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ AssociationID = "NOOSE-PIA", SpawnRequirement = TaskRequirements.Guard | TaskRequirements.StandardScenario },
                 new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ SpawnRequirement = TaskRequirements.Patrol },
-                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.AnyScenario },
-
-#else
-                new ConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 75f),
-                new ConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 75f),
-                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 75f),
-#endif
-
-
+                new ConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ AssociationID = "NOOSE-PIA",SpawnRequirement = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario },
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
-            { new ConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 75f), } },
+            {
+
+                new ConditionalLocation(new Vector3(-900.9653f, -2391.173f, 13.47696f), 148.7623f, 75f) { AssociationID = "NOOSE-PIA" },
+                new ConditionalLocation(new Vector3(-862.1013f, -2414.928f, 13.47701f), 147.4044f, 75f),
+                new ConditionalLocation(new Vector3(-858.2088f, -2397.289f, 13.47724f), 161.3987f, 75f) { AssociationID = "NOOSE-BP" },
+                new ConditionalLocation(new Vector3(-890.4263f, -2377.496f, 13.47698f), 70.6132f, 75f),
+                new ConditionalLocation(new Vector3(-873.713f, -2419.414f, 13.94444f), 53.94463f, 75f) { AssociationID = "NOOSE-PIA" },
+            } },
 
 
 
@@ -1682,6 +1677,9 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Residence(new Vector3(-64.19335f, -1450.097f, 32.52492f), 188.7294f, "280S Forum Dr No 1",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1250, RentalDays = 28,},//lamar house
             new Residence(new Vector3(863.4708f, -1585.503f, 31.4171f), 89.42107f, "310S Popular Street",""){ OpenTime = 0,CloseTime = 24,RentalFee = 950, RentalDays = 28,},//lamar house
             new Residence(new Vector3(-390.3866f, -187.2812f, 37.3177f), 207.2874f, "70W Carcer Way Apt 343",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1950, RentalDays = 28,},
+
+
+            new Residence(new Vector3(-1597.134f, -352.3153f, 45.97645f), 230.207f, "Pacific Buff Manor",""){ OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000},
         };
     }
     private void DefaultConfig_Hotels()

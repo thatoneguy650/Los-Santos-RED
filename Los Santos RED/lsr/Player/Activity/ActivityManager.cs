@@ -711,8 +711,32 @@ public class ActivityManager
         Player.LastFriendlyVehicle = toEnter.Vehicle;
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);         
     }
+    public void ToggleDoor(int doorIndex)
+    {
+        EntryPoint.WriteToConsole($"ToggleDoor {doorIndex}");
+
+        VehicleExt toToggleDoor = Player.CurrentLookedAtVehicle;
+        if (toToggleDoor == null)
+        {
+            toToggleDoor = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
+        }
 
 
+        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())// || !Player.CurrentLookedAtVehicle.Vehicle.Doors[doorIndex].IsValid())
+        {
+            return;
+        }
+        if (toToggleDoor.Vehicle.Doors[doorIndex].IsOpen)
+        {
+            EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
+            toToggleDoor.Vehicle.Doors[doorIndex].Close(false);
+        }
+        else
+        {
+            EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
+            toToggleDoor.Vehicle.Doors[doorIndex].Open(false, false);
+        }
+    }
     public void YellInPain()
     {
         if (CanYell)

@@ -61,7 +61,11 @@ public class DebugSettings : ISettingsDefaultable
 
     public bool DragFixedRotation { get; set; }
     public float PlateTheftFloat { get; set; }
-
+    public uint DrinkTimeBetween { get; set; }
+    public bool DrinkStartsBase { get; set; }
+    public float TrunkXOffset { get; set; }
+    public float TrunkYOffset { get; set; }
+    public float TrunkZOffset { get; set; }
 
     public DebugSettings()
     {
@@ -117,6 +121,11 @@ public class DebugSettings : ISettingsDefaultable
 
         DragFixedRotation = true;
         PlateTheftFloat = 1.0f;
+        DrinkTimeBetween = 0;
+        DrinkStartsBase = false;
+        TrunkXOffset = 0.0f;
+        TrunkYOffset = -1.0f;// -2.2f;
+        TrunkZOffset = 0.5f;
 }
 
 }

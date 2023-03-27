@@ -164,10 +164,10 @@ public class LEDispatcher
     private List<Cop> DeletableCops => World.Pedestrians.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
     private float DistanceToDelete => 1000f;// TotalIsWanted ? 600f : 1000f;
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 300f;
-    private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedPolice < SpawnedCopLimit && World.Vehicles.SpawnedPoliceVehiclesCount < SpawnedCopVehicleLimit;
+    private bool HasNeedToAmbientDispatch => World.Pedestrians.TotalSpawnedAmbientPolice < SpawnedCopLimit && World.Vehicles.SpawnedAmbientPoliceVehiclesCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.RoadblockSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.RoadblockSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.RoadblockSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     private bool HasNeedToDispatchToStations => Settings.SettingsManager.PoliceSpawnSettings.AllowStationSpawning && World.TotalWantedLevel <= Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted;
-    private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
+    private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     public int LikelyHoodOfStationFootSpawnWhenNear => Settings.SettingsManager.PoliceSpawnSettings.PercentageSpawnOnFootNearStation;
@@ -652,7 +652,7 @@ public class LEDispatcher
     private void HandleAmbientSpawns()
     {
         EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
-        if (IsTimeToDispatch && HasNeedToDispatch)
+        if (IsTimeToAmbientDispatch && HasNeedToAmbientDispatch)
         {
             HasDispatchedThisTick = true;
             if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
@@ -676,7 +676,7 @@ public class LEDispatcher
                     {
                         foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                         {
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
+                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToAmbientDispatch))
                             {
                                 HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);
@@ -716,7 +716,7 @@ public class LEDispatcher
                         foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                         {
 
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToDispatch))
+                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToAmbientDispatch))
                             {
                                 HasDispatchedThisTick = true;
                                 SpawnLocation = new SpawnLocation(cl.Location);

@@ -554,10 +554,10 @@ public class Drag : DynamicActivity
 
         if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())//turned off for now
         {
-            //if (!Player.ButtonPromptList.Any(x => x.Identifier == "Load"))
-            //{
-            //    Player.ButtonPromptList.Add(new ButtonPrompt("Load", "Load", "Load", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1));
-            //}
+            if (!Player.ButtonPrompts.HasPrompt("Load"))
+            {
+                Player.ButtonPrompts.AddPrompt("Load", "Load", "Load", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1);
+            }
         }
         else
         {
@@ -569,38 +569,32 @@ public class Drag : DynamicActivity
         EntryPoint.WriteToConsole("LoadBodyInCarStarted");
         if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists() && Ped.Pedestrian.Exists() && ClosestVehicle.Vehicle.Doors[5].IsValid())
         {
-
             Ped.Pedestrian.Detach();
-
-
             if (!ClosestVehicle.Vehicle.Doors[5].IsFullyOpen)
             {
                 ClosestVehicle.Vehicle.Doors[5].Open(false, false);
                 AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
-
-
-
-
                 // the boot is the actual trunk lid, not the place inthe car, cant attach as it moves with the thingo
-
-
                 //NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_pickup_back_plyr", 2.0f, -2.0f, 5000, 2, 0, false, false, false);
-
                 GameFiber.Wait(750);
                 if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists() && Ped.Pedestrian.Exists())
                 {
-
-
-
                     //NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, false, false);
-                    int trunkBone = ClosestVehicle.Vehicle.GetBoneIndex("boot");// NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", ClosestVehicle.Vehicle, "boot");
-                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, trunkBone, 0.08f, 0.51f, 0.08f, 0f, -180f, -3f, false, false, false, false, 2, false);
+                   // int trunkBone = ClosestVehicle.Vehicle.GetBoneIndex("boot");// NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", ClosestVehicle.Vehicle, "boot");
+                   // int chassisBone = ClosestVehicle.Vehicle.GetBoneIndex("chassis");
+
+
+                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, -1, Settings.SettingsManager.DebugSettings.TrunkXOffset, Settings.SettingsManager.DebugSettings.TrunkYOffset, Settings.SettingsManager.DebugSettings.TrunkZOffset, 0.0f, 0.0f, 0.0f, false, false, false, false, 20, true);
+
+                    
+
+
+                    //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, trunkBone, 0.08f, 0.51f, 0.08f, 0f, -180f, -3f, false, false, false, false, 2, false);
                     //Ped.Pedestrian.AttachTo(ClosestVehicle.Vehicle, trunkBone, new Vector3(0.08f, 0.51f, 0.08f), new Rotator(0f, -180f, -3f));
                     //Ped.Pedestrian.AttachTo(ClosestVehicle.Vehicle, , new Vector3(0f,-2.2f,0.5f), new Rotator(0f,0f,0f));
                     IsAttached = false;
-                    NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-
-
+                    GameFiber.Wait(100);
+                    NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                     NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 0.99f);
                 }
                 GameFiber.Wait(1000);
@@ -611,5 +605,9 @@ public class Drag : DynamicActivity
             }
         }
         Cancel();
+    }
+    private void GetTrunkBodyAttachPosition()
+    {
+
     }
 }

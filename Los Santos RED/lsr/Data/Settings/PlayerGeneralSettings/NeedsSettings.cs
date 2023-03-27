@@ -45,6 +45,8 @@ public class NeedsSettings : ISettingsDefaultable
     public int HealthDrainMinHealth { get; set; }
     [Description("Allows a melee damage decrease when you have pressing needs (less than 25%) up to a set amount.")]
     public bool AllowMeleeDamageDecrease { get; set; }
+    [Description("Time (in ms) between needs being gained. Lower values increase needs more rapidly.")]
+    public uint TimeBetweenGain { get; set; }
 
     public NeedsSettings()
     {
@@ -71,6 +73,7 @@ public class NeedsSettings : ISettingsDefaultable
         HealthDrainAmount = 1;
         HealthDrainMinHealth = 140;
         AllowMeleeDamageDecrease = true;
+        TimeBetweenGain = 750;
     }
 
 }

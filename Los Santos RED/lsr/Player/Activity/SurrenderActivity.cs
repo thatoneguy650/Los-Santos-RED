@@ -25,6 +25,8 @@ public class SurrenderActivity : DynamicActivity
         Settings = settings;
     }
     public bool CanSurrender => !HandsAreUp && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);//&& Player.IsWanted;
+
+    private bool IsSurrenderValid => Player.IsAliveAndFree && !Player.IsAiming && (!Player.IsInVehicle || !Player.IsMoving);//&& Player.IsWanted;
     public override ModItem ModItem { get; set; }
     public override string DebugString => "";
     public override bool CanPause { get; set; } = false;
@@ -59,16 +61,19 @@ public class SurrenderActivity : DynamicActivity
     public void ToggleSurrender()
     {
         EntryPoint.WriteToConsole("Toggle Surrender Ran");
-        if (Game.GameTime - GameTimeLastToggledSurrender >= 200)
+        if (Game.GameTime - GameTimeLastToggledSurrender >= 300)
         {
-            EntryPoint.WriteToConsole($"Toggle Surrender Ran 2 HandsAreUp {HandsAreUp} CanSurrender {CanSurrender}");
-            if (HandsAreUp)
+            if (IsSurrenderValid)
             {
-                LowerHands();
-            }
-            else
-            {
-                RaiseHands();          
+                EntryPoint.WriteToConsole($"Toggle Surrender Ran 2 HandsAreUp {HandsAreUp} CanSurrender {CanSurrender}");
+                if (HandsAreUp)
+                {
+                    LowerHands();
+                }
+                else
+                {
+                    RaiseHands();
+                }
             }
             GameTimeLastToggledSurrender = Game.GameTime;
         }
