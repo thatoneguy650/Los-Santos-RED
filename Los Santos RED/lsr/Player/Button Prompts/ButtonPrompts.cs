@@ -164,10 +164,15 @@ public class ButtonPrompts
             string promptText = Player.CurrentLookedAtPed.InteractPrompt(Player);
             AddPrompt("StartConversation", promptText, $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
-        //if (((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu) && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
+        //if (//((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu)
+            
+        //    Player.CurrentLookedAtPed.CanTransact
+            
+            
+        //    && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
         //{
         //    RemovePrompts("StartTransaction");
-            //string promptText = Player.CurrentLookedAtPed.TransactionPrompt(Player);
+        //    string promptText = Player.CurrentLookedAtPed.TransactionPrompt(Player);
         //    AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
         //}
         //else

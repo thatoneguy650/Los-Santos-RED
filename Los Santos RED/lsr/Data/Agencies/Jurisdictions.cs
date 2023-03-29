@@ -718,7 +718,9 @@ public class Jurisdictions : IJurisdictions
             new ZoneJurisdiction("LSFD","DELSOL", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DELSOL", 0, 100, 100),
 
-            new ZoneJurisdiction("LSSD-MJ","DESRT", 0, 100, 100),
+            new ZoneJurisdiction("LSSD-MJ","DESRT", 0, 75, 75),
+            new ZoneJurisdiction("NOOSE-BP","DESRT", 1, 25, 25),
+
             new ZoneJurisdiction("LSFD","DESRT", 0, 100, 100),
             new ZoneJurisdiction("LSMC","DESRT", 0, 100, 100),
 

@@ -17,5 +17,6 @@ public class Merchant : PedExt
     }
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => false;
+    public override bool CanTransact => IsNearSpawnPosition && base.CanTransact;
 }
 

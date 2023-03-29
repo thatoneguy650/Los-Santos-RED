@@ -41,6 +41,7 @@ public class Drag : DynamicActivity
     private bool IsBodyPickedUp;
     private Rage.Object leftHandObject;
     private bool IsRagdoll = false;
+    private AnimationWatcher AnimationWatcher;
 
     public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world)
     {
@@ -81,6 +82,17 @@ public class Drag : DynamicActivity
         {
             leftHandObject.Delete();
         }
+
+        ////DEBUG STUFFF
+        if (Ped.Pedestrian.Exists())
+        {
+            Ped.Pedestrian.IsVisible = true;
+        }
+        Player.Character.IsVisible = true;
+
+
+
+
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsDraggingBody = false;
     }
@@ -143,6 +155,7 @@ public class Drag : DynamicActivity
     {
         AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
         EntryPoint.WriteToConsole("Begin Dragging Body");
+        AnimationWatcher = new AnimationWatcher();
         IsNearBody = MoveToBody();
         if (IsNearBody)
         {
@@ -170,7 +183,7 @@ public class Drag : DynamicActivity
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
         }
-        PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_putdown_plyr", false, 2, true);
+        PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_putdown_plyr", false, 2, true, false);
         DetachPeds();
     }
     private void RemovePrompts()
@@ -246,8 +259,12 @@ public class Drag : DynamicActivity
                 Ped.Pedestrian.KeepTasks = true;
             }
             IsAttached = true;
-            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
+            DoRegularAttach();// NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
         }
+    }
+    private void DoRegularAttach()
+    {
+        NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
     }
     private void DetachPeds()
     {
@@ -324,7 +341,7 @@ public class Drag : DynamicActivity
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
         }
-        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false))
+        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false, true))
         {
             //if(Ped.Pedestrian.Exists() && !Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
             //{
@@ -334,6 +351,10 @@ public class Drag : DynamicActivity
             //    NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, 10000, 2 * 10000, 0, true, true, true);
             //    //NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             //}
+            if (1==0 && Settings.SettingsManager.DebugSettings.Draw_DoInitialRagdoll)
+            {
+                DoRagdollDrag();// SetRagdollTest();
+            }
 
             EntryPoint.WriteToConsole("DRAG ANIM RAN");
 
@@ -344,14 +365,43 @@ public class Drag : DynamicActivity
             return false;
         }
     }
+
+    private void SetRagdollTest()
+    {
+        if (!Ped.Pedestrian.Exists())
+        {
+            return;
+        }
+
+        Ped.Pedestrian.Detach();
+        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+        //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.IsRagdoll = true;
+        //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
+        //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
+        //AttachPeds();
+        IsRagdoll = true;
+
+
+        if (Settings.SettingsManager.DebugSettings.Drag_SetNoCollision)
+        {
+            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
+        }
+        NativeFunction.Natives.SET_PED_TO_RAGDOLL(Ped.Pedestrian, -1, -1, 0, false, false, false);
+
+        DoRegularAttach();
+        EntryPoint.WriteToConsole("TEST");
+    }
+
     private bool PlayDragAnimation()
     {
         AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
-        if (Ped.Pedestrian.Exists())
+        if (Ped.Pedestrian.Exists() && !IsRagdoll)
         {
             NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.5f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
         }
-        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false))
+        if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_drag_plyr", true, 1, false, false))
         {
             return true;
         }
@@ -360,7 +410,7 @@ public class Drag : DynamicActivity
             return false;
         }
     }
-    private bool PlayPlayerLoopingAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels)
+    private bool PlayPlayerLoopingAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels, bool forcePedIntroAnim)
     {
         EntryPoint.WriteToConsole($"PlayPlayerLoopingAnimation START {animation} repeat {repeat}");
         if (!repeat)
@@ -369,6 +419,7 @@ public class Drag : DynamicActivity
         }
         uint GameTimeStartedAnimation = Game.GameTime;
         float AnimationTime = 0.0f;
+        AnimationWatcher.Reset();
         GameTimeLastCheckedVehicle = 0;
         while (AnimationTime < 1.0f && !IsCancelled && (repeat||  Game.GameTime - GameTimeStartedAnimation <= 10000))
         {
@@ -403,21 +454,6 @@ public class Drag : DynamicActivity
                     if (Ped.Pedestrian.Exists())
                     {
 
-                        Ped.Pedestrian.Detach();
-
-
-                        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                        //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
-                        Ped.Pedestrian.BlockPermanentEvents = true;
-                        Ped.Pedestrian.IsRagdoll = true;
-                        //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
-
-                        //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
-
-
-                        //AttachPeds();
-
-                        IsRagdoll = true;
 
                         DoRagdollDrag();
 
@@ -425,6 +461,19 @@ public class Drag : DynamicActivity
 
 
                         Game.DisplaySubtitle("RAGDOLLED");
+                    }
+                }
+            }
+            else
+            {
+                if(forcePedIntroAnim)
+                {
+                    if (Ped.Pedestrian.Exists())
+                    {
+                        if (!AnimationWatcher.IsAnimationRunning(NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped")))
+                        {
+                            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
+                        }
                     }
                 }
             }
@@ -448,35 +497,7 @@ public class Drag : DynamicActivity
     }
 
 
-    private void DoRagdollDrag()
-    {
-        leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-        if (leftHandObject.Exists() && Ped.Pedestrian.Exists())
-        {
 
-            leftHandObject.IsVisible = false;
-            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
-            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
-            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, leftHandObject,
-                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, "BONETAG_SPINE3"), //bone 1
-                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, "BONETAG_SPINE3"),// bone 2
-                        Settings.SettingsManager.DebugSettings.DragAttach1X, Settings.SettingsManager.DebugSettings.DragAttach1Y, Settings.SettingsManager.DebugSettings.DragAttach1Z,
-                        Settings.SettingsManager.DebugSettings.DragAttach2X, Settings.SettingsManager.DebugSettings.DragAttach2Y, Settings.SettingsManager.DebugSettings.DragAttach2Z,
-                        Settings.SettingsManager.DebugSettings.DragAttach3X, Settings.SettingsManager.DebugSettings.DragAttach3Y, Settings.SettingsManager.DebugSettings.DragAttach3Z,
-                100000.0f,//break force
-                true, //fixed rotation
-                true, //DoInitialWarp
-                false, //collision
-                false, //teleport
-                1 //RotationORder
-                );
-            //"BONETAG_SPINE3"
-            //"BONETAG_PELVIS"
-            //0.1f,0.3f,-0.1f,
-            //0f,0f,0f,
-            //180f,90f,0f,
-        }
-    }
     private void DirectionLoop()
     {
         if (Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveDown))
@@ -485,7 +506,7 @@ public class Drag : DynamicActivity
             if (!isBackingUp)
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
+                if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation && !IsRagdoll)
                 {
                     NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_drag_ped", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 }
@@ -501,7 +522,7 @@ public class Drag : DynamicActivity
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_putdown_plyr", 8.0f, -8.0f, -1, 2, 0, true, true, true);
-                    if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
+                    if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation && !IsRagdoll)
                     {
                         //NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                         NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -512,7 +533,7 @@ public class Drag : DynamicActivity
             else if(!isBackingUp)
             {
                 NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Player.Character, "combat@drag_ped@", "injured_putdown_plyr", 0.0f);
-                if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
+                if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation && !IsRagdoll)
                 {
                     NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 0.0f);
                 }
@@ -564,6 +585,12 @@ public class Drag : DynamicActivity
             Player.ButtonPrompts.RemovePrompts("Load");
         }
     }
+
+
+
+
+
+
     private void LoadBodyInCar()
     {
         EntryPoint.WriteToConsole("LoadBodyInCarStarted");
@@ -610,4 +637,87 @@ public class Drag : DynamicActivity
     {
 
     }
+
+
+    private void DoRagdollDrag()
+    {
+        if (!Ped.Pedestrian.Exists())
+        {
+            return;
+        }
+
+        Ped.Pedestrian.Detach();
+        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+        //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
+        Ped.Pedestrian.BlockPermanentEvents = true;
+        Ped.Pedestrian.IsRagdoll = true;
+        //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
+        //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
+        //AttachPeds();
+        IsRagdoll = true;
+
+        if (!leftHandObject.Exists())
+        {
+            leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+        }
+        if (leftHandObject.Exists() && Ped.Pedestrian.Exists())
+        {
+            if(Settings.SettingsManager.DebugSettings.Drag_SetPedsInvisible)
+            {
+                Ped.Pedestrian.IsVisible = false;
+                Player.Character.IsVisible = false;
+            }
+            else
+            {
+                Ped.Pedestrian.IsVisible = true;
+                Player.Character.IsVisible = true;
+            }
+
+
+            leftHandObject.IsVisible = false;
+
+
+            if (Settings.SettingsManager.DebugSettings.Drag_SetNoCollision)
+            {
+                NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
+            }
+            NativeFunction.Natives.SET_PED_TO_RAGDOLL(Ped.Pedestrian, -1, -1, 0, false, false, false);
+
+
+            if (Settings.SettingsManager.DebugSettings.Drag_RunAttach)
+            {
+
+                leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, Settings.SettingsManager.DebugSettings.Drag_ItemAttachBone), Vector3.Zero, Rotator.Zero);
+
+
+
+
+
+                NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(Ped.Pedestrian, leftHandObject,
+                    NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.Drag_PhysicalAttachBone1), //bone 1
+                    0,//NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Ped.Pedestrian, Settings.SettingsManager.DebugSettings.Drag_PhysicalAttachBone2),// bone 2
+                            Settings.SettingsManager.DebugSettings.DragAttach1X, Settings.SettingsManager.DebugSettings.DragAttach1Y, Settings.SettingsManager.DebugSettings.DragAttach1Z,
+                            Settings.SettingsManager.DebugSettings.DragAttach2X, Settings.SettingsManager.DebugSettings.DragAttach2Y, Settings.SettingsManager.DebugSettings.DragAttach2Z,
+                            Settings.SettingsManager.DebugSettings.DragAttach3X, Settings.SettingsManager.DebugSettings.DragAttach3Y, Settings.SettingsManager.DebugSettings.DragAttach3Z,
+                    100000.0f,//break force
+                    Settings.SettingsManager.DebugSettings.DragFixedRotation,//true, //fixed rotation
+                    Settings.SettingsManager.DebugSettings.Drag_DoInitialWarp,//true, //DoInitialWarp
+                     Settings.SettingsManager.DebugSettings.Drag_Collision,//false, //collision
+                           Settings.SettingsManager.DebugSettings.Drag_Teleport,//false, //teleport
+                        Settings.SettingsManager.DebugSettings.Drag_RotationOrder                                                                                                                             //2 //RotationORder
+                    );
+
+
+            }
+
+
+            //"BONETAG_SPINE3"
+            //"BONETAG_PELVIS"
+            //0.1f,0.3f,-0.1f,
+            //0f,0f,0f,
+            //180f,90f,0f,
+        }
+    }
+
+
 }

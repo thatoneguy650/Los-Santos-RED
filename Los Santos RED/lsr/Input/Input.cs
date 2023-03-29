@@ -173,11 +173,12 @@ namespace LosSantosRED.lsr
             }
             else if (Player.ButtonPrompts.IsGroupPressed("StartTransaction"))//Player.ButtonPromptList.Any(x => x.Group == "StartTransaction" && x.IsPressedNow))//string for now...
             {
-                if (Game.GameTime - GameTimeLastPressedStartTransaction >= 1000)
-                {
-                    Player.ActivityManager.StartTransaction();
-                    GameTimeLastPressedStartTransaction = Game.GameTime;
-                }
+                Player.ActivityManager.StartConversation();
+                //if (Game.GameTime - GameTimeLastPressedStartTransaction >= 1000)
+                //{
+                //    Player.ActivityManager.StartTransaction();
+                //    GameTimeLastPressedStartTransaction = Game.GameTime;
+                //}
             }
             else if (Player.ButtonPrompts.IsGroupPressed("InteractableLocation"))//Player.ButtonPromptList.Any(x => x.Group == "InteractableLocation" && x.IsPressedNow))//string for now...
             {

@@ -1,4 +1,5 @@
-﻿using Rage;
+﻿using NAudio.Wave;
+using Rage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,43 @@ using System.Threading.Tasks;
 
 public class DebugSettings : ISettingsDefaultable
 {
+    public bool Drag_SetPedsInvisible { get; set; }
+    public bool Drag_SetNoCollision { get; set; }
+
+
+    public string Drag_ItemAttachBone { get; set; }
+    public string Drag_PhysicalAttachBone1 { get; set; }
+    public string Drag_PhysicalAttachBone2 { get; set; }
+
+    public float DragAttach1X { get; set; }
+    public float DragAttach1Y { get; set; }
+    public float DragAttach1Z { get; set; }
+
+
+    public float DragAttach2X { get; set; }
+    public float DragAttach2Y { get; set; }
+    public float DragAttach2Z { get; set; }
+
+    public float DragAttach3X { get; set; }
+    public float DragAttach3Y { get; set; }
+    public float DragAttach3Z { get; set; }
+
+    //public float DragAttach4X { get; set; }
+    //public float DragAttach4Y { get; set; }
+    //public float DragAttach4Z { get; set; }
+
+    public bool DragFixedRotation { get; set; }
+    public bool Drag_DoInitialWarp { get; set; }
+    public bool Drag_Collision { get; set; }
+    public bool Drag_Teleport { get; set; }
+    public int Drag_RotationOrder { get; set; }
+
+    public int Drag_RagdollType { get; set; }
+
+    public bool Drag_SetNM { get; set; }
+    public bool Drag_RunAttach { get; set; }
+    public bool Draw_DoInitialRagdoll { get; set; }
+
     public bool ShowPoliceTaskArrows { get; set; }
     public bool ShowCivilianTaskArrows { get; set; }
     public bool ShowCivilianPerceptionArrows { get; set; }
@@ -42,30 +80,16 @@ public class DebugSettings : ISettingsDefaultable
 
 
 
-    public float DragAttach1X { get; set; }
-    public float DragAttach1Y { get; set; }
-    public float DragAttach1Z { get; set; }
-
-
-    public float DragAttach2X { get; set; }
-    public float DragAttach2Y { get; set; }
-    public float DragAttach2Z { get; set; }
-
-    public float DragAttach3X { get; set; }
-    public float DragAttach3Y { get; set; }
-    public float DragAttach3Z { get; set; }
-
-    //public float DragAttach4X { get; set; }
-    //public float DragAttach4Y { get; set; }
-    //public float DragAttach4Z { get; set; }
-
-    public bool DragFixedRotation { get; set; }
     public float PlateTheftFloat { get; set; }
     public uint DrinkTimeBetween { get; set; }
     public bool DrinkStartsBase { get; set; }
     public float TrunkXOffset { get; set; }
     public float TrunkYOffset { get; set; }
     public float TrunkZOffset { get; set; }
+
+
+
+
 
     public DebugSettings()
     {
@@ -106,26 +130,41 @@ public class DebugSettings : ISettingsDefaultable
 
 
 
-        DragAttach1X = 0.1f;
-        DragAttach1Y = 0.3f;
-        DragAttach1Z = -0.1f;
+        DragAttach1X = 0.0f;// 0.1f;
+        DragAttach1Y = 0.0f;//0.3f;
+        DragAttach1Z = 0.0f;//-0.1f;
 
 
         DragAttach2X = 0.0f;
         DragAttach2Y = 0.0f;
         DragAttach2Z = 0.0f;
 
-        DragAttach3X = 180f;
-        DragAttach3Y = 90f;
-        DragAttach3Z = 0f;
+        DragAttach3X = 0.0f;//180f;
+        DragAttach3Y = 0.0f;//90f;
+        DragAttach3Z = 0.0f;//0f;
 
-        DragFixedRotation = true;
+        
         PlateTheftFloat = 1.0f;
         DrinkTimeBetween = 0;
         DrinkStartsBase = false;
         TrunkXOffset = 0.0f;
         TrunkYOffset = -1.0f;// -2.2f;
         TrunkZOffset = 0.5f;
-}
+        Drag_SetPedsInvisible = false;
+        Drag_SetNoCollision = true;
+        Drag_ItemAttachBone = "BONETAG_R_PH_HAND"; //"BONETAG_R_PH_HAND";// "BONETAG_PELVIS";
+        Drag_PhysicalAttachBone1 = "BONETAG_NECK"; //"BONETAG_R_CLAVICLE";// "BONETAG_SPINE3";
+        Drag_PhysicalAttachBone2 = "BONETAG_PELVIS"; //"BONETAG_R_CLAVICLE";// "BONETAG_SPINE3";
+        Drag_RagdollType = 0;
+        Drag_SetNM = false;
+        Drag_RunAttach = true;
+        Draw_DoInitialRagdoll = true;
+
+        DragFixedRotation = false;
+        Drag_DoInitialWarp = true;
+        Drag_Collision = true;
+        Drag_Teleport = true;
+        Drag_RotationOrder = 2;
+    }
 
 }

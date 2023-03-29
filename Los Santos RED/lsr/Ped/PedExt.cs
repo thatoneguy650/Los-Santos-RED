@@ -100,9 +100,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
-   // public bool WasLocationSpawned { get; set; } = false;
+    // public bool WasLocationSpawned { get; set; } = false;
 
-
+    public virtual bool CanTransact => HasMenu;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
     public int CellX { get; set; }

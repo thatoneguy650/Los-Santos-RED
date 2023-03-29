@@ -52,7 +52,7 @@ namespace LosSantosRED.lsr.Data
             new Bone("SKEL_L_Finger40", 4103, 26614, BodyLocation.LeftArm),
             new Bone("SKEL_L_Finger41", 4103, 4153, BodyLocation.LeftArm),
             new Bone("SKEL_L_Finger42", 7, 4154, BodyLocation.LeftArm),
-            new Bone("PH_L_Hand", 119, 60309, BodyLocation.LeftArm),
+            new Bone("PH_L_Hand", 119, 60309, BodyLocation.LeftArm),//
             new Bone("IK_L_Hand", 119, 36029, BodyLocation.LeftArm),
             new Bone("RB_L_ForeArmRoll", 7, 61007, BodyLocation.LeftArm),
             new Bone("RB_L_ArmRoll", 7, 5232, BodyLocation.LeftArm),
@@ -76,7 +76,7 @@ namespace LosSantosRED.lsr.Data
             new Bone("SKEL_R_Finger40", 4103, 58870, BodyLocation.RightArm),
             new Bone("SKEL_R_Finger41", 4103, 64080, BodyLocation.RightArm),
             new Bone("SKEL_R_Finger42", 7, 64081, BodyLocation.RightArm),
-            new Bone("PH_R_Hand", 119, 28422, BodyLocation.RightArm),
+            new Bone("PH_R_Hand", 119, 28422, BodyLocation.RightArm),//
             new Bone("IK_R_Hand", 119, 6286, BodyLocation.RightArm),
             new Bone("RB_R_ForeArmRoll", 7, 43810, BodyLocation.RightArm),
             new Bone("RB_R_ArmRoll", 7, 37119, BodyLocation.RightArm),
