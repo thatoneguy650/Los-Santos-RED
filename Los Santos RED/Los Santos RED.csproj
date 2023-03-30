@@ -158,6 +158,7 @@
     <Compile Include="lsr\Data\Peds\PedConfigFlagToSet.cs" />
     <Compile Include="lsr\Data\Peds\TattooNames.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
+    <Compile Include="lsr\Dispatcher\LocationDispatcher.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
@@ -170,6 +171,12 @@
     <Compile Include="lsr\Locations\Menus\ShopMenuTypes.cs" />
     <Compile Include="lsr\Locations\Menus\PropShopMenu.cs" />
     <Compile Include="lsr\Locations\Menus\ShopMenuGroup.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\EMSConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\FireConditionalSpawn.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\GangConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Carrier.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />

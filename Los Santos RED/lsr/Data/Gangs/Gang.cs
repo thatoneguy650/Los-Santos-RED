@@ -9,7 +9,7 @@ using System.Linq;
 using System.Xml.Serialization;
 
 [Serializable()]
-public class Gang : IPlatePrefixable
+public class Gang : IPlatePrefixable, IGeneratesDispatchables
 {
     public Gang()
     {
@@ -139,10 +139,17 @@ public class Gang : IPlatePrefixable
             return null;
 
         List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn).ToList();
-        if (RequiredPedGroup != "")
+        //if (RequiredPedGroup != "")
+        //{
+        //    ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
+        //}
+
+        if (RequiredPedGroup != "" && !string.IsNullOrEmpty(RequiredPedGroup))
         {
             ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();
         }
+
+
         //if (RequiredModels != null && RequiredModels.Any())
         //{
         //    ToPickFrom = ToPickFrom.Where(x => RequiredModels.Contains(x.ModelName.ToLower())).ToList();
@@ -178,7 +185,7 @@ public class Gang : IPlatePrefixable
         }
         return null;
     }
-    public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, ISettingsProvideable settings)
+    public DispatchableVehicle GetRandomVehicle(int wantedLevel, bool includeHelicopters, bool includeBoats, bool includeMotorcycles, string requiredGroup, ISettingsProvideable settings)
     {
         if (Vehicles != null && Vehicles.Any())
         {

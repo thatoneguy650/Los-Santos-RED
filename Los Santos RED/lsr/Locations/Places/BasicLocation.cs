@@ -77,10 +77,23 @@ public class BasicLocation
     public string FullName { get; set; }
     public string Description { get; set; }
     public bool IsEnabled { get; set; } = true;
+
+
+
+
+
+
+
+
+
+
+
+
+
     public bool IsTemporarilyClosed { get; set; } = false;
     public string BannerImagePath { get; set; } = "";
     public bool RemoveBanner { get; set; } = false;
-    public bool IsBlipEnabled { get; set; } = true;
+    public virtual bool IsBlipEnabled { get; set; } = true;
     public virtual int MapIcon { get; set; } = (int)BlipSprite.PointOfInterest;
 
 
@@ -110,6 +123,11 @@ public class BasicLocation
     public bool IsPlayerInterestedInLocation { get; set; } = false;
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
+
+    [XmlIgnore]
+    public bool CanActivate { get; set; } = true;
+
+
     [XmlIgnore]
     public int CellX { get; set; }
     [XmlIgnore]

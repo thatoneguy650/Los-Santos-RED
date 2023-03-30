@@ -38,6 +38,12 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
 
     public bool IsPrimaryGangDen { get; set; } = false;
 
+    public override bool IsBlipEnabled { get; set; } = false;
+    [XmlIgnore]
+    public bool IsAvailableForPlayer { get; set; } = false;
+
+    
+
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -74,6 +80,13 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
             return;
         }
 
+
+        if (!IsAvailableForPlayer)
+        {
+            Game.DisplayHelp($"{Name} is only availbe to associated and members");
+            PlayErrorSound();
+            return;
+        }
         if (CanInteract)
         {
             bool isPlayerMember = player.RelationshipManager.GangRelationships.GetReputation(AssociatedGang)?.IsMember == true;

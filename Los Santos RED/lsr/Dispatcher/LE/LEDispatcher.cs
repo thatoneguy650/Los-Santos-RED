@@ -158,7 +158,6 @@ public class LEDispatcher
             }
         }
     }
-    public TaskRequirements SpawnRequirement { get; set; }
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.PoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
@@ -166,7 +165,6 @@ public class LEDispatcher
     private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 300f;
     private bool HasNeedToAmbientDispatch => World.Pedestrians.TotalSpawnedAmbientPolice < SpawnedCopLimit && World.Vehicles.SpawnedAmbientPoliceVehiclesCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.RoadblockSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.RoadblockSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.RoadblockSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
-    private bool HasNeedToDispatchToStations => Settings.SettingsManager.PoliceSpawnSettings.AllowStationSpawning && World.TotalWantedLevel <= Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted;
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
@@ -607,17 +605,9 @@ public class LEDispatcher
         if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
             HandleAmbientSpawns();
-            HandleStationSpawns();
             HandleRoadblockSpawns();
         }
         return HasDispatchedThisTick;
-    }
-    public void LocationDispatch()
-    {
-        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
-        {
-            HandleStationSpawns();
-        }
     }
     public void Dispose()
     {
@@ -651,7 +641,7 @@ public class LEDispatcher
     }
     private void HandleAmbientSpawns()
     {
-        EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
+        //EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
         if (IsTimeToAmbientDispatch && HasNeedToAmbientDispatch)
         {
             HasDispatchedThisTick = true;
@@ -659,115 +649,8 @@ public class LEDispatcher
             {
                 LastAgencySpawned = Agency;
                 CallSpawnTask(false, true, false, false, TaskRequirements.None);
+                GameTimeAttemptedDispatch = Game.GameTime;
             }
-            GameTimeAttemptedDispatch = Game.GameTime;
-        }
-    }
-    private void HandleStationSpawns()
-    {
-        if (HasNeedToDispatchToStations)
-        {
-            foreach (ILocationDispatchable ps in PlacesOfInterest.PoliceDispatchLocations().Where(x => x.IsEnabled && x.IsActivated && x.DistanceToPlayer <= 200f && x.IsNearby && !x.IsDispatchFilled))
-            {
-                if (ps.PossiblePedSpawns != null || ps.PossibleVehicleSpawns != null)
-                {
-                    bool spawnedsome = false;
-                    if (ps.PossiblePedSpawns != null)
-                    {
-                        foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
-                        {
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToAmbientDispatch))
-                            {
-                                HasDispatchedThisTick = true;
-                                SpawnLocation = new SpawnLocation(cl.Location);
-                                SpawnLocation.Heading = cl.Heading;
-                                SpawnLocation.StreetPosition = cl.Location;
-                                SpawnLocation.SidewalkPosition = cl.Location;
-                                Agency toSpawn = null;
-                                if (!string.IsNullOrEmpty(cl.AssociationID))
-                                {
-                                    toSpawn = Agencies.GetAgency(cl.AssociationID);
-                                }
-                                if (toSpawn == null)
-                                {
-                                    toSpawn = ps.AssignedAgency;
-                                }
-                                if (toSpawn == null)
-                                {
-                                    Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
-                                    Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
-                                    if (ZoneAgency != null)
-                                    {
-                                        toSpawn = ZoneAgency;
-                                    }
-                                }
-                                if (GetSpawnTypes(true, false, toSpawn, cl.RequiredGroup))
-                                {
-                                    LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true, false, cl.SpawnRequirement);
-                                    spawnedsome = true;
-                                }
-                            }
-                            GameFiber.Yield();
-                        }
-                    }
-                    if (ps.PossibleVehicleSpawns != null)
-                    {
-                        foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
-                        {
-
-                            if (RandomItems.RandomPercent(cl.Percentage) && (Settings.SettingsManager.PoliceSpawnSettings.StationSpawningIgnoresLimits || HasNeedToAmbientDispatch))
-                            {
-                                HasDispatchedThisTick = true;
-                                SpawnLocation = new SpawnLocation(cl.Location);
-                                SpawnLocation.Heading = cl.Heading;
-                                SpawnLocation.StreetPosition = cl.Location;
-                                SpawnLocation.SidewalkPosition = cl.Location;
-                                Agency toSpawn = null;
-                                if (!string.IsNullOrEmpty(cl.AssociationID))
-                                {
-                                    toSpawn = Agencies.GetAgency(cl.AssociationID);
-                                }
-                                if (toSpawn == null)
-                                {
-                                    toSpawn = ps.AssignedAgency;
-                                }
-                                if (toSpawn == null)
-                                {
-                                    Zone CurrentZone = Zones.GetZone(ps.EntrancePosition);
-                                    Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
-                                    if (ZoneAgency != null)
-                                    {
-                                        toSpawn = ZoneAgency;
-                                    }
-                                }
-
-                                bool forceVehicle = true;
-                                if (!cl.IsEmpty)
-                                {
-                                    forceVehicle = false;
-                                }
-                                if (GetSpawnTypes(false, forceVehicle, toSpawn, cl.RequiredGroup))
-                                {
-                                    LastAgencySpawned = Agency;
-                                    CallSpawnTask(true, false, true, true, cl.SpawnRequirement);
-                                    spawnedsome = true;
-                                }
-                            }
-                            GameFiber.Yield();
-                        }
-                    }
-                    ps.IsDispatchFilled = true;
-                }
-                else
-                {
-                    ps.IsDispatchFilled = true;
-                }
-            }
-        }
-        foreach (ILocationDispatchable ps in PlacesOfInterest.PoliceDispatchLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
-        {
-            ps.IsDispatchFilled = false;
         }
     }
     private void HandleRoadblockSpawns()

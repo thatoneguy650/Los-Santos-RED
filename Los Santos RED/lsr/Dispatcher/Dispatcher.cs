@@ -22,6 +22,7 @@ public class Dispatcher
     private ZombieDispatcher ZombieDispatcher;
     private SecurityDispatcher SecurityDispatcher;
     private GangDispatcher GangDispatcher;
+    private LocationDispatcher LocationDispatcher;
     private IWeapons Weapons;
     private INameProvideable Names;
     //private List<RandomHeadData> RandomHeadList;
@@ -60,6 +61,7 @@ public class Dispatcher
         FireDispatcher = new FireDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest);
         ZombieDispatcher = new ZombieDispatcher(World, Player, Settings, Streets, Zones, Jurisdictions, Weapons, Names, Crimes);
         GangDispatcher = new GangDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest);
+        LocationDispatcher = new LocationDispatcher(World, Player, Gangs, Settings, Streets, Zones, GangTerritories, Weapons, Names, PedGroups, Crimes, ShopMenus, PlacesOfInterest, Agencies, Jurisdictions);
     }
     public void Dispatch()
     {
@@ -86,28 +88,7 @@ public class Dispatcher
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();
         }
-        LocationDispatch();
-    }
-    public void LocationDispatch()
-    {
-        if (Player.Respawning.WasRecentlyTeleported && !hasLocationDispatched)
-        {
-            LEDispatcher.LocationDispatch();
-            GameFiber.Yield();
-            EMSDispatcher.LocationDispatch();
-            GameFiber.Yield();
-            FireDispatcher.LocationDispatch();
-            GameFiber.Yield();
-            GangDispatcher.LocationDispatch();
-            GameFiber.Yield();
-            SecurityDispatcher.LocationDispatch();
-            GameFiber.Yield();
-            hasLocationDispatched = true;
-        }
-        else
-        {
-            hasLocationDispatched = false;
-        }
+        LocationDispatcher.Dispatch();
     }
     public void Recall()
     {

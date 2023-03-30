@@ -50,31 +50,16 @@ public class SecurityDispatcher
     private List<SecurityGuard> DeletableOfficers => World.Pedestrians.SecurityGuardList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
     private float DistanceToDelete => Player.IsWanted ? 400f : 600f;// Player.IsWanted ? 600f : 800f;
     private float DistanceToDeleteOnFoot => Player.IsWanted ? 125f : 300f;
-   // private bool HasNeedToDispatch => World.Pedestrians.TotalSpawnedEMTs == 0;
-    private bool HasNeedToDispatchToStations => true;// Settings.SettingsManager.SecuritySettings.AllowStationSpawning;
-   // private bool IsTimeToDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
     private float MaxDistanceToSpawn => 650f;
     private float MinDistanceToSpawn => 350f;
     private int TimeBetweenSpawn => 60000;
-
-
     private int TimeBetweenRecall => 10000;
     public bool Dispatch()
     {
+        //currently does nothing as security doesnt ambient spawn
         HasDispatchedThisTick = false;
-        if (Settings.SettingsManager.SecuritySettings.ManageDispatching)
-        {
-            HandleStationSpawns();
-        }
         return HasDispatchedThisTick;
-    }
-    public void LocationDispatch()
-    {
-        if (Settings.SettingsManager.SecuritySettings.ManageDispatching)
-        {
-            HandleStationSpawns();
-        }
     }
     public void Dispose()
     {
@@ -94,82 +79,6 @@ public class SecurityDispatcher
             }
             GameTimeAttemptedRecall = Game.GameTime;
         }
-    }
-    private void HandleStationSpawns()
-    {
-        if (HasNeedToDispatchToStations)
-        {
-            foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
-            {
-                EntryPoint.WriteToConsole($"Security Dispatcher, Spawning at {ps.Name}");
-                if(ps.PossiblePedSpawns != null)
-                {
-                    foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
-                    {
-                        EntryPoint.WriteToConsole($"Security Dispatcher, Spawning PED at {ps.Name}");
-                        SpawnConditional(ps, cl, true);
-                        GameFiber.Yield();
-                    }
-                }
-                if(ps.PossibleVehicleSpawns != null)
-                {
-                    foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
-                    {
-                        EntryPoint.WriteToConsole($"Security Dispatcher, Spawning CAR at {ps.Name}");
-                        SpawnConditional(ps, cl, false);
-                        GameFiber.Yield();
-                    }
-                }
-                ps.IsDispatchFilled = true;
-            }
-        }
-        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled && x.AssignedAgency?.Classification == Classification.Security).ToList())
-        {
-            EntryPoint.WriteToConsole($"Security Dispatcher, CLEARED AT {ps.Name}");
-            ps.IsDispatchFilled = false;
-        }
-    }
-    private void SpawnConditional(InteractableLocation ps, ConditionalLocation cl, bool isPed)
-    {
-        if (!RandomItems.RandomPercent(cl.Percentage))
-        {
-            return;
-        }
-        HasDispatchedThisTick = true;
-        SpawnLocation = new SpawnLocation(cl.Location);
-        SpawnLocation.Heading = cl.Heading;
-        SpawnLocation.StreetPosition = cl.Location;
-        SpawnLocation.SidewalkPosition = cl.Location;
-        Agency toSpawn = null;
-        if (!string.IsNullOrEmpty(cl.AssociationID))
-        {
-            toSpawn = Agencies.GetAgency(cl.AssociationID);
-        }
-        if (toSpawn == null)
-        {
-            toSpawn = ps.AssignedAgency;
-        }
-        if (toSpawn == null)
-        {
-            return;
-        }
-
-
-        bool forcePed = isPed;
-        bool forceVehicle = !isPed;
-        if (!cl.IsEmpty && !isPed)
-        {
-            forcePed = false;
-            forceVehicle = false;
-        }
-
-
-        EntryPoint.WriteToConsole($"Security Dispatcher, GETTING SPAWN TYPES FOR {toSpawn.FullName} isPed{isPed} cl.RequiredGroup {cl.RequiredGroup}");
-        if (GetSpawnTypes(forcePed, forceVehicle, toSpawn, cl.RequiredGroup))
-        {
-            EntryPoint.WriteToConsole($"Security Dispatcher, CALLING SPAWN TASK FOR {toSpawn.FullName} SpawnRequirement {cl.SpawnRequirement}");
-            CallSpawnTask(true, false, true, !isPed, cl.SpawnRequirement);
-        }      
     }
     private bool GetSpawnLocation()
     {

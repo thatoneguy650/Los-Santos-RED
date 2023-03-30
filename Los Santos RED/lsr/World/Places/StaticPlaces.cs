@@ -55,6 +55,7 @@ public class StaticPlaces
         }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
+           
             tl.StoreData(Gangs, ShopMenus);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
@@ -69,11 +70,10 @@ public class StaticPlaces
         {
             foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
             {
-                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled && gl.IsCorrectMap(World.IsMPMapLoaded))// ((World.IsMPMapLoaded && gl.IsOnMPMap) || (!World.IsMPMapLoaded && gl.IsOnSPMap)))
+                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled && gl.IsCorrectMap(World.IsMPMapLoaded) && gl.CanActivate)// ((World.IsMPMapLoaded && gl.IsOnMPMap) || (!World.IsMPMapLoaded && gl.IsOnSPMap)))
                 {
                     if (!gl.IsActivated)
                     {
-                        //EntryPoint.WriteToConsole($"{gl.Name} IsOnMPMap:{gl.IsOnMPMap} IsCorrectMap: {gl.IsCorrectMap(World.IsMPMapLoaded)} World.IsMPMapLoaded {World.IsMPMapLoaded}");
                         gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
                         GameFiber.Yield();
                     }
@@ -88,7 +88,7 @@ public class StaticPlaces
                 }
                 if (Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
                 {
-                    if (!gl.IsActivated && gl.IsEnabled && gl.IsBlipEnabled && !gl.Blip.Exists() && gl.IsSameState(EntryPoint.FocusZone?.State) && gl.IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
+                    if (!gl.IsActivated && gl.IsEnabled && gl.CanActivate && gl.IsBlipEnabled && !gl.Blip.Exists() && gl.IsSameState(EntryPoint.FocusZone?.State) && gl.IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
                     {
                         gl.ActivateBlip(Time, World);
                     }
@@ -167,7 +167,18 @@ public class StaticPlaces
     {
         foreach (GangDen gl in PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.AssociatedGang?.ID == iD))
         {
-            gl.IsEnabled = setEnabled;
+            gl.IsAvailableForPlayer = setEnabled;
+            gl.IsBlipEnabled = setEnabled;
+
+            if (setEnabled)
+            {
+                gl.ActivateBlip(Time, World);
+            }
+            else
+            {
+                gl.DeactivateBlip();
+            }
+            //gl.IsEnabled = setEnabled;
         }
     }
     public void AddAllBlips()

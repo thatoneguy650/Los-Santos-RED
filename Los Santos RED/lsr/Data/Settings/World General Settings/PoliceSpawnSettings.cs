@@ -18,8 +18,12 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public bool AllowStationSpawning { get; set; }
     [Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
     public int StationSpawning_MaxWanted { get; set; }
-    [Description("If enabled, police stations ambient spawns ignore the ped and vehicle spawn limits. Use with StationSpawning_MaxWanted of 1 or 2 to allow ambient spawning, but not overload ped limits when in a serious chase.")]
-    public bool StationSpawningIgnoresLimits { get; set; }
+
+
+    //[Description("If enabled, police stations ambient spawns ignore the ped and vehicle spawn limits. Use with StationSpawning_MaxWanted of 1 or 2 to allow ambient spawning, but not overload ped limits when in a serious chase.")]
+    //public bool StationSpawningIgnoresLimits { get; set; }
+
+
     [Description("Maximum distance (in meters) that police can spawn when you are wanted and seen by police.")]
     public float MaxDistanceToSpawn_WantedSeen { get; set; }
     [Description("Maximum distance (in meters) that police can spawn when you are wanted and not seen by police.")]
@@ -56,6 +60,11 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int TimeBetweenCopDespawn_Seen_Min { get; set; }
     [Description("Decreased time (in ms) between cop despawns when you are seen as you increase your wanted level. Formula: ((6 - WantedLevel) * TimeBetweenCopDespawn_Seen_AdditionalTimeScaler) + TimeBetweenCopDespawn_Seen_Min;")]
     public int TimeBetweenCopDespawn_Seen_AdditionalTimeScaler { get; set; }
+
+
+
+
+
 
 
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active.")]
@@ -97,6 +106,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int PedSpawnLimit_Wanted9 { get; set; }
     [Description("Maximum police peds that can be spawned when you are at wanted level 10.")]
     public int PedSpawnLimit_Wanted10 { get; set; }
+
+
+
 
 
 
@@ -257,7 +269,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     {
 
         ManageDispatching = true;
-     
+
+
         PedSpawnLimit_Default = 7;
         PedSpawnLimit_Default_Wilderness = 2;
         PedSpawnLimit_Default_Rural = 3;
@@ -278,6 +291,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         PedSpawnLimit_Wanted8 = 26;
         PedSpawnLimit_Wanted9 = 26;
         PedSpawnLimit_Wanted10 = 26;
+
+
 
         VehicleSpawnLimit_Default = 9;
         VehicleSpawnLimit_Default_Wilderness = 2;
@@ -382,6 +397,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 #endif
         AllowStationSpawning = true;
         StationSpawning_MaxWanted = 2;
-        StationSpawningIgnoresLimits = true;
+       // StationSpawningIgnoresLimits = true;
     }
 }

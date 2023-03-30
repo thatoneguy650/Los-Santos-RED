@@ -36,11 +36,27 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
 
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
+
+
+
     public string AssignedAgencyID { get; set; }
     [XmlIgnore]
     public Agency AssignedAgency { get; set; }
+
+
+
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
+
+
+
+
+
+
+
+
+
+
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
 
@@ -98,6 +114,9 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         {
             return;
         }
+
+
+
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
