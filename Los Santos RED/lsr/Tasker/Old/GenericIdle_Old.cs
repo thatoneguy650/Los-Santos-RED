@@ -112,7 +112,7 @@ public class GenericIdle_Old : ComplexTask
         {
             return;
         }
-        if (Ped.TaskRequirements.Equals(TaskRequirements.None))
+        if (Ped.LocationTaskRequirements.TaskRequirements.Equals(TaskRequirements.None))
         {
             if (Ped.IsLocationSpawned)
             {
@@ -126,11 +126,11 @@ public class GenericIdle_Old : ComplexTask
         else
         {
             HasSpawnRequirements = true;
-            if (Ped.TaskRequirements.HasFlag(TaskRequirements.Guard))
+            if (Ped.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Guard))
             {
                 canGuard = true;
             }
-            if (Ped.TaskRequirements.HasFlag(TaskRequirements.Patrol))
+            if (Ped.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Patrol))
             {
                 canPatrol = true;
             }
@@ -299,15 +299,15 @@ public class GenericIdle_Old : ComplexTask
         string ScenarioChosen = "WORLD_HUMAN_STAND_IMPATIENT";
         if (HasSpawnRequirements)
         {
-            if (Ped.TaskRequirements.HasFlag(TaskRequirements.AnyScenario))
+            if (Ped.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.AnyScenario))
             {
                 ScenarioChosen = AllScenarios.PickRandom();
             }
-            else if (Ped.TaskRequirements.HasFlag(TaskRequirements.StandardScenario))
+            else if (Ped.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.StandardScenario))
             {
                 ScenarioChosen = NormalScenarios.PickRandom();
             }
-            else if (Ped.TaskRequirements.HasFlag(TaskRequirements.LocalScenario))
+            else if (Ped.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.LocalScenario))
             {
                 useLocal = true;
             }

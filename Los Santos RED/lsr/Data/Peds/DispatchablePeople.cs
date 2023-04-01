@@ -56,6 +56,8 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> NOOSEPeds_Old;
     private List<DispatchablePerson> SheriffPeds_Old;
     private List<DispatchablePerson> StandardCops_Simple;
+    private List<DispatchablePerson> FIBPeds_Simple;
+    private List<DispatchablePerson> NOOSEPeds_Simple;
     private List<DispatchablePerson> PrisonPeds_Simple;
     private List<DispatchablePerson> SecurityPeds_Simple;
     private List<DispatchablePerson> GruppeSechsPeds_Simple;
@@ -1643,6 +1645,33 @@ public class DispatchablePeople : IDispatchablePeople
             },//vest, no hat
         };
 
+        FIBPeds_Simple = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_m_fibsec_01",55,70){ DebugName = "FIBAgentMale", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_fiboffice_01",15,0){ DebugName = "FIBNormalMale1", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_m_fiboffice_02",15,0){ DebugName = "FIBNormalMale2", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("u_m_m_fibarchitect",10,0) { DebugName = "FIBNormalMale3", MaxWantedLevelSpawn = 3 },
+            new DispatchablePerson("s_m_y_swat_01", 0,100) {
+                DebugName = "FIBSWATDefaultMale"
+                ,GroupName = "FIBHRT"
+                ,MinWantedLevelSpawn = 5
+                ,MaxWantedLevelSpawn = 5
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(10, 0, 1, 0) },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })
+            },
+        };
+        NOOSEPeds_Simple = new List<DispatchablePerson>() {
+            new DispatchablePerson("s_m_y_swat_01", 100,100){
+                DebugName = "NOOSEDefaultMale"
+                ,AllowRandomizeBeforeVariationApplied = true
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(10, 0, 0, 0) },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 0, 0) })
+            },
+        };
+
+
         PrisonPeds_Simple = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_m_prisguard_01",100,100)  { DebugName = "PrisonGuardMale" },
         };
@@ -1666,8 +1695,8 @@ public class DispatchablePeople : IDispatchablePeople
         List<DispatchablePersonGroup> PeopleGroupLookup_Simple = new List<DispatchablePersonGroup>();
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("StandardCops", StandardCops_Simple));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SheriffPeds", SheriffPeds));
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds_Old));
-        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_Old));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("NOOSEPeds", NOOSEPeds_Simple));
+        PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("FIBPeds", FIBPeds_Simple));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("ParkRangers", ParkRangers));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("DOAPeds", DOAPeds));
         PeopleGroupLookup_Simple.Add(new DispatchablePersonGroup("SAHPPeds", SAHPPeds));

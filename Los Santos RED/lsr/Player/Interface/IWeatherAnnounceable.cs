@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IWeatherReportable
+    public interface IWeatherAnnounceable
     {
         bool IsDead { get; }
         bool IsBusted { get; }

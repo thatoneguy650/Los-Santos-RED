@@ -8,39 +8,17 @@ using System.Linq;
 
 public class CivilianSpawnTask : SpawnTask
 {
-    private bool AddBlip;
-    private bool AddOptionalPassengers = false;
     public bool SetPersistent = false;
-    private VehicleExt LastCreatedVehicle;
-    private INameProvideable Names;
-    private int NextBeatNumber;
-    private int OccupantsToAdd;
-    private ISettingsProvideable Settings;
     private Vehicle SpawnedVehicle;
-    private string UnitCode;
-    private IWeapons Weapons;
-    private IEntityProvideable World;
     private ICrimes Crimes;
 
-    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world) : base(spawnLocation, vehicleType, personType)
+    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world) 
+        : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world)
     {
-
-        AddBlip = addBlip;
-        Settings = settings;
-        Weapons = weapons;
-        Names = names;
-        AddOptionalPassengers = addOptionalPassengers;
-        SetPersistent = setPersistent;
-        World = world;
         Crimes = crimes;
+        SetPersistent = setPersistent;
     }
-    public bool ClearArea { get; set; } = false;
     public TaskRequirements SpawnRequirement { get; set; }
-    private bool HasPersonToSpawn => PersonType != null;
-    private bool HasVehicleToSpawn => VehicleType != null;
-    private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
-    private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
-    private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     public override void AttemptSpawn()
     {
         try

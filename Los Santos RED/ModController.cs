@@ -28,7 +28,7 @@ namespace LosSantosRED.lsr
         private VanillaManager VanillaManager;
         private NAudioPlayer NAudioPlayer;
         private NAudioPlayer NAudioPlayer2;
-        private Weather Weather;
+        private WeatherReporting Weather;
         private Mod.World World;
         
         public ModDataFileManager ModDataFileManager { get; private set; }
@@ -86,9 +86,18 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
+
+
+
+            GameFiber.Yield();
+            Weather = new WeatherReporting(NAudioPlayer, ModDataFileManager.Settings, Time, Player);
+            Weather.Setup();
+
+
+
             GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, 
-                ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest);
+                ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest, Weather,Time);
             Dispatcher.Setup();
             GameFiber.Yield();
             UI = new UI(Player, ModDataFileManager.Settings, ModDataFileManager.Jurisdictions, PedSwap, ModDataFileManager.PlacesOfInterest, Player, Player, Player, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.GameSaves, World, Player, Player, Tasker, Player, 
@@ -100,9 +109,6 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             VanillaManager.Setup();
-            GameFiber.Yield();
-            Weather = new Weather(NAudioPlayer, ModDataFileManager.Settings, Time, Player);
-            Weather.Setup();
 
             GameFiber.Yield();
             WeatherManager = new WeatherManager(ModDataFileManager.Settings, Time, ModDataFileManager.WeatherForecasts);
@@ -222,8 +228,8 @@ namespace LosSantosRED.lsr
             }),
                 new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
             {
-                new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
-                new ModTask(1000, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1500
+                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 0),
+                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1000
             }),
                 new ModTaskGroup("RG5:Police Update", new List<ModTask>()
             {

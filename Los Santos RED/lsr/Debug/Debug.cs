@@ -18,7 +18,8 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using System.Windows.Media.Animation;
+//using System.Windows.Media;
+//using System.Windows.Media.Animation;
 //using System.Windows.Media;
 //using System.Windows.Media;
 using static DispatchScannerFiles;
@@ -55,7 +56,7 @@ public class Debug
     private string TimecycleName = "";
     private IModItems ModItems;
     private bool boolFlipper;
-    private Weather Weather;
+    private WeatherReporting Weather;
     private PlacesOfInterest PlacesOfInterest;
     private Interiors Interiors;
     private Gangs Gangs;
@@ -75,7 +76,7 @@ public class Debug
     private bool Test;
     private bool OnOff1;
 
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, Weather weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
         PlateTypes = plateTypes;
         World = world;
@@ -3384,7 +3385,7 @@ public class Debug
                 $"Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} " +
                 $"IsInVehicle {ped.IsInVehicle} ReactionTier: {ped.PedReactions.ReactionTier} WeaponSet {weaponinventorystring} DebugWeaponState {ped.WeaponInventory.DebugWeaponState}" +
                 $"Weapon {currentWeapon} Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} " +
-                $"Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} HasTaser {ped.HasTaser} SpawnRequirement {ped.TaskRequirements}";
+                $"Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} HasTaser {ped.HasTaser} SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements}";
 
             if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
@@ -3534,7 +3535,7 @@ public class Debug
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} " +
                     $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
 
@@ -3542,7 +3543,7 @@ public class Debug
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
                     $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
             }

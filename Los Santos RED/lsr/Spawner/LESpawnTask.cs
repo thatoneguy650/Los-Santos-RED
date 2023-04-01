@@ -9,37 +9,19 @@ using System.Linq;
 
 public class LESpawnTask : SpawnTask
 {
-    private bool AddBlip;
-    private bool AddOptionalPassengers = false;
     private Agency Agency;
-    private VehicleExt LastCreatedVehicle;
-    private INameProvideable Names;
     private int NextBeatNumber;
-    private int OccupantsToAdd;
-    private ISettingsProvideable Settings;
     private Vehicle SpawnedVehicle;
     private string UnitCode;
-    private IWeapons Weapons;
-    private IEntityProvideable World;
-    public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world) : base(spawnLocation, vehicleType, personType)
+    public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world) 
+        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world)
     {
         Agency = agency;
-        AddBlip = addBlip;
-        Settings = settings;
-        Weapons = weapons;
-        Names = names;
-        AddOptionalPassengers = addOptionalPassengers;
-        World = world;
     }
+
     public TaskRequirements SpawnRequirement { get; set; }
-    public bool ClearArea { get; set; } = false;
     public bool SpawnWithAllWeapons { get; set; } = false;
     private bool HasAgency => Agency != null;
-    private bool HasPersonToSpawn => PersonType != null;
-    private bool HasVehicleToSpawn => VehicleType != null;
-    private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
-    private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
-    private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     public override void AttemptSpawn()
     {
         try
@@ -289,7 +271,7 @@ public class LESpawnTask : SpawnTask
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
-        PrimaryCop.TaskRequirements = SpawnRequirement;
+        //PrimaryCop.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryCop.SpawnPosition = ped.Position;

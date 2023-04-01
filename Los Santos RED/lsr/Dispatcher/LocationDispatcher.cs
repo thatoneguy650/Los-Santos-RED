@@ -24,14 +24,14 @@ public class LocationDispatcher
     private IPlacesOfInterest PlacesOfInterest;
     private IAgencies Agencies;
     private IJurisdictions Jurisdictions;
-
-
+    private IWeatherReportable WeatherReporter;
+    private ITimeControllable Time;
 
     private SpawnLocation SpawnLocation;
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
 
-    public LocationDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions)
+    public LocationDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IAgencies agencies, IJurisdictions jurisdictions, IWeatherReportable weatherReporter, ITimeControllable time)
     {
         Player = player;
         World = world;
@@ -48,18 +48,26 @@ public class LocationDispatcher
         PlacesOfInterest = placesOfInterest;
         Agencies = agencies;
         Jurisdictions = jurisdictions;
+        WeatherReporter = weatherReporter;
+        Time = time;
     }
 
     public void Dispatch()
     {
-        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= 225f && x.IsNearby && !x.IsDispatchFilled && (x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
+        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
         {
+            List<string> ForcedGroups = new List<string>();
             //EntryPoint.WriteToConsole($"Location Dispatcher, SPAWNED AT {ps.Name}");
             if (ps.PossiblePedSpawns != null)
             {
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                 {
-                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssignedAgencyID, Weapons, Names, Crimes, PedGroups,ShopMenus);
+                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssignedAgencyID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time);
+                    if(cl.AttemptedSpawn && !string.IsNullOrEmpty(cl.GroupID))
+                    {
+                        EntryPoint.WriteToConsole($"ADDED FORCED GROUP {cl.GroupID}");
+                        ForcedGroups.Add(cl.GroupID);
+                    }
                     GameFiber.Yield();
                 }
             }
@@ -67,7 +75,9 @@ public class LocationDispatcher
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
-                    cl.AttemptSpawn(Player, false, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssignedAgencyID, Weapons, Names, Crimes, PedGroups, ShopMenus);
+                    bool hasStuff = ForcedGroups.Contains(cl.GroupID);
+                    EntryPoint.WriteToConsole($"CHECKED FORCE GROUP {cl.GroupID} FORCING:{hasStuff}");
+                    cl.AttemptSpawn(Player, false, hasStuff, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssignedAgencyID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time);
                     GameFiber.Yield();
                 }
             }

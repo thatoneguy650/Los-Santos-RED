@@ -25,14 +25,14 @@ public class GangConditionalLocation : ConditionalLocation
             GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = true;
             gangSpawnTask.AllowBuddySpawn = false;
-            gangSpawnTask.SpawnRequirement = SpawnRequirement;
+            gangSpawnTask.SpawnRequirement = TaskRequirements;
             gangSpawnTask.ClearArea = true;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
                 World.Pedestrians.AddEntity(created);
             }
-            gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; });
+            gangSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             gangSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.None));
         }
         catch (Exception ex)
@@ -62,11 +62,7 @@ public class GangConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        if (!force && !RandomItems.RandomPercent(Percentage))
-        {
-            return false;
-        }
-        return true;
+        return base.DetermineRun(force);
     }
     public override void GetDispatchableGenerator()
     {

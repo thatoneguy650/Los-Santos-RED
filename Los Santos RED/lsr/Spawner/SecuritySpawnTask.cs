@@ -8,39 +8,17 @@ using System.Linq;
 
 public class SecurityGuardSpawnTask : SpawnTask
 {
-    private bool AddBlip;
-    private bool AddOptionalPassengers = false;
     private Agency Agency;
-    private VehicleExt LastCreatedVehicle;
-    private INameProvideable Names;
-    private int NextBeatNumber;
-    private int OccupantsToAdd;
-    private ISettingsProvideable Settings;
     private Vehicle SpawnedVehicle;
-    private string UnitCode;
-    private IWeapons Weapons;
-    private IEntityProvideable World;
     private ICrimes Crimes;
     public SecurityGuardSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, 
-        bool addOptionalPassengers, IEntityProvideable world, ICrimes crimes) : base(spawnLocation, vehicleType, personType)
+        bool addOptionalPassengers, IEntityProvideable world, ICrimes crimes) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world)
     {
         Agency = agency;
-        AddBlip = addBlip;
-        Settings = settings;
-        Weapons = weapons;
-        Names = names;
-        AddOptionalPassengers = addOptionalPassengers;
-        World = world;
         Crimes = crimes;
-    }
-    public bool ClearArea { get; set; } = false;
+}
     public TaskRequirements SpawnRequirement { get; set; } = TaskRequirements.None;
     private bool HasAgency => Agency != null;
-    private bool HasPersonToSpawn => PersonType != null;
-    private bool HasVehicleToSpawn => VehicleType != null;
-    private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
-    private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
-    private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     public override void AttemptSpawn()
     {
         try
@@ -263,7 +241,7 @@ public class SecurityGuardSpawnTask : SpawnTask
         SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
-        primarySecurityGuard.TaskRequirements = SpawnRequirement;
+        //primarySecurityGuard.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             primarySecurityGuard.SpawnPosition = ped.Position;

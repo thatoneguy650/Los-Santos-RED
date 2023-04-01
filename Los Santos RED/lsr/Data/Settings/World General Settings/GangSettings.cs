@@ -118,7 +118,7 @@ public class GangSettings : ISettingsDefaultable
         PercentSpawnOutsideTerritory = 10;
         ManageDispatching = true;
 
-        TimeBetweenSpawn = 15000;//10000;
+        TimeBetweenSpawn = 10000;//10000;
 
         TimeBetweenSpawn_DowntownAdditional = 10000;
         TimeBetweenSpawn_WildernessAdditional = 80000;

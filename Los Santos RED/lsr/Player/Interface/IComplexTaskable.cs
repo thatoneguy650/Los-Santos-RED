@@ -50,7 +50,12 @@ namespace LosSantosRED.lsr.Interface
         //List<uint> BlackListedVehicles { get; }
         bool RecentlySeenPlayer { get; }
         bool IsLocationSpawned { get; }
-        TaskRequirements TaskRequirements { get; }
+      //  TaskRequirements TaskRequirements { get; }
+
+
+
+        LocationTaskRequirements LocationTaskRequirements { get; }
+
         PlayerPerception PlayerPerception { get; }
         uint GameTimeReachedInvestigationPosition { get; set; }
 

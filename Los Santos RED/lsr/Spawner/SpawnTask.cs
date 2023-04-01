@@ -12,11 +12,31 @@ using ExtensionsMethods;
 
 public abstract class SpawnTask
 {
-    public SpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType)
+    protected bool AddBlip;
+    protected bool AddOptionalPassengers = false;
+    protected VehicleExt LastCreatedVehicle;
+    protected INameProvideable Names;
+    protected int OccupantsToAdd;
+    protected ISettingsProvideable Settings;
+    protected IWeapons Weapons;
+    protected IEntityProvideable World;
+
+    protected bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
+    protected bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
+    protected bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
+    protected bool HasPersonToSpawn => PersonType != null;
+    protected bool HasVehicleToSpawn => VehicleType != null;
+    public SpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, IEntityProvideable world)
     {
         SpawnLocation = spawnLocation;
         PersonType = personType;
         VehicleType = vehicleType;
+        AddBlip = addBlip;
+        Settings = settings;
+        Weapons = weapons;
+        Names = names;
+        AddOptionalPassengers = addOptionalPassengers;
+        World = world;       
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();
@@ -25,6 +45,8 @@ public abstract class SpawnTask
     public DispatchablePerson PersonType { get; set; }
     public bool AllowAnySpawn { get; set; } = false;
     public bool AllowBuddySpawn { get; set; } = true;
+    public bool ClearArea { get; set; } = false;
+    public bool PlacePedOnGround { get; set; } = false;
     public Vector3 Position
     {
         get
@@ -51,35 +73,5 @@ public abstract class SpawnTask
             }
         }
     }
-    public bool PlacePedOnGround { get; set; } = false;
     public abstract void AttemptSpawn();
-
-
-    //public void UpgradePerformance(VehicleExt vehicleExt)//should be an inherited class? VehicleExt and CopCar? For now itll stay in here 
-    //{
-    //    if (vehicleExt.Vehicle.Exists() || vehicleExt.Vehicle.IsHelicopter)
-    //    {
-    //        return;
-    //    }
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD_KIT", vehicleExt.Vehicle, 0);//Required to work
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 11, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 11) - 1, true);//Engine
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 12, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 12) - 1, true);//Brakes
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 13, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 13) - 1, true);//Tranny
-    //    NativeFunction.CallByName<bool>("SET_VEHICLE_MOD", vehicleExt.Vehicle, 15, NativeFunction.CallByName<int>("GET_NUM_VEHICLE_MODS", vehicleExt.Vehicle, 15) - 1, true);//Suspension
-    //}
-    //public void UpdatePlate(VehicleExt vehicleExt, Agency AssignedAgency)
-    //{
-    //    if (AssignedAgency == null)
-    //    {
-    //        return;
-    //    }
-    //    vehicleExt.Vehicle.LicensePlate = AssignedAgency.LicensePlatePrefix + RandomItems.RandomString(8 - AssignedAgency.LicensePlatePrefix.Length);
-    //    //if (RequiredLiveries == null || !RequiredLiveries.Any())
-    //    //{
-    //    //    return;
-    //    //}
-    //    //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
-    //}
-
-
 }

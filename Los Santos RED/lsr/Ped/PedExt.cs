@@ -333,7 +333,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int TimesInsultedByPlayer { get; private set; }
     public Vector3 PositionLastSeenDistressedPed { get; set; }
     public ShopMenu ShopMenu { get; private set; }
-    public Vector3 SpawnPosition { get; set; }
+
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
@@ -402,11 +402,30 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
-    public bool WasModSpawned { get; set; } = false;
-    public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
-    public Vector3 SpawnLocation { get; set; }
-    public float SpawnHeading { get; set; }
+
+
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
+
+
+
+    public bool WasModSpawned { get; set; } = false;
+    public Vector3 SpawnPosition { get; set; }
+    public float SpawnHeading { get; set; }
+
+
+
+    public LocationTaskRequirements LocationTaskRequirements { get; set; } = new LocationTaskRequirements();
+
+
+
+  //  public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
+
+
+
+
+
+
+
     public virtual bool KnowsDrugAreas => HasMenu || HasDrugAreaKnowledge;
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
 

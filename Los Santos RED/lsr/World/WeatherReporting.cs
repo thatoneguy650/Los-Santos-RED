@@ -10,14 +10,14 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Weather
+public class WeatherReporting : IWeatherReportable
 {
     private List<WeatherFile> WeatherFiles;
-    private eWeatherTypeHash NextWeather;
+    private eWeatherTypeHash nextWeather;
     private eWeatherTypeHash PrevNextWeather;
-    private eWeatherTypeHash CurrentWeather;
+    private eWeatherTypeHash currentWeather;
     private eWeatherTypeHash PrevCurrentWeather;
-    private float CurrentWindSpeed;
+    private float currentWindSpeed;
     private uint GameTimeLastReportedWeather;
     private string RadioStationLastTuned;
     private IAudioPlayable AudioPlayer;
@@ -28,30 +28,35 @@ public class Weather
     private readonly string NotificationTitle = "Weazel News";
     private readonly string NotificationSubtitle = "~b~Weather Report";
     private List<Sponsor> Sponsors;
-    private IWeatherReportable Player;
+    private IWeatherAnnounceable Player;
     private bool isPlayingAudio = false;
     private uint GameTimeLastAudioReportedWeather;
-    public Weather(IAudioPlayable audio, ISettingsProvideable settings, ITimeReportable time, IWeatherReportable player)
+    public WeatherReporting(IAudioPlayable audio, ISettingsProvideable settings, ITimeReportable time, IWeatherAnnounceable player)
     {
         AudioPlayer = audio;
         Settings = settings;
         Time = time;
         Player = player;
     }
+
+
+    public float WindSpeed => currentWindSpeed;
+    public bool IsPoorWeather => WindSpeed >= 12f || currentWeather == eWeatherTypeHash.ThunderStorm || currentWeather == eWeatherTypeHash.Raining || currentWeather == eWeatherTypeHash.Blizzard;
+
     public bool IsReportingWeather { get; set; }
     private bool CanAudioReportWeather => Game.GameTime - GameTimeLastAudioReportedWeather >= Settings.SettingsManager.WeatherSettings.ReportWeather_MinimumTimeBetweenAudioReports;
     private bool CanAudioReportWind => Game.GameTime - GameTimeLastAudioReportedWeather >= Settings.SettingsManager.WeatherSettings.ReportWindyWeather_MinimumTimeBetweenAudioReports;
     private bool CanReportWeather => Game.GameTime - GameTimeLastReportedWeather >= Settings.SettingsManager.WeatherSettings.ReportWeather_MinimumTimeBetweenReports;
     private bool CanReportWind => Game.GameTime - GameTimeLastReportedWeather >= Settings.SettingsManager.WeatherSettings.ReportWindyWeather_MinimumTimeBetweenReports;
-    public eWeatherTypeHash ForecastedWeather => NextWeather;
+    public eWeatherTypeHash ForecastedWeather => nextWeather;
     public void Setup()
     {
         WeatherFiles = new List<WeatherFile>();
-        NextWeather = eWeatherTypeHash.Neutral;
+        nextWeather = eWeatherTypeHash.Neutral;
         PrevNextWeather = eWeatherTypeHash.Neutral;
-        CurrentWeather = eWeatherTypeHash.Neutral;
+        currentWeather = eWeatherTypeHash.Neutral;
         PrevCurrentWeather = eWeatherTypeHash.Neutral;
-        CurrentWindSpeed = 0f;
+        currentWindSpeed = 0f;
         GameTimeLastReportedWeather = 0;
         IsReportingWeather = false;
         RadioStationLastTuned = "";
@@ -158,28 +163,29 @@ public class Weather
     }
     public void Update()
     {
+        currentWeather = (eWeatherTypeHash)NativeFunction.Natives.GET_PREV_WEATHER_TYPE_HASH_NAME<int>();
+        nextWeather = (eWeatherTypeHash)NativeFunction.Natives.GET_NEXT_WEATHER_TYPE_HASH_NAME<int>();
+        currentWindSpeed = NativeFunction.Natives.GET_WIND_SPEED<float>();
         if (Settings.SettingsManager.WeatherSettings.ReportWeather)
         {
-            CurrentWeather = (eWeatherTypeHash)NativeFunction.Natives.GET_PREV_WEATHER_TYPE_HASH_NAME<int>();
-            NextWeather = (eWeatherTypeHash)NativeFunction.Natives.GET_NEXT_WEATHER_TYPE_HASH_NAME<int>();
             if (CanReportWeather)
             {
-                if (PrevCurrentWeather != CurrentWeather)
+                if (PrevCurrentWeather != currentWeather)
                 {
                     CurrentWeatherChanged();
                 }
             }
             if (CanReportWeather)
             {
-                if (PrevNextWeather != NextWeather)
+                if (PrevNextWeather != nextWeather)
                 {
                     NextWeatherChanged();
                 }
             }
-            CurrentWindSpeed = NativeFunction.Natives.GET_WIND_SPEED<float>();
+            
             if (CanReportWind)
             {
-                if (CurrentWindSpeed >= Settings.SettingsManager.WeatherSettings.ReportWindyWeather_MinimumSpeed && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
+                if (currentWindSpeed >= Settings.SettingsManager.WeatherSettings.ReportWindyWeather_MinimumSpeed && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
                 {
                     GameFiber.Yield();
                     ReportWindy();
@@ -267,7 +273,7 @@ public class Weather
     private void DisplayNotification(string ForcedSponsorName, bool isWindy)
     {
         RemoveAllNotifications();
-        double WindSpeed = Math.Round(CurrentWindSpeed, 0);
+        double WindSpeed = Math.Round(currentWindSpeed, 0);
         string WindText;
         if(WindSpeed <= 2)
         {
@@ -285,10 +291,10 @@ public class Weather
         {
             WindText = "~r~" + WindSpeed.ToString() + "~s~";
         }
-        string NotificationText = $"Currently: {NameFromHash(CurrentWeather)}~n~Forecasted: {NameFromHash(NextWeather)}";
+        string NotificationText = $"Currently: {NameFromHash(currentWeather)}~n~Forecasted: {NameFromHash(nextWeather)}";
         if(isWindy)
         {
-            NotificationText = $"Currently: ~s~Windy: {WindText} m/s~n~Forecasted: {NameFromHash(NextWeather)}";
+            NotificationText = $"Currently: ~s~Windy: {WindText} m/s~n~Forecasted: {NameFromHash(nextWeather)}";
         }    
         Sponsor sponsor = Sponsors.PickRandom();
 
@@ -365,20 +371,20 @@ public class Weather
         if (Settings.SettingsManager.WeatherSettings.ReportChangedCurrentWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)//if (!AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedCurrentWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
         {
             GameFiber.Yield();
-            ReportWeather(CurrentWeather);
+            ReportWeather(currentWeather);
         }
-        EntryPoint.WriteToConsole($"Current Weather Changed from {PrevCurrentWeather} to {CurrentWeather}", 5);
-        PrevCurrentWeather = CurrentWeather;
+        EntryPoint.WriteToConsole($"Current Weather Changed from {PrevCurrentWeather} to {currentWeather}", 5);
+        PrevCurrentWeather = currentWeather;
     }
     private void NextWeatherChanged()
     {
-        if (NextWeather != CurrentWeather && Settings.SettingsManager.WeatherSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)//if (NextWeather != CurrentWeather && !AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
+        if (nextWeather != currentWeather && Settings.SettingsManager.WeatherSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)//if (NextWeather != CurrentWeather && !AudioPlayer.IsAudioPlaying && Settings.SettingsManager.WorldSettings.ReportChangedForecastedWeather && !Time.IsFastForwarding && Player.IsNotWanted && Player.IsAliveAndFree)
         {
             GameFiber.Yield();
-            ReportWeather(NextWeather);
+            ReportWeather(nextWeather);
         }
-        EntryPoint.WriteToConsole($"Next Weather Changed from {PrevNextWeather} to {NextWeather}", 5);
-        PrevNextWeather = NextWeather;
+        EntryPoint.WriteToConsole($"Next Weather Changed from {PrevNextWeather} to {nextWeather}", 5);
+        PrevNextWeather = nextWeather;
     }
     private void StoredAndTurnOffRadio()
     {

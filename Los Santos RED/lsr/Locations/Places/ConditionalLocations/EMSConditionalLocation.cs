@@ -41,11 +41,7 @@ public class EMSConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        if (!force && !RandomItems.RandomPercent(Percentage))
-        {
-            return false;
-        }
-        return true;
+        return base.DetermineRun(force);
     }
 
 
@@ -56,10 +52,10 @@ public class EMSConditionalLocation : ConditionalLocation
             EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
             eMTSpawnTask.AllowAnySpawn = true;
             eMTSpawnTask.AllowBuddySpawn = false;
-            eMTSpawnTask.SpawnRequirement = SpawnRequirement;
+            eMTSpawnTask.SpawnRequirement = TaskRequirements;
             eMTSpawnTask.ClearArea = true;
             eMTSpawnTask.AttemptSpawn();
-            eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; });
+            eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));
             eMTSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.EMS));
         }

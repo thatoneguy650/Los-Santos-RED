@@ -8,43 +8,21 @@ using System.Linq;
 
 public class GangSpawnTask : SpawnTask
 {
-    private bool AddBlip;
-    private bool AddOptionalPassengers = false;
     private Gang Gang;
-    private ICrimes Crimes;
-    private VehicleExt LastCreatedVehicle;
-    private INameProvideable Names;
-    private int OccupantsToAdd;
     private IPedGroups RelationshipGroups;
-    private ISettingsProvideable Settings;
     private IShopMenus ShopMenus;
     private Vehicle SpawnedVehicle;
-    private IWeapons Weapons;
-    private IEntityProvideable World;
-    public GangSpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world) : base(spawnLocation, vehicleType, personType)
+    private ICrimes Crimes;
+    public GangSpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world) 
+        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world)
     {
         Gang = gang;
-        PersonType = personType;
-        VehicleType = vehicleType;
-        AddBlip = addBlip;
-        SpawnLocation = spawnLocation;
-        Settings = settings;
-        Weapons = weapons;
-        Names = names;
-        Crimes = crimes;
         RelationshipGroups = pedGroups;
-        AddOptionalPassengers = addOptionalPassengers;
         ShopMenus = shopMenus;
-        World = world;
+        Crimes = crimes;
     }
     public TaskRequirements SpawnRequirement { get; set; }
-    public bool ClearArea { get; set; } = false;
     private bool HasGang => Gang != null;
-    private bool HasPersonToSpawn => PersonType != null;
-    private bool HasVehicleToSpawn => VehicleType != null;
-    private bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
-    private bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
-    private bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     public override void AttemptSpawn()
     {
         try
@@ -281,7 +259,7 @@ public class GangSpawnTask : SpawnTask
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
-        GangMember.TaskRequirements = SpawnRequirement;
+        //GangMember.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             GangMember.SpawnPosition = ped.Position;

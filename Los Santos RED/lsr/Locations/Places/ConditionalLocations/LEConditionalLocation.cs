@@ -31,24 +31,21 @@ public class LEConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        if (!force && !RandomItems.RandomPercent(Percentage))
-        {
-            return false;
-        }
-        return true;
+        return base.DetermineRun(force);
     }
     public override void RunSpawnTask()
     {
         try
         {
+            EntryPoint.WriteToConsole("ATTEMPT LE SPAWN");
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World);
             spawnTask.AllowAnySpawn = true;
             spawnTask.AllowBuddySpawn = false;
             spawnTask.ClearArea = true;
-            spawnTask.SpawnRequirement = SpawnRequirement;
+            spawnTask.SpawnRequirement = TaskRequirements;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
-            spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; });
+            spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             Player.OnLawEnforcementSpawn(Agency, DispatchableVehicle, DispatchablePerson);
         }

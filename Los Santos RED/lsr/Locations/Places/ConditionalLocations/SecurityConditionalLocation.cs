@@ -31,11 +31,7 @@ public class SecurityConditionalLocation : ConditionalLocation
         //{
         //    return false;
         //}
-        if (!force && !RandomItems.RandomPercent(Percentage))
-        {
-            return false;
-        }
-        return true;
+        return base.DetermineRun(force);
     }
 
     public override void RunSpawnTask()
@@ -46,9 +42,9 @@ public class SecurityConditionalLocation : ConditionalLocation
             securitySpawnTask.AllowAnySpawn = true;
             securitySpawnTask.AllowBuddySpawn = false;
             securitySpawnTask.ClearArea = true;
-            securitySpawnTask.SpawnRequirement = SpawnRequirement;
+            securitySpawnTask.SpawnRequirement = TaskRequirements;
             securitySpawnTask.AttemptSpawn();
-            securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; });
+            securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));
         }
         catch (Exception ex)

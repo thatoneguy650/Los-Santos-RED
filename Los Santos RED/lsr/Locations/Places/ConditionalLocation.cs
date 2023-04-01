@@ -28,7 +28,8 @@ public class ConditionalLocation
     protected ICrimes Crimes;
     protected IPedGroups PedGroups;
     protected IShopMenus ShopMenus;
-
+    protected IWeatherReportable WeatherReporter;
+    protected ITimeControllable Time;
     protected SpawnTask SpawnTask;
     protected SpawnLocation SpawnLocation;
     protected DispatchablePerson DispatchablePerson;
@@ -53,11 +54,22 @@ public class ConditionalLocation
     public string RequiredPedGroup { get; set; }
     public string RequiredVehicleGroup { get; set; }
     public bool IsEmpty { get; set; } = true;
-    public TaskRequirements SpawnRequirement { get; set; } = TaskRequirements.None;
+
+    public string GroupID { get; set; } = "";
+
+    public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
+    public List<string> ForcedScenarios { get; set; }
+
+    [XmlIgnore]
+    public bool AttemptedSpawn { get; private set; }
+
+    public float OverrideNightPercentage { get; set; } = -1.0f;
+    public float OverrideDayPercentage { get; set; } = -1.0f;
+    public float OverridePoorWeatherPercentage { get; set; } = -1.0f;
+    
 
 
-
-    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus)
+    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time)
     {
         Player = player;
         IsPerson = isPerson;
@@ -74,7 +86,10 @@ public class ConditionalLocation
         Crimes = crimes;
         PedGroups = pedGroups;
         ShopMenus = shopMenus;
-        if(!DetermineRun(force))
+        WeatherReporter = weatherReporter;
+        Time = time;
+        AttemptedSpawn = DetermineRun(force);
+        if (!AttemptedSpawn)
         {
             return;
         }
@@ -85,11 +100,23 @@ public class ConditionalLocation
     }
     public virtual bool DetermineRun(bool force)
     {
-        if (!force && !RandomItems.RandomPercent(Percentage))
+        if(force)
         {
-            return false;
+            return true;
         }
-        return true;
+        if(WeatherReporter.IsPoorWeather && OverridePoorWeatherPercentage != -1.0f)
+        {
+            return RandomItems.RandomPercent(OverridePoorWeatherPercentage);
+        }
+        else if (Time.IsNight && OverrideNightPercentage != -1.0f)
+        {
+            return RandomItems.RandomPercent(OverrideNightPercentage);
+        }
+        else if (!Time.IsNight && OverrideDayPercentage != -1.0f)
+        {
+            return RandomItems.RandomPercent(OverrideDayPercentage);
+        }
+        return RandomItems.RandomPercent(Percentage);
     }
     public virtual void GenerateSpawnLocation()
     {
@@ -109,6 +136,20 @@ public class ConditionalLocation
     public virtual void RunSpawnTask()
     {
 
+    }
+    public virtual void AddLocationRequirements(PedExt ped)
+    {
+        if(ped == null || ped.LocationTaskRequirements == null)
+        {
+            return;
+        }
+        ped.LocationTaskRequirements.TaskRequirements = TaskRequirements;
+        ped.LocationTaskRequirements.ForcedScenarios.Clear();
+        if (ForcedScenarios != null && ForcedScenarios.Any())
+        {
+            ped.LocationTaskRequirements.ForcedScenarios.AddRange(ForcedScenarios.ToList());
+        }
+        EntryPoint.WriteToConsole("ADDED LOCATION REQUIREMENTS");
     }
 
 

@@ -93,6 +93,9 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public bool VendorAbandoned { get; set; } = false;
 
 
+
+    public virtual float ActivateDistance { get; set; } = 225;
+
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         

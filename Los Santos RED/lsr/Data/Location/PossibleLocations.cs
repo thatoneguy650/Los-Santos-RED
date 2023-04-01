@@ -46,5 +46,6 @@ public class PossibleLocations
     public List<SportingGoodsStore> SportingGoodsStores { get; private set; } = new List<SportingGoodsStore>();
     public List<Airport> Airports { get; private set; } = new List<Airport>();
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
+    public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
 }
 

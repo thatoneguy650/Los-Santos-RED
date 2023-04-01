@@ -20,6 +20,7 @@ public class LEDispatcher
     private readonly IJurisdictions Jurisdictions;
     private readonly IZones Zones;
     private bool HasDispatchedThisTick;
+    private bool ShouldRunAmbientDispatch;
     private uint GameTimeAttemptedDispatch;
     private uint GameTimeAttemptedDispatchRoadblock;
     private uint GameTimeAttemptedRecall;
@@ -522,6 +523,38 @@ public class LEDispatcher
     {
         get
         {
+
+            if(World.TotalWantedLevel == 0 && !Player.Investigation.IsActive)
+            {
+                int TotalTimeBetweenSpawns = Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
+                if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_WildernessAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_RuralAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_SuburbAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_IndustrialAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_DowntownAdditional;
+                }
+                return TotalTimeBetweenSpawns;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
+            }
+
+
             int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;
             int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
             int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
@@ -544,18 +577,6 @@ public class LEDispatcher
                 {
                     return SeenMinTime;
                 }
-
-                //if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel > 6 && World.TotalWantedLevel >= 6)
-                //{
-                //    return SeenMinTime;
-                //}
-                //else
-                //{
-                //    float percentage = 6 * (float)World.TotalWantedLevel / Settings.SettingsManager.PoliceSettings.MaxWantedLevel;
-
-
-                //    return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
-                //}
             }
         }
     }
@@ -599,6 +620,46 @@ public class LEDispatcher
             }
         }
     }
+    private int PercentageOfAmbientSpawn // => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
+    {
+        get
+        {
+            if(World.TotalWantedLevel >= 3)
+            {
+                return 100;
+            }
+            else if(World.TotalWantedLevel > 0)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Wanted;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Investigation;
+            }
+            int ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage;
+            if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Wilderness;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Rural;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Suburb;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Industrial;
+            }
+            else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+            {
+                ambientSpawnPercent = Settings.SettingsManager.PoliceSpawnSettings.AmbientSpawnPercentage_Downtown;
+            }
+            return ambientSpawnPercent;
+        }
+    }
     public bool Dispatch()
     {
         HasDispatchedThisTick = false;
@@ -639,20 +700,70 @@ public class LEDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
+
+
     private void HandleAmbientSpawns()
     {
-        //EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
-        if (IsTimeToAmbientDispatch && HasNeedToAmbientDispatch)
+        if (!IsTimeToAmbientDispatch || !HasNeedToAmbientDispatch)
         {
-            HasDispatchedThisTick = true;
-            if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
+            return;
+        }
+        HasDispatchedThisTick = true;//up here for now, might be better down low
+        if (ShouldRunAmbientDispatch)
+        {
+            EntryPoint.WriteToConsole($"AMBIENT COP RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
+            RunAmbientDispatch();
+        }
+        else
+        {
+            ShouldRunAmbientDispatch = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
+            if (ShouldRunAmbientDispatch)
             {
-                LastAgencySpawned = Agency;
-                CallSpawnTask(false, true, false, false, TaskRequirements.None);
+                EntryPoint.WriteToConsole($"AMBIENT COP RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
+                RunAmbientDispatch();
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"AMBIENT COP Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
                 GameTimeAttemptedDispatch = Game.GameTime;
             }
         }
     }
+
+    private void RunAmbientDispatch()
+    {
+        EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
+
+        bool getspawnLocation = GetSpawnLocation();
+        bool getSpawnTypes = GetSpawnTypes(false, false, null, "");
+        EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
+        if (getspawnLocation && getSpawnTypes)
+        {
+            EntryPoint.WriteToConsole($"AMBIENT COP CALLED SPAWN TASK");
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
+            {
+                EntryPoint.WriteToConsole($"AMBIENT COP SPAWN TASK RAN");
+                ShouldRunAmbientDispatch = false;
+                GameTimeAttemptedDispatch = Game.GameTime;
+            }
+        }
+    }
+
+
+    //private void HandleAmbientSpawns()
+    //{
+    //    //EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
+    //    if (IsTimeToAmbientDispatch && HasNeedToAmbientDispatch)
+    //    {
+    //        HasDispatchedThisTick = true;
+    //        if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
+    //        {
+    //            LastAgencySpawned = Agency;
+    //            CallSpawnTask(false, true, false, false, TaskRequirements.None);
+    //            GameTimeAttemptedDispatch = Game.GameTime;
+    //        }
+    //    }
+    //}
     private void HandleRoadblockSpawns()
     {
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)
@@ -661,7 +772,7 @@ public class LEDispatcher
             SpawnRoadblock(false,300f);
         }
     }
-    private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
         {
@@ -676,10 +787,12 @@ public class LEDispatcher
             spawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.LawEnforcement));
             HasDispatchedThisTick = true;
             Player.OnLawEnforcementSpawn(Agency, VehicleType, PersonType);
+            return spawnTask.CreatedPeople.Any(x => x.Pedestrian.Exists());
         }
         catch (Exception ex)
-        {
+        {        
             EntryPoint.WriteToConsole($"LE Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            return false;
         }
     }
     private bool GetSpawnLocation()

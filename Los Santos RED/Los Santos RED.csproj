@@ -189,6 +189,7 @@
     <Compile Include="lsr\Locations\Places\Interact\Airport\RoadToggler.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\TaxiDropOff.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\YanktonAiport.cs" />
+    <Compile Include="lsr\Locations\Places\Interact\BlankLocation.cs" />
     <Compile Include="lsr\Locations\Places\PurchaseMenu.cs" />
     <Compile Include="lsr\Locations\Places\SellMenu.cs" />
     <Compile Include="lsr\Locations\Places\TaskRequirements.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="lsr\Ped\PedKnowledge.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
     <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Cellphone\Burner\Apps\BurnerPhone.cs" />
@@ -547,7 +549,7 @@
     <Compile Include="lsr\Player\Interface\IWeaponRecoilable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponSelectable.cs" />
     <Compile Include="lsr\Player\Interface\IWeaponSwayable.cs" />
-    <Compile Include="lsr\Player\Interface\IWeatherReportable.cs" />
+    <Compile Include="lsr\Player\Interface\IWeatherAnnounceable.cs" />
     <Compile Include="lsr\Player\HumanState\Intoxication.cs" />
     <Compile Include="lsr\Player\Intoxication\Intoxicator.cs" />
     <Compile Include="lsr\Player\Money\Properties.cs" />
@@ -805,6 +807,7 @@
     <Compile Include="lsr\Vehicle\RadioStation.cs" />
     <Compile Include="lsr\VanillaManager\VanillaManager.cs" />
     <Compile Include="lsr\Weather\eWeatherTypeHash.cs" />
+    <Compile Include="lsr\Weather\IWeatherReportable.cs" />
     <Compile Include="lsr\Weather\WeatherForecast.cs" />
     <Compile Include="lsr\World\eRandomEventType.cs" />
     <Compile Include="lsr\World\Interface\IEntityProvideable.cs" />
@@ -823,7 +826,7 @@
     <Compile Include="lsr\World\Places\Places.cs" />
     <Compile Include="lsr\World\Places\StaticPlaces.cs" />
     <Compile Include="lsr\World\Vehicles\PlateController.cs" />
-    <Compile Include="lsr\World\Weather.cs" />
+    <Compile Include="lsr\World\WeatherReporting.cs" />
     <Compile Include="ModController.cs" />
     <Compile Include="lsr\Player\Player.cs" />
     <Compile Include="lsr\Ped\PedConfigFlags.cs" />

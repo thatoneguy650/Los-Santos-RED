@@ -217,7 +217,7 @@ public class GangDispatcher
         HasDispatchedThisTick = true;//up here for now, might be better down low
         if(ShouldRunAmbientDispatch)
         {
-            EntryPoint.WriteToConsole($"AMBIENT GANG RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
+            //EntryPoint.WriteToConsole($"AMBIENT GANG RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
             RunAmbientDispatch();
         }
         else
@@ -225,12 +225,12 @@ public class GangDispatcher
             ShouldRunAmbientDispatch = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
             if(ShouldRunAmbientDispatch)
             {
-                EntryPoint.WriteToConsole($"AMBIENT GANG RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
+                //EntryPoint.WriteToConsole($"AMBIENT GANG RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
                 RunAmbientDispatch();              
             }
             else
             {
-                EntryPoint.WriteToConsole($"AMBIENT GANG Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
+                //EntryPoint.WriteToConsole($"AMBIENT GANG Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
                 GameTimeAttemptedDispatch = Game.GameTime;
             }
         }  

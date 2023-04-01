@@ -76,7 +76,7 @@ class WanderOnFootTaskState : TaskState
         {
             return;
         }
-        if (PedGeneral.TaskRequirements.Equals(TaskRequirements.None))
+        if (PedGeneral.LocationTaskRequirements.TaskRequirements.Equals(TaskRequirements.None))
         {
             if (PedGeneral.IsLocationSpawned)
             {
@@ -90,11 +90,11 @@ class WanderOnFootTaskState : TaskState
         else
         {
             HasSpawnRequirements = true;
-            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.Guard))
+            if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Guard))
             {
                 canGuard = true;
             }
-            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.Patrol))
+            if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Patrol))
             {
                 canPatrol = true;
             }
@@ -179,21 +179,28 @@ class WanderOnFootTaskState : TaskState
 
         if (HasSpawnRequirements)
         {
-            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.AnyScenario))
+            if (PedGeneral.LocationTaskRequirements.ForcedScenarios != null && PedGeneral.LocationTaskRequirements.ForcedScenarios.Any())
             {
-                ScenarioChosen = AllScenarios.PickRandom();
+                ScenarioChosen = PedGeneral.LocationTaskRequirements.ForcedScenarios.PickRandom();
             }
-            else if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.StandardScenario))
+            else
             {
-                ScenarioChosen = NormalScenarios.PickRandom();
-            }
-            else if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.LocalScenario))
-            {
-                useLocal = true;
-            }
-            if (PedGeneral.TaskRequirements.HasFlag(TaskRequirements.BasicScenario))
-            {
-                ScenarioChosen = BasicScenarios.PickRandom();
+                if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.AnyScenario))
+                {
+                    ScenarioChosen = AllScenarios.PickRandom();
+                }
+                else if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.StandardScenario))
+                {
+                    ScenarioChosen = NormalScenarios.PickRandom();
+                }
+                else if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.LocalScenario))
+                {
+                    useLocal = true;
+                }
+                if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.BasicScenario))
+                {
+                    ScenarioChosen = BasicScenarios.PickRandom();
+                }
             }
         }
         else if (ForceStandardScenarios)

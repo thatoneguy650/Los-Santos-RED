@@ -109,15 +109,21 @@ namespace LosSantosRED.lsr.Data
                     //    hex = hex.Substring(2);
                     //}
                     //bool parsedSuccessfully = uint.TryParse(hex, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out modelHash);
+                   // bool isstringhash = NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash1);
+                   // bool hashEqualsModel = car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower();
+                    //EntryPoint.WriteToConsole($"car.VehicleModelName:{car.VehicleModelName} isstringhash:{isstringhash} modelHash1:{modelHash1} hashEqualsModel:{hashEqualsModel} First:{car.VehicleModelName.ToLower()} Second:{car.Vehicle.Model.Hash.ToString().ToLower()}");
+
+
                     VehicleSaveStatus vss;
-                    if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash) && car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower())//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
-                    {
-                        vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
-                    }
-                    else
-                    {
-                        vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading);
-                    }
+                    vss = new VehicleSaveStatus(car.Vehicle.Model.Hash, car.Vehicle.Position, car.Vehicle.Heading);
+                    //if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash) && car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower())//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
+                    //{
+                    //    vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
+                    //}
+                    //else
+                    //{
+                    //    vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading);
+                    //}
                     vss.VehicleVariation = NativeHelper.GetVehicleVariation(car.Vehicle);
                     OwnedVehicleVariations.Add(vss);
                 }

@@ -43,7 +43,7 @@ public class FireConditionalLocation : ConditionalLocation
         //{
         //    return false;
         //}
-        return true;
+        return base.DetermineRun(force);
     }
 
     public override void RunSpawnTask()
@@ -53,10 +53,10 @@ public class FireConditionalLocation : ConditionalLocation
             FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
             fireFighterSpawnTask.AllowAnySpawn = true;
             fireFighterSpawnTask.AllowBuddySpawn = false;
-            fireFighterSpawnTask.SpawnRequirement = SpawnRequirement;
+            fireFighterSpawnTask.SpawnRequirement = TaskRequirements;
             fireFighterSpawnTask.ClearArea = true;
             fireFighterSpawnTask.AttemptSpawn();
-            fireFighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; });
+            fireFighterSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));
         }
         catch (Exception ex)

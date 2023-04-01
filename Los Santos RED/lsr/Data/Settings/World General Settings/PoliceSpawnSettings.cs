@@ -48,6 +48,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Minimum distance (in meters) that police can spawn when you are not wanted.")]
     public float MinDistanceToSpawn_NotWanted { get; set; }
+
+
+
+
+
+
+
     [Description("Time (in ms) between cop spawns when you are not seen.")]
     public int TimeBetweenCopSpawn_Unseen { get; set; }
     [Description("Minimum time (in ms) between cop spawns when you are seen by police.")]
@@ -62,8 +69,28 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int TimeBetweenCopDespawn_Seen_AdditionalTimeScaler { get; set; }
 
 
+    [Description("Minimum time in milliseconds between a spawn.")]
+    public int AmbientTimeBetweenSpawn { get; set; }
+
+    public int AmbientTimeBetweenSpawn_DowntownAdditional { get; set; }
+    public int AmbientTimeBetweenSpawn_WildernessAdditional { get; set; }
+    public int AmbientTimeBetweenSpawn_RuralAdditional { get; set; }
+    public int AmbientTimeBetweenSpawn_SuburbAdditional { get; set; }
+    public int AmbientTimeBetweenSpawn_IndustrialAdditional { get; set; }
 
 
+
+    [Description("Percentage of the time to allow an ambient spawn. Minimum 0, maximum 100.")]
+    public int AmbientSpawnPercentage { get; set; }
+
+    public int AmbientSpawnPercentage_Wanted { get; set; }
+    public int AmbientSpawnPercentage_Investigation { get; set; }
+
+    public int AmbientSpawnPercentage_Wilderness { get; set; }
+    public int AmbientSpawnPercentage_Rural { get; set; }
+    public int AmbientSpawnPercentage_Suburb { get; set; }
+    public int AmbientSpawnPercentage_Industrial { get; set; }
+    public int AmbientSpawnPercentage_Downtown { get; set; }
 
 
 
@@ -352,7 +379,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         MinDistanceToSpawn_WantedUnseenScalar = 40f;
         MinDistanceToSpawn_WantedSeenScalar = 40f;
 
-
+        
 
         TimeBetweenCopSpawn_Unseen = 3000;
         TimeBetweenCopSpawn_Seen_Min = 2000;
@@ -360,6 +387,27 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         TimeBetweenCopDespawn_Unseen = 2000;
         TimeBetweenCopDespawn_Seen_Min = 1000;
         TimeBetweenCopDespawn_Seen_AdditionalTimeScaler = 1000;
+
+
+        AmbientTimeBetweenSpawn = 10000;//10000;
+        AmbientTimeBetweenSpawn_DowntownAdditional = 5000;
+        AmbientTimeBetweenSpawn_WildernessAdditional = 20000;
+        AmbientTimeBetweenSpawn_RuralAdditional = 12000;
+        AmbientTimeBetweenSpawn_SuburbAdditional = 10000;
+        AmbientTimeBetweenSpawn_IndustrialAdditional = 10000;
+
+
+        AmbientSpawnPercentage = 65;
+        AmbientSpawnPercentage_Wanted = 85;
+
+        AmbientSpawnPercentage_Investigation = 75;
+        AmbientSpawnPercentage_Wilderness = 40;// 25;
+        AmbientSpawnPercentage_Rural = 55;// 45;
+        AmbientSpawnPercentage_Suburb = 65;// 55;
+        AmbientSpawnPercentage_Industrial = 65;// 55;
+        AmbientSpawnPercentage_Downtown = 85;//70;
+
+
 
         AddOptionalPassengerPercentage = 75f;
         PedestrianSpawnPercentage = 50f;
