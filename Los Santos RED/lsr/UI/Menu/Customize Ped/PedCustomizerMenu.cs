@@ -29,7 +29,8 @@ public class PedCustomizerMenu
     private CustomizeAffiliationMenu CustomizeAffiliationMenu;
     private CustomizeVoiceMenu CustomizeVoiceMenu;
     public bool IsProgramicallySettingFieldValues { get; set; }
-    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads, IGangs gangs, IAgencies agencies)
+    public PedCustomizerMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, IDispatchablePeople dispatchablePeople, IHeads heads, IGangs gangs, 
+        IAgencies agencies, IGameSaves gameSaves, ISavedOutfits savedOutfits)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -44,7 +45,7 @@ public class PedCustomizerMenu
         CustomizeComponentsMenu = new CustomizeComponentsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizeOverlaysMenu = new CustomizeOverlaysMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
         CustomizePropsMenu = new CustomizePropsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
-        CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads);
+        CustomizeExistingVariationsMenu = new CustomizeExistingVariationsMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this, dispatchablePeople, heads, gameSaves, savedOutfits);
         CustomizeAffiliationMenu = new CustomizeAffiliationMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this,gangs,agencies);
         CustomizeVoiceMenu = new CustomizeVoiceMenu(MenuPool, PedSwap, Names, Player, World, Settings, PedCustomizer, this);
 
@@ -111,7 +112,18 @@ public class PedCustomizerMenu
         CustomizePropsMenu.OnModelChanged();
         CustomizeAffiliationMenu.OnModelChanged();
         CustomizeVoiceMenu.OnModelChanged();
+        CustomizeExistingVariationsMenu.OnModelChanged();
         EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
+        IsProgramicallySettingFieldValues = false;
+    }
+    public void OnSetVariation()
+    {
+        IsProgramicallySettingFieldValues = true;
+        CustomizeHeadMenu.OnModelChanged();
+        CustomizeComponentsMenu.OnModelChanged();
+        CustomizeOverlaysMenu.OnModelChanged();
+        CustomizePropsMenu.OnModelChanged();
+        EntryPoint.WriteToConsole("PedCustomizerMenu.OnSetVariation Executed");
         IsProgramicallySettingFieldValues = false;
     }
 }

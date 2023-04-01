@@ -29,6 +29,8 @@ public class PedCustomizer
     private IHeads Heads;
     private IGangs Gangs;
     private IAgencies Agencies;
+    private IGameSaves GameSaves;
+    private ISavedOutfits SavedOutfits;
     private bool ShowDisplayName = true;
 
     //private CameraCycler CameraCycler;
@@ -61,7 +63,8 @@ public class PedCustomizer
     public PedVariation WorkingVariation { get; set; } = new PedVariation();
     public IClothesNames ClothesNames { get; private set; }
     public ITattooNames TattooNames { get; private set; }
-    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, IAgencies agencies, ITattooNames tattooNames)
+    public PedCustomizer(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, IDispatchablePeople dispatchablePeople, IHeads heads, IClothesNames clothesNames, IGangs gangs, 
+        IAgencies agencies, ITattooNames tattooNames, IGameSaves gameSaves, ISavedOutfits savedOutfits)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -76,6 +79,8 @@ public class PedCustomizer
         Agencies= agencies;
         Gangs= gangs;
         TattooNames = tattooNames;
+        GameSaves = gameSaves;
+        SavedOutfits = savedOutfits;
     }   
     public bool SetupAsNewPlayer { get; private set; } = false;
     public bool ChoseToClose { get; private set; } = false;
@@ -133,7 +138,7 @@ public class PedCustomizer
     }
     public void Setup()
     {
-        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies);
+        PedCustomizerMenu = new PedCustomizerMenu(MenuPool, PedSwap, Names, Player, World, Settings, this, DispatchablePeople, Heads, Gangs,Agencies, GameSaves, SavedOutfits);
         PedCustomizerMenu.Setup();
 
         CameraCycler = new CameraCycler(CharCam, Player, this);
@@ -344,6 +349,11 @@ public class PedCustomizer
         CreateModelPed();
         ResetPedModel(resetVariation);
         PedCustomizerMenu.OnModelChanged();
+        OnVariationChanged();
+    }
+    public void OnSetVariation()
+    {
+        PedCustomizerMenu.OnSetVariation();
         OnVariationChanged();
     }
     public void OnVariationChanged()

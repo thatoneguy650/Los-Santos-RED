@@ -64,15 +64,6 @@ public class FireDispatcher
         }
         return HasDispatchedThisTick;
     }
-
-    public void LocationDispatch()
-    {
-        //if (Settings.SettingsManager.FireSettings.ManageDispatching)
-        //{
-        //    HandleStationSpawns();
-        //}
-    }
-
     public void Dispose()
     {
 
@@ -104,54 +95,6 @@ public class FireDispatcher
             GameTimeAttemptedDispatch = Game.GameTime;
         }
     }
-    //private void HandleStationSpawns()
-    //{
-    //    if (Settings.SettingsManager.FireSettings.ManageDispatching)
-    //    {
-    //        foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && x.DistanceToPlayer <= 150f && x.IsNearby && !x.IsDispatchFilled))
-    //        {
-    //            if (ps.PossiblePedSpawns != null)
-    //            {
-    //                bool spawnedsome = false;
-    //                foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
-    //                {
-    //                    if (RandomItems.RandomPercent(cl.Percentage))
-    //                    {
-    //                        HasDispatchedThisTick = true;
-    //                        SpawnLocation = new SpawnLocation(cl.Location);
-    //                        SpawnLocation.Heading = cl.Heading;
-    //                        SpawnLocation.StreetPosition = cl.Location;
-    //                        SpawnLocation.SidewalkPosition = cl.Location;
-    //                        Agency toSpawn = ps.AssignedAgency;
-    //                        if (toSpawn == null)
-    //                        {
-    //                            Zone CurrentZone = Zones.GetZone(cl.Location);
-    //                            Agency ZoneAgency = Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.LawEnforcement);
-    //                            if (ZoneAgency != null)
-    //                            {
-    //                                toSpawn = ZoneAgency;
-    //                            }
-    //                        }
-    //                        if (GetSpawnTypes(true, toSpawn))
-    //                        {
-    //                            CallSpawnTask(true, false, true,false, cl.SpawnRequirement);
-    //                            spawnedsome = true;
-    //                        }
-    //                    }
-    //                }
-    //                ps.IsDispatchFilled = true;
-    //            }
-    //            else
-    //            {
-    //                ps.IsDispatchFilled = true;
-    //            }
-    //        }
-    //        foreach (FireStation ps in PlacesOfInterest.PossibleLocations.FireStations.Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled))
-    //        {
-    //            ps.IsDispatchFilled = false;
-    //        }
-    //    }
-    //}
     private void CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
     {
         try
@@ -170,7 +113,6 @@ public class FireDispatcher
             EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
-
     private bool GetSpawnLocation()
     {
         int timesTried = 0;

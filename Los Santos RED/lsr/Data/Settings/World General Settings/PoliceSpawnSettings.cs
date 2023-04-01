@@ -10,18 +10,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public bool RemoveNonSpawnedPolice { get; set; }
     [Description("Enable of disable removing all police peds not spawned by LSR that are non persistent.")]
     public bool RemoveAmbientPolice { get; set; }
-    [Description("Percentage of time to add optional passenegers to a vehicle. 0 is never 100 is always.")]
+    [Description("Percentage of time to add optional passengers to a vehicle. 0 is never 100 is always.")]
     public float AddOptionalPassengerPercentage { get; set; }
-    [Description("Percentage of time to spawn foot patrol officers (when possible). 0 is never 100 is always. WIP")]
-    public float PedestrianSpawnPercentage { get; set; }
     [Description("Enable or disable ambient spawns around police stations.")]
     public bool AllowStationSpawning { get; set; }
     [Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
     public int StationSpawning_MaxWanted { get; set; }
 
-
-    //[Description("If enabled, police stations ambient spawns ignore the ped and vehicle spawn limits. Use with StationSpawning_MaxWanted of 1 or 2 to allow ambient spawning, but not overload ped limits when in a serious chase.")]
-    //public bool StationSpawningIgnoresLimits { get; set; }
 
 
     [Description("Maximum distance (in meters) that police can spawn when you are wanted and seen by police.")]
@@ -30,22 +25,14 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public float MaxDistanceToSpawn_WantedUnseen { get; set; }
     [Description("Maximum distance (in meters) that police can spawn when you not wanted.")]
     public float MaxDistanceToSpawn_NotWanted { get; set; }
-
-
-
     [Description("Minimum distance (in meters) that police can spawn when you are wanted and not seen by police.")]
     public float MinDistanceToSpawn_WantedUnseen { get; set; }
     [Description("Minimum distance (in meters) that police can spawn when you are wanted and seen by police.")]
     public float MinDistanceToSpawn_WantedSeen { get; set; }
-
     [Description("Decrease min distance (in meters) that police can spawn for each wanted level when you are wanted and not seen by the police. A value of 40 with a wanted level of 3 would be (MinDistanceToSpawn_WantedUnseen - (3 * 40))")]
     public float MinDistanceToSpawn_WantedUnseenScalar { get; set; }
     [Description("Decrease min distance (in meters) that police can spawn for each wanted level when you are wanted and seen by police. A value of 40 with a wanted level of 3 would be (MinDistanceToSpawn_WantedUnseen - (3 * 40))")]
     public float MinDistanceToSpawn_WantedSeenScalar { get; set; }
-
-
-
-
     [Description("Minimum distance (in meters) that police can spawn when you are not wanted.")]
     public float MinDistanceToSpawn_NotWanted { get; set; }
 
@@ -71,7 +58,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Minimum time in milliseconds between a spawn.")]
     public int AmbientTimeBetweenSpawn { get; set; }
-
     public int AmbientTimeBetweenSpawn_DowntownAdditional { get; set; }
     public int AmbientTimeBetweenSpawn_WildernessAdditional { get; set; }
     public int AmbientTimeBetweenSpawn_RuralAdditional { get; set; }
@@ -82,10 +68,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Percentage of the time to allow an ambient spawn. Minimum 0, maximum 100.")]
     public int AmbientSpawnPercentage { get; set; }
-
     public int AmbientSpawnPercentage_Wanted { get; set; }
     public int AmbientSpawnPercentage_Investigation { get; set; }
-
     public int AmbientSpawnPercentage_Wilderness { get; set; }
     public int AmbientSpawnPercentage_Rural { get; set; }
     public int AmbientSpawnPercentage_Suburb { get; set; }
@@ -96,8 +80,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active.")]
     public int PedSpawnLimit_Default { get; set; }
-
-
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the wilderness zones")]
     public int PedSpawnLimit_Default_Wilderness { get; set; }
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the rural zones")]
@@ -108,9 +90,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int PedSpawnLimit_Default_Industrial { get; set; }
     [Description("Maximum police peds that can be spawned when you are not wanted and no investigation is active for the downtown zones")]
     public int PedSpawnLimit_Default_Downtown { get; set; }
-
-
-
     [Description("Maximum police peds that can be spawned when you are not wanted and an investigation is active.")]
     public int PedSpawnLimit_Investigation { get; set; }
     [Description("Maximum police peds that can be spawned when you are at wanted level 1.")]
@@ -141,8 +120,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
     [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active.")]
     public int VehicleSpawnLimit_Default { get; set; }
-
-
     [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the wilderness zones")]
     public int VehicleSpawnLimit_Default_Wilderness { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the rural zones")]
@@ -153,9 +130,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int VehicleSpawnLimit_Default_Industrial { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are not wanted and no investigation is active for the downtown zones")]
     public int VehicleSpawnLimit_Default_Downtown { get; set; }
-
-
-
     [Description("Maximum police vehicles that can be spawned when you are not wanted and an investigation is active.")]
     public int VehicleSpawnLimit_Investigation { get; set; }
     [Description("Maximum police vehicles that can be spawned when you are at wanted level 1.")]
@@ -196,7 +170,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int BoatSpawnLimit_Wanted5 { get; set; }
     [Description("Maximum police boats that can be spawned when you are at wanted level 6.")]
     public int BoatSpawnLimit_Wanted6 { get; set; }
-
     [Description("Maximum police boats that can be spawned when you are at wanted level 7.")]
     public int BoatSpawnLimit_Wanted7 { get; set; }
     [Description("Maximum police boats that can be spawned when you are at wanted level 8.")]
@@ -232,11 +205,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int HeliSpawnLimit_Wanted9 { get; set; }
     [Description("Maximum police helicopters that can be spawned when you are at wanted level 10.")]
     public int HeliSpawnLimit_Wanted10 { get; set; }
-
-
-
-    [Description("Percentage of time to spawn foot patrol police when near a police station. 0 is never, 100 is always. Inactive Setting.")]
-    public int PercentageSpawnOnFootNearStation { get; set; }
+    
+    
     [Description("Percentage of time to allow spawning a random agency (that can spawn in the given location) instead of the main assigned jurisdiction when not wanted. Allows agencies without territory to spawn randomly. 0 is never 100 is always.")]
     public int LikelyHoodOfAnySpawn_Default { get; set; }
     [Description("Percentage of time to allow spawning the county assigned jurisdiction when not wanted. Allows the possibility of county agencies to spawn when in a location with zone based jurisdiction. 0 is never 100 is always.")]
@@ -265,9 +235,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int LikelyHoodOfAnySpawn_Wanted6 { get; set; }
     [Description("Percentage of time to allow spawning the county assigned jurisdiction when at 6 stars. Allows the possibility of county agencies to spawn when in a location with zone based jurisdiction. 0 is never 100 is always.")]
     public int LikelyHoodOfCountySpawn_Wanted6 { get; set; }
-
-
-
     [Description("Percentage of time to allow spawning a random agency (that can spawn in the given location) instead of the main assigned jurisdiction when at 7 star. Allows agencies without territory to spawn randomly. 0 is never 100 is always.")]
     public int LikelyHoodOfAnySpawn_Wanted7 { get; set; }
     [Description("Percentage of time to allow spawning the county assigned jurisdiction when at 7 stars. Allows the possibility of county agencies to spawn when in a location with zone based jurisdiction. 0 is never 100 is always.")]
@@ -397,21 +364,21 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         AmbientTimeBetweenSpawn_IndustrialAdditional = 10000;
 
 
-        AmbientSpawnPercentage = 65;
-        AmbientSpawnPercentage_Wanted = 85;
+        AmbientSpawnPercentage = 70;
+        AmbientSpawnPercentage_Wanted = 95;
 
         AmbientSpawnPercentage_Investigation = 75;
-        AmbientSpawnPercentage_Wilderness = 40;// 25;
-        AmbientSpawnPercentage_Rural = 55;// 45;
-        AmbientSpawnPercentage_Suburb = 65;// 55;
-        AmbientSpawnPercentage_Industrial = 65;// 55;
-        AmbientSpawnPercentage_Downtown = 85;//70;
+        AmbientSpawnPercentage_Wilderness = 55;// 25;
+        AmbientSpawnPercentage_Rural = 65;// 45;
+        AmbientSpawnPercentage_Suburb = 75;// 55;
+        AmbientSpawnPercentage_Industrial = 75;// 55;
+        AmbientSpawnPercentage_Downtown = 90;//70;
 
 
 
         AddOptionalPassengerPercentage = 75f;
-        PedestrianSpawnPercentage = 50f;
-        PercentageSpawnOnFootNearStation = 50;
+       // PedestrianSpawnPercentage = 50f;
+        //PercentageSpawnOnFootNearStation = 50;
 
         LikelyHoodOfAnySpawn_Default = 5;
         LikelyHoodOfCountySpawn_Default = 5;

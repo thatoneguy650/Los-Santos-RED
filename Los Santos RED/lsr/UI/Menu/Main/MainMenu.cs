@@ -164,7 +164,7 @@ public class MainMenu : ModUIMenu
         Main.MenuItems[Main.MenuItems.Count() - 1].Description = "Add or Remove ownership of nearby vehicles.";
         Main.MenuItems[Main.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Car;
 
-        UIMenuItem TakeVehicleOwnership = new UIMenuItem("Set Vehicle as Owned", "Set closest vehicle as owned by the mode. This will let you enter it freely and police/civilians will not react as if it is stolen when you enter.");
+        UIMenuItem TakeVehicleOwnership = new UIMenuItem("Set Vehicle as Owned", "Set closest vehicle as owned. This will let you enter it freely and police/civilians will not react as if it is stolen when you enter.");
         TakeVehicleOwnership.RightBadge = UIMenuItem.BadgeStyle.Car;
         TakeVehicleOwnership.Activated += (s, e) =>
         {
@@ -181,7 +181,7 @@ public class MainMenu : ModUIMenu
         };
         VehicleItems.AddItem(RemoveVehicleOwnership);
 
-        UIMenuItem UnloadMod = new UIMenuItem("Deactivate Mod", "Deactivate mod and change back to vanilla. Can be restarted with Shift+F10. Does not unload from RPH. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
+        UIMenuItem UnloadMod = new UIMenuItem("Deactivate Mod", "Deactivate mod and change back to vanilla. Use Shift+F10 to restart. Does not unload from RPH. ~r~Load Game~s~ required at minimum, ~r~Restart~s~ for best results.");
         UnloadMod.RightBadge = UIMenuItem.BadgeStyle.Star;
         UnloadMod.Activated += (s, e) =>
         {

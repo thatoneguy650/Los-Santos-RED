@@ -58,8 +58,6 @@ public class GangDispatcher
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
     private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;
     private float MinDistanceToSpawn => Settings.SettingsManager.GangSettings.MinDistanceToSpawn;//50f;
-
-
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -86,8 +84,7 @@ public class GangDispatcher
             }
             return true;
         }
-    }
-    
+    }  
     private int AmbientMemberLimitForZoneType
     {
         get
@@ -116,7 +113,6 @@ public class GangDispatcher
             return AmbientMemberLimit;
         }
     }
-
     private int TimeBetweenSpawn// => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
     {
         get
@@ -173,8 +169,6 @@ public class GangDispatcher
             return ambientSpawnPercent;
         }
     }
-
-
     public int LikelyHoodOfAnySpawn => Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     public int LikelyHoodOfDenSpawnWhenNear => Settings.SettingsManager.GangSettings.PercentageSpawnNearDen;
     public bool Dispatch()

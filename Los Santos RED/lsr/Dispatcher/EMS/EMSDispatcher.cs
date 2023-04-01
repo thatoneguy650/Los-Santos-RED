@@ -77,34 +77,6 @@ public class EMSDispatcher
             return true;
         }
     }
-    private bool HasNeedToLocationDispatch
-    {
-        get
-        {
-            if (!Settings.SettingsManager.EMSSettings.AllowStationSpawning)
-            {
-                return false;
-            }
-            if (!Settings.SettingsManager.EMSSettings.AllowStationSpawningWhenPlayerWanted && Player.IsWanted)
-            {
-                return false;
-            }
-            if (Settings.SettingsManager.EMSSettings.AllowStationSpawningWhenPlayerWanted && Player.WantedLevel > Settings.SettingsManager.EMSSettings.StationSpawningWhenPlayerWantedMaxWanted)
-            {
-                return false;
-            }
-            if(Settings.SettingsManager.EMSSettings.StationSpawningIgnoresLimits)
-            {
-                return true;
-            }
-            if (World.Pedestrians.TotalSpawnedEMTs > Settings.SettingsManager.EMSSettings.TotalSpawnedMembersLimit)
-            {
-                return false;
-            }
-            return true;
-        }
-    }
-
     private int AmbientMemberLimitForZoneType
     {
         get

@@ -1,6 +1,8 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr.Data;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Mod;
+using Rage;
 using RAGENativeUI;
 using RAGENativeUI.Elements;
 using System;
@@ -27,7 +29,13 @@ public class CustomizeExistingVariationsMenu
     private string FilterString;
     private IDispatchablePeople DispatchablePeople;
     private IHeads Heads;
-    public CustomizeExistingVariationsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu, IDispatchablePeople dispatchablePeople, IHeads heads)
+    private UIMenu savedVariationsMenu;
+    private IGameSaves GameSaves;
+    private ISavedOutfits SavedOutfits;
+    private UIMenu outfitsSubMenu;
+
+    public CustomizeExistingVariationsMenu(MenuPool menuPool, IPedSwap pedSwap, INameProvideable names, IPedSwappable player, IEntityProvideable world, ISettingsProvideable settings, PedCustomizer pedCustomizer, PedCustomizerMenu pedCustomizerMenu, 
+        IDispatchablePeople dispatchablePeople, IHeads heads, IGameSaves gameSaves, ISavedOutfits savedOutfits)
     {
         PedSwap = pedSwap;
         MenuPool = menuPool;
@@ -39,27 +47,117 @@ public class CustomizeExistingVariationsMenu
         PedCustomizerMenu = pedCustomizerMenu;
         DispatchablePeople = dispatchablePeople;
         Heads = heads;
+        GameSaves = gameSaves;
+        SavedOutfits = savedOutfits;
     }
     public void Setup(UIMenu CustomizeMainMenu)
     {
-        UIMenu ModelSubMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Saved Variations");
+        savedVariationsMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Saved Variations");
         CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Choose from a list of saved variations";
         //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
-        ModelSubMenu.SetBannerType(EntryPoint.LSRedColor);
-        ModelSubMenu.InstructionalButtonsEnabled = false;
-        ModelSubMenu.OnMenuOpen += (sender) =>
+        savedVariationsMenu.SetBannerType(EntryPoint.LSRedColor);
+        savedVariationsMenu.InstructionalButtonsEnabled = false;
+        savedVariationsMenu.OnMenuOpen += (sender) =>
         {
             PedCustomizer.CameraCycler.SetDefault();
         };
-        ModelSubMenu.OnMenuClose += (sender) =>
+        savedVariationsMenu.OnMenuClose += (sender) =>
         {
             PedCustomizer.CameraCycler.SetDefault();
+        };  
+        AddOutfits();
+        AddSaveGames();
+        AddDispatchablePeople();
+    }
+    public void OnModelChanged()
+    {
+        SetOutfits();
+    }
+    private void AddOutfits()
+    {
+        outfitsSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Outfits");
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from a saved outfit.";
+        outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        outfitsSubMenu.InstructionalButtonsEnabled = false;
+        SetOutfits();
+    }
+    private void SetOutfits()
+    {
+        outfitsSubMenu.Clear();
+
+
+        UIMenuItem saveOutfitMenuItem = new UIMenuItem("Save Outfit");
+        saveOutfitMenuItem.Activated += (sender, e) =>
+        {
+            string outfitName = NativeHelper.GetKeyboardInput("");
+            if (string.IsNullOrEmpty(outfitName) || outfitName == "")
+            {
+                Game.DisplaySubtitle("No Outfit Name Set");
+                return;
+            }
+            SavedOutfits.AddOutfit(new SavedOutfit(outfitName, PedCustomizer.WorkingModelName, PedCustomizer.WorkingVariation.Copy()));
+            SetOutfits();
+            outfitsSubMenu.RefreshIndex();
         };
+        outfitsSubMenu.AddItem(saveOutfitMenuItem);
 
 
+        foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower()))
+        {
+            EntryPoint.WriteToConsole($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
+            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                if (so.PedVariation == null)
+                {
+                    Game.DisplaySubtitle("No Variation to Set");
+                    return;
+                }
+                PedVariation newVariation = so.PedVariation.Copy();
+                PedCustomizer.WorkingVariation = newVariation;
+                PedCustomizer.InitialVariation = newVariation.Copy();
+                PedCustomizer.OnVariationChanged();
+            };
+            outfitsSubMenu.AddItem(uIMenuItem);
+        }
+    }
+    private void AddSaveGames()
+    {
+        UIMenu dispatchablePeopleSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Save Games");
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the save games.";
+        dispatchablePeopleSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        dispatchablePeopleSubMenu.InstructionalButtonsEnabled = false;
+        foreach (GameSave gs in GameSaves.GameSaveList)
+        {
+            UIMenuItem uIMenuItem = new UIMenuItem(gs.Title);
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                PedCustomizer.WorkingModelName = gs.ModelName;
+                if (gs.CurrentModelVariation == null)
+                {
+                    PedCustomizer.WorkingVariation = new PedVariation();
+                    PedCustomizer.InitialVariation = new PedVariation();
+                }
+                else
+                {
+                    PedVariation newVariation = gs.CurrentModelVariation.Copy();
+                    PedCustomizer.WorkingVariation = newVariation;
+                    PedCustomizer.InitialVariation = newVariation.Copy();
+                }
+                PedCustomizer.OnModelChanged(false);
+            };
+            dispatchablePeopleSubMenu.AddItem(uIMenuItem);
+        }
+    }
+    private void AddDispatchablePeople()
+    {
+        UIMenu dispatchablePeopleSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Dispatchable People");
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the dispatched people.";
+        dispatchablePeopleSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        dispatchablePeopleSubMenu.InstructionalButtonsEnabled = false;
         foreach (DispatchablePersonGroup dpg in DispatchablePeople.AllPeople)
         {
-            UIMenu dpgSubMenu = MenuPool.AddSubMenu(ModelSubMenu, dpg.DispatchablePersonGroupID);
+            UIMenu dpgSubMenu = MenuPool.AddSubMenu(dispatchablePeopleSubMenu, dpg.DispatchablePersonGroupID);
             dpgSubMenu.SetBannerType(EntryPoint.LSRedColor);
             dpgSubMenu.InstructionalButtonsEnabled = false;
             foreach (DispatchablePerson dp in dpg.DispatchablePeople)
@@ -68,7 +166,7 @@ public class CustomizeExistingVariationsMenu
                 uIMenuItem.Activated += (sender, e) =>
                 {
                     PedCustomizer.WorkingModelName = dp.ModelName;
-                    if(dp.RequiredVariation == null)
+                    if (dp.RequiredVariation == null)
                     {
                         PedCustomizer.WorkingVariation = new PedVariation();
                         PedCustomizer.InitialVariation = new PedVariation();
@@ -85,6 +183,5 @@ public class CustomizeExistingVariationsMenu
             }
         }
     }
-
 }
 

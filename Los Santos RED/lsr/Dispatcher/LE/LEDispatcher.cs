@@ -37,8 +37,6 @@ public class LEDispatcher
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
 
-
-
     private Vector3 RoadblockInitialPosition;
     private Vector3 RoadblockAwayPosition;
     private Street RoadblockInitialPositionStreet;
@@ -169,7 +167,6 @@ public class LEDispatcher
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
     private bool IsTimeToDispatchRoadblock => Game.GameTime - GameTimeLastSpawnedRoadblock >= TimeBetweenRoadblocks && Player.PoliceResponse.HasBeenAtCurrentWantedLevelFor >= 30000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= TimeBetweenRecall;
-    public int LikelyHoodOfStationFootSpawnWhenNear => Settings.SettingsManager.PoliceSpawnSettings.PercentageSpawnOnFootNearStation;
     private float MaxDistanceToSpawn
     {
         get
@@ -700,8 +697,6 @@ public class LEDispatcher
             GameTimeAttemptedRecall = Game.GameTime;
         }
     }
-
-
     private void HandleAmbientSpawns()
     {
         if (!IsTimeToAmbientDispatch || !HasNeedToAmbientDispatch)
@@ -729,7 +724,6 @@ public class LEDispatcher
             }
         }
     }
-
     private void RunAmbientDispatch()
     {
         EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
@@ -748,22 +742,6 @@ public class LEDispatcher
             }
         }
     }
-
-
-    //private void HandleAmbientSpawns()
-    //{
-    //    //EntryPoint.WriteToConsole($"MinDistanceToSpawn{MinDistanceToSpawn} MaxDistanceToSpawn{MaxDistanceToSpawn} SpawnedCopLimit{SpawnedCopLimit} SpawnedCopVehicleLimit{SpawnedCopVehicleLimit} TimeBetweenSpawn{TimeBetweenSpawn}");
-    //    if (IsTimeToAmbientDispatch && HasNeedToAmbientDispatch)
-    //    {
-    //        HasDispatchedThisTick = true;
-    //        if (GetSpawnLocation() && GetSpawnTypes(false,false, null,""))
-    //        {
-    //            LastAgencySpawned = Agency;
-    //            CallSpawnTask(false, true, false, false, TaskRequirements.None);
-    //            GameTimeAttemptedDispatch = Game.GameTime;
-    //        }
-    //    }
-    //}
     private void HandleRoadblockSpawns()
     {
         if (IsTimeToDispatchRoadblock && HasNeedToDispatchRoadblock)

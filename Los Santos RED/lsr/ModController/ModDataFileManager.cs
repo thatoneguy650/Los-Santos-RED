@@ -45,6 +45,7 @@ public class ModDataFileManager
     public LanguageStrings LanguageStrings;
     public WantedLevels WantedLevels;
     public TattooNames TattooNames;
+    public SavedOutfits SavedOutfits;
     public ModDataFileManager()
     {
 
@@ -176,6 +177,10 @@ public class ModDataFileManager
         //LanguageStrings = new LanguageStrings();
         //LanguageStrings.DefaultConfig();
         //GameFiber.Yield();
+
+        SavedOutfits = new SavedOutfits();
+        SavedOutfits.ReadConfig();
+        GameFiber.Yield();
 
     }
     private void SetupAlternateConfigs()
