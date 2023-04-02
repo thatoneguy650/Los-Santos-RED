@@ -11,5 +11,6 @@ namespace LosSantosRED.lsr.Interface
     {
         List<SavedOutfit> SavedOutfitList { get; }
         void AddOutfit(SavedOutfit outfit);
+        void RemoveOutfit(SavedOutfit so);
     }
 }

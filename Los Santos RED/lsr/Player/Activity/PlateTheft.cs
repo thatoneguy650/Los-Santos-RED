@@ -283,9 +283,9 @@ public class PlateTheft : DynamicActivity
             {
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Driver, TargetVehicle, 27, -1);
             }
-#if DEBUG
-            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
-#endif
+//#if DEBUG
+//            Rage.Debug.DrawArrowDebug(PositionToMoveTo + new Vector3(0f, 0f, 0f), Vector3.Zero, Rotator.Zero, 1f, Color.White);
+//#endif
         }
         if (!Continue)
         {

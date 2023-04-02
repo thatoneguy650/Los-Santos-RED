@@ -23,6 +23,7 @@ public class Residence : InteractableLocation
     private UIMenuItem RentDisplayItem;
     private bool KeepInteractionGoing;
     private InventoryMenu InventoryMenu;
+    private UIMenu outfitsSubMenu;
     private IActivityPerformable ActivityPerformable;
 
     private string IsRentedDescription => $"Rental Days: {RentalDays}~n~Remaining Days: ~o~{Math.Round((DateRentalPaymentDue - Time.CurrentDateTime).TotalDays, 0)}~s~~n~Rental Fee: ~r~{RentalFee:C0}~s~";
@@ -206,7 +207,10 @@ public class Residence : InteractableLocation
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
         InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
-        
+
+        outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
+        InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
+        UpdateOutfits();
     }
     private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -225,6 +229,22 @@ public class Residence : InteractableLocation
             }
         }
     }
+    private void UpdateOutfits()
+    {
+        outfitsSubMenu.Clear();
+        foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)
+        {
+            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                Player.OutfitManager.SetOutfit(so);
+            };
+            outfitsSubMenu.AddItem(uIMenuItem);
+        }
+    }
+
+
+
     private bool Rent()
     {
         if(CanRent && Player.BankAccounts.Money >= RentalFee)

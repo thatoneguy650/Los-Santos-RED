@@ -79,13 +79,13 @@ public class GameSaves : IGameSaves
         AddClaude();
         AddLamar();
         AddBrad();
-#if DEBUG
-        AddNicholasClark();
-        AddDaveNorton();
-        AddKarenDaniels();
-        AddMaleMPCop();
-        AddFemaleMPCop();
-#endif
+//#if DEBUG
+//        AddNicholasClark();
+//        AddDaveNorton();
+//        AddKarenDaniels();
+//        AddMaleMPCop();
+//        AddFemaleMPCop();
+//#endif
         Serialization.SerializeParams(GameSaveList, ConfigFileName);
     }
     private void AddAlexis()

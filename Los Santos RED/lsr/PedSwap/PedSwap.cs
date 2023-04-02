@@ -422,10 +422,14 @@ public class PedSwap : IPedSwap
             Player.BankAccounts.SetMoney(money);
             if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
             {
+                Player.WeaponEquipment.StoreWeapons();
                 SetPlayerOffset();
                 NativeHelper.ChangeModel(AliasModelName(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias));
                 NativeHelper.ChangeModel(modelName);
                 Game.LocalPlayer.Character.ResetVariation();
+                Player.WeaponEquipment.GiveBackStoredWeapons();
+                GameFiber.Sleep(100);
+                Player.WeaponEquipment.SetUnarmed();
             }
             if (variation != null)
             {

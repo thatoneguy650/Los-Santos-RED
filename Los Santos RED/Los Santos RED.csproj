@@ -231,8 +231,10 @@
     <Compile Include="lsr\Old\FullConversation_Old.cs" />
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
+    <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
+    <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Old\GenericIdle_Old.cs" />

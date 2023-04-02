@@ -29,6 +29,9 @@ public class WeaponEquipment
     public WeaponInformation CurrentSeenWeapon => !Player.IsInVehicle ? CurrentWeapon : null;
     public WeaponHash LastWeaponHash { get; private set; }
     public bool IsDangerouslyArmed => Player.IsVisiblyArmed && CurrentWeapon != null && CurrentWeapon.Category != WeaponCategory.Melee;
+
+    public List<StoredWeapon> StoredWeapons { get; private set; }
+
     public WeaponEquipment(IItemEquipable player, IWeaponDroppable weaponDroppable, IWeapons weapons, ISettingsProvideable settings, IWeaponSwayable weaponSwayable, IWeaponRecoilable weaponRecoilable, IWeaponSelectable weaponSelectable)
     {
         Player = player;
@@ -170,7 +173,7 @@ public class WeaponEquipment
             if (MyGTANewGun == null || MyGTANewGun.IsLegalWithoutCCW || (hasValidCCW && MyGTANewGun.IsLegal))//or its an addon gun
             {
                 Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyNewGun.WeaponHash, (short)MyNewGun.Ammo, false);
-                MyGTANewGun.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
+                MyGTANewGun?.ApplyWeaponVariation(Game.LocalPlayer.Character, MyNewGun.Variation);
                 NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)MyNewGun.WeaponHash, MyNewGun.Ammo + 1);
             }
             if (!MyGTANewGun.IsLegal)
@@ -179,6 +182,30 @@ public class WeaponEquipment
             }
         }
         return foundItems;
+    }
+    public void StoreWeapons()
+    {
+        StoredWeapons = new List<StoredWeapon>();
+        WeaponDescriptorCollection CurrentWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+        foreach (WeaponDescriptor Weapon in CurrentWeapons)
+        {
+            WeaponVariation DroppedGunVariation = Weapons.GetWeaponVariation(Game.LocalPlayer.Character, (uint)Weapon.Hash);
+            StoredWeapon MyGun = new StoredWeapon((uint)Weapon.Hash, Vector3.Zero, DroppedGunVariation, Weapon.Ammo);
+            StoredWeapons.Add(MyGun);
+        }
+    }
+    public void GiveBackStoredWeapons()
+    {
+        foreach (StoredWeapon storedWeapon in StoredWeapons)
+        {
+            WeaponInformation lookupWeaponInfo = Weapons.GetWeapon((ulong)storedWeapon.WeaponHash);
+            Game.LocalPlayer.Character.Inventory.GiveNewWeapon(storedWeapon.WeaponHash, (short)storedWeapon.Ammo, false);
+            if (lookupWeaponInfo != null)
+            {
+                lookupWeaponInfo.ApplyWeaponVariation(Game.LocalPlayer.Character, storedWeapon.Variation);
+            }
+            NativeFunction.CallByName<bool>("ADD_AMMO_TO_PED", Game.LocalPlayer.Character, (uint)storedWeapon.WeaponHash, storedWeapon.Ammo + 1);
+        }
     }
 
 

@@ -20,6 +20,11 @@ class WanderInVehicleTaskState : TaskState
     private Vector3 taskedPosition;
     private ISettingsProvideable Settings;
     private bool BlockPermanentEvents = false;
+    private bool canGuard;
+    private bool canPatrol;
+    private bool HasSpawnRequirements;
+    private bool IsGuarding;
+    private bool IsPatrolling;
 
     public WanderInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents)
     {
@@ -29,6 +34,7 @@ class WanderInVehicleTaskState : TaskState
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
+
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle;
@@ -40,7 +46,53 @@ class WanderInVehicleTaskState : TaskState
     public void Start()
     {
         PedGeneral.ClearTasks(true);
-        TaskWander();
+
+        IsGuarding = false;
+        IsPatrolling = false;
+        canGuard = false;
+        canPatrol = false;
+
+        if (PedGeneral.LocationTaskRequirements.TaskRequirements.Equals(TaskRequirements.None))
+        {
+            canGuard = false;
+            canPatrol = true;
+        }
+        else
+        {
+            HasSpawnRequirements = true;
+            if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Guard) && PedGeneral.IsNearSpawnPosition)
+            {
+                canGuard = true;
+            }
+            else
+            {
+                canPatrol = true;
+            }
+            if (PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.Patrol))
+            {
+                canPatrol = true;
+            }
+        }
+        if (canGuard)
+        {
+            IsGuarding = true;
+        }
+        else if (canPatrol)
+        {
+            IsPatrolling = true;
+        }
+
+        if (IsGuarding)
+        {
+            VehicleGuard();
+        }
+        else if (IsPatrolling)
+        {
+            VehiclePatrol();
+        }
+
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} START WANDER IsNearSpawnPosition:{PedGeneral?.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        //VehiclePatrol();
     }
     public void Stop()
     {
@@ -50,7 +102,42 @@ class WanderInVehicleTaskState : TaskState
     {
 
     }
-    private void TaskWander()
+    private void VehicleGuard()
+    {
+        if (!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (BlockPermanentEvents)
+        {
+            PedGeneral.Pedestrian.BlockPermanentEvents = true;
+            PedGeneral.Pedestrian.KeepTasks = true;
+        }
+        if (!PedGeneral.IsDriver || !PedGeneral.Pedestrian.IsInAnyVehicle(false) || !PedGeneral.Pedestrian.CurrentVehicle.Exists())
+        {
+            return;
+        }
+        if (PedGeneral.IsInHelicopter)
+        {
+            NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+        }
+        else
+        {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, -1);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+
+        }
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE GUARD IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+    }
+    private void VehiclePatrol()
     {
         if(!PedGeneral.Pedestrian.Exists())
         {
@@ -82,7 +169,8 @@ class WanderInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
-        }       
+        }
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE PATROL IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
     }
 }
 

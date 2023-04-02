@@ -76,7 +76,7 @@ public class CustomizeExistingVariationsMenu
     private void AddOutfits()
     {
         outfitsSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Outfits");
-        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from a saved outfit.";
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new variation for the current model from a saved outfit. Will keep the current character.";
         outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         outfitsSubMenu.InstructionalButtonsEnabled = false;
         SetOutfits();
@@ -105,18 +105,28 @@ public class CustomizeExistingVariationsMenu
         foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower()))
         {
             EntryPoint.WriteToConsole($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
-            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
+            UIMenuListScrollerItem<string> uIMenuItem = new UIMenuListScrollerItem<string>(so.Name,"",new List<string>() { "Set","Delete" });
             uIMenuItem.Activated += (sender, e) =>
             {
-                if (so.PedVariation == null)
+                if (uIMenuItem.SelectedItem == "Set")
                 {
-                    Game.DisplaySubtitle("No Variation to Set");
-                    return;
+                    if (so.PedVariation == null)
+                    {
+                        Game.DisplaySubtitle("No Variation to Set");
+                        return;
+                    }
+                    PedVariation newVariation = so.PedVariation.Copy();
+                    PedCustomizer.WorkingVariation = newVariation;
+                    PedCustomizer.InitialVariation = newVariation.Copy();
+                    PedCustomizer.OnVariationChanged();
+                    Game.DisplaySubtitle($"Applied Outfit {so.Name}");
                 }
-                PedVariation newVariation = so.PedVariation.Copy();
-                PedCustomizer.WorkingVariation = newVariation;
-                PedCustomizer.InitialVariation = newVariation.Copy();
-                PedCustomizer.OnVariationChanged();
+                else if (uIMenuItem.SelectedItem == "Delete")
+                {
+                    SavedOutfits.RemoveOutfit(so);
+                    SetOutfits();
+                    outfitsSubMenu.RefreshIndex();
+                }
             };
             outfitsSubMenu.AddItem(uIMenuItem);
         }
@@ -124,7 +134,7 @@ public class CustomizeExistingVariationsMenu
     private void AddSaveGames()
     {
         UIMenu dispatchablePeopleSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Save Games");
-        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the save games.";
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the save games. Will reset the current character.";
         dispatchablePeopleSubMenu.SetBannerType(EntryPoint.LSRedColor);
         dispatchablePeopleSubMenu.InstructionalButtonsEnabled = false;
         foreach (GameSave gs in GameSaves.GameSaveList)
@@ -152,7 +162,7 @@ public class CustomizeExistingVariationsMenu
     private void AddDispatchablePeople()
     {
         UIMenu dispatchablePeopleSubMenu = MenuPool.AddSubMenu(savedVariationsMenu, "Dispatchable People");
-        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the dispatched people.";
+        savedVariationsMenu.MenuItems[savedVariationsMenu.MenuItems.Count() - 1].Description = "Choose a new model and variation from one of the dispatched people.Will reset the current character.";
         dispatchablePeopleSubMenu.SetBannerType(EntryPoint.LSRedColor);
         dispatchablePeopleSubMenu.InstructionalButtonsEnabled = false;
         foreach (DispatchablePersonGroup dpg in DispatchablePeople.AllPeople)

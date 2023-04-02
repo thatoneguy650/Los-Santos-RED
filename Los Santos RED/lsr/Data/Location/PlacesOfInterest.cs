@@ -738,7 +738,8 @@ public class PlacesOfInterest : IPlacesOfInterest
 #endif
         BlankLocationPlaces = new List<BlankLocation>() {
 
-            new BlankLocation(new Vector3(-2453.876f, 3720.782f, 15.35273f), 348.2538f, "SpeedTrap1", "Speed Trap 1") { 
+            //Speed Traps
+            new BlankLocation(new Vector3(-2453.876f, 3720.782f, 15.35273f), 348.2538f, "SpeedTrap1", "Speed Trap Great Ocean Highway 1") {  ActivateDistance = 400f,ActivateCells = 8,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new LEConditionalLocation(new Vector3(-2453.876f, 3720.782f, 15.35273f), 348.2538f, 0f) {GroupID = "SpeedTrap1", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
@@ -748,12 +749,85 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new LEConditionalLocation(new Vector3(-2456.923f, 3717.698f, 15.68384f), 170.4713f, defaultSpawnPercentage) { GroupID = "SpeedTrap1",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
             }
             },
-
-
-            new BlankLocation(new Vector3(1561.604f, 2776.656f, 37.73339f), 25.09373f, "BPCheckpoint1", "BP Checkpoint 1") {
+            new BlankLocation(new Vector3(-732.3002f, 5503.62f, 36.00393f), 101.8113f, "SpeedTrap2", "Speed Trap Great Ocean Highway 2") {  ActivateDistance = 400f,ActivateCells = 8,
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                
+                new LEConditionalLocation(new Vector3(-727.5372f, 5504.277f, 35.65791f), 304.7107f, 0f) {GroupID = "SpeedTrap2", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-732.3002f, 5503.62f, 36.00393f), 101.8113f, defaultSpawnPercentage) { GroupID = "SpeedTrap2",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
+            }
+            },
+            new BlankLocation(new Vector3(-22.44862f, 6405.367f, 30.99126f), 221.6609f, "SpeedTrap3", "Speed Trap In Paleto Bay") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-22.44862f, 6405.367f, 30.99126f), 221.6609f, defaultSpawnPercentage) {GroupID = "SpeedTrap3", IsEmpty = false, TaskRequirements = TaskRequirements.Guard,  OverrideNightPercentage = 55.0f,OverridePoorWeatherPercentage = 0.0f },},
+            },
+            new BlankLocation(new Vector3(2389.632f, 5837.942f, 46.33297f), 60.37991f, "SpeedTrap4", "Speed Trap Braddock Tunnel") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2389.632f, 5837.942f, 46.33297f), 60.37991f, defaultSpawnPercentage) {GroupID = "SpeedTrap4",AssociationID = "SAHP",RequiredVehicleGroup = "StandardSAHP", IsEmpty = false, TaskRequirements = TaskRequirements.Guard,  OverrideNightPercentage = 55.0f,OverridePoorWeatherPercentage = 0.0f },},
+            },
+            new BlankLocation(new Vector3(2806.941f, 4280.857f, 49.73266f), 199.6163f, "SpeedTrap5", "Speed Trap Great Ocean Highway 3") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2806.941f, 4280.857f, 49.73266f), 199.6163f, 0f) {GroupID = "SpeedTrap5", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2807.574f, 4284.726f, 50.22674f), 11.87567f, defaultSpawnPercentage) { GroupID = "SpeedTrap5",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
+            }
+            },
+            new BlankLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, "SpeedTrap6", "Speed Trap You Tool") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2716.348f, 3428.547f, 55.57796f), 248.8778f, defaultSpawnPercentage) {GroupID = "SpeedTrap6",AssociationID = "SAHP",RequiredVehicleGroup = "StandardSAHP", IsEmpty = false, TaskRequirements = TaskRequirements.Guard,  OverrideNightPercentage = 55.0f,OverridePoorWeatherPercentage = 0.0f },},
+            },
+            new BlankLocation(new Vector3(2240.881f, 2742.619f, 44.46104f), 303.4088f, "SpeedTrap7", "Speed Trap Great Ocean Highway 4") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2240.881f, 2742.619f, 44.46104f), 303.4088f, 0f) {GroupID = "SpeedTrap7", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2237.851f, 2742.785f, 45.01079f), 121.1667f, defaultSpawnPercentage) { GroupID = "SpeedTrap7",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
+            }
+            },
+            new BlankLocation(new Vector3(1896.709f, 1787.596f, 63.94535f), 199.7011f, "SpeedTrap8", "Speed Trap Great Ocean Highway 5") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(1896.709f, 1787.596f, 63.94535f), 199.7011f, 0f) {GroupID = "SpeedTrap8", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(1898.374f, 1789.177f, 64.64346f), 12.35284f, defaultSpawnPercentage) { GroupID = "SpeedTrap8",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
+            }
+            },
+            new BlankLocation(new Vector3(2515.903f, 607.1796f, 108.1216f), 189.9624f, "SpeedTrap9", "Speed Trap Great Ocean Highway 6") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2515.903f, 607.1796f, 108.1216f), 189.9624f, 0f) {GroupID = "SpeedTrap9", AssociationID = "SAHP", RequiredVehicleGroup = "Motorcycle", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
+            },
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(2517.579f, 610.0076f, 108.436f), 2.938543f, defaultSpawnPercentage) { GroupID = "SpeedTrap9",AssociationID = "SAHP", RequiredPedGroup = "MotorcycleCop",OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f, TaskRequirements = TaskRequirements.Guard, ForcedScenarios = new List<string>(){ "WORLD_HUMAN_BINOCULARS" } },
+            }
+            },
+            new BlankLocation(new Vector3(1863.335f, -754.3698f, 81.10484f), 223.2417f, "SpeedTrap10", "Speed Trap Train Bridge") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(1863.335f, -754.3698f, 81.10484f), 223.2417f, defaultSpawnPercentage) {GroupID = "SpeedTrap10",AssociationID = "SAHP",RequiredVehicleGroup = "StandardSAHP", IsEmpty = false, TaskRequirements = TaskRequirements.Guard,  OverrideNightPercentage = 55.0f,OverridePoorWeatherPercentage = 0.0f },},
+            },
+            new BlankLocation(new Vector3(1290.652f, -2548.193f, 42.99783f), 8.77529f, "SpeedTrap11", "Speed Trap East LS") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(1290.652f, -2548.193f, 42.99783f), 8.77529f, defaultSpawnPercentage) {GroupID = "SpeedTrap11",AssociationID = "SAHP",RequiredVehicleGroup = "StandardSAHP", IsEmpty = false, TaskRequirements = TaskRequirements.Guard,  OverrideNightPercentage = 55.0f,OverridePoorWeatherPercentage = 0.0f },},
+            },
+            //BP Checkpoint
+            new BlankLocation(new Vector3(1561.604f, 2776.656f, 37.73339f), 25.09373f, "BPCheckpoint1", "BP Checkpoint 1") {ActivateDistance = 400f,ActivateCells = 8,
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {       
                 new LEConditionalLocation(new Vector3(1550.248f, 2792.72f, 37.75742f), 200.7081f, defaultSpawnPercentage){GroupID = "BPCheckpoint1", AssociationID = "NOOSE-BP", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
                 new LEConditionalLocation(new Vector3(1561.604f, 2776.656f, 37.73339f), 25.09373f, defaultSpawnPercentage){GroupID = "BPCheckpoint2", AssociationID = "NOOSE-BP", OverrideNightPercentage = 0.0f,OverridePoorWeatherPercentage = 0.0f },
             },
@@ -766,8 +840,6 @@ public class PlacesOfInterest : IPlacesOfInterest
                 
             }
             },
-
-            //(-423.8026f, 185.627f, 80.80039f)
         };
     }
     private void DefaultConfig_FoodStands()
@@ -1076,6 +1148,18 @@ public class PlacesOfInterest : IPlacesOfInterest
             
             },
 
+
+
+            new Landmark(new Vector3(-1490.359f, 4981.503f, 63.35722f), 87.43992f, "Raton Canyon Ranger Station", "Not just a shack and a shitter!"){ 
+                OpenTime = 0,CloseTime = 24
+            ,PossiblePedSpawns = new List<ConditionalLocation>() {
+                new LEConditionalLocation(new Vector3(-1490.743f, 4984.296f, 63.20091f), 153.2589f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
+                new LEConditionalLocation(new Vector3(-1493.811f, 4971.682f, 63.89991f), 264.6635f, 55f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol| TaskRequirements.StandardScenario },
+            }
+            ,PossibleVehicleSpawns = new List<ConditionalLocation>() {
+                new LEConditionalLocation(new Vector3(-1491.661f, 4975.111f, 63.07887f), 43.19771f, 55f),
+            new LEConditionalLocation(new Vector3(-1507.015f, 4973.019f, 61.8642f), 55.27364f, 55f),},
+            },
         };
     }
     private void DefaultConfig_PawnShops()

@@ -117,6 +117,10 @@ public class BasicLocation
     public virtual int SortOrder { get; set; } = 999;
     public string StateLocation { get; set; }
     public string ScannerFilePath { get; set; } = "";
+
+    public virtual int ActivateCells { get; set; } = 5;
+
+
     [XmlIgnore]
     public Texture BannerImage { get; set; }
     [XmlIgnore]

@@ -573,7 +573,7 @@ public class Drag : DynamicActivity
         }
 
 
-        if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists())//turned off for now
+        if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists() && 1==0)//turned off for now
         {
             if (!Player.ButtonPrompts.HasPrompt("Load"))
             {

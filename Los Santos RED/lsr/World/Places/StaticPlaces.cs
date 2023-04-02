@@ -70,7 +70,7 @@ public class StaticPlaces
         {
             foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
             {
-                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, 5) && gl.IsEnabled && gl.IsCorrectMap(World.IsMPMapLoaded) && gl.CanActivate)// ((World.IsMPMapLoaded && gl.IsOnMPMap) || (!World.IsMPMapLoaded && gl.IsOnSPMap)))
+                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.ActivateCells) && gl.IsEnabled && gl.IsCorrectMap(World.IsMPMapLoaded) && gl.CanActivate)// ((World.IsMPMapLoaded && gl.IsOnMPMap) || (!World.IsMPMapLoaded && gl.IsOnSPMap)))
                 {
                     if (!gl.IsActivated)
                     {

@@ -51,6 +51,7 @@ public class DebugMenu : ModUIMenu
     private uint GameTimeLastAttached;
     private UIMenu vehicleItemsMenu;
     private List<string> MovementClipsetsList;
+    private UIMenu outfitsSubMenu;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
         IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
@@ -86,6 +87,7 @@ public class DebugMenu : ModUIMenu
         if (!Debug.Visible)
         {
             UpdateVehicleItems();
+            UpdateOutfits();
             Debug.Visible = true;
         }
     }
@@ -94,6 +96,7 @@ public class DebugMenu : ModUIMenu
         if (!Debug.Visible)
         {
             UpdateVehicleItems();
+            UpdateOutfits();
             Debug.Visible = true;
         }
         else
@@ -103,6 +106,7 @@ public class DebugMenu : ModUIMenu
     }
     private void CreateDebugMenu()
     {
+        CreateOutfitMenu();
         CreateDispatcherMenu();
         CreateGangItemsMenu();
         CreateTimeMenu();
@@ -115,6 +119,37 @@ public class DebugMenu : ModUIMenu
         CreateRelationshipsMenu();
         CreateVehicleMenu();
         CreateMovementItems();
+    }
+
+
+    private void CreateOutfitMenu()
+    {
+        outfitsSubMenu = MenuPool.AddSubMenu(Debug, "Outfits");
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Quick set a variation for the current character.";
+        outfitsSubMenu.SetBannerType(EntryPoint.LSRedColor);
+        UpdateOutfits();
+    }
+    private void UpdateOutfits()
+    {
+        outfitsSubMenu.Clear();
+        foreach (SavedOutfit so in Player.OutfitManager.CurrentPlayerOutfits)// ModDataFileManager.SavedOutfits.SavedOutfitList.Where(x => x.ModelName.ToLower() == Player.ModelName.ToLower()))
+        {
+            UIMenuItem uIMenuItem = new UIMenuItem(so.Name);
+            uIMenuItem.Activated += (sender, e) =>
+            {
+                Player.OutfitManager.SetOutfit(so);
+                //if (so.PedVariation == null)
+                //{
+                //    Game.DisplaySubtitle("No Variation to Set");
+                //    return;
+                //}
+                //PedVariation newVariation = so.PedVariation.Copy();
+                //Player.CurrentModelVariation = newVariation;
+                //Player.CurrentModelVariation.ApplyToPed(Player.Character);
+                //Game.DisplayHelp($"Applied Outfit {so.Name}");
+            };
+            outfitsSubMenu.AddItem(uIMenuItem);
+        }
     }
 
     private void CreateMovementItems()
@@ -191,11 +226,7 @@ public class DebugMenu : ModUIMenu
         vehicleItemsMenu = MenuPool.AddSubMenu(Debug, "Vehicle Menu");
         vehicleItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various vehicle items.";
-
         UpdateVehicleItems();
-
-
-
     }
 
     private void CreateExtraMenuItem()

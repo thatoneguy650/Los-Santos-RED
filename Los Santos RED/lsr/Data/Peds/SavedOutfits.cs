@@ -38,7 +38,11 @@ public class SavedOutfits : ISavedOutfits
         SavedOutfitList.Add(so);
         Serialization.SerializeParams(SavedOutfitList, ConfigFileName);
     }
-  
+    public void RemoveOutfit(SavedOutfit so)
+    {
+        SavedOutfitList.Remove(so);
+        Serialization.SerializeParams(SavedOutfitList, ConfigFileName);
+    }
     private void DefaultConfig()
     {
         SavedOutfitList = new List<SavedOutfit>();

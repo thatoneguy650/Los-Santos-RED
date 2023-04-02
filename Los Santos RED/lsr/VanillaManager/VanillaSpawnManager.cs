@@ -227,7 +227,7 @@ public class VanillaSpawnManager
     }
     public void Tick()
     {
-      if(Game.GameTime - GameTimeLastDisabledVehicles >= 15000)
+      if(Game.GameTime - GameTimeLastDisabledVehicles >= 30000)
         {
             DisableScenariosAndGenerators();
             GameTimeLastDisabledVehicles = Game.GameTime;
@@ -236,20 +236,34 @@ public class VanillaSpawnManager
     }
     private void DisableScenariosAndGenerators()
     {
+        int ran = 0;
         if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators)
         {
             foreach (Vector3 carGenSPot in CarGeneratorsToDisable)
             {
                 NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
                 NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
+                ran++;
+                if(ran > 10)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
             }
         }
         if (Settings.SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios)
         {
+            ran = 0;
             float ScenarioBlockingDistance = 2f;
             foreach (Vector3 scenario in ScenariosToDisable)
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
+                ran++;
+                if (ran > 10)
+                {
+                    GameFiber.Yield();
+                    ran = 0;
+                }
             }
             Vector3 PrisonMainBlock = new Vector3(1862.066f, 2593.06f, 45.67203f);
             float largeBlockingRange = 50f;

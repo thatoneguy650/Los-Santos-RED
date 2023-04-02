@@ -72,6 +72,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsShowingActionWheel { get; }
         ClipsetManager ClipsetManager { get; }
         bool IsWanted { get; }
+        PedVariation CurrentModelVariation { get; set; }
+        OutfitManager OutfitManager { get; }
 
         //bool IsCommitingSuicide { get; set; }
 

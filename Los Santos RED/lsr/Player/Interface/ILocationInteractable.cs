@@ -51,6 +51,8 @@ namespace LosSantosRED.lsr.Interface
         Rage.Object CurrentLookedAtObject { get; }
         float ClosestPoliceDistanceToPlayer { get; }
         bool AnyPoliceRecentlySeenPlayer { get; }
+        PedVariation CurrentModelVariation { get; set; }
+        OutfitManager OutfitManager { get; }
 
         //  void StopDynamicActivity();
         //   void StartConsumingActivity(ModItem modItem, bool v);
