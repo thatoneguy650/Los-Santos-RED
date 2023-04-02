@@ -179,6 +179,7 @@ public class StaticPlaces
                 gl.DeactivateBlip();
             }
             //gl.IsEnabled = setEnabled;
+            //EntryPoint.WriteToConsole($"SetGangLocationActive {iD} setEnabled:{setEnabled}");
         }
     }
     public void AddAllBlips()

@@ -292,7 +292,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     }
     public void Reset()
     {
-        IsEnabled = false;
+        //IsEnabled = false;
         ExpectedMoney = 0;
         ExpectedItem = null;
         ExpectedItemAmount = 0;

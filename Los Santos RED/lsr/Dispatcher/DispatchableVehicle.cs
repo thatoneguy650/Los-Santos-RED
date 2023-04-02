@@ -90,11 +90,10 @@ public class DispatchableVehicle
         {
             return;
         }
-        if (RequiredLiveries == null || !RequiredLiveries.Any())
+        if (RequiredLiveries != null && RequiredLiveries.Any())
         {
-            return;
+            NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
         }
-        NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", vehicleExt.Vehicle, RequiredLiveries.PickRandom());
         if (VehicleExtras != null)
         {
             foreach (DispatchableVehicleExtra extra in VehicleExtras.OrderBy(x => x.ExtraID).ThenBy(x => x.IsOn))
