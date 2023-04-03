@@ -11,7 +11,7 @@ public class AnimationWatcher
 
     private float PrevAnimationTime;
     private uint GameTimeLastCheckedAnimation;
-
+    public uint TimeBetweenCheck { get; set; } = 500;
     public bool HasStartedAnimation { get; private set; }
 
     public bool IsAnimationRunning(float AnimationTime)
@@ -20,7 +20,7 @@ public class AnimationWatcher
         {
             HasStartedAnimation = true;
         }
-        if (Game.GameTime - GameTimeLastCheckedAnimation >= 500)
+        if (Game.GameTime - GameTimeLastCheckedAnimation >= TimeBetweenCheck)
         {
             if (PrevAnimationTime == AnimationTime && HasStartedAnimation)
             {

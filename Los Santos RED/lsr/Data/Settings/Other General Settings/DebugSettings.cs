@@ -8,6 +8,30 @@ using System.Threading.Tasks;
 
 public class DebugSettings : ISettingsDefaultable
 {
+    //public float Draw_LoadBodyZInitialOffset { get; set; }
+
+
+    public float Draw_LoadBodyXOffset { get; set; }
+    public float Draw_LoadBodyYOffset { get; set; }
+    public float Draw_LoadBodyZOffset { get; set; }
+
+
+    public float Draw_LoadBodyXRotation { get; set; }
+    public float Draw_LoadBodyYRotation { get; set; }
+    public float Draw_LoadBodyZRotation { get; set; }
+
+    public int Draw_BoneIndex { get; set; }
+
+    public bool Drag_UseBasicAttachIfPed { get; set; }
+    public int Drag_Euler { get; set; }
+    public bool Drag_OffsetIsRelative { get; set; }
+
+
+    public bool Drag_FadeOut { get; set; }
+    public bool Drag_AutoCloseTrunk { get; set; }
+
+
+
     public bool Drag_SetPedsInvisible { get; set; }
     public bool Drag_SetNoCollision { get; set; }
 
@@ -88,9 +112,6 @@ public class DebugSettings : ISettingsDefaultable
     public float TrunkZOffset { get; set; }
 
 
-
-
-
     public DebugSettings()
     {
         SetDefault();
@@ -165,6 +186,17 @@ public class DebugSettings : ISettingsDefaultable
         Drag_Collision = true;
         Drag_Teleport = true;
         Drag_RotationOrder = 2;
+
+
+        Drag_UseBasicAttachIfPed = false;
+        Drag_Euler = 2;
+        Drag_OffsetIsRelative = false;
+        Draw_BoneIndex = 0;
+
+        Draw_LoadBodyZOffset = -0.1f;
+        Draw_LoadBodyZRotation = 180f;
+        Drag_FadeOut = false;
+        Drag_AutoCloseTrunk = false;
     }
 
 }

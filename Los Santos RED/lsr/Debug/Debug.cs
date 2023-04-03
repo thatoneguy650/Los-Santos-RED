@@ -18,10 +18,6 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-//using System.Windows.Media;
-//using System.Windows.Media.Animation;
-//using System.Windows.Media;
-//using System.Windows.Media;
 using static DispatchScannerFiles;
 
 public class Debug
@@ -732,8 +728,108 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        Player.CellPhone.CloseBurner();
-        GameFiber.Sleep(1000);
+
+        GameFiber.StartNew(delegate
+        {
+            VehicleExt ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
+            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+            GameFiber.Yield();
+            bool freezePos = false;
+            AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
+
+            if (ClosestVehicle!= null && ClosestVehicle.Vehicle.Exists() && coolguy.Exists())
+            {
+                //coolguy.Kill();
+                //NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
+               // coolguy.IsPersistent = true;
+               // coolguy.BlockPermanentEvents = true;
+                while (ClosestVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O) && coolguy.Exists())
+                {
+                    bool hasBoot = ClosestVehicle.Vehicle.HasBone("boot");
+                    Vector3 BootPosition = ClosestVehicle.Vehicle.GetBonePosition("boot");
+                    Vector3 RootPosition = ClosestVehicle.Vehicle.GetBonePosition(0);
+
+
+                    float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
+                    float ZOffset = BootPosition.Z - RootPosition.Z;// BootPosition.DistanceTo2D(RootPosition);
+
+
+
+
+
+                    int bootBoneIndex = ClosestVehicle.Vehicle.GetBoneIndex("boot");
+
+                    Vector3 AboveVehiclePosition = ClosestVehicle.Vehicle.GetOffsetPositionUp(Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset);
+                    Vector3 FinalPosition = NativeHelper.GetOffsetPosition(NativeHelper.GetOffsetPosition(BootPosition, ClosestVehicle.Vehicle.Heading, Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset), ClosestVehicle.Vehicle.Heading - 90f, Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset);
+                    FinalPosition.Z = AboveVehiclePosition.Z;
+
+                    Rage.Debug.DrawArrowDebug(BootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+                    Rage.Debug.DrawArrowDebug(AboveVehiclePosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Black);
+                    Rage.Debug.DrawArrowDebug(FinalPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Green);
+
+                    Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Purple);
+
+                    Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+
+                    if (Game.IsKeyDownRightNow(Keys.I))
+                    {
+                        freezePos = !freezePos;
+                        if(freezePos)
+                        {
+                            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation, 
+                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation, 
+                                false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
+                            //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, bootBoneIndex, FinalPosition.X, FinalPosition.Y, FinalPosition.Z, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, false, false);
+                            GameFiber.Wait(100);
+                            NativeFunction.Natives.TASK_PLAY_ANIM(coolguy, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+                            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(coolguy, "timetable@floyd@cryingonbed@base", "base", 1.0f);
+                            Game.DisplaySubtitle("ATTACHED");
+                        }
+                        else
+                        {
+                            coolguy.Detach();
+                            Game.DisplaySubtitle("DETACHED");
+                        }
+
+
+                        //if(!freezePos)
+                        //{
+                        //    coolguy.BlockPermanentEvents = true;
+                        //    coolguy.IsRagdoll = true;
+                        //    NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
+                        //}
+                        GameFiber.Sleep(500);
+                    }
+                    //if(freezePos)
+                    //{
+                    //    coolguy.Position = FinalPosition;
+                    //}
+                    Game.DisplayHelp("PRESS O TO CANCEL, I to Drop");
+                    GameFiber.Yield();
+                }
+
+            }
+
+
+            if (coolguy.Exists())
+            {
+                coolguy.Delete();
+            }
+
+
+
+        }, "Run Debug Logic");
+
+
+
+
+        //Player.CellPhone.CloseBurner();
+        //GameFiber.Sleep(1000);
         //   SpawnGunAttackers();
 
         //GameFiber.StartNew(delegate
@@ -1237,6 +1333,25 @@ public class Debug
     {
         World.Pedestrians.ClearSpawned();
         World.Vehicles.ClearSpawned(true);
+
+
+        if(Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        {
+            Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
+            Settings.SettingsManager.EMSSettings.ManageDispatching = false;
+            Settings.SettingsManager.GangSettings.ManageDispatching = false;
+            Game.DisplaySubtitle("Dispatching Disabled");
+        }
+        else
+        {
+            Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = true;
+            Settings.SettingsManager.EMSSettings.ManageDispatching = true;
+            Settings.SettingsManager.GangSettings.ManageDispatching = true;
+            Game.DisplaySubtitle("Dispatching Enabled");
+        }
+
+
+
         //Cop cop = World.Pedestrians.PoliceList.Where(x=> x.DistanceToPlayer <= 25f).OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
         //if(cop == null || !cop.Pedestrian.Exists())
         //{
