@@ -186,6 +186,8 @@ public class GameSaves : IGameSaves
         AlexisGameSave.GangReputationsSave = new List<GangRepSave>() { new GangRepSave("Gambetti", 4000, 0, 0, 0, 0, 0, 0, 0, false, false,0) };
         AlexisGameSave.SaveNumber = 1;
         AlexisGameSave.VoiceName = "A_F_M_BEVHILLS_01_WHITE_FULL_01";
+        AlexisGameSave.Health = 175;
+        AlexisGameSave.Armor = 25;
         GameSaveList.Add(AlexisGameSave);
     }
     private void AddClaude()

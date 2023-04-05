@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 public class GangConditionalLocation : ConditionalLocation
 {
     private Gang Gang;
+    public bool TerritorySpawnsForceMainGang { get; set; } = false;
 
     public GangConditionalLocation(Vector3 location, float heading, float percentage) : base(location, heading, percentage)
     {
@@ -66,6 +67,7 @@ public class GangConditionalLocation : ConditionalLocation
     }
     public override void GetDispatchableGenerator()
     {
+        EntryPoint.WriteToConsole($"GANG GetDispatchableGenerator: AssociationID: {AssociationID} MasterAssociationID: {MasterAssociationID}");
         if (Gang != null)
         {
             return;
@@ -81,7 +83,18 @@ public class GangConditionalLocation : ConditionalLocation
         if (Gang == null)
         {
             Zone CurrentZone = Zones.GetZone(Location);
-            Gang = GangTerritories.GetRandomGang(CurrentZone.InternalGameName,World.TotalWantedLevel);// Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.Security);
+            if (TerritorySpawnsForceMainGang)
+            {
+                Gang = GangTerritories.GetMainGang(CurrentZone.InternalGameName);// Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.Security);
+            }
+            else
+            {
+                Gang = GangTerritories.GetRandomGang(CurrentZone.InternalGameName, World.TotalWantedLevel);
+            }
+        }
+        if(Gang != null) 
+        { 
+            EntryPoint.WriteToConsole($"GANG GetDispatchableGenerator CHOSEN GANG: {Gang.ShortName}"); 
         }
     }
     public override void GenerateSpawnTypes()

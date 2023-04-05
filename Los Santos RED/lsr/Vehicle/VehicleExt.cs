@@ -4,6 +4,8 @@ using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
+using RAGENativeUI;
+using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -43,6 +45,7 @@ namespace LSR.Vehicles
         public Indicators Indicators { get; set; }
         public Engine Engine { get; set; }
         public FuelTank FuelTank { get; set; }
+        public VehicleBodyManager VehicleBodyManager { get; private set; }
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -275,6 +278,7 @@ namespace LSR.Vehicles
             Indicators = new Indicators(this);
             FuelTank = new FuelTank(this, Settings);
             Engine = new Engine(this, Settings);
+            VehicleBodyManager = new VehicleBodyManager(this, Settings);
         }
         public void SetAsEntered()
         {
@@ -559,59 +563,6 @@ namespace LSR.Vehicles
             //}
             //NativeFunction.CallByName<bool>("SET_VEHICLE_LIVERY", Vehicle, MyVehicle.RequiredLiveries.PickRandom());
         }
-        //public void SetSpawnItems(DispatchableVehicle VehicleType, Agency agency, Gang gang, bool SetPersistent)
-        //{
-        //    if (!Vehicle.Exists())
-        //    {
-        //        return;
-        //    }
-        //    if (SetPersistent)
-        //    {
-        //        Vehicle.IsPersistent = true;
-        //        EntryPoint.PersistentVehiclesCreated++;
-        //    }
-        //    else
-        //    {
-        //        Vehicle.IsPersistent = false;
-        //    }
-        //    if (agency != null)
-        //    {
-        //        UpdateLivery(agency, VehicleType);
-        //        GameFiber.Yield();
-        //        UpgradePerformance();
-        //        GameFiber.Yield();
-        //    }
-        //    if (!Vehicle.Exists())
-        //    {
-        //        return;
-        //    }
-        //    AssociatedGang = gang; 
-        //    if (VehicleType.VehicleExtras != null)
-        //    {
-        //        foreach (DispatchableVehicleExtra extra in VehicleType.VehicleExtras.OrderBy(x=> x.ExtraID).ThenBy(x=>x.IsOn))
-        //        {
-        //            if (NativeFunction.Natives.DOES_EXTRA_EXIST<bool>(Vehicle, extra.ExtraID))
-        //            {
-        //                int toSet = extra.IsOn ? 0 : 1;
-        //                if (RandomItems.RandomPercent(extra.Percentage))
-        //                {
-        //                    NativeFunction.Natives.SET_VEHICLE_EXTRA(Vehicle, extra.ExtraID, toSet);
-        //                }
-        //            }
-        //        }
-        //    }
-        //    if (!Vehicle.Exists())
-        //    {
-        //        return;
-        //    }
-        //    if (VehicleType.RequiredPrimaryColorID != -1)
-        //    {
-        //        NativeFunction.Natives.SET_VEHICLE_COLOURS(Vehicle, VehicleType.RequiredPrimaryColorID, VehicleType.RequiredSecondaryColorID == -1 ? VehicleType.RequiredPrimaryColorID : VehicleType.RequiredSecondaryColorID);
-        //    }
-        //    NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(Vehicle, RandomItems.GetRandomNumber(0.0f, 15.0f));
-        //    VehicleType.RequiredVariation?.Apply(this);
-        //    GameFiber.Yield();           
-        //}
         public void SetDriverWindow(bool RollDown)
         {
             if (NativeFunction.CallByName<bool>("IS_VEHICLE_WINDOW_INTACT", Game.LocalPlayer.Character.CurrentVehicle, 0))
@@ -881,7 +832,6 @@ namespace LSR.Vehicles
                 GameTimeBecameEmpty = Game.GameTime;
             }
         }
-
         private void SetupClassAndCategory()
         {
             vehicleClass = (VehicleClass)ClassInt();
@@ -892,7 +842,6 @@ namespace LSR.Vehicles
             IsMotorcycle = !isModelBicycle && isModelBike;
             GetOwnedBlipID();
         }
-
         public void RemoveOwnershipBlip()
         {
             if (!AttachedBlip.Exists() || !Vehicle.Exists())
@@ -963,6 +912,55 @@ namespace LSR.Vehicles
                 return lightEmissives[(int)index];
             }
         }
+        public string GetClosestPedStorageBone(IInteractionable Player, float maxDistance)
+        {
+            if(!Vehicle.Exists()) 
+            {
+                return string.Empty;
+            }
+            List<string> BoneNames = new List<string>() { 
+                    "boot", 
+                    "seat_dside_f",
+                    "seat_dside_r",
+                    "seat_pside_f",
+                    "seat_pside_r",
+                    //"seat_dside_r1",
+                    //"seat_dside_r2",
+                    //"seat_dside_r3",
+                    //"seat_dside_r4",
+                    //"seat_dside_r5",
+                    //"seat_dside_r6",
+                    //"seat_dside_r7",
+                    //"seat_pside_r1",
+                    //"seat_pside_r2",
+                    //"seat_pside_r3",
+                    //"seat_pside_r4",
+                    //"seat_pside_r5",
+                    //"seat_pside_r6",
+                    //"seat_pside_r7", 
+            };
+            float closestBoneDistance = 999f;
+            string boneToReturn = "";
+            foreach(string boneName in BoneNames)
+            {
+                if(!Vehicle.HasBone(boneName))
+                {
+                    continue;
+                }
+                Vector3 bonePositon = Vehicle.GetBonePosition(boneName);
+                float currentBoneDistance = Player.Character.DistanceTo2D(bonePositon);
+                if(currentBoneDistance <= maxDistance && currentBoneDistance < closestBoneDistance)
+                {
+                    boneToReturn = boneName;
+                    closestBoneDistance = currentBoneDistance;
+                }
+            }
+            return boneToReturn;
+        }
+        public void PutPedInTrunk(IInteractionable Player, PedExt pedExt)
+        {
+
+        }
         public enum LightID
         {
             defaultlight = 0,
@@ -984,5 +982,49 @@ namespace LSR.Vehicles
             extralight_3 = 16,
             extralight_4 = 17
         }
+        public void ShowInteractionMenu()
+        {
+            MenuPool MenuPool = new MenuPool();
+            UIMenu VehicleInteractMenu = new UIMenu("Vehicle", "Select an Option");
+            VehicleInteractMenu.SetBannerType(EntryPoint.LSRedColor);
+            MenuPool.Add(VehicleInteractMenu);
+
+
+            foreach(StoredBody storedBody in VehicleBodyManager.StoredBodies)
+            {
+                if(storedBody.PedExt == null || !storedBody.PedExt.Pedestrian.Exists())
+                {
+                    continue;
+                }
+                UIMenuItem unloadBody = new UIMenuItem($"Unload {storedBody.PedExt.Name}", $"Unload {storedBody.PedExt.Name} from {storedBody.StoredBone}");
+                unloadBody.Activated += (menu, item) =>
+                {
+                    VehicleBodyManager.StoredBodies.Remove(storedBody);
+                    storedBody.Unload();
+                    VehicleInteractMenu.Visible = false;
+                };
+                VehicleInteractMenu.AddItem(unloadBody);
+            }
+
+
+            VehicleInteractMenu.Visible = true;
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    while (EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen())
+                    {
+                        MenuPool.ProcessMenus();
+                        GameFiber.Yield();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "VehicleInteraction");
+        }
+
     }
 }

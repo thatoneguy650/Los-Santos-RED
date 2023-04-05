@@ -37,8 +37,9 @@ public static class EntryPoint
     public static uint NotificationID { get; set; }
     public static void Main()
     {
-        #if DEBUG
-                LogLevel = 5;
+
+#if DEBUG
+        LogLevel = 5;
         #endif
 
         while (Game.IsLoading)
@@ -51,6 +52,9 @@ public static class EntryPoint
     }
     private static void Startup()
     {
+
+
+
         GetVersionInfo();
         CheckDependencies();
         CheckForUpdates();
@@ -110,20 +114,20 @@ public static class EntryPoint
         try
         {
             receivedData = webClient.DownloadString("https://www.lcpdfr.com/applications/downloadsng/interface/api.php?do=checkForUpdates&fileId=36665&textOnly=1").Trim();
+            string WebLatestVersionFixed = FixWebVersionString(receivedData);
+            if (WebLatestVersionFixed != LSRInstalledVersionInfo.FileVersion)
+            {
+                Version webLatest = new Version(WebLatestVersionFixed);
+                Version installed = new Version(LSRInstalledVersionInfo.FileVersion);
+                string description = webLatest > installed ? "~r~Update Available:~s~" : "~o~Released:~s~";
+                PreStartMessage = $"{PreStartMessage} ~n~{description} v{WebLatestVersionFixed}~s~~n~Current Version: v{LSRInstalledVersionInfo.FileVersion}";
+                WriteToConsole($"{description}: New: {WebLatestVersionFixed} Installed: {LSRInstalledVersionInfo.FileVersion}", 0);
+            }
         }
-        catch (WebException)
+        catch(Exception ex)
         {
             PreStartMessage = $"{PreStartMessage} ~n~~n~~r~UPDATE CHECK FAILED~s~";
             WriteToConsole($"Failed to check for updates", 0);
-        }
-        string WebLatestVersionFixed = FixWebVersionString(receivedData);
-        if (WebLatestVersionFixed != LSRInstalledVersionInfo.FileVersion)
-        {
-            Version webLatest = new Version(WebLatestVersionFixed);
-            Version installed = new Version(LSRInstalledVersionInfo.FileVersion);
-            string description = webLatest > installed ? "~r~Update Available:~s~" : "~o~Released:~s~";
-            PreStartMessage = $"{PreStartMessage} ~n~{description} v{WebLatestVersionFixed}~s~~n~Current Version: v{LSRInstalledVersionInfo.FileVersion}";
-            WriteToConsole($"{description}: New: {WebLatestVersionFixed} Installed: {LSRInstalledVersionInfo.FileVersion}", 0);
         }
     }
     private static string FixWebVersionString(string webVersionString)

@@ -15,15 +15,9 @@ public class ButtonPrompts
     private IButtonPromptable Player;
     private ISettingsProvideable Settings;
     private bool addedPromptGroup;
-
     private bool CanInteractWithClosestLocation => Player.ClosestInteractableLocation != null
         && !Player.ActivityManager.IsInteractingWithLocation
         && !Player.ActivityManager.IsInteracting;
-
-
-
-
-       // && (Player.IsNotWanted || (Player.ClosestInteractableLocation.CanInteractWhenWanted && Player.ClosestPoliceDistanceToPlayer >= 80f && !Player.AnyPoliceRecentlySeenPlayer));
     public List<ButtonPrompt> Prompts { get; private set; }
     public bool IsSuspended { get; set; } = false;
     public bool IsUsingKeyboard { get; private set; } = true;
@@ -41,16 +35,29 @@ public class ButtonPrompts
     public void Update()
     {
         addedPromptGroup = false;
-
         IsUsingKeyboard = NativeFunction.Natives.IS_USING_KEYBOARD_AND_MOUSE<bool>(2);
-
-
         AttemptAddInteractionPrompts();
         AttemptAddAdvancedInteractionPrompts();
+        AttemptAddVehiclePrompts();
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
     }
+
+    private void AttemptAddVehiclePrompts()
+    {
+        if(addedPromptGroup || Player.CurrentLookedAtVehicle == null || !Player.CurrentLookedAtVehicle.Vehicle.Exists())
+        {
+            RemovePrompts("VehicleInteract");
+            return;
+        }
+        if (!HasPrompt($"VehicleInteract"))
+        {
+            RemovePrompts("VehicleInteract");
+            AttemptAddPrompt("VehicleInteract", $"Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+        }
+    }
+
     public void Dispose()
     {
         Prompts.Clear();
@@ -68,8 +75,6 @@ public class ButtonPrompts
         Prompts.RemoveAll(x => x.Group == groupName);
     }
 
-
-
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
@@ -77,9 +82,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, order));
         }
     }
-
-
-
 
     public void AddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
@@ -127,12 +129,6 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, modifierControl, order));
         }
     }
-
-
-
-
-
-
 
     public bool HasPrompt(string identifier)
     {

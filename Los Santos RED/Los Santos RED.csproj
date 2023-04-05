@@ -338,6 +338,8 @@
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
     <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
+    <Compile Include="lsr\Vehicle\Storage\StoredBody.cs" />
+    <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Weapon\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
     <Compile Include="lsr\Data\Weather\WeatherForecasts.cs" />

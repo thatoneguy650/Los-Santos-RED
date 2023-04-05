@@ -49,6 +49,7 @@ namespace LosSantosRED.lsr.Interface
         GroupManager GroupManager { get; }
         ActivityManager ActivityManager { get; }
         bool IsUsingController { get; set; }
+        VehicleExt CurrentLookedAtVehicle { get; }
 
         //   void CancelCurrentActivity();
         //  void CloseDriverDoor();
@@ -59,11 +60,12 @@ namespace LosSantosRED.lsr.Interface
         //  void LootPed();
         // void PauseCurrentActivity();
         void PlaySpeech(string player, bool v);
-     //   void StartConversation();
-     //   void StartLocationInteraction();
-     //   void StartScenario();
-     //   void StartSimpleCellphoneActivity();
-      //  void StartTransaction();
-    //    void StartSittingDown(bool v1, bool v2);
+        void ShowVehicleInteractMenu();
+        //   void StartConversation();
+        //   void StartLocationInteraction();
+        //   void StartScenario();
+        //   void StartSimpleCellphoneActivity();
+        //  void StartTransaction();
+        //    void StartSittingDown(bool v1, bool v2);
     }
 }

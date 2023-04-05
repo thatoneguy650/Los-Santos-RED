@@ -81,6 +81,8 @@ namespace Mod
         private Vehicle VehicleTryingToEnter;
         private int SeatTryingToEnter;
         private bool currentlyHasScrewdriver;
+        private MenuPool MenuPool;
+        private UIMenu VehicleInteractMenu;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -895,6 +897,15 @@ namespace Mod
                 Game.DisplaySubtitle($"Player Cop Taskable: {meCop.CanBeTasked}");
                EntryPoint.WriteToConsole($"Player Cop Taskable: {meCop.CanBeTasked}");
             }
+        }
+        public void ShowVehicleInteractMenu()
+        {
+            if(CurrentLookedAtVehicle == null || !CurrentLookedAtVehicle.Vehicle.Exists())
+            {
+                return;
+            }
+            CurrentLookedAtVehicle.ShowInteractionMenu();
+            
         }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);

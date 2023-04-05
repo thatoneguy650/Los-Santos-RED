@@ -32,6 +32,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public string GangID { get; set; }
 
 
+    public override string AssociationID => GangID;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
     public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();

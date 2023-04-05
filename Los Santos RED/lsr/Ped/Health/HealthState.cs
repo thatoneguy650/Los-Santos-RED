@@ -22,13 +22,6 @@ public class HealthState
     private ISettingsProvideable Settings;
     private uint GameTimeLastSetRagDoll;
     private bool IsPlayer;
-
-    //private int TimeBetweenYelling = 2500;
-    //private uint GameTimeLastYelled;
-    //private string VoiceName;
-
-    //private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
-    //private bool CanYell => !IsYellingTimeOut;
     public HealthState()
     {
 
@@ -79,15 +72,11 @@ public class HealthState
                 return false;
         }
     }
-
     public bool WasShot { get; private set; }
     public bool WasMeleeAttacked { get; private set; }
-
     private uint GameTimeLastModifiedDamage;
     private uint GameTimeLastYelledInPain;
-
     public bool WasHitByVehicle { get; private set; }
-
     public void Update(IPoliceRespondable CurrentPlayer)
     {
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
@@ -195,6 +184,20 @@ public class HealthState
             CurrentArmor = Armor;
             CurrentHealth = Health;
         }
+    }
+    public void ResurrectPed()
+    {
+        if (MyPed == null || !MyPed.Pedestrian.Exists())
+        {
+            return;
+        }
+        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        MyPed.Pedestrian.Resurrect();
+        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        NativeFunction.Natives.RESURRECT_PED(MyPed.Pedestrian);
+        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
+        NativeFunction.Natives.REVIVE_INJURED_PED(MyPed.Pedestrian);
+        MyPed.Pedestrian.Health = MyPed.Pedestrian.MaxHealth;
     }
     private void SetUnconscious()
     {
@@ -605,5 +608,6 @@ public class HealthState
         };
         return PedBones.FirstOrDefault(x => x.Tag == ID);
     }
+
 
 }

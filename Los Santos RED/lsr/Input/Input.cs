@@ -204,6 +204,10 @@ namespace LosSantosRED.lsr
             {
                 Player.GroupManager.TryRecruitLookedAtPed();
             }
+            if (Player.ButtonPrompts.IsGroupPressed("VehicleInteract"))
+            {
+                Player.ShowVehicleInteractMenu();
+            }
             if (Player.ButtonPrompts.IsGroupPressed("Sit"))
             {
                 Player.ActivityManager.StartSittingDown(true, true);

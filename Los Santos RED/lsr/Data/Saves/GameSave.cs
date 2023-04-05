@@ -54,6 +54,8 @@ namespace LosSantosRED.lsr.Data
         public int SpeechSkill { get; set; }
         public bool IsCop { get; set; }
         public string VoiceName { get; set; }
+        public int Health { get; set; }
+        public int Armor { get; set; }
         public PedVariation CurrentModelVariation { get; set; }
         public DriversLicense DriversLicense { get; set; }
         public CCWLicense CCWLicense { get; set; }
@@ -76,7 +78,8 @@ namespace LosSantosRED.lsr.Data
             CurrentModelVariation = player.CurrentModelVariation.Copy();
             WeaponInventory = new List<StoredWeapon>();
 
-
+            Health = player.Character.Health;
+            Armor = player.Character.Armor;
 
             modItems.WriteToFile();
             SaveDateTime = DateTime.Now;
@@ -217,6 +220,7 @@ namespace LosSantosRED.lsr.Data
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 player.SetCopStatus(IsCop, null);
+                LoadHealth(player);
                 GameFiber.Sleep(1000);
                 Game.FadeScreenIn(1500, true);
                 player.DisplayPlayerNotification();
@@ -226,6 +230,19 @@ namespace LosSantosRED.lsr.Data
                 Game.FadeScreenIn(0);
                 EntryPoint.WriteToConsole("Error Loading Game Save: " + e.Message + " " + e.StackTrace, 0);
                 Game.DisplayNotification("Error Loading Save");
+            }
+        }
+
+        private void LoadHealth(IInventoryable player)
+        {
+            if (Health > 0)
+            {
+                player.Character.MaxHealth = Health;
+                player.Character.Health = Health;
+            }
+            if (Armor > 0)
+            {
+                player.Character.Armor = Armor;
             }
         }
 

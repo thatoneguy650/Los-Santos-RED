@@ -71,7 +71,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public HealthState CurrentHealthState { get; private set; }
     public PedReactions PedReactions { get; set; }
     public PedInventory PedInventory { get; private set; }
-  //  public PedKnowledge PedKnowledge { get; private set; }
     public PedBrain PedBrain { get; set; }
     public PedDesires PedDesires { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
@@ -100,8 +99,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
     public bool IsTrustingOfPlayer { get; set; } = true;
-    // public bool WasLocationSpawned { get; set; } = false;
-
     public virtual bool CanTransact => HasMenu;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
@@ -116,10 +113,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public float HeightToPlayer => PlayerPerception.HeightToTarget;
     public bool EverSeenPlayer => PlayerPerception.EverSeenTarget;
     public string FormattedName => (PlayerKnownsName ? Name : GroupName);
-
-
-
-
     public virtual int ShootRate { get; set; } = 400;
     public virtual int Accuracy { get; set; } = 5;
     public virtual int CombatAbility { get; set; } = 0;
@@ -129,12 +122,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int VehicleShootRate { get; set; } = 100;
     public virtual int TurretAccuracy { get; set; } = 10;
     public virtual int TurretShootRate { get; set; } = 1000;
-
-
-
-
-
-
     public string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;
@@ -205,8 +192,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         return promptText;
     }
-
-
     public string GroupName { get; set; } = "Person";
     public uint GameTimeLastUpdated { get; set; }
     public uint GameTimeLastUpdatedTask { get; set; }
@@ -333,7 +318,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int TimesInsultedByPlayer { get; private set; }
     public Vector3 PositionLastSeenDistressedPed { get; set; }
     public ShopMenu ShopMenu { get; private set; }
-
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
     public bool WasEverSetPersistent { get; set; }
@@ -402,33 +386,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
-
-
     public List<uint> BlackListedVehicles { get; set; } = new List<uint>();
-
-
-
     public bool WasModSpawned { get; set; } = false;
     public Vector3 SpawnPosition { get; set; }
     public float SpawnHeading { get; set; }
-
-
-
     public LocationTaskRequirements LocationTaskRequirements { get; set; } = new LocationTaskRequirements();
-
-
-
-  //  public TaskRequirements TaskRequirements { get; set; } = TaskRequirements.None;
-
-
-
-
-
-
-
     public virtual bool KnowsDrugAreas => HasMenu || HasDrugAreaKnowledge;
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
-
     public uint GameTimeReachedInvestigationPosition { get; set; }
     public bool HasFullBodyArmor { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
@@ -796,8 +760,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedViolations.Reset();
         PedPerception.Reset();
     }
-
-
     public void ClearTasks(bool resetAlertness)
     {
         if (!Pedestrian.Exists())
@@ -827,7 +789,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
         EntryPoint.WriteToConsole($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
     }
-
     private void PlaySpeech(string speechName, bool useMegaphone)
     {
         if (VoiceName != "")
