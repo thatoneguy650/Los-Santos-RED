@@ -31,7 +31,6 @@ public class Drag : DynamicActivity
     private bool IsAttached;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
-   // private bool PedWasPersistent;
     private IEntityProvideable World;
     private bool PedWasDead;
     private VehicleExt ClosestVehicle;
@@ -45,9 +44,10 @@ public class Drag : DynamicActivity
     private bool IsRagdoll = false;
     private AnimationWatcher AnimationWatcher;
     private bool CloseTrunk = false;
-    private string closestBone;
+    private VehicleDoorSeatData VehicleDoorSeatData;
+    private IVehicleSeatDoorData VehicleSeatDoorData;
 
-    public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world)
+    public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world, IVehicleSeatDoorData vehicleSeatDoorData)
     {
         Player = player;
         Ped = ped;
@@ -55,6 +55,7 @@ public class Drag : DynamicActivity
         Crimes = crimes;
         ModItems = modItems;
         World = world;
+        VehicleSeatDoorData = vehicleSeatDoorData;
     }
     public override string DebugString => $"TimesInsultedByPlayer {Ped.TimesInsultedByPlayer} FedUp {Ped.IsFedUpWithPlayer}";
     public override ModItem ModItem { get; set; }
@@ -90,7 +91,7 @@ public class Drag : DynamicActivity
         {
             leftHandObject.Delete();
         }
-        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character); 
         Player.ActivityManager.IsDraggingBody = false;
     }
     public override void Pause()
@@ -112,10 +113,21 @@ public class Drag : DynamicActivity
             try
             {
                 BeginDrag();
-                Cancel();
                 if(LoadBody)
                 {
-                    ClosestVehicle.VehicleBodyManager.LoadBody(Ped, closestBone);
+                    ClosestVehicle.OpenDoor(VehicleDoorSeatData.DoorID, true);
+                    if(Settings.SettingsManager.DebugSettings.Drag_FadeOut && !Game.IsScreenFadedOut)
+                    {
+                        Game.FadeScreenOut(500, true);
+                    }
+                }
+                Cancel();
+                if (LoadBody)
+                {
+                    if(!ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData) && Game.IsScreenFadedOut)
+                    {
+                        Game.FadeScreenIn(500, true);
+                    }
                 }
             }
             catch (Exception ex)
@@ -169,18 +181,19 @@ public class Drag : DynamicActivity
             EntryPoint.WriteToConsole("Drag, Finished, completed");
             PutDownPed();
         }
-        else if (IsAttached)
+        else if (IsAttached && !LoadBody)
         {
             EntryPoint.WriteToConsole("Drag, Finished, only attached");
             DetachPeds();
         }
-        if (LastWeapon != null)
+        if (LastWeapon != null && !LoadBody)
         {
             NativeFunction.CallByName<bool>("SET_CURRENT_PED_WEAPON", Game.LocalPlayer.Character, (uint)LastWeapon.Hash, true);
         }    
     }
     private void PutDownPed()
-    {    
+    {
+        EntryPoint.WriteToConsole("DRAG PUT DOWN PED RAN");
         if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2, 0, false, false, false);
@@ -474,9 +487,13 @@ public class Drag : DynamicActivity
     }
     private void DirectionLoop()
     {
+        if(LoadBody)
+        {
+            return;
+        }
         if (Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveDown))
         {
-            EntryPoint.WriteToConsole("DRAG DOWN PRESSED");
+            //EntryPoint.WriteToConsole("DRAG DOWN PRESSED");
             if (!isBackingUp)
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -535,20 +552,20 @@ public class Drag : DynamicActivity
         ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
         if(ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists())
         {
-            closestBone = "";
+            VehicleDoorSeatData = null;
             Player.ButtonPrompts.RemovePrompts("Load");
             return;
         }
-        closestBone = ClosestVehicle.GetClosestPedStorageBone(Player, 2.5f);
-        if(string.IsNullOrEmpty(closestBone))
+        VehicleDoorSeatData = ClosestVehicle.GetClosestPedStorageBone(Player, 2.5f, VehicleSeatDoorData);
+        if(VehicleDoorSeatData == null)
         {
             Player.ButtonPrompts.RemovePrompts("Load");
             return;
         }
         Player.ButtonPrompts.RemovePrompts("Load");
-        if (!Player.ButtonPrompts.HasPrompt($"Load into {closestBone}"))
+        if (!Player.ButtonPrompts.HasPrompt($"Load into {VehicleDoorSeatData.SeatName}"))
         {
-            Player.ButtonPrompts.AddPrompt("Load", $"Load into {closestBone}", $"Load into {closestBone}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1);
+            Player.ButtonPrompts.AddPrompt("Load", $"Load into {VehicleDoorSeatData.SeatName}", $"Load into {VehicleDoorSeatData.SeatName}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1);
         }
     }
     private void DoRagdollDrag()
@@ -636,150 +653,150 @@ public class Drag : DynamicActivity
             //180f,90f,0f,
         }
     }
-    private void LoadBodyInCar()
-    {
-        EntryPoint.WriteToConsole("LoadBodyInCarStarted");
-        if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists() || !ClosestVehicle.Vehicle.Doors[5].IsValid())
-        {
-            return;
-        }
+    //private void LoadBodyInCar()
+    //{
+    //    EntryPoint.WriteToConsole("LoadBodyInCarStarted");
+    //    if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists() || !ClosestVehicle.Vehicle.Doors[5].IsValid())
+    //    {
+    //        return;
+    //    }
 
-        if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
-        {
-            Game.FadeScreenOut(500, true);
-        }
+    //    if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
+    //    {
+    //        Game.FadeScreenOut(500, true);
+    //    }
 
-        AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
-        // Ped.Pedestrian.IsPersistent = true;
-        Ped.Pedestrian.Detach();
-        //Ped.Pedestrian.Health = 200;
-        //Ped.Pedestrian.Resurrect();
-        //Ped.Pedestrian.Health = 200;
-        //NativeFunction.Natives.RESURRECT_PED(Ped.Pedestrian);
-        //Ped.Pedestrian.Health = 200;
-        //NativeFunction.Natives.REVIVE_INJURED_PED(Ped.Pedestrian);
-        //Ped.Pedestrian.Health = 200;
-        Ped.CurrentHealthState.ResurrectPed();
-        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-        NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
-        Ped.Pedestrian.BlockPermanentEvents = true;
-       // Ped.Pedestrian.IsRagdoll = true;
-        GameFiber.Sleep(100);
-        if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
-        {
-            return;
-        }   
-        if (!ClosestVehicle.Vehicle.Doors[5].IsFullyOpen)
-        {
-            ClosestVehicle.Vehicle.Doors[5].Open(false, false);
-            GameFiber.Wait(750);
-        }
-        if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
-        {
-            return;
-        }
-        bool hasBoot = ClosestVehicle.Vehicle.HasBone("boot");
-        Vector3 BootPosition = ClosestVehicle.Vehicle.GetBonePosition("boot");
-        Vector3 RootPosition = ClosestVehicle.Vehicle.GetBonePosition(0);
+    //    AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
+    //    // Ped.Pedestrian.IsPersistent = true;
+    //    Ped.Pedestrian.Detach();
+    //    //Ped.Pedestrian.Health = 200;
+    //    //Ped.Pedestrian.Resurrect();
+    //    //Ped.Pedestrian.Health = 200;
+    //    //NativeFunction.Natives.RESURRECT_PED(Ped.Pedestrian);
+    //    //Ped.Pedestrian.Health = 200;
+    //    //NativeFunction.Natives.REVIVE_INJURED_PED(Ped.Pedestrian);
+    //    //Ped.Pedestrian.Health = 200;
+    //    Ped.CurrentHealthState.ResurrectPed();
+    //    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+    //    NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
+    //    Ped.Pedestrian.BlockPermanentEvents = true;
+    //   // Ped.Pedestrian.IsRagdoll = true;
+    //    GameFiber.Sleep(100);
+    //    if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }   
+    //    if (!ClosestVehicle.Vehicle.Doors[5].IsFullyOpen)
+    //    {
+    //        ClosestVehicle.Vehicle.Doors[5].Open(false, false);
+    //        GameFiber.Wait(750);
+    //    }
+    //    if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }
+    //    bool hasBoot = ClosestVehicle.Vehicle.HasBone("boot");
+    //    Vector3 BootPosition = ClosestVehicle.Vehicle.GetBonePosition("boot");
+    //    Vector3 RootPosition = ClosestVehicle.Vehicle.GetBonePosition(0);
 
-        float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
-        float ZOffset = BootPosition.Z - RootPosition.Z;
-        NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation,
-            Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation,
-            false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
-        IsAttached = false;
-        GameFiber.Wait(100);
-        if (Ped.Pedestrian.Exists())
-        {
-            EntryPoint.WriteToConsole("ANIMATION RAN");
-            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 1.0f);
-        }
-        if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
-        {
-            Game.FadeScreenIn(500, true);
-        }
-        if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
-        {
-            return;
-        }
-        EntryPoint.WriteToConsole("GOT TO CLOSE TRUNK");
-        GameFiber.Wait(1000);
-        if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists() && Settings.SettingsManager.DebugSettings.Drag_AutoCloseTrunk)
-        {
-            ClosestVehicle.Vehicle.Doors[5].Close(false);
-        }
+    //    float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
+    //    float ZOffset = BootPosition.Z - RootPosition.Z;
+    //    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation,
+    //        Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation,
+    //        false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
+    //    IsAttached = false;
+    //    GameFiber.Wait(100);
+    //    if (Ped.Pedestrian.Exists())
+    //    {
+    //        EntryPoint.WriteToConsole("ANIMATION RAN");
+    //        NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+    //        NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 1.0f);
+    //    }
+    //    if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
+    //    {
+    //        Game.FadeScreenIn(500, true);
+    //    }
+    //    if (ClosestVehicle == null || !ClosestVehicle.Vehicle.Exists() || !Ped.Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }
+    //    EntryPoint.WriteToConsole("GOT TO CLOSE TRUNK");
+    //    GameFiber.Wait(1000);
+    //    if (ClosestVehicle != null && ClosestVehicle.Vehicle.Exists() && Settings.SettingsManager.DebugSettings.Drag_AutoCloseTrunk)
+    //    {
+    //        ClosestVehicle.Vehicle.Doors[5].Close(false);
+    //    }
 
-        bool freezePos = false;
+    //    bool freezePos = false;
 
-        //while (ClosestVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O) && Ped.Pedestrian.Exists())
-        //{
+    //    //while (ClosestVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O) && Ped.Pedestrian.Exists())
+    //    //{
             
 
-        //    if (Game.IsKeyDownRightNow(Keys.I))
-        //    {
-        //        freezePos = !freezePos;
-        //        if (freezePos)
-        //        {
-        //            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation,
-        //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation,
-        //                false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
-        //            //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, bootBoneIndex, FinalPosition.X, FinalPosition.Y, FinalPosition.Z, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, false, false);
-        //            GameFiber.Wait(100);
-        //            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-        //            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 1.0f);
-        //            Game.DisplaySubtitle("ATTACHED");
-        //        }
-        //        else
-        //        {
-        //            Ped.Pedestrian.Detach();
-        //            Game.DisplaySubtitle("DETACHED");
-        //        }
-        //        GameFiber.Sleep(500);
-        //    }
-        //    Game.DisplayHelp("PRESS O TO CANCEL, I to Drop");
-        //    GameFiber.Yield();
-        //}
+    //    //    if (Game.IsKeyDownRightNow(Keys.I))
+    //    //    {
+    //    //        freezePos = !freezePos;
+    //    //        if (freezePos)
+    //    //        {
+    //    //            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation,
+    //    //                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation,
+    //    //                false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
+    //    //            //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, bootBoneIndex, FinalPosition.X, FinalPosition.Y, FinalPosition.Z, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, false, false);
+    //    //            GameFiber.Wait(100);
+    //    //            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+    //    //            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 1.0f);
+    //    //            Game.DisplaySubtitle("ATTACHED");
+    //    //        }
+    //    //        else
+    //    //        {
+    //    //            Ped.Pedestrian.Detach();
+    //    //            Game.DisplaySubtitle("DETACHED");
+    //    //        }
+    //    //        GameFiber.Sleep(500);
+    //    //    }
+    //    //    Game.DisplayHelp("PRESS O TO CANCEL, I to Drop");
+    //    //    GameFiber.Yield();
+    //    //}
     
 
-    }
-    private void SetRagdollTest()
-    {
-        if (!Ped.Pedestrian.Exists())
-        {
-            return;
-        }
+    //}
+    //private void SetRagdollTest()
+    //{
+    //    if (!Ped.Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }
 
-        Ped.Pedestrian.Detach();
-        NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-        //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
-        Ped.Pedestrian.BlockPermanentEvents = true;
-        Ped.Pedestrian.IsRagdoll = true;
-        //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
-        //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
-        //AttachPeds();
-        IsRagdoll = true;
+    //    Ped.Pedestrian.Detach();
+    //    NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
+    //    //NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Ped.Pedestrian);
+    //    Ped.Pedestrian.BlockPermanentEvents = true;
+    //    Ped.Pedestrian.IsRagdoll = true;
+    //    //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", Ped.Pedestrian, -1, -1, 0, false, false, false);
+    //    //NativeFunction.Natives.SET_PED_RAGDOLL_FORCE_FALL(Ped.Pedestrian);
+    //    //AttachPeds();
+    //    IsRagdoll = true;
 
 
-        if (Settings.SettingsManager.DebugSettings.Drag_SetNoCollision)
-        {
-            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
-        }
-        NativeFunction.Natives.SET_PED_TO_RAGDOLL(Ped.Pedestrian, -1, -1, 0, false, false, false);
+    //    if (Settings.SettingsManager.DebugSettings.Drag_SetNoCollision)
+    //    {
+    //        NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(Ped.Pedestrian, Player.Character, false);
+    //    }
+    //    NativeFunction.Natives.SET_PED_TO_RAGDOLL(Ped.Pedestrian, -1, -1, 0, false, false, false);
 
-        DoRegularAttach();
-        EntryPoint.WriteToConsole("TEST");
-    }
+    //    DoRegularAttach();
+    //    EntryPoint.WriteToConsole("TEST");
+    //}
     //private void LoadBodyInCar()
     //{
     //    EntryPoint.WriteToConsole("LoadBodyInCarStarted");

@@ -264,25 +264,28 @@ namespace LosSantosRED.lsr.Data
         }
         private void LoadWeapons(IWeapons weapons)
         {
-            WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
+            //WeaponDescriptorCollection PlayerWeapons = Game.LocalPlayer.Character.Inventory.Weapons;
             foreach (StoredWeapon MyOldGuns in WeaponInventory)
             {
-                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyOldGuns.WeaponHash, 0, false);
-                if (PlayerWeapons.Contains(MyOldGuns.WeaponHash))
-                {
-                    WeaponInformation Gun2 = weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
-                    if (Gun2 != null)
-                    {
-                        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
-                        //WeaponDescriptor wd = Game.LocalPlayer.Character.Inventory.Weapons.Where(x => (uint)x.Hash == (uint)MyOldGuns.WeaponHash).FirstOrDefault();
-                        //if(wd != null)
-                        //{
-                        //    wd.Ammo = (short)MyOldGuns.Ammo;
-                        //}    
-                    }
-                }
-                NativeFunction.Natives.SET_PED_AMMO(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, 0, false);
-                NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo);
+                MyOldGuns.GiveToPlayer(weapons);
+
+
+                //Game.LocalPlayer.Character.Inventory.GiveNewWeapon(MyOldGuns.WeaponHash, 0, false);
+                //if (PlayerWeapons.Contains(MyOldGuns.WeaponHash))
+                //{
+                //    WeaponInformation Gun2 = weapons.GetWeapon((uint)MyOldGuns.WeaponHash);
+                //    if (Gun2 != null)
+                //    {
+                //        Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, MyOldGuns.Variation);
+                //        //WeaponDescriptor wd = Game.LocalPlayer.Character.Inventory.Weapons.Where(x => (uint)x.Hash == (uint)MyOldGuns.WeaponHash).FirstOrDefault();
+                //        //if(wd != null)
+                //        //{
+                //        //    wd.Ammo = (short)MyOldGuns.Ammo;
+                //        //}    
+                //    }
+                //}
+                //NativeFunction.Natives.SET_PED_AMMO(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, 0, false);
+                //NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)MyOldGuns.WeaponHash, MyOldGuns.Ammo);
             }
         }
         private void LoadInventory(IInventoryable player,IModItems modItems)

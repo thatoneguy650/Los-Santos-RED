@@ -13,22 +13,28 @@ using static RAGENativeUI.Elements.UIMenuStatsPanel;
 public class StoredBody
 {
     private ISettingsProvideable Settings;
+    private IVehicleSeatDoorData VehicleSeatDoorData;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
 
-    public StoredBody(PedExt pedExt, string storedBone, VehicleExt vehicleExt, ISettingsProvideable settings)
+    public StoredBody(PedExt pedExt, VehicleDoorSeatData vehicleDoorSeatData, VehicleExt vehicleExt, ISettingsProvideable settings)
     {
         PedExt = pedExt;
-        StoredBone = storedBone;
+        VehicleDoorSeatData = vehicleDoorSeatData;
         VehicleExt = vehicleExt;
         Settings = settings;
     }
 
     public PedExt PedExt { get; private set; }
     public VehicleExt VehicleExt { get; private set; }
-    public string StoredBone { get; private set; }
+    public VehicleDoorSeatData VehicleDoorSeatData { get; private set; }
+    public bool WasEjected { get; private set; }
     public bool Load()
     {
+        if(VehicleDoorSeatData == null)
+        {
+            return false;
+        }
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
         {
             return false;
@@ -37,7 +43,7 @@ public class StoredBody
         {
             return false;
         }
-        OpenDoor();
+        VehicleExt.OpenDoor(VehicleDoorSeatData.DoorID, true);
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
         {
             return false;
@@ -46,13 +52,13 @@ public class StoredBody
         {
             return false;
         }
-        if(Settings.SettingsManager.DebugSettings.Drag_FadeOut)
+        if(Settings.SettingsManager.DebugSettings.Drag_FadeOut && !Game.IsScreenFadedOut)
         {
             Game.FadeScreenOut(500, true);
         }
         SetupPed();
-        bool Loaded = false;
-        if (StoredBone == "boot")
+        bool Loaded;
+        if (VehicleDoorSeatData.SeatBone == "boot")
         {
             SetupTrunkLoad();
             Loaded = LoadInTrunk();
@@ -68,9 +74,27 @@ public class StoredBody
         CleanupPed();
         if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
         {
+            GameFiber.Sleep(500);
             Game.FadeScreenIn(500, true);
         }
         return Loaded;
+    }
+    public bool OnVehicleCrashed()
+    {
+        if (VehicleDoorSeatData == null || VehicleDoorSeatData.SeatBone != "boot" || !PedExt.Pedestrian.Exists())
+        {
+            return false;
+        }
+        EntryPoint.WriteToConsole("EJECTING BODY FROM TRUNK");
+        VehicleExt.OpenDoor(VehicleDoorSeatData.DoorID, false);
+        PedExt.Pedestrian.Detach();
+        ResetPed();
+       // NativeFunction.Natives.CLEAR_PED_TASKS(PedExt.Pedestrian);
+        NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(PedExt.Pedestrian);
+        NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
+        //ResetPed();
+        WasEjected = true;
+        return true;
     }
     private void ResetPed()
     {
@@ -101,10 +125,9 @@ public class StoredBody
     private bool LoadIntoSeat()
     {     
         bool isLoaded = SetPedIntoSeat();
-        CloseDoor();
+        VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
         return isLoaded;
     }
-
     private bool SetPedIntoSeat()
     {
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
@@ -115,8 +138,8 @@ public class StoredBody
         {
             return false;
         }
-        int seat = GetSeatIDFromSeat();
-        EntryPoint.WriteToConsole($"SetPedIntoSeat StoredBone{StoredBone} seatid{seat}");
+        int seat = VehicleDoorSeatData.SeatID;
+        EntryPoint.WriteToConsole($"SetPedIntoSeat StoredBone{VehicleDoorSeatData.SeatBone} seatid{seat}");
         if(seat == -1)
         {
             return false;
@@ -128,15 +151,13 @@ public class StoredBody
         }
         return true;
     }
-
     private bool LoadInTrunk()
     {
         SetupTrunkLoad();
         bool isLoaded = DetermineAttachType();
-        CloseDoor();
+        VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
         return isLoaded;
     }
-
     private bool DetermineAttachType()
     {
         if(VehicleExt.VehicleClass == VehicleClass.Van)
@@ -173,7 +194,6 @@ public class StoredBody
         }
         return true;
     }
-
     private bool PlayTrunkAnimation()
     {
         if (PedExt == null || !PedExt.Pedestrian.Exists())
@@ -184,7 +204,6 @@ public class StoredBody
         NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(PedExt.Pedestrian, "timetable@floyd@cryingonbed@base", "base", 1.0f);
         return true;
     }
-
     private void AttachToTrunk()
     {
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
@@ -210,7 +229,6 @@ public class StoredBody
             false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
         GameFiber.Wait(100);
     }
-
     private void SetupPed()
     {
         if (PedExt == null || !PedExt.Pedestrian.Exists())
@@ -221,6 +239,9 @@ public class StoredBody
         PedCanBeAmbientTasked = PedExt.CanBeAmbientTasked;
         PedExt.CanBeTasked = false;
         PedExt.CanBeAmbientTasked = false;
+
+        PedExt.Pedestrian.Detach();
+
         PedExt.CurrentHealthState.ResurrectPed();
         NativeFunction.Natives.CLEAR_PED_TASKS(PedExt.Pedestrian);
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(PedExt.Pedestrian);
@@ -231,106 +252,68 @@ public class StoredBody
     {
         AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
     }
-
-    private void OpenDoor()
-    {
-        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
-        {
-            return;
-        }
-        int doorID = GetDoorIDFromSeat();
-        if(!VehicleExt.Vehicle.Doors[doorID].IsValid())
-        {
-            return;
-        }
-        if (!VehicleExt.Vehicle.Doors[doorID].IsFullyOpen)
-        {
-            VehicleExt.Vehicle.Doors[doorID].Open(false, false);
-            GameFiber.Wait(750);
-        }
-
-    }
-    private void CloseDoor()
-    {
-        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
-        {
-            return;
-        }
-        int doorID = GetDoorIDFromSeat();
-        if (!VehicleExt.Vehicle.Doors[doorID].IsValid())
-        {
-            return;
-        }
-        VehicleExt.Vehicle.Doors[doorID].Close(false);
-    }
-    private int GetDoorIDFromSeat()
-    {
-        if (StoredBone == "boot")
-        {
-            return 5;
-        }
-        else if (StoredBone == "seat_dside_f")
-        {
-            return 0;
-        }
-        else if (StoredBone == "seat_pside_f")
-        {
-            return 1;
-        }
-        else if (StoredBone == "seat_dside_r")
-        {
-            return 2;
-        }
-        else if (StoredBone == "seat_pside_r")
-        {
-            return 3;
-        }
-        return 5;
-    }
-    private int GetSeatIDFromSeat()
-    {
-        if (StoredBone == "boot")
-        {
-            return -2;
-        }
-        else if (StoredBone == "seat_dside_f")
-        {
-            return -1;
-        }
-        else if (StoredBone == "seat_pside_f")
-        {
-            return 0;
-        }
-        else if (StoredBone == "seat_dside_r")
-        {
-            return 1;
-        }
-        else if (StoredBone == "seat_pside_r")
-        {
-            return 2;
-        }
-        return -2;
-    }
+    //private void OpenDoor(int doorID)
+    //{
+    //    if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+    //    {
+    //        return;
+    //    }
+    //    //int doorID = VehicleDoorSeatData.DoorID;
+    //    if (!VehicleExt.Vehicle.Doors[doorID].IsValid())
+    //    {
+    //        return;
+    //    }
+    //    if (!VehicleExt.Vehicle.Doors[doorID].IsFullyOpen)
+    //    {
+    //        VehicleExt.Vehicle.Doors[doorID].Open(false, false);
+    //        GameFiber.Wait(750);
+    //    }
+    //}
+    //private void CloseDoor(int doorID)
+    //{
+    //    if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+    //    {
+    //        return;
+    //    }
+    //    //int doorID = VehicleDoorSeatData.DoorID;
+    //    if (!VehicleExt.Vehicle.Doors[doorID].IsValid())
+    //    {
+    //        return;
+    //    }
+    //    VehicleExt.Vehicle.Doors[doorID].Close(false);
+    //} 
     public bool Unload()
     {
+        //Move to Unload Position and open the door if it exists?
         if (PedExt == null || !PedExt.Pedestrian.Exists())
         {
             return false;
+        }
+        if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
+        {
+            return false;
+        }
+        VehicleExt.OpenDoor(VehicleDoorSeatData.DoorID, true);
+        if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
+        {
+            Game.FadeScreenOut(500, true);
         }
         PedExt.Pedestrian.Detach();
         if (PedExt.IsDead)
         {
             PedExt.Pedestrian.Kill();
         }
-        NativeFunction.Natives.CLEAR_PED_TASKS(PedExt.Pedestrian);
+        //NativeFunction.Natives.CLEAR_PED_TASKS(PedExt.Pedestrian);
         NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(PedExt.Pedestrian);
-        PedExt.Pedestrian.Position = Game.LocalPlayer.Character.Position;
+        PedExt.Pedestrian.Position = Game.LocalPlayer.Character.GetOffsetPositionFront(-0.5f);
         NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
-        return false;
+        if (Settings.SettingsManager.DebugSettings.Drag_FadeOut)
+        {
+            GameFiber.Sleep(1000);
+            Game.FadeScreenIn(500, true);
+        }
+        return true;
     }
-
-
-
     //private void LoadBodyInCar()
     //{
     //    EntryPoint.WriteToConsole("LoadBodyInCarStarted");
@@ -400,7 +383,5 @@ public class StoredBody
     //    }
     //    bool freezePos = false;
     //}
-
-
 }
 

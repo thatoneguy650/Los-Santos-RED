@@ -20,6 +20,14 @@ public class ModItems : IModItems
     {
         return AllItems().FirstOrDefault(x => x.Name == name);
     }
+    public WeaponItem GetWeapon(uint modelHash)
+    {
+        return PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelHash == modelHash);
+    }
+    public WeaponItem GetWeapon(string modelName)
+    {
+        return PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName.ToLower() == modelName.ToLower());
+    }
     //public ModItem GetRandomItem()
     //{
     //    return PossibleFoundItems().PickRandom();

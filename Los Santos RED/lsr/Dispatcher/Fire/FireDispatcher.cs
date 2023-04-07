@@ -104,6 +104,7 @@ public class FireDispatcher
             fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
             fireFighterSpawnTask.SpawnRequirement = spawnRequirement;
             fireFighterSpawnTask.ClearArea = clearArea;
+            fireFighterSpawnTask.PlacePedOnGround = VehicleType == null;
             fireFighterSpawnTask.AttemptSpawn();
             fireFighterSpawnTask.CreatedPeople.ForEach(x =>{ World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
             fireFighterSpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Fire));

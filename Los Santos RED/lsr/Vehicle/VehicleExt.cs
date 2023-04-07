@@ -12,6 +12,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Security.RightsManagement;
 using System.Text;
 using System.Threading.Tasks;
 using static DispatchScannerFiles;
@@ -27,6 +28,7 @@ namespace LSR.Vehicles
         private int Health = 1000;
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
+        public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
 
         public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
@@ -46,6 +48,7 @@ namespace LSR.Vehicles
         public Engine Engine { get; set; }
         public FuelTank FuelTank { get; set; }
         public VehicleBodyManager VehicleBodyManager { get; private set; }
+        public WeaponStorage WeaponStorage { get; private set; }
         public Color DescriptionColor { get; set; }
         public LicensePlate CarPlate { get; set; }
         public LicensePlate OriginalLicensePlate { get; set; }
@@ -279,6 +282,8 @@ namespace LSR.Vehicles
             FuelTank = new FuelTank(this, Settings);
             Engine = new Engine(this, Settings);
             VehicleBodyManager = new VehicleBodyManager(this, Settings);
+            VehicleInteractionMenu = new VehicleInteractionMenu(this);
+            WeaponStorage = new WeaponStorage(Settings);
         }
         public void SetAsEntered()
         {
@@ -912,46 +917,25 @@ namespace LSR.Vehicles
                 return lightEmissives[(int)index];
             }
         }
-        public string GetClosestPedStorageBone(IInteractionable Player, float maxDistance)
+        public VehicleDoorSeatData GetClosestPedStorageBone(IInteractionable Player, float maxDistance, IVehicleSeatDoorData vehicleSeatDoorData)
         {
             if(!Vehicle.Exists()) 
             {
-                return string.Empty;
+                return null;
             }
-            List<string> BoneNames = new List<string>() { 
-                    "boot", 
-                    "seat_dside_f",
-                    "seat_dside_r",
-                    "seat_pside_f",
-                    "seat_pside_r",
-                    //"seat_dside_r1",
-                    //"seat_dside_r2",
-                    //"seat_dside_r3",
-                    //"seat_dside_r4",
-                    //"seat_dside_r5",
-                    //"seat_dside_r6",
-                    //"seat_dside_r7",
-                    //"seat_pside_r1",
-                    //"seat_pside_r2",
-                    //"seat_pside_r3",
-                    //"seat_pside_r4",
-                    //"seat_pside_r5",
-                    //"seat_pside_r6",
-                    //"seat_pside_r7", 
-            };
             float closestBoneDistance = 999f;
-            string boneToReturn = "";
-            foreach(string boneName in BoneNames)
+            VehicleDoorSeatData boneToReturn = null;
+            foreach(VehicleDoorSeatData vdsd in vehicleSeatDoorData.VehicleDoorSeatDataList)
             {
-                if(!Vehicle.HasBone(boneName))
+                if(!Vehicle.HasBone(vdsd.SeatBone))
                 {
                     continue;
                 }
-                Vector3 bonePositon = Vehicle.GetBonePosition(boneName);
+                Vector3 bonePositon = Vehicle.GetBonePosition(vdsd.SeatBone);
                 float currentBoneDistance = Player.Character.DistanceTo2D(bonePositon);
                 if(currentBoneDistance <= maxDistance && currentBoneDistance < closestBoneDistance)
                 {
-                    boneToReturn = boneName;
+                    boneToReturn = vdsd;
                     closestBoneDistance = currentBoneDistance;
                 }
             }
@@ -982,49 +966,42 @@ namespace LSR.Vehicles
             extralight_3 = 16,
             extralight_4 = 17
         }
-        public void ShowInteractionMenu()
+
+        public void OpenDoor(int doorID, bool wait)
         {
-            MenuPool MenuPool = new MenuPool();
-            UIMenu VehicleInteractMenu = new UIMenu("Vehicle", "Select an Option");
-            VehicleInteractMenu.SetBannerType(EntryPoint.LSRedColor);
-            MenuPool.Add(VehicleInteractMenu);
-
-
-            foreach(StoredBody storedBody in VehicleBodyManager.StoredBodies)
+            if (!Vehicle.Exists())
             {
-                if(storedBody.PedExt == null || !storedBody.PedExt.Pedestrian.Exists())
-                {
-                    continue;
-                }
-                UIMenuItem unloadBody = new UIMenuItem($"Unload {storedBody.PedExt.Name}", $"Unload {storedBody.PedExt.Name} from {storedBody.StoredBone}");
-                unloadBody.Activated += (menu, item) =>
-                {
-                    VehicleBodyManager.StoredBodies.Remove(storedBody);
-                    storedBody.Unload();
-                    VehicleInteractMenu.Visible = false;
-                };
-                VehicleInteractMenu.AddItem(unloadBody);
+                return;
             }
-
-
-            VehicleInteractMenu.Visible = true;
-            GameFiber.StartNew(delegate
+            if (!Vehicle.Doors[doorID].IsValid())
             {
-                try
+                return;
+            }
+            if (!Vehicle.Doors[doorID].IsFullyOpen)
+            {
+                Vehicle.Doors[doorID].Open(false, false);
+                if (wait)
                 {
-                    while (EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen())
-                    {
-                        MenuPool.ProcessMenus();
-                        GameFiber.Yield();
-                    }
+                    GameFiber.Wait(750);
                 }
-                catch (Exception ex)
-                {
-                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                    EntryPoint.ModController.CrashUnload();
-                }
-            }, "VehicleInteraction");
+            }
+        }
+        public void CloseDoor(int doorID)
+        {
+            if (!Vehicle.Exists())
+            {
+                return;
+            }
+            if (!Vehicle.Doors[doorID].IsValid())
+            {
+                return;
+            }
+            Vehicle.Doors[doorID].Close(false);
         }
 
+        public void CreateDoorMenu(MenuPool menuPool, UIMenu vehicleInteractMenu)
+        {
+
+        }
     }
 }

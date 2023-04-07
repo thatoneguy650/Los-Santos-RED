@@ -43,6 +43,7 @@ public class SecurityConditionalLocation : ConditionalLocation
             securitySpawnTask.AllowBuddySpawn = false;
             securitySpawnTask.ClearArea = true;
             securitySpawnTask.SpawnRequirement = TaskRequirements;
+            securitySpawnTask.PlacePedOnGround = true;
             securitySpawnTask.AttemptSpawn();
             securitySpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             securitySpawnTask.CreatedVehicles.ForEach(x => World.Vehicles.AddEntity(x, ResponseType.Other));

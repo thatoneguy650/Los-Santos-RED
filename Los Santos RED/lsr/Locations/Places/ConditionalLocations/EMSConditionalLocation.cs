@@ -54,6 +54,7 @@ public class EMSConditionalLocation : ConditionalLocation
             eMTSpawnTask.AllowBuddySpawn = false;
             eMTSpawnTask.SpawnRequirement = TaskRequirements;
             eMTSpawnTask.ClearArea = true;
+            eMTSpawnTask.PlacePedOnGround = true;
             eMTSpawnTask.AttemptSpawn();
             eMTSpawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = true; AddLocationRequirements(x); });
             eMTSpawnTask.CreatedPeople.ForEach(x => World.Pedestrians.AddEntity(x));

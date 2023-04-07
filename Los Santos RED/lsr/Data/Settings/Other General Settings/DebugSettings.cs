@@ -195,7 +195,7 @@ public class DebugSettings : ISettingsDefaultable
 
         Draw_LoadBodyZOffset = -0.1f;
         Draw_LoadBodyZRotation = 180f;
-        Drag_FadeOut = false;
+        Drag_FadeOut = true;
         Drag_AutoCloseTrunk = false;
     }
 

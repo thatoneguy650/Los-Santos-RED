@@ -42,10 +42,12 @@ public class ActivityManager
     private IShopMenus ShopMenus;
     private IGangs Gangs;
     private IGangTerritories GangTerritories;
+    private IVehicleSeatDoorData VehicleSeatDoorData;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
     private ICameraControllable CameraControllable;
+
 
 
     private MenuPool MenuPool;
@@ -133,7 +135,8 @@ public class ActivityManager
     public List<DynamicActivity> PausedActivites { get; set; } = new List<DynamicActivity>();
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
-        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories)
+        IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
+        IVehicleSeatDoorData vehicleSeatDoorData)
     {
         Player = player;
         Settings = settings;
@@ -158,6 +161,7 @@ public class ActivityManager
         ShopMenus = shopMenus;
         Gangs = gangs;
         GangTerritories = gangTerritories;
+        VehicleSeatDoorData = vehicleSeatDoorData;
     }
     public void Setup()
     {
@@ -518,7 +522,7 @@ public class ActivityManager
             Game.DisplayHelp("Cancel existing activity to start");
             return;
         }
-        Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World);
+        Drag drag = new Drag(Interactionable, Player.CurrentLookedAtPed, Settings, Crimes, ModItems, World, VehicleSeatDoorData);
         if (drag.CanPerform(Actionable))
         {
             ForceCancelAllActive();

@@ -1,5 +1,7 @@
 ﻿
+using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,21 @@ public class StoredWeapon
 
     public StoredWeapon()
     {
+    }
+
+    public void GiveToPlayer(IWeapons weapons)
+    {
+        Game.LocalPlayer.Character.Inventory.GiveNewWeapon(WeaponHash, 0, false);
+        if (Game.LocalPlayer.Character.Inventory.Weapons.Contains(WeaponHash))
+        {
+            WeaponInformation Gun2 = weapons.GetWeapon((uint)WeaponHash);
+            if (Gun2 != null)
+            {
+                Gun2.ApplyWeaponVariation(Game.LocalPlayer.Character, Variation);
+            }
+        }
+        NativeFunction.Natives.SET_PED_AMMO(Game.LocalPlayer.Character, (uint)WeaponHash, 0, false);
+        NativeFunction.Natives.ADD_AMMO_TO_PED(Game.LocalPlayer.Character, (uint)WeaponHash, Ammo);
     }
 }
 

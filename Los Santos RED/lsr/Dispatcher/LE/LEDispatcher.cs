@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 public class LEDispatcher
 {
@@ -726,11 +727,11 @@ public class LEDispatcher
     }
     private void RunAmbientDispatch()
     {
-        EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
+        //EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
 
         bool getspawnLocation = GetSpawnLocation();
         bool getSpawnTypes = GetSpawnTypes(false, false, null, "");
-        EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
+        //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)
         {
             EntryPoint.WriteToConsole($"AMBIENT COP CALLED SPAWN TASK");
@@ -759,6 +760,7 @@ public class LEDispatcher
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
             spawnTask.SpawnRequirement = spawnRequirement;
+            spawnTask.PlacePedOnGround = VehicleType == null;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });

@@ -82,7 +82,7 @@ public class LocationDispatcher
                 }
             }
             ps.IsDispatchFilled = true;
-            //GameFiber.Yield();
+            GameFiber.Yield();
         }
     
         foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsEnabled && !x.IsNearby && x.IsDispatchFilled).ToList())

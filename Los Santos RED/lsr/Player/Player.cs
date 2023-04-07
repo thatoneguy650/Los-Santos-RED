@@ -77,6 +77,7 @@ namespace Mod
         private IGameSaves GameSaves;
         private ISeats Seats;
         private IAgencies Agencies;
+        private IVehicleSeatDoorData VehicleSeatDoorData;
         private uint GameTimeLastRaiseHandsEmote;
         private Vehicle VehicleTryingToEnter;
         private int SeatTryingToEnter;
@@ -86,7 +87,7 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies,ISavedOutfits savedOutfits)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies,ISavedOutfits savedOutfits, IVehicleSeatDoorData vehicleSeatDoorData)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -108,6 +109,7 @@ namespace Mod
             Names = names;
             Seats = seats;
             Agencies = agencies;
+            VehicleSeatDoorData= vehicleSeatDoorData;
             Scanner = new Scanner(provider, this, audio, secondaryAudio, Settings, TimeControllable, PlacesOfInterest);
             HealthState = new HealthState(new PedExt(Game.LocalPlayer.Character, Settings, Crimes, Weapons, PlayerName, "Person", World), Settings, true);
             if (CharacterModelIsFreeMode)
@@ -141,7 +143,7 @@ namespace Mod
             GPSManager = new GPSManager(this, World);
             VehicleOwnership = new VehicleOwnership(this,World, Settings);
             BankAccounts = new BankAccounts(this, Settings);
-            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories);
+            ActivityManager = new ActivityManager(this,settings,this,this,this, this, this,TimeControllable,RadioStations,Crimes,ModItems,Dances,World,Intoxicants,this,Speeches,Seats,Weapons, PlacesOfInterest, Zones, shopMenus, gangs, gangTerritories, VehicleSeatDoorData);
             HealthManager = new HealthManager(this, Settings);
             GroupManager = new GroupManager(this, this, Settings, World, gangs, Weapons);
             MeleeManager = new MeleeManager(this, Settings);
@@ -904,7 +906,7 @@ namespace Mod
             {
                 return;
             }
-            CurrentLookedAtVehicle.ShowInteractionMenu();
+            CurrentLookedAtVehicle.VehicleInteractionMenu.ShowInteractionMenu(IsInVehicle, Weapons, ModItems);
             
         }
         //Events
@@ -994,20 +996,31 @@ namespace Mod
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
             GameFiber.Yield();
-            if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
+            if (IsInVehicle && amount >= 50f && TimeInCurrentVehicle >= 5000)
             {
+                if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                {
+                    Scanner.OnVehicleCrashed();
+                }
+               // CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
-                Scanner.OnVehicleCrashed();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
             GameFiber.Yield();
-            if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer && IsInVehicle && amount >= 50 && TimeInCurrentVehicle >= 5000)
+            if (IsInVehicle && amount >= 50 && TimeInCurrentVehicle >= 5000)
             {
+                if (isCollision && IsWanted && AnyPoliceRecentlySeenPlayer)
+                {
+                    Scanner.OnVehicleCrashed();
+                }
+                if (amount >= 50)
+                {
+                    CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
+                }
                 GameTimeLastCrashedVehicle = Game.GameTime;
-                Scanner.OnVehicleCrashed();
             }
             EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
         }

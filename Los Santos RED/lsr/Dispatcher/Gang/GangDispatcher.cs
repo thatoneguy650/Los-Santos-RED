@@ -358,6 +358,7 @@ public class GangDispatcher
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
             gangSpawnTask.SpawnRequirement = spawnRequirement;
             gangSpawnTask.ClearArea = clearArea;
+            gangSpawnTask.PlacePedOnGround = VehicleType == null;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {

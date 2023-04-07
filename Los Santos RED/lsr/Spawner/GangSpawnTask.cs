@@ -27,6 +27,7 @@ public class GangSpawnTask : SpawnTask
     {
         try
         {
+            GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
                 EntryPoint.WriteToConsole($"GangSpawn: Task Invalid Spawn Position");
@@ -145,15 +146,7 @@ public class GangSpawnTask : SpawnTask
     {
         try
         {
-            Ped createdPed;
-            if (PlacePedOnGround)
-            {
-                createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
-            }
-            else
-            {
-                createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z + 1f), SpawnLocation.Heading);
-            }
+            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
@@ -272,8 +265,10 @@ public class GangSpawnTask : SpawnTask
         if (PlacePedOnGround)
         {
             float resultArg = ped.Position.Z;
-            NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD(ped.Position.X, ped.Position.Y, ped.Position.Z, out resultArg, false);
-            ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+            if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
+            {
+                ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+            }
         }
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);

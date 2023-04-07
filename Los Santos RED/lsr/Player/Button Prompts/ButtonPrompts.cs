@@ -46,7 +46,7 @@ public class ButtonPrompts
 
     private void AttemptAddVehiclePrompts()
     {
-        if(addedPromptGroup || Player.CurrentLookedAtVehicle == null || !Player.CurrentLookedAtVehicle.Vehicle.Exists())
+        if(addedPromptGroup || Player.CurrentLookedAtVehicle == null || !Player.CurrentLookedAtVehicle.Vehicle.Exists() || !Player.CurrentLookedAtVehicle.HasBeenEnteredByPlayer || Player.CurrentLookedAtVehicle.Vehicle.Speed >= 0.5f)
         {
             RemovePrompts("VehicleInteract");
             return;

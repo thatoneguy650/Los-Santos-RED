@@ -92,6 +92,7 @@ public class Dispatcher
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();
         }
+        GameFiber.Yield();
         LocationDispatcher.Dispatch();
     }
     public void Recall()

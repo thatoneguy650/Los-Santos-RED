@@ -73,7 +73,7 @@ namespace LosSantosRED.lsr
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
                 ModDataFileManager.Zones, ModDataFileManager.Settings, ModDataFileManager.Weapons, ModDataFileManager.RadioStations, ModDataFileManager.Scenarios, ModDataFileManager.Crimes, NAudioPlayer, NAudioPlayer2, ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, 
                 ModDataFileManager.ModItems, ModDataFileManager.Intoxicants, ModDataFileManager.Gangs, ModDataFileManager.Jurisdictions, ModDataFileManager.GangTerritories, ModDataFileManager.GameSaves, ModDataFileManager.Names, ModDataFileManager.ShopMenus, 
-                ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits);
+                ModDataFileManager.RelationshipGroups, ModDataFileManager.DanceList, ModDataFileManager.SpeechList, ModDataFileManager.Seats, ModDataFileManager.Agencies, ModDataFileManager.SavedOutfits, ModDataFileManager.VehicleSeatDoorData);
             Player.Setup();
             GameFiber.Yield();
             Police = new Police(World, Player, Player, ModDataFileManager.Settings, Player, Time);
@@ -183,94 +183,75 @@ namespace LosSantosRED.lsr
             TaskGroups = new List<ModTaskGroup>
             {
                 new ModTaskGroup("RG1:Player", new List<ModTask>()
-            {
-                 new ModTask(100, "Player.Update", Player.Update, 0),//1
-                 new ModTask(250, "UI.UpdateData", UI.CacheData, 1),//500
-            }),
+                {
+                     new ModTask(100, "Player.Update", Player.Update, 0),//1
+                     new ModTask(250, "UI.UpdateData", UI.CacheData, 1),//500
+                }),
                 new ModTaskGroup("RG2:Player Gen", new List<ModTask>()
-            {
-                new ModTask(250, "Player.Violations.Update", Player.Violations.Update, 0),
-                new ModTask(250, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
-                new ModTask(250, "Player.Investigation.Update", Player.Investigation.Update, 2),
-                new ModTask(250, "Player.SearchModeUpdate", Player.SearchMode.Update, 3),
+                {
+                    new ModTask(250, "Player.Violations.Update", Player.Violations.Update, 0),
+                    new ModTask(250, "Player.CurrentPoliceResponse.Update", Player.PoliceResponse.Update, 1),
+                    new ModTask(250, "Player.Investigation.Update", Player.Investigation.Update, 2),
+                    new ModTask(250, "Player.SearchModeUpdate", Player.SearchMode.Update, 3),
 
-                new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
-                new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
-                new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
+                    new ModTask(250, "Player.TrafficViolationsUpdate", Player.Violations.TrafficViolations.Update, 4),
+                    new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
+                    new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
 
-
-                new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),
-            }),
+                    new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),
+                }),
                 new ModTaskGroup("RG3:World Gen", new List<ModTask>()//something in here is causing a hang on some crapola computers
-            {
-                new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
-                
-                
-                
-                new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //this is the freezer, what the fucko
-                
-                    
-                    
+                {
+                    new ModTask(1000, "World.PrunePedestrians", World.Pedestrians.Prune, 0),
+                    new ModTask(500, "World.CreateNewPedestrians", World.Pedestrians.CreateNew, 1), //this is the freezer, what the fucko
                     new ModTask(1000, "World.PruneVehicles", World.Vehicles.Prune, 2),//500
-
-                new ModTask(500, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3),//1000 //very bad performance
-               
-                    
-                    
+                    new ModTask(500, "World.CreateNewVehicles", World.Vehicles.CreateNew, 3),//1000 //very bad performance   
                     new ModTask(1000, "World.CleanUpVehicles", World.Vehicles.CleanUp, 4),
-
-
-
-
-
-               new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
-                new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
-            }),
+                    new ModTask(1000, "World.UpdateVehiclePlates", World.Vehicles.PlateController.UpdatePlates, 5),
+                    new ModTask(1500, "Player.ScannerUpdate", Player.Scanner.Update, 6),
+                }),
                 new ModTaskGroup("RG4:Dispatch", new List<ModTask>()
-            {
-                new ModTask(500, "Dispatcher.Recall", Dispatcher.Recall, 0),
-                new ModTask(500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1000
-            }),
+                {
+                    new ModTask(1500, "Dispatcher.Recall", Dispatcher.Recall, 0),
+                    new ModTask(1500, "Dispatcher.Dispatch", Dispatcher.Dispatch, 1),//1000
+                }),
                 new ModTaskGroup("RG5:Police Update", new List<ModTask>()
-            {
-                new ModTask(250, "Police.Update", Police.Update,0),//250
-            }),
+                {
+                    new ModTask(250, "Police.Update", Police.Update,0),//250
+                }),
                 new ModTaskGroup("RG6:Civilian Update", new List<ModTask>()
-            {
-                new ModTask(250, "Civilians.Update", Civilians.UpdateCivilians, 0),//500//250
-            }),
-
+                {
+                    new ModTask(250, "Civilians.Update", Civilians.UpdateCivilians, 0),//500//250
+                }),
                 new ModTaskGroup("RG:7 GangMember Update", new List<ModTask>()
-            {
-                new ModTask(250, "Civilians.UpdateGangMembers", Civilians.UpdateGangMembers, 0),//500//250
-            }),
+                {
+                    new ModTask(250, "Civilians.UpdateGangMembers", Civilians.UpdateGangMembers, 0),//500//250
+                }),
                 new ModTaskGroup("RG8:Merchant Update", new List<ModTask>()
-            {
-                new ModTask(250, "Civilians.UpdateMerchants", Civilians.UpdateMerchants, 0),//500//250
-            }),
+                {
+                    new ModTask(250, "Civilians.UpdateMerchants", Civilians.UpdateMerchants, 0),//500//250
+                }),
                 new ModTaskGroup("RG9:EMT Update", new List<ModTask>()
-            {
-                new ModTask(250, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
-                new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
-                new ModTask(250, "Civilians.UpdateSecurityGuards", Civilians.UpdateSecurityGuards, 2),//500//250
-            }),
-
+                {
+                    new ModTask(250, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
+                    new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
+                    new ModTask(250, "Civilians.UpdateSecurityGuards", Civilians.UpdateSecurityGuards, 2),//500//250
+                }),
                 new ModTaskGroup("RG10:World LowPri", new List<ModTask>()
-            {
-                new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
-                new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
-                new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
-                new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 3),//1000
-                new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
-                new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
-                new ModTask(1000, "World.Update", World.Update, 6),
-
-            }),
+                {
+                    new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
+                    new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
+                    new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
+                    new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 3),//1000
+                    new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
+                    new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
+                    new ModTask(1000, "World.Update", World.Update, 6),
+                }),
                 new ModTaskGroup("RG11:TaskerUpdate", new List<ModTask>()
-            {
-                new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
-                new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
-            })
+                {
+                    new ModTask(500, "Tasker.UpdatePolice", Tasker.UpdatePolice, 0),
+                    new ModTask(500, "Tasker.UpdateCivilians", Tasker.UpdateCivilians, 1),
+                })
             };
         }
         private void StartCoreLogic()
