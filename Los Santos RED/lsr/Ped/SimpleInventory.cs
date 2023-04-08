@@ -1,18 +1,19 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
+using RAGENativeUI.Elements;
+using RAGENativeUI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class PedInventory
+public class SimpleInventory
 {
-    private PedExt PedExt;
     private ISettingsProvideable Settings;
     public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
-    public PedInventory(PedExt pedExt, ISettingsProvideable settings)
+    public SimpleInventory( ISettingsProvideable settings)
     {
-        PedExt = pedExt;
         Settings = settings;
     }
     public void Add(ModItem modItem, float remainingPercent)
@@ -93,5 +94,28 @@ public class PedInventory
             }
         }
     }
+
+    public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu)
+    {
+
+        UIMenu UnloadBodiesSubMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Inventory");
+        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage vehicle Inventory.";
+        UnloadBodiesSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        foreach(InventoryItem modItem in ItemsList)
+        {
+            UIMenuItem unloadBody = new UIMenuItem($"Unload {storedBody.PedExt.Name}", $"Unload {storedBody.PedExt.Name} from {storedBody.VehicleDoorSeatData?.SeatName}");
+            unloadBody.Activated += (menu, item) =>
+            {
+
+                UnloadBodiesSubMenu.Visible = false;
+            };
+            UnloadBodiesSubMenu.AddItem(unloadBody);
+        }
+    }
+
+
+
 }
 

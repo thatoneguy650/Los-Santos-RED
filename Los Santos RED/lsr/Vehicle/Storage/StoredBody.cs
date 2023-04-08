@@ -125,7 +125,7 @@ public class StoredBody
     private bool LoadIntoSeat()
     {     
         bool isLoaded = SetPedIntoSeat();
-        VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
+        //VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
         return isLoaded;
     }
     private bool SetPedIntoSeat()
@@ -155,7 +155,7 @@ public class StoredBody
     {
         SetupTrunkLoad();
         bool isLoaded = DetermineAttachType();
-        VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
+        //VehicleExt.CloseDoor(VehicleDoorSeatData.DoorID);
         return isLoaded;
     }
     private bool DetermineAttachType()

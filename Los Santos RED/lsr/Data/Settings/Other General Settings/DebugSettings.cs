@@ -110,7 +110,17 @@ public class DebugSettings : ISettingsDefaultable
     public float TrunkXOffset { get; set; }
     public float TrunkYOffset { get; set; }
     public float TrunkZOffset { get; set; }
+    public float CloseHoodAnimationTime { get; set; }
+    public float OpenHoodAnimationTime { get; set; }
+    public float DefaultAnimationTime { get; set; }
 
+
+    public bool DoorToggle_IsHood { get; set; }
+    public float DoorToggle_TrunkHeading { get; set; }
+    public float DoorToggle_TrunkOffset { get; set; }
+    public float DoorToggle_HoodHeading { get; set; }
+    public float DoorToggle_HoodOffset { get; set; }
+    public bool DoorToggle_ShowMarker { get; set; }
 
     public DebugSettings()
     {
@@ -197,6 +207,20 @@ public class DebugSettings : ISettingsDefaultable
         Draw_LoadBodyZRotation = 180f;
         Drag_FadeOut = true;
         Drag_AutoCloseTrunk = false;
+
+        CloseHoodAnimationTime = 0.25f;
+        OpenHoodAnimationTime = 0.5f;
+        DefaultAnimationTime = 0.25f;
+
+
+        DoorToggle_IsHood = false;
+        DoorToggle_TrunkHeading = 90f;
+        DoorToggle_TrunkOffset = -0.5f;
+        DoorToggle_HoodHeading = 90f;
+        DoorToggle_HoodOffset = 0.5f;
+
+        DoorToggle_ShowMarker = false;
+
     }
 
 }

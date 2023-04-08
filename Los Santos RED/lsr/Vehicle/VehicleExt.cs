@@ -29,7 +29,7 @@ namespace LSR.Vehicles
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
         public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
-
+        public SimpleInventory VehicleInventory { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
         public bool HasShowHotwireLockPrompt { get; set; } = false;
@@ -284,6 +284,7 @@ namespace LSR.Vehicles
             VehicleBodyManager = new VehicleBodyManager(this, Settings);
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
+            VehicleInventory = new SimpleInventory(Settings);
         }
         public void SetAsEntered()
         {

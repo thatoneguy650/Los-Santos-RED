@@ -728,7 +728,11 @@ public class Debug
     }
     private void DebugNumpad5()
     {
+        OffsetGarbage();
+        
+        //AnimationTester();
 
+        return;
         GameFiber.StartNew(delegate
         {
             VehicleExt ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
@@ -1046,6 +1050,55 @@ public class Debug
 
         //SpawnGunAttackers();
     }
+
+    private void OffsetGarbage()
+    {
+
+        VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
+        if(chosenVehicle == null || !chosenVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        Vector3 DoorTogglePosition = Vector3.Zero;
+        float DoorToggleHeading = 0f;
+
+
+
+
+        if (!Settings.SettingsManager.DebugSettings.DoorToggle_IsHood)//is trunk
+        {
+            float length = chosenVehicle.Vehicle.Model.Dimensions.Y;
+            DoorTogglePosition = chosenVehicle.Vehicle.Position;
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkHeading, (-1 * length/2) + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkOffset);
+            DoorToggleHeading = chosenVehicle.Vehicle.Heading;
+        }
+        else
+        {
+            float length = chosenVehicle.Vehicle.Model.Dimensions.Y;
+            DoorTogglePosition = chosenVehicle.Vehicle.Position;
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_HoodHeading, (length / 2) + Settings.SettingsManager.DebugSettings.DoorToggle_HoodOffset);
+            DoorToggleHeading = chosenVehicle.Vehicle.Heading - 180f;
+        }
+
+
+
+        GameFiber.StartNew(delegate
+        {
+            while (chosenVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O))
+            {
+                Game.DisplayHelp($"O to Cancel");
+                Rage.Debug.DrawArrowDebug(DoorTogglePosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+                GameFiber.Yield();
+            }
+        }, "Run Debug Logic");
+
+
+
+
+
+
+    }
+
     private void DebugNumpad6()
     {
         DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
@@ -4755,7 +4808,15 @@ public class Debug
 ,"whitenightlighting"
 ,"WhiteOut"};
     }
-
+    private void AnimationTester()
+    {
+        string dictionary = NativeHelper.GetKeyboardInput("veh@std@ds@enter_exit");
+        string animation = NativeHelper.GetKeyboardInput("d_close_out");
+        AnimationDictionary.RequestAnimationDictionay(dictionary);
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 8.0f, -8.0f, -1, (int)(AnimationFlags.Loop), 0, false, false, false);//-1
+        GameFiber.Sleep(5000);
+        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+    }
 
     private void ArrestScene()
     {

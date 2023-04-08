@@ -124,10 +124,17 @@ public class Drag : DynamicActivity
                 Cancel();
                 if (LoadBody)
                 {
-                    if(!ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData) && Game.IsScreenFadedOut)
+                    if(ClosestVehicle.VehicleBodyManager.LoadBody(Ped, VehicleDoorSeatData))
+                    {
+                        Player.ActivityManager.ToggleDoor(VehicleDoorSeatData.DoorID, true);
+                    }
+                    else if (Game.IsScreenFadedOut)
                     {
                         Game.FadeScreenIn(500, true);
                     }
+
+
+
                 }
             }
             catch (Exception ex)
@@ -279,10 +286,11 @@ public class Drag : DynamicActivity
                 //NativeFunction.Natives.RESURRECT_PED(Ped.Pedestrian);
                 //NativeFunction.Natives.REVIVE_INJURED_PED(Ped.Pedestrian);
                 //NativeFunction.Natives.CLEAR_PED_TASKS_IMMEDIATELY(Ped.Pedestrian);
-                NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
-                Ped.Pedestrian.BlockPermanentEvents = true;
-                Ped.Pedestrian.KeepTasks = true;
+
             }
+            NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
+            Ped.Pedestrian.BlockPermanentEvents = true;
+            Ped.Pedestrian.KeepTasks = true;
             IsAttached = true;
             DoRegularAttach();// NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(Ped.Pedestrian, Player.Character, 11816, 0f, 0.6f, 0f, 0f, 0f, 0f, false, false, false, false, 2, false);
         }
@@ -301,8 +309,8 @@ public class Drag : DynamicActivity
             }
             Ped.Pedestrian.Detach();
             NativeFunction.Natives.SET_ENTITY_COLLISION(Ped.Pedestrian, true, true);
-            Ped.Pedestrian.BlockPermanentEvents = false;
-            Ped.Pedestrian.KeepTasks = false;
+            //Ped.Pedestrian.BlockPermanentEvents = false;
+            //Ped.Pedestrian.KeepTasks = false;
         }
         IsAttached = false;
     }

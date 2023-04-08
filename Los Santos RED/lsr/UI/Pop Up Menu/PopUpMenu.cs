@@ -24,7 +24,7 @@ public class PopUpMenu
     private readonly string InventoryCategoriesSubMenuName = "InventoryCategoriesSubMenu";
     private readonly string WeaponsSubMenuName = "WeaponsSubMenu";
     private readonly string ActionsSubMenuName = "ActionsSubMenu";
-
+    private readonly string VehicleActionsSubMenuName = "VehicleActionsSubMenu";
 
 
     private IActionable Player;
@@ -975,7 +975,11 @@ public class PopUpMenu
             IconNameInvalid = "affiliation_black.png",
             IsCurrentlyValid = new Func<bool>(() => false)
         };
-
+        PopUpBox VehicleActionBox = new PopUpBox(7, "Vehicle Actions", VehicleActionsSubMenuName, "Open Vehicle Actions Sub Menu")
+        {
+            ClosesMenu = false,
+            IsCurrentlyValid = new Func<bool>(() => true)
+        };
 
         List<PopUpBox> OnFootMenuMaps = new List<PopUpBox>()
         {
@@ -991,6 +995,7 @@ public class PopUpMenu
 #if DEBUG
             AffiliationBox,
 #endif
+            VehicleActionBox,
         };
         List<PopUpBox> InVehicleMenuMaps = new List<PopUpBox>()
         {
@@ -1026,16 +1031,27 @@ public class PopUpMenu
             new PopUpBox(2,"Suicide",Player.ActivityManager.CommitSuicide,"Commit suicide"),
             new PopUpBox(3,"Sitting", "SitSubMenu","Open Sitting Sub Menu") { ClosesMenu = false },
             new PopUpBox(4,"Sleep", new Action(() => Player.ActivityManager.StartSleeping()),"Start sleeping here"),
-            new PopUpBox(5,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),
-            new PopUpBox(6,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
-            new PopUpBox(7,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),
-            new PopUpBox(8,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
+            
+           // new PopUpBox(5,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
+            new PopUpBox(5,"Stop Activities",new Action(() => Player.ActivityManager.ForceCancelAllActivities()),"Stops all active and paused activites"),
+            new PopUpBox(6,"Surrender",new Action(() => Player.Surrendering.ToggleSurrender()),"Toggle surrendering"),
 
-
-            new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
-            new PopUpBox(10,"Open Door", "OpenDoorSubMenu","Open the door of the vehicle you are looking at") { ClosesMenu = false },
+           // new PopUpBox(8,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),
+           // new PopUpBox(9,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
+           // new PopUpBox(10,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
 
         };
+
+        List<PopUpBox> VehicleActionsSubMenu = new List<PopUpBox>()
+        {
+            new PopUpBox(0,"Remove Plate",new Action(() => Player.ActivityManager.RemovePlate()),"Remove the license plate from the nearest vehicle."),
+            new PopUpBox(1,"Enter Vehicle (Passenger)", new Action(() => Player.ActivityManager.EnterVehicleAsPassenger(false)),"Enter vehicle you are looking at as passenger"),
+            new PopUpBox(2,"Enter Vehicle (By Seat)", "EnterSeatSubMenu","Enter vehicle you are looking at and sit on the specific seat") { ClosesMenu = false },
+            new PopUpBox(3,"Toggle Door", "OpenDoorSubMenu","Toggle the door of the vehicle you are looking at") { ClosesMenu = false },
+        };
+
+
+
         List<PopUpBox> SitSubMenu = new List<PopUpBox>()
         {
             new PopUpBox(0,"Sit At Nearest", new Action(() => Player.ActivityManager.StartSittingDown(true,true)),"Sit down at nearest seat"),
@@ -1056,13 +1072,13 @@ public class PopUpMenu
 
         List<PopUpBox> OpenDoorSubMenu = new List<PopUpBox>()
         {
-            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.ToggleDoor(0)),"Toggle the driver door"),
-            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.ToggleDoor(1)),"Toggle the passenger door"),
-            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.ToggleDoor(2)),"Toggle the left rear door"),
-            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.ToggleDoor(3)),"Toggle the right rear door"),
-            new PopUpBox(4,"Hood", new Action(() => Player.ActivityManager.ToggleDoor(4)),"Toggle the hood (bonnet)"),
-            new PopUpBox(5,"Trunk", new Action(() => Player.ActivityManager.ToggleDoor(5)),"Toggle the trunk (boot)"),
-            new PopUpBox(6,"Other", new Action(() => Player.ActivityManager.ToggleDoor(6)),"Toggle the other door"),
+            new PopUpBox(0,"Driver", new Action(() => Player.ActivityManager.ToggleDoor(0,true)),"Toggle the driver door"),
+            new PopUpBox(1,"Passenger", new Action(() => Player.ActivityManager.ToggleDoor(1,true)),"Toggle the passenger door"),
+            new PopUpBox(2,"Left Rear", new Action(() => Player.ActivityManager.ToggleDoor(2,true)),"Toggle the left rear door"),
+            new PopUpBox(3,"Right Rear", new Action(() => Player.ActivityManager.ToggleDoor(3,true)),"Toggle the right rear door"),
+            new PopUpBox(4,"Hood", new Action(() => Player.ActivityManager.ToggleDoor(4,true)),"Toggle the hood (bonnet)"),
+            new PopUpBox(5,"Trunk", new Action(() => Player.ActivityManager.ToggleDoor(5,true)),"Toggle the trunk (boot)"),
+            new PopUpBox(6,"Other", new Action(() => Player.ActivityManager.ToggleDoor(6,true)),"Toggle the other door"),
         };
 
 
@@ -1130,6 +1146,7 @@ public class PopUpMenu
         PopUpMenuGroups.Add(new PopUpBoxGroup("Dance", DancesMenuMaps) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("InfoSubMenu", InfoSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup(ActionsSubMenuName, ActionsSubMenu) { IsChild = true });
+        PopUpMenuGroups.Add(new PopUpBoxGroup(VehicleActionsSubMenuName, VehicleActionsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup(WeaponsSubMenuName, WeaponsSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("StancesSubMenu", StanceSubMenu) { IsChild = true });
         PopUpMenuGroups.Add(new PopUpBoxGroup("VehicleSubMenu", VehicleSubMenu) { IsChild = true });

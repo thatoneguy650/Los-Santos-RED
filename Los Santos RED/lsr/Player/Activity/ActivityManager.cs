@@ -457,7 +457,6 @@ public class ActivityManager
             modItem.UseItem(Actionable, Settings, World, CameraControllable, Intoxicants);
         }
     }
-
     public void DropInventoryItem(ModItem modItem, int amount)
     {
         if (IsPerformingActivity)
@@ -467,7 +466,6 @@ public class ActivityManager
         }
         modItem.DropItem(Actionable, Settings, amount); 
     }
-
     public void StartScenario()
     {
         if (IsPerformingActivity)
@@ -665,37 +663,35 @@ public class ActivityManager
     //Other
     public void EnterVehicleAsPassenger(bool withBlocking)
     {
-        VehicleExt toEnter = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
-        if (toEnter != null && toEnter.Vehicle.Exists())
+        VehicleExt toEnter = GetInterestedVehicle();
+        if (toEnter == null || !toEnter.Vehicle.Exists())
         {
-            int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
-            if (seatIndex != null)
+            return;
+        }
+        int? seatIndex = toEnter.Vehicle.GetFreePassengerSeatIndex();
+        if (seatIndex == null)
+        {
+            return;
+        }
+        if (withBlocking)
+        {
+            foreach (Ped passenger in toEnter.Vehicle.Occupants)
             {
-                if (withBlocking)
+                if (passenger.Exists())
                 {
-                    foreach (Ped passenger in toEnter.Vehicle.Occupants)
-                    {
-                        if (passenger.Exists())
-                        {
-                            //passenger.CanBePulledOutOfVehicles = false;//when does this get turned off  ?
-                            passenger.StaysInVehiclesWhenJacked = true;
-                            passenger.BlockPermanentEvents = true;
-                        }
-                    }
+                    //passenger.CanBePulledOutOfVehicles = false;//when does this get turned off  ?
+                    passenger.StaysInVehiclesWhenJacked = true;
+                    passenger.BlockPermanentEvents = true;
                 }
-                Player.LastFriendlyVehicle = toEnter.Vehicle;
-                NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
             }
         }
+        Player.LastFriendlyVehicle = toEnter.Vehicle;
+        NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
+        WatchVehicleEntry();
     }
-
     public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex)
     {
-        VehicleExt toEnter = Player.CurrentLookedAtVehicle;
-        if(toEnter == null)
-        {
-            toEnter = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
-        }
+        VehicleExt toEnter = GetInterestedVehicle();
         if (toEnter == null || !toEnter.Vehicle.Exists() || !toEnter.Vehicle.IsSeatFree(seatIndex))
         {
             return;
@@ -713,33 +709,85 @@ public class ActivityManager
             }
         }
         Player.LastFriendlyVehicle = toEnter.Vehicle;
-        NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, 5000, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);         
+        NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
+        WatchVehicleEntry();
     }
-    public void ToggleDoor(int doorIndex)
+    public void ToggleDoor(int doorIndex, bool withAnimation)
     {
-        EntryPoint.WriteToConsole($"ToggleDoor {doorIndex}");
-
-        VehicleExt toToggleDoor = Player.CurrentLookedAtVehicle;
-        if (toToggleDoor == null)
-        {
-            toToggleDoor = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
-        }
-
-
-        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())// || !Player.CurrentLookedAtVehicle.Vehicle.Doors[doorIndex].IsValid())
+        VehicleExt toToggleDoor = GetInterestedVehicle();
+        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
         {
             return;
         }
-        if (toToggleDoor.Vehicle.Doors[doorIndex].IsOpen)
+        if (withAnimation)
         {
-            EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
-            toToggleDoor.Vehicle.Doors[doorIndex].Close(false);
+            if (IsPerformingActivity)
+            {
+                Game.DisplayHelp("Cancel existing activity to start");
+                return;
+            }
+            DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+            if (doorToggle.CanPerform(Actionable))
+            {
+                ForceCancelAllActive();
+                IsPerformingActivity = true;
+                LowerBodyActivity = doorToggle;
+                LowerBodyActivity.Start();
+            }
         }
         else
         {
-            EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
-            toToggleDoor.Vehicle.Doors[doorIndex].Open(false, false);
+            if (toToggleDoor.Vehicle.Doors[doorIndex].IsOpen)
+            {
+                EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
+                toToggleDoor.Vehicle.Doors[doorIndex].Close(false);
+            }
+            else
+            {
+                EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
+                toToggleDoor.Vehicle.Doors[doorIndex].Open(false, false);
+            }
         }
+    }
+    private void WatchVehicleEntry()
+    {
+        GameFiber DoorWatcher = GameFiber.StartNew(delegate
+        {
+            try
+            {
+                uint GameTimeStarted = Game.GameTime;
+                EntryPoint.WriteToConsole("WatchVehicleEntry START");
+                while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
+                {
+                    int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Player.Character, Game.GetHashKey("SCRIPT_TASK_ENTER_VEHICLE"));
+                    Game.DisplaySubtitle($"taskStatus {taskStatus}");
+                    if(taskStatus != 1)
+                    {
+                        break;
+                    }
+                    if (Player.IsMoveControlPressed)
+                    {
+                        NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
+                        break;
+                    }
+                    GameFiber.Yield();
+                }
+                EntryPoint.WriteToConsole("WatchVehicleEntry END");
+            }
+            catch (Exception ex)
+            {
+                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+            }
+        }, "DoorWatcher");
+    }
+    public VehicleExt GetInterestedVehicle()
+    {
+        VehicleExt toToggleDoor = Player.CurrentLookedAtVehicle;
+        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
+        {
+            toToggleDoor = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, false, 10f);
+        }
+        return toToggleDoor;
     }
     public void YellInPain()
     {

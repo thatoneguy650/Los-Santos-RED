@@ -47,7 +47,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedPerception = new PedPerception(this, crimes, settings, weapons, world);
         PlayerPerception = new PlayerPerception(this, null, settings);
         PedReactions = new PedReactions(this);
-        PedInventory = new PedInventory(this, Settings);
+        PedInventory = new SimpleInventory(Settings);
         PedBrain = new PedBrain(this, settings, world, weapons);
         PedDesires = new PedDesires(this, settings);
         //PedKnowledge = new PedKnowledge(this, settings);
@@ -70,7 +70,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public PlayerPerception PlayerPerception { get; private set; }
     public HealthState CurrentHealthState { get; private set; }
     public PedReactions PedReactions { get; set; }
-    public PedInventory PedInventory { get; private set; }
+    public SimpleInventory PedInventory { get; private set; }
     public PedBrain PedBrain { get; set; }
     public PedDesires PedDesires { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
