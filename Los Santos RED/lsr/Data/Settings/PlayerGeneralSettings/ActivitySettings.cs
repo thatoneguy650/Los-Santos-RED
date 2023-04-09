@@ -44,8 +44,9 @@ public class ActivitySettings : ISettingsDefaultable
     public float SittingSlideDistance { get; set; }
     [Description("Will add an exclamation point to the prompt if the ped wants to buy an item you have")]
     public bool ShowInPromptWhenPedsWantToBuyItemsYouHave { get; set; }
-
-
+    public float PlateTheftFloat { get; set; }
+    public uint DrinkTimeBetween { get; set; }
+    public bool DrinkStartsBase { get; set; }
     public ActivitySettings()
     {
         SetDefault();
@@ -70,5 +71,8 @@ public class ActivitySettings : ISettingsDefaultable
         SittingSlideDistance = 0.5f;//0.1f
         ShowInPromptWhenPedsWantToBuyItemsYouHave = true;
         HoldUpDistance = 15f;
+        PlateTheftFloat = 1.0f;
+        DrinkTimeBetween = 0;
+        DrinkStartsBase = false;
     }
 }

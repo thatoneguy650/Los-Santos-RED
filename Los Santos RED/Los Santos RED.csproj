@@ -161,6 +161,10 @@
     <Compile Include="lsr\Data\Peds\SavedOutfits.cs" />
     <Compile Include="lsr\Data\Peds\TattooNames.cs" />
     <Compile Include="lsr\Data\Saves\CellPhoneSave.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\BinocularSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\DoorToggleSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\DragSettings.cs" />
+    <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ShovelSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\VehicleSeatDoorData.cs" />
     <Compile Include="lsr\Dispatcher\Default\DefaultDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Default\LEDispatcherNew.cs" />

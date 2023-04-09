@@ -177,16 +177,13 @@ public class HumanShield : DynamicActivity
             wasSetPersistent = Ped.WasEverSetPersistent;
             PreviousRelationshipGroup = Ped.Pedestrian.RelationshipGroup;
 
-
             EntryPoint.WriteToConsole($"Grab Started PreviousRelationshipGroup {PreviousRelationshipGroup.Name}");
-
 
             Ped.CanBeTasked = false;
             Ped.Pedestrian.Tasks.Clear();
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             Ped.Pedestrian.IsPersistent = true;
-
 
             NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Ped.Pedestrian, true);
             Ped.Pedestrian.RelationshipGroup = HostageRG;
@@ -230,12 +227,12 @@ public class HumanShield : DynamicActivity
     }
     private void PlayInitialAnimation()
     {
-        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1//NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 8 | 16 | 32, 0, false, false, false);//-1//NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
         if (Ped.Pedestrian.Exists())
         {
             //Ped.Pedestrian.AttachTo(Player.Character, 0, AttachOffset, new Rotator(0, 0, 0));
             Ped.Pedestrian.Position = Player.Character.GetOffsetPosition(AttachOffset);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 8 | 16 | 32, 0, false, false, false);//-1
         }
     }
     private void SetupPrompts()

@@ -730,6 +730,7 @@ public class LEDispatcher
         //EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
 
         bool getspawnLocation = GetSpawnLocation();
+        GameFiber.Yield();
         bool getSpawnTypes = GetSpawnTypes(false, false, null, "");
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)

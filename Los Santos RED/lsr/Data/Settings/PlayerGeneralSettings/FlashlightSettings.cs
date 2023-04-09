@@ -33,7 +33,6 @@
     }
     public void SetDefault()
     {
-
         LightFollowsCamera = true;
         PitchMax = 25f;
         PitchMin = -25f;

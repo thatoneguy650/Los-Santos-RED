@@ -635,7 +635,7 @@ public class Gangs : IGangs
 
                 DrugDealerPercentage = 90f,
         };//marijuana
-        Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "VagosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablos", "CHAR_BLANK_ENTRY", "Diablo Soldier")
+        Diablos = new Gang("~r~", "AMBIENT_GANG_DIABLOS", "Diablos", "Diablos", "Red", "DiablosPeds", "DiablosVehicles", "", "MeleeWeapons", "FamiliesSidearms", "FamiliesLongGuns", "Diablos", "CHAR_BLANK_ENTRY", "Diablo Soldier")
         {
             DenName = "Hangout",
             AmbientMemberMoneyMin = 20,
@@ -664,6 +664,9 @@ public class Gangs : IGangs
             PercentageWithLongGuns = 2f,
             MemberKickUpAmount = 1500,
             DrugDealerPercentage = 55f,
+
+            HeadDataGroupID = "DiablosHeads",
+
         };//SPANK
         //new Gang("~w~", "AMBIENT_GANG_CULT", "Altruist Cult","Altruist", "White", "AltruistPeds", "GenericGangVehicles", "","MeleeWeapons","FamiliesSidearms","FamiliesLongGuns","Altruist Leader","CHAR_PA_MALE","Altruist Member") { 
         //                                DenName = "Gathering Location",AmbientMemberMoneyMin = 200, AmbientMemberMoneyMax = 1000,EnemyGangs = new List<string>() { "AMBIENT_GANG_HILLBILLY" }, DealerMenuGroup = "ToiletCleanerDealerMenu",

@@ -41,6 +41,9 @@ public class ModItem
 {
     private UIMenuNumericScrollerItem<int> sellScroller;
     private UIMenuNumericScrollerItem<int> purchaseScroller;
+    private UIMenuNumericScrollerItem<int> takeScroller;
+    private UIMenu inventoryItemSubMenu;
+    private UIMenuNumericScrollerItem<int> giveScroller;
 
     public ModItem()
     {
@@ -466,6 +469,81 @@ public class ModItem
             return true;
         }
         return false;
+    }
+    public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu)
+    {
+        inventoryItemSubMenu = menuPool.AddSubMenu(headerMenu, Name);
+        headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1].Description = Description;
+        inventoryItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
+
+        InventoryItem currentInventoryItem = simpleInventory.Get(this);
+        if(currentInventoryItem == null || currentInventoryItem.Amount <= 0)
+        {
+            takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, 1, 1) { Value = 1,Enabled = false };
+        }
+        else
+        {
+            takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, currentInventoryItem.Amount, 1) { Value = 1 };
+        }
+        takeScroller.Activated += (sender, selectedItem) =>
+        {
+            if(simpleInventory.Remove(this, takeScroller.Value))
+            {
+                player.Inventory.Add(this,takeScroller.Value);
+            }
+            UpdateInventoryScrollers(player, simpleInventory);
+        };
+        inventoryItemSubMenu.AddItem(takeScroller);
+
+        InventoryItem playerInventoryItem = player.Inventory.Get(this);
+        if (playerInventoryItem == null || playerInventoryItem.Amount <= 0)
+        {
+            giveScroller = new UIMenuNumericScrollerItem<int>("Deposit", "", 1, 1, 1) { Value = 1, Enabled = false };
+        }
+        else
+        {
+            giveScroller = new UIMenuNumericScrollerItem<int>("Deposit", "", 1, playerInventoryItem.Amount, 1) { Value = 1 };
+        }
+        giveScroller.Activated += (sender, selectedItem) =>
+        {
+            if(player.Inventory.Remove(this, giveScroller.Value))
+            {
+                simpleInventory.Add(this, giveScroller.Value);
+            }
+            UpdateInventoryScrollers(player, simpleInventory);
+        };
+        inventoryItemSubMenu.AddItem(giveScroller);
+    }
+
+    private void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory)
+    {
+        InventoryItem currentInventoryItem = simpleInventory.Get(this);
+        if (currentInventoryItem == null || currentInventoryItem.Amount <= 0)
+        {
+            takeScroller.Maximum = 1;
+            takeScroller.Value = 1;
+            takeScroller.Enabled = false;
+        }
+        else
+        {
+            takeScroller.Maximum = currentInventoryItem.Amount;
+            takeScroller.Value = 1;
+            takeScroller.Enabled = true;
+        }
+        InventoryItem playerInventoryItem = player.Inventory.Get(this);
+        if (playerInventoryItem == null || playerInventoryItem.Amount <= 0)
+        {
+            giveScroller.Maximum = 1;
+            giveScroller.Value = 1;
+            giveScroller.Enabled = false;
+        }
+        else
+        {
+            giveScroller.Maximum = playerInventoryItem.Amount;
+            giveScroller.Value = 1;
+            giveScroller.Enabled = true;
+        }
+
     }
 }
 

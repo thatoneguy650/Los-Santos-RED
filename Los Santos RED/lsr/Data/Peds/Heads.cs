@@ -130,7 +130,26 @@ public class Heads : IHeads
                         new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 0.0f,AgingPercentage = 40f },//white male
                     };
         RandomHeadDataLookup.Add(new HeadDataGroup("MafiaHeads", MafiaHeadList));
-
+        List<RandomHeadData> DiablosHeadList = new List<RandomHeadData>()
+                    {
+                        new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),//white male
+                        new RandomHeadData(9,"Ethan",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
+                        new RandomHeadData(10,"Vincent",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
+                        new RandomHeadData(11,"Angel",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
+                        new RandomHeadData(16,"Santiago",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
+                        new RandomHeadData(20,"Anthony",BrownHairColors_Male,BrownHairStyles_Male,BrownEyeColors, true),//brown male
+                        new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true),///white male
+                        //new RandomHeadData(0,"Benjamin",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true) { FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(1,"Daniel",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(4,"Andrew",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(5,"Juan",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(12,"Diego",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(13,"Adrian",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(42,"Claude",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(43,"Niko",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                        //new RandomHeadData(44,"John",WhiteHairColors_Male,WhiteHairStyles_Male,WhiteEyeColors, true){ FacialHairPercentage = 50.0f,AgingPercentage = 40f },//white male
+                    };
+        RandomHeadDataLookup.Add(new HeadDataGroup("DiablosHeads", DiablosHeadList));
 
         Serialization.SerializeParams(RandomHeadDataLookup, ConfigFileName);
 

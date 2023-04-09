@@ -1906,424 +1906,450 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     private void DefaultConfig_GangDens()
     {
-        GangDens = new List<GangDen>()
+        GangDens = new List<GangDen>() {};
+        DefaultConfig_GangDens_Cartel();
+        DefaultConfig_GangDens_Armenian();
+        DefaultConfig_GangDens_Yardies();
+        DefaultConfig_GangDens_Diablos();
+        DefaultConfig_GangDens_Varrios();
+        DefaultConfig_GangDens_Marabunta();
+        DefaultConfig_GangDens_Altruists();
+        DefaultConfig_GangDens_Mafia();
+        DefaultConfig_GangDens_Families();
+        DefaultConfig_GangDens_Ballas();
+        DefaultConfig_GangDens_Lost();
+        DefaultConfig_GangDens_Triads();
+        DefaultConfig_GangDens_Vagos();
+        DefaultConfig_GangDens_Redneck();
+        DefaultConfig_GangDens_Korean();
+    }
+    private void DefaultConfig_GangDens_Cartel()
+    {
+        GangDen Den1 = new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "", "MadrazoDenMenu", "AMBIENT_GANG_MADRAZO")
         {
-            new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "","PavanoDenMenu", "AMBIENT_GANG_PAVANO") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 267, BannerImagePath = "pavano.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 50f),
-                new GangConditionalLocation(new Vector3(1662.094f, 4778.333f, 42.00935f), 259.006f, 50f),
-                new GangConditionalLocation(new Vector3(1647.39f, 4779.691f, 42.01637f), 9.346325f, 50f),
-                new GangConditionalLocation(new Vector3(1666.244f, 4773.587f, 41.93539f), 215.5277f, 50f),
-                new GangConditionalLocation(new Vector3(1665.208f, 4778.518f, 41.94879f), 271.264f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 78,
+            BannerImagePath = "madrazo.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(1669.677f, 4776.892f, 41.22393f), 4.480381f, 75f),
-                new GangConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f),
-            }
-            },//Grapeseed Shack
-            new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "","LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 77, BannerImagePath = "lupisella.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 50f),
-                new GangConditionalLocation(new Vector3(-227.5764f, 6442.54f, 31.19769f), 141.2697f, 50f),
-                new GangConditionalLocation(new Vector3(-217.9765f, 6432.755f, 31.19775f), 165.7642f, 50f),
-                new GangConditionalLocation(new Vector3(-212.6066f, 6443.875f, 31.2976f), 326.0233f, 50f),
-                new GangConditionalLocation(new Vector3(-215.7044f, 6445.802f, 31.3135f), 270.9214f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(-226.1172f, 6435.622f, 30.51782f), 232.3148f, 75f),
-                new GangConditionalLocation(new Vector3(-210.5319f, 6437.373f, 30.72163f), 327.138f, 75f),
-            } },//Beachhouse in Paleto
-            new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "","MessinaDenMenu", "AMBIENT_GANG_MESSINA") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "messina.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 50f),
-                new GangConditionalLocation(new Vector3(-1626.534f, 37.39336f, 62.54136f), 342.5028f, 50f),
-                new GangConditionalLocation(new Vector3(-1614.67f, 29.32284f, 62.54132f), 257.1678f, 50f),
-                new GangConditionalLocation(new Vector3(-1620.178f, 19.3019f, 62.54137f), 269.8025f, 50f),
-                new GangConditionalLocation(new Vector3(-1639.313f, 16.93647f, 62.53671f), 122.0091f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(-1613.357f, 22.61485f, 61.48566f), 155.361f, 75f),
-                new GangConditionalLocation(new Vector3(-1625.055f, 65.92033f, 61.15781f), 237.2095f, 75f),
-            } },//mansion in richman
-            new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "","AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath = "ancelotti.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 50f),
-                new GangConditionalLocation(new Vector3(-3226.294f, 1095.004f, 10.69816f), 260.7955f, 50f),
-                new GangConditionalLocation(new Vector3(-3240.798f, 1081.971f, 7.396926f), 157.9129f, 50f),
-                new GangConditionalLocation(new Vector3(-3242.731f, 1087.94f, 7.478574f), 115.9338f, 50f),
-                new GangConditionalLocation(new Vector3(-3247.704f, 1098.255f, 2.835759f), 70.83805f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(-3226.144f, 1086.399f, 9.993718f), 162.1115f, 75f),
-                new GangConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
-
-            } },//beachhousein chumash
-            new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "","YardiesDenMenu", "AMBIENT_GANG_YARDIES") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, BannerImagePath = "yardies.png", MapIconColorString = "Green", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 50f),
-                new GangConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 50f),
-                new GangConditionalLocation(new Vector3(-1166.395f, -1453.536f, 4.367522f), 122.2634f, 50f),
-                new GangConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 50f),
-                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(-1156.718f, -1462.597f, 3.70943f), 210.7057f, 75f),
-                new GangConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
-
-            } },//near shops on del perro beach
-            new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "","DiablosDenMenu", "AMBIENT_GANG_DIABLOS") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 355, BannerImagePath = "diablos.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 50f),
-                new GangConditionalLocation(new Vector3(274.2913f, -3010.913f, 5.70001f), 105.1246f, 50f),
-                new GangConditionalLocation(new Vector3(281.5445f, -2997.272f, 5.672155f), 5.840774f, 50f),
-                new GangConditionalLocation(new Vector3(285.892f, -3025.893f, 5.652033f), 304.8488f, 50f),
-                new GangConditionalLocation(new Vector3(290.5836f, -3035.765f, 5.882213f), 174.9672f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(260.6703f, -3008.191f, 5.070713f), 87.13465f, 75f),
-                new GangConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
-            } },//shitty shack in elysian
-            new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "","GambettiDenMenu", "AMBIENT_GANG_GAMBETTI") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 541, BannerImagePath = "gambetti.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, 50f),
-                new GangConditionalLocation(new Vector3(504.8874f, 201.7501f, 104.7445f), 334.6481f, 50f),
-                new GangConditionalLocation(new Vector3(541.257f, 201.7959f, 101.5426f), 246.2837f, 50f),
-
-                new GangConditionalLocation(new Vector3(546.3932f, 214.8331f, 102.2434f), 320.1989f, 50f),
-                new GangConditionalLocation(new Vector3(539.8316f, 241.9526f, 103.1213f), 324.5678f, 50f),
-                new GangConditionalLocation(new Vector3(516.8485f, 250.2658f, 103.1146f), 350.7859f, 50f),
-
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-                new GangConditionalLocation(new Vector3(464.1385f, 226.9263f, 102.5122f), 67.93208f, 75f),
-                new GangConditionalLocation(new Vector3(462.139f, 222.349f, 102.2742f), 245.8917f, 75f),
-
-            } },//Downtown Vinewood
-            new GangDen(new Vector3(1389.966f, 1131.907f, 114.3344f), 91.72424f, "Madrazo Cartel Den", "","MadrazoDenMenu", "AMBIENT_GANG_MADRAZO") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "madrazo.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 50f),
                 new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 50f),
                 new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 50f),
                 new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
-new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
-            } },
-            new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "","ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 76, BannerImagePath ="armenian.png", OpenTime = 0,CloseTime = 24, IsEnabled = true,
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-
+                new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
+                new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
+            }
+        };
+        GangDens.Add(Den1);
+    }
+    private void DefaultConfig_GangDens_Armenian()
+    {
+        GangDen Den1 = new GangDen(new Vector3(-615.221f, -1787.458f, 23.69615f), 210.6709f, "Armenian Hangout", "", "ArmenianDenMenu", "AMBIENT_GANG_ARMENIAN")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 76,
+            BannerImagePath = "armenian.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
                 new GangConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 50f),
                 new GangConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 50f),
                 new GangConditionalLocation(new Vector3(-600.0588f, -1795.333f, 23.38985f), 155.3086f, 50f),
                 new GangConditionalLocation(new Vector3(-622.9163f, -1792.963f, 23.80351f), 163.1899f, 50f),
                 new GangConditionalLocation(new Vector3(-591.4926f, -1776.089f, 22.79006f), 214.9723f, 50f),
             },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-new GangConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
-new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
+                new GangConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
+                new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
             },
-                CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f),
-                CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f),
-                CameraRotation = new Rotator(-21.2234f, -7.327146E-06f, -38.98296f),
-                ItemPreviewPosition = new Vector3(-585.7418f, -1792.97f, 22.85472f),
-                ItemPreviewHeading = 53.11781f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
-                    new SpawnPlace(new Vector3(-581.0074f, -1797.569f, 22.8803f), 322.0219f),
-                    new SpawnPlace(new Vector3(-584.7271f, -1780.009f, 22.66464f), 144.9928f),
-                    new SpawnPlace(new Vector3(-586.3314f, -1804.048f, 22.58966f), 115.4426f),
-
-
-
-                } },
-
-            new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs","FamiliesDenMenu", "AMBIENT_GANG_FAMILY") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 86, BannerImagePath = "families.png",OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),
-                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 50f),
-                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 50f),
-                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 50f),
-                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 50f),
-                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f),
+            CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f),
+            CameraRotation = new Rotator(-21.2234f, -7.327146E-06f, -38.98296f),
+            ItemPreviewPosition = new Vector3(-585.7418f, -1792.97f, 22.85472f),
+            ItemPreviewHeading = 53.11781f,
+            ItemDeliveryLocations = new List<SpawnPlace>() 
             {
-                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 75f),
-                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 75f),
-                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 75f),
-                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
+                new SpawnPlace(new Vector3(-581.0074f, -1797.569f, 22.8803f), 322.0219f),
+                new SpawnPlace(new Vector3(-584.7271f, -1780.009f, 22.66464f), 144.9928f),
+                new SpawnPlace(new Vector3(-586.3314f, -1804.048f, 22.58966f), 115.4426f),
+            }
+        };
+        GangDens.Add(Den1);
+    }
+    private void DefaultConfig_GangDens_Yardies()
+    {
+        GangDen Den1 = new GangDen(new Vector3(-1157.501f, -1451.861f, 4.468448f), 216.5082f, "Yardies Chill Spot", "", "YardiesDenMenu", "AMBIENT_GANG_YARDIES")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "yardies.png",
+            MapIconColorString = "Green",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(-1155.236f, -1450.92f, 4.508356f), 203.7991f, 50f),
+                new GangConditionalLocation(new Vector3(-1158.698f, -1454.306f, 4.346763f), 192.8651f, 50f),
+                new GangConditionalLocation(new Vector3(-1166.395f, -1453.536f, 4.367522f), 122.2634f, 50f),
+                new GangConditionalLocation(new Vector3(-1177.108f, -1437.649f, 4.379432f), 75.27589f, 50f),
+                new GangConditionalLocation(new Vector3(-1171.944f, -1470.263f, 4.382764f), 290.1982f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1156.718f, -1462.597f, 3.70943f), 210.7057f, 75f),
+                new GangConditionalLocation(new Vector3(-1150.134f, -1456.732f, 3.955124f), 215.4072f, 75f),
+            }
+        };//near shops on del perro beach
+        GangDens.Add(Den1);
+    }
+    private void DefaultConfig_GangDens_Diablos()
+    {
+        GangDen Den1 = new GangDen(new Vector3(275.2381f, -3015.519f, 5.945963f), 91.01478f, "Diablos Hangout", "", "DiablosDenMenu", "AMBIENT_GANG_DIABLOS")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 355,
+            BannerImagePath = "diablos.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(274.3982f, -3017.684f, 5.699762f), 86.04555f, 50f),
+                new GangConditionalLocation(new Vector3(274.2913f, -3010.913f, 5.70001f), 105.1246f, 50f),
+                new GangConditionalLocation(new Vector3(281.5445f, -2997.272f, 5.672155f), 5.840774f, 50f),
+                new GangConditionalLocation(new Vector3(285.892f, -3025.893f, 5.652033f), 304.8488f, 50f),
+                new GangConditionalLocation(new Vector3(290.5836f, -3035.765f, 5.882213f), 174.9672f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(260.6703f, -3008.191f, 5.070713f), 87.13465f, 75f),
+                new GangConditionalLocation(new Vector3(286.6504f, -2996.586f, 5.060739f), 85.31966f, 75f),
+            }
+        };//shitty shack in elysian
+        GangDens.Add(Den1);
+    }
+    private void DefaultConfig_GangDens_Varrios()
+    {
+        GangDen Den1 = new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "", "VarriosDenMenu", "AMBIENT_GANG_SALVA")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "varrios.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 50f),
+                new GangConditionalLocation(new Vector3(1189.079f, -1655.169f, 42.358f), 338.5124f, 50f),
+                new GangConditionalLocation(new Vector3(1190.508f, -1648.968f, 41.43568f), 34.16187f, 50f),
+                new GangConditionalLocation(new Vector3(1172.624f, -1645.602f, 36.78029f), 94.79508f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1166.678f, -1647.833f, 36.23235f), 132.0248f, 75f),
+                new GangConditionalLocation(new Vector3(1157.749f, -1660.837f, 35.93925f), 205.3036f, 75f),
+                new GangConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f, 75f),
+            }
+        };
+        GangDens.Add(Den1);
+    }
+    private void DefaultConfig_GangDens_Marabunta()
+    {
+        GangDen Den1 = new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabunta Grande Den", "", "MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 78,
+            BannerImagePath = "marabunta.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
+                new GangConditionalLocation(new Vector3(1293.167f, -1748.509f, 53.87848f), 200.1636f, 50f),
+                new GangConditionalLocation(new Vector3(1313.939f, -1771.984f, 54.81713f), 113.8552f, 50f),
+                new GangConditionalLocation(new Vector3(1319.703f, -1775.434f, 54.5059f), 215.1372f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1322.044f, -1768.506f, 54.82401f), 195.1561f, 75f),
+                new GangConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f, 75f),
+            }
+        };
+        GangDens.Add(Den1);
+    }
 
-            } },//This is in Chamberlain Hills
-            new GangDen()
-            {
-                MapIcon = 86,
-                GangID = "AMBIENT_GANG_FAMILY",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(11.67317f,-1434.168f,30.54151f),
-                Heading = -108.9996f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(13.05488f,-1434.443f,30.54151f),
-                Heading = 129.9996f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(22.77389f,-1428.475f,30.53836f),
-                Heading = 175.9996f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(22.58638f,-1430.516f,30.54151f),
-                Heading = 25.99998f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(24.02172f,-1429.669f,30.54151f),
-                Heading = 75.99992f,
-                Percentage = 35f,
-            },
-        },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(25.02328f,-1454.192f,29.77646f),
-                Heading = -36.88154f,
-                Percentage = 75f,
-            },
-        },
-                MenuID = "FamiliesDenMenu",
-                CanInteractWhenWanted = true,
-                Name = "Families OG Hideout 1",
-                FullName = "Families OG Hideout 1",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "families.png",
-                EntrancePosition = new Vector3(16.29254f,-1444.204f,30.95157f),
-                EntranceHeading = 164.9996f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-            new GangDen()
-            {
-                MapIcon = 86,
-                GangID = "AMBIENT_GANG_FAMILY",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-121.8506f,-1485.729f,33.82269f),
-                Heading = 175.9996f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-111.3437f,-1458.663f,33.52345f),
-                Heading = -51.99996f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-131.6255f,-1463.676f,33.82264f),
-                Heading = -125.9998f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-131.2158f,-1465.14f,33.82258f),
-                Heading = 0f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-130.0541f,-1463.692f,33.82257f),
-                Heading = 122.9998f,
-                Percentage = 35f,
-            },
-        },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-109.2051f,-1456.626f,32.91021f),
-                Heading = -129.7567f,
-                Percentage = 75f,
-            },
-        },
-                MenuID = "FamiliesDenMenu",
-                Name = "Families OG Hideout 2",
-                FullName = "Families OG Hideout 2",
-                Description = "",
-                IsEnabled = true,
-                EntrancePosition = new Vector3(-138.0617f, -1470.718f, 36.99474f),
-                EntranceHeading = -39.2744f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-            new GangDen()
-            {
-                MapIcon = 86,
-                GangID = "AMBIENT_GANG_FAMILY",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-58.05992f,-1507.429f,32.11591f),
-                Heading = -41.99997f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-80.4858f,-1522.49f,34.2426f),
-                Heading = 90.9976f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-63.70837f,-1526.52f,34.24794f),
-                Heading = 41.99997f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-63.93343f,-1524.981f,34.24784f),
-                Heading = 151.9997f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-70.06671f,-1519.742f,34.248f),
-                Heading = -24.99999f,
-                Percentage = 35f,
-            },
-        },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-57.86029f,-1493.169f,31.22089f),
-                Heading = 133.9038f,
-                Percentage = 35f,
-            },
-        },
-                MenuID = "FamiliesDenMenu",
-                Name = "Families OG Hideout3 ",
-                FullName = "Families OG Hideout 3",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "families.png",
-                EntrancePosition = new Vector3(-69.21278f, -1526.623f, 34.23756f),
-                EntranceHeading = -49.99997f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-            new GangDen()
-            {
-                MapIcon = 86,
-                GangID = "AMBIENT_GANG_FAMILY",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-144.4888f,-1586.785f,34.84586f),
-                Heading = 117.9993f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-134.4106f,-1591.487f,34.24623f),
-                Heading = 146.9997f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-134.3287f,-1592.902f,34.24641f),
-                Heading = 0f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-135.906f,-1592.25f,34.24649f),
-                Heading = -70.99994f,
-                Percentage = 35f,
-            },
-            new GangConditionalLocation() {
-                Location = new Vector3(-114.2554f,-1596.416f,32.11221f),
-                Heading = -124.9998f,
-                Percentage = 35f,
-            },
-        },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-            new GangConditionalLocation() {
-                Location = new Vector3(-111.1881f,-1597.381f,31.3905f),
-                Heading = 138.7799f,
-                Percentage = 75f,
-            },
-        },
-                MenuID = "FamiliesDenMenu",
-                Name = "Families OG Hideout 4",
-                FullName = "Families OG Hideout 4",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "families.png",
-                EntrancePosition = new Vector3(-140.2153f, -1599.549f, 34.83382f),
-                EntranceHeading = -11f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
+    private void DefaultConfig_GangDens_Altruists()
+    {
+        GangDen Den1 = new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "", "GenericGangDenMenu", "AMBIENT_GANG_CULT") 
+        { 
+            IsPrimaryGangDen = true, 
+            CanInteractWhenWanted = true,
+            MapIcon = 76, 
+            BannerImagePath = "altruist.png", 
+            OpenTime = 0, 
+            CloseTime = 24, 
+            IsEnabled = true, 
+        };
+        GangDens.Add(Den1);
+    }
 
-            new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "","BallasDenMenu", "AMBIENT_GANG_BALLAS") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 106, BannerImagePath = "ballas.png",OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                    new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
-                    new GangConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
-                    new GangConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
-                    new GangConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
-                }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-                {
-    new GangConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 75f),
-    new GangConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 75f),
-    new GangConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
-    new GangConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
-                } },//This is in DAVIS near Grove Street
-            new GangDen()
+    private void DefaultConfig_GangDens_Korean()
+    {
+        GangDen KoreanDen1 = new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "", "KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "kkangpae.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                MapIcon = 106,
-                GangID = "AMBIENT_GANG_BALLAS",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new GangConditionalLocation() {
-                    Location = new Vector3(166.5394f,-1870.718f,24.05765f),
-                    Heading = 166.9992f,
-                    Percentage = 35f,
-                    },
-                    new GangConditionalLocation() {
-                    Location = new Vector3(176.6803f,-1856.694f,24.0493f),
-                    Heading = 17.00001f,
-                    Percentage = 35f,
-                    },
-                    new GangConditionalLocation() {
-                    Location = new Vector3(168.3999f,-1863.078f,24.09362f),
-                    Heading = 89.99988f,
-                    Percentage = 35f,
-                    },
-                    new GangConditionalLocation() {
-                    Location = new Vector3(177.6906f,-1856.02f,24.07937f),
-                    Heading = 120.7892f,
-                    Percentage = 35f,
-                    },
-                    new GangConditionalLocation() {
-                    Location = new Vector3(168.0899f,-1862.198f,24.10498f),
-                    Heading = -175.0005f,
-                    Percentage = 35f,
-                    },
-                },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
-                    new GangConditionalLocation() {
-                    Location = new Vector3(166.1798f,-1860.151f,23.61886f),
-                    Heading = -22.5675f,
-                    Percentage = 75f,
-                    },
-                },
-                MenuID = "BallasDenMenu",
-                Name = "Ballas Grove Trap house",
-                FullName = "Ballas Grove Trap house",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "ballas.png",
-                EntrancePosition = new Vector3(171.3143f,-1871.577f,24.40372f),
-                EntranceHeading = 97.43147f,
-                OpenTime = 0,
-                CloseTime = 24,
+                new GangConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 50f),
+                new GangConditionalLocation(new Vector3(-581.7299f, -780.7718f, 25.01723f), 66.59444f, 50f),
+                new GangConditionalLocation(new Vector3(-613.7438f, -782.4008f, 25.20246f), 42.77346f, 50f),
+                new GangConditionalLocation(new Vector3(-622.1181f, -768.7686f, 25.95107f), 88.71659f, 50f),
             },
-            new GangDen()
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                MapIcon = 514,
-                GangID = "AMBIENT_GANG_BALLAS",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
+                new GangConditionalLocation(new Vector3(-610.1835f, -756.0798f, 26.07551f), 266.9069f, 75f),
+                new GangConditionalLocation(new Vector3(-618.8381f, -761.884f, 25.46778f), 89.04613f, 75f),
+            }
+        };
+        GangDens.Add(KoreanDen1);
+        //new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
+        //    new GangConditionalLocation(new Vector3(-761.3151f, -910.3087f, 19.53444f), 237.0572f, 50f),
+        //    new GangConditionalLocation(new Vector3(-762.3676f, -923.8786f, 18.74619f), 237.6777f, 50f),
+        //    new GangConditionalLocation(new Vector3(-760.9077f, -927.9499f, 18.47775f), 292.1328f, 50f),
+        //    new GangConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
+        //} },
+    }
+
+    private void DefaultConfig_GangDens_Redneck()
+    {
+        GangDen RedneckDen1 = new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "", "GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "rednecks.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),
+                new GangConditionalLocation(new Vector3(959.2394f, 3612.307f, 32.75033f), 138.3261f, 50f),
+                new GangConditionalLocation(new Vector3(969.4822f, 3626.386f, 32.33695f), 17.91204f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(950.5566f, 3618.955f, 31.88234f), 268.8919f, 75f),
+                new GangConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f, 75f),
+                new GangConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
+            }
+        };
+        GangDens.Add(RedneckDen1);
+    }
+
+    private void DefaultConfig_GangDens_Mafia()
+    {
+        GangDen PavanoDen1 = new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "", "PavanoDenMenu", "AMBIENT_GANG_PAVANO")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 267,
+            BannerImagePath = "pavano.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(1664.384f, 4765.325f, 42.0682f), 290.2068f, 50f),
+                new GangConditionalLocation(new Vector3(1662.094f, 4778.333f, 42.00935f), 259.006f, 50f),
+                new GangConditionalLocation(new Vector3(1647.39f, 4779.691f, 42.01637f), 9.346325f, 50f),
+                new GangConditionalLocation(new Vector3(1666.244f, 4773.587f, 41.93539f), 215.5277f, 50f),
+                new GangConditionalLocation(new Vector3(1665.208f, 4778.518f, 41.94879f), 271.264f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(1669.677f, 4776.892f, 41.22393f), 4.480381f, 75f),
+                new GangConditionalLocation(new Vector3(1662.887f, 4768.458f, 41.3252f), 278.0306f, 75f),
+            }
+        };//Grapeseed Shack
+        GangDen LupisellaDen1 = new GangDen(new Vector3(-229.6159f, 6445.189f, 31.19745f), 139.3764f, "Lupisella Safehouse", "", "LupisellaDenMenu", "AMBIENT_GANG_LUPISELLA")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 77,
+            BannerImagePath = "lupisella.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(-233.3555f, 6447.341f, 31.19741f), 131.7259f, 50f),
+                new GangConditionalLocation(new Vector3(-227.5764f, 6442.54f, 31.19769f), 141.2697f, 50f),
+                new GangConditionalLocation(new Vector3(-217.9765f, 6432.755f, 31.19775f), 165.7642f, 50f),
+                new GangConditionalLocation(new Vector3(-212.6066f, 6443.875f, 31.2976f), 326.0233f, 50f),
+                new GangConditionalLocation(new Vector3(-215.7044f, 6445.802f, 31.3135f), 270.9214f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-226.1172f, 6435.622f, 30.51782f), 232.3148f, 75f),
+                new GangConditionalLocation(new Vector3(-210.5319f, 6437.373f, 30.72163f), 327.138f, 75f),
+            }
+        };//Beachhouse in Paleto
+        GangDen MessinaDen1 = new GangDen(new Vector3(-1629.715f, 36.49737f, 62.93618f), 333.3146f, "Messina Safehouse", "", "MessinaDenMenu", "AMBIENT_GANG_MESSINA")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 78,
+            BannerImagePath = "messina.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(-1630.811f, 39.70509f, 62.54136f), 323.2733f, 50f),
+                new GangConditionalLocation(new Vector3(-1626.534f, 37.39336f, 62.54136f), 342.5028f, 50f),
+                new GangConditionalLocation(new Vector3(-1614.67f, 29.32284f, 62.54132f), 257.1678f, 50f),
+                new GangConditionalLocation(new Vector3(-1620.178f, 19.3019f, 62.54137f), 269.8025f, 50f),
+                new GangConditionalLocation(new Vector3(-1639.313f, 16.93647f, 62.53671f), 122.0091f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-1613.357f, 22.61485f, 61.48566f), 155.361f, 75f),
+                new GangConditionalLocation(new Vector3(-1625.055f, 65.92033f, 61.15781f), 237.2095f, 75f),
+            }
+        };//mansion in richman
+        GangDen AncelottiDen1 = new GangDen(new Vector3(-3228.478f, 1092.326f, 10.76322f), 253.458f, "Ancelotti Safehouse", "", "AncelottiDenMenu", "AMBIENT_GANG_ANCELOTTI")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 76,
+            BannerImagePath = "ancelotti.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(-3228.078f, 1089.288f, 10.73698f), 243.1453f, 50f),
+                new GangConditionalLocation(new Vector3(-3226.294f, 1095.004f, 10.69816f), 260.7955f, 50f),
+                new GangConditionalLocation(new Vector3(-3240.798f, 1081.971f, 7.396926f), 157.9129f, 50f),
+                new GangConditionalLocation(new Vector3(-3242.731f, 1087.94f, 7.478574f), 115.9338f, 50f),
+                new GangConditionalLocation(new Vector3(-3247.704f, 1098.255f, 2.835759f), 70.83805f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(-3226.144f, 1086.399f, 9.993718f), 162.1115f, 75f),
+                new GangConditionalLocation(new Vector3(-3229.512f, 1077.396f, 10.19788f), 260.5915f, 75f),
+            }
+        };//beachhousein chumash
+        GangDen GambettiDen1 = new GangDen(new Vector3(514.9427f, 190.9465f, 104.745f), 356.6495f, "Gambetti Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_GAMBETTI")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 541,
+            BannerImagePath = "gambetti.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(517.7187f, 191.4421f, 104.745f), 344.8743f, 50f),
+                new GangConditionalLocation(new Vector3(504.8874f, 201.7501f, 104.7445f), 334.6481f, 50f),
+                new GangConditionalLocation(new Vector3(541.257f, 201.7959f, 101.5426f), 246.2837f, 50f),
+                new GangConditionalLocation(new Vector3(546.3932f, 214.8331f, 102.2434f), 320.1989f, 50f),
+                new GangConditionalLocation(new Vector3(539.8316f, 241.9526f, 103.1213f), 324.5678f, 50f),
+                new GangConditionalLocation(new Vector3(516.8485f, 250.2658f, 103.1146f), 350.7859f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(464.1385f, 226.9263f, 102.5122f), 67.93208f, 75f),
+                new GangConditionalLocation(new Vector3(462.139f, 222.349f, 102.2742f), 245.8917f, 75f),
+            }
+        };//Downtown Vinewood
+        GangDens.Add(PavanoDen1);
+        GangDens.Add(LupisellaDen1);
+        GangDens.Add(MessinaDen1);
+        GangDens.Add(AncelottiDen1);
+        GangDens.Add(GambettiDen1);
+    }
+
+    private void DefaultConfig_GangDens_Ballas()
+    {
+        GangDen BallasDen1 = new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 106,
+            BannerImagePath = "ballas.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
+                new GangConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
+                new GangConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
+                new GangConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 75f),
+                new GangConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 75f),
+                new GangConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
+                new GangConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
+            }
+        };//This is in DAVIS near Grove Street
+        GangDen BallasDen2 = new GangDen()
+        {
+            MapIcon = 106,
+            GangID = "AMBIENT_GANG_BALLAS",
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                    new GangConditionalLocation(new Vector3(166.5394f,-1870.718f,24.05765f),166.9992f,35f),
+                    new GangConditionalLocation(new Vector3(176.6803f,-1856.694f,24.0493f),17.00001f,35f),
+                    new GangConditionalLocation(new Vector3(168.3999f,-1863.078f,24.09362f),89.99988f,35f),
+                    new GangConditionalLocation(new Vector3(177.6906f,-1856.02f,24.07937f),120.7892f,35f),
+                    new GangConditionalLocation(new Vector3(168.0899f,-1862.198f,24.10498f),-175.0005f,35f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(166.1798f,-1860.151f,23.61886f),-22.5675f, 75f),
+            },
+            MenuID = "BallasDenMenu",
+            Name = "Ballas Grove Trap house",
+            FullName = "Ballas Grove Trap house",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "ballas.png",
+            EntrancePosition = new Vector3(171.3143f, -1871.577f, 24.40372f),
+            EntranceHeading = 97.43147f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen BallasDen3 = new GangDen()
+        {
+            MapIcon = 514,
+            GangID = "AMBIENT_GANG_BALLAS",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(141.4837f,-1950.442f,19.1047f),
                     Heading = 21.99992f,
@@ -2350,37 +2376,37 @@ new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6
                     Percentage = 35f,
                     },
                 },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(152.3754f,-1965.335f,18.3794f),
                     Heading = 49.37751f,
                     Percentage = 75f,
                     },
                 },
-                MenuID = "BallasDenMenu",
-                Name = "Ballas Grove street Trap house",
-                FullName = "Ballas Grove street Trap house",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "ballas.png",
-                EntrancePosition = new Vector3(148.9452f, -1960.762f, 19.46201f),
-                EntranceHeading = -128.9999f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-            new GangDen()
-            {
-                ShowsOnDirectory = false,
-                TypeName = "Gang Den",
-                MapIcon = 514,
-                MapIconScale = 1f,
-                ButtonPromptText = "Enter Ballas Hangout",
-                GangID = "AMBIENT_GANG_BALLAS",
-                ItemPreviewPosition = new Vector3(0f, 0f, 0),
-                ItemPreviewHeading = 0f,
-                ExpectedMoney = 0,
-                ExpectedItemAmount = 0,
-                PossiblePedSpawns = new List<ConditionalLocation>() {
+            MenuID = "BallasDenMenu",
+            Name = "Ballas Grove street Trap house",
+            FullName = "Ballas Grove street Trap house",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "ballas.png",
+            EntrancePosition = new Vector3(148.9452f, -1960.762f, 19.46201f),
+            EntranceHeading = -128.9999f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen BallasDen4 = new GangDen()
+        {
+            ShowsOnDirectory = false,
+            TypeName = "Gang Den",
+            MapIcon = 514,
+            MapIconScale = 1f,
+            ButtonPromptText = "Enter Ballas Hangout",
+            GangID = "AMBIENT_GANG_BALLAS",
+            ItemPreviewPosition = new Vector3(0f, 0f, 0),
+            ItemPreviewHeading = 0f,
+            ExpectedMoney = 0,
+            ExpectedItemAmount = 0,
+            PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(7.144477f,-1894.97f,23.12855f),
                     Heading = 146.9997f,
@@ -2407,29 +2433,29 @@ new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6
                     Percentage = 35f,
                     },
                 },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(15.37083f,-1882.745f,22.59842f),
                     Heading = 141.488f,
                     Percentage = 75f,
                     },
                 },
-                MenuID = "BallasDenMenu",
-                Name = "Ballas Covenant Trap house",
-                FullName = "Ballas Covenant Trap house",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "ballas.png",
-                EntrancePosition = new Vector3(5.248489f, -1883.882f, 23.70065f),
-                EntranceHeading = -39.92797f,
-                OpenTime = 0,
-                CloseTime = 24,
-            },
-            new GangDen()
-            {
-                MapIcon = 47,
-                GangID = "AMBIENT_GANG_BALLAS",
-                PossiblePedSpawns = new List<ConditionalLocation>() {
+            MenuID = "BallasDenMenu",
+            Name = "Ballas Covenant Trap house",
+            FullName = "Ballas Covenant Trap house",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "ballas.png",
+            EntrancePosition = new Vector3(5.248489f, -1883.882f, 23.70065f),
+            EntranceHeading = -39.92797f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen BallasDen5 = new GangDen()
+        {
+            MapIcon = 47,
+            GangID = "AMBIENT_GANG_BALLAS",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(225.4509f,-1691.309f,29.29176f),
                     Heading = 0f,
@@ -2456,174 +2482,426 @@ new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6
                     Percentage = 35f,
                     },
                 },
-                PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new GangConditionalLocation() {
                     Location = new Vector3(224.8163f,-1707.909f,28.75177f),
                     Heading = 34.13058f,
                     Percentage = 75f,
                     },
                 },
-                MenuID = "BallasDenMenu",
-                Name = "Ballas hangout",
-                FullName = "Ballas Covenant Trap house",
-                Description = "",
-                IsEnabled = true,
-                BannerImagePath = "ballas.png",
-                EntrancePosition = new Vector3(223.0043f, -1703.303f, 29.69505f),
-                EntranceHeading = -141.9996f,
-                OpenTime = 0,
-                CloseTime = 24,
+            MenuID = "BallasDenMenu",
+            Name = "Ballas hangout",
+            FullName = "Ballas Covenant Trap house",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "ballas.png",
+            EntrancePosition = new Vector3(223.0043f, -1703.303f, 29.69505f),
+            EntranceHeading = -141.9996f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDens.Add(BallasDen1);
+        GangDens.Add(BallasDen2);
+        GangDens.Add(BallasDen3);
+        GangDens.Add(BallasDen4);
+        GangDens.Add(BallasDen5);
+    }
+
+    private void DefaultConfig_GangDens_Families()
+    {
+        GangDen FamiliesDen1 = new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 86,
+            BannerImagePath = "families.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),
+                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 50f),
+                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 50f),
+                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 50f),
+                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 50f),
+                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 50f),
             },
-
-            new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "","VagosDenMenu", "AMBIENT_GANG_MEXICAN") { IsPrimaryGangDen = true,  CanInteractWhenWanted = true, BannerImagePath = "vagos.png",OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 50f),
-                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
-                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 50f),
-                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-new GangConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 75f),
-new GangConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 75f),
-new GangConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 75f),
-new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 75f),
-            } },
-            new GangDen(new Vector3(1193.61f, -1656.411f, 43.02641f), 31.55427f, "Varrios Los Aztecas Den", "","VarriosDenMenu", "AMBIENT_GANG_SALVA") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, BannerImagePath = "varrios.png",OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 50f),
-                new GangConditionalLocation(new Vector3(1189.079f, -1655.169f, 42.358f), 338.5124f, 50f),
-                new GangConditionalLocation(new Vector3(1190.508f, -1648.968f, 41.43568f), 34.16187f, 50f),
-                new GangConditionalLocation(new Vector3(1172.624f, -1645.602f, 36.78029f), 94.79508f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 75f),
+                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 75f),
+                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 75f),
+                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
+            }
+        };//This is in Chamberlain Hills
+        GangDen FamiliesDen2 = new GangDen()
+        {
+            MapIcon = 86,
+            GangID = "AMBIENT_GANG_FAMILY",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(11.67317f,-1434.168f,30.54151f),
+                Heading = -108.9996f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(13.05488f,-1434.443f,30.54151f),
+                Heading = 129.9996f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(22.77389f,-1428.475f,30.53836f),
+                Heading = 175.9996f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(22.58638f,-1430.516f,30.54151f),
+                Heading = 25.99998f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(24.02172f,-1429.669f,30.54151f),
+                Heading = 75.99992f,
+                Percentage = 35f,
+            },
+        },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(25.02328f,-1454.192f,29.77646f),
+                Heading = -36.88154f,
+                Percentage = 75f,
+            },
+        },
+            MenuID = "FamiliesDenMenu",
+            CanInteractWhenWanted = true,
+            Name = "Families OG Hideout 1",
+            FullName = "Families OG Hideout 1",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "families.png",
+            EntrancePosition = new Vector3(16.29254f, -1444.204f, 30.95157f),
+            EntranceHeading = 164.9996f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen FamiliesDen3 = new GangDen()
+        {
+            MapIcon = 86,
+            GangID = "AMBIENT_GANG_FAMILY",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-121.8506f,-1485.729f,33.82269f),
+                Heading = 175.9996f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-111.3437f,-1458.663f,33.52345f),
+                Heading = -51.99996f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-131.6255f,-1463.676f,33.82264f),
+                Heading = -125.9998f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-131.2158f,-1465.14f,33.82258f),
+                Heading = 0f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-130.0541f,-1463.692f,33.82257f),
+                Heading = 122.9998f,
+                Percentage = 35f,
+            },
+        },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-109.2051f,-1456.626f,32.91021f),
+                Heading = -129.7567f,
+                Percentage = 75f,
+            },
+        },
+            MenuID = "FamiliesDenMenu",
+            Name = "Families OG Hideout 2",
+            FullName = "Families OG Hideout 2",
+            Description = "",
+            IsEnabled = true,
+            EntrancePosition = new Vector3(-138.0617f, -1470.718f, 36.99474f),
+            EntranceHeading = -39.2744f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen FamiliesDen4 = new GangDen()
+        {
+            MapIcon = 86,
+            GangID = "AMBIENT_GANG_FAMILY",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-58.05992f,-1507.429f,32.11591f),
+                Heading = -41.99997f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-80.4858f,-1522.49f,34.2426f),
+                Heading = 90.9976f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-63.70837f,-1526.52f,34.24794f),
+                Heading = 41.99997f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-63.93343f,-1524.981f,34.24784f),
+                Heading = 151.9997f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-70.06671f,-1519.742f,34.248f),
+                Heading = -24.99999f,
+                Percentage = 35f,
+            },
+        },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-57.86029f,-1493.169f,31.22089f),
+                Heading = 133.9038f,
+                Percentage = 35f,
+            },
+        },
+            MenuID = "FamiliesDenMenu",
+            Name = "Families OG Hideout3 ",
+            FullName = "Families OG Hideout 3",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "families.png",
+            EntrancePosition = new Vector3(-69.21278f, -1526.623f, 34.23756f),
+            EntranceHeading = -49.99997f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDen FamiliesDen5 = new GangDen()
+        {
+            MapIcon = 86,
+            GangID = "AMBIENT_GANG_FAMILY",
+            PossiblePedSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-144.4888f,-1586.785f,34.84586f),
+                Heading = 117.9993f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-134.4106f,-1591.487f,34.24623f),
+                Heading = 146.9997f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-134.3287f,-1592.902f,34.24641f),
+                Heading = 0f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-135.906f,-1592.25f,34.24649f),
+                Heading = -70.99994f,
+                Percentage = 35f,
+            },
+            new GangConditionalLocation() {
+                Location = new Vector3(-114.2554f,-1596.416f,32.11221f),
+                Heading = -124.9998f,
+                Percentage = 35f,
+            },
+        },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() {
+            new GangConditionalLocation() {
+                Location = new Vector3(-111.1881f,-1597.381f,31.3905f),
+                Heading = 138.7799f,
+                Percentage = 75f,
+            },
+        },
+            MenuID = "FamiliesDenMenu",
+            Name = "Families OG Hideout 4",
+            FullName = "Families OG Hideout 4",
+            Description = "",
+            IsEnabled = true,
+            BannerImagePath = "families.png",
+            EntrancePosition = new Vector3(-140.2153f, -1599.549f, 34.83382f),
+            EntranceHeading = -11f,
+            OpenTime = 0,
+            CloseTime = 24,
+        };
+        GangDens.Add(FamiliesDen1);
+        GangDens.Add(FamiliesDen2);
+        GangDens.Add(FamiliesDen3);
+        GangDens.Add(FamiliesDen4);
+        GangDens.Add(FamiliesDen5);
+    }
+    private void DefaultConfig_GangDens_Lost()
+    {
+        GangDen LostMainDen = new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f, "Lost M.C. Clubhouse", "", "LostDenMenu", "AMBIENT_GANG_LOST")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            MapIcon = 226,
+            BannerImagePath = "lostmc.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-new GangConditionalLocation(new Vector3(1166.678f, -1647.833f, 36.23235f), 132.0248f, 75f),
-new GangConditionalLocation(new Vector3(1157.749f, -1660.837f, 35.93925f), 205.3036f, 75f),
-new GangConditionalLocation(new Vector3(1184.424f, -1652.161f, 39.12302f), 312.0581f, 75f),
-            } },
-            new GangDen(new Vector3(1299.267f, -1752.92f, 53.88011f), 110.3803f, "Marabunta Grande Den", "","MarabunteDenMenu", "AMBIENT_GANG_MARABUNTE") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 78, BannerImagePath = "marabunta.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
-                new GangConditionalLocation(new Vector3(1293.167f, -1748.509f, 53.87848f), 200.1636f, 50f),
-                new GangConditionalLocation(new Vector3(1313.939f, -1771.984f, 54.81713f), 113.8552f, 50f),
-                new GangConditionalLocation(new Vector3(1319.703f, -1775.434f, 54.5059f), 215.1372f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-new GangConditionalLocation(new Vector3(1322.044f, -1768.506f, 54.82401f), 195.1561f, 75f),
-new GangConditionalLocation(new Vector3(1313.927f, -1783.216f, 51.72291f), 109.9802f, 75f),
-            } },
-            new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "","GenericGangDenMenu", "AMBIENT_GANG_CULT") {IsPrimaryGangDen = true,  CanInteractWhenWanted = true,MapIcon = 76, BannerImagePath = "altruist.png",OpenTime = 0,CloseTime = 24, IsEnabled = true, },
-            //new GangDen(new Vector3(-766.3793f, -917.0612f, 21.29704f), 268.4079f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") {  OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-            //    new GangConditionalLocation(new Vector3(-761.3151f, -910.3087f, 19.53444f), 237.0572f, 50f),
-            //    new GangConditionalLocation(new Vector3(-762.3676f, -923.8786f, 18.74619f), 237.6777f, 50f),
-            //    new GangConditionalLocation(new Vector3(-760.9077f, -927.9499f, 18.47775f), 292.1328f, 50f),
-            //    new GangConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
-            //} },
-            new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "","KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, BannerImagePath = "kkangpae.png",  OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(-585.9933f, -776.1322f, 25.01723f), 167.2549f, 50f),
-                new GangConditionalLocation(new Vector3(-581.7299f, -780.7718f, 25.01723f), 66.59444f, 50f),
-                new GangConditionalLocation(new Vector3(-613.7438f, -782.4008f, 25.20246f), 42.77346f, 50f),
-                new GangConditionalLocation(new Vector3(-622.1181f, -768.7686f, 25.95107f), 88.71659f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-new GangConditionalLocation(new Vector3(-610.1835f, -756.0798f, 26.07551f), 266.9069f, 75f),
-new GangConditionalLocation(new Vector3(-618.8381f, -761.884f, 25.46778f), 89.04613f, 75f),
-
-            } },
-            new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "","GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, BannerImagePath = "rednecks.png", OpenTime = 0,CloseTime = 24, IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
-
-                new GangConditionalLocation(new Vector3(957.8521f, 3616.273f, 32.75988f), 56.09721f, 50f),
-                new GangConditionalLocation(new Vector3(959.2394f, 3612.307f, 32.75033f), 138.3261f, 50f),
-                new GangConditionalLocation(new Vector3(969.4822f, 3626.386f, 32.33695f), 17.91204f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
-            {
-new GangConditionalLocation(new Vector3(950.5566f, 3618.955f, 31.88234f), 268.8919f, 75f),
-new GangConditionalLocation(new Vector3(950.8107f, 3622.341f, 31.76403f), 271.0765f, 75f),
-new GangConditionalLocation(new Vector3(950.5989f, 3615.652f, 31.93583f), 271.2046f, 75f),
-
-            } },
-            new GangDen(new Vector3(981.8542f, -103.0203f, 74.84874f), 220.3094f,  "Lost M.C. Clubhouse", "","LostDenMenu", "AMBIENT_GANG_LOST") { IsPrimaryGangDen = true, CanInteractWhenWanted = true, MapIcon = 226, BannerImagePath = "lostmc.png", OpenTime = 0,CloseTime = 24, IsEnabled = true,
-                PossiblePedSpawns = new List<ConditionalLocation>() {
-
                 new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 50f),
                 new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 50f),
                 new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 50f),
                 new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 50f),
                 new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 50f),
             },
-                PossibleVehicleSpawns = new List<ConditionalLocation>()
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 75f),
                 new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 75f),
                 new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 75f),
                 new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
-
             },
-                CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
-                CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
-                CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
-                ItemPreviewPosition = new Vector3(955.3662f, -127.888f, 74.37495f),
-                ItemPreviewHeading = 150.3339f,
-                ItemDeliveryLocations = new List<SpawnPlace>() {
+            CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
+            CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
+            CameraRotation = new Rotator(-14.03436f, 4.840233E-06f, 53.19739f),
+            ItemPreviewPosition = new Vector3(955.3662f, -127.888f, 74.37495f),
+            ItemPreviewHeading = 150.3339f,
+            ItemDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(955.2133f, -133.7419f, 74.44804f),239.5793f),
                     new SpawnPlace(new Vector3(967.6667f, -141.4849f, 74.39858f), 239.8698f),
                     new SpawnPlace(new Vector3(986.6042f, -138.3367f, 73.09078f), 59.13091f),
                     new SpawnPlace(new Vector3(968.5606f, -122.4432f, 74.35313f), 153.9187f),
-                } },
-            new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f,  "Triad Den", "","TriadsDenMenu", "AMBIENT_GANG_WEICHENG") {IsPrimaryGangDen = true,  CanInteractWhenWanted = true, BannerImagePath = "triad.png", OpenTime = 0,CloseTime = 24,IsEnabled = true, PossiblePedSpawns = new List<ConditionalLocation>() {
+                }
+        };
+        GangDen LostDen2 = new GangDen(new Vector3(84.04226f, 3718.52f, 39.78923f), 50.35764f, "Lost M.C. The Range", "", "LostDenMenu", "AMBIENT_GANG_LOST")
+        {
+            CanInteractWhenWanted = true,
+            MapIcon = 226,
+            BannerImagePath = "lostmc.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 35f),
+                new GangConditionalLocation(new Vector3(80.1135f, 3721.855f, 39.74522f), 150.8561f, 35f),
+                new GangConditionalLocation(new Vector3(78.30386f, 3722.036f, 39.74952f), 266.9375f, 35f),
+                new GangConditionalLocation(new Vector3(67.40894f, 3703.18f, 39.75497f), 338.0555f, 35f),
+                new GangConditionalLocation(new Vector3(68.87956f, 3704.888f, 39.75497f), 120.9388f, 35f),
+                new GangConditionalLocation(new Vector3(47.73441f, 3704.631f, 39.75497f), 302.5045f, 35f),
+                new GangConditionalLocation(new Vector3(47.20625f, 3705.412f, 39.75497f), 269.3896f, 35f),
+                new GangConditionalLocation(new Vector3(46.69005f, 3715.68f, 39.73444f), 245.4069f, 35f),
+                new GangConditionalLocation(new Vector3(57.10126f, 3724.255f, 39.72771f), 196.2136f, 35f),
+                new GangConditionalLocation(new Vector3(58.31903f, 3724.607f, 39.72731f), 176.8168f, 35f),
+                new GangConditionalLocation(new Vector3(66.5742f, 3726.808f, 39.71051f), 173.2846f, 35f),
+                new GangConditionalLocation(new Vector3(64.92879f, 3726.43f, 39.7145f), 256.0423f, 35f),
+                new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 35f),
+                new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 35f),
+            },
+            CameraPosition = new Vector3(88.20795f, 3694.343f, 40.96601f),
+            CameraDirection = new Vector3(-0.2029471f, 0.9696398f, -0.1364228f),
+            CameraRotation = new Rotator(-7.840899f, 0f, 11.82144f),
+            ItemPreviewPosition = new Vector3(86.68027f, 3702.844f, 39.09414f),
+            ItemPreviewHeading = 150.3339f,
+            ItemDeliveryLocations = new List<SpawnPlace>() {
+                    new SpawnPlace(new Vector3(86.68027f, 3702.844f, 39.09414f), 168.2432f),
+                }
+        };
+        GangDens.Add(LostMainDen);
+        GangDens.Add(LostDen2);
+    }
 
+    private void DefaultConfig_GangDens_Triads()
+    {
+        GangDen TriadMainDen = new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, "Triad Den", "", "TriadsDenMenu", "AMBIENT_GANG_WEICHENG")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "triad.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
                 new GangConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 50f),
                 new GangConditionalLocation(new Vector3(108.1241f, -817.763f, 31.36724f), 273.9551f, 50f),
                 new GangConditionalLocation(new Vector3(92.21131f, -817.7866f, 31.31864f), 55.81263f, 50f),
                 new GangConditionalLocation(new Vector3(114.8412f, -819.1249f, 31.32478f), 342.2915f, 50f),
-            }, PossibleVehicleSpawns = new List<ConditionalLocation>()
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-new GangConditionalLocation(new Vector3(85.50445f, -818.2582f, 30.74365f), 155.5453f, 75f),
-new GangConditionalLocation(new Vector3(59.77588f, -848.8732f, 30.33472f), 334.658f, 75f),
-new GangConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f, 75f),
-
-            } },
+                new GangConditionalLocation(new Vector3(85.50445f, -818.2582f, 30.74365f), 155.5453f, 75f),
+                new GangConditionalLocation(new Vector3(59.77588f, -848.8732f, 30.33472f), 334.658f, 75f),
+                new GangConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f, 75f),
+            }
         };
-
+        GangDens.Add(TriadMainDen);
+    }
+    private void DefaultConfig_GangDens_Vagos()
+    {
+        GangDen VagosMainDen = new GangDen(new Vector3(967.6899f, -1867.115f, 31.44757f), 176.7243f, "Vagos Den", "", "VagosDenMenu", "AMBIENT_GANG_MEXICAN")
+        {
+            IsPrimaryGangDen = true,
+            CanInteractWhenWanted = true,
+            BannerImagePath = "vagos.png",
+            OpenTime = 0,
+            CloseTime = 24,
+            IsEnabled = true,
+            PossiblePedSpawns = new List<ConditionalLocation>() 
+            {
+                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 50f),
+                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
+                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 50f),
+                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 50f),
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 75f),
+                new GangConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 75f),
+                new GangConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 75f),
+                new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 75f),
+            }
+        };
         GangDen VagosHangout1 = new GangDen()
         {
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(279.9768f,-1957.178f,23.844f),
-Heading = -166.0208f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(281.0413f,-1958.143f,23.8485f),
-Heading = 79.9999f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(289.5965f,-1960.205f,22.51619f),
-Heading = 55.99986f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(289.101f,-1958.489f,22.55319f),
-Heading = -159.0003f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(287.7115f,-1959.962f,22.54695f),
-Heading = -84.99989f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(279.9768f,-1957.178f,23.844f),
+                Heading = -166.0208f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(281.0413f,-1958.143f,23.8485f),
+                Heading = 79.9999f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(289.5965f,-1960.205f,22.51619f),
+                Heading = 55.99986f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(289.101f,-1958.489f,22.55319f),
+                Heading = -159.0003f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(287.7115f,-1959.962f,22.54695f),
+                Heading = -84.99989f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(298.1687f,-1976.326f,21.81265f),
-Heading = 48.75335f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(298.1687f,-1976.326f,21.81265f),
+                Heading = 48.75335f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Trap House 1",
             FullName = "Vagos Trap House",
@@ -2642,39 +2920,39 @@ Percentage = 75f,
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(344.1845f,-1850.748f,27.31188f),
-Heading = -154.9997f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(345.2848f,-1851.904f,27.3096f),
-Heading = 51.99996f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(341.3383f,-1858.817f,27.35466f),
-Heading = -126.9997f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(341.1977f,-1860.319f,27.37708f),
-Heading = 0f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(342.5609f,-1859.336f,27.39991f),
-Heading = 84.99989f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(344.1845f,-1850.748f,27.31188f),
+                Heading = -154.9997f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(345.2848f,-1851.904f,27.3096f),
+                Heading = 51.99996f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(341.3383f,-1858.817f,27.35466f),
+                Heading = -126.9997f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(341.1977f,-1860.319f,27.37708f),
+                Heading = 0f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(342.5609f,-1859.336f,27.39991f),
+                Heading = 84.99989f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(335.3903f,-1836.632f,26.78196f),
-Heading = -135.7316f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(335.3903f,-1836.632f,26.78196f),
+                Heading = -135.7316f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Trap House 2",
             FullName = "Vagos Trap House",
@@ -2692,39 +2970,39 @@ Percentage = 75f,
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(473.6748f,-1729.119f,28.80654f),
-Heading = -39.00011f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(474.325f,-1727.832f,28.87496f),
-Heading = -160.0003f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(464.2597f,-1731.531f,28.81734f),
-Heading = 75.99986f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(463.274f,-1730.221f,28.87736f),
-Heading = -154.0003f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(462.4821f,-1731.81f,28.88963f),
-Heading = -60.99995f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(473.6748f,-1729.119f,28.80654f),
+                Heading = -39.00011f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(474.325f,-1727.832f,28.87496f),
+                Heading = -160.0003f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(464.2597f,-1731.531f,28.81734f),
+                Heading = 75.99986f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(463.274f,-1730.221f,28.87736f),
+                Heading = -154.0003f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(462.4821f,-1731.81f,28.88963f),
+                Heading = -60.99995f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(469.5431f,-1741.667f,28.42751f),
-Heading = 70.88543f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(469.5431f,-1741.667f,28.42751f),
+                Heading = 70.88543f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Trap House 3",
             FullName = "Vagos Trap House",
@@ -2742,39 +3020,39 @@ Percentage = 75f,
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(342.6061f,-1851.355f,27.31567f),
-Heading = -84.99982f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(343.716f,-1851.246f,27.3132f),
-Heading = 122.9998f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(341.6856f,-1858.757f,27.35947f),
-Heading = -125.9998f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(341.8779f,-1860.188f,27.41061f),
-Heading = 0f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(343.2036f,-1859.359f,27.40417f),
-Heading = 85.9999f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(342.6061f,-1851.355f,27.31567f),
+                Heading = -84.99982f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(343.716f,-1851.246f,27.3132f),
+                Heading = 122.9998f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(341.6856f,-1858.757f,27.35947f),
+                Heading = -125.9998f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(341.8779f,-1860.188f,27.41061f),
+                Heading = 0f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(343.2036f,-1859.359f,27.40417f),
+                Heading = 85.9999f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(336.048f,-1836.994f,26.77941f),
-Heading = -133.1032f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(336.048f,-1836.994f,26.77941f),
+                Heading = -133.1032f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Trap House 4",
             FullName = "Vagos Trap House",
@@ -2792,39 +3070,39 @@ Percentage = 75f,
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(364.1315f,-2066.042f,21.74919f),
-Heading = 57.00518f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(356.4194f,-2066.269f,21.27436f),
-Heading = 53.0007f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(355.0307f,-2066.106f,21.15525f),
-Heading = -82.99987f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(363.3668f,-2056.781f,21.71887f),
-Heading = 96.99989f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(362.9595f,-2057.564f,21.68725f),
-Heading = 0f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(364.1315f,-2066.042f,21.74919f),
+                Heading = 57.00518f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(356.4194f,-2066.269f,21.27436f),
+                Heading = 53.0007f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(355.0307f,-2066.106f,21.15525f),
+                Heading = -82.99987f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(363.3668f,-2056.781f,21.71887f),
+                Heading = 96.99989f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(362.9595f,-2057.564f,21.68725f),
+                Heading = 0f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(331.9642f,-2044.172f,20.29884f),
-Heading = -40.4487f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(331.9642f,-2044.172f,20.29884f),
+                Heading = -40.4487f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Hood Hangout",
             FullName = "Vagos Hood Hangout",
@@ -2842,39 +3120,39 @@ Percentage = 75f,
             MapIcon = 47,
             GangID = "AMBIENT_GANG_MEXICAN",
             PossiblePedSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(452.7909f,-1576.325f,32.79226f),
-Heading = -87.99966f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(454.013f,-1577.252f,32.79216f),
-Heading = 10.9994f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(454.2974f,-1575.76f,32.79229f),
-Heading = 135.9998f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(459.7767f,-1577.874f,32.79194f),
-Heading = -112.9996f,
-Percentage = 35f,
-},
-new GangConditionalLocation() {
-Location = new Vector3(447.8612f,-1568.847f,32.79542f),
-Heading = 54.99996f,
-Percentage = 35f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(452.7909f,-1576.325f,32.79226f),
+                Heading = -87.99966f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(454.013f,-1577.252f,32.79216f),
+                Heading = 10.9994f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(454.2974f,-1575.76f,32.79229f),
+                Heading = 135.9998f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(459.7767f,-1577.874f,32.79194f),
+                Heading = -112.9996f,
+                Percentage = 35f,
+                },
+                new GangConditionalLocation() {
+                Location = new Vector3(447.8612f,-1568.847f,32.79542f),
+                Heading = 54.99996f,
+                Percentage = 35f,
+                },
+                },
             PossibleVehicleSpawns = new List<ConditionalLocation>() {
-new GangConditionalLocation() {
-Location = new Vector3(467.802f,-1579.866f,28.58691f),
-Heading = -129.7965f,
-Percentage = 75f,
-},
-},
+                new GangConditionalLocation() {
+                Location = new Vector3(467.802f,-1579.866f,28.58691f),
+                Heading = -129.7965f,
+                Percentage = 75f,
+                },
+                },
             MenuID = "VagosDenMenu",
             Name = "Vagos Projects",
             FullName = "Vagos Projects",
@@ -2888,6 +3166,7 @@ Percentage = 75f,
             CloseTime = 24,
         };
 
+        GangDens.Add(VagosMainDen);
         GangDens.Add(VagosHangout1);
         GangDens.Add(VagosHangout2);
         GangDens.Add(VagosHangout3);
@@ -2895,6 +3174,7 @@ Percentage = 75f,
         GangDens.Add(VagosHangout5);
         GangDens.Add(VagosHangout6);
     }
+
     private void DefaultConfig_ScrapYards()
     {
         ScrapYards = new List<ScrapYard>() {
@@ -3088,4 +3368,9 @@ Percentage = 75f,
     //    //OldPossibleLocations.IllicitMarketplaces.AddRange(illicitMarketplaces);
     //    //Serialization.SerializeParam(OldPossibleLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LosSantos2008\\Locations_LosSantos2008.xml");
     //}
+
+
+
+
+
 }

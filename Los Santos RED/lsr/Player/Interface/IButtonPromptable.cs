@@ -54,6 +54,8 @@ namespace LosSantosRED.lsr.Interface
         Rage.Object CurrentLookedAtObject { get; }
         bool CanSitOnCurrentLookedAtObject { get; }
         Inventory Inventory { get; set; }
+        VehicleExt CurrentVehicle { get; }
+        VehicleExt InterestedVehicle { get; }
         // bool IsSitting { get; }
         //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }

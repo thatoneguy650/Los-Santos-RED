@@ -35,7 +35,8 @@ namespace LosSantosRED.lsr.Interface
       //  bool IsHoldingUp { get; set; }
         bool IsIncapacitated { get; }
         bool IsInVehicle { get; }
-       // bool IsLootingBody { get; set; }
+
+        // bool IsLootingBody { get; set; }
         bool IsMoveControlPressed { get; }
        // bool IsPerformingActivity { get; }
      //   bool IsSitting { get; }

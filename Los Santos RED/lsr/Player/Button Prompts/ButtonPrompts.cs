@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using RAGENativeUI.Elements;
@@ -46,7 +47,8 @@ public class ButtonPrompts
 
     private void AttemptAddVehiclePrompts()
     {
-        if(addedPromptGroup || Player.CurrentLookedAtVehicle == null || !Player.CurrentLookedAtVehicle.Vehicle.Exists() || !Player.CurrentLookedAtVehicle.HasBeenEnteredByPlayer || Player.CurrentLookedAtVehicle.Vehicle.Speed >= 0.5f)
+        VehicleExt toConsider = Player.InterestedVehicle;
+        if(addedPromptGroup || toConsider == null || !toConsider.Vehicle.Exists() || !toConsider.HasBeenEnteredByPlayer || toConsider.Vehicle.Speed >= 0.5f)
         {
             RemovePrompts("VehicleInteract");
             return;

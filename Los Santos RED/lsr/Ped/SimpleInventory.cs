@@ -31,7 +31,6 @@ public class SimpleInventory
             }
         }
     }
-
     public InventoryItem Get(ModItem modItem)
     {
         return ItemsList.FirstOrDefault(x => x.ModItem.Name == modItem.Name);
@@ -77,7 +76,6 @@ public class SimpleInventory
         }
         return false;
     }
-
     public void AddRandomItems(IModItems modItems)
     {
         if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
@@ -94,28 +92,19 @@ public class SimpleInventory
             }
         }
     }
-
-    public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu VehicleInteractMenu)
     {
-
-        UIMenu UnloadBodiesSubMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Inventory");
+        UIMenu VehicleInventoryItem = menuPool.AddSubMenu(VehicleInteractMenu, "Inventory");
         VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage vehicle Inventory.";
-        UnloadBodiesSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
-
-        foreach(InventoryItem modItem in ItemsList)
+        VehicleInventoryItem.SetBannerType(EntryPoint.LSRedColor);
+        List<InventoryItem> totalItems = new List<InventoryItem>();
+        totalItems.AddRange(ItemsList); 
+        totalItems.AddRange(player.Inventory.ItemsList.ToList());
+        foreach (InventoryItem inventoryItem in totalItems)
         {
-            UIMenuItem unloadBody = new UIMenuItem($"Unload {storedBody.PedExt.Name}", $"Unload {storedBody.PedExt.Name} from {storedBody.VehicleDoorSeatData?.SeatName}");
-            unloadBody.Activated += (menu, item) =>
-            {
+            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem);
 
-                UnloadBodiesSubMenu.Visible = false;
-            };
-            UnloadBodiesSubMenu.AddItem(unloadBody);
         }
     }
-
-
-
 }
 

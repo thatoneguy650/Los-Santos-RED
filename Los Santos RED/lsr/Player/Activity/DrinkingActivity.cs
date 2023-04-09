@@ -119,12 +119,12 @@ namespace LosSantosRED.lsr.Player
                 {
                     if (!IsFinishedWithSip)
                     {
-                        if (Settings.SettingsManager.DebugSettings.DrinkStartsBase)
+                        if (Settings.SettingsManager.ActivitySettings.DrinkStartsBase)
                         {
                             StartBaseAnimation();
                         }
                         GameTimeLastChangedIdle = Game.GameTime;
-                        GameTimeBetweenDrinks = Settings.SettingsManager.DebugSettings.DrinkTimeBetween;// RandomItems.GetRandomNumber(1500, 2500);
+                        GameTimeBetweenDrinks = Settings.SettingsManager.ActivitySettings.DrinkTimeBetween;// RandomItems.GetRandomNumber(1500, 2500);
                         IsFinishedWithSip = true;
                         EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
                     }

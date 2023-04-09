@@ -75,9 +75,18 @@ public class SettingsManager
 
 
 
-
-
-
+    [Category("Player")]
+    [Description("Drag Settings")]
+    public DragSettings DragSettings { get; set; } = new DragSettings();
+    [Category("Player")]
+    [Description("Binocular Settings")]
+    public BinocularSettings BinocularSettings { get; set; } = new BinocularSettings();
+    [Category("Player")]
+    [Description("Shovel Settings")]
+    public ShovelSettings ShovelSettings { get; set; } = new ShovelSettings();
+    [Category("Player")]
+    [Description("Door Toggle Settings")]
+    public DoorToggleSettings DoorToggleSettings { get; set; } = new DoorToggleSettings();
 
 
     [Category("World")]
@@ -158,7 +167,7 @@ public class SettingsManager
         {
             RespawnSettings, VehicleSettings, PedSwapSettings, ActivitySettings, SprintSettings, ViolationSettings, RecoilSettings, SwaySettings, SelectorSettings, InvestigationSettings, CriminalHistorySettings, ScannerSettings, KeySettings, PlayerOtherSettings, CellphoneSettings,
             PoliceSettings,GangSettings,CivilianSettings, EMSSettings,FireSettings, DamageSettings, WorldSettings, TaskSettings, TimeSettings, WeatherSettings, VanillaSettings,DebugSettings,PerformanceSettings,
-            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings
+            UIGeneralSettings,LSRHUDSettings,BarDisplaySettings,ActionWheelSettings, NeedsSettings, RoadblockSettings, PoliceSpawnSettings,PoliceTaskSettings,PoliceSpeechSettings,PlayerSpeechSettings,FlashlightSettings, SecuritySettings,DragSettings,BinocularSettings,DoorToggleSettings,ShovelSettings
 
         };
 

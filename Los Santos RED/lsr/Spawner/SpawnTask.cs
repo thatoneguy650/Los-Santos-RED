@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using LosSantosRED.lsr.Interface;
 using System.Drawing;
 using ExtensionsMethods;
+using System.Windows.Media;
 
 public abstract class SpawnTask
 {
@@ -74,4 +75,15 @@ public abstract class SpawnTask
         }
     }
     public abstract void AttemptSpawn();
+    protected virtual void PlacePed(Ped ped)
+    {
+        if (PlacePedOnGround)
+        {
+            float resultArg = ped.Position.Z;
+            if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, ped.Position.Z + 1f, out resultArg, false))
+            {
+                ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+            }
+        }
+    }
 }

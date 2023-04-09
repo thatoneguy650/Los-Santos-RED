@@ -244,14 +244,15 @@ public class SecurityGuardSpawnTask : SpawnTask
     }
     private void SetupPed(Ped ped)
     {
-        if (PlacePedOnGround)
-        {
-            float resultArg = ped.Position.Z;
-            if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
-            {
-                ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-            }
-        }
+        //if (PlacePedOnGround)
+        //{
+        //    float resultArg = ped.Position.Z;
+        //    if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
+        //    {
+        //        ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
+        //    }
+        //}
+        PlacePed(ped);
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
         ped.MaxHealth = DesiredHealth;

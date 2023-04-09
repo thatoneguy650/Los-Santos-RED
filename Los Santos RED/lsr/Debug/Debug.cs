@@ -732,102 +732,102 @@ public class Debug
         
         //AnimationTester();
 
-        return;
-        GameFiber.StartNew(delegate
-        {
-            VehicleExt ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
-            GameFiber.Yield();
-            bool freezePos = false;
-            AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
+        //return;
+        //GameFiber.StartNew(delegate
+        //{
+        //    VehicleExt ClosestVehicle = World.Vehicles.GetClosestVehicleExt(Player.Character.Position, true, 5f);
+        //    Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionRight(10f).Around2D(10f));
+        //    GameFiber.Yield();
+        //    bool freezePos = false;
+        //    AnimationDictionary.RequestAnimationDictionay("timetable@floyd@cryingonbed@base");
 
-            if (ClosestVehicle!= null && ClosestVehicle.Vehicle.Exists() && coolguy.Exists())
-            {
-                //coolguy.Kill();
-                //NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
-               // coolguy.IsPersistent = true;
-               // coolguy.BlockPermanentEvents = true;
-                while (ClosestVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O) && coolguy.Exists())
-                {
-                    bool hasBoot = ClosestVehicle.Vehicle.HasBone("boot");
-                    Vector3 BootPosition = ClosestVehicle.Vehicle.GetBonePosition("boot");
-                    Vector3 RootPosition = ClosestVehicle.Vehicle.GetBonePosition(0);
-
-
-                    float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
-                    float ZOffset = BootPosition.Z - RootPosition.Z;// BootPosition.DistanceTo2D(RootPosition);
+        //    if (ClosestVehicle!= null && ClosestVehicle.Vehicle.Exists() && coolguy.Exists())
+        //    {
+        //        //coolguy.Kill();
+        //        //NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
+        //       // coolguy.IsPersistent = true;
+        //       // coolguy.BlockPermanentEvents = true;
+        //        while (ClosestVehicle.Vehicle.Exists() && !Game.IsKeyDownRightNow(Keys.O) && coolguy.Exists())
+        //        {
+        //            bool hasBoot = ClosestVehicle.Vehicle.HasBone("boot");
+        //            Vector3 BootPosition = ClosestVehicle.Vehicle.GetBonePosition("boot");
+        //            Vector3 RootPosition = ClosestVehicle.Vehicle.GetBonePosition(0);
 
 
+        //            float YOffset = -1 * BootPosition.DistanceTo2D(RootPosition);
+        //            float ZOffset = BootPosition.Z - RootPosition.Z;// BootPosition.DistanceTo2D(RootPosition);
 
 
 
-                    int bootBoneIndex = ClosestVehicle.Vehicle.GetBoneIndex("boot");
-
-                    Vector3 AboveVehiclePosition = ClosestVehicle.Vehicle.GetOffsetPositionUp(Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset);
-                    Vector3 FinalPosition = NativeHelper.GetOffsetPosition(NativeHelper.GetOffsetPosition(BootPosition, ClosestVehicle.Vehicle.Heading, Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset), ClosestVehicle.Vehicle.Heading - 90f, Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset);
-                    FinalPosition.Z = AboveVehiclePosition.Z;
-
-                    Rage.Debug.DrawArrowDebug(BootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
-                    Rage.Debug.DrawArrowDebug(AboveVehiclePosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Black);
-                    Rage.Debug.DrawArrowDebug(FinalPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Green);
-
-                    Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Purple);
-
-                    Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
-
-                    if (Game.IsKeyDownRightNow(Keys.I))
-                    {
-                        freezePos = !freezePos;
-                        if(freezePos)
-                        {
-                            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, Settings.SettingsManager.DebugSettings.Draw_BoneIndex, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXOffset, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYOffset + YOffset, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZOffset + ZOffset, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyXRotation, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyYRotation, 
-                                Settings.SettingsManager.DebugSettings.Draw_LoadBodyZRotation, 
-                                false, false, false, Settings.SettingsManager.DebugSettings.Drag_UseBasicAttachIfPed, Settings.SettingsManager.DebugSettings.Drag_Euler, Settings.SettingsManager.DebugSettings.Drag_OffsetIsRelative, false);
-                            //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, bootBoneIndex, FinalPosition.X, FinalPosition.Y, FinalPosition.Z, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, false, false);
-                            GameFiber.Wait(100);
-                            NativeFunction.Natives.TASK_PLAY_ANIM(coolguy, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
-                            NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(coolguy, "timetable@floyd@cryingonbed@base", "base", 1.0f);
-                            Game.DisplaySubtitle("ATTACHED");
-                        }
-                        else
-                        {
-                            coolguy.Detach();
-                            Game.DisplaySubtitle("DETACHED");
-                        }
 
 
-                        //if(!freezePos)
-                        //{
-                        //    coolguy.BlockPermanentEvents = true;
-                        //    coolguy.IsRagdoll = true;
-                        //    NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
-                        //}
-                        GameFiber.Sleep(500);
-                    }
-                    //if(freezePos)
-                    //{
-                    //    coolguy.Position = FinalPosition;
-                    //}
-                    Game.DisplayHelp("PRESS O TO CANCEL, I to Drop");
-                    GameFiber.Yield();
-                }
+        //            int bootBoneIndex = ClosestVehicle.Vehicle.GetBoneIndex("boot");
 
-            }
+        //            Vector3 AboveVehiclePosition = ClosestVehicle.Vehicle.GetOffsetPositionUp(Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+        //            Vector3 FinalPosition = NativeHelper.GetOffsetPosition(NativeHelper.GetOffsetPosition(BootPosition, ClosestVehicle.Vehicle.Heading, Settings.SettingsManager.DragSettings.LoadBodyXOffset), ClosestVehicle.Vehicle.Heading - 90f, Settings.SettingsManager.DragSettings.LoadBodyYOffset);
+        //            FinalPosition.Z = AboveVehiclePosition.Z;
+
+        //            Rage.Debug.DrawArrowDebug(BootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Yellow);
+        //            Rage.Debug.DrawArrowDebug(AboveVehiclePosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Black);
+        //            Rage.Debug.DrawArrowDebug(FinalPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Green);
+
+        //            Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Purple);
+
+        //            Rage.Debug.DrawArrowDebug(RootPosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+
+        //            if (Game.IsKeyDownRightNow(Keys.I))
+        //            {
+        //                freezePos = !freezePos;
+        //                if(freezePos)
+        //                {
+        //                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, Settings.SettingsManager.DragSettings.BoneIndex, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyXOffset, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyYOffset + YOffset, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyZOffset + ZOffset, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyXRotation, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyYRotation, 
+        //                        Settings.SettingsManager.DragSettings.LoadBodyZRotation, 
+        //                        false, false, false, Settings.SettingsManager.DragSettings.UseBasicAttachIfPed, Settings.SettingsManager.DragSettings.Euler, Settings.SettingsManager.DragSettings.OffsetIsRelative, false);
+        //                    //NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY(coolguy, ClosestVehicle.Vehicle, bootBoneIndex, FinalPosition.X, FinalPosition.Y, FinalPosition.Z, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, false, false);
+        //                    GameFiber.Wait(100);
+        //                    NativeFunction.Natives.TASK_PLAY_ANIM(coolguy, "timetable@floyd@cryingonbed@base", "base", 8.0f, -8.0f, -1, 2, 0, false, false, false);
+        //                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(coolguy, "timetable@floyd@cryingonbed@base", "base", 1.0f);
+        //                    Game.DisplaySubtitle("ATTACHED");
+        //                }
+        //                else
+        //                {
+        //                    coolguy.Detach();
+        //                    Game.DisplaySubtitle("DETACHED");
+        //                }
 
 
-            if (coolguy.Exists())
-            {
-                coolguy.Delete();
-            }
+        //                //if(!freezePos)
+        //                //{
+        //                //    coolguy.BlockPermanentEvents = true;
+        //                //    coolguy.IsRagdoll = true;
+        //                //    NativeFunction.Natives.SET_PED_TO_RAGDOLL(coolguy, -1, -1, 0, false, false, false);
+        //                //}
+        //                GameFiber.Sleep(500);
+        //            }
+        //            //if(freezePos)
+        //            //{
+        //            //    coolguy.Position = FinalPosition;
+        //            //}
+        //            Game.DisplayHelp("PRESS O TO CANCEL, I to Drop");
+        //            GameFiber.Yield();
+        //        }
+
+        //    }
+
+
+        //    if (coolguy.Exists())
+        //    {
+        //        coolguy.Delete();
+        //    }
 
 
 
-        }, "Run Debug Logic");
+        //}, "Run Debug Logic");
 
 
 
@@ -1065,18 +1065,18 @@ public class Debug
 
 
 
-        if (!Settings.SettingsManager.DebugSettings.DoorToggle_IsHood)//is trunk
+        if (RandomItems.RandomPercent(50f))//is trunk
         {
             float length = chosenVehicle.Vehicle.Model.Dimensions.Y;
             DoorTogglePosition = chosenVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkHeading, (-1 * length/2) + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkOffset);
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.TrunkHeading, (-1 * length/2) + Settings.SettingsManager.DoorToggleSettings.TrunkOffset);
             DoorToggleHeading = chosenVehicle.Vehicle.Heading;
         }
         else
         {
             float length = chosenVehicle.Vehicle.Model.Dimensions.Y;
             DoorTogglePosition = chosenVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_HoodHeading, (length / 2) + Settings.SettingsManager.DebugSettings.DoorToggle_HoodOffset);
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, chosenVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.HoodHeading, (length / 2) + Settings.SettingsManager.DoorToggleSettings.HoodOffset);
             DoorToggleHeading = chosenVehicle.Vehicle.Heading - 180f;
         }
 
@@ -1473,59 +1473,59 @@ public class Debug
     }
     private void SpawnAttachedRagdoll()
     {
-        GameFiber.StartNew(delegate
-        {
-            Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-            Rage.Object leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
-            GameFiber.Yield();
-            if (coolguy.Exists())
-            {
-                coolguy.BlockPermanentEvents = true;
-                coolguy.KeepTasks = true;
-                coolguy.Kill();
-                GameFiber.Sleep(500);
-                if (coolguy.Exists() && leftHandObject.Exists())
-                {
-                    AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
-                    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_drag_plyr", 2.0f, -2.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);
+        //GameFiber.StartNew(delegate
+        //{
+        //    Ped coolguy = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+        //    Rage.Object leftHandObject = new Rage.Object("ng_proc_cigarette01a", Game.LocalPlayer.Character.GetOffsetPositionFront(2f).Around2D(2f));
+        //    GameFiber.Yield();
+        //    if (coolguy.Exists())
+        //    {
+        //        coolguy.BlockPermanentEvents = true;
+        //        coolguy.KeepTasks = true;
+        //        coolguy.Kill();
+        //        GameFiber.Sleep(500);
+        //        if (coolguy.Exists() && leftHandObject.Exists())
+        //        {
+        //            AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
+        //            NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "combat@drag_ped@", "injured_drag_plyr", 2.0f, -2.0f, -1, (int)AnimationFlags.Loop, 0, false, false, false);
                     
-                    NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(coolguy, Player.Character, false);
-                    leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
-                    NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolguy, leftHandObject, 
-                        NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"), //bone 1
-                        NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"),// bone 2
-                        Settings.SettingsManager.DebugSettings.DragAttach1X, Settings.SettingsManager.DebugSettings.DragAttach1Y, Settings.SettingsManager.DebugSettings.DragAttach1Z,
-                        Settings.SettingsManager.DebugSettings.DragAttach2X, Settings.SettingsManager.DebugSettings.DragAttach2Y, Settings.SettingsManager.DebugSettings.DragAttach2Z,
-                        Settings.SettingsManager.DebugSettings.DragAttach3X, Settings.SettingsManager.DebugSettings.DragAttach3Y, Settings.SettingsManager.DebugSettings.DragAttach3Z,
-                        100000.0f,//break force
-                        Settings.SettingsManager.DebugSettings.DragFixedRotation, //fixed rotation
-                        true, //DoInitialWarp
-                        false, //collision
-                        false, //teleport
-                        1 //RotationORder
-                        );
+        //            NativeFunction.Natives.SET_ENTITY_NO_COLLISION_ENTITY(coolguy, Player.Character, false);
+        //            leftHandObject.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, "BONETAG_PELVIS"), Vector3.Zero, Rotator.Zero);
+        //            NativeFunction.Natives.ATTACH_ENTITY_TO_ENTITY_PHYSICALLY(coolguy, leftHandObject, 
+        //                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"), //bone 1
+        //                NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", coolguy, "BONETAG_SPINE3"),// bone 2
+        //                Settings.SettingsManager.DragSettings.Attach1X, Settings.SettingsManager.DragSettings.Attach1Y, Settings.SettingsManager.DragSettings.Attach1Z,
+        //                Settings.SettingsManager.DragSettings.Attach2X, Settings.SettingsManager.DragSettings.Attach2Y, Settings.SettingsManager.DragSettings.Attach2Z,
+        //                Settings.SettingsManager.DragSettings.Attach3X, Settings.SettingsManager.DragSettings.Attach3Y, Settings.SettingsManager.DragSettings.Attach3Z,
+        //                100000.0f,//break force
+        //                Settings.SettingsManager.DragSettings.FixedRotation, //fixed rotation
+        //                true, //DoInitialWarp
+        //                false, //collision
+        //                false, //teleport
+        //                1 //RotationORder
+        //                );
 
-                    //"BONETAG_SPINE3"
-                    //"BONETAG_PELVIS"
-                    //0.1,0.3,-0.1
-                    //0,0,0
-                    //180.90,0
-                }
-            }
-            while (coolguy.Exists() && leftHandObject.Exists() && !Game.IsKeyDownRightNow(Keys.Q) && ModController.IsRunning)
-            {
-                Game.DisplayHelp("Press Q to Stop");
-                GameFiber.Yield();
-            }
-            if (coolguy.Exists())
-            {
-                coolguy.Delete();
-            }
-            if (leftHandObject.Exists())
-            {
-                leftHandObject.Delete();
-            }
-        }, "Run Debug Logic");
+        //            //"BONETAG_SPINE3"
+        //            //"BONETAG_PELVIS"
+        //            //0.1,0.3,-0.1
+        //            //0,0,0
+        //            //180.90,0
+        //        }
+        //    }
+        //    while (coolguy.Exists() && leftHandObject.Exists() && !Game.IsKeyDownRightNow(Keys.Q) && ModController.IsRunning)
+        //    {
+        //        Game.DisplayHelp("Press Q to Stop");
+        //        GameFiber.Yield();
+        //    }
+        //    if (coolguy.Exists())
+        //    {
+        //        coolguy.Delete();
+        //    }
+        //    if (leftHandObject.Exists())
+        //    {
+        //        leftHandObject.Delete();
+        //    }
+        //}, "Run Debug Logic");
     }
 
     private void CarChanePos()
@@ -1559,22 +1559,22 @@ public class Debug
             Position = VehicleToChange.GetBonePosition("numberplate");
 
 
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
             return SpawnPosition;
 
             VehicleToChange.GetBoneAxes("numberplate", out Right, out Forward, out Up);
-            return Vector3.Add(Forward * -1.0f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);
+            return Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
         }
         else if (VehicleToChange.HasBone("boot"))
         {
             EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
             Position = VehicleToChange.GetBonePosition("boot");
 
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
             return SpawnPosition;
 
             VehicleToChange.GetBoneAxes("boot", out Right, out Forward, out Up);
-            return Vector3.Add(Forward * -1.75f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);//return Vector3.Add(Forward * -1.75f, Position);
+            return Vector3.Add(Forward * -1.75f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);//return Vector3.Add(Forward * -1.75f, Position);
         }
         else if (VehicleToChange.IsBike)
         {
@@ -1587,12 +1587,12 @@ public class Debug
             Position = VehicleToChange.GetBonePosition("bumper_r");
 
 
-            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.DebugSettings.PlateTheftFloat);
+            Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
             return SpawnPosition;
 
 
             VehicleToChange.GetBoneAxes("bumper_r", out Right, out Forward, out Up);
-            Position = Vector3.Add(Forward * -1.0f * Settings.SettingsManager.DebugSettings.PlateTheftFloat, Position);
+            Position = Vector3.Add(Forward * -1.0f * Settings.SettingsManager.ActivitySettings.PlateTheftFloat, Position);
             return Vector3.Add(Right * 0.25f, Position);
         }
         else

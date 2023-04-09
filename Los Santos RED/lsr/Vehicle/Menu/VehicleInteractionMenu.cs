@@ -19,18 +19,19 @@ public class VehicleInteractionMenu
     {
         VehicleExt = vehicleExt;
     }
-    public void ShowInteractionMenu(bool isInvehicle, IWeapons weapons, IModItems modItems)
+    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems)
     {
         CreateInteractionMenu();
-        if (!isInvehicle)
+        if (!player.IsInVehicle)
         {
             VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu);
         }
         VehicleExt.WeaponStorage.CreateInteractionMenu(MenuPool, VehicleInteractMenu, weapons, modItems);
-        if(!isInvehicle)
+        if(!player.IsInVehicle)
         {
             VehicleExt.CreateDoorMenu(MenuPool, VehicleInteractMenu);
         }
+        VehicleExt.VehicleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu);
         VehicleInteractMenu.Visible = true;
         ProcessMenu();
     }

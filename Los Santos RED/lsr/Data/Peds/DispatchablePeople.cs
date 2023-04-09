@@ -38,6 +38,7 @@ public class DispatchablePeople : IDispatchablePeople
     private List<DispatchablePerson> BlueEMTs;
     private List<DispatchablePerson> LostMCPeds;
     private List<DispatchablePerson> VagosPeds;
+    private List<DispatchablePerson> DiablosPeds;
     private List<DispatchablePerson> FamiliesPeds;
     private List<DispatchablePerson> BallasPeds;
     private List<DispatchablePerson> MarabuntaPeds;
@@ -1230,6 +1231,36 @@ public class DispatchablePeople : IDispatchablePeople
             new DispatchablePerson("g_m_y_mexgoon_03",30,30,5,10,400,600,0,1) { DebugName = "VagosMale3" },
             new DispatchablePerson("g_f_y_vagos_01",10,10,5,10,400,600,0,1) { DebugName = "VagosFemale1" },
         };
+        DiablosPeds = new List<DispatchablePerson>() {
+            new DispatchablePerson("mp_m_freemode_01",30,30,5,10,400,600,0,1) { 
+                DebugName = "DiablosMale1",
+                OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" },
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedComponent>() {
+                     new PedComponent(2, 1, 4, 0),
+                     new PedComponent(3, 18, 0, 0),
+                     new PedComponent(4, 1, 8, 0),
+                     new PedComponent(6, 7, 0, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 15, 0, 0),
+                     new PedComponent(11, 224, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0,14,3), })
+            },
+            new DispatchablePerson("mp_m_freemode_01",30,30,5,10,400,600,0,1) { 
+                DebugName = "DiablosMale2",
+                OverrideVoice = new List<string>() { "A_M_Y_BUSINESS_01_WHITE_FULL_01", "A_M_Y_BUSINESS_02_WHITE_FULL_01", "A_M_M_SKATER_01_WHITE_FULL_01" },
+                RandomizeHead = true,
+                RequiredVariation = new PedVariation(new List<PedComponent>() {
+                    new PedComponent(2, 4, 0, 0),
+                    new PedComponent(3, 18, 0, 0),
+                     new PedComponent(4, 9, 0, 0),
+                     new PedComponent(6, 7, 0, 0),
+                     new PedComponent(7, 0, 0, 0),
+                     new PedComponent(8, 15, 0, 0),
+                     new PedComponent(11, 224, 0, 0) },new List<PedPropComponent>() { new PedPropComponent(0,14,2), })
+            },
+        };
+
+
         FamiliesPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("g_m_y_famca_01",30,30,5,10,400,600,0,1) { DebugName = "FamiliesMale1" },
             new DispatchablePerson("g_m_y_famdnf_01",30,30,5,10,400,600,0,1) { DebugName = "FamiliesMale2" },
@@ -1479,6 +1510,7 @@ public class DispatchablePeople : IDispatchablePeople
         //Gangs
         PeopleGroupLookup.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        PeopleGroupLookup.Add(new DispatchablePersonGroup("DiablosPeds", DiablosPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
         PeopleGroupLookup.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
@@ -1592,6 +1624,7 @@ public class DispatchablePeople : IDispatchablePeople
         //Gangs
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("DiablosPeds", DiablosPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
         PeopleGroupLookup_Old.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));
@@ -7381,6 +7414,7 @@ public class DispatchablePeople : IDispatchablePeople
         //Gangs
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("LostMCPeds", LostMCPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("VagosPeds", VagosPeds));
+        PeopleConfig_EUP.Add(new DispatchablePersonGroup("DiablosPeds", DiablosPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("FamiliesPeds", FamiliesPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("BallasPeds", BallasPeds));
         PeopleConfig_EUP.Add(new DispatchablePersonGroup("MarabuntaPeds", MarabuntaPeds));

@@ -71,6 +71,7 @@ public class LocationDispatcher
                     GameFiber.Yield();
                 }
             }
+            GameFiber.Yield();
             if (ps.PossibleVehicleSpawns != null)
             {
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)

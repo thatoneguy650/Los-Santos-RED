@@ -348,6 +348,7 @@ namespace Mod
         public bool IsStunned { get; private set; }
         public bool IsTransacting { get; set; }
         public bool IsVisiblyArmed { get; set; }
+        public VehicleExt InterestedVehicle => IsInVehicle ? CurrentVehicle : CurrentLookedAtVehicle;
         public bool IsWanted => wantedLevel > 0;
         public Vehicle LastFriendlyVehicle { get; set; }
         public int LastSeatIndex => -1;
@@ -902,12 +903,20 @@ namespace Mod
         }
         public void ShowVehicleInteractMenu()
         {
-            if(CurrentLookedAtVehicle == null || !CurrentLookedAtVehicle.Vehicle.Exists())
+            if(InterestedVehicle == null || !InterestedVehicle.Vehicle.Exists())
             {
                 return;
             }
-            CurrentLookedAtVehicle.VehicleInteractionMenu.ShowInteractionMenu(IsInVehicle, Weapons, ModItems);
-            
+            if(!IsInVehicle)
+            {
+                VehicleDoorSeatData vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 5.0f, VehicleSeatDoorData);
+                if(vdsd == null)
+                {
+                    return;
+                }
+                ActivityManager.ToggleDoor(vdsd.DoorID,true);
+            }
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems);
         }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);

@@ -137,7 +137,7 @@ public class DoorToggle : DynamicActivity
         EntryPoint.WriteToConsole($"DoorID: {DoorID}");
         animDict = "veh@std@ds@enter_exit";
         anim = "d_close_out";
-        AnimationToggleTime = Settings.SettingsManager.DebugSettings.DefaultAnimationTime;
+        AnimationToggleTime = Settings.SettingsManager.DoorToggleSettings.DefaultAnimationTime;
         bool isOpen = TargetVehicle != null && TargetVehicle.Vehicle.Exists() && TargetVehicle.Vehicle.Doors[DoorID].IsOpen;
         if (DoorID == 5 || DoorID == 4)
         {      
@@ -146,11 +146,11 @@ public class DoorToggle : DynamicActivity
 
             if(isOpen)
             {
-                AnimationToggleTime = Settings.SettingsManager.DebugSettings.CloseHoodAnimationTime;
+                AnimationToggleTime = Settings.SettingsManager.DoorToggleSettings.CloseHoodAnimationTime;
             }
             else
             {
-                AnimationToggleTime = Settings.SettingsManager.DebugSettings.OpenHoodAnimationTime;
+                AnimationToggleTime = Settings.SettingsManager.DoorToggleSettings.OpenHoodAnimationTime;
             }
         }
         else
@@ -197,7 +197,7 @@ public class DoorToggle : DynamicActivity
             {
                 NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", TargetVehicle.Vehicle.Driver, TargetVehicle.Vehicle, 27, -1);
             }
-            if (Settings.SettingsManager.DebugSettings.DoorToggle_ShowMarker)
+            if (Settings.SettingsManager.DoorToggleSettings.ShowMarker)
             {
                 Rage.Debug.DrawArrowDebug(DoorTogglePosition, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
                 Game.DisplaySubtitle($"DesiredHeading: {DoorToggleHeading} Current:{Math.Round(Player.Character.Heading, 2)}");
@@ -244,7 +244,7 @@ public class DoorToggle : DynamicActivity
 
             float length = TargetVehicle.Vehicle.Model.Dimensions.Y;
             DoorTogglePosition = TargetVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkHeading, (-1 * length / 2) + Settings.SettingsManager.DebugSettings.DoorToggle_TrunkOffset);
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.TrunkHeading, (-1 * length / 2) + Settings.SettingsManager.DoorToggleSettings.TrunkOffset);
             DoorToggleHeading = TargetVehicle.Vehicle.Heading;
 
 
@@ -256,7 +256,7 @@ public class DoorToggle : DynamicActivity
         {
             float length = TargetVehicle.Vehicle.Model.Dimensions.Y;
             DoorTogglePosition = TargetVehicle.Vehicle.Position;
-            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DebugSettings.DoorToggle_HoodHeading, (length / 2) + Settings.SettingsManager.DebugSettings.DoorToggle_HoodOffset);
+            DoorTogglePosition = NativeHelper.GetOffsetPosition(DoorTogglePosition, TargetVehicle.Vehicle.Heading + Settings.SettingsManager.DoorToggleSettings.HoodHeading, (length / 2) + Settings.SettingsManager.DoorToggleSettings.HoodOffset);
             DoorToggleHeading = TargetVehicle.Vehicle.Heading - 180f;
 
 
