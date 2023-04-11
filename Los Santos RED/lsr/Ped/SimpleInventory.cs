@@ -83,7 +83,7 @@ public class SimpleInventory
             int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
             for (int i = 0; i < ItemsToGet; i++)
             {
-                ModItem toGet = modItems.GetRandomItem();
+                ModItem toGet = modItems.GetRandomItem(true);
                 int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
                 if (toGet != null)
                 {
@@ -92,19 +92,49 @@ public class SimpleInventory
             }
         }
     }
-    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu VehicleInteractMenu)
+
+    public void AddRandomItems(IModItems modItems, int maxToGet, int maxAmount, bool allowIllegal)
     {
-        UIMenu VehicleInventoryItem = menuPool.AddSubMenu(VehicleInteractMenu, "Inventory");
-        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage vehicle Inventory.";
+        if (maxToGet >= 1 && maxAmount >= 1)
+        {
+            int ItemsToGet = RandomItems.GetRandomNumberInt(1, maxToGet);
+            for (int i = 0; i < ItemsToGet; i++)
+            {
+                ModItem toGet = modItems.GetRandomItem(allowIllegal);
+                int AmountToGet = RandomItems.GetRandomNumberInt(1, maxAmount);
+                if (toGet != null)
+                {
+                    Add(toGet, AmountToGet * toGet.AmountPerPackage);
+                }
+            }
+        }
+    }
+
+
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd)
+    {
+        UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, "Stored Inventory");
+        menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage stored inventory. Take or deposit items.";
         VehicleInventoryItem.SetBannerType(EntryPoint.LSRedColor);
-        List<InventoryItem> totalItems = new List<InventoryItem>();
-        totalItems.AddRange(ItemsList); 
-        totalItems.AddRange(player.Inventory.ItemsList.ToList());
-        foreach (InventoryItem inventoryItem in totalItems)
+
+
+        foreach (InventoryItem inventoryItem in ItemsList)
         {
             inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem);
-
         }
+        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        {
+            if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
+            {
+                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem);
+            }
+        }
+
+    }
+
+    public void Reset()
+    {
+        ItemsList.Clear();
     }
 }
 

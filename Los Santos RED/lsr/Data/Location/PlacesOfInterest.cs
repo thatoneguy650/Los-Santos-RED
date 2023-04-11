@@ -130,6 +130,7 @@ public class PlacesOfInterest : IPlacesOfInterest
     {
         List<ILocationSetupable> AllLocations = new List<ILocationSetupable>();
         AllLocations.AddRange(PossibleLocations.Airports);
+        AllLocations.AddRange(PossibleLocations.Residences);
         return AllLocations;
     }
     public List<BasicLocation> AllLocations()
@@ -895,8 +896,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Bar(new Vector3(1218.175f, -416.5078f, 67.78294f), 74.95883f, "Mirror Park Tavern", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
             new Bar(new Vector3(-1388.5f, -586.6741f, 30.21859f), 31.53231f, "Bahama Mama's", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorPosition = new Vector3(-1391.372f, -605.995f, 30.31955f), VendorHeading = 116.404f, InteriorID = 107778,  VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//TeleportEnterPosition = new Vector3(-1387.984f, -587.4419f, 30.31951f), TeleportEnterHeading = 210.6985f,
             new Bar(new Vector3(-564.6519f, 276.2436f, 83.12064f), 175.5771f,"Tequila-La", "","BarMenu") { OpenTime = 0, CloseTime = 24,VendorPosition = new Vector3(-561.9947f, 284.9062f, 82.17636f), VendorHeading = 262.2369f, InteriorID = 72706, VendorModels = new List<string>() {"s_f_y_clubbar_01","s_m_y_clubbar_01","a_f_y_clubcust_01" } },//need better coordinates
-            
-
+            new Bar(new Vector3(-2193.238f, 4290.112f, 49.17442f), 37.55579f, "Hookies", "","BarMenu") { OpenTime = 0, CloseTime = 24 } ,
         };
     }
     private void DefaultConfig_GasStations()

@@ -749,6 +749,84 @@ public class ActivityManager
             }
         }
     }
+
+    public bool SetDoor(int doorIndex, bool withAnimation, bool setOpen) 
+    {
+        VehicleExt toToggleDoor = GetInterestedVehicle();
+        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
+        {
+            return false;
+        }
+        bool isAlreadyOpen = toToggleDoor.Vehicle.Doors[doorIndex].IsOpen;
+
+        if (setOpen)
+        {
+            if (!isAlreadyOpen)
+            {
+                EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
+                if (withAnimation)
+                {
+
+                    if (IsPerformingActivity)
+                    {
+                        Game.DisplayHelp("Cancel existing activity to start");
+                        return false;
+                    }
+                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+                    if (doorToggle.CanPerform(Actionable))
+                    {
+                        ForceCancelAllActive();
+                        IsPerformingActivity = true;
+                        LowerBodyActivity = doorToggle;
+                        LowerBodyActivity.Start();
+                    }
+
+
+
+                }
+                else
+                {
+                    toToggleDoor.Vehicle.Doors[doorIndex].Open(false, false);
+                }
+            }
+        }
+        else
+        {
+            if (isAlreadyOpen)
+            {
+                EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
+                if (withAnimation)
+                {
+
+
+                    if (IsPerformingActivity)
+                    {
+                        Game.DisplayHelp("Cancel existing activity to start");
+                        return false;
+                    }
+                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+                    if (doorToggle.CanPerform(Actionable))
+                    {
+                        ForceCancelAllActive();
+                        IsPerformingActivity = true;
+                        LowerBodyActivity = doorToggle;
+                        LowerBodyActivity.Start();
+                    }
+
+
+                }
+                else
+                {
+                    toToggleDoor.Vehicle.Doors[doorIndex].Close(false);
+                }
+            }
+        }
+        return true;
+    }
+
+
+
+
     private void WatchVehicleEntry()
     {
         GameFiber DoorWatcher = GameFiber.StartNew(delegate

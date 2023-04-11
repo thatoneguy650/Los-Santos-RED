@@ -112,7 +112,7 @@ public class GangTasks
     }
     public void StartGangWheelman(Gang gang)
     {
-        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus);
+        GangWheelmanTask newTask = new GangWheelmanTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes, Weapons, Names, PedGroups, ShopMenus, ModItems);
         GangWheelmanTasks.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);

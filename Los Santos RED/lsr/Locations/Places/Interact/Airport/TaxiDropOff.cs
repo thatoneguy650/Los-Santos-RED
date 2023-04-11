@@ -16,7 +16,8 @@ public class TaxiDropOff
     private IWeapons Weapons;
     private INameProvideable Names;
     private IEntityProvideable World;
-    public TaxiDropOff(Vector3 position, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world)
+    private IModItems ModItems;
+    public TaxiDropOff(Vector3 position, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems)
     {
         Position = position;
         Settings = settings;
@@ -24,6 +25,7 @@ public class TaxiDropOff
         Weapons = weapons;  
         Names = names;
         World = world;
+        ModItems = modItems;
     }
     public void Setup()
     {
@@ -37,7 +39,7 @@ public class TaxiDropOff
         DispatchablePerson taxiPed = new DispatchablePerson("a_m_m_socenlat_01", 100, 100);
         if (taxiSpawn.StreetPosition != null)
         {
-            CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(taxiSpawn, taxiVehicle, taxiPed, false, false, true, Settings, Crimes, Weapons, Names, World);
+            CivilianSpawnTask civilianSpawnTask = new CivilianSpawnTask(taxiSpawn, taxiVehicle, taxiPed, false, false, true, Settings, Crimes, Weapons, Names, World, ModItems);
             civilianSpawnTask.AllowAnySpawn = true;
             civilianSpawnTask.AllowBuddySpawn = false;
             civilianSpawnTask.AttemptSpawn();

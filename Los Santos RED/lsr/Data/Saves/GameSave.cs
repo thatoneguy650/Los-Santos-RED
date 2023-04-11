@@ -119,6 +119,31 @@ namespace LosSantosRED.lsr.Data
 
                     VehicleSaveStatus vss;
                     vss = new VehicleSaveStatus(car.Vehicle.Model.Hash, car.Vehicle.Position, car.Vehicle.Heading);
+
+
+
+                    if (car.WeaponStorage != null)
+                    {
+                        vss.WeaponInventory = new List<StoredWeapon>();
+                        foreach (StoredWeapon storedWeapon in car.WeaponStorage.StoredWeapons)
+                        {
+                            vss.WeaponInventory.Add(storedWeapon.Copy());
+                        }
+                    }
+                    if (car.SimpleInventory != null)
+                    {
+                        vss.InventoryItems = new List<InventorySave>();
+                        foreach (InventoryItem ii in car.SimpleInventory.ItemsList)
+                        {
+                            vss.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                        }
+                    }
+
+
+
+
+
+
                     //if (NativeHelper.IsStringHash(car.VehicleModelName, out uint modelHash) && car.VehicleModelName.ToLower() == car.Vehicle.Model.Hash.ToString().ToLower())//uint.TryParse(car.VehicleModelName.ToLower().Replace("0x",""), out uint modelHash))
                     //{
                     //    vss = new VehicleSaveStatus(modelHash, car.Vehicle.Position, car.Vehicle.Heading);
@@ -128,7 +153,21 @@ namespace LosSantosRED.lsr.Data
                     //    vss = new VehicleSaveStatus(car.VehicleModelName, car.Vehicle.Position, car.Vehicle.Heading);
                     //}
                     vss.VehicleVariation = NativeHelper.GetVehicleVariation(car.Vehicle);
+
+
+
+
+
+
                     OwnedVehicleVariations.Add(vss);
+
+
+
+
+
+
+
+
                 }
             }
             GangReputationsSave = new List<GangRepSave>();
@@ -179,9 +218,6 @@ namespace LosSantosRED.lsr.Data
             {
                 PilotsLicense = new PilotsLicense() { ExpirationDate = player.Licenses.PilotsLicense.ExpirationDate, IssueDate = player.Licenses.PilotsLicense.IssueDate, IsFixedWingEndorsed = player.Licenses.PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = player.Licenses.PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = player.Licenses.PilotsLicense.IsLighterThanAirEndorsed };
             }
-
-
-
             SavedResidences.Clear();
             foreach (Residence res in player.Properties.Residences)//placesOfInterest.PossibleLocations.Residences)
             {
@@ -192,6 +228,22 @@ namespace LosSantosRED.lsr.Data
                     {
                         myRes.DateOfLastRentalPayment = res.DateRentalPaymentPaid;
                         myRes.RentalPaymentDate = res.DateRentalPaymentDue;
+                    }
+                    if(res.WeaponStorage != null)
+                    {
+                        myRes.WeaponInventory = new List<StoredWeapon>();
+                        foreach(StoredWeapon storedWeapon in res.WeaponStorage.StoredWeapons)
+                        {
+                            myRes.WeaponInventory.Add(storedWeapon.Copy());
+                        }
+                    }
+                    if(res.SimpleInventory!= null)
+                    {
+                        myRes.InventoryItems = new List<InventorySave>();
+                        foreach(InventoryItem ii in res.SimpleInventory.ItemsList)
+                        {
+                            myRes.InventoryItems.Add(new InventorySave(ii.ModItem?.Name, ii.RemainingPercent));
+                        }
                     }
                     SavedResidences.Add(myRes);
                 }
@@ -211,12 +263,12 @@ namespace LosSantosRED.lsr.Data
                 pedSwap.BecomeSavedPed(PlayerName, ModelName, Money, CurrentModelVariation, SpeechSkill, VoiceName);//, CurrentHeadBlendData, CurrentPrimaryHairColor, CurrentSecondaryColor, CurrentHeadOverlays);
                 LoadWeapons(weapons);
                 LoadInventory(player, modItems);
-                LoadVehicles(player, world,settings);
+                LoadVehicles(player, world,settings, modItems);
                 LoadPosition(player);
                 LoadRelationships(player, gangs);
                 LoadContacts(player, gangs);
                 LoadLicenses(player);
-                LoadResidences(player, placesOfInterest);
+                LoadResidences(player, placesOfInterest, modItems);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 player.SetCopStatus(IsCop, null);
@@ -312,7 +364,7 @@ namespace LosSantosRED.lsr.Data
                 //}
             }
         }
-        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings)
+        private void LoadVehicles(IInventoryable player, IEntityProvideable World, ISettingsProvideable settings, IModItems modItems)
         {
             player.VehicleOwnership.ClearVehicleOwnership();
             foreach (VehicleSaveStatus OwnedVehicleVariation in OwnedVehicleVariations)
@@ -338,9 +390,22 @@ namespace LosSantosRED.lsr.Data
                             MyVeh = new VehicleExt(NewVehicle, settings);
                             MyVeh.Setup();
                             MyVeh.HasUpdatedPlateType = true;
+                            MyVeh.CanHaveRandomItems = false;
                             World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                             OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
                         }
+
+
+                        foreach (StoredWeapon storedWeap in OwnedVehicleVariation.WeaponInventory)
+                        {
+                            MyVeh.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                        }
+                        foreach (InventorySave stest in OwnedVehicleVariation.InventoryItems)
+                        {
+                            MyVeh.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                        }
+
+
                         player.VehicleOwnership.TakeOwnershipOfVehicle(MyVeh, false);
                         if (OwnedVehicleVariation.LastPosition != Vector3.Zero)
                         {
@@ -404,7 +469,7 @@ namespace LosSantosRED.lsr.Data
                 player.Licenses.PilotsLicense = new PilotsLicense() { ExpirationDate = PilotsLicense.ExpirationDate, IssueDate = PilotsLicense.IssueDate, IsFixedWingEndorsed = PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = PilotsLicense.IsLighterThanAirEndorsed };
             }
         }
-        private void LoadResidences(IInventoryable player, IPlacesOfInterest placesOfInterest)
+        private void LoadResidences(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems)
         {
             foreach (SavedResidence res in SavedResidences)
             {
@@ -418,6 +483,14 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.IsRented = res.IsRentedByPlayer;
                         savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
                         savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
+                        foreach(StoredWeapon storedWeap in res.WeaponInventory)
+                        {
+                            savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
+                        }
+                        foreach(InventorySave stest in res.InventoryItems)
+                        {
+                            savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
+                        }
                         savedPlace.RefreshUI();
                     }
                 }

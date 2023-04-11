@@ -14,13 +14,16 @@ public class VehicleInteractionMenu
     private VehicleExt VehicleExt;
     private MenuPool MenuPool;
     private UIMenu VehicleInteractMenu;
-
+    private VehicleDoorSeatData VehicleDoorSeatData;
+    private IInteractionable Player;
     public VehicleInteractionMenu(VehicleExt vehicleExt)
     {
         VehicleExt = vehicleExt;
     }
-    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems)
+    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData)
     {
+        VehicleDoorSeatData = vehicleDoorSeatData;
+        Player = player;
         CreateInteractionMenu();
         if (!player.IsInVehicle)
         {
@@ -31,7 +34,8 @@ public class VehicleInteractionMenu
         {
             VehicleExt.CreateDoorMenu(MenuPool, VehicleInteractMenu);
         }
-        VehicleExt.VehicleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu);
+        VehicleExt.HandleRandomItems(modItems);
+        VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu);
         VehicleInteractMenu.Visible = true;
         ProcessMenu();
     }
@@ -48,10 +52,14 @@ public class VehicleInteractionMenu
         {
             try
             {
-                while (EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen())
+                while (EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
+                }
+                if(VehicleDoorSeatData != null)
+                {
+                    Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, true, false);
                 }
             }
             catch (Exception ex)

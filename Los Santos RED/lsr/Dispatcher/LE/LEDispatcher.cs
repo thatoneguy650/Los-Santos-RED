@@ -37,6 +37,7 @@ public class LEDispatcher
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
+    private IModItems ModItems;
 
     private Vector3 RoadblockInitialPosition;
     private Vector3 RoadblockAwayPosition;
@@ -44,7 +45,7 @@ public class LEDispatcher
     private Vector3 RoadblockFinalPosition;
     private float RoadblockFinalHeading;
 
-    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
+    public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         Player = player;
         World = world;
@@ -56,6 +57,7 @@ public class LEDispatcher
         Weapons = weapons;
         Names = names;
         PlacesOfInterest = placesOfInterest;
+        ModItems = modItems;
     }
     private float LikelyHoodOfAnySpawn
     {
@@ -756,7 +758,7 @@ public class LEDispatcher
     {
         try
         {
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World);
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
@@ -1055,7 +1057,7 @@ public class LEDispatcher
                             Roadblock.Dispose();
                             GameFiber.Yield();
                         }
-                        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force);
+                        Roadblock = new Roadblock(Player, World, ToSpawn, VehicleToUse, OfficerType, RoadblockFinalPosition, RoadblockFinalHeading, Settings, Weapons, Names, force, ModItems);
                         Roadblock.SpawnRoadblock();
                         GameFiber.Yield();
                         GameTimeLastSpawnedRoadblock = Game.GameTime;

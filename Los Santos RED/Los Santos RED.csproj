@@ -346,7 +346,12 @@
     <Compile Include="lsr\Data\Vehicles\DispatchableVehicles.cs" />
     <Compile Include="lsr\Data\Peds\DispatchablePeople.cs" />
     <Compile Include="lsr\Data\Vehicles\PlateTypeManager.cs" />
+    <Compile Include="lsr\Vehicle\EMSVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\FireVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\GangVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Menu\VehicleInteractionMenu.cs" />
+    <Compile Include="lsr\Vehicle\PoliceVehicleExt.cs" />
+    <Compile Include="lsr\Vehicle\SecurityVehicleExt.cs" />
     <Compile Include="lsr\Vehicle\Storage\StoredBody.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />

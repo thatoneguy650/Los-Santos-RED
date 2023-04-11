@@ -907,16 +907,17 @@ namespace Mod
             {
                 return;
             }
-            if(!IsInVehicle)
+            VehicleDoorSeatData vdsd = null;
+            if (!IsInVehicle)
             {
-                VehicleDoorSeatData vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 5.0f, VehicleSeatDoorData);
+                vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 5.0f, VehicleSeatDoorData);
                 if(vdsd == null)
                 {
                     return;
                 }
-                ActivityManager.ToggleDoor(vdsd.DoorID,true);
+                ActivityManager.SetDoor(vdsd.DoorID,true,true);
             }
-            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems);
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd);
         }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
@@ -2099,6 +2100,7 @@ namespace Mod
                         {
                             VehicleExt createdVehicleExt = new VehicleExt(vehicle, Settings);
                             createdVehicleExt.Setup();
+                            //createdVehicleExt.CanHaveRandomItems = false;
                             World.Vehicles.AddEntity(createdVehicleExt, ResponseType.None);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;

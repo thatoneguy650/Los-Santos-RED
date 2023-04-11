@@ -33,8 +33,9 @@ public class GangDispatcher
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
     private bool ShouldRunAmbientDispatch;
+    private IModItems ModItems;
 
-    public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest)
+    public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         Player = player;
         World = world;
@@ -49,6 +50,7 @@ public class GangDispatcher
         Crimes = crimes;
         ShopMenus = shopMenus;
         PlacesOfInterest = placesOfInterest;
+        ModItems = modItems;
     }
     private float ClosestGangSpawnToPlayerAllowed => 45f;
     private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -353,7 +355,7 @@ public class GangDispatcher
     {
         try
         {
-            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = allowAny;
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
             gangSpawnTask.SpawnRequirement = spawnRequirement;

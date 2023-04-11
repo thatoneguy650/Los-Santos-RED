@@ -34,7 +34,7 @@ public class YanktonAiport : Airport
 
         if (setPos)
         {
-            TaxiDropOff = new TaxiDropOff(ArrivalPosition, Settings, Crimes, Weapons, Names, World);
+            TaxiDropOff = new TaxiDropOff(ArrivalPosition, Settings, Crimes, Weapons, Names, World, ModItems);
             TaxiDropOff.Setup();
             TaxiDropOff.Start();
         }

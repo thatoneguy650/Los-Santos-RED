@@ -43,7 +43,9 @@ public class ModItem
     private UIMenuNumericScrollerItem<int> purchaseScroller;
     private UIMenuNumericScrollerItem<int> takeScroller;
     private UIMenu inventoryItemSubMenu;
+    private UIMenuItem inventoryItemSubMenuItem;
     private UIMenuNumericScrollerItem<int> giveScroller;
+   // private Func<int, string> Formatter = v => $"{(v == 1 && MeasurementName == "Item" ? "" : v.ToString() + " ")}{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}{(v > 1 ? "(s)" : "")}{(MeasurementName != "Item" || v > 1 ? " - " : "")}${(v * menuItem.SalesPrice)}"
 
     public ModItem()
     {
@@ -83,7 +85,7 @@ public class ModItem
     public bool ConsumeOnPurchase { get; set; } = false;
     public virtual bool CanConsume { get; set; } = false;//no no
 
-    public int FindDuringLootingPercentage { get; set; } = 0;
+    public int FindPercentage { get; set; } = 0;
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
@@ -473,18 +475,12 @@ public class ModItem
     public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu)
     {
         inventoryItemSubMenu = menuPool.AddSubMenu(headerMenu, Name);
-        headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1].Description = Description;
+        inventoryItemSubMenuItem = headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1];
+        inventoryItemSubMenuItem.Description = Description;
         inventoryItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
 
-        InventoryItem currentInventoryItem = simpleInventory.Get(this);
-        if(currentInventoryItem == null || currentInventoryItem.Amount <= 0)
-        {
-            takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, 1, 1) { Value = 1,Enabled = false };
-        }
-        else
-        {
-            takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, currentInventoryItem.Amount, 1) { Value = 1 };
-        }
+
+        takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, 1, 1) { Value = 1, Enabled = true, Formatter = v => v.ToString() + " " + MeasurementName + (v > 1 ? "(s)" : "") };
         takeScroller.Activated += (sender, selectedItem) =>
         {
             if(simpleInventory.Remove(this, takeScroller.Value))
@@ -495,15 +491,7 @@ public class ModItem
         };
         inventoryItemSubMenu.AddItem(takeScroller);
 
-        InventoryItem playerInventoryItem = player.Inventory.Get(this);
-        if (playerInventoryItem == null || playerInventoryItem.Amount <= 0)
-        {
-            giveScroller = new UIMenuNumericScrollerItem<int>("Deposit", "", 1, 1, 1) { Value = 1, Enabled = false };
-        }
-        else
-        {
-            giveScroller = new UIMenuNumericScrollerItem<int>("Deposit", "", 1, playerInventoryItem.Amount, 1) { Value = 1 };
-        }
+        giveScroller = new UIMenuNumericScrollerItem<int>("Deposit", "", 1, 1, 1) { Value = 1, Enabled = true, Formatter = v => v.ToString() + " " + MeasurementName + (v > 1 ? "(s)" : "") };
         giveScroller.Activated += (sender, selectedItem) =>
         {
             if(player.Inventory.Remove(this, giveScroller.Value))
@@ -513,19 +501,24 @@ public class ModItem
             UpdateInventoryScrollers(player, simpleInventory);
         };
         inventoryItemSubMenu.AddItem(giveScroller);
+        UpdateInventoryScrollers(player, simpleInventory);
     }
 
     private void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory)
     {
+        int storedItems = 0;
+        int playerItems = 0;
         InventoryItem currentInventoryItem = simpleInventory.Get(this);
         if (currentInventoryItem == null || currentInventoryItem.Amount <= 0)
         {
             takeScroller.Maximum = 1;
             takeScroller.Value = 1;
             takeScroller.Enabled = false;
+            storedItems = 0;
         }
         else
         {
+            storedItems = currentInventoryItem.Amount;
             takeScroller.Maximum = currentInventoryItem.Amount;
             takeScroller.Value = 1;
             takeScroller.Enabled = true;
@@ -533,17 +526,29 @@ public class ModItem
         InventoryItem playerInventoryItem = player.Inventory.Get(this);
         if (playerInventoryItem == null || playerInventoryItem.Amount <= 0)
         {
+            playerItems = 0;
             giveScroller.Maximum = 1;
             giveScroller.Value = 1;
             giveScroller.Enabled = false;
         }
         else
         {
+            playerItems = playerInventoryItem.Amount;
             giveScroller.Maximum = playerInventoryItem.Amount;
             giveScroller.Value = 1;
+            
             giveScroller.Enabled = true;
         }
 
+        string descriptionToUse = $"{Description}" +
+            $"~n~{storedItems} {MeasurementName}(s) ~o~Stored~s~" +
+            $"~n~{playerItems} {MeasurementName}(s) In ~y~Player Inventory~s~."; ;
+
+        takeScroller.Description = descriptionToUse;
+        giveScroller.Description = descriptionToUse;
+
+        inventoryItemSubMenuItem.RightLabel = $"{storedItems} Stored";
+        inventoryItemSubMenuItem.Description = descriptionToUse;
     }
 }
 

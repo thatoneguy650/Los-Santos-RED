@@ -577,7 +577,7 @@ public class DebugMenu : ModUIMenu
         UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
         TaxiSpawn.Activated += (menu, item) =>
         {
-            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World);
+            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems);
             TaxiDropOff.Setup();
             TaxiDropOff.Start();
             menu.Visible = false;

@@ -23,5 +23,12 @@ public class SavedResidence
     public bool IsRentedByPlayer { get; set; } = false;
     public DateTime RentalPaymentDate { get; set; }
     public DateTime DateOfLastRentalPayment { get; set; }
+
+    public List<StoredWeapon> WeaponInventory { get; set; }
+    public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
+
+
+
+
 }
 

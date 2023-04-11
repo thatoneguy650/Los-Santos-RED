@@ -2,5 +2,5 @@
 
 public interface ILocationSetupable
 {
-    void Setup(ICrimes crimes, INameProvideable names);
+    void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings);
 }

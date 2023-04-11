@@ -295,22 +295,14 @@ public class BasicLocation
     public virtual void Deactivate()
     {
         IsActivated = false;
-
-
         if (Blip.Exists())
         {
             Blip.Delete();
         }
-
-
         if (createdBlip.Exists())
         {
             createdBlip.Delete();
         }
-
-
-
-
         if (interior != null)
         {
             interior.Unload();
@@ -392,6 +384,51 @@ public class BasicLocation
             return IsOnMPMap;
         }
         return IsOnSPMap;
+    }
+    public void CheckActivation(IEntityProvideable world, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
+    {
+        World = world;
+        if (CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ActivateCells) && IsEnabled && IsCorrectMap(World.IsMPMapLoaded) && CanActivate)// ((World.IsMPMapLoaded && IsOnMPMap) || (!World.IsMPMapLoaded && IsOnSPMap)))
+        {
+            if (!IsActivated)
+            {
+                Activate(interiors, settings, crimes, weapons, time, World);
+                GameFiber.Yield();
+            }
+        }
+        else
+        {
+            if (IsActivated)
+            {
+                Deactivate();
+                GameFiber.Yield();
+            }
+        }
+        if (settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
+        {
+            if (!IsActivated && IsEnabled && CanActivate && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.State) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
+            {
+                ActivateBlip(time, World);
+            }
+            else if ((!IsEnabled && Blip.Exists()) || (IsEnabled && IsBlipEnabled && Blip.Exists() && !IsSameState(EntryPoint.FocusZone?.State)))
+            {
+                DeactivateBlip();
+            }
+            else
+            {
+                if (IsEnabled && IsBlipEnabled)
+                {
+                    UpdateBlip(time);
+                }
+            }
+        }
+        else
+        {
+            if (!IsActivated && Blip.Exists())
+            {
+                DeactivateBlip();
+            }
+        }
     }
 }
 

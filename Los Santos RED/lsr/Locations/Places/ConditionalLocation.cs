@@ -30,6 +30,7 @@ public class ConditionalLocation
     protected IShopMenus ShopMenus;
     protected IWeatherReportable WeatherReporter;
     protected ITimeControllable Time;
+    protected IModItems ModItems;
     protected SpawnTask SpawnTask;
     protected SpawnLocation SpawnLocation;
     protected DispatchablePerson DispatchablePerson;
@@ -64,7 +65,7 @@ public class ConditionalLocation
     public float OverridePoorWeatherPercentage { get; set; } = -1.0f;
     public int MinHourSpawn { get; set; } = 0;
     public int MaxHourSpawn { get; set; } = 24;
-    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time)
+    public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
     {
         Player = player;
         IsPerson = isPerson;
@@ -83,6 +84,7 @@ public class ConditionalLocation
         ShopMenus = shopMenus;
         WeatherReporter = weatherReporter;
         Time = time;
+        ModItems = modItems;
         AttemptedSpawn = DetermineRun(force);
         if (!AttemptedSpawn)
         {

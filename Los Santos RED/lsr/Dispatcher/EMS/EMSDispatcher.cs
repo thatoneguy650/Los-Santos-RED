@@ -31,9 +31,10 @@ public class EMSDispatcher
     private DispatchableVehicle VehicleType;
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
+    private IModItems ModItems;
     private bool ShouldRunAmbientDispatch;
 
-    public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest)
+    public EMSDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         Player = player;
         World = world;
@@ -45,6 +46,7 @@ public class EMSDispatcher
         Weapons = weapons;
         Names = names;
         PlacesOfInterest = placesOfInterest;
+        ModItems = modItems;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<EMT> DeletableOfficers => World.Pedestrians.EMTList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -310,7 +312,7 @@ public class EMSDispatcher
     {
         try
         {
-            EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
+            EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems);
             eMTSpawnTask.AllowAnySpawn = allowAny;
             eMTSpawnTask.AllowBuddySpawn = allowBuddy;
             eMTSpawnTask.SpawnRequirement = spawnRequirement;

@@ -49,7 +49,7 @@ public class EMSConditionalLocation : ConditionalLocation
     {
         try
         {
-            EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
+            EMTSpawnTask eMTSpawnTask = new EMTSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.EMSSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems);
             eMTSpawnTask.AllowAnySpawn = true;
             eMTSpawnTask.AllowBuddySpawn = false;
             eMTSpawnTask.SpawnRequirement = TaskRequirements;

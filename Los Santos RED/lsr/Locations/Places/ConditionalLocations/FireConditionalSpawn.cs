@@ -50,7 +50,7 @@ public class FireConditionalLocation : ConditionalLocation
     {
         try
         {
-            FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World);
+            FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems);
             fireFighterSpawnTask.AllowAnySpawn = true;
             fireFighterSpawnTask.AllowBuddySpawn = false;
             fireFighterSpawnTask.SpawnRequirement = TaskRequirements;

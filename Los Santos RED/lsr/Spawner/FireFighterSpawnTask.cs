@@ -10,8 +10,8 @@ public class FireFighterSpawnTask : SpawnTask
 {
     private Agency Agency;
     private Vehicle SpawnedVehicle;
-    public FireFighterSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world) 
-        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world)
+    public FireFighterSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems) 
+        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
     }
@@ -180,6 +180,8 @@ public class FireFighterSpawnTask : SpawnTask
             }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpdatePlatePrefix(Agency);
+            CreatedVehicle.CanRandomlyHaveIllegalItems = false;
+            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,6,2,false);
             //CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;

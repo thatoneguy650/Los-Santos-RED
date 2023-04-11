@@ -9,11 +9,12 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Residence : InteractableLocation
+public class Residence : InteractableLocation, ILocationSetupable
 {
     private UIMenu OfferSubMenu;
     private UIMenuNumericScrollerItem<int> RestMenuItem;
@@ -42,6 +43,14 @@ public class Residence : InteractableLocation
     public DateTime DateRentalPaymentDue { get; set; }
     [XmlIgnore]
     public DateTime DateRentalPaymentPaid { get; set; }
+
+
+    [XmlIgnore] 
+    public SimpleInventory SimpleInventory { get; set; }
+    [XmlIgnore]
+    public WeaponStorage WeaponStorage { get; set; }
+
+
     public bool CanRent => !IsOwned && !IsRented && RentalFee > 0;
     public bool CanBuy => !IsOwned && PurchasePrice > 0;
     public bool IsOwnedOrRented => IsOwned || IsRented;
@@ -69,6 +78,9 @@ public class Residence : InteractableLocation
         Settings = settings;
         Weapons = weapons;
         Time = time;
+
+
+
 
         if (IsLocationClosed())
         {
@@ -119,7 +131,9 @@ public class Residence : InteractableLocation
     public void Reset()
     {
         IsOwned = false;
-        IsRented = false;   
+        IsRented = false;
+        WeaponStorage.Reset();
+        SimpleInventory.Reset();
         UpdateStoredData();
     }
     public void ReRent()
@@ -206,12 +220,25 @@ public class Residence : InteractableLocation
         }
         RestMenuItem = new UIMenuNumericScrollerItem<int>("Rest", "Rest at your residence to recover health. Select up to 12 hours.", 1, 12, 1) { Formatter = v => v.ToString() + " hours" };
         InteractionMenu.AddItem(RestMenuItem);
-        InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
+       // InventoryMenu = new InventoryMenu(MenuPool, InteractionMenu, Player, ModItems, true);
 
         outfitsSubMenu = MenuPool.AddSubMenu(InteractionMenu, "Outfits");
         InteractionMenu.MenuItems[InteractionMenu.MenuItems.Count() - 1].Description = "Set an outfit.";
         UpdateOutfits();
+        UpdateInventory();
+        UpdateStoredWeapons();
     }
+
+    private void UpdateStoredWeapons()
+    {
+        WeaponStorage.CreateInteractionMenu(MenuPool, InteractionMenu, Weapons, ModItems);
+    }
+
+    private void UpdateInventory()
+    {
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu);
+    }
+
     private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
     {
         if(selectedItem == RentResidenceMenuItem)
@@ -412,5 +439,17 @@ public class Residence : InteractableLocation
             }
         }
         return BaseList;
+    }
+
+    public void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings)
+    {
+        if (SimpleInventory == null)
+        {
+            SimpleInventory = new SimpleInventory(settings);
+        }
+        if (WeaponStorage == null)
+        {
+            WeaponStorage = new WeaponStorage(settings);
+        }
     }
 }

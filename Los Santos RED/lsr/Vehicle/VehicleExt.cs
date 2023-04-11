@@ -29,7 +29,7 @@ namespace LSR.Vehicles
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
         public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
-        public SimpleInventory VehicleInventory { get; private set; }
+        public SimpleInventory SimpleInventory { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
         public string VehicleModelName { get; private set; }
         public bool HasShowHotwireLockPrompt { get; set; } = false;
@@ -41,6 +41,7 @@ namespace LSR.Vehicles
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public bool IsDisabled { get; set; } = false;
+        public bool HasAddedRandomItems { get; set; } = false;
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -167,6 +168,8 @@ namespace LSR.Vehicles
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
         public bool IsRandomlyLocked { get; set; } = false;
+        public virtual bool CanHaveRandomItems { get; set; } = true;
+        public virtual bool CanRandomlyHaveIllegalItems { get; set; } = true;
         private void GetFuelTankCapacity()
         {
             if (vehicleClass == VehicleClass.Compact) // "Compact":
@@ -284,7 +287,7 @@ namespace LSR.Vehicles
             VehicleBodyManager = new VehicleBodyManager(this, Settings);
             VehicleInteractionMenu = new VehicleInteractionMenu(this);
             WeaponStorage = new WeaponStorage(Settings);
-            VehicleInventory = new SimpleInventory(Settings);
+            SimpleInventory = new SimpleInventory(Settings);
         }
         public void SetAsEntered()
         {
@@ -1003,6 +1006,27 @@ namespace LSR.Vehicles
         public void CreateDoorMenu(MenuPool menuPool, UIMenu vehicleInteractMenu)
         {
 
+        }
+
+        public void ResetItems()
+        {
+            SimpleInventory.Reset();
+            WeaponStorage.Reset();
+        }
+
+        public void HandleRandomItems(IModItems modItems)
+        {
+            if(HasAddedRandomItems)
+            {
+                return;
+            }
+            if(!CanHaveRandomItems)
+            {
+                HasAddedRandomItems = true;
+                return;
+            }
+            SimpleInventory.AddRandomItems(modItems, 6, 2, CanRandomlyHaveIllegalItems);
+            HasAddedRandomItems = true;
         }
     }
 }

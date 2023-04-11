@@ -55,12 +55,11 @@ public class StaticPlaces
         }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
-           
             tl.StoreData(Gangs, ShopMenus);
         }
         foreach (ILocationSetupable ps in PlacesOfInterest.LocationsToSetup())
         {
-            ps.Setup(Crimes,Names);
+            ps.Setup(Crimes,Names, Settings);
         }
     }
     public void ActivateLocations()
@@ -70,51 +69,7 @@ public class StaticPlaces
         {
             foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
             {
-                if (gl.CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, gl.ActivateCells) && gl.IsEnabled && gl.IsCorrectMap(World.IsMPMapLoaded) && gl.CanActivate)// ((World.IsMPMapLoaded && gl.IsOnMPMap) || (!World.IsMPMapLoaded && gl.IsOnSPMap)))
-                {
-                    if (!gl.IsActivated)
-                    {
-                        gl.Activate(Interiors, Settings, Crimes, Weapons, Time, World);
-                        GameFiber.Yield();
-                    }
-                }
-                else
-                {
-                    if (gl.IsActivated)
-                    {
-                        gl.Deactivate();
-                        GameFiber.Yield();
-                    }
-                }
-                if (Settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
-                {
-                    if (!gl.IsActivated && gl.IsEnabled && gl.CanActivate && gl.IsBlipEnabled && !gl.Blip.Exists() && gl.IsSameState(EntryPoint.FocusZone?.State) && gl.IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == gl.StateLocation))
-                    {
-                        gl.ActivateBlip(Time, World);
-                    }
-                    else if (!gl.IsEnabled && gl.Blip.Exists())
-                    {
-                        gl.DeactivateBlip();
-                    }
-                    else if (gl.IsEnabled && gl.IsBlipEnabled && gl.Blip.Exists() && !gl.IsSameState(EntryPoint.FocusZone?.State))
-                    {
-                        gl.DeactivateBlip();
-                    }
-                    else
-                    {
-                        if (gl.IsEnabled && gl.IsBlipEnabled)
-                        {
-                            gl.UpdateBlip(Time);
-                        }
-                    }
-                }
-                else
-                {
-                    if (!gl.IsActivated && gl.Blip.Exists())
-                    {
-                        gl.DeactivateBlip();
-                    }
-                }
+                gl.CheckActivation(World, Interiors,Settings,Crimes,Weapons,Time);
                 LocationsCalculated++;
                 if (LocationsCalculated >= 7)//20//50//20//5
                 {

@@ -12,8 +12,8 @@ public class CivilianSpawnTask : SpawnTask
     private Vehicle SpawnedVehicle;
     private ICrimes Crimes;
 
-    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world) 
-        : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world)
+    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems) 
+        : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world, modItems)
     {
         Crimes = crimes;
         SetPersistent = setPersistent;
@@ -166,7 +166,7 @@ public class CivilianSpawnTask : SpawnTask
             }
             CreatedVehicle.WasModSpawned = true;
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, SetPersistent);
-
+            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet,Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount,true);
 
             //CreatedVehicle.SetSpawnItems(VehicleType, null, null, SetPersistent);
             CreatedVehicles.Add(CreatedVehicle);

@@ -23,6 +23,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private ISettingsProvideable Settings;
         private IEntityProvideable World;
         private ICrimes Crimes;
+        private IModItems ModItems;
 
         private IWeapons Weapons;
         private INameProvideable Names;
@@ -62,7 +63,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
         private string ButtonPromptIdentifier => "RobberyStart" + RobberyLocation?.Name + HiringGang?.ID;
         private bool HasLocations => RobberyLocation != null && HiringGangDen != null;
-        public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus)
+        public GangWheelmanTask(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, IShopMenus shopMenus, IModItems modItems)
         {
             Player = player;
             Time = time;
@@ -77,6 +78,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Names = names;
             PedGroups = pedGroups;
             ShopMenus = shopMenus;
+            ModItems = modItems;
         }
         public void Setup()
         {
@@ -506,7 +508,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     Vector3 ToSpawn = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading + 90f, offset);
                     SpawnLocation toSpawn = new SpawnLocation(ToSpawn);
-                    GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, null, RobberAccompliceInfo, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World);
+                    GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, null, RobberAccompliceInfo, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems);
                     gmSpawn.PlacePedOnGround = true;
                     gmSpawn.AllowAnySpawn = true;
                     gmSpawn.AllowBuddySpawn = false;

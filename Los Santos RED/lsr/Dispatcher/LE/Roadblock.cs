@@ -35,6 +35,7 @@ public class Roadblock
     private Model VehicleModel;
     private IWeapons Weapons;
     private IEntityProvideable World;
+    private IModItems ModItems;
     private float InitialHeading;
     private bool AllowAnySpawn;
     private RoadNode RoadNode;
@@ -55,7 +56,7 @@ public class Roadblock
         Front = 1,
         Back = 2,
     }
-    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool allowAnySpawn)
+    public Roadblock(IDispatchable player, IEntityProvideable world, Agency agency, DispatchableVehicle vehicle, DispatchablePerson person, Vector3 initialPosition, float initialHeading, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool allowAnySpawn, IModItems modItems)
     {
         Player = player;
         World = world;
@@ -70,7 +71,7 @@ public class Roadblock
         Weapons = weapons;
         Names = names;
         AllowAnySpawn = allowAnySpawn;
-        
+        ModItems = modItems;
     }
     public Vector3 CenterPosition => NodeCenter;
     private float RotatedNodeHeading => NodeHeading - 90f;
@@ -355,7 +356,7 @@ public class Roadblock
         SpawnLocation pos1 = new SpawnLocation(position);
         pos1.StreetPosition = position;
         pos1.Heading = heading;
-        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World);//had .Copy() on the vehicle and ped for some reason?
+        LESpawnTask spawnTask = new LESpawnTask(Agency, pos1, Vehicle, null, false, Settings, Weapons, Names, false, World, ModItems);//had .Copy() on the vehicle and ped for some reason?
         spawnTask.AllowAnySpawn = AllowAnySpawn;
         spawnTask.AttemptSpawn();
         foreach (VehicleExt roadblockCar in spawnTask.CreatedVehicles)
@@ -366,7 +367,7 @@ public class Roadblock
         {
             SpawnLocation pos2 = new SpawnLocation(PedPosition);
             pos2.StreetPosition = PedPosition;
-            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World);
+            LESpawnTask pedSpawn = new LESpawnTask(Agency, pos2, null, Person, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, false, World, ModItems);
             pedSpawn.AllowAnySpawn = AllowAnySpawn;
             pedSpawn.SpawnWithAllWeapons = true;
             pedSpawn.AttemptSpawn();

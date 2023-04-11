@@ -38,7 +38,7 @@ public class SecurityConditionalLocation : ConditionalLocation
     {
         try
         {
-            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes);
+            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, DispatchableVehicle, DispatchablePerson, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
             securitySpawnTask.AllowAnySpawn = true;
             securitySpawnTask.AllowBuddySpawn = false;
             securitySpawnTask.ClearArea = true;

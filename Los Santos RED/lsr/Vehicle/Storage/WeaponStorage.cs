@@ -21,6 +21,10 @@ public class WeaponStorage
     {
         Settings = settings;
     }
+    public void Reset()
+    {
+        StoredWeapons.Clear();
+    }
     public void PlaceInStorage(uint hash, IWeapons weapons)
     {
         Weapons = weapons;
@@ -47,64 +51,70 @@ public class WeaponStorage
         StoredWeapons.Remove(storedWeapon);
         storedWeapon.GiveToPlayer(Weapons);
     }
-    public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu, IWeapons weapons, IModItems modItems)
+    public void CreateInteractionMenu(MenuPool menuPool, UIMenu parentMenu, IWeapons weapons, IModItems modItems)
     {
         Weapons = weapons;
         //Weapons Menu
-        UIMenu WeaponsHeaderMenu = menuPool.AddSubMenu(VehicleInteractMenu, "Weapons");
-        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage Weapons.";
+        UIMenu WeaponsHeaderMenu = menuPool.AddSubMenu(parentMenu, "Stored Weapons");
+        parentMenu.MenuItems[parentMenu.MenuItems.Count() - 1].Description = "Manage Stored Weapons. Place items within storage, or retreive them for use.";
         WeaponsHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
 
 
         //Remove Weapons
-        UIMenu RemoveWeaponsSubMenu = menuPool.AddSubMenu(WeaponsHeaderMenu, "Remove Weapons");
-        WeaponsHeaderMenu.MenuItems[WeaponsHeaderMenu.MenuItems.Count() - 1].Description = "Remove stored weapons.";
+        UIMenu RemoveWeaponsSubMenu = menuPool.AddSubMenu(WeaponsHeaderMenu, "Take Weapons");
+        WeaponsHeaderMenu.MenuItems[WeaponsHeaderMenu.MenuItems.Count() - 1].Description = "Take stored weapons. Remove the weapon from its local storage and add it to the player's current weapon inventory.";
         RemoveWeaponsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         foreach (StoredWeapon storedWeapon in StoredWeapons)
         {
             string weaponName = GetWeaponName((uint)storedWeapon.WeaponHash, modItems);
-            UIMenuItem removeWeapon = new UIMenuItem($"Remove {weaponName}", $"Remove {weaponName}");
+            UIMenuItem removeWeapon = new UIMenuItem($"Take {weaponName}", $"Take {weaponName}");
             removeWeapon.Activated += (menu, item) =>
             {
                 RemoveFromStorage(storedWeapon, Weapons);
-                RemoveWeaponsSubMenu.Visible = false;
+                removeWeapon.Enabled = false;
+                //RemoveWeaponsSubMenu.Visible = false;
             };
             RemoveWeaponsSubMenu.AddItem(removeWeapon);
         }
         //Place Weapons
-        UIMenu PlaceWeaponsSubMenu = menuPool.AddSubMenu(WeaponsHeaderMenu, "Add Weapons");
-        WeaponsHeaderMenu.MenuItems[WeaponsHeaderMenu.MenuItems.Count() - 1].Description = "Add stored weapons.";
+        UIMenu PlaceWeaponsSubMenu = menuPool.AddSubMenu(WeaponsHeaderMenu, "Deposit Weapons");
+        WeaponsHeaderMenu.MenuItems[WeaponsHeaderMenu.MenuItems.Count() - 1].Description = "Deposit stored weapons. Remove the weapon from the player's current weapon inventory and add it to the local storage.";
         PlaceWeaponsSubMenu.SetBannerType(EntryPoint.LSRedColor);
         foreach (WeaponDescriptor wd in Game.LocalPlayer.Character.Inventory.Weapons)
         {
+            if((int)wd.Hash == -72657034)//parachute?
+            {
+                continue;
+            }
             string weaponName = GetWeaponName((uint)wd.Hash, modItems);
-            UIMenuItem addWeapon = new UIMenuItem($"Add {weaponName}", $"Add {weaponName}");
+            UIMenuItem addWeapon = new UIMenuItem($"Deposit {weaponName}", $"Deposit {weaponName}");
             addWeapon.Activated += (menu, item) =>
             {
                 PlaceInStorage((uint)wd.Hash, Weapons);
-                PlaceWeaponsSubMenu.Visible = false;
+                addWeapon.Enabled = false;
+                //PlaceWeaponsSubMenu.Visible = false;
             };
             PlaceWeaponsSubMenu.AddItem(addWeapon);
         }
     }
     private string GetWeaponName(uint hash, IModItems modItems)
     {
-        string weaponName = hash.ToString();
         WeaponInformation wi = Weapons.GetWeapon((uint)hash);
-        if (wi != null)
+        if (wi == null)
         {
-            weaponName = wi.ModelName;
-            WeaponItem modItem = modItems.GetWeapon(wi.ModelName);
-            if (modItem == null)
-            {
-                modItem = modItems.GetWeapon(wi.Hash);
-            }
-            if (modItem != null)
-            {
-                weaponName = modItem.Name;
-            }
+            return hash.ToString();
         }
-        return weaponName;
+        WeaponItem modItem = modItems.GetWeapon(wi.ModelName);
+        if(modItem == null)
+        {
+            modItem = modItems.GetWeapon(wi.Hash);
+        }
+        if(modItem == null)
+        {
+            return wi.ModelName;
+        }
+        return modItem.Name;
+
     }
 }
 

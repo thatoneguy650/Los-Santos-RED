@@ -21,13 +21,14 @@ public abstract class SpawnTask
     protected ISettingsProvideable Settings;
     protected IWeapons Weapons;
     protected IEntityProvideable World;
+    protected IModItems ModItems;
 
     protected bool IsInvalidSpawnPosition => !AllowAnySpawn && Position.DistanceTo2D(Game.LocalPlayer.Character) <= 100f && Extensions.PointIsInFrontOfPed(Game.LocalPlayer.Character, Position);
     protected bool LastCreatedVehicleExists => LastCreatedVehicle != null && LastCreatedVehicle.Vehicle.Exists();
     protected bool WillAddPassengers => (VehicleType != null && VehicleType.MinOccupants > 1) || AddOptionalPassengers;
     protected bool HasPersonToSpawn => PersonType != null;
     protected bool HasVehicleToSpawn => VehicleType != null;
-    public SpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, IEntityProvideable world)
+    public SpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems)
     {
         SpawnLocation = spawnLocation;
         PersonType = personType;
@@ -37,7 +38,8 @@ public abstract class SpawnTask
         Weapons = weapons;
         Names = names;
         AddOptionalPassengers = addOptionalPassengers;
-        World = world;       
+        World = world;
+        ModItems = modItems;
     }
     public List<PedExt> CreatedPeople { get; private set; } = new List<PedExt>();
     public List<VehicleExt> CreatedVehicles { get; private set; } = new List<VehicleExt>();

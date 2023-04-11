@@ -32,7 +32,8 @@ public class VehicleSaveStatus
     public float LastHeading { get; set; }
     public VehicleVariation VehicleVariation { get; set; }
 
-
+    public List<StoredWeapon> WeaponInventory { get; set; }
+    public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
 
 
 }

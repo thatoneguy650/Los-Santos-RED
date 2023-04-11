@@ -13,8 +13,9 @@ public class GangSpawnTask : SpawnTask
     private IShopMenus ShopMenus;
     private Vehicle SpawnedVehicle;
     private ICrimes Crimes;
-    public GangSpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world) 
-        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world)
+    public GangSpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, 
+        bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world, IModItems modItems) 
+        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Gang = gang;
         RelationshipGroups = pedGroups;
@@ -201,6 +202,7 @@ public class GangSpawnTask : SpawnTask
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.AssociatedGang = Gang;
             CreatedVehicle.UpdatePlatePrefix(Gang);
+            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,8,4,true);
             CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
 

@@ -18,15 +18,17 @@ public class Vehicles
     private IPlateTypes PlateTypes;
     private IJurisdictions Jurisdictions;
     private ISettingsProvideable Settings;
+    private IModItems ModItems;
     private Entity[] RageVehicles;
     private uint GameTimeLastCreatedVehicles;
-    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes)
+    public Vehicles(IAgencies agencies,IZones zones, IJurisdictions jurisdictions, ISettingsProvideable settings, IPlateTypes plateTypes, IModItems modItems)
     {
         Zones = zones;
         Agencies = agencies;
         PlateTypes = plateTypes;
         Jurisdictions = jurisdictions;
         Settings = settings;
+        ModItems = modItems;
         PlateController = new PlateController(this, Zones, PlateTypes, Settings);
     }
     public PlateController PlateController { get; private set; }
@@ -214,6 +216,8 @@ public class Vehicles
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
                     Car.Setup();
                     Car.IsPolice = true;
+                    //Car.SimpleInventory.AddRandomItems(ModItems,6,2,false);
+                    Car.CanRandomlyHaveIllegalItems = false;
                     PoliceVehicles.Add(Car);
                     return true;
                 }
@@ -225,6 +229,7 @@ public class Vehicles
                     VehicleExt Car = new VehicleExt(vehicle, Settings);
                     Car.Setup();
                     CivilianVehicles.Add(Car);
+                    //Car.SimpleInventory.AddRandomItems(ModItems,Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet,Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount,true);
                     return true;
                 }
             }

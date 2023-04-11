@@ -45,6 +45,7 @@ public class VehicleOwnership
     {
         foreach (VehicleExt car in OwnedVehicles)
         {
+            car.ResetItems();
             car.RemoveOwnership();
             car.RemoveOwnershipBlip();       
         }

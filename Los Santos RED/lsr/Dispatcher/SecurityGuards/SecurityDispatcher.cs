@@ -31,8 +31,10 @@ public class SecurityDispatcher
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
     private ICrimes Crimes;
+    private IModItems ModItems;
 
-    public SecurityDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, ICrimes crimes)
+    public SecurityDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, 
+        IPlacesOfInterest placesOfInterest, ICrimes crimes, IModItems modItems)
     {
         Player = player;
         World = world;
@@ -45,6 +47,7 @@ public class SecurityDispatcher
         Names = names;
         PlacesOfInterest = placesOfInterest;
         Crimes = crimes;
+        ModItems = modItems;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<SecurityGuard> DeletableOfficers => World.Pedestrians.SecurityGuardList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -138,7 +141,7 @@ public class SecurityDispatcher
         try
         {
             EntryPoint.WriteToConsole($"Security Dispatcher, SPAWN TASK STARTING");
-            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes);
+            SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;
             securitySpawnTask.ClearArea = clearArea;

@@ -466,10 +466,11 @@ public class Airport : InteractableLocation, ILocationSetupable
             }
         }, "DestinationGoTo");
     }
-    public void Setup(ICrimes crimes, INameProvideable names)
+    public void Setup(ICrimes crimes, INameProvideable names, ISettingsProvideable settings)
     {
         Crimes = crimes;
         Names = names;
+        Settings = settings;
         Carriers = new List<Carrier>()
         {
             new Carrier(StaticStrings.AirHerlerCarrierID,"Air Herler", "For the utmost in luxury"),

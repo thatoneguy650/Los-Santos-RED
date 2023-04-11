@@ -343,6 +343,7 @@ public class VehicleItem : ModItem
                     MyNewCar.Setup();
                     MyNewCar.HasUpdatedPlateType = false;
                     MyNewCar.AllowVanityPlates = false;
+                    MyNewCar.CanHaveRandomItems = false;
                     EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
                 }
                 world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
@@ -389,6 +390,7 @@ public class VehicleItem : ModItem
         }
         Car.WasModSpawned = true;
         Car.WasSpawnedEmpty = true;
+        Car.CanHaveRandomItems = false;
         world.Vehicles.AddEntity(Car, ResponseType.None);
         Transaction.SellingVehicle.Wash();
         CreateLiveryMenuOne(Transaction);

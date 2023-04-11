@@ -9,40 +9,35 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface ILocationInteractable //: IActivityPerformable,IActionable
+    public interface ILocationInteractable : IInteractionable //: IActivityPerformable,IActionable
     {
-        ButtonPrompts ButtonPrompts { get; }
-        BankAccounts BankAccounts { get; }
-        Inventory Inventory { get; }
+        //ButtonPrompts ButtonPrompts { get; }
+        //BankAccounts BankAccounts { get; }
+        //Inventory Inventory { get; }
         Properties Properties { get; }
-        ActivityManager ActivityManager { get; }
-     //   bool IsInteractingWithLocation { get; set; }
-        Ped Character { get; }
-        bool CharacterModelIsFreeMode { get; }
-     //   bool CanConverse { get; }
-        string FreeModeVoice { get; }
+        //ActivityManager ActivityManager { get; }
+        //Ped Character { get; }
+        //bool CharacterModelIsFreeMode { get; }
+        //string FreeModeVoice { get; }
         Vector3 Position { get; }
-        bool IsTransacting { get; set; }
-        bool IsMoveControlPressed { get; }
+        //bool IsTransacting { get; set; }
+        //bool IsMoveControlPressed { get; }
         bool IsDoingSuspiciousActivity { get; set; }
-     //   bool CanPerformActivities { get; }
-        WeaponEquipment WeaponEquipment { get; }
-        VehicleOwnership VehicleOwnership { get; }
-        RelationshipManager RelationshipManager { get; }
-      //  bool IsPerformingActivity { get; }
+        //WeaponEquipment WeaponEquipment { get; }
+        //VehicleOwnership VehicleOwnership { get; }
+        //RelationshipManager RelationshipManager { get; }
         Licenses Licenses { get; }
         string PlayerName { get; }
-     //   bool IsConversing { get; set; }
-        bool IsAliveAndFree { get; }
-        bool IsInVehicle { get; }
+        //bool IsAliveAndFree { get; }
+        //bool IsInVehicle { get; }
         float VehicleSpeedMPH { get; }
         bool RecentlyCrashedVehicle { get; }
         Vehicle LastFriendlyVehicle { get; set; }
         VehicleExt CurrentVehicle { get; }
         bool IsResting { get; set; }
         bool IsSleeping { get; set; }
-        bool IsDealingDrugs { get; set; }
-        bool IsDealingIllegalGuns { get; set; }
+        //bool IsDealingDrugs { get; set; }
+        //bool IsDealingIllegalGuns { get; set; }
         bool IsNotWanted { get; }
         bool IsWanted { get; }
         PlayerTasks PlayerTasks { get; }
@@ -53,9 +48,6 @@ namespace LosSantosRED.lsr.Interface
         bool AnyPoliceRecentlySeenPlayer { get; }
         PedVariation CurrentModelVariation { get; set; }
         OutfitManager OutfitManager { get; }
-
-        //  void StopDynamicActivity();
-        //   void StartConsumingActivity(ModItem modItem, bool v);
         void ChangeName(string newName);
         void SetWantedLevel(int v1, string v2, bool v3);
     }
