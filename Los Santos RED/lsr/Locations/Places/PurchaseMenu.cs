@@ -54,7 +54,7 @@ public class PurchaseMenu : ModUIMenu
     }
     public void Setup()
     {
-        EntryPoint.WriteToConsole($"PurchaseMenu: HasBannerImage {Transaction.HasBannerImage} RemoveBanner {Transaction.RemoveBanner}");
+        //EntryPoint.WriteToConsoleTestLong($"PurchaseMenu: HasBannerImage {Transaction.HasBannerImage} RemoveBanner {Transaction.RemoveBanner}");
         StoreCam = Camera.RenderingCamera;
         if (ParentMenu != null)
         {
@@ -88,7 +88,7 @@ public class PurchaseMenu : ModUIMenu
         CreateCategories2();
         foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderBy(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
         {
-            EntryPoint.WriteToConsole($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
+            //EntryPoint.WriteToConsoleTestLong($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreatePurchaseMenuItem(Transaction, cii, purchaseMenu, Settings, Player, Transaction.IsStealing, World);
         }
     }
@@ -212,26 +212,26 @@ public class PurchaseMenu : ModUIMenu
         if(menuSelected == null || menuSelected.MenuItems == null)
         {
             Transaction.ClearPreviews();
-            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
+            //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
             return;
         }
         UIMenuItem myItem = menuSelected.MenuItems.ElementAtOrDefault(v);
         if (myItem == null)
         {
             Transaction.ClearPreviews();
-            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
+            //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
             return;
         }
         MenuItem selectedMenuItem = ShopMenu.Items.Where(x => x.ModItemName == myItem.Text).FirstOrDefault();
         if (selectedMenuItem != null)
         {
             CreatePreview(selectedMenuItem);
-            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} SELECTED {selectedMenuItem.ModItemName}");
+            //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} SELECTED {selectedMenuItem.ModItemName}");
         }
         else
         {
             Transaction.ClearPreviews();
-            EntryPoint.WriteToConsole($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
+            //EntryPoint.WriteToConsoleTestLong($"{menuSelected.TitleText} Menu OnIndexChange newIndex {v} NO ITEM SELECTED");
         }
     }
     private void CreatePreview(MenuItem selectedMenu)

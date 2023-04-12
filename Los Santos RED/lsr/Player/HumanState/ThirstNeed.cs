@@ -78,7 +78,7 @@ public class ThirstNeed : HumanNeed
 
         if(RealTimeScalar >= 10f)
         {
-            EntryPoint.WriteToConsole($"THIRST NEED EXCESSIVE REAL TIME SCALAR AMOUNT {RealTimeScalar} CurrentValue {CurrentValue}");
+            //EntryPoint.WriteToConsoleTestLong($"THIRST NEED EXCESSIVE REAL TIME SCALAR AMOUNT {RealTimeScalar} CurrentValue {CurrentValue}");
         }
         TimeLastUpdatedValue = Time.CurrentDateTime;
     }

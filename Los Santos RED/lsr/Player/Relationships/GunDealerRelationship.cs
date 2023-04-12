@@ -95,7 +95,7 @@ public class GunDealerRelationship
                 };
 
                 Player.CellPhone.AddScheduledText(new GunDealerContact(StaticStrings.UndergroundGunsContactName), Replies.PickRandom());
-                EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
+                //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
             }
         }
         if(TotalMoneySpentAtShops >= 2000)
@@ -104,7 +104,7 @@ public class GunDealerRelationship
 
             //Player.CellPhone.AddGunDealerContact(true);
         }
-        EntryPoint.WriteToConsole($"You spent {Amount} for a total of {TotalMoneySpentAtShops}");
+        //EntryPoint.WriteToConsoleTestLong($"You spent {Amount} for a total of {TotalMoneySpentAtShops}");
     }
     public void SetMoneySpent(int Amount, bool sendNotification)
     {
@@ -136,7 +136,7 @@ public class GunDealerRelationship
 
                             Player.CellPhone.AddScheduledText(new GunDealerContact(StaticStrings.UndergroundGunsContactName), Replies.PickRandom());
                         }
-                        EntryPoint.WriteToConsole($"{gs.Name} is now enabled");
+                        //EntryPoint.WriteToConsoleTestLong($"{gs.Name} is now enabled");
                     }
                 }
                 else

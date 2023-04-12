@@ -74,7 +74,7 @@ public class ConsumableRefresher
         {
             if (GivenFullHunger && GivenFullSleep && GivenFullThirst && (GivenFullHealth || !ConsumableItem.AlwaysChangesHealth))
             {
-                EntryPoint.WriteToConsole($"Finished CIG1 {ConsumableItem.Name}");
+                //EntryPoint.WriteToConsoleTestLong($"Finished CIG1 {ConsumableItem.Name}");
                 IsFinished = true;
             }
         }
@@ -82,7 +82,7 @@ public class ConsumableRefresher
         {
             if (GivenFullHealth)
             {
-                EntryPoint.WriteToConsole($"Finished CIG2 {ConsumableItem.Name}");
+                //EntryPoint.WriteToConsoleTestLong($"Finished CIG2 {ConsumableItem.Name}");
                 IsFinished = true;
             }
         }
@@ -106,7 +106,7 @@ public class ConsumableRefresher
             }
             if (HealthGiven == ConsumableItem.HealthChangeAmount)
             {
-                EntryPoint.WriteToConsole("GIVEN FULL HEALTH");
+                //EntryPoint.WriteToConsoleTestLong("GIVEN FULL HEALTH");
                 GivenFullHealth = true;
             }
             GameTimeLastGivenHealth = Game.GameTime;

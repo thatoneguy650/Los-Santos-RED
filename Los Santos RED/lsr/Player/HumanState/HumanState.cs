@@ -40,7 +40,7 @@ public class HumanState
     {
         if(Settings.SettingsManager.NeedsSettings.ApplyNeeds != isApplyingNeeds)
         {
-            EntryPoint.WriteToConsole("Changed Apply Needs Settings, Resetting Values");
+            //EntryPoint.WriteToConsoleTestLong("Changed Apply Needs Settings, Resetting Values");
             Reset();
             isApplyingNeeds = Settings.SettingsManager.NeedsSettings.ApplyNeeds;
         }

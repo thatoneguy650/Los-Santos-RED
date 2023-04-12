@@ -192,14 +192,14 @@ public class SeatAssigner
                     VehicleAssigned = possibleVehicle;
                     SeatAssigned = 1;
                     
-                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 1 Distance: {DistanceTo} Seat: {SeatAssigned}");
+                    //EntryPoint.WriteToConsoleTestLong($"Prisoner Seat Assigned 1 Distance: {DistanceTo} Seat: {SeatAssigned}");
                     break;
                 }
                 else if (IsSeatAvailable(possibleVehicle, 2))
                 {
                     VehicleAssigned = possibleVehicle;
                     SeatAssigned = 2;
-                    EntryPoint.WriteToConsole($"Prisoner Seat Assigned 2 Distance: {DistanceTo} Seat: {SeatAssigned}");
+                    //EntryPoint.WriteToConsoleTestLong($"Prisoner Seat Assigned 2 Distance: {DistanceTo} Seat: {SeatAssigned}");
                     break;
                 }
             }

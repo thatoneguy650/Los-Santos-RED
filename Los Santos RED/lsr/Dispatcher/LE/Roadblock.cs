@@ -242,8 +242,8 @@ public class Roadblock
         GameFiber.Yield();
         if (AddVehicles(LocationCreate.Middle, 1))//need at least one car to spawn?
         {    
-            EntryPoint.WriteToConsole($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
-            EntryPoint.WriteToConsole($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
+            //EntryPoint.WriteToConsoleTestLong($"ROADBLOCK Road Node Properties {RoadNode.Position} {RoadNode.Heading} FW: {RoadNode.ForwardLanes} BW: {RoadNode.BackwardsLanes} WIDTH: {RoadNode.Width} POS: {RoadNode.RoadPosition}");
+            //EntryPoint.WriteToConsoleTestLong($"VFront: {VehiclesToAddFront} VRear: {VehiclesToAddRear} BFront: {BarriersToAddFront} BRear: {BarriersToAddRear} ");
             GameFiber.Yield();
             if (VehiclesToAddFront > 0)
             {

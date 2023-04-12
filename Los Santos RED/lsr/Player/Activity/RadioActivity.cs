@@ -119,7 +119,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Radio Start", 5);
+            //EntryPoint.WriteToConsole($"Radio Start");
             GameFiber BinocWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -232,7 +232,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void StartGeneralIdle()
         {
-            EntryPoint.WriteToConsole("Radio Start General Idle");
+            //EntryPoint.WriteToConsoleTestLong("Radio Start General Idle");
             PlayingDictionary = animBaseDictionary;
             PlayingAnimation = animBase;
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowBlendIn, animLowBlendOut, -1, animLowFlag, 0, false, false, false);//-1      
@@ -311,7 +311,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!rageObject.Exists())
                 {
@@ -404,7 +404,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Take Out Radio Start");
+                //EntryPoint.WriteToConsoleTestLong("Take Out Radio Start");
                 RemovePrompts();
                 PlayingDictionary = animTakeOutDictionary;
                 PlayingAnimation = animTakeOut;
@@ -416,20 +416,20 @@ namespace LosSantosRED.lsr.Player
                     GeneralTick();
                     if (!aw.IsAnimationRunning(CurrentAnimationTime))
                     {
-                        EntryPoint.WriteToConsole($"Take Out Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        //EntryPoint.WriteToConsoleTestLong($"Take Out Radio Error, Animation Not Running {CurrentAnimationTime}");
                         break;
                     }
                     GameFiber.Yield();
                 }
                 Player.Scanner.ScannerBoostLevel = 1;
-                EntryPoint.WriteToConsole("Take Out Radio End");
+                //EntryPoint.WriteToConsoleTestLong("Take Out Radio End");
             }
         }
         private void PutAwayItem()
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Put Away Radio Start");
+                //EntryPoint.WriteToConsoleTestLong("Put Away Radio Start");
                 RemovePrompts();
                 PlayingDictionary = animPutAwayDictionary;
                 PlayingAnimation = animPutAway;
@@ -441,20 +441,20 @@ namespace LosSantosRED.lsr.Player
                     GeneralTick();
                     if (!aw.IsAnimationRunning(CurrentAnimationTime))
                     {
-                        EntryPoint.WriteToConsole("Put Away Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        //EntryPoint.WriteToConsoleTestLong("Put Away Radio Error, Animation Not Running {CurrentAnimationTime}");
                         break;
                     }
                     GameFiber.Yield();
                 }
                 Player.Scanner.ScannerBoostLevel = 0;
-                EntryPoint.WriteToConsole("Put Away Radio End");
+                //EntryPoint.WriteToConsoleTestLong("Put Away Radio End");
             }
         }
         private void RaiseRadio()
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Raise Radio Start");
+                //EntryPoint.WriteToConsoleTestLong("Raise Radio Start");
                 IsRaising = true;
                 IsLowering = false;
                 RemovePrompts();
@@ -468,7 +468,7 @@ namespace LosSantosRED.lsr.Player
                     GeneralTick();
                     if (!aw.IsAnimationRunning(CurrentAnimationTime))
                     {
-                        EntryPoint.WriteToConsole($"Raise Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        //EntryPoint.WriteToConsoleTestLong($"Raise Radio Error, Animation Not Running {CurrentAnimationTime}");
                         break;
                     }
                     GameFiber.Yield();
@@ -477,14 +477,14 @@ namespace LosSantosRED.lsr.Player
                 IsRaising = false;
                 Player.Scanner.ScannerBoostLevel = 2;
                 AddPrompts();
-                EntryPoint.WriteToConsole("Raise Radio End");
+                //EntryPoint.WriteToConsoleTestLong("Raise Radio End");
             }
         }
         private void LowerRadio(bool restartIdle)
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Lower Radio Start");
+                //EntryPoint.WriteToConsoleTestLong("Lower Radio Start");
                 IsLowering = true;
                 IsRaising = false;
                 RemovePrompts();
@@ -498,7 +498,7 @@ namespace LosSantosRED.lsr.Player
                     GeneralTick();
                     if (!aw.IsAnimationRunning(CurrentAnimationTime))
                     {
-                        EntryPoint.WriteToConsole($"Lower Radio Error, Animation Not Running {CurrentAnimationTime}");
+                        //EntryPoint.WriteToConsoleTestLong($"Lower Radio Error, Animation Not Running {CurrentAnimationTime}");
                         break;
                     }
                     GameFiber.Yield();
@@ -511,7 +511,7 @@ namespace LosSantosRED.lsr.Player
                     StartGeneralIdle();
                     AddPrompts();
                 }
-                EntryPoint.WriteToConsole("Lower Radio End");
+                //EntryPoint.WriteToConsoleTestLong("Lower Radio End");
             }
         }
 

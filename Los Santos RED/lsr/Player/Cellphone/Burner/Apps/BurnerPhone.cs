@@ -261,7 +261,7 @@ public class BurnerPhone
         
         if(pressedDirection)
         {
-            EntryPoint.WriteToConsole($"Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
+            //EntryPoint.WriteToConsoleTestLong($"Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         }
         if (NativeFunction.Natives.x91AEF906BCA88877<bool>(3, 176))//SELECT
         {
@@ -275,7 +275,7 @@ public class BurnerPhone
 
     private void PressedUp()
     {
-        EntryPoint.WriteToConsole("Burner Phone: Pressed UP");
+        //EntryPoint.WriteToConsoleTestLong("Burner Phone: Pressed UP");
         NavigateMenu(1);
         MoveFinger(1);
         int prevRow = CurrentRow;
@@ -287,13 +287,13 @@ public class BurnerPhone
         if(!PhoneApps.Any(x=> x.Index == CurrentIndex))
         {
             CurrentRow = prevRow;
-            EntryPoint.WriteToConsole("NO APP, RESETTING");
+            //EntryPoint.WriteToConsoleTestLong("NO APP, RESETTING");
         }
         pressedDirection = true;
     }
     private void PressedDown()
     {
-        EntryPoint.WriteToConsole("Burner Phone: Pressed DOWN");
+        //EntryPoint.WriteToConsoleTestLong("Burner Phone: Pressed DOWN");
         NavigateMenu(3);
         MoveFinger(2);
         int prevRow = CurrentRow;
@@ -305,13 +305,13 @@ public class BurnerPhone
         if (!PhoneApps.Any(x => x.Index == CurrentIndex))
         {
             CurrentRow = prevRow;
-            EntryPoint.WriteToConsole("NO APP, RESETTING");
+            //EntryPoint.WriteToConsoleTestLong("NO APP, RESETTING");
         }
         pressedDirection = true;
     }
     private void PressedLeft()
     {
-        EntryPoint.WriteToConsole("Burner Phone: Pressed LEFT");
+        //EntryPoint.WriteToConsoleTestLong("Burner Phone: Pressed LEFT");
         NavigateMenu(4);
         MoveFinger(4);
         int prevColumn = CurrentColumn;
@@ -323,13 +323,13 @@ public class BurnerPhone
         if (!PhoneApps.Any(x => x.Index == CurrentIndex))
         {
             CurrentColumn = prevColumn;
-            EntryPoint.WriteToConsole("NO APP, RESETTING");
+            //EntryPoint.WriteToConsoleTestLong("NO APP, RESETTING");
         }
         pressedDirection = true;
     }
     private void PressedRight()
     {
-        EntryPoint.WriteToConsole("Burner Phone: Pressed RIGHT");
+        //EntryPoint.WriteToConsoleTestLong("Burner Phone: Pressed RIGHT");
         NavigateMenu(2);
         MoveFinger(4);
         int prevColumn = CurrentColumn;
@@ -341,20 +341,20 @@ public class BurnerPhone
         if (!PhoneApps.Any(x => x.Index == CurrentIndex))
         {
             CurrentColumn = prevColumn;
-            EntryPoint.WriteToConsole("NO APP, RESETTING");
+            //EntryPoint.WriteToConsoleTestLong("NO APP, RESETTING");
         }
         pressedDirection = true;
     }
     private void PressedSelect()
     {
-        EntryPoint.WriteToConsole($"Burner Phone: Pressed SELECT Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
+        //EntryPoint.WriteToConsoleTestLong($"Burner Phone: Pressed SELECT Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         MoveFinger(5);
         PlayAcceptedSound();
         OpenApp(CurrentIndex);
     }
     private void PressedBack()
     {
-        EntryPoint.WriteToConsole($"Burner Phone: Pressed CLOSE Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
+        //EntryPoint.WriteToConsoleTestLong($"Burner Phone: Pressed CLOSE Row:{CurrentRow} Column:{CurrentColumn} Index:{CurrentIndex}");
         ClosePhone();
     }
     private void SetDefaultSoftKeys()

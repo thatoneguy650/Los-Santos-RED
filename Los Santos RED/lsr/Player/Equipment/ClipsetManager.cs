@@ -60,7 +60,7 @@ public class ClipsetManager
     }
     private void ApplyCoverClipset()
     {
-        EntryPoint.WriteToConsole($"CLIPSET MANAGER: RequiredCoverClipset{RequiredCoverClipset}");
+        //EntryPoint.WriteToConsoleTestLong($"CLIPSET MANAGER: RequiredCoverClipset{RequiredCoverClipset}");
         SetMotionInCoverClipset(RequiredCoverClipset);
         hasOverriderCoverClipset = true;
         SetCoverClipset = RequiredCoverClipset;
@@ -125,7 +125,7 @@ public class ClipsetManager
         {
             return;
         }
-        EntryPoint.WriteToConsole($"CLIPSET MANAGER: COVER RESET");
+        //EntryPoint.WriteToConsoleTestLong($"CLIPSET MANAGER: COVER RESET");
         NativeFunction.Natives.CLEAR_PED_MOTION_IN_COVER_CLIPSET_OVERRIDE(Player.Character);
         hasOverriderCoverClipset = false;
         SetCoverClipset = "";
@@ -139,7 +139,7 @@ public class ClipsetManager
     }
     public void ResetMovementClipset()
     {
-        EntryPoint.WriteToConsole($"CLIPSET MANAGER: MOVEMENT RESET");
+        //EntryPoint.WriteToConsoleTestLong($"CLIPSET MANAGER: MOVEMENT RESET");
         NativeFunction.Natives.RESET_PED_MOVEMENT_CLIPSET(Player.Character, 0.25f);// 0.5f);
     }
 
@@ -150,7 +150,7 @@ public class ClipsetManager
     }
     public void ResetStrafeClipset()
     {
-        EntryPoint.WriteToConsole($"CLIPSET MANAGER: STRAFE RESET");
+        //EntryPoint.WriteToConsoleTestLong($"CLIPSET MANAGER: STRAFE RESET");
         NativeFunction.Natives.RESET_PED_STRAFE_CLIPSET(Player.Character);
     }
 
@@ -165,7 +165,7 @@ public class ClipsetManager
 
     public void ResetWeaponMovementClipset()
     {
-        EntryPoint.WriteToConsole($"CLIPSET MANAGER: WEAPON MOVEMENT RESET");
+        //EntryPoint.WriteToConsoleTestLong($"CLIPSET MANAGER: WEAPON MOVEMENT RESET");
         NativeFunction.Natives.RESET_PED_WEAPON_MOVEMENT_CLIPSET(Player.Character);
     }
 }

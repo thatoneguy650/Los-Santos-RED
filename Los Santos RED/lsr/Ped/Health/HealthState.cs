@@ -154,10 +154,8 @@ public class HealthState
             int prevHealth = Health;
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
-
-                GameFiber.Yield();
-                
-                EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);
+                GameFiber.Yield(); 
+                //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}");
                 if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
                 {
                     ModifyDamage();
@@ -169,7 +167,7 @@ public class HealthState
             {
                 CurrentPlayer.ActivityManager.YellInPain();
                 MyPed.GameTimeLastInjured = Game.GameTime;
-                EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}", 5);
+                //EntryPoint.WriteToConsole($"HEALTHSTATE PLAYER DAMAGE DETECTED {MyPed.Pedestrian.Handle} YELLING! MyPed.GameTimeLastInjured {MyPed.GameTimeLastInjured}");
             }
         }
     }
@@ -208,7 +206,7 @@ public class HealthState
             MyPed.YellInPain(true);
             MyPed.IsUnconscious = true;
             NativeFunction.Natives.SET_PED_TO_RAGDOLL(MyPed.Pedestrian, -1, -1, 0, true, true, false);
-            EntryPoint.WriteToConsole($"HEALTHSTATE SetUnconscious {MyPed.Pedestrian.Handle} GameTimeLastInjured {MyPed.GameTimeLastInjured} Health {Health}", 5);
+            //EntryPoint.WriteToConsole($"HEALTHSTATE SetUnconscious {MyPed.Pedestrian.Handle} GameTimeLastInjured {MyPed.GameTimeLastInjured} Health {Health}");
         }
     }
     private void FlagDamage(IPoliceRespondable CurrentPlayer)
@@ -420,7 +418,7 @@ public class HealthState
             MyPed.Pedestrian.Health = Health;
             Armor = (Armor - NewArmorDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Armor = Armor;
-            EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
+            //EntryPoint.WriteToConsoleTestLong($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 
 
         }
@@ -485,7 +483,7 @@ public class HealthState
         }
         if (Health - NewHealth >= 65)
         {
-            EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 1 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}", 5);
+            //EntryPoint.WriteToConsole($"HEALTHSTATE: RAGDOLL 1 {MyPed.Pedestrian.Handle} Health - NewHealth = {Health - NewHealth} NewHealth {NewHealth} Health {Health} MyPed.Pedestrian.Health {MyPed.Pedestrian.Health}");
             //NativeFunction.CallByName<bool>("SET_PED_TO_RAGDOLL", MyPed.Pedestrian, 3000, 3000, 0, false, false, false);
         }
         //else if (Health - NewHealth >= 35 && RandomItems.RandomPercent(60))

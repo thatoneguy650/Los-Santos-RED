@@ -236,7 +236,7 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 int colonIndex = propertyName.IndexOf(":");
                 propertyName = (colonIndex > 0 ? propertyName.Substring(0, colonIndex) : propertyName);
 
-                EntryPoint.WriteToConsole($"OnNewCheckboxChange property.Name {property} propertyName {propertyName}", 5);
+                //EntryPoint.WriteToConsole($"OnNewCheckboxChange property.Name {property} propertyName {propertyName}", 5);
                 foreach (PropertyInfo fi in subSettings)
                 {
                     if (propertyName == fi.Name)
@@ -267,7 +267,7 @@ public class SettingsMenu : ModUIMenu//needs lots of cleanup still
                 int colonIndex = propertyName.IndexOf(":");
                 propertyName = (colonIndex > 0 ? propertyName.Substring(0, colonIndex) : propertyName);
 
-                EntryPoint.WriteToConsole($"OnNewSettingsSelect property.Name {property} propertyName {propertyName}", 5);
+                //EntryPoint.WriteToConsole($"OnNewSettingsSelect property.Name {property} propertyName {propertyName}", 5);
                 foreach (PropertyInfo fi in subSettings)
                 {
                     if (propertyName == fi.Name)

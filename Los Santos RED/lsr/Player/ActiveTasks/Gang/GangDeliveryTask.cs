@@ -107,7 +107,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 float MoreThaMax = (float)Prices.Item2 * 1.5f;
                 NumberOfItemsToDeliver = (int)(PaymentAmount / MoreThaMax);
                 MoneyToRecieve = PaymentAmount;
-                EntryPoint.WriteToConsole($"GANG DELIVERY Item: {ItemToDeliver.Name} Number: {NumberOfItemsToDeliver} Lowest: {Prices.Item1}  Highest {Prices.Item2} Payment: {MoneyToRecieve}");
+                //EntryPoint.WriteToConsoleTestLong($"GANG DELIVERY Item: {ItemToDeliver.Name} Number: {NumberOfItemsToDeliver} Lowest: {Prices.Item1}  Highest {Prices.Item2} Payment: {MoneyToRecieve}");
             }
             if (MoneyToRecieve <= 0)
             {

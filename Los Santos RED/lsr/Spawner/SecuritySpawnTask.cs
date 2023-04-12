@@ -26,12 +26,12 @@ public class SecurityGuardSpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"SecurityGuardSpawnTask: Task Invalid Spawn Position");
                 return;
             }
             if (!HasAgency)
             {
-                EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: Task No Agency Supplied");
+                //EntryPoint.WriteToConsoleTestLong($"SecurityGuardSpawnTask: Task No Agency Supplied");
                 return;
             }
             Setup();
@@ -161,7 +161,7 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 NativeFunction.Natives.CLEAR_AREA(Position.X, Position.Y, Position.Z, 3f, true, false, false, false);
             }
-            EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: Attempting to spawn {VehicleType.ModelName}", 3);
+            //EntryPoint.WriteToConsole($"SecurityGuardSpawnTask: Attempting to spawn {VehicleType.ModelName}", 3);
             SpawnedVehicle = new Vehicle(VehicleType.ModelName, Position, SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(SpawnedVehicle);
             GameFiber.Yield();

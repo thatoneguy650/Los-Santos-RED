@@ -77,10 +77,10 @@ public class GangRelationships
         }
         int preValue = gr.ReputationLevel;
         gr.SetReputation(gr.ReputationLevel + amount, sendNotification);
-        if (amount > 1)
-        {
-            EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} preValue {preValue} amount {amount} current {gr.ReputationLevel}", 5);
-        }
+        //if (amount > 1)
+        //{
+        //    EntryPoint.WriteToConsole($"GangRelationships ChangeReputation {gang.FullName} preValue {preValue} amount {amount} current {gr.ReputationLevel}", 5);
+        //}
     }
     public void AddAttacked(Gang gang)
     {
@@ -95,7 +95,7 @@ public class GangRelationships
             GangReputations.Add(gr);
         }
         gr.SetAttacked(); 
-        EntryPoint.WriteToConsole($"GangRelationships AddAttacked {gang.FullName} {gr.RecentlyAttacked} RecentlyAttacked {gr.RecentlyAttacked} current {gr.ReputationLevel}", 5);
+        //EntryPoint.WriteToConsole($"GangRelationships AddAttacked {gang.FullName} {gr.RecentlyAttacked} RecentlyAttacked {gr.RecentlyAttacked} current {gr.ReputationLevel}", 5);
     }
     public void SetReputation(Gang gang, int value, bool sendNotification)
     {
@@ -111,7 +111,7 @@ public class GangRelationships
         }
         int preValue = gr.ReputationLevel;
         gr.SetReputation(value, sendNotification);
-        EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} preValue {preValue} toset {value} current {gr.ReputationLevel}", 5);
+        //EntryPoint.WriteToConsole($"GangRelationships SetReputation {gang.FullName} preValue {preValue} toset {value} current {gr.ReputationLevel}", 5);
     }
     public void AddDebt(Gang gang, int amount)
     {

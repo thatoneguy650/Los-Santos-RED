@@ -28,7 +28,7 @@ public class VehicleBodyManager
     }
     public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone)
     {
-        EntryPoint.WriteToConsole($"VehicleBodyManager LoadBody {bone}");
+        //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone}");
         if (VehicleExt == null || !VehicleExt.Vehicle.Exists())
         {
             return false;
@@ -46,7 +46,7 @@ public class VehicleBodyManager
         StoredBody storedBody = new StoredBody(pedExt, bone, VehicleExt, Settings);
         if (storedBody.Load())
         {
-            EntryPoint.WriteToConsole($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");
+            //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");
             StoredBodies.Add(storedBody);
             return true;
         }

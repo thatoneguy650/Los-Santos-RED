@@ -58,7 +58,7 @@ class FollowInVehicleTaskState : TaskState
     {
         if (PedGeneral != null && PedGeneral.IsInVehicle && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists())
         {
-            EntryPoint.WriteToConsole($"SET FOLLOW IN VEHICLE GroupMemberNumber {GroupMemberNumber}");
+            //EntryPoint.WriteToConsoleTestLong($"SET FOLLOW IN VEHICLE GroupMemberNumber {GroupMemberNumber}");
             unsafe
             {
                 int lol = 0;

@@ -21,7 +21,7 @@ public class TapeItem : ModItem
     }
     public override bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
-        EntryPoint.WriteToConsole("I AM IN TapeItem ACTIVITY!!!!!!!!!!");
+        //EntryPoint.WriteToConsoleTestLong("I AM IN TapeItem ACTIVITY!!!!!!!!!!");
         Game.DisplayHelp($"Item: {Name} is currently unused");
         return false;
     }

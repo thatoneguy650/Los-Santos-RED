@@ -126,7 +126,7 @@ namespace LosSantosRED.lsr.Player
                         GameTimeLastChangedIdle = Game.GameTime;
                         GameTimeBetweenDrinks = Settings.SettingsManager.ActivitySettings.DrinkTimeBetween;// RandomItems.GetRandomNumber(1500, 2500);
                         IsFinishedWithSip = true;
-                        EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}", 5);
+                        //EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}");
                     }
                     if (TimesDrank >= 5 && ConsumableItemNeedGain.IsFinished)
                     {
@@ -137,7 +137,7 @@ namespace LosSantosRED.lsr.Player
                         TimesDrank++;
                         StartNewIdleAnimation();
                         IsFinishedWithSip = false;
-                        EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}", 5);
+                        //EntryPoint.WriteToConsole($"New Drinking Idle {PlayingAnim} TimesDrank {TimesDrank}");
                     }
                 }
                 bool isAnimRunning = aw.IsAnimationRunning(AnimationTime);
@@ -188,7 +188,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Bottle.Exists())
                 {
@@ -239,7 +239,7 @@ namespace LosSantosRED.lsr.Player
             {
                 isBottle = true;
             }
-            EntryPoint.WriteToConsole($"Drinking Start isBottle {isBottle} isMale {Player.IsMale}");
+            //EntryPoint.WriteToConsoleTestLong($"Drinking Start isBottle {isBottle} isMale {Player.IsMale}");
 
             string HandBoneName = "BONETAG_L_PH_HAND";
             Vector3 HandOffset = new Vector3();

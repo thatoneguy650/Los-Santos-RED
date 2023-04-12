@@ -80,7 +80,7 @@ public class Flee : ComplexTask
                 Vector3 CurrentPos = Ped.Pedestrian.Position;
                 NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", Ped.Pedestrian, CurrentPos.X, CurrentPos.Y, CurrentPos.Z, 5000f, -1, true, false);
             }
-            EntryPoint.WriteToConsole("RETASK FLEE");
+            //EntryPoint.WriteToConsoleTestLong("RETASK FLEE");
         }
     }
 }

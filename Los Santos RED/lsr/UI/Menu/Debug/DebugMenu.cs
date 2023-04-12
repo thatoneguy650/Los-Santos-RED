@@ -1465,7 +1465,7 @@ public class DebugMenu : ModUIMenu
         if(toChoose != null && toChoose.Pedestrian.Exists())
         {
             toChoose.Pedestrian.Inventory.GiveNewWeapon(WeaponHash.Pistol, 50, true);
-            EntryPoint.WriteToConsole($"Gave {toChoose.Pedestrian.Handle} Weapon");
+            //EntryPoint.WriteToConsoleTestLong($"Gave {toChoose.Pedestrian.Handle} Weapon");
         }
 
     }
@@ -1475,7 +1475,7 @@ public class DebugMenu : ModUIMenu
         if (toChoose != null && toChoose.Pedestrian.Exists())
         {
             toChoose.SetWantedLevel(3);
-            EntryPoint.WriteToConsole($"Gave {toChoose.Pedestrian.Handle} Weapon");
+            //EntryPoint.WriteToConsoleTestLong($"Gave {toChoose.Pedestrian.Handle} Weapon");
         }
 
     }
@@ -1698,7 +1698,7 @@ public class DebugMenu : ModUIMenu
 
                             if (Game.IsKeyDown(Keys.B))
                             {
-                                EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                                 GameFiber.Sleep(500);
                             }
                             if (Game.IsKeyDown(Keys.N))
@@ -1857,7 +1857,7 @@ public class DebugMenu : ModUIMenu
                                 }
                                 if (Game.IsKeyDown(Keys.B))
                                 {
-                                    EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                    //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                                     GameFiber.Sleep(500);
                                 }
                                 if (Game.IsKeyDown(Keys.N))
@@ -1888,7 +1888,7 @@ public class DebugMenu : ModUIMenu
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
             }
         }
     }
@@ -1937,7 +1937,7 @@ public class DebugMenu : ModUIMenu
                             }
                             if (Game.IsKeyDown(Keys.B))
                             {
-                                EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                                 GameFiber.Sleep(500);
                             }
                             if (Game.IsKeyDown(Keys.N))
@@ -1968,7 +1968,7 @@ public class DebugMenu : ModUIMenu
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
         }
 
     }

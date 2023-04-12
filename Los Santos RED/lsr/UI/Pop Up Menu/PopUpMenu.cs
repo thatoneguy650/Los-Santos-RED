@@ -374,7 +374,7 @@ public class PopUpMenu
         //}
         if(!UI.IsPressingActionWheelButton && !HasStoppedPressingDisplayKey)
         {
-            EntryPoint.WriteToConsole("HAS STOPPED PRESSING ACTION WHEEL SHOW");
+            //EntryPoint.WriteToConsoleTestLong("HAS STOPPED PRESSING ACTION WHEEL SHOW");
             HasStoppedPressingDisplayKey = true;
         }
         if (ClosestPositionMap != null)
@@ -397,7 +397,7 @@ public class PopUpMenu
                     if ((Game.IsControlJustReleased(0, GameControl.Attack) || NativeFunction.Natives.x305C8DCD79DA8B0F<bool>(0, 24)))// && Game.GameTime - GameTimeLastClicked >= 50)//or is disbaled control just released.....//&& Environment.TickCount - GameTimeLastClicked >= 100)//or is disbaled control just released.....
                     {
 
-                        EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT 2");
+                        //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT 2");
 
                         if (popUpBox.ClosesMenu)
                         {
@@ -408,7 +408,7 @@ public class PopUpMenu
                         if (popUpBox.Action != null)
                         {
                             popUpBox.Action();
-                            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT ACTION RAN");
+                            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT ACTION RAN");
                         }
                         else if (popUpBox.ChildMenuID != "")
                         {
@@ -416,7 +416,7 @@ public class PopUpMenu
                             CurrentPopUpBoxGroupID = popUpBox.ChildMenuID;
                             CurrentPage = 0;
                             TotalPages = 0;
-                            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED SELECT SUB MENU DRAWN");
+                            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT SUB MENU DRAWN");
                         }
                         //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
                     }
@@ -448,14 +448,14 @@ public class PopUpMenu
         bool isPressingAim = (Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25));
         if (!IsCurrentPopUpBoxGroupDefault && isPressingAim)
         {
-            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, GOING TO HOMEPAGE");
+            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED BACK, GOING TO HOMEPAGE");
             UpdateDefaultMapping(true);
             CurrentPage = 0;
             TotalPages = 0;
         }
         else if(IsCurrentPopUpBoxGroupDefault && !Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && isPressingAim)
         {
-            EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, CLOSING MENU");
+            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED BACK, CLOSING MENU");
             CloseMenu();
         }
         else if (!Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && UI.IsPressingActionWheelButton && HasStoppedPressingDisplayKey)

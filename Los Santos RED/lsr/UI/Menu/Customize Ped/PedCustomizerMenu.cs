@@ -113,7 +113,7 @@ public class PedCustomizerMenu
         CustomizeAffiliationMenu.OnModelChanged();
         CustomizeVoiceMenu.OnModelChanged();
         CustomizeExistingVariationsMenu.OnModelChanged();
-        EntryPoint.WriteToConsole("PedCustomizerMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("PedCustomizerMenu.OnModelChanged Executed");
         IsProgramicallySettingFieldValues = false;
     }
     public void OnSetVariation()
@@ -123,7 +123,7 @@ public class PedCustomizerMenu
         CustomizeComponentsMenu.OnModelChanged();
         CustomizeOverlaysMenu.OnModelChanged();
         CustomizePropsMenu.OnModelChanged();
-        EntryPoint.WriteToConsole("PedCustomizerMenu.OnSetVariation Executed");
+        //EntryPoint.WriteToConsoleTestLong("PedCustomizerMenu.OnSetVariation Executed");
         IsProgramicallySettingFieldValues = false;
     }
 }

@@ -132,7 +132,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {HiringGang.ContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if(!hasStartedRobbery)
@@ -205,7 +205,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     Player.ButtonPrompts.AddPrompt("RobberyStart", "Hold To Start Robbery", ButtonPromptIdentifier, Settings.SettingsManager.KeySettings.InteractCancel, 99);
                     if (Player.ButtonPrompts.IsHeld(ButtonPromptIdentifier))
                     {
-                        EntryPoint.WriteToConsole("RobberyStart You pressed fastforward to time");
+                        //EntryPoint.WriteToConsoleTestLong("RobberyStart You pressed fastforward to time");
                         Player.ButtonPrompts.RemovePrompts("RobberyStart");
                         Time.FastForward(RobberyTime);
                         Game.FadeScreenOut(1000, true);
@@ -271,13 +271,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     uint currentWeapon;
                     NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(gangMember.Pedestrian, out currentWeapon, true);
 
-                    EntryPoint.WriteToConsole($"PLAY SCENE currentWeapon {currentWeapon}");
+                    //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE currentWeapon {currentWeapon}");
 
                     if (currentWeapon != bestWeapon)
                     {
                         NativeFunction.Natives.SET_CURRENT_PED_WEAPON(gangMember.Pedestrian, bestWeapon, true);
                        // NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(gangMember.Pedestrian, false);
-                        EntryPoint.WriteToConsole($"PLAY SCENE SETTING TO bestWeapon {bestWeapon} currentWeapon {currentWeapon}");
+                        //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE SETTING TO bestWeapon {bestWeapon} currentWeapon {currentWeapon}");
                     }
                 }
             }
@@ -288,7 +288,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Star.Pedestrian, out currentWeapon, true);
                 if (currentWeapon != 2725352035)
                 {
-                    EntryPoint.WriteToConsole($"PLAY SCENE STARTING currentWeapon {currentWeapon}");
+                    //EntryPoint.WriteToConsoleTestLong($"PLAY SCENE STARTING currentWeapon {currentWeapon}");
                     PlaySpeech(Star, "COVER_ME", false);
                     NativeFunction.CallByName<bool>("SET_PED_SHOOTS_AT_COORD", Star.Pedestrian, RobberyLocation.EntrancePosition.X, RobberyLocation.EntrancePosition.Y, RobberyLocation.EntrancePosition.Z + 0.5f, true);
                     if (RandomItems.RandomPercent(50))
@@ -321,12 +321,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             Player.ButtonPrompts.RemovePrompts("RobberyStart");
             if (!hasSpawnedRobbers)
             {
-                EntryPoint.WriteToConsole($"FAILED!  as you werent close enough of the robbers didnt spawn!");
+                //EntryPoint.WriteToConsoleTestLong($"FAILED!  as you werent close enough of the robbers didnt spawn!");
                 return false;
             }
             if (hasSpawnedRobbers && !AreRobbersNormal())
             {
-                EntryPoint.WriteToConsole($"FAILED! ROBBER ISSUES!");
+                //EntryPoint.WriteToConsoleTestLong($"FAILED! ROBBER ISSUES!");
                 return false;
             }
             //if(!Player.IsAliveAndFree)//should handle on the respawn event, want to allow undie,,,,
@@ -346,7 +346,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     SendMoneyPickupMessage();
                     hasSentCompleteMessage = true;
                 }
-                EntryPoint.WriteToConsole($"You lost the cops so it is now ready for payment!");
+                //EntryPoint.WriteToConsoleTestLong($"You lost the cops so it is now ready for payment!");
             }
         }
         private void SetRobbersViolent()
@@ -374,7 +374,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(2000, 5000);
 
 
-                        EntryPoint.WriteToConsole($"WHEELMAN SPEECH CHECK DEADLY SHOOTING!");
+                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK DEADLY SHOOTING!");
                     }
                     else if (Player.IsWanted && tospeak.IsWanted && Player.AnyPoliceRecentlySeenPlayer)
                     {
@@ -383,7 +383,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(2000, 5000);
 
 
-                        EntryPoint.WriteToConsole($"WHEELMAN SPEECH CHECK WANTED!");
+                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK WANTED!");
 
                     }
                     else if(Player.IsNotWanted && tospeak.IsNotWanted)
@@ -399,7 +399,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                         GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(5000, 15000);
 
 
-                        EntryPoint.WriteToConsole($"WHEELMAN SPEECH CHECK IDLE!");
+                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK IDLE!");
 
                     }
                     else
@@ -409,7 +409,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 }
                 GameTimeBetweenRobberSpeech = RandomItems.GetRandomNumber(5000, 15000);
                 GameTimeRobberLastSpoke = Game.GameTime;
-                EntryPoint.WriteToConsole($"WHEELMAN SPEECH CHECK NO SPEECH!");
+                //EntryPoint.WriteToConsoleTestLong($"WHEELMAN SPEECH CHECK NO SPEECH!");
             }
         }
         private void PlaySpeech(GangMember gangMember, string speechName, bool useMegaphone)
@@ -425,12 +425,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     gangMember.Pedestrian.PlayAmbientSpeech(gangMember.VoiceName, speechName, 0, SpeechModifier.Force);
                 }
-                EntryPoint.WriteToConsole($"FREEMODE GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
+                //EntryPoint.WriteToConsoleTestLong($"FREEMODE GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
             }
             else
             {
                 gangMember.Pedestrian.PlayAmbientSpeech(speechName, useMegaphone);
-                EntryPoint.WriteToConsole($"REGULAR GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
+                //EntryPoint.WriteToConsoleTestLong($"REGULAR GANG SPEAK {gangMember.Pedestrian.Handle} freeModeVoice {gangMember.VoiceName} speechName {speechName}");
             }
         }
         private void CheckRobberCrimes()
@@ -441,17 +441,17 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if(gm.WantedLevel > Player.WantedLevel && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        EntryPoint.WriteToConsole($"WANTED LEVEL Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
+                        //EntryPoint.WriteToConsoleTestLong($"WANTED LEVEL Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
                         Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, null, true, true, true);
                     }
                     else if(gm.IsDeadlyChase && !Player.PoliceResponse.IsDeadlyChase && gm.PedViolations.WorstObservedCrime != null)
                     {
-                        EntryPoint.WriteToConsole($"DEADLY CHASE Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
+                        //EntryPoint.WriteToConsoleTestLong($"DEADLY CHASE Adding Crime {gm.PedViolations.WorstObservedCrime.Name}!");
                         Player.AddCrime(gm.PedViolations.WorstObservedCrime, true, Player.Character.Position, Player.CurrentVehicle, Player.WeaponEquipment.CurrentWeapon, true, true, true);
                     }
                     else if(gm.PedViolations.WorstObservedCrime == null)
                     {
-                        EntryPoint.WriteToConsole($"WHEELMAN NO CRIMES!!!!");
+                        //EntryPoint.WriteToConsoleTestLong($"WHEELMAN NO CRIMES!!!!");
                     }
                 }
             }
@@ -463,22 +463,22 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if(!gm.Pedestrian.Exists())
                 {
-                    EntryPoint.WriteToConsole($"FAILED!  A robber got despawned soemhow!");
+                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber got despawned soemhow!");
                     return false;
                 }
                 else if(gm.IsBusted)
                 {
-                    EntryPoint.WriteToConsole($"FAILED!  The robber got caught!");
+                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  The robber got caught!");
                     return false;
                 }
                 else if (gm.Pedestrian.IsDead)
                 {
-                    EntryPoint.WriteToConsole($"FAILED!  A robber died!");
+                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber died!");
                     return false;
                 }
                 else if (gm.Pedestrian.DistanceTo2D(Player.Character) >= 250f)
                 {
-                    EntryPoint.WriteToConsole($"FAILED!  A robber got left!");
+                    //EntryPoint.WriteToConsoleTestLong($"FAILED!  A robber got left!");
                     return false;
                 }
             }
@@ -557,7 +557,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetFailed()
         {
-            EntryPoint.WriteToConsole("Gang Wheelman FAILED");
+            //EntryPoint.WriteToConsoleTestLong("Gang Wheelman FAILED");
             //CleanupRobbers();
 
             foreach(GangMember gm in SpawnedRobbers)
@@ -575,7 +575,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetCompleted()
         {
-            EntryPoint.WriteToConsole("Gang Wheelman COMPLETED");
+            //EntryPoint.WriteToConsoleTestLong("Gang Wheelman COMPLETED");
             CleanupRobbers();
             //GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
             //SendMoneyPickupMessage();
@@ -703,7 +703,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 RobberyLocation.IsPlayerInterestedInLocation = true;
             }
 
-            EntryPoint.WriteToConsole($"You are hired to wheelman!");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to wheelman!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 2000, -500, 7, "Gang Wheelman");
             CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
             CurrentTask.FailOnStandardRespawn = true;

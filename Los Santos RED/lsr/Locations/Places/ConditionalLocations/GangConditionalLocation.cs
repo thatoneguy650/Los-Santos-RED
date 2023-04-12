@@ -68,7 +68,7 @@ public class GangConditionalLocation : ConditionalLocation
     }
     public override void GetDispatchableGenerator()
     {
-        EntryPoint.WriteToConsole($"GANG GetDispatchableGenerator: AssociationID: {AssociationID} MasterAssociationID: {MasterAssociationID}");
+        //EntryPoint.WriteToConsoleTestLong($"GANG GetDispatchableGenerator: AssociationID: {AssociationID} MasterAssociationID: {MasterAssociationID}");
         if (Gang != null)
         {
             return;
@@ -95,7 +95,7 @@ public class GangConditionalLocation : ConditionalLocation
         }
         if(Gang != null) 
         { 
-            EntryPoint.WriteToConsole($"GANG GetDispatchableGenerator CHOSEN GANG: {Gang.ShortName}"); 
+            //EntryPoint.WriteToConsoleTestLong($"GANG GetDispatchableGenerator CHOSEN GANG: {Gang.ShortName}"); 
         }
     }
     public override void GenerateSpawnTypes()

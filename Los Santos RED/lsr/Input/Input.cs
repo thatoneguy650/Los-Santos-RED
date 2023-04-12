@@ -239,7 +239,7 @@ namespace LosSantosRED.lsr
             }
             if (IsPressingGesture)
             {
-                EntryPoint.WriteToConsole("Gesture Start Hotkey");
+                //EntryPoint.WriteToConsoleTestLong("Gesture Start Hotkey");
                 Player.ActivityManager.Gesture();
             }
         } 
@@ -325,7 +325,7 @@ namespace LosSantosRED.lsr
                 }
                 if(IsUsingController && MenuProvider.IsPressingActionWheelButton && CanToggleAltMenu)
                 {
-                    EntryPoint.WriteToConsole("TOGGLE ALT MENU RAN");
+                    //EntryPoint.WriteToConsoleTestLong("TOGGLE ALT MENU RAN");
                     CanToggleAltMenu = false;
                     MenuProvider.ToggleAltMenu();
                    // GameTimeLastPressedAltMenu = Game.GameTime;

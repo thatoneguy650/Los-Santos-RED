@@ -150,7 +150,7 @@ public class ConditionalLocation
         {
             ped.LocationTaskRequirements.ForcedScenarios.AddRange(ForcedScenarios.ToList());
         }
-        EntryPoint.WriteToConsole("ADDED LOCATION REQUIREMENTS");
+        //EntryPoint.WriteToConsoleTestLong("ADDED LOCATION REQUIREMENTS");
     }
 
 

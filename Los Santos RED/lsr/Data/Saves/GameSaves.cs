@@ -37,7 +37,7 @@ public class GameSaves : IGameSaves
     }
     public void Save(ISaveable player, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest, IModItems modItems, int saveNumber)
     {
-        EntryPoint.WriteToConsole($"NEW SAVE GAME save number {saveNumber}");
+        //EntryPoint.WriteToConsoleTestLong($"NEW SAVE GAME save number {saveNumber}");
         GameSave mySave = new GameSave();
         mySave.SaveNumber = saveNumber;
         GameSaveList.Add(mySave);     

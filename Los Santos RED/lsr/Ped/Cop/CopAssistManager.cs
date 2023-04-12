@@ -97,7 +97,7 @@ public class CopAssistManager
                                 ClosestCar.Delete();
                             }
                             GameFiber.Yield();
-                            EntryPoint.WriteToConsole($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
+                            //EntryPoint.WriteToConsoleTestLong($"DELETED CAR IN FRONT USING ASSIST MANAGER {Cop.Handle}");
                         }
                     }
                 }
@@ -113,7 +113,7 @@ public class CopAssistManager
             { 
                 if(!IsCheatFiberRunning)
                 {
-                    EntryPoint.WriteToConsole($"POWER ASSIST STARTED {Cop.Handle}");
+                    //EntryPoint.WriteToConsoleTestLong($"POWER ASSIST STARTED {Cop.Handle}");
                     IsCheatFiberRunning = true;
                     GameFiber.StartNew(delegate
                     {

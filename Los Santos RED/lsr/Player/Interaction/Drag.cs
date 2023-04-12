@@ -105,7 +105,7 @@ public class Drag : DynamicActivity
         {
                 return;
         }
-        EntryPoint.WriteToConsole($"Drag Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
+        //EntryPoint.WriteToConsoleTestLong($"Drag Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
         Player.ActivityManager.IsDraggingBody = true;
         SetupPed();
         GameFiber.StartNew(delegate
@@ -173,7 +173,7 @@ public class Drag : DynamicActivity
     private void BeginDrag()
     {
         AnimationDictionary.RequestAnimationDictionay("combat@drag_ped@");
-        EntryPoint.WriteToConsole("Begin Dragging Body");
+        //EntryPoint.WriteToConsoleTestLong("Begin Dragging Body");
         AnimationWatcher = new AnimationWatcher();
         AnimationWatcher.TimeBetweenCheck = 0;
         IsNearBody = MoveToBody();
@@ -185,12 +185,12 @@ public class Drag : DynamicActivity
         RemovePrompts();
         if (IsBodyPickedUp && !LoadBody)
         {
-            EntryPoint.WriteToConsole("Drag, Finished, completed");
+            //EntryPoint.WriteToConsoleTestLong("Drag, Finished, completed");
             PutDownPed();
         }
         else if (IsAttached && !LoadBody)
         {
-            EntryPoint.WriteToConsole("Drag, Finished, only attached");
+            //EntryPoint.WriteToConsoleTestLong("Drag, Finished, only attached");
             DetachPeds();
         }
         if (LastWeapon != null && !LoadBody)
@@ -200,7 +200,7 @@ public class Drag : DynamicActivity
     }
     private void PutDownPed()
     {
-        EntryPoint.WriteToConsole("DRAG PUT DOWN PED RAN");
+        //EntryPoint.WriteToConsoleTestLong("DRAG PUT DOWN PED RAN");
         if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2 | 8, 0, false, false, false);
@@ -244,9 +244,9 @@ public class Drag : DynamicActivity
             float calcHeading = (float)GetHeading(Player.Character.Position, PedRoot);
             float calcHeading2 = (float)CalculeAngle(PedRoot, Player.Character.Position);
             DesiredHeading = calcHeading2;
-            EntryPoint.WriteToConsole($"calcHeading 1 {calcHeading} calcHeading2  {calcHeading2}", 5);
+            //EntryPoint.WriteToConsole($"calcHeading 1 {calcHeading} calcHeading2  {calcHeading2}");
             NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1000);
-            EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}", 5);
+            //EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}");
             GameFiber.Sleep(1000);
             if (!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree || Player.IsIncapacitated)
             {
@@ -254,13 +254,13 @@ public class Drag : DynamicActivity
             }
             if (IsCloseEnough && IsFacingDirection && !IsCancelled)
             {
-                EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+                //EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}");
                 return true;
             }
             else
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-                EntryPoint.WriteToConsole($"MoveToBody NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+                //EntryPoint.WriteToConsole($"MoveToBody NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}");
                 return false;
             }
         }
@@ -341,7 +341,7 @@ public class Drag : DynamicActivity
 
         if (PlayAttachAnimation() && PlayDragAnimation())
         {
-            EntryPoint.WriteToConsole("ATTACH RAN");
+            //EntryPoint.WriteToConsoleTestLong("ATTACH RAN");
             return true;
         }
         else
@@ -363,7 +363,7 @@ public class Drag : DynamicActivity
             //{
             //    DoRagdollDrag();// SetRagdollTest();
             //}
-            EntryPoint.WriteToConsole("DRAG ANIM RAN");
+            //EntryPoint.WriteToConsoleTestLong("DRAG ANIM RAN");
             return true;
         }
         else
@@ -389,7 +389,7 @@ public class Drag : DynamicActivity
     }
     private bool PlayPlayerLoopingAnimation(string dictionary, string animation, bool repeat, int flag, bool moveCancels, bool forcePedIntroAnim)
     {
-        EntryPoint.WriteToConsole($"PlayPlayerLoopingAnimation START {animation} repeat {repeat}");
+        //EntryPoint.WriteToConsoleTestLong($"PlayPlayerLoopingAnimation START {animation} repeat {repeat}");
         if (!repeat)
         {
             NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 2.0f, -2.0f, -1, flag, 0, false, false, false);
@@ -452,7 +452,7 @@ public class Drag : DynamicActivity
             }
             GameFiber.Yield();
         }
-        EntryPoint.WriteToConsole($"PlayPlayerLoopingAnimation END {animation} repeat {repeat}");
+        //EntryPoint.WriteToConsoleTestLong($"PlayPlayerLoopingAnimation END {animation} repeat {repeat}");
         if(!IsCancelled && IsRagdoll)
         {
             return true;

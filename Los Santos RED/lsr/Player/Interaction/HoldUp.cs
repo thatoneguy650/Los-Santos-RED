@@ -49,7 +49,7 @@ public class HoldUp : Interaction
     }
     private void Setup()
     {
-        EntryPoint.WriteToConsole($"Hold Up Started Target.IsInVehicle {Target.IsInVehicle}");
+        //EntryPoint.WriteToConsoleTestLong($"Hold Up Started Target.IsInVehicle {Target.IsInVehicle}");
         Target.CanBeTasked = false;     
         Target.PlayerKnownsName = true;
         Target.Pedestrian.BlockPermanentEvents = true;
@@ -65,7 +65,7 @@ public class HoldUp : Interaction
         if (Target.IsInVehicle && Target.Pedestrian.CurrentVehicle.Exists())
         {
             Player.IsCarJacking = true;
-            EntryPoint.WriteToConsole($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
+            //EntryPoint.WriteToConsoleTestLong($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
             unsafe
             {
                 int lol = 0;
@@ -86,7 +86,7 @@ public class HoldUp : Interaction
         }
         else
         {
-            EntryPoint.WriteToConsole($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
+            //EntryPoint.WriteToConsoleTestLong($"Hold Up EnterHandsUp Target.IsInVehicle {Target.IsInVehicle}");
             unsafe
             {
                 int lol = 0;
@@ -241,7 +241,7 @@ public class HoldUp : Interaction
                 NativeFunction.CallByName<bool>("CREATE_AMBIENT_PICKUP", modelHash, MoneyPos.X, MoneyPos.Y, MoneyPos.Z, 0, MoneyToDrop, 1, false, true);
                 MoneyPickupCreated += MoneyToDrop;
             }
-            EntryPoint.WriteToConsole($"Mugging Calculated PickupsToCreate (Gang) {PickupsToCreate} Target.Money {Target.Money} Remainder {Remainder}");
+            //EntryPoint.WriteToConsoleTestLong($"Mugging Calculated PickupsToCreate (Gang) {PickupsToCreate} Target.Money {Target.Money} Remainder {Remainder}");
         }
         else
         {       

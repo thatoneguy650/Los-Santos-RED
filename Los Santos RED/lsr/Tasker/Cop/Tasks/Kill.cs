@@ -187,7 +187,7 @@ public class Kill : ComplexTask
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
-                EntryPoint.WriteToConsole($"KillTask: {Ped.Pedestrian.Handle} Reset Combat", 5);
+                //EntryPoint.WriteToConsole($"KillTask: {Ped.Pedestrian.Handle} Reset Combat", 5);
                 GametimeLastRetasked = Game.GameTime;
             }
             if(!Ped.IsInVehicle)
@@ -195,7 +195,7 @@ public class Kill : ComplexTask
                 if(ShouldGoToBeforeAttack != IsGoingToBeforeAttacking)
                 {
                     UpdateCombat();
-                    EntryPoint.WriteToConsole($"KILL Task Target Changed to {Player.CurrentLocation.IsInside}");
+                    //EntryPoint.WriteToConsoleTestLong($"KILL Task Target Changed to {Player.CurrentLocation.IsInside}");
                 }
             }
         }

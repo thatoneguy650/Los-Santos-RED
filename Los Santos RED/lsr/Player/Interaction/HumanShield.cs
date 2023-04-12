@@ -80,7 +80,7 @@ public class HumanShield : DynamicActivity
     }
     public override void Cancel()
     {
-        EntryPoint.WriteToConsole("Human Shield - Cancel Pressed");
+        //EntryPoint.WriteToConsoleTestLong("Human Shield - Cancel Pressed");
         ResetHostage();
         ResetPlayer();
         ResetVariables();
@@ -177,7 +177,7 @@ public class HumanShield : DynamicActivity
             wasSetPersistent = Ped.WasEverSetPersistent;
             PreviousRelationshipGroup = Ped.Pedestrian.RelationshipGroup;
 
-            EntryPoint.WriteToConsole($"Grab Started PreviousRelationshipGroup {PreviousRelationshipGroup.Name}");
+            //EntryPoint.WriteToConsoleTestLong($"Grab Started PreviousRelationshipGroup {PreviousRelationshipGroup.Name}");
 
             Ped.CanBeTasked = false;
             Ped.Pedestrian.Tasks.Clear();
@@ -196,7 +196,7 @@ public class HumanShield : DynamicActivity
     private void TakHostage()
     {
         //SetCloseCamera();
-        EntryPoint.WriteToConsole("Taking Hostage");
+        //EntryPoint.WriteToConsoleTestLong("Taking Hostage");
         PlayInitialAnimation();
         SetupPrompts();
         while (IsHostageValid && IsPlayerValidHostageTaker && !IsCancelled)
@@ -330,7 +330,7 @@ public class HumanShield : DynamicActivity
         }
         if (isMoveDownPressed)
         {
-            EntryPoint.WriteToConsole("SHIELD DOWN PRESSED");
+            //EntryPoint.WriteToConsoleTestLong("SHIELD DOWN PRESSED");
             if(!isBackingUp)
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "move_strafe@generic", "walk_bwd_180_loop", 8.0f, -8.0f, -1, 1, 0, false, false, false);
@@ -356,7 +356,7 @@ public class HumanShield : DynamicActivity
         }
         else if (isMoveUpPressed || Player.Character.IsWalking)
         {
-            EntryPoint.WriteToConsole("SHIELD UP PRESSED");
+            //EntryPoint.WriteToConsoleTestLong("SHIELD UP PRESSED");
             if (!IsMovingForward)
             {
                 if (Ped.Pedestrian.Exists())

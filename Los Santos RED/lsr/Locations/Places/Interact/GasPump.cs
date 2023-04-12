@@ -228,7 +228,7 @@ public class GasPump : InteractableLocation
             }
             else
             {
-                EntryPoint.WriteToConsole("Gas Pump You are Closer to the REAR, using that side");
+                //EntryPoint.WriteToConsoleTestLong("Gas Pump You are Closer to the REAR, using that side");
                 PropEntryPosition = PumpProp.GetOffsetPositionFront(1f);
                 PropEntryPosition = new Vector3(PropEntryPosition.X, PropEntryPosition.Y, Game.LocalPlayer.Character.Position.Z);
                 float ObjectHeading = PumpProp.Heading;

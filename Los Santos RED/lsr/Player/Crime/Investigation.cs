@@ -140,7 +140,7 @@ public class Investigation
                     NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START");
             }
         }
     }
@@ -160,7 +160,7 @@ public class Investigation
         UpdateBlip();
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
         {
-            EntryPoint.WriteToConsole($"Investigation Update (Secondary Tasks) 250ms? Ran Time Since {Game.GameTime - GameTimeLastUpdatedInvestigation}", 5);
+            EntryPoint.WriteToConsole($"Investigation Update (Secondary Tasks) 250ms? Ran Time Since {Game.GameTime - GameTimeLastUpdatedInvestigation}",5);
         }
         GameTimeLastUpdatedInvestigation = Game.GameTime;
     }
@@ -169,12 +169,12 @@ public class Investigation
     {
         if(IsOutsideInvestigationRange)
         {
-            EntryPoint.WriteToConsole("Investigation Expire OUTSIDE RANGE");
+            //EntryPoint.WriteToConsoleTestLong("Investigation Expire OUTSIDE RANGE");
             Expire();
         }
         else if ((IsTimedOut || World.Pedestrians.Police.Any(x=>x.IsRespondingToInvestigation && x.GameTimeReachedInvestigationPosition > 0 && Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring)) && World.TotalWantedLevel == 0 && !World.Pedestrians.AnyInjuredPeopleNearPlayer)
         {
-            EntryPoint.WriteToConsole("Investigation Expire TIME OUT");
+            //EntryPoint.WriteToConsoleTestLong("Investigation Expire TIME OUT");
             Expire();
         }
     }

@@ -50,7 +50,7 @@ public class Radio
             if (!VehicleToMonitor.HasAutoSetRadio)
             {
                 VehicleToMonitor.HasAutoSetRadio = true;
-                EntryPoint.WriteToConsole($"Player Event: Set Radio For the First Time {StationName}", 5);
+                //EntryPoint.WriteToConsole($"Player Event: Set Radio For the First Time {StationName}", 5);
             }
         }
     }

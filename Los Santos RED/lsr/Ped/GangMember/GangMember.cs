@@ -104,9 +104,9 @@ public class GangMember : PedExt, IWeaponIssuable
                 RelationshipGroup.Cop.SetRelationshipWith(Pedestrian.RelationshipGroup, Relationship.Hate);
                 Pedestrian.RelationshipGroup.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
                 Gang.HasWantedMembers = true;
-                EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
+                //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER) SET {Gang.ID} TO HATES COPS");
             }
-            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER)");
+            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (GANG MEMBER)");
         }
     }
     public override void OnLostWanted()
@@ -114,7 +114,7 @@ public class GangMember : PedExt, IWeaponIssuable
         if(Pedestrian.Exists())
         {
             PedViolations.Reset();
-            EntryPoint.WriteToConsole($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
+            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
         }
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)

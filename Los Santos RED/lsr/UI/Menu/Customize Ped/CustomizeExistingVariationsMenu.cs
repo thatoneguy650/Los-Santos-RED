@@ -104,7 +104,7 @@ public class CustomizeExistingVariationsMenu
 
         foreach (SavedOutfit so in SavedOutfits.SavedOutfitList.Where(x=> x.ModelName.ToLower() == PedCustomizer.WorkingModelName.ToLower()))
         {
-            EntryPoint.WriteToConsole($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
+            //EntryPoint.WriteToConsoleTestLong($"OUTFIT MANAGER:     ADDING OUTFIT {so.Name}");
             UIMenuListScrollerItem<string> uIMenuItem = new UIMenuListScrollerItem<string>(so.Name,"",new List<string>() { "Set","Delete" });
             uIMenuItem.Activated += (sender, e) =>
             {

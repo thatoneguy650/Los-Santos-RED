@@ -158,7 +158,7 @@ public class DeadDrop : InteractableLocation
             }
             GameFiber.Yield();
         }
-        EntryPoint.WriteToConsole($"Dead Drop PlayMoneyAnimation IsCancelled: {IsCancelled}");
+        //EntryPoint.WriteToConsoleTestLong($"Dead Drop PlayMoneyAnimation IsCancelled: {IsCancelled}");
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
 
         Player.IsDoingSuspiciousActivity = false;

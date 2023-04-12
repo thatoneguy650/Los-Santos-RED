@@ -709,7 +709,7 @@ public class LEDispatcher
         HasDispatchedThisTick = true;//up here for now, might be better down low
         if (ShouldRunAmbientDispatch)
         {
-            EntryPoint.WriteToConsole($"AMBIENT COP RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
+            //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
             RunAmbientDispatch();
         }
         else
@@ -717,12 +717,12 @@ public class LEDispatcher
             ShouldRunAmbientDispatch = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
             if (ShouldRunAmbientDispatch)
             {
-                EntryPoint.WriteToConsole($"AMBIENT COP RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
+                //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
                 RunAmbientDispatch();
             }
             else
             {
-                EntryPoint.WriteToConsole($"AMBIENT COP Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
+                //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
                 GameTimeAttemptedDispatch = Game.GameTime;
             }
         }
@@ -737,10 +737,10 @@ public class LEDispatcher
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)
         {
-            EntryPoint.WriteToConsole($"AMBIENT COP CALLED SPAWN TASK");
+            //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
             if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
             {
-                EntryPoint.WriteToConsole($"AMBIENT COP SPAWN TASK RAN");
+                //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
                 GameTimeAttemptedDispatch = Game.GameTime;
             }
@@ -962,7 +962,7 @@ public class LEDispatcher
         }
         if (agency == null)
         {
-            EntryPoint.WriteToConsole("Dispatcher could not find Agency To Spawn");
+            //EntryPoint.WriteToConsoleTestLong("Dispatcher could not find Agency To Spawn");
         }
         return agency;
     }
@@ -999,32 +999,32 @@ public class LEDispatcher
         bool anyCopsNearCop = totalCopsNearCop > 0;
         if (!cop.AssignedAgency.CanSpawn(World.TotalWantedLevel))
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CANNOT SPAWN AGENCY");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CANNOT SPAWN AGENCY");
             return true;
         }
         else if (cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDelete) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, IN VEHICLE DELETE");
             return true;
         }
         else if (!cop.IsInVehicle && cop.DistanceToPlayer > DistanceToDeleteOnFoot) //Beyond Caring
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, NOT IN VEHICLE DELETE");
             return true;
         }
         else if (cop.DistanceToPlayer >= 300f && cop.ClosestDistanceToPlayer <= 15f && !cop.IsInHelicopter) //Got Close and Then got away
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, CLOSE THEN FAR");
             return true;
         }
         else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 150f && cop.ClosestDistanceToPlayer <= 35f && anyCopsNearCop && !cop.Pedestrian.IsOnScreen)
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST ONE");
             return true;
         }
         else if (!cop.IsInHelicopter && cop.DistanceToPlayer >= 300f && totalCopsNearCop >= 4 && !cop.Pedestrian.IsOnScreen)
         {
-            EntryPoint.WriteToConsole($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST total COPS");
+            //EntryPoint.WriteToConsoleTestLong($"{cop.Handle} Distance {cop.DistanceToPlayer} DELETE COP, LAST total COPS");
             return true;
         }
         return false;
@@ -1105,7 +1105,7 @@ public class LEDispatcher
                 //    , 0, out RoadblockFinalPosition, out RoadblockFinalHeading, Settings.SettingsManager.PoliceSettings.RoadblockNodeType, 0x40400000, 0))
                 //    { 
                 float headingDiff = Math.Abs(Extensions.GetHeadingDifference(Game.LocalPlayer.Character.Heading, RoadblockFinalHeading));
-                EntryPoint.WriteToConsole($"Roadblock RoadblockFinalPosition {RoadblockFinalPosition} RoadblockFinalHeading {RoadblockFinalHeading} PlayerHeading: {Game.LocalPlayer.Character.Heading} {headingDiff}");
+                //EntryPoint.WriteToConsoleTestLong($"Roadblock RoadblockFinalPosition {RoadblockFinalPosition} RoadblockFinalHeading {RoadblockFinalHeading} PlayerHeading: {Game.LocalPlayer.Character.Heading} {headingDiff}");
                 if (headingDiff > 50f)
                 {
                     return false;
@@ -1141,7 +1141,7 @@ public class LEDispatcher
         VehicleType = null;
         PersonType = null;
         Agency = null;           
-        EntryPoint.WriteToConsole($"DEBUG SPAWN COP agencyID: {agencyID} onFoot: {onFoot}");
+        //EntryPoint.WriteToConsoleTestLong($"DEBUG SPAWN COP agencyID: {agencyID} onFoot: {onFoot}");
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         if (Game.LocalPlayer.Character.DistanceTo2D(new Vector3(682.6665f, 668.7299f, 128.4526f)) <= 30f)
@@ -1169,7 +1169,7 @@ public class LEDispatcher
         }
         if (Agency == null)
         {
-            EntryPoint.WriteToConsole($"DEBUG SPAWN COP NO AGENCY FOUND");
+            //EntryPoint.WriteToConsoleTestLong($"DEBUG SPAWN COP NO AGENCY FOUND");
             return;
         }
         if (!onFoot)

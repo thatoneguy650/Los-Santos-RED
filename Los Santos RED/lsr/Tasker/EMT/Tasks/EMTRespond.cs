@@ -174,18 +174,18 @@ public class EMTRespond : ComplexTask
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = Player.Investigation.Position;
                 UpdateGoTo();
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated 1: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated 1: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 HasReachedReportedPosition = true;
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo();
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Near: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }
@@ -207,7 +207,7 @@ public class EMTRespond : ComplexTask
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)eCustomDrivingStyles.Code3, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
                     }
-                    EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
+                    //EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
                 }
             }
             else

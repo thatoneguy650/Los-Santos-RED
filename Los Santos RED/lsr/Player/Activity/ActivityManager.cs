@@ -206,7 +206,7 @@ public class ActivityManager
     }
     private void ForceCancelUpperBody()
     {
-        EntryPoint.WriteToConsole("ForceCancelUpperBody");
+        //EntryPoint.WriteToConsole("ForceCancelUpperBody");
         if (UpperBodyActivity != null)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -216,7 +216,7 @@ public class ActivityManager
     }
     private void ForceCancelLowerBody()
     {
-        EntryPoint.WriteToConsole("ForceCancelLowerBody");
+        //EntryPoint.WriteToConsoleTestLong("ForceCancelLowerBody");
         if (LowerBodyActivity != null)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -231,7 +231,7 @@ public class ActivityManager
     }
     public void ForceCancelAllPaused()
     {
-        EntryPoint.WriteToConsole("ForceCancelAllPaused");
+        //EntryPoint.WriteToConsoleTestLong("ForceCancelAllPaused");
         foreach (DynamicActivity da in PausedActivites)
         {
             da.Cancel();
@@ -303,14 +303,14 @@ public class ActivityManager
         {
             if(bp.IsPressedNow || bp.IsHeldNow || bp.IsFakePressed)
             {
-                EntryPoint.WriteToConsole($"BP PRESSED: {bp.Text} IsPressedNow{bp.IsPressedNow} IsHeldNow{bp.IsHeldNow} IsAlternativePressed{bp.IsFakePressed}");
+                //EntryPoint.WriteToConsoleTestLong($"BP PRESSED: {bp.Text} IsPressedNow{bp.IsPressedNow} IsHeldNow{bp.IsHeldNow} IsAlternativePressed{bp.IsFakePressed}");
             }
             else
             {
-                EntryPoint.WriteToConsole($"BP NOT PRESSED: {bp.Text}");
+                //EntryPoint.WriteToConsoleTestLong($"BP NOT PRESSED: {bp.Text}");
             }
         }
-        EntryPoint.WriteToConsole("CancelCurrentActivity");
+        //EntryPoint.WriteToConsoleTestLong("CancelCurrentActivity");
         if (UpperBodyActivity != null && UpperBodyActivity.CanCancel)
         {
             Player.ButtonPrompts.RemoveActivityPrompts();
@@ -328,7 +328,7 @@ public class ActivityManager
     {
         if (IsPerformingActivity)
         {
-            EntryPoint.WriteToConsole("StopDynamicActivity");
+            //EntryPoint.WriteToConsoleTestLong("StopDynamicActivity");
             Player.ButtonPrompts.RemoveActivityPrompts();
             UpperBodyActivity?.Cancel();
             UpperBodyActivity = null;
@@ -739,12 +739,12 @@ public class ActivityManager
         {
             if (toToggleDoor.Vehicle.Doors[doorIndex].IsOpen)
             {
-                EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
+                //EntryPoint.WriteToConsoleTestLong($"CLOSE DOOR {doorIndex}");
                 toToggleDoor.Vehicle.Doors[doorIndex].Close(false);
             }
             else
             {
-                EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
+                //EntryPoint.WriteToConsoleTestLong($"OPEN DOOR {doorIndex}");
                 toToggleDoor.Vehicle.Doors[doorIndex].Open(false, false);
             }
         }
@@ -763,7 +763,7 @@ public class ActivityManager
         {
             if (!isAlreadyOpen)
             {
-                EntryPoint.WriteToConsole($"OPEN DOOR {doorIndex}");
+                //EntryPoint.WriteToConsoleTestLong($"OPEN DOOR {doorIndex}");
                 if (withAnimation)
                 {
 
@@ -794,7 +794,7 @@ public class ActivityManager
         {
             if (isAlreadyOpen)
             {
-                EntryPoint.WriteToConsole($"CLOSE DOOR {doorIndex}");
+                //EntryPoint.WriteToConsoleTestLong($"CLOSE DOOR {doorIndex}");
                 if (withAnimation)
                 {
 
@@ -834,7 +834,7 @@ public class ActivityManager
             try
             {
                 uint GameTimeStarted = Game.GameTime;
-                EntryPoint.WriteToConsole("WatchVehicleEntry START");
+                //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry START");
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
                 {
                     int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Player.Character, Game.GetHashKey("SCRIPT_TASK_ENTER_VEHICLE"));
@@ -850,7 +850,7 @@ public class ActivityManager
                     }
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole("WatchVehicleEntry END");
+                //EntryPoint.WriteToConsoleTestLong("WatchVehicleEntry END");
             }
             catch (Exception ex)
             {
@@ -904,12 +904,12 @@ public class ActivityManager
                 {
                     NativeFunction.Natives.PLAY_FACIAL_ANIM(Player.Character, Animation, "facials@gen_female@base");
                 }
-                EntryPoint.WriteToConsole($"PLAYER YELL IN PAIN {Player.Character.Handle} YellType {YellType} Animation {Animation}");
+                //EntryPoint.WriteToConsoleTestLong($"PLAYER YELL IN PAIN {Player.Character.Handle} YellType {YellType} Animation {Animation}");
             }
             else
             {
                 Player.PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
-                EntryPoint.WriteToConsole($"PLAYER CRY SPEECH FOR PAIN {Player.Character.Handle}");
+                //EntryPoint.WriteToConsoleTestLong($"PLAYER CRY SPEECH FOR PAIN {Player.Character.Handle}");
             }
 
             GameTimeLastYelled = Game.GameTime;
@@ -1003,7 +1003,7 @@ public class ActivityManager
                         {
                             toPlay = "d_close_in_near";
                         }
-                        EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}", 5);
+                        //EntryPoint.WriteToConsole($"Player Event: Closing Door Manually Angle {DoorAngle} Dict veh@std@ds@enter_exit Animation {toPlay}");
                         AnimationDictionary.RequestAnimationDictionay("veh@std@ds@enter_exit");
                         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "veh@std@ds@enter_exit", toPlay, 4.0f, -4.0f, -1, 50, 0, false, false, false);//-1
                         GameFiber DoorWatcher = GameFiber.StartNew(delegate
@@ -1076,6 +1076,18 @@ public class ActivityManager
     public void OnPlayerDied()
     {
         ForceCancelAllActivities();
+    }
+
+    public void PerformItemAnimation(bool isTaking)
+    {
+        //throw new NotImplementedException();
+        if (IsPerformingActivity)
+        {
+            return;
+        }
+        AnimationDictionary.RequestAnimationDictionay("mp_common");
+        string animation = isTaking ? "givetake1_b" : "givetake1_a";
+        NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "mp_common", animation, 1.0f, -1.0f, 5000, (int)(AnimationFlags.UpperBodyOnly | AnimationFlags.SecondaryTask), 0, false, false, false);
     }
 }
 

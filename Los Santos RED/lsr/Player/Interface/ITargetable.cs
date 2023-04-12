@@ -56,6 +56,10 @@ namespace LosSantosRED.lsr.Interface
         int CellX { get; }
         int CellY { get; }
         bool IsDead { get; }
+        bool PoliceLastSeenOnFoot { get; }
+        bool IsNearbyPlacePoliceShouldSearchForPlayer { get; }
+        Vector3 StreetPlacePoliceShouldSearchForPlayer { get; }
+        Vector3 StreetPlacePoliceLastSeenPlayer { get; }
         //bool IsHostile(Gang gang);
     }
 }

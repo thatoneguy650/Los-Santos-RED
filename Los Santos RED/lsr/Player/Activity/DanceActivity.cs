@@ -68,7 +68,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Dance Start: {DanceData.Name}", 5);
+            //EntryPoint.WriteToConsole($"Dance Start: {DanceData.Name}");
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -105,7 +105,7 @@ namespace LosSantosRED.lsr.Player
             if (DanceData.AnimationEnter != "")
             {
                 AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
-                EntryPoint.WriteToConsole($"Dance Enter: {DanceData.AnimationEnter}", 5);
+                //EntryPoint.WriteToConsole($"Dance Enter: {DanceData.AnimationEnter}");
                 GameTimeStartedDancing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlagNormal, 0, false, false, false);//-1
 
@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player
                 //Player.ButtonPrompts.AddPrompt("DanceActivity", "Stop Dancing", "StopDance", Settings.SettingsManager.KeySettings.InteractCancel, 3);
                 PlayingAnimation = DanceData.AnimationIdle;
                 PlayingDictionary = DanceData.AnimationDictionary;
-                EntryPoint.WriteToConsole($"Dance Idle: {DanceData.AnimationIdle}", 5);
+               // EntryPoint.WriteToConsole($"Dance Idle: {DanceData.AnimationIdle}");
                 GameTimeStartedDancing = Game.GameTime;
 
                 if (!Player.IsMoveControlPressed)
@@ -173,18 +173,18 @@ namespace LosSantosRED.lsr.Player
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationIdle);
                     if (AnimationTime >= 0.99f && shouldStop)
                     {
-                        EntryPoint.WriteToConsole("EXIT ANIM OVER AND SHOULDSTOP");
+                        //EntryPoint.WriteToConsoleTestLong("EXIT ANIM OVER AND SHOULDSTOP");
                         break;
                     }
                     if (Player.IsMoveControlPressed)
                     {
-                        EntryPoint.WriteToConsole("EXIT IsMoveControlPressed");
+                        //EntryPoint.WriteToConsoleTestLong("EXIT IsMoveControlPressed");
                         IsCancelled = true;
                         break;
                     }
                     if(PlayingAnimation != DanceData.AnimationIdle || PlayingDictionary != DanceData.AnimationDictionary)//changed the dance, restart it baby!
                     {
-                        EntryPoint.WriteToConsole("EXIT NOT PLAYING ANIM");
+                        //EntryPoint.WriteToConsoleTestLong("EXIT NOT PLAYING ANIM");
                         shouldExit = false;
                         break;
 
@@ -213,7 +213,7 @@ namespace LosSantosRED.lsr.Player
                     GameFiber.Yield();
                 }
 
-                EntryPoint.WriteToConsole($" CanPerformActivitiesExtended{Player.ActivityManager.CanPerformActivitiesExtended} IsCancelled {IsCancelled} IsMoveControlPressed {Player.IsMoveControlPressed}");
+                //EntryPoint.WriteToConsoleTestLong($" CanPerformActivitiesExtended{Player.ActivityManager.CanPerformActivitiesExtended} IsCancelled {IsCancelled} IsMoveControlPressed {Player.IsMoveControlPressed}");
 
                 Player.ButtonPrompts.RemovePrompts("DanceActivity");
             }
@@ -230,7 +230,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (DanceData.AnimationExit != "" && !IsCancelled)
             {
-                EntryPoint.WriteToConsole($"Dance Exit: {DanceData.AnimationExit}", 5);
+                //EntryPoint.WriteToConsole($"Dance Exit: {DanceData.AnimationExit}");
                 GameTimeStartedDancing = Game.GameTime;
                 AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, DanceData.AnimationDictionary, DanceData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlagNormal, 0, false, false, false);//-1
@@ -261,7 +261,7 @@ namespace LosSantosRED.lsr.Player
         {
             //AnimationFlag = 0;
             AnimationBlendOutTime = -4.0f;
-            EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {DanceData.AnimationDictionary} AnimationEnter: {DanceData.AnimationEnter} AnimationName: {DanceData.AnimationIdle} AnimationExit: {DanceData.AnimationExit}", 5);
+            //EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {DanceData.AnimationDictionary} AnimationEnter: {DanceData.AnimationEnter} AnimationName: {DanceData.AnimationIdle} AnimationExit: {DanceData.AnimationExit}");
             AnimationDictionary.RequestAnimationDictionay(DanceData.AnimationDictionary);
 
             MenuPool = new MenuPool();

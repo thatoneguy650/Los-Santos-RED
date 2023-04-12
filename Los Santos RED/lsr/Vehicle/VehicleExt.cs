@@ -859,7 +859,7 @@ namespace LSR.Vehicles
             }
             AttachedBlip.Delete();
             AttachedBlip = null;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: RemoveOwnershipBlip", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: RemoveOwnershipBlip", 5);
             //Blip attachedBlip = car.Vehicle.GetAttachedBlip();
             //if (attachedBlip.Exists())
             //{
@@ -879,7 +879,7 @@ namespace LSR.Vehicles
             AttachedBlip = Vehicle.AttachBlip();
             AttachedBlip.Sprite = (BlipSprite)OwnedBlipID;
             AttachedBlip.Color = Color.Red;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: AddOwnershipBlip", 5);
         }
         public void AddOwnership()
         {

@@ -51,7 +51,7 @@ public class DoorToggle : DynamicActivity
     public override bool IsPaused() => false;
     public override void Start()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED TOGGLE DOOR", 3);
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED TOGGLE DOOR");
         if (TargetVehicle == null || !TargetVehicle.Vehicle.Exists())
         {
             Game.DisplayHelp("No vehicle found");
@@ -90,29 +90,29 @@ public class DoorToggle : DynamicActivity
                 Player.WeaponEquipment.SetUnarmed();        
                 if (!MovePedToCarPosition())
                 {
-                    EntryPoint.WriteToConsole($"DOOR TOGGLE: CAN NOT MOVE TO POSITION");
+                    //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: CAN NOT MOVE TO POSITION");
                     Player.ActivityManager.IsPerformingActivity = false;
                     return;
                 }
                 GetAnimation();
-                EntryPoint.WriteToConsole($"DOOR TOGGLE: GET ANIMATION");
+                //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: GET ANIMATION");
                 AnimationDictionary.RequestAnimationDictionay(animDict);
                 AnimationWatcher aw = new AnimationWatcher();
                 uint GameTimeStartedAnimation = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animDict, anim, 2.0f, -2.0f, -1, (int)(AnimationFlags.StayInEndFrame), 0, false, false, false);
                 bool toggledDoor = false;
-                EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED ANIM");
+                //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: STARTED ANIM");
                 while (Player.IsAliveAndFree && !Player.IsMoveControlPressed)
                 {
                     float AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, animDict, anim);
                     if (AnimationTime >= 1.0f)
                     {
-                        EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED ANIM ANIM TIME TIME OUT");
+                        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED ANIM ANIM TIME TIME OUT");
                         break;
                     }
                     if (!aw.IsAnimationRunning(AnimationTime))
                     {
-                        EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED ANIM ANIM NOT RUNNING");
+                        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED ANIM ANIM NOT RUNNING");
                         break;
                     }
                     if (!toggledDoor && AnimationTime >= AnimationToggleTime)
@@ -124,7 +124,7 @@ public class DoorToggle : DynamicActivity
                 }
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.ActivityManager.IsPerformingActivity = false;
-                EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED ANIM");
+                //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED ANIM");
             }
             catch (Exception e)
             {
@@ -134,7 +134,7 @@ public class DoorToggle : DynamicActivity
     }
     private void GetAnimation()
     {
-        EntryPoint.WriteToConsole($"DoorID: {DoorID}");
+        //EntryPoint.WriteToConsoleTestLong($"DoorID: {DoorID}");
         animDict = "veh@std@ds@enter_exit";
         anim = "d_close_out";
         AnimationToggleTime = Settings.SettingsManager.DoorToggleSettings.DefaultAnimationTime;
@@ -173,7 +173,7 @@ public class DoorToggle : DynamicActivity
             }
             anim = isOpen ? "d_close_out" : "d_open_out";
         }
-        EntryPoint.WriteToConsole($"isDriverSide: {isDriverSide} anim {anim} animDict {animDict}");
+        //EntryPoint.WriteToConsoleTestLong($"isDriverSide: {isDriverSide} anim {anim} animDict {animDict}");
     }
     private bool FloatIsWithin(float value, float minimum, float maximum)
     {
@@ -183,7 +183,7 @@ public class DoorToggle : DynamicActivity
     {
         bool Continue = true;
         bool StopDriver = false;
-        EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED MOVE TO POSITION");
+        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: STARTED MOVE TO POSITION");
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, DoorToggleHeading, -1);
         while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.25f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
         {
@@ -204,7 +204,7 @@ public class DoorToggle : DynamicActivity
             }
 
         }
-        EntryPoint.WriteToConsole($"DOOR TOGGLE: END MOVE TO POSITION Continue{Continue}");
+        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: END MOVE TO POSITION Continue{Continue}");
         if (!Continue)
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
@@ -273,21 +273,21 @@ public class DoorToggle : DynamicActivity
             DoorTogglePosition = NativeFunction.Natives.GET_ENTRY_POINT_POSITION<Vector3>(TargetVehicle.Vehicle, DoorID);
             if(isDriverSide)
             {
-                EntryPoint.WriteToConsole("DRIVER SIDE");
+                //EntryPoint.WriteToConsoleTestLong("DRIVER SIDE");
                 DoorToggleHeading = TargetVehicle.Vehicle.Heading - 90f;
             }
             else
             {
-                EntryPoint.WriteToConsole("PASSENGER SIDE");
+                //EntryPoint.WriteToConsoleTestLong("PASSENGER SIDE");
                 DoorToggleHeading = TargetVehicle.Vehicle.Heading + 90f;
             }            
         }
         if(DoorToggleHeading >= 360f)
         {
-            EntryPoint.WriteToConsole("TOO LARGE< LOWERING");
+            //EntryPoint.WriteToConsoleTestLong("TOO LARGE< LOWERING");
             DoorToggleHeading = DoorToggleHeading - 360f;
         }
-        EntryPoint.WriteToConsole($"DOOR TOGGLE: FINISHED SETUP");
+        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED SETUP");
         return true;
     }
 }

@@ -62,7 +62,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole("Laying Activity Started", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Started");
             Setup();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
@@ -97,7 +97,7 @@ namespace LosSantosRED.lsr.Player
 
         private void Enter()
         {
-            EntryPoint.WriteToConsole("Sleeping Activity Enter", 5);
+            //EntryPoint.WriteToConsole("Sleeping Activity Enter");
             Player.WeaponEquipment.SetUnarmed();
             Player.ActivityManager.IsLayingDown = true;
             if(IsUsingVehicleAnimations)
@@ -122,7 +122,7 @@ namespace LosSantosRED.lsr.Player
                 AnimationTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, PlayingDict, PlayingAnim);
                 if (AnimationTime >= 1.0f)
                 {
-                    EntryPoint.WriteToConsole("Laying Activity, Enter Break2");
+                    //EntryPoint.WriteToConsoleTestLong("Laying Activity, Enter Break2");
                     break;
                 }
                 if (Player.IsMoveControlPressed)
@@ -131,13 +131,13 @@ namespace LosSantosRED.lsr.Player
                 }
                 GameFiber.Yield();
             }
-            EntryPoint.WriteToConsole("Laying Activity, Enter ENded");
+            //EntryPoint.WriteToConsoleTestLong("Laying Activity, Enter ENded");
             Idle_Vehicle();
 
         }
         private void Idle_Vehicle()
         {
-            EntryPoint.WriteToConsole("Laying Activity Idle", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Idle");
 
             if (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
             {
@@ -167,10 +167,10 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit_Vehicle()
         {
-            EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle)", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle)");
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.ActivityManager.IsLayingDown = false;
-            EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle) 1", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle) 1");
         }
         private void LayDown_Foot()
         {
@@ -200,7 +200,7 @@ namespace LosSantosRED.lsr.Player
                 {
                     IsCancelled = true;
                 }
-                EntryPoint.WriteToConsole($"Animation Time {AnimationTime}");
+                //EntryPoint.WriteToConsoleTestLong($"Animation Time {AnimationTime}");
 
                 NativeFunction.Natives.SET_ENTITY_ANIM_SPEED(Player.Character, PlayingDict, PlayingAnim, -1.0f);
                 GameFiber.Yield();
@@ -239,7 +239,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit_Foot()
         {
-            EntryPoint.WriteToConsole("Laying Activity Exit", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Exit");
             if (IsActivelyLayingDown && Data.AnimExitDictionary != "")
             {
                 PlayingDict = Data.AnimExitDictionary;
@@ -272,7 +272,7 @@ namespace LosSantosRED.lsr.Player
                     //Player.WeaponEquipment.SetUnarmed();
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole("Laying Activity Exit 3", 5);
+                //EntryPoint.WriteToConsole("Laying Activity Exit 3");
                 if (!UseRegularAnimations)
                 {
                     AnimationDictionary.RequestAnimationDictionay("ped");
@@ -313,7 +313,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Setup()
         {
-            EntryPoint.WriteToConsole("Sitting Activity SETUP RAN", 5);
+            //EntryPoint.WriteToConsole("Sitting Activity SETUP RAN");
             Data = new LayingData();
             //if (Player.ModelName.ToLower() == "player_zero" || Player.ModelName.ToLower() == "player_one" || Player.ModelName.ToLower() == "player_two" || Player.IsMale)
             //{
@@ -396,7 +396,7 @@ namespace LosSantosRED.lsr.Player
             AnimationDictionary.RequestAnimationDictionay(Data.AnimIdleDictionary);
             AnimationDictionary.RequestAnimationDictionay(Data.AnimExitDictionary);
 
-            EntryPoint.WriteToConsole("Laying Activity Data Created", 5);
+            //EntryPoint.WriteToConsole("Laying Activity Data Created");
         }
     }
 }

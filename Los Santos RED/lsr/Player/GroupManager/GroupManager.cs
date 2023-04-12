@@ -47,7 +47,7 @@ public class GroupManager
             if(sc != null && sc.PedExt != null && sc.PedExt.IsBusted)
             {
                 Remove(sc.PedExt);
-                EntryPoint.WriteToConsole("Remove Group Member (Busted)");
+                //EntryPoint.WriteToConsoleTestLong("Remove Group Member (Busted)");
             }
         }
     }

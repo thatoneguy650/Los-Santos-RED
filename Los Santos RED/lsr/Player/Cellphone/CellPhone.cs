@@ -177,7 +177,7 @@ public class CellPhone
     }
     public void Close(int time)
     {
-        EntryPoint.WriteToConsole("Mobile Phone Closed");
+        //EntryPoint.WriteToConsoleTestLong("Mobile Phone Closed");
         if (isRunningForcedMobileTask)
         {
             NativeFunction.Natives.DESTROY_MOBILE_PHONE();

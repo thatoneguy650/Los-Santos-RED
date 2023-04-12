@@ -55,7 +55,7 @@ public class GangKickUp
         Reset();
         SetNewDueDate(true);
         SendPaymentMessage();
-        EntryPoint.WriteToConsole("PAYED GANG KICK UP");
+        //EntryPoint.WriteToConsoleTestLong("PAYED GANG KICK UP");
     }
     public void Start(bool sendMessage)
     {
@@ -113,7 +113,7 @@ public class GangKickUp
             SetNewDueDate(true);
             SendMissedMessage();
         }
-        EntryPoint.WriteToConsole("SET MISSED KICK UP PAYMENT");
+        //EntryPoint.WriteToConsoleTestLong("SET MISSED KICK UP PAYMENT");
     }
     private void SendStartMessage()
     {
@@ -148,7 +148,7 @@ public class GangKickUp
         };
         Player.CellPhone.AddScheduledText(Contact, WarningMessages.PickRandom());
         HasSentWarning = true;
-        EntryPoint.WriteToConsole("SENT WARNING FOR GANG KICK UP");
+        //EntryPoint.WriteToConsoleTestLong("SENT WARNING FOR GANG KICK UP");
     }
     private void SendMissedMessage()
     {

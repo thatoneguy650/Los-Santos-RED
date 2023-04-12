@@ -49,17 +49,17 @@ public class PopUpBox
         {
             IconDefault = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\hudicons\\{IconNameDefault}");
             HasIcon = true;
-            EntryPoint.WriteToConsole($"MADE TEXTURE {IconNameDefault}");
+            //EntryPoint.WriteToConsoleTestLong($"MADE TEXTURE {IconNameDefault}");
         }
         if (File.Exists($"Plugins\\LosSantosRED\\images\\hudicons\\{IconNameSelected}"))
         {
             IconSelected = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\hudicons\\{IconNameSelected}");
-            EntryPoint.WriteToConsole($"MADE TEXTURE {IconNameSelected}");
+            //EntryPoint.WriteToConsoleTestLong($"MADE TEXTURE {IconNameSelected}");
         }
         if (File.Exists($"Plugins\\LosSantosRED\\images\\hudicons\\{IconNameInvalid}"))
         {
             IconInvalid = Game.CreateTextureFromFile($"Plugins\\LosSantosRED\\images\\hudicons\\{IconNameInvalid}");
-            EntryPoint.WriteToConsole($"MADE TEXTURE {IconNameInvalid}");
+            //EntryPoint.WriteToConsoleTestLong($"MADE TEXTURE {IconNameInvalid}");
         }
         if(IconDefault == null || IconSelected == null || IconInvalid == null)
         {
@@ -68,7 +68,7 @@ public class PopUpBox
         }
         else
         {
-            EntryPoint.WriteToConsole($"HAS ALL ICONS: {Display}");
+            //EntryPoint.WriteToConsoleTestLong($"HAS ALL ICONS: {Display}");
         }
     }
 }

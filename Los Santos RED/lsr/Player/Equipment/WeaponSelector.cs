@@ -79,7 +79,7 @@ public class WeaponSelector
         {
             if (Game.GameTime - GameTimeLastToggledSelector >= 200)//delayso it doesnt get toggled like crazy
             {
-                EntryPoint.WriteToConsole($"ToggleSelector Initial Setting {CurrentSelectorSetting}", 5);
+                //EntryPoint.WriteToConsole($"ToggleSelector Initial Setting {CurrentSelectorSetting}");
                 bool found1 = false;
                 bool found2 = false;
                 foreach (SelectorOptions x in Enum.GetValues(typeof(SelectorOptions)))
@@ -99,7 +99,7 @@ public class WeaponSelector
                 {
                     SetSelectorSetting(SelectorOptions.Safe);
                 }
-                EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}", 5);
+                //EntryPoint.WriteToConsole($"ToggleSelector Final Setting {CurrentSelectorSetting}");
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
                 GameTimeLastToggledSelector = Game.GameTime;
             }
@@ -202,7 +202,7 @@ public class WeaponSelector
             {
                 NativeFunction.Natives.xE8A25867FBA3B05E(2, 24, 1.0f);
             }
-            EntryPoint.WriteToConsole("Fired Round");
+            //EntryPoint.WriteToConsoleTestLong("Fired Round");
             //roundsFired++;
         }
         else if (Player.ReleasedFireWeapon && (roundsFired > BulletLimt - 1) && BulletLimt > 0)
@@ -210,7 +210,7 @@ public class WeaponSelector
             roundsFired = 0;
             canShoot = true;
 
-            EntryPoint.WriteToConsole("Released Fire");
+            //EntryPoint.WriteToConsoleTestLong("Released Fire");
         }
         if (Player.WeaponEquipment.CurrentWeapon == null)
         {

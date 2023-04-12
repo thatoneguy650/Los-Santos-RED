@@ -75,7 +75,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
         IsDisposed = true;
-        EntryPoint.WriteToConsole("CONVERSATION DISPOSE RAN");
+        //EntryPoint.WriteToConsoleTestLong("CONVERSATION DISPOSE RAN");
     }
     public override void Start()
     {
@@ -207,7 +207,7 @@ public class Conversation : Interaction, IAdvancedConversationable
             {
                 Spoke = true;
             }
-            EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}", 5);
+            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
             if (Spoke)
             {
                 break;
@@ -280,7 +280,7 @@ public class Conversation : Interaction, IAdvancedConversationable
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             IsBlockedEvents = true;
-            EntryPoint.WriteToConsole("CONVERSATION BLOCKED EVENTS");
+            //EntryPoint.WriteToConsoleTestLong("CONVERSATION BLOCKED EVENTS");
             NativeFunction.CallByName<bool>("TASK_LOOK_AT_ENTITY", Ped.Pedestrian, Player.Character, -1, 0, 2);
         }
         else if (NativeFunction.CallByName<bool>("IS_PED_USING_ANY_SCENARIO", Ped.Pedestrian))

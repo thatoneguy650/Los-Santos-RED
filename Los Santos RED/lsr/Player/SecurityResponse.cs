@@ -41,7 +41,7 @@ namespace LosSantosRED.lsr
             {
                 sg.PedReactions.Reset();
             }
-            EntryPoint.WriteToConsole("SECURITY RESET");
+            //EntryPoint.WriteToConsoleTestLong("SECURITY RESET");
         }
      
     }

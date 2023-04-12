@@ -76,9 +76,7 @@ public class LocationCamera
 
         NativeFunction.Natives.SET_EVERYONE_IGNORE_PLAYER(Game.LocalPlayer, true);
 
-
-        //Player.Character.Position = new Vector3(402.5164f, -1002.847f, -99.2587f);
-        EntryPoint.WriteToConsole("Transaction: Setup Camera Ran", 5);
+        //EntryPoint.WriteToConsole("Transaction: Setup Camera Ran");
     }
     public void Dispose()
     {

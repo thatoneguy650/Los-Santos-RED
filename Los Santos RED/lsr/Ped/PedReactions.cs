@@ -78,7 +78,7 @@ public class PedReactions
         OldDistressedUpdate();
         if(prevReactionTier != ReactionTier)
         {
-            EntryPoint.WriteToConsole($"Ped Reaction {Civilian.Handle} Reaction Changed from {prevReactionTier} to {ReactionTier}");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {Civilian.Handle} Reaction Changed from {prevReactionTier} to {ReactionTier}");
             prevReactionTier = ReactionTier;
         }
     }
@@ -104,7 +104,7 @@ public class PedReactions
             {
                 PedReactionList.Add(new PedReaction(Player, Civilian, witnessed.Perpetrator, witnessed.GameTimeLastWitnessed, witnessed.Crime.ReactionTier));
             }
-            EntryPoint.WriteToConsole($"Added New Ped Reaction {Civilian.Handle} for {witnessed.Crime.Name} to Perpetrator {witnessed.Perpetrator?.Handle}");
+            //EntryPoint.WriteToConsoleTestLong($"Added New Ped Reaction {Civilian.Handle} for {witnessed.Crime.Name} to Perpetrator {witnessed.Perpetrator?.Handle}");
         }
         else
         {
@@ -112,7 +112,7 @@ public class PedReactions
             if (ExistingReaction.ReactionTier < witnessed.Crime.ReactionTier)
             {
                 ExistingReaction.ReactionTier = witnessed.Crime.ReactionTier;
-                EntryPoint.WriteToConsole($"Updated Existing Ped Reaction {Civilian.Handle} for {witnessed.Crime.Name} to Perpetrator {witnessed.Perpetrator?.Handle} ReactionTier {ExistingReaction.ReactionTier}");
+                //EntryPoint.WriteToConsoleTestLong($"Updated Existing Ped Reaction {Civilian.Handle} for {witnessed.Crime.Name} to Perpetrator {witnessed.Perpetrator?.Handle} ReactionTier {ExistingReaction.ReactionTier}");
             }
             ExistingReaction.GameTimeLastReacted = witnessed.GameTimeLastWitnessed;
             //EntryPoint.WriteToConsole($"Updated Existing Ped Reaction {Civilian.Handle} for {witnessed.Crime.Name} to Perpetrator {witnessed.Perpetrator?.Handle}");

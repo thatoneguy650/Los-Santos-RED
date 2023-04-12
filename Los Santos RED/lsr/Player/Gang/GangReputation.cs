@@ -244,7 +244,7 @@ public class GangReputation
                 RelationshipGroup.Player.SetRelationshipWith(rg, Relationship.Neutral);
                 Player.SetDenStatus(Gang, false);
             }
-            EntryPoint.WriteToConsole($"GangReputation {Gang.FullName} changed from {PreviousGangRelationship} to {GangRelationship}", 5);
+            //EntryPoint.WriteToConsole($"GangReputation {Gang.FullName} changed from {PreviousGangRelationship} to {GangRelationship}");
             PreviousGangRelationship = GangRelationship;
         }
     }

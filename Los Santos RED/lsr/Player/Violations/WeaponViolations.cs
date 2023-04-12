@@ -125,35 +125,35 @@ public class WeaponViolations
     {
         if(weaponInformation == null)
         {
-            EntryPoint.WriteToConsole("AddFoundWeapon WEAPONIFNO IS NULL");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon WEAPONIFNO IS NULL");
             return false;
         }
         if(weaponInformation.IsLegalWithoutCCW)
         {
-            EntryPoint.WriteToConsole("AddFoundWeapon Legal without CCW");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon Legal without CCW");
             return false;
         }
         else if (weaponInformation.IsLegal && hasCCW)
         {
-            EntryPoint.WriteToConsole("AddFoundWeapon Legal and have CCW");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon Legal and have CCW");
             return false;
         }
         if (weaponInformation.WeaponLevel >= 4)
         {
             Violations.AddViolatingAndObserved("TerroristActivity");
-            EntryPoint.WriteToConsole("AddFoundWeapon TerroristActivity");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon TerroristActivity");
             return true;
         }
         else if (weaponInformation.WeaponLevel >= 3)
         {
             Violations.AddViolatingAndObserved("BrandishingHeavyWeapon");
-            EntryPoint.WriteToConsole("AddFoundWeapon BrandishingHeavyWeapon");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon BrandishingHeavyWeapon");
             return true;
         }
         else 
         {
             Violations.AddViolatingAndObserved("BrandishingWeapon");
-            EntryPoint.WriteToConsole("AddFoundWeapon !IsLegal");
+            //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon !IsLegal");
             return true;
         }
     }

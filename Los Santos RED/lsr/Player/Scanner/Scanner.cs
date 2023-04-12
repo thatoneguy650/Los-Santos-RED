@@ -288,12 +288,12 @@ namespace LosSantosRED.lsr
                 {
                     if (!SuspectSpotted.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.AnyPoliceCanSeePlayer)
                     {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
+                        //EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED SuspectSpotted", 3);
                         AddToQueue(SuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                     }
                     else if (!Player.AnyPoliceRecentlySeenPlayer && !AttemptToReacquireSuspect.HasRecentlyBeenPlayed && !SuspectEvaded.HasRecentlyBeenPlayed)
                     {
-                        EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
+                        //EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED AttemptToReacquireSuspect", 3);
                         AddToQueue(AttemptToReacquireSuspect, new CrimeSceneDescription(false, true, Player.PlacePoliceLastSeenPlayer));
                     }
                 }
@@ -447,7 +447,7 @@ namespace LosSantosRED.lsr
                     AddToQueue(WantedSuspectSpotted, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer) { VehicleSeen = Player.CurrentVehicle });
                 }
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnAppliedWantedStats", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnAppliedWantedStats", 3);
         }
         public void OnArmyDeployed()
         {
@@ -462,7 +462,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(ResumePatrol);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
         public void OnExcessiveSpeed()
         {
@@ -472,7 +472,7 @@ namespace LosSantosRED.lsr
                 ExcessiveSpeed.LatestInformation.Speed = Game.LocalPlayer.Character.Speed;
                 AddToQueue(ExcessiveSpeed);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnExcessiveSpeed", 5);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnExcessiveSpeed", 5);
         }
         public void OnFIBHRTDeployed()
         {
@@ -487,7 +487,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(FirefightingServicesRequired);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: FirefightingServicesRequired", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: FirefightingServicesRequired", 3);
         }
         public void OnGotInVehicle()
         {
@@ -495,7 +495,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(ChangedVehicles);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: InVehicle", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: InVehicle", 3);
         }
         public void OnGotOffFreeway()
         {
@@ -504,7 +504,7 @@ namespace LosSantosRED.lsr
                 GotOffFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOffFreeway);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOffFreeway", 5);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOffFreeway", 5);
         }
         public void OnGotOnFreeway()
         {
@@ -513,7 +513,7 @@ namespace LosSantosRED.lsr
                 GotOnFreeway.LatestInformation.SeenByOfficers = true;
                 AddToQueue(GotOnFreeway);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOnFreeway", 5);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnGotOnFreeway", 5);
         }
         public void OnGotOutOfVehicle()
         {
@@ -521,7 +521,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(OnFoot);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
+           // EntryPoint.WriteToConsole($"SCANNER EVENT: OnFoot", 3);
         }
         public void OnHelicoptersDeployed()
         {
@@ -549,7 +549,7 @@ namespace LosSantosRED.lsr
                 Reset();
             }
 
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnInvestigationExpire", 3);
+           // EntryPoint.WriteToConsole($"SCANNER EVENT: OnInvestigationExpire", 3);
         }
         public void OnLethalForceAuthorized()
         {
@@ -557,14 +557,14 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(LethalForceAuthorized);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnLethalForceAuthorized", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnLethalForceAuthorized", 3);
         }
         public void OnMedicalServicesRequested()
         {
             if (!MedicalServicesRequired.HasRecentlyBeenPlayed && (MedicalServicesRequired.TimesPlayed <= 2 || MedicalServicesRequired.HasntBeenPlayedForAWhile))
             {
                 AddToQueue(MedicalServicesRequired);
-                EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
+                //EntryPoint.WriteToConsole($"SCANNER EVENT: MedicalServicesRequired", 3);
             }
             
         }
@@ -588,7 +588,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(ResumePatrol);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnBribedPolice", 3);
         }
         public void OnTalkedOutOfTicket()
         {
@@ -600,7 +600,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(SuspectArrested);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectBusted", 3);
+           // EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectBusted", 3);
         }
         public void OnPoliceNoticeVehicleChange()
         {
@@ -608,7 +608,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(ChangedVehicles, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer) { VehicleSeen = Player.CurrentVehicle });
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnPoliceNoticeVehicleChange", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnPoliceNoticeVehicleChange", 3);
         }
         public void OnRequestedBackUp()
         {
@@ -616,7 +616,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(RequestBackup, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUp", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUp", 3);
 
             //MILITARY
         }
@@ -626,7 +626,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(RequestBackupSimple, new CrimeSceneDescription(true, true, World.PoliceBackupPoint));
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUpSimple", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnRequestedBackUpSimple", 3);
             //MILITARY
         }
         public void OnSuspectEluded()
@@ -642,7 +642,7 @@ namespace LosSantosRED.lsr
                     {
                         AddToQueue(RemainInArea, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
                     }
-                    EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
+                    //EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectEluded", 3);
                 }
                 catch (Exception ex)
                 {
@@ -657,13 +657,13 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(SuspectWasted);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectWasted", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnSuspectWasted", 3);
         }
         public void OnSuspectShooting()
         {
             if (!ShotsFiredStatus.HasRecentlyBeenPlayed && !VeryRecentlyAnnouncedDispatch && Player.WantedLevel <= 4)
             {
-                EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED Shooting", 3);
+                //EntryPoint.WriteToConsole($"SCANNER EVENT: ADDED Shooting", 3);
                 AddToQueue(ShotsFiredStatus, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
             }
         }
@@ -674,7 +674,7 @@ namespace LosSantosRED.lsr
                 VehicleCrashed.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleCrashed);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleCrashed", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleCrashed", 3);
         }
         public void OnVehicleStartedFire()
         {
@@ -683,7 +683,7 @@ namespace LosSantosRED.lsr
                 VehicleStartedFire.LatestInformation.SeenByOfficers = true;
                 AddToQueue(VehicleStartedFire);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleStartedFire", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnVehicleStartedFire", 3);
         }
         public void OnWantedActiveMode()
         {
@@ -701,7 +701,7 @@ namespace LosSantosRED.lsr
                     AddToQueue(SuspectSpottedSimple, new CrimeSceneDescription(!Player.IsInVehicle, true, Game.LocalPlayer.Character.Position));
                 }
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsActive", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsActive", 3);
             //MILITARY
         }
         public void OnWantedSearchMode()
@@ -720,7 +720,7 @@ namespace LosSantosRED.lsr
                     AddToQueue(SuspectEvadedSimple, new CrimeSceneDescription(!Player.IsInVehicle, true, Player.PlacePoliceLastSeenPlayer));
                 }
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnStarsGreyedOut", 3);
             //MILITARY
         }
         public void OnWeaponsFree()
@@ -729,7 +729,7 @@ namespace LosSantosRED.lsr
             {
                 AddToQueue(WeaponsFree);
             }
-            EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: OnWeaponsFree", 3);
             //MILITARY
         }
 
@@ -776,7 +776,7 @@ namespace LosSantosRED.lsr
                     if (!CallSigns.Contains(CallSign))
                     {
                         CallSigns.Add(CallSign);
-                        EntryPoint.WriteToConsole($"Scanner Calling Specific Unit {CallSign}");
+                        //EntryPoint.WriteToConsoleTestLong($"Scanner Calling Specific Unit {CallSign}");
                         List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnityType, UnitToCall.BeatNumber);
                         if (CallsignAudio != null)
                         {
@@ -1400,7 +1400,7 @@ namespace LosSantosRED.lsr
         }
         private void BuildDispatch(Dispatch DispatchToPlay, bool addtoPlayed, bool isAmbient)
         {
-            EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
+            //EntryPoint.WriteToConsole($"SCANNER EVENT: Building {DispatchToPlay.Name}, MarkVehicleAsStolen: {DispatchToPlay.MarkVehicleAsStolen} Vehicle: {DispatchToPlay.LatestInformation?.VehicleSeen?.Vehicle.Handle} Instances: {DispatchToPlay.LatestInformation?.InstancesObserved}", 3);
             DispatchEvent EventToPlay = new DispatchEvent();
             if (DispatchToPlay.HasPreamble)
             {
@@ -1747,32 +1747,32 @@ namespace LosSantosRED.lsr
             //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && !CurrentlyPlayingCallIn.SeenByOfficers && dispatchDescription.SeenByOfficers)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! OFFICER REPORTED STOPPING CIV REPORTING Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlayingCallIn != null && (CurrentlyPlayingDispatch.Name == SuspectEvaded.Name ||CurrentlyPlayingDispatch.Name == AttemptToReacquireSuspect.Name) && Player.AnyPoliceCanSeePlayer)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+               // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Special Case, Lost Visual Being Cancelled Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
             if (AudioPlayer.IsAudioPlaying && AudioPlayer.IsPlayingLowPriority)
             {
-                EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
+                //EntryPoint.WriteToConsole("ScannerScript ABORT! LOW PRIORITY PLAYING", 4);
                 AbortedAudio = true;
                 Abort();
             }
 
             if (CurrentlyPlaying != null && CurrentlyPlaying.AnyDispatchInterrupts)
             {
-                EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
+                //EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
                 AbortedAudio = true;
                 Abort();
             }
@@ -1786,7 +1786,7 @@ namespace LosSantosRED.lsr
                     GameFiber.Yield();
                     if (AbortedAudio)
                     {
-                        EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
+                        //EntryPoint.WriteToConsole($"Scanner Aborted. Incoming: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
                         if (Settings.SettingsManager.ScannerSettings.SetVolume)
                         {
                             AudioPlayer.Play(RadioEnd.PickRandom(), DesiredVolume, false, Settings.SettingsManager.ScannerSettings.ApplyFilter);
@@ -1853,13 +1853,13 @@ namespace LosSantosRED.lsr
                                     GameFiber.Yield();
                                     if (AbortedAudio)
                                     {
-                                        EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                        //EntryPoint.WriteToConsole($"AbortedAudio1", 5);
                                         break;
                                     }
                                 }
                                 if (AbortedAudio)
                                 {
-                                    EntryPoint.WriteToConsole($"AbortedAudio2", 5);
+                                    //EntryPoint.WriteToConsole($"AbortedAudio2", 5);
                                     break;
                                 }
                             }
@@ -1902,7 +1902,7 @@ namespace LosSantosRED.lsr
                     {
                         foreach (string audioname in soundsToPlayer)
                         {
-                            EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
+                            //EntryPoint.WriteToConsole($"Scanner Playing. ToAudioPlayer: {audioname} isblank {audioname == ""}", 5);
                             if (audioname != "" && audioname != null && audioname.Length > 2 && EntryPoint.ModController.IsRunning && !AudioPlayer.IsAudioPlaying)
                             {
                                 if (Settings.SettingsManager.ScannerSettings.SetVolume)
@@ -1918,18 +1918,18 @@ namespace LosSantosRED.lsr
                                     GameFiber.Yield();
                                     if (AbortedAudio)
                                     {
-                                        EntryPoint.WriteToConsole($"AbortedAudio1", 5);
+                                        //EntryPoint.WriteToConsole($"AbortedAudio1", 5);
                                         break;
                                     }
                                     if (AudioPlayer.IsAudioPlaying)
                                     {
-                                        EntryPoint.WriteToConsole($"AbortedAudio333", 5);
+                                       //EntryPoint.WriteToConsole($"AbortedAudio333", 5);
                                         break;
                                     }
                                 }
                                 if (AbortedAudio)
                                 {
-                                    EntryPoint.WriteToConsole($"AbortedAudio2", 5);
+                                    //EntryPoint.WriteToConsole($"AbortedAudio2", 5);
                                     break;
                                 }
                             }

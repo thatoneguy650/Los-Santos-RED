@@ -100,13 +100,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                     break;
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers + MembersToKill - 1)
                 {
                     CurrentTask.OnReadyForPayment(true);
-                    EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
+                    //EntryPoint.WriteToConsoleTestLong($"You killed a member so it is now ready for payment!");
                     break;
                 }
                 GameFiber.Sleep(1000);
@@ -131,13 +131,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
                         Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
-                        EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     GameFiber.Sleep(1000);
@@ -157,7 +157,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         {
             CurrentGangReputation = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = CurrentGangReputation.MembersKilled;
-            EntryPoint.WriteToConsole($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill starting kill = {CurrentKilledMembers} MembersToKill {MembersToKill}!");
             PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Gang Hit");
             CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
         }

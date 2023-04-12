@@ -69,13 +69,13 @@ public class CarLockPick
                     GameFiber.Yield();
                     if (!SetupLockPick())
                     {
-                        EntryPoint.WriteToConsole("PickLock Setup Failed", 3);
+                        //EntryPoint.WriteToConsoleTestLong("PickLock Setup Failed");
                         return;
                     }
                     GameFiber.Yield();
                     if (!LockPickAnimation())
                     {
-                        EntryPoint.WriteToConsole("PickLock Animation Failed", 3);
+                        //EntryPoint.WriteToConsoleTestLong("PickLock Animation Failed");
                         return;
                     }
                     GameFiber.Yield();
@@ -101,7 +101,7 @@ public class CarLockPick
         Player.WeaponEquipment.SetUnarmed();
         if(TargetVehicle.LockStatus != (VehicleLockStatus)3)
         {
-            EntryPoint.WriteToConsole($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}", 3);//some IV pack cars fail even with the door open.....
+            //EntryPoint.WriteToConsoleTestLong($"SetupLockPick Failed, Could Not Set Lock Status to 3 Current Status {(int)TargetVehicle.LockStatus}");//some IV pack cars fail even with the door open.....
             NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, TargetVehicle, -1, SeatTryingToEnter, 2.0f, 1, 0);
             return false;
         }
@@ -120,12 +120,12 @@ public class CarLockPick
         if (!StartAnimation)
         {
             TargetVehicle.LockStatus = OriginalLockStatus;
-            EntryPoint.WriteToConsole("SetupLockPick Failed, Move Control Pressed", 3);
+            //EntryPoint.WriteToConsoleTestLong("SetupLockPick Failed, Move Control Pressed");
             return false;
         }
         if (TargetVehicle.LockStatus == (VehicleLockStatus)1)
         {
-            EntryPoint.WriteToConsole("SetupLockPick Failed, Lock Status = 1", 3);
+            //EntryPoint.WriteToConsoleTestLong("SetupLockPick Failed, Lock Status = 1");
             return false;
         }
         if (TargetVehicle.HasBone("door_dside_f") && TargetVehicle.HasBone("door_pside_f"))
@@ -149,7 +149,7 @@ public class CarLockPick
     {
         Player.IsLockPicking = true;
         bool Continue = true;
-        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation START");
+        //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: LockPickAnimation START");
         Screwdriver = AttachScrewdriverToPed(Game.LocalPlayer.Character);
 
         AnimationDictionary.RequestAnimationDictionay("veh@break_in@0h@p_m_one@");
@@ -161,7 +161,7 @@ public class CarLockPick
             GameFiber.Yield();
             if (Player.IsMoveControlPressed || TargetVehicle.Doors[DoorIndex].IsOpen)
             {
-                EntryPoint.WriteToConsole($"LOCK PICK ENTRY: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
+                //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: {Player.IsMoveControlPressed} TargetVehicle.Doors[DoorIndex].IsOpen {TargetVehicle.Doors[DoorIndex].IsOpen}");
                 Continue = false;
                 break;
             }
@@ -177,7 +177,7 @@ public class CarLockPick
             }
             Player.IsLockPicking = false;
             TargetVehicle.LockStatus = OriginalLockStatus;
-            EntryPoint.WriteToConsole($"LOCK PICK ENTRY: CANNOT CONTINUE");
+            //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: CANNOT CONTINUE");
             return false;
         }
 
@@ -187,7 +187,7 @@ public class CarLockPick
         {
             TargetVehicle.Doors[DoorIndex].Open(true, false);
         }
-        EntryPoint.WriteToConsole($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
+        //EntryPoint.WriteToConsoleTestLong($"LOCK PICK ENTRY: LockPickAnimation FINISH TRUE");
         return true;
     }
     private Rage.Object AttachScrewdriverToPed(Ped Pedestrian)
@@ -203,7 +203,7 @@ public class CarLockPick
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
         }
         if (!Screwdriver.Exists())
         {

@@ -90,7 +90,7 @@ public class PedVariation
             //Freemode only below
             if (HeadBlendData != null && (HeadBlendData.shapeFirst != -1 || HeadBlendData.shapeSecond != -1 || HeadBlendData.shapeThird != -1))
             {
-                EntryPoint.WriteToConsole("FREEMODE APPLY");
+                //EntryPoint.WriteToConsoleTestLong("FREEMODE APPLY");
                 NativeFunction.Natives.SET_PED_HEAD_BLEND_DATA(ped, HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix, false);
                 setVariation.HeadBlendData = new HeadBlendData(HeadBlendData.shapeFirst, HeadBlendData.shapeSecond, HeadBlendData.shapeThird, HeadBlendData.skinFirst, HeadBlendData.skinSecond, HeadBlendData.skinThird, HeadBlendData.shapeMix, HeadBlendData.skinMix, HeadBlendData.thirdMix);
                 if (PrimaryHairColor != -1 && SecondaryHairColor != -1)
@@ -101,14 +101,14 @@ public class PedVariation
                 }
                 foreach (HeadOverlayData headOverlayData in HeadOverlays)
                 {
-                    EntryPoint.WriteToConsole($"FREEMODE APPLY OVERLAYS {headOverlayData.OverlayID} {headOverlayData.Index} {headOverlayData.PrimaryColor} {headOverlayData.SecondaryColor} {headOverlayData.Opacity}");
+                    //EntryPoint.WriteToConsoleTestLong($"FREEMODE APPLY OVERLAYS {headOverlayData.OverlayID} {headOverlayData.Index} {headOverlayData.PrimaryColor} {headOverlayData.SecondaryColor} {headOverlayData.Opacity}");
                     NativeFunction.Natives.SET_PED_HEAD_OVERLAY(ped, headOverlayData.OverlayID, headOverlayData.Index, headOverlayData.Opacity);
                     NativeFunction.Natives.x497BF74A7B9CB952(ped, headOverlayData.OverlayID, headOverlayData.ColorType, headOverlayData.PrimaryColor, headOverlayData.SecondaryColor);//colors?
                     setVariation.HeadOverlays.Add(new HeadOverlayData(headOverlayData.OverlayID, headOverlayData.Part) { ColorType = headOverlayData.ColorType, Index = headOverlayData.Index, Opacity = headOverlayData.Opacity, OverlayID = headOverlayData.OverlayID, PrimaryColor = headOverlayData.PrimaryColor, SecondaryColor = headOverlayData.SecondaryColor });
                 }
                 foreach(FaceFeature faceFeature in FaceFeatures)
                 {
-                    EntryPoint.WriteToConsole($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
+                    //EntryPoint.WriteToConsoleTestLong($"APPLYING FACE FEATURE {faceFeature.Name} {faceFeature.Index} {faceFeature.Scale}");
                     NativeFunction.Natives.SET_PED_MICRO_MORPH(ped, faceFeature.Index, faceFeature.Scale);
                     setVariation.FaceFeatures.Add(new FaceFeature(faceFeature.Index, faceFeature.Name) { Index = faceFeature.Index, Scale = faceFeature.Scale, RangeLow = faceFeature.RangeLow, RangeHigh = faceFeature.RangeHigh });
                 }

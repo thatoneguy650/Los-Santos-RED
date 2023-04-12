@@ -35,7 +35,7 @@ public class MeleeWeaponAlias
 
     public void Start()
     {
-        EntryPoint.WriteToConsole("MELEE WEAPON ALIAS START");
+        //EntryPoint.WriteToConsoleTestLong("MELEE WEAPON ALIAS START");
         Setup();
         SpawnAndAttach();
     }
@@ -49,7 +49,7 @@ public class MeleeWeaponAlias
         NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(Player.Character, out currentWeapon, true);
         if (currentWeapon != MeleeWeaponToAliasHash)
         {
-            EntryPoint.WriteToConsole("Player changed weapon, ending");
+            //EntryPoint.WriteToConsoleTestLong("Player changed weapon, ending");
             IsCancelled = true;
         }
         if(!Player.IsAliveAndFree)
@@ -69,7 +69,7 @@ public class MeleeWeaponAlias
             Player.WeaponEquipment.SetUnarmed();
         }
         Player.ActivityManager.IsUsingToolAsWeapon = false;
-        EntryPoint.WriteToConsole("MELEE WEAPON ALIAS ENDED");
+        //EntryPoint.WriteToConsoleTestLong("MELEE WEAPON ALIAS ENDED");
     }
     private void SpawnAndAttach()
     {
@@ -109,11 +109,11 @@ public class MeleeWeaponAlias
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
             }
             if (!ItemToAliasObject.Exists())
             {
-                EntryPoint.WriteToConsole("Error Creating Item for Melee Alias");
+                //EntryPoint.WriteToConsoleTestLong("Error Creating Item for Melee Alias");
                 IsCancelled = true;
             }
         }

@@ -34,12 +34,12 @@ public class CarJack
     {
         if (CanArmedCarJack() && Game.GameTime - GameTimeLastTriedCarJacking > 500 && Weapon != null && Weapon.Category != WeaponCategory.Melee)
         {
-            EntryPoint.WriteToConsole($"CARJACK EVENT: Armed Start", 3);
+            //EntryPoint.WriteToConsole($"CARJACK EVENT: Armed Start");
             ArmedCarJack();
         }
         else
         {
-            EntryPoint.WriteToConsole($"CARJACK EVENT: Unarmed Start", 3);
+            //EntryPoint.WriteToConsole($"CARJACK EVENT: Unarmed Start");
             UnarmedCarJack();
         }
     }

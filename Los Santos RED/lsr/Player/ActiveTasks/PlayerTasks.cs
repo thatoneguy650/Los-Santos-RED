@@ -112,7 +112,7 @@ public class PlayerTasks
             myTask.IsReadyForPayment = false;
             myTask.WasCompleted = true;
             myTask.CompletionTime = Time.CurrentDateTime;
-            EntryPoint.WriteToConsole($"Task Completed for {contactName}");
+            //EntryPoint.WriteToConsoleTestLong($"Task Completed for {contactName}");
             if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
             {
                 Game.DisplayHelp($"Task Completed for {contactName}");
@@ -136,7 +136,7 @@ public class PlayerTasks
             myTask.IsReadyForPayment = false;
             myTask.WasFailed = true;
             myTask.FailedTime = Time.CurrentDateTime;
-            EntryPoint.WriteToConsole($"Task Failed for {contactName}");
+            //EntryPoint.WriteToConsoleTestLong($"Task Failed for {contactName}");
             if (Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
             {
                 Game.DisplayHelp($"Task Failed for {contactName}");

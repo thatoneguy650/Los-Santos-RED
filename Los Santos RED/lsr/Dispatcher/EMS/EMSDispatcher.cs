@@ -217,7 +217,7 @@ public class EMSDispatcher
 
         if (ShouldRunAmbientDispatch)
         {
-            EntryPoint.WriteToConsole($"AMBIENT EMS RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
+            //EntryPoint.WriteToConsoleTestLong($"AMBIENT EMS RunAmbientDispatch 1 TimeBetweenSpawn{TimeBetweenSpawn}");
             RunAmbientDispatch();
         }
         else
@@ -225,12 +225,12 @@ public class EMSDispatcher
             ShouldRunAmbientDispatch = RandomItems.RandomPercent(PercentageOfAmbientSpawn);
             if (ShouldRunAmbientDispatch)
             {
-                EntryPoint.WriteToConsole($"AMBIENT EMS RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
+                //EntryPoint.WriteToConsoleTestLong($"AMBIENT EMS RunAmbientDispatch 2 TimeBetweenSpawn{TimeBetweenSpawn}");
                 RunAmbientDispatch();
             }
             else
             {
-                EntryPoint.WriteToConsole($"AMBIENT EMS Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
+                //EntryPoint.WriteToConsoleTestLong($"AMBIENT EMS Aborting Spawn for this dispatch TimeBetweenSpawn{TimeBetweenSpawn} PercentageOfAmbientSpawn{PercentageOfAmbientSpawn}");
                 GameTimeAttemptedDispatch = Game.GameTime;
             }
         }

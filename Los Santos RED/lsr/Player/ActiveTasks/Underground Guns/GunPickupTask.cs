@@ -90,7 +90,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     GetPayment();
                     SendInitialInstructionsMessage();
-                    EntryPoint.WriteToConsole($"Starting Underground Guns Pickup Guns Task");
+                    //EntryPoint.WriteToConsoleTestLong($"Starting Underground Guns Pickup Guns Task");
                     AddTask();
                     GameFiber PayoffFiber = GameFiber.StartNew(delegate
                     {
@@ -155,18 +155,18 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.UndergroundGunsContactName}");
                     break;
                 }
                 else if (hasSpawnedCar && IsSpawnedVehicleDestroyed)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, the spawned vehicle was destroyed");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, the spawned vehicle was destroyed");
                     Game.DisplayHelp($"{StaticStrings.UndergroundGunsContactName} Vehicle Destroyed");
                     break;
                 }
                 else if (hasSpawnedCar && hasGottenInCar && IsPlayerFarAwayFromSpawnedVehicle)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, you ran away from the car");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.UndergroundGunsContactName}, you ran away from the car");
                     break;
                 }
                 if (!hasSpawnedCar && IsPlayerNearbyPickupStore)
@@ -206,7 +206,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
            // SpawnedVehicle.SetLock((VehicleLockStatus)10);
             //
             SpawnedVehicle.LockStatus = (VehicleLockStatus)10;
-            EntryPoint.WriteToConsole($"You ARRIVED! so it is now ready for payment!, doors are locked!");
+            //EntryPoint.WriteToConsoleTestLong($"You ARRIVED! so it is now ready for payment!, doors are locked!");
 
             Game.DisplayHelp($"{StaticStrings.UndergroundGunsContactName} You have arrived, leave the vehicle");
 
@@ -231,7 +231,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 SpawnedVehicleExt.CarPlate.IsWanted = true;
                 SpawnedVehicleExt.OriginalLicensePlate.IsWanted = true;
                 Player.AddCrime(Crimes.CrimeList?.FirstOrDefault(x => x.ID == "GrandTheftAuto"), false, Player.Character.Position, SpawnedVehicleExt, null, true, true, true);
-                EntryPoint.WriteToConsole("GUNS CONTACT, COMPLICATIONS ADDED!");
+                //EntryPoint.WriteToConsoleTestLong("GUNS CONTACT, COMPLICATIONS ADDED!");
             }
             HasAddedComplications = true;
         }
@@ -303,7 +303,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     catch (Exception ex)
                     {
-                        EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                        //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                     }
                     if (GunProp.Exists())
                     {
@@ -313,7 +313,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     SpawnedVehicleExt = World.Vehicles.GetVehicleExt(SpawnedVehicle.Handle);
                     if (SpawnedVehicleExt != null)
                     {
-                        EntryPoint.WriteToConsole("Spawned Guns Task Burrito, FOUND VEHICLE ");
+                        //EntryPoint.WriteToConsoleTestLong("Spawned Guns Task Burrito, FOUND VEHICLE ");
                         // World.Vehicles.UpdatePlate(SpawnedVehicleExt, true);
                         string NewPlateNumber = RandomItems.RandomString(8);
                         SpawnedVehicleExt.Vehicle.LicensePlate = NewPlateNumber;
@@ -323,7 +323,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     else
                     {
-                        EntryPoint.WriteToConsole("Spawned Guns Task Burrito, DIDNT FIND VEHCILE :( ");
+                        //EntryPoint.WriteToConsoleTestLong("Spawned Guns Task Burrito, DIDNT FIND VEHCILE :( ");
                     }
                     SendVehicleSpawnedMessage();
                     return true;

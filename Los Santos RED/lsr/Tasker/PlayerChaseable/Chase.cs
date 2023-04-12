@@ -150,7 +150,7 @@ public class Chase : ComplexTask
             {
                 CopsVehicle = SeatAssigner.VehicleAssigned.Vehicle;
                 CopsSeat = SeatAssigner.SeatAssigned;
-                EntryPoint.WriteToConsole("ASSIGNED COP NEW VEHICLE");
+                //EntryPoint.WriteToConsoleTestLong("ASSIGNED COP NEW VEHICLE");
             }
         }
         Task UpdatedTask = GetCurrentTaskDynamic();
@@ -471,7 +471,7 @@ public class Chase : ComplexTask
         {
             try
             {
-                EntryPoint.WriteToConsole($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
+                //EntryPoint.WriteToConsoleTestLong($"STARTED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
                 while (hasOwnFiber && Ped.Pedestrian.Exists() && Ped.CurrentTask != null & Ped.CurrentTask?.Name == "Chase" && CurrentTask == Task.FootChase && !Settings.SettingsManager.PerformanceSettings.CopDisableFootChaseFiber && !IsCancelled)
                 {
                     footChase.Update();
@@ -480,7 +480,7 @@ public class Chase : ComplexTask
                 }
                 footChase.Dispose();
                 Ped.IsRunningOwnFiber = false;
-                EntryPoint.WriteToConsole($"ENDED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
+                //EntryPoint.WriteToConsoleTestLong($"ENDED Foot Chase Fiber for {(Ped.Pedestrian.Exists() ? Ped.Pedestrian.Handle : 0)}");
             }
             catch (Exception ex)
             {
@@ -721,10 +721,10 @@ public class Chase : ComplexTask
             {
                 GameTimeGotStuck = 0;
             }
-            if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
-            {
-                EntryPoint.WriteToConsole($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}", 5);
-            }
+            //if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
+            //{
+            //    EntryPoint.WriteToConsole($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}", 5);
+            //}
             LastPosition = CurrentPosition;
         }
     }
@@ -808,7 +808,7 @@ public class Chase : ComplexTask
                 }
             }
             //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Player.Character, 7, 30f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);
-            EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
+            //EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
         }
     }
 }

@@ -170,7 +170,7 @@ public class CustomizeHairMenu
         if (PedCustomizer.PedModelIsFreeMode)
         {
             NativeFunction.Natives.x4CFFC65454C93A49(PedCustomizer.ModelPed, PedCustomizer.WorkingVariation.PrimaryHairColor, PedCustomizer.WorkingVariation.SecondaryHairColor);
-            EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
+            //EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
         }
     }
     private void SetSecondaryHairColor(int newIndex)
@@ -183,7 +183,7 @@ public class CustomizeHairMenu
         if (PedCustomizer.PedModelIsFreeMode)
         {
             NativeFunction.Natives.x4CFFC65454C93A49(PedCustomizer.ModelPed, PedCustomizer.WorkingVariation.PrimaryHairColor, PedCustomizer.WorkingVariation.SecondaryHairColor);
-            EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
+            //EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {PedCustomizer.WorkingVariation.PrimaryHairColor} {PedCustomizer.WorkingVariation.SecondaryHairColor}", 5);
         }
     }
     private void RandomizePedHair()
@@ -233,7 +233,7 @@ public class CustomizeHairMenu
                 }
             }
         }
-        EntryPoint.WriteToConsole("OnHairValuesChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("OnHairValuesChanged Executed");
     }
 }
 

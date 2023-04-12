@@ -173,7 +173,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Exit()
         {
-            EntryPoint.WriteToConsole("SmokingActivity Exit Start", 5);
+           // EntryPoint.WriteToConsole("SmokingActivity Exit Start");
             if (SmokedItem.Exists())
             {
                 SmokedItem.Detach();
@@ -185,7 +185,7 @@ namespace LosSantosRED.lsr.Player
             NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
             Player.ActivityManager.IsPerformingActivity = false;
             Player.Intoxication.StopIngesting(CurrentIntoxicant);
-            EntryPoint.WriteToConsole("SmokingActivity Exit End", 5);
+           // EntryPoint.WriteToConsole("SmokingActivity Exit End");
             GameFiber.Sleep(5000);
             if (SmokedItem.Exists())
             {
@@ -200,10 +200,10 @@ namespace LosSantosRED.lsr.Player
         {
             ConsumableItemNeedGain = new ConsumableRefresher(Player, PipeSmokeItem, Settings);
             AttachSmokedItemToHand();
-            EntryPoint.WriteToConsole("SmokingActivity Idle Start", 5);
+            //EntryPoint.WriteToConsole("SmokingActivity Idle Start");
             PlayingDict = Data.AnimIdleDictionary;
             PlayingAnim = Data.AnimIdle.PickRandom();
-            EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}", 5);
+            //EntryPoint.WriteToConsole($"Smoking Activity Playing {PlayingDict} {PlayingAnim}");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 4.0f, -4.0f, -1, 50, 0, false, false, false);
             IsActivelySmoking = true;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && !isPaused)
@@ -220,7 +220,7 @@ namespace LosSantosRED.lsr.Player
                 ConsumableItemNeedGain.Update();
                 GameFiber.Yield();
             }
-            EntryPoint.WriteToConsole("SmokingActivity Idle End", 5);
+            //EntryPoint.WriteToConsole("SmokingActivity Idle End");
             Exit();        
         }
      

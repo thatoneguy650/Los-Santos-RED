@@ -373,7 +373,7 @@ public class WeatherReporting : IWeatherReportable
             GameFiber.Yield();
             ReportWeather(currentWeather);
         }
-        EntryPoint.WriteToConsole($"Current Weather Changed from {PrevCurrentWeather} to {currentWeather}", 5);
+        //EntryPoint.WriteToConsole($"Current Weather Changed from {PrevCurrentWeather} to {currentWeather}", 5);
         PrevCurrentWeather = currentWeather;
     }
     private void NextWeatherChanged()
@@ -383,7 +383,7 @@ public class WeatherReporting : IWeatherReportable
             GameFiber.Yield();
             ReportWeather(nextWeather);
         }
-        EntryPoint.WriteToConsole($"Next Weather Changed from {PrevNextWeather} to {nextWeather}", 5);
+        //EntryPoint.WriteToConsole($"Next Weather Changed from {PrevNextWeather} to {nextWeather}", 5);
         PrevNextWeather = nextWeather;
     }
     private void StoredAndTurnOffRadio()

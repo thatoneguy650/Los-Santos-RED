@@ -71,7 +71,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Lighter Start", 5);
+            //EntryPoint.WriteToConsole($"Lighter Start");
             GameFiber UmbrellaWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -210,7 +210,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Lighter.Exists())
                 {

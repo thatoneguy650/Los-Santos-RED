@@ -106,12 +106,12 @@ public class SecurityDispatcher
         Agency = forceAgency != null ? forceAgency : GetRandomAgency(SpawnLocation);
         if (Agency != null)
         {
-            EntryPoint.WriteToConsole($"Security Dispatcher, GETTING SPAWN TYPES AGENCY NOT NULL");
+            //EntryPoint.WriteToConsoleTestLong($"Security Dispatcher, GETTING SPAWN TYPES AGENCY NOT NULL");
             if (forcePed)
             {
-                EntryPoint.WriteToConsole($"Security Dispatcher, FORCE PED requiredGroup:{requiredGroup}");
+                //EntryPoint.WriteToConsoleTestLong($"Security Dispatcher, FORCE PED requiredGroup:{requiredGroup}");
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
-                EntryPoint.WriteToConsole($"Security Dispatcher, FORCE PED FOUND{PersonType != null}");
+                //EntryPoint.WriteToConsoleTestLong($"Security Dispatcher, FORCE PED FOUND{PersonType != null}");
                 return PersonType != null;
             }
             else if (forceVehicle)
@@ -140,7 +140,7 @@ public class SecurityDispatcher
     {
         try
         {
-            EntryPoint.WriteToConsole($"Security Dispatcher, SPAWN TASK STARTING");
+            //EntryPoint.WriteToConsoleTestLong($"Security Dispatcher, SPAWN TASK STARTING");
             SecurityGuardSpawnTask securitySpawnTask = new SecurityGuardSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.SecuritySettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, Crimes, ModItems);
             securitySpawnTask.AllowAnySpawn = allowAny;
             securitySpawnTask.AllowBuddySpawn = allowBuddy;

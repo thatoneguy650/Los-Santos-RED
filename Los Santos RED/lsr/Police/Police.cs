@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Interface;
+﻿using LosSantosRED.lsr.Helper;
+using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System;
@@ -136,6 +137,84 @@ namespace LosSantosRED.lsr
         }
         private void UpdateRecognition()
         {
+            RecognitionLoop();
+            UpdateGeneralItmes();
+            UpdateWantedItems();
+            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
+        }
+        private void UpdateGeneralItmes()
+        {
+            if (Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !Player.AnyPoliceCanSeePlayer)
+            {
+                if (Player.RecentlyShot && Player.AnyPoliceCanHearPlayer)
+                {
+                    Player.AnyPoliceCanSeePlayer = true;
+                    Player.AnyPoliceRecentlySeenPlayer = true;
+                }
+            }
+            if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
+            {
+                Player.AnyPoliceKnowInteriorLocation = true;
+            }
+            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000)
+            {
+                Player.AnyPoliceKnowInteriorLocation = false;
+            }
+            if (PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
+            {
+                //EntryPoint.WriteToConsoleTestLong($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
+                PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
+            }
+
+            if(Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            {
+                Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
+            }
+
+
+        }
+        private void UpdateWantedItems()
+        {
+            if(!Player.IsWanted)
+            {
+                return;
+            }
+            GameFiber.Yield();
+            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            {
+                Player.PlacePoliceLastSeenPlayer = Player.Position;
+            }
+            else
+            {
+                if (Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero && Player.PoliceResponse.PlaceLastReportedCrime != Player.PlacePoliceLastSeenPlayer && Player.Position.DistanceTo2D(Player.PoliceResponse.PlaceLastReportedCrime) <= Player.Position.DistanceTo2D(Player.PlacePoliceLastSeenPlayer))//They called in a place closer than your position, maybe go with time instead ot be more fair?
+                {
+                    Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
+                    //EntryPoint.WriteToConsole($"POLICE EVENT: Updated Place Police Last Seen To A Citizen Reported Location", 3);
+                }
+            }
+
+            Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer);
+
+
+
+            DeterimineInterestedLocation();
+
+            if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
+            {
+                if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
+                {
+                    Player.OnPoliceNoticeVehicleChange();
+                }
+                PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
+            }
+
+            if (Player.AnyPoliceCanSeePlayer && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                Player.CurrentVehicle.UpdateDescription();
+            }
+        }
+        private void RecognitionLoop()
+        {
             bool anyPoliceCanSeePlayer = false;
             bool anyPoliceCanHearPlayer = false;
             bool anyPoliceCanRecognizePlayer = false;
@@ -143,7 +222,7 @@ namespace LosSantosRED.lsr
             int tested = 0;
             foreach (Cop cop in World.Pedestrians.PoliceList)
             {
-                if(cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
+                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
                 {
                     if (cop.CanSeePlayer)
                     {
@@ -170,88 +249,44 @@ namespace LosSantosRED.lsr
                     break;
                 }
                 tested++;
-                if(tested >= 20)//10
+                if (tested >= 20)//10
                 {
                     tested = 0;
                     GameFiber.Yield();
                 }
                 //GameFiber.Yield();
             }
-            //GameFiber.Yield();//TR TEST 28
             Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
-            if(Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !anyPoliceCanSeePlayer)
+        }
+
+        private void DeterimineInterestedLocation()
+        {
+            if (Player.SearchMode.IsInStartOfSearchMode)
             {
-                if(Player.RecentlyShot && anyPoliceCanHearPlayer)
+                if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) >= 10f)
                 {
-                    Player.AnyPoliceCanSeePlayer = true;
-                    Player.AnyPoliceRecentlySeenPlayer = true;
+                    Player.PlacePoliceShouldSearchForPlayer = Player.Position;
+                }
+                if (Game.GameTime - GameTimeLastUpdatedSearchLocation >= 1000)
+                {
+                    //EntryPoint.WriteToConsole("Ghost Position Update for Cop Tasking");
+                    GameTimeLastUpdatedSearchLocation = Game.GameTime;
                 }
             }
-            if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
+            else
             {
-                Player.AnyPoliceKnowInteriorLocation = true;
+                Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
             }
-            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000)
-            {
-                Player.AnyPoliceKnowInteriorLocation = false;
-            }
-            if(PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
-            {
-                EntryPoint.WriteToConsole($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
-                PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
-            }
-            if (Player.IsWanted)
-            {
-                GameFiber.Yield();
-                if (Player.AnyPoliceRecentlySeenPlayer)
-                {
-                    Player.PlacePoliceLastSeenPlayer = Player.Position;
-                }  
-                else if (Player.AnyPoliceKnowInteriorLocation)
-                {
-                    Player.PlacePoliceLastSeenPlayer = Player.Position;
-                }
-                else
-                {
-                    if (Player.PoliceResponse.PlaceLastReportedCrime != Vector3.Zero && Player.PoliceResponse.PlaceLastReportedCrime != Player.PlacePoliceLastSeenPlayer && Player.Position.DistanceTo2D(Player.PoliceResponse.PlaceLastReportedCrime) <= Player.Position.DistanceTo2D(Player.PlacePoliceLastSeenPlayer))//They called in a place closer than your position, maybe go with time instead ot be more fair?
-                    {
-                        Player.PlacePoliceLastSeenPlayer = Player.PoliceResponse.PlaceLastReportedCrime;
-                        EntryPoint.WriteToConsole($"POLICE EVENT: Updated Place Police Last Seen To A Citizen Reported Location", 3);
-                    }
-                }
-                if (Player.SearchMode.IsInStartOfSearchMode)
-                {
-                    if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) >= 10f)
-                    {
-                        Player.PlacePoliceShouldSearchForPlayer = Player.Position;
-                    }
-                    if(Game.GameTime - GameTimeLastUpdatedSearchLocation >= 1000)
-                    {
-                        EntryPoint.WriteToConsole("Ghost Position Update for Cop Tasking");
-                        GameTimeLastUpdatedSearchLocation = Game.GameTime;
-                    }
-                }
-                else
-                {
-                    Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
-                }
-                  if (Player.AnyPoliceCanSeePlayer && Player.CurrentSeenVehicle != null && Player.CurrentSeenVehicle.Vehicle.Exists())
-                {
-                    if (PoliceLastSeenVehicleHandle != 0 && PoliceLastSeenVehicleHandle != Player.CurrentSeenVehicle.Vehicle.Handle && !Player.CurrentSeenVehicle.HasBeenDescribedByDispatch)
-                    {
-                        Player.OnPoliceNoticeVehicleChange();
-                    }
-                    PoliceLastSeenVehicleHandle = Player.CurrentSeenVehicle.Vehicle.Handle;
-                }
-                if (Player.AnyPoliceCanSeePlayer && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-                {
-                    Player.CurrentVehicle.UpdateDescription();
-                }
-            }
-            NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
+
+            Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer);
+
+
+
+            Player.IsNearbyPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) <= 200f;
         }
     }
+
 }

@@ -92,7 +92,7 @@ public class VehicleItem : ModItem
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = enabled;
-            EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+            //EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}");
         }
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
@@ -100,7 +100,7 @@ public class VehicleItem : ModItem
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedSalesPrice;
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Enabled = enabled;
-            EntryPoint.WriteToConsole($"Added Vehicle {Name} To Main Buy Menu", 5);
+            //EntryPoint.WriteToConsole($"Added Vehicle {Name} To Main Buy Menu");
         }
         if (Transaction.HasBannerImage)
         {
@@ -193,14 +193,14 @@ public class VehicleItem : ModItem
             VehicleMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
             CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+            //EntryPoint.WriteToConsole($"Added Vehicle {Name} To SubMenu {CategoryMenu.SubtitleText}");
         }
         if (!FoundCategoryMenu && VehicleMenu == null)
         {
             VehicleMenu = Transaction.MenuPool.AddSubMenu(purchaseMenu, menuItem.ModItemName);
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            EntryPoint.WriteToConsole($"Added Vehicle {Name} To Main Buy Menu", 5);
+            //EntryPoint.WriteToConsole($"Added Vehicle {Name} To Main Buy Menu");
         }
         if (Transaction.HasBannerImage)
         {
@@ -219,7 +219,7 @@ public class VehicleItem : ModItem
             {
                 return;
             }
-            EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+            //EntryPoint.WriteToConsole($"Vehicle Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}");
             if (player.BankAccounts.Money < menuItem.PurchasePrice)
             {
                 Transaction.DisplayInsufficientFundsMessage();
@@ -344,7 +344,7 @@ public class VehicleItem : ModItem
                     MyNewCar.HasUpdatedPlateType = false;
                     MyNewCar.AllowVanityPlates = false;
                     MyNewCar.CanHaveRandomItems = false;
-                    EntryPoint.WriteToConsole("New Vehicle Created in PurchaseVehicle");
+                    //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in PurchaseVehicle");
                 }
                 world.Vehicles.AddEntity(MyNewCar, ResponseType.None);
                 player.VehicleOwnership.TakeOwnershipOfVehicle(MyNewCar, false);
@@ -455,7 +455,7 @@ public class VehicleItem : ModItem
                 {
                     SetLivery1 = true;
                     Livery1 = selectedLivery;
-                    EntryPoint.WriteToConsole($"Livery 1 Activated {Livery1}");
+                    //EntryPoint.WriteToConsoleTestLong($"Livery 1 Activated {Livery1}");
                     if (Transaction.SellingVehicle.Exists())
                     {
                         NativeFunction.Natives.SET_VEHICLE_LIVERY(Transaction.SellingVehicle, Livery1);

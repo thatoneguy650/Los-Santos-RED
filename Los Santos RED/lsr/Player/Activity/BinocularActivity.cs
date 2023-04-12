@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Binoculars Start", 5);
+           // EntryPoint.WriteToConsole($"Binoculars Start");
             GameFiber BinocWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -172,7 +172,7 @@ namespace LosSantosRED.lsr.Player
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Raise Binocs Start");
+                //EntryPoint.WriteToConsoleTestLong("Raise Binocs Start");
                 IsRaisingBinocs = true;
                 IsLoweringBinocs = false;
                 IsNightVision = false;
@@ -192,14 +192,14 @@ namespace LosSantosRED.lsr.Player
                 IsZoomedIn = true;
                 ResetFOV();
                 AddPrompts();
-                EntryPoint.WriteToConsole("Raise Binocs End");
+                //EntryPoint.WriteToConsoleTestLong("Raise Binocs End");
             }
         }
         private void LowerBinoculars(bool restartIdle)
         {
             if (!IsCancelled)
             {
-                EntryPoint.WriteToConsole("Lower Binocs Start");
+                //EntryPoint.WriteToConsoleTestLong("Lower Binocs Start");
                 IsLoweringBinocs = true;
                 IsRaisingBinocs = false;
                 IsZoomedIn = false;
@@ -223,7 +223,7 @@ namespace LosSantosRED.lsr.Player
                     LowIdle();
                     AddPrompts();
                 }
-                EntryPoint.WriteToConsole("Lower Binocs End");
+                //EntryPoint.WriteToConsoleTestLong("Lower Binocs End");
             }
         }
         private void Exit()
@@ -264,7 +264,7 @@ namespace LosSantosRED.lsr.Player
             }
             if (restartAnimation)
             {
-                EntryPoint.WriteToConsole($"Idle Low Start {PlayingDictionary}    ANIM: {PlayingAnimation}");
+                //EntryPoint.WriteToConsoleTestLong($"Idle Low Start {PlayingDictionary}    ANIM: {PlayingAnimation}");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animLowBlendIn, animLowBlendOut, -1, animLowFlag, 0, false, false, false);//-1
             }
         }
@@ -584,7 +584,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Binoculars.Exists())
                 {

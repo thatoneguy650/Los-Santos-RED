@@ -16,9 +16,7 @@ namespace LosSantosRED.lsr
         public List<LicensePlate> WantedPlates = new List<LicensePlate>();
         private PoliceState CurrentPoliceState;
         private uint GameTimeLastRequestedBackup;
-
-        private uint GameTimeLastWantedEnded;
-        
+        private uint GameTimeLastWantedEnded;   
         private uint GameTimePoliceStateStart;
         private uint GameTimeWantedLevelStarted;
         private IPoliceRespondable Player;
@@ -298,7 +296,7 @@ namespace LosSantosRED.lsr
             DateTimeLastWantedEnded = Time.CurrentDateTime;
             RelationshipGroup.Cop.SetRelationshipWith(RelationshipGroup.Player, Relationship.Neutral);
             RelationshipGroup.Player.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
-            EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted DateTimeLastWantedEnded {DateTimeLastWantedEnded}",5);
+            //EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted DateTimeLastWantedEnded {DateTimeLastWantedEnded}");
         }
         public void OnWantedLevelIncreased()
         {
@@ -451,7 +449,7 @@ namespace LosSantosRED.lsr
         {
             if(Player.IsWanted)
             {
-                if(!LastSeenLocationBlip.Exists())
+                if(!LastSeenLocationBlip.Exists() && EntryPoint.ModController.IsRunning)
                 {
                     LastSeenLocationBlip = new Blip(Player.PlacePoliceLastSeenPlayer, 200f)
                     {
@@ -464,30 +462,33 @@ namespace LosSantosRED.lsr
                     NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(LastSeenLocationBlip);
                     NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)LastSeenLocationBlip.Handle, true);
                 }
-                else
+                else if(LastSeenLocationBlip.Exists())
                 {
+
                     LastSeenLocationBlip.Position = Player.PlacePoliceLastSeenPlayer;
                 }
-
-
-                if(Player.IsInSearchMode)
+                if (LastSeenLocationBlip.Exists())
                 {
-                    LastSeenLocationBlip.Color = Color.Orange;
-                    LastSeenLocationBlip.Alpha = 0.35f;
-                    LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
-                }
-                else if (Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation)
-                {
-                    LastSeenLocationBlip.Color = Color.Black;
-                    LastSeenLocationBlip.Alpha = 0.25f;
-                    LastSeenLocationBlip.Scale = 200f;
-                }
-                else
-                {
-                    LastSeenLocationBlip.Color = Color.Red;
-                    LastSeenLocationBlip.Alpha = 0.25f;
-                    LastSeenLocationBlip.Scale = 200f;
 
+                    if (Player.IsInSearchMode)
+                    {
+                        LastSeenLocationBlip.Color = Color.Orange;
+                        LastSeenLocationBlip.Alpha = 0.35f;
+                        LastSeenLocationBlip.Scale = 25f + ((1 - Player.SearchModePercentage) * 175f);
+                    }
+                    else if (Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation)
+                    {
+                        LastSeenLocationBlip.Color = Color.Black;
+                        LastSeenLocationBlip.Alpha = 0.25f;
+                        LastSeenLocationBlip.Scale = 200f;
+                    }
+                    else
+                    {
+                        LastSeenLocationBlip.Color = Color.Red;
+                        LastSeenLocationBlip.Alpha = 0.25f;
+                        LastSeenLocationBlip.Scale = 200f;
+
+                    }
                 }
             }
             else
@@ -528,10 +529,6 @@ namespace LosSantosRED.lsr
             {
                 Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement}+ wanted level", true);
             }
-            //if (Settings.SettingsManager.PoliceSettings.DeadlyChaseRequiresWantedLevel && CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < 3)
-            //{
-            //    Player.SetWantedLevel(3, "Deadly chase requires 3+ wanted level", true);
-            //}
             PoliceKilledUpdate();     
         }
         private void PoliceKilledUpdate()
@@ -588,8 +585,6 @@ namespace LosSantosRED.lsr
                 Player.OnWeaponsFree();
             }
         }
-
-
         public bool IsWithinGracePeriod(Crime crime) => GracePeriodCrimes.Any(x => x.ID == crime.ID);
         public void AddToGracePeriod()
         {
@@ -601,7 +596,7 @@ namespace LosSantosRED.lsr
                     GracePeriodCrimes.Add(crime);
                 }
             }
-            EntryPoint.WriteToConsole("AddToGracePeriod");
+            //EntryPoint.WriteToConsoleTestLong("AddToGracePeriod");
         }
         private void UpdateGracePeriod()
         {
@@ -612,13 +607,10 @@ namespace LosSantosRED.lsr
             }
             GracePeriodCrimes.RemoveWhere(x => HasBeenNotWantedFor >= x.GracePeriod); 
         }
-
         public void ResetGracePeriod()
         {
             GracePeriodCrimes.Clear();
-            EntryPoint.WriteToConsole("ResetGracePeriod");
+            //EntryPoint.WriteToConsoleTestLong("ResetGracePeriod");
         }
     }
-
-
 }

@@ -77,13 +77,13 @@ public class PedReaction
         if (!ReactingToPed.Pedestrian.Exists())
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} NPC Expired - Doesnt Exist");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} NPC Expired - Doesnt Exist");
             return;
         }
         if (ReactingToPed.IsDead)
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - Dead");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - Dead");
             return;
         }
         //if(ReactingToPed.WantedLevel >= 3)
@@ -95,13 +95,13 @@ public class PedReaction
         if(ReactingToPed.IsBusted && ReactingPed.WantedLevel > 0)
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - busted");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - busted");
             return;
         }
         if(!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY,ReactingToPed.CellX,ReactingToPed.CellY,4))
         {
             IsDistanceExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - distance");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} to {ReactingToPed.Handle} NPC Expired - distance");
             return;
         }
     }
@@ -110,19 +110,19 @@ public class PedReaction
         if(Player.IsDead)
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired DEAD");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} Player Expired DEAD");
             return;
         }
         if(Player.IsBusted && Player.WantedLevel > 0)
         {
             IsOtherExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired BUSTED AND WANTED BY POLICE");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} Player Expired BUSTED AND WANTED BY POLICE");
             return;
         }
         if (!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY, Player.CellX, Player.CellY, 3))
         {
             IsDistanceExpired = true;
-            EntryPoint.WriteToConsole($"Ped Reaction {ReactingPed.Handle} Player Expired Distance");
+            //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} Player Expired Distance");
             return;
         }
     }

@@ -335,7 +335,7 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Chase")
         {
-            EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
+            //EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Chase", 3);
             Cop.CurrentTask = new Chase(Cop, Player, World, Cop, Settings);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4

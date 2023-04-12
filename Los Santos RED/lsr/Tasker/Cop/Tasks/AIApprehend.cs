@@ -435,7 +435,7 @@ public class AIApprehend : ComplexTask
                 IsFirstRun = false;
                 NeedsUpdates = true;
                 FootChaseLoop();
-                EntryPoint.WriteToConsole($"COP EVENT: AI Apprehend Start: {Ped.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"COP EVENT: AI Apprehend Start: {Ped.Pedestrian.Handle}", 3);
             }
         }
     }
@@ -490,7 +490,7 @@ public class AIApprehend : ComplexTask
                         }
                     }
                 }
-                EntryPoint.WriteToConsole($"VehicleChase Vehicle Target: {Ped.Pedestrian.Handle} IsChasingRecklessly: {IsChasingRecklessly}", 5);
+                //EntryPoint.WriteToConsole($"VehicleChase Vehicle Target: {Ped.Pedestrian.Handle} IsChasingRecklessly: {IsChasingRecklessly}", 5);
                 IsFirstRun = false;
             }
             else
@@ -546,10 +546,10 @@ public class AIApprehend : ComplexTask
                 {
                     GameTimeGotStuck = 0;
                 }
-                if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
-                {
-                    EntryPoint.WriteToConsole($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}", 5);
-                }
+                //if (IsStuck && Game.GameTime - GameTimeGotStuck >= 3000)
+                //{
+                //    EntryPoint.WriteToConsole($"VehicleChase Vehicle Target I AM STUCK!!: {Ped.Pedestrian.Handle}", 5);
+                //}
                 LastPosition = CurrentPosition;
             }
         }
@@ -604,7 +604,7 @@ public class AIApprehend : ComplexTask
                 }
             }
             //NativeFunction.CallByName<bool>("TASK_VEHICLE_MISSION_PED_TARGET", Cop.Pedestrian, Cop.Pedestrian.CurrentVehicle, Target.Pedestrian, 7, 30f, 4 | 8 | 16 | 32 | 512 | 262144, 0f, 0f, true);
-            EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
+            //EntryPoint.WriteToConsole($"VehicleChase Ped Target: {Ped.Pedestrian.Handle}", 5);
         }
     }
     private void StopCar()
@@ -622,14 +622,14 @@ public class AIApprehend : ComplexTask
             }
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 27, 2000);
-            EntryPoint.WriteToConsole($"AIApprehend Stop Car: {Ped.Pedestrian.Handle}", 5);
+            //EntryPoint.WriteToConsole($"AIApprehend Stop Car: {Ped.Pedestrian.Handle}", 5);
         }
         else
         {
             NeedsUpdates = true;
             return;
         }
-        EntryPoint.WriteToConsole($"AI Apprehend STOPCAR: {Ped.Pedestrian.Handle}", 5);
+        //EntryPoint.WriteToConsole($"AI Apprehend STOPCAR: {Ped.Pedestrian.Handle}", 5);
     }
     private void SetSiren()
     {
@@ -792,7 +792,7 @@ public class AIApprehend : ComplexTask
                 {
                     OtherTarget.ArrestingPedHandle = Ped.Pedestrian.Handle;
                 }
-                EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"Should bust {OtherTarget.Pedestrian.Handle}", 3);
             }
         }
     }

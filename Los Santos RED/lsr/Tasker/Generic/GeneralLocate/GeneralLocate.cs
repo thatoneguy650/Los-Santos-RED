@@ -72,7 +72,7 @@ public class GeneralLocate : ComplexTask
                 hasSixthSense = true;
             }
 
-            EntryPoint.WriteToConsole($"GeneralLocate TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
+            //EntryPoint.WriteToConsoleTestLong($"GeneralLocate TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();
         }
     }
@@ -220,7 +220,7 @@ public class GeneralLocate : ComplexTask
                     HasReachedReportedPosition = true;
                 }
 
-                EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
+                //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
             }
             if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
             {

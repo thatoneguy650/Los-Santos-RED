@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Drill ACTIVITY Start", 5);
+            //EntryPoint.WriteToConsole($"Drill ACTIVITY Start");
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -92,7 +92,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Dispose()
         {
-            EntryPoint.WriteToConsole("Drill ACTIVITY END");
+            //EntryPoint.WriteToConsoleTestLong("Drill ACTIVITY END");
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();

@@ -99,13 +99,13 @@ public class SearchActivity
                         PlayEntryAnimation();
                         ReleaseCop();
                         EndSearch();
-                        EntryPoint.WriteToConsole("Search Activity, Finished Searching Player");
+                        //EntryPoint.WriteToConsoleTestLong("Search Activity, Finished Searching Player");
                     }
                     else
                     {
                         ReleaseCop();
                         EndSearch();
-                        EntryPoint.WriteToConsole("Search Activity, Failure Moving Cop To Search Position");
+                        //EntryPoint.WriteToConsoleTestLong("Search Activity, Failure Moving Cop To Search Position");
                     }
                 }
                 catch (Exception ex)
@@ -119,7 +119,7 @@ public class SearchActivity
         {
             ReleaseCop();
             EndSearch();
-            EntryPoint.WriteToConsole("Booking Activity, No Cop Found");
+            //EntryPoint.WriteToConsoleTestLong("Booking Activity, No Cop Found");
         }
     }
     private void EndSearch()
@@ -242,12 +242,12 @@ public class SearchActivity
             {
                 if (!DidWeaponSearch)
                 {
-                    EntryPoint.WriteToConsole("Cop Search Do Weapons Search");
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Do Weapons Search");
                     DoWeaponSearch();
                 }
                 if(FoundIllegalWeapons && !AnnouncedIllegalWeapons)
                 {
-                    EntryPoint.WriteToConsole("Cop Search Announce Found Weapons");
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Weapons");
                     CopAnnounceFoundWeapon();
                 }
             }
@@ -256,13 +256,13 @@ public class SearchActivity
             {
                 if (!DidItemsSearch)
                 {
-                    EntryPoint.WriteToConsole("Cop Search Do Items Search");
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Do Items Search");
                     DoItemSearch();
                     
                 }
                 if (FoundIllegalDrugs && !AnnouncedIllegalDrugs)
                 {
-                    EntryPoint.WriteToConsole("Cop Search Announce Found Drugs");
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Drugs");
                     CopAnnounceFoundDrugs();
                 }
             }
@@ -272,7 +272,7 @@ public class SearchActivity
                 CompletedSearch = true;
                 if (!FoundIllegalItems)
                 {
-                    EntryPoint.WriteToConsole("Cop Search Announce Found Nothing");
+                    //EntryPoint.WriteToConsoleTestLong("Cop Search Announce Found Nothing");
                     CopAnnounceFoundNothing();
                 }
                 endLoop = true;
@@ -281,13 +281,13 @@ public class SearchActivity
             bool isAnimRunning = AnimationWatcher.IsAnimationRunning(animTime);
             if (!isAnimRunning)
             {
-                EntryPoint.WriteToConsole("Cop Animation on Search Not Running");
+                //EntryPoint.WriteToConsoleTestLong("Cop Animation on Search Not Running");
                 endLoop = true;
             }
 
             GameFiber.Yield();
         }
-        EntryPoint.WriteToConsole("Cop Search ANIM LOOP ENDED");
+        //EntryPoint.WriteToConsoleTestLong("Cop Search ANIM LOOP ENDED");
         if (CanContinueSearch)
         {
             Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
@@ -368,7 +368,7 @@ public class SearchActivity
             WeaponItem wi = ModItems.PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName == weapon.ModelName);
             if(wi == null)
             {
-                EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
+                //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} DID NOT FIND WEAPON, CONTINUING");
                 continue;
             }
             if(weapon.Category == WeaponCategory.Throwable)
@@ -376,14 +376,14 @@ public class SearchActivity
                 TimesToCheck = NativeFunction.Natives.GET_AMMO_IN_PED_WEAPON<int>(Player.Character, weapon.Hash);
                 TimesToCheck.Clamp(1, 10);
             }
-            EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
+            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} FOUND MODITEM %:{wi.PoliceFindDuringPlayerSearchPercentage} TimesToCheck {TimesToCheck}");
             if (RandomItems.RandomPercent(wi.PoliceFindDuringPlayerSearchPercentage * TimesToCheck))
             {
                 Player.Violations.WeaponViolations.AddFoundWeapon(worstWeapon, hasCCW);
                 FoundIllegalWeapons = true;
                 FoundIllegalItems = true;
                 Player.WeaponEquipment.RemoveIllegalWeapons(hasCCW);
-                EntryPoint.WriteToConsole($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
+                //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {weapon.ModelName} PERCENTAGE MET, WEAPONS FOUND");
                 break;
             }
         }
@@ -400,14 +400,14 @@ public class SearchActivity
             {
                 ItemsOwned = ii.Amount;
             }
-            EntryPoint.WriteToConsole($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
+            //EntryPoint.WriteToConsoleTestLong($"SEARCH WEAPON {modItem.Name} %:{modItem.PoliceFindDuringPlayerSearchPercentage} ItemsOwned {ItemsOwned} Total%{modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned}");
             if (RandomItems.RandomPercent(modItem.PoliceFindDuringPlayerSearchPercentage * ItemsOwned))
             {
                 Player.Violations.OtherViolations.AddFoundIllegalItem();
                 FoundIllegalDrugs = true;
                 FoundIllegalItems = true;
                 Player.Inventory.RemoveIllicitInventoryItems();
-                EntryPoint.WriteToConsole($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
+                //EntryPoint.WriteToConsoleTestLong($"SEARCH ITEMS {modItem.Name} PERCENTAGE MET, ITEMS FOUND");
                 break;
             }
         }

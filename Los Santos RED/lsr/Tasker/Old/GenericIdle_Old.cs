@@ -279,7 +279,7 @@ public class GenericIdle_Old : ComplexTask
                 {
                     IsGuarding = false;
                     IsPatrolling = true;
-                    EntryPoint.WriteToConsole($"PED {Ped.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
+                    //EntryPoint.WriteToConsoleTestLong($"PED {Ped.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
                 }
                 GameTimeLastStartedScenario = Game.GameTime;
             }
@@ -356,7 +356,7 @@ public class GenericIdle_Old : ComplexTask
                 {
                     IsGuarding = true;
                     IsPatrolling = false;
-                    EntryPoint.WriteToConsole($"PED {Ped.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
+                    //EntryPoint.WriteToConsoleTestLong($"PED {Ped.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
                 }
                 GameTimeLastStartedFootPatrol = Game.GameTime;
             }
@@ -426,7 +426,7 @@ public class GenericIdle_Old : ComplexTask
         else if (Ped.DistanceToPlayer <= 150f && Ped.Pedestrian.Tasks.CurrentTaskStatus == Rage.TaskStatus.NoTask)//might be a crash cause?, is there a regular native for this?
         {
             WanderTask();
-            EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
+            //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Reset: {Ped.Pedestrian.Handle}", 3);
         }
         else if (GameTimeLastChangedWanderStuff != 0 && Game.GameTime - GameTimeLastChangedWanderStuff >= GameTimeBetweenWanderDecision && !Ped.IsInVehicle)
         {
@@ -477,17 +477,17 @@ public class GenericIdle_Old : ComplexTask
                 Scenario = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" }.PickRandom();
             }
             NativeFunction.Natives.TASK_START_SCENARIO_IN_PLACE(Ped.Pedestrian, Scenario, 0, true);
-            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario FORCED! {Scenario}", 5);
+            //EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario FORCED! {Scenario}", 5);
         }
         else if (ScenarioInArea)
         {
             NativeFunction.Natives.TASK_USE_NEAREST_SCENARIO_TO_COORD(Ped.Pedestrian, pedPos.X, pedPos.Y, pedPos.Z, 15f, 15000);
-            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion NEARBY", 5);
+           // EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenarion NEARBY", 5);
         }
         else
         {
             NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-            EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
+           // EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
         }
         GameTimeBetweenWanderDecision = RandomItems.GetRandomNumber(30000, 80000);
         GameTimeLastChangedWanderStuff = Game.GameTime;

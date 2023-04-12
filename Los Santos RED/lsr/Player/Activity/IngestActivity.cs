@@ -127,7 +127,7 @@ namespace LosSantosRED.lsr.Player
             Player.ActivityManager.IsPerformingActivity = false;
             if (CurrentIntoxicant != null && !CurrentIntoxicant.ContinuesWithoutCurrentUse)
             {
-                EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion", 5);
+                //EntryPoint.WriteToConsole("IngestActivity Exit, Stopping ingestion");
                 Player.Intoxication.StopIngesting(CurrentIntoxicant);
             }
             GameFiber.Sleep(5000);
@@ -156,7 +156,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (Item.Exists())
                 {

@@ -106,7 +106,7 @@ public class BusRide
     {
         if (Bus.Exists())
         {
-            EntryPoint.WriteToConsole("PLAYER EVENT: BusRide Start", 3);
+            //EntryPoint.WriteToConsole("PLAYER EVENT: BusRide Start");
             FixPassengers();
             Player.LastFriendlyVehicle = Bus;
             while (!Player.IsInVehicle)
@@ -120,11 +120,11 @@ public class BusRide
                 TaskDriver();
                 MonitorRide();
                 Player.IsRidingBus = false;
-                EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End", 3);
+                //EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End");
             }
             else
             {
-                EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End (Timeout entry)", 3);
+                //EntryPoint.WriteToConsole("PLAYER EVENT: BusRide End (Timeout entry)", 3);
             }
         }
     }
@@ -180,7 +180,7 @@ public class BusRide
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Bus.Driver, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
-                EntryPoint.WriteToConsole("PLAYER EVENT: BusRide Tasked Driver", 3);
+               // EntryPoint.WriteToConsole("PLAYER EVENT: BusRide Tasked Driver");
             }
         }
     }

@@ -91,7 +91,7 @@ public class BankAccounts
         {
             PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
         }
-        EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {Player.ModelName}");
+        //EntryPoint.WriteToConsoleTestLong($"PlayerCashHash {PlayerCashHash} ModelName {Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || Player.CharacterModelIsPrimaryCharacter)
         {
 
@@ -133,7 +133,7 @@ public class BankAccounts
             PlayerCashHash = NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias);
         }
 
-        EntryPoint.WriteToConsole($"PlayerCashHash {PlayerCashHash} ModelName {Player.ModelName}");
+        //EntryPoint.WriteToConsoleTestLong($"PlayerCashHash {PlayerCashHash} ModelName {Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter || Player.CharacterModelIsPrimaryCharacter)
         {
             NativeFunction.CallByName<int>("STAT_SET_INT", PlayerCashHash, Amount, 1);

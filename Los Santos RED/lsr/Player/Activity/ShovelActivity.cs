@@ -84,7 +84,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Shovel Start", 5);
+            //EntryPoint.WriteToConsole($"Shovel Start");
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -271,12 +271,12 @@ namespace LosSantosRED.lsr.Player
             {
                 if(isWeapon)
                 {
-                    EntryPoint.WriteToConsole($"WEAPON ATTACH {WeaponHandBoneName} {WeaponHandOffset} {WeaponHandRotator}");
+                    //EntryPoint.WriteToConsoleTestLong($"WEAPON ATTACH {WeaponHandBoneName} {WeaponHandOffset} {WeaponHandRotator}");
                     Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, WeaponHandBoneName), WeaponHandOffset, WeaponHandRotator);
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole($"REGULAR ATTACH {HandBoneName} {HandOffset} {HandRotator}");
+                    //EntryPoint.WriteToConsoleTestLong($"REGULAR ATTACH {HandBoneName} {HandOffset} {HandRotator}");
                     Shovel.AttachTo(Player.Character, NativeFunction.CallByName<int>("GET_ENTITY_BONE_INDEX_BY_NAME", Player.Character, HandBoneName), HandOffset, HandRotator);
                 }
                 IsAttachedToHand = true;
@@ -293,7 +293,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Shovel.Exists())
                 {
@@ -311,7 +311,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
             }
         }//prop_pile_dirt_01
@@ -335,18 +335,18 @@ namespace LosSantosRED.lsr.Player
 
             if (ShovelItem != null)
             {
-                EntryPoint.WriteToConsole("FOUND RIGHT SHOVEL ITEM");
+                //EntryPoint.WriteToConsoleTestLong("FOUND RIGHT SHOVEL ITEM");
 
                 foreach(PropAttachment pa in ShovelItem.ModelItem.Attachments)
                 {
-                    EntryPoint.WriteToConsole($"PROP ATTACHMENT FOUND {pa.Name}");
+                    //EntryPoint.WriteToConsoleTestLong($"PROP ATTACHMENT FOUND {pa.Name}");
                 }
 
                 PropModelName = ShovelItem.ModelItem.ModelName;
                 PropAttachment handAttachment = ShovelItem.ModelItem.Attachments.Where(x => x.Name == "RightHand").FirstOrDefault();
                 if (handAttachment != null)
                 {
-                    EntryPoint.WriteToConsole("FOUND RIGHT HAND REGULAR ATTACHMENTS");
+                    //EntryPoint.WriteToConsoleTestLong("FOUND RIGHT HAND REGULAR ATTACHMENTS");
                     HandBoneName = handAttachment.BoneName;
                     HandOffset = handAttachment.Attachment;
                     HandRotator = handAttachment.Rotation;
@@ -355,7 +355,7 @@ namespace LosSantosRED.lsr.Player
                 PropAttachment handWeaponAttachment = ShovelItem.ModelItem.Attachments.Where(x => x.Name == "RightHandWeapon").FirstOrDefault();
                 if (handWeaponAttachment != null)
                 {
-                    EntryPoint.WriteToConsole("FOUND RIGHT HAND WEAPON ATTACHMENTS");
+                    //EntryPoint.WriteToConsoleTestLong("FOUND RIGHT HAND WEAPON ATTACHMENTS");
                     WeaponHandBoneName = handWeaponAttachment.BoneName;
                     WeaponHandOffset = handWeaponAttachment.Attachment;
                     WeaponHandRotator = handWeaponAttachment.Rotation;

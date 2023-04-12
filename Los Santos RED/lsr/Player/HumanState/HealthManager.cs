@@ -38,7 +38,7 @@ public class HealthManager
                     if (Player.Character.Health < Player.Character.MaxHealth)
                     {
                         ChangeHealth(Math.Abs(Settings.SettingsManager.NeedsSettings.HealthRegenAmount));
-                        EntryPoint.WriteToConsole($"Health Manager Added Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
+                        //EntryPoint.WriteToConsoleTestLong($"Health Manager Added Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
                         GameTimeLastRegenedHealth = Game.GameTime;
                     }
                 }
@@ -50,7 +50,7 @@ public class HealthManager
                     if (Player.Character.Health >= Settings.SettingsManager.NeedsSettings.HealthDrainMinHealth)//minimum value to stop it from killing people tons
                     {
                         ChangeHealth(-1 * Math.Abs(Settings.SettingsManager.NeedsSettings.HealthDrainAmount));
-                        EntryPoint.WriteToConsole($"Health Manager Drained Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
+                        //EntryPoint.WriteToConsoleTestLong($"Health Manager Drained Health (Needs) Max Health: {Player.Character.MaxHealth} Current Health: {Player.Character.Health}");
                         GameTimeLastDrainedHealth = Game.GameTime;
                     }
                 }
@@ -74,7 +74,7 @@ public class HealthManager
                     ToAdd = Player.Character.MaxHealth - Player.Character.Health;
                 }
                 Player.Character.Health += ToAdd;
-                EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}", 5);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: Added Health {ToAdd}");
             }
         }
         else if (ToAdd < 0)
@@ -92,7 +92,7 @@ public class HealthManager
 
     public void SetHealth(int value)
     {
-        EntryPoint.WriteToConsole($"Set Health, Value {value}");
+        //EntryPoint.WriteToConsole($"Set Health, Value {value}");
         if(value > Player.Character.MaxHealth)
         {
             Player.Character.Health = Player.Character.MaxHealth;
@@ -102,7 +102,7 @@ public class HealthManager
             if(value == 0)
             {
                 Game.LocalPlayer.Character.Kill();
-                EntryPoint.WriteToConsole("Set health to 0, killing player");
+                //EntryPoint.WriteToConsole("Set health to 0, killing player");
             }
             else
             {

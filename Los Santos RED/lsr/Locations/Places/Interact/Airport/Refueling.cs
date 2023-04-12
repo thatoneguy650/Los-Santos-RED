@@ -116,7 +116,7 @@ public class Refueling
 
                             Shop.PlaySuccessSound();
 
-                            EntryPoint.WriteToConsole($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
+                            //EntryPoint.WriteToConsoleTestLong($"Gas pump added unit of gas Percent Added {PercentFilledPerUnit} Money Subtracted {-1 * PricePerUnit}");
                         }
                         if (Player.ButtonPrompts.IsPressed("CancelFueling"))
                         {

@@ -208,7 +208,7 @@ public class FashionProp
             if (pfa != null)
             {
                 DrawableMenuScroller.SelectedItem = pfa;
-                EntryPoint.WriteToConsole($"SetDrawableValue SET ANY VARIATION {PropID} {pfa.ID} {pfa.Name} canGo {canGo}");
+                //EntryPoint.WriteToConsoleTestLong($"SetDrawableValue SET ANY VARIATION {PropID} {pfa.ID} {pfa.Name} canGo {canGo}");
             }
         }
     }
@@ -218,7 +218,7 @@ public class FashionProp
         {
             return;
         }
-        EntryPoint.WriteToConsole("FP OnComponentChanged");
+        //EntryPoint.WriteToConsoleTestLong("FP OnComponentChanged");
         GetPossibleTextures(newDrawableID);
         TextureMenuScroller.Items = PossibleTextures;
         SetTextureValue();
@@ -284,7 +284,7 @@ public class FashionProp
         {
             return;
         }
-        EntryPoint.WriteToConsole("FP OnTextureChanged");
+        //EntryPoint.WriteToConsoleTestLong("FP OnTextureChanged");
         int TextureID = 0;
         if (TextureMenuScroller.SelectedItem != null)
         {
@@ -335,10 +335,10 @@ public class FashionProp
     }
     private void ResetFiltering()
     {
-        EntryPoint.WriteToConsole($"ResetFiltering Start {PropID}");
+        //EntryPoint.WriteToConsoleTestLong($"ResetFiltering Start {PropID}");
         filterString = "";
         SetFiltering();
-        EntryPoint.WriteToConsole($"ResetFiltering End {PropID}");
+        //EntryPoint.WriteToConsoleTestLong($"ResetFiltering End {PropID}");
     }
     private void SetToEnteredDrawableID()
     {
@@ -361,7 +361,7 @@ public class FashionProp
         PedCustomizer.PedCustomizerMenu.IsProgramicallySettingFieldValues = false;
         if (!DrawableMenuScroller.Items.Any())
         {
-            EntryPoint.WriteToConsole($"SetFiltering NO DRAWABLES {PropID}");
+            //EntryPoint.WriteToConsoleTestLong($"SetFiltering NO DRAWABLES {PropID}");
             TextureMenuScroller.Items.Clear();
         }
         else

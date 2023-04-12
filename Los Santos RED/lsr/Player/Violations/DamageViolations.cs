@@ -81,7 +81,7 @@ public class DamageViolations
         {
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime(StaticStrings.HurtingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
-            EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
         {
@@ -92,7 +92,7 @@ public class DamageViolations
             }
             GameTimeLastHurtCivilian = Game.GameTime;
         }
-        EntryPoint.WriteToConsole($"VIOLATIONS: Hurting WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+       // EntryPoint.WriteToConsole($"VIOLATIONS: Hurting WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }
     public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
     {
@@ -103,7 +103,7 @@ public class DamageViolations
             GameTimeLastHurtCop = Game.GameTime;
             Player.AddCrime(Crimes.GetCrime(StaticStrings.KillingPoliceCrimeID), true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
             Player.OnKilledCop();
-            EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Killing Police Added WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
         }
         else
         {
@@ -120,7 +120,7 @@ public class DamageViolations
             GameTimeLastKilledCivilian = Game.GameTime;
             GameTimeLastHurtCivilian = Game.GameTime;
         }
-        EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
+       // EntryPoint.WriteToConsole($"VIOLATIONS: Killing WasShot {WasShot} WasMeleeAttacked {WasMeleeAttacked} WasHitByVehicle {WasHitByVehicle}", 5);
     }
 
     private void AddAttackedGang(GangMember gm, bool isKilled)
@@ -136,41 +136,41 @@ public class DamageViolations
             if (isKilled)
             {
                 gr.MembersKilled++;
-                EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} {gr.MembersKilled}", 5);
+                //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} {gr.MembersKilled}", 5);
             }
             else
             {
                 gr.MembersHurt++;
-                EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} {gr.MembersHurt}", 5);
+                //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} {gr.MembersHurt}", 5);
             }
             if (gm.Pedestrian.Exists())
             {
                 Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
                 if (KillingZone != null)
                 {
-                    EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
+                    //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
                     List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
                     if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
                     {
-                        EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
                         if (isKilled)
                         {
                             RepToRemove -= 4000;// 1000;
                             gr.MembersKilledInTerritory++;
-                            EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
+                            //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
                         }
                         else
                         {
                             RepToRemove -= 2500;// 500;
                             gr.MembersHurtInTerritory++;
-                            EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
+                           //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
                         }
 
                     }
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
+                   // EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
                 }
             }
         }

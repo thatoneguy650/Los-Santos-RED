@@ -187,7 +187,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                     break;
                 }
                 if(!IsWitnessSpawned && IsPlayerNearWitnessSpawn)
@@ -199,7 +199,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     DespawnWitness();
                     if(Witness.HasSeenPlayerCommitCrime)
                     {
-                        EntryPoint.WriteToConsole("Witness Elimination WITNESS FLED");
+                        //EntryPoint.WriteToConsoleTestLong("Witness Elimination WITNESS FLED");
                         Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} The witness fled");
                         //Game.DisplayHelp($"The witness fled");
                         break;
@@ -213,7 +213,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     {
                         attachedBlip.Delete();
                     }
-                    EntryPoint.WriteToConsole("Witness Elimination WITNESS WAS KILLED");
+                    //EntryPoint.WriteToConsoleTestLong("Witness Elimination WITNESS WAS KILLED");
                     CurrentTask.OnReadyForPayment(true);
                     break;
                 }
@@ -244,13 +244,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetCompleted()
         {
-            EntryPoint.WriteToConsole("Witness Elimination COMPLETED");
+            //EntryPoint.WriteToConsoleTestLong("Witness Elimination COMPLETED");
             SendCompletedMessage();
             PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
         }
         private void SetFailed()
         {
-            EntryPoint.WriteToConsole("Witness Elimination FAILED");
+            //EntryPoint.WriteToConsoleTestLong("Witness Elimination FAILED");
             SendFailMessage();
             PlayerTasks.FailTask(StaticStrings.OfficerFriendlyContactName);
         }
@@ -266,12 +266,12 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
-                        EntryPoint.WriteToConsole($"Picked up money for Witness Elimination for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Picked up money for Witness Elimination for {StaticStrings.OfficerFriendlyContactName}");
                         Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
                         break;
                     }
@@ -290,7 +290,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            EntryPoint.WriteToConsole($"You are hired to kill a witness!");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill a witness!");
             PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7,"Witness Elimination");
             CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
             IsWitnessSpawned = false;
@@ -399,7 +399,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             Witness.WillFightPolice = false;
                             NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(ped, (int)eCombatAttributes.BF_AlwaysFlee, true);
                             NativeFunction.Natives.SET_PED_FLEE_ATTRIBUTES(ped, 2, true);
-                            EntryPoint.WriteToConsole("WITNESS ELIMINATION, THE WITNESS WITH FLEE FROM YOU");
+                            //EntryPoint.WriteToConsoleTestLong("WITNESS ELIMINATION, THE WITNESS WITH FLEE FROM YOU");
                         }
                         else if (WillFight)
                         {
@@ -415,11 +415,11 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                             {
                                 NativeFunction.Natives.GIVE_WEAPON_TO_PED(ped, (uint)WitnessWeapon.Hash, WitnessWeapon.AmmoAmount, false, false);
                             }
-                            EntryPoint.WriteToConsole("WITNESS ELIMINATION, THE WITNESS WITH FIGHT YOU");
+                            //EntryPoint.WriteToConsoleTestLong("WITNESS ELIMINATION, THE WITNESS WITH FIGHT YOU");
                         }
                         //they either know and flee, or know and fight     
                     }
-                    EntryPoint.WriteToConsole("Witness Elimination SPAWNED WITNESS");
+                    //EntryPoint.WriteToConsoleTestLong("Witness Elimination SPAWNED WITNESS");
                     GameFiber.Sleep(1000);
                     SendWitnessSpawnedMessage();
                     return true;
@@ -504,7 +504,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (Witness != null && Witness.Pedestrian.Exists())
             {
                 Witness.Pedestrian.Delete();
-                EntryPoint.WriteToConsole("Witness Elimination DESPAWNED WITNESS");
+                //EntryPoint.WriteToConsoleTestLong("Witness Elimination DESPAWNED WITNESS");
             }
             IsWitnessSpawned = false;
         }

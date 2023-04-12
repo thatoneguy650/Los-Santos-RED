@@ -94,7 +94,7 @@ public class TheftViolations
         if (gr != null)
         {
             gr.MembersCarJacked++;
-            EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
             if (gm.Pedestrian.Exists())
             {
                 Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
@@ -105,7 +105,7 @@ public class TheftViolations
                     {
                         RepToRemove -= 2500;
                         gr.MembersCarJackedInTerritory++;
-                        EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
                     }
                 }
             }

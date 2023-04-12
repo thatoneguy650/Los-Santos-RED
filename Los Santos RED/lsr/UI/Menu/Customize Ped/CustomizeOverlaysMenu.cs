@@ -69,7 +69,7 @@ public class CustomizeOverlaysMenu
     {
         PickComponentMenu.Clear();
         AddComponentItems();
-        EntryPoint.WriteToConsole("CustomizeOverlaysMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("CustomizeOverlaysMenu.OnModelChanged Executed");
     }
     private void AddComponentItems()
     {

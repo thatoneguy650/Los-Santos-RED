@@ -37,7 +37,7 @@ public class BurnerPhoneApp
     }
     public virtual void Open(bool Reset)
     {
-        EntryPoint.WriteToConsole("BurnerPhoneApp OPEN");
+        //EntryPoint.WriteToConsoleTestLong("BurnerPhoneApp OPEN");
         if(Reset)
         {
 

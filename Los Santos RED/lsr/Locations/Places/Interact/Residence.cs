@@ -110,7 +110,7 @@ public class Residence : InteractableLocation, ILocationSetupable
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: RESIDENCE LOOP CLOSING IsAnyMenuVisible {IsAnyMenuVisible} Time.IsFastForwarding {Time.IsFastForwarding}");
                 DisposeInteractionMenu();
                 StoreCamera.Dispose();
                 Player.ActivityManager.IsInteractingWithLocation = false;
@@ -231,12 +231,12 @@ public class Residence : InteractableLocation, ILocationSetupable
 
     private void UpdateStoredWeapons()
     {
-        WeaponStorage.CreateInteractionMenu(MenuPool, InteractionMenu, Weapons, ModItems);
+        WeaponStorage.CreateInteractionMenu(Player,MenuPool, InteractionMenu, Weapons, ModItems, false);
     }
 
     private void UpdateInventory()
     {
-        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu);
+        SimpleInventory.CreateInteractionMenu(Player, MenuPool, InteractionMenu, false);
     }
 
     private void OfferMenu_OnItemSelect(RAGENativeUI.UIMenu sender, UIMenuItem selectedItem, int index)
@@ -335,7 +335,7 @@ public class Residence : InteractableLocation, ILocationSetupable
                 EntryPoint.ModController.CrashUnload();
             }
         }, "FastForwardWatcher");
-        EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT RESIDENCE", 3);
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: START REST ACTIVITY AT RESIDENCE");
     }
     private void OnRented()
     {

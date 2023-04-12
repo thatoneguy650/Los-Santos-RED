@@ -66,7 +66,7 @@ public class CustomizePropsMenu
     {
         PickPropMenu.Clear();
         AddPropItems();
-        EntryPoint.WriteToConsole("CustomizePropsMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("CustomizePropsMenu.OnModelChanged Executed");
     }
     private void AddPropItems()
     {

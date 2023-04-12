@@ -104,7 +104,7 @@ public class BurnerPhoneSettingsBackgroundEntry : BurnerPhoneSettingsAppEntry
             }
             selectedItem.IsSelected = true;
             BurnerPhoneSettingsApp.Player.CellPhone.CustomBackground = selectedItem.IntegerValue;
-            EntryPoint.WriteToConsole($"SETTING BACKGROUND TO {selectedItem.IntegerValue} {BurnerPhoneSettingsApp.Player.CellPhone.CustomBackground}");
+            //EntryPoint.WriteToConsoleTestLong($"SETTING BACKGROUND TO {selectedItem.IntegerValue} {BurnerPhoneSettingsApp.Player.CellPhone.CustomBackground}");
 
             BurnerPhoneSettingsApp.BurnerPhone.UpdateThemeItems();
             Open(false);

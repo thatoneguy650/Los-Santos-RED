@@ -165,7 +165,7 @@ public class EMTIdle : ComplexTask
             {
                 IsReturningToStation = false;
                 WanderTask();
-                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
+               // EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
             }
 
         }
@@ -242,13 +242,13 @@ public class EMTIdle : ComplexTask
                     NativeFunction.CallByName<bool>("TASK_START_SCENARIO_IN_PLACE", Ped.Pedestrian, ScenarioChosen, 0, true);
                     GameTimeBetweenScenarios = RandomItems.GetRandomNumber(30000, 90000);
                     GameTimeLastStartedScenario = Game.GameTime;
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario GameTimeBetweenScenarios {GameTimeBetweenScenarios} ScenarioChosen {ScenarioChosen}", 5);
+                    //EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Scenario GameTimeBetweenScenarios {GameTimeBetweenScenarios} ScenarioChosen {ScenarioChosen}", 5);
                 }
                 else
                 {
                     NativeFunction.Natives.TASK_WANDER_IN_AREA(Ped.Pedestrian, Ped.Pedestrian.Position.X, Ped.Pedestrian.Position.Y, Ped.Pedestrian.Position.Z, 100f, 0f, 0f);
                     //NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
-                    EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
+                   // EntryPoint.WriteToConsole($"PED {Ped.Pedestrian.Handle} Started Regular wander on foot", 5);
                 }
 
 

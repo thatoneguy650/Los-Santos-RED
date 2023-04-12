@@ -174,19 +174,19 @@ public class CustomizePedMenu : ModUIMenu
         }
         else if (Player.ButtonPrompts.IsPressed("ZoomCameraIn") || Player.ButtonPrompts.IsHeld("ZoomCameraIn"))//else if (Player.ButtonPromptList.Any(x => x.Identifier == "ZoomCameraIn" && (x.IsPressedNow || x.IsHeldNow)))
         {
-            EntryPoint.WriteToConsole("ZoomCameraIn", 5);
+            //EntryPoint.WriteToConsole("ZoomCameraIn", 5);
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y + 0.05f, CharCam.Position.Z);
         }
         else if (Player.ButtonPrompts.IsPressed("ZoomCameraOut") || Player.ButtonPrompts.IsHeld("ZoomCameraOut"))//else if (Player.ButtonPromptList.Any(x => x.Identifier == "ZoomCameraOut" && (x.IsPressedNow || x.IsHeldNow)))
         {
-            EntryPoint.WriteToConsole("ZoomCameraOut", 5);
+            //EntryPoint.WriteToConsole("ZoomCameraOut", 5);
             CharCam.Position = new Vector3(CharCam.Position.X, CharCam.Position.Y - 0.05f, CharCam.Position.Z);
         }
 
 
         if(Game.IsKeyDownRightNow(System.Windows.Forms.Keys.N) && Game.GameTime - GameTimeLastPrinted >= 1000)
         {
-            EntryPoint.WriteToConsole(WorkingVariation.ToString());
+            //EntryPoint.WriteToConsoleTestLong(WorkingVariation.ToString());
             GameTimeLastPrinted = Game.GameTime;
         }
         if (ModelPed.Exists() && ModelPedExt == null)
@@ -298,7 +298,7 @@ public class CustomizePedMenu : ModUIMenu
             if (PedModelIsFreeMode)
             {
                 NativeFunction.Natives.x4CFFC65454C93A49(ModelPed, WorkingVariation.PrimaryHairColor, WorkingVariation.SecondaryHairColor);
-                EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {WorkingVariation.PrimaryHairColor} {WorkingVariation.SecondaryHairColor}", 5);
+                //EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {WorkingVariation.PrimaryHairColor} {WorkingVariation.SecondaryHairColor}", 5);
             }
         }
         else if (item == HairSecondaryColorMenu)
@@ -307,7 +307,7 @@ public class CustomizePedMenu : ModUIMenu
             if (PedModelIsFreeMode)
             {
                 NativeFunction.Natives.x4CFFC65454C93A49(ModelPed, WorkingVariation.PrimaryHairColor, WorkingVariation.SecondaryHairColor);
-                EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {WorkingVariation.PrimaryHairColor} {WorkingVariation.SecondaryHairColor}", 5);
+               // EntryPoint.WriteToConsole($"PedSwapCustomeMenu Hair Color Changed {WorkingVariation.PrimaryHairColor} {WorkingVariation.SecondaryHairColor}", 5);
             }
         }
         else if (item == Parent1IDMenu)
@@ -343,7 +343,7 @@ public class CustomizePedMenu : ModUIMenu
                 WorkingVariation.ApplyToPed(ModelPed);
             }
         }
-        EntryPoint.WriteToConsole($"OnScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
+        //EntryPoint.WriteToConsole($"OnScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
     }
     private void HeadOverlay_OnScrollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
@@ -377,7 +377,7 @@ public class CustomizePedMenu : ModUIMenu
             myOverlay.Opacity = test.Value;
         }
         WorkingVariation.ApplyToPed(ModelPed);
-        EntryPoint.WriteToConsole($"OnHeadOverlayScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
+        //EntryPoint.WriteToConsole($"OnHeadOverlayScrollerChange {sender.TitleText} {item.Index} {item.OptionText} {item.Text} {newIndex}", 5);
     }
     private void MainMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -463,7 +463,7 @@ public class CustomizePedMenu : ModUIMenu
     private void OnComponentIndexChange(UIMenu sender, int newIndex)
     {
         CurrentDrawable = newIndex;
-        EntryPoint.WriteToConsole($"OnComponentIndexChange {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnComponentIndexChange {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void OnComponentItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {
@@ -492,7 +492,7 @@ public class CustomizePedMenu : ModUIMenu
                 WorkingVariation.ApplyToPed(ModelPed);
             }
         }
-        EntryPoint.WriteToConsole($"OnComponentItemSelect IsValid {IsValid} {CurrentSelectedComponent}  {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnComponentItemSelect IsValid {IsValid} {CurrentSelectedComponent}  {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void OnComponentScollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
@@ -517,7 +517,7 @@ public class CustomizePedMenu : ModUIMenu
                 WorkingVariation.ApplyToPed(ModelPed);
             }
         }
-        EntryPoint.WriteToConsole($"OnComponentScollerChange IsValid {IsValid} {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnComponentScollerChange IsValid {IsValid} {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void OnPropItemSelect(UIMenu sender, UIMenuItem selectedItem, int newIndex)
     {
@@ -540,12 +540,12 @@ public class CustomizePedMenu : ModUIMenu
             pedPropComponent.TextureID = CurrentTexture;
             WorkingVariation.ApplyToPed(ModelPed);
         }
-        EntryPoint.WriteToConsole($"OnPropsScollerChange propID {propID} {CurrentSelectedComponent}  {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnPropsScollerChange propID {propID} {CurrentSelectedComponent}  {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void OnPropsIndexChange(UIMenu sender, int newIndex)
     {
         CurrentDrawable = newIndex;
-        EntryPoint.WriteToConsole($"OnComponentIndexChange {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnComponentIndexChange {CurrentSelectedComponent} {TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void OnPropsScollerChange(UIMenu sender, UIMenuScrollerItem item, int oldIndex, int newIndex)
     {
@@ -568,7 +568,7 @@ public class CustomizePedMenu : ModUIMenu
             pedPropComponent.TextureID = CurrentTexture;
             WorkingVariation.ApplyToPed(ModelPed);
         }
-        EntryPoint.WriteToConsole($"OnPropsScollerChange propID {propID} {CurrentSelectedComponent}{TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
+        //EntryPoint.WriteToConsole($"OnPropsScollerChange propID {propID} {CurrentSelectedComponent}{TextureSelected} : {CurrentComponent} {CurrentDrawable} {CurrentTexture}", 5);
     }
     private void PropsMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)
     {

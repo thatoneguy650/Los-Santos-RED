@@ -66,7 +66,7 @@ public class PlateTheft : DynamicActivity
     public override bool IsPaused() => false;
     public override void Start()
     {
-        EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChangingPlate: {IsChangingPlate}", 3);
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChangingPlate: {IsChangingPlate}");
         Setup();
         if(TargetVehicle == null || !TargetVehicle.Vehicle.Exists())
         {
@@ -116,7 +116,7 @@ public class PlateTheft : DynamicActivity
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
         }
         LicensePlate.IsVisible = true;
         int BoneIndexLeftHand = NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Player.Character, 18905);
@@ -133,7 +133,7 @@ public class PlateTheft : DynamicActivity
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
         }
         if (!Screwdriver.Exists())
             return null;
@@ -220,12 +220,12 @@ public class PlateTheft : DynamicActivity
         {
             float HeadingRotation = -90f;
 
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate");
             Position = VehicleToChange.GetBonePosition("numberplate");
 
             if(Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(2f)) < Position.DistanceTo2D(VehicleToChange.GetOffsetPositionFront(-2f)))
             {
-                EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate IS FRONT PLATE");
+                //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate IS FRONT PLATE");
                 HeadingRotation = 90f;
             }
             Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading + HeadingRotation, 1.0f);
@@ -244,12 +244,12 @@ public class PlateTheft : DynamicActivity
         //}
         else if (VehicleToChange.IsBike)
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: IS BIKE");
             return VehicleToChange.GetOffsetPositionFront(-1.5f);
         }
         else if (VehicleToChange.HasBone("bumper_r"))
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: bumper_r");
             Position = VehicleToChange.GetBonePosition("bumper_r");
             Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading - 90, 1.0f);
             return SpawnPosition;
@@ -309,16 +309,13 @@ public class PlateTheft : DynamicActivity
         LicensePlate PlateToRemove = TargetVehicle.CarPlate;
         if (IsChangingPlate)
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToAdd {PlateToAdd.LicensePlate.PlateNumber}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToAdd {PlateToAdd.LicensePlate.PlateNumber}");
             Player.Inventory.Remove(PlateToAdd);
-            //Player.SpareLicensePlates.Remove(PlateToAdd);// Menu.Instance.SelectedPlateIndex);//need to pass this in somehow???
             if (PlateToRemove != null && PlateToRemove.PlateNumber != "        ")
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {PlateToRemove.PlateNumber}", 3);
-
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {PlateToRemove.PlateNumber}");
                 LicensePlateItem toAdd = new LicensePlateItem($"License Plate: {TargetVehicle.CarPlate.PlateNumber}-{TargetVehicle.CarPlate.PlateType}-{TargetVehicle.CarPlate.IsWanted}") { LicensePlate = PlateToRemove };
                 Player.Inventory.Add(toAdd, 1.0f);
-                //Player.SpareLicensePlates.Add(PlateToRemove);
             }
             TargetVehicle.CarPlate = PlateToAdd.LicensePlate;
             TargetVehicle.Vehicle.LicensePlate = PlateToAdd.LicensePlate.PlateNumber;
@@ -326,13 +323,12 @@ public class PlateTheft : DynamicActivity
         }
         else
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {TargetVehicle.CarPlate}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: STARTED PLATE THEFT - IsChanging: {IsChangingPlate} PlateToRemove {TargetVehicle.CarPlate}");
             if (TargetVehicle.CarPlate != null && TargetVehicle.CarPlate.PlateNumber != "        ")
             {
                 LicensePlateItem toAdd = new LicensePlateItem($"License Plate: {TargetVehicle.CarPlate.PlateNumber}-{TargetVehicle.CarPlate.PlateType}-{TargetVehicle.CarPlate.IsWanted}") { LicensePlate = TargetVehicle.CarPlate };
                 Player.Inventory.Add(toAdd, 1.0f);
             }
-            // Player.SpareLicensePlates.Add(TargetVehicle.CarPlate);
             TargetVehicle.CarPlate = null;
             TargetVehicle.Vehicle.LicensePlate = "        ";
             TargetVehicle.CarPlate = null;

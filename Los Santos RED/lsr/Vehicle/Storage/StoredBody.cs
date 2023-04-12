@@ -85,7 +85,7 @@ public class StoredBody
         {
             return false;
         }
-        EntryPoint.WriteToConsole("EJECTING BODY FROM TRUNK");
+        //EntryPoint.WriteToConsoleTestLong("EJECTING BODY FROM TRUNK");
         VehicleExt.OpenDoor(VehicleDoorSeatData.DoorID, false);
         PedExt.Pedestrian.Detach();
         ResetPed();
@@ -136,7 +136,7 @@ public class StoredBody
             return false;
         }
         int seat = VehicleDoorSeatData.SeatID;
-        EntryPoint.WriteToConsole($"SetPedIntoSeat StoredBone{VehicleDoorSeatData.SeatBone} seatid{seat}");
+        //EntryPoint.WriteToConsoleTestLong($"SetPedIntoSeat StoredBone{VehicleDoorSeatData.SeatBone} seatid{seat}");
         if(seat == -1)
         {
             return false;

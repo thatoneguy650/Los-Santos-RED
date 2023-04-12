@@ -112,7 +112,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 NumberOfItemsToDeliver = RandomItems.GetRandomNumberInt(1, 3);
                 MoneyToRecieve = PaymentAmount;
-                EntryPoint.WriteToConsole($"GANG Pizza Pickup Item: {ItemToDeliver.Name} Number: {NumberOfItemsToDeliver} Payment: {MoneyToRecieve}");
+                //EntryPoint.WriteToConsoleTestLong($"GANG Pizza Pickup Item: {ItemToDeliver.Name} Number: {NumberOfItemsToDeliver} Payment: {MoneyToRecieve}");
             }
             if (MoneyToRecieve <= 0)
             {

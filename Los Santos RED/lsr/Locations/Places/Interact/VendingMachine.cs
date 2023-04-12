@@ -70,7 +70,7 @@ public class VendingMachine : InteractableLocation
                     GetPropEntry();
                     if (!MoveToMachine())
                     {
-                        EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER", 5);
+                        //EntryPoint.WriteToConsole("Transaction: TOP LEVE DISPOSE AFTER NO MOVE FUCKER");
                         FullDispose();
                     }
 
@@ -182,14 +182,14 @@ public class VendingMachine : InteractableLocation
             if (Math.Abs(ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)) <= 0.5f)//0.5f)
             {
                 IsFacingDirection = true;
-                EntryPoint.WriteToConsole($"Moving to Machine FACING TRUE {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
+                //EntryPoint.WriteToConsole($"Moving to Machine FACING TRUE {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}");
             }
             GameFiber.Yield();
         }
         GameFiber.Sleep(250);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
-            EntryPoint.WriteToConsole($"Moving to Machine IN POSITION {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}", 5);
+            //EntryPoint.WriteToConsole($"Moving to Machine IN POSITION {Game.LocalPlayer.Character.DistanceTo(PropEntryPosition)} {ExtensionsMethods.Extensions.GetHeadingDifference(heading, PropEntryHeading)} {heading} {PropEntryHeading}");
             return true;
         }
         else
@@ -239,7 +239,7 @@ public class VendingMachine : InteractableLocation
         AnimationDictionary.RequestAnimationDictionay(PlayingDict);
 
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDict, PlayingAnim, 2.0f, -4.0f, -1, 0, 0, false, false, false);//-1
-        EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}", 5);
+       // EntryPoint.WriteToConsole($"Vending Activity Playing {PlayingDict} {PlayingAnim}");
         bool IsCompleted = false;
 
 
@@ -267,7 +267,7 @@ public class VendingMachine : InteractableLocation
                     }
                     catch (Exception ex)
                     {
-                        EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                        //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                     }
                     GameFiber.Yield();                  
                     if (SellingProp.Exists())

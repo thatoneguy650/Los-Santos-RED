@@ -502,7 +502,7 @@ public class Debug
 
 
             int CurrentPlateStyleIndex = NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle);
-            EntryPoint.WriteToConsole($"Plate 1: CurrentPlateStyleIndex {CurrentPlateStyleIndex}");
+            //EntryPoint.WriteToConsoleTestLong($"Plate 1: CurrentPlateStyleIndex {CurrentPlateStyleIndex}");
 
             if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int newPlateStyleIndex))
             {
@@ -512,24 +512,24 @@ public class Debug
                 PlateType CurrentType = PlateTypes.GetPlateType(CurrentPlateStyleIndex);
                 if (CurrentType != null && Player.CurrentVehicle.CanUpdatePlate)
                 {
-                    EntryPoint.WriteToConsole($"Plate 2: newPlateStyleIndex {newPlateStyleIndex}");
+                    //EntryPoint.WriteToConsoleTestLong($"Plate 2: newPlateStyleIndex {newPlateStyleIndex}");
                     PlateType NewType = PlateTypes.GetPlateType(newPlateStyleIndex);//PlateTypes.GetRandomPlateType();
                     if (NewType != null)
                     {
-                        EntryPoint.WriteToConsole("Plate 3");
+                        //EntryPoint.WriteToConsoleTestLong("Plate 3");
                         string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
                         if (NewPlateNumber != "")
                         {
-                            EntryPoint.WriteToConsole("Plate 4");
+                            //EntryPoint.WriteToConsoleTestLong("Plate 4");
                             Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
                             Player.CurrentVehicle.OriginalLicensePlate.PlateNumber = NewPlateNumber;
                             Player.CurrentVehicle.CarPlate.PlateNumber = NewPlateNumber;
                         }
                         if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
                         {
-                            EntryPoint.WriteToConsole($"OldPlateType {CurrentType.Index} {CurrentType.State} {CurrentType.Description}");
+                            //EntryPoint.WriteToConsoleTestLong($"OldPlateType {CurrentType.Index} {CurrentType.State} {CurrentType.Description}");
                             int test = NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES");
-                            EntryPoint.WriteToConsole($"Total Plates: {test} NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
+                            //EntryPoint.WriteToConsoleTestLong($"Total Plates: {test} NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
                             NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
                             Player.CurrentVehicle.OriginalLicensePlate.PlateType = NewType.Index;
                             Player.CurrentVehicle.CarPlate.PlateType = NewType.Index;
@@ -1555,7 +1555,7 @@ public class Debug
 
         if (VehicleToChange.HasBone("numberplate"))
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: numberplate");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: numberplate");
             Position = VehicleToChange.GetBonePosition("numberplate");
 
 
@@ -1567,7 +1567,7 @@ public class Debug
         }
         else if (VehicleToChange.HasBone("boot"))
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: boot");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: boot");
             Position = VehicleToChange.GetBonePosition("boot");
 
             Vector3 SpawnPosition = NativeHelper.GetOffsetPosition(Position, VehicleToChange.Heading -90, -1 * Settings.SettingsManager.ActivitySettings.PlateTheftFloat);
@@ -1578,12 +1578,12 @@ public class Debug
         }
         else if (VehicleToChange.IsBike)
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: IS BIKE");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: IS BIKE");
             return VehicleToChange.GetOffsetPositionFront(-1.5f);
         }
         else if (VehicleToChange.HasBone("bumper_r"))
         {
-            EntryPoint.WriteToConsole("PLATE THEFT BONE: bumper_r");
+            //EntryPoint.WriteToConsoleTestLong("PLATE THEFT BONE: bumper_r");
             Position = VehicleToChange.GetBonePosition("bumper_r");
 
 
@@ -1980,7 +1980,7 @@ public class Debug
 
                         if (Game.IsKeyDown(Keys.B))
                         {
-                            EntryPoint.WriteToConsole($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            //EntryPoint.WriteToConsoleTestLong($"Item {PropName} Attached to  {boneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                             GameFiber.Sleep(500);
                         }
                         if (Game.IsKeyDown(Keys.N))
@@ -2154,7 +2154,7 @@ public class Debug
                             }
                             if (Game.IsKeyDown(Keys.B))
                             {
-                                EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                                //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                                 GameFiber.Sleep(500);
                             }
                             if (Game.IsKeyDown(Keys.N))
@@ -2179,7 +2179,7 @@ public class Debug
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
             }
         }
     }
@@ -2227,7 +2227,7 @@ public class Debug
                         }
                         if (Game.IsKeyDown(Keys.B))
                         {
-                            EntryPoint.WriteToConsole($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
+                            //EntryPoint.WriteToConsoleTestLong($"Item {weaponObject} Attached to  {HandBoneName} new Vector3({Offset.X}f,{Offset.Y}f,{Offset.Z}f),new Rotator({Rotation.Pitch}f, {Rotation.Roll}f, {Rotation.Yaw}f)");
                             GameFiber.Sleep(500);
                         }
                         if (Game.IsKeyDown(Keys.N))
@@ -2252,7 +2252,7 @@ public class Debug
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+            //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
         }
         
     }
@@ -2525,7 +2525,7 @@ public class Debug
                         {
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f";
                             Game.DisplayNotification(Text);
-                            EntryPoint.WriteToConsole(Text);
+                            //EntryPoint.WriteToConsoleTestLong(Text);
 
                             GameFiber.StartNew(delegate
                             {
@@ -2555,7 +2555,7 @@ public class Debug
                             string description = "Literally";
                             string Text = $"Object Name: {Target.Model.Name} Hash: {Target.Model.Hash} new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, ";
 
-                            EntryPoint.WriteToConsole(Text);
+                            //EntryPoint.WriteToConsoleTestLong(Text);
 
                             string Text2 = $"new DeadDrop(new Vector3({Target.Position.X}f,{Target.Position.Y}f,{Target.Position.Z}f), {Target.Heading}f, \"{name}\", \"{text1}\" )";// { OpenTime = 0, CloseTime = 24, IsEnabled = false },";
                             Text2 += " { OpenTime = 0,CloseTime = 24, IsEnabled = false },";
@@ -3561,7 +3561,7 @@ public class Debug
 
             }
 
-            EntryPoint.WriteToConsole(Text);
+            //EntryPoint.WriteToConsoleTestLong(Text);
 
 
         }
@@ -3590,7 +3590,7 @@ public class Debug
 
             }
 
-            EntryPoint.WriteToConsole(Text);
+            //EntryPoint.WriteToConsoleTestLong(Text);
 
 
 
@@ -4878,7 +4878,7 @@ public class Debug
                     //float ScenePhase = NativeFunction.CallByName<float>("GET_SYNCHRONIZED_SCENE_PHASE", PlayerScene);
                     GameFiber.Yield();
                 }
-                EntryPoint.WriteToConsole("Arrest Test First Phase Over");
+                //EntryPoint.WriteToConsoleTestLong("Arrest Test First Phase Over");
                 //if (coolguy.Exists())
                 //{
                 //    //PlayerAnimation = "cop_p2_back_right";
@@ -4966,7 +4966,7 @@ public class Debug
         qt = new Quaternion(tospawn + new Vector3(0f, 0f, -0.7058839f), 0.7083276f);
         
 
-        EntryPoint.WriteToConsole($"Angle {qt.Angle}");
+        //EntryPoint.WriteToConsoleTestLong($"Angle {qt.Angle}");
 
        // qt.Normalize();
         //qt.Invert();
@@ -4977,7 +4977,7 @@ public class Debug
 
 
         float DegreeAngle = qt.Angle * 180f / (float)Math.PI;
-        EntryPoint.WriteToConsole($"Angle degree {DegreeAngle} Rotations {Rotations}");
+        //EntryPoint.WriteToConsoleTestLong($"Angle degree {DegreeAngle} Rotations {Rotations}");
         Vehicle imcool = new Vehicle("police2", tospawn, Rotations.Z);
 
         // imcool.Orientation = qt;
@@ -4989,7 +4989,7 @@ public class Debug
         GameFiber.Sleep(500);
         if(imcool.Exists())
         {
-            EntryPoint.WriteToConsole($"imcool {imcool.Heading}");
+            //EntryPoint.WriteToConsoleTestLong($"imcool {imcool.Heading}");
         }
 
 

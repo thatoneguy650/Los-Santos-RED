@@ -50,7 +50,7 @@ public class VehicleOwnership
             car.RemoveOwnershipBlip();       
         }
         OwnedVehicles.Clear();
-        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLEs CLEARED", 5);
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLEs CLEARED");
     }
     public void RemoveOwnershipOfNearestCar()
     {
@@ -78,7 +78,7 @@ public class VehicleOwnership
         {
             return;
         }
-        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}", 5);
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE REMOVED {toOwn.Vehicle.Handle}");
         if (OwnedVehicles.Any(x => x.Handle == toOwn.Handle))
         {
             OwnedVehicles.Remove(toOwn);
@@ -124,7 +124,7 @@ public class VehicleOwnership
         {
             DisplayPlayerVehicleNotification(toOwn);
         }
-        EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}", 5);    
+        //EntryPoint.WriteToConsole($"PLAYER EVENT: OWNED VEHICLE ADDED {toOwn.Vehicle.Handle}");    
     }
     private void UpdateOwnedBlips()
     {

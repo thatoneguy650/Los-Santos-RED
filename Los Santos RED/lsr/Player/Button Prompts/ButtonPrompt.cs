@@ -126,44 +126,44 @@ public class ButtonPrompt
 
         if (HasKeyButtons && Game.IsKeyDown(Key) && (ModifierKey == Keys.None || Game.IsKeyDown(ModifierKey)) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 1");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 1");
             IsPressedNow = true;
         }
 
 
         else if(HasControllerButtons && Game.IsControllerButtonDown(ControllerButton) && (ControllerButtonModifier == ControllerButtons.None || Game.IsControllerButtonDown(ControllerButtonModifier)) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 1.5");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 1.5");
             IsPressedNow = true;
         }
 
 
         else if (HasGameControl && !HasGameControlModifier && Game.IsControlJustPressed(2, GameControl) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 2");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 2");
             IsPressedNow = true;
         }
         else if (HasGameControl && !HasGameControlModifier && NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 3");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 3");
             IsPressedNow = true;
         }
 
         else if (HasGameControl && HasGameControlModifier && Game.IsControlJustPressed(2, GameControlModifier) && Game.IsControlJustPressed(2, GameControl) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 4");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 4");
             IsPressedNow = true;
         }
         else if (HasGameControl && HasGameControlModifier && NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControlModifier) && NativeFunction.Natives.IS_DISABLED_CONTROL_JUST_PRESSED<bool>(2, (int)GameControl) && !IsPressedNow)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 5");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 5");
             IsPressedNow = true;
         }
 
 
         else if (IsFakePressed)
         {
-            EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 6");
+            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 6");
             IsPressedNow = true;
         }
         else

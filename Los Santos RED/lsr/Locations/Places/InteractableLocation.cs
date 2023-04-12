@@ -192,7 +192,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
             InteractionMenu.SetBannerType(BannerImage);
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
             RemoveBanner = false;
-            EntryPoint.WriteToConsole($"BANNER REGULAR {BannerImagePath} {HasBannerImage}");
+            //EntryPoint.WriteToConsoleTestLong($"BANNER REGULAR {BannerImagePath} {HasBannerImage}");
         }
         else if (Menu != null && !string.IsNullOrEmpty(Menu.BannerOverride))
         {
@@ -201,7 +201,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
             InteractionMenu.SetBannerType(BannerImage);
             RemoveBanner = false;
             Game.RawFrameRender += (s, e) => MenuPool.DrawBanners(e.Graphics);
-            EntryPoint.WriteToConsole($"BANNER OVERRIDE {BannerImagePath} {HasBannerImage}");
+            //EntryPoint.WriteToConsoleTestLong($"BANNER OVERRIDE {BannerImagePath} {HasBannerImage}");
         }
         //InteractionMenu.OnItemSelect += OnItemSelect;
         MenuPool.Add(InteractionMenu);

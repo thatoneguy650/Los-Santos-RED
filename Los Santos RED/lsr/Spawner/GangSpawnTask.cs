@@ -31,12 +31,12 @@ public class GangSpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"GangSpawn: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"GangSpawn: Task Invalid Spawn Position");
                 return;
             }
             if (!HasGang)
             {
-                EntryPoint.WriteToConsole($"GangSpawn: Task No GANG Supplied");
+                //EntryPoint.WriteToConsoleTestLong($"GangSpawn: Task No GANG Supplied");
                 return;
             }
             Setup();
@@ -96,7 +96,7 @@ public class GangSpawnTask : SpawnTask
                 if (PersonType != null)
                 {
                     PedExt Buddy = CreatePerson();
-                    EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
+                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To Gang Spawn", 5);
                 }
             }
         }
@@ -152,7 +152,7 @@ public class GangSpawnTask : SpawnTask
             GameFiber.Yield();
             if (createdPed.Exists())
             {
-                EntryPoint.WriteToConsole("GangSpawn Task CREATED PED!");
+                //EntryPoint.WriteToConsoleTestLong("GangSpawn Task CREATED PED!");
                 SetupPed(createdPed);
                 if (!createdPed.Exists())
                 {

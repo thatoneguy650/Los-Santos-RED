@@ -58,7 +58,7 @@ namespace LosSantosRED.lsr.Player
         public override bool IsPaused() => false;
         public override void Start()
         {
-            EntryPoint.WriteToConsole("EatingActivity START", 5);
+            //EntryPoint.WriteToConsole("EatingActivity START");
             Setup();
             GameFiber ScenarioWatcher = GameFiber.StartNew(delegate
             {
@@ -100,7 +100,7 @@ namespace LosSantosRED.lsr.Player
                         GameTimeLastChangedIdle = Game.GameTime;
                         GameTimeBetweenBites = RandomItems.GetRandomNumber(1500, 2500);
                         IsFinishedWithBite = true;
-                        EntryPoint.WriteToConsole($"Eating Bite finished {PlayingAnim} TimesAte {TimesAte}", 5);
+                        //EntryPoint.WriteToConsole($"Eating Bite finished {PlayingAnim} TimesAte {TimesAte}");
                     }
                     if (TimesAte >= 5 && ConsumableItemNeedGain.IsFinished)
                     {
@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr.Player
                         TimesAte++;
                         StartNewIdleAnimation();
                         IsFinishedWithBite = false;
-                        EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte}", 5);
+                        //EntryPoint.WriteToConsole($"New Eating Idle {PlayingAnim} TimesAte {TimesAte}");
                     }
                 }
                 bool isAnimRunning = AnimationWatcher.IsAnimationRunning(AnimationTime);
@@ -162,7 +162,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Food.Exists())
                 {
@@ -210,7 +210,7 @@ namespace LosSantosRED.lsr.Player
                     HandOffset = pa.Attachment;
                     HandRotator = pa.Rotation;
                     HandBoneName = pa.BoneName;
-                    EntryPoint.WriteToConsole($"Eating Activity Found Attachment {HandOffset} {HandRotator} {HandBoneName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Eating Activity Found Attachment {HandOffset} {HandRotator} {HandBoneName}");
                 }
             }
             AnimIdleDictionary = "mp_player_inteat@burger";

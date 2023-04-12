@@ -209,7 +209,7 @@ public class Intoxication
             toAdd.StartConsuming();
             CurrentIntoxicators.Add(toAdd);
         }
-        EntryPoint.WriteToConsole($"Intoxication Started Ingesting {intoxicant.Name}", 5);
+        //EntryPoint.WriteToConsole($"Intoxication Started Ingesting {intoxicant.Name}");
     }
     public void StopIngesting(Intoxicant intoxicant)
     {
@@ -222,7 +222,7 @@ public class Intoxication
         {
             existing.StopConsuming();
         }
-        EntryPoint.WriteToConsole($"Intoxication Stopped Ingesting {intoxicant.Name}", 5);
+        //EntryPoint.WriteToConsole($"Intoxication Stopped Ingesting {intoxicant.Name}");
     }
     public void Update(bool isPrimary)
     {
@@ -242,7 +242,7 @@ public class Intoxication
                 if(intox.CurrentIntensity == intox.Intoxicant.MaxEffectAllowed && intox.IsConsuming)
                 {
                     intox.StopConsuming();
-                    EntryPoint.WriteToConsole($"Intoxication Intoxicant.ContinuesWithoutCurrentUse, Reached Max, Stopping {intox.Intoxicant?.Name}", 5);
+                    //EntryPoint.WriteToConsole($"Intoxication Intoxicant.ContinuesWithoutCurrentUse, Reached Max, Stopping {intox.Intoxicant?.Name}");
                 }
             }
         }

@@ -111,7 +111,7 @@ public class SimpleInventory
     }
 
 
-    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd)
+    public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations)
     {
         UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, "Stored Inventory");
         menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage stored inventory. Take or deposit items.";
@@ -120,13 +120,13 @@ public class SimpleInventory
 
         foreach (InventoryItem inventoryItem in ItemsList)
         {
-            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem);
+            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations);
         }
         foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
         {
             if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
             {
-                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem);
+                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations);
             }
         }
 

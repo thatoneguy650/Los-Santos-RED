@@ -24,12 +24,12 @@ public class EMTSpawnTask :SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"EMTSpawn: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"EMTSpawn: Task Invalid Spawn Position");
                 return;
             }
             if (!HasAgency)
             {
-                EntryPoint.WriteToConsole($"EMTSpawn: Task No Agency Supplied");
+                //EntryPoint.WriteToConsoleTestLong($"EMTSpawn: Task No Agency Supplied");
                 return;
             }
             Setup();

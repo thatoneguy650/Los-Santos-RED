@@ -150,7 +150,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private void PayoffCop(PhoneContact contact)
     {
 
-        EntryPoint.WriteToConsole($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
+        //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearWanted {CostToClearWanted}");
         if (Player.WantedLevel > 4)
         {
             List<string> Replies = new List<string>() {
@@ -227,7 +227,7 @@ public class CorruptCopInteraction : IContactMenuInteraction
     private void PayoffCopInvestigation(PhoneContact contact)
     {
 
-        EntryPoint.WriteToConsole($"Player.Money {Player.BankAccounts.Money} CostToClearInvestigation {CostToClearInvestigation}");
+        //EntryPoint.WriteToConsoleTestLong($"Player.Money {Player.BankAccounts.Money} CostToClearInvestigation {CostToClearInvestigation}");
         if (Player.BankAccounts.Money >= CostToClearInvestigation)
         {
             Player.BankAccounts.GiveMoney(-1 * CostToClearInvestigation);

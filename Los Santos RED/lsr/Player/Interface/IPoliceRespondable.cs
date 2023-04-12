@@ -65,6 +65,11 @@ namespace LosSantosRED.lsr.Interface
         Scanner Scanner { get; }
         bool IsAlive { get; }
         bool IsDetainable { get; }
+        bool IsOnFoot { get; }
+        bool PoliceLastSeenOnFoot { get; set; }
+        bool IsNearbyPlacePoliceShouldSearchForPlayer { get; set; }
+        Vector3 StreetPlacePoliceShouldSearchForPlayer { get; set; }
+        Vector3 StreetPlacePoliceLastSeenPlayer { get; set; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void Arrest();

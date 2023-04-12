@@ -242,13 +242,13 @@ public class PedCustomizer
     
         if (Player.ButtonPrompts.IsPressed("ResetCamera") || Player.ButtonPrompts.IsHeld("ResetCamera"))
         {
-            EntryPoint.WriteToConsole("ResetCamera");
+            //EntryPoint.WriteToConsoleTestLong("ResetCamera");
             ModelPed.Tasks.AchieveHeading(DefaultModelPedHeading, 5000);
             CameraCycler.SetDefault();
         }
         if (Player.ButtonPrompts.IsPressed("RotateModelLeft") || Player.ButtonPrompts.IsHeld("RotateModelLeft"))
         {
-            EntryPoint.WriteToConsole("RotateModelLeft");
+            //EntryPoint.WriteToConsoleTestLong("RotateModelLeft");
             if (ModelPed.Exists())
             {
                 ModelPed.Tasks.AchieveHeading(ModelPed.Heading + 45f, 5000);
@@ -256,7 +256,7 @@ public class PedCustomizer
         }
         if (Player.ButtonPrompts.IsPressed("RotateModelRight") || Player.ButtonPrompts.IsHeld("RotateModelRight"))
         {
-            EntryPoint.WriteToConsole("RotateModelRight");
+            //EntryPoint.WriteToConsoleTestLong("RotateModelRight");
             if (ModelPed.Exists())
             {
                 ModelPed.Tasks.AchieveHeading(ModelPed.Heading - 45, 5000);
@@ -264,7 +264,7 @@ public class PedCustomizer
         }
         if (Player.ButtonPrompts.IsPressed("CameraCycle") || Player.ButtonPrompts.IsHeld("CameraCycle"))
         {
-            EntryPoint.WriteToConsole("CameraCycle");
+            //EntryPoint.WriteToConsoleTestLong("CameraCycle");
             CameraCycler.Cycle();
         }
     }

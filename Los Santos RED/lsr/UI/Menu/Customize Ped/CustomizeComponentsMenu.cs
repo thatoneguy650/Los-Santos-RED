@@ -74,7 +74,7 @@ public class CustomizeComponentsMenu
     {
         PickComponentMenu.Clear();
         AddComponentItems();
-        EntryPoint.WriteToConsole("CustomizeComponentsMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("CustomizeComponentsMenu.OnModelChanged Executed");
     }
     private void AddComponentItems()
     {

@@ -134,7 +134,7 @@ public class CustomizeDemographicsMenu
     {
         OnWorkingNameChanged();
         OnMoneyChanged();
-        EntryPoint.WriteToConsole("CustomizeDemographicsMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("CustomizeDemographicsMenu.OnModelChanged Executed");
     }
 }
 

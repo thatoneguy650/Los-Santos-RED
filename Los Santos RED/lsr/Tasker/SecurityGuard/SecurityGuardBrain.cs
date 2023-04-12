@@ -162,7 +162,7 @@ public class SecurityGuardBrain : PedBrain
         SecurityGuard.WeaponInventory.Reset();
         GameFiber.Yield();//TR Added back 4
         SecurityGuard.CurrentTask.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET Chase {PedExt.Handle}", debugLevel);
+       // EntryPoint.WriteToConsole($"SECURITY SET Chase {PedExt.Handle}", debugLevel);
     }
     private void SetAIApprehend()
     {
@@ -175,20 +175,20 @@ public class SecurityGuardBrain : PedBrain
         SecurityGuard.WeaponInventory.Reset();
         GameFiber.Yield();//TR Added back 4
         SecurityGuard.CurrentTask.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET AIApprehend {PedExt.Handle}", debugLevel);
+        //EntryPoint.WriteToConsole($"SECURITY SET AIApprehend {PedExt.Handle}", debugLevel);
     }
     private void HandleCrimeReports()
     {
         if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.HasSeenDistressedPed))
         {
             GameTimeLastSeenCrime = Game.GameTime;
-            EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME", debugLevel);
+            //EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME", debugLevel);
         }
         if (GameTimeLastSeenCrime != 0 && Game.GameTime - GameTimeLastSeenCrime >= 10000 && PedExt.Pedestrian.Exists() && !PedExt.IsDead && !PedExt.IsUnconscious && !PedExt.Pedestrian.IsRagdoll && PedExt.DistanceToPlayer <= 40f)
         {
             GameTimeLastSeenCrime = 0;
             PedExt.ReportCrime(Player);
-            EntryPoint.WriteToConsole("SECURITY REPORTED CRIME", debugLevel);
+           // EntryPoint.WriteToConsole("SECURITY REPORTED CRIME", debugLevel);
         }
     }
     private void SetFlee()
@@ -200,7 +200,7 @@ public class SecurityGuardBrain : PedBrain
         PedExt.CurrentTask = new Flee(PedExt, Player) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET FLEE {PedExt.Handle}", debugLevel);
+        //EntryPoint.WriteToConsole($"SECURITY SET FLEE {PedExt.Handle}", debugLevel);
     }
 
     private void SetLocate()
@@ -212,7 +212,7 @@ public class SecurityGuardBrain : PedBrain
         PedExt.CurrentTask = new GeneralLocate(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET GeneralLocate {PedExt.Handle}", debugLevel);
+        //EntryPoint.WriteToConsole($"SECURITY SET GeneralLocate {PedExt.Handle}", debugLevel);
     }
 
 
@@ -229,7 +229,7 @@ public class SecurityGuardBrain : PedBrain
         //SecurityGuard.WeaponInventory.SetDeadly(false);
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET FIGHT {PedExt.Handle}", debugLevel);
+        //EntryPoint.WriteToConsole($"SECURITY SET FIGHT {PedExt.Handle}", debugLevel);
     }
     private void SetCalmCallIn()
     {
@@ -252,7 +252,7 @@ public class SecurityGuardBrain : PedBrain
         SecurityGuard.WeaponInventory.SetDefault();
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
-        EntryPoint.WriteToConsole($"SECURITY SET IDLE {PedExt.Handle}", debugLevel);
+       // EntryPoint.WriteToConsole($"SECURITY SET IDLE {PedExt.Handle}", debugLevel);
 
 
 

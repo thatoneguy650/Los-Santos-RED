@@ -63,31 +63,31 @@ namespace LosSantosRED.lsr
                     {
                         ApplyLastWantedStats();
                         GameFiber.Yield();//TR 05
-                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Became Wanted", 3);
+                        //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Became Wanted");
                     }
                     else if (IsNearLastSeenLocation && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)//move the second one OUT
                     {
                         ApplyLastWantedStats();
                         GameFiber.Yield();//TR 05
-                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Near Last Location", 3);
+                        //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Near Last Location");
                     }
                     else if (Player.IsInVehicle && Player.CurrentVehicle != null && Player.CurrentVehicle.IsWanted)//.CopsRecognizeAsStolen)
                     {
                         ApplyLastWantedStats();
                         GameFiber.Yield();//TR 05
-                        EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle", 3);
+                        //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: Recognized Vehicle");
                     }
                 }
                 if(Player.PoliceResponse.HasBeenNotWantedFor >= (Settings.SettingsManager.CriminalHistorySettings.RealTimeExpireWantedMultiplier * LastWantedMaxLevel))// 120000)
                 {
                     Clear();
-                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Real Time)", 3);
+                    //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Real Time)");
                 }
                 if(DateTime.Compare(Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier), Time.CurrentDateTime) < 0)
                 {
-                    EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier)} Current: {Time.CurrentDateTime}", 5);
+                    //EntryPoint.WriteToConsole($"POLICE RESPONSE: Lost Wanted ToExpire: {Player.PoliceResponse.DateTimeLastWantedEnded.AddHours(LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.CalendarTimeExpireWantedMultiplier)} Current: {Time.CurrentDateTime}");
                     Clear();
-                    EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)", 3);
+                    //EntryPoint.WriteToConsole("CRIMINAL HISTORY EVENT: History Expired (Calendar Time)");
                 }
             }
             //GameFiber.Yield();//TR 05
@@ -100,7 +100,7 @@ namespace LosSantosRED.lsr
         public void Clear()
         {
             CurrentHistory = null;
-            EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Clear", 3);
+            //EntryPoint.WriteToConsole($" PLAYER EVENT: Criminal History Clear");
         }
         public void AddCrime(Crime crime)
         {
@@ -121,25 +121,12 @@ namespace LosSantosRED.lsr
         {
             if(CurrentHistory != null)
             {
-
                 string CrimeString = "";
                 foreach (Crime MyCrime in CurrentHistory.Crimes.OrderBy(x => x.Priority).Take(3))
                 {
                     CrimeString += string.Format("~n~{0}~s~", MyCrime.Name);
                 }
                 return CrimeString;
-
-
-
-
-                //EntryPoint.WriteToConsole("-------------------------------Criminal History Start", 3);
-                //EntryPoint.WriteToConsole($"Wanted Level: {CurrentHistory.WantedLevel}", 3);
-                //EntryPoint.WriteToConsole($"LastSeenLocation: {CurrentHistory.LastSeenLocation}", 3);
-                //foreach(Crime crime in CurrentHistory.Crimes)
-                //{
-                //    EntryPoint.WriteToConsole($" Crime: {crime.Name}, {crime.ResultingWantedLevel}", 3);
-                //}
-                //EntryPoint.WriteToConsole("-------------------------------Criminal History End", 3);
             }
             return "";
         }
@@ -157,7 +144,7 @@ namespace LosSantosRED.lsr
             {
                 foreach(Crime crime in CurrentHistory.Crimes)
                 {
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}", 3);
+                    //EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}");
                     Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true,false, true);
                 }
                 int highestWantedLevel = CurrentHistory.WantedLevel;

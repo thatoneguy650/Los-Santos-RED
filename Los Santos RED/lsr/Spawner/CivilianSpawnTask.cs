@@ -26,7 +26,7 @@ public class CivilianSpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"CivilianSpawn: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"CivilianSpawn: Task Invalid Spawn Position");
                 return;
             }
             Setup();

@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Hammer Start", 5);
+            //EntryPoint.WriteToConsole($"Hammer Start");
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -90,7 +90,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Dispose()
         {
-            EntryPoint.WriteToConsole("HAMMER ACTIVITY END");
+            //EntryPoint.WriteToConsoleTestLong("HAMMER ACTIVITY END");
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();

@@ -29,13 +29,13 @@ public class VehicleInteractionMenu
         {
             VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu);
         }
-        VehicleExt.WeaponStorage.CreateInteractionMenu(MenuPool, VehicleInteractMenu, weapons, modItems);
+        VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, weapons, modItems, !player.IsInVehicle);
         if(!player.IsInVehicle)
         {
             VehicleExt.CreateDoorMenu(MenuPool, VehicleInteractMenu);
         }
         VehicleExt.HandleRandomItems(modItems);
-        VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu);
+        VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, !player.IsInVehicle);
         VehicleInteractMenu.Visible = true;
         ProcessMenu();
     }

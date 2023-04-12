@@ -48,7 +48,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Gesture Start: {GestureData.Name}", 5);
+            //EntryPoint.WriteToConsole($"Gesture Start: {GestureData.Name}");
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -89,7 +89,7 @@ namespace LosSantosRED.lsr.Player
             }
             if (GestureData.AnimationEnter != "")
             {
-                EntryPoint.WriteToConsole($"Gesture Enter: {GestureData.AnimationEnter}", 5);
+                //EntryPoint.WriteToConsole($"Gesture Enter: {GestureData.AnimationEnter}");
                 GameTimeStartedGesturing = Game.GameTime;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationEnter, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
                 while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
@@ -100,12 +100,8 @@ namespace LosSantosRED.lsr.Player
                     {
                         break;
                     }
-
-                   // Rage.Debug.DrawArrowDebug(Player.Character.Position + new Vector3(0f, 0f, 1f), Vector3.Zero, Rotator.Zero, 1f, Color.Yellow);
-
                     GameFiber.Yield();
                 }
-                //GameFiber.Sleep(250);
             } 
             Idle();
         }
@@ -116,7 +112,7 @@ namespace LosSantosRED.lsr.Player
                 EntryPoint.WriteToConsole($"Gesture Idle: {GestureData.AnimationName}", 5);
                 GameTimeStartedGesturing = Game.GameTime;
                 int idleAnimationFlag = GetIdleAnimationFlag();
-                EntryPoint.WriteToConsole($"idleAnimationFlag {idleAnimationFlag} IsWholeBody{GestureData.IsWholeBody} SetRepeat{GestureData.SetRepeat}");
+                //EntryPoint.WriteToConsole($"idleAnimationFlag {idleAnimationFlag} IsWholeBody{GestureData.IsWholeBody} SetRepeat{GestureData.SetRepeat}");
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationName, 4.0f, AnimationBlendOutTime, -1, idleAnimationFlag, 0, false, false, false);//-1
                 while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && (GestureData.SetRepeat || Game.GameTime - GameTimeStartedGesturing <= 5000))
                 {
@@ -126,11 +122,8 @@ namespace LosSantosRED.lsr.Player
                     {
                         break;
                     }
-                   // Rage.Debug.DrawArrowDebug(Player.Character.Position + new Vector3(0f, 0f, 1f), Vector3.Zero, Rotator.Zero, 1f, Color.Orange);
-
                     GameFiber.Yield();
                 }
-                //GameFiber.Sleep(250);
             }
             Exit();
         }
@@ -141,9 +134,14 @@ namespace LosSantosRED.lsr.Player
             {
                 idleAnimationFlag = idleAnimationFlag | (int)AnimationFlags.UpperBodyOnly | (int)AnimationFlags.SecondaryTask;
             }
+
             if (GestureData.SetRepeat)
             {
                 idleAnimationFlag = idleAnimationFlag | (int)AnimationFlags.Loop;
+            }
+            else
+            {
+                idleAnimationFlag = idleAnimationFlag | (int)AnimationFlags.StayInEndFrame;
             }
             return idleAnimationFlag;
         }
@@ -153,7 +151,7 @@ namespace LosSantosRED.lsr.Player
             {
                 if (GestureData.AnimationExit != "")
                 {
-                    EntryPoint.WriteToConsole($"Gesture Exit: {GestureData.AnimationExit}", 5);
+                    //EntryPoint.WriteToConsole($"Gesture Exit: {GestureData.AnimationExit}");
                     GameTimeStartedGesturing = Game.GameTime;
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, GestureData.AnimationDictionary, GestureData.AnimationExit, 4.0f, AnimationBlendOutTime, -1, AnimationFlag, 0, false, false, false);//-1
                     while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled && Game.GameTime - GameTimeStartedGesturing <= 5000)
@@ -164,12 +162,8 @@ namespace LosSantosRED.lsr.Player
                         {
                             break;
                         }
-
-                        //Rage.Debug.DrawArrowDebug(Player.Character.Position + new Vector3(0f, 0f, 1f), Vector3.Zero, Rotator.Zero, 1f, Color.Red);
-
                         GameFiber.Yield();
                     }
-                    //GameFiber.Sleep(250);
                 }
                 if(GestureData.AnimationEnter != "" || GestureData.IsWholeBody)
                 {
@@ -183,7 +177,6 @@ namespace LosSantosRED.lsr.Player
                 {
                     Player.IsMakingInsultingGesture = false;
                 }
-                //NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             }
             catch
             {
@@ -232,14 +225,12 @@ namespace LosSantosRED.lsr.Player
                     }
                 }
             }
-
             if(GestureData.AnimationEnter != "")
             {
                 AnimationFlag = 2;
                 AnimationBlendOutTime = -4.0f;
             }
-
-            EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {GestureData.AnimationDictionary} AnimationEnter: {GestureData.AnimationEnter} AnimationName: {GestureData.AnimationName} AnimationExit: {GestureData.AnimationExit}", 5);
+            //EntryPoint.WriteToConsole($"Gesture Setup AnimationDictionary: {GestureData.AnimationDictionary} AnimationEnter: {GestureData.AnimationEnter} AnimationName: {GestureData.AnimationName} AnimationExit: {GestureData.AnimationExit}");
             AnimationDictionary.RequestAnimationDictionay(GestureData.AnimationDictionary);
         }
     }

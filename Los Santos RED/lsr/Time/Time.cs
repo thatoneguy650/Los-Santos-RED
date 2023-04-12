@@ -199,13 +199,13 @@ namespace Mod
                 {
                     if (DateTime.Compare(CurrentDateTime.AddSeconds(ClockMultiplier), TimeToStopFastForwarding) >= 0)
                     {
-                        EntryPoint.WriteToConsole($"CURRENT TIME SLOWING FAST FORWARD {CurrentTime}", 5);
+                       // EntryPoint.WriteToConsole($"CURRENT TIME SLOWING FAST FORWARD {CurrentTime}", 5);
                         ClockMultiplier = 10;
 
                     }
                     if (DateTime.Compare(CurrentDateTime, TimeToStopFastForwarding) >= 0)
                     {
-                        EntryPoint.WriteToConsole($"CURRENT TIME STOPPING FAST FORWARD {CurrentTime}", 5);
+                       // EntryPoint.WriteToConsole($"CURRENT TIME STOPPING FAST FORWARD {CurrentTime}", 5);
                         IsFastForwarding = false;
                         ClockMultiplier = DefaultMultiplier;
                         Interval = DefaultInterval;

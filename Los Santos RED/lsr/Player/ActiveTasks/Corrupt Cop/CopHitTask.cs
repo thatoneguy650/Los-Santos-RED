@@ -149,7 +149,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                     break;
                 }
                 if (!IsTargetCopSpawned && IsPlayerNearTargetCopSpawn)
@@ -186,7 +186,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void SetCompleted()
         {
-            EntryPoint.WriteToConsole("Witness Elimination COMPLETED");
+            //EntryPoint.WriteToConsoleTestLong("Witness Elimination COMPLETED");
             SendCompletedMessage();
             PlayerTasks.CompleteTask(StaticStrings.OfficerFriendlyContactName, true);
         }
@@ -202,13 +202,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     if (CurrentTask == null || !CurrentTask.IsActive)
                     {
-                        EntryPoint.WriteToConsole($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     if (myDrop.InteractionComplete)
                     {
                         Game.DisplayHelp($"{StaticStrings.OfficerFriendlyContactName} Money Picked Up");
-                        EntryPoint.WriteToConsole($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
+                        //EntryPoint.WriteToConsoleTestLong($"Picked up money for Gang Hit for {StaticStrings.OfficerFriendlyContactName}");
                         break;
                     }
                     GameFiber.Sleep(1000);
@@ -226,7 +226,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void AddTask()
         {
-            EntryPoint.WriteToConsole($"You are hired to kill a witness!");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill a witness!");
             PlayerTasks.AddTask(StaticStrings.OfficerFriendlyContactName, MoneyToRecieve, 2000, 0, -500, 7, "Witness Elimination");
             CurrentTask = PlayerTasks.GetTask(StaticStrings.OfficerFriendlyContactName);
             IsTargetCopSpawned = false;
@@ -270,7 +270,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                     }
                     SendWitnessSpawnedMessage();
 
-                    EntryPoint.WriteToConsole("Witness Elimination SPAWNED WITNESS");
+                    //EntryPoint.WriteToConsoleTestLong("Witness Elimination SPAWNED WITNESS");
 
                     return true;
                 }
@@ -286,7 +286,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             if (TargetCop != null && TargetCop.Pedestrian.Exists())
             {
                 TargetCop.Pedestrian.Delete();
-                EntryPoint.WriteToConsole("Witness Elimination DESPAWNED WITNESS");
+                //EntryPoint.WriteToConsoleTestLong("Witness Elimination DESPAWNED WITNESS");
             }
             IsTargetCopSpawned = false;
         }

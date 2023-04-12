@@ -279,7 +279,7 @@ public class Civilians
                 RelationshipGroup.Cop.SetRelationshipWith(gangRG, Relationship.Neutral);
                 gangRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Neutral);
                 gang.HasWantedMembers = false;
-                EntryPoint.WriteToConsole($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
+                //EntryPoint.WriteToConsoleTestLong($"GANG {gang.ID} has no wanted members, settings relationship with cops to neutral");
             }
         }
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
@@ -342,13 +342,13 @@ public class Civilians
             {
                 GameFiber.Yield();
                 PoliceRespondable.Arrest();
-                EntryPoint.WriteToConsole("Security Detain 1");
+                //EntryPoint.WriteToConsoleTestLong("Security Detain 1");
             }
             if (PoliceRespondable.IsDetainable && PoliceRespondable.IsAttemptingToSurrender && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.DistanceToPlayer <= 10f && x.HeightToPlayer <= 5f))
             {
                 GameFiber.Yield();
                 PoliceRespondable.Arrest();
-                EntryPoint.WriteToConsole("Security Detain 2");
+                //EntryPoint.WriteToConsoleTestLong("Security Detain 2");
             }
         }
 
@@ -405,7 +405,7 @@ public class Civilians
             {
 
             }
-            EntryPoint.WriteToConsole($"Citizen Wanted Level Changed from {prevCitizenWantedLevel} to {World.CitizenWantedLevel}");
+            //EntryPoint.WriteToConsoleTestLong($"Citizen Wanted Level Changed from {prevCitizenWantedLevel} to {World.CitizenWantedLevel}");
             prevCitizenWantedLevel = World.CitizenWantedLevel;
         }
 

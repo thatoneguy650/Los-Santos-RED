@@ -293,7 +293,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 string RelationshipGroupName = Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
                 if (RelationshipGroupName == string.Empty)
                 {
-                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
+                    //EntryPoint.WriteToConsoleTestLong($" PedExt.Pedestrian {Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
                     RelationshipGroupName = RelationshipGroupName.ToUpper();
                 }
                 if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
@@ -475,7 +475,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             Pedestrian.RelationshipGroup = CriminalsRG;
             RelationshipGroup.Cop.SetRelationshipWith(CriminalsRG, Relationship.Hate);
             CriminalsRG.SetRelationshipWith(RelationshipGroup.Cop, Relationship.Hate);
-            EntryPoint.WriteToConsole($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");
+            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} BECAME WANTED (CIVILIAN) SET TO CRIMINALS");
         }
     }
     public virtual void OnLostWanted()
@@ -484,7 +484,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.RelationshipGroup = originalGroup;
             PedViolations.Reset();
-            EntryPoint.WriteToConsole($"{Pedestrian.Handle} LOST WANTED (CIVILIAN) SET TO ORIGINAL GROUP {originalGroup.Name}");
+            //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (CIVILIAN) SET TO ORIGINAL GROUP {originalGroup.Name}");
         }
     }
     public void AddWitnessedPlayerCrime(Crime CrimeToAdd, Vector3 PositionToReport) => PlayerPerception.AddWitnessedCrime(CrimeToAdd, PositionToReport);
@@ -505,20 +505,20 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     {
         if (LastHurtBy == ToCheck)
         {
-            EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (LAST) Hurt by {ToCheck.Handle}", 5);
+            //EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (LAST) Hurt by {ToCheck.Handle}");
             return true;
         }
         if (!OnlyLast && Pedestrian.Handle != ToCheck.Handle)
         {
             if (NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck, true))
             {
-                EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW PERSON) Hurt by {ToCheck.Handle}", 5);
+                //EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW PERSON) Hurt by {ToCheck.Handle}");
                 LastHurtBy = ToCheck;
                 return true;
             }
             else if (ToCheck.IsInAnyVehicle(false) && NativeFunction.CallByName<bool>("HAS_ENTITY_BEEN_DAMAGED_BY_ENTITY", Pedestrian, ToCheck.CurrentVehicle, true))
             {
-                EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW CAR) Hurt by {ToCheck.Handle}", 5);
+                //EntryPoint.WriteToConsole($"PEDEXT: CheckHurtBy Ped To Check: {Pedestrian.Handle} (NEW CAR) Hurt by {ToCheck.Handle}");
                 LastHurtBy = ToCheck;
                 return true;
             }
@@ -534,12 +534,12 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 //Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
                 if (KillerHandle != 0 && KillerHandle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == KillerHandle))//if (Killer.Exists() && Killer.Handle == ToCheck.Handle || (ToCheck.IsInAnyVehicle(false) && ToCheck.CurrentVehicle.Handle == Killer.Handle))
                 {
-                    EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killed by {KillerHandle}", 5);
+                    //EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killed by {KillerHandle}");
                     return true;
                 }
                 else if (KillerHandle == 0 && CheckHurtBy(ToCheck, true))
                 {
-                    EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killer is 0 Last Hurt By {ToCheck.Handle}", 5);
+                    //EntryPoint.WriteToConsole($"PEDEXT: CheckKilledBy Ped To Check: {Pedestrian.Handle} Killer is 0 Last Hurt By {ToCheck.Handle}");
                     return true;
                 }
             }
@@ -562,7 +562,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             if(IsFedUpWithPlayer && player != null && Crimes != null)
             {
                 AddWitnessedPlayerCrime(Crimes.CrimeList.FirstOrDefault(x => x.ID == "Harassment"), player.Character.Position);
-                EntryPoint.WriteToConsole("Insulted by Player FED UP Adding Crime");
+                //EntryPoint.WriteToConsoleTestLong("Insulted by Player FED UP Adding Crime");
             }
 
         }
@@ -574,7 +574,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             try
             {
                 KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
-                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}", 5);
+                //EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}");
             }
             catch (Exception ex)
             {
@@ -652,7 +652,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
             {
                 SetBusted();
-                EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}", 3);
+               //EntryPoint.WriteToConsole($"PEDEXT: Player bust {Pedestrian.Handle}");
             }
         }
     }
@@ -740,12 +740,12 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 int YellType = PossibleYells.PickRandom();
                 NativeFunction.Natives.PLAY_PAIN(Pedestrian, YellType, 0, 0);
 
-                EntryPoint.WriteToConsole($"YELL IN PAIN {Pedestrian.Handle} YellType {YellType}");
+                //EntryPoint.WriteToConsoleTestLong($"YELL IN PAIN {Pedestrian.Handle} YellType {YellType}");
             }
             else
             {
                 PlaySpeech("GENERIC_FRIGHTENED_HIGH", false);
-                EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
+                //EntryPoint.WriteToConsoleTestLong($"CRY SPEECH FOR PAIN {Pedestrian.Handle}");
             }
 
             GameTimeLastYelled = Game.GameTime;
@@ -787,7 +787,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
         }
-        EntryPoint.WriteToConsole($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
+        //EntryPoint.WriteToConsoleTestLong($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
     }
     private void PlaySpeech(string speechName, bool useMegaphone)
     {
@@ -802,7 +802,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 Pedestrian.PlayAmbientSpeech(VoiceName, speechName, 0, SpeechModifier.Force);
 
             }
-            EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Pedestrian.Handle} freeModeVoice {VoiceName} speechName {speechName}");
+            //EntryPoint.WriteToConsoleTestLong($"FREEMODE COP SPEAK {Pedestrian.Handle} freeModeVoice {VoiceName} speechName {speechName}");
         }
         else
         {

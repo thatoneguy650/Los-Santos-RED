@@ -498,7 +498,7 @@ public class FootChase
     }
     private void TaskWriteTicket()
     {
-        EntryPoint.WriteToConsole($"Foot Chase Write Ticket Started {Ped.Pedestrian.Handle} PrevSubTask = {CurrentSubTask}");
+        //EntryPoint.WriteToConsoleTestLong($"Foot Chase Write Ticket Started {Ped.Pedestrian.Handle} PrevSubTask = {CurrentSubTask}");
         CurrentSubTask = SubTask.WriteTicket;
         NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         if (LocalDistance > 5f)

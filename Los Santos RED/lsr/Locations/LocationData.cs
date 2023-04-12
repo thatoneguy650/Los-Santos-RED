@@ -130,7 +130,7 @@ namespace LosSantosRED.lsr.Locations
             {
                 currState = CurrentZone.State;
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: STATE CHANGED FROM {prevState} TO {currState}");
+            //EntryPoint.WriteToConsoleTestLong($"PLAYER EVENT: STATE CHANGED FROM {prevState} TO {currState}");
         }
         private void UpdateInterior()
         {
@@ -314,13 +314,13 @@ namespace LosSantosRED.lsr.Locations
         {
             GameTimeWentInside = Game.GameTime;
             GameTimeWentOutside = 0;
-            EntryPoint.WriteToConsole("PLAYER EVENT: WENT INSIDE");
+            //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: WENT INSIDE");
         }
         private void OnWentOutside()
         {
             GameTimeWentInside = 0;
             GameTimeWentOutside = Game.GameTime;
-            EntryPoint.WriteToConsole("PLAYER EVENT: WENT OUTSIDE");
+            //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: WENT OUTSIDE");
         }
         private void GetInteriorFromID()
         {

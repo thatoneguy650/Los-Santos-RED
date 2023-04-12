@@ -98,13 +98,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {HiringGang.ContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if (IsInStolenGangCar)
                 {
                     CurrentTask.OnReadyForPayment(true);
-                    EntryPoint.WriteToConsole($"You stole a car so it is now ready for payment!");
+                    //EntryPoint.WriteToConsoleTestLong($"You stole a car so it is now ready for payment!");
                     break;
                 }
                 GameFiber.Sleep(1000);
@@ -163,7 +163,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
             WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
-            EntryPoint.WriteToConsole($"You are hired to steal car from {TargetGang.ShortName} {VehicleToSteal.ModelName}");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to steal car from {TargetGang.ShortName} {VehicleToSteal.ModelName}");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 1000, 0, -500, 5, "Auto Theft for Gang");
         }
         private void SendInitialInstructionsMessage()

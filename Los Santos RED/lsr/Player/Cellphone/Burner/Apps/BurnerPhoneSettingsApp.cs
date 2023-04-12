@@ -49,7 +49,7 @@ public class BurnerPhoneSettingsApp : BurnerPhoneApp
     }
     public override void Open(bool Reset)
     {
-        EntryPoint.WriteToConsole("BurnerPhoneSettingsApp OPEN");
+        //EntryPoint.WriteToConsoleTestLong("BurnerPhoneSettingsApp OPEN");
         if (Reset)
         {
             CurrentRow = 0;

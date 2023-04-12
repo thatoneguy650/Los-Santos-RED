@@ -48,19 +48,19 @@ public class GangInteraction : IContactMenuInteraction
     {
         if(phoneContact != null)
         {
-            EntryPoint.WriteToConsole($"GangInteraction phoneContact {phoneContact.Name}");
+            //EntryPoint.WriteToConsoleTestLong($"GangInteraction phoneContact {phoneContact.Name}");
             Start(Gangs.GetGangByContact(phoneContact.Name));
         }
         else
         {
-            EntryPoint.WriteToConsole("GangInteraction phoneContact IS NULL");
+            //EntryPoint.WriteToConsoleTestLong("GangInteraction phoneContact IS NULL");
         }
     }
     public void Start(Gang gang)
     {
         if(gang == null)
         {
-            EntryPoint.WriteToConsole("GangInteraction GANG IS NULL");
+            //EntryPoint.WriteToConsoleTestLong("GangInteraction GANG IS NULL");
         }
         if (gang != null)
         {

@@ -46,7 +46,7 @@ public class VehicleShowcase
     {
         if (HighlightedVehicle == null || !HighlightedVehicle.Vehicle.Exists())
         {
-            EntryPoint.WriteToConsole("VehicleShowcase Failed 1");
+            //EntryPoint.WriteToConsoleTestLong("VehicleShowcase Failed 1");
             return;
         }
         Time.PauseTime();
@@ -199,7 +199,7 @@ public class VehicleShowcase
     {
         if(HighlightedVehicle == null || !HighlightedVehicle.Vehicle.Exists())
         {
-            EntryPoint.WriteToConsole("VehicleShowcase Failed 2");
+            //EntryPoint.WriteToConsoleTestLong("VehicleShowcase Failed 2");
             return;
         }
         NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(HighlightedVehicle.Vehicle, 0.0f);
@@ -248,7 +248,7 @@ public class VehicleShowcase
         float height = HighlightedVehicle.Vehicle.Model.Dimensions.Z;
         Vector3 ToShowVector = new Vector3(hp.OffsetVector.X * distanceAwayX, hp.OffsetVector.Y * distanceAwayY, hp.OffsetVector.Z * distanceAwayZ);
 
-        EntryPoint.WriteToConsole($"CurrentPosition {CurrentPosition} ToShowVector {ToShowVector}");
+        //EntryPoint.WriteToConsoleTestLong($"CurrentPosition {CurrentPosition} ToShowVector {ToShowVector}");
         InitialCameraPosition = HighlightedVehicle.Vehicle.GetOffsetPosition(ToShowVector);
 
         if (increase)

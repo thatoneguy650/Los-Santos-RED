@@ -125,13 +125,13 @@ public class Vehicles
                         if(TotalPoliceCars >= 15 && PoliceCar.HasBeenEmptyFor >= 60000 && PoliceCar.Vehicle.Exists() && !PoliceCar.Vehicle.IsOnScreen)
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
-                            EntryPoint.WriteToConsole("MARKED POLICE CAR NON PERSIST 1");
+                            //EntryPoint.WriteToConsoleTestLong("MARKED POLICE CAR NON PERSIST 1");
                             GameFiber.Yield();
                         }
                         else if (TotalPoliceCars >= 10 && distanceTo >= 50f && PoliceCar.HasBeenEmptyFor >= 35000 && PoliceCar.Vehicle.IsPersistent)
                         {
                             PoliceCar.Vehicle.IsPersistent = false;
-                            EntryPoint.WriteToConsole("MARKED POLICE CAR NON PERSIST 2");
+                            //EntryPoint.WriteToConsoleTestLong("MARKED POLICE CAR NON PERSIST 2");
                             GameFiber.Yield();
                         }
                         else if (distanceTo >= 250f)
@@ -172,7 +172,7 @@ public class Vehicles
                     {
                         EntryPoint.PersistentVehiclesDeleted++;
                     }
-                    EntryPoint.WriteToConsole($"Remove Abandoned Non Police {civilianCar.Vehicle.Handle}", 5);
+                    //EntryPoint.WriteToConsole($"Remove Abandoned Non Police {civilianCar.Vehicle.Handle}", 5);
                     civilianCar.Vehicle.Delete();
                 }
                 GameFiber.Yield();

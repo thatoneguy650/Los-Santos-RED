@@ -109,7 +109,7 @@ public class TrafficViolations
         {
             isDrivingSuspiciously = true;
             Violations.AddViolating(StaticStrings.HitPedWithCarCrimeID);
-            EntryPoint.WriteToConsole("Violations HitPedWithCar");
+            //EntryPoint.WriteToConsoleTestLong("Violations HitPedWithCar");
             //GameFiber.Yield();
         }
         if (RecentlyHitVehicle && IsFastEnoughToCheckViolations)

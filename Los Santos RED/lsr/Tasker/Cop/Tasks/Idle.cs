@@ -210,7 +210,7 @@ public class Idle : ComplexTask
             {
                 IsReturningToStation = false;
                 WanderTask();
-                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
             }
 
         }
@@ -354,7 +354,7 @@ public class Idle : ComplexTask
             {
                 IsReturningToStation = false;
                 VehiclePatrolTask();
-                EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
+                //EntryPoint.WriteToConsole($"COP EVENT: Wander Idle Arrived at Station: {Ped.Pedestrian.Handle}", 3);
             }
         }
     }

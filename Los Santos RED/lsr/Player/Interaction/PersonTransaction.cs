@@ -104,7 +104,7 @@ public class PersonTransaction : Interaction
 
     public override void Dispose()
     {
-        EntryPoint.WriteToConsole($"PERSON TRANSACTION Dispose IsDisposed {IsDisposed}");
+        //EntryPoint.WriteToConsoleTestLong($"PERSON TRANSACTION Dispose IsDisposed {IsDisposed}");
         if(IsDisposed)
         {
             return;
@@ -130,7 +130,7 @@ public class PersonTransaction : Interaction
             if(PanickedByPlayer)
             {
                 NativeFunction.Natives.TASK_SMART_FLEE_PED(Ped.Pedestrian, Player.Character, 100f, -1, false, false);
-                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1", 3);
+                //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE PANIC 1");
             }
             else if(Ped.Pedestrian.IsInAnyVehicle(false) && PedEnteringPlayerVehicle && Ped.Pedestrian.CurrentVehicle.Exists() && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Handle == Player.CurrentVehicle.Vehicle.Handle)
             {
@@ -143,21 +143,21 @@ public class PersonTransaction : Interaction
                 {
                     Ped.BlackListedVehicles.Add(Player.CurrentVehicle.Vehicle.Handle);
                 }
-                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1", 3);
+                //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE CAR 1");
             }
             else if (AssociatedStore != null && AssociatedStore.VendorHeading != 0f)
             {
                 Ped.Pedestrian.BlockPermanentEvents = false;
                 Ped.Pedestrian.KeepTasks = false;
                 NativeFunction.Natives.TASK_ACHIEVE_HEADING(Ped.Pedestrian, AssociatedStore.VendorHeading, -1);
-                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading", 3);
+                //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE Set Heading");
             }
             else
             {
                 NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                 Ped.Pedestrian.BlockPermanentEvents = false;
                 Ped.Pedestrian.KeepTasks = false;
-                EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking", 3);
+                //EntryPoint.WriteToConsole($"PersonTransaction: DISPOSE UnTasking");
             }
         }
         NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);     
@@ -198,11 +198,11 @@ public class PersonTransaction : Interaction
             {
                 HavePlayerLookAtPed();
             }
-            EntryPoint.WriteToConsole("Unpased Person Transaction");
+            //EntryPoint.WriteToConsoleTestLong("Unpased Person Transaction");
         }
         if (isPaused && Player.ButtonPrompts.IsPressed("CancelTransaction"))
         {
-            EntryPoint.WriteToConsole("Cancelled Paused Person Transaction");
+            //EntryPoint.WriteToConsoleTestLong("Cancelled Paused Person Transaction");
             IsCancelled = true;
         }
     }
@@ -211,7 +211,7 @@ public class PersonTransaction : Interaction
         if (Ped != null && (Ped.HasSeenPlayerCommitMajorCrime || Ped.HasSeenPlayerCommitTrafficCrime || Player.VehicleSpeedMPH >= 85f || Player.RecentlyCrashedVehicle) && PedCanBeTasked && PedCanBeAmbientTasked)
         {
             PanickedByPlayer = true;
-            EntryPoint.WriteToConsole($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
+            //EntryPoint.WriteToConsoleTestLong($"Person Transaction PanickedByPlayer HasSeenPlayerCommitMajorCrime {Ped.HasSeenPlayerCommitMajorCrime} Ped.HasSeenPlayerCommitTrafficCrime {Ped.HasSeenPlayerCommitTrafficCrime} VehicleSpeedMPH {Player.VehicleSpeedMPH} RecentlyCrashedVehicle {Player.RecentlyCrashedVehicle}");
         }
     }
     private void StopVehicleActions()
@@ -378,7 +378,7 @@ public class PersonTransaction : Interaction
             Player.LastFriendlyVehicle = Ped.Pedestrian.CurrentVehicle;
             PlayerEnteringOtherVehicle = true;
             PedEnteringPlayerVehicle = false;
-            EntryPoint.WriteToConsole("Paused Person Transaction");
+            //EntryPoint.WriteToConsoleTestLong("Paused Person Transaction");
             InteractionMenu.Visible = false;
             isPaused = true;
             AddPausedButtonPrompts();
@@ -405,7 +405,7 @@ public class PersonTransaction : Interaction
         {
             NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
             isPaused = true;
-            EntryPoint.WriteToConsole("Paused Person Transaction");
+            //EntryPoint.WriteToConsoleTestLong("Paused Person Transaction");
             SayAvailableAmbient(Player.Character, new List<string>() { "GENERIC_BUY" }, true);
             SayAvailableAmbient(personToFollow, new List<string>() { "GENERIC_YES" }, true);    
             InteractionMenu.Visible = false;
@@ -585,7 +585,7 @@ public class PersonTransaction : Interaction
 
                     Ped.Pedestrian.BlockPermanentEvents = true;
                     Ped.Pedestrian.KeepTasks = true;
-                    EntryPoint.WriteToConsole("PersonTransaction, THEY HAVE BEEN BLOCKED< CLEARED< AND FUCKING TASKED SO FUCK OFF");
+                    //EntryPoint.WriteToConsoleTestLong("PersonTransaction, THEY HAVE BEEN BLOCKED< CLEARED< AND FUCKING TASKED SO FUCK OFF");
                 }
                 else
                 {
@@ -719,7 +719,7 @@ public class PersonTransaction : Interaction
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
             }
             GameFiber.Yield();
             if (SellingProp.Exists())
@@ -874,7 +874,7 @@ public class PersonTransaction : Interaction
             }
             catch (Exception ex)
             {
-                EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
             }
             GameFiber.Yield();
             if (SellingProp.Exists())

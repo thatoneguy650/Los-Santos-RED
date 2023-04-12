@@ -60,7 +60,7 @@ public class WaveHandsActivity : DynamicActivity
     {
         if (!IsToggled)
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: Lower Hands");
             HandsAreUp = false; // You put your hands down
             IsWavingHands = false;
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
@@ -71,7 +71,7 @@ public class WaveHandsActivity : DynamicActivity
     {
         if (!IsToggled)
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: Raise Hands");
             if (Player.Character.IsWearingHelmet)
             {
                 Player.Character.RemoveHelmet(true);
@@ -98,7 +98,7 @@ public class WaveHandsActivity : DynamicActivity
     {
         if (!IsToggled)
         {
-            EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: Wave Hands");
             if (HandsAreUp || Player.IsInVehicle || IsWavingHands)
             {
                 return;
@@ -297,13 +297,13 @@ public class WaveHandsActivity : DynamicActivity
         {
             try
             {
-                EntryPoint.WriteToConsole("UnsetArrestedRan");
+                //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan");
                 AnimationDictionary.RequestAnimationDictionay("random@arrests");
                 AnimationDictionary.RequestAnimationDictionay("busted");
                 AnimationDictionary.RequestAnimationDictionay("ped");
                 if (IsPlayingAnimation("busted", "idle_a") || IsPlayingAnimation("busted", "idle_2_hands_up") || IsPlayingAnimation("busted", "idle_2_hands_up_2h"))
                 {
-                    EntryPoint.WriteToConsole("UnsetArrestedRan Playing Kneeling");
+                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing Kneeling");
 
                     NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, "busted", "hands_up_2_idle", 2.0f, -2.0f, -1, 4096, 0, 0, 1, 0);
                     GameFiber.Wait(1500);//1250
@@ -322,12 +322,12 @@ public class WaveHandsActivity : DynamicActivity
                 }
                 else if (IsPlayingAnimation("ped", "handsup_enter"))// NativeFunction.CallByName<bool>("IS_ENTITY_PLAYING_ANIM", Player.Character, "ped", "handsup_enter", 3) || NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, "ped", "handsup_enter") > 0f)
                 {
-                    EntryPoint.WriteToConsole("UnsetArrestedRan Playing HandsUp");
+                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan Playing HandsUp");
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole("UnsetArrestedRan No Animation Detected, Clearing Tasks");
+                    //EntryPoint.WriteToConsoleTestLong("UnsetArrestedRan No Animation Detected, Clearing Tasks");
                     NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 }
             }
@@ -360,7 +360,7 @@ public class WaveHandsActivity : DynamicActivity
 
         if (Game.GameTime - GameTimeLastToggledSurrender >= 500)
         {
-            EntryPoint.WriteToConsole($"Surrender Toggle START {IsToggled}");
+            //EntryPoint.WriteToConsoleTestLong($"Surrender Toggle START {IsToggled}");
             if (HandsAreUp)
             {
                 if (!Player.IsBusted)
@@ -389,7 +389,7 @@ public class WaveHandsActivity : DynamicActivity
                     IsToggled = true;
                 }
             }
-            EntryPoint.WriteToConsole($"Surrender Toggle END {IsToggled}");
+            //EntryPoint.WriteToConsoleTestLong($"Surrender Toggle END {IsToggled}");
             GameTimeLastToggledSurrender = Game.GameTime;
         }
     }

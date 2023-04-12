@@ -43,7 +43,7 @@ public class PlayerTask
 
     public void OnReadyForPayment(bool displayHelp, string helpText)
     {
-        EntryPoint.WriteToConsole($"OnReadyForPayment {ContactName} displayHelp {displayHelp} helpText {helpText}");
+        //EntryPoint.WriteToConsoleTestLong($"OnReadyForPayment {ContactName} displayHelp {displayHelp} helpText {helpText}");
         IsReadyForPayment = true;
         if (!displayHelp || !Settings.SettingsManager.TaskSettings.DisplayHelpPrompts)
         {

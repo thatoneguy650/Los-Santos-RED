@@ -671,12 +671,12 @@ public class PedSwap : IPedSwap
         if(CurrentPed.Exists() && CurrentPed.Handle != Game.LocalPlayer.Character.Handle)
         {
             previousPed = CurrentPed;
-            EntryPoint.WriteToConsole("HandlePreviousPed Using 'CurrentPed' as it is not equal to the player character.");
+            //EntryPoint.WriteToConsoleTestLong("HandlePreviousPed Using 'CurrentPed' as it is not equal to the player character.");
         }
         else if (TargetPed.Exists() && TargetPed.Handle != Game.LocalPlayer.Character.Handle)
         {
             previousPed = TargetPed;
-            EntryPoint.WriteToConsole("HandlePreviousPed Using 'TargetPed' as it is not equal to the player character.");
+            //EntryPoint.WriteToConsoleTestLong("HandlePreviousPed Using 'TargetPed' as it is not equal to the player character.");
         }
 
 
@@ -945,10 +945,10 @@ public class PedSwap : IPedSwap
     }
     private void ResetOffsetForCurrentModel()
     {
-        EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+        //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel START CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
         if (Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && CurrentModelPlayerIs != 0)
         {
-            EntryPoint.WriteToConsole($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+            //EntryPoint.WriteToConsoleTestLong($"PEDSWAP ResetOffsetForCurrentModel RAN CurrentModelPlayerIs {CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
             unsafe
             {
                 var PedPtr = (ulong)Game.LocalPlayer.Character.MemoryAddress;
@@ -963,7 +963,7 @@ public class PedSwap : IPedSwap
         {
             return;
         }
-        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
+        //EntryPoint.WriteToConsoleTestLong($"PEDSWAP SetPlayerOffset RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName} ModelHash{ModelHash}");
         //bigbruh in discord, supplied the below, seems to work just fine
         unsafe
         {
@@ -991,7 +991,7 @@ public class PedSwap : IPedSwap
         {
             ModelHash = 2608926626;
         }
-        EntryPoint.WriteToConsole($"PEDSWAP SetPlayerOffset 2 RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
+        //EntryPoint.WriteToConsoleTestLong($"PEDSWAP SetPlayerOffset 2 RAN CurrentModelPlayerIs{CurrentModelPlayerIs.Name} {CurrentModelPlayerIs.Hash} CharacterModelIsPrimaryCharacter {Player.CharacterModelIsPrimaryCharacter} ModelName{Player.ModelName}");
 
         if (ModelHash != 0)
         {
@@ -1086,7 +1086,7 @@ public class PedSwap : IPedSwap
             {
                 NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
                 NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(FormerPlayer, (int)eCustomDrivingStyles.Code3);
-                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Escape", 5);
+               // EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Escape");
             }
             else
             {
@@ -1101,7 +1101,7 @@ public class PedSwap : IPedSwap
                     NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
                     NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                 }
-                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Wander", 5);
+                //EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Vehicle Wander");
             }
         }
         else if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(FormerPlayer))
@@ -1126,19 +1126,19 @@ public class PedSwap : IPedSwap
                         NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", FormerPlayer, lol);
                         NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
                     }
-                    EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Attack", 5);
+                    //EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Attack");
                 }
                 else
                 {
                     NativeFunction.CallByName<bool>("TASK_SMART_FLEE_COORD", FormerPlayer, FormerPlayer.Position.X, FormerPlayer.Position.Y, FormerPlayer.Position.Z, 500f, -1, false, false);
-                    EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Flee", 5);
+                    //EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Wanted Flee");
                 }
                 NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(FormerPlayer, 100f, 0);
             }
             else
             {
                 NativeFunction.Natives.TASK_WANDER_STANDARD(FormerPlayer, 0, 0);
-                EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Normal Wander", 5);
+                //EntryPoint.WriteToConsole($"PEDSWAP: HandlePreviousPed Tasking {FormerPlayer.Handle} Normal Wander");
             }
         }
         FormerPlayer.IsPersistent = false;

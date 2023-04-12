@@ -194,7 +194,7 @@ public class BookingVehicleManager
     }
     private void ReTaskCarLoop()
     {
-        EntryPoint.WriteToConsole("Retask Loop Ran");
+        //EntryPoint.WriteToConsoleTestLong("Retask Loop Ran");
         GetClosesetPoliceVehicle();
         GetInCarTask();
     }
@@ -254,7 +254,7 @@ public class BookingVehicleManager
         SeatTryingToEnter = SeatAssigner.SeatAssigned;
         DoorTryingToEnter = SeatAssigner.GetDoorFromSeat(SeatTryingToEnter);
 
-        EntryPoint.WriteToConsole($"GetClosesetPoliceVehicle Booking: SeatTryingToEnter {SeatTryingToEnter} DoorTryingToEnter {DoorTryingToEnter}");
+        //EntryPoint.WriteToConsoleTestLong($"GetClosesetPoliceVehicle Booking: SeatTryingToEnter {SeatTryingToEnter} DoorTryingToEnter {DoorTryingToEnter}");
         //SeatTryingToEnterEntryPosition = SeatAssigner.GetEntryPosition(VehicleTryingToEnter, SeatTryingToEnter);
     }
 }

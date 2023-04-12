@@ -201,14 +201,14 @@ public class Investigate : ComplexTask
                 Ped.GameTimeReachedInvestigationPosition = 0;
                 CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(true);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 HasReachedReportedPosition = true;
                 Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
@@ -228,14 +228,14 @@ public class Investigate : ComplexTask
                 Ped.GameTimeReachedInvestigationPosition = 0;
                 CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(false);
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
                 HasReachedReportedPosition = true;
-                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {

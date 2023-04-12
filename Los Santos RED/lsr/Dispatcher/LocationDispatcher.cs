@@ -68,7 +68,7 @@ public class LocationDispatcher
                     cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems);
                     if(cl.AttemptedSpawn && !string.IsNullOrEmpty(cl.GroupID))
                     {
-                        EntryPoint.WriteToConsole($"ADDED FORCED GROUP {cl.GroupID}");
+                        //EntryPoint.WriteToConsoleTestLong($"ADDED FORCED GROUP {cl.GroupID}");
                         ForcedGroups.Add(cl.GroupID);
                     }
                     GameFiber.Yield();
@@ -80,7 +80,7 @@ public class LocationDispatcher
                 foreach (ConditionalLocation cl in ps.PossibleVehicleSpawns)
                 {
                     bool hasStuff = ForcedGroups.Contains(cl.GroupID);
-                    EntryPoint.WriteToConsole($"CHECKED FORCE GROUP {cl.GroupID} FORCING:{hasStuff}");
+                    //EntryPoint.WriteToConsoleTestLong($"CHECKED FORCE GROUP {cl.GroupID} FORCING:{hasStuff}");
                     cl.AttemptSpawn(Player, false, hasStuff, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
                     GameFiber.Yield();
                 }

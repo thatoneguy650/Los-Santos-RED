@@ -354,8 +354,17 @@ namespace Mod
         public int LastSeatIndex => -1;
         public string ModelName { get; set; }
         public Ped Pedestrian => Game.LocalPlayer.Character;
+        public bool PoliceLastSeenOnFoot { get; set; }
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
+        public bool IsNearbyPlacePoliceShouldSearchForPlayer { get; set; }
         public Vector3 PlacePoliceShouldSearchForPlayer { get; set; }
+
+
+
+        public Vector3 StreetPlacePoliceShouldSearchForPlayer { get; set; }
+        public Vector3 StreetPlacePoliceLastSeenPlayer { get; set; }
+
+
         public string PlayerName { get; set; }
         public Vector3 Position => position;
         public VehicleExt PreviousVehicle { get; private set; }
@@ -721,7 +730,7 @@ namespace Mod
         public void ChangeName(string newName)
         {
             PlayerName = newName;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: ChangeName {newName}");
         }
         public void DisplayPlayerNotification()
         {
@@ -752,7 +761,7 @@ namespace Mod
             {
                 FreeModeVoice = voiceName;
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: SetDemographics MoneyToSet {money} Current: {BankAccounts.Money} {NativeHelper.CashHash(Settings.SettingsManager.PedSwapSettings.MainCharacterToAlias)}");
         }
         public void LocationUpdate()
         {
@@ -783,7 +792,7 @@ namespace Mod
                 {
                     Character.PlayAmbientSpeech(FreeModeVoice, speechName, 0, SpeechModifier.Force);
                 }
-                EntryPoint.WriteToConsole($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
+                //EntryPoint.WriteToConsoleTestLong($"FREEMODE COP SPEAK {Character.Handle} freeModeVoice {FreeModeVoice} speechName {speechName}");
             }
             else
             {
@@ -898,7 +907,7 @@ namespace Mod
                 meCop.CanBeAmbientTasked = !meCop.CanBeAmbientTasked;
                 meCop.CanBeTasked = !meCop.CanBeTasked;
                 Game.DisplaySubtitle($"Player Cop Taskable: {meCop.CanBeTasked}");
-               EntryPoint.WriteToConsole($"Player Cop Taskable: {meCop.CanBeTasked}");
+               //EntryPoint.WriteToConsoleTestLong($"Player Cop Taskable: {meCop.CanBeTasked}");
             }
         }
         public void ShowVehicleInteractMenu()
@@ -910,7 +919,7 @@ namespace Mod
             VehicleDoorSeatData vdsd = null;
             if (!IsInVehicle)
             {
-                vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 5.0f, VehicleSeatDoorData);
+                vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 2.5f, VehicleSeatDoorData);
                 if(vdsd == null)
                 {
                     return;
@@ -928,7 +937,7 @@ namespace Mod
             {
                 Scanner.OnGotOffFreeway();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOffFreeway (5 Second Delay)", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOffFreeway (5 Second Delay)");
         }
         public void OnGotOnFreeway()
         {
@@ -937,14 +946,14 @@ namespace Mod
             {
                 Scanner.OnGotOnFreeway();
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOnFreeway (5 Second Delay)", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnGotOnFreeway (5 Second Delay)");
         }
         public void OnInvestigationExpire()
         {
             GameFiber.Yield();
             PoliceResponse.Reset();
             Scanner.OnInvestigationExpire();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnInvestigationExpire", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnInvestigationExpire");
         }
         public void OnKilledCop()
         {
@@ -1001,7 +1010,7 @@ namespace Mod
 
             PlayerVoice.OnCrashedCar();
 
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleCrashed");
         }
         public void OnVehicleEngineHealthDecreased(float amount, bool isCollision)
         {
@@ -1015,7 +1024,7 @@ namespace Mod
                // CurrentVehicle?.VehicleBodyManager.OnVehicleCrashed();
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleEngineHealthDecreased {amount} {isCollision}");
         }
         public void OnVehicleHealthDecreased(int amount, bool isCollision)
         {
@@ -1032,7 +1041,7 @@ namespace Mod
                 }
                 GameTimeLastCrashedVehicle = Game.GameTime;
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}", 5);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnVehicleHealthDecreased {amount} {isCollision}");
         }
         public void OnVehicleStartedFire()
         {
@@ -1074,7 +1083,7 @@ namespace Mod
                 }
                 else
                 {
-                    EntryPoint.WriteToConsole($"CurrentWeapon {WeaponEquipment.CurrentWeapon.ModelName}", 5);
+                    //EntryPoint.WriteToConsole($"CurrentWeapon {WeaponEquipment.CurrentWeapon.ModelName}");
                 }
             }
             else
@@ -1107,7 +1116,7 @@ namespace Mod
                     }
                 }, "FastForwardWatcher");
             }
-            EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: OnExcessiveSpeed");
         }
         private void OnGettingIntoAVehicleChanged()
         {
@@ -1122,7 +1131,7 @@ namespace Mod
                 }
             }
             isGettingIntoVehicle = IsGettingIntoAVehicle;
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicleChanged to {IsGettingIntoAVehicle}, HoldingEnter {IsNotHoldingEnter}");
         }
 
 
@@ -1131,13 +1140,13 @@ namespace Mod
         {
             if(CurrentVehicle == null)
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle ERROR VEHICLE NOT FOUND (ARE YOU SCANNING ENOUGH?)", 3);
                 return;
             }
             VehicleGettingInto = CurrentVehicle;
             if(IsFreeToEnter())
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
                 return;
             }
             if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
@@ -1147,13 +1156,13 @@ namespace Mod
             HandleScrewdriver();
             if (IsNotHoldingEnter && VehicleTryingToEnter.Driver == null && VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && !VehicleTryingToEnter.IsEngineOn && (!Settings.SettingsManager.VehicleSettings.RequireScrewdriverForLockPickEntry || currentlyHasScrewdriver))//no driver && Unlocked
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: LockPick Start", 3);
                 CarLockPick MyLockPick = new CarLockPick(this, VehicleTryingToEnter, SeatTryingToEnter);
                 MyLockPick.PickLock();
             }
             else if (IsNotHoldingEnter && SeatTryingToEnter == -1 && VehicleTryingToEnter.Driver != null && VehicleTryingToEnter.Driver.IsAlive) //Driver
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: CarJack Start", 3);
                 PedExt jackedPed = World.Pedestrians.GetPedExt(VehicleTryingToEnter.Driver.Handle);
                 Violations.TheftViolations.AddCarJacked(jackedPed);
                 CarJack MyJack = new CarJack(this, CurrentVehicle, jackedPed, SeatTryingToEnter, WeaponEquipment.CurrentWeapon);
@@ -1161,7 +1170,7 @@ namespace Mod
             }
             else if (VehicleTryingToEnter.LockStatus == (VehicleLockStatus)7 && CurrentVehicle.IsCar)
             {
-                EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: Car Break-In Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
                 CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
                 MyBreakIn.BreakIn();
             }
@@ -1183,45 +1192,45 @@ namespace Mod
         {
             if (CurrentVehicle.Vehicle.Exists() && NativeFunction.Natives.IS_TURRET_SEAT<bool>(VehicleTryingToEnter, SeatTryingToEnter))
             {
-                EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
+                //EntryPoint.WriteToConsole($"YOU ARE GETTING INTO A TURRENT, NOT DOING LOCKPICK SeatTryingToEnter {SeatTryingToEnter}");
                 return true;
             }
             else if (!Settings.SettingsManager.VehicleSettings.AllowLockVehicles)
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Disallow Lock");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: Disallow Lock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (VehicleOwnership.OwnedVehicles.Any(x => CurrentVehicle.Vehicle.Exists() && x.Handle == CurrentVehicle.Handle))
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Owned Vehicle");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: Owned Vehicle");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (CurrentVehicle.Vehicle.Exists() && LastFriendlyVehicle.Exists() && CurrentVehicle.Vehicle.Handle == LastFriendlyVehicle.Handle)
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Last Friendly");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: Last Friendly");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (!CurrentVehicle.WasModSpawned && !Settings.SettingsManager.VehicleSettings.AllowLockMissionVehicles && CurrentVehicle.Vehicle.Exists() && CurrentVehicle.Vehicle.IsPersistent)
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Mission Lock");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: Mission Lock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
             }
             else if (CurrentVehicle.WasModSpawned && (CurrentVehicle.IsService || CurrentVehicle.IsGang) && CurrentVehicle.Vehicle.Exists())//maybe unlock friendly gang vehicles?maybe not
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: FALSE SERVICE OR GANG, SET LOCKED");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: FALSE SERVICE OR GANG, SET LOCKED");
                 return false;
             }
             else if (CurrentVehicle.Vehicle.Exists() && !CurrentVehicle.IsRandomlyLocked)// RandomItems.RandomPercent(Settings.SettingsManager.VehicleSettings.LockVehiclePercentage))
             {
-                EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");
+                //EntryPoint.WriteToConsole($"IsFreeToEnter: Percentage Unlock");
                 CurrentVehicle.Vehicle.LockStatus = (VehicleLockStatus)1;
                 CurrentVehicle.Vehicle.MustBeHotwired = false;
                 return true;
@@ -1295,7 +1304,7 @@ namespace Mod
 
             }
             //UpdateOwnedBlips();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsInVehicle to {IsInVehicle}");
         }
         private void OnPlayerBusted()
         {
@@ -1315,7 +1324,7 @@ namespace Mod
             NativeHelper.DisablePlayerControl();
             //Game.LocalPlayer.HasControl = false;
             Scanner.OnPlayerBusted();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsBusted Changed to: {IsBusted}");
         }
         private void OnPlayerDied()
         {
@@ -1333,7 +1342,7 @@ namespace Mod
             }
             Scanner.OnSuspectWasted();
             ActivityManager.OnPlayerDied();
-            EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}", 3);
+            //EntryPoint.WriteToConsole($"PLAYER EVENT: IsDead Changed to: {IsDead}");
         }
         private void OnIsShootingChanged()
         {
@@ -1344,11 +1353,11 @@ namespace Mod
                     Scanner.OnSuspectShooting();
                 }
                 PlayerVoice.OnShotGun();
-                EntryPoint.WriteToConsole("PLAYER EVENT: Starting Shooting");
+                //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: Starting Shooting");
             }
             else
             {
-                EntryPoint.WriteToConsole("PLAYER EVENT: Stopped Shooting");
+                //EntryPoint.WriteToConsoleTestLong("PLAYER EVENT: Stopped Shooting");
             }
         }
         private void OnStartedDuckingInVehicle()
@@ -1361,7 +1370,7 @@ namespace Mod
                     storedViewMode = viewMode;
                     NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(4);
                 }
-                EntryPoint.WriteToConsole($"OnStartedDuckingInVehicle viewMode {viewMode} storedViewMode {storedViewMode}", 5);
+               // EntryPoint.WriteToConsole($"OnStartedDuckingInVehicle viewMode {viewMode} storedViewMode {storedViewMode}", 5);
             }
         }
         private void OnStoppedDuckingInVehicle()
@@ -1374,7 +1383,7 @@ namespace Mod
                     NativeFunction.Natives.SET_FOLLOW_VEHICLE_CAM_VIEW_MODE(storedViewMode);
                     storedViewMode = -1;
                 }
-                EntryPoint.WriteToConsole($"OnStoppedDuckingInVehicle storedViewMode {storedViewMode}", 5);
+               // EntryPoint.WriteToConsole($"OnStoppedDuckingInVehicle storedViewMode {storedViewMode}", 5);
             }
         }
         private void OnTargettingHandleChanged()
@@ -1400,7 +1409,7 @@ namespace Mod
                 {
                     if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
+                        //EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING TO {PreviousWantedLevel}", 3);
                         SetWantedLevel(PreviousWantedLevel, "GAME AUTO SET WANTED", true);
                     }
                 }
@@ -1415,7 +1424,7 @@ namespace Mod
                     RelationshipManager.GangRelationships.OnLostWanted();
                     GameFiber.Yield();//TR 05
                     World.Pedestrians.CivilianList.ForEach(x => x.PlayerCrimesWitnessed.Clear());
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
+                   // EntryPoint.WriteToConsole($"PLAYER EVENT: LOST WANTED", 3);
                 }
             }
             else if (IsWanted && PreviousWantedLevel == 0)//Added Wanted Level
@@ -1424,7 +1433,7 @@ namespace Mod
                 {
                     if (Settings.SettingsManager.PoliceSettings.TakeExclusiveControlOverWantedLevel)
                     {
-                        EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
+                        //EntryPoint.WriteToConsole($"PLAYER EVENT: GAME AUTO SET WANTED TO {WantedLevel}, RESETTING", 3);
                         SetWantedLevel(0, "GAME AUTO SET WANTED", true);
                     }
                 }
@@ -1437,21 +1446,21 @@ namespace Mod
                     PlayerVoice.OnBecameWanted();
                     GameFiber.Yield();//TR 05
                     RelationshipManager.GangRelationships.OnBecameWanted();
-                    EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
+                   // EntryPoint.WriteToConsole($"PLAYER EVENT: BECAME WANTED", 3);
                 }
             }
             else if (IsWanted && PreviousWantedLevel < WantedLevel)//Increased Wanted Level (can't decrease only remove for now.......)
             {
                 PoliceResponse.OnWantedLevelIncreased();
-                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
+               // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL INCREASED", 3);
                 //BigMessage.ShowColoredShard("WANTED", $"{wantedLevel} stars", HudColor.Gold, HudColor.InGameBackground);
             }
             else if (IsWanted && PreviousWantedLevel > WantedLevel)
             {
                 //PoliceResponse.OnWantedLevelDecreased();
-                EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
+               // EntryPoint.WriteToConsole($"PLAYER EVENT: WANTED LEVEL DECREASED", 3);
             }
-            EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
+           // EntryPoint.WriteToConsole($"Wanted Changed: {WantedLevel} Previous: {PreviousWantedLevel}", 3);
             PreviousWantedLevel = wantedLevel;// NativeFunction.Natives.GET_FAKE_WANTED_LEVEL<int>();//PreviousWantedLevel = Game.LocalPlayer.WantedLevel;
         }
         //Crimes
@@ -2104,7 +2113,7 @@ namespace Mod
                             World.Vehicles.AddEntity(createdVehicleExt, ResponseType.None);
                             TrackedVehicles.Add(createdVehicleExt);
                             existingVehicleExt = createdVehicleExt;
-                            EntryPoint.WriteToConsole("New Vehicle Created in UpdateCurrentVehicle");
+                            //EntryPoint.WriteToConsoleTestLong("New Vehicle Created in UpdateCurrentVehicle");
                         }
                         if (!TrackedVehicles.Any(x => x.Vehicle.Handle == vehicle.Handle))
                         {
@@ -2139,7 +2148,7 @@ namespace Mod
                             }
                             CurrentVehicle = existingVehicleExt;
 
-                            EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
+                            //EntryPoint.WriteToConsole("PLAYER VEHICLE UPDATE Needed to re look up vehicle", 5);
                         }
                     }
                 }

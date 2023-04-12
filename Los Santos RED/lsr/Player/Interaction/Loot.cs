@@ -46,7 +46,7 @@ public class Loot : DynamicActivity
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"Looting Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
+            //EntryPoint.WriteToConsoleTestLong($"Looting Started Money: {Ped.Money} Dead: {Ped.IsDead} Unconsc: {Ped.IsUnconscious}");
 
             Player.ActivityManager.IsLootingBody = true;
            // NativeFunction.Natives.SET_GAMEPLAY_PED_HINT(Ped.Pedestrian, 0f, 0f, 0f, true, -1, 2000, 2000);
@@ -81,7 +81,7 @@ public class Loot : DynamicActivity
     }
     private void LootBody()
     {
-        EntryPoint.WriteToConsole("Looting Body");
+        //EntryPoint.WriteToConsoleTestLong("Looting Body");
         if (MoveToBody())
         {
             bool hasCompletedTasks = DoLootAnimation();
@@ -192,14 +192,14 @@ public class Loot : DynamicActivity
 
         DesiredHeading = calcHeading2;
 
-        EntryPoint.WriteToConsole($"calcHeading 1 {calcHeading} calcHeading2  {calcHeading2}", 5);
+        //EntryPoint.WriteToConsole($"calcHeading 1 {calcHeading} calcHeading2  {calcHeading2}");
 
 
         //calcHeading = -(90 - calcHeading);
         NativeFunction.CallByName<bool>("TASK_TURN_PED_TO_FACE_ENTITY", Player.Character, Ped.Pedestrian, 1000);
 
 
-        EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}", 5);
+        //EntryPoint.WriteToConsole($"calcHeading 2 {calcHeading} calcHeading2 {calcHeading2}");
 
         //NativeFunction.Natives.TASK_ACHIEVE_HEADING(Player.Character, calcHeading2, -1);//1200
 
@@ -210,13 +210,13 @@ public class Loot : DynamicActivity
         GameFiber.Sleep(1000);
         if (IsCloseEnough && IsFacingDirection && !IsCancelled)
         {
-            EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+           // EntryPoint.WriteToConsole($"MoveToBody IN POSITION {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}");
             return true;
         }
         else
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
-            EntryPoint.WriteToConsole($"MoveToBody NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}", 5);
+            //EntryPoint.WriteToConsole($"MoveToBody NOT IN POSITION EXIT {Game.LocalPlayer.Character.DistanceTo(DesiredPosition)} {Extensions.GetHeadingDifference(heading, DesiredHeading)} {heading} {DesiredHeading}");
             return false;
         }
     }
@@ -345,7 +345,7 @@ public class Loot : DynamicActivity
             {
                 Spoke = true;
             }
-            EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}", 5);
+            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}");
             if (Spoke)
             {
                 break;

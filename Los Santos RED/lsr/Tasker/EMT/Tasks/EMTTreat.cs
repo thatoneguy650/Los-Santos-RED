@@ -94,7 +94,7 @@ public class EMTTreat : ComplexTask
             if (Ped.Pedestrian.DistanceTo2D(OtherTarget.Pedestrian.Position) <= 5f)
             {
                 OtherTarget.HasStartedEMTTreatment = true;
-                EntryPoint.WriteToConsole("EMT REACHED VICTIM");
+                //EntryPoint.WriteToConsoleTestLong("EMT REACHED VICTIM");
                 HasReachedVictim = true;
                 GameTimeStartedTreatingVictim = Game.GameTime;
             }
@@ -125,7 +125,7 @@ public class EMTTreat : ComplexTask
                 OtherTarget.HasStartedEMTTreatment = false;
                 if (OtherTarget.Pedestrian.Exists())
                 {
-                    EntryPoint.WriteToConsole("EMT TREATED VICTIM");
+                    //EntryPoint.WriteToConsoleTestLong("EMT TREATED VICTIM");
 
 
                     if (RandomItems.RandomPercent(Settings.SettingsManager.EMSSettings.RevivePercentage))
@@ -206,18 +206,18 @@ public class EMTTreat : ComplexTask
                 HasReachedReportedPosition = false;
                 CurrentTaskedPosition = OtherTarget.Pedestrian.Position;
                 UpdateGoTo();
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated 2: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Updated 2: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)//25f
             {
                 HasReachedReportedPosition = true;
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo();
-                EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Near: {0}", Ped.Pedestrian.Handle), 5);
+               // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }
@@ -239,7 +239,7 @@ public class EMTTreat : ComplexTask
                     {
                         NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 12f, (int)eCustomDrivingStyles.Code3, 20f); //NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, (int)VehicleDrivingFlags.Normal, 20f);
                     }
-                    EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
+                   // EntryPoint.WriteToConsole(string.Format("TASKER: EMTRespond UpdateGoTo Driver: {0}", Ped.Pedestrian.Handle), 5);
                 }
             }
             else
@@ -279,7 +279,7 @@ public class EMTTreat : ComplexTask
         Ped.Pedestrian.KeepTasks = true;
         if (Ped.Pedestrian.Exists() && OtherTarget != null && OtherTarget.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole("EMT TREAT VICTIM RAN");
+            //EntryPoint.WriteToConsoleTestLong("EMT TREAT VICTIM RAN");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@enter");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@base");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@tendtodead@exit");
@@ -364,7 +364,7 @@ public class EMTTreat : ComplexTask
             {
                 Spoke = true;
             }
-            EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}", 5);
+            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {ToSpeak.Handle} Attempting {AmbientSpeech}, Result: {Spoke}", 5);
             if (Spoke)
             {
                 break;

@@ -67,7 +67,7 @@ public class SimpleWarning
                 Tick();
                 if (IsAnswered)
                 {
-                    EntryPoint.WriteToConsole($"Simple Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
+                    //EntryPoint.WriteToConsoleTestLong($"Simple Warning Exit Result IsAccepted{IsAccepted} IsRejected{IsRejected}");
                     break;
                 }
                 FramesSinceStarted++;

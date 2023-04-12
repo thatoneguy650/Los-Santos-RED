@@ -41,7 +41,7 @@ public class CameraCyclerPosition
         Camera coolCam = charCam;
 
 
-        EntryPoint.WriteToConsole($"CameraCyclerPosition MoveToPosition {Name}");
+        //EntryPoint.WriteToConsoleTestLong($"CameraCyclerPosition MoveToPosition {Name}");
         if (coolCam == null || !coolCam.Exists())
         {
             coolCam = new Camera(false);

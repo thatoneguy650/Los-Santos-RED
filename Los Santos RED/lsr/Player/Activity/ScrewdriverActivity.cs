@@ -46,7 +46,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Screwdriver ACTIVITY Start", 5);
+            //EntryPoint.WriteToConsole($"Screwdriver ACTIVITY Start");
             GameFiber ShovelWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -88,7 +88,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Dispose()
         {
-            EntryPoint.WriteToConsole("Screwdriver ACTIVITY END");
+            //EntryPoint.WriteToConsoleTestLong("Screwdriver ACTIVITY END");
             IsCancelled = true;
             Player.ActivityManager.IsPerformingActivity = false;
             meleeWeaponAlias?.Dispose();

@@ -17,13 +17,22 @@ public class Locate : ComplexTask
     private bool isSetCode3Close;
     private bool hasSixthSense = false;
     private ISettingsProvideable Settings;
-    private Vector3 PlaceToGoTo => hasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
+    private Vector3 PlaceToGoTo => hasSixthSense ? Player.StreetPlacePoliceShouldSearchForPlayer : Player.StreetPlacePoliceLastSeenPlayer;
 
+
+
+    private Vector3 PlaceToGoToOnFoot => hasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
+
+
+
+
+    //private Vector3 PlaceToGoToOnFoot => hasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
     private enum Task
     {
         Wander,
         GoTo,
         Nothing,
+        InvestigateOnFoot,
     }
     private Task CurrentTaskDynamic
     {
@@ -31,7 +40,14 @@ public class Locate : ComplexTask
         {
             if (HasReachedReportedPosition)
             {
-                return Task.Wander;
+                if(!Ped.IsInHelicopter && Player.IsOnFoot && Player.PoliceLastSeenOnFoot && Player.IsNearbyPlacePoliceShouldSearchForPlayer)
+                {
+                    return Task.InvestigateOnFoot;
+                }
+                else
+                {
+                    return Task.Wander;
+                }
             }
             else
             {
@@ -56,7 +72,7 @@ public class Locate : ComplexTask
                 hasSixthSense = true;
             }
 
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
+            //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
             Update();
         }
     }
@@ -92,8 +108,73 @@ public class Locate : ComplexTask
             SubTaskName = "GoTo";
             GoTo();
         }
+        else if (CurrentTask == Task.InvestigateOnFoot)
+        {
+            SubTaskName = "InvestigateOnFoot";
+            InvestigateOnFoot();
+        }
         GameTimeLastRan = Game.GameTime;
     }
+
+
+    private void InvestigateOnFoot()
+    {
+        if (Ped == null || !Ped.Pedestrian.Exists())
+        {
+            return;
+        }
+        NeedsUpdates = false;
+        InvestigatePosition();     
+    }
+
+
+    private void InvestigatePosition()
+    {
+        if (!Ped.Pedestrian.Exists())
+        {
+            return;
+        }
+        Ped.Pedestrian.BlockPermanentEvents = Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleLocate;
+        Ped.Pedestrian.KeepTasks = true;
+
+        Vector3 RandomPlaceOnFoot = PlaceToGoToOnFoot.Around2D(15f);
+
+        if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
+        { 
+            EntryPoint.WriteToConsole("LOCATE SET TO LEAVE VEHICLE AND WANDER");
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
+                NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
+                NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                NativeFunction.CallByName<bool>("TASK_WANDER_IN_AREA", 0, PlaceToGoToOnFoot.X, PlaceToGoToOnFoot.Y, PlaceToGoToOnFoot.Z, 150f, 0.0f,0.0f);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        else
+        {
+            EntryPoint.WriteToConsole("LOCATE SET TO JUST WANDER");
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<bool>("TASK_FOLLOW_NAV_MESH_TO_COORD", 0, RandomPlaceOnFoot.X, RandomPlaceOnFoot.Y, RandomPlaceOnFoot.Z,100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+                NativeFunction.CallByName<bool>("TASK_WANDER_IN_AREA", 0, PlaceToGoToOnFoot.X, PlaceToGoToOnFoot.Y, PlaceToGoToOnFoot.Z, 150f, 0.0f, 0.0f);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+    }
+
+  
+
     private void Wander()
     {
         NeedsUpdates = false;
@@ -170,6 +251,18 @@ public class Locate : ComplexTask
 
             }
         }
+        else
+        {
+            if (DistanceToCoordinates <= 50f)
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
+            }
+            else
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 70f);
+
+            }
+        }
         if (DistanceToCoordinates <= 25f)
         {
             if (hasSixthSense && Player.SearchMode.IsInStartOfSearchMode)
@@ -180,7 +273,7 @@ public class Locate : ComplexTask
             {
                 HasReachedReportedPosition = true;
             }
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
+            //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
         }     
     }
     private void SetGoToDrivingStyle()
@@ -251,28 +344,28 @@ NATIVE PROC TASK_FOLLOW_NAV_MESH_TO_COORD(PED_INDEX PedIndex
 , ENAV_SCRIPT_FLAGS NavFlags = ENAV_DEFAULT
 , FLOAT FinalHeading = DEFAULT_NAVMESH_FINAL_HEADING 
 */
-}
-private void SetVehicle()
-{
-if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
-{
-    Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
-    Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
-}
-if (Ped.IsInVehicle)
-{
-    NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
-    NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
-    if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
-    {
-        NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
     }
-}
-}
-public override void Stop()
-{
+    private void SetVehicle()
+    {
+        if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        {
+            Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
+            Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
+        }
+        if (Ped.IsInVehicle)
+        {
+            NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
+            NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
+            if (Settings.SettingsManager.PoliceTaskSettings.DriverRacing > 0f)
+            {
+                NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
+            }
+        }
+    }
+    public override void Stop()
+    {
 
-}
+    }
 
 //private void Wander()
 //{

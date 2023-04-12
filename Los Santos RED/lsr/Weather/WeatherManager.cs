@@ -88,7 +88,7 @@ public class WeatherManager
         EverSetWeather = true;
         if (CurrentSetWeather != closestForecast.GTAWeather)
         {
-            EntryPoint.WriteToConsole($"Updating Weather to {closestForecast.GTAWeather} from {CurrentSetWeather}");
+            //EntryPoint.WriteToConsoleTestLong($"Updating Weather to {closestForecast.GTAWeather} from {CurrentSetWeather}");
 
 
 
@@ -105,14 +105,14 @@ public class WeatherManager
         }
         if (CurrentSetRainLevel != closestForecast.RainLevel)
         {
-            EntryPoint.WriteToConsole($"Updating Rain to {closestForecast.RainLevel} from {CurrentSetRainLevel}");
+            //EntryPoint.WriteToConsoleTestLong($"Updating Rain to {closestForecast.RainLevel} from {CurrentSetRainLevel}");
 
             NativeFunction.Natives.x643E26EA6E024D92(closestForecast.RainLevel);
             CurrentSetRainLevel = closestForecast.RainLevel;
         }
         if (CurrentSetWindSpeed != closestForecast.WindSpeedMetersPerSecond)
         {
-            EntryPoint.WriteToConsole($"Updating WindSpeed to {closestForecast.WindSpeedMetersPerSecond} from {CurrentSetWindSpeed}");
+            //EntryPoint.WriteToConsoleTestLong($"Updating WindSpeed to {closestForecast.WindSpeedMetersPerSecond} from {CurrentSetWindSpeed}");
 
             NativeFunction.Natives.SET_WIND_SPEED(closestForecast.WindSpeedMetersPerSecond);
 
@@ -120,7 +120,7 @@ public class WeatherManager
         }
         if(CurrentSetWindDirection != closestForecast.WindDirectionRadians)
         {
-            EntryPoint.WriteToConsole($"Updating WindDirection to {closestForecast.WindDirectionRadians} from {CurrentSetWindDirection}");
+            //EntryPoint.WriteToConsoleTestLong($"Updating WindDirection to {closestForecast.WindDirectionRadians} from {CurrentSetWindDirection}");
 
             NativeFunction.Natives.SET_WIND_DIRECTION(closestForecast.WindDirectionRadians);
 
@@ -137,7 +137,7 @@ public class WeatherManager
         TransitionToWeatherPercent = Settings.SettingsManager.WeatherSettings.StartChangeWeatherPrcentage;
         IsTransitioningWeather = true;
         NativeFunction.Natives.SET_CURR_WEATHER_STATE((uint)TransitionFromWeather, (uint)TransitionToWeather, TransitionToWeatherPercent);
-        EntryPoint.WriteToConsole($"Started Weather Transition from:{TransitionFromWeather} to {TransitionToWeather} percent {TransitionToWeatherPercent}");
+        //EntryPoint.WriteToConsoleTestLong($"Started Weather Transition from:{TransitionFromWeather} to {TransitionToWeather} percent {TransitionToWeatherPercent}");
     }
     private void UpdateWeatherTransition()
     {
@@ -146,7 +146,7 @@ public class WeatherManager
             if(TransitionToWeatherPercent >= 1.0f)
             {
                 IsTransitioningWeather = false;
-                EntryPoint.WriteToConsole($"Stopped Weather Transition");
+                //EntryPoint.WriteToConsoleTestLong($"Stopped Weather Transition");
             }
             else
             {
@@ -155,7 +155,7 @@ public class WeatherManager
                     TransitionToWeatherPercent += Settings.SettingsManager.WeatherSettings.ChangeWeatherPrcentage;
                     GameTimeLastSetWeatherTransition = Game.GameTime;
                     NativeFunction.Natives.SET_CURR_WEATHER_STATE((uint)TransitionFromWeather, (uint)TransitionToWeather, TransitionToWeatherPercent);
-                    EntryPoint.WriteToConsole($"Updated Weather Transition from:{TransitionFromWeather} to {TransitionToWeather} percent {TransitionToWeatherPercent}");
+                    //EntryPoint.WriteToConsoleTestLong($"Updated Weather Transition from:{TransitionFromWeather} to {TransitionToWeather} percent {TransitionToWeatherPercent}");
                 }
             }
         }

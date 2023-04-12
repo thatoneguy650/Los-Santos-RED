@@ -412,7 +412,7 @@ public class Pedestrians : ITaskerReportable
             }
             Cop.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            //EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == Cop.Handle))
             {
                 Cop.IsDead = true;
@@ -430,7 +430,7 @@ public class Pedestrians : ITaskerReportable
             }
             SecurityGuard.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: SecurityGuard {SecurityGuard.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            //EntryPoint.WriteToConsole($"Pedestrians: SecurityGuard {SecurityGuard.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == SecurityGuard.Handle))
             {
                 SecurityGuard.IsDead = true;
@@ -450,7 +450,7 @@ public class Pedestrians : ITaskerReportable
             }
             EMT.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            //EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == EMT.Handle))
             {
                 EMT.IsDead = true;
@@ -468,7 +468,7 @@ public class Pedestrians : ITaskerReportable
             }
             Firefighter.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+           // EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
             if (!DeadPeds.Any(x => x.Handle == Firefighter.Handle))
             {
                 Firefighter.IsDead = true;
@@ -914,7 +914,7 @@ public class Pedestrians : ITaskerReportable
             Police.Add(myCop);
             myCop.Pedestrian.IsPersistent = true;
         }
-        EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
+        //EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
     }
     private void AddAmbientSecurityGuard(Ped Pedestrian)
     {
@@ -942,7 +942,7 @@ public class Pedestrians : ITaskerReportable
             SecurityGuards.Add(mySecurityGuard);
             mySecurityGuard.Pedestrian.IsPersistent = true;
         }
-        EntryPoint.WriteToConsole($"PEDESTRIANS: Add SECURITY {Pedestrian.Handle}", 2);        
+        //EntryPoint.WriteToConsole($"PEDESTRIANS: Add SECURITY {Pedestrian.Handle}", 2);        
     }
     public (Agency agency, DispatchablePerson dispatchablePerson) GetAgencyData(Ped ped, int WantedLevel, ResponseType responseType)
     {

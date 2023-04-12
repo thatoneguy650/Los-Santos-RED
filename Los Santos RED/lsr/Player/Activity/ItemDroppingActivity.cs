@@ -53,7 +53,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Item Drop Start", 5);
+            //EntryPoint.WriteToConsole($"Item Drop Start");
             GameFiber GestureWatcher = GameFiber.StartNew(delegate
             {
                 try

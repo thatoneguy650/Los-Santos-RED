@@ -37,7 +37,7 @@ public class PedViolations
                 string RelationshipGroupName = PedExt.Pedestrian.RelationshipGroup.Name;//weirdness withthis bullshit
                 if(RelationshipGroupName == string.Empty)
                 {
-                    EntryPoint.WriteToConsole($" PedExt.Pedestrian {PedExt.Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
+                    //EntryPoint.WriteToConsoleTestLong($" PedExt.Pedestrian {PedExt.Pedestrian.Handle} RelationshipGroupName {RelationshipGroupName} RelationshipGroupName2 A{RelationshipGroupName}A");
                     RelationshipGroupName = RelationshipGroupName.ToUpper();
                 }
                 if (RelationshipGroupName == "SECURITY_GUARD" || RelationshipGroupName == "SECURITY_GUARDS" || RelationshipGroupName == "PRIVATE_SECURITY" || RelationshipGroupName == "FIREMAN" || RelationshipGroupName == "MEDIC" || RelationshipGroupName == "RANGE_IGNORE" || RelationshipGroupName == "range_IGNORE")
@@ -146,7 +146,7 @@ public class PedViolations
         {
             PedExt.OnLostWanted();
            // Reset();
-            EntryPoint.WriteToConsole($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
+            //EntryPoint.WriteToConsoleTestLong($"Removing Wanted Level, No Near Cops {PedExt?.Handle}");
         }
     }
     private void CheckCrimes(IPoliceRespondable player)
@@ -288,7 +288,7 @@ public class PedViolations
                         EverCommittedCrime = true;
                         PedExt.WillCallPolice = false;
                         PedExt.WillCallPoliceIntense = false;
-                        EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}", 5);
+                        //EntryPoint.WriteToConsole($"PEDCRIMES: FIRST CRIME {PedExt.Pedestrian.Handle} {CrimesViolating.FirstOrDefault().Name}");
                     }
                 }
                 if (player.Investigation.IsActive && (Game.GameTime - GameTimeLastCommittedCrime <= 7000 || (EverCommittedCrime && PedExt.Pedestrian.IsRunning)) && PedExt.Pedestrian.DistanceTo2D(player.Investigation.Position) <= player.Investigation.Distance)

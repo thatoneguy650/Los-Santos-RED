@@ -223,7 +223,7 @@ public class ModItem
         sellScroller.Maximum = MaxSell;
         sellScroller.Enabled = isEnabled;
         sellScroller.Description = description;
-        EntryPoint.WriteToConsole($"SELL Item: {Name} formattedSalesPrice {formattedPurchasePrice} NumberOfItemsToPurchaseFromPlayer: {menuItem.NumberOfItemsToPurchaseFromPlayer} ItemsBoughtFromPlayer {itemsBoughtFromPlayer}");
+        //EntryPoint.WriteToConsoleTestLong($"SELL Item: {Name} formattedSalesPrice {formattedPurchasePrice} NumberOfItemsToPurchaseFromPlayer: {menuItem.NumberOfItemsToPurchaseFromPlayer} ItemsBoughtFromPlayer {itemsBoughtFromPlayer}");
     }
     private bool SellItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
     {
@@ -351,7 +351,7 @@ public class ModItem
             purchaseScroller.Maximum = RemainingToBuy;
             purchaseScroller.Enabled = enabled;
             purchaseScroller.Description = description;
-            EntryPoint.WriteToConsole($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {itemsSoldToPlayer}");
+            //EntryPoint.WriteToConsoleTestLong($"PURCHASE Item: {Name} formattedPurchasePrice {formattedPurchasePrice} NumberOfItemsToSellToPlayer: {menuItem.NumberOfItemsToSellToPlayer} ItemsSoldToPlayer {itemsSoldToPlayer}");
         }
     }
     private bool PurchaseItem(Transaction Transaction, ILocationInteractable player, MenuItem menuItem, int TotalItems, bool isStealing)
@@ -433,7 +433,7 @@ public class ModItem
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (Transaction.SellingProp.Exists())
                 {
@@ -443,7 +443,7 @@ public class ModItem
                         NativeFunction.Natives.SET_ENTITY_HAS_GRAVITY(Transaction.SellingProp, false);
                     }
                 }
-                EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN", 5);
+                //EntryPoint.WriteToConsole("SIMPLE TRANSACTION: PREVIEW ITEM RAN");
             }
             else
             {
@@ -472,7 +472,7 @@ public class ModItem
         }
         return false;
     }
-    public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu)
+    public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu, bool withAnimations)
     {
         inventoryItemSubMenu = menuPool.AddSubMenu(headerMenu, Name);
         inventoryItemSubMenuItem = headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1];
@@ -485,6 +485,10 @@ public class ModItem
         {
             if(simpleInventory.Remove(this, takeScroller.Value))
             {
+                if(withAnimations)
+                {
+                    player.ActivityManager.PerformItemAnimation(true);
+                }
                 player.Inventory.Add(this,takeScroller.Value);
             }
             UpdateInventoryScrollers(player, simpleInventory);
@@ -496,6 +500,10 @@ public class ModItem
         {
             if(player.Inventory.Remove(this, giveScroller.Value))
             {
+                if(withAnimations)
+                {
+                    player.ActivityManager.PerformItemAnimation(false);
+                }
                 simpleInventory.Add(this, giveScroller.Value);
             }
             UpdateInventoryScrollers(player, simpleInventory);

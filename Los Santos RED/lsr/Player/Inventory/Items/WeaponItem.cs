@@ -101,7 +101,7 @@ public class WeaponItem : ModItem
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
-                EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+                //EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}");
             }
             //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
             //{
@@ -124,7 +124,7 @@ public class WeaponItem : ModItem
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Description = description;
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
             sellMenuRNUI.MenuItems[sellMenuRNUI.MenuItems.Count() - 1].Enabled = hasPedGotWeapon;
-            EntryPoint.WriteToConsole($"Added Weapon {Name} To Main Buy Menu", 5);
+            //EntryPoint.WriteToConsole($"Added Weapon {Name} To Main Buy Menu");
         }
 
         if (Transaction.HasBannerImage)
@@ -170,7 +170,7 @@ public class WeaponItem : ModItem
     }
     private void OnWeaponSellMenuOpen(UIMenu sender, ILocationInteractable player)
     {
-        EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN!", 5);
+        //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN!");
         foreach (UIMenuItem uimen in sender.MenuItems)
         {
             if (uimen.GetType() == typeof(UIMenuListScrollerItem<MenuItemExtra>))
@@ -185,7 +185,7 @@ public class WeaponItem : ModItem
                         {
                             myItem.SelectedItem = stuff;
                             stuff.HasItem = true;
-                            EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} HAS COMPONENT {stuff.HasItem} {myItem.OptionText}", 5);
+                            //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} HAS COMPONENT {stuff.HasItem} {myItem.OptionText}");
                             break;
                         }
                         else
@@ -194,7 +194,7 @@ public class WeaponItem : ModItem
                             myItem.SelectedItem = myItem.Items[0];
                             IsProgramicallyChangingItems = false;
                             stuff.HasItem = false;
-                            EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} DOES NOT HAVE COMPONENT  {stuff.HasItem} {myItem.OptionText}", 5);
+                            //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} DOES NOT HAVE COMPONENT  {stuff.HasItem} {myItem.OptionText}");
                         }
                         // myItem.Formatter = v => v.HasItem ? $"{v.ExtraName} - Equipped" : v.PurchasePrice == 0 ? v.ExtraName : $"{v.ExtraName} - ${v.PurchasePrice}";
                     }
@@ -224,7 +224,7 @@ public class WeaponItem : ModItem
                     uimen.Enabled = false;
                 }
             }
-            EntryPoint.WriteToConsole($"Full Below Level: {uimen.Text}", 5);
+            //EntryPoint.WriteToConsole($"Full Below Level: {uimen.Text}");
         }
     }
     private bool SellWeapon(ILocationInteractable player, Transaction transaction, MenuItem menuItem)
@@ -249,7 +249,7 @@ public class WeaponItem : ModItem
     public override void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         CurrentWeaponVariation = new WeaponVariation();
-        EntryPoint.WriteToConsole($"Purchase Menu Add Weapon Entry ItemName: {Name}", 5);
+        //EntryPoint.WriteToConsole($"Purchase Menu Add Weapon Entry ItemName: {Name}");
         string description;
         if (Description.Length >= 200)
         {
@@ -291,7 +291,7 @@ public class WeaponItem : ModItem
                 WeaponMenu = Transaction.MenuPool.AddSubMenu(CategoryMenu, menuItem.ModItemName);
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].Description = description;
                 CategoryMenu.MenuItems[CategoryMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-                EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}", 5);
+                //EntryPoint.WriteToConsole($"Added Weapon {Name} To SubMenu {CategoryMenu.SubtitleText}");
             }
             //foreach (UIMenu uimen in Transaction.MenuPool.ToList())
             //{
@@ -311,7 +311,7 @@ public class WeaponItem : ModItem
             WeaponMenu = Transaction.MenuPool.AddSubMenu(purchaseMenu, menuItem.ModItemName);
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].Description = description;
             purchaseMenu.MenuItems[purchaseMenu.MenuItems.Count() - 1].RightLabel = formattedPurchasePrice;
-            EntryPoint.WriteToConsole($"Added Weapon {Name} To Main Buy Menu", 5);
+            //EntryPoint.WriteToConsole($"Added Weapon {Name} To Main Buy Menu");
         }
         if (Transaction.HasBannerImage)
         {
@@ -372,7 +372,7 @@ public class WeaponItem : ModItem
                         WeaponComponent myComponent = WeaponInformation.PossibleComponents.Where(x => x.Name == myItem.SelectedItem.ExtraName).FirstOrDefault();
                         if (myComponent != null && menuItem != null)
                         {
-                            EntryPoint.WriteToConsole($"Weapon Component Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice} myComponent {myComponent.Name}", 5);
+                            //EntryPoint.WriteToConsole($"Weapon Component Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice} myComponent {myComponent.Name}");
                             if (player.BankAccounts.Money < myItem.SelectedItem.PurchasePrice)
                             {
                                 Transaction.DisplayInsufficientFundsMessage();
@@ -412,7 +412,7 @@ public class WeaponItem : ModItem
             if (menuItem != null)
             {
                 int TotalPrice = menuItem.SubPrice * TotalItems;
-                EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {1}", 5);
+                //EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {1}");
                 if (player.BankAccounts.Money < TotalPrice)
                 {
                     Transaction.DisplayInsufficientFundsMessage();
@@ -450,7 +450,7 @@ public class WeaponItem : ModItem
                     TotalPrice += mie.PurchasePrice;
                 }
             }
-            EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}", 5);
+            //EntryPoint.WriteToConsole($"Weapon Purchase {menuItem.ModItemName} Player.Money {player.BankAccounts.Money} menuItem.PurchasePrice {menuItem.PurchasePrice}");
             if (player.BankAccounts.Money < TotalPrice)
             {
                 Transaction.DisplayInsufficientFundsMessage();
@@ -469,7 +469,7 @@ public class WeaponItem : ModItem
     private void OnWeaponMenuOpen(UIMenu sender, ILocationInteractable player)
     {
         
-        EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! START", 5);
+        //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! START");
         foreach (UIMenuItem uimen in sender.MenuItems)
         {
             if (uimen.GetType() == typeof(UIMenuListScrollerItem<MenuItemExtra>))
@@ -484,7 +484,7 @@ public class WeaponItem : ModItem
                         {
                             myItem.SelectedItem = stuff;
                             stuff.HasItem = true;
-                            EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} HAS COMPONENT {stuff.HasItem} {myItem.OptionText}", 5);
+                            //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} HAS COMPONENT {stuff.HasItem} {myItem.OptionText}");
                             break;
                         }
                         else
@@ -494,7 +494,7 @@ public class WeaponItem : ModItem
                             IsProgramicallyChangingItems = false;
                             //myItem.SelectedItem = stuff;
                             stuff.HasItem = false;
-                            EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} DOES NOT HAVE COMPONENT  {stuff.HasItem} {myItem.OptionText}", 5);
+                            //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! {myComponent.Name} DOES NOT HAVE COMPONENT  {stuff.HasItem} {myItem.OptionText}");
                         }
                         // myItem.Formatter = v => v.HasItem ? $"{v.ExtraName} - Equipped" : v.PurchasePrice == 0 ? v.ExtraName : $"{v.ExtraName} - ${v.PurchasePrice}";
                     }
@@ -525,7 +525,7 @@ public class WeaponItem : ModItem
                     uimen.Enabled = false;
                 }
             }
-            EntryPoint.WriteToConsole($"Full Below Level: {uimen.Text}", 5);
+            //EntryPoint.WriteToConsole($"Full Below Level: {uimen.Text}");
         }
     }
     private bool PurchaseAmmo(ILocationInteractable player, Transaction transaction, MenuItem menuItem, int TotalItems)
@@ -647,7 +647,7 @@ public class WeaponItem : ModItem
                 if (!WeaponInformation.HasWeapon(player.Character))
                 {
                     int TotalPrice = CurrentMenuItem.PurchasePrice;
-                    EntryPoint.WriteToConsole($"Current Weapon: {WeaponInformation.ModelName}", 5);
+                    //EntryPoint.WriteToConsole($"Current Weapon: {WeaponInformation.ModelName}");
                     if (CurrentWeaponVariation != null)
                     {
                         foreach (WeaponComponent weaponComponents in CurrentWeaponVariation.Components)
@@ -657,7 +657,7 @@ public class WeaponItem : ModItem
                             {
                                 TotalPrice += mie.PurchasePrice;
                             }
-                            EntryPoint.WriteToConsole($"                Components On: {weaponComponents.Name}", 5);
+                           // EntryPoint.WriteToConsole($"                Components On: {weaponComponents.Name}");
                         }
                     }
                     foreach (UIMenuItem uimli in sender.MenuItems)
@@ -668,7 +668,7 @@ public class WeaponItem : ModItem
                             break;
                         }
                     }
-                    EntryPoint.WriteToConsole($"Current Weapon: {WeaponInformation.ModelName} Total Price {TotalPrice}", 5);
+                    //EntryPoint.WriteToConsole($"Current Weapon: {WeaponInformation.ModelName} Total Price {TotalPrice}");
                 }
             }
         }
@@ -684,7 +684,7 @@ public class WeaponItem : ModItem
             if (ModelItem != null && ModelItem.ModelName != "")
             {
                 Transaction.RotatePreview = true;
-                EntryPoint.WriteToConsole($"WEAPON ITEM CREATE PREVIEW {ModelItem.ModelName} {ModelItem.ModelHash}");
+                //EntryPoint.WriteToConsoleTestLong($"WEAPON ITEM CREATE PREVIEW {ModelItem.ModelName} {ModelItem.ModelHash}");
                 Vector3 Position = Vector3.Zero;
                 if (StoreCam.Exists())
                 {
@@ -700,7 +700,7 @@ public class WeaponItem : ModItem
                
                 if (NativeFunction.Natives.HAS_WEAPON_ASSET_LOADED<bool>(ModelItem.ModelHash))
                 {
-                    EntryPoint.WriteToConsole($"WEAPON ITEM ASSET LOADED {ModelItem.ModelName} {ModelItem.ModelHash}");
+                    //EntryPoint.WriteToConsoleTestLong($"WEAPON ITEM ASSET LOADED {ModelItem.ModelName} {ModelItem.ModelHash}");
                     Transaction.SellingProp = NativeFunction.Natives.CREATE_WEAPON_OBJECT<Rage.Object>(ModelItem.ModelHash, 60, Position.X, Position.Y, Position.Z, true, 1.0f, 0, 0, 1);
                 }
                 if (Transaction.SellingProp.Exists())

@@ -223,7 +223,7 @@ namespace Mod
             if(CurrentSpawnMultiplier != 1.0f && !isSettingDensity)
             {
                 isSettingDensity = true;
-                EntryPoint.WriteToConsole($"World - START Setting Population Density {CurrentSpawnMultiplier}");
+                //EntryPoint.WriteToConsoleTestLong($"World - START Setting Population Density {CurrentSpawnMultiplier}");
                 GameFiber.StartNew(delegate
                 {
                     try
@@ -238,7 +238,7 @@ namespace Mod
                             GameFiber.Yield();
                         }
                         isSettingDensity = false;
-                        EntryPoint.WriteToConsole($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
+                        //EntryPoint.WriteToConsoleTestLong($"World - DONE Setting Population Density {CurrentSpawnMultiplier}");
                     }
                     catch (Exception ex)
                     {
@@ -255,7 +255,7 @@ namespace Mod
             NativeFunction.Natives.REQUEST_IPL(iplName);
             GameFiber.Sleep(100);
             IsMPMapLoaded = NativeFunction.Natives.IS_IPL_ACTIVE<bool>(iplName);
-            EntryPoint.WriteToConsole($"MP Map Loaded: {IsMPMapLoaded}");
+            //EntryPoint.WriteToConsoleTestLong($"MP Map Loaded: {IsMPMapLoaded}");
         }
         private void CreateTotalWantedBlip()
         {
@@ -285,7 +285,7 @@ namespace Mod
             }
             else
             {
-                EntryPoint.WriteToConsole($"OnTotalWantedLevelChanged {TotalWantedLevel}");
+                //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelChanged {TotalWantedLevel}");
             }
             totalWantedLevel = TotalWantedLevel;
         }
@@ -294,12 +294,12 @@ namespace Mod
             if (Settings.SettingsManager.WorldSettings.AllowSettingDistantSirens)
             {
                 NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(false);
-                EntryPoint.WriteToConsole($"OnTotalWantedLevelRemoved Distant Sirens Removed");
+                //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelRemoved Distant Sirens Removed");
             }
         }
         private void OnTotalWantedLevelAdded()
         {
-            EntryPoint.WriteToConsole($"OnTotalWantedLevelAdded {TotalWantedLevel}");
+            //EntryPoint.WriteToConsoleTestLong($"OnTotalWantedLevelAdded {TotalWantedLevel}");
         }
     }
 }

@@ -316,14 +316,14 @@ public class CustomizeFaceMenu
         HeadOverlayData toChange = PedCustomizer.WorkingVariation.HeadOverlays.FirstOrDefault(x => x.OverlayID == OverlayID);
         if (toChange != null)
         {
-            EntryPoint.WriteToConsole("OpacityMenu FOUND OVERLAY TO CHANGE");
+            //EntryPoint.WriteToConsoleTestLong("OpacityMenu FOUND OVERLAY TO CHANGE");
             toChange.Opacity = OpacityMenu.Value;
             PedCustomizer.WorkingVariation.ApplyToPed(PedCustomizer.ModelPed);
         }
     }
     private void AddOverlay(int id)
     {
-        EntryPoint.WriteToConsole($"AddOverlay id {id}");
+        //EntryPoint.WriteToConsoleTestLong($"AddOverlay id {id}");
         if (!PedCustomizer.WorkingVariation.HeadOverlays.Any(x => x.OverlayID == id))
         {
             HeadOverlayData hod = HeadOverlayLookups.FirstOrDefault(x => x.OverlayID == id);
@@ -331,7 +331,7 @@ public class CustomizeFaceMenu
             {
                 HeadOverlayData myOverlay = new HeadOverlayData(hod.OverlayID, hod.Part) { ColorType = hod.ColorType };
                 PedCustomizer.WorkingVariation.HeadOverlays.Add(myOverlay);
-                EntryPoint.WriteToConsole($"AddOverlay ");
+                //EntryPoint.WriteToConsoleTestLong($"AddOverlay ");
             }
         }
     }
@@ -360,7 +360,7 @@ public class CustomizeFaceMenu
             OverlayMenuGroup overlayStuff = OverlayMenus.FirstOrDefault(x => x.OverlayID == hod.OverlayID);
             if (overlayStuff != null)
             {
-                EntryPoint.WriteToConsole($"OnOverlayValuesChanged ID {hod.OverlayID} Part {hod.Part} Index {hod.Index} Opacity {hod.Opacity}");
+                //EntryPoint.WriteToConsoleTestLong($"OnOverlayValuesChanged ID {hod.OverlayID} Part {hod.Part} Index {hod.Index} Opacity {hod.Opacity}");
                 if (hod.Index != 255)
                 {
                     overlayStuff.OverlayIndexMenu.Value = hod.Index;
@@ -374,7 +374,7 @@ public class CustomizeFaceMenu
                 overlayStuff.OpacityMenu.Value = hod.Opacity;
             }
         }
-        EntryPoint.WriteToConsole("OnOverlayValuesChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("OnOverlayValuesChanged Executed");
     }
 }
 

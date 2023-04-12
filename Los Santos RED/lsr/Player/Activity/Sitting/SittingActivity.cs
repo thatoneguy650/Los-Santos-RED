@@ -75,9 +75,9 @@ namespace LosSantosRED.lsr.Player
             {
                 try
                 {
-                    EntryPoint.WriteToConsole("Sitting Activity Enter");
+                    //EntryPoint.WriteToConsoleTestLong("Sitting Activity Enter");
                     Enter();
-                    EntryPoint.WriteToConsole("Sitting Activity Final");
+                    //EntryPoint.WriteToConsoleTestLong("Sitting Activity Final");
                 }
                 catch (Exception ex)
                 {
@@ -142,7 +142,7 @@ namespace LosSantosRED.lsr.Player
         }
         private void Idle()
         {
-            EntryPoint.WriteToConsole("Sitting Activity Idle Start");
+            //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle Start");
             StartNewBaseScene();
             float AnimationTime;
             while (Player.ActivityManager.CanPerformActivitiesExtended && !IsCancelled)
@@ -159,12 +159,12 @@ namespace LosSantosRED.lsr.Player
                 Player.WeaponEquipment.SetUnarmed();
                 GameFiber.Yield();
             }
-            EntryPoint.WriteToConsole("Sitting Activity Idle End");
+            //EntryPoint.WriteToConsoleTestLong("Sitting Activity Idle End");
             Exit();
         }
         private void Exit()
         {
-            EntryPoint.WriteToConsole("Sitting Activity Exit Start");
+            //EntryPoint.WriteToConsoleTestLong("Sitting Activity Exit Start");
             Player.ActivityManager.PauseCurrentActivity();
             if (Settings.SettingsManager.ActivitySettings.TeleportWhenSitting)
             {
@@ -225,10 +225,10 @@ namespace LosSantosRED.lsr.Player
                     //obj.CollisionIgnoredEntity = null;
                     //obj.IsCollisionEnabled = true;
                     //obj.NeedsCollision = true;
-                    EntryPoint.WriteToConsole("RESET COLLISION FOR ONE PROP, SITTING");
+                    //EntryPoint.WriteToConsoleTestLong("RESET COLLISION FOR ONE PROP, SITTING");
                 }
             }
-            EntryPoint.WriteToConsole("Sitting Activity Exit End");
+            //EntryPoint.WriteToConsoleTestLong("Sitting Activity Exit End");
         }
         private void SitDown()
         {
@@ -422,7 +422,7 @@ namespace LosSantosRED.lsr.Player
                     SeatHash = ClosestSittableEntity.Model.Hash;
                     SeatName = ClosestSittableEntity.Model.Name;
                 }
-                EntryPoint.WriteToConsole($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName}");
+                //EntryPoint.WriteToConsoleTestLong($"SeatOffset {SeatOffset} SeatHash {SeatHash} SeatName {SeatName}");
                 uint GameTimeGotClose = 0;
 
 

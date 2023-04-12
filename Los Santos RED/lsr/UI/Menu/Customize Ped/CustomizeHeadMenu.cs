@@ -104,7 +104,7 @@ public class CustomizeHeadMenu
         CustomizeAncestryMenu.Setup();
         CustomizeFaceMenu.Setup();
         CustomizeFaceMorphMenu.Setup();
-        EntryPoint.WriteToConsole("CustomizeHeadMenu.OnModelChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("CustomizeHeadMenu.OnModelChanged Executed");
     }
 
 }

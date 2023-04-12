@@ -113,7 +113,7 @@ public class InventoryMenu : ModUIMenu
     {
         if (ActionablePlayer.ActivityManager.CanPerformActivitiesExtended)
         {
-            EntryPoint.WriteToConsole($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
+            //EntryPoint.WriteToConsoleTestLong($"Inventory On Action Item Selected selectedItem.Text: {selectedItem.Text} sender.SubtitleText: {sender.SubtitleText} index: {index}");
             ModItem selectedModItem = ModItems.Get(selectedItem.Text);
             if (selectedModItem != null)
             {
@@ -148,7 +148,7 @@ public class InventoryMenu : ModUIMenu
                         selectedItem.RightLabel = "None";
                         selectedItem.Description = "";
                     }
-                    EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);
+                   // EntryPoint.WriteToConsole($"Removed {selectedModItem.Name} ", 3);
                 }
             }
         }

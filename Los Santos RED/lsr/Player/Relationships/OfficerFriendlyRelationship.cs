@@ -75,7 +75,7 @@ public class OfficerFriendlyRelationship
     public void AddMoneySpent(int Amount)
     {
         TotalMoneySpentOnBribes += Amount;
-        EntryPoint.WriteToConsole($"You spent {Amount} for a total of {TotalMoneySpentOnBribes}");
+        //EntryPoint.WriteToConsoleTestLong($"You spent {Amount} for a total of {TotalMoneySpentOnBribes}");
 
     }
     public void SetMoneySpent(int Amount, bool sendNotification)

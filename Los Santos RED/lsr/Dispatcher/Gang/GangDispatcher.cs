@@ -233,10 +233,10 @@ public class GangDispatcher
     }
     private void RunAmbientDispatch()
     {
-        EntryPoint.WriteToConsole($"AMBIENT GANG SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} AmbLimit:{AmbientMemberLimitForZoneType}");
+        //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} AmbLimit:{AmbientMemberLimitForZoneType}");
         if (GetSpawnLocation() && GetSpawnTypes(false, false, null))
         {
-            EntryPoint.WriteToConsole($"AMBIENT GANG CALLED SPAWN TASK");
+            //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
             if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
             {
                 ShouldRunAmbientDispatch = false;

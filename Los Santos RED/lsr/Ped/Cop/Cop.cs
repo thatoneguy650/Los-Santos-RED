@@ -301,7 +301,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             {
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, false);
                 IsSetStayInVehicle = true;
-                EntryPoint.WriteToConsole($"COP {Handle} SET CA_LEAVE_VEHICLES FALSE");
+                //EntryPoint.WriteToConsoleTestLong($"COP {Handle} SET CA_LEAVE_VEHICLES FALSE");
             }
         }
         else
@@ -310,7 +310,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             {
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombat_Attribute.CA_LEAVE_VEHICLES, true);
                 IsSetStayInVehicle = false;
-                EntryPoint.WriteToConsole($"COP {Handle} SET CA_LEAVE_VEHICLES TRUE");
+                //EntryPoint.WriteToConsoleTestLong($"COP {Handle} SET CA_LEAVE_VEHICLES TRUE");
             }
         }
     }

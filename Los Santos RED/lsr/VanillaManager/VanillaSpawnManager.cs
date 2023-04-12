@@ -231,7 +231,7 @@ public class VanillaSpawnManager
         {
             DisableScenariosAndGenerators();
             GameTimeLastDisabledVehicles = Game.GameTime;
-            EntryPoint.WriteToConsole("SCENARIO AND GENERATOR DISABLE RAN");
+            //EntryPoint.WriteToConsoleTestLong("SCENARIO AND GENERATOR DISABLE RAN");
         }
     }
     private void DisableScenariosAndGenerators()

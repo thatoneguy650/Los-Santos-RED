@@ -177,7 +177,7 @@ public class CustomizeAncestryMenu
         {
             return;
         }
-        EntryPoint.WriteToConsole("Parent1Activated");
+        //EntryPoint.WriteToConsoleTestLong("Parent1Activated");
         PedCustomizer.WorkingVariation.HeadBlendData.skinFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeFirst = Parent1IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
@@ -188,7 +188,7 @@ public class CustomizeAncestryMenu
         {
             return;
         }
-        EntryPoint.WriteToConsole("Parent2Activated");
+        //EntryPoint.WriteToConsoleTestLong("Parent2Activated");
         PedCustomizer.WorkingVariation.HeadBlendData.skinSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.WorkingVariation.HeadBlendData.shapeSecond = Parent2IDMenu.SelectedItem.HeadID;
         PedCustomizer.OnVariationChanged();
@@ -256,19 +256,19 @@ public class CustomizeAncestryMenu
             if (Parent1IDMenuHead != null)
             {
                 Parent1IDMenu.SelectedItem = Parent1IDMenuHead;
-                EntryPoint.WriteToConsole($"OnHeadblendValuesChanged Parent1IDMenuHead {Parent1IDMenuHead.HeadName}");
+                //EntryPoint.WriteToConsoleTestLong($"OnHeadblendValuesChanged Parent1IDMenuHead {Parent1IDMenuHead.HeadName}");
             }
             HeadLookup Parent2IDMenuHead = HeadList.FirstOrDefault(x => x.HeadID == PedCustomizer.WorkingVariation.HeadBlendData.skinSecond);
             if (Parent2IDMenuHead != null)
             {
                 Parent2IDMenu.SelectedItem = Parent2IDMenuHead;
-                EntryPoint.WriteToConsole($"OnHeadblendValuesChanged Parent2IDMenuHead {Parent2IDMenuHead.HeadName}");
+                //EntryPoint.WriteToConsoleTestLong($"OnHeadblendValuesChanged Parent2IDMenuHead {Parent2IDMenuHead.HeadName}");
             }
             Parent1MixMenu.Value = PedCustomizer.WorkingVariation.HeadBlendData.shapeMix == -1 ? 0 : PedCustomizer.WorkingVariation.HeadBlendData.shapeMix;
             Parent2MixMenu.Value = PedCustomizer.WorkingVariation.HeadBlendData.skinMix == -1 ? 0 : PedCustomizer.WorkingVariation.HeadBlendData.skinMix;
-            EntryPoint.WriteToConsole($"OnHeadblendValuesChanged MIX P1{Parent1MixMenu.Value} P2{Parent2MixMenu.Value}");
+            //EntryPoint.WriteToConsoleTestLong($"OnHeadblendValuesChanged MIX P1{Parent1MixMenu.Value} P2{Parent2MixMenu.Value}");
         }
-        EntryPoint.WriteToConsole("OnHeadblendValuesChanged Executed");
+        //EntryPoint.WriteToConsoleTestLong("OnHeadblendValuesChanged Executed");
     }
     private void MatchHeadblendToMenuValues()
     {

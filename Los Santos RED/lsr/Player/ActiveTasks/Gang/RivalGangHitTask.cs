@@ -93,14 +93,14 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
                 if (CurrentTask == null || !CurrentTask.IsActive)
                 {
-                    EntryPoint.WriteToConsole($"Task Inactive for {HiringGang.ContactName}");
+                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
                     break;
                 }
                 if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled > CurrentKilledMembers)
                 {
                     CurrentTask.OnReadyForPayment(true);
                     //CurrentTask.IsReadyForPayment = true;
-                    EntryPoint.WriteToConsole($"You killed a member so it is now ready for payment!");
+                    //EntryPoint.WriteToConsoleTestLong($"You killed a member so it is now ready for payment!");
                     //Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
                     break;
                 }
@@ -151,7 +151,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
 
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             CurrentKilledMembers = gr.MembersKilled;
-            EntryPoint.WriteToConsole($"You are hired to kill {TargetGang.ShortName} starting kill = {CurrentKilledMembers}!");
+            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill {TargetGang.ShortName} starting kill = {CurrentKilledMembers}!");
             PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -500, 7, "Rival Gang Hit");
         }
         private void SendInitialInstructionsMessage()

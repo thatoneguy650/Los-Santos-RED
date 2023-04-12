@@ -124,7 +124,7 @@ namespace LosSantosRED.lsr.Player
         }
         public override void Start()
         {
-            EntryPoint.WriteToConsole($"Flashlight Start", 5);
+           // EntryPoint.WriteToConsole($"Flashlight Start");
             GameFiber FlashlightWatcher = GameFiber.StartNew(delegate
             {
                 try
@@ -164,7 +164,7 @@ namespace LosSantosRED.lsr.Player
             if (animEnter != "")
             {
                 AttachFlashlightToHand();
-                EntryPoint.WriteToConsole($"Flashlight Enter: {animEnter}", 5);
+                //EntryPoint.WriteToConsole($"Flashlight Enter: {animEnter}");
                 PlayingDictionary = animEnterDictionary;
                 PlayingAnimation = animEnter;
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, animEnterDictionary, animEnter, animEnterBlendIn, animEnterBlendOut, -1, animEnterFlag, 0, false, false, false);//-1
@@ -186,7 +186,7 @@ namespace LosSantosRED.lsr.Player
             if (animBase != "")
             {
                 AttachFlashlightToHand();
-                EntryPoint.WriteToConsole($"Flashlight Idle: {animBase}", 5);
+                //EntryPoint.WriteToConsole($"Flashlight Idle: {animBase}");
                 GameTimeStartedHoldingUmbrella = Game.GameTime;
 
                 PlayingDictionary = animBaseDictionary;
@@ -265,7 +265,7 @@ namespace LosSantosRED.lsr.Player
             {
                 if (animExit != "")
                 {
-                    EntryPoint.WriteToConsole($"Flashlight Exit: {animExit}", 5);
+                    //EntryPoint.WriteToConsole($"Flashlight Exit: {animExit}");
                     GameTimeStartedHoldingUmbrella = Game.GameTime;
                     PlayingDictionary = animExitDictionary;
                     PlayingAnimation = animExit;
@@ -331,7 +331,7 @@ namespace LosSantosRED.lsr.Player
             if (Player.ButtonPrompts.IsPressed("FlashlightToggle"))
             {
                 IsLightOn = !IsLightOn;
-                EntryPoint.WriteToConsole($"FlashlightToggle Toggled to {IsLightOn}");
+                //EntryPoint.WriteToConsole($"FlashlightToggle Toggled to {IsLightOn}");
             }
             if (Player.ButtonPrompts.IsPressed("FlashlightPlayAnimation"))
             {
@@ -345,7 +345,7 @@ namespace LosSantosRED.lsr.Player
                     }
                 }
 
-                EntryPoint.WriteToConsole($"FlashlightPlayAnimation");
+                //EntryPoint.WriteToConsole($"FlashlightPlayAnimation");
             }
             if (Player.ButtonPrompts.IsPressed("FlashlightStopAnimation"))
             {
@@ -360,7 +360,7 @@ namespace LosSantosRED.lsr.Player
             hasStartedAnimation = false;
             PlayingDictionary = animBaseDictionary;
             PlayingAnimation = animBase;
-            EntryPoint.WriteToConsole($"FlashlightPlayAnimation SET BASE {PlayingDictionary} {PlayingAnimation}");
+            //EntryPoint.WriteToConsole($"FlashlightPlayAnimation SET BASE {PlayingDictionary} {PlayingAnimation}");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animBaseBlendIn, animBaseBlendOut, -1, animBaseFlag, 0, false, false, false);//-1
         }
         private void StartIdleAnimation(string dict, string anim)
@@ -368,7 +368,7 @@ namespace LosSantosRED.lsr.Player
             hasStartedAnimation = false;
             PlayingDictionary = dict;
             PlayingAnimation = anim;
-            EntryPoint.WriteToConsole($"FlashlightPlayAnimation New Idle {PlayingDictionary} {PlayingAnimation}");
+            //EntryPoint.WriteToConsole($"FlashlightPlayAnimation New Idle {PlayingDictionary} {PlayingAnimation}");
             NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, PlayingDictionary, PlayingAnimation, animIdleBlendIn, animIdleBlendOut, -1, animIdleFlag, 0, false, false, false);//-1
         }
         private void HandleLight()
@@ -412,7 +412,7 @@ namespace LosSantosRED.lsr.Player
                 }
                 catch (Exception ex)
                 {
-                    EntryPoint.WriteToConsole($"Error Spawning Model {ex.Message} {ex.StackTrace}");
+                    //EntryPoint.WriteToConsoleTestLong($"Error Spawning Model {ex.Message} {ex.StackTrace}");
                 }
                 if (!Flashlight.Exists())
                 {

@@ -24,12 +24,12 @@ public class FireFighterSpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"FireFighterSpawn: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"FireFighterSpawn: Task Invalid Spawn Position");
                 return;
             }
             if (!HasAgency)
             {
-                EntryPoint.WriteToConsole($"FireFighterSpawn: Task No Agency Supplied");
+                //EntryPoint.WriteToConsoleTestLong($"FireFighterSpawn: Task No Agency Supplied");
                 return;
             }
             Setup();

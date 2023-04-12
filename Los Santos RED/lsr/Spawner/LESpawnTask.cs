@@ -29,12 +29,12 @@ public class LESpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                EntryPoint.WriteToConsole($"LESpawn: Task Invalid Spawn Position");
+                //EntryPoint.WriteToConsoleTestLong($"LESpawn: Task Invalid Spawn Position");
                 return;
             }
             if (!HasAgency)
             {
-                EntryPoint.WriteToConsole($"LESpawn: Task No Agency Supplied");
+                //EntryPoint.WriteToConsoleTestLong($"LESpawn: Task No Agency Supplied");
                 return;
             }
             Setup();
@@ -97,7 +97,7 @@ public class LESpawnTask : SpawnTask
                     SpawnLocation.InitialPosition = Position.Around2D(1f);
                     SpawnLocation.SidewalkPosition = Vector3.Zero;
                     PedExt Buddy = CreatePerson();
-                    EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To LE Spawn", 5);
+                    //EntryPoint.WriteToConsole($"SpawnTask: Adding Buddy To LE Spawn", 5);
                 }
             }
         }
@@ -229,7 +229,7 @@ public class LESpawnTask : SpawnTask
         if(VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(seat))
         {
             Person.StayInVehicle = true;
-            EntryPoint.WriteToConsole($"COP {Person.Handle} SET STAY IN VEHICLE Vehicle:{VehicleType.ModelName} seat:{seat}");
+            //EntryPoint.WriteToConsoleTestLong($"COP {Person.Handle} SET STAY IN VEHICLE Vehicle:{VehicleType.ModelName} seat:{seat}");
         }
 
         Person.UpdateVehicleState();

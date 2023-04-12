@@ -118,7 +118,7 @@ public class WeaponDropping
             {
                 Suppressed.Add(sp);
                 sp.Supress();
-                EntryPoint.WriteToConsole($"Started Supressing");
+                //EntryPoint.WriteToConsoleTestLong($"Started Supressing");
             }
         }    
     }
@@ -136,7 +136,7 @@ public class WeaponDropping
                 if (sp.ShouldUnsupress)
                 {
                     sp.Unsuppress();
-                    EntryPoint.WriteToConsole($"Stopped Supressing {sp.ModelHash}");
+                    //EntryPoint.WriteToConsoleTestLong($"Stopped Supressing {sp.ModelHash}");
                 }
             }
             Suppressed.RemoveAll(x => x.ShouldUnsupress);

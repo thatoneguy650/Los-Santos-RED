@@ -119,14 +119,14 @@ public class BookingActivity
                         {
                             ReleaseCop();
                             EndBooking();
-                            EntryPoint.WriteToConsole("Booking Activity, Failure Cuffing Player");
+                            //EntryPoint.WriteToConsoleTestLong("Booking Activity, Failure Cuffing Player");
                         }
                     }
                     else
                     {
                         ReleaseCop();
                         EndBooking();
-                        EntryPoint.WriteToConsole("Booking Activity, Failure Moving Cop To Cuff Position");
+                        //EntryPoint.WriteToConsoleTestLong("Booking Activity, Failure Moving Cop To Cuff Position");
                     }
                 }
                 catch (Exception ex)
@@ -140,7 +140,7 @@ public class BookingActivity
         {
             ReleaseCop();
             EndBooking();
-            EntryPoint.WriteToConsole("Booking Activity, No Cop Found");
+            //EntryPoint.WriteToConsoleTestLong("Booking Activity, No Cop Found");
         }
     }
     private void EndBooking()
