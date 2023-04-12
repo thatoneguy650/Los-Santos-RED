@@ -16,12 +16,12 @@ public class CopTasker
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
-    private Tasker Tasker;
+    private Mod.Tasker Tasker;
     private IPlacesOfInterest PlacesOfInterest;
     private List<PedExt> PossibleTargets = new List<PedExt>();
     private Cop ClosestCopToPlayer;
     private int CopsTaskedToRespond = 0;
-    public CopTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
+    public CopTasker(Mod.Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
         World = pedProvider;
@@ -324,8 +324,17 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Locate")
         {
-           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
-            Cop.CurrentTask = new Locate(Cop, Player, Settings);
+            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Locate", 3);
+            //Cop.CurrentTask = new Locate(Cop, Player, Settings);
+
+            if(Settings.SettingsManager.PoliceTaskSettings.UseLegacyLocateTasking)
+            {
+                Cop.CurrentTask = new Locate(Cop, Player, Settings);
+            }
+            else
+            {
+                Cop.CurrentTask = new GeneralLocate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate, Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState, true, Cop);
+            }
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();

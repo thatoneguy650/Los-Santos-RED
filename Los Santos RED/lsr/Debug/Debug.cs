@@ -36,7 +36,7 @@ public class Debug
     private ModController ModController;
     private Settings Settings;
     private Ped RageTargetPed;
-    private Tasker Tasker;
+    private Mod.Tasker Tasker;
     private List<InteriorPosition> InteriorPositions = new List<InteriorPosition>();
     private List<InteriorPosition> MPInteriorPositions = new List<InteriorPosition>();
     private uint GameTimeLastScannedForStands;
@@ -72,7 +72,7 @@ public class Debug
     private bool Test;
     private bool OnOff1;
 
-    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
+    public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
         PlateTypes = plateTypes;
         World = world;

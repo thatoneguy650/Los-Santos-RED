@@ -9,6 +9,8 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Security.Policy;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 [assembly: Rage.Attributes.Plugin("Los Santos RED", Description = "Total Conversion", Author = "Greskrendtregk", PrefersSingleInstance = true, ShouldTickInPauseMenu = true)]

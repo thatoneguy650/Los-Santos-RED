@@ -17,9 +17,9 @@ public class GangTasker
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
-    private Tasker Tasker;
+    private Mod.Tasker Tasker;
     private IPlacesOfInterest PlacesOfInterest;
-    public GangTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
+    public GangTasker(Mod.Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
         World = pedProvider;

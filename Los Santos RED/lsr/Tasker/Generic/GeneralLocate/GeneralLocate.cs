@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using Rage.Native;
 using System;
@@ -8,246 +9,141 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GeneralLocate : ComplexTask
+public class GeneralLocate : ComplexTask, ILocationReachable
 {
-    private bool NeedsUpdates;
-    private Vector3 CurrentTaskedPosition;
-    private Task CurrentTask = Task.Nothing;
-    private bool HasReachedReportedPosition;
-    private bool isSetCode3Close;
-    private bool hasSixthSense = false;
+    private Cop Cop;
+    private IComplexTaskable complexTaskablePed;
+    private PedExt PedGeneral;
+    private IEntityProvideable World;
+    private IPlacesOfInterest PlacesOfInterest;
+    private SeatAssigner SeatAssigner;
+    private TaskState CurrentTaskState;
     private ISettingsProvideable Settings;
-    private Vector3 PlaceToGoTo// => hasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget; // Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer;
-    {
-        get
-        {
-            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-            {
-                return OtherTarget.Pedestrian.Position;
-            }
-            if (hasSixthSense)
-            {
-                return Player.Character.Position;
-            }
-            else
-            {
-               return Ped.PlayerPerception.PositionLastSeenTarget;
-            }
-        }
-    }
-    private enum Task
-    {
-        Wander,
-        GoTo,
-        Nothing,
-    }
-    private Task CurrentTaskDynamic
-    {
-        get
-        {
-            if (HasReachedReportedPosition)
-            {
-                return Task.Wander;
-            }
-            else
-            {
-                return Task.GoTo;
-            }
-        }
-    }
-    public GeneralLocate(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
-    {
-        Name = "GeneralLocate";
-        SubTaskName = "";
-        Settings = settings;
-    }
-    public override void Start()
-    {
-        if (Ped.Pedestrian.Exists())
-        {
-            NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-            hasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
-            if (!hasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentageClose))
-            {
-                hasSixthSense = true;
-            }
+    private bool BlockPermanentEvents = false;
+    private bool CheckSiren = false;
+    private bool SetDriverSkill = false;
+    private bool HasSixthSense;
+    private bool AllowEnteringVehicle = true;
 
-            //EntryPoint.WriteToConsoleTestLong($"GeneralLocate TASK: Cop {Ped.Handle} hasSixthSense {hasSixthSense}");
-            Update();
-        }
-    }
-    public override void Update()
+
+
+
+    private Vector3 PlaceToDriveTo;
+    private Vector3 PlaceToWalkTo;
+    private Vector3 prevPlaceToDriveTo;
+    private Vector3 prevPlaceToWalkTo;
+    public bool HasReachedLocatePosition { get; set; } = false;
+    public GeneralLocate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, bool checkSiren, bool setDriverSkill, Cop cop) : base(player, ped, 1500)//1500
     {
-        if (Ped.Pedestrian.Exists() && ShouldUpdate)
+        PedGeneral = pedGeneral;
+        complexTaskablePed = ped;
+        Cop = cop;
+        Name = "Locate";
+        SubTaskName = "";
+        World = world;
+        PlacesOfInterest = placesOfInterest;
+        Settings = settings;
+        BlockPermanentEvents = blockPermanentEvents;
+        CheckSiren = checkSiren;
+        SetDriverSkill = setDriverSkill;
+        PlaceToDriveTo = HasSixthSense ? Player.StreetPlacePoliceShouldSearchForPlayer : Player.StreetPlacePoliceLastSeenPlayer;// Player.StreetPlacePoliceShouldSearchForPlayer;
+        PlaceToWalkTo = HasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer; //Player.PlacePoliceShouldSearchForPlayer;
+        HasSixthSense = RandomItems.RandomPercent(Ped.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
+        if (!HasSixthSense && Ped.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentageClose))
         {
-            if (CurrentTask != CurrentTaskDynamic)
-            {
-                CurrentTask = CurrentTaskDynamic;
-                ExecuteCurrentSubTask();
-            }
-            else if (NeedsUpdates)
-            {
-                ExecuteCurrentSubTask();
-            }
-            SetVehicle();
+            HasSixthSense = true;
         }
+        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);     
     }
     public override void ReTask()
     {
+        Start();
+    }
+    public override void Start()
+    {
+        CurrentTaskState?.Stop();
+        GetNewTaskState();
+        CurrentTaskState?.Start();
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTING Task{CurrentTaskState?.DebugName}");
+    }
+    public override void Stop()
+    {
+        CurrentTaskState?.Stop();
+    }
+    public override void Update()
+    {
 
-    }
-    private void ExecuteCurrentSubTask()
-    {
-        if (CurrentTask == Task.Wander)
+        PlaceToDriveTo = HasSixthSense ? Player.StreetPlacePoliceShouldSearchForPlayer : Player.StreetPlacePoliceLastSeenPlayer;// Player.StreetPlacePoliceShouldSearchForPlayer;
+        PlaceToWalkTo = HasSixthSense ? Player.PlacePoliceShouldSearchForPlayer : Player.PlacePoliceLastSeenPlayer; //Player.PlacePoliceShouldSearchForPlayer;
+
+
+        if (prevPlaceToDriveTo.DistanceTo(PlaceToDriveTo) >= 5.0f || prevPlaceToWalkTo.DistanceTo(PlaceToWalkTo) >= 5.0f)
         {
-            SubTaskName = "Wander";
-            Wander();
+            HasReachedLocatePosition = false;
+            EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
+            prevPlaceToDriveTo = PlaceToDriveTo;
+            prevPlaceToWalkTo = PlaceToWalkTo;
+            Start();
         }
-        else if (CurrentTask == Task.GoTo)
+        else
         {
-            SubTaskName = "GoTo";
-            GoTo();
-        }
-        GameTimeLastRan = Game.GameTime;
-    }
-    private void Wander()
-    {
-        NeedsUpdates = false;
-        if (Ped.Pedestrian.Exists())
-        {
-            if (Ped.Pedestrian.IsInAnyVehicle(false) && Ped.Pedestrian.CurrentVehicle.Exists())
+            if (CurrentTaskState == null || !CurrentTaskState.IsValid)
             {
-                if (Ped.IsDriver)
-                {
-                    if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleLocate)
-                    {
-                        Ped.Pedestrian.BlockPermanentEvents = true;
-                    }
-                    else
-                    {
-                        Ped.Pedestrian.BlockPermanentEvents = false;
-                    }
-                    Ped.Pedestrian.KeepTasks = true;
-                    NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 30f, (int)eCustomDrivingStyles.Code3, 10f);
-                }
+               // EntryPoint.WriteToConsole($"{PedGeneral.Handle} Stopping Task{CurrentTaskState?.DebugName}");
+                Start();
             }
             else
             {
-                if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate)
-                {
-                    Ped.Pedestrian.BlockPermanentEvents = true;
-                }
-                else
-                {
-                    Ped.Pedestrian.BlockPermanentEvents = false;
-                }
-                Ped.Pedestrian.KeepTasks = true;
-                NativeFunction.Natives.TASK_WANDER_STANDARD(Ped.Pedestrian, 0, 0);
+                SubTaskName = CurrentTaskState.DebugName;
+                CurrentTaskState.Update();
             }
         }
+        UpdateVehicleState();
     }
-    private void GoTo()
+
+    private void GetNewTaskState()
     {
-        if (Ped.Pedestrian.Exists())
+        if(!HasReachedLocatePosition)
         {
-            NeedsUpdates = true;
-            if (CurrentTaskedPosition.DistanceTo2D(PlaceToGoTo) >= 5f && !HasReachedReportedPosition)
+            if (Ped.IsInVehicle)
             {
-                HasReachedReportedPosition = false;
-                CurrentTaskedPosition = PlaceToGoTo;
-                if (Ped.Pedestrian.IsInAnyVehicle(false))
-                {
-                    if (Ped.IsDriver)
-                    {
-                        if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringVehicleLocate)
-                        {
-                            Ped.Pedestrian.BlockPermanentEvents = true;
-                        }
-                        else
-                        {
-                            Ped.Pedestrian.BlockPermanentEvents = false;
-                        }
-                        Ped.Pedestrian.KeepTasks = true;
-                        if (Ped.IsInHelicopter)
-                        {
-                            NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
-                        }
-                        else if (Ped.IsInBoat)
-                        {
-                            NativeFunction.Natives.TASK_BOAT_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, (int)eCustomDrivingStyles.Code3, -1.0f, 7);
-                        }
-                        else
-                        {
-                            NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 70f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
-                        }
-                    }
-                }
-                else
-                {
-                    if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate)
-                    {
-                        Ped.Pedestrian.BlockPermanentEvents = true;
-                    }
-                    else
-                    {
-                        Ped.Pedestrian.BlockPermanentEvents = false;
-                    }
-                    Ped.Pedestrian.KeepTasks = true;
-                    NativeFunction.Natives.TASK_GO_STRAIGHT_TO_COORD(Ped.Pedestrian, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 15f, -1, 0f, 0f);
-                }
-            }
-            float DistanceToCoordinates = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
-            if (Ped.Pedestrian.IsInAirVehicle)
-            {
-                if (DistanceToCoordinates <= 150f)
-                {
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 10f);
-                }
-                else
-                {
-                    NativeFunction.Natives.SET_DRIVE_TASK_CRUISE_SPEED(Ped.Pedestrian, 50f);
-
-                }
-            }
-            if (DistanceToCoordinates <= 25f)
-            {
-                if (hasSixthSense && Player.SearchMode.IsInStartOfSearchMode)
-                {
-
-                }
-                else
-                {
-                    HasReachedReportedPosition = true;
-                }
-
-                //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
-            }
-            if (Ped.IsDriver && !Ped.IsInHelicopter && !Ped.IsInBoat && Ped.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
-            {
-                if (!isSetCode3Close)
-                {
-                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-                    isSetCode3Close = true;
-                }
+                CurrentTaskState = new GoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToDriveTo, this);
+                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} GoToInVehicleTaskState");
             }
             else
             {
-                if (isSetCode3Close)
-                {
-                    NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-                    isSetCode3Close = false;
-                }
+                CurrentTaskState = new GoToOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this);
+                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} GoToOnFootTaskState");
             }
         }
+        else if (!Ped.IsInHelicopter && Player.IsOnFoot && Player.PoliceLastSeenOnFoot && Player.IsNearbyPlacePoliceShouldSearchForPlayer)
+        {
+            if (Cop != null)
+            {
+                Cop.WeaponInventory.Reset();
+                Cop.WeaponInventory.SetDeadly(true);
+            }
+            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, Cop);
+            //EntryPoint.WriteToConsole($"{PedGeneral.Handle} SearchLocationOnFootTaskState");
+        }
+        else
+        {
+            CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents);
+            //EntryPoint.WriteToConsole($"{PedGeneral.Handle} WanderInVehicleTaskState");
+        }
     }
-    private void SetVehicle()
+    private void UpdateVehicleState()
     {
-        if (Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState && Ped.Pedestrian.Exists() && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
+        if (!Ped.IsInVehicle || !Ped.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (CheckSiren && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.HasSiren && !Ped.Pedestrian.CurrentVehicle.IsSirenOn)
         {
             Ped.Pedestrian.CurrentVehicle.IsSirenOn = true;
             Ped.Pedestrian.CurrentVehicle.IsSirenSilent = false;
         }
-        if (Ped.IsInVehicle)
+        if (SetDriverSkill)
         {
             NativeFunction.Natives.SET_DRIVER_ABILITY(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAbility);
             NativeFunction.Natives.SET_DRIVER_AGGRESSIVENESS(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverAggressiveness);
@@ -256,10 +152,6 @@ public class GeneralLocate : ComplexTask
                 NativeFunction.Natives.SET_DRIVER_RACING_MODIFIER(Ped.Pedestrian, Settings.SettingsManager.PoliceTaskSettings.DriverRacing);
             }
         }
-    }
-    public override void Stop()
-    {
-
     }
 }
 

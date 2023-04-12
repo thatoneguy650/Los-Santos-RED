@@ -22,7 +22,7 @@ namespace LosSantosRED.lsr
         private PedSwap PedSwap;   
         private Mod.Player Player;
         private Police Police;  
-        private Tasker Tasker;
+        private Mod.Tasker Tasker;
         private Mod.Time Time;
         private UI UI;
         private VanillaManager VanillaManager;
@@ -84,7 +84,7 @@ namespace LosSantosRED.lsr
                 ModDataFileManager.ShopMenus, ModDataFileManager.DispatchablePeople, ModDataFileManager.Heads, ModDataFileManager.ClothesNames, ModDataFileManager.Gangs,ModDataFileManager.Agencies,ModDataFileManager.TattooNames, ModDataFileManager.GameSaves, ModDataFileManager.SavedOutfits);
 
             GameFiber.Yield();
-            Tasker = new Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
+            Tasker = new Mod.Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
 
 

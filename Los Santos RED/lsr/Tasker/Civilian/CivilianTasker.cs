@@ -17,9 +17,9 @@ public class CivilianTasker
     private ITargetable Player;
     private IWeapons Weapons;
     private ISettingsProvideable Settings;
-    private Tasker Tasker;
+    private Mod.Tasker Tasker;
     private IPlacesOfInterest PlacesOfInterest;
-    public CivilianTasker(Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
+    public CivilianTasker(Mod.Tasker tasker, IEntityProvideable pedProvider, ITargetable player, IWeapons weapons, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest)
     {
         Tasker = tasker;
         PedProvider = pedProvider;

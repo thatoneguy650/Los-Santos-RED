@@ -21,6 +21,8 @@ namespace LosSantosRED.lsr
         private uint GameTimeLastUpdatedSearchLocation;
         private bool PrevAnyPoliceKnowInteriorLocation;
         private ITimeReportable Time;
+        private Vector3 prevPlacePoliceShouldSearchForPlayer;
+        private Vector3 prevPlacePoliceLastSeenPlayer;
 
         public Police(IEntityProvideable world, IPoliceRespondable currentPlayer, IPerceptable perceptable, ISettingsProvideable settings, IItemEquipable itemEquipablePlayer, ITimeReportable time)
         {
@@ -142,6 +144,57 @@ namespace LosSantosRED.lsr
             UpdateWantedItems();
             NativeFunction.CallByName<bool>("SET_PLAYER_WANTED_CENTRE_POSITION", Game.LocalPlayer, Player.PlacePoliceLastSeenPlayer.X, Player.PlacePoliceLastSeenPlayer.Y, Player.PlacePoliceLastSeenPlayer.Z);
         }
+
+        private void RecognitionLoop()
+        {
+            bool anyPoliceCanSeePlayer = false;
+            bool anyPoliceCanHearPlayer = false;
+            bool anyPoliceCanRecognizePlayer = false;
+            bool anyPoliceRecentlySeenPlayer = false;
+            int tested = 0;
+            foreach (Cop cop in World.Pedestrians.PoliceList)
+            {
+                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
+                {
+                    if (cop.CanSeePlayer)
+                    {
+                        anyPoliceCanSeePlayer = true;
+                        anyPoliceCanHearPlayer = true;
+                        anyPoliceRecentlySeenPlayer = true;
+                    }
+                    else if (cop.WithinWeaponsAudioRange)
+                    {
+                        anyPoliceCanHearPlayer = true;
+                    }
+                    if (cop.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (cop.CanSeePlayer && cop.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.AutoRecognizeDistance) || (cop.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.AlwaysRecognizeDistance && cop.DistanceToPlayer > 0.01f))
+                    {
+                        anyPoliceCanRecognizePlayer = true;
+                    }
+                    if (cop.SeenPlayerWithin(Settings.SettingsManager.PoliceSettings.RecentlySeenTime))
+                    {
+                        anyPoliceRecentlySeenPlayer = true;
+                    }
+                }
+
+                if (anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
+                {
+                    break;
+                }
+                tested++;
+                if (tested >= 20)//10
+                {
+                    tested = 0;
+                    GameFiber.Yield();
+                }
+                //GameFiber.Yield();
+            }
+            Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
+            Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
+            Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
+            Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
+        }
+
+
         private void UpdateGeneralItmes()
         {
             if (Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !Player.AnyPoliceCanSeePlayer)
@@ -193,7 +246,15 @@ namespace LosSantosRED.lsr
                 }
             }
 
-            Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer);
+
+            if(Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
+            {
+                EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
+                Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer);
+                prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
+            }
+
+            
 
 
 
@@ -213,54 +274,7 @@ namespace LosSantosRED.lsr
                 Player.CurrentVehicle.UpdateDescription();
             }
         }
-        private void RecognitionLoop()
-        {
-            bool anyPoliceCanSeePlayer = false;
-            bool anyPoliceCanHearPlayer = false;
-            bool anyPoliceCanRecognizePlayer = false;
-            bool anyPoliceRecentlySeenPlayer = false;
-            int tested = 0;
-            foreach (Cop cop in World.Pedestrians.PoliceList)
-            {
-                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
-                {
-                    if (cop.CanSeePlayer)
-                    {
-                        anyPoliceCanSeePlayer = true;
-                        anyPoliceCanHearPlayer = true;
-                        anyPoliceRecentlySeenPlayer = true;
-                    }
-                    else if (cop.WithinWeaponsAudioRange)
-                    {
-                        anyPoliceCanHearPlayer = true;
-                    }
-                    if (cop.TimeContinuoslySeenPlayer >= Player.TimeToRecognize || (cop.CanSeePlayer && cop.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.AutoRecognizeDistance) || (cop.DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.AlwaysRecognizeDistance && cop.DistanceToPlayer > 0.01f))
-                    {
-                        anyPoliceCanRecognizePlayer = true;
-                    }
-                    if (cop.SeenPlayerWithin(Settings.SettingsManager.PoliceSettings.RecentlySeenTime))
-                    {
-                        anyPoliceRecentlySeenPlayer = true;
-                    }
-                }
 
-                if (anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
-                {
-                    break;
-                }
-                tested++;
-                if (tested >= 20)//10
-                {
-                    tested = 0;
-                    GameFiber.Yield();
-                }
-                //GameFiber.Yield();
-            }
-            Player.AnyPoliceCanSeePlayer = anyPoliceCanSeePlayer;
-            Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
-            Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
-            Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
-        }
 
         private void DeterimineInterestedLocation()
         {
@@ -281,8 +295,13 @@ namespace LosSantosRED.lsr
                 Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
-            Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer);
 
+            if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo(prevPlacePoliceShouldSearchForPlayer) >= 5f)
+            {
+                EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
+                Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer);
+                prevPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
+            }
 
 
             Player.IsNearbyPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) <= 200f;
