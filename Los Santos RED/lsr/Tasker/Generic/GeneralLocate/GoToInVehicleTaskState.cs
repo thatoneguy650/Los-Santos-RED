@@ -66,7 +66,7 @@ class GoToInVehicleTaskState : TaskState
             PedGeneral.Pedestrian.BlockPermanentEvents = true;
             PedGeneral.Pedestrian.KeepTasks = true;
         }
-        if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero || !PedGeneral.IsDriver)
+        if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || !PedGeneral.Pedestrian.CurrentVehicle.Exists() || PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero || !PedGeneral.IsDriver)
         {
             return;
         }
@@ -133,7 +133,8 @@ class GoToInVehicleTaskState : TaskState
         }
         if (DistanceToCoordinates <= 20f)
         {
-            LocationReachable.HasReachedLocatePosition = true;
+            LocationReachable.OnLocationReached();
+            //LocationReachable.HasReachedLocatePosition = true;
             //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
         }
     }

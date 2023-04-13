@@ -185,7 +185,12 @@ public class DispatchablePerson
             NativeFunction.Natives.SET_PED_SHOOT_RATE(pedExt.Pedestrian, pedExt.ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
         }
-        if(PedConfigFlagsToSet != null && PedConfigFlagsToSet.Any())
+        GameFiber.Yield();
+        if (!pedExt.Pedestrian.Exists())
+        {
+            return;
+        }
+        if (PedConfigFlagsToSet != null && PedConfigFlagsToSet.Any())
         {
             PedConfigFlagsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
         }
@@ -439,11 +444,11 @@ public class DispatchablePerson
             return;
         }
         pedVariation.EyeColor = EyeColor;
-        NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);    
+        NativeFunction.Natives.x50B56988B170AFDF(ped, EyeColor);
 
+        GameFiber.Yield();
 
-
-        if(!allowMorph || !ped.Exists())
+        if (!allowMorph || !ped.Exists())
         {
             return;
         }

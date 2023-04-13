@@ -209,7 +209,7 @@ public class SecurityGuardBrain : PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new GeneralLocate(PedExt, PedExt, Player, World,null,PlacesOfInterest,Settings,true,false,false, null) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+        PedExt.CurrentTask = new GeneralLocate(PedExt, PedExt, Player, World,null,PlacesOfInterest,Settings,true,null,true) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
         //EntryPoint.WriteToConsole($"SECURITY SET GeneralLocate {PedExt.Handle}", debugLevel);

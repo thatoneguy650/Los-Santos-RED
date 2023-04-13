@@ -8,6 +8,8 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface ILocationReachable
     {
-        bool HasReachedLocatePosition { get; set; }
+        bool HasReachedLocatePosition { get; }
+
+        void OnLocationReached();
     }
 }

@@ -16,8 +16,12 @@ public class StoredBody
     private IVehicleSeatDoorData VehicleSeatDoorData;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
-    private readonly string AnimationDictionaryName = "timetable@floyd@cryingonbed@base";
-    private readonly string AnimationName = "base";
+    private readonly string TrunkAnimationDictionaryName = "timetable@floyd@cryingonbed@base";
+    private readonly string TrunkAnimationName = "base";
+
+    private readonly string AliveSeatAnimationDictionaryName = "veh@std@ps@enter_exit";
+    private readonly string AliveSeatAnimationName = "dead_fall_out";
+    public bool IsAttachedToVehicle { get; set; } = true;
 
     public StoredBody(PedExt pedExt, VehicleDoorSeatData vehicleDoorSeatData, VehicleExt vehicleExt, ISettingsProvideable settings)
     {
@@ -121,7 +125,8 @@ public class StoredBody
         }
     }
     private bool LoadIntoSeat()
-    {     
+    {
+        AnimationDictionary.RequestAnimationDictionay(AliveSeatAnimationDictionaryName);
         bool isLoaded = SetPedIntoSeat();
         return isLoaded;
     }
@@ -137,20 +142,30 @@ public class StoredBody
         }
         int seat = VehicleDoorSeatData.SeatID;
         //EntryPoint.WriteToConsoleTestLong($"SetPedIntoSeat StoredBone{VehicleDoorSeatData.SeatBone} seatid{seat}");
-        if(seat == -1)
+        //if(seat == -1)
+        //{
+        //    return false;
+        //}
+        if(!VehicleExt.Vehicle.IsSeatFree(seat))
         {
             return false;
         }
         PedExt.Pedestrian.WarpIntoVehicle(VehicleExt.Vehicle, seat);
+       
         if (PedExt.IsDead)
         {
             PedExt.Pedestrian.Kill();
         }
+        else
+        {
+            PlaySeatAnimation();
+        }
+        IsAttachedToVehicle = true;
         return true;
     }
     private bool LoadInTrunk()
     {
-        AnimationDictionary.RequestAnimationDictionay(AnimationDictionaryName);
+        AnimationDictionary.RequestAnimationDictionay(TrunkAnimationDictionaryName);
         bool isLoaded = DetermineAttachType();
         return isLoaded;
     }
@@ -178,7 +193,7 @@ public class StoredBody
             return false;
         }
         Vector3 BootPosition = VehicleExt.Vehicle.GetBonePosition("boot");
-        Vector3 BedPositon = new Vector3(BootPosition.X + Settings.SettingsManager.DragSettings.LoadBodyXOffset, BootPosition.Y + Settings.SettingsManager.DragSettings.LoadBodyYOffset, BootPosition.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
+        Vector3 BedPositon = new Vector3(BootPosition.X + Settings.SettingsManager.DragSettings.LoadBodyXOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyXOffset, BootPosition.Y + Settings.SettingsManager.DragSettings.LoadBodyYOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyYOffset, BootPosition.Z + Settings.SettingsManager.DragSettings.LoadBodyZOffsetBed + Settings.SettingsManager.DragSettings.LoadBodyZOffset);
         PedExt.Pedestrian.Position = BedPositon;
         if (PedExt.IsDead)
         {
@@ -188,6 +203,7 @@ public class StoredBody
         {
             NativeFunction.Natives.SET_PED_TO_RAGDOLL(PedExt.Pedestrian, -1, -1, 0, false, false, false);
         }
+        IsAttachedToVehicle = false;
         return true;
     }
     private bool PlayTrunkAnimation()
@@ -196,8 +212,19 @@ public class StoredBody
         {
             return false;
         }
-        NativeFunction.Natives.TASK_PLAY_ANIM(PedExt.Pedestrian, AnimationDictionaryName, AnimationName, 1000.0f, -1000.0f, -1, 2 | 8, 0, false, false, false);
-        NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(PedExt.Pedestrian, AnimationDictionaryName, AnimationName, 1.0f);
+        NativeFunction.Natives.TASK_PLAY_ANIM(PedExt.Pedestrian, TrunkAnimationDictionaryName, TrunkAnimationName, 1000.0f, -1000.0f, -1, 2 | 8, 0, false, false, false);
+        NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(PedExt.Pedestrian, TrunkAnimationDictionaryName, TrunkAnimationName, 1.0f);
+        return true;
+    }
+    private bool PlaySeatAnimation()
+    {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return false;
+        }
+        PedExt.Pedestrian.BlockPermanentEvents = true;
+        //NativeFunction.Natives.TASK_PLAY_ANIM(PedExt.Pedestrian, AliveSeatAnimationDictionaryName, AliveSeatAnimationName, 1000.0f, -1000.0f, -1, 2 | 8, 0, false, false, false);
+        //NativeFunction.Natives.SET_ANIM_RATE(PedExt.Pedestrian, 0.0f,2,false);
         return true;
     }
     private void AttachToTrunk()
@@ -222,6 +249,7 @@ public class StoredBody
             Settings.SettingsManager.DragSettings.LoadBodyYRotation,
             Settings.SettingsManager.DragSettings.LoadBodyZRotation,
             false, false, false, Settings.SettingsManager.DragSettings.UseBasicAttachIfPed, Settings.SettingsManager.DragSettings.Euler, Settings.SettingsManager.DragSettings.OffsetIsRelative, false);
+        IsAttachedToVehicle = true;
         GameFiber.Wait(100);
     }
     private void SetupPed()
@@ -271,6 +299,22 @@ public class StoredBody
         {
             GameFiber.Sleep(1000);
             Game.FadeScreenIn(500, true);
+        }
+        return true;
+    }
+    public bool IsValid()
+    {
+        if (PedExt == null || !PedExt.Pedestrian.Exists())
+        {
+            return false;
+        }
+        else if (VehicleDoorSeatData == null)
+        {
+            return false;
+        }
+        else if (VehicleDoorSeatData.SeatID >= -1 && (!PedExt.Pedestrian.CurrentVehicle.Exists() || PedExt.Pedestrian.SeatIndex != VehicleDoorSeatData.SeatID))
+        {
+            return false;
         }
         return true;
     }

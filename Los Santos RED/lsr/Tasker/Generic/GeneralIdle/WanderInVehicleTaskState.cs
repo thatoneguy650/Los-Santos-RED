@@ -25,8 +25,9 @@ class WanderInVehicleTaskState : TaskState
     private bool HasSpawnRequirements;
     private bool IsGuarding;
     private bool IsPatrolling;
+    private bool IsReckless;
 
-    public WanderInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents)
+    public WanderInVehicleTaskState(PedExt pedGeneral, IEntityProvideable world, SeatAssigner seatAssigner, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, bool isReckless)
     {
         PedGeneral = pedGeneral;
         World = world;
@@ -34,7 +35,7 @@ class WanderInVehicleTaskState : TaskState
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
-
+        IsReckless = isReckless;
     }
 
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.IsInVehicle;
@@ -52,7 +53,7 @@ class WanderInVehicleTaskState : TaskState
         canGuard = false;
         canPatrol = false;
 
-        if (PedGeneral.LocationTaskRequirements.TaskRequirements.Equals(TaskRequirements.None))
+        if (PedGeneral.LocationTaskRequirements.TaskRequirements.Equals(TaskRequirements.None) || IsReckless)
         {
             canGuard = false;
             canPatrol = true;
@@ -158,12 +159,14 @@ class WanderInVehicleTaskState : TaskState
         }
         else
         {
+            float Speed = IsReckless ? 30f : 10f;
+            int DrivingStyle = IsReckless ? (int)eCustomDrivingStyles.Code3 : (int)eCustomDrivingStyles.RegularDriving;
             unsafe
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(1000, 2000));
-                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, PedGeneral.Pedestrian.CurrentVehicle, 10f, (int)eCustomDrivingStyles.RegularDriving, 10f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
+                //NativeFunction.CallByName<bool>("TASK_PAUSE", 0, RandomItems.MyRand.Next(1000, 2000));
+                NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, PedGeneral.Pedestrian.CurrentVehicle, Speed, DrivingStyle, Speed);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", 0, Ped.Pedestrian.CurrentVehicle, 10f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 10f);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", PedGeneral.Pedestrian, lol);

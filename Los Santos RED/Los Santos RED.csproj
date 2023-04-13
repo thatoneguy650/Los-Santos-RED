@@ -244,11 +244,13 @@
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\GeneralLocate_Old.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\ILocationReachable.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\InvestigatePositionOnFoot.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GeneralLocate.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\PoliceGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\SearchLocationOnFootTaskState.cs" />
     <Compile Include="lsr\Tasker\Old\GenericIdle_Old.cs" />
     <Compile Include="lsr\Tasker\PlayerChaseable\IPlayerChaseable.cs" />

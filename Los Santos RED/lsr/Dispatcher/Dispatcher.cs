@@ -89,6 +89,7 @@ public class Dispatcher
                 }
             }
         }
+        GameFiber.Yield();
         GangDispatcher.Dispatch();
         if (World.IsZombieApocalypse)
         {
@@ -102,6 +103,7 @@ public class Dispatcher
     {
         LEDispatcher.Recall();
         EMSDispatcher.Recall();
+        GameFiber.Yield();
         FireDispatcher.Recall();
         SecurityDispatcher.Recall();
         if (World.IsZombieApocalypse)
@@ -109,6 +111,7 @@ public class Dispatcher
             GameFiber.Yield();
             ZombieDispatcher.Recall();
         }
+        GameFiber.Yield();
         GangDispatcher.Recall();
     }
     public void Dispose()

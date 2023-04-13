@@ -7,6 +7,8 @@ public class DragSettings : ISettingsDefaultable
     public float LoadBodyXOffset { get; set; }
     public float LoadBodyYOffset { get; set; }
     public float LoadBodyZOffset { get; set; }
+    public float LoadBodyXOffsetBed { get; set; }
+    public float LoadBodyYOffsetBed { get; set; }
     public float LoadBodyZOffsetBed { get; set; }
     public float LoadBodyXRotation { get; set; }
     public float LoadBodyYRotation { get; set; }
@@ -35,6 +37,8 @@ public class DragSettings : ISettingsDefaultable
     public bool RagdollTeleport { get; set; }
     public int RagdollRotationOrder { get; set; }
     public bool RagdollRunAttach { get; set; }
+
+
     public DragSettings()
     {
         SetDefault();
@@ -64,9 +68,13 @@ public class DragSettings : ISettingsDefaultable
         Euler = 2;
         OffsetIsRelative = false;
         BoneIndex = 0;
-        LoadBodyZOffsetBed = -0.2f;
+        LoadBodyZOffsetBed = 1.5f;// -0.2f;
         LoadBodyZOffset = -0.1f;
         LoadBodyZRotation = 180f;
+        LoadBodyYOffsetBed = -0.5f;
+
+
+
         FadeOut = true;
     }
 }

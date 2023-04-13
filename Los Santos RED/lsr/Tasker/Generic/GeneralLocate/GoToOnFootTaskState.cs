@@ -63,18 +63,20 @@ class GoToOnFootTaskState : TaskState
             PedGeneral.Pedestrian.BlockPermanentEvents = true;
             PedGeneral.Pedestrian.KeepTasks = true;
         }
-        if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || PlaceToWalkTo == null || PlaceToWalkTo == Vector3.Zero || !PedGeneral.IsDriver)
+        if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || PlaceToWalkTo == null || PlaceToWalkTo == Vector3.Zero)
         {
             return;
         }
-        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedGeneral.Pedestrian, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 15f, -1, 0.25f, 0, 40000.0f);
+        NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedGeneral.Pedestrian, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 100.0f, -1, 0f, 0, 0f);//15f, -1, 0.25f, 0, 40000.0f);
+
+        //NativeFunction.Natives.TASK_FOLLOW_NAV_MESH_TO_COORD(PedGeneral.Pedestrian, PlaceToWalkTo.X, PlaceToWalkTo.Y, PlaceToWalkTo.Z, 15f, -1, 0.25f, 0, 40000.0f);
     }
     private void UpdateDistances()
     {
         float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo2D(PlaceToWalkTo);
         if (DistanceToCoordinates <= 7f)
         {
-            LocationReachable.HasReachedLocatePosition = true;
+            LocationReachable.OnLocationReached();
             //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
         }
     }

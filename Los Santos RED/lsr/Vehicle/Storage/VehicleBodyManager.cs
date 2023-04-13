@@ -24,7 +24,7 @@ public class VehicleBodyManager
     }
     public void Update()
     {
-        
+        StoredBodies.RemoveAll(x => !x.IsValid());
     }
     public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone)
     {
@@ -47,7 +47,10 @@ public class VehicleBodyManager
         if (storedBody.Load())
         {
             //EntryPoint.WriteToConsoleTestLong($"VehicleBodyManager LoadBody {bone} FINISHED SUCCESSFULLY");
-            StoredBodies.Add(storedBody);
+            if (storedBody.IsAttachedToVehicle)
+            {
+                StoredBodies.Add(storedBody);
+            }
             return true;
         }
         return false;
@@ -85,6 +88,7 @@ public class VehicleBodyManager
 
     public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu)
     {
+        Update();
         if(VehicleExt.VehicleBodyManager.StoredBodies == null || !VehicleExt.VehicleBodyManager.StoredBodies.Any())
         {
             return;

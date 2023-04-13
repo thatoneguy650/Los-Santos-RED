@@ -333,7 +333,7 @@ public class CopTasker
             }
             else
             {
-                Cop.CurrentTask = new GeneralLocate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate, Settings.SettingsManager.PoliceTaskSettings.AllowSettingSirenState, true, Cop);
+                Cop.CurrentTask = new PoliceGeneralLocate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate, Cop, HasSixthSense(Cop));
             }
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
@@ -373,7 +373,15 @@ public class CopTasker
             Cop.CurrentTask.Start();
         }
     }
-
+    private bool HasSixthSense(PedExt Cop)
+    {
+        bool HasSixthSense = RandomItems.RandomPercent(Cop.IsInHelicopter ? Settings.SettingsManager.PoliceTaskSettings.SixthSenseHelicopterPercentage : Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentage);
+        if (!HasSixthSense && Cop.DistanceToPlayer <= 40f && RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SixthSensePercentageClose))
+        {
+            HasSixthSense = true;
+        }
+        return HasSixthSense;
+    }
     private class CopTarget
     {
         public CopTarget(PedExt target, float distanceToTarget)
