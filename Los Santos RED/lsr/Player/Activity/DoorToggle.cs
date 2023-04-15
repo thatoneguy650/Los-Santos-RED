@@ -20,14 +20,21 @@ public class DoorToggle : DynamicActivity
     private uint DoorToggleWaitTime;
     private float AnimationToggleTime;
     private bool isDriverSide = false;
+    private bool ForceDoorState = false;
+    private bool DoorForcedState = false;
 
-    public DoorToggle(IActionable player, ISettingsProvideable settings, IEntityProvideable world, VehicleExt vehicleExt, int doorID)
+
+    private bool IsDoorAlreadyOpen = false;
+
+    public DoorToggle(IActionable player, ISettingsProvideable settings, IEntityProvideable world, VehicleExt vehicleExt, int doorID, bool forceDoorState, bool doorForcedState)
     {
         Player = player;
         Settings = settings;
         World = world;
         TargetVehicle = vehicleExt;
         DoorID = doorID;
+        ForceDoorState = forceDoorState;
+        DoorForcedState = doorForcedState;
     }
     public override string DebugString => "";
     public override ModItem ModItem { get; set; }
@@ -37,6 +44,8 @@ public class DoorToggle : DynamicActivity
     public override string PausePrompt { get; set; } = "Pause Activity";
     public override string CancelPrompt { get; set; } = "Stop Activity";
     public override string ContinuePrompt { get; set; } = "Continue Activity";
+
+
     public override void Cancel()
     {
         Player.ActivityManager.IsPerformingActivity = false;
@@ -70,6 +79,13 @@ public class DoorToggle : DynamicActivity
             Player.ActivityManager.IsPerformingActivity = false;
             return;
         }
+        if(ForceDoorState && !DoorForcedState && !IsDoorAlreadyOpen)
+        {
+            //tasked to close and door is already closed, do nothing
+            EntryPoint.WriteToConsole($"DOOR TOGGLE DOOR IS ALREADY CLOSED ForceDoorState{ForceDoorState} DoorForcedState{DoorForcedState} IsDoorAlreadyOpen{IsDoorAlreadyOpen} DoorID{DoorID}");
+            Player.ActivityManager.IsPerformingActivity = false;
+            return;
+        }
         Enter();
     }
     public override bool CanPerform(IActionable player)
@@ -90,10 +106,19 @@ public class DoorToggle : DynamicActivity
                 Player.WeaponEquipment.SetUnarmed();        
                 if (!MovePedToCarPosition())
                 {
+                    EntryPoint.WriteToConsole($"DOOR TOGGLE CANNOT MOVE TO POSITION ForceDoorState{ForceDoorState} DoorForcedState{DoorForcedState} IsDoorAlreadyOpen{IsDoorAlreadyOpen} DoorID{DoorID}");
                     //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: CAN NOT MOVE TO POSITION");
                     Player.ActivityManager.IsPerformingActivity = false;
                     return;
                 }
+                if(ForceDoorState && DoorForcedState && IsDoorAlreadyOpen)
+                {
+                    EntryPoint.WriteToConsole($"DOOR TOGGLE DOOR IS ALREADY OPEN ForceDoorState{ForceDoorState} DoorForcedState{DoorForcedState} IsDoorAlreadyOpen{IsDoorAlreadyOpen} DoorID{DoorID}");
+                    //wanted to open the door, but its already open
+                    Player.ActivityManager.IsPerformingActivity = false;
+                    return;
+                }
+
                 GetAnimation();
                 //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: GET ANIMATION");
                 AnimationDictionary.RequestAnimationDictionay(animDict);
@@ -225,6 +250,8 @@ public class DoorToggle : DynamicActivity
     }
     private bool Setup()
     {
+        EntryPoint.WriteToConsole($"DOOR TOGGLE SETUP ForceDoorState{ForceDoorState} DoorForcedState{DoorForcedState} DoorID{DoorID}");
+        IsDoorAlreadyOpen = false;
         isDriverSide = DoorID == 0 || DoorID == 2;
         if (TargetVehicle == null || !TargetVehicle.Vehicle.Exists())
         {
@@ -287,6 +314,13 @@ public class DoorToggle : DynamicActivity
             //EntryPoint.WriteToConsoleTestLong("TOO LARGE< LOWERING");
             DoorToggleHeading = DoorToggleHeading - 360f;
         }
+
+        if (TargetVehicle.Vehicle.Doors[DoorID].IsValid())
+        {
+            IsDoorAlreadyOpen = TargetVehicle.Vehicle.Doors[DoorID].IsOpen;
+        }
+
+
         //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: FINISHED SETUP");
         return true;
     }

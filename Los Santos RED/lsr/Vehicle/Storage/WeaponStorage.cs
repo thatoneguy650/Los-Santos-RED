@@ -21,6 +21,7 @@ public class WeaponStorage
     public WeaponStorage(ISettingsProvideable settings)
     {
         Settings = settings;
+        StoredWeapons = new List<StoredWeapon>();
     }
     public void Reset()
     {

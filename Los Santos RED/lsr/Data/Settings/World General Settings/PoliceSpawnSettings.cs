@@ -196,7 +196,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int HeliSpawnLimit_Wanted5 { get; set; }
     [Description("Maximum police helicopters that can be spawned when you are at wanted level 6.")]
     public int HeliSpawnLimit_Wanted6 { get; set; }
-
     [Description("Maximum police helicopters that can be spawned when you are at wanted level 7.")]
     public int HeliSpawnLimit_Wanted7 { get; set; }
     [Description("Maximum police helicopters that can be spawned when you are at wanted level 8.")]
@@ -205,8 +204,39 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int HeliSpawnLimit_Wanted9 { get; set; }
     [Description("Maximum police helicopters that can be spawned when you are at wanted level 10.")]
     public int HeliSpawnLimit_Wanted10 { get; set; }
-    
-    
+
+
+
+
+    [Description("Maximum police K9 units that can be spawned when you are not wanted and no investigation is active.")]
+    public int K9SpawnLimit_Default { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are not wanted and an investigation is active.")]
+    public int K9SpawnLimit_Investigation { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 1.")]
+    public int K9SpawnLimit_Wanted1 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 2.")]
+    public int K9SpawnLimit_Wanted2 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 3.")]
+    public int K9SpawnLimit_Wanted3 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 4.")]
+    public int K9SpawnLimit_Wanted4 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 5.")]
+    public int K9SpawnLimit_Wanted5 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 6.")]
+    public int K9SpawnLimit_Wanted6 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 7.")]
+    public int K9SpawnLimit_Wanted7 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 8.")]
+    public int K9SpawnLimit_Wanted8 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 9.")]
+    public int K9SpawnLimit_Wanted9 { get; set; }
+    [Description("Maximum police K9 units that can be spawned when you are at wanted level 10.")]
+    public int K9SpawnLimit_Wanted10 { get; set; }
+
+    [Description("Percentage of time to allow adding a canine unit to a spawn when possible. 0 is never 100 is always.")]
+    public int AddK9Percentage { get; set; }
+
+
     [Description("Percentage of time to allow spawning a random agency (that can spawn in the given location) instead of the main assigned jurisdiction when not wanted. Allows agencies without territory to spawn randomly. 0 is never 100 is always.")]
     public int LikelyHoodOfAnySpawn_Default { get; set; }
     [Description("Percentage of time to allow spawning the county assigned jurisdiction when not wanted. Allows the possibility of county agencies to spawn when in a location with zone based jurisdiction. 0 is never 100 is always.")]
@@ -336,6 +366,27 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         HeliSpawnLimit_Wanted9 = 2;
         HeliSpawnLimit_Wanted10 = 2;
 
+
+
+
+        K9SpawnLimit_Default = 0;
+        K9SpawnLimit_Investigation = 0;
+        K9SpawnLimit_Wanted1 = 0;
+        K9SpawnLimit_Wanted2 = 0;
+        K9SpawnLimit_Wanted3 = 1;
+        K9SpawnLimit_Wanted4 = 2;
+        K9SpawnLimit_Wanted5 = 0;
+        K9SpawnLimit_Wanted6 = 0;
+
+        K9SpawnLimit_Wanted7 = 0;
+        K9SpawnLimit_Wanted8 = 0;
+        K9SpawnLimit_Wanted9 = 0;
+        K9SpawnLimit_Wanted10 = 0;
+
+        AddK9Percentage = 20;
+
+
+
         MaxDistanceToSpawn_WantedSeen = 550f;
         MaxDistanceToSpawn_WantedUnseen = 350f;
         MaxDistanceToSpawn_NotWanted = 900f;
@@ -376,7 +427,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        AddOptionalPassengerPercentage = 75f;
+        AddOptionalPassengerPercentage = 80f;
        // PedestrianSpawnPercentage = 50f;
         //PercentageSpawnOnFootNearStation = 50;
 
@@ -408,10 +459,16 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         RemoveAmbientPolice = false;
 #if DEBUG
         ShowSpawnedBlips = true;
+
+        //AddK9Percentage = 100;
+        //K9SpawnLimit_Default = 1;
+        //K9SpawnLimit_Wanted1 = 1;
+        //K9SpawnLimit_Wanted2 = 1;
+        //K9SpawnLimit_Investigation = 1;
 #else
 #endif
         AllowStationSpawning = true;
-        StationSpawning_MaxWanted = 2;
+        StationSpawning_MaxWanted = 3;
        // StationSpawningIgnoresLimits = true;
     }
 }

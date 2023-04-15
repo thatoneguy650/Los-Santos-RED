@@ -21,7 +21,7 @@ public class GeneralIdle : ComplexTask
     private bool CheckPassengers = false;
     private bool CheckSiren = false;
     private bool ForceStandardScenarios = false;
-    private bool AllowEnteringVehicle => !Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000;
+    private bool AllowEnteringVehicle => !Ped.IsAnimal && (!Ped.IsLocationSpawned || PedGeneral.HasExistedFor >= 10000);
     public GeneralIdle(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world,List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents, bool checkPassengers, bool checkSiren, bool forceStandardScenarios) : base(player, ped, 1500)//1500
     {
         PedGeneral = pedGeneral;

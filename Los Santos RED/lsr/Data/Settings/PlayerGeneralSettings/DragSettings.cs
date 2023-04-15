@@ -3,7 +3,7 @@
 public class DragSettings : ISettingsDefaultable
 {
     [Description("")]
-
+    public bool AllowLoadingBodies { get; set; }
     public float LoadBodyXOffset { get; set; }
     public float LoadBodyYOffset { get; set; }
     public float LoadBodyZOffset { get; set; }
@@ -37,7 +37,7 @@ public class DragSettings : ISettingsDefaultable
     public bool RagdollTeleport { get; set; }
     public int RagdollRotationOrder { get; set; }
     public bool RagdollRunAttach { get; set; }
-
+    public bool AllowRagdolling { get; set; }
 
     public DragSettings()
     {
@@ -45,6 +45,7 @@ public class DragSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
+        AllowLoadingBodies = false;
         RagdollAttach1X = 0.0f;// 0.1f;
         RagdollAttach1Y = 0.0f;//0.3f;
         RagdollAttach1Z = 0.0f;//-0.1f;
@@ -74,7 +75,13 @@ public class DragSettings : ISettingsDefaultable
         LoadBodyYOffsetBed = -0.5f;
 
 
-
+        AllowRagdolling = false;
         FadeOut = true;
+
+#if DEBUG
+        AllowLoadingBodies = true;
+        AllowRagdolling = true;
+#endif
+
     }
 }

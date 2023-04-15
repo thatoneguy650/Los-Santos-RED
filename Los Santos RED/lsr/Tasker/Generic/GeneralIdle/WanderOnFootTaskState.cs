@@ -169,6 +169,10 @@ class WanderOnFootTaskState : TaskState
         List<string> NormalScenarios = new List<string>() { "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" };
         List<string> BasicScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" };
 
+
+
+        List<string> DogScenarios = new List<string>() { "WORLD_DOG_BARKING_ROTTWEILER","WORLD_DOG_BARKING_RETRIEVER","WORLD_DOG_BARKING_SHEPHERD","WORLD_DOG_SITTING_ROTTWEILER","WORLD_DOG_SITTING_RETRIEVER","WORLD_DOG_SITTING_SHEPHERD","WORLD_DOG_BARKING_SMALL","WORLD_DOG_SITTING_SMALL" };
+
         string ScenarioChosen = "WORLD_HUMAN_STAND_IMPATIENT";
 
         if (BlockPermanentEvents)
@@ -176,6 +180,7 @@ class WanderOnFootTaskState : TaskState
             PedGeneral.Pedestrian.BlockPermanentEvents = true;
             PedGeneral.Pedestrian.KeepTasks = true;
         }
+
 
         if (HasSpawnRequirements)
         {
@@ -209,7 +214,11 @@ class WanderOnFootTaskState : TaskState
         }
         else
         {
-            if (PedGeneral.HasMenu)
+            if(PedGeneral.IsAnimal)
+            {
+                ScenarioChosen = DogScenarios.PickRandom();
+            }
+            else if (PedGeneral.HasMenu)
             {
                 ScenarioChosen = DealerScenarios.PickRandom();
             }

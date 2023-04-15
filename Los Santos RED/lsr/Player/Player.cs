@@ -919,12 +919,7 @@ namespace Mod
             VehicleDoorSeatData vdsd = null;
             if (!IsInVehicle)
             {
-                vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 2.5f, VehicleSeatDoorData);
-                if(vdsd == null)
-                {
-                    return;
-                }
-                ActivityManager.SetDoor(vdsd.DoorID,true,true);
+                vdsd = InterestedVehicle.GetClosestPedStorageBone(this, 7f, VehicleSeatDoorData);
             }
             if(InterestedVehicle.VehicleInteractionMenu.IsShowingMenu)
             {
@@ -2262,6 +2257,12 @@ namespace Mod
                         CurrentLookedAtObject = null;
                     }
                 }
+                if(CurrentLookedAtPed != null && CurrentLookedAtPed.IsDead && CurrentLookedAtPed.Pedestrian.Exists())
+                {
+                    CurrentLookedAtPed.UpdateVehicleState();
+                }
+
+
                 GameTimeLastUpdatedLookedAtPed = Game.GameTime;
                 GameFiber.Yield();
             }

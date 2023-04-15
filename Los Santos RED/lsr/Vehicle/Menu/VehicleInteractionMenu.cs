@@ -30,17 +30,45 @@ public class VehicleInteractionMenu
         {
             VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu, vehicleSeatDoorData, world);
         }
-        VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, weapons, modItems, !player.IsInVehicle);
-        if(!player.IsInVehicle)
+
+        UIMenu InventoryWeaponHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Inventory and Weapons");
+        VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage Stored Inventory and Weapons. Place items or weapons within storage, or retreive them for use.";
+        InventoryWeaponHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
+
+
+        InventoryWeaponHeaderMenu.OnMenuOpen += (sender) =>
         {
-            VehicleExt.CreateDoorMenu(MenuPool, VehicleInteractMenu);
-        }
+            vehicleDoorSeatData = VehicleExt.GetClosestPedStorageBone(player, 5.0f, vehicleSeatDoorData);
+            if(vehicleDoorSeatData== null)
+            {
+                return;
+            }
+            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, true, false);
+        };
+        InventoryWeaponHeaderMenu.OnMenuClose += (sender) =>
+        {
+            if (vehicleDoorSeatData == null)
+            {
+                return;
+            }
+            player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, false, false);
+        };
+
+
+        VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, weapons, modItems, !player.IsInVehicle);
         VehicleExt.HandleRandomItems(modItems);
-        VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, !player.IsInVehicle);
+        VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, !player.IsInVehicle);
         VehicleInteractMenu.Visible = true;
         IsShowingMenu = true;
+
+
+
         ProcessMenu();
     }
+
+
+
+
     private void CreateInteractionMenu()
     {
         MenuPool = new MenuPool();
@@ -54,15 +82,15 @@ public class VehicleInteractionMenu
         {
             try
             {
-                while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
+                while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 7f)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
                 }
-                if(VehicleDoorSeatData != null)
-                {
-                    Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, true, false);
-                }
+                //if(VehicleDoorSeatData != null)
+                //{
+                //    Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, true, false);
+                //}
                 IsShowingMenu = false;
             }
             catch (Exception ex)

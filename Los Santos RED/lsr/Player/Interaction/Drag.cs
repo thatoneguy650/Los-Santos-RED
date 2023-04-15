@@ -330,13 +330,12 @@ public class Drag : DynamicActivity
         {
             Player.ButtonPrompts.AddPrompt("Drop", "Drop", "Drop", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 1);
         }
-#if DEBUG
 
-        if (!Player.ButtonPrompts.HasPrompt("Ragdoll"))
+        if (Settings.SettingsManager.DragSettings.AllowRagdolling && !Player.ButtonPrompts.HasPrompt("Ragdoll"))
         {
             Player.ButtonPrompts.AddPrompt("Ragdoll", "Ragdoll", "Ragdoll", Settings.SettingsManager.KeySettings.InteractCancel, 10);
         }
-#endif
+
 
 
         if (PlayAttachAnimation() && PlayDragAnimation())
@@ -544,7 +543,7 @@ public class Drag : DynamicActivity
             return;
         }
         Player.ButtonPrompts.RemovePrompts("Load");
-        if (!Player.ButtonPrompts.HasPrompt($"Load into {VehicleDoorSeatData.SeatName}"))
+        if (Settings.SettingsManager.DragSettings.AllowLoadingBodies && !Player.ButtonPrompts.HasPrompt($"Load into {VehicleDoorSeatData.SeatName}"))
         {
             Player.ButtonPrompts.AddPrompt("Load", $"Load into {VehicleDoorSeatData.SeatName}", $"Load into {VehicleDoorSeatData.SeatName}", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 1);
         }

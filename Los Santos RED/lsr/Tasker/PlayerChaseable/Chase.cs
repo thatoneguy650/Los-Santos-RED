@@ -107,14 +107,17 @@ public class Chase : ComplexTask
             Ped.Pedestrian.KeepTasks = true;
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@enter");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@idle_a");
-            NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
-            NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
-            NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
-            if (Settings.SettingsManager.PoliceTaskSettings.SetSteerAround)
+            if (!Ped.IsAnimal)
             {
-                NativeFunction.Natives.SET_PED_STEERS_AROUND_OBJECTS(Ped.Pedestrian, true);
-                NativeFunction.Natives.SET_PED_STEERS_AROUND_PEDS(Ped.Pedestrian, true);
-                NativeFunction.Natives.SET_PED_STEERS_AROUND_VEHICLES(Ped.Pedestrian, true);
+                NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
+                NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
+                NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
+                if (Settings.SettingsManager.PoliceTaskSettings.SetSteerAround)
+                {
+                    NativeFunction.Natives.SET_PED_STEERS_AROUND_OBJECTS(Ped.Pedestrian, true);
+                    NativeFunction.Natives.SET_PED_STEERS_AROUND_PEDS(Ped.Pedestrian, true);
+                    NativeFunction.Natives.SET_PED_STEERS_AROUND_VEHICLES(Ped.Pedestrian, true);
+                }
             }
             GameFiber.Yield();
             Update();
@@ -381,7 +384,8 @@ public class Chase : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
             {
-                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);// 9);
+                int flags = Ped.IsAnimal ? (int)eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE : (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE;
+                NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, flags);// 9);
             }
         }
         //EntryPoint.WriteToConsole(string.Format("Started Enter Old Car: {0}", Ped.Pedestrian.Handle));

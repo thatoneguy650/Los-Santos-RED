@@ -54,6 +54,7 @@ public class VehicleBodyManager
             {
                 StoredBody storedBody = new StoredBody(pedExtOnSeat, vdsd, VehicleExt, Settings);
                 EntryPoint.WriteToConsole("Added Existng Stored Body to the data set");
+                StoredBodies.Add(storedBody);
             }
         }
 

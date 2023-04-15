@@ -306,14 +306,17 @@ public class StoredBody
     {
         if (PedExt == null || !PedExt.Pedestrian.Exists())
         {
+            EntryPoint.WriteToConsole($"REMOVING INVALID STORED BODY PED DOESNT EXIST");
             return false;
         }
         else if (VehicleDoorSeatData == null)
         {
+            EntryPoint.WriteToConsole($"REMOVING INVALID STORED BODY NO DATA");
             return false;
         }
         else if (VehicleDoorSeatData.SeatID >= -1 && (!PedExt.Pedestrian.CurrentVehicle.Exists() || PedExt.Pedestrian.SeatIndex != VehicleDoorSeatData.SeatID))
         {
+            EntryPoint.WriteToConsole($"REMOVING INVALID STORED BODY CUrrent:{PedExt.Pedestrian.SeatIndex} Stored:{VehicleDoorSeatData.SeatID}");
             return false;
         }
         return true;

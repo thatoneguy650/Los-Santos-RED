@@ -726,7 +726,7 @@ public class ActivityManager
                 Game.DisplayHelp("Cancel existing activity to start");
                 return;
             }
-            DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+            DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex, false,false);
             if (doorToggle.CanPerform(Actionable))
             {
                 ForceCancelAllActive();
@@ -750,7 +750,32 @@ public class ActivityManager
         }
     }
 
-    public bool SetDoor(int doorIndex, bool withAnimation, bool setOpen) 
+    public bool SetDoor(int doorIndex, bool setOpen, bool includeWarning) 
+    {
+        VehicleExt toToggleDoor = GetInterestedVehicle();
+        if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
+        {
+            return false;
+        }
+        if (IsPerformingActivity)
+        {
+            if (includeWarning)
+            {
+                Game.DisplayHelp("Cancel existing activity to start");
+            }
+            return false;
+        }
+        DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex, true,setOpen);
+        if (doorToggle.CanPerform(Actionable))
+        {
+            ForceCancelAllActive();
+            IsPerformingActivity = true;
+            LowerBodyActivity = doorToggle;
+            LowerBodyActivity.Start();
+        }
+        return true;
+    }
+    public bool SetDoor_Old(int doorIndex, bool withAnimation, bool setOpen, bool includeWarning)
     {
         VehicleExt toToggleDoor = GetInterestedVehicle();
         if (toToggleDoor == null || !toToggleDoor.Vehicle.Exists())
@@ -769,10 +794,13 @@ public class ActivityManager
 
                     if (IsPerformingActivity)
                     {
-                        Game.DisplayHelp("Cancel existing activity to start");
+                        if (includeWarning)
+                        {
+                            Game.DisplayHelp("Cancel existing activity to start");
+                        }
                         return false;
                     }
-                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex, false, false);
                     if (doorToggle.CanPerform(Actionable))
                     {
                         ForceCancelAllActive();
@@ -780,9 +808,6 @@ public class ActivityManager
                         LowerBodyActivity = doorToggle;
                         LowerBodyActivity.Start();
                     }
-
-
-
                 }
                 else
                 {
@@ -804,7 +829,7 @@ public class ActivityManager
                         Game.DisplayHelp("Cancel existing activity to start");
                         return false;
                     }
-                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex);
+                    DoorToggle doorToggle = new DoorToggle(Actionable, Settings, World, toToggleDoor, doorIndex, false, false);
                     if (doorToggle.CanPerform(Actionable))
                     {
                         ForceCancelAllActive();

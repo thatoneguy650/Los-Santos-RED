@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr.Data
         public List<PhoneContact> Contacts { get; set; } = new List<PhoneContact>();
         public List<GangRepSave> GangReputationsSave { get; set; } = new List<GangRepSave>();
         public GangKickSave GangKickSave { get; set; }
-        public List<StoredWeapon> WeaponInventory { get; set; }
+        public List<StoredWeapon> WeaponInventory { get; set; } = new List<StoredWeapon>();
         public List<InventorySave> InventoryItems { get; set; } = new List<InventorySave>();
         public List<VehicleSaveStatus> OwnedVehicleVariations { get; set; } = new List<VehicleSaveStatus>();
         public List<SavedResidence> SavedResidences { get; set; } = new List<SavedResidence>();
@@ -268,7 +268,7 @@ namespace LosSantosRED.lsr.Data
                 LoadRelationships(player, gangs);
                 LoadContacts(player, gangs);
                 LoadLicenses(player);
-                LoadResidences(player, placesOfInterest, modItems);
+                LoadResidences(player, placesOfInterest, modItems, settings);
                 LoadHumanState(player);
                 LoadCellPhoneSettings(player);
                 player.SetCopStatus(IsCop, null);
@@ -387,15 +387,53 @@ namespace LosSantosRED.lsr.Data
                         VehicleExt MyVeh = World.Vehicles.GetVehicleExt(NewVehicle.Handle);
                         if (MyVeh == null)
                         {
+                            EntryPoint.WriteToConsole("MY VEH IS NULL");
                             MyVeh = new VehicleExt(NewVehicle, settings);
                             MyVeh.Setup();
                             MyVeh.HasUpdatedPlateType = true;
                             MyVeh.CanHaveRandomItems = false;
+                            //if(MyVeh == null)
+                            //{
+                            //    EntryPoint.WriteToConsole("VEH IS NULL");
+                            //}
+                            //if (World == null)
+                            //{
+                            //    EntryPoint.WriteToConsole("World IS NULL");
+                            //}
+                            //if (World.Vehicles == null)
+                            //{
+                            //    EntryPoint.WriteToConsole("World.Vehicles IS NULL");
+                            //}
+                            
+                            //EntryPoint.WriteToConsole($"TEST LIST COUNT {World.Vehicles.CivilianVehicleList.Count()}");
+
                             World.Vehicles.AddEntity(MyVeh, ResponseType.None);
                             OwnedVehicleVariation.VehicleVariation?.Apply(MyVeh);
                         }
-
-
+                        if(MyVeh.WeaponStorage == null)
+                        {
+                            EntryPoint.WriteToConsole("MyVeh.WeaponStorage == null");
+                        }
+                        if (MyVeh.WeaponStorage.StoredWeapons == null)
+                        {
+                            EntryPoint.WriteToConsole("MyVeh.WeaponStorage.StoredWeapons == null");
+                        }
+                        if (MyVeh.SimpleInventory == null)
+                        {
+                            EntryPoint.WriteToConsole("MyVeh.SimpleInventory == null");
+                        }
+                        if (MyVeh.SimpleInventory.ItemsList == null)
+                        {
+                            EntryPoint.WriteToConsole("MyVeh.SimpleInventory.ItemsList == null");
+                        }
+                        if (OwnedVehicleVariation.WeaponInventory == null)
+                        {
+                            EntryPoint.WriteToConsole("OwnedVehicleVariation.WeaponInventory == null");
+                        }
+                        if (OwnedVehicleVariation.InventoryItems == null)
+                        {
+                            EntryPoint.WriteToConsole("OwnedVehicleVariation.InventoryItems == null");
+                        }
                         foreach (StoredWeapon storedWeap in OwnedVehicleVariation.WeaponInventory)
                         {
                             MyVeh.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
@@ -469,7 +507,7 @@ namespace LosSantosRED.lsr.Data
                 player.Licenses.PilotsLicense = new PilotsLicense() { ExpirationDate = PilotsLicense.ExpirationDate, IssueDate = PilotsLicense.IssueDate, IsFixedWingEndorsed = PilotsLicense.IsFixedWingEndorsed, IsRotaryEndorsed = PilotsLicense.IsRotaryEndorsed, IsLighterThanAirEndorsed = PilotsLicense.IsLighterThanAirEndorsed };
             }
         }
-        private void LoadResidences(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems)
+        private void LoadResidences(IInventoryable player, IPlacesOfInterest placesOfInterest, IModItems modItems, ISettingsProvideable settings)
         {
             foreach (SavedResidence res in SavedResidences)
             {
@@ -483,11 +521,19 @@ namespace LosSantosRED.lsr.Data
                         savedPlace.IsRented = res.IsRentedByPlayer;
                         savedPlace.DateRentalPaymentDue = res.RentalPaymentDate;
                         savedPlace.DateRentalPaymentPaid = res.DateOfLastRentalPayment;
-                        foreach(StoredWeapon storedWeap in res.WeaponInventory)
+                        if(savedPlace.WeaponStorage == null)
+                        {
+                            savedPlace.WeaponStorage = new WeaponStorage(settings);
+                        }
+                        if(savedPlace.SimpleInventory == null)
+                        {
+                            savedPlace.SimpleInventory = new SimpleInventory(settings);
+                        }
+                        foreach (StoredWeapon storedWeap in res.WeaponInventory)
                         {
                             savedPlace.WeaponStorage.StoredWeapons.Add(storedWeap.Copy());
                         }
-                        foreach(InventorySave stest in res.InventoryItems)
+                        foreach (InventorySave stest in res.InventoryItems)
                         {
                             savedPlace.SimpleInventory.Add(modItems.Get(stest.ModItemName), stest.RemainingPercent);
                         }

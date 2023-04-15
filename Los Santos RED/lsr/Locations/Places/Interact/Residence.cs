@@ -45,7 +45,7 @@ public class Residence : InteractableLocation, ILocationSetupable
     public DateTime DateRentalPaymentPaid { get; set; }
 
 
-    [XmlIgnore] 
+    [XmlIgnore]
     public SimpleInventory SimpleInventory { get; set; }
     [XmlIgnore]
     public WeaponStorage WeaponStorage { get; set; }

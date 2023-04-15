@@ -163,7 +163,7 @@ public class LEDispatcher
 
 
 
-    private bool HasNeedToAmbientCanineDispatch => TotalIsWanted && World.Pedestrians.TotalSpawnedAmbientPoliceCanines < 1;
+    private bool HasNeedToAmbientCanineDispatch => World.Pedestrians.TotalSpawnedAmbientPoliceCanines < SpawnedK9Limit;
 
 
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
@@ -328,6 +328,64 @@ public class LEDispatcher
             else
             {
                 return Settings.SettingsManager.PoliceSpawnSettings.PedSpawnLimit_Default;
+            }
+        }
+    }
+    private int SpawnedK9Limit
+    {
+        get
+        {
+            if (World.TotalWantedLevel == 10)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted10;// return 2;
+            }
+            if (World.TotalWantedLevel == 9)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted9;// return 2;
+            }
+            if (World.TotalWantedLevel == 8)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted8;// return 2;
+            }
+            if (World.TotalWantedLevel == 7)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted7;// return 2;
+            }
+            if (World.TotalWantedLevel == 6)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted6;// return 2;
+            }
+            else if (World.TotalWantedLevel == 5)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted5;//return 2;
+            }
+            else if (World.TotalWantedLevel == 4)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted4;//return 1;
+            }
+            else if (World.TotalWantedLevel == 3)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted3;//return 1;
+            }
+            else if (World.TotalWantedLevel == 2)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted2;//return 0;
+            }
+            else if (World.TotalWantedLevel == 1)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Wanted1;//return 0;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Investigation;//return 0;
+            }
+            else if (World.TotalWantedLevel == 0)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Default;//return 0;
+            }
+            else
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.K9SpawnLimit_Default;//return 0;
             }
         }
     }
@@ -783,7 +841,7 @@ public class LEDispatcher
         {
             GameFiber.Yield();
             LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, 
-                RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, HasNeedToAmbientCanineDispatch);
+                RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, HasNeedToAmbientCanineDispatch && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage));
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;

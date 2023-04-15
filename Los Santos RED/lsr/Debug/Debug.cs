@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 using static DispatchScannerFiles;
+using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
 public class Debug
 {
@@ -1502,18 +1503,38 @@ public class Debug
             {
                 attackDog.BlockPermanentEvents = true;
                 attackDog.KeepTasks = true;
-               // NativeFunction.Natives.SET_PED_CONFIG_FLAG(attackDog, 281, false);//Can Writhe
+                // NativeFunction.Natives.SET_PED_CONFIG_FLAG(attackDog, 281, false);//Can Writhe
                 //NativeFunction.Natives.SET_PED_DIES_WHEN_INJURED(attackDog, false);
                 //attackDog.Tasks.FightAgainst(Game.LocalPlayer.Character);
-                unsafe
+                VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
+                if(chosenVehicle != null && chosenVehicle.Vehicle.Exists())
                 {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 134217728, 16);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    attackDog.WarpIntoVehicle(chosenVehicle.Vehicle, 1);
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, attackDog.CurrentVehicle, 27, 1000);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, attackDog.CurrentVehicle, (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR));// 256);
+                        NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
+                }
+                else
+                {
+                    unsafe
+                    {
+                        int lol = 0;
+                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                        NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 134217728, 16);
+                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                    }
                 }
             }
             Game.DisplayHelp("PRESS Z TO CANCEL");
