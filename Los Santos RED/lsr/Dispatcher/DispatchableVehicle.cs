@@ -29,7 +29,8 @@ public class DispatchableVehicle
     public List<int> RequiredLiveries { get; set; } = new List<int>();
     public List<DispatchableVehicleExtra> VehicleExtras { get; set; } = new List<DispatchableVehicleExtra>();
 
-
+    public List<int> OptionalColors { get; set; }
+    public float MaxRandomDirtLevel { get; set; } = 5.0f;
     public VehicleVariation RequiredVariation { get; set; }
 
     public bool RequiresDLC { get; set; } = false;
@@ -37,6 +38,9 @@ public class DispatchableVehicle
     public bool IsCar => NativeFunction.Natives.IS_THIS_MODEL_A_CAR<bool>(Game.GetHashKey(ModelName));
     public bool IsHelicopter => NativeFunction.Natives.IS_THIS_MODEL_A_HELI<bool>(Game.GetHashKey(ModelName));
     public bool IsMotorcycle => NativeFunction.Natives.IS_THIS_MODEL_A_BIKE<bool>(Game.GetHashKey(ModelName));
+
+
+
     public bool CanCurrentlySpawn(int WantedLevel, bool allowDLC) => CurrentSpawnChance(WantedLevel, allowDLC) > 0;
     public int CurrentSpawnChance(int WantedLevel, bool allowDLC)
     {
@@ -112,11 +116,16 @@ public class DispatchableVehicle
         {
             return;
         }
+        if (OptionalColors != null && OptionalColors.Any())
+        {
+            int chosenColor = OptionalColors.PickRandom();
+            NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, chosenColor, chosenColor);
+        }
         if (RequiredPrimaryColorID != -1)
         {
             NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
         }
-        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, 15.0f));
+        NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, MaxRandomDirtLevel.Clamp(0.0f,15.0f)));
         RequiredVariation?.Apply(vehicleExt);
         GameFiber.Yield();
     }

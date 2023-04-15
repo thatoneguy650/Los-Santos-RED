@@ -220,6 +220,7 @@ public class DebugMenu : ModUIMenu
         CreatePlateMenuItem();
         CreateLiveryMenuItem();
         CreateExtraMenuItem();
+        CreateColorMenuItem();
     }
     private void CreateVehicleMenu()
     {
@@ -243,7 +244,19 @@ public class DebugMenu : ModUIMenu
         };
         vehicleItemsMenu.AddItem(VehicleExtraMenuItem);
     }
-
+    private void CreateColorMenuItem()//CreateColorMenuItem
+    {
+        UIMenuNumericScrollerItem<int> VehicleColorMenuItem = new UIMenuNumericScrollerItem<int>("Set Color", "Set the vehicle color", 0, 159, 1);
+        VehicleColorMenuItem.Activated += (menu, item) =>
+        {
+            if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+            {
+                NativeFunction.Natives.SET_VEHICLE_COLOURS(Player.CurrentVehicle.Vehicle, VehicleColorMenuItem.Value, VehicleColorMenuItem.Value);
+                Game.DisplaySubtitle($"SET COLOR {VehicleColorMenuItem.Value}");
+            }
+        };
+        vehicleItemsMenu.AddItem(VehicleColorMenuItem);
+    }
 
     private void CreateLiveryMenuItem()
     {
