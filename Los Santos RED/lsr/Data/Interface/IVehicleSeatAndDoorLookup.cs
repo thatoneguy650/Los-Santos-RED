@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface IVehicleSeatDoorData
+    public interface IVehicleSeatAndDoorLookup
     {
         List<VehicleDoorSeatData> VehicleDoorSeatDataList { get; }
     }

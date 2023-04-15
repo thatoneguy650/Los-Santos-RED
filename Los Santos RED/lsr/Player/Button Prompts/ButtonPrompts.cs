@@ -40,6 +40,7 @@ public class ButtonPrompts
         AttemptAddInteractionPrompts();
         AttemptAddAdvancedInteractionPrompts();
         AttemptAddVehiclePrompts();
+        //GameFiber.Yield();
         AttemptAddLocationPrompts();
         AttemptAddActivityPrompts();
         AttemptRemoveMenuPrompts();
@@ -48,7 +49,7 @@ public class ButtonPrompts
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if(addedPromptGroup || toConsider == null || !toConsider.Vehicle.Exists() || !toConsider.HasBeenEnteredByPlayer || toConsider.Vehicle.Speed >= 0.5f)
+        if(addedPromptGroup || Player.Surrendering.HandsAreUp || !Player.IsAliveAndFree || toConsider == null || !toConsider.Vehicle.Exists() || toConsider.VehicleInteractionMenu.IsShowingMenu || !toConsider.HasBeenEnteredByPlayer || toConsider.Vehicle.Speed >= 0.5f)
         {
             RemovePrompts("VehicleInteract");
             return;

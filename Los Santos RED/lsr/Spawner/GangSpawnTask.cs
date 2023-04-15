@@ -199,6 +199,11 @@ public class GangSpawnTask : SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, ResponseType.None);
             }
+            GameFiber.Yield();
+            if (!SpawnedVehicle.Exists())
+            {
+                return null;
+            }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.AssociatedGang = Gang;
             CreatedVehicle.UpdatePlatePrefix(Gang);

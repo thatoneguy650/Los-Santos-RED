@@ -89,6 +89,7 @@ public class FireDispatcher
     {
         if (Settings.SettingsManager.FireSettings.ManageDispatching && IsTimeToDispatch && HasNeedToDispatch)
         {
+            GameFiber.Yield();
             HasDispatchedThisTick = true;//up here for now, might be better down low
             if (GetSpawnLocation() && GetSpawnTypes(false, null))
             {

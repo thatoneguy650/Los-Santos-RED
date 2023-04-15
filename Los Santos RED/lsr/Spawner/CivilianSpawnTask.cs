@@ -165,6 +165,11 @@ public class CivilianSpawnTask : SpawnTask
                 CreatedVehicle.Setup();
             }
             CreatedVehicle.WasModSpawned = true;
+            GameFiber.Yield();
+            if (!SpawnedVehicle.Exists())
+            {
+                return null;
+            }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, SetPersistent);
             //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet,Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount,true);
 

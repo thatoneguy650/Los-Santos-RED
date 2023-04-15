@@ -8,11 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class VehicleSeatDoorData : IVehicleSeatDoorData
+public class VehicleSeatAndDoorLookup : IVehicleSeatAndDoorLookup
 {
 
     public List<VehicleDoorSeatData> VehicleDoorSeatDataList { get; set; }
-    public VehicleSeatDoorData()
+    public VehicleSeatAndDoorLookup()
     {
 
     }

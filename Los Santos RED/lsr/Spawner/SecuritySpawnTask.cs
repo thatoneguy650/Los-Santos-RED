@@ -180,6 +180,11 @@ public class SecurityGuardSpawnTask : SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
             }
+            GameFiber.Yield();
+            if (!SpawnedVehicle.Exists())
+            {
+                return null;
+            }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpdatePlatePrefix(Agency);
             CreatedVehicle.CanRandomlyHaveIllegalItems = false;

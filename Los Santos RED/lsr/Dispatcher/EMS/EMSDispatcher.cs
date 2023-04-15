@@ -245,6 +245,7 @@ public class EMSDispatcher
     {
         if (GetSpawnLocation() && GetSpawnTypes(false, null))
         {
+            GameFiber.Yield();
             CallSpawnTask(false, true, false, false, TaskRequirements.None);
             GameTimeAttemptedDispatch = Game.GameTime;
         }

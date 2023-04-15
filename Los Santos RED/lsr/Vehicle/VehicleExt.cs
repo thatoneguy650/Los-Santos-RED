@@ -921,7 +921,7 @@ namespace LSR.Vehicles
                 return lightEmissives[(int)index];
             }
         }
-        public VehicleDoorSeatData GetClosestPedStorageBone(IInteractionable Player, float maxDistance, IVehicleSeatDoorData vehicleSeatDoorData)
+        public VehicleDoorSeatData GetClosestPedStorageBone(IInteractionable Player, float maxDistance, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
             if(!Vehicle.Exists()) 
             {

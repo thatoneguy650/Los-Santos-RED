@@ -737,12 +737,14 @@ public class LEDispatcher
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)
         {
+            GameFiber.Yield();
+            GameTimeAttemptedDispatch = Game.GameTime;
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
             if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
             {
                 //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
-                GameTimeAttemptedDispatch = Game.GameTime;
+                //GameTimeAttemptedDispatch = Game.GameTime;
             }
         }
     }

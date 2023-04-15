@@ -35,6 +35,9 @@ public class GangDispatcher
     private bool ShouldRunAmbientDispatch;
     private IModItems ModItems;
 
+
+    private bool IsPedestrianOnlySpawn = false;
+
     public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
         Player = player;
@@ -54,12 +57,39 @@ public class GangDispatcher
     }
     private float ClosestGangSpawnToPlayerAllowed => 45f;
     private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-    private float DistanceToDelete => 300f;
-    private float DistanceToDeleteOnFoot => 250f;
+
+
+
+    private float DistanceToDeleteInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
+
+
+
+    private float DistanceToDeleteOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
+
+
+
+
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
-    private float MaxDistanceToSpawn => Settings.SettingsManager.GangSettings.MaxDistanceToSpawn;//150f;
-    private float MinDistanceToSpawn => Settings.SettingsManager.GangSettings.MinDistanceToSpawn;//50f;
+
+
+
+
+    private float MaxDistanceToSpawnOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot;//150f;
+    private float MinDistanceToSpawnOnFoot => Settings.SettingsManager.GangSettings.MinDistanceToSpawnOnFoot;//50f;
+
+
+
+
+    private float MaxDistanceToSpawnInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle;//150f;
+    private float MinDistanceToSpawnInVehicle => Settings.SettingsManager.GangSettings.MinDistanceToSpawnInVehicle;//50f;
+
+
+
+
+
+
+
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -234,13 +264,15 @@ public class GangDispatcher
     private void RunAmbientDispatch()
     {
         //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} AmbLimit:{AmbientMemberLimitForZoneType}");
-        if (GetSpawnLocation() && GetSpawnTypes(false, false, null))
+        if (GetSpawnLocation() && GetSpawnTypes())
         {
+            GameTimeAttemptedDispatch = Game.GameTime;
+            GameFiber.Yield();
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
             if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
             {
                 ShouldRunAmbientDispatch = false;
-                GameTimeAttemptedDispatch = Game.GameTime;
+                //GameTimeAttemptedDispatch = Game.GameTime;
             }
         }
     }
@@ -250,6 +282,7 @@ public class GangDispatcher
         bool isValidSpawn;
         GangDen = null;
         IsDenSpawn = false;
+        IsPedestrianOnlySpawn = false;
         SpawnLocation = new SpawnLocation();
         do
         {
@@ -257,26 +290,28 @@ public class GangDispatcher
             {
                 GangDen = PlacesOfInterest.PossibleLocations.GangDens.Where(x => x.IsNearby).PickRandom();
             }
-            if (GangDen != null)
+            if(GangDen != null && GangDen.DistanceToPlayer >= 90f)
             {
-                float DistanceTo = GangDen.EntrancePosition.DistanceTo2D(Game.LocalPlayer.Character);
-                if (DistanceTo >= 45f)
-                {
-                    IsDenSpawn = true;
-                    SpawnLocation.InitialPosition = GangDen.EntrancePosition.Around2D(50f);
-                }
-                else
-                {
-                    GangDen = null;
-                    SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-                }
+                Gang = GangDen.AssociatedGang;
+                IsPedestrianOnlySpawn = RandomItems.RandomPercent(Gang.PedestrianSpawnPercentageAroundDen);
+                IsDenSpawn = true;
+                SpawnLocation.InitialPosition = GangDen.EntrancePosition.Around2D(50f);
+                EntryPoint.WriteToConsole($"Gang Dispatcher Den Spawn, Ped Only:{IsPedestrianOnlySpawn}");
             }
             else
             {
+                IsPedestrianOnlySpawn = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.AmbientSpawnPedestrianAttemptPercentage);
+                GangDen = null;
                 SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+                EntryPoint.WriteToConsole($"Gang Dispatcher Regular Spawn, Ped Only:{IsPedestrianOnlySpawn}");
             }
             SpawnLocation.GetClosestStreet(false);
             SpawnLocation.GetClosestSidewalk();
+            if(IsPedestrianOnlySpawn && !IsDenSpawn && !SpawnLocation.HasSidewalk)
+            {
+                IsPedestrianOnlySpawn = false;
+                EntryPoint.WriteToConsole($"Gang Dispatcher attempted Ped Only spawn without sidewalks, changing to vehicle");
+            }
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);
             timesTried++;
@@ -284,17 +319,12 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Gang forceGang)
+    private bool GetSpawnTypes()
     {
         Gang = null;
         VehicleType = null;
         PersonType = null;
-
-        if(forceGang != null)
-        {
-            Gang = forceGang;
-        }
-        else if (IsDenSpawn && GangDen != null)
+        if (IsDenSpawn && GangDen != null)
         {
             Gang = GangDen.AssociatedGang;
         }
@@ -302,53 +332,28 @@ public class GangDispatcher
         {
             Gang = GetRandomGang(SpawnLocation);
         }
-        if (Gang != null)
+        if(Gang == null)
         {
-            if(forcePed)
-            {
-                PersonType = Gang.GetRandomPed(Player.WantedLevel, "");
-                VehicleType = null;
-                return PersonType != null;
-            }
-            else if (forceVehicle)
-            {
-                PersonType = null;
-                VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true,"", Settings);
-                return VehicleType != null;
-            }
-            else
-            {
-                if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID) >= Gang.SpawnLimit)
-                {
-                    return false;
-                }
-                else
-                {
-                    if (IsDenSpawn && RandomItems.RandomPercent(80))
-                    {
-                        VehicleType = null;
-                    }
-                    else if (!SpawnLocation.HasSidewalk || RandomItems.RandomPercent(Gang.VehicleSpawnPercentage))
-                    {
-                        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);
-                    }
-
-                    if (VehicleType != null || SpawnLocation.HasSidewalk || IsDenSpawn)
-                    {
-                        string RequiredGroup = "";
-                        if (VehicleType != null)
-                        {
-                            RequiredGroup = VehicleType.RequiredPedGroup;
-                        }
-                        PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
-                        if (PersonType != null)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
+            return false;
+        }    
+        if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID) >= Gang.SpawnLimit)
+        {
+            return false;
         }
+        if(!IsPedestrianOnlySpawn)
+        {
+            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);
+        }
+        string RequiredGroup = "";
+        if (VehicleType != null)
+        {
+            RequiredGroup = VehicleType.RequiredPedGroup;
+        }
+        PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+        if (PersonType != null)
+        {
+            return true;
+        }         
         return false;
     }
     private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
@@ -377,15 +382,15 @@ public class GangDispatcher
             return false;
         }
     }
-    private bool ShouldBeRecalled(GangMember emt)
+    private bool ShouldBeRecalled(GangMember gangMember)
     {
-        if (emt.IsInVehicle)
+        if (gangMember.IsInVehicle)
         {
-            return emt.DistanceToPlayer >= DistanceToDelete;
+            return gangMember.DistanceToPlayer >= DistanceToDeleteInVehicle;
         }
         else
         {
-            return emt.DistanceToPlayer >= DistanceToDeleteOnFoot;
+            return gangMember.DistanceToPlayer >= DistanceToDeleteOnFoot;
         }
     }
     private void Delete(PedExt emt)
@@ -454,7 +459,7 @@ public class GangDispatcher
     {
         Vector3 Position;
         Position = Player.Position;
-        Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
+        Position = Position.Around2D(IsPedestrianOnlySpawn ? MinDistanceToSpawnOnFoot : MinDistanceToSpawnInVehicle, IsPedestrianOnlySpawn ? MaxDistanceToSpawnOnFoot : MaxDistanceToSpawnInVehicle);
         return Position;
     }
     private Gang GetRandomGang(SpawnLocation spawnLocation)

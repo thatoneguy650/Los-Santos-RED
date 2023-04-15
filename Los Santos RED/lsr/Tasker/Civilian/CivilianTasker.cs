@@ -50,6 +50,7 @@ public class CivilianTasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
+            GameFiber.Yield();
             foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -62,6 +63,7 @@ public class CivilianTasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
+            GameFiber.Yield();
             foreach (SecurityGuard securityGuard in PedProvider.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists()))
             {
                 try
@@ -74,6 +76,7 @@ public class CivilianTasker
                     Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Setting Civilian Task");
                 }
             }
+            GameFiber.Yield();
         }
     }
 }

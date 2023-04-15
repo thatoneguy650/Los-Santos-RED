@@ -13,7 +13,7 @@ using static RAGENativeUI.Elements.UIMenuStatsPanel;
 public class StoredBody
 {
     private ISettingsProvideable Settings;
-    private IVehicleSeatDoorData VehicleSeatDoorData;
+    private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
     private bool PedCanBeTasked;
     private bool PedCanBeAmbientTasked;
     private readonly string TrunkAnimationDictionaryName = "timetable@floyd@cryingonbed@base";

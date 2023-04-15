@@ -77,7 +77,7 @@ namespace Mod
         private IGameSaves GameSaves;
         private ISeats Seats;
         private IAgencies Agencies;
-        private IVehicleSeatDoorData VehicleSeatDoorData;
+        private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
         private uint GameTimeLastRaiseHandsEmote;
         private Vehicle VehicleTryingToEnter;
         private int SeatTryingToEnter;
@@ -87,7 +87,7 @@ namespace Mod
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
-            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies,ISavedOutfits savedOutfits, IVehicleSeatDoorData vehicleSeatDoorData)
+            , IPedGroups pedGroups, IDances dances, ISpeeches speeches, ISeats seats, IAgencies agencies,ISavedOutfits savedOutfits, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
             ModelName = modelName;
             IsMale = isMale;
@@ -926,7 +926,11 @@ namespace Mod
                 }
                 ActivityManager.SetDoor(vdsd.DoorID,true,true);
             }
-            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd);
+            if(InterestedVehicle.VehicleInteractionMenu.IsShowingMenu)
+            {
+                return;
+            }
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World);
         }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);

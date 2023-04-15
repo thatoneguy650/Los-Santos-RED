@@ -42,7 +42,7 @@ public class ActivityManager
     private IShopMenus ShopMenus;
     private IGangs Gangs;
     private IGangTerritories GangTerritories;
-    private IVehicleSeatDoorData VehicleSeatDoorData;
+    private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
 
     private DynamicActivity LowerBodyActivity;
     private DynamicActivity UpperBodyActivity;
@@ -136,7 +136,7 @@ public class ActivityManager
     public ActivityManager(IActivityManageable player, ISettingsProvideable settings, IActionable actionable, IIntoxicatable intoxicatable, IInteractionable interactionable, ICameraControllable cameraControllable, ILocationInteractable locationInteractable,
         ITimeControllable time, IRadioStations radioStations, ICrimes crimes, IModItems modItems, 
         IDances dances, IEntityProvideable world, IIntoxicants intoxicants, IPlateChangeable plateChangeable, ISpeeches speeches, ISeats seats, IWeapons weapons, IPlacesOfInterest placesOfInterest, IZones zones, IShopMenus shopMenus, IGangs gangs, IGangTerritories gangTerritories,
-        IVehicleSeatDoorData vehicleSeatDoorData)
+        IVehicleSeatAndDoorLookup vehicleSeatDoorData)
     {
         Player = player;
         Settings = settings;

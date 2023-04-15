@@ -147,7 +147,7 @@
     <Compile Include="lsr\Data\Interface\IModItems.cs" />
     <Compile Include="lsr\Data\Interface\ISpeeches.cs" />
     <Compile Include="lsr\Data\Interface\ITattooNames.cs" />
-    <Compile Include="lsr\Data\Interface\IVehicleSeatDoorData.cs" />
+    <Compile Include="lsr\Data\Interface\IVehicleSeatAndDoorLookup.cs" />
     <Compile Include="lsr\Data\Interface\IWantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
@@ -165,7 +165,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\DoorToggleSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\DragSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ShovelSettings.cs" />
-    <Compile Include="lsr\Data\Vehicles\VehicleSeatDoorData.cs" />
+    <Compile Include="lsr\Data\Vehicles\VehicleSeatAndDoorLookup.cs" />
     <Compile Include="lsr\Dispatcher\Default\DefaultDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Default\LEDispatcherNew.cs" />
     <Compile Include="lsr\Dispatcher\LocationDispatcher.cs" />

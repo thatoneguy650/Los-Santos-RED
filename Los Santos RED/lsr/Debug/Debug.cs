@@ -442,7 +442,7 @@ public class Debug
     }
     private void DebugNumpad4()
     {
-
+        K9Test();
         // Player.CellPhone.OpenBurner();
         // GameFiber.Sleep(1000);
 
@@ -496,49 +496,49 @@ public class Debug
 
         //    //}
         //}
-        if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
-        {
-            Player.CurrentVehicle.HasUpdatedPlateType = true;
+        //if (Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists())
+        //{
+        //    Player.CurrentVehicle.HasUpdatedPlateType = true;
 
 
-            int CurrentPlateStyleIndex = NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle);
-            //EntryPoint.WriteToConsoleTestLong($"Plate 1: CurrentPlateStyleIndex {CurrentPlateStyleIndex}");
+        //    int CurrentPlateStyleIndex = NativeFunction.CallByName<int>("GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle);
+        //    //EntryPoint.WriteToConsoleTestLong($"Plate 1: CurrentPlateStyleIndex {CurrentPlateStyleIndex}");
 
-            if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int newPlateStyleIndex))
-            {
+        //    if (int.TryParse(NativeHelper.GetKeyboardInput(""), out int newPlateStyleIndex))
+        //    {
 
 
 
-                PlateType CurrentType = PlateTypes.GetPlateType(CurrentPlateStyleIndex);
-                if (CurrentType != null && Player.CurrentVehicle.CanUpdatePlate)
-                {
-                    //EntryPoint.WriteToConsoleTestLong($"Plate 2: newPlateStyleIndex {newPlateStyleIndex}");
-                    PlateType NewType = PlateTypes.GetPlateType(newPlateStyleIndex);//PlateTypes.GetRandomPlateType();
-                    if (NewType != null)
-                    {
-                        //EntryPoint.WriteToConsoleTestLong("Plate 3");
-                        string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
-                        if (NewPlateNumber != "")
-                        {
-                            //EntryPoint.WriteToConsoleTestLong("Plate 4");
-                            Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
-                            Player.CurrentVehicle.OriginalLicensePlate.PlateNumber = NewPlateNumber;
-                            Player.CurrentVehicle.CarPlate.PlateNumber = NewPlateNumber;
-                        }
-                        if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
-                        {
-                            //EntryPoint.WriteToConsoleTestLong($"OldPlateType {CurrentType.Index} {CurrentType.State} {CurrentType.Description}");
-                            int test = NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES");
-                            //EntryPoint.WriteToConsoleTestLong($"Total Plates: {test} NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
-                            NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
-                            Player.CurrentVehicle.OriginalLicensePlate.PlateType = NewType.Index;
-                            Player.CurrentVehicle.CarPlate.PlateType = NewType.Index;
-                        }
-                        // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
-                    }
-                }
-            }
-        }
+        //        PlateType CurrentType = PlateTypes.GetPlateType(CurrentPlateStyleIndex);
+        //        if (CurrentType != null && Player.CurrentVehicle.CanUpdatePlate)
+        //        {
+        //            //EntryPoint.WriteToConsoleTestLong($"Plate 2: newPlateStyleIndex {newPlateStyleIndex}");
+        //            PlateType NewType = PlateTypes.GetPlateType(newPlateStyleIndex);//PlateTypes.GetRandomPlateType();
+        //            if (NewType != null)
+        //            {
+        //                //EntryPoint.WriteToConsoleTestLong("Plate 3");
+        //                string NewPlateNumber = NewType.GenerateNewLicensePlateNumber();
+        //                if (NewPlateNumber != "")
+        //                {
+        //                    //EntryPoint.WriteToConsoleTestLong("Plate 4");
+        //                    Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
+        //                    Player.CurrentVehicle.OriginalLicensePlate.PlateNumber = NewPlateNumber;
+        //                    Player.CurrentVehicle.CarPlate.PlateNumber = NewPlateNumber;
+        //                }
+        //                if (NewType.Index <= NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES"))
+        //                {
+        //                    //EntryPoint.WriteToConsoleTestLong($"OldPlateType {CurrentType.Index} {CurrentType.State} {CurrentType.Description}");
+        //                    int test = NativeFunction.CallByName<int>("GET_NUMBER_OF_VEHICLE_NUMBER_PLATES");
+        //                    //EntryPoint.WriteToConsoleTestLong($"Total Plates: {test} NewPlateType {NewType.Index} {NewType.State} {NewType.Description}");
+        //                    NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
+        //                    Player.CurrentVehicle.OriginalLicensePlate.PlateType = NewType.Index;
+        //                    Player.CurrentVehicle.CarPlate.PlateType = NewType.Index;
+        //                }
+        //                // //EntryPoint.WriteToConsole("UpdatePlate", string.Format("Updated {0} {1}", Vehicle.Model.Name, NewType.Index));
+        //            }
+        //        }
+        //    }
+        //}
 
         //SpawnNoGunAttackers();
 
@@ -728,7 +728,8 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        OffsetGarbage();
+        ShuffleTest();
+        //OffsetGarbage();
         
         //AnimationTester();
 
@@ -1053,6 +1054,9 @@ public class Debug
 
     private void OffsetGarbage()
     {
+
+
+
 
         VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
         if(chosenVehicle == null || !chosenVehicle.Vehicle.Exists())
@@ -1454,8 +1458,79 @@ public class Debug
         //Player.CellPhone.AddScamText();
     }
 
+    private void ShuffleTest()
+    {
+        //spawn car, put me in, put them in passenger, kill them, shuffle seat, see what happens?
+        //TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT
+        bool isPassenger = RandomItems.RandomPercent(50f);
+        int playerseat = isPassenger ? 0 : - 1;
+        int pedseat = isPassenger ? -1: 0;
+
+        VehicleExt chosenVehicle = Player.ActivityManager.GetInterestedVehicle();
+        if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists())
+        {
+            return;
+        }
+        if(!Player.IsInVehicle)
+        {
+            Player.Character.WarpIntoVehicle(chosenVehicle.Vehicle, playerseat);
+        }
+        Ped randomPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f));
+        GameFiber.Yield();
+        if (!randomPed.Exists())
+        {
+            return;
+        }
+        randomPed.WarpIntoVehicle(chosenVehicle.Vehicle, pedseat);
+        randomPed.Kill();
+        GameFiber.Sleep(1000);
+        if (chosenVehicle == null || !chosenVehicle.Vehicle.Exists() || !randomPed.Exists())
+        {
+            return;
+        }
+        NativeFunction.Natives.TASK_SHUFFLE_TO_NEXT_VEHICLE_SEAT(Game.LocalPlayer.Character, chosenVehicle.Vehicle, false);
+    }
+    private void K9Test()
+    {
+        //spawn K9 give him attack me tasks, set him to not do the pre attack thiungo, wait until press button, despawn
+
+        GameFiber.StartNew(delegate
+        {
+            Ped attackDog = new Ped("a_c_shepherd",Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f),0f);
+            GameFiber.Yield();
+            if (attackDog.Exists())
+            {
+                attackDog.BlockPermanentEvents = true;
+                attackDog.KeepTasks = true;
+               // NativeFunction.Natives.SET_PED_CONFIG_FLAG(attackDog, 281, false);//Can Writhe
+                //NativeFunction.Natives.SET_PED_DIES_WHEN_INJURED(attackDog, false);
+                //attackDog.Tasks.FightAgainst(Game.LocalPlayer.Character);
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 134217728, 16);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", attackDog, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            Game.DisplayHelp("PRESS Z TO CANCEL");
+            while (attackDog.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+            {
+                GameFiber.Sleep(25);
+            }
+            if (attackDog.Exists())
+            {
+                attackDog.Delete();
+            }
+
+        }, "Run Debug Logic");
 
 
+
+    }
    
 
     private void OpenDoors()

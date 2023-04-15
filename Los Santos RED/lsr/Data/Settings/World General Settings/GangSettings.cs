@@ -42,10 +42,25 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-    [Description("Minimum distance in meters to spawn from the player.")]
-    public float MinDistanceToSpawn { get; set; }
-    [Description("Maximum distance in meters to spawn from the player.")]
-    public float MaxDistanceToSpawn { get; set; }
+    [Description("Minimum distance in meters to spawn a pedestrian gang member from the player.")]
+    public float MinDistanceToSpawnOnFoot { get; set; }
+    [Description("Maximum distance in meters to spawn a pedestrian gang member from the player.")]
+    public float MaxDistanceToSpawnOnFoot { get; set; }
+
+
+    [Description("Minimum distance in meters to spawn a gang member in a vehicle from the player.")]
+    public float MinDistanceToSpawnInVehicle { get; set; }
+    [Description("Maximum distance in meters to spawn a gang member in a vehicle from the player.")]
+    public float MaxDistanceToSpawnInVehicle { get; set; }
+
+
+
+
+
+
+
+
+
     [Description("Total limit of spawned gang members between all gangs. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
 
@@ -69,7 +84,7 @@ public class GangSettings : ISettingsDefaultable
     public int AmbientSpawnPercentage_Downtown { get; set; }
 
 
-
+    public float AmbientSpawnPedestrianAttemptPercentage { get; set; }
 
 
     [Description("Percentage of the time to spawn a gang outside of the den when near.")]
@@ -129,8 +144,14 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-        MinDistanceToSpawn = 75f;// 50f;
-        MaxDistanceToSpawn = 200f;// 150f;
+        MinDistanceToSpawnOnFoot = 75f;// 50f;
+        MaxDistanceToSpawnOnFoot = 200f;// 150f;
+
+
+        MinDistanceToSpawnInVehicle = 300f;// 50f;
+        MaxDistanceToSpawnInVehicle = 500f;// 150f;
+
+
 
         TotalSpawnedMembersLimit = 20;//5
         TotalSpawnedAmbientMembersLimit = 5;// 8;
@@ -177,6 +198,7 @@ public class GangSettings : ISettingsDefaultable
         EscortSpeed = 100f;
         DenSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawningWhenPlayerWantedMaxWanted = 4;
+        AmbientSpawnPedestrianAttemptPercentage = 20f;
     }
 
 }

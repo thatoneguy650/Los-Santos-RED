@@ -11,6 +11,7 @@ using LosSantosRED.lsr.Interface;
 
 public class VehicleInteractionMenu
 {
+    public bool IsShowingMenu { get; private set; } = false;
     private VehicleExt VehicleExt;
     private MenuPool MenuPool;
     private UIMenu VehicleInteractMenu;
@@ -20,14 +21,14 @@ public class VehicleInteractionMenu
     {
         VehicleExt = vehicleExt;
     }
-    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData)
+    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
     {
         VehicleDoorSeatData = vehicleDoorSeatData;
         Player = player;
         CreateInteractionMenu();
         if (!player.IsInVehicle)
         {
-            VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu);
+            VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu, vehicleSeatDoorData, world);
         }
         VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, weapons, modItems, !player.IsInVehicle);
         if(!player.IsInVehicle)
@@ -37,6 +38,7 @@ public class VehicleInteractionMenu
         VehicleExt.HandleRandomItems(modItems);
         VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, VehicleInteractMenu, !player.IsInVehicle);
         VehicleInteractMenu.Visible = true;
+        IsShowingMenu = true;
         ProcessMenu();
     }
     private void CreateInteractionMenu()
@@ -52,7 +54,7 @@ public class VehicleInteractionMenu
         {
             try
             {
-                while (EntryPoint.ModController.IsRunning && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
+                while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 10f)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();
@@ -61,6 +63,7 @@ public class VehicleInteractionMenu
                 {
                     Player.ActivityManager.SetDoor(VehicleDoorSeatData.DoorID, true, false);
                 }
+                IsShowingMenu = false;
             }
             catch (Exception ex)
             {

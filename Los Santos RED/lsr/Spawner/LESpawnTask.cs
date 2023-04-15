@@ -199,14 +199,16 @@ public class LESpawnTask : SpawnTask
             {
                 World.Vehicles.AddEntity(CreatedVehicle, Agency.ResponseType);
             }
+            GameFiber.Yield();
+            if (!SpawnedVehicle.Exists())
+            {
+                return null;
+            }
             VehicleType.SetVehicleExtPermanentStats(CreatedVehicle, true);
             CreatedVehicle.UpgradePerformance();
             CreatedVehicle.UpdatePlatePrefix(Agency);
             CreatedVehicle.CanRandomlyHaveIllegalItems = false;
-            //CreatedVehicle.SimpleInventory.AddRandomItems(ModItems,6,2,false);
-
-            //CreatedVehicle.SetSpawnItems(VehicleType, Agency, null, true);
-            CreatedVehicles.Add(CreatedVehicle);           
+            CreatedVehicles.Add(CreatedVehicle);
             return CreatedVehicle;
         }
         catch (Exception ex)

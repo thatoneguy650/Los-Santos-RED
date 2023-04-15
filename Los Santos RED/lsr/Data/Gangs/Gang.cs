@@ -110,6 +110,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public float PercentageWithSidearms { get; set; } = 40f;
     public float PercentageWithMelee { get; set; } = 50f;
     public float VehicleSpawnPercentage { get; set; } = 60f;
+    public float PedestrianSpawnPercentageAroundDen { get; set; } = 80f;
     public int MemberKickUpDays { get; set; } = 7;
     public int MemberKickUpAmount { get; set; } = 2000;
     public int MemberKickUpMissLimit { get; set; } = 3;

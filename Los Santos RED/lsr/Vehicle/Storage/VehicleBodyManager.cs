@@ -22,9 +22,44 @@ public class VehicleBodyManager
         VehicleExt = vehicleExt;
         Settings = settings;
     }
-    public void Update()
+    public void Update(IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
     {
+
         StoredBodies.RemoveAll(x => !x.IsValid());
+
+        if(VehicleExt == null || !VehicleExt.Vehicle.Exists())
+        {
+            return;
+        }
+
+        for(int seatindex = -1;seatindex <= 5;seatindex++) 
+        {
+            if (StoredBodies.Any(x => x.VehicleDoorSeatData?.SeatID == seatindex))
+            {
+                continue;
+            }
+            Ped pedOnSeat = VehicleExt.Vehicle.GetPedOnSeat(seatindex);
+            if(!pedOnSeat.Exists())
+            {
+                continue;
+            }
+
+            PedExt pedExtOnSeat = world.Pedestrians.GetPedExt(pedOnSeat.Handle);
+            VehicleDoorSeatData vdsd = vehicleSeatDoorData.VehicleDoorSeatDataList.Where(x => x.SeatID == seatindex).FirstOrDefault();
+            if(vdsd == null)
+            {
+                continue;
+            }
+            if (pedExtOnSeat.IsDead || pedExtOnSeat.IsUnconscious)
+            {
+                StoredBody storedBody = new StoredBody(pedExtOnSeat, vdsd, VehicleExt, Settings);
+                EntryPoint.WriteToConsole("Added Existng Stored Body to the data set");
+            }
+        }
+
+
+
+
     }
     public bool LoadBody(PedExt pedExt, VehicleDoorSeatData bone)
     {
@@ -86,9 +121,9 @@ public class VehicleBodyManager
     //    }
     //}
 
-    public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu)
+    public void CreateInteractionMenu(MenuPool menuPool, UIMenu VehicleInteractMenu, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
     {
-        Update();
+        Update(vehicleSeatDoorData, world);
         if(VehicleExt.VehicleBodyManager.StoredBodies == null || !VehicleExt.VehicleBodyManager.StoredBodies.Any())
         {
             return;

@@ -45,9 +45,9 @@ public class Drag : DynamicActivity
     private AnimationWatcher AnimationWatcher;
     private bool CloseTrunk = false;
     private VehicleDoorSeatData VehicleDoorSeatData;
-    private IVehicleSeatDoorData VehicleSeatDoorData;
+    private IVehicleSeatAndDoorLookup VehicleSeatDoorData;
 
-    public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world, IVehicleSeatDoorData vehicleSeatDoorData)
+    public Drag(IInteractionable player, PedExt ped, ISettingsProvideable settings, ICrimes crimes, IModItems modItems, IEntityProvideable world, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
     {
         Player = player;
         Ped = ped;

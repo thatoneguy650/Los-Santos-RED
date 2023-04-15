@@ -46,7 +46,7 @@ public class ModDataFileManager
     public WantedLevels WantedLevels;
     public TattooNames TattooNames;
     public SavedOutfits SavedOutfits;
-    public VehicleSeatDoorData VehicleSeatDoorData;
+    public VehicleSeatAndDoorLookup VehicleSeatDoorData;
     public ModDataFileManager()
     {
 
@@ -184,7 +184,7 @@ public class ModDataFileManager
         GameFiber.Yield();
 
 
-        VehicleSeatDoorData = new VehicleSeatDoorData();
+        VehicleSeatDoorData = new VehicleSeatAndDoorLookup();
         VehicleSeatDoorData.ReadConfig();
         GameFiber.Yield();
     }
