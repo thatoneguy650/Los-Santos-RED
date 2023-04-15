@@ -768,16 +768,16 @@ namespace LosSantosRED.lsr
             int totalAdded = 0;
             int totalToAdd = Settings.SettingsManager.ScannerSettings.NumberOfUnitsToAnnounce;
             List<string> CallSigns = new List<string>();
-            foreach (Cop UnitToCall in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation || x.IsRespondingToWanted).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop UnitToCall in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToInvestigation || x.IsRespondingToWanted).OrderBy(x => x.DistanceToPlayer))
             {
                 if (UnitToCall != null && UnitToCall.Division != -1)
                 {
-                    string CallSign = $"{UnitToCall.Division}-{UnitToCall.UnityType}-{UnitToCall.BeatNumber}";
+                    string CallSign = $"{UnitToCall.Division}-{UnitToCall.UnitType}-{UnitToCall.BeatNumber}";
                     if (!CallSigns.Contains(CallSign))
                     {
                         CallSigns.Add(CallSign);
                         //EntryPoint.WriteToConsoleTestLong($"Scanner Calling Specific Unit {CallSign}");
-                        List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnityType, UnitToCall.BeatNumber);
+                        List<string> CallsignAudio = CallsignScannerAudio.GetAudio(UnitToCall.Division, UnitToCall.UnitType, UnitToCall.BeatNumber);
                         if (CallsignAudio != null)
                         {
                             if (!AddedSingleUnit)

@@ -51,6 +51,9 @@ public class Pedestrians : ITaskerReportable
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
+
+    public List<CanineUnit> PoliceCanines { get; private set; } = new List<CanineUnit>();
+
     public List<SecurityGuard> SecurityGuards { get; private set; } = new List<SecurityGuard>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
@@ -61,6 +64,9 @@ public class Pedestrians : ITaskerReportable
     public List<GangMember> GangMemberList => GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Zombie> ZombieList => Zombies.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Cop> PoliceList => Police.Where(x => x.Pedestrian.Exists()).ToList();
+
+    public List<CanineUnit> PoliceCanineList => PoliceCanines.Where(x => x.Pedestrian.Exists()).ToList();
+
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
     public List<SecurityGuard> SecurityGuardList => SecurityGuards.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
@@ -92,6 +98,16 @@ public class Pedestrians : ITaskerReportable
             return myList;
         }
     }
+    public List<Cop> AllPoliceList
+    {
+        get
+        {
+            List<Cop> myList = new List<Cop>();
+            myList.AddRange(PoliceList);
+            myList.AddRange(PoliceCanineList);
+            return myList;
+        }
+    }
     public List<PedExt> PedExts
     {
         get
@@ -105,6 +121,7 @@ public class Pedestrians : ITaskerReportable
             myList.AddRange(FirefighterList);
             myList.AddRange(DeadPeds);
             myList.AddRange(SecurityGuardList);
+            myList.AddRange(PoliceCanineList);
             return myList;
         }
     }
@@ -116,6 +133,13 @@ public class Pedestrians : ITaskerReportable
     public bool AnyNooseUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
     public int TotalSpawnedPolice => Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientPolice => Police.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+
+    public int TotalSpawnedPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+    public int TotalSpawnedAmbientPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
+
+
+
     public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientEMTs => EMTs.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
@@ -325,6 +349,15 @@ public class Pedestrians : ITaskerReportable
             }
         }
         Police.Clear();
+        foreach (CanineUnit Canine in PoliceCanines)
+        {
+            if (Canine.Pedestrian.Exists() && Canine.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                Canine.Pedestrian.Delete();
+                EntryPoint.PersistentPedsDeleted++;
+            }
+        } 
+        PoliceCanines.Clear();
     }
     public void ClearSpawned()
     {
@@ -419,6 +452,28 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Cop);
             }
         }
+        GameFiber.Yield();
+
+        foreach (CanineUnit CanineUnit in PoliceCanines.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        {
+            bool hasBlip = false;
+            Blip myblip = CanineUnit.Pedestrian.GetAttachedBlip();
+            if (myblip.Exists())
+            {
+                hasBlip = true;
+                myblip.Delete();
+            }
+            CanineUnit.Pedestrian.IsPersistent = false;
+            EntryPoint.PersistentPedsNonPersistent++;
+            //EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
+            if (!DeadPeds.Any(x => x.Handle == CanineUnit.Handle))
+            {
+                CanineUnit.IsDead = true;
+                DeadPeds.Add(CanineUnit);
+            }
+        }
+        GameFiber.Yield();
+
         foreach (SecurityGuard SecurityGuard in SecurityGuards.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             bool hasBlip = false;
@@ -437,7 +492,7 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(SecurityGuard);
             }
         }
-
+        GameFiber.Yield();
 
         foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
@@ -457,6 +512,8 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(EMT);
             }
         }
+        GameFiber.Yield();
+
         foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             bool hasBlip = false;
@@ -475,6 +532,7 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Firefighter);
             }
         }
+        GameFiber.Yield();
         foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
         {
             if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
@@ -483,8 +541,10 @@ public class Pedestrians : ITaskerReportable
                 DeadPeds.Add(Civilian);
             }
         }
+
         GameFiber.Yield();
         Police.RemoveAll(x => x.CanRemove);// || x.Handle == Game.LocalPlayer.Character.Handle);
+        PoliceCanines.RemoveAll(x => x.CanRemove);
         EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Merchants.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
@@ -598,6 +658,13 @@ public class Pedestrians : ITaskerReportable
                 if (!Police.Any(x => x.Handle == pedExt.Handle))
                 {
                     Police.Add((Cop)pedExt);
+                }
+            }
+            else if (pedExt.GetType() == typeof(CanineUnit))
+            {
+                if (!PoliceCanines.Any(x => x.Handle == pedExt.Handle))
+                {
+                    PoliceCanines.Add((CanineUnit)pedExt);
                 }
             }
             else if (pedExt.GetType() == typeof(EMT))

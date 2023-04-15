@@ -93,6 +93,9 @@ public class DispatchablePerson
     public List<CombatFloatToSet> CombatFloatsToSet { get; set; }
     public float FaceFeatureRandomizePercentage { get; set; } = 90f;
 
+
+    public bool IsAnimal { get; set; } = false;
+
     public bool CanCurrentlySpawn(int WantedLevel)
     {
         if (WantedLevel > 0)
@@ -170,7 +173,7 @@ public class DispatchablePerson
         }
         if (overrideHealth)
         {
-            int health = RandomItems.GetRandomNumberInt(HealthMin, HealthMax) + 100;
+            int health = RandomItems.GetRandomNumberInt(HealthMin, HealthMax) + 100 + (IsAnimal ? 100 : 0);
             pedExt.Pedestrian.MaxHealth = health;
             pedExt.Pedestrian.Health = health;
         }
@@ -286,7 +289,7 @@ public class DispatchablePerson
             {
                 bool isMale = ModelName.ToLower() == "mp_m_freemode_01";
                 RandomHeadData rhd = null;
-                rhd = PossibleHeads.Where(x => x.IsMale == isMale).PickRandom();
+                rhd = PossibleHeads?.Where(x => x.IsMale == isMale).PickRandom();
                 if (rhd != null)
                 {
                     RandomHeadData rhd2 = PossibleHeads.Where(x => x.IsMale == isMale && x.Name != rhd.Name).PickRandom();

@@ -91,6 +91,11 @@ public class SeatAssigner
     }
     public void AssignFrontSeat(bool includeNonAssigned)
     {
+        if(Ped.IsAnimal)
+        {
+            AssignPrisonerSeat();
+            return;
+        }
         VehicleAssigned = null;
         SeatAssigned = -99;
         if (IsSeatAvailable(Ped.AssignedVehicle, Ped.AssignedSeat))

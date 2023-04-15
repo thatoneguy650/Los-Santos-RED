@@ -122,6 +122,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int VehicleShootRate { get; set; } = 100;
     public virtual int TurretAccuracy { get; set; } = 10;
     public virtual int TurretShootRate { get; set; } = 1000;
+    public virtual bool IsAnimal { get; set; } = false;
     public string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;

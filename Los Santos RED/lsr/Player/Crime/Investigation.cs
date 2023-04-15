@@ -89,7 +89,7 @@ public class Investigation
         RequiresEMS = false;
         RequiresFirefighters = false;
         IsNearPosition = false;
-        foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+        foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToInvestigation))
         {
             cop.IsRespondingToInvestigation = false;
         }
@@ -172,7 +172,7 @@ public class Investigation
             //EntryPoint.WriteToConsoleTestLong("Investigation Expire OUTSIDE RANGE");
             Expire();
         }
-        else if ((IsTimedOut || World.Pedestrians.Police.Any(x=>x.IsRespondingToInvestigation && x.GameTimeReachedInvestigationPosition > 0 && Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring)) && World.TotalWantedLevel == 0 && !World.Pedestrians.AnyInjuredPeopleNearPlayer)
+        else if ((IsTimedOut || World.Pedestrians.AllPoliceList.Any(x=>x.IsRespondingToInvestigation && x.GameTimeReachedInvestigationPosition > 0 && Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring)) && World.TotalWantedLevel == 0 && !World.Pedestrians.AnyInjuredPeopleNearPlayer)
         {
             //EntryPoint.WriteToConsoleTestLong("Investigation Expire TIME OUT");
             Expire();
@@ -200,7 +200,7 @@ public class Investigation
                 RespondingPolice = PoliceToRespond(1);
             }
             int tasked = 0;
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && (InvestigationWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))//first pass, only want my police and whatever units?
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists() && (InvestigationWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))//first pass, only want my police and whatever units?
             {
                 if(!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(Position) >= 150f)
                 {
@@ -218,7 +218,7 @@ public class Investigation
             }
             if(tasked < RespondingPolice)
             {
-                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
+                foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(Position)))
                 {
                     if (!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(Position) >= 150f)
                     {
@@ -236,7 +236,7 @@ public class Investigation
         }
         else
         {
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToInvestigation))
             {
                 cop.IsRespondingToInvestigation = false;
             }
@@ -289,7 +289,7 @@ public class Investigation
         {
             InvestigationBlip.Delete();
         }
-        foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToInvestigation))
+        foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToInvestigation))
         {
             cop.IsRespondingToInvestigation = false;
             cop.GameTimeReachedInvestigationPosition = 0;

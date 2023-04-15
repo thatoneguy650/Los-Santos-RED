@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         int LastSeatIndex { get; }
         uint Handle { get; }
         VehicleExt AssignedVehicle { get; }
+        bool IsAnimal { get; }
     }
 }

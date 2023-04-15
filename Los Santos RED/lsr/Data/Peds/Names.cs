@@ -80,6 +80,20 @@ public class Names : INameProvideable
         Name += " " + PossibleNames.LastNames.PickRandom();
         return Name;
     }
+    public string GetRandomDogName(bool IsMale)
+    {
+        string Name = "";
+        if (IsMale)
+        {
+            Name += PossibleNames.MaleNames.PickRandom();
+        }
+        else
+        {
+            Name += PossibleNames.FemaleNames.PickRandom();
+        }
+        Name += " Dog";
+        return Name;
+    }
     private void DefaultConfig()
     {
         PossibleNames = new PossibleNames();

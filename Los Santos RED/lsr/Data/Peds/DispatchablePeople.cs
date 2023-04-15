@@ -215,6 +215,19 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
 
+            new DispatchablePerson("a_c_shepherd",50,50) { 
+                IsAnimal = true,
+                DebugName = "K9_Shepherd",
+                UnitCode = "K9",
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null, 
+            },
+
+
         };
         SheriffPeds = new List<DispatchablePerson>() {
             new DispatchablePerson("s_m_y_sheriff_01",60,60) {
@@ -2443,6 +2456,20 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,17,0),
               new PedComponent(5,59,0),
                }) },
+
+
+            new DispatchablePerson("a_c_shepherd",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Shepherd",
+                UnitCode = "K9",
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
+
 
         };
         List<DispatchablePerson> LSIAPDPeds_FEJ = new List<DispatchablePerson>() {

@@ -65,6 +65,11 @@ public class FootChase
             MoveRate = 1.15f;
         }
         RunSpeed = 500f;
+
+        if(Ped.IsAnimal)
+        {
+            MoveRate = Settings.SettingsManager.DebugSettings.CanineRunSpeed;
+        }
         AnimationDictionary.RequestAnimationDictionay("random@arrests");
         //Cop.WeaponInventory.ShouldAutoSetWeaponState = true;
         //Cop.WeaponInventory.SetLessLethal();
@@ -233,7 +238,7 @@ public class FootChase
     }
     private void SetRunSpeed()
     {
-        if (Player.WantedLevel == 1)
+        if (Player.WantedLevel == 1 && !Ped.IsAnimal)
         {
             if (LocalDistance >= 15f)
             {
@@ -247,7 +252,7 @@ public class FootChase
         else
         {
             RunSpeed = 500f;
-            NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
+             NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, MoveRate);
         }
         if (prevRunSpeed != RunSpeed)
         {

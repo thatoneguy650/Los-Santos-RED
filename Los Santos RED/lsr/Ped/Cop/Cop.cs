@@ -46,7 +46,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public Agency AssignedAgency { get; set; } = new Agency();
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
-    public bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
+    public virtual bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
@@ -67,7 +67,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsRespondingToCitizenWanted { get; set; }
     public bool HasTaser { get; set; } = false;
     public int Division { get; set; } = -1;
-    public string UnityType { get; set; } = "Lincoln";
+    public virtual string UnitType { get; set; } = "Lincoln";
     public int BeatNumber { get; set; } = 1;
     public uint GameTimeLastUpdatedTarget { get; set; }
     public override bool KnowsDrugAreas => false;
@@ -181,7 +181,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string UnitCode)
     {
-        WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+        if (!IsAnimal)
+        {
+            WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+        }
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
        
         //Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
@@ -198,53 +201,18 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         if (AssignedAgency.Division != -1)
         {
             Division = AssignedAgency.Division;
-            UnityType = UnitCode;
+            UnitType = UnitCode;
             BeatNumber = AssignedAgency.GetNextBeatNumber();
-            GroupName = $"{AssignedAgency.ID} {Division}-{UnityType}-{BeatNumber}";
+            GroupName = $"{AssignedAgency.ID} {Division}-{UnitType}-{BeatNumber}";
         }
         else if (AssignedAgency.MemberName != "")
         {
             GroupName = AssignedAgency.MemberName;
         }
-        //if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
-        //{
-        //    VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
-        //}
-
-
-
-
         if(!Pedestrian.Exists())
         {
             return;
         }
-
-        //if (dispatchablePerson.DisableBulletRagdoll)
-        //{
-        //    NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
-        //}
-        //if (dispatchablePerson.DisableCriticalHits)
-        //{
-        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-        //}
-        //HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
-        //if(dispatchablePerson.FiringPatternHash != 0)
-        //{
-        //    NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
-        //}
-
-
-        //if (Settings.SettingsManager.PoliceSettings.OverrideHealth)
-        //{
-        //    int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
-        //    Pedestrian.MaxHealth = health;
-        //    Pedestrian.Health = health;
-        //}
-        //if (Settings.SettingsManager.PoliceSettings.OverrideArmor)
-        //{
-        //    int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
-        //    Pedestrian.Armor = armor;
-        //}
         if (addBlip)
         {
             Blip myBlip = Pedestrian.AttachBlip();
@@ -253,6 +221,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
             myBlip.Color = AssignedAgency.Color;
             myBlip.Scale = 0.6f;
+        }
+        if(IsAnimal)
+        {
+            return;
         }
         if (Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
         {
@@ -290,7 +262,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
-
     }
 
     private void UpdateCombatFlags()

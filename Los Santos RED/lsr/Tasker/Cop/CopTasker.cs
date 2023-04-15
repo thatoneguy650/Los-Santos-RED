@@ -43,7 +43,7 @@ public class CopTasker
             
             World.Pedestrians.ExpireSeatAssignments();
             GameFiber.Yield();//TR 29
-            foreach (Cop cop in World.Pedestrians.PoliceList.Where(x => x.Pedestrian.Exists()))
+            foreach (Cop cop in World.Pedestrians.AllPoliceList)
             {
                 try
                 {

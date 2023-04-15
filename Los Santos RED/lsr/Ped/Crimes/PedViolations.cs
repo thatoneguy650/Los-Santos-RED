@@ -225,7 +225,7 @@ public class PedViolations
             }
             if (!IsDeadlyChase && !CrimesObserved.Any(x => x.ID == "KillingPolice"))//only loop if we have to
             {
-                foreach (Cop cop in World.Pedestrians.PoliceList)
+                foreach (Cop cop in World.Pedestrians.AllPoliceList)
                 {
                     if (cop.Pedestrian.Exists() && cop.Pedestrian.IsDead)
                     {
@@ -248,7 +248,7 @@ public class PedViolations
                     {
                         AddViolating(Crimes?.CrimeList.FirstOrDefault(x => x.ID == "AssaultingWithDeadlyWeapon"));
                     }
-                    foreach (Cop cop in World.Pedestrians.PoliceList)
+                    foreach (Cop cop in World.Pedestrians.AllPoliceList)
                     {
                         if (cop.Pedestrian.Exists())
                         {
@@ -378,7 +378,7 @@ public class PedViolations
         bool CanHearPed = false;
         if (PedExt.Pedestrian.Exists())
         {
-            foreach (Cop cop in World.Pedestrians.PoliceList)
+            foreach (Cop cop in World.Pedestrians.AllPoliceList)
             {
                 if (cop.Pedestrian.Exists())
                 {

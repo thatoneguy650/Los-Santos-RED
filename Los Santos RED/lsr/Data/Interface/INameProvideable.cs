@@ -8,6 +8,7 @@ namespace LosSantosRED.lsr.Interface
 {
     public interface INameProvideable
     {
+        string GetRandomDogName(bool isMale);
         string GetRandomName(bool isMale);
     }
 }

@@ -13,10 +13,12 @@ public class LESpawnTask : SpawnTask
     private int NextBeatNumber;
     private Vehicle SpawnedVehicle;
     private string UnitCode;
-    public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems) 
-        : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
+    private bool AddCanine;
+    public LESpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers,
+        IEntityProvideable world, IModItems modItems, bool addCanine) : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
+        AddCanine = addCanine;
     }
 
     public TaskRequirements SpawnRequirement { get; set; }
@@ -29,12 +31,12 @@ public class LESpawnTask : SpawnTask
             GameFiber.Yield();
             if (IsInvalidSpawnPosition)
             {
-                //EntryPoint.WriteToConsoleTestLong($"LESpawn: Task Invalid Spawn Position");
+                EntryPoint.WriteToConsole($"LESpawn: Task Invalid Spawn Position");
                 return;
             }
             if (!HasAgency)
             {
-                //EntryPoint.WriteToConsoleTestLong($"LESpawn: Task No Agency Supplied");
+                EntryPoint.WriteToConsole($"LESpawn: Task No Agency Supplied");
                 return;
             }
             Setup();
@@ -55,7 +57,7 @@ public class LESpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
-        //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+        EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -65,11 +67,12 @@ public class LESpawnTask : SpawnTask
             }
             if (Agency != null)
             {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup, AddCanine);
             }
             if (PersonType != null)
             {
-                PedExt Passenger = CreatePerson();
+                EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
+                PedExt Passenger = PersonType.IsAnimal ? CreateCanine() : CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
@@ -160,6 +163,34 @@ public class LESpawnTask : SpawnTask
                 }
                 PedExt Person = SetupAgencyPed(createdPed);
                 PersonType.SetPedVariation(createdPed, Agency.PossibleHeads, true);
+                GameFiber.Yield();
+                CreatedPeople.Add(Person);
+                return Person;
+            }
+            return null;
+        }
+        catch (Exception ex)
+        {
+            EntryPoint.WriteToConsole($"LESpawn: ERROR DELETED PERSON {ex.Message} {ex.StackTrace}", 0);
+            return null;
+        }
+    }
+    private PedExt CreateCanine()
+    {
+        try
+        {
+            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
+            EntryPoint.SpawnedEntities.Add(createdPed);
+            GameFiber.Yield();
+            if (createdPed.Exists())
+            {
+                SetupPed(createdPed);
+                if (!createdPed.Exists())
+                {
+                    return null;
+                }
+                PedExt Person = SetupAgencyAnimal(createdPed);
+                PersonType.SetPedVariation(createdPed, null, true);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;
@@ -278,6 +309,26 @@ public class LESpawnTask : SpawnTask
         if (SpawnWithAllWeapons)
         {
             PrimaryCop.WeaponInventory.GiveHeavyWeapon();
+        }
+        return PrimaryCop;
+    }
+    private PedExt SetupAgencyAnimal(Ped ped)
+    {
+        ped.IsPersistent = true;
+        EntryPoint.PersistentPedsCreated++;//TR
+
+        RelationshipGroup rg = new RelationshipGroup("COP");
+        ped.RelationshipGroup = rg;
+        //NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
+        bool isMale = true;
+        CanineUnit PrimaryCop = new CanineUnit(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomDogName(isMale), PersonType.ModelName, World);
+        World.Pedestrians.AddEntity(PrimaryCop);
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
+        //PrimaryCop.TaskRequirements = SpawnRequirement;
+        if (ped.Exists())
+        {
+            PrimaryCop.SpawnPosition = ped.Position;
+            PrimaryCop.SpawnHeading = ped.Heading;
         }
         return PrimaryCop;
     }

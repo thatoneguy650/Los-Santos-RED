@@ -85,9 +85,9 @@ public class Chase : ComplexTask
     public bool ShouldStopCar => Ped.DistanceToPlayer < 30f && Ped.Pedestrian.CurrentVehicle.Exists() && Ped.Pedestrian.CurrentVehicle.Speed > 0.5f && !Player.IsMovingFast && !ChaseRecentlyStarted && !Ped.IsInHelicopter && !Ped.IsInBoat;
     private bool ChaseRecentlyStarted => false;
     private bool ShouldAim => !UseWantedLevel || Player.WantedLevel > 1;
-    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true);
+    private bool ShouldCarJackPlayer => (!UseWantedLevel || Player.WantedLevel > 1) && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast && !Ped.Pedestrian.IsInAnyVehicle(true) && !Ped.IsAnimal;
     private bool ShouldGoToPlayerCar => Player.WantedLevel == 1 && Cop.DistanceToPlayer <= 50f && Player.CurrentVehicle != null && Player.CurrentVehicle.Vehicle.Exists() && !Player.IsMovingFast;
-    private bool ShouldChasePedInVehicle => Ped.IsDriver && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
+    private bool ShouldChasePedInVehicle => Ped.IsDriver && !Ped.IsAnimal && (Ped.DistanceToPlayer >= 55f || Ped.IsInBoat || Ped.IsInHelicopter || World.Pedestrians.PoliceList.Count(x => x.DistanceToPlayer <= 25f && !x.IsInVehicle) > 3);
     private bool ShouldChaseRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.RecklessVehicleChaseWantedLevelRequirement && !Player.PoliceResponse.LethalForceAuthorized;
     private bool ShouldChaseVeryRecklessly => Player.WantedLevel >= Settings.SettingsManager.PoliceTaskSettings.RecklessVehicleChaseWantedLevelRequirement && Settings.SettingsManager.PoliceTaskSettings.AllowVeryRecklessVehicleChaseWithLethalForce && Player.PoliceResponse.LethalForceAuthorized;
     private bool ShouldChaseVehicleInVehicle => Ped.IsDriver && Ped.Pedestrian.CurrentVehicle.Exists() && !ShouldExitPoliceVehicle && Player.CurrentVehicle != null;
@@ -103,21 +103,13 @@ public class Chase : ComplexTask
 
             //EntryPoint.WriteToConsole($"TASKER: Chase Start: {Ped.Pedestrian.Handle} ChaseDistance: {ChaseDistance}", 5);
             GameTimeChaseStarted = Game.GameTime;
-            if (Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase)
-            {
-                Ped.Pedestrian.BlockPermanentEvents = true;
-            }
-            else
-            {
-                Ped.Pedestrian.BlockPermanentEvents = false;
-            }
+            Ped.Pedestrian.BlockPermanentEvents = Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringChase;
             Ped.Pedestrian.KeepTasks = true;
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@enter");
             AnimationDictionary.RequestAnimationDictionay("amb@medic@standing@timeofdeath@idle_a");
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_CLIMBOVERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_USE_LADDERS(Ped.Pedestrian, true);
             NativeFunction.Natives.SET_PED_PATH_CAN_DROP_FROM_HEIGHT(Ped.Pedestrian, true);
-
             if (Settings.SettingsManager.PoliceTaskSettings.SetSteerAround)
             {
                 NativeFunction.Natives.SET_PED_STEERS_AROUND_OBJECTS(Ped.Pedestrian, true);
@@ -421,7 +413,7 @@ public class Chase : ComplexTask
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 64);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.IsAnimal ? (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR) : (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_WAIT_FOR_VEHICLE_TO_STOP);//64);
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 3f, 1.4f, 1073741824, 1); //Original and works ok
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -437,7 +429,7 @@ public class Chase : ComplexTask
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, 256);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.IsAnimal ? (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR) : (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR);// 256);
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

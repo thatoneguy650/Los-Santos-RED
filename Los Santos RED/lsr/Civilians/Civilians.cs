@@ -419,7 +419,7 @@ public class Civilians
             }
             else
             {
-                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToCitizenWanted))
+                foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToCitizenWanted))
                 {
                     cop.IsRespondingToCitizenWanted = false;
                 }
@@ -432,7 +432,7 @@ public class Civilians
         {
             RespondingPolice = PoliceToRespond(World.CitizenWantedLevel);    
             int tasked = 0;
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && (World.CitizenWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))//first pass, only want my police and whatever units?
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && (World.CitizenWantedLevel >= 3 || x.AssignedAgency?.Classification == Classification.Police || x.AssignedAgency?.Classification == Classification.Sheriff)).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))//first pass, only want my police and whatever units?
             {
                 if(!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(World.PoliceBackupPoint) >= 150f)
                 {
@@ -450,7 +450,7 @@ public class Civilians
             }
             if(tasked < RespondingPolice)
             {
-                foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToCitizenWanted && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))
+                foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists() && !x.IsRespondingToCitizenWanted && !x.IsRespondingToWanted && !x.IsRespondingToInvestigation && x.AssignedAgency?.Classification != Classification.Police && x.AssignedAgency?.Classification != Classification.Sheriff).OrderBy(x => x.Pedestrian.DistanceTo2D(World.PoliceBackupPoint)))
                 {
                     if (!cop.IsInVehicle && cop.Pedestrian.DistanceTo2D(World.PoliceBackupPoint) >= 150f)
                     {
@@ -467,7 +467,7 @@ public class Civilians
         }
         else
         {
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.IsRespondingToCitizenWanted))
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.IsRespondingToCitizenWanted))
             {
                 cop.IsRespondingToCitizenWanted = false;
             }

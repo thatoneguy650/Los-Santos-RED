@@ -98,12 +98,15 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
-    public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup)// List<string> RequiredModels)
+
+    public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup) => GetRandomPed(wantedLevel, RequiredPedGroup, false);
+
+    public DispatchablePerson GetRandomPed(int wantedLevel, string RequiredPedGroup, bool forceAnimal)// List<string> RequiredModels)
     {
         if (Personnel == null || !Personnel.Any())
             return null;
 
-        List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn).ToList();
+        List<DispatchablePerson> ToPickFrom = Personnel.Where(x => wantedLevel >= x.MinWantedLevelSpawn && wantedLevel <= x.MaxWantedLevelSpawn && x.IsAnimal == forceAnimal).ToList();
         if (RequiredPedGroup != "" && !string.IsNullOrEmpty(RequiredPedGroup))
         {
             ToPickFrom = ToPickFrom.Where(x => x.GroupName == RequiredPedGroup).ToList();

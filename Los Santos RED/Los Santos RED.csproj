@@ -205,6 +205,7 @@
     <Compile Include="lsr\Locations\Places\TaskRequirements.cs" />
     <Compile Include="lsr\Locations\Places\VehicleColorLookup.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
+    <Compile Include="lsr\Ped\Cop\CanineUnit.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedKnowledge.cs" />

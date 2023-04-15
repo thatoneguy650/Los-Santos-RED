@@ -374,7 +374,7 @@ namespace LosSantosRED.lsr
             }
             int tasked = 0;
             int updated = 0;
-            foreach (Cop cop in World.Pedestrians.Police.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+            foreach (Cop cop in World.Pedestrians.AllPoliceList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
             {
                 if(!cop.IsInVehicle && cop.DistanceToPlayer >= 150f)
                 {

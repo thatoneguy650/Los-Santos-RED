@@ -15,7 +15,7 @@ public class Kill : ComplexTask
     private bool IsGoingToBeforeAttacking = false;
     private ISettingsProvideable Settings;
     private bool CanSiege = false;
-    private bool ShouldGoToBeforeAttack => Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege;
+    private bool ShouldGoToBeforeAttack => Ped.IsAnimal || (Settings.SettingsManager.PoliceTaskSettings.AllowSiegeMode && Player.CurrentLocation.IsInside && Player.AnyPoliceKnowInteriorLocation && !Player.AnyPoliceRecentlySeenPlayer && CanSiege);
     public Kill(IComplexTaskable cop, ITargetable player, ISettingsProvideable settings) : base(player, cop, 1000)
     {
         Name = "Kill";
@@ -26,7 +26,7 @@ public class Kill : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-
+            EntryPoint.WriteToConsole($"KILL STARTED {Ped.Handle} IsAnimal: {Ped.IsAnimal}");
             if(RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SiegePercentage))
             {
                 CanSiege = true;
@@ -97,32 +97,13 @@ public class Kill : ComplexTask
                     NativeFunction.Natives.SET_TASK_VEHICLE_CHASE_IDEAL_PURSUIT_DISTANCE(Ped.Pedestrian, 0f);
                     //int DesiredStyle = (int)eDrivingStyles.AvoidEmptyVehicles | (int)eDrivingStyles.AvoidPeds | (int)eDrivingStyles.AvoidObject | (int)eDrivingStyles.AllowWrongWay | (int)eDrivingStyles.ShortestPath;
                     NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-                    unsafe
-                    {
-                        int lol = 0;
-                        NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                        NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);
-                        NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                        NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                        NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                        NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                    }
+                    AssignCombat();
                     //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
                 }
             }
             else
             {
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
-                //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
+                AssignCombat();
             }
             UpdateCombat();
         }  
@@ -177,16 +158,7 @@ public class Kill : ComplexTask
                 NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Ped.Pedestrian, (int)eCombatAttributes.BF_CanFightArmedPedsWhenNotArmed, true);
 
                 //NativeFunction.Natives.TASK_COMBAT_HATED_TARGETS_AROUND_PED(Ped.Pedestrian, 300f, 0);
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
+                AssignCombat();
                 //EntryPoint.WriteToConsole($"KillTask: {Ped.Pedestrian.Handle} Reset Combat", 5);
                 GametimeLastRetasked = Game.GameTime;
             }
@@ -197,6 +169,10 @@ public class Kill : ComplexTask
                     UpdateCombat();
                     //EntryPoint.WriteToConsoleTestLong($"KILL Task Target Changed to {Player.CurrentLocation.IsInside}");
                 }
+            }
+            if(Ped.IsAnimal)
+            {
+                NativeFunction.Natives.SET_PED_MOVE_RATE_OVERRIDE<uint>(Ped.Pedestrian, Settings.SettingsManager.DebugSettings.CanineRunSpeed);
             }
         }
     }
@@ -242,10 +218,18 @@ public class Kill : ComplexTask
             {
                 int lol = 0;
                 NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceTaskSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceTaskSettings.SiegeAimDistance);
+
+                if(Ped.IsAnimal)
+                {
+                    NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
+                }
+                else
+                {
+                    NativeFunction.CallByName<bool>("TASK_GOTO_ENTITY_AIMING", 0, Player.Character, Settings.SettingsManager.PoliceTaskSettings.SiegeGotoDistance, Settings.SettingsManager.PoliceTaskSettings.SiegeAimDistance);
+                }
                 //NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY_WHILE_AIMING_AT_ENTITY", 0, Player.Character, Player.Character, 200f, true, 10.0f, 200f, false, false, (uint)FiringPattern.DelayFireByOneSecond);
                 // NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
-                NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);
+                NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.IsAnimal ? 134217728 : 0, 16);
                 NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
                 NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
                 NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
@@ -255,18 +239,21 @@ public class Kill : ComplexTask
         else
         {
             IsGoingToBeforeAttacking = false;
-            unsafe
-            {
-                int lol = 0;
-                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, 0, 16);
-                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
-                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-            }
-
+            AssignCombat();
             //NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, Player.Character, 0, 16);
+        }
+    }
+    private void AssignCombat()
+    {
+        unsafe
+        {
+            int lol = 0;
+            NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            NativeFunction.CallByName<bool>("TASK_COMBAT_PED", 0, Player.Character, Ped.IsAnimal ? 134217728 : 0, 16);
+            NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, true);
+            NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
         }
     }
 }

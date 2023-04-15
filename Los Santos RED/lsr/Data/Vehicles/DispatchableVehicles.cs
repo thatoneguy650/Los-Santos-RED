@@ -17528,9 +17528,9 @@ Output = -1,
             new DispatchableVehicle("sheriff", 50, 50) { MaxRandomDirtLevel = 15.0f, RequiredLiveries = new List<int>() { 20 } },
             new DispatchableVehicle("sheriff2", 50, 50) { MaxRandomDirtLevel = 15.0f,RequiredLiveries = new List<int>() { 20 } }, };
         List<DispatchableVehicle> FIBVehicles_FEJ = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("fbi", 70, 70){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
+            new DispatchableVehicle("fbi", 30, 30){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
             new DispatchableVehicle("fbi2", 30, 30) { MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3 },
-
+            new DispatchableVehicle("pranger", 30,30){ MinWantedLevelSpawn = 0, MaxWantedLevelSpawn = 3,RequiredLiveries = new List<int>() { 15 },VehicleExtras = new List<DispatchableVehicleExtra>() { new DispatchableVehicleExtra(1,false,100), new DispatchableVehicleExtra(2, false, 100), new DispatchableVehicleExtra(10, false, 100), new DispatchableVehicleExtra(12, false, 100) } },
             new DispatchableVehicle("fbi2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("fbi", 0, 70) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4 },
             new DispatchableVehicle("frogger2", 0, 30) { MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, RequiredPedGroup = "FIBHRT",MinOccupants = 3, MaxOccupants = 4, RequiredLiveries = new List<int>() { 0 } }, };  
@@ -17745,10 +17745,7 @@ Output = -1,
             new DispatchableVehicle("annihilator", 0, 100) { MinWantedLevelSpawn = 4, MaxWantedLevelSpawn = 5, MinOccupants = 4, MaxOccupants = 5 }};
 
 
-        List<DispatchableVehicle> MarshalsServiceVehicles_FEJ = new List<DispatchableVehicle>()
-        {
-            new DispatchableVehicle("police4", 100, 100),
-        };
+        List<DispatchableVehicle> MarshalsServiceVehicles_FEJ = UnmarkedVehicles_FEJ.Copy();//for now
 
         //Security
         List<DispatchableVehicle> MerryweatherPatrolVehicles_FEJ = new List<DispatchableVehicle>(){

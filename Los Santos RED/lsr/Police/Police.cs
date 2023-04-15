@@ -61,8 +61,9 @@ namespace LosSantosRED.lsr
             int localRan = 0;
             float closestCopDistance = 999f;
             Cop PrimaryPlayerCop = null;
-            foreach (Cop Cop in World.Pedestrians.PoliceList)
+            foreach (Cop Cop in World.Pedestrians.AllPoliceList)
             {
+
                 try
                 {
                     if (Cop.Pedestrian.Exists())
@@ -152,7 +153,7 @@ namespace LosSantosRED.lsr
             bool anyPoliceCanRecognizePlayer = false;
             bool anyPoliceRecentlySeenPlayer = false;
             int tested = 0;
-            foreach (Cop cop in World.Pedestrians.PoliceList)
+            foreach (Cop cop in World.Pedestrians.AllPoliceList)
             {
                 if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
                 {
