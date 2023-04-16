@@ -372,9 +372,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         K9SpawnLimit_Default = 0;
         K9SpawnLimit_Investigation = 0;
         K9SpawnLimit_Wanted1 = 0;
-        K9SpawnLimit_Wanted2 = 0;
-        K9SpawnLimit_Wanted3 = 1;
-        K9SpawnLimit_Wanted4 = 2;
+        K9SpawnLimit_Wanted2 = 1;
+        K9SpawnLimit_Wanted3 = 2;
+        K9SpawnLimit_Wanted4 = 3;
         K9SpawnLimit_Wanted5 = 0;
         K9SpawnLimit_Wanted6 = 0;
 
@@ -383,7 +383,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         K9SpawnLimit_Wanted9 = 0;
         K9SpawnLimit_Wanted10 = 0;
 
-        AddK9Percentage = 20;
+        AddK9Percentage = 30;
 
 
 
@@ -460,12 +460,6 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 #if DEBUG
         ShowSpawnedBlips = true;
 
-        //AddK9Percentage = 100;
-        //K9SpawnLimit_Default = 1;
-        //K9SpawnLimit_Wanted1 = 1;
-        //K9SpawnLimit_Wanted2 = 1;
-        //K9SpawnLimit_Investigation = 1;
-#else
 #endif
         AllowLocationSpawning = true;
         //StationSpawning_MaxWanted = 3;

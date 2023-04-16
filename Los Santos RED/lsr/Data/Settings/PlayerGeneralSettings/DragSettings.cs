@@ -45,7 +45,7 @@ public class DragSettings : ISettingsDefaultable
     }
     public void SetDefault()
     {
-        AllowLoadingBodies = false;
+        AllowLoadingBodies = true;
         RagdollAttach1X = 0.0f;// 0.1f;
         RagdollAttach1Y = 0.0f;//0.3f;
         RagdollAttach1Z = 0.0f;//-0.1f;
@@ -79,7 +79,6 @@ public class DragSettings : ISettingsDefaultable
         FadeOut = true;
 
 #if DEBUG
-        AllowLoadingBodies = true;
         AllowRagdolling = true;
 #endif
 

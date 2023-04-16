@@ -70,9 +70,9 @@ public class WorldSettings : ISettingsDefaultable
         UpdateVehiclePlates = true;
         CleanupVehicles = true;
         ReplaceVanillaShopKeepers = true;
-        RandomVehiclePlatesPercent = 5f;
+        RandomVehiclePlatesPercent = 7f;
         AllowRandomVanityPlates = true;
-        RandomVehicleVanityPlatesPercent = 2f;
+        RandomVehicleVanityPlatesPercent = 5f;
         ShowAllLocationsOnDirectory = false;
 
         LowerPedSpawnsAtHigherWantedLevels = true;
@@ -89,11 +89,7 @@ public class WorldSettings : ISettingsDefaultable
         ShowMarkersOnLocationEntrances = false;
         HotelsUsesRooms = false;
         AllowPoliceBackupBlip = true;
-#if DEBUG
-        RandomVehiclePlatesPercent = 15f;
-        RandomVehicleVanityPlatesPercent = 10f;
-        //ShowMarkersOnLocationEntrances = true;
-#endif
+
         ShowAllBlipsOnMap = true;
 
         AirportsRequireOwnedPlanesLocal = true;
