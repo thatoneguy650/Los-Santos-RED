@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class SpawnLocation
 {
+    private float WaterHeight = 0.0f;
     public SpawnLocation()
     {
 
@@ -17,41 +18,60 @@ public class SpawnLocation
     {
         InitialPosition = initialPosition;
     }
-    public bool HasSpawns => InitialPosition != Vector3.Zero && StreetPosition != Vector3.Zero;
+    public bool HasStreetPosition { get; private set; }
+    public bool HasSpawns => InitialPosition != Vector3.Zero && (IsWater || StreetPosition != Vector3.Zero);
     public float Heading { get; set; }
     public Vector3 InitialPosition { get; set; } = Vector3.Zero;
     public Vector3 StreetPosition { get; set; } = Vector3.Zero;
     public Vector3 SidewalkPosition { get; set; } = Vector3.Zero;
     public bool HasSidewalk => SidewalkPosition != Vector3.Zero;
-    public float GetWaterHeight()
+    public bool IsWater { get; private set; } = false;
+    public Vector3 FinalPosition => IsWater || !HasStreetPosition ? InitialPosition : StreetPosition;
+    public void GetWaterHeight()
     {
-        if (NativeFunction.Natives.GET_WATER_HEIGHT<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
+        if (IsWater = NativeFunction.Natives.GET_WATER_HEIGHT_NO_WAVES<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out float height))
         {
-            return height;
+            WaterHeight = height;
         }
-        return height;
+        else
+        {
+            WaterHeight = 0.0f;
+        }
     }
+    //public void GetClosestStreetCheckWater(bool favorPlayer)
+    //{
+    //    GetWaterHeight();
+    //    if (IsWater)
+    //    {
+    //        StreetPosition = InitialPosition;
+    //        EntryPoint.WriteToConsole($"waterHeight > 0.0 SETTING STREET TO INITIAL {WaterHeight}");
+    //        return;
+    //    }
+    //    GetClosestStreet(favorPlayer);
+    //}
     public void GetClosestStreet(bool favorPlayer)
     {
         Vector3 streetPosition;
         float streetHeading;
         if (favorPlayer)
         {
-            NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
+            HasStreetPosition = NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_FAVOUR_DIRECTION<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z
                 , 0, out streetPosition, out streetHeading, 0, 0x40400000, 0);
         }
         else
         {
-            NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out streetPosition, out streetHeading, 0, 3, 0);
+            HasStreetPosition =  NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(InitialPosition.X, InitialPosition.Y, InitialPosition.Z, out streetPosition, out streetHeading, 0, 3, 0);
         }
-
-
-
+      
         StreetPosition = streetPosition;
         Heading = streetHeading;
     }
     public void GetClosestSidewalk()
     {
+        if(IsWater)
+        {
+            return;
+        }
         Vector3 posToSearch = InitialPosition;
         if(StreetPosition != Vector3.Zero)
         {

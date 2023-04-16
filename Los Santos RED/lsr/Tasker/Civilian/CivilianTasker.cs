@@ -38,7 +38,7 @@ public class CivilianTasker
         if (Settings.SettingsManager.CivilianSettings.ManageCivilianTasking)
         {
             PedProvider.Pedestrians.ExpireSeatAssignments();
-            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists()))
+            foreach (PedExt civilian in PedProvider.Pedestrians.CivilianList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
             {
                 try
                 {
@@ -51,7 +51,7 @@ public class CivilianTasker
                 }
             }
             GameFiber.Yield();
-            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists()))
+            foreach (Merchant merchant in PedProvider.Pedestrians.MerchantList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
             {
                 try
                 {
@@ -64,7 +64,7 @@ public class CivilianTasker
                 }
             }
             GameFiber.Yield();
-            foreach (SecurityGuard securityGuard in PedProvider.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists()))
+            foreach (SecurityGuard securityGuard in PedProvider.Pedestrians.SecurityGuardList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
             {
                 try
                 {

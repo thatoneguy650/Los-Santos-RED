@@ -131,15 +131,19 @@ public class Dispatcher
     }
     public void DebugSpawnCop()
     {
-        LEDispatcher.DebugSpawnCop("",false, false, null, null);
+        LEDispatcher.DebugSpawnCop("",false, false, null, null, false);
     }
     public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle dispatchableVehicle, DispatchablePerson dispatchablePerson)
     {
-        LEDispatcher.DebugSpawnCop(agencyID, onFoot, isEmpty, dispatchableVehicle, dispatchablePerson);
+        LEDispatcher.DebugSpawnCop(agencyID, onFoot, isEmpty, dispatchableVehicle, dispatchablePerson, false);
     }
     public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty)
     {
-        LEDispatcher.DebugSpawnCop(agencyID,onFoot, isEmpty, null, null);
+        LEDispatcher.DebugSpawnCop(agencyID,onFoot, isEmpty, null, null, false);
+    }
+    public void DebugSpawnK9Cop(string agencyID)
+    {
+        LEDispatcher.DebugSpawnCop(agencyID, false, false, null, null, true);
     }
     public void DebugSpawnGang()
     {

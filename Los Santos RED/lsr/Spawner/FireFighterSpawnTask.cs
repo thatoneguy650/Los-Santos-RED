@@ -15,7 +15,6 @@ public class FireFighterSpawnTask : SpawnTask
     {
         Agency = agency;
     }
-    public TaskRequirements SpawnRequirement { get; set; }
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
     {

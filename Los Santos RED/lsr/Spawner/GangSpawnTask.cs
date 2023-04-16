@@ -13,16 +13,21 @@ public class GangSpawnTask : SpawnTask
     private IShopMenus ShopMenus;
     private Vehicle SpawnedVehicle;
     private ICrimes Crimes;
+    private bool ForceMelee;
+    private bool ForceSidearm;
+    private bool ForceLongGun;
     public GangSpawnTask(Gang gang, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, 
-        bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world, IModItems modItems) 
+        bool addOptionalPassengers, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IEntityProvideable world, IModItems modItems, bool forceMelee, bool forceSidearm, bool forceLongGun) 
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Gang = gang;
         RelationshipGroups = pedGroups;
         ShopMenus = shopMenus;
         Crimes = crimes;
+        ForceMelee = forceMelee;
+        ForceSidearm = forceSidearm;
+        ForceLongGun = forceLongGun;
     }
-    public TaskRequirements SpawnRequirement { get; set; }
     private bool HasGang => Gang != null;
     public override void AttemptSpawn()
     {
@@ -258,7 +263,7 @@ public class GangSpawnTask : SpawnTask
         }
         GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         World.Pedestrians.AddEntity(GangMember);
-        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
+        GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
         //GangMember.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {

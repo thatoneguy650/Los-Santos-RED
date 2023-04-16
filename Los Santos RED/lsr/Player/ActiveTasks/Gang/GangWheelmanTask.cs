@@ -508,7 +508,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
                 {
                     Vector3 ToSpawn = NativeHelper.GetOffsetPosition(RobberyLocation.EntrancePosition, RobberyLocation.EntranceHeading + 90f, offset);
                     SpawnLocation toSpawn = new SpawnLocation(ToSpawn);
-                    GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, null, RobberAccompliceInfo, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems);
+                    GangSpawnTask gmSpawn = new GangSpawnTask(HiringGang, toSpawn, null, RobberAccompliceInfo, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, false, Crimes, PedGroups, ShopMenus, World, ModItems, false, true, false);
                     gmSpawn.PlacePedOnGround = true;
                     gmSpawn.AllowAnySpawn = true;
                     gmSpawn.AllowBuddySpawn = false;

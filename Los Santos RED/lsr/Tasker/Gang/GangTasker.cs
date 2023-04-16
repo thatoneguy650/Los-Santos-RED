@@ -38,7 +38,7 @@ public class GangTasker
         if (Settings.SettingsManager.GangSettings.ManageTasking)
         {
             World.Pedestrians.ExpireSeatAssignments();
-            foreach (GangMember gangMember in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()))
+            foreach (GangMember gangMember in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists() && x.HasExistedFor >= 1000))
             {
                 try
                 {
@@ -252,7 +252,9 @@ public class GangTasker
         {
             //EntryPoint.WriteToConsole($"TASKER: gm {GangMember.Pedestrian.Handle} Task Changed from {GangMember.CurrentTask?.Name} to GeneralIdle", 3);
             GangMember.CurrentTask = new GeneralIdle(GangMember, GangMember, Player, World,World.Vehicles.CivilianVehicleList.Where(x=> x.AssociatedGang != null && GangMember.Gang != null && x.AssociatedGang.ID == GangMember.Gang.ID).ToList(),PlacesOfInterest,Settings,false,false,false, false);//GangMember.CurrentTask = new GangIdle(GangMember, Player, PedProvider, PlacesOfInterest);
-            GameFiber.Yield();//TR Added back 4
+            GangMember.WeaponInventory.Reset();
+            GangMember.WeaponInventory.SetDefault();
+            GameFiber.Yield();//TR Added back 4    
             GangMember.CurrentTask?.Start();
         }
 

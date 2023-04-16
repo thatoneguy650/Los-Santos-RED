@@ -17,7 +17,6 @@ public class SecurityGuardSpawnTask : SpawnTask
         Agency = agency;
         Crimes = crimes;
 }
-    public TaskRequirements SpawnRequirement { get; set; } = TaskRequirements.None;
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
     {

@@ -249,6 +249,7 @@ public class SecurityGuardBrain : PedBrain
             return;
         }
         PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle },  PlacesOfInterest, Settings,false,false,false, true);
+        SecurityGuard.WeaponInventory.Reset();
         SecurityGuard.WeaponInventory.SetDefault();
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();

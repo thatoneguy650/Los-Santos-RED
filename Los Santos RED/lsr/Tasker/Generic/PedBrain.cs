@@ -1,4 +1,5 @@
 ﻿using LosSantosRED.lsr.Interface;
+using LSR.Vehicles;
 using Rage;
 using System;
 using System.Collections.Generic;
@@ -190,14 +191,19 @@ public class PedBrain
     }
     private void SetIdle()
     {
-        if (PedExt.CurrentTask?.Name == "GangIdle")
+        if (PedExt.CurrentTask?.Name == "Idle")
         {
             return;
         }
-        PedExt.CurrentTask = new GangIdle_Old(PedExt, Player, World, PlacesOfInterest);
+        PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, false, false, false, true);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }
+
+
+
+
+
     private WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
         WeaponInformation ToIssue;

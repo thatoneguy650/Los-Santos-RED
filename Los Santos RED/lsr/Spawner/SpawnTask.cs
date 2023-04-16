@@ -50,6 +50,8 @@ public abstract class SpawnTask
     public bool AllowBuddySpawn { get; set; } = true;
     public bool ClearArea { get; set; } = false;
     public bool PlacePedOnGround { get; set; } = false;
+    public TaskRequirements SpawnRequirement { get; set; }
+    public bool SpawnWithAllWeapons { get; set; } = false;
     public Vector3 Position
     {
         get

@@ -107,7 +107,7 @@ class WanderOnFootTaskState : TaskState
         {
             IsPatrolling = true;
         }
-        //EntryPoint.WriteToConsoleTestLong($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements}");   
+        EntryPoint.WriteToConsole($"PED {PedGeneral.Pedestrian.Handle} IsGuarding {IsGuarding} IsPatrolling {IsPatrolling} canGuard {canGuard} canPatrol {canPatrol} HasSpawnRequirements {HasSpawnRequirements} {PedGeneral.LocationTaskRequirements.TaskRequirements}");   
         SetTasking();
     }
     public void Stop()
@@ -150,7 +150,7 @@ class WanderOnFootTaskState : TaskState
                 IsGuarding = false;
                 IsPatrolling = true;
                 SetTasking();
-                //EntryPoint.WriteToConsoleTestLong($"PED {PedGeneral.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
+                EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM GUARDING TO PATROLLING");
             }
             GameTimeLastStartedScenario = Game.GameTime;
         }
@@ -227,12 +227,9 @@ class WanderOnFootTaskState : TaskState
                 ScenarioChosen = NonDealerScenarios.PickRandom();
             }
         }
-
-
-
-        if(PedGeneral.AlwaysHasLongGun)
+        if(PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipLongGunWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipSidearmWhenIdle) || PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipMeleeWhenIdle))
         {
-            NativeFunction.Natives.TASK_GUARD_CURRENT_POSITION(PedGeneral.Pedestrian, canPatrol ? 15f : 0.0f, 5f, true);
+            NativeFunction.Natives.TASK_GUARD_CURRENT_POSITION(PedGeneral.Pedestrian, PedGeneral.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.CanMoveWhenGuarding) ? 15f : 0.0f, 5f, true);
         }
         else if (useLocal && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, true))
         {
@@ -259,7 +256,7 @@ class WanderOnFootTaskState : TaskState
                 IsGuarding = true;
                 IsPatrolling = false;
                 SetTasking();
-                //EntryPoint.WriteToConsoleTestLong($"PED {PedGeneral.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
+                EntryPoint.WriteToConsole($"PED {PedGeneral.Handle} TRANSITIONED FROM PATROLLING TO GUARDING");
             }
             GameTimeLastStartedFootPatrol = Game.GameTime;
         }    

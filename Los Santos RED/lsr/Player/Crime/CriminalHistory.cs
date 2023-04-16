@@ -45,7 +45,7 @@ namespace LosSantosRED.lsr
         {
             if (CrimesAssociated != null && PlaceLastSeen != Vector3.Zero)
             {
-                CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null ? 1 : CrimesAssociated.Max(x => x.ResultingWantedLevel));
+                CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null || !CrimesAssociated.Any() ? 1 : CrimesAssociated.Max(x => x.ResultingWantedLevel));
             }
         }
         public void OnLostWanted()
@@ -192,7 +192,14 @@ namespace LosSantosRED.lsr
             public BOLO(Vector3 lastSeenLocation, List<Crime> crimes, int wantedLevel)
             {
                 LastSeenLocation = lastSeenLocation;
-                Crimes = crimes;
+                if (crimes == null)
+                {
+                    Crimes = new List<Crime>();
+                }
+                else
+                {
+                    Crimes = crimes;
+                }
                 WantedLevel = wantedLevel;
             }
 

@@ -319,6 +319,8 @@ namespace Mod
         public bool IsMoveControlPressed { get; set; }
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
         public bool IsMovingDynamically { get; private set; }
+        public bool IsSwimming { get; private set; }
+
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
@@ -1622,6 +1624,10 @@ namespace Mod
             IsRagdoll = Game.LocalPlayer.Character.IsRagdoll;
             IsInCover = Game.LocalPlayer.Character.IsInCover;
             IsMovingDynamically = IsInCover || Game.LocalPlayer.Character.IsInCombat || Game.LocalPlayer.Character.IsJumping || Game.LocalPlayer.Character.IsRunning;
+
+            IsSwimming = Game.LocalPlayer.Character.IsSwimming;
+
+
             position = Game.LocalPlayer.Character.Position;
             // RootPosition = NativeFunction.Natives.GET_WORLD_POSITION_OF_ENTITY_BONE<Vector3>(Game.LocalPlayer.Character, NativeFunction.CallByName<int>("GET_PED_BONE_INDEX", Game.LocalPlayer.Character, 57005));// if you are in a car, your position is the mioddle of the car, hopefully this fixes that
             //See which cell it is in now

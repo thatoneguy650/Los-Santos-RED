@@ -117,7 +117,7 @@ public class GangMember : PedExt, IWeaponIssuable
             //EntryPoint.WriteToConsoleTestLong($"{Pedestrian.Handle} LOST WANTED (GANG MEMBER)");
         }
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
+    public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip, bool forceMelee, bool forceSidearm, bool forceLongGun)
     {
         if (!Pedestrian.Exists())
         {
@@ -134,7 +134,6 @@ public class GangMember : PedExt, IWeaponIssuable
             SetupTransactionItems(toadd);
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
-        WeaponInventory.IssueWeapons(weapons, RandomItems.RandomPercent(Gang.PercentageWithMelee), RandomItems.RandomPercent(Gang.PercentageWithSidearms), RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
         if (addBlip)
         {
             Blip myBlip = Pedestrian.AttachBlip();
@@ -148,59 +147,9 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-
-
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.GangSettings.OverrideHealth, Settings.SettingsManager.GangSettings.OverrideArmor, Settings.SettingsManager.GangSettings.OverrideAccuracy);
-
-        //Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
-        //ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
-        //CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
-        //TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
-        //TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
-        //VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
-        //VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
-        //TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
-        //TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
-        //if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
-        //{
-        //    VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
-        //}
+        WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
         Pedestrian.Money = 0;
-        //if (dispatchablePerson.DisableBulletRagdoll)
-        //{
-        //    NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
-        //}
-        //if (dispatchablePerson.DisableCriticalHits)
-        //{
-        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-        //}
-        //HasFullBodyArmor = dispatchablePerson.HasFullBodyArmor;
-        //if (dispatchablePerson.FiringPatternHash != 0)
-        //{
-        //    NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
-        //}
-
-        //if (Settings.SettingsManager.GangSettings.DisableCriticalHits)
-        //{
-        //    NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-        //}
-        //if (Settings.SettingsManager.GangSettings.OverrideHealth)
-        //{
-        //    int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100;
-        //    Pedestrian.MaxHealth = health;
-        //    Pedestrian.Health = health;
-        //}
-        //if (Settings.SettingsManager.GangSettings.OverrideArmor)
-        //{
-        //    int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
-        //    Pedestrian.Armor = armor;
-        //}
-        //if (Settings.SettingsManager.GangSettings.OverrideAccuracy)
-        //{
-        //    Pedestrian.Accuracy = Accuracy;
-        //    NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
-        //    NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
-        //}
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

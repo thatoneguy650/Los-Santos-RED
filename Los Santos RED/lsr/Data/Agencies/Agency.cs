@@ -153,16 +153,6 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch));
         int RandomPick = RandomItems.MyRand.Next(0, Total);
-
-//#if DEBUG
-//        foreach (DispatchableVehicle Vehicle in ToPickFrom)
-//        {
-//            int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel);
-//            EntryPoint.WriteToConsole($"Vehicle:{Vehicle.ModelName} CurrentSpawnChance:{SpawnChance} wantedLevel:{wantedLevel} AmbientSpawnChance:{Vehicle.AmbientSpawnChance} WantedSpawnChance:{Vehicle.WantedSpawnChance} Heli:{includeHelicopters} Motor:{includeMotorcycles}");
-//        }
-//#endif
-
-
         foreach (DispatchableVehicle Vehicle in ToPickFrom)
         {
             int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch);
@@ -253,5 +243,29 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
             beatNumber = 1;
         }
         return beatNumber;
+    }
+    public DispatchableVehicle GetRandomWaterVehicle(int wantedLevel, string requiredGroup, ISettingsProvideable settings)
+    {
+        if (Vehicles == null || !Vehicles.Any())
+        {
+            return null;
+        }
+        List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && (x.IsBoat || x.IsHelicopter)).ToList();
+        if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableVehicle Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch);
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
     }
 }

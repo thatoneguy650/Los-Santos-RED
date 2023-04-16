@@ -3694,17 +3694,46 @@ public class Debug
         EntryPoint.WriteToConsole($"============================================ EMT END", 5);
         EntryPoint.WriteToConsole($"============================================ GANGS START", 5);
         foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x=>x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))
-        {
+        { 
             uint currentWeapon;
             NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
             uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+
+            string weaponinventorystring = "";
+            if (ped.WeaponInventory.IsSetLessLethal)
+            {
+                weaponinventorystring = "IsSetLessLethal";
+            }
+            else if (ped.WeaponInventory.IsSetDeadly)
+            {
+                weaponinventorystring = "IsSetDeadly";
+            }
+            else if (ped.WeaponInventory.IsSetUnarmed)
+            {
+                weaponinventorystring = "IsSetUnarmed";
+            }
+            else if (ped.WeaponInventory.IsSetDefault)
+            {
+                weaponinventorystring = "IsSetDefault";
+            }
+
+            if (ped.WeaponInventory.HasPistol)
+            {
+                weaponinventorystring += " Has Pistol";
+            }
+            if (ped.WeaponInventory.LongGun != null)
+            {
+                weaponinventorystring += " Has Long Gun";
+            }
+            weaponinventorystring += $" HasHeavyWeaponOnPerson {ped.WeaponInventory.HasHeavyWeaponOnPerson}";
+
             EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
-            EntryPoint.WriteToConsole($"        WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"     weaponinventorystring {weaponinventorystring}  SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+
+            // SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements}";
 
 
 
-
-            
 
 
 
@@ -3795,7 +3824,7 @@ public class Debug
             {
                 weaponinventorystring += " Has Long Gun";
             }
-            weaponinventorystring += $"HasHeavyWeaponOnPerson {cop.WeaponInventory.HasHeavyWeaponOnPerson}";
+            weaponinventorystring += $" HasHeavyWeaponOnPerson {cop.WeaponInventory.HasHeavyWeaponOnPerson}";
 
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)

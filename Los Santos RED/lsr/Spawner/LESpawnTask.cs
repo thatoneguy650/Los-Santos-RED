@@ -21,8 +21,7 @@ public class LESpawnTask : SpawnTask
         AddCanine = addCanine;
     }
 
-    public TaskRequirements SpawnRequirement { get; set; }
-    public bool SpawnWithAllWeapons { get; set; } = false;
+
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
     {

@@ -356,19 +356,31 @@ public class WeaponInventory
             NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)Sidearm.GetHash(), 200, false, false);
             Sidearm.ApplyVariation(WeaponOwner.Pedestrian);
         }
+        if (HasHeavyWeaponOnPerson && LongGun != null && !NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), false))
+        {
+            NativeFunction.Natives.GIVE_WEAPON_TO_PED(WeaponOwner.Pedestrian, (uint)LongGun.GetHash(), 200, false, false);
+            LongGun.ApplyVariation(WeaponOwner.Pedestrian);
+        }
         GetCurrentWeapon();
 
 
 
-        if (LongGun != null && WeaponOwner.AlwaysHasLongGun)
+        if (LongGun != null && WeaponOwner.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipLongGunWhenIdle))
         {
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+        }
+        else if (Sidearm != null && WeaponOwner.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipSidearmWhenIdle))
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+        }
+        else if (Melee != null && WeaponOwner.LocationTaskRequirements.TaskRequirements.HasFlag(TaskRequirements.EquipMeleeWhenIdle))
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Melee.GetHash(), true);
         }
         else if (CurrentWeapon != 2725352035 && CurrentWeapon != 966099553)//unarmed and notepad
         {
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, 2725352035, true);
         }
-
 
         NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponOwner.Pedestrian, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(WeaponOwner.Pedestrian, (int)eCombat_Attribute.CA_DO_DRIVEBYS, true);
@@ -376,7 +388,6 @@ public class WeaponInventory
         IsSetUnarmed = false;
         IsSetDeadly = false;
         IsSetDefault = true;
-
         if(!IsHolsterFull)
         {
             HolsterPistol();

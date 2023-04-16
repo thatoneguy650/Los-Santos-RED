@@ -360,7 +360,7 @@ public class GangDispatcher
     {
         try
         {
-            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
+            GangSpawnTask gangSpawnTask = new GangSpawnTask(Gang, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.GangSettings.ShowSpawnedBlip, Settings, Weapons, Names, true, Crimes, PedGroups, ShopMenus, World, ModItems, false, false, false);// Settings.SettingsManager.Police.SpawnedAmbientPoliceHaveBlip);
             gangSpawnTask.AllowAnySpawn = allowAny;
             gangSpawnTask.AllowBuddySpawn = allowBuddy;
             gangSpawnTask.SpawnRequirement = spawnRequirement;

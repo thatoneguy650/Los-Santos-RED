@@ -338,19 +338,19 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         VehicleSpawnLimit_Wanted9 = 18;
         VehicleSpawnLimit_Wanted10 = 18;
 
-        BoatSpawnLimit_Default = 0;
-        BoatSpawnLimit_Investigation = 0;
-        BoatSpawnLimit_Wanted1 = 0;
-        BoatSpawnLimit_Wanted2 = 0;
-        BoatSpawnLimit_Wanted3 = 1;
-        BoatSpawnLimit_Wanted4 = 1;
-        BoatSpawnLimit_Wanted5 = 1;
-        BoatSpawnLimit_Wanted6 = 1;
+        BoatSpawnLimit_Default = 1;
+        BoatSpawnLimit_Investigation = 1;
+        BoatSpawnLimit_Wanted1 = 1;
+        BoatSpawnLimit_Wanted2 = 2;
+        BoatSpawnLimit_Wanted3 = 3;
+        BoatSpawnLimit_Wanted4 = 4;
+        BoatSpawnLimit_Wanted5 = 5;
+        BoatSpawnLimit_Wanted6 = 6;
 
-        BoatSpawnLimit_Wanted7 = 1;
-        BoatSpawnLimit_Wanted8 = 1;
-        BoatSpawnLimit_Wanted9 = 1;
-        BoatSpawnLimit_Wanted10 = 1;
+        BoatSpawnLimit_Wanted7 = 6;
+        BoatSpawnLimit_Wanted8 = 6;
+        BoatSpawnLimit_Wanted9 = 6;
+        BoatSpawnLimit_Wanted10 = 6;
 
         HeliSpawnLimit_Default = 0;
         HeliSpawnLimit_Investigation = 0;

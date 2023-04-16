@@ -1185,9 +1185,14 @@ public class DebugMenu : ModUIMenu
             }
             menu.Visible = false;
         };
+        UIMenuListScrollerItem<Agency> SpawnAgencyK9Vehicle = new UIMenuListScrollerItem<Agency>("Agency Random K9 Vehicle Spawn", "Spawn a random agency ped & k9 with a vehicle", Agencies.GetAgenciesByResponse(ResponseType.LawEnforcement));
+        SpawnAgencyK9Vehicle.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugSpawnK9Cop(SpawnAgencyK9Vehicle.SelectedItem.ID);
+            menu.Visible = false;
+        };
 
 
-     
 
 
         UIMenuListScrollerItem<Gang> SpawnGangFoot = new UIMenuListScrollerItem<Gang>("Gang Random On-Foot Spawn", "Spawn a random gang ped on foot", Gangs.GetAllGangs());
@@ -1249,6 +1254,7 @@ public class DebugMenu : ModUIMenu
         DispatcherMenu.AddItem(SpawnAgencyFoot);
         DispatcherMenu.AddItem(SpawnAgencyVehicle);
         DispatcherMenu.AddItem(SpawnEmptyAgencyVehicle);
+        DispatcherMenu.AddItem(SpawnAgencyK9Vehicle);
         DispatcherMenu.AddItem(SpawnGangFoot);
         DispatcherMenu.AddItem(SpawnGangVehicle);
         DispatcherMenu.AddItem(SpawnEmptyGangVehicle);

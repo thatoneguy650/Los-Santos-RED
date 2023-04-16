@@ -67,7 +67,10 @@ public class ConditionalLocation
     public int MaxHourSpawn { get; set; } = 24;
     public int MinWantedLevelSpawn { get; set; } = 0;
     public int MaxWantedLevelSpawn { get; set; } = 3;
-    public bool AlwaysHasLongGun { get; set; } = false;
+    public bool LongGunAlwaysEquipped { get; set; } = false;
+    public bool ForceMelee { get; set; } = false;
+    public bool ForceSidearm { get; set; } = false;
+    public bool ForceLongGun { get; set; } = false;
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
     {
         Player = player;
@@ -151,7 +154,7 @@ public class ConditionalLocation
         {
             return;
         }
-        if (AlwaysHasLongGun)
+        if (LongGunAlwaysEquipped)
         {
             ped.AlwaysHasLongGun = true;
         }

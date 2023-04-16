@@ -387,6 +387,12 @@ public class Gangs : IGangs
             MemberKickUpAmount = 3200,
             DrugDealerPercentage = 40f,
         };//heroin
+        float pistolPercentage = 35f;
+        float longGunPercentage = 2f;
+#if DEBUG
+        pistolPercentage = 100f;
+        longGunPercentage = 100f;
+#endif
         Gambetti = new Gang("~g~", "AMBIENT_GANG_GAMBETTI", "Gambetti Crime Family", "Gambetti", "Green", "MafiaPeds", "MafiaVehicles", "", "MeleeWeapons", "MafiaSidearms", "MafiaLongGuns", "Gambetti", "CHAR_BLANK_ENTRY", "Gambetti Associate")
         {
             DenName = "Safehouse",
@@ -413,8 +419,8 @@ public class Gangs : IGangs
             MinimumRep = -8000
                                         ,
             PercentageWithMelee = 5f,
-            PercentageWithSidearms = 35f,
-            PercentageWithLongGuns = 2f,
+            PercentageWithSidearms = pistolPercentage,
+            PercentageWithLongGuns = longGunPercentage,
             MemberKickUpAmount = 6000,
             DrugDealerPercentage = 35f,
         };//cocaine

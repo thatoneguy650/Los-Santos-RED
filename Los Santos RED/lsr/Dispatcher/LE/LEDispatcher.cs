@@ -44,6 +44,8 @@ public class LEDispatcher
     private Street RoadblockInitialPositionStreet;
     private Vector3 RoadblockFinalPosition;
     private float RoadblockFinalHeading;
+    private bool HasNeedToSpawnHeli => World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit;
+    private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit;
 
     public LEDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
@@ -812,14 +814,22 @@ public class LEDispatcher
 
         bool getspawnLocation = GetSpawnLocation();
         GameFiber.Yield();
-        bool getSpawnTypes = GetSpawnTypes(false, false, null, "");
+
+
+
+
+        bool getSpawnTypes = GetSpawnTypes();
+
+
+        EntryPoint.WriteToConsole($"Attempt {Agency?.ShortName}  {VehicleType?.ModelName} {VehicleType?.DebugName} HasNeedToSpawnBoat {HasNeedToSpawnBoat} {getspawnLocation} {getSpawnTypes}");
+
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)
         {
             GameFiber.Yield();
             GameTimeAttemptedDispatch = Game.GameTime;
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
             {
                 //EntryPoint.WriteToConsoleTestLong($"AMBIENT COP SPAWN TASK RAN");
                 ShouldRunAmbientDispatch = false;
@@ -835,13 +845,20 @@ public class LEDispatcher
             SpawnRoadblock(false,300f);
         }
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool forcek9)
     {
         try
         {
             GameFiber.Yield();
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, 
-                RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage), World, ModItems, HasNeedToAmbientCanineDispatch && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage));
+            bool addOptionalPassengers = RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage);
+            bool addCanine = HasNeedToAmbientCanineDispatch && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage);
+            if (forcek9)
+            {
+                addOptionalPassengers = true;
+                addCanine = true;
+            }
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names,
+                addOptionalPassengers, World, ModItems, addCanine);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
@@ -864,56 +881,69 @@ public class LEDispatcher
     private bool GetSpawnLocation()
     {
         int timesTried = 0;
-        bool isValidSpawn;
+        bool isValidSpawn = false;
         PoliceStation = null;
         SpawnLocation = new SpawnLocation();
+        bool tryBoat = HasNeedToSpawnBoat;
         do
         {
-            SpawnLocation.InitialPosition = GetSpawnPosition();    
-            SpawnLocation.GetClosestStreet(Player.IsWanted);
-            SpawnLocation.GetClosestSidewalk();
-            GameFiber.Yield();
-            isValidSpawn = IsValidSpawn(SpawnLocation);
+            SpawnLocation.InitialPosition = GetSpawnPosition();
+            if(tryBoat)
+            {
+                SpawnLocation.GetWaterHeight();
+            }
+            if(tryBoat && SpawnLocation.IsWater)
+            {
+                isValidSpawn = IsValidSpawn(SpawnLocation.InitialPosition);
+            }
+            else
+            {
+                SpawnLocation.GetClosestStreet(Player.IsWanted);
+                SpawnLocation.GetClosestSidewalk();
+                GameFiber.Yield();
+                isValidSpawn = AreSpawnsValidSpawn(SpawnLocation);
+            }
             timesTried++;
             GameFiber.Yield();
         }
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 3);//2//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
-    private bool GetSpawnTypes(bool forcePed, bool forceVehicle, Agency forceAgency, string requiredGroup)
+    private bool GetSpawnTypes()
     {
         Agency = null;
         VehicleType = null;
         PersonType = null;
-        Agency = forceAgency != null ? forceAgency : GetRandomAgency(SpawnLocation);   
-        if (Agency != null)
+        if (SpawnLocation.IsWater && !HasNeedToSpawnBoat && !HasNeedToSpawnHeli)
         {
-            if (forcePed)
-            {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
-                return PersonType != null;
-            }
-            else if (forceVehicle)
-            {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, requiredGroup, Settings);
-                return VehicleType != null;        
-            }
-            else
-            {
-                VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, World.Vehicles.PoliceHelicoptersCount < SpawnedHeliLimit, World.Vehicles.PoliceBoatsCount < SpawnedBoatLimit, true, "", Settings);
-                if (VehicleType != null)
-                {
-                    string RequiredGroup = "";
-                    if (VehicleType != null)
-                    {
-                        RequiredGroup = VehicleType.RequiredPedGroup;
-                    }
-                    PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
-                    return PersonType != null;
-                }
-            }
+            EntryPoint.WriteToConsole("Spawn Location is water and no need to spawn heli or boat, exit");
+            return false;
         }
-        return false;
+        Agency = GetRandomAgency(SpawnLocation);
+        if (Agency == null)
+        {
+            return false;
+        }
+        if(SpawnLocation.IsWater)
+        {
+            VehicleType = Agency.GetRandomWaterVehicle(World.TotalWantedLevel, "", Settings);
+        }
+        else
+        {
+            VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
+        }
+        
+        if (VehicleType == null)
+        {
+            return false;
+        }
+        string RequiredGroup = "";
+        if (VehicleType != null)
+        {
+            RequiredGroup = VehicleType.RequiredPedGroup;
+        }
+        PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
+        return PersonType != null;
     }
     private void Delete(PedExt Cop)
     {
@@ -1019,25 +1049,13 @@ public class LEDispatcher
                 Position = Player.Position;
             }
         }
-        //if (World.TotalWantedLevel > 0 && Player.IsInVehicle)
-        //{
-        //    Position = Player.Character.GetOffsetPositionFront(250f);//350f
-        //}
-        //else if (Player.Investigation.IsActive)
-        //{
-        //    Position = Player.Investigation.Position;
-        //}
-        //else
-        //{
-        //    Position = Player.Position;
-        //}
         Position = Position.Around2D(MinDistanceToSpawn, MaxDistanceToSpawn);
         return Position;
     }
     private Agency GetRandomAgency(SpawnLocation spawnLocation)
     {
         Agency agency;
-        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.StreetPosition, World.TotalWantedLevel);
+        List<Agency> PossibleAgencies = GetAgencies(spawnLocation.FinalPosition, World.TotalWantedLevel);
         agency = PossibleAgencies.Where(x=>x.Personnel.Any(y =>y.CanCurrentlySpawn(World.TotalWantedLevel))).PickRandom();
         if (agency == null)
         {
@@ -1064,7 +1082,7 @@ public class LEDispatcher
         }
         return agency;
     }
-    private bool IsValidSpawn(SpawnLocation spawnLocation)
+    private bool AreSpawnsValidSpawn(SpawnLocation spawnLocation)
     {
         if (spawnLocation.StreetPosition.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(spawnLocation.StreetPosition, ClosestPoliceSpawnToOtherPoliceAllowed))
         {
@@ -1076,6 +1094,17 @@ public class LEDispatcher
         }
         return true;
     }
+
+    private bool IsValidSpawn(Vector3 location)
+    {
+        if (location.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(location, ClosestPoliceSpawnToOtherPoliceAllowed))
+        {
+            return false;
+        }
+        return true;
+    }
+
+
     private bool ShouldCopBeRecalled(Cop cop)
     {
         int totalCopsNearCop = World.Pedestrians.TotalCopsNearCop(cop, 3);
@@ -1219,7 +1248,7 @@ public class LEDispatcher
 
         }
     }
-    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType)
+    public void DebugSpawnCop(string agencyID, bool onFoot, bool isEmpty, DispatchableVehicle vehicleType, DispatchablePerson personType, bool forcek9)
     {
         VehicleType = null;
         PersonType = null;
@@ -1283,6 +1312,6 @@ public class LEDispatcher
             PersonType = personType; 
         }
 
-        CallSpawnTask(true, true, true, true, TaskRequirements.None);
+        CallSpawnTask(true, true, true, true, TaskRequirements.None, forcek9);
     }
 }

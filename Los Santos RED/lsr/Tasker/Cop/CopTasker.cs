@@ -49,7 +49,7 @@ public class CopTasker
                 {
                     if (cop.CanBeTasked)
                     {
-                        if (cop.HasBeenSpawnedFor >= 2000)
+                        if (cop.HasExistedFor >= 1000)
                         {
                             bool didOne = false;
                             if (cop.NeedsTaskAssignmentCheck && cop.CanBeAmbientTasked)

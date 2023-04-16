@@ -938,7 +938,7 @@ public class Pedestrians : ITaskerReportable
             }
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World);// { CanBeAmbientTasked = canBeAmbientTasked, WasPersistentOnCreate = WasPersistentOnCreate };
-        gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips);
+        gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips, false, false, false);
         if (Pedestrian.IsPersistent)
         {
             gm.WasPersistentOnCreate = true;
