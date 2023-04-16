@@ -29,6 +29,7 @@ namespace LosSantosRED.lsr.Interface
         int TurretAccuracy { get; }
         int TurretShootRate { get; }
         bool IsUsingMountedWeapon { get; set; }
+        bool AlwaysHasLongGun { get; }
 
         IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons);
         IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons);

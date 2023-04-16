@@ -81,7 +81,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    public bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
+    public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -98,7 +98,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return false;
         }
     }
-    public bool IsTrustingOfPlayer { get; set; } = true;
+    public virtual bool IsTrustingOfPlayer { get; set; } = true;
     public virtual bool CanTransact => HasMenu;
     public bool CanSeePlayer => PlayerPerception.CanSeeTarget;
     public bool RecentlySeenPlayer => PlayerPerception.RecentlySeenTarget;
@@ -116,6 +116,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int ShootRate { get; set; } = 400;
     public virtual int Accuracy { get; set; } = 5;
     public virtual int CombatAbility { get; set; } = 0;
+    public virtual int CombatRange { get; set; } = -1;
+    public virtual int CombatMovement { get; set; } = -1;
+
+
+
     public virtual int TaserAccuracy { get; set; } = 10;
     public virtual int TaserShootRate { get; set; } = 100;
     public virtual int VehicleAccuracy { get; set; } = 10;
@@ -123,6 +128,13 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int TurretAccuracy { get; set; } = 10;
     public virtual int TurretShootRate { get; set; } = 1000;
     public virtual bool IsAnimal { get; set; } = false;
+
+
+
+    public virtual int DefaultCombatFlag { get; set; } = 0;
+
+    public virtual int DefaultEnterExitFlag { get; set; } = 0;
+
     public string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;
@@ -396,6 +408,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool KnowsGangAreas => HasMenu || HasGangAreaKnowledge;
     public uint GameTimeReachedInvestigationPosition { get; set; }
     public bool HasFullBodyArmor { get; set; } = false;
+    public virtual bool CanBeLooted { get; set; } = true;
+    public virtual bool CanBeDragged { get; set; } = true;
+    public bool AlwaysHasLongGun { get; set; } = false;
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

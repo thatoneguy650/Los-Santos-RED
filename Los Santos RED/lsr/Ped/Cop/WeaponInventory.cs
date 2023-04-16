@@ -212,7 +212,10 @@ public class WeaponInventory
         if (!IsSetDefault && !IsSetUnarmed)
         {
             SetDefault();
-            HasHeavyWeaponOnPerson = false;
+            if (!WeaponOwner.AlwaysHasLongGun)
+            {
+                HasHeavyWeaponOnPerson = false;
+            }
         }
     }
     private void AutoSetWeapons_Deadly()
@@ -354,10 +357,19 @@ public class WeaponInventory
             Sidearm.ApplyVariation(WeaponOwner.Pedestrian);
         }
         GetCurrentWeapon();
-        if (CurrentWeapon != 2725352035 && CurrentWeapon != 966099553)//unarmed and notepad
+
+
+
+        if (LongGun != null && WeaponOwner.AlwaysHasLongGun)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+        }
+        else if (CurrentWeapon != 2725352035 && CurrentWeapon != 966099553)//unarmed and notepad
         {
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, 2725352035, true);
         }
+
+
         NativeFunction.Natives.SET_PED_CAN_SWITCH_WEAPON(WeaponOwner.Pedestrian, true);
         NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(WeaponOwner.Pedestrian, (int)eCombat_Attribute.CA_DO_DRIVEBYS, true);
         IsSetLessLethal = false;

@@ -384,7 +384,7 @@ public class Chase : ComplexTask
             NeedsUpdates = false;
             if (Ped.Pedestrian.Exists() && CopsVehicle.Exists())
             {
-                int flags = Ped.IsAnimal ? (int)eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE : (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE;
+                int flags = Ped.DefaultEnterExitFlag | (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE;
                 NativeFunction.CallByName<bool>("TASK_ENTER_VEHICLE", Ped.Pedestrian, CopsVehicle, -1, CopsSeat, 2.0f, flags);// 9);
             }
         }
@@ -417,7 +417,7 @@ public class Chase : ComplexTask
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.IsAnimal ? (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR) : (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_WAIT_FOR_VEHICLE_TO_STOP);//64);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.DefaultEnterExitFlag);//64);
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 3f, 1.4f, 1073741824, 1); //Original and works ok
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
@@ -433,7 +433,7 @@ public class Chase : ComplexTask
                         int lol = 0;
                         NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
                         NativeFunction.CallByName<uint>("TASK_VEHICLE_TEMP_ACTION", 0, Ped.Pedestrian.CurrentVehicle, 27, 1000);
-                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.IsAnimal ? (int)(eEnter_Exit_Vehicle_Flags.ECF_WARP_PED | eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR) : (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR);// 256);
+                        NativeFunction.CallByName<bool>("TASK_LEAVE_VEHICLE", 0, Ped.Pedestrian.CurrentVehicle, Ped.DefaultEnterExitFlag | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_CLOSE_DOOR | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_WAIT_FOR_VEHICLE_TO_STOP);// 256);
                         NativeFunction.CallByName<bool>("TASK_GO_TO_ENTITY", 0, Player.Character, -1, 7f, 500f, 1073741824, 1); //Original and works ok
                         NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
                         NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);

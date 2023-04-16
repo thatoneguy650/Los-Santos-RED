@@ -306,7 +306,7 @@ public class LESpawnTask : SpawnTask
             PrimaryCop.SpawnPosition = ped.Position;
             PrimaryCop.SpawnHeading = ped.Heading;
         }
-        if (SpawnWithAllWeapons)
+        if (SpawnWithAllWeapons || PersonType.AlwaysHasLongGun)
         {
             PrimaryCop.WeaponInventory.GiveHeavyWeapon();
         }

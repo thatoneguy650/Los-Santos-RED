@@ -59,6 +59,8 @@ namespace LosSantosRED.lsr.Interface
         PlayerPerception PlayerPerception { get; }
         uint GameTimeReachedInvestigationPosition { get; set; }
         bool IsAnimal { get; }
+        int DefaultCombatFlag { get; }
+        int DefaultEnterExitFlag { get; }
 
         void ReportCrime(ITargetable player);
         void SetWantedLevel(int v);

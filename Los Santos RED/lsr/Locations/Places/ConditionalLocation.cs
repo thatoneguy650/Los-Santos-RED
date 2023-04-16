@@ -65,6 +65,9 @@ public class ConditionalLocation
     public float OverridePoorWeatherPercentage { get; set; } = -1.0f;
     public int MinHourSpawn { get; set; } = 0;
     public int MaxHourSpawn { get; set; } = 24;
+    public int MinWantedLevelSpawn { get; set; } = 0;
+    public int MaxWantedLevelSpawn { get; set; } = 3;
+    public bool AlwaysHasLongGun { get; set; } = false;
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
     {
         Player = player;
@@ -102,6 +105,10 @@ public class ConditionalLocation
             return true;
         }
         if (Time.CurrentHour < MinHourSpawn || Time.CurrentHour > MaxHourSpawn)
+        {
+            return false;
+        }
+        if(World.TotalWantedLevel < MinWantedLevelSpawn || World.TotalWantedLevel > MaxWantedLevelSpawn)
         {
             return false;
         }
@@ -143,6 +150,10 @@ public class ConditionalLocation
         if(ped == null || ped.LocationTaskRequirements == null)
         {
             return;
+        }
+        if (AlwaysHasLongGun)
+        {
+            ped.AlwaysHasLongGun = true;
         }
         ped.LocationTaskRequirements.TaskRequirements = TaskRequirements;
         ped.LocationTaskRequirements.ForcedScenarios.Clear();

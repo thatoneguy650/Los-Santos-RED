@@ -215,7 +215,7 @@ public class DispatchablePeople : IDispatchablePeople
             },
 
 
-            new DispatchablePerson("a_c_shepherd",50,50) { 
+            new DispatchablePerson("a_c_shepherd",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
                 UnitCode = "K9",
@@ -224,8 +224,34 @@ public class DispatchablePeople : IDispatchablePeople
                 OverrideAgencyLongGuns = true,
                 OverrideLessLethalWeaponsID = null,
                 OverrideSideArmsID = null,
-                OverrideLongGunsID = null, 
+                OverrideLongGunsID = null,
             },
+
+
+
+            new DispatchablePerson("mp_m_freemode_01",0,0) {
+                DebugName = "LSPDMPSniperArmorMale"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02","S_M_Y_HWAYCOP_01_WHITE_FULL_01", "S_M_Y_HWAYCOP_01_WHITE_FULL_02", "S_M_Y_HWAYCOP_01_BLACK_FULL_01", "S_M_Y_HWAYCOP_01_BLACK_FULL_02" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() {new PedComponent(4, 35, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 58, 0, 0), new PedComponent(9, 11, 1, 0), new PedComponent(10, 8, 2, 0), new PedComponent(11, 55, 0, 0)},
+                    new List<PedPropComponent>() { })
+                ,OptionalProps = new List<PedPropComponent>() { new PedPropComponent(0, 124, 15), new PedPropComponent(1, 23, 9) }
+                ,OptionalPropChance = 10
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+            },
+
 
 
         };
@@ -314,6 +340,21 @@ public class DispatchablePeople : IDispatchablePeople
                 ,RequiredVariation = new PedVariation(
                     new List<PedComponent>() { new PedComponent(3, 18, 0, 0),new PedComponent(4, 127, 0, 0),new PedComponent(6, 24, 0, 0),new PedComponent(8, 9, 0, 0),new PedComponent(10, 79, 0, 0), new PedComponent(11, 331, 0, 0), },
                     new List<PedPropComponent>() { new PedPropComponent(0, 140, 0)})
+            },
+
+            new DispatchablePerson("mp_m_freemode_01", 100,100, 100, 100, 100, 100, 65, 85, 400, 500, 2, 2) {
+                DebugName = "NOOSEMPMaleSniper"
+                ,GroupName = "Sniper"
+                ,RandomizeHead = true
+                ,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }
+                ,RequiredVariation = new PedVariation(
+                    new List<PedComponent>() { new PedComponent(3, 17, 0, 0),new PedComponent(4, 121, 0, 0),new PedComponent(6, 25, 0, 0),new PedComponent(8, 2, 0, 0),new PedComponent(10, 70, 0, 0),new PedComponent(11, 320, 0, 0), },
+                    new List<PedPropComponent>() { new PedPropComponent(0, 141, 0)})
+                    ,CombatRange = 3
+                ,CombatMovement = 0
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
             },
         };
         FIBPeds = new List<DispatchablePerson>() {
@@ -1443,6 +1484,8 @@ public class DispatchablePeople : IDispatchablePeople
                 ,ShootRateMax = 500
                 ,CombatAbilityMin = 2
                 ,CombatAbilityMax = 2
+                ,AlwaysHasLongGun = true
+                ,CombatRange = 2
             },
         };
 
@@ -2457,7 +2500,7 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(5,59,0),
                }) },
 
-
+            //Animals
             new DispatchablePerson("a_c_shepherd",50,50) {
                 IsAnimal = true,
                 DebugName = "K9_Shepherd",
@@ -2470,7 +2513,33 @@ public class DispatchablePeople : IDispatchablePeople
                 OverrideLongGunsID = null,
             },
 
-
+            //Snipers
+            new DispatchablePerson("mp_m_freemode_01",0,0) { DebugName = "<Male METRO Div Class B Sniper>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+              }, new List<PedComponent>() {
+              new PedComponent(1,101,0),
+              new PedComponent(11,101,1),
+              new PedComponent(3,4,0),
+              new PedComponent(10,12,0),
+              new PedComponent(8,94,0),
+              new PedComponent(4,86,12),
+              new PedComponent(6,25,0),
+              new PedComponent(7,1,0),
+              new PedComponent(9,0,0),
+              new PedComponent(5,48,0),
+               })
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,ArmorMin = 50
+                ,ArmorMax = 50
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+            },
         };
         List<DispatchablePerson> LSIAPDPeds_FEJ = new List<DispatchablePerson>() {
             //LSIA Class A
@@ -2736,6 +2805,47 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(5,48,0),
                }) },
 
+            //Animals
+            new DispatchablePerson("a_c_shepherd",50,50) {
+                IsAnimal = true,
+                DebugName = "K9_Shepherd",
+                UnitCode = "K9",
+                OverrideAgencyLessLethalWeapons = true,
+                OverrideAgencySideArms = true,
+                OverrideAgencyLongGuns = true,
+                OverrideLessLethalWeaponsID = null,
+                OverrideSideArmsID = null,
+                OverrideLongGunsID = null,
+            },
+
+            //Snipers
+            new DispatchablePerson("mp_m_freemode_01",0,0) { DebugName = "<Male LSIA Utility Class B Sniper>",RandomizeHead = true,
+                OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+              }, new List<PedComponent>() {
+              new PedComponent(1,0,0),
+              new PedComponent(11,209,8),
+              new PedComponent(3,4,0),
+              new PedComponent(10,0,0),
+              new PedComponent(8,94,1),
+              new PedComponent(4,86,2),
+              new PedComponent(6,51,0),
+              new PedComponent(7,8,0),
+              new PedComponent(9,14,0),
+              new PedComponent(5,65,9),
+               })
+            ,GroupName = "Sniper"
+            ,OverrideAgencyLongGuns = true
+            ,OverrideLongGunsID = "GoodSniperLongGuns"
+            ,AlwaysHasLongGun = true
+            ,ArmorMin = 50
+            ,ArmorMax = 50
+            ,CombatAbilityMin = 2
+            ,CombatAbilityMax = 2
+            ,CombatRange = 3
+            ,CombatMovement = 0
+            ,AccuracyMin = 65
+            ,AccuracyMax = 85
+            }
         };
         List<DispatchablePerson> RHPDCops_FEJ = new List<DispatchablePerson>() {
             //RHPD Class A
@@ -3231,7 +3341,37 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 48, 0),
                     })},
 
+            //Sniper
+            new DispatchablePerson("mp_m_freemode_01", 0,0){
+                MaxWantedLevelSpawn = 3, DebugName = "<Male RHPD Utility Class C Sniper>", RandomizeHead = true,
+                OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
+                RequiredVariation = new PedVariation(
+                    new List<PedPropComponent>(){
 
+                    },
+                    new List<PedComponent>(){
+                        new PedComponent(1, 101, 0),
+                        new PedComponent(11, 212, 6),
+                        new PedComponent(3, 11, 0),
+                        new PedComponent(10, 0, 0),
+                        new PedComponent(8, 94, 1),
+                        new PedComponent(4, 86, 12),
+                        new PedComponent(6, 51, 0),
+                        new PedComponent(7, 8, 0),
+                        new PedComponent(9, 37, 0),
+                        new PedComponent(5, 65, 6),
+                    })
+                ,GroupName = "Sniper"
+                ,OverrideAgencyLongGuns = true
+                ,OverrideLongGunsID = "GoodSniperLongGuns"
+                ,AlwaysHasLongGun = true
+                ,CombatAbilityMin = 2
+                ,CombatAbilityMax = 2
+                ,CombatRange = 3
+                ,CombatMovement = 0
+                ,AccuracyMin = 65
+                ,AccuracyMax = 85
+            },
         };
         List<DispatchablePerson> DPPDCops_FEJ = new List<DispatchablePerson>() {
             //DPPD Class A
@@ -3647,6 +3787,35 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                 })
             },
+
+            //Sniper
+            new DispatchablePerson("mp_m_freemode_01", 2, 10){
+                MaxWantedLevelSpawn = 3, DebugName = "<Male DPPD Utility Class C>", RandomizeHead = true,
+                OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" },
+                RequiredVariation = new PedVariation(new List<PedPropComponent>(){},
+                                                        new List<PedComponent>(){
+                                                            new PedComponent(1, 0, 0),
+                                                            new PedComponent(11, 212, 7),
+                                                            new PedComponent(3, 11, 0),
+                                                            new PedComponent(10, 0, 0),
+                                                            new PedComponent(8, 94, 1),
+                                                            new PedComponent(4, 86, 2),
+                                                            new PedComponent(6, 51, 0),
+                                                            new PedComponent(7, 8, 0),
+                                                            new PedComponent(9, 37, 0),
+                                                            new PedComponent(5, 65, 7),
+                                                        })            ,GroupName = "Sniper"
+            ,OverrideAgencyLongGuns = true
+            ,OverrideLongGunsID = "GoodSniperLongGuns"
+            ,AlwaysHasLongGun = true
+            ,ArmorMin = 50
+            ,ArmorMax = 50
+            ,CombatAbilityMin = 2
+            ,CombatAbilityMax = 2
+            ,CombatRange = 3
+            ,CombatMovement = 0
+            ,AccuracyMin = 65
+            ,AccuracyMax = 85},
 
         };
         List<DispatchablePerson> SheriffPeds_FEJ = new List<DispatchablePerson>() {
@@ -5223,8 +5392,38 @@ public class DispatchablePeople : IDispatchablePeople
                         new PedComponent(5, 0, 0),
                 })
             },
-        };
 
+            //Sniper
+            new DispatchablePerson("mp_m_freemode_01", 0, 0) {
+                ArmorMin = 50, ArmorMax = 50, CombatAbilityMin = 1, CombatAbilityMax = 2,
+                DebugName = "<Male NOOSE SEP Class C Sniper>", RandomizeHead = true, OverrideVoice = new List < string > () {
+                    "S_M_Y_COP_01_WHITE_FULL_01",
+                    "S_M_Y_COP_01_WHITE_FULL_02",
+                    "S_M_Y_COP_01_BLACK_FULL_01",
+                    "S_M_Y_COP_01_BLACK_FULL_02"
+                }, RequiredVariation = new PedVariation(new List < PedPropComponent > () {
+                }, new List < PedComponent > () {
+                    new PedComponent(1, 0, 0),
+                        new PedComponent(11, 190, 15),
+                        new PedComponent(3, 11, 0),
+                        new PedComponent(10, 0, 0),
+                        new PedComponent(8, 37, 0),
+                        new PedComponent(4, 86, 12),
+                        new PedComponent(6, 25, 0),
+                        new PedComponent(7, 8, 0),
+                        new PedComponent(9, 30, 0),
+                        new PedComponent(5, 20, 0),
+                })
+            ,GroupName = "Sniper"
+            ,OverrideAgencyLongGuns = true
+            ,OverrideLongGunsID = "GoodSniperLongGuns"
+            ,AlwaysHasLongGun = true
+            ,CombatRange = 3
+            ,CombatMovement = 0
+            ,AccuracyMin = 65
+            ,AccuracyMax = 85
+            },
+        };
         List<DispatchablePerson> BorderPatrolPeds_FEJ = new List<DispatchablePerson>()
         {
             //Class C
@@ -5351,7 +5550,6 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
         };
-
         List<DispatchablePerson> MarshalsServicePeds_FEJ = new List<DispatchablePerson>()
         {
             //Suit
@@ -5524,8 +5722,6 @@ public class DispatchablePeople : IDispatchablePeople
                 })
             },
         };
-
-
         List <DispatchablePerson> FIBPeds_FEJ = new List<DispatchablePerson>() {
 
             //Suits
@@ -5557,7 +5753,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //Suits (with armor)
-            new DispatchablePerson("mp_m_freemode_01",0,40) { MaxWantedLevelSpawn = 3, DebugName = "<Male FIB Response>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_m_freemode_01",0,40) { ArmorMin = 50,ArmorMax = 50, MaxWantedLevelSpawn = 3, DebugName = "<Male FIB Response>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_COP_01_WHITE_FULL_01", "S_M_Y_COP_01_WHITE_FULL_02", "S_M_Y_COP_01_BLACK_FULL_01", "S_M_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
               new PedComponent(11,292,0),
@@ -5570,7 +5766,7 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,22,0),
               new PedComponent(5,0,0),
                }) },
-            new DispatchablePerson("mp_f_freemode_01",0,40) { MaxWantedLevelSpawn = 3, DebugName = "<Female FIB Response>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_f_freemode_01",0,40) { ArmorMin = 50,ArmorMax = 50,MaxWantedLevelSpawn = 3, DebugName = "<Female FIB Response>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               }, new List<PedComponent>() {
               new PedComponent(1,0,0),
               new PedComponent(11,366,0),
@@ -5613,7 +5809,7 @@ public class DispatchablePeople : IDispatchablePeople
                }) },
 
             //SWAT
-            new DispatchablePerson("mp_m_freemode_01",0,50) { GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Male FIB SWAT Uniform>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_m_freemode_01",0,50) { ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Male FIB SWAT Uniform>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,39,0),
               new PedPropComponent(1,21,0),
               }, new List<PedComponent>() {
@@ -5628,7 +5824,7 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,25,3),
               new PedComponent(5,48,0),
                }) },
-            new DispatchablePerson("mp_f_freemode_01",0,50) {GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Female FIB SWAT Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+            new DispatchablePerson("mp_f_freemode_01",0,50) {CombatAbilityMin = 2,CombatAbilityMax = 2, ArmorMin = 50,ArmorMax = 50,GroupName = "FIBHRT",MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Female FIB SWAT Uniform>", RandomizeHead = true,OverrideVoice = new List<string>() { "S_F_Y_COP_01_WHITE_FULL_01", "S_F_Y_COP_01_WHITE_FULL_02", "S_F_Y_COP_01_BLACK_FULL_01", "S_F_Y_COP_01_BLACK_FULL_02" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
               new PedPropComponent(0,38,0),
               new PedPropComponent(1,22,0),
               }, new List<PedComponent>() {
@@ -5643,6 +5839,32 @@ public class DispatchablePeople : IDispatchablePeople
               new PedComponent(9,27,3),
               new PedComponent(5,48,0),
                }) },
+
+            new DispatchablePerson("mp_m_freemode_01",0,0) { ArmorMin = 50,ArmorMax = 50,MinWantedLevelSpawn = 5, MaxWantedLevelSpawn = 5, DebugName = "<Male FIB SWAT Uniform Sniper>",RandomizeHead = true,OverrideVoice = new List<string>() { "S_M_Y_SWAT_01_WHITE_FULL_01", "S_M_Y_SWAT_01_WHITE_FULL_02", "S_M_Y_SWAT_01_WHITE_FULL_03", "S_M_Y_SWAT_01_WHITE_FULL_04" }, RequiredVariation = new PedVariation( new List<PedPropComponent>() {
+              new PedPropComponent(0,39,0),
+              new PedPropComponent(1,21,0),
+              }, new List<PedComponent>() {
+              new PedComponent(1,122,0),
+              new PedComponent(11,220,5),
+              new PedComponent(3,179,0),
+              new PedComponent(10,0,0),
+              new PedComponent(8,116,0),
+              new PedComponent(4,31,4),
+              new PedComponent(6,35,0),
+              new PedComponent(7,110,0),
+              new PedComponent(9,25,3),
+              new PedComponent(5,48,0),
+               })           
+            ,GroupName = "Sniper"
+            ,OverrideAgencyLongGuns = true
+            ,OverrideLongGunsID = "GoodSniperLongGuns"
+            ,AlwaysHasLongGun = true
+            ,CombatAbilityMin = 2
+            ,CombatAbilityMax = 2
+            ,CombatRange = 3
+            ,CombatMovement = 0
+            ,AccuracyMin = 65
+            ,AccuracyMax = 85 },
 
             };
         List<DispatchablePerson> ParkRangers_FEJ = new List<DispatchablePerson>() {

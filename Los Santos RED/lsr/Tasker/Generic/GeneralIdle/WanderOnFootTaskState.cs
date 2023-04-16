@@ -165,9 +165,9 @@ class WanderOnFootTaskState : TaskState
         bool useLocal = false;
         List<string> DealerScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD" };
         List<string> NonDealerScenarios = new List<string>() { "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" };
-        List<string> AllScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD", "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING" };
-        List<string> NormalScenarios = new List<string>() { "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT" };
-        List<string> BasicScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT" };
+        List<string> AllScenarios = new List<string>() { "WORLD_HUMAN_DRUG_DEALER", "WORLD_HUMAN_DRUG_DEALER_HARD", "WORLD_HUMAN_SMOKING", "WORLD_HUMAN_AA_SMOKE", "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_DRINKING", "WORLD_HUMAN_GUARD_STAND" };
+        List<string> NormalScenarios = new List<string>() { "WORLD_HUMAN_STAND_MOBILE", "WORLD_HUMAN_HANG_OUT_STREET", "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND" };
+        List<string> BasicScenarios = new List<string>() { "WORLD_HUMAN_STAND_IMPATIENT", "WORLD_HUMAN_GUARD_STAND" };
 
 
 
@@ -227,8 +227,14 @@ class WanderOnFootTaskState : TaskState
                 ScenarioChosen = NonDealerScenarios.PickRandom();
             }
         }
-        bool ScenarioInArea = NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, true);
-        if (useLocal && ScenarioInArea)
+
+
+
+        if(PedGeneral.AlwaysHasLongGun)
+        {
+            NativeFunction.Natives.TASK_GUARD_CURRENT_POSITION(PedGeneral.Pedestrian, canPatrol ? 15f : 0.0f, 5f, true);
+        }
+        else if (useLocal && NativeFunction.Natives.DOES_SCENARIO_EXIST_IN_AREA<bool>(PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, true))
         {
             NativeFunction.CallByName<bool>("TASK_USE_NEAREST_SCENARIO_TO_COORD_WARP", PedGeneral.Pedestrian, PedGeneral.Pedestrian.Position.X, PedGeneral.Pedestrian.Position.Y, PedGeneral.Pedestrian.Position.Z, 3f, 0);
         }

@@ -26,7 +26,7 @@ public class GangFight : ComplexTask
             //EntryPoint.WriteToConsole($"TASKER: GangFight Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {
-                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, Ped.IsAnimal ? 134217728 : 0, 16);
+                NativeFunction.Natives.TASK_COMBAT_PED(Ped.Pedestrian, OtherTarget.Pedestrian, Ped.DefaultCombatFlag, 16);
             }
             else
             {

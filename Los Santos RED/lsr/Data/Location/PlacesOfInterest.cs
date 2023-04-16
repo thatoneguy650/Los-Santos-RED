@@ -841,6 +841,43 @@ public class PlacesOfInterest : IPlacesOfInterest
                 
             }
             },
+
+            //Rooftop Snipers
+            new BlankLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, "RoofTopSniper1", "Rooftop Sniper 1") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-1004.588f,-2451.93f,25.63272f), 294.0977f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper1", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, "RoofTopSniper2", "Rooftop Sniper 2") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-544.9591f, -2225.018f, 122.3655f), 56.47693f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper2", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, "RoofTopSniper3", "Rooftop Sniper 3") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(132.3552f, -1032.493f, 57.79759f), 336.7522f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper3", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, "RoofTopSniper4", "Rooftop Sniper 4") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-62.03125f, -707.9713f, 55.52032f), 94.052f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper4", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, "RoofTopSniper5", "Rooftop Sniper 5") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-547.1264f, -625.6401f, 56.11749f), 172.5318f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper5", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, "RoofTopSniper6", "Rooftop Sniper 6") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-771.976f, -302.2982f, 54.00434f), 109.9027f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper6", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
+            new BlankLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, "RoofTopSniper7", "Rooftop Sniper 7") {  ActivateDistance = 400f,ActivateCells = 8,
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new LEConditionalLocation(new Vector3(-1332.035f, -500.6434f, 40.44254f), 260.7096f, defaultSpawnPercentage) { MaxWantedLevelSpawn = 5, GroupID = "RoofTopSniper7", RequiredPedGroup = "Sniper", TaskRequirements = TaskRequirements.Guard,},},
+            },
         };
     }
     private void DefaultConfig_FoodStands()
@@ -1498,14 +1535,14 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new Prison(new Vector3(1846.258f, 2586.139f, 45.67202f), 269.2306f, "Bolingbroke Penitentiary","Where the scum of LS washes up")  { OpenTime = 0,CloseTime = 24,AssignedAgencyID = "SASPA",
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                new LEConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f),//guard facing towards entry
+                new LEConditionalLocation(new Vector3(1899.234f, 2605.696f, 44.96621f), 354f, 100f) { TaskRequirements = TaskRequirements.Guard,AlwaysHasLongGun = true },//guard facing towards entry
 
-                new LEConditionalLocation(new Vector3(1830.171f, 2602.584f, 44.88912f), 0f, 100f),//guard facing towards entry second guard booth
+                new LEConditionalLocation(new Vector3(1830.171f, 2602.584f, 44.88912f), 0f, 100f) { TaskRequirements = TaskRequirements.Guard,AlwaysHasLongGun = true },//guard facing towards entry second guard booth
 
 
                 //
-                new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 75f),//front of prison
-                new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 75f),
+                new LEConditionalLocation(new Vector3(1846.473f, 2584.199f, 44.67195f), 295f, 75f) { TaskRequirements = TaskRequirements.Guard,AlwaysHasLongGun = true },//front of prison
+                new LEConditionalLocation(new Vector3(1845.851f, 2587.203f, 44.67231f), 290f, 75f) { TaskRequirements = TaskRequirements.Guard,AlwaysHasLongGun = true },
             },PossibleVehicleSpawns = new List<ConditionalLocation>() {
 
                 new LEConditionalLocation(new Vector3(1855.314f, 2578.854f, 46.42464f), 92f, 75f),//facing towards prison
@@ -1697,10 +1734,10 @@ public class PlacesOfInterest : IPlacesOfInterest
             { new LEConditionalLocation(new Vector3(374.2932f, 795.6959f, 186.5305f), 178f,100f), } },
 
             new PoliceStation(new Vector3(-893.9146f, -2401.547f, 14.02436f), 148.8757f, "NOoSE LSIA","Let's tighten the noose!") { AssignedAgencyID = "NOOSE", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
-                new LEConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 75f){ AssociationID = "NOOSE-BP", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario },
-                new LEConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ AssociationID = "NOOSE-PIA", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario },
-                new LEConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ TaskRequirements = TaskRequirements.Patrol },
-                new LEConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ AssociationID = "NOOSE-PIA",TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario },
+                new LEConditionalLocation(new Vector3(-896.5345f, -2388.417f, 14.02436f), 63.63145f, 75f){ AssociationID = "NOOSE-BP", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario ,AlwaysHasLongGun = true},
+                new LEConditionalLocation(new Vector3(-897.6145f, -2398.739f, 14.02436f), 117.328f, 100f){ AssociationID = "NOOSE-PIA", TaskRequirements = TaskRequirements.Guard | TaskRequirements.StandardScenario,AlwaysHasLongGun = true },
+                new LEConditionalLocation(new Vector3(-889.1294f, -2405.644f, 14.02639f), 117.7686f, 100f){ TaskRequirements = TaskRequirements.Patrol,AlwaysHasLongGun = true },
+                new LEConditionalLocation(new Vector3(-868.955f, -2417.757f, 14.02489f), 200.5734f, 100f){ AssociationID = "NOOSE-PIA",TaskRequirements = TaskRequirements.Guard | TaskRequirements.Patrol | TaskRequirements.StandardScenario,AlwaysHasLongGun = true },
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
 
@@ -2093,7 +2130,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDens.Add(Den1);
     }
-
     private void DefaultConfig_GangDens_Altruists()
     {
         GangDen Den1 = new GangDen(new Vector3(-1144.041f, 4908.383f, 220.9688f), 33.69744f, "Altruist Cult Den", "", "GenericGangDenMenu", "AMBIENT_GANG_CULT") 
@@ -2108,7 +2144,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDens.Add(Den1);
     }
-
     private void DefaultConfig_GangDens_Korean()
     {
         GangDen KoreanDen1 = new GangDen(new Vector3(-579.9809f, -778.5275f, 25.01723f), 90.93932f, "Kkangpae Den", "", "KkangpaeDenMenu", "AMBIENT_GANG_KKANGPAE")
@@ -2140,7 +2175,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         //    new GangConditionalLocation(new Vector3(-764.5098f, -919.3218f, 20.20216f), 267.6916f, 50f),
         //} },
     }
-
     private void DefaultConfig_GangDens_Redneck()
     {
         GangDen RedneckDen1 = new GangDen(new Vector3(959.721f, 3618.905f, 32.67253f), 93.92658f, "Reckneck Den", "", "GenericGangDenMenu", "AMBIENT_GANG_HILLBILLY")
@@ -2166,7 +2200,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         };
         GangDens.Add(RedneckDen1);
     }
-
     private void DefaultConfig_GangDens_Mafia()
     {
         GangDen PavanoDen1 = new GangDen(new Vector3(1662.302f, 4776.384f, 42.00795f), 279.1427f, "Pavano Safehouse", "", "PavanoDenMenu", "AMBIENT_GANG_PAVANO")
@@ -2291,7 +2324,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(AncelottiDen1);
         GangDens.Add(GambettiDen1);
     }
-
     private void DefaultConfig_GangDens_Ballas()
     {
         GangDen BallasDen1 = new GangDen(new Vector3(86.11255f, -1959.272f, 21.12167f), 318.5057f, "Ballas Den", "", "BallasDenMenu", "AMBIENT_GANG_BALLAS")
@@ -2506,7 +2538,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(BallasDen4);
         GangDens.Add(BallasDen5);
     }
-
     private void DefaultConfig_GangDens_Families()
     {
         GangDen FamiliesDen1 = new GangDen(new Vector3(-223.1647f, -1601.309f, 34.88379f), 266.3889f, "The Families Den", "The OGs", "FamiliesDenMenu", "AMBIENT_GANG_FAMILY")
@@ -2812,7 +2843,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(LostMainDen);
         GangDens.Add(LostDen2);
     }
-
     private void DefaultConfig_GangDens_Triads()
     {
         GangDen TriadMainDen = new GangDen(new Vector3(101.6865f, -819.3801f, 31.31512f), 341.2845f, "Triad Den", "", "TriadsDenMenu", "AMBIENT_GANG_WEICHENG")
@@ -3174,7 +3204,6 @@ public class PlacesOfInterest : IPlacesOfInterest
         GangDens.Add(VagosHangout5);
         GangDens.Add(VagosHangout6);
     }
-
     private void DefaultConfig_ScrapYards()
     {
         ScrapYards = new List<ScrapYard>() {

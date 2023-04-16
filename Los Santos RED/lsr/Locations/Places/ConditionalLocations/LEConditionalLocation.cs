@@ -23,14 +23,14 @@ public class LEConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        if(!Settings.SettingsManager.PoliceSpawnSettings.AllowStationSpawning)
+        if(!Settings.SettingsManager.PoliceSpawnSettings.AllowLocationSpawning)
         {
             return false;
         }
-        if(World.TotalWantedLevel > Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted)
-        {
-            return false;
-        }
+        //if(World.TotalWantedLevel > Settings.SettingsManager.PoliceSpawnSettings.StationSpawning_MaxWanted)
+        //{
+        //    return false;
+        //}
         return base.DetermineRun(force);
     }
     public override void RunSpawnTask()

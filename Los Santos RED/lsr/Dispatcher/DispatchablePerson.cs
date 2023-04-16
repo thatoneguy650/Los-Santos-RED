@@ -33,6 +33,10 @@ public class DispatchablePerson
     public int CombatAbilityMin { get; set; } = 1;//0 - poor, 1- average, 2 - professional
     public int CombatAbilityMax { get; set; } = 2;//0 - poor, 1- average, 2 - professional
 
+    public int CombatRange { get; set; } = -1;
+    public int CombatMovement { get; set; } = -1;//0 - poor, 1- average, 2 - professional
+
+
     public int TaserAccuracyMin { get; set; } = 30;
     public int TaserAccuracyMax { get; set; } = 30;
     public int TaserShootRateMin { get; set; } = 100;
@@ -93,6 +97,7 @@ public class DispatchablePerson
     public List<CombatFloatToSet> CombatFloatsToSet { get; set; }
     public float FaceFeatureRandomizePercentage { get; set; } = 90f;
 
+    public bool AlwaysHasLongGun { get; set; } = false;
 
     public bool IsAnimal { get; set; } = false;
 
@@ -144,12 +149,18 @@ public class DispatchablePerson
         pedExt.Accuracy = RandomItems.GetRandomNumberInt(AccuracyMin, AccuracyMax);
         pedExt.ShootRate = RandomItems.GetRandomNumberInt(ShootRateMin, ShootRateMax);
         pedExt.CombatAbility = RandomItems.GetRandomNumberInt(CombatAbilityMin, CombatAbilityMax);
+        pedExt.CombatMovement = CombatMovement;
+        pedExt.CombatRange = CombatRange;
         pedExt.TaserAccuracy = RandomItems.GetRandomNumberInt(TaserAccuracyMin, TaserAccuracyMax);
         pedExt.TaserShootRate = RandomItems.GetRandomNumberInt(TaserShootRateMin, TaserShootRateMax);
         pedExt.VehicleAccuracy = RandomItems.GetRandomNumberInt(VehicleAccuracyMin, VehicleAccuracyMax);
         pedExt.VehicleShootRate = RandomItems.GetRandomNumberInt(VehicleShootRateMin, VehicleShootRateMax);
         pedExt.TurretAccuracy = RandomItems.GetRandomNumberInt(TurretAccuracyMin, TurretAccuracyMax);
         pedExt.TurretShootRate = RandomItems.GetRandomNumberInt(TurretShootRateMin, TurretShootRateMax);
+        if (AlwaysHasLongGun)
+        {
+            pedExt.AlwaysHasLongGun = true;
+        }
         if (OverrideVoice != null && OverrideVoice.Any())
         {
             pedExt.VoiceName = OverrideVoice.PickRandom();
@@ -187,7 +198,17 @@ public class DispatchablePerson
             pedExt.Pedestrian.Accuracy = pedExt.Accuracy;
             NativeFunction.Natives.SET_PED_SHOOT_RATE(pedExt.Pedestrian, pedExt.ShootRate);
             NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
+            if(pedExt.CombatMovement != -1)
+            {
+                NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(pedExt.Pedestrian, pedExt.CombatMovement);
+            }
+            if(pedExt.CombatRange != -1)
+            {
+                NativeFunction.Natives.SET_PED_COMBAT_RANGE(pedExt.Pedestrian, pedExt.CombatRange);
+            }
         }
+
+
         GameFiber.Yield();
         if (!pedExt.Pedestrian.Exists())
         {

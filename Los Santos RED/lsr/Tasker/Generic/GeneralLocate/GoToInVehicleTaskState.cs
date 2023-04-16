@@ -52,6 +52,10 @@ class GoToInVehicleTaskState : TaskState
     }
     public void Update()
     {
+        if (!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
         CheckGoToDistances();
         SetGoToDrivingStyle();
     }

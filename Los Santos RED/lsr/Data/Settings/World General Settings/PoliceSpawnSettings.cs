@@ -13,9 +13,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     [Description("Percentage of time to add optional passengers to a vehicle. 0 is never 100 is always.")]
     public float AddOptionalPassengerPercentage { get; set; }
     [Description("Enable or disable ambient spawns around police stations.")]
-    public bool AllowStationSpawning { get; set; }
-    [Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
-    public int StationSpawning_MaxWanted { get; set; }
+    public bool AllowLocationSpawning { get; set; }
+    //[Description("Maximum wanted level to spawn ambient peds and vehicles around the station.")]
+    //public int StationSpawning_MaxWanted { get; set; }
 
 
 
@@ -467,8 +467,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         //K9SpawnLimit_Investigation = 1;
 #else
 #endif
-        AllowStationSpawning = true;
-        StationSpawning_MaxWanted = 3;
+        AllowLocationSpawning = true;
+        //StationSpawning_MaxWanted = 3;
        // StationSpawningIgnoresLimits = true;
     }
 }

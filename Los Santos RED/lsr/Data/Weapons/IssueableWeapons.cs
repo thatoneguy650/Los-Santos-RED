@@ -156,6 +156,12 @@ public class IssueableWeapons : IIssuableWeapons
         {
             new IssuableWeapon("weapon_nightstick", new WeaponVariation(), 100),
         };
+        List<IssuableWeapon> GoodSniperLongGuns = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_sniperrifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope")})),
+            new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Suppressor"), new WeaponComponent("Tracer Rounds" )})),
+            new IssuableWeapon("weapon_marksmanrifle_mk2", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Large Scope"), new WeaponComponent("Tracer Rounds") })),
+        };
 
         IssuableWeaponsGroupLookup = new List<IssuableWeaponsGroup>();
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Tasers", Tasers));
@@ -170,6 +176,11 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("HeliLongGuns", HeliLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedSidearms", LimitedSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("LimitedLongGuns", LimitedLongGuns));
+
+
+
+        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("GoodSniperLongGuns", GoodSniperLongGuns));
+
 
         //Gangs
         List<IssuableWeapon> MeleeWeapons = new List<IssuableWeapon>()
