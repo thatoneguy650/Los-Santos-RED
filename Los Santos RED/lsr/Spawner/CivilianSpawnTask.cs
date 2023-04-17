@@ -11,14 +11,15 @@ public class CivilianSpawnTask : SpawnTask
     public bool SetPersistent = false;
     private Vehicle SpawnedVehicle;
     private ICrimes Crimes;
+    private IShopMenus ShopMenus;
 
-    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems) 
+    public CivilianSpawnTask(SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, bool addOptionalPassengers, bool setPersistent, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, INameProvideable names, IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
         : base(spawnLocation,vehicleType,personType,addBlip,addOptionalPassengers,settings,weapons,names,world, modItems)
     {
         Crimes = crimes;
         SetPersistent = setPersistent;
+        ShopMenus = shopMenus;
     }
-    public TaskRequirements SpawnRequirement { get; set; }
     public override void AttemptSpawn()
     {
         try
@@ -125,12 +126,13 @@ public class CivilianSpawnTask : SpawnTask
             GameFiber.Yield();
             if (createdPed.Exists())
             {
+                SetupPed(createdPed);
                 if (!createdPed.Exists())
                 {
                     return null;
                 }
-                PedExt Person = SetupPed(createdPed);
-                PersonType.SetPedVariation(createdPed, null, true);
+                PedExt Person = SetupRegularPed(createdPed);
+                PersonType?.SetPedVariation(createdPed, null, true);
                 GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;
@@ -206,57 +208,37 @@ public class CivilianSpawnTask : SpawnTask
             OccupantsToAdd = 0;
         }
     }
-    private PedExt SetupPed(Ped ped)
+
+
+
+
+
+    private PedExt SetupRegularPed(Ped ped)
     {
-        //if (PlacePedOnGround)
-        //{
-        //    float resultArg = ped.Position.Z;
-        //    if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
-        //    {
-        //        ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-        //    }
-        //}
+        ped.IsPersistent = SetPersistent;    
+        EntryPoint.PersistentPedsCreated++;//TR
+        bool isMale = PersonType.IsMale(ped);
+        ped.RelationshipGroup = isMale ? new RelationshipGroup("CIVMALE") : new RelationshipGroup("CIVFEMALE");
+        PedExt CreatedPedExt = new PedExt(ped, Settings, Crimes, Weapons, Names.GetRandomName(isMale), "", World);
+        World.Pedestrians.AddEntity(CreatedPedExt);
+        CreatedPedExt.SetBaseStats(PersonType, ShopMenus, Weapons, AddBlip);
+        if (ped.Exists())
+        {
+            CreatedPedExt.SpawnPosition = ped.Position;
+            CreatedPedExt.SpawnHeading = ped.Heading;
+        }
+        return CreatedPedExt;
+    }
+
+    private void SetupPed(Ped ped)
+    {
         PlacePed(ped);
-
-
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
         ped.MaxHealth = DesiredHealth;
         ped.Health = DesiredHealth;
         ped.Armor = DesiredArmor;
-
-        if (SetPersistent)
-        {
-            ped.IsPersistent = true;
-        }
-        else
-        {
-            ped.IsPersistent = false;
-        }
-        EntryPoint.PersistentPedsCreated++;//TR
-        bool isMale;
-        RelationshipGroup rg = new RelationshipGroup("CIVMALE");
-        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-        {
-            isMale = false;
-            rg = new RelationshipGroup("CIVFEMALE");
-        }
-        else
-        {
-            isMale = ped.IsMale;
-        }
-        ped.RelationshipGroup = rg;
-        PedExt CreatedPedExt = new PedExt(ped, Settings, false, true, false, false, Names.GetRandomName(isMale), Crimes, Weapons, "", World, false);
-        World.Pedestrians.AddEntity(CreatedPedExt);
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(CreatedPedExt.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = System.Drawing.Color.Blue;
-            myBlip.Scale = 0.6f;
-        }
-        return CreatedPedExt;
     }
+
+
 }

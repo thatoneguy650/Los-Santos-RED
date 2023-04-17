@@ -5,13 +5,13 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
     private bool IsSetStayInVehicle;
     private uint GameTimeSpawned;
-    private ISettingsProvideable Settings;
     private bool WasAlreadySetPersistent = false;
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Cop", world)
     {
@@ -24,7 +24,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GameTimeSpawned = Game.GameTime;
         }
-        Settings = settings;
         if (Pedestrian.Exists() && Pedestrian.IsPersistent)
         {
             WasAlreadySetPersistent = true;
@@ -44,6 +43,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
+    public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public virtual bool ShouldBustPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.PoliceSettings.BustDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
@@ -118,53 +118,54 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
-        if (Pedestrian.Exists())
+        if (!Pedestrian.Exists())
         {
-            if (Pedestrian.IsAlive)
-            {
-                if (NeedsFullUpdate)
-                {
-                    IsInWrithe = Pedestrian.IsInWrithe;
-                    UpdatePositionData();
-                    PlayerPerception.Update(perceptable, placeLastSeen);
-                    if(Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    UpdateVehicleState();
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                    {
-                        LookForDistressedPeds(world);
-                    }
-                    if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
-                    {
-                        GameFiber.Yield();//TR TEST 30
-                    }
-                    if (HasSeenDistressedPed)
-                    {
-                        perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                        HasSeenDistressedPed = false;
-                    }
-
-                    UpdateCombatFlags();
-
-                    GameTimeLastUpdated = Game.GameTime;
-                }
-            }
-            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+            return;
         }
+        if (Pedestrian.IsAlive)
+        {
+            if (NeedsFullUpdate)
+            {
+                IsInWrithe = Pedestrian.IsInWrithe;
+                UpdatePositionData();
+                PlayerPerception.Update(perceptable, placeLastSeen);
+                if(Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                {
+                    GameFiber.Yield();//TR TEST 30
+                }
+                if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
+                {
+                    GameFiber.Yield();//TR TEST 30
+                }
+                UpdateVehicleState();
+                if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
+                {
+                    GameFiber.Yield();//TR TEST 30
+                }
+                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                {
+                    GameFiber.Yield();//TR TEST 30
+                }
+                if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                {
+                    LookForDistressedPeds(world);
+                }
+                if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
+                {
+                    GameFiber.Yield();//TR TEST 30
+                }
+                if (HasSeenDistressedPed)
+                {
+                    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+                    HasSeenDistressedPed = false;
+                }
+
+                UpdateCombatFlags();
+
+                GameTimeLastUpdated = Game.GameTime;
+            }
+        }
+        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
@@ -179,9 +180,13 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         Voice.ResetSpeech();
         Voice.Speak(currentPlayer);
     }
-    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string UnitCode)
+    public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName)
     {
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         if (!IsAnimal)
         {
             WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
@@ -189,7 +194,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         if (AssignedAgency.Division != -1)
         {
             Division = AssignedAgency.Division;
-            UnitType = UnitCode;
+            UnitType = forceGroupName;
             BeatNumber = AssignedAgency.GetNextBeatNumber();
             GroupName = $"{AssignedAgency.ID} {Division}-{UnitType}-{BeatNumber}";
         }
@@ -197,18 +202,17 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GroupName = AssignedAgency.MemberName;
         }
+        else
+        {
+            GroupName = "Cop";
+        }
         if(!Pedestrian.Exists())
         {
             return;
         }
         if (addBlip)
         {
-            Blip myBlip = Pedestrian.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = AssignedAgency.Color;
-            myBlip.Scale = 0.6f;
+            AddBlip();
         }
         if(IsAnimal)
         {
@@ -251,7 +255,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
     }
-
     private void UpdateCombatFlags()
     {
         if (StayInVehicle && IsUsingMountedWeapon)

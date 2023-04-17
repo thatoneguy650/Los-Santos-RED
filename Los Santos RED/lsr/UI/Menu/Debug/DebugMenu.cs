@@ -590,7 +590,7 @@ public class DebugMenu : ModUIMenu
         UIMenuItem TaxiSpawn = new UIMenuItem("Spawn Taxi", "Spawns a taxi in fron of player");
         TaxiSpawn.Activated += (menu, item) =>
         {
-            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems);
+            TaxiDropOff TaxiDropOff = new TaxiDropOff(Game.LocalPlayer.Character.GetOffsetPositionFront(10f), Settings, Crimes, Weapons, Names, World, ModItems, null);
             TaxiDropOff.Setup();
             TaxiDropOff.Start();
             menu.Visible = false;
@@ -1446,8 +1446,10 @@ public class DebugMenu : ModUIMenu
                     //    coolguy.Inventory.GiveNewWeapon(WeaponHash.Bat, 1, true);
                     //}
                     coolguy.Tasks.FightAgainstClosestHatedTarget(250f, -1);
-                    PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
+                    PedExt pedExt = new PedExt(coolguy, Settings, Crimes, Weapons, "Test1","CRIMINAL", World);
                     pedExt.WasEverSetPersistent = true;
+                    pedExt.WillFight = true;
+                    pedExt.WillFightPolice = true;
                     World.Pedestrians.AddEntity(pedExt);
                 }
                 while (coolguy.Exists() && !Game.IsKeyDownRightNow(Keys.P))
@@ -1511,7 +1513,9 @@ public class DebugMenu : ModUIMenu
                     coolguy.BlockPermanentEvents = true;
                     coolguy.KeepTasks = true;
                     //coolguy.IsInvincible = true;
-                    PedExt pedExt = new PedExt(coolguy, Settings, true, false, false, false, "Test1", Crimes, Weapons, "CRIMINAL", World, true);
+                    PedExt pedExt = new PedExt(coolguy, Settings, Crimes, Weapons, "Test1", "CRIMINAL", World);
+                    pedExt.WillFight = true;
+                    pedExt.WillFightPolice = true;
                     pedExt.WasEverSetPersistent = true;
                     World.Pedestrians.AddEntity(pedExt);
                     NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", coolguy, 281, true);//Can Writhe

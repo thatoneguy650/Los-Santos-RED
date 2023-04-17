@@ -33,16 +33,21 @@ public class GangFlee : ComplexTask
                 Ped.Pedestrian.BlockPermanentEvents = true;
                 
             }
+
+
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
+
+
             Ped.Pedestrian.KeepTasks = true;
             NativeFunction.Natives.SET_CURRENT_PED_WEAPON(Ped.Pedestrian, (uint)2725352035, true);//set unarmed
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
 
-            if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(Ped.Pedestrian))
-            {
-                Vector3 PedPos = Ped.Pedestrian.Position;
-                NativeFunction.Natives.SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
-                NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
-            }
+            //if (NativeFunction.Natives.IS_PED_USING_ANY_SCENARIO<bool>(Ped.Pedestrian))
+            //{
+            //    Vector3 PedPos = Ped.Pedestrian.Position;
+            //    NativeFunction.Natives.SET_PED_SHOULD_PLAY_FLEE_SCENARIO_EXIT(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
+            //    NativeFunction.Natives.SET_PED_PANIC_EXIT_SCENARIO(Ped.Pedestrian, PedPos.X, PedPos.Y, PedPos.Z);
+            //}
 
 
             Vector3 CurrentPos = Ped.Pedestrian.Position;

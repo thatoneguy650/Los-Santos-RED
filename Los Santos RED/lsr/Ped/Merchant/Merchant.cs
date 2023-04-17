@@ -11,12 +11,15 @@ public class Merchant : PedExt
 {
     public InteractableLocation AssociatedStore { get; set; }
    // public GameLocation Store { get; set; }
-    public Merchant(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world, bool willFightPolice) : base(_Pedestrian, settings, _WillFight, _WillCallPolice, _IsGangMember, true, _Name, crimes, weapons, "Vendor", world, willFightPolice)
+    public Merchant(Ped _Pedestrian, ISettingsProvideable settings, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name, "Vendor", world)
     {
         Money = RandomItems.GetRandomNumberInt(settings.SettingsManager.CivilianSettings.MerchantMoneyMin, settings.SettingsManager.CivilianSettings.MerchantMoneyMax);
     }
     public override bool KnowsDrugAreas => false;
     public override bool KnowsGangAreas => false;
     public override bool CanTransact => IsNearSpawnPosition && base.CanTransact;
+    public override bool WillCallPolice { get; set; } = true;
+    public override bool WillCallPoliceIntense { get; set; } = true;
+    public override bool IsMerchant { get; set; } = true;
 }
 

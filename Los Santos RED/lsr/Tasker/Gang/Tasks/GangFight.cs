@@ -23,6 +23,7 @@ public class GangFight : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
             //EntryPoint.WriteToConsole($"TASKER: GangFight Start: {Ped.Pedestrian.Handle} OtherTarget {OtherTarget?.Handle}", 3);
             if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
             {

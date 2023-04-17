@@ -51,9 +51,7 @@ public class Pedestrians : ITaskerReportable
     public List<PedExt> Civilians { get; private set; } = new List<PedExt>();
     public List<Cop> Police { get; private set; } = new List<Cop>();
     public List<EMT> EMTs { get; private set; } = new List<EMT>();
-
     public List<CanineUnit> PoliceCanines { get; private set; } = new List<CanineUnit>();
-
     public List<SecurityGuard> SecurityGuards { get; private set; } = new List<SecurityGuard>();
     public List<Firefighter> Firefighters { get; private set; } = new List<Firefighter>();
     public List<Merchant> Merchants { get; private set; } = new List<Merchant>();
@@ -64,9 +62,7 @@ public class Pedestrians : ITaskerReportable
     public List<GangMember> GangMemberList => GangMembers.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Zombie> ZombieList => Zombies.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Cop> PoliceList => Police.Where(x => x.Pedestrian.Exists()).ToList();
-
     public List<CanineUnit> PoliceCanineList => PoliceCanines.Where(x => x.Pedestrian.Exists()).ToList();
-
     public List<EMT> EMTList => EMTs.Where(x => x.Pedestrian.Exists()).ToList();
     public List<SecurityGuard> SecurityGuardList => SecurityGuards.Where(x => x.Pedestrian.Exists()).ToList();
     public List<Firefighter> FirefighterList => Firefighters.Where(x => x.Pedestrian.Exists()).ToList();
@@ -133,13 +129,8 @@ public class Pedestrians : ITaskerReportable
     public bool AnyNooseUnitsSpawned => Police.Any(x => x.AssignedAgency.ID == "NOOSE" && x.WasModSpawned);
     public int TotalSpawnedPolice => Police.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientPolice => Police.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-
-
     public int TotalSpawnedPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientPoliceCanines => PoliceCanines.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
-
-
-
     public int TotalSpawnedEMTs => EMTs.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedAmbientEMTs => EMTs.Where(x => x.WasModSpawned && !x.IsLocationSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
     public int TotalSpawnedGangMembers => GangMembers.Where(x => x.WasModSpawned && x.Pedestrian.Exists() && x.Pedestrian.IsAlive).Count();
@@ -406,6 +397,15 @@ public class Pedestrians : ITaskerReportable
             }
         }
         SecurityGuards.Clear();
+        foreach (PedExt deadPed in DeadPeds)
+        {
+            if (deadPed.Pedestrian.Exists() && deadPed.Pedestrian.Handle != Game.LocalPlayer.Character.Handle)
+            {
+                deadPed.Pedestrian.Delete();
+            }
+        }
+        DeadPeds.Clear();
+        
 
     }
     public void ClearGangMembers()
@@ -434,120 +434,87 @@ public class Pedestrians : ITaskerReportable
     }
     private void PruneServicePeds()
     {
-        foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (Cop Cop in Police.Where(x => x.Pedestrian.Exists() && x.CanRemove))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = Cop.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            Cop.DeleteBlip();
             Cop.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            //EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == Cop.Handle))
+            EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent", 5);
+            if (Cop.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == Cop.Handle))
             {
                 Cop.IsDead = true;
                 DeadPeds.Add(Cop);
             }
         }
+        Police.RemoveAll(x => x.CanRemove);
         GameFiber.Yield();
-
-        foreach (CanineUnit CanineUnit in PoliceCanines.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (CanineUnit CanineUnit in PoliceCanines.Where(x => x.Pedestrian.Exists() && x.CanRemove))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = CanineUnit.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            CanineUnit.DeleteBlip();
             CanineUnit.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            //EntryPoint.WriteToConsole($"Pedestrians: Cop {Cop.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == CanineUnit.Handle))
+            EntryPoint.WriteToConsole($"Pedestrians: CanineUnit {CanineUnit.Pedestrian.Handle} Removed Blip Set Non Persistent", 5);
+            if (CanineUnit.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == CanineUnit.Handle))
             {
                 CanineUnit.IsDead = true;
                 DeadPeds.Add(CanineUnit);
             }
         }
+        PoliceCanines.RemoveAll(x => x.CanRemove);
         GameFiber.Yield();
-
-        foreach (SecurityGuard SecurityGuard in SecurityGuards.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (SecurityGuard SecurityGuard in SecurityGuards.Where(x => x.Pedestrian.Exists() && x.CanRemove))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = SecurityGuard.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            SecurityGuard.DeleteBlip();
             SecurityGuard.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            //EntryPoint.WriteToConsole($"Pedestrians: SecurityGuard {SecurityGuard.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == SecurityGuard.Handle))
+            EntryPoint.WriteToConsole($"Pedestrians: SecurityGuard {SecurityGuard.Pedestrian.Handle} Removed Blip Set Non Persistent", 5);
+            if (SecurityGuard.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == SecurityGuard.Handle))
             {
                 SecurityGuard.IsDead = true;
                 DeadPeds.Add(SecurityGuard);
             }
         }
+        SecurityGuards.RemoveAll(x => x.CanRemove);
         GameFiber.Yield();
-
-        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (EMT EMT in EMTs.Where(x => x.Pedestrian.Exists() && x.CanRemove))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = EMT.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            EMT.DeleteBlip();
             EMT.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-            //EntryPoint.WriteToConsole($"Pedestrians: Cop {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == EMT.Handle))
+            EntryPoint.WriteToConsole($"Pedestrians: EMT {EMT.Pedestrian.Handle} Removed Blip Set Non Persistent", 5);
+            if (EMT.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == EMT.Handle))
             {
                 EMT.IsDead = true;
                 DeadPeds.Add(EMT);
             }
         }
+        EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         GameFiber.Yield();
-
-        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
+        foreach (Firefighter Firefighter in Firefighters.Where(x => x.Pedestrian.Exists() && x.CanRemove))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = Firefighter.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            Firefighter.DeleteBlip();
             Firefighter.Pedestrian.IsPersistent = false;
             EntryPoint.PersistentPedsNonPersistent++;
-           // EntryPoint.WriteToConsole($"Pedestrians: Cop {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent hasBlip {hasBlip}", 5);
-            if (!DeadPeds.Any(x => x.Handle == Firefighter.Handle))
+            EntryPoint.WriteToConsole($"Pedestrians: Firefighter {Firefighter.Pedestrian.Handle} Removed Blip Set Non Persistent", 5);
+            if (Firefighter.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == Firefighter.Handle))
             {
                 Firefighter.IsDead = true;
                 DeadPeds.Add(Firefighter);
             }
         }
+        Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         GameFiber.Yield();
-        foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))
+        foreach (Merchant Civilian in Merchants.Where(x => x.Pedestrian.Exists() && x.CanRemove))
         {
-            if (!DeadPeds.Any(x => x.Handle == Civilian.Handle))
+            Civilian.DeleteBlip();
+            if (Civilian.Pedestrian.IsDead && !DeadPeds.Any(x => x.Handle == Civilian.Handle))
             {
                 Civilian.IsDead = true;
                 DeadPeds.Add(Civilian);
             }
         }
-
-        GameFiber.Yield();
-        Police.RemoveAll(x => x.CanRemove);// || x.Handle == Game.LocalPlayer.Character.Handle);
-        PoliceCanines.RemoveAll(x => x.CanRemove);
-        EMTs.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
-        Firefighters.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
         Merchants.RemoveAll(x => x.CanRemove || x.Handle == Game.LocalPlayer.Character.Handle);
+        GameFiber.Yield();
     }
     private void PruneGangMembers()
     {
@@ -593,13 +560,10 @@ public class Pedestrians : ITaskerReportable
             }
             EntryPoint.PersistentPedsNonPersistent++;
         }
-
         //RelationshipGroup formerPlayer = new RelationshipGroup("FORMERPLAYER");
         //RelationshipGroup criminalsRG = new RelationshipGroup("CRIMINALS");
         //RelationshipGroup hatesPlayerRG = new RelationshipGroup("HATES_PLAYER");
         //RelationshipGroup norelationshipRG = new RelationshipGroup("NO_RELATIONSHIP");
-
-        
         foreach (PedExt Civilian in Civilians.Where(x => x.DistanceToPlayer >= 200f && x.Pedestrian.Exists() && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
             if (Civilian.Pedestrian.RelationshipGroup == formerPlayer)
@@ -727,183 +691,62 @@ public class Pedestrians : ITaskerReportable
             AddEntity(pedExt);
         }
     }
-    private float CivilianCallPercentage()
-    {
-        if (EntryPoint.FocusZone != null)
-        {
-            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageRichZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPolicePercentagePoorZones;
-            }
-            else
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
-            }
-        }
-        else
-        {
-            return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
-        }
-    }
-    private float CivilianSeriousCallPercentage()
-    {
-        if (EntryPoint.FocusZone != null)
-        {
-            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageRichZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentagePoorZones;
-            }
-            else
-            {
-                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
-            }
-        }
-        else
-        {
-            return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
-        }
-    }
-    private float CivilianFightPercentage()
-    {
-        if (EntryPoint.FocusZone != null)
-        {
-            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPercentageRichZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPercentagePoorZones;
-            }
-            else
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
-            }
-        }
-        else
-        {
-            return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
-        }
-    }
-    private float CivilianFightPolicePercentage()
-    {
-        if (EntryPoint.FocusZone != null)
-        {
-            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageRichZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
-            }
-            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPolicePercentagePoorZones;
-            }
-            else
-            {
-                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
-            }
-        }
-        else
-        {
-            return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
-        }
-    }
     private void AddAmbientCivilian(Ped Pedestrian)
     {  
-        bool WillFight = false;
-        bool WillCallPolice = false;
-        bool WillCallPoliceIntense = false;
-        bool WillFightPolice = false;
-        bool IsGangMember = false;
-        bool canBeAmbientTasked = true;
         bool WasPersistentOnCreate = false;
-        if (Pedestrian.Exists())
+        if(!Pedestrian.Exists())
         {
-            if (Pedestrian.IsSecurity())
-            {
-                WillFight = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.SecurityFightPercentage);
-                WillCallPolice = false;
-                WillCallPoliceIntense = false;
-                WillFightPolice = false;
-            }
-            else
-            {
-                SetCivilianStats(Pedestrian);
-                WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
-                WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
-                WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
-                WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
-            }
-            if (Pedestrian.IsPersistent)
-            {
-                WasPersistentOnCreate = true;
-            }
-            if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && WasPersistentOnCreate)//must have been spawned by another mod?
-            {
-                WillFight = false;
-                WillCallPolice = false;
-                WillCallPoliceIntense = false;
-                WillFightPolice = false;
-                canBeAmbientTasked = false;
-            }
-            PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
-            if (myGroup == null)
-            {
-                myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
-            }
-            ShopMenu toAdd = EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus);// GetIllicitMenu();
-            PedExt toCreate = new PedExt(Pedestrian, Settings, WillFight, WillCallPolice, IsGangMember, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, myGroup.MemberName, World, WillFightPolice) { CanBeAmbientTasked = canBeAmbientTasked , WillCallPoliceIntense = WillCallPoliceIntense, WasPersistentOnCreate = WasPersistentOnCreate };
-            toCreate.SetupTransactionItems(toAdd);
-            Civilians.Add(toCreate);
-            if (Pedestrian.Exists())
-            {
-                Pedestrian.Money = 0;// toCreate.Money;
-                //NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
-            }
-            //EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
+            return;
         }
-    }
-    private void SetCivilianStats(Ped Pedestrian)
-    {
-        if (Pedestrian.Exists() && !Pedestrian.IsPersistent)
+        Pedestrian.Money = 0;// toCreate.Money;
+        if (Pedestrian.IsPersistent)
         {
-            if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
-            {
-                Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
-            }
-            if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
-            {
-                int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
-                Pedestrian.MaxHealth = DesiredHealth;
-                Pedestrian.Health = DesiredHealth;
-                Pedestrian.Armor = 0;
-            }
-            NativeFunction.CallByName<bool>("SET_PED_CONFIG_FLAG", Pedestrian, 281, true);//Can Writhe
-            NativeFunction.CallByName<bool>("SET_PED_DIES_WHEN_INJURED", Pedestrian, false);
+            WasPersistentOnCreate = true;
         }
+        PedGroup myGroup = RelationshipGroups.GetPedGroup(Pedestrian.RelationshipGroup.Name);
+        if (myGroup == null)
+        {
+            myGroup = new PedGroup(Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, Pedestrian.RelationshipGroup.Name, false);
+        }
+        
+        PedExt createdPedExt = new PedExt(Pedestrian, Settings, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), myGroup.MemberName, World) 
+        { 
+            WasPersistentOnCreate = WasPersistentOnCreate, 
+        };
+        createdPedExt.SetBaseStats(null, ShopMenus, Weapons, false);  
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        if (Settings.SettingsManager.CivilianSettings.OverrideAccuracy)
+        {
+            Pedestrian.Accuracy = Settings.SettingsManager.CivilianSettings.GeneralAccuracy;
+        }
+        if (Settings.SettingsManager.CivilianSettings.OverrideHealth)
+        {
+            int DesiredHealth = RandomItems.MyRand.Next(Settings.SettingsManager.CivilianSettings.MinHealth, Settings.SettingsManager.CivilianSettings.MaxHealth) + 100;
+            Pedestrian.MaxHealth = DesiredHealth;
+            Pedestrian.Health = DesiredHealth;
+        }   
+        if (Pedestrian.IsPersistent)
+        {
+            createdPedExt.WasPersistentOnCreate = true;
+        }
+        if (!Settings.SettingsManager.CivilianSettings.TaskMissionPeds && createdPedExt.WasPersistentOnCreate)//must have been spawned by another mod?
+        {
+            createdPedExt.WillCallPolice = false;
+            createdPedExt.WillCallPoliceIntense = false;
+            createdPedExt.WillFight = false;
+            createdPedExt.WillFightPolice = false;
+            createdPedExt.CanBeAmbientTasked = false;
+            createdPedExt.SetupTransactionItems(null);
+        }
+        else
+        {
+            createdPedExt.SetupTransactionItems(EntryPoint.FocusZone?.GetIllicitMenu(Settings, ShopMenus));
+        }
+        Civilians.Add(createdPedExt);
+        //EntryPoint.WriteToConsole("ADD AMBIENT FINAL");
     }
     private void AddAmbientGangMember(Ped Pedestrian)
     {
@@ -939,6 +782,10 @@ public class Pedestrians : ITaskerReportable
         }
         GangMember gm = new GangMember(Pedestrian, Settings, MyGang, false, Names.GetRandomName(Pedestrian.IsMale), Crimes, Weapons, World);// { CanBeAmbientTasked = canBeAmbientTasked, WasPersistentOnCreate = WasPersistentOnCreate };
         gm.SetStats(gangPerson, ShopMenus, Weapons, Settings.SettingsManager.GangSettings.ShowAmbientBlips, false, false, false);
+        if(!Pedestrian.Exists())
+        {
+            return;
+        }
         if (Pedestrian.IsPersistent)
         {
             gm.WasPersistentOnCreate = true;
@@ -961,6 +808,10 @@ public class Pedestrians : ITaskerReportable
     }
     private void AddAmbientCop(Ped Pedestrian)
     {
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         var AgencyData = GetAgencyData(Pedestrian, 0, ResponseType.LawEnforcement);
         Agency AssignedAgency = AgencyData.agency;
         DispatchablePerson AssignedPerson = AgencyData.dispatchablePerson;
@@ -976,18 +827,14 @@ public class Pedestrians : ITaskerReportable
         }
         Cop myCop = new Cop(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
         myCop.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.PoliceSettings.AttachBlipsToAmbientPeds, "Lincoln");
-        if(!myCop.Pedestrian.Exists())
+        if(!Pedestrian.Exists())
         {
             return;
         }
+        Pedestrian.IsPersistent = true;
         if (!Police.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
         {
             Police.Add(myCop);
-            if (!myCop.Pedestrian.Exists())
-            {
-                return;
-            }
-            myCop.Pedestrian.IsPersistent = true;
         }
         //EntryPoint.WriteToConsole($"PEDESTRIANS: Add COP {Pedestrian.Handle}", 2);
     }
@@ -1012,10 +859,14 @@ public class Pedestrians : ITaskerReportable
         }
         SecurityGuard mySecurityGuard = new SecurityGuard(Pedestrian, Settings, Pedestrian.Health, AssignedAgency, false, Crimes, Weapons, Names.GetRandomName(Pedestrian.IsMale), Pedestrian.Model.Name, World);
         mySecurityGuard.SetStats(AssignedPerson, Weapons, Settings.SettingsManager.SecuritySettings.AttachBlipsToAmbientPeds);
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        Pedestrian.IsPersistent = true;
         if (!SecurityGuards.Any(x => x.Pedestrian.Exists() && x.Pedestrian.Handle == Pedestrian.Handle))
         {
             SecurityGuards.Add(mySecurityGuard);
-            mySecurityGuard.Pedestrian.IsPersistent = true;
         }
         //EntryPoint.WriteToConsole($"PEDESTRIANS: Add SECURITY {Pedestrian.Handle}", 2);        
     }

@@ -296,21 +296,21 @@ public class GangDispatcher
                 IsPedestrianOnlySpawn = RandomItems.RandomPercent(Gang.PedestrianSpawnPercentageAroundDen);
                 IsDenSpawn = true;
                 SpawnLocation.InitialPosition = GangDen.EntrancePosition.Around2D(50f);
-                EntryPoint.WriteToConsole($"Gang Dispatcher Den Spawn, Ped Only:{IsPedestrianOnlySpawn}");
+               // EntryPoint.WriteToConsole($"Gang Dispatcher Den Spawn, Ped Only:{IsPedestrianOnlySpawn}");
             }
             else
             {
                 IsPedestrianOnlySpawn = RandomItems.RandomPercent(Settings.SettingsManager.GangSettings.AmbientSpawnPedestrianAttemptPercentage);
                 GangDen = null;
                 SpawnLocation.InitialPosition = GetPositionAroundPlayer();
-                EntryPoint.WriteToConsole($"Gang Dispatcher Regular Spawn, Ped Only:{IsPedestrianOnlySpawn}");
+               // EntryPoint.WriteToConsole($"Gang Dispatcher Regular Spawn, Ped Only:{IsPedestrianOnlySpawn}");
             }
             SpawnLocation.GetClosestStreet(false);
             SpawnLocation.GetClosestSidewalk();
             if(IsPedestrianOnlySpawn && !IsDenSpawn && !SpawnLocation.HasSidewalk)
             {
                 IsPedestrianOnlySpawn = false;
-                EntryPoint.WriteToConsole($"Gang Dispatcher attempted Ped Only spawn without sidewalks, changing to vehicle");
+               // EntryPoint.WriteToConsole($"Gang Dispatcher attempted Ped Only spawn without sidewalks, changing to vehicle");
             }
             GameFiber.Yield();
             isValidSpawn = IsValidSpawn(SpawnLocation);

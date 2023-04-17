@@ -5,14 +5,14 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 
 public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
 {
     private uint GameTimeSpawned;
-    private ISettingsProvideable Settings;
     private bool WasAlreadySetPersistent = false;
-    public SecurityGuard(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, true,true,false,false,name, crimes, weapons, "Security", world,false )
+    public SecurityGuard(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Security", world )
     {
         IsCop = false;
         Health = health;
@@ -23,7 +23,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         {
             GameTimeSpawned = Game.GameTime;
         }
-        Settings = settings;
         if (Pedestrian.Exists() && Pedestrian.IsPersistent)
         {
             WasAlreadySetPersistent = true;
@@ -43,6 +42,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => AssignedAgency.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => AssignedAgency.GetRandomWeapon(v, weapons);
     public Agency AssignedAgency { get; set; } = new Agency();
+    public override Color BlipColor => AssignedAgency != null ? AssignedAgency.Color : base.BlipColor;
     public string CopDebugString => WeaponInventory.DebugWeaponState;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool ShouldDetainPlayer => !IsInVehicle && DistanceToPlayer > 0.1f && HeightToPlayer <= 2.5f && !IsUnconscious && !IsInWrithe && DistanceToPlayer <= Settings.SettingsManager.SecuritySettings.DetainDistance && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
@@ -71,7 +71,8 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public PedExt CurrentTarget { get; set; }
     public bool IsUsingMountedWeapon { get; set; } = false;
 
-
+    public override bool WillCallPolice { get; set; } = true;
+    public override bool WillCallPoliceIntense { get; set; } = true;
 
     public override bool NeedsFullUpdate
     {
@@ -172,9 +173,18 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        Pedestrian.Money = 0;
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.SecuritySettings.OverrideHealth, Settings.SettingsManager.SecuritySettings.OverrideArmor, Settings.SettingsManager.SecuritySettings.OverrideAccuracy);
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
-        if (AssignedAgency.MemberName != "")
+        if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")
         {
             GroupName = AssignedAgency.MemberName;
         }
@@ -184,12 +194,7 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         if (addBlip)
         {
-            Blip myBlip = Pedestrian.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = AssignedAgency.Color;
-            myBlip.Scale = 0.6f;
+            AddBlip();
         }
         if (Settings.SettingsManager.SecuritySettings.ForceDefaultWeaponAnimations)
         {
@@ -227,6 +232,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
-        Pedestrian.Money = 0;
+        
     }
 }

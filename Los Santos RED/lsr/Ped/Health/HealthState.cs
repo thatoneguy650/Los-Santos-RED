@@ -84,7 +84,7 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
-            if(CurrentHealth <= 0)
+            if(MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
             }
@@ -147,7 +147,7 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
-            if (CurrentHealth <= 0)
+            if (MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
             }

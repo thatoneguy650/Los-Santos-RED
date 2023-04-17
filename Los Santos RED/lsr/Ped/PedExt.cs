@@ -11,7 +11,7 @@ using System.Linq;
 public class PedExt : IComplexTaskable, ISeatAssignable
 {
     public IPoliceRespondable PlayerToCheck;
-    private ISettingsProvideable Settings;
+    protected ISettingsProvideable Settings;
     private uint GameTimeCreated = 0;
     private uint GameTimeLastEnteredVehicle;
     private uint GameTimeLastExitedVehicle;
@@ -56,15 +56,15 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         HasGangAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyGangTerritory);
         UpdateJitter = RandomItems.GetRandomNumber(100, 200);
     }
-    public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
-    {
-        WillFight = _WillFight;
-        WillFightPolice = willFightPolice;
-        WillCallPolice = _WillCallPolice;
-        IsGangMember = _IsGangMember;
-        IsMerchant = isMerchant;
-        Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
-    }
+    //public PedExt(Ped _Pedestrian, ISettingsProvideable settings, bool _WillFight, bool _WillCallPolice, bool _IsGangMember, bool isMerchant, string _Name, ICrimes crimes, IWeapons weapons, string groupName, IEntityProvideable world, bool willFightPolice) : this(_Pedestrian, settings, crimes, weapons, _Name, groupName, world)
+    //{
+    //    WillFight = _WillFight;
+    //    WillFightPolice = willFightPolice;
+    //    WillCallPolice = _WillCallPolice;
+    //    IsGangMember = _IsGangMember;
+    //    IsMerchant = isMerchant;
+    //    Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
+    //}
     public PedViolations PedViolations { get; private set; }
     public PedPerception PedPerception { get; private set; }
     public PlayerPerception PlayerPerception { get; private set; }
@@ -129,7 +129,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int TurretShootRate { get; set; } = 1000;
     public virtual bool IsAnimal { get; set; } = false;
 
-
+    
 
     public virtual int DefaultCombatFlag { get; set; } = 0;
 
@@ -233,7 +233,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsDrunk { get; set; } = false;
     public bool IsFedUpWithPlayer => TimesInsultedByPlayer >= InsultLimit;
     public bool IsFreeModePed { get; set; } = false;
-    public bool IsGangMember { get; set; } = false;
+    public virtual bool IsGangMember { get; set; } = false;
     public bool IsInAPC { get; private set; }
     public bool IsInBoat { get; private set; } = false;
     public bool IsWaitingAtTrafficLight { get; set; }
@@ -242,7 +242,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool IsInHelicopter { get; private set; } = false;
     public bool IsInVehicle { get; private set; } = false;
     public bool IsInWrithe { get; set; } = false;
-    public bool IsMerchant { get; set; } = false;
+    public virtual bool IsMerchant { get; set; } = false;
     public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
     public bool IsNearSpawnPosition => Pedestrian.Exists() && Pedestrian.DistanceTo2D(SpawnPosition) <= 5f;////15f;//15f
     public bool IsOnBike { get; private set; } = false;
@@ -258,7 +258,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public int LastSeatIndex { get; private set; } = -1;
     public int Money { get; set; } = 10;
     public bool StayInVehicle { get; set; } = false;
-    public string Name { get; set; }
+    public string Name { get; set; } = "Unknown";
     public virtual bool NeedsFullUpdate
     {
         get
@@ -277,6 +277,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
+    public virtual System.Drawing.Color BlipColor => System.Drawing.Color.White;
+    public virtual float BlipSize => 0.6f;
     public bool NeedsTaskAssignmentCheck => Game.GameTime - GameTimeLastUpdatedTask >= Settings.SettingsManager.PerformanceSettings.TaskAssignmentCheckFrequency;// (IsCop ? 500 : 700);
     public List<WitnessedCrime> OtherCrimesWitnessed => PedPerception.NPCCrimesWitnessed;
     public Ped Pedestrian { get; set; }
@@ -337,11 +339,20 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasPersistentOnCreate { get; set; } = false;
     public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
-    public bool WillCallPolice { get; set; } = false;//true;
-    public bool WillCallPoliceIntense { get; set; } = false;//true;
-    public bool WillFight { get; set; } = false;
+    public Blip AttachedLSRBlip { get; set; }
+
+    public virtual bool WillCallPolice { get; set; } = false;
+    public virtual bool WillCallPoliceIntense { get; set; } = false;
+    public virtual bool WillFight { get; set; } = false;
+    public virtual bool WillFightPolice { get; set; } = false;
+
+
+
+
+
+
     public bool IsGroupMember { get; set; } = false;
-    public bool WillFightPolice { get; set; } = false;
+
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
     private int FullUpdateInterval//dont forget distance and LOS in here
@@ -410,74 +421,77 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasFullBodyArmor { get; set; } = false;
     public virtual bool CanBeLooted { get; set; } = true;
     public virtual bool CanBeDragged { get; set; } = true;
-    public bool AlwaysHasLongGun { get; set; } = false;
 
+    public bool IsMale { get; set; } = true;
+    public bool AlwaysHasLongGun { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
-        if (Pedestrian.Exists())
+        if (!Pedestrian.Exists())
         {
-            if (Pedestrian.IsAlive)
-            {
-                if (NeedsFullUpdate)
-                {
-                    IsInWrithe = Pedestrian.IsInWrithe;
-                    UpdatePositionData();
-                    PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
-                    {
-                        GameFiber.Yield();//TR TEST 28
-                    }
-                    UpdateVehicleState();
-                    if (!IsCop && !IsUnconscious)
-                    {
-                        if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
-                        {
-                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            if (ShouldCheckCrimes)
-                            {
-                                PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            }
-                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            PedPerception.Update();
-                            if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                        }
-                        if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
-                        {
-                            CheckPlayerBusted();
-                        }
-                    }
-                    if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                    {
-                        LookForDistressedPeds(world);
-                    }
-                    //if (IsCop && HasSeenDistressedPed)
-                    //{
-                    //    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                    //    HasSeenDistressedPed = false;
-                    //}
-                    GameTimeLastUpdated = Game.GameTime;
-                }
-            }
-            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+            return;
         }
+        if (Pedestrian.IsAlive)
+        {
+            if (NeedsFullUpdate)
+            {
+                IsInWrithe = Pedestrian.IsInWrithe;
+                UpdatePositionData();
+                PlayerPerception.Update(perceptable, placeLastSeen);
+                if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
+                {
+                    GameFiber.Yield();//TR TEST 28
+                }
+                UpdateVehicleState();
+                if (!IsCop && !IsUnconscious)
+                {
+                    if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (ShouldCheckCrimes)
+                        {
+                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        PedPerception.Update();
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                    }
+                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                    {
+                        CheckPlayerBusted();
+                    }
+                }
+                if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                {
+                    LookForDistressedPeds(world);
+                }
+                //if (IsCop && HasSeenDistressedPed)
+                //{
+                //    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
+                //    HasSeenDistressedPed = false;
+                //}
+                GameTimeLastUpdated = Game.GameTime;
+            }
+        }
+        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+        
     }
     public virtual void OnBecameWanted()
     {
@@ -897,6 +911,64 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
 
     }
+
+    public void SetBaseStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
+    {
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        Pedestrian.Money = 0;
+        IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);// Gang.PercentageTrustingOfPlayer);
+        Money = RandomItems.GetRandomNumberInt(Settings.SettingsManager.CivilianSettings.MoneyMin, Settings.SettingsManager.CivilianSettings.MoneyMax);
+        WillFight = RandomItems.RandomPercent(CivilianFightPercentage());
+        WillCallPolice = RandomItems.RandomPercent(CivilianCallPercentage());
+        WillCallPoliceIntense = RandomItems.RandomPercent(CivilianSeriousCallPercentage());
+        WillFightPolice = RandomItems.RandomPercent(CivilianFightPolicePercentage());
+        if (addBlip)
+        {
+            AddBlip();
+        }
+        if (dispatchablePerson == null)
+        {
+            return;
+        }
+        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.CivilianSettings.OverrideHealth, false, Settings.SettingsManager.CivilianSettings.OverrideAccuracy);//has a yield
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }    
+    }
+    protected void AddBlip()
+    {
+        if(!Pedestrian.Exists())
+        {
+            return;
+        }
+        Blip myBlip = Pedestrian.AttachBlip();
+        NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+        NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
+        NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
+        myBlip.Color = BlipColor;
+        myBlip.Scale = BlipSize;
+        AttachedLSRBlip = myBlip;
+    }
+    public void DeleteBlip()
+    {
+        if(AttachedLSRBlip.Exists())
+        {
+            AttachedLSRBlip.Delete();
+        }
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        Blip attachedBlip = Pedestrian.GetAttachedBlip();
+        if (attachedBlip.Exists())
+        {
+            attachedBlip.Delete();
+        }
+    }
     private void AddPlayerCrimeWitnessed(ITargetable Player)
     {
         foreach(WitnessedCrime witnessedCrime in PlayerCrimesWitnessed)
@@ -919,4 +991,114 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         Player.AddMedicalEvent(PositionLastSeenDistressedPed);
         HasSeenDistressedPed = false;
     }
+
+
+
+    private float CivilianCallPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.CallPolicePercentageMiddleZones;
+        }
+    }
+    private float CivilianSeriousCallPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.CallPoliceForSeriousCrimesPercentageMiddleZones;
+        }
+    }
+    private float CivilianFightPercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.FightPercentageMiddleZones;
+        }
+    }
+    private float CivilianFightPolicePercentage()
+    {
+        if (EntryPoint.FocusZone != null)
+        {
+            if (EntryPoint.FocusZone.Economy == eLocationEconomy.Rich)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageRichZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Middle)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+            }
+            else if (EntryPoint.FocusZone.Economy == eLocationEconomy.Poor)
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentagePoorZones;
+            }
+            else
+            {
+                return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+            }
+        }
+        else
+        {
+            return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
+        }
+    }
+
+
+
 }

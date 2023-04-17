@@ -3,17 +3,17 @@ using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
 public class GangMember : PedExt, IWeaponIssuable
 {
     private uint GameTimeSpawned;
-    private ISettingsProvideable Settings;
-    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, false, false, true, false, _Name, crimes, weapons, gang.MemberName, world, false)
+    public GangMember(Ped _Pedestrian, ISettingsProvideable settings, Gang gang, bool wasModSpawned, string _Name, ICrimes crimes, IWeapons weapons, IEntityProvideable world) : base(_Pedestrian, settings, crimes, weapons, _Name,gang.MemberName, world)
     {
         Gang = gang;
-        Settings = settings;
         WasModSpawned = wasModSpawned;
         WeaponInventory = new WeaponInventory(this, settings);
         if (WasModSpawned)
@@ -35,65 +35,70 @@ public class GangMember : PedExt, IWeaponIssuable
     public IssuableWeapon GetRandomMeleeWeapon(IWeapons weapons) => Gang.GetRandomMeleeWeapon(weapons);
     public IssuableWeapon GetRandomWeapon(bool v, IWeapons weapons) => Gang.GetRandomWeapon(v, weapons);
     public Gang Gang { get; set; } = new Gang();
+    public override Color BlipColor => Gang != null ? Gang.Color : base.BlipColor;
+    public override float BlipSize => 0.3f;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
+    public override bool IsGangMember { get; set; } = true;
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
-        if (Pedestrian.Exists())
+        if (!Pedestrian.Exists())
         {
-            if (Pedestrian.IsAlive)
-            {
-                if (NeedsFullUpdate)
-                {
-                    IsInWrithe = Pedestrian.IsInWrithe;
-                    UpdatePositionData();
-                    PlayerPerception.Update(perceptable, placeLastSeen);
-                    if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield1Active)
-                    {
-                        GameFiber.Yield();//TR TEST 28
-                    }
-                    UpdateVehicleState();
-                    if (!IsUnconscious)
-                    {
-                        if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
-                        {
-                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield3Active)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            PedPerception.Update();
-                            if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield4Active)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                            if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                            {
-                                GameFiber.Yield();//TR TEST 28
-                            }
-                        }
-                        if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
-                        {
-                            CheckPlayerBusted();
-                        }
-                    }
-                    GameTimeLastUpdated = Game.GameTime;
-                }
-            }
-            CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+            return;
         }
+        if (Pedestrian.IsAlive)
+        {
+            if (NeedsFullUpdate)
+            {
+                IsInWrithe = Pedestrian.IsInWrithe;
+                UpdatePositionData();
+                PlayerPerception.Update(perceptable, placeLastSeen);
+                if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield1Active)
+                {
+                    GameFiber.Yield();//TR TEST 28
+                }
+                UpdateVehicleState();
+                if (!IsUnconscious)
+                {
+                    if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield3Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        PedPerception.Update();
+                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield4Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                    }
+                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                    {
+                        CheckPlayerBusted();
+                    }
+                }
+                GameTimeLastUpdated = Game.GameTime;
+            }
+        }
+        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+        
     }
     public override void OnBecameWanted()
     {
@@ -123,33 +128,31 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
+        Pedestrian.Money = 0;
         IsTrustingOfPlayer = RandomItems.RandomPercent(Gang.PercentageTrustingOfPlayer);
         Money = RandomItems.GetRandomNumberInt(Gang.AmbientMemberMoneyMin, Gang.AmbientMemberMoneyMax);
         WillFight = RandomItems.RandomPercent(Gang.FightPercentage);
         WillCallPolice = false;
-        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);
+        WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);    
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
-            ShopMenu toadd = shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup);
-            SetupTransactionItems(toadd);
+            SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup));
             Money = RandomItems.GetRandomNumberInt(Gang.DealerMemberMoneyMin, Gang.DealerMemberMoneyMax);
         }
         if (addBlip)
         {
-            Blip myBlip = Pedestrian.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Gang.Color;
-            myBlip.Scale = 0.3f;
+            AddBlip();
         }
         if (dispatchablePerson == null)
         {
             return;
         }
-        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.GangSettings.OverrideHealth, Settings.SettingsManager.GangSettings.OverrideArmor, Settings.SettingsManager.GangSettings.OverrideAccuracy);
-        WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);
-        Pedestrian.Money = 0;
+        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.GangSettings.OverrideHealth, Settings.SettingsManager.GangSettings.OverrideArmor, Settings.SettingsManager.GangSettings.OverrideAccuracy);//has a yield
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);       
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

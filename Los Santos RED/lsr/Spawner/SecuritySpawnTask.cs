@@ -224,23 +224,18 @@ public class SecurityGuardSpawnTask : SpawnTask
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
+        if (!ped.Exists())
+        {
+            return null;
+        }
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
         RelationshipGroup rg = new RelationshipGroup("SECURITY_GUARD");
         ped.RelationshipGroup = rg;
-        bool isMale;
-        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-        {
-            isMale = false;
-        }
-        else
-        {
-            isMale = ped.IsMale;
-        }
+        bool isMale = PersonType.IsMale(ped);
         SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
-        //primarySecurityGuard.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             primarySecurityGuard.SpawnPosition = ped.Position;
@@ -250,14 +245,6 @@ public class SecurityGuardSpawnTask : SpawnTask
     }
     private void SetupPed(Ped ped)
     {
-        //if (PlacePedOnGround)
-        //{
-        //    float resultArg = ped.Position.Z;
-        //    if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
-        //    {
-        //        ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-        //    }
-        //}
         PlacePed(ped);
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);

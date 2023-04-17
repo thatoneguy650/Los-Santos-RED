@@ -250,7 +250,7 @@ namespace LosSantosRED.lsr
 
             if(Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
             {
-                EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
+                //EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
                 Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer);
                 prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
             }
@@ -299,7 +299,7 @@ namespace LosSantosRED.lsr
 
             if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo(prevPlacePoliceShouldSearchForPlayer) >= 5f)
             {
-                EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
+                //EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
                 Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer);
                 prevPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
             }

@@ -221,41 +221,17 @@ public class EMTSpawnTask :SpawnTask
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
-
+        if (!ped.Exists())
+        {
+            return null;
+        }
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-
-        RelationshipGroup rg = new RelationshipGroup("MEDIC");
-        ped.RelationshipGroup = rg;
-        bool isMale;
-        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-        {
-            isMale = false;
-        }
-        else
-        {
-            isMale = ped.IsMale;
-        }
+        ped.RelationshipGroup = new RelationshipGroup("MEDIC");
+        bool isMale = PersonType.IsMale(ped);
         EMT PrimaryEmt = new EMT(ped, Settings, ped.Health, Agency, true, null, null, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryEmt);
-
-        PersonType.SetPedExtPermanentStats(PrimaryEmt, true, true, false);
-
-
-        //if (PrimaryEmt != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        //{
-        //    PrimaryEmt.VoiceName = PersonType.OverrideVoice.PickRandom();
-        //}
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryEmt.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
-        //PrimaryEmt.TaskRequirements = SpawnRequirement;
+        PrimaryEmt.SetStats(PersonType, Weapons, AddBlip);
         if (ped.Exists())
         {
             PrimaryEmt.SpawnPosition = ped.Position;
@@ -263,54 +239,9 @@ public class EMTSpawnTask :SpawnTask
         }
         return PrimaryEmt;
     }
-    //private void SetupCallSigns()
-    //{
-    //    if (PersonType.UnitCode != "")
-    //    {
-    //        UnitCode = PersonType.UnitCode;
-    //        NextBeatNumber = Agency.GetNextBeatNumber();
-    //    }
-    //    if (Agency != null && Agency.Division != -1)
-    //    {
-    //        if (VehicleType?.IsMotorcycle == true)
-    //        {
-    //            UnitCode = "Mary";
-    //        }
-    //        else if (VehicleType?.IsHelicopter == true)
-    //        {
-    //            UnitCode = "David";
-    //        }
-    //        else if (WillAddPassengers && OccupantsToAdd > 0 && VehicleType != null)
-    //        {
-    //            UnitCode = "Adam";
-    //        }
-    //        else if (VehicleType == null)
-    //        {
-    //            UnitCode = "Frank";
-    //        }
-    //        else
-    //        {
-    //            UnitCode = "Lincoln";
-    //        }
-    //        NextBeatNumber = Agency.GetNextBeatNumber();
-    //    }
-    //    else
-    //    {
-    //        UnitCode = "";
-    //        NextBeatNumber = 0;
-    //    }
-    //}
     private void SetupPed(Ped ped)
     {
         PlacePed(ped);
-        //if(PlacePedOnGround)
-        //{
-        //    float resultArg = ped.Position.Z;
-        //    if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
-        //    {
-        //        ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-        //    }
-        //}
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
         ped.MaxHealth = DesiredHealth;

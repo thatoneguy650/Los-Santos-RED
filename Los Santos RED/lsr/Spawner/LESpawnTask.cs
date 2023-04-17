@@ -70,7 +70,7 @@ public class LESpawnTask : SpawnTask
             }
             if (PersonType != null)
             {
-                EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
+                //EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
                 PedExt Passenger = PersonType.IsAnimal ? CreateCanine() : CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
@@ -280,34 +280,26 @@ public class LESpawnTask : SpawnTask
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
+        if (!ped.Exists())
+        {
+            return null;
+        }
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-
-        RelationshipGroup rg = new RelationshipGroup("COP");
-        ped.RelationshipGroup = rg;
+        ped.RelationshipGroup = new RelationshipGroup("COP");
         NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-
-        bool isMale;
-        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-        {
-            isMale = false;
-        }
-        else
-        {
-            isMale = ped.IsMale;
-        }
+        bool isMale = PersonType.IsMale(ped);
         Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
         PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
-        //PrimaryCop.TaskRequirements = SpawnRequirement;
         if (ped.Exists())
         {
             PrimaryCop.SpawnPosition = ped.Position;
             PrimaryCop.SpawnHeading = ped.Heading;
-        }
-        if (SpawnWithAllWeapons || PersonType.AlwaysHasLongGun)
-        {
-            PrimaryCop.WeaponInventory.GiveHeavyWeapon();
+            if (SpawnWithAllWeapons || PersonType.AlwaysHasLongGun)
+            {
+                PrimaryCop.WeaponInventory.GiveHeavyWeapon();
+            }
         }
         return PrimaryCop;
     }

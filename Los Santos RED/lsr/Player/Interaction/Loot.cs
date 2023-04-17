@@ -116,7 +116,10 @@ public class Loot : DynamicActivity
                 Player.BankAccounts.GiveMoney(Ped.Money);
                 CashAdded = Ped.Money;
                 Ped.Money = 0;
-                Ped.Pedestrian.Money = 0;
+                if (Ped.Pedestrian.Exists())
+                { 
+                    Ped.Pedestrian.Money = 0;
+                }
                 hasAddedCash = true;
             }
         }

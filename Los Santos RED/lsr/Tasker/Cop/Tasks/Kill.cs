@@ -26,7 +26,7 @@ public class Kill : ComplexTask
     {
         if (Ped.Pedestrian.Exists())
         {
-            EntryPoint.WriteToConsole($"KILL STARTED {Ped.Handle} IsAnimal: {Ped.IsAnimal}");
+            //EntryPoint.WriteToConsole($"KILL STARTED {Ped.Handle} IsAnimal: {Ped.IsAnimal}");
             if(RandomItems.RandomPercent(Settings.SettingsManager.PoliceTaskSettings.SiegePercentage))
             {
                 CanSiege = true;

@@ -10,10 +10,13 @@ public class FireFighterSpawnTask : SpawnTask
 {
     private Agency Agency;
     private Vehicle SpawnedVehicle;
-    public FireFighterSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, IEntityProvideable world, IModItems modItems) 
+    private IShopMenus ShopMenus;
+    public FireFighterSpawnTask(Agency agency, SpawnLocation spawnLocation, DispatchableVehicle vehicleType, DispatchablePerson personType, bool addBlip, ISettingsProvideable settings, IWeapons weapons, INameProvideable names, bool addOptionalPassengers, 
+        IEntityProvideable world, IModItems modItems, IShopMenus shopMenus) 
         : base(spawnLocation, vehicleType, personType, addBlip, addOptionalPassengers, settings, weapons, names, world, modItems)
     {
         Agency = agency;
+        ShopMenus = shopMenus;
     }
     private bool HasAgency => Agency != null;
     public override void AttemptSpawn()
@@ -221,36 +224,17 @@ public class FireFighterSpawnTask : SpawnTask
     }
     private PedExt SetupAgencyPed(Ped ped)
     {
+        if (!ped.Exists())
+        {
+            return null;
+        }
         ped.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-
-        RelationshipGroup rg = new RelationshipGroup("FIREMAN");
-        ped.RelationshipGroup = rg;
-        bool isMale;
-        if (PersonType.IsFreeMode && PersonType.ModelName.ToLower() == "mp_f_freemode_01")
-        {
-            isMale = false;
-        }
-        else
-        {
-            isMale = ped.IsMale;
-        }
+        ped.RelationshipGroup = new RelationshipGroup("FIREMAN");
+        bool isMale = PersonType.IsMale(ped);
         Firefighter PrimaryFirefighter = new Firefighter(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), World);
         World.Pedestrians.AddEntity(PrimaryFirefighter);
-        if (PrimaryFirefighter != null && PersonType.OverrideVoice != null && PersonType.OverrideVoice.Any())
-        {
-            PrimaryFirefighter.VoiceName = PersonType.OverrideVoice.PickRandom();
-        }
-        if (AddBlip && ped.Exists())
-        {
-            Blip myBlip = ped.AttachBlip();
-            NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-            NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(PrimaryFirefighter.GroupName);
-            NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(myBlip);
-            myBlip.Color = Agency.Color;
-            myBlip.Scale = 0.6f;
-        }
-        //PrimaryFirefighter.TaskRequirements = SpawnRequirement;
+        PrimaryFirefighter.SetStats(PersonType, ShopMenus, Weapons, AddBlip);
         if (ped.Exists())
         {
             PrimaryFirefighter.SpawnPosition = ped.Position;
@@ -261,14 +245,6 @@ public class FireFighterSpawnTask : SpawnTask
     private void SetupPed(Ped ped)
     {
         PlacePed(ped);
-        //if (PlacePedOnGround)
-        //{
-        //    float resultArg = ped.Position.Z;
-        //    if (NativeFunction.Natives.GET_GROUND_Z_FOR_3D_COORD<bool>(ped.Position.X, ped.Position.Y, 1000f, out resultArg, false))
-        //    {
-        //        ped.Position = new Vector3(ped.Position.X, ped.Position.Y, resultArg);
-        //    }
-        //}
         int DesiredHealth = RandomItems.MyRand.Next(PersonType.HealthMin, PersonType.HealthMax) + 100;
         int DesiredArmor = RandomItems.MyRand.Next(PersonType.ArmorMin, PersonType.ArmorMax);
         ped.MaxHealth = DesiredHealth;

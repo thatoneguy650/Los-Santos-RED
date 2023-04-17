@@ -32,7 +32,9 @@ public class FireDispatcher
     private DispatchablePerson PersonType;
     private IPlacesOfInterest PlacesOfInterest;
     private IModItems ModItems;
-    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, IPlacesOfInterest placesOfInterest, IModItems modItems)
+    private IShopMenus ShopMenus;
+    public FireDispatcher(IEntityProvideable world, IDispatchable player, IAgencies agencies, ISettingsProvideable settings, IStreets streets, IZones zones, IJurisdictions jurisdictions, IWeapons weapons, INameProvideable names, 
+        IPlacesOfInterest placesOfInterest, IModItems modItems, IShopMenus shopMenus)
     {
         Player = player;
         World = world;
@@ -45,6 +47,7 @@ public class FireDispatcher
         Names = names;
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
+        ShopMenus = shopMenus;
     }
     private float ClosestOfficerSpawnToPlayerAllowed => Player.IsWanted ? 150f : 250f;
     private List<Firefighter> DeletableOfficers => World.Pedestrians.FirefighterList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
@@ -102,7 +105,7 @@ public class FireDispatcher
     {
         try
         {
-            FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems);
+            FireFighterSpawnTask fireFighterSpawnTask = new FireFighterSpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.FireSettings.ShowSpawnedBlips, Settings, Weapons, Names, true, World, ModItems, ShopMenus);
             fireFighterSpawnTask.AllowAnySpawn = allowAny;
             fireFighterSpawnTask.AllowBuddySpawn = allowBuddy;
             fireFighterSpawnTask.SpawnRequirement = spawnRequirement;

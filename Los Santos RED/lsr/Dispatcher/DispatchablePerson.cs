@@ -142,8 +142,20 @@ public class DispatchablePerson
         }
     }
     public bool IsFreeMode => ModelName.ToLower() == "mp_f_freemode_01" || ModelName.ToLower() == "mp_m_freemode_01";
-
-
+    public bool IsFreeModeFemale => ModelName.ToLower() == "mp_f_freemode_01";
+    public bool IsFreeModeMale => ModelName.ToLower() == "mp_m_freemode_01";
+    public bool IsMale(Ped ped)
+    {
+        if(IsFreeMode)
+        {
+            return IsFreeModeMale;
+        }
+        if(!ped.Exists())
+        {
+            return true;
+        }
+        return ped.IsMale;
+    }
     public void SetPedExtPermanentStats(PedExt pedExt, bool overrideHealth, bool overrideArmor, bool overrideAccuracy)
     {
         pedExt.Accuracy = RandomItems.GetRandomNumberInt(AccuracyMin, AccuracyMax);

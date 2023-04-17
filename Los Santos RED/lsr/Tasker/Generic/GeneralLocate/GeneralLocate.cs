@@ -129,7 +129,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
+        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
     }
 
     protected virtual void GetLocations()
