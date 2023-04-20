@@ -82,6 +82,10 @@ public class FireConditionalLocation : ConditionalLocation
         if (Agency == null)
         {
             Zone CurrentZone = Zones.GetZone(Location);
+            if (CurrentZone == null)
+            {
+                return;
+            }
             Agency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, World.TotalWantedLevel, ResponseType.Fire);
         }
     }

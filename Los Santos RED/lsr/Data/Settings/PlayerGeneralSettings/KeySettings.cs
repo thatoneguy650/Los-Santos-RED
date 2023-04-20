@@ -44,6 +44,12 @@ public class KeySettings : ISettingsDefaultable
     public Keys ActionPopUpDisplayKeyModifier { get; set; }
     public Keys AltActionPopUpDisplayKey { get; set; }
     public Keys AltActionPopUpDisplayKeyModifier { get; set; }
+
+
+    public Keys VehicleInteract { get; set; }
+    public Keys VehicleInteractModifier { get; set; }
+
+
     public int ControllerAction { get; set; }
     public int ControllerActionModifier { get; set; }
     public int GameControlToDisable { get; set; }
@@ -108,5 +114,9 @@ public class KeySettings : ISettingsDefaultable
         ControllerActionModifier = -1;//227 - scriptRB//206 - frontenRB
 
         GameControlToDisable = 0;//Next Cam
+
+
+        VehicleInteract = Keys.L;
+        VehicleInteractModifier = Keys.LShiftKey;
     }
 }

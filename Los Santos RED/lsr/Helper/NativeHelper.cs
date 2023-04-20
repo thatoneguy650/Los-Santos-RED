@@ -342,13 +342,14 @@ namespace LosSantosRED.lsr.Helper
                 }
             }
         }
-        public static Vector3 GetStreetPosition(Vector3 PositionNear)
+        public static Vector3 GetStreetPosition(Vector3 PositionNear, bool withYield)
         {
             Vector3 pos = PositionNear;
             Vector3 SpawnPosition = Vector3.Zero;
             Vector3 outPos;
             float heading;
             float val;
+            int timesRan = 0;
             for (int i = 1; i < 40; i++)
             {
                 NativeFunction.Natives.GET_NTH_CLOSEST_VEHICLE_NODE_WITH_HEADING<bool>(pos.X, pos.Y, pos.Z, i, out outPos, out heading, out val, 1, 0x40400000, 0);
@@ -356,6 +357,12 @@ namespace LosSantosRED.lsr.Helper
                 {
                     SpawnPosition = outPos;
                     break;
+                }
+                timesRan++;
+                if(timesRan > 10 && withYield)
+                {
+                    timesRan = 0;
+                    GameFiber.Yield();
                 }
             }
             if (SpawnPosition == Vector3.Zero)

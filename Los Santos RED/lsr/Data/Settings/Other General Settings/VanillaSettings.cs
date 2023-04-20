@@ -15,8 +15,8 @@ public class VanillaSettings : ISettingsDefaultable
     public bool TerminateWantedMusic { get; set; }
     public bool TerminateScanner { get; set; }
     public bool TerminateScenarioCops { get; set; }
-    public bool SuppressVanillaGangPeds { get; set; }
-    public bool TerminateScenarioPeds { get; set; }
+    //public bool SuppressVanillaGangPeds { get; set; }
+  //  public bool TerminateScenarioPeds { get; set; }
     public bool SupressRandomPoliceEvents { get; set; }
     public bool BlockGangScenarios { get; set; }
     public bool BlockVanillaPoliceCarGenerators { get; set; }
@@ -42,8 +42,8 @@ public class VanillaSettings : ISettingsDefaultable
         TerminateWantedMusic = true;
         TerminateScanner = true;
         TerminateScenarioCops = true;
-        SuppressVanillaGangPeds = false;
-        TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
+        //SuppressVanillaGangPeds = false;
+//TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
         SupressRandomPoliceEvents = true;
         BlockGangScenarios = true;
         BlockGangScenariosAroundDensDistance = 200f;

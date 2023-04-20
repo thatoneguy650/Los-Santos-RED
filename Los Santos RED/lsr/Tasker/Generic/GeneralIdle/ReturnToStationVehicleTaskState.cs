@@ -98,7 +98,7 @@ class ReturnToStationVehicleTaskState : TaskState
                 }
                 else
                 {
-                    taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.EntrancePosition);
+                    taskedPosition = NativeHelper.GetStreetPosition(closestPoliceStation.EntrancePosition, false);
                     NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)eCustomDrivingStyles.RegularDriving, 20f);//NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, taskedPosition.X, taskedPosition.Y, taskedPosition.Z, 12f, (int)(VehicleDrivingFlags.FollowTraffic | VehicleDrivingFlags.YieldToCrossingPedestrians | VehicleDrivingFlags.RespectIntersections | (VehicleDrivingFlags)8), 20f);
                     //EntryPoint.WriteToConsoleTestLong("Return to Station Without Parking Spot");
                 }

@@ -206,6 +206,7 @@ namespace LosSantosRED.lsr
             }
             if (Player.ButtonPrompts.IsGroupPressed("VehicleInteract"))
             {
+                //EntryPoint.WriteToConsole("ShowVehicleInteractMenu");
                 Player.ShowVehicleInteractMenu();
             }
             if (Player.ButtonPrompts.IsGroupPressed("Sit"))

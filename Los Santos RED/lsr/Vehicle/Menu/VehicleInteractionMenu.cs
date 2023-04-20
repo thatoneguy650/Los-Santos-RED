@@ -39,7 +39,7 @@ public class VehicleInteractionMenu
         InventoryWeaponHeaderMenu.OnMenuOpen += (sender) =>
         {
             vehicleDoorSeatData = VehicleExt.GetClosestPedStorageBone(player, 5.0f, vehicleSeatDoorData);
-            if(vehicleDoorSeatData== null)
+            if(vehicleDoorSeatData== null || player.IsInVehicle)
             {
                 return;
             }
@@ -47,7 +47,7 @@ public class VehicleInteractionMenu
         };
         InventoryWeaponHeaderMenu.OnMenuClose += (sender) =>
         {
-            if (vehicleDoorSeatData == null)
+            if (vehicleDoorSeatData == null || player.IsInVehicle)
             {
                 return;
             }
@@ -60,6 +60,7 @@ public class VehicleInteractionMenu
         VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, !player.IsInVehicle);
         VehicleInteractMenu.Visible = true;
         IsShowingMenu = true;
+        Player.ButtonPrompts.RemovePrompts("VehicleInteract");
 
 
 
@@ -82,7 +83,7 @@ public class VehicleInteractionMenu
         {
             try
             {
-                while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 7f)
+                while (EntryPoint.ModController.IsRunning && Player.IsAliveAndFree && MenuPool.IsAnyMenuOpen() && VehicleExt.Vehicle.Exists() && VehicleExt.Vehicle.Speed <= 0.5f && VehicleExt.Vehicle.DistanceTo2D(Game.LocalPlayer.Character) <= 7f)
                 {
                     MenuPool.ProcessMenus();
                     GameFiber.Yield();

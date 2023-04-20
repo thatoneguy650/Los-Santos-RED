@@ -77,6 +77,7 @@ public class WeaponInventory
             {
                 WeaponOwner.HasTaser = false;
             }
+            
         }
         if (issueSidearm)
         {

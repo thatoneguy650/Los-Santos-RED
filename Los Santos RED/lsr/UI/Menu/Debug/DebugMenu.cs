@@ -405,7 +405,7 @@ public class DebugMenu : ModUIMenu
         LocationItemsMenu.SetBannerType(EntryPoint.LSRedColor);
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Teleport to various locations";
         LocationItemsMenu.Width = 0.6f;
-        List<BasicLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
+        List<InteractableLocation> DirectoryLocations = PlacesOfInterest.AllLocations().ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             UIMenuListScrollerItem<BasicLocation> myLocationType = new UIMenuListScrollerItem<BasicLocation>($"{typeName}", "Teleports to A POI on the Map", DirectoryLocations.Where(x => x.TypeName == typeName));

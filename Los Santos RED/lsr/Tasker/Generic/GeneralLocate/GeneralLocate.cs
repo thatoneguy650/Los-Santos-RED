@@ -120,7 +120,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     }
     private void CheckLocationChanged()
     {
-        if(prevPlaceToDriveTo.DistanceTo(PlaceToDriveTo) <= 5.0f && prevPlaceToWalkTo.DistanceTo(PlaceToWalkTo) <= 5.0f)
+        if(prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)
         {
             LocationsChanged = false;
             return;
@@ -129,7 +129,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;
-        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
     }
 
     protected virtual void GetLocations()

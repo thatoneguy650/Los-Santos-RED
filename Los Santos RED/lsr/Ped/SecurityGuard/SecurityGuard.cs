@@ -184,6 +184,11 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
             return;
         }
         WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+        GameFiber.Yield();
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")
         {
             GroupName = AssignedAgency.MemberName;

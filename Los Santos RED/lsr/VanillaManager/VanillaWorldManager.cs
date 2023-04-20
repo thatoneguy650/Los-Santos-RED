@@ -61,10 +61,10 @@ public class VanillaWorldManager
             TerminateHealthRecharge();
         }
 
-        if (Settings.SettingsManager.VanillaSettings.TerminateScenarioPeds)
-        {
-            TerminateScenarioPeds();
-        }
+        //if (Settings.SettingsManager.VanillaSettings.TerminateScenarioPeds)
+        //{
+        //    TerminateScenarioPeds();
+        //}
 
         //if (Settings.SettingsManager.VanillaSettings.TerminateRandomEvents)
         //{

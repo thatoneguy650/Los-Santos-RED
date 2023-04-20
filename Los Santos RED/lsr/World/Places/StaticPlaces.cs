@@ -25,7 +25,13 @@ public class StaticPlaces
     private IAgencies Agencies;
     private ITimeReportable Time;
     private INameProvideable Names;
-    public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs, IAgencies agencies, ITimeReportable time, INameProvideable names)
+
+    private IPedGroups PedGroups;
+    private IJurisdictions Jurisdictions;
+    private IGangTerritories GangTerritories;
+
+    public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
+        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -41,6 +47,9 @@ public class StaticPlaces
         Agencies = agencies;
         Time = time;
         Names = names;
+        PedGroups = pedGroups;
+        Jurisdictions = jurisdictions;
+        GangTerritories = gangTerritories;
     }
     public void Setup()
     {
@@ -51,7 +60,7 @@ public class StaticPlaces
         }
         foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
         {
-            tl.StoreData(ShopMenus, Agencies);
+            tl.StoreData(ShopMenus, Agencies, Gangs,Zones, Jurisdictions, GangTerritories, Names, Crimes, PedGroups, World);
         }
         foreach (ILocationGangAssignable tl in PlacesOfInterest.GangAssignableLocations())
         {
@@ -65,46 +74,52 @@ public class StaticPlaces
     public void ActivateLocations()
     {
         int LocationsCalculated = 0;
-        if (EntryPoint.ModController.IsRunning)
+        if (!EntryPoint.ModController.IsRunning)
         {
-            foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
-            {
-                gl.CheckActivation(World, Interiors,Settings,Crimes,Weapons,Time);
-                LocationsCalculated++;
-                if (LocationsCalculated >= 5)//7//20//50//20//5
-                {
-                    LocationsCalculated = 0;
-                    GameFiber.Yield();
-                }
-                if (!EntryPoint.ModController.IsRunning)
-                {
-                    break;
-                }
-            }
+            return;
         }
+        foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
+        {
+            gl.CheckActivation(World, Interiors,Settings,Crimes,Weapons,Time);
+            LocationsCalculated++;
+            if (LocationsCalculated >= 5)//7//20//50//20//5
+            {
+                LocationsCalculated = 0;
+                GameFiber.Yield();
+            }
+            if (!EntryPoint.ModController.IsRunning)
+            {
+                break;
+            }
+        }   
     }
     public void Update()
     {
-        if (EntryPoint.ModController.IsRunning)
+        if (!EntryPoint.ModController.IsRunning)
         {
-            int updated = 0;
-            foreach (BasicLocation gl in Places.ActiveLocations.ToList())
-            {
-                gl.Update(Time);
-                updated++;
-                if (updated >= 5)
-                { 
-                    GameFiber.Yield();
-                    updated = 0;
-                }
-            }
+            return;
         }
+        int updated = 0;
+        foreach (BasicLocation gl in Places.ActiveLocations.ToList())
+        {
+            gl.Update(Time);
+            updated++;
+            if (updated >= 5)
+            { 
+                GameFiber.Yield();
+                updated = 0;
+            }
+            if (!EntryPoint.ModController.IsRunning)
+            {
+                break;
+            }
+        }     
     }
     public void Dispose()
     {
         foreach (BasicLocation loc in Places.ActiveLocations.ToList())
         {
-            loc.Deactivate();
+            loc.Deactivate(true);
         }
         foreach (BasicLocation gl in PlacesOfInterest.AllLocations())
         {
@@ -134,7 +149,7 @@ public class StaticPlaces
                 gl.DeactivateBlip();
             }
             //gl.IsEnabled = setEnabled;
-            //EntryPoint.WriteToConsole($"SetGangLocationActive {iD} setEnabled:{setEnabled}");
+            EntryPoint.WriteToConsole($"SetGangLocationActive {iD} setEnabled:{setEnabled}");
         }
     }
     public void AddAllBlips()

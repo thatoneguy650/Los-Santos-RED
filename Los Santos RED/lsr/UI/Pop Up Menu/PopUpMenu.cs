@@ -967,15 +967,8 @@ public class PopUpMenu
             IconNameInvalid = "group_black.png",
             IsCurrentlyValid = new Func<bool>(() => Player.GroupManager.MemberCount > 0)
         };
-        PopUpBox AffiliationBox = new PopUpBox(6, "Affiliation", AffiliationSubMenuName, "Open Affiliation Sub Menu")
-        {
-            ClosesMenu = false,
-            IconNameDefault = "affiliation_white.png",
-            IconNameSelected = "affiliation_red.png",
-            IconNameInvalid = "affiliation_black.png",
-            IsCurrentlyValid = new Func<bool>(() => false)
-        };
-        PopUpBox VehicleActionBox = new PopUpBox(7, "Vehicle Actions", VehicleActionsSubMenuName, "Open Vehicle Actions Sub Menu")
+
+        PopUpBox VehicleActionBox = new PopUpBox(6, "Vehicle Actions", VehicleActionsSubMenuName, "Open Vehicle Actions Sub Menu")
         {
             ClosesMenu = false,
             IsCurrentlyValid = new Func<bool>(() => true)
@@ -992,9 +985,6 @@ public class PopUpMenu
                 IconNameInvalid = "stance_black.png", },
             InventoryBox,
             GroupBox,
-#if DEBUG
-            AffiliationBox,
-#endif
             VehicleActionBox,
         };
         List<PopUpBox> InVehicleMenuMaps = new List<PopUpBox>()

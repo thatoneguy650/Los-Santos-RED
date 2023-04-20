@@ -71,6 +71,29 @@ public class ConditionalLocation
     public bool ForceMelee { get; set; } = false;
     public bool ForceSidearm { get; set; } = false;
     public bool ForceLongGun { get; set; } = false;
+
+    public virtual void Setup(IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, ITimeControllable time, IModItems modItems)
+    {
+        Agencies = agencies;
+        Gangs = gangs;
+        Zones = zones;
+        Jurisdictions = jurisdictions;
+        GangTerritories = gangTerritories;
+        Settings = settings;
+        World = world;
+        MasterAssociationID = masterAssociationID;
+        Weapons = weapons;
+        Names = names;
+        Crimes = crimes;
+        PedGroups = pedGroups;
+        ShopMenus = shopMenus;
+        Time = time;
+        ModItems = modItems;
+        GetDispatchableGenerator();
+    }
+
+
+
     public virtual void AttemptSpawn(IDispatchable player, bool isPerson, bool force, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ISettingsProvideable settings, IEntityProvideable world, string masterAssociationID, IWeapons weapons, INameProvideable names, ICrimes crimes, IPedGroups pedGroups, IShopMenus shopMenus, IWeatherReportable weatherReporter, ITimeControllable time, IModItems modItems)
     {
         Player = player;

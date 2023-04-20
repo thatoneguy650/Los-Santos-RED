@@ -231,7 +231,7 @@ public class VanillaSpawnManager
         {
             DisableScenariosAndGenerators();
             GameTimeLastDisabledVehicles = Game.GameTime;
-            //EntryPoint.WriteToConsoleTestLong("SCENARIO AND GENERATOR DISABLE RAN");
+            EntryPoint.WriteToConsole("SCENARIO AND GENERATOR DISABLE RAN");
         }
     }
     private void DisableScenariosAndGenerators()
@@ -244,7 +244,7 @@ public class VanillaSpawnManager
                 NativeFunction.Natives.SET_ALL_VEHICLE_GENERATORS_ACTIVE_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false, false);
                 NativeFunction.Natives.REMOVE_VEHICLES_FROM_GENERATORS_IN_AREA(carGenSPot.X - 2f, carGenSPot.Y - 2f, carGenSPot.Z - 2f, carGenSPot.X + 2f, carGenSPot.Y + 2f, carGenSPot.Z + 2f, false);
                 ran++;
-                if(ran > 10)
+                if(ran > 5)
                 {
                     GameFiber.Yield();
                     ran = 0;
@@ -259,7 +259,7 @@ public class VanillaSpawnManager
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(scenario.X - ScenarioBlockingDistance, scenario.Y - ScenarioBlockingDistance, scenario.Z - ScenarioBlockingDistance, scenario.X + ScenarioBlockingDistance, scenario.Y + ScenarioBlockingDistance, scenario.Z + ScenarioBlockingDistance, false, true, true, true);
                 ran++;
-                if (ran > 10)
+                if (ran > 5)
                 {
                     GameFiber.Yield();
                     ran = 0;

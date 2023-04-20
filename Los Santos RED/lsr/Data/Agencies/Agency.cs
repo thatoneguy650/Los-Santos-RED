@@ -268,4 +268,28 @@ public class Agency : IPlatePrefixable, IGeneratesDispatchables
         }
         return null;
     }
+    public DispatchableVehicle GetRandomCanineVehicle(int wantedLevel, string requiredGroup, ISettingsProvideable settings)
+    {
+        if (Vehicles == null || !Vehicles.Any())
+        {
+            return null;
+        }
+        List<DispatchableVehicle> ToPickFrom = Vehicles.Where(x => x.CanCurrentlySpawn(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch) && x.CaninePossibleSeats != null && x.CaninePossibleSeats.Any()).ToList();
+        if (requiredGroup != "" && !string.IsNullOrEmpty(requiredGroup))
+        {
+            ToPickFrom = ToPickFrom.Where(x => x.GroupName == requiredGroup).ToList();
+        }
+        int Total = ToPickFrom.Sum(x => x.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch));
+        int RandomPick = RandomItems.MyRand.Next(0, Total);
+        foreach (DispatchableVehicle Vehicle in ToPickFrom)
+        {
+            int SpawnChance = Vehicle.CurrentSpawnChance(wantedLevel, settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesToDispatch);
+            if (RandomPick < SpawnChance)
+            {
+                return Vehicle;
+            }
+            RandomPick -= SpawnChance;
+        }
+        return null;
+    }
 }

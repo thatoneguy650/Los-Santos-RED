@@ -182,6 +182,10 @@ public class Jurisdictions : IJurisdictions
     //{
     //    return ZoneJurisdictionsList.Where(x => x.ZoneInternalGameName.ToLower() == zoneName.ToLower() && x.AgencyInitials == agencyInitials).FirstOrDefault()?.CanSpawnPedestrianOfficers == true;
     //}
+    public string TestString()
+    {
+        return "OH YEAH!";
+    }
     private void DefaultZoneConfig()
     {
         ZoneJurisdictionsList = new List<ZoneJurisdiction>()

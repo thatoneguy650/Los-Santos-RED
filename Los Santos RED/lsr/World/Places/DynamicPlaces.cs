@@ -180,7 +180,7 @@ public class DynamicPlaces
             {
                 if(gl.IsActivated)
                 {
-                    gl.Deactivate();
+                    gl.Deactivate(true);
                     if (ActiveVendingMachines.Contains(gl))
                     {
                         ActiveVendingMachines.Remove(gl);
@@ -199,7 +199,7 @@ public class DynamicPlaces
             {
                 if(gl.IsActivated)
                 {
-                    gl.Deactivate();
+                    gl.Deactivate(true);
                     if (ActiveGasPumps.Contains(gl))
                     {
                         ActiveGasPumps.Remove(gl);

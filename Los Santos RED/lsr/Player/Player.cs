@@ -320,7 +320,8 @@ namespace Mod
         public bool IsMoving => GameTimeLastMoved != 0 && Game.GameTime - GameTimeLastMoved <= 2000;
         public bool IsMovingDynamically { get; private set; }
         public bool IsSwimming { get; private set; }
-
+        public bool IsShowingFrontEndMenus => !IsNotShowingFrontEndMenus;
+        public bool IsNotShowingFrontEndMenus { get; set; }
         public bool IsMovingFast => GameTimeLastMovedFast != 0 && Game.GameTime - GameTimeLastMovedFast <= 2000;
         public bool IsNearScenario { get; private set; }
         public bool IsNotHoldingEnter { get; set; }
@@ -925,6 +926,7 @@ namespace Mod
             }
             if(InterestedVehicle.VehicleInteractionMenu.IsShowingMenu)
             {
+                //EntryPoint.WriteToConsole("InterestedVehicle.VehicleInteractionMenu.IsShowingMenu");
                 return;
             }
             InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World);
@@ -995,7 +997,7 @@ namespace Mod
             GameFiber.Yield();
             if (WantedLevel > 1)
             {
-                CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.Select(x => x.AssociatedCrime).ToList(), PlacePoliceLastSeenPlayer);
+                CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.ToList(), PlacePoliceLastSeenPlayer);
                 Scanner.OnSuspectEluded();
             }
             PlayerVoice.OnSuspectEluded();
@@ -1467,6 +1469,10 @@ namespace Mod
         //Crimes
         public void AddCrime(Crime crimeObserved, bool isObservedByPolice, Vector3 Location, VehicleExt VehicleObserved, WeaponInformation WeaponObserved, bool HaveDescription, bool AnnounceCrime, bool isForPlayer)
         {
+            if(crimeObserved == null)
+            {
+                return;
+            }
             if (RecentlyBribedPolice && crimeObserved.ResultingWantedLevel <= 2)
             {
                 return;
@@ -1968,12 +1974,12 @@ namespace Mod
                 }
 
 
-                if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && Character.CurrentVehicle.Exists() && Character.SeatIndex != -1 && !IsRidingBus && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
-                {
-                    IsRidingBus = true;
-                    BusRide MyBusRide = new BusRide(this, CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
-                    MyBusRide.Start();
-                }
+                //if (CurrentVehicle != null && CurrentVehicle.Vehicle.Exists() && Character.CurrentVehicle.Exists() && Character.SeatIndex != -1 && !IsRidingBus && CurrentVehicle.Vehicle.Model.Name.ToLower().Contains("bus"))
+                //{
+                //    IsRidingBus = true;
+                //    BusRide MyBusRide = new BusRide(this, CurrentVehicle.Vehicle, World, PlacesOfInterest, Settings);
+                //    MyBusRide.Start();
+                //}
 
             }
             else

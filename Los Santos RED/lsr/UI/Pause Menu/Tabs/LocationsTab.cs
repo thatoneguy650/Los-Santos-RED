@@ -65,7 +65,7 @@ public class LocationsTab
     private List<TabItem> GetDirectoryLocations()
     {
         List<TabItem> items = new List<TabItem>();
-        List<BasicLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && (FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
+        List<InteractableLocation> DirectoryLocations = PlacesOfInterest.AllLocations().Where(x => (x.ShowsOnDirectory || Settings.SettingsManager.WorldSettings.ShowAllLocationsOnDirectory) && x.IsEnabled && (FilterString == "" || x.Name.ToLower().Contains(FilterString.ToLower()))).ToList();
         foreach (string typeName in DirectoryLocations.OrderBy(x => x.TypeName).Select(x => x.TypeName).Distinct())
         {
             List<MissionInformation> missionInfoList = new List<MissionInformation>();

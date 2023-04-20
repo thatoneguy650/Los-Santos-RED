@@ -111,7 +111,7 @@ public class ButtonPrompt
         {
             IsHeldNow = true;
         }
-        else if (HasControllerButtons && Game.IsControllerButtonDownRightNow(ControllerButton) && (ModifierKey == Keys.None || Game.IsControllerButtonDownRightNow(ControllerButtonModifier)) && !IsHeldNow)
+        else if (HasControllerButtons && Game.IsControllerButtonDownRightNow(ControllerButton) && (ModifierKey == Keys.None || Game.IsControllerButtonDown(ControllerButtonModifier)) && !IsHeldNow)
         {
             IsHeldNow = true;
         }
@@ -124,9 +124,9 @@ public class ButtonPrompt
             IsHeldNow = false;
         }
 
-        if (HasKeyButtons && Game.IsKeyDown(Key) && (ModifierKey == Keys.None || Game.IsKeyDown(ModifierKey)) && !IsPressedNow)
+        if (HasKeyButtons && Game.IsKeyDown(Key) && (ModifierKey == Keys.None || Game.IsKeyDownRightNow(ModifierKey)) && !IsPressedNow)
         {
-            //EntryPoint.WriteToConsoleTestLong($"INPUT! Control :{Text}: Down 1");
+            //EntryPoint.WriteToConsole($"INPUT! Control :{Text}: Down 1");
             IsPressedNow = true;
         }
 

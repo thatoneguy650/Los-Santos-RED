@@ -4,7 +4,6 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 [Serializable]
@@ -23,6 +22,8 @@ public class DispatchableVehicle
     public int MaxWantedLevelSpawn { get; set; } = 6;
 
     public List<int> ForceStayInSeats { get; set; }
+
+    public List<int> CaninePossibleSeats { get; set; }
 
     public int RequiredPrimaryColorID { get; set; } = -1;
     public int RequiredSecondaryColorID { get; set; } = -1;

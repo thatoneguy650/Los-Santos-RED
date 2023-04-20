@@ -106,5 +106,6 @@ public class PlayerInfoMenu
         LocationsTab.AddItems();
 
         tabView.RefreshIndex();
+        tabView.ShowInstructionalButtons();
     }
 }

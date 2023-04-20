@@ -54,6 +54,37 @@ public class LESpawnTask : SpawnTask
             Cleanup(true);
         }
     }
+    private void AddCaninePassengers()
+    {
+        if(VehicleType == null || VehicleType.CaninePossibleSeats == null || Agency == null)
+        {
+            return;
+        }
+        EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine Passengers {VehicleType.ModelName} START UnitCode {UnitCode}");
+        foreach(int seatIndex in VehicleType.CaninePossibleSeats)
+        {
+            if(!LastCreatedVehicleExists || !LastCreatedVehicle.Vehicle.IsSeatFree(seatIndex))
+            {
+                continue;
+            }
+            PersonType = Agency.GetRandomPed(World.TotalWantedLevel, VehicleType.RequiredPedGroup, true);
+            if(PersonType == null || !PersonType.IsAnimal)
+            {
+                continue;
+            }
+            PedExt Passenger = CreateCanine();
+            if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists && LastCreatedVehicle.Vehicle.IsSeatFree(seatIndex))
+            {
+                PutPedInVehicle(Passenger, seatIndex);
+                EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine {VehicleType.ModelName} ADDED ONE TO VEHICLE {seatIndex}");
+            }
+            else
+            {
+                Cleanup(false);
+            }
+            GameFiber.Yield();
+        }
+    }
     private void AddPassengers()
     {
         EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
@@ -66,12 +97,12 @@ public class LESpawnTask : SpawnTask
             }
             if (Agency != null)
             {
-                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup, AddCanine);
+                PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup, false);
             }
             if (PersonType != null)
             {
                 //EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
-                PedExt Passenger = PersonType.IsAnimal ? CreateCanine() : CreatePerson();
+                PedExt Passenger = CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
@@ -118,6 +149,10 @@ public class LESpawnTask : SpawnTask
                     if (WillAddPassengers)
                     {
                         AddPassengers();
+                    }
+                    if (AddCanine && VehicleType != null && VehicleType.CaninePossibleSeats.Any())
+                    {
+                        AddCaninePassengers();
                     }
                 }
                 else

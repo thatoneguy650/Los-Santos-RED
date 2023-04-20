@@ -11,7 +11,7 @@ namespace LosSantosRED.lsr.Interface
     {
         PossibleLocations PossibleLocations { get; }
         List<InteractableLocation> InteractableLocations();
-        List<BasicLocation> AllLocations();
+        List<InteractableLocation> AllLocations();
         List<ILocationDispatchable> PoliceDispatchLocations();
         List<ILocationRespawnable> BustedRespawnLocations();
         List<ILocationGangAssignable> GangAssignableLocations();

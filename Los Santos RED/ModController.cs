@@ -67,7 +67,7 @@ namespace LosSantosRED.lsr
             Time.Setup();
             GameFiber.Yield();
             World = new Mod.World(ModDataFileManager.Agencies, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest, ModDataFileManager.PlateTypes, ModDataFileManager.Names, ModDataFileManager.RelationshipGroups, ModDataFileManager.Weapons, 
-                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems);
+                ModDataFileManager.Crimes, Time, ModDataFileManager.ShopMenus, ModDataFileManager.Interiors, NAudioPlayer, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.Streets, ModDataFileManager.ModItems, ModDataFileManager.RelationshipGroups);
             World.Setup();
             GameFiber.Yield();
             Player = new Mod.Player(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale, ModDataFileManager.Names.GetRandomName(Game.LocalPlayer.Character.Model.Name, Game.LocalPlayer.Character.IsMale), World, Time, ModDataFileManager.Streets, 
@@ -198,7 +198,7 @@ namespace LosSantosRED.lsr
                     new ModTask(250, "Player.LocationUpdate", Player.LocationUpdate, 5),
                     new ModTask(250, "Player.ArrestWarrantUpdate",Player.CriminalHistory.Update, 6),//these were all 500
 
-                    new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),
+                   // new ModTask(250, "Player.SecurityResponse.Update", Player.SecurityResponse.Update, 7),//did nothing
                 }),
                 new ModTaskGroup("RG3:World Gen", new List<ModTask>()//something in here is causing a hang on some crapola computers
                 {
@@ -242,7 +242,7 @@ namespace LosSantosRED.lsr
                     new ModTask(2000, "World.ActiveNearLocations", World.Places.ActivateLocations, 0),//1000
                     new ModTask(4000, "Weather.Update", Weather.Update, 1),//1000
                     new ModTask(2000,"WeatherManager.Update",WeatherManager.Update,2),
-                    new ModTask(500, "World.UpdateNear", World.Places.UpdateLocations, 3),//1000
+                    new ModTask(1000, "World.UpdateNear", World.Places.UpdateLocations, 3),//500//1000
                     new ModTask(2000, "Player.GangRelationshipsUpdate", Player.RelationshipManager.GangRelationships.Update, 4),//might become a priority...
                     new ModTask(5000, "Player.Properties.Update", Player.Properties.Update, 5),//might become a priority...
                     new ModTask(1000, "World.Update", World.Update, 6),

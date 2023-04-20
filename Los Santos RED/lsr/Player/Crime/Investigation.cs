@@ -116,7 +116,7 @@ public class Investigation
             {
                 RequiresFirefighters = true;
             }
-            Position = NativeHelper.GetStreetPosition(postionToInvestigate);
+            Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
             GameFiber.Yield();
             if (havePlayerDescription)
             {
@@ -151,6 +151,7 @@ public class Investigation
         if (IsActive && Player.IsNotWanted)
         {
             AssignCops();
+            GameFiber.Yield();
             CheckExpired();
             if (IsSuspicious && Player.AnyPoliceCanRecognizePlayer && Player.PoliceResponse.HasBeenNotWantedFor >= 5000)
             {

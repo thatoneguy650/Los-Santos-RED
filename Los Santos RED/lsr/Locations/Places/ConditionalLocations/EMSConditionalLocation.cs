@@ -83,7 +83,11 @@ public class EMSConditionalLocation : ConditionalLocation
         if (Agency == null)
         {
             Zone CurrentZone = Zones.GetZone(Location);
-            Agency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, World.TotalWantedLevel, ResponseType.EMS);
+            if (CurrentZone == null)
+            {
+                return;
+            }
+            Agency = Jurisdictions.GetRandomAgency(CurrentZone?.InternalGameName, World.TotalWantedLevel, ResponseType.EMS);
         }
     }
     public override void GenerateSpawnTypes()

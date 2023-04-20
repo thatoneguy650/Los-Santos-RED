@@ -370,14 +370,14 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
         }
 
 
-        if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
-        {
-            SupressVanillaGangPeds();
-        }
-        else
-        {
-            UnSupressVanillaGangPeds();
-        }
+        //if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
+        //{
+        //    SupressVanillaGangPeds();
+        //}
+        //else
+        //{
+        //    UnSupressVanillaGangPeds();
+        //}
     }
     public void SupressVanillaGangPeds()
     {

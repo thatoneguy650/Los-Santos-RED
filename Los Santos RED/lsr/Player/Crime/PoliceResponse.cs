@@ -542,43 +542,43 @@ namespace LosSantosRED.lsr
             {
                 return;
             }  
-            if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 10 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted10 && Player.WantedLevel < 10)
+            if (Player.WantedLevel == 9 && Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 10 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted10)
             {
                 Player.SetWantedLevel(10, "You killed too many cops 10 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 9 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted9 && Player.WantedLevel < 9)
+            else if (Player.WantedLevel == 8 && Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 9 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted9)
             {
                 Player.SetWantedLevel(9, "You killed too many cops 9 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 8 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted8 && Player.WantedLevel < 8)
+            else if (Player.WantedLevel == 7 && Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 8 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted8)
             {
                 Player.SetWantedLevel(8, "You killed too many cops 8 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 7 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted7 && Player.WantedLevel < 7)
+            else if (Player.WantedLevel == 6 && Settings.SettingsManager.PoliceSettings.MaxWantedLevel >= 7 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted7)
             {
                 Player.SetWantedLevel(7, "You killed too many cops 7 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6 && Player.WantedLevel < 6)
+            else if (Player.WantedLevel == 5 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted6)
             {
                 Player.SetWantedLevel(6, "You killed too many cops 6 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5 && Player.WantedLevel < 5)
+            else if (Player.WantedLevel == 4 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted5)
             {
                 Player.SetWantedLevel(5, "You killed too many cops 5 Stars", true);
                 IsWeaponsFree = true;
                 Player.OnWeaponsFree();
             }
-            else if (PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4 && Player.WantedLevel < 4)
+            else if (Player.WantedLevel < 4 && PoliceKilled >= Settings.SettingsManager.PoliceSettings.KillLimit_Wanted4)
             {
                 Player.SetWantedLevel(4, "You killed too many cops 4 Stars", true);
                 IsWeaponsFree = true;

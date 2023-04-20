@@ -72,7 +72,11 @@ public class LEConditionalLocation : ConditionalLocation
         if (Agency == null)
         {
             Zone CurrentZone = Zones.GetZone(Location);
-            Agency = Jurisdictions.GetRandomAgency(CurrentZone.InternalGameName, World.TotalWantedLevel, ResponseType.LawEnforcement);
+            if (CurrentZone == null)
+            {
+                return;
+            }
+            Agency = Jurisdictions.GetRandomAgency(CurrentZone?.InternalGameName, 0, ResponseType.LawEnforcement);
         }
     }
     public override void GenerateSpawnTypes()

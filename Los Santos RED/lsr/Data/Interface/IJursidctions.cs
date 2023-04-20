@@ -14,6 +14,7 @@ namespace LosSantosRED.lsr.Interface
         List<Agency> GetAgencies(string internalGameName, int wantedLevel, ResponseType responseType);
         Agency GetMainAgency(string internalGameName, ResponseType responseType);
         Agency GetNthAgency(string internalGameName, ResponseType lawEnforcement, int v);
-       // bool CanSpawnPedestrianAtZone(string v, string iD);
+        string TestString();
+        // bool CanSpawnPedestrianAtZone(string v, string iD);
     }
 }

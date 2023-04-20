@@ -59,5 +59,6 @@ namespace LosSantosRED.lsr.Interface
         RelationshipManager RelationshipManager { get; }
         int WantedLevel { get; }
         bool IsAlive { get; }
+        bool IsNotShowingFrontEndMenus { get; set; }
     }
 }

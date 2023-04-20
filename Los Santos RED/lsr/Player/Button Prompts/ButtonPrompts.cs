@@ -49,15 +49,26 @@ public class ButtonPrompts
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if(addedPromptGroup || Player.Surrendering.HandsAreUp || !Player.IsAliveAndFree || toConsider == null || !toConsider.Vehicle.Exists() || toConsider.VehicleInteractionMenu.IsShowingMenu || !toConsider.HasBeenEnteredByPlayer || toConsider.Vehicle.Speed >= 0.5f)
+        if(Player.ActivityManager.IsInteractingWithLocation || 
+            Player.IsShowingFrontEndMenus || 
+            
+            
+            addedPromptGroup || 
+            Player.Surrendering.HandsAreUp || 
+            !Player.IsAliveAndFree || 
+            toConsider == null || 
+            !toConsider.Vehicle.Exists() || 
+            !toConsider.HasBeenEnteredByPlayer || 
+            toConsider.VehicleInteractionMenu.IsShowingMenu || 
+            toConsider.Vehicle.Speed >= 0.5f)
         {
             RemovePrompts("VehicleInteract");
             return;
         }
         if (!HasPrompt($"VehicleInteract"))
         {
-            RemovePrompts("VehicleInteract");
-            AttemptAddPrompt("VehicleInteract", $"Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+           // RemovePrompts("VehicleInteract");
+            AttemptAddPrompt("VehicleInteract", $"Vehicle Interact", $"VehicleInteract", Settings.SettingsManager.KeySettings.VehicleInteractModifier, Settings.SettingsManager.KeySettings.VehicleInteract, 999);
         }
     }
 
@@ -78,6 +89,13 @@ public class ButtonPrompts
         Prompts.RemoveAll(x => x.Group == groupName);
     }
 
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys modifierKey, Keys interactKey, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, interactKey, modifierKey, order));
+        }
+    }
     public void AttemptAddPrompt(string groupName, string prompt, string identifier, Keys interactKey, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x => x.Key == interactKey))
@@ -253,7 +271,7 @@ public class ButtonPrompts
             RemovePrompts("ActivityControlCancel");
         }
 
-        if (Player.ActivityManager.IsPerformingActivity)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.IsPerformingActivity)
         {
             if (Player.ActivityManager.CanPauseCurrentActivity && !Player.ActivityManager.IsCurrentActivityPaused)
             {
@@ -332,7 +350,7 @@ public class ButtonPrompts
     }
     private void AttemptAddInteractionPrompts()
     {
-        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanConverseWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedConversations)
         {
             PersonInteractingPrompts();
             addedPromptGroup = true;
@@ -346,7 +364,7 @@ public class ButtonPrompts
     private void AttemptAddAdvancedInteractionPrompts()
     {
 
-            if(Player.ActivityManager.CanRecruitLookedAtGangMember && !Player.ActivityManager.IsConversing)
+            if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanRecruitLookedAtGangMember && !Player.ActivityManager.IsConversing)
             {
                 PersonRecruitingPrompts();
                 addedPromptGroup = true;
@@ -357,7 +375,7 @@ public class ButtonPrompts
             }
 
 
-        if (!addedPromptGroup)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup)
         {
             if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
             {
@@ -374,7 +392,7 @@ public class ButtonPrompts
             Prompts.RemoveAll(x => x.Group == "Sit");
         }
 
-        if (!addedPromptGroup)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup)
         {
             if (Player.ActivityManager.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
             {
@@ -396,7 +414,7 @@ public class ButtonPrompts
             }
         }
 
-        if (Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
         {
             PersonGrabPrompts();
             addedPromptGroup = true;
@@ -407,7 +425,7 @@ public class ButtonPrompts
         }
 
 
-        if(Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
+        if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -417,7 +435,7 @@ public class ButtonPrompts
         }
 
 
-        if(Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
+        if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
         {
             AddPrompt("ShowStopSurrender", "Stop Surrendering", "ShowStopSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -447,7 +465,7 @@ public class ButtonPrompts
     }
     private void AttemptAddLocationPrompts()
     {
-        if (!addedPromptGroup && CanInteractWithClosestLocation)
+        if (!addedPromptGroup && !Player.IsShowingFrontEndMenus && CanInteractWithClosestLocation)
         {
             LocationInteractingPrompts();
             addedPromptGroup = true;
@@ -459,7 +477,7 @@ public class ButtonPrompts
 
 
 
-        if (!addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesExtended && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesExtended && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();
             addedPromptGroup = true;

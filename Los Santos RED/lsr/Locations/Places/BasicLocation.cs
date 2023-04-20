@@ -5,11 +5,14 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Runtime;
 using System.Xml.Serialization;
 
 [Serializable()]
 public class BasicLocation
 {
+    private float currentblipAlpha = 0.25f;
+    private Color currentBlipColor = Color.White;
     private IEntityProvideable World;
     private Blip createdBlip;
     private Interior interior;
@@ -128,8 +131,8 @@ public class BasicLocation
     [XmlIgnore]
     public bool IsActivated { get; set; } = false;
 
-    [XmlIgnore]
-    public bool CanActivate { get; set; } = true;
+    //[XmlIgnore]
+    //public bool CanActivate { get; set; } = true;
 
 
     [XmlIgnore]
@@ -272,36 +275,59 @@ public class BasicLocation
     }
     public void UpdateBlip(ITimeReportable time)
     {
-        if (Blip.Exists())
+        if(!Blip.Exists())
         {
-            if (IsOpen(time.CurrentHour))
-            {
-                Blip.Alpha = MapOpenIconAlpha;
-            }
-            else
-            {
-                Blip.Alpha = MapClosedIconAlpha;
-            }
-            if (IsPlayerInterestedInLocation)
-            {
-                Blip.Color = Color.Blue;
-            }
-            else
-            {
-                Blip.Color = MapIconColor;
-            }
+            return;
         }
+
+        float newAlpha;
+        Color newColor;
+
+        if (IsOpen(time.CurrentHour))
+        {
+            newAlpha = MapOpenIconAlpha;
+        }
+        else
+        {
+            newAlpha = MapClosedIconAlpha;
+        }
+        if (IsPlayerInterestedInLocation)
+        {
+            newColor = Color.Blue;
+        }
+        else
+        {
+            newColor = MapIconColor;
+        }
+
+        if(newAlpha != currentblipAlpha)
+        {
+            Blip.Alpha = newAlpha;
+            currentblipAlpha = newAlpha;
+            EntryPoint.WriteToConsole($"CHANGING BLIP ALPHA {Name} {currentblipAlpha}");
+        }
+        if (newColor != currentBlipColor)
+        {
+            Blip.Color = newColor;
+            currentBlipColor = newColor;
+            EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
+        }
+
     }
-    public virtual void Deactivate()
+    public virtual void Deactivate(bool deleteBlip)
     {
         IsActivated = false;
-        if (Blip.Exists())
+
+        if (deleteBlip)
         {
-            Blip.Delete();
-        }
-        if (createdBlip.Exists())
-        {
-            createdBlip.Delete();
+            if (Blip.Exists())
+            {
+                Blip.Delete();
+            }
+            if (createdBlip.Exists())
+            {
+                createdBlip.Delete();
+            }
         }
         if (interior != null)
         {
@@ -328,8 +354,12 @@ public class BasicLocation
             }
             locationBlip.Scale = MapIconScale;
         }
-        locationBlip.Color = IsPlayerInterestedInLocation? Color.Blue : MapIconColor;
-        locationBlip.Alpha = IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
+
+        currentblipAlpha = IsOpen(time.CurrentHour) ? MapOpenIconAlpha : MapClosedIconAlpha;
+        currentBlipColor = IsPlayerInterestedInLocation ? Color.Blue : MapIconColor;
+
+        locationBlip.Color = currentBlipColor;
+        locationBlip.Alpha = currentblipAlpha;
         if (isShortRange)
         {
             NativeFunction.CallByName<bool>("SET_BLIP_AS_SHORT_RANGE", (uint)locationBlip.Handle, true);
@@ -388,11 +418,12 @@ public class BasicLocation
     public void CheckActivation(IEntityProvideable world, IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time)
     {
         World = world;
-        if (CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ActivateCells) && IsEnabled && IsCorrectMap(World.IsMPMapLoaded) && CanActivate)// ((World.IsMPMapLoaded && IsOnMPMap) || (!World.IsMPMapLoaded && IsOnSPMap)))
+        if (CheckIsNearby(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ActivateCells) && IsEnabled && IsCorrectMap(World.IsMPMapLoaded))// ((World.IsMPMapLoaded && IsOnMPMap) || (!World.IsMPMapLoaded && IsOnSPMap)))
         {
             if (!IsActivated)
             {
                 Activate(interiors, settings, crimes, weapons, time, World);
+                EntryPoint.WriteToConsole($"Activated {Name}");
                 GameFiber.Yield();
             }
         }
@@ -400,15 +431,16 @@ public class BasicLocation
         {
             if (IsActivated)
             {
-                Deactivate();
+                Deactivate(!settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap);
                 GameFiber.Yield();
             }
         }
         if (settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
         {
-            if (!IsActivated && IsEnabled && CanActivate && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.State) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
+            if (!IsActivated && IsEnabled && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.State) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
             {
                 ActivateBlip(time, World);
+                EntryPoint.WriteToConsole($"Activated BLIP {Name}");
             }
             else if ((!IsEnabled && Blip.Exists()) || (IsEnabled && IsBlipEnabled && Blip.Exists() && !IsSameState(EntryPoint.FocusZone?.State)))
             {

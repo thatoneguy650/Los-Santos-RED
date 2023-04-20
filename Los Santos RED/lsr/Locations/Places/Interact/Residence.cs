@@ -103,6 +103,11 @@ public class Residence : InteractableLocation, ILocationSetupable
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
 
+                if (!HasBannerImage)
+                {
+                    InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
+                }
+
                 GenerateResidenceMenu();
 
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)

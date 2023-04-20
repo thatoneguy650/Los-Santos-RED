@@ -31,9 +31,9 @@ namespace LosSantosRED.lsr
         private int LastWantedMaxLevel => CurrentHistory == null ? 0 : CurrentHistory.WantedLevel;
         private float SearchRadius => LastWantedMaxLevel > 0 ? LastWantedMaxLevel * Settings.SettingsManager.CriminalHistorySettings.SearchRadiusIncrement : Settings.SettingsManager.CriminalHistorySettings.MinimumSearchRadius;// 400f;
         public bool HasHistory => CurrentHistory != null;
-        public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.ResultsInLethalForce);
+        public bool HasDeadlyHistory => CurrentHistory != null && CurrentHistory.Crimes.Any(x => x.AssociatedCrime.ResultsInLethalForce);
         public int MaxWantedLevel => LastWantedMaxLevel;
-        public List<Crime> WantedCrimes => CurrentHistory?.Crimes;
+        public List<Crime> WantedCrimes => CurrentHistory?.Crimes.Select(x => x.AssociatedCrime).ToList();
         public void Dispose()
         {
             if (CriminalHistoryBlip.Exists())
@@ -41,11 +41,11 @@ namespace LosSantosRED.lsr
                 CriminalHistoryBlip.Delete();
             }
         }
-        public void OnSuspectEluded(List<Crime> CrimesAssociated,Vector3 PlaceLastSeen)
+        public void OnSuspectEluded(List<CrimeEvent> CrimesAssociated,Vector3 PlaceLastSeen)
         {
             if (CrimesAssociated != null && PlaceLastSeen != Vector3.Zero)
             {
-                CurrentHistory = new BOLO(PlaceLastSeen, CrimesAssociated, CrimesAssociated == null || !CrimesAssociated.Any() ? 1 : CrimesAssociated.Max(x => x.ResultingWantedLevel));
+                CurrentHistory = new BOLO(PlaceLastSeen,  CrimesAssociated, Player.WantedLevel);
             }
         }
         public void OnLostWanted()
@@ -107,13 +107,13 @@ namespace LosSantosRED.lsr
             Player.PoliceResponse.OnLostWanted();
             if (CurrentHistory == null)
             {
-                CurrentHistory = new BOLO(Vector3.Zero,new List<Crime>() { crime }, crime.ResultingWantedLevel);
+                CurrentHistory = new BOLO(Vector3.Zero,new List<CrimeEvent>() { new CrimeEvent(crime,null) }, crime.ResultingWantedLevel);
             }
             else
             {
-                if (!CurrentHistory.Crimes.Any(x => x.Name == crime.Name))
+                if (!CurrentHistory.Crimes.Any(x => x.AssociatedCrime != null && x.AssociatedCrime.Name == crime.Name))
                 {
-                    CurrentHistory.Crimes.Add(crime);
+                    CurrentHistory.Crimes.Add(new CrimeEvent(crime, null));
                 }
             }
         }
@@ -122,9 +122,9 @@ namespace LosSantosRED.lsr
             if(CurrentHistory != null)
             {
                 string CrimeString = "";
-                foreach (Crime MyCrime in CurrentHistory.Crimes.OrderBy(x => x.Priority).Take(3))
+                foreach (CrimeEvent MyCrime in CurrentHistory.Crimes.Where(x=> x.AssociatedCrime != null).OrderBy(x => x.AssociatedCrime.Priority).Take(3))
                 {
-                    CrimeString += string.Format("~n~{0}~s~", MyCrime.Name);
+                    CrimeString += string.Format("~n~{0}~s~", MyCrime.AssociatedCrime.Name);
                 }
                 return CrimeString;
             }
@@ -140,17 +140,23 @@ namespace LosSantosRED.lsr
         }
         private void ApplyLastWantedStats()
         {
-            if(CurrentHistory != null)
+            if(CurrentHistory == null)
             {
-                foreach(Crime crime in CurrentHistory.Crimes)
-                {
-                    //EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}");
-                    Player.AddCrime(crime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true,false, true);
-                }
-                int highestWantedLevel = CurrentHistory.WantedLevel;
-                CurrentHistory = null;
-                Player.OnAppliedWantedStats(highestWantedLevel);
+                return;
             }
+            foreach(CrimeEvent crime in CurrentHistory.Crimes)
+            {
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: APPLYING WANTED STATS: ADDING CRIME: {crime.Name}");
+                Player.AddCrime(crime.AssociatedCrime, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true,false, true);
+                CrimeEvent addedCrime = Player.PoliceResponse.CrimesObserved.Where(x => x.AssociatedCrime?.ID == crime.AssociatedCrime.ID).FirstOrDefault();
+                if(addedCrime != null)
+                {
+                    addedCrime.Instances = crime.Instances;
+                }
+            }
+            int highestWantedLevel = CurrentHistory.WantedLevel;
+            CurrentHistory = null;
+            Player.OnAppliedWantedStats(highestWantedLevel);        
         }
         private void UpdateBlip()
         {
@@ -187,14 +193,14 @@ namespace LosSantosRED.lsr
         private class BOLO
         {
             public Vector3 LastSeenLocation { get; set; }
-            public List<Crime> Crimes = new List<Crime>();
+            public List<CrimeEvent> Crimes = new List<CrimeEvent>();
 
-            public BOLO(Vector3 lastSeenLocation, List<Crime> crimes, int wantedLevel)
+            public BOLO(Vector3 lastSeenLocation, List<CrimeEvent> crimes, int wantedLevel)
             {
                 LastSeenLocation = lastSeenLocation;
                 if (crimes == null)
                 {
-                    Crimes = new List<Crime>();
+                    Crimes = new List<CrimeEvent>();
                 }
                 else
                 {

@@ -216,13 +216,23 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         }
         CanInteract = true;
     }
-    public void StoreData(IShopMenus shopMenus, IAgencies agencies)
+    public void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world)
     {
+        World = world;
+        //EntryPoint.WriteToConsole($"Storing Data for {Name}");
         if (AssignedAgencyID != null)
         {
             AssignedAgency = agencies.GetAgency(AssignedAgencyID);
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
+        foreach(ConditionalLocation cl in PossiblePedSpawns)
+        {
+            cl.Setup(agencies,gangs,zones,jurisdictions,gangTerritories,Settings,World,AssociationID,Weapons,Names,Crimes,PedGroups,shopMenus,Time,ModItems);
+        }
+        foreach (ConditionalLocation cl in PossibleVehicleSpawns)
+        {
+            cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+        }
     }
     public void ProcessInteractionMenu()
     {
@@ -237,24 +247,21 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         World = world;
         if (HasVendor)
         {
-            if (1==1)//InteractsWithVendor)
-            {
-                CanInteract = false;
-            }
+            CanInteract = false;
             if (IsOpen(time.CurrentHour))
             {
                 SpawnVendor(settings, crimes, weapons, true);// InteractsWithVendor);
-            }
-            GameFiber.Yield();
+            }     
         }
         World.Pedestrians.AddEntity(Vendor);
         if (!World.Places.ActiveInteractableLocations.Contains(this))
         {
             World.Places.ActiveInteractableLocations.Add(this);
         }
+        GameFiber.Yield();
         base.Activate(interiors, settings, crimes, weapons, time, World);
     }
-    public override void Deactivate()
+    public override void Deactivate(bool deleteBlip)
     {
         if (Vendor != null && Vendor.Pedestrian.Exists())
         {
@@ -264,7 +271,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         {
             World.Places.ActiveInteractableLocations.Remove(this);
         }
-        base.Deactivate();
+        base.Deactivate(deleteBlip);
     }
     private void SpawnVendor(ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, bool addMenu)
     {

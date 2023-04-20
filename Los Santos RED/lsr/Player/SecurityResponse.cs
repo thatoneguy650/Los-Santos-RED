@@ -23,13 +23,13 @@ namespace LosSantosRED.lsr
             Time = time;
             World = world;
         }
-        public void Update()
-        {
-            //foreach (SecurityGuard sg in World.Pedestrians.SecurityGuardList)
-            //{
-            //    if(CrimesObserved.Any(x=> x.AssociatedCrime?.ID == sg.re))
-            //}
-        }
+        //public void Update()
+        //{
+        //    //foreach (SecurityGuard sg in World.Pedestrians.SecurityGuardList)
+        //    //{
+        //    //    if(CrimesObserved.Any(x=> x.AssociatedCrime?.ID == sg.re))
+        //    //}
+        //}
         public void Dispose()
         {
 

@@ -84,6 +84,10 @@ public class GangConditionalLocation : ConditionalLocation
         if (Gang == null)
         {
             Zone CurrentZone = Zones.GetZone(Location);
+            if (CurrentZone == null)
+            {
+                return;
+            }
             if (TerritorySpawnsForceMainGang)
             {
                 Gang = GangTerritories.GetMainGang(CurrentZone.InternalGameName);// Jurisdictions.GetMainAgency(CurrentZone.InternalGameName, ResponseType.Security);
@@ -92,10 +96,6 @@ public class GangConditionalLocation : ConditionalLocation
             {
                 Gang = GangTerritories.GetRandomGang(CurrentZone.InternalGameName, World.TotalWantedLevel);
             }
-        }
-        if(Gang != null) 
-        { 
-            //EntryPoint.WriteToConsoleTestLong($"GANG GetDispatchableGenerator CHOSEN GANG: {Gang.ShortName}"); 
         }
     }
     public override void GenerateSpawnTypes()

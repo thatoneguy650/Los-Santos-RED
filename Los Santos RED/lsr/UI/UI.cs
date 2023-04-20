@@ -140,6 +140,13 @@ public class UI : IMenuProvideable
     {
         IsNotShowingFrontEndMenus = !MenuPool.IsAnyMenuOpen() && !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen;
         IsNotShowingFullScreenMenus = !TabView.IsAnyPauseMenuVisible && !EntryPoint.ModController.IsDisplayingAlertScreen;
+
+        if (DisplayablePlayer.IsNotShowingFrontEndMenus != IsNotShowingFrontEndMenus)
+        {      
+            DisplayablePlayer.IsNotShowingFrontEndMenus = IsNotShowingFrontEndMenus;
+            DisplayablePlayer.ButtonPrompts.Update();
+        }
+
         ProcessActionWheel();
         LowerRightDisplay.Display();
         if (!EntryPoint.ModController.IsDisplayingAlertScreen)

@@ -851,14 +851,12 @@ public class LEDispatcher
         {
             GameFiber.Yield();
             bool addOptionalPassengers = RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddOptionalPassengerPercentage);
-            bool addCanine = HasNeedToAmbientCanineDispatch && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage);
+            bool addCanine = HasNeedToAmbientCanineDispatch;// && RandomItems.RandomPercent(Settings.SettingsManager.PoliceSpawnSettings.AddK9Percentage);
             if (forcek9)
             {
-                addOptionalPassengers = true;
                 addCanine = true;
             }
-            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names,
-                addOptionalPassengers, World, ModItems, addCanine);
+            LESpawnTask spawnTask = new LESpawnTask(Agency, SpawnLocation, VehicleType, PersonType, Settings.SettingsManager.PoliceSpawnSettings.ShowSpawnedBlips, Settings, Weapons, Names, addOptionalPassengers, World, ModItems, forcek9);
             spawnTask.AllowAnySpawn = allowAny;
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
@@ -1288,6 +1286,14 @@ public class LEDispatcher
         {
             VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, true, true, true, "", Settings);
         }
+
+
+        if (forcek9)
+        {
+            VehicleType = Agency.GetRandomCanineVehicle(World.TotalWantedLevel, "", Settings);
+        }
+
+
         if (VehicleType != null || onFoot)
         {
             string RequiredGroup = "";
@@ -1301,6 +1307,13 @@ public class LEDispatcher
         {
             PersonType = null;
         }
+
+
+
+
+
+
+
 
 
         if(vehicleType != null)

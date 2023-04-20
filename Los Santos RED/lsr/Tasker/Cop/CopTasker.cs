@@ -98,7 +98,7 @@ public class CopTasker
         if (Cop.DistanceToPlayer <= Player.ActiveDistance)// && !Cop.IsInHelicopter)//heli, dogs, boats come next?
         {
             PedExt MainTarget = PedToAttack(Cop);
-            //GameFiber.Yield();
+            GameFiber.Yield();
             if (MainTarget != null)
             {
                 SetAIApprehend(Cop, MainTarget);

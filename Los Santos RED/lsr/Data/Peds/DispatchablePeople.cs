@@ -250,6 +250,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatMovement = 0
                 ,AccuracyMin = 65
                 ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
 
 
@@ -355,6 +356,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,OverrideAgencyLongGuns = true
                 ,OverrideLongGunsID = "GoodSniperLongGuns"
                 ,AlwaysHasLongGun = true
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
         };
         FIBPeds = new List<DispatchablePerson>() {
@@ -2539,6 +2541,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatMovement = 0
                 ,AccuracyMin = 65
                 ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
         };
         List<DispatchablePerson> LSIAPDPeds_FEJ = new List<DispatchablePerson>() {
@@ -2845,6 +2848,7 @@ public class DispatchablePeople : IDispatchablePeople
             ,CombatMovement = 0
             ,AccuracyMin = 65
             ,AccuracyMax = 85
+            ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             }
         };
         List<DispatchablePerson> RHPDCops_FEJ = new List<DispatchablePerson>() {
@@ -3371,6 +3375,7 @@ public class DispatchablePeople : IDispatchablePeople
                 ,CombatMovement = 0
                 ,AccuracyMin = 65
                 ,AccuracyMax = 85
+                ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
             },
         };
         List<DispatchablePerson> DPPDCops_FEJ = new List<DispatchablePerson>() {
@@ -5864,7 +5869,9 @@ public class DispatchablePeople : IDispatchablePeople
             ,CombatRange = 3
             ,CombatMovement = 0
             ,AccuracyMin = 65
-            ,AccuracyMax = 85 },
+            ,AccuracyMax = 85
+            ,CombatAttributesToSet = new List<CombatAttributeToSet>() { new CombatAttributeToSet(21,false) }
+            },
 
             };
         List<DispatchablePerson> ParkRangers_FEJ = new List<DispatchablePerson>() {

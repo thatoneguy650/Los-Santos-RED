@@ -56,6 +56,7 @@ namespace LosSantosRED.lsr.Interface
         Inventory Inventory { get; set; }
         VehicleExt CurrentVehicle { get; }
         VehicleExt InterestedVehicle { get; }
+        bool IsShowingFrontEndMenus { get; }
         // bool IsSitting { get; }
         //  bool IsConversing { get; }
         //GameLocation ClosestTeleportEntrance { get; }

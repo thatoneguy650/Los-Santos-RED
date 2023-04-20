@@ -133,9 +133,9 @@ public class PlacesOfInterest : IPlacesOfInterest
         AllLocations.AddRange(PossibleLocations.Residences);
         return AllLocations;
     }
-    public List<BasicLocation> AllLocations()
+    public List<InteractableLocation> AllLocations()
     {
-        List<BasicLocation> AllLocations = new List<BasicLocation>();
+        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
         AllLocations.AddRange(InteractableLocations());
         return AllLocations;
     }
@@ -2007,15 +2007,15 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 50f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 50f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 50f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
-                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 50f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 35f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1383.559f, 1156.695f, 114.3345f), 170.1522f, 35f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1375.004f, 1149.209f, 113.9089f), 91.94662f, 35f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
+                new GangConditionalLocation(new Vector3(1412.588f, 1138.611f, 114.3341f), 196.4261f, 35f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.CanMoveWhenGuarding | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 75f),
-                new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 75f),
+                new GangConditionalLocation(new Vector3(1410.701f, 1119.38f, 114.5649f), 89.85777f, 50f),
+                new GangConditionalLocation(new Vector3(1367.869f, 1147.611f, 113.4886f), 1.871943f, 50f),
             }
         };
         GangDens.Add(Den1);
@@ -2033,16 +2033,16 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 50f),
-                new GangConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 50f),
-                new GangConditionalLocation(new Vector3(-600.0588f, -1795.333f, 23.38985f), 155.3086f, 50f),
-                new GangConditionalLocation(new Vector3(-622.9163f, -1792.963f, 23.80351f), 163.1899f, 50f),
-                new GangConditionalLocation(new Vector3(-591.4926f, -1776.089f, 22.79006f), 214.9723f, 50f),
+                new GangConditionalLocation(new Vector3(-608.3129f, -1786.241f, 23.63522f), 191.6332f, 35f),
+                new GangConditionalLocation(new Vector3(-602.466f, -1784.252f, 23.64002f), 120.1152f, 35f),
+                new GangConditionalLocation(new Vector3(-600.0588f, -1795.333f, 23.38985f), 155.3086f, 35f),
+                new GangConditionalLocation(new Vector3(-622.9163f, -1792.963f, 23.80351f), 163.1899f, 35f),
+                new GangConditionalLocation(new Vector3(-591.4926f, -1776.089f, 22.79006f), 214.9723f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 75f),
-                new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 75f),
+                new GangConditionalLocation(new Vector3(-597.8096f, -1791.076f, 22.92511f), 300.9409f, 50f),
+                new GangConditionalLocation(new Vector3(-607.3063f, -1788.965f, 22.9275f), 162.6913f, 50f),
             },
             CameraPosition = new Vector3(-589.6008f, -1798.514f, 25.45085f),
             CameraDirection = new Vector3(0.586422f, 0.7246112f, -0.3620054f),
@@ -2372,17 +2372,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 50f),
-                new GangConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 50f),
-                new GangConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 50f),
-                new GangConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 50f),
+                new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 35f),
+                new GangConditionalLocation(new Vector3(87.02995f, -1947.637f, 20.74858f), 303.2596f, 35f),
+                new GangConditionalLocation(new Vector3(95.30958f, -1954.979f, 20.75126f), 314.5049f, 35f),
+                new GangConditionalLocation(new Vector3(84.23887f, -1932.319f, 20.74922f), 19.71852f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 75f),
-                new GangConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 75f),
-                new GangConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 75f),
-                new GangConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 75f),
+                new GangConditionalLocation(new Vector3(94.70525f, -1960.741f, 20.06409f), 322.6508f, 35f),
+                new GangConditionalLocation(new Vector3(108.7719f, -1951.384f, 20.01156f), 294.1027f, 35f),
+                new GangConditionalLocation(new Vector3(113.3118f, -1933.905f, 19.9819f), 36.83981f, 35f),
+                new GangConditionalLocation(new Vector3(68.90487f, -1922.226f, 20.57331f), 130.7354f, 35f),
             }
         };//This is in DAVIS near Grove Street
         GangDen BallasDen2 = new GangDen()
@@ -2447,7 +2447,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new GangConditionalLocation() {
                     Location = new Vector3(152.3754f,-1965.335f,18.3794f),
                     Heading = 49.37751f,
-                    Percentage = 75f,
+                    Percentage = 45f,
                     },
                 },
             MenuID = "BallasDenMenu",
@@ -2504,7 +2504,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new GangConditionalLocation() {
                     Location = new Vector3(15.37083f,-1882.745f,22.59842f),
                     Heading = 141.488f,
-                    Percentage = 75f,
+                    Percentage = 45f,
                     },
                 },
             MenuID = "BallasDenMenu",
@@ -2553,7 +2553,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new GangConditionalLocation() {
                     Location = new Vector3(224.8163f,-1707.909f,28.75177f),
                     Heading = 34.13058f,
-                    Percentage = 75f,
+                    Percentage = 45f,
                     },
                 },
             MenuID = "BallasDenMenu",
@@ -2586,19 +2586,19 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 50f),
-                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 50f),
-                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 50f),
-                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 50f),
-                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 50f),
-                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 50f),
+                new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
+                new GangConditionalLocation(new Vector3(-214.3197f, -1580.346f, 34.86931f), 147.0013f, 35f),
+                new GangConditionalLocation(new Vector3(-234.661f, -1606.322f, 34.26423f), 70.74878f, 35f),
+                new GangConditionalLocation(new Vector3(-234.2032f, -1602.192f, 34.30891f), 104.5916f, 35f),
+                new GangConditionalLocation(new Vector3(-197.1071f, -1604.178f, 34.36404f), 260.1856f, 35f),
+                new GangConditionalLocation(new Vector3(-191.8121f, -1595.623f, 34.5155f), 263.9107f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 75f),
-                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 75f),
-                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 75f),
-                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 75f),
+                new GangConditionalLocation(new Vector3(-237.4984f, -1612.648f, 33.17708f), 179.3492f, 35f),
+                new GangConditionalLocation(new Vector3(-221.4851f, -1633.947f, 32.93398f), 269.4803f, 35f),
+                new GangConditionalLocation(new Vector3(-176.6605f, -1608.427f, 32.9703f), 342.4364f, 35f),
+                new GangConditionalLocation(new Vector3(-189.6106f, -1611.435f, 33.20397f), 174.0037f, 35f),
             }
         };//This is in Chamberlain Hills
         GangDen FamiliesDen2 = new GangDen()
@@ -2636,7 +2636,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GangConditionalLocation() {
                 Location = new Vector3(25.02328f,-1454.192f,29.77646f),
                 Heading = -36.88154f,
-                Percentage = 75f,
+                Percentage = 35f,
             },
         },
             MenuID = "FamiliesDenMenu",
@@ -2686,7 +2686,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GangConditionalLocation() {
                 Location = new Vector3(-109.2051f,-1456.626f,32.91021f),
                 Heading = -129.7567f,
-                Percentage = 75f,
+                Percentage = 35f,
             },
         },
             MenuID = "FamiliesDenMenu",
@@ -2783,7 +2783,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new GangConditionalLocation() {
                 Location = new Vector3(-111.1881f,-1597.381f,31.3905f),
                 Heading = 138.7799f,
-                Percentage = 75f,
+                Percentage = 35f,
             },
         },
             MenuID = "FamiliesDenMenu",
@@ -2816,18 +2816,18 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 50f),
-                new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 50f),
-                new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 50f),
-                new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 50f),
-                new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 50f),
+                new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 35f),
+                new GangConditionalLocation(new Vector3(975.0338f, -112.2333f, 74.35313f), 188.1823f, 35f),
+                new GangConditionalLocation(new Vector3(960.2211f, -123.5155f, 74.35313f), 181.6973f, 35f),
+                new GangConditionalLocation(new Vector3(981.1419f, -142.9071f, 74.23688f), 80.7939f, 35f),
+                new GangConditionalLocation(new Vector3(976.2161f, -144.2681f, 74.24052f), 0.7361088f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 75f),
-                new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 75f),
-                new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 75f),
-                new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 75f),
+                new GangConditionalLocation(new Vector3(976.4726f, -132.778f, 73.21405f), 58.86649f, 35f),
+                new GangConditionalLocation(new Vector3(960.3214f, -132.2091f, 73.69121f), 189.5355f, 35f),
+                new GangConditionalLocation(new Vector3(972.7709f, -142.4676f, 73.60614f), 239.6191f, 35f),
+                new GangConditionalLocation(new Vector3(972.8246f, -155.1686f, 72.8443f), 52.89192f, 35f),
             },
             CameraPosition = new Vector3(961.1312f, -131.4942f, 76.40847f),
             CameraDirection = new Vector3(-0.7768034f, 0.5811784f, -0.2425037f),
@@ -2851,20 +2851,20 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 35f),
-                new GangConditionalLocation(new Vector3(80.1135f, 3721.855f, 39.74522f), 150.8561f, 35f),
-                new GangConditionalLocation(new Vector3(78.30386f, 3722.036f, 39.74952f), 266.9375f, 35f),
-                new GangConditionalLocation(new Vector3(67.40894f, 3703.18f, 39.75497f), 338.0555f, 35f),
-                new GangConditionalLocation(new Vector3(68.87956f, 3704.888f, 39.75497f), 120.9388f, 35f),
-                new GangConditionalLocation(new Vector3(47.73441f, 3704.631f, 39.75497f), 302.5045f, 35f),
-                new GangConditionalLocation(new Vector3(47.20625f, 3705.412f, 39.75497f), 269.3896f, 35f),
-                new GangConditionalLocation(new Vector3(46.69005f, 3715.68f, 39.73444f), 245.4069f, 35f),
-                new GangConditionalLocation(new Vector3(57.10126f, 3724.255f, 39.72771f), 196.2136f, 35f),
-                new GangConditionalLocation(new Vector3(58.31903f, 3724.607f, 39.72731f), 176.8168f, 35f),
-                new GangConditionalLocation(new Vector3(66.5742f, 3726.808f, 39.71051f), 173.2846f, 35f),
-                new GangConditionalLocation(new Vector3(64.92879f, 3726.43f, 39.7145f), 256.0423f, 35f),
-                new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 35f),
-                new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 35f),
+                new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 25f),
+                new GangConditionalLocation(new Vector3(80.1135f, 3721.855f, 39.74522f), 150.8561f, 25f),
+                new GangConditionalLocation(new Vector3(78.30386f, 3722.036f, 39.74952f), 266.9375f, 25f),
+                new GangConditionalLocation(new Vector3(67.40894f, 3703.18f, 39.75497f), 338.0555f, 25f),
+                new GangConditionalLocation(new Vector3(68.87956f, 3704.888f, 39.75497f), 120.9388f, 25f),
+                new GangConditionalLocation(new Vector3(47.73441f, 3704.631f, 39.75497f), 302.5045f, 25f),
+                new GangConditionalLocation(new Vector3(47.20625f, 3705.412f, 39.75497f), 269.3896f, 25f),
+                new GangConditionalLocation(new Vector3(46.69005f, 3715.68f, 39.73444f), 245.4069f, 25f),
+                new GangConditionalLocation(new Vector3(57.10126f, 3724.255f, 39.72771f), 196.2136f, 25f),
+                new GangConditionalLocation(new Vector3(58.31903f, 3724.607f, 39.72731f), 176.8168f, 25f),
+                new GangConditionalLocation(new Vector3(66.5742f, 3726.808f, 39.71051f), 173.2846f, 25f),
+                new GangConditionalLocation(new Vector3(64.92879f, 3726.43f, 39.7145f), 256.0423f, 25f),
+                new GangConditionalLocation(new Vector3(58.89564f, 3698.918f, 39.75497f), 319.3528f, 25f),
+                new GangConditionalLocation(new Vector3(57.78175f, 3699.333f, 39.75499f), 307.2412f, 25f),
             },
             CameraPosition = new Vector3(88.20795f, 3694.343f, 40.96601f),
             CameraDirection = new Vector3(-0.2029471f, 0.9696398f, -0.1364228f),
@@ -2890,16 +2890,16 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 50f),
-                new GangConditionalLocation(new Vector3(108.1241f, -817.763f, 31.36724f), 273.9551f, 50f),
-                new GangConditionalLocation(new Vector3(92.21131f, -817.7866f, 31.31864f), 55.81263f, 50f),
-                new GangConditionalLocation(new Vector3(114.8412f, -819.1249f, 31.32478f), 342.2915f, 50f),
+                new GangConditionalLocation(new Vector3(99.74276f, -816.0181f, 31.40174f), 2.775635f, 35f),
+                new GangConditionalLocation(new Vector3(108.1241f, -817.763f, 31.36724f), 273.9551f, 35f),
+                new GangConditionalLocation(new Vector3(92.21131f, -817.7866f, 31.31864f), 55.81263f, 35f),
+                new GangConditionalLocation(new Vector3(114.8412f, -819.1249f, 31.32478f), 342.2915f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(85.50445f, -818.2582f, 30.74365f), 155.5453f, 75f),
-                new GangConditionalLocation(new Vector3(59.77588f, -848.8732f, 30.33472f), 334.658f, 75f),
-                new GangConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f, 75f),
+                new GangConditionalLocation(new Vector3(85.50445f, -818.2582f, 30.74365f), 155.5453f, 45f),
+                new GangConditionalLocation(new Vector3(59.77588f, -848.8732f, 30.33472f), 334.658f, 45f),
+                new GangConditionalLocation(new Vector3(87.69022f, -827.7574f, 30.66308f), 340.578f, 45f),
             }
         };
         GangDens.Add(TriadMainDen);
@@ -2916,17 +2916,17 @@ public class PlacesOfInterest : IPlacesOfInterest
             IsEnabled = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
-                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 50f),
-                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 50f),
-                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 50f),
-                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 50f),
+                new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 35f),
+                new GangConditionalLocation(new Vector3(970.806f, -1869.026f, 31.31658f), 163.6367f, 35f),
+                new GangConditionalLocation(new Vector3(968.0837f, -1893.529f, 31.14556f), 357.2057f, 35f),
+                new GangConditionalLocation(new Vector3(979.5701f, -1867.066f, 31.19429f), 259.3384f, 35f),
             },
             PossibleVehicleSpawns = new List<ConditionalLocation>()
             {
-                new GangConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 75f),
-                new GangConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 75f),
-                new GangConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 75f),
-                new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 75f),
+                new GangConditionalLocation(new Vector3(966.6174f, -1873.199f, 30.44685f), 41.87259f, 35f),
+                new GangConditionalLocation(new Vector3(971.0187f, -1873.486f, 30.48772f), 40.74247f, 35f),
+                new GangConditionalLocation(new Vector3(983.9246f, -1860.417f, 30.36379f), 179.4304f, 35f),
+                new GangConditionalLocation(new Vector3(990.0909f, -1892.571f, 29.7773f), 263.3322f, 35f),
             }
         };
         GangDen VagosHangout1 = new GangDen()
@@ -2964,7 +2964,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(298.1687f,-1976.326f,21.81265f),
                 Heading = 48.75335f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",
@@ -3015,7 +3015,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(335.3903f,-1836.632f,26.78196f),
                 Heading = -135.7316f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",
@@ -3065,7 +3065,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(469.5431f,-1741.667f,28.42751f),
                 Heading = 70.88543f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",
@@ -3115,7 +3115,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(336.048f,-1836.994f,26.77941f),
                 Heading = -133.1032f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",
@@ -3165,7 +3165,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(331.9642f,-2044.172f,20.29884f),
                 Heading = -40.4487f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",
@@ -3215,7 +3215,7 @@ public class PlacesOfInterest : IPlacesOfInterest
                 new GangConditionalLocation() {
                 Location = new Vector3(467.802f,-1579.866f,28.58691f),
                 Heading = -129.7965f,
-                Percentage = 75f,
+                Percentage = 35f,
                 },
                 },
             MenuID = "VagosDenMenu",

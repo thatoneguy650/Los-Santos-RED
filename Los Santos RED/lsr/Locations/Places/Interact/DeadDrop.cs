@@ -97,7 +97,7 @@ public class DeadDrop : InteractableLocation
             InteractionComplete = true;
 
 
-            Deactivate();
+            Deactivate(true);
             ButtonPromptText = "";
             //ClearActiveGangTasks(Player);
             Player.ActivityManager.IsInteractingWithLocation = false;
@@ -127,7 +127,7 @@ public class DeadDrop : InteractableLocation
 
        // SendMessageOnLeaveArea(Player);
         ButtonPromptText = "";
-        Deactivate();
+        Deactivate(true);
         Player.ActivityManager.IsInteractingWithLocation = false;
         //ClearActiveGangTasks(Player);
     }

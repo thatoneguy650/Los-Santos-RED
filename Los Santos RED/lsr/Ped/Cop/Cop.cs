@@ -190,6 +190,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         if (!IsAnimal)
         {
             WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
+            GameFiber.Yield();
+        }
+        if (!Pedestrian.Exists())
+        {
+            return;
         }
         if (AssignedAgency.Division != -1)
         {
@@ -206,6 +211,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GroupName = "Cop";
         }
+        GameFiber.Yield();
         if(!Pedestrian.Exists())
         {
             return;

@@ -139,7 +139,7 @@ class GoToInVehicleTaskState : TaskState
         {
             LocationReachable.OnLocationReached();
             //LocationReachable.HasReachedLocatePosition = true;
-            //EntryPoint.WriteToConsoleTestLong($"LOCATE TASK: Cop {Ped.Handle} HAS REACHED POSITION");
+            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HAS REACHED POSITION");
         }
     }
 }

@@ -233,8 +233,8 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     [Description("Maximum police K9 units that can be spawned when you are at wanted level 10.")]
     public int K9SpawnLimit_Wanted10 { get; set; }
 
-    [Description("Percentage of time to allow adding a canine unit to a spawn when possible. 0 is never 100 is always.")]
-    public int AddK9Percentage { get; set; }
+    //[Description("Percentage of time to allow adding a canine unit to a spawn when possible. 0 is never 100 is always.")]
+    //public int AddK9Percentage { get; set; }
 
 
     [Description("Percentage of time to allow spawning a random agency (that can spawn in the given location) instead of the main assigned jurisdiction when not wanted. Allows agencies without territory to spawn randomly. 0 is never 100 is always.")]
@@ -295,7 +295,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         ManageDispatching = true;
 
 
-        PedSpawnLimit_Default = 7;
+        PedSpawnLimit_Default = 5;
         PedSpawnLimit_Default_Wilderness = 2;
         PedSpawnLimit_Default_Rural = 3;
         PedSpawnLimit_Default_Suburb = 4;
@@ -303,13 +303,13 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         PedSpawnLimit_Default_Downtown = 7;
 
 
-        PedSpawnLimit_Investigation = 8;
-        PedSpawnLimit_Wanted1 = 9;
-        PedSpawnLimit_Wanted2 = 10;
-        PedSpawnLimit_Wanted3 = 16;
-        PedSpawnLimit_Wanted4 = 20;
-        PedSpawnLimit_Wanted5 = 24;
-        PedSpawnLimit_Wanted6 = 26;
+        PedSpawnLimit_Investigation = 6;
+        PedSpawnLimit_Wanted1 = 8;
+        PedSpawnLimit_Wanted2 = 9;
+        PedSpawnLimit_Wanted3 = 14;
+        PedSpawnLimit_Wanted4 = 18;
+        PedSpawnLimit_Wanted5 = 22;
+        PedSpawnLimit_Wanted6 = 24;
 
         PedSpawnLimit_Wanted7 = 26;
         PedSpawnLimit_Wanted8 = 26;
@@ -318,16 +318,16 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        VehicleSpawnLimit_Default = 9;
+        VehicleSpawnLimit_Default = 6;
         VehicleSpawnLimit_Default_Wilderness = 2;
         VehicleSpawnLimit_Default_Rural = 3;
         VehicleSpawnLimit_Default_Suburb = 3;
         VehicleSpawnLimit_Default_Industrial = 4;
         VehicleSpawnLimit_Default_Downtown = 9;
 
-        VehicleSpawnLimit_Investigation = 10;
-        VehicleSpawnLimit_Wanted1 = 11;
-        VehicleSpawnLimit_Wanted2 = 12;
+        VehicleSpawnLimit_Investigation = 7;
+        VehicleSpawnLimit_Wanted1 = 8;
+        VehicleSpawnLimit_Wanted2 = 9;
         VehicleSpawnLimit_Wanted3 = 13;
         VehicleSpawnLimit_Wanted4 = 15;
         VehicleSpawnLimit_Wanted5 = 16;
@@ -343,9 +343,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         BoatSpawnLimit_Wanted1 = 1;
         BoatSpawnLimit_Wanted2 = 2;
         BoatSpawnLimit_Wanted3 = 3;
-        BoatSpawnLimit_Wanted4 = 4;
-        BoatSpawnLimit_Wanted5 = 5;
-        BoatSpawnLimit_Wanted6 = 6;
+        BoatSpawnLimit_Wanted4 = 3;
+        BoatSpawnLimit_Wanted5 = 4;
+        BoatSpawnLimit_Wanted6 = 4;
 
         BoatSpawnLimit_Wanted7 = 6;
         BoatSpawnLimit_Wanted8 = 6;
@@ -383,7 +383,7 @@ public class PoliceSpawnSettings : ISettingsDefaultable
         K9SpawnLimit_Wanted9 = 0;
         K9SpawnLimit_Wanted10 = 0;
 
-        AddK9Percentage = 30;
+       // AddK9Percentage = 30;
 
 
 
@@ -399,9 +399,9 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
         
 
-        TimeBetweenCopSpawn_Unseen = 3000;
-        TimeBetweenCopSpawn_Seen_Min = 2000;
-        TimeBetweenCopSpawn_Seen_AdditionalTimeScaler = 2000;
+        TimeBetweenCopSpawn_Unseen = 5000;//3000
+        TimeBetweenCopSpawn_Seen_Min = 3000;//2000
+        TimeBetweenCopSpawn_Seen_AdditionalTimeScaler = 3000;//2000
         TimeBetweenCopDespawn_Unseen = 2000;
         TimeBetweenCopDespawn_Seen_Min = 1000;
         TimeBetweenCopDespawn_Seen_AdditionalTimeScaler = 1000;
