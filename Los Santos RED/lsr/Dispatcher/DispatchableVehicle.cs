@@ -113,6 +113,7 @@ public class DispatchableVehicle
                 }
             }
         }
+        GameFiber.Yield();
         if (!vehicleExt.Vehicle.Exists())
         {
             return;
@@ -125,6 +126,11 @@ public class DispatchableVehicle
         if (RequiredPrimaryColorID != -1)
         {
             NativeFunction.Natives.SET_VEHICLE_COLOURS(vehicleExt.Vehicle, RequiredPrimaryColorID, RequiredSecondaryColorID == -1 ? RequiredPrimaryColorID : RequiredSecondaryColorID);
+        }
+        GameFiber.Yield();
+        if (!vehicleExt.Vehicle.Exists())
+        {
+            return;
         }
         NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, RandomItems.GetRandomNumber(0.0f, MaxRandomDirtLevel.Clamp(0.0f,15.0f)));
         RequiredVariation?.Apply(vehicleExt);

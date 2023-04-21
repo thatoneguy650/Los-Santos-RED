@@ -41,7 +41,7 @@ public class VehicleVariation
     public float DirtLevel { get; set; } = 0.0f;
     public void Apply(VehicleExt vehicleExt)
     {
-        if(vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
         {
             return;
         }
@@ -80,6 +80,11 @@ public class VehicleVariation
                 }
             }
             NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, vehicleMod.ID, vehicleMod.Output, isCustomTires);
+        }
+        GameFiber.Yield();
+        if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
+        {
+            return;
         }
         if (Livery != -1)
         {

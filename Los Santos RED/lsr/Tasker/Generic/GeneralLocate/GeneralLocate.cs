@@ -56,7 +56,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
-        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTING Task{CurrentTaskState?.DebugName}");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTING Task{CurrentTaskState?.DebugName}");
     }
     public override void Stop()
     {
@@ -68,13 +68,20 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         CheckLocationChanged();
         if (LocationsChanged)
         {
-            Start();
+            Restart();
         }
         else
         {
             StandardUpdate();
         }
         UpdateVehicleState();
+    }
+    private void Restart()
+    {
+        CurrentTaskState?.Stop();
+        GetNewTaskState();
+        CurrentTaskState?.Start();
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} RESTARTING Task{CurrentTaskState?.DebugName} PlaceToDriveTo{PlaceToDriveTo} PlaceToWalkTo {PlaceToWalkTo}");
     }
     public virtual void OnLocationReached()
     {
@@ -99,19 +106,23 @@ public class GeneralLocate : ComplexTask, ILocationReachable
             if (Ped.IsInVehicle)
             {
                 CurrentTaskState = new GoToInVehicleTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToDriveTo, this);
+                SubTaskName = "GoToInVehicleTaskState";
             }
             else
             {
                 CurrentTaskState = new GoToOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this);
+                SubTaskName = "GoToOnFootTaskState";
             }
         }
         else if (ShouldInvestigateOnFoot)
         {
             CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable);
+            SubTaskName = "SearchLocationOnFootTaskState";
         }
         else
         {
             CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, true);
+            SubTaskName = "WanderInVehicleTaskState";
         }
     }
     protected virtual void UpdateVehicleState()
@@ -120,7 +131,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     }
     private void CheckLocationChanged()
     {
-        if(prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)
+        if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
         {
             LocationsChanged = false;
             return;

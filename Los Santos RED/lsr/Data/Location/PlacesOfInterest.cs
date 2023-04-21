@@ -1886,6 +1886,24 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
             new Residence(new Vector3(-1597.134f, -352.3153f, 45.97645f), 230.207f, "Pacific Buff Manor",""){ OpenTime = 0,CloseTime = 24,RentalFee = 5000, RentalDays = 28,PurchasePrice = 1200000},
+
+            //from box in discord
+            new Residence(new Vector3(-766.33f, -917.05f, 21.28f), 270f, "1068 Ginger St. Apt 4",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1450, RentalDays = 28,PurchasePrice = 350000},
+            new Residence(new Vector3(-780.21f, -784.22f, 27.87f), 85f, "Dream Tower Apt 31",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(-188.97f, 1008.84f, 232.13f), 87f, "202 Lake Vinewood Estate",""){ OpenTime = 0,CloseTime = 24,RentalFee = 12000, RentalDays = 28,PurchasePrice = 1550000},
+            new Residence(new Vector3(-232.71f, 588.12f, 190.54f), 355f, "3636 Kimble Hill Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 9100, RentalDays = 28,PurchasePrice = 1250000},
+            new Residence(new Vector3(-700.87f, 649.99f, 155.38f), 350f, "4057 Hillcrest Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 8500, RentalDays = 28,PurchasePrice = 1100000},
+            new Residence(new Vector3(-1009.54f, 479.05f, 79.60f), 330f, "2125 Cockingend Dr",""){ OpenTime = 0,CloseTime = 24,RentalFee = 14500, RentalDays = 28,PurchasePrice = 1800000},
+            new Residence(new Vector3(-773.63f, 313.08f, 85.70f), 180f, "Eclipse Towers Apt 401",""){ OpenTime = 0,CloseTime = 24,RentalFee = 30000, RentalDays = 28,PurchasePrice = 2000000},
+
+
+            new Residence(new Vector3(-116.35f, -37.69f, 62.20f), 70f, "Las Lagunas Blvd Apt 21",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1550, RentalDays = 28},
+            new Residence(new Vector3(77.15f, -871.53f, 31.51f), 65f, "Elgin Ave Apt 340",""){ OpenTime = 0,CloseTime = 24,RentalFee = 2150, RentalDays = 28},
+            new Residence(new Vector3(1289.23f, -1710.51f, 55.48f), 205f, "412 El Burro Heights",""){ OpenTime = 0,CloseTime = 24,RentalFee = 1200, RentalDays = 28,PurchasePrice = 200000},
+           // new Residence(new Vector3(1336.86f, -2195.42f, 54.55f), 210f, "12 Sustancia Road",""){ OpenTime = 0,CloseTime = 24,RentalFee = 850, RentalDays = 28,PurchasePrice = 150000}, //maybe mp map, idk
+          //  new Residence(new Vector3(968.16f, -352.3153f, 31.53f), 170f, "Cypress Flats Train",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28}, //maybe mp map, idk
+
+            new Residence(new Vector3(-1243.89f, -1241.10f, 11.03f), 20f, "1533 Magellan Ave",""){ OpenTime = 0,CloseTime = 24,RentalFee = 500, RentalDays = 28},
         };
     }
     private void DefaultConfig_Hotels()

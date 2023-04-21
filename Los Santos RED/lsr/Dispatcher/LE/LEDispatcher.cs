@@ -918,6 +918,7 @@ public class LEDispatcher
             return false;
         }
         Agency = GetRandomAgency(SpawnLocation);
+        GameFiber.Yield();
         if (Agency == null)
         {
             return false;
@@ -930,7 +931,7 @@ public class LEDispatcher
         {
             VehicleType = Agency.GetRandomVehicle(World.TotalWantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
         }
-        
+        GameFiber.Yield();
         if (VehicleType == null)
         {
             return false;
@@ -940,6 +941,7 @@ public class LEDispatcher
         {
             RequiredGroup = VehicleType.RequiredPedGroup;
         }
+        GameFiber.Yield();
         PersonType = Agency.GetRandomPed(World.TotalWantedLevel, RequiredGroup);
         return PersonType != null;
     }

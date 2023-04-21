@@ -23,6 +23,7 @@ class GoToInVehicleTaskState : TaskState
     private Vector3 PlaceToDriveTo;
     private bool isSetCode3Close;
     private ILocationReachable LocationReachable;
+    private uint GametimeLastRetasked;
 
     public GoToInVehicleTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placetoDriveTo, ILocationReachable locationReachable)
     {
@@ -56,9 +57,22 @@ class GoToInVehicleTaskState : TaskState
         {
             return;
         }
+        CheckTasks();
         CheckGoToDistances();
         SetGoToDrivingStyle();
     }
+
+    private void CheckTasks()
+    {
+        Rage.TaskStatus taskStatus = PedGeneral.Pedestrian.Tasks.CurrentTaskStatus;
+        if (PedGeneral.IsDriver && (taskStatus == Rage.TaskStatus.NoTask || taskStatus == Rage.TaskStatus.Preparing) && Game.GameTime - GametimeLastRetasked >= 2000)
+        {
+            TaskEntry();
+            GametimeLastRetasked = Game.GameTime;
+            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} RETASKED");
+        }
+    }
+
     private void TaskEntry()
     {
         if (!PedGeneral.Pedestrian.Exists())
@@ -70,8 +84,13 @@ class GoToInVehicleTaskState : TaskState
             PedGeneral.Pedestrian.BlockPermanentEvents = true;
             PedGeneral.Pedestrian.KeepTasks = true;
         }
+        bool pedExists = PedGeneral != null && PedGeneral.Pedestrian.Exists();
+        bool pedVehicleExists = PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.CurrentVehicle.Exists();
+        bool locationEror = PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero;
+
         if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || !PedGeneral.Pedestrian.CurrentVehicle.Exists() || PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero || !PedGeneral.IsDriver)
         {
+            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} TASK ENTRY ABORTED Driver:{PedGeneral?.IsDriver} pedExists{pedExists} pedVehicleExists {pedVehicleExists} locationEror {locationEror}");
             return;
         }
         if (PedGeneral.IsInHelicopter)

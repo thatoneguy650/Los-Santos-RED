@@ -56,7 +56,8 @@ public class LESpawnTask : SpawnTask
     }
     private void AddCaninePassengers()
     {
-        if(VehicleType == null || VehicleType.CaninePossibleSeats == null || Agency == null)
+        GameFiber.Yield();
+        if (VehicleType == null || VehicleType.CaninePossibleSeats == null || Agency == null)
         {
             return;
         }
@@ -87,6 +88,7 @@ public class LESpawnTask : SpawnTask
     }
     private void AddPassengers()
     {
+        GameFiber.Yield();
         EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {

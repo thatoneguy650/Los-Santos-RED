@@ -225,13 +225,19 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
             AssignedAgency = agencies.GetAgency(AssignedAgencyID);
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
-        foreach(ConditionalLocation cl in PossiblePedSpawns)
+        if (PossiblePedSpawns != null)
         {
-            cl.Setup(agencies,gangs,zones,jurisdictions,gangTerritories,Settings,World,AssociationID,Weapons,Names,Crimes,PedGroups,shopMenus,Time,ModItems);
+            foreach (ConditionalLocation cl in PossiblePedSpawns)
+            {
+                cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+            }
         }
-        foreach (ConditionalLocation cl in PossibleVehicleSpawns)
+        if (PossibleVehicleSpawns != null)
         {
-            cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+            foreach (ConditionalLocation cl in PossibleVehicleSpawns)
+            {
+                cl.Setup(agencies, gangs, zones, jurisdictions, gangTerritories, Settings, World, AssociationID, Weapons, Names, Crimes, PedGroups, shopMenus, Time, ModItems);
+            }
         }
     }
     public void ProcessInteractionMenu()
@@ -258,7 +264,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         {
             World.Places.ActiveInteractableLocations.Add(this);
         }
-        GameFiber.Yield();
+       // GameFiber.Yield();
         base.Activate(interiors, settings, crimes, weapons, time, World);
     }
     public override void Deactivate(bool deleteBlip)

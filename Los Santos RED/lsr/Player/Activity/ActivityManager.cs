@@ -687,7 +687,7 @@ public class ActivityManager
         }
         Player.LastFriendlyVehicle = toEnter.Vehicle;
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
-        WatchVehicleEntry();
+        WatchVehicleEntry(toEnter);
     }
     public void EnterVehicleInSpecificSeat(bool withBlocking, int seatIndex)
     {
@@ -710,7 +710,7 @@ public class ActivityManager
         }
         Player.LastFriendlyVehicle = toEnter.Vehicle;
         NativeFunction.Natives.TASK_ENTER_VEHICLE(Player.Character, toEnter.Vehicle, -1, seatIndex, 1f, (int)eEnter_Exit_Vehicle_Flags.ECF_RESUME_IF_INTERRUPTED | (int)eEnter_Exit_Vehicle_Flags.ECF_DONT_JACK_ANYONE);
-        WatchVehicleEntry();
+        WatchVehicleEntry(toEnter);
     }
     public void ToggleDoor(int doorIndex, bool withAnimation)
     {
@@ -852,8 +852,12 @@ public class ActivityManager
 
 
 
-    private void WatchVehicleEntry()
+    private void WatchVehicleEntry(VehicleExt toEnter)
     {
+        if(toEnter == null || !toEnter.Vehicle.Exists())
+        {
+            return;
+        }
         GameFiber DoorWatcher = GameFiber.StartNew(delegate
         {
             try
@@ -868,7 +872,7 @@ public class ActivityManager
                     {
                         break;
                     }
-                    if (Player.IsMoveControlPressed)
+                    if (Player.IsMoveControlPressed || toEnter == null || !toEnter.Vehicle.Exists() || toEnter.Vehicle.Speed >= 0.5f)
                     {
                         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                         break;

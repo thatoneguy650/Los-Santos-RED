@@ -32,6 +32,7 @@ class GoToOnFootTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
         PlaceToWalkTo = placeToWalkTo;
         LocationReachable = locationReachable;
+        
     }
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && !LocationReachable.HasReachedLocatePosition;
     public string DebugName => $"GoToOnFootTaskState";

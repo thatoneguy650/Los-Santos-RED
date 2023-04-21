@@ -332,7 +332,8 @@ public class GangDispatcher
         {
             Gang = GetRandomGang(SpawnLocation);
         }
-        if(Gang == null)
+        GameFiber.Yield();
+        if (Gang == null)
         {
             return false;
         }    
@@ -344,12 +345,14 @@ public class GangDispatcher
         {
             VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);
         }
+        GameFiber.Yield();
         string RequiredGroup = "";
         if (VehicleType != null)
         {
             RequiredGroup = VehicleType.RequiredPedGroup;
         }
         PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+        GameFiber.Yield();
         if (PersonType != null)
         {
             return true;
