@@ -1169,18 +1169,21 @@ public class Debug
     }
     private void DebugNumpad7()
     {
-        if (!Test)
-        {
-            //NativeFunction.Natives.ADD_PED_DECORATION(Game.LocalPlayer.Character, "multiplayer_overlays", "FM_Tat_F_003");
-            NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
-            Game.DisplaySubtitle("added DECOR");
-        }
-        else
-        {
-            NativeFunction.Natives.CLEAR_PED_DECORATIONS(Game.LocalPlayer.Character);
-            Game.DisplaySubtitle("removed DECOR");
-        }
-        Test = !Test;
+
+        ResetCops();
+
+        //if (!Test)
+        //{
+        //    //NativeFunction.Natives.ADD_PED_DECORATION(Game.LocalPlayer.Character, "multiplayer_overlays", "FM_Tat_F_003");
+        //    NativeFunction.Natives.ADD_PED_DECORATION_FROM_HASHES(Game.LocalPlayer.Character, Game.GetHashKey("multiplayer_overlays"), Game.GetHashKey("FM_Tat_F_003"));
+        //    Game.DisplaySubtitle("added DECOR");
+        //}
+        //else
+        //{
+        //    NativeFunction.Natives.CLEAR_PED_DECORATIONS(Game.LocalPlayer.Character);
+        //    Game.DisplaySubtitle("removed DECOR");
+        //}
+        //Test = !Test;
         //DoUiCustomzierFont();
         //ParticleTest1();
         //string AudioFilePath = Ringtones.STTHOMAS.FileName;// string.Format("Plugins\\LosSantosRED\\audio\\{0}", "gta4_cellphone\\STTHOMAS.wav");
@@ -1195,7 +1198,8 @@ public class Debug
     }
     public void DebugNumpad8()
     {
-        Test222();
+        DoCops();
+        // Test222();
         //SpawnLocation taxiSpawn = new SpawnLocation(Game.LocalPlayer.Character.Position);
         //taxiSpawn.GetClosestStreet(true);
         //DispatchableVehicle taxiVehicle = new DispatchableVehicle("taxi", 100, 100);
@@ -1457,6 +1461,35 @@ public class Debug
         //DisplaySprite();
         //DisableAllSpawning();
         //Player.CellPhone.AddScamText();
+    }
+
+
+    private void DoCops()
+    {
+        Vector3 PlaceToDriveTo = Game.LocalPlayer.Character.Position;
+        foreach (Cop cop in World.Pedestrians.Police)
+        {
+            if(cop.Pedestrian.Exists() && cop.Pedestrian.CurrentVehicle.Exists())
+            {
+                cop.Pedestrian.BlockPermanentEvents = true;
+                cop.Pedestrian.KeepTasks = true;
+                NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD_LONGRANGE(cop.Pedestrian, cop.Pedestrian.CurrentVehicle, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 70f, (int)eCustomDrivingStyles.Code3, 10f); //30f speed
+                EntryPoint.WriteToConsole($"COP {cop.Handle} SET TO DRIVE TO PLAYER");
+            }
+        }
+    }
+
+
+    private void ResetCops()
+    {
+        foreach (Cop cop in World.Pedestrians.Police)
+        {
+            if (cop.Pedestrian.Exists())
+            {
+                cop.ClearTasks(true);
+                EntryPoint.WriteToConsole($"COP {cop.Handle} CLEARED");
+            }
+        }
     }
 
     private void ShuffleTest()
@@ -3814,6 +3847,10 @@ public class Debug
             weaponinventorystring += $" HasHeavyWeaponOnPerson {cop.WeaponInventory.HasHeavyWeaponOnPerson}";
 
 
+
+            string retardedcops = $"IsDriver:{cop.IsDriver}";
+
+
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
                 EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} " +
@@ -3822,18 +3859,18 @@ public class Debug
                     $"Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                     EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} " +
                     $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} " +
-                    $"WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
+                    $"WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops}", 5);
 
             }
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                 EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops}", 5);
             }
             
         }

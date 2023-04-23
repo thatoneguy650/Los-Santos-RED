@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 public class GeneralLocate : ComplexTask, ILocationReachable
 {
+    protected uint GameTimeStarted;
     protected IComplexTaskable complexTaskablePed;
     protected PedExt PedGeneral;
     protected IEntityProvideable World;
@@ -48,15 +49,24 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     
     public override void ReTask()
     {
-        Start();
+        //Start();
     }
     public override void Start()
     {
+        GameTimeStarted = Game.GameTime;
         GetLocations();
+
+
+        HasReachedLocatePosition = false;
+        prevPlaceToDriveTo = PlaceToDriveTo;
+        prevPlaceToWalkTo = PlaceToWalkTo;
+        LocationsChanged = false;
+
+
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTING Task{CurrentTaskState?.DebugName}");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
     }
     public override void Stop()
     {
@@ -66,32 +76,29 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     {
         GetLocations();
         CheckLocationChanged();
-        if (LocationsChanged)
-        {
-            Restart();
-        }
-        else
-        {
-            StandardUpdate();
-        }
+        StandardUpdate();
         UpdateVehicleState();
     }
-    private void Restart()
-    {
-        CurrentTaskState?.Stop();
-        GetNewTaskState();
-        CurrentTaskState?.Start();
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} RESTARTING Task{CurrentTaskState?.DebugName} PlaceToDriveTo{PlaceToDriveTo} PlaceToWalkTo {PlaceToWalkTo}");
-    }
+    //private void Restart()
+    //{
+    //    CurrentTaskState?.Stop();
+    //    GetNewTaskState();
+    //    CurrentTaskState?.Start();
+    //    EntryPoint.WriteToConsole($"{PedGeneral.Handle} RESTARTED Task{CurrentTaskState?.DebugName} PlaceToDriveTo{PlaceToDriveTo} PlaceToWalkTo {PlaceToWalkTo}");
+    //}
     public virtual void OnLocationReached()
     {
         HasReachedLocatePosition = true;
     }
     private void StandardUpdate()
     {
-        if (CurrentTaskState == null || !CurrentTaskState.IsValid)
+        if (CurrentTaskState == null || !CurrentTaskState.IsValid || LocationsChanged)
         {
-            Start();
+            if (Game.GameTime - GameTimeStarted >= 1000)
+            {
+                Start();
+                EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
+            }
         }
         else
         {
@@ -131,7 +138,9 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     }
     private void CheckLocationChanged()
     {
-        if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
+        float driveChangeDistance = prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo);
+        float walkChangeDistance = prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo);
+        if ((PedGeneral.IsInVehicle && driveChangeDistance <= 15f) || (walkChangeDistance <= 10f)) //if (prevPlaceToDriveTo != PlaceToDriveTo  || prevPlaceToWalkTo != PlaceToWalkTo)// if (prevPlaceToDriveTo.DistanceTo2D(PlaceToDriveTo) <= 5f && prevPlaceToWalkTo.DistanceTo2D(PlaceToWalkTo) <= 5f)       
         {
             LocationsChanged = false;
             return;
@@ -140,7 +149,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed driveChangeDistance{driveChangeDistance} walkChangeDistance{walkChangeDistance}");
     }
 
     protected virtual void GetLocations()

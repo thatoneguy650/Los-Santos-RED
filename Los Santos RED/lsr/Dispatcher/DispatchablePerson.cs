@@ -171,6 +171,7 @@ public class DispatchablePerson
         pedExt.TurretShootRate = RandomItems.GetRandomNumberInt(TurretShootRateMin, TurretShootRateMax);
         if (AlwaysHasLongGun)
         {
+            EntryPoint.WriteToConsole($"SET AlwaysHasLongGun {pedExt.Handle}");
             pedExt.AlwaysHasLongGun = true;
         }
         if (OverrideVoice != null && OverrideVoice.Any())
@@ -183,15 +184,18 @@ public class DispatchablePerson
         }
         if (DisableBulletRagdoll)
         {
+            EntryPoint.WriteToConsole($"SET DisableBulletRagdoll {pedExt.Handle}");
             NativeFunction.Natives.SET_PED_CONFIG_FLAG(pedExt.Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
         }
         if (DisableCriticalHits)
         {
+            EntryPoint.WriteToConsole($"SET DisableCriticalHits {pedExt.Handle}");
             NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(pedExt.Pedestrian, false);
         }
         pedExt.HasFullBodyArmor = HasFullBodyArmor;
         if (FiringPatternHash != 0)
         {
+            EntryPoint.WriteToConsole($"SET FiringPatternHash {pedExt.Handle}");
             NativeFunction.Natives.SET_PED_FIRING_PATTERN(pedExt.Pedestrian, FiringPatternHash);
         }
         if (overrideHealth)
@@ -209,23 +213,19 @@ public class DispatchablePerson
         {
             pedExt.Pedestrian.Accuracy = pedExt.Accuracy;
             NativeFunction.Natives.SET_PED_SHOOT_RATE(pedExt.Pedestrian, pedExt.ShootRate);
-            NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
+            //NativeFunction.Natives.SET_PED_COMBAT_ABILITY(pedExt.Pedestrian, pedExt.CombatAbility);
             if(pedExt.CombatMovement != -1)
             {
                 NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(pedExt.Pedestrian, pedExt.CombatMovement);
+                EntryPoint.WriteToConsole($"SET COMBAT MOVEMENT {pedExt.Handle} {pedExt.CombatMovement}");
             }
             if(pedExt.CombatRange != -1)
             {
                 NativeFunction.Natives.SET_PED_COMBAT_RANGE(pedExt.Pedestrian, pedExt.CombatRange);
+                EntryPoint.WriteToConsole($"SET COMBAT RANGE {pedExt.Handle} {pedExt.CombatRange}");
             }
         }
-
-
-        GameFiber.Yield();
-        if (!pedExt.Pedestrian.Exists())
-        {
-            return;
-        }
+        // return;
         if (PedConfigFlagsToSet != null && PedConfigFlagsToSet.Any())
         {
             PedConfigFlagsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
@@ -238,8 +238,6 @@ public class DispatchablePerson
         {
             CombatFloatsToSet.ForEach(x => x.ApplyToPed(pedExt.Pedestrian));
         }
-        //NativeFunction.Natives.SET_PED_COMBAT_ATTRIBUTES(Pedestrian, (int)eCombatAttributes.CA_DISABLE_ENTRY_REACTIONS, true);
-
     }
 
 

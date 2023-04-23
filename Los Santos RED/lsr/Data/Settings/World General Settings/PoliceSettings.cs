@@ -13,8 +13,13 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("If enabled, one star wanted levels not set by the mod will be ignored.")]
     public bool TakeExclusiveControlOverWantedLevelOneStarAndBelow { get; set; }
 
-    [Description("Any observed crime that results in deadly chase will automatically increase the wanted level to this number if less than current.")]
-    public int DeadlyChaseWantedLevelRequirement { get; set; }
+    [Description("Minimum wanted level allowed while lethal force is authorized.")]
+    public int DeadlyChaseMinimumWantedLevel { get; set; }
+
+    [Description("Maximum wanted level that the police can still chase without lethal force.")]
+    public int UnarmedChaseMaxWantedLevel { get; set; }
+
+
     [Description("Maximum wanted level allowed. Default/Recommended = 6. Maximum = 10.")]
     public int MaxWantedLevel { get; set; }
 
@@ -118,6 +123,7 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Minimum wanted level required to trigger a high response from the polce. Determines how fast they will drive to the wanted area.")]
     public int HighResponseWantedLevelRequirement { get; set; }
 
+
     public PoliceSettings()
     {
         SetDefault();
@@ -176,7 +182,8 @@ public class PoliceSettings : ISettingsDefaultable
 
      //   DeadlyChaseRequiresWantedLevel = true;
 
-        DeadlyChaseWantedLevelRequirement = 3;
+        DeadlyChaseMinimumWantedLevel = 3;
+        UnarmedChaseMaxWantedLevel = 3;
 
         MaxWantedLevel = 6;
 

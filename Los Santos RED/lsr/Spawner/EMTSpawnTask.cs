@@ -6,7 +6,7 @@ using Rage.Native;
 using System;
 using System.Linq;
 
-public class EMTSpawnTask :SpawnTask
+public class EMTSpawnTask : SpawnTask
 {
     private Agency Agency;
     private Vehicle SpawnedVehicle;
@@ -61,7 +61,7 @@ public class EMTSpawnTask :SpawnTask
             {
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup);
             }
-            if (PersonType != null)
+            if (PersonType != null && LastCreatedVehicleExists)
             {
                 PedExt Passenger = CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)

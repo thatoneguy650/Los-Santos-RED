@@ -101,14 +101,14 @@ public class LESpawnTask : SpawnTask
             {
                 PersonType = Agency.GetRandomPed(World.TotalWantedLevel, requiredGroup, false);
             }
-            if (PersonType != null)
+            if (PersonType != null && LastCreatedVehicleExists)
             {
-                //EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
+                EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
                 PedExt Passenger = CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
-                    //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
+                    EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
                 }
                 else
                 {
@@ -199,7 +199,7 @@ public class LESpawnTask : SpawnTask
                 }
                 PedExt Person = SetupAgencyPed(createdPed);
                 PersonType.SetPedVariation(createdPed, Agency.PossibleHeads, true);
-                GameFiber.Yield();
+               // GameFiber.Yield();
                 CreatedPeople.Add(Person);
                 return Person;
             }
@@ -294,13 +294,11 @@ public class LESpawnTask : SpawnTask
         Person.Pedestrian.WarpIntoVehicle(LastCreatedVehicle.Vehicle, seat);
         Person.AssignedVehicle = LastCreatedVehicle;
         Person.AssignedSeat = seat;
-
         if(VehicleType != null && VehicleType.ForceStayInSeats != null && VehicleType.ForceStayInSeats.Contains(seat))
         {
             Person.StayInVehicle = true;
             //EntryPoint.WriteToConsoleTestLong($"COP {Person.Handle} SET STAY IN VEHICLE Vehicle:{VehicleType.ModelName} seat:{seat}");
         }
-
         Person.UpdateVehicleState();
     }
     private void Setup()
@@ -315,24 +313,25 @@ public class LESpawnTask : SpawnTask
         }
         SetupCallSigns();
     }
-    private PedExt SetupAgencyPed(Ped ped)
+    private PedExt SetupAgencyPed(Ped Pedestrian)
     {
-        if (!ped.Exists())
+        if (!Pedestrian.Exists())
         {
             return null;
         }
-        ped.IsPersistent = true;
+        Pedestrian.IsPersistent = true;
         EntryPoint.PersistentPedsCreated++;//TR
-        ped.RelationshipGroup = new RelationshipGroup("COP");
-        NativeFunction.CallByName<bool>("SET_PED_AS_COP", ped, true);
-        bool isMale = PersonType.IsMale(ped);
-        Cop PrimaryCop = new Cop(ped, Settings, ped.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        RelationshipGroup rg = new RelationshipGroup("COP");
+        Pedestrian.RelationshipGroup = rg;
+        NativeFunction.CallByName<bool>("SET_PED_AS_COP", Pedestrian, true);
+        bool isMale = PersonType.IsMale(Pedestrian);
+        Cop PrimaryCop = new Cop(Pedestrian, Settings, Pedestrian.Health, Agency, true, null, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
         World.Pedestrians.AddEntity(PrimaryCop);
-        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);
-        if (ped.Exists())
+        PrimaryCop.SetStats(PersonType, Weapons, AddBlip, UnitCode);//TASKING IS BROKEN FOR ALL COPS FAR FROM PLAYER AND ALL OTHER PEDS
+        if (Pedestrian.Exists())
         {
-            PrimaryCop.SpawnPosition = ped.Position;
-            PrimaryCop.SpawnHeading = ped.Heading;
+            PrimaryCop.SpawnPosition = Pedestrian.Position;
+            PrimaryCop.SpawnHeading = Pedestrian.Heading;
             if (SpawnWithAllWeapons || PersonType.AlwaysHasLongGun)
             {
                 PrimaryCop.WeaponInventory.GiveHeavyWeapon();

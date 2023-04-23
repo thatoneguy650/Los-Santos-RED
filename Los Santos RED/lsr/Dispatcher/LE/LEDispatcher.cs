@@ -861,7 +861,7 @@ public class LEDispatcher
             spawnTask.AllowBuddySpawn = allowBuddy;
             spawnTask.ClearArea = clearArea;
             spawnTask.SpawnRequirement = spawnRequirement;
-            spawnTask.PlacePedOnGround = VehicleType == null;
+           // spawnTask.PlacePedOnGround = VehicleType == null;
             spawnTask.AttemptSpawn();
             GameFiber.Yield();
             spawnTask.CreatedPeople.ForEach(x => { World.Pedestrians.AddEntity(x); x.IsLocationSpawned = isLocationSpawn; });
@@ -898,7 +898,7 @@ public class LEDispatcher
             {
                 SpawnLocation.GetClosestStreet(Player.IsWanted);
                 SpawnLocation.GetClosestSidewalk();
-                GameFiber.Yield();
+                //GameFiber.Yield();
                 isValidSpawn = AreSpawnsValidSpawn(SpawnLocation);
             }
             timesTried++;

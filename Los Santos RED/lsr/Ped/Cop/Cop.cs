@@ -159,9 +159,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
                     HasSeenDistressedPed = false;
                 }
-
                 UpdateCombatFlags();
-
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
@@ -182,15 +180,15 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     }
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip, string forceGroupName)
     {
-        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
         if (!Pedestrian.Exists())
         {
             return;
         }
+        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
         if (!IsAnimal)
         {
             WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
-            GameFiber.Yield();
+            //GameFiber.Yield();
         }
         if (!Pedestrian.Exists())
         {
@@ -211,19 +209,20 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GroupName = "Cop";
         }
-        GameFiber.Yield();
-        if(!Pedestrian.Exists())
-        {
-            return;
-        }
+        // GameFiber.Yield();
+        //if (!Pedestrian.Exists())
+        //{
+        //     return;
+        //  }
         if (addBlip)
         {
             AddBlip();
         }
-        if(IsAnimal)
+        if (IsAnimal)
         {
             return;
         }
+        //return;
         if (Settings.SettingsManager.PoliceSettings.ForceDefaultWeaponAnimations)
         {
             NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Pedestrian, Game.GetHashKey("Default"));
@@ -290,4 +289,139 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             player.SetAngeredCop();
         }
     }
+
+    //public void AddDivision(string forceGroupName)
+    //{
+    //    if (AssignedAgency.Division != -1)
+    //    {
+    //        Division = AssignedAgency.Division;
+    //        UnitType = forceGroupName;
+    //        BeatNumber = AssignedAgency.GetNextBeatNumber();
+    //        GroupName = $"{AssignedAgency.ID} {Division}-{UnitType}-{BeatNumber}";
+    //    }
+    //    else if (AssignedAgency.MemberName != "")
+    //    {
+    //        GroupName = AssignedAgency.MemberName;
+    //    }
+    //    else
+    //    {
+    //        GroupName = "Cop";
+    //    }
+    //}
+
+    //public void SetPedExtPermanentStats(DispatchablePerson dispatchablePerson, bool overrideHealth, bool overrideArmor, bool overrideAccuracy)
+    //{
+    //    if(dispatchablePerson == null)
+    //    {
+    //        return;
+    //    }
+    //    Accuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.AccuracyMin, dispatchablePerson.AccuracyMax);
+    //    ShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.ShootRateMin, dispatchablePerson.ShootRateMax);
+    //    CombatAbility = RandomItems.GetRandomNumberInt(dispatchablePerson.CombatAbilityMin, dispatchablePerson.CombatAbilityMax);
+    //    CombatMovement = CombatMovement;
+    //    CombatRange = CombatRange;
+    //    TaserAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserAccuracyMin, dispatchablePerson.TaserAccuracyMax);
+    //    TaserShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TaserShootRateMin, dispatchablePerson.TaserShootRateMax);
+    //    VehicleAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleAccuracyMin, dispatchablePerson.VehicleAccuracyMax);
+    //    VehicleShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.VehicleShootRateMin, dispatchablePerson.VehicleShootRateMax);
+    //    TurretAccuracy = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretAccuracyMin, dispatchablePerson.TurretAccuracyMax);
+    //    TurretShootRate = RandomItems.GetRandomNumberInt(dispatchablePerson.TurretShootRateMin, dispatchablePerson.TurretShootRateMax);
+    //    if (AlwaysHasLongGun)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} AlwaysHasLongGun");
+    //        AlwaysHasLongGun = true;
+    //    }
+    //    if (dispatchablePerson.OverrideVoice != null && dispatchablePerson.OverrideVoice.Any())
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} VoiceName");
+    //        VoiceName = dispatchablePerson.OverrideVoice.PickRandom();
+    //    }
+    //    if (!Pedestrian.Exists())
+    //    {
+    //        return;
+    //    }
+
+        
+
+    //    if (dispatchablePerson.DisableBulletRagdoll)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} DisableBulletRagdoll");
+    //        NativeFunction.Natives.SET_PED_CONFIG_FLAG(Pedestrian, (int)107, true);//PCF_DontActivateRagdollFromBulletImpact		= 107,  // Blocks ragdoll activation when hit by a bullet
+    //    }
+
+
+    //    if (dispatchablePerson.DisableCriticalHits)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} DisableCriticalHits");
+    //        NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(Pedestrian, false);
+    //    }
+    //    HasFullBodyArmor = HasFullBodyArmor;
+    //    if (dispatchablePerson.FiringPatternHash != 0)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} FiringPatternHash");
+    //        NativeFunction.Natives.SET_PED_FIRING_PATTERN(Pedestrian, dispatchablePerson.FiringPatternHash);
+    //    }
+
+
+        
+
+    //    if (overrideHealth)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} health");
+    //        int health = RandomItems.GetRandomNumberInt(dispatchablePerson.HealthMin, dispatchablePerson.HealthMax) + 100 + (IsAnimal ? 100 : 0);
+    //        Pedestrian.MaxHealth = health;
+    //        Pedestrian.Health = health;
+    //    }
+    //    if (overrideArmor)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} armor");
+    //        int armor = RandomItems.GetRandomNumberInt(dispatchablePerson.ArmorMin, dispatchablePerson.ArmorMax);
+    //        Pedestrian.Armor = armor;
+    //    }
+
+        
+
+    //    if (overrideAccuracy)
+    //    {
+    //        EntryPoint.WriteToConsole($"COP {Handle} overrideAccuracy");
+    //        Pedestrian.Accuracy = Accuracy;
+    //        NativeFunction.Natives.SET_PED_SHOOT_RATE(Pedestrian, ShootRate);
+    //        NativeFunction.Natives.SET_PED_COMBAT_ABILITY(Pedestrian, CombatAbility);
+    //        if (CombatMovement != -1)
+    //        {
+    //            NativeFunction.Natives.SET_PED_COMBAT_MOVEMENT(Pedestrian, CombatMovement);
+    //            EntryPoint.WriteToConsole($"SET COMBAT MOVEMENT {Handle} {CombatMovement}");
+    //        }
+    //        if (CombatRange != -1)
+    //        {
+    //            NativeFunction.Natives.SET_PED_COMBAT_RANGE(Pedestrian, CombatRange);
+    //            EntryPoint.WriteToConsole($"SET COMBAT RANGE {Handle} {CombatRange}");
+    //        }
+    //    }
+
+    //  //  return;
+
+
+       
+
+    //    //GameFiber.Yield();
+    //    //if (!Pedestrian.Exists())
+    //    //{
+    //    //    return;
+    //    //}
+
+
+    //    //if (dispatchablePerson.PedConfigFlagsToSet != null && dispatchablePerson.PedConfigFlagsToSet.Any())
+    //    //{
+    //    //    dispatchablePerson.PedConfigFlagsToSet.ForEach(x => x.ApplyToPed(Pedestrian));
+    //    //}
+    //    //if (dispatchablePerson.CombatAttributesToSet != null && dispatchablePerson.CombatAttributesToSet.Any())
+    //    //{
+    //    //    dispatchablePerson.CombatAttributesToSet.ForEach(x => x.ApplyToPed(Pedestrian));
+    //    //}
+    //    //if (dispatchablePerson.CombatFloatsToSet != null && dispatchablePerson.CombatFloatsToSet.Any())
+    //    //{
+    //    //    dispatchablePerson.CombatFloatsToSet.ForEach(x => x.ApplyToPed(Pedestrian));
+    //    //}
+    //}
 }

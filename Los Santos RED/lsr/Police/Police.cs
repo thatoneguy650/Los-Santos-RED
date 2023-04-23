@@ -36,6 +36,7 @@ namespace LosSantosRED.lsr
         public void Update()
         {
             UpdateCops();
+            GameFiber.Yield();
             UpdateRecognition();
             if (Player.IsBustable && (Player.IsIncapacitated || Player.WantedLevel == 1 || (Player.WantedLevel > 1 && Player.IsDangerouslyArmed && Player.IsStill)) && Player.AnyPoliceCanSeePlayer && World.Pedestrians.PoliceList.Any(x => x.ShouldBustPlayer))
             {
@@ -109,7 +110,7 @@ namespace LosSantosRED.lsr
                         {
                             closestDistanceToPlayer = Cop.DistanceToPlayer;
                         }
-                        if(Cop.DistanceToPlayer < closestCopDistance)
+                        if (Cop.DistanceToPlayer < closestCopDistance)
                         {
                             PrimaryPlayerCop = Cop;
                             closestCopDistance = Cop.DistanceToPlayer;
@@ -125,9 +126,9 @@ namespace LosSantosRED.lsr
                 TotalChecked++;
                 GameFiber.Yield();
             }
-            if(Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
+            if (Player.ClosestCopToPlayer != null && PrimaryPlayerCop != null && Player.ClosestCopToPlayer.Handle != PrimaryPlayerCop.Handle)
             {
-                if(Math.Abs(Player.ClosestCopToPlayer.DistanceToPlayer - PrimaryPlayerCop.DistanceToPlayer) >= 2f)
+                if (Math.Abs(Player.ClosestCopToPlayer.DistanceToPlayer - PrimaryPlayerCop.DistanceToPlayer) >= 2f)
                 {
                     Player.ClosestCopToPlayer = PrimaryPlayerCop;
                 }
@@ -135,7 +136,7 @@ namespace LosSantosRED.lsr
             else
             {
                 Player.ClosestCopToPlayer = PrimaryPlayerCop;
-            } 
+            }
             Player.ClosestPoliceDistanceToPlayer = closestDistanceToPlayer;
         }
         private void UpdateRecognition()
@@ -220,7 +221,7 @@ namespace LosSantosRED.lsr
                 PrevAnyPoliceKnowInteriorLocation = Player.AnyPoliceKnowInteriorLocation;
             }
 
-            if(Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
+            if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
             {
                 Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
             }
@@ -229,7 +230,7 @@ namespace LosSantosRED.lsr
         }
         private void UpdateWantedItems()
         {
-            if(!Player.IsWanted)
+            if (!Player.IsWanted)
             {
                 return;
             }
@@ -248,14 +249,14 @@ namespace LosSantosRED.lsr
             }
 
 
-            if(Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
+            if (Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
                 Player.StreetPlacePoliceLastSeenPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceLastSeenPlayer, true);
                 prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
-            
+
 
 
 

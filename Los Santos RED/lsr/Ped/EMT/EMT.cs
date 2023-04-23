@@ -69,15 +69,15 @@ public class EMT : PedExt
 
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
-        dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.CivilianSettings.OverrideHealth, false, Settings.SettingsManager.CivilianSettings.OverrideAccuracy);
+        //dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.CivilianSettings.OverrideHealth, false, Settings.SettingsManager.CivilianSettings.OverrideAccuracy);
         if (!Pedestrian.Exists())
         {
             return;
         }
-        if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")
-        {
-            GroupName = AssignedAgency.MemberName;
-        }
+       // if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")
+       // {
+       //     GroupName = AssignedAgency.MemberName;
+       // }
         if (addBlip)
         {
             AddBlip();

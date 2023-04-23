@@ -417,7 +417,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                if (Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement)// 3)
+                if (Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.UnarmedChaseMaxWantedLevel)// 3)
                 {
                     if (LethalForceAuthorized)
                     {
@@ -525,9 +525,9 @@ namespace LosSantosRED.lsr
                 Player.SetWantedLevel(Player.WantedLevel + 1, "WantedLevelIncreasesOverTime", true);
                 Player.OnRequestedBackUp();
             }
-            if(CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement)
+            if(CurrentPoliceState == PoliceState.DeadlyChase && Player.WantedLevel < Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel)
             {
-                Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseWantedLevelRequirement}+ wanted level", true);
+                Player.SetWantedLevel(Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel, $"Deadly chase requires {Settings.SettingsManager.PoliceSettings.DeadlyChaseMinimumWantedLevel}+ wanted level", true);
             }
             PoliceKilledUpdate();     
         }

@@ -13,6 +13,7 @@ public class DebugSettings : ISettingsDefaultable
     public bool ShowCivilianPerceptionArrows { get; set; }
     public bool ShowTrafficArrows { get; set; }
     public float CanineRunSpeed { get;  set; }
+    public bool SetupCopFully { get; set; }
 
     public DebugSettings()
     {
@@ -25,5 +26,6 @@ public class DebugSettings : ISettingsDefaultable
         ShowCivilianPerceptionArrows = false;
         ShowTrafficArrows = false;
         CanineRunSpeed = 10.0f;
+        SetupCopFully = true;
     }
 }

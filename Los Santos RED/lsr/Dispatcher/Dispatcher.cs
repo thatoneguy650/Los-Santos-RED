@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 public class Dispatcher
 {
+    private uint GameTimeStartedDispatch;
     private readonly IAgencies Agencies;
     private readonly IDispatchable Player;
     private readonly ISettingsProvideable Settings;
@@ -62,6 +63,7 @@ public class Dispatcher
     }
     public void Setup()
     {
+        GameTimeStartedDispatch = Game.GameTime;
         LEDispatcher = new LEDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems);
         EMSDispatcher = new EMSDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, ModItems);
         SecurityDispatcher = new SecurityDispatcher(World, Player, Agencies, Settings, Streets, Zones, Jurisdictions, Weapons, Names, PlacesOfInterest, Crimes, ModItems);
@@ -74,6 +76,16 @@ public class Dispatcher
     {
         if(Player.IsCustomizingPed)
         {
+            return;
+        }
+        if(Player.RecentlyStartedPlaying)
+        {
+            EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING NO DISPTACH");
+            return;
+        }
+        if(Game.GameTime - GameTimeStartedDispatch <= 10000)
+        {
+            EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
             return;
         }
         if (!LEDispatcher.Dispatch())

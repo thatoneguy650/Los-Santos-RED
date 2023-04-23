@@ -939,7 +939,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return;
         }    
     }
-    protected void AddBlip()
+    public void AddBlip()
     {
         if(!Pedestrian.Exists())
         {

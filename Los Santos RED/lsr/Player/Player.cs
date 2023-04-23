@@ -436,6 +436,7 @@ namespace Mod
         //Required
         public void Setup()
         {
+            GameTimeStartedPlaying = Game.GameTime;
             Violations.Setup();
             Respawning.Setup();
             Scanner.Setup();
