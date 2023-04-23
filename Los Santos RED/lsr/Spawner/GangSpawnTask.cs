@@ -152,7 +152,13 @@ public class GangSpawnTask : SpawnTask
     {
         try
         {
-            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(Position.X, Position.Y, Position.Z), SpawnLocation.Heading);
+            Vector3 CreatePos = Position;
+            if (!PlacePedOnGround)
+            {
+                CreatePos.Z += 1.0f;
+                EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
+            }
+            Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);
             GameFiber.Yield();
             if (createdPed.Exists())
