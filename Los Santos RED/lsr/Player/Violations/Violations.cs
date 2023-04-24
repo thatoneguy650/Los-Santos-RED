@@ -109,7 +109,7 @@ namespace LosSantosRED.lsr
         }
         private void AddObservedAndReported()
         {
-            foreach (Crime Violating in CrimesViolating)
+            foreach (Crime Violating in CrimesViolating.ToList())
             {
                 if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
                 {

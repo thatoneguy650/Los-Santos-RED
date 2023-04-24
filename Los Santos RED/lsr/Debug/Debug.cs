@@ -729,7 +729,8 @@ public class Debug
     }
     private void DebugNumpad5()
     {
-        ShuffleTest();
+        PhoneTest();
+        //ShuffleTest();
         //OffsetGarbage();
         
         //AnimationTester();
@@ -1106,12 +1107,13 @@ public class Debug
 
     private void DebugNumpad6()
     {
-        DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
-        WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
-        if (closestForecast != null)
-        {
-            Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
-        }
+        ShockTest();
+        //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
+        //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
+        //if (closestForecast != null)
+        //{
+        //    Game.DisplaySubtitle($"DEBUG Time is {Time.CurrentDateTime} and the closest forcast is {closestForecast.DateTime} {closestForecast.AirTemperature} F {closestForecast.Description} ");
+        //}
 
 
         //Player.Scanner.DebugPlayDispatch();
@@ -1491,7 +1493,91 @@ public class Debug
             }
         }
     }
+    private void PhoneTest()
+    {
 
+        GameFiber.StartNew(delegate
+        {
+            Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
+            GameFiber.Yield();
+            if (coolPed.Exists())
+            {
+                coolPed.BlockPermanentEvents = true;
+                coolPed.KeepTasks = true;
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000, true,true);//100f
+                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1, true, true);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            Game.DisplayHelp("PRESS Z TO CANCEL");
+            while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+            {
+                GameFiber.Sleep(25);
+            }
+            if (coolPed.Exists())
+            {
+                coolPed.Delete();
+            }
+
+        }, "Run Debug Logic");
+
+
+
+
+
+
+
+    }
+    private void ShockTest()
+    {
+
+        GameFiber.StartNew(delegate
+        {
+            Ped coolPed = new Ped(Game.LocalPlayer.Character.GetOffsetPositionFront(10f).Around2D(10f), 0f);
+            GameFiber.Yield();
+            if (coolPed.Exists())
+            {
+                coolPed.BlockPermanentEvents = true;
+                coolPed.KeepTasks = true;
+                unsafe
+                {
+                    int lol = 0;
+                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                    NativeFunction.CallByName<bool>("TASK_SHOCKING_EVENT_BACK_AWAY", 0, 0);//100f
+                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", coolPed, lol);
+                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+                }
+            }
+            Game.DisplayHelp("PRESS Z TO CANCEL");
+            while (coolPed.Exists() && !Game.IsKeyDownRightNow(Keys.Z) && ModController.IsRunning)
+            {
+                GameFiber.Sleep(25);
+            }
+            if (coolPed.Exists())
+            {
+                coolPed.Delete();
+            }
+
+        }, "Run Debug Logic");
+
+
+
+
+
+
+
+    }
     private void ShuffleTest()
     {
         //spawn car, put me in, put them in passenger, kill them, shuffle seat, see what happens?

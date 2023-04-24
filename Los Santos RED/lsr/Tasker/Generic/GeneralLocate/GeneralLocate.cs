@@ -57,16 +57,16 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         GetLocations();
 
 
-        HasReachedLocatePosition = false;
+        //HasReachedLocatePosition = false;
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
-        LocationsChanged = false;
+       // LocationsChanged = false;
 
 
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
+        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
     }
     public override void Stop()
     {
@@ -97,7 +97,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
             if (Game.GameTime - GameTimeStarted >= 1000)
             {
                 Start();
-                EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
+                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
             }
         }
         else
@@ -149,7 +149,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed driveChangeDistance{driveChangeDistance} walkChangeDistance{walkChangeDistance}");
+        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} General Locate, Search Place Changed driveChangeDistance{driveChangeDistance} walkChangeDistance{walkChangeDistance}");
     }
 
     protected virtual void GetLocations()

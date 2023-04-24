@@ -185,10 +185,14 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             return;
         }
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.PoliceSettings.OverrideHealth, Settings.SettingsManager.PoliceSettings.OverrideArmor, Settings.SettingsManager.PoliceSettings.OverrideAccuracy);
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         if (!IsAnimal)
         {
             WeaponInventory.IssueWeapons(Weapons, true, true, true, dispatchablePerson);
-            //GameFiber.Yield();
+            GameFiber.Yield();
         }
         if (!Pedestrian.Exists())
         {
@@ -209,11 +213,11 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             GroupName = "Cop";
         }
-        // GameFiber.Yield();
-        //if (!Pedestrian.Exists())
-        //{
-        //     return;
-        //  }
+        GameFiber.Yield();
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
         if (addBlip)
         {
             AddBlip();

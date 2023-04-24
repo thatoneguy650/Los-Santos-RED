@@ -127,10 +127,10 @@ public class EMTSpawnTask : SpawnTask
         try
         {
             Vector3 CreatePos = Position;
-            if (!PlacePedOnGround)
+            if (!PlacePedOnGround || VehicleType != null)
             {
                 CreatePos.Z += 1.0f;
-                EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
+                //EntryPoint.WriteToConsole("ADDED HIEGHT TO SPAWN");
             }
             Ped createdPed = new Ped(PersonType.ModelName, new Vector3(CreatePos.X, CreatePos.Y, CreatePos.Z), SpawnLocation.Heading);
             EntryPoint.SpawnedEntities.Add(createdPed);

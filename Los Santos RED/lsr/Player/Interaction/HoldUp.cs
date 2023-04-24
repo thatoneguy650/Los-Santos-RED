@@ -255,7 +255,7 @@ public class HoldUp : Interaction
 
         string ItemsFound;
         Target.HasBeenLooted = true;
-        if(RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
+        if(RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
         {
             Target.PedInventory.AddRandomItems(ModItems);
         }

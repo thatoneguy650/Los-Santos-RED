@@ -28,6 +28,8 @@ namespace LSR.Vehicles
         private int Health = 1000;
         private bool IsOnFire;
         private uint GameTimeBecameEmpty;
+        private bool HasAddedRandomItems = false;
+        private bool HasAddedRandomWeapons = false;
         public VehicleInteractionMenu VehicleInteractionMenu { get; private set; }
         public SimpleInventory SimpleInventory { get; private set; }
         public VehicleClass VehicleClass => vehicleClass;
@@ -41,7 +43,6 @@ namespace LSR.Vehicles
         public Blip AttachedBlip { get; set; }
         public bool IsHotWireLocked { get; set; } = false;
         public bool IsDisabled { get; set; } = false;
-        public bool HasAddedRandomItems { get; set; } = false;
         public Vehicle Vehicle { get; set; } = null;
         public Vector3 PlaceOriginallyEntered { get; set; }
         public Radio Radio { get; set; }
@@ -168,6 +169,7 @@ namespace LSR.Vehicles
         public bool IsBicycle { get; private set; } = false;
         public bool IsMotorcycle { get; private set; } = false;
         public bool IsRandomlyLocked { get; set; } = false;
+        public virtual bool CanHaveRandomWeapons { get; set; } = true;
         public virtual bool CanHaveRandomItems { get; set; } = true;
         public virtual bool CanRandomlyHaveIllegalItems { get; set; } = true;
         private void GetFuelTankCapacity()
@@ -442,6 +444,18 @@ namespace LSR.Vehicles
             }
             return VehicleName;
         }
+        public bool CanLoadBodies
+        {
+            get
+            {
+                if (VehicleClass == VehicleClass.Motorcycle || VehicleClass == VehicleClass.Industrial || VehicleClass == VehicleClass.Utility || VehicleClass == VehicleClass.Cycle || VehicleClass == VehicleClass.Boat ||
+                    VehicleClass == VehicleClass.Helicopter || VehicleClass == VehicleClass.Plane || VehicleClass == VehicleClass.Rail || VehicleClass == VehicleClass.Service)
+                {
+                    return false;
+                }
+                return true;
+            }
+        }
         public string FullDescription()
         {
             string description = "";
@@ -600,6 +614,8 @@ namespace LSR.Vehicles
         public bool WasSpawnedEmpty { get; set; } = false;
         public bool OwnedByPlayer { get; internal set; }
         public bool AllowVanityPlates { get; set; } = true;
+ 
+
         private int ClosestColor(List<Color> colors, Color target)
         {
             var colorDiffs = colors.Select(n => ColorDiff(n, target)).Min(n => n);
@@ -923,7 +939,7 @@ namespace LSR.Vehicles
         }
         public VehicleDoorSeatData GetClosestPedStorageBone(IInteractionable Player, float maxDistance, IVehicleSeatAndDoorLookup vehicleSeatDoorData)
         {
-            if(!Vehicle.Exists()) 
+            if(!Vehicle.Exists() || !CanLoadBodies) 
             {
                 return null;
             }
@@ -1025,8 +1041,31 @@ namespace LSR.Vehicles
                 HasAddedRandomItems = true;
                 return;
             }
-            SimpleInventory.AddRandomItems(modItems, 6, 2, CanRandomlyHaveIllegalItems);
+            if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
+            {
+                SimpleInventory.AddRandomItems(modItems);
+            }
             HasAddedRandomItems = true;
+        }
+        public void HandleRandomWeapons(IModItems modItems, IWeapons weapons)
+        {
+            if (HasAddedRandomWeapons)
+            {
+                EntryPoint.WriteToConsole("ALREADY ADDED RANDOM WEAPONS");
+                return;
+            }
+            if (!CanHaveRandomWeapons)
+            {
+                HasAddedRandomWeapons = true;
+                EntryPoint.WriteToConsole("CANT HAVE RANDOM WEAPONS");
+                return;
+            }
+            if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomWeapons))
+            {
+                EntryPoint.WriteToConsole("ATTEMPT ADD RANDOM WEAPON");
+                WeaponStorage.AddRandomWeapons(modItems, weapons);
+            }
+            HasAddedRandomWeapons = true;
         }
     }
 }

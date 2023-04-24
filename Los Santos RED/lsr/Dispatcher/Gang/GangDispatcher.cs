@@ -223,11 +223,11 @@ public class GangDispatcher
         {
             return;
         }
-        foreach (GangMember emt in DeleteableGangMembers)
+        foreach (GangMember gangMember in DeleteableGangMembers)
         {
-            if (ShouldBeRecalled(emt))
+            if (ShouldBeRecalled(gangMember))
             {
-                Delete(emt);
+                Delete(gangMember);
                 GameFiber.Yield();
             }
         }
@@ -387,6 +387,10 @@ public class GangDispatcher
     }
     private bool ShouldBeRecalled(GangMember gangMember)
     {
+        if(!gangMember.RecentlyUpdated)
+        {
+            return false;
+        }
         if (gangMember.IsInVehicle)
         {
             return gangMember.DistanceToPlayer >= DistanceToDeleteInVehicle;

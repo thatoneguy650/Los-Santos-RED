@@ -39,8 +39,6 @@ namespace LosSantosRED.lsr
             ModDataFileManager = new ModDataFileManager();
         }
         public bool IsRunning { get; private set; }
-        //test
-
         public bool RunUI { get; set; } = true;
         public bool RunInput { get; set; } = true;
         public bool RunOther { get; set; } = true;
@@ -56,12 +54,12 @@ namespace LosSantosRED.lsr
             }
             ModDataFileManager = new ModDataFileManager();
             ModDataFileManager.Setup();
-
-
-            //WavAudioPlayer = new WavAudioPlayer();
+            GameFiber.Yield();
             NAudioPlayer = new NAudioPlayer(ModDataFileManager.Settings);
+            NAudioPlayer.Setup();
+            GameFiber.Yield();
             NAudioPlayer2 = new NAudioPlayer(ModDataFileManager.Settings);
-            //MediaPlayerAudio = new MediaPlayerAudio(ModDataFileManager.Settings);
+            NAudioPlayer2.Setup();
             GameFiber.Yield();
             Time = new Mod.Time(ModDataFileManager.Settings);
             Time.Setup();
@@ -82,19 +80,12 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             PedSwap = new PedSwap(Time, Player, ModDataFileManager.Settings, World, ModDataFileManager.Weapons, ModDataFileManager.Crimes, ModDataFileManager.Names, ModDataFileManager.ModItems, World, ModDataFileManager.RelationshipGroups, 
                 ModDataFileManager.ShopMenus, ModDataFileManager.DispatchablePeople, ModDataFileManager.Heads, ModDataFileManager.ClothesNames, ModDataFileManager.Gangs,ModDataFileManager.Agencies,ModDataFileManager.TattooNames, ModDataFileManager.GameSaves, ModDataFileManager.SavedOutfits);
-
             GameFiber.Yield();
             Tasker = new Mod.Tasker(World, Player, ModDataFileManager.Weapons, ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             Tasker.Setup();
-
-
-
             GameFiber.Yield();
             Weather = new WeatherReporting(NAudioPlayer, ModDataFileManager.Settings, Time, Player);
             Weather.Setup();
-
-
-
             GameFiber.Yield();
             Dispatcher = new Dispatcher(World, Player, ModDataFileManager.Agencies, ModDataFileManager.Settings, ModDataFileManager.Streets, ModDataFileManager.Zones, ModDataFileManager.Jurisdictions, ModDataFileManager.Weapons, ModDataFileManager.Names, ModDataFileManager.Crimes, 
                 ModDataFileManager.RelationshipGroups, ModDataFileManager.Gangs, ModDataFileManager.GangTerritories, ModDataFileManager.ShopMenus, ModDataFileManager.PlacesOfInterest, Weather,Time, ModDataFileManager.ModItems);
@@ -109,12 +100,9 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             VanillaManager = new VanillaManager(ModDataFileManager.Settings, ModDataFileManager.PlacesOfInterest);
             VanillaManager.Setup();
-
             GameFiber.Yield();
             WeatherManager = new WeatherManager(ModDataFileManager.Settings, Time, ModDataFileManager.WeatherForecasts);
             WeatherManager.Setup();
-
-
             GameFiber.Yield();
             Debug = new Debug(ModDataFileManager.PlateTypes, World, Player, ModDataFileManager.Streets, Dispatcher, ModDataFileManager.Zones, ModDataFileManager.Crimes, this, ModDataFileManager.Settings, Tasker, Time, ModDataFileManager.Agencies, ModDataFileManager.Weapons, ModDataFileManager.ModItems, Weather, 
                 ModDataFileManager.PlacesOfInterest, ModDataFileManager.Interiors, ModDataFileManager.Gangs, Input, ModDataFileManager.ShopMenus, ModDataFileManager);
@@ -136,13 +124,8 @@ namespace LosSantosRED.lsr
             StartDebugLogic();
             GameFiber.Yield();
 #endif
-
             UI.SetupDebugMenu();
-
-
             Game.FadeScreenIn(500, true);
-
-
             DisplayLoadSuccessfulMessage();
         }
 

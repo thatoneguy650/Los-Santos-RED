@@ -144,12 +144,12 @@ public class GangSettings : ISettingsDefaultable
 
 
 
-        MinDistanceToSpawnOnFoot = 75f;// 50f;
-        MaxDistanceToSpawnOnFoot = 200f;// 150f;
+        MinDistanceToSpawnOnFoot = 125f;//75f// 50f;
+        MaxDistanceToSpawnOnFoot = 225f;//200f// 150f;
 
 
-        MinDistanceToSpawnInVehicle = 300f;// 50f;
-        MaxDistanceToSpawnInVehicle = 500f;// 150f;
+        MinDistanceToSpawnInVehicle = 400f;//300f// 50f;
+        MaxDistanceToSpawnInVehicle = 600f;//500f// 150f;
 
 
 

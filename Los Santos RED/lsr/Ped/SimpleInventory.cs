@@ -12,7 +12,7 @@ public class SimpleInventory
 {
     private ISettingsProvideable Settings;
     public List<InventoryItem> ItemsList { get; set; } = new List<InventoryItem>();
-    public SimpleInventory( ISettingsProvideable settings)
+    public SimpleInventory(ISettingsProvideable settings)
     {
         Settings = settings;
     }
@@ -78,13 +78,13 @@ public class SimpleInventory
     }
     public void AddRandomItems(IModItems modItems)
     {
-        if (Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount >= 1)
+        if (Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsToGet >= 1 && Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsAmount >= 1)
         {
-            int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsToGet);
+            int ItemsToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsToGet);
             for (int i = 0; i < ItemsToGet; i++)
             {
                 ModItem toGet = modItems.GetRandomItem(true);
-                int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.CivilianSettings.MaxRandomItemsAmount);
+                int AmountToGet = RandomItems.GetRandomNumberInt(1, Settings.SettingsManager.PlayerOtherSettings.MaxRandomItemsAmount);
                 if (toGet != null)
                 {
                     Add(toGet, AmountToGet * toGet.AmountPerPackage);
@@ -93,22 +93,7 @@ public class SimpleInventory
         }
     }
 
-    public void AddRandomItems(IModItems modItems, int maxToGet, int maxAmount, bool allowIllegal)
-    {
-        if (maxToGet >= 1 && maxAmount >= 1)
-        {
-            int ItemsToGet = RandomItems.GetRandomNumberInt(1, maxToGet);
-            for (int i = 0; i < ItemsToGet; i++)
-            {
-                ModItem toGet = modItems.GetRandomItem(allowIllegal);
-                int AmountToGet = RandomItems.GetRandomNumberInt(1, maxAmount);
-                if (toGet != null)
-                {
-                    Add(toGet, AmountToGet * toGet.AmountPerPackage);
-                }
-            }
-        }
-    }
+
 
 
     public void CreateInteractionMenu(IInteractionable player, MenuPool menuPool, UIMenu menuToAdd, bool withAnimations)

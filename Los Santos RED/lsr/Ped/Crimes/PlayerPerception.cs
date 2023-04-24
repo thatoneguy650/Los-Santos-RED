@@ -165,24 +165,7 @@ public class PlayerPerception
             return false;
         }
         Vector3 PositionToCheck = posToCheck;
-        if(Originator.IsCop)
-        {
-            DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-           // GameFiber.Yield();//TR 9 had before, doesnt do much i bet
-        }
-        else
-        {
-            DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-            //int maxCellsAway =  NativeHelper.MaxCellsAway(Target.CellX, Target.CellY, Originator.CellX, Originator.CellY);
-            //if (maxCellsAway <= 2)
-            //{
-            //    DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
-            //}
-            //else
-            //{
-            //    DistanceToTarget = maxCellsAway * 70f;
-            //}
-        }
+        DistanceToTarget = Originator.Pedestrian.DistanceTo2D(PositionToCheck);
         HeightToTarget = Math.Abs(Originator.Pedestrian.Position.Z - PositionToCheck.Z);//is new
         if (Originator.IsCop && Originator.Pedestrian.Exists())
         {
@@ -190,20 +173,13 @@ public class PlayerPerception
         }
         if (DistanceToTarget <= 0.1f)
         {
-            if(Originator.IsInVehicle && Target.IsInVehicle)
+            if(Originator.Pedestrian.CurrentVehicle?.Handle == Target.Character.CurrentVehicle?.Handle)
             {
-                if(Originator.Pedestrian.CurrentVehicle?.Handle == Target.Character.CurrentVehicle?.Handle)
-                {
-                    DistanceToTarget = DistanceToTarget;
-                }
-                else
-                {
-                    DistanceToTarget = 999f;
-                }
+                DistanceToTarget = DistanceToTarget;
             }
             else
             {
-                DistanceToTarget = 999f;
+                DistanceToTarget = 100f;// 999f;
             }
         }
         if (DistanceToTarget <= ClosestDistanceToTarget)

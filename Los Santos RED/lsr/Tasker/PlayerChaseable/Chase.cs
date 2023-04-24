@@ -605,7 +605,7 @@ public class Chase : ComplexTask
             }
             if (Ped.IsInHelicopter)
             {
-                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
+                NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(80f, 120f)); // NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, -50f, 50f, 60f);
             }
             //else if (Ped.IsInBoat)
             //{
@@ -756,7 +756,8 @@ public class Chase : ComplexTask
             {
                 if (Ped.IsInHelicopter)
                 {
-                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 25f, 0f, 25f);
+                    NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(-35f, 35f), RandomItems.GetRandomNumber(50f, 80f));
+                    //NativeFunction.Natives.TASK_HELI_CHASE(Ped.Pedestrian, Player.Character, 25f, 0f, 25f);
                 }
                 else if (Ped.IsInBoat)
                 {

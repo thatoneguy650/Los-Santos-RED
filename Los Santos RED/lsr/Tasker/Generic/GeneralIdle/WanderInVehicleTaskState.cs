@@ -120,7 +120,9 @@ class WanderInVehicleTaskState : TaskState
         }
         if (PedGeneral.IsInHelicopter)
         {
-            NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+            Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.Position;
+            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 9, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
+            //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
         }
         else
         {
@@ -136,7 +138,7 @@ class WanderInVehicleTaskState : TaskState
             }
 
         }
-        //EntryPoint.WriteToConsoleTestLong($"{PedGeneral?.Handle} VEHICLE GUARD IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE GUARD IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
     }
     private void VehiclePatrol()
     {
@@ -155,7 +157,11 @@ class WanderInVehicleTaskState : TaskState
         }
         if (PedGeneral.IsInHelicopter)
         {
-            NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
+            Vector3 PlaceToDriveTo = PedGeneral.Pedestrian.Position;
+            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 8, 50f, 10f, -1f, 60, 60, -1.0f, 0);//9 = circle
+
+
+            //NativeFunction.CallByName<bool>("TASK_HELI_MISSION", PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, 0f, 0f, 300f, 9, 50f, 150f, -1f, -1, 30, -1.0f, 0);
         }
         else
         {
@@ -173,7 +179,7 @@ class WanderInVehicleTaskState : TaskState
                 NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
             }
         }
-        //EntryPoint.WriteToConsoleTestLong($"{PedGeneral?.Handle} VEHICLE PATROL IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
+        EntryPoint.WriteToConsole($"{PedGeneral?.Handle} VEHICLE PATROL IsNearSpawnPosition:{PedGeneral.IsNearSpawnPosition} canGuard{canGuard} canPatrol{canPatrol}");
     }
 }
 

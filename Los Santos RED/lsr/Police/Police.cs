@@ -183,7 +183,7 @@ namespace LosSantosRED.lsr
                     break;
                 }
                 tested++;
-                if (tested >= 20)//10
+                if (tested >= 10)//20//10
                 {
                     tested = 0;
                     GameFiber.Yield();

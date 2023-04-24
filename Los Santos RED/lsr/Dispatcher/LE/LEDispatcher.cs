@@ -181,16 +181,114 @@ public class LEDispatcher
 
 
     private bool IsTimeToAmbientCanineDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;
+    private int TimeBetweenSpawn
+    {
+        get
+        {
 
+            if (World.TotalWantedLevel == 0 && !Player.Investigation.IsActive)
+            {
+                int TotalTimeBetweenSpawns = Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
+                if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_WildernessAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_RuralAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_SuburbAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_IndustrialAdditional;
+                }
+                else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
+                {
+                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_DowntownAdditional;
+                }
+                return TotalTimeBetweenSpawns;
+            }
+            else if (Player.Investigation.IsActive)
+            {
+                return Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
+            }
+
+
+            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
+
+            if (World.TotalWantedLevel > Player.WantedLevel)
+            {
+                return UnseenTime;
+            }
+            else if (!Player.AnyPoliceRecentlySeenPlayer)
+            {
+                return UnseenTime;
+            }
+            else
+            {
+                if (World.TotalWantedLevel <= 6)
+                {
+                    return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                }
+                return SeenMinTime;  
+            }
+        }
+    }
+    private int TimeBetweenRecall
+    {
+        get
+        {
+            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_Min;
+            if (World.TotalWantedLevel > Player.WantedLevel)
+            {
+                return UnseenTime;
+            }
+            else if (!Player.AnyPoliceRecentlySeenPlayer)
+            {
+                return UnseenTime;
+            }
+            else
+            {
+                if(World.TotalWantedLevel <= 6)
+                {
+                    return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+                }
+                return SeenMinTime;
+            }
+        }
+    }
+    private int TimeBetweenRoadblocks
+    {
+        get
+        {
+            int UnseenTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Unseen;
+            int SeenScalarTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
+            int SeenMinTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min;
+
+            if (!Player.AnyPoliceRecentlySeenPlayer)
+            {
+                return UnseenTime;
+            }
+            else
+            {
+                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
+            }
+        }
+    }
     private float MaxDistanceToSpawn
     {
         get
-        {//setup to do rural dispatch, but do i want to add ALL those settings?
+        {
             float MaxWantedUnseen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedUnseen;
             float MaxWantedSeen = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_WantedSeen;
             float MaxNotWanted = Settings.SettingsManager.PoliceSpawnSettings.MaxDistanceToSpawn_NotWanted;
-
-
             if(World.TotalWantedLevel > Player.WantedLevel)
             {
                 return MaxWantedUnseen;
@@ -589,107 +687,6 @@ public class LEDispatcher
             }
         }
     }
-    private int TimeBetweenSpawn
-    {
-        get
-        {
-
-            if(World.TotalWantedLevel == 0 && !Player.Investigation.IsActive)
-            {
-                int TotalTimeBetweenSpawns = Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
-                if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
-                {
-                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_WildernessAdditional;
-                }
-                else if (EntryPoint.FocusZone?.Type == eLocationType.Rural)
-                {
-                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_RuralAdditional;
-                }
-                else if (EntryPoint.FocusZone?.Type == eLocationType.Suburb)
-                {
-                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_SuburbAdditional;
-                }
-                else if (EntryPoint.FocusZone?.Type == eLocationType.Industrial)
-                {
-                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_IndustrialAdditional;
-                }
-                else if (EntryPoint.FocusZone?.Type == eLocationType.Downtown)
-                {
-                    TotalTimeBetweenSpawns += Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn_DowntownAdditional;
-                }
-                return TotalTimeBetweenSpawns;
-            }
-            else if (Player.Investigation.IsActive)
-            {
-                return Settings.SettingsManager.PoliceSpawnSettings.AmbientTimeBetweenSpawn;
-            }
-
-
-            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopSpawn_Seen_Min;
-
-            if (World.TotalWantedLevel > Player.WantedLevel)
-            {
-                return UnseenTime;
-            }
-            else if (!Player.AnyPoliceRecentlySeenPlayer)
-            {
-                return UnseenTime;
-            }
-            else
-            {
-                if(World.TotalWantedLevel <= 6)
-                {
-                    return ((6 - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
-                }
-                else
-                {
-                    return SeenMinTime;
-                }
-            }
-        }
-    }
-    private int TimeBetweenRecall
-    {
-        get
-        {
-            int UnseenTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.PoliceSpawnSettings.TimeBetweenCopDespawn_Seen_Min;
-
-            if (World.TotalWantedLevel > Player.WantedLevel)
-            {
-                return UnseenTime;
-            }
-            else if (!Player.AnyPoliceRecentlySeenPlayer)
-            {
-                return UnseenTime;
-            }
-            else
-            {
-                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
-            }
-        }
-    }
-    private int TimeBetweenRoadblocks
-    {
-        get
-        {
-            int UnseenTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Unseen;
-            int SeenScalarTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_AdditionalTimeScaler;
-            int SeenMinTime = Settings.SettingsManager.RoadblockSettings.TimeBetweenRoadblock_Seen_Min;
-
-            if (!Player.AnyPoliceRecentlySeenPlayer)
-            {
-                return UnseenTime;
-            }
-            else
-            {
-                return ((Settings.SettingsManager.PoliceSettings.MaxWantedLevel - World.TotalWantedLevel) * SeenScalarTime) + SeenMinTime;
-            }
-        }
-    }
     private int PercentageOfAmbientSpawn // => Settings.SettingsManager.GangSettings.TimeBetweenSpawn;//15000;
     {
         get
@@ -740,17 +737,6 @@ public class LEDispatcher
         }
         return HasDispatchedThisTick;
     }
-
-    //private void HandleCanineSpawns()
-    //{
-    //    if (!IsTimeToAmbientCanineDispatch || !HasNeedToAmbientCanineDispatch)
-    //    {
-    //        return;
-    //    }
-    //}
-
-
-
     public void Dispose()
     {
         RemoveRoadblock();
@@ -764,7 +750,6 @@ public class LEDispatcher
             {
                 if (ShouldCopBeRecalled(DeleteableCop))
                 {
-
                     GameFiber.Yield();
                     Delete(DeleteableCop);
 
@@ -811,18 +796,10 @@ public class LEDispatcher
     private void RunAmbientDispatch()
     {
         //EntryPoint.WriteToConsole($"AMBIENT COP SPAWN RunAmbientDispatch ShouldRunAmbientDispatch{ShouldRunAmbientDispatch}: %{PercentageOfAmbientSpawn} TimeBetween:{TimeBetweenSpawn} SpawnedCopLimit:{SpawnedCopLimit}");
-
         bool getspawnLocation = GetSpawnLocation();
         GameFiber.Yield();
-
-
-
-
         bool getSpawnTypes = GetSpawnTypes();
-
-
         //EntryPoint.WriteToConsole($"Attempt {Agency?.ShortName}  {VehicleType?.ModelName} {VehicleType?.DebugName} HasNeedToSpawnBoat {HasNeedToSpawnBoat} {getspawnLocation} {getSpawnTypes}");
-
         //EntryPoint.WriteToConsole($"getspawnLocation:{getspawnLocation} getSpawnTypes:{getSpawnTypes}");
         if (getspawnLocation && getSpawnTypes)
         {
@@ -898,7 +875,7 @@ public class LEDispatcher
             {
                 SpawnLocation.GetClosestStreet(Player.IsWanted);
                 SpawnLocation.GetClosestSidewalk();
-                //GameFiber.Yield();
+                GameFiber.Yield();
                 isValidSpawn = AreSpawnsValidSpawn(SpawnLocation);
             }
             timesTried++;
@@ -1094,7 +1071,6 @@ public class LEDispatcher
         }
         return true;
     }
-
     private bool IsValidSpawn(Vector3 location)
     {
         if (location.DistanceTo2D(Player.Position) < ClosestPoliceSpawnToSuspectAllowed || World.Pedestrians.AnyCopsNearPosition(location, ClosestPoliceSpawnToOtherPoliceAllowed))
@@ -1103,8 +1079,6 @@ public class LEDispatcher
         }
         return true;
     }
-
-
     private bool ShouldCopBeRecalled(Cop cop)
     {
         int totalCopsNearCop = World.Pedestrians.TotalCopsNearCop(cop, 3);

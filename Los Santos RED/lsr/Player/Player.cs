@@ -930,7 +930,7 @@ namespace Mod
                 //EntryPoint.WriteToConsole("InterestedVehicle.VehicleInteractionMenu.IsShowingMenu");
                 return;
             }
-            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World);
+            InterestedVehicle.VehicleInteractionMenu.ShowInteractionMenu(this, Weapons, ModItems, vdsd, VehicleSeatDoorData, World, Settings);
         }
         //Events
         public void OnAppliedWantedStats(int wantedLevel) => Scanner.OnAppliedWantedStats(wantedLevel);
@@ -1150,7 +1150,7 @@ namespace Mod
             VehicleGettingInto = CurrentVehicle;
             if(IsFreeToEnter())
             {
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
+                EntryPoint.WriteToConsole($"PLAYER EVENT: IsGettingIntoVehicle Vehicle is Free to Enter, Ending", 3);
                 return;
             }
             if (!CurrentVehicle.HasBeenEnteredByPlayer && !IsCop)
@@ -1178,19 +1178,6 @@ namespace Mod
                 CarBreakIn MyBreakIn = new CarBreakIn(this, VehicleTryingToEnter, Settings, SeatTryingToEnter);
                 MyBreakIn.BreakIn();
             }
-            //else if (SeatTryingToEnter != -1)
-            //{
-            //    if (VehicleTryingToEnter.Exists() && VehicleTryingToEnter.Model.Name.ToLower().Contains("bus"))
-            //    {
-            //        EntryPoint.WriteToConsole($"PLAYER EVENT: BusRide Start LockStatus {VehicleTryingToEnter.LockStatus}", 3);
-            //        BusRide MyBusRide = new BusRide(this, VehicleTryingToEnter, World, PlacesOfInterest);
-            //        MyBusRide.Start();
-            //    }
-            //    else
-            //    {
-            //        EntryPoint.WriteToConsole($"PLAYER EVENT: Car Enter as Passenger {VehicleTryingToEnter.LockStatus}", 3);
-            //    }
-            //}     
         }
         private bool IsFreeToEnter()
         {

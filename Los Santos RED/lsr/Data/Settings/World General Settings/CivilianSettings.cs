@@ -119,12 +119,7 @@ public class CivilianSettings : ISettingsDefaultable
 
 
 
-    [Description("Percentage of time you will get random items when looting a random ped (weapons and vehicles excluded)")]
-    public float PercentageToGetRandomItems { get; set; }
-    [Description("Max number of random items to get when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
-    public int MaxRandomItemsToGet { get; set; }
-    [Description("Max amount to get for each random item when looting a random ped (weapons and vehicles excluded). Requires PercentageToGetRandomItems > 0")]
-    public int MaxRandomItemsAmount { get; set; }
+
 
 
 
@@ -192,9 +187,7 @@ public class CivilianSettings : ISettingsDefaultable
         MoneyMin = 15;
         MoneyMax = 550;
         PercentageTrustingOfPlayer = 85f;
-        PercentageToGetRandomItems = 80f;
-        MaxRandomItemsToGet = 6;
-        MaxRandomItemsAmount = 2;
+
 
 
 //#if DEBUG

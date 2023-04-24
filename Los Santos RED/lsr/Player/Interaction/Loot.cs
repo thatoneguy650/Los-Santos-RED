@@ -105,7 +105,7 @@ public class Loot : DynamicActivity
         if (Ped.Pedestrian.Exists())
         {
             Ped.HasBeenLooted = true;
-            if (RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageToGetRandomItems))
+            if (RandomItems.RandomPercent(Settings.SettingsManager.PlayerOtherSettings.PercentageToGetRandomItems))
             {
                 Ped.PedInventory.AddRandomItems(ModItems);
             }

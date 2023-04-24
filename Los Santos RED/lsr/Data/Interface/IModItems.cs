@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         List<ModItem> AllItems();
         List<ModItem> InventoryItems();
         void WriteToFile();
+        WeaponItem GetRandomWeapon(bool allowIllegal);
     }
 }

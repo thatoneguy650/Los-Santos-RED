@@ -287,7 +287,8 @@ public class ModDataFileManager
             + Environment.NewLine +
             "AllenKennedy - https://www.gta5-mods.com/users/AllenKennedy/files"
             + Environment.NewLine +
-
+            "NIGHTKID/Han'SGarage - https://www.lcpdfr.com/profile/69491-hansgarage/content/?type=downloads_file"
+            + Environment.NewLine +
             "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\FullExpandedJurisdiction\\readme.txt", Description);
     }
@@ -305,13 +306,13 @@ public class ModDataFileManager
     private void SetupLibertyCity()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity");
-        string Description = "For use with liberty city (centered). The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
+        string Description = "For use with liberty city (centered). Not complete. The Full Expanded Jurisdiction config has some LCPD liveries if you need some vehicles.";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\readme.txt", Description);
     }
     private void SetupSimple()
     {
         Directory.CreateDirectory("Plugins\\LosSantosRED\\AlternateConfigs\\Simple");
-        string Description = "Simple and basic jurisdiction config, vanilla units and gangs only. Basic ped/vehicle models only." + Environment.NewLine + Environment.NewLine +
+        string Description = "Simple and basic jurisdiction config, vanilla units and gangs only. Basic ped/vehicle models only. If you want close to vanilla, this is for you." + Environment.NewLine + Environment.NewLine +
         "To use, copy all of the .xml files from the AlternateConfigs\\Simple folder into the top level LosSantosRED folder and restart the mod. You can leave the vanilla configs, alternate configs will be loaded first (if they exist)" + Environment.NewLine + Environment.NewLine +
         "";
         File.WriteAllText("Plugins\\LosSantosRED\\AlternateConfigs\\Simple\\readme.txt", Description);

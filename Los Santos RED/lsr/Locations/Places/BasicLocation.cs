@@ -423,7 +423,7 @@ public class BasicLocation
             if (!IsActivated)
             {
                 Activate(interiors, settings, crimes, weapons, time, World);
-                EntryPoint.WriteToConsole($"Activated {Name}");
+                //EntryPoint.WriteToConsole($"Activated {Name}");
                 GameFiber.Yield();
             }
         }
@@ -440,7 +440,7 @@ public class BasicLocation
             if (!IsActivated && IsEnabled && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.State) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
             {
                 ActivateBlip(time, World);
-                EntryPoint.WriteToConsole($"Activated BLIP {Name}");
+               // EntryPoint.WriteToConsole($"Activated BLIP {Name}");
             }
             else if ((!IsEnabled && Blip.Exists()) || (IsEnabled && IsBlipEnabled && Blip.Exists() && !IsSameState(EntryPoint.FocusZone?.State)))
             {

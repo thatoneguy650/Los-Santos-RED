@@ -387,12 +387,12 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 
 
 
-        MaxDistanceToSpawn_WantedSeen = 550f;
-        MaxDistanceToSpawn_WantedUnseen = 350f;
+        MaxDistanceToSpawn_WantedSeen = 650f;//550f
+        MaxDistanceToSpawn_WantedUnseen = 450f;//350f
         MaxDistanceToSpawn_NotWanted = 900f;
-        MinDistanceToSpawn_WantedUnseen = 250f;
-        MinDistanceToSpawn_WantedSeen = 400f;
-        MinDistanceToSpawn_NotWanted = 150f;//350f;
+        MinDistanceToSpawn_WantedUnseen = 350f;//250f
+        MinDistanceToSpawn_WantedSeen = 500f;//400f
+        MinDistanceToSpawn_NotWanted = 200f;//350f;//150f
 
         MinDistanceToSpawn_WantedUnseenScalar = 40f;
         MinDistanceToSpawn_WantedSeenScalar = 40f;

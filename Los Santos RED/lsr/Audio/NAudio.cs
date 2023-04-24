@@ -142,6 +142,21 @@ public class NAudioPlayer : IAudioPlayable
         Play(fileName, realVolume, isScannerPlaying, applyFilter);
     }
 
+
+    public void Setup()
+    {
+        //if (outputDevice == null)
+        //{
+        //    outputDevice = new WaveOutEvent();
+        //    outputDevice.PlaybackStopped += OnPlaybackStopped;
+        //}
+        //audioFile = new AudioFileReader(string.Format("Plugins\\LosSantosRED\\audio\\{0}", ""))
+        //{
+        //    Volume = 0.0f
+        //};
+        //outputDevice.Init(audioFile);
+    }
+
     //class MyWaveProvider_New : ISampleProvider
     //{
     //    private ISampleProvider sourceProvider;

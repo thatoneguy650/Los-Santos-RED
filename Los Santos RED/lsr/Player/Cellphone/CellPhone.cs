@@ -105,6 +105,7 @@ public class CellPhone
     {
         AddContact(new EmergencyServicesContact(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911"), false);
         BurnerPhone.Setup();
+        phoneAudioPlayer.Setup();
     }
     public void ContactAnswered(PhoneContact contact)
     {

@@ -92,22 +92,23 @@ class GoToInVehicleTaskState : TaskState
 
         if (PedGeneral == null || !PedGeneral.Pedestrian.Exists() || !PedGeneral.Pedestrian.CurrentVehicle.Exists() || PlaceToDriveTo == null || PlaceToDriveTo == Vector3.Zero || !PedGeneral.IsDriver)
         {
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} TASK ENTRY ABORTED Driver:{PedGeneral?.IsDriver} pedExists{pedExists} pedVehicleExists {pedVehicleExists} locationEror {locationEror}");
+            //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} TASK ENTRY ABORTED Driver:{PedGeneral?.IsDriver} pedExists{pedExists} pedVehicleExists {pedVehicleExists} locationEror {locationEror}");
             return;
         }
         if (PedGeneral.IsInHelicopter)
         {
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HELI TASK ASSIGNED");
-            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
+           //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HELI TASK ASSIGNED");
+            NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 6, 50f, 10f, -1f, 60, 60, -1.0f, 0);//6 = attack
+            //NativeFunction.Natives.TASK_HELI_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, 150f, -1f, -1, 30, -1.0f, 0);//NativeFunction.Natives.TASK_HELI_MISSION(Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 0, 0, CurrentTaskedPosition.X, CurrentTaskedPosition.Y, CurrentTaskedPosition.Z, 4, 50f, 10f, 0f, -1, -1, -1, 0);
         }
         else if (PedGeneral.IsInBoat)
         {
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} BOAT TASK ASSIGNED");
+            //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} BOAT TASK ASSIGNED");
             NativeFunction.Natives.TASK_BOAT_MISSION(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, 0, 0, PlaceToDriveTo.X, PlaceToDriveTo.Y, PlaceToDriveTo.Z, 4, 50f, (int)eCustomDrivingStyles.Code3, -1.0f, 7);
         }
         else
         {
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} DRIVE TASK ASSIGNED");
+            //EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} DRIVE TASK ASSIGNED");
 
             //NativeFunction.Natives.TASK_VEHICLE_DRIVE_TO_COORD(PedGeneral.Pedestrian, PedGeneral.Pedestrian.CurrentVehicle, JitterPlace.X, JitterPlace.Y, JitterPlace.Z, 70f, 0, "", (int)eCustomDrivingStyles.Code3, 15.0f, -1);
 
@@ -118,22 +119,22 @@ class GoToInVehicleTaskState : TaskState
     }
     private void SetGoToDrivingStyle()
     {
-        //if (PedGeneral.IsDriver && !PedGeneral.IsInHelicopter && !PedGeneral.IsInBoat && PedGeneral.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
-        //{
-        //    if (!isSetCode3Close)
-        //    {
-        //        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
-        //        isSetCode3Close = true;
-        //    }
-        //}
-        //else
-        //{
-        //    if (isSetCode3Close)
-        //    {
-        //        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3);
-        //        isSetCode3Close = false;
-        //    }
-        //}
+        if (PedGeneral.IsDriver && !PedGeneral.IsInHelicopter && !PedGeneral.IsInBoat && PedGeneral.DistanceToPlayer <= Settings.SettingsManager.PoliceTaskSettings.DriveBySightDuringLocateDistance && Settings.SettingsManager.PoliceTaskSettings.AllowDriveBySightDuringLocate)// && Player.CurrentLocation.IsOffroad && Player.CurrentLocation.HasBeenOffRoad)
+        {
+            if (!isSetCode3Close)
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3Close);
+                isSetCode3Close = true;
+            }
+        }
+        else
+        {
+            if (isSetCode3Close)
+            {
+                NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(PedGeneral.Pedestrian, (int)eCustomDrivingStyles.Code3);
+                isSetCode3Close = false;
+            }
+        }
     }
     private void CheckGoToDistances()
     {
@@ -168,7 +169,7 @@ class GoToInVehicleTaskState : TaskState
         {
             LocationReachable.OnLocationReached();
             //LocationReachable.HasReachedLocatePosition = true;
-            EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HAS REACHED POSITION");
+           // EntryPoint.WriteToConsole($"LOCATE TASK: Cop {PedGeneral?.Handle} HAS REACHED POSITION");
         }
     }
 }

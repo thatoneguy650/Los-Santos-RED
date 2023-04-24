@@ -21,7 +21,7 @@ public class VehicleInteractionMenu
     {
         VehicleExt = vehicleExt;
     }
-    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world)
+    public void ShowInteractionMenu(IInteractionable player, IWeapons weapons, IModItems modItems, VehicleDoorSeatData vehicleDoorSeatData, IVehicleSeatAndDoorLookup vehicleSeatDoorData, IEntityProvideable world, ISettingsProvideable settings)
     {
         VehicleDoorSeatData = vehicleDoorSeatData;
         Player = player;
@@ -30,12 +30,9 @@ public class VehicleInteractionMenu
         {
             VehicleExt.VehicleBodyManager.CreateInteractionMenu(MenuPool, VehicleInteractMenu, vehicleSeatDoorData, world);
         }
-
         UIMenu InventoryWeaponHeaderMenu = MenuPool.AddSubMenu(VehicleInteractMenu, "Inventory and Weapons");
         VehicleInteractMenu.MenuItems[VehicleInteractMenu.MenuItems.Count() - 1].Description = "Manage Stored Inventory and Weapons. Place items or weapons within storage, or retreive them for use.";
         InventoryWeaponHeaderMenu.SetBannerType(EntryPoint.LSRedColor);
-
-
         InventoryWeaponHeaderMenu.OnMenuOpen += (sender) =>
         {
             vehicleDoorSeatData = VehicleExt.GetClosestPedStorageBone(player, 5.0f, vehicleSeatDoorData);
@@ -52,18 +49,14 @@ public class VehicleInteractionMenu
                 return;
             }
             player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, false, false);
-        };
-
-
-        VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, weapons, modItems, !player.IsInVehicle);
+        };  
         VehicleExt.HandleRandomItems(modItems);
+        VehicleExt.HandleRandomWeapons(modItems, weapons);
         VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, !player.IsInVehicle);
+        VehicleExt.WeaponStorage.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, weapons, modItems, !player.IsInVehicle);
         VehicleInteractMenu.Visible = true;
         IsShowingMenu = true;
         Player.ButtonPrompts.RemovePrompts("VehicleInteract");
-
-
-
         ProcessMenu();
     }
 

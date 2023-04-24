@@ -867,7 +867,7 @@ public class ActivityManager
                 while (EntryPoint.ModController.IsRunning && Game.GameTime - GameTimeStarted <= 20000)
                 {
                     int taskStatus = NativeFunction.Natives.GET_SCRIPT_TASK_STATUS<int>(Player.Character, Game.GetHashKey("SCRIPT_TASK_ENTER_VEHICLE"));
-                    Game.DisplaySubtitle($"taskStatus {taskStatus}");
+                    //Game.DisplaySubtitle($"taskStatus {taskStatus}");
                     if(taskStatus != 1)
                     {
                         break;
