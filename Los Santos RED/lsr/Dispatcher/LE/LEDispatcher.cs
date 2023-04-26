@@ -171,8 +171,8 @@ public class LEDispatcher
     private float ClosestPoliceSpawnToOtherPoliceAllowed => TotalIsWanted ? 200f : 500f;
     private float ClosestPoliceSpawnToSuspectAllowed => TotalIsWanted ? 150f : 250f;
     private List<Cop> DeletableCops => World.Pedestrians.AllPoliceList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime && x.Handle != Player.Handle) || x.CanRemove).ToList();//NEED TO ADD WAS MOD SPAWNED HERE, LET THE REST OF THE FUCKERS MANAGE THEIR OWN STUFF?
-    private float DistanceToDelete => 1000f;// TotalIsWanted ? 600f : 1000f;
-    private float DistanceToDeleteOnFoot => TotalIsWanted ? 125f : 300f;
+    private float DistanceToDelete => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallInVehicle_NotWanted;
+    private float DistanceToDeleteOnFoot => TotalIsWanted ? Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_Wanted : Settings.SettingsManager.PoliceSpawnSettings.DistanceToRecallOnFoot_NotWanted;
     private bool HasNeedToAmbientDispatch => World.Pedestrians.TotalSpawnedAmbientPolice < SpawnedCopLimit && World.Vehicles.SpawnedAmbientPoliceVehiclesCount < SpawnedCopVehicleLimit;
     private bool HasNeedToDispatchRoadblock => Settings.SettingsManager.RoadblockSettings.RoadblockEnabled && Player.WantedLevel >= Settings.SettingsManager.RoadblockSettings.RoadblockMinWantedLevel && Player.WantedLevel <= Settings.SettingsManager.RoadblockSettings.RoadblockMaxWantedLevel && Roadblock == null;//roadblocks are only for player
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;

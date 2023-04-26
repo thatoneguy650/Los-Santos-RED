@@ -472,13 +472,12 @@ public class ModItem
         }
         return false;
     }
-    public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu, bool withAnimations)
+    public virtual void CreateInventoryManageMenu(IInteractionable player, MenuPool menuPool, SimpleInventory simpleInventory, UIMenu headerMenu, bool withAnimations, ISettingsProvideable settings)
     {
         inventoryItemSubMenu = menuPool.AddSubMenu(headerMenu, Name);
         inventoryItemSubMenuItem = headerMenu.MenuItems[headerMenu.MenuItems.Count() - 1];
         inventoryItemSubMenuItem.Description = Description;
         inventoryItemSubMenu.SetBannerType(EntryPoint.LSRedColor);
-
 
         takeScroller = new UIMenuNumericScrollerItem<int>("Take", "", 1, 1, 1) { Value = 1, Enabled = true, Formatter = v => v.ToString() + " " + MeasurementName + (v > 1 ? "(s)" : "") };
         takeScroller.Activated += (sender, selectedItem) =>
@@ -491,7 +490,7 @@ public class ModItem
                 }
                 player.Inventory.Add(this,takeScroller.Value);
             }
-            UpdateInventoryScrollers(player, simpleInventory);
+            UpdateInventoryScrollers(player, simpleInventory, settings);
         };
         inventoryItemSubMenu.AddItem(takeScroller);
 
@@ -506,13 +505,13 @@ public class ModItem
                 }
                 simpleInventory.Add(this, giveScroller.Value);
             }
-            UpdateInventoryScrollers(player, simpleInventory);
+            UpdateInventoryScrollers(player, simpleInventory, settings);
         };
         inventoryItemSubMenu.AddItem(giveScroller);
-        UpdateInventoryScrollers(player, simpleInventory);
+        UpdateInventoryScrollers(player, simpleInventory, settings);
     }
 
-    private void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory)
+    public void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory, ISettingsProvideable settings)
     {
         int storedItems = 0;
         int playerItems = 0;
@@ -528,7 +527,7 @@ public class ModItem
         {
             storedItems = currentInventoryItem.Amount;
             takeScroller.Maximum = currentInventoryItem.Amount;
-            takeScroller.Value = 1;
+            takeScroller.Value = currentInventoryItem.Amount;
             takeScroller.Enabled = true;
         }
         InventoryItem playerInventoryItem = player.Inventory.Get(this);
@@ -543,12 +542,12 @@ public class ModItem
         {
             playerItems = playerInventoryItem.Amount;
             giveScroller.Maximum = playerInventoryItem.Amount;
-            giveScroller.Value = 1;
-            
+            giveScroller.Value = playerInventoryItem.Amount;
             giveScroller.Enabled = true;
         }
 
         string descriptionToUse = $"{Description}" +
+            $"~n~{PurchaseMenuDescription(settings)}~n~" +
             $"~n~{storedItems} {MeasurementName}(s) ~o~Stored~s~" +
             $"~n~{playerItems} {MeasurementName}(s) In ~y~Player Inventory~s~."; ;
 

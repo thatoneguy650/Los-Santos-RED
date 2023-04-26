@@ -55,6 +55,11 @@ public class Settings : ISettingsProvideable
         SettingsManager.PoliceSettings.TalkFailFineAmount = 100;
 
         SettingsManager.RespawnSettings.ShowRequiredBribeAmount = true;
+
+
+
+
+
     }
     public void SetDefault()
     {

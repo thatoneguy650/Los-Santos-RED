@@ -101,22 +101,73 @@ public class SimpleInventory
         UIMenu VehicleInventoryItem = menuPool.AddSubMenu(menuToAdd, "Stored Inventory");
         menuToAdd.MenuItems[menuToAdd.MenuItems.Count() - 1].Description = "Manage stored inventory. Take or deposit items.";
         VehicleInventoryItem.SetBannerType(EntryPoint.LSRedColor);
+        UIMenuItem TakeAllItems = new UIMenuItem("Take All","Take all stored items.");
+        TakeAllItems.Activated += (sender, selectedItem) =>
+        {
+            TakeAll(player);
+            UpdateInventoryScrollers(player);
+        };
+        VehicleInventoryItem.AddItem(TakeAllItems);
+        UIMenuItem DepositAll = new UIMenuItem("Store All", "Store all player items.");
+        DepositAll.Activated += (sender, selectedItem) =>
+        {
+            StoreAll(player);
+            UpdateInventoryScrollers(player);
+        };
+        VehicleInventoryItem.AddItem(DepositAll);
+
 
 
         foreach (InventoryItem inventoryItem in ItemsList)
         {
-            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations);
+            inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings);
         }
         foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
         {
             if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
             {
-                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations);
+                inventoryItem.ModItem.CreateInventoryManageMenu(player, menuPool, this, VehicleInventoryItem, withAnimations, Settings);
             }
         }
 
     }
+    private void UpdateInventoryScrollers(IInteractionable player)
+    {
+        foreach (InventoryItem inventoryItem in ItemsList)
+        {
+            inventoryItem.ModItem.UpdateInventoryScrollers(player, this, Settings);
+        }
+        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        {
+            if (!ItemsList.Any(x => x.ModItem.Name == inventoryItem.ModItem.Name))
+            {
+                inventoryItem.ModItem.UpdateInventoryScrollers(player, this, Settings);
+            }
+        }
+    }
 
+    private void TakeAll(IInteractionable player)
+    {
+        foreach(InventoryItem inventoryItem in ItemsList.ToList())
+        {
+            int amount = inventoryItem.Amount;
+            if (Remove(inventoryItem.ModItem, amount))
+            {
+                player.Inventory.Add(inventoryItem.ModItem, amount);
+            }
+        }
+    }
+    private void StoreAll(IInteractionable player)
+    {
+        foreach (InventoryItem inventoryItem in player.Inventory.ItemsList.ToList())
+        {
+            int amount = inventoryItem.Amount;
+            if (player.Inventory.Remove(inventoryItem.ModItem, amount))
+            {
+                Add(inventoryItem.ModItem, amount);
+            }
+        }
+    }
     public void Reset()
     {
         ItemsList.Clear();

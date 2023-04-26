@@ -207,14 +207,19 @@ namespace LosSantosRED.lsr
                     Player.AnyPoliceRecentlySeenPlayer = true;
                 }
             }
+
+
+
+
             if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {
                 Player.AnyPoliceKnowInteriorLocation = true;
             }
-            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000)
+            if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000 || Player.PlacePolicePhysicallyLastSeenPlayer.DistanceTo(Player.Position) >= 200f)
             {
                 Player.AnyPoliceKnowInteriorLocation = false;
             }
+
             if (PrevAnyPoliceKnowInteriorLocation != Player.AnyPoliceKnowInteriorLocation)
             {
                 //EntryPoint.WriteToConsoleTestLong($"AnyPoliceKnowInteriorLocation changed to {Player.AnyPoliceKnowInteriorLocation}");
@@ -256,7 +261,10 @@ namespace LosSantosRED.lsr
                 prevPlacePoliceLastSeenPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
-
+            if(Player.AnyPoliceRecentlySeenPlayer)
+            {
+                Player.PlacePolicePhysicallyLastSeenPlayer = Player.Position;
+            }
 
 
 

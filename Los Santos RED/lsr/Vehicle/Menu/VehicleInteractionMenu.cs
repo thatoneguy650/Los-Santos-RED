@@ -49,7 +49,11 @@ public class VehicleInteractionMenu
                 return;
             }
             player.ActivityManager.SetDoor(vehicleDoorSeatData.DoorID, false, false);
-        };  
+        };
+
+
+
+
         VehicleExt.HandleRandomItems(modItems);
         VehicleExt.HandleRandomWeapons(modItems, weapons);
         VehicleExt.SimpleInventory.CreateInteractionMenu(player, MenuPool, InventoryWeaponHeaderMenu, !player.IsInVehicle);

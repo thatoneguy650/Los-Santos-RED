@@ -61,7 +61,7 @@ public class LESpawnTask : SpawnTask
         {
             return;
         }
-        EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine Passengers {VehicleType.ModelName} START UnitCode {UnitCode}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine Passengers {VehicleType.ModelName} START UnitCode {UnitCode}");
         foreach(int seatIndex in VehicleType.CaninePossibleSeats)
         {
             if(!LastCreatedVehicleExists || !LastCreatedVehicle.Vehicle.IsSeatFree(seatIndex))
@@ -77,7 +77,7 @@ public class LESpawnTask : SpawnTask
             if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists && LastCreatedVehicle.Vehicle.IsSeatFree(seatIndex))
             {
                 PutPedInVehicle(Passenger, seatIndex);
-                EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine {VehicleType.ModelName} ADDED ONE TO VEHICLE {seatIndex}");
+               // EntryPoint.WriteToConsole($"SPAWN TASK: Add Canine {VehicleType.ModelName} ADDED ONE TO VEHICLE {seatIndex}");
             }
             else
             {
@@ -89,7 +89,7 @@ public class LESpawnTask : SpawnTask
     private void AddPassengers()
     {
         GameFiber.Yield();
-        EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
+        //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} START UnitCode {UnitCode} OccupantsToAdd {OccupantsToAdd}");
         for (int OccupantIndex = 1; OccupantIndex <= OccupantsToAdd; OccupantIndex++)
         {
             string requiredGroup = "";
@@ -103,12 +103,12 @@ public class LESpawnTask : SpawnTask
             }
             if (PersonType != null && LastCreatedVehicleExists)
             {
-                EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
+               // EntryPoint.WriteToConsole($"Adding Passenger IsAnimal: {PersonType.IsAnimal} {PersonType.ModelName} Seat {OccupantIndex - 1}");
                 PedExt Passenger = CreatePerson();
                 if (Passenger != null && Passenger.Pedestrian.Exists() && LastCreatedVehicleExists)
                 {
                     PutPedInVehicle(Passenger, OccupantIndex - 1);
-                    EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
+                    //EntryPoint.WriteToConsole($"SPAWN TASK: Add Passengers {VehicleType.ModelName} ADDED ONE TO VEHICLE");
                 }
                 else
                 {

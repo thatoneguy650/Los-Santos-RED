@@ -52,6 +52,7 @@ public class DebugMenu : ModUIMenu
     private UIMenu vehicleItemsMenu;
     private List<string> MovementClipsetsList;
     private UIMenu outfitsSubMenu;
+    private bool isHidingHelp;
 
     public DebugMenu(MenuPool menuPool, IActionable player, IWeapons weapons, RadioStations radioStations, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, ITimeControllable time, 
         IEntityProvideable world, ITaskerable tasker, Dispatcher dispatcher, IAgencies agencies, IGangs gangs, IModItems modItems, ICrimes crimes, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
@@ -1278,7 +1279,7 @@ public class DebugMenu : ModUIMenu
                 FreeCam.Active = true;
                 Game.LocalPlayer.HasControl = false;
                 //This is all adapted from https://github.com/CamxxCore/ScriptCamTool/blob/master/GTAV_ScriptCamTool/PositionSelector.cs#L59
-                while (!Game.IsKeyDownRightNow(Keys.P))
+                while (!Game.IsKeyDownRightNow(Keys.Z))
                 {
                     if (Game.IsKeyDownRightNow(Keys.W))
                     {
@@ -1302,21 +1303,12 @@ public class DebugMenu : ModUIMenu
 
                     if (Game.IsKeyDownRightNow(Keys.O))
                     {
-                        if (FreeCamScale == 1.0f)
-                        {
-                            FreeCamString = "Slow";
-                            FreeCamScale = 0.25f;
-                        }
-                        else if (FreeCamScale == 0.25f)
-                        {
-                            FreeCamString = "Super Slow";
-                            FreeCamScale = 0.05f;
-                        }
-                        else
-                        {
-                            FreeCamString = "Regular";
-                            FreeCamScale = 1.0f;
-                        }
+                        FreeCamScale += 0.5f;
+                        GameFiber.Sleep(100);
+                    }
+                    if (Game.IsKeyDownRightNow(Keys.L))
+                    {
+                        FreeCamScale -= 0.5f;
                         GameFiber.Sleep(100);
                     }
 
@@ -1324,10 +1316,20 @@ public class DebugMenu : ModUIMenu
                     {
                         Game.LocalPlayer.Character.Position = FreeCam.Position;
                         Game.LocalPlayer.Character.Heading = FreeCam.Heading;
+                        GameFiber.Sleep(200);
+                    }
+
+                    if(Game.IsKeyDownRightNow(Keys.K))
+                    {
+                        isHidingHelp = !isHidingHelp;
+                        GameFiber.Sleep(200);
                     }
 
                     //string FreeCamString = FreeCamScale == 1.0f ? "Regular Scale" : "Slow Scale";
-                    Game.DisplayHelp($"Press P to Exit~n~Press O To Change Scale Current: {FreeCamString}~n~Press J To Move Player to Position");
+                    if (!isHidingHelp)
+                    {
+                        Game.DisplayHelp($"Press Z to Exit~n~Press O To Increase Scale~n~Press L To Decrease Scale~n~Current Scale: {FreeCamScale}~n~Press J To Move Player to Position~n~Press K to Toggle Controls");
+                    }
                     GameFiber.Yield();
                 }
                 FreeCam.Active = false;

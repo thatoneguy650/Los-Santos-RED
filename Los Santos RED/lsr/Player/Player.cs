@@ -84,6 +84,7 @@ namespace Mod
         private bool currentlyHasScrewdriver;
         private MenuPool MenuPool;
         private UIMenu VehicleInteractMenu;
+        private bool disableAutoEngineStart;
 
         public Player(string modelName, bool isMale, string suspectsName, IEntityProvideable provider, ITimeControllable timeControllable, IStreets streets, IZones zones, ISettingsProvideable settings, IWeapons weapons, IRadioStations radioStations, IScenarios scenarios, ICrimes crimes
             , IAudioPlayable audio, IAudioPlayable secondaryAudio, IPlacesOfInterest placesOfInterest, IInteriors interiors, IModItems modItems, IIntoxicants intoxicants, IGangs gangs, IJurisdictions jurisdictions, IGangTerritories gangTerritories, IGameSaves gameSaves, INameProvideable names, IShopMenus shopMenus
@@ -358,6 +359,10 @@ namespace Mod
         public string ModelName { get; set; }
         public Ped Pedestrian => Game.LocalPlayer.Character;
         public bool PoliceLastSeenOnFoot { get; set; }
+
+
+        public Vector3 PlacePolicePhysicallyLastSeenPlayer { get; set; }
+
         public Vector3 PlacePoliceLastSeenPlayer { get; set; }
         public bool IsNearbyPlacePoliceShouldSearchForPlayer { get; set; }
         public Vector3 PlacePoliceShouldSearchForPlayer { get; set; }
@@ -465,6 +470,7 @@ namespace Mod
                 UpdateCurrentVehicle();
                 VehicleOwnership.TakeOwnershipOfVehicle(CurrentVehicle, false);
             }
+            disableAutoEngineStart = Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart;
             if (Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart)
             {
                 NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, true);
@@ -1001,6 +1007,11 @@ namespace Mod
                 CriminalHistory.OnSuspectEluded(PoliceResponse.CrimesObserved.ToList(), PlacePoliceLastSeenPlayer);
                 Scanner.OnSuspectEluded();
             }
+            else if(WantedLevel == 1)
+            {
+                Scanner.Reset();
+            }
+
             PlayerVoice.OnSuspectEluded();
         }
         public void OnVehicleCrashed()
@@ -2048,6 +2059,13 @@ namespace Mod
                 IsDuckingInVehicle = isDuckingInVehicle;
             }
             VehicleOwnership.Update();
+
+
+            if(Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart != disableAutoEngineStart)
+            {
+                NativeFunction.Natives.SET_PED_CONFIG_FLAG<bool>(Game.LocalPlayer.Character, (int)PedConfigFlags._PED_FLAG_DISABLE_STARTING_VEH_ENGINE, Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart);
+                disableAutoEngineStart = Settings.SettingsManager.VehicleSettings.DisableAutoEngineStart;
+            }
         }
         public void UpdateWeaponData()
         {           

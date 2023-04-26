@@ -64,7 +64,7 @@ namespace LosSantosRED.lsr
                 }
                 else
                 {
-                    if(IsInSearchMode && Player.WantedLevel == 1)
+                    if(IsInSearchMode && Player.WantedLevel == 1 && Settings.SettingsManager.PoliceSettings.DisableSearchModeAtOneStart)
                     {
                         IsInActiveMode = false;
                         IsInSearchMode = false;

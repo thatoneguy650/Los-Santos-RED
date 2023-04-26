@@ -70,6 +70,7 @@ namespace LosSantosRED.lsr.Interface
         bool IsNearbyPlacePoliceShouldSearchForPlayer { get; set; }
         Vector3 StreetPlacePoliceShouldSearchForPlayer { get; set; }
         Vector3 StreetPlacePoliceLastSeenPlayer { get; set; }
+        Vector3 PlacePolicePhysicallyLastSeenPlayer { get; set; }
 
         void AddCrime(Crime crime, bool ByPolice, Vector3 positionLastSeenCrime, VehicleExt vehicleLastSeenPlayerIn, WeaponInformation weaponLastSeenPlayerWith, bool HaveDescription, bool announceCrime, bool IsForPlayer);
         void Arrest();

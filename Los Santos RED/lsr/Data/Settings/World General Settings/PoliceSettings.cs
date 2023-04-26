@@ -109,6 +109,9 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Time in millisecond that each wanted level adds to the search time. Ex. SearchTimeMultiplier of 30000 at 2 Stars would take 60 seconds to expire. At 4 stars, 120 seconds.")]
     public uint SearchTimeMultiplier { get; set; }
 
+
+
+
     [Description("Force the default weapon animation set on spawned or ambient police. Mostly used for freemode police.")]
     public bool ForceDefaultWeaponAnimations { get; set; }
     [Description("Allows police to be aware of hurt peds in the world. Required for police to call EMS.")]
@@ -123,6 +126,8 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Minimum wanted level required to trigger a high response from the polce. Determines how fast they will drive to the wanted area.")]
     public int HighResponseWantedLevelRequirement { get; set; }
 
+    [Description("Set if the police can go into search mode at a one star wanted level or it should just expire.")]
+    public bool DisableSearchModeAtOneStart { get; set; }
 
     public PoliceSettings()
     {
@@ -201,6 +206,10 @@ public class PoliceSettings : ISettingsDefaultable
 
         SearchTimeMultiplier = 20000;
 
+
+
+
+
         AllowPoliceToCallEMTsOnBodies = true;
 
 
@@ -208,6 +217,6 @@ public class PoliceSettings : ISettingsDefaultable
         MediumResponseInvestigationActiveCrimePriorityRequirement = 8;
         FullResponseWantedLevelRequirement = 4;
         HighResponseWantedLevelRequirement = 2;
-
+        DisableSearchModeAtOneStart = false;
     }
 }

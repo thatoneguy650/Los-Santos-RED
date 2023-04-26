@@ -283,6 +283,16 @@ public class PoliceSpawnSettings : ISettingsDefaultable
     public int LikelyHoodOfCountySpawn_Wanted10 { get; set; }
 
 
+    [Description("Distance required from the player (in meters) to be forcibly despawned when in a vehicle and there is no wanted level active.")]
+    public float DistanceToRecallInVehicle_NotWanted { get; set; }
+    [Description("Distance required from the player (in meters) to be forcibly despawned when in a vehicle and there is any wanted level active.")]
+    public float DistanceToRecallInVehicle_Wanted { get; set; }
+
+    [Description("Distance required from the player (in meters) to be forcibly despawned when in on foot and there is no wanted level active.")]
+    public float DistanceToRecallOnFoot_NotWanted { get; set; }
+    [Description("Distance required from the player (in meters) to be forcibly despawned when in on foot and there is any wanted level active.")]
+    public float DistanceToRecallOnFoot_Wanted { get; set; }
+
     public PoliceSpawnSettings()
     {
         SetDefault();
@@ -463,6 +473,14 @@ public class PoliceSpawnSettings : ISettingsDefaultable
 #endif
         AllowLocationSpawning = true;
         //StationSpawning_MaxWanted = 3;
-       // StationSpawningIgnoresLimits = true;
+        // StationSpawningIgnoresLimits = true;
+
+
+
+        DistanceToRecallInVehicle_NotWanted = 1000f;
+        DistanceToRecallInVehicle_Wanted = 850f;
+        DistanceToRecallOnFoot_NotWanted = 300f;
+        DistanceToRecallOnFoot_Wanted = 125f;
+
     }
 }

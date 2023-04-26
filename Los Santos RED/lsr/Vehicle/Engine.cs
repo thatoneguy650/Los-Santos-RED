@@ -94,6 +94,7 @@ public class Engine
                 VehicleToMonitor.Vehicle.IsDriveable = false;
                 VehicleToMonitor.Vehicle.IsEngineOn = false;
                 IsRunning = false;
+              //  EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET NOT DRIVEABLE 1");
                 return;
             }
 
@@ -103,6 +104,7 @@ public class Engine
                 VehicleToMonitor.Vehicle.IsDriveable = false;
                 VehicleToMonitor.Vehicle.IsEngineOn = false;
                 IsRunning = false;
+               // EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET NOT DRIVEABLE 2");
                 return;
             }
 
@@ -116,11 +118,13 @@ public class Engine
             {
                 VehicleToMonitor.Vehicle.IsDriveable = false;
                 VehicleToMonitor.Vehicle.IsEngineOn = false;
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET NOT DRIVEABLE 3");
             }
             else
             {
                 VehicleToMonitor.Vehicle.IsDriveable = true;
                 VehicleToMonitor.Vehicle.IsEngineOn = true;
+                //EntryPoint.WriteToConsole($"PLAYER EVENT: VEHICLE SET DRIVEABLE");
             }
         }
         else
