@@ -3330,14 +3330,83 @@ public class PlacesOfInterest : IPlacesOfInterest
         PossibleLocations LibertyCityLocations = new PossibleLocations();
         List<PoliceStation> PoliceStations = new List<PoliceStation>()
         {
-            new PoliceStation(new Vector3(0f, 0f, 0f), 323.5287f, "LCPD Station", "LCPD") {OpenTime = 0,CloseTime = 24 }
+            //Broker
+            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+
+
+            //Dukes
+            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+
+            //Bohan
+            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+
+            //Algonquin
+            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+
+            //Alderney
+            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+
         };
         List<Hospital> Hospitals = new List<Hospital>()
         {
-            new Hospital(new Vector3(25f, 25f, 25f), 280.637f, "LC Hospital","LC Hosptial") { OpenTime = 0,CloseTime = 24 },
+            //Broker
+            new Hospital(new Vector3(1438.552f, 690.5808f, 33.54961f), 90.19894f, "Schottler Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            //Dukes
+            new Hospital(new Vector3(1486.106f, 977.1287f, 29.53525f), 33.23054f, "Cerveza Heights Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            //Bohan
+            new Hospital(new Vector3(1220.561f, 2333.059f, 23.89302f), 92.1476f, "Bohan Medical & Dental Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            //Algon
+            new Hospital(new Vector3(-186.4241f, 1797.527f, 17.43241f), 85.08374f, "Holland Hospital Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(334.043f, 643.3015f, 14.77393f), 178.5839f, "Lancet-Hospital Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(51.70538f, -64.34246f, 4.941999f), 89.92042f, "City Hall Hospital","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            //Alderny
+            new Hospital(new Vector3(-1080.693f, 1769.972f, 23.37073f), 309.4161f, "Westdyke Memorial Hospital","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new Hospital(new Vector3(-1277.354f, 890.3488f, 21.63032f), 313.0107f, "North Tudor Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
         };
+        List<Prison> LCPrison = new List<Prison>()
+        {
+            new Prison(new Vector3(-903.9021f, 118.7461f, 3.080931f), 91.96844f, "Alderney State Correctional Facility","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+        };
+
+        List<GangDen> LCGangDens = new List<GangDen>()
+        {
+            new GangDen(new Vector3(117.9776f, 237.2734f, 12.68547f), 91.83325f, "Gambetti Safehouse", "", "GambettiDenMenu", "AMBIENT_GANG_GAMBETTI")
+            {
+                IsPrimaryGangDen = true,
+                CanInteractWhenWanted = true,
+                MapIcon = 541,
+                BannerImagePath = "gambetti.png",
+                OpenTime = 0,
+                CloseTime = 24,
+                IsEnabled = true,
+                StateLocation = StaticStrings.LibertyStateID,
+                PossiblePedSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(116.7614f, 239.4333f, 12.68577f), 117.5893f, 55f) { TaskRequirements = TaskRequirements.Guard },//right by thingo
+                    new GangConditionalLocation(new Vector3(116.0579f, 223.9395f, 12.72538f), 73.20693f, 55f){ TaskRequirements = TaskRequirements.Guard },
+                },
+                PossibleVehicleSpawns = new List<ConditionalLocation>()
+                {
+                    new GangConditionalLocation(new Vector3(111.3983f, 218.4232f, 12.41919f), 1.662297f, 75f),
+                }
+            },
+        };
+
         LibertyCityLocations.PoliceStations.AddRange(PoliceStations);
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
+        LibertyCityLocations.Prisons.AddRange(LCPrison);
+        LibertyCityLocations.GangDens.AddRange(LCGangDens);
         Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
     }
     public void Setup()

@@ -166,6 +166,7 @@
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\DragSettings.cs" />
     <Compile Include="lsr\Data\Settings\PlayerGeneralSettings\ShovelSettings.cs" />
     <Compile Include="lsr\Data\Vehicles\VehicleSeatAndDoorLookup.cs" />
+    <Compile Include="lsr\Debug\LSMapDisabler.cs" />
     <Compile Include="lsr\Dispatcher\Default\DefaultDispatcher.cs" />
     <Compile Include="lsr\Dispatcher\Default\LEDispatcherNew.cs" />
     <Compile Include="lsr\Dispatcher\LocationDispatcher.cs" />

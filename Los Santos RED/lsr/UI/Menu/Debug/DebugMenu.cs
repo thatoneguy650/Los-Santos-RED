@@ -374,7 +374,7 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
 
-        UIMenuItem CheckMapLoaded = new UIMenuItem("Loaded Map", "Diaply the current loaded map (MP/SP)");
+        UIMenuItem CheckMapLoaded = new UIMenuItem("Loaded Map", "Display the current loaded map (MP/SP)");
         CheckMapLoaded.Activated += (menu, item) =>
         {
             string iplName = "bkr_bi_hw1_13_int";
@@ -384,7 +384,18 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
 
-        //
+
+        UIMenuItem DisableLS = new UIMenuItem("Disable LS", "Disable ALL LS IPLs. Useful for travelling to some far away places. CANNOT UNDO WITHOUT GAME RESTART!");
+        DisableLS.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            Game.DisplaySubtitle("Disabling LS");
+            LSMapDisabler lSMapDisabler = new LSMapDisabler();
+            lSMapDisabler.DisableLS();
+            GameFiber.Sleep(500);
+            Game.DisplaySubtitle("LS Disabled");
+
+        };
 
 
 
@@ -399,6 +410,7 @@ public class DebugMenu : ModUIMenu
         LocationItemsMenu.AddItem(LoadMPMap);
         LocationItemsMenu.AddItem(AddAllBlips);
         LocationItemsMenu.AddItem(RemoveAllBlips);
+        LocationItemsMenu.AddItem(DisableLS);
     }
     private void CreateTeleportMenu()
     {
@@ -1001,8 +1013,58 @@ public class DebugMenu : ModUIMenu
             menu.Visible = false;
         };
         HelperMenuItem.AddItem(PrintClassStuffMenu);
-        
 
+
+
+        //Print Zone
+        UIMenuItem PrintCurrentZone = new UIMenuItem("Display Current Zone", "Display the current zone");
+        PrintCurrentZone.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(Game.LocalPlayer.Character.Position.X, Game.LocalPlayer.Character.Position.Y, Game.LocalPlayer.Character.Position.Z);
+            Game.DisplaySubtitle(Marshal.PtrToStringAnsi(ptr));
+        };
+        HelperMenuItem.AddItem(PrintCurrentZone);
+
+        //Print Street
+        UIMenuItem PrintCurrentStreet = new UIMenuItem("Display Current Street", "Display the current street");
+        PrintCurrentStreet.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+
+
+            Vector3 position = Game.LocalPlayer.Character.Position;
+            bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
+            Vector3 ClosestNode = outPos;
+
+            int StreetHash = 0;
+            int CrossingHash = 0;
+            string CurrentStreetName;
+            unsafe
+            {
+                NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+            }
+            string StreetName = string.Empty;
+            if (StreetHash != 0)
+            {
+                unsafe
+                {
+                    IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+                    StreetName = Marshal.PtrToStringAnsi(ptr);
+                }
+                CurrentStreetName = StreetName;
+                GameFiber.Yield();
+            }
+            else
+            {
+                CurrentStreetName = "";
+            }
+
+
+            Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
+            GameFiber.Sleep(200);
+        };
+        HelperMenuItem.AddItem(PrintCurrentStreet);
         //
 
         //VehicleShowcase

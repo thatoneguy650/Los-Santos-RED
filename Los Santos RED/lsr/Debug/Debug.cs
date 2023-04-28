@@ -1107,7 +1107,48 @@ public class Debug
 
     private void DebugNumpad6()
     {
-        ShockTest();
+        Vector3 position = Game.LocalPlayer.Character.Position;
+        bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
+        Vector3 ClosestNode = outPos;
+
+
+
+
+        int StreetHash = 0;
+        int CrossingHash = 0;
+        string CurrentStreetName;
+        unsafe
+        {
+            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+        }
+        string StreetName = string.Empty;
+        if (StreetHash != 0)
+        {
+            unsafe
+            {
+                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+                StreetName = Marshal.PtrToStringAnsi(ptr);
+            }
+            CurrentStreetName = StreetName;
+            GameFiber.Yield();
+        }
+        else
+        {
+            CurrentStreetName = "";
+        }
+
+
+        Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
+        GameFiber.Sleep(200);
+
+
+
+        //Game.DisplaySubtitle("Disabling LS");
+        //LSMapDisabler lSMapDisabler = new LSMapDisabler();
+        //lSMapDisabler.DisableLS();
+        //GameFiber.Sleep(500);
+        //Game.DisplaySubtitle("LS Disabled");
+        //ShockTest();
         //DateTime currentOffsetDateTime = new DateTime(2020, Time.CurrentDateTime.Month, Time.CurrentDateTime.Day, Time.CurrentDateTime.Hour, Time.CurrentDateTime.Minute, Time.CurrentDateTime.Second);
         //WeatherForecast closestForecast = ModDataFileManager.WeatherForecasts.WeatherForecastList.OrderBy(x => Math.Abs(x.DateTime.Ticks - currentOffsetDateTime.Ticks)).ThenBy(x => x.DateTime).FirstOrDefault();//WeatherForecasts.WeatherForecastList.OrderBy(x => (x.DateTime - currentOffsetDateTime).Duration()).ThenBy(y=>y.DateTime).FirstOrDefault();
         //if (closestForecast != null)

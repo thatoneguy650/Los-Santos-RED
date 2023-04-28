@@ -156,7 +156,21 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
-    public bool IsSameState(string state) => String.IsNullOrEmpty(state) || StateLocation == state;
+    public bool IsSameState(string state) => string.IsNullOrEmpty(state) || StateLocation == state || IsSisterState(state);
+
+    private bool IsSisterState(string state)
+    {
+        if(state == StaticStrings.AlderneyStateID && StateLocation == StaticStrings.LibertyStateID)
+        {
+            return true;
+        }
+        if (state == StaticStrings.LibertyStateID && StateLocation == StaticStrings.AlderneyStateID)
+        {
+            return true;
+        }
+        return false;
+    }
+
     public void StoreData(IZones zones, IStreets streets)
     {
         Zone placeZone = zones.GetZone(EntrancePosition);

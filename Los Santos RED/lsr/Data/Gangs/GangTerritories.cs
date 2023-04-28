@@ -36,6 +36,7 @@ public class GangTerritories : IGangTerritories
             EntryPoint.WriteToConsole($"No Gang Territories config found, creating default", 0);
             //DefaultConfig_LosSantos2008();
             DefaultConfig_Simple();
+            DefaultConfig_LibertyCity();
             DefaultConfig();
         }
     }
@@ -254,6 +255,76 @@ public class GangTerritories : IGangTerritories
            //new ZoneJurisdiction("LSMC","GALLI", 0, 100, 100),
         };
         Serialization.SerializeParams(ZoneJurisdictionsList, ZoneConfigFileName);
+    }
+    private void DefaultConfig_LibertyCity()
+    {
+        List<ZoneJurisdiction> LibertyZOneJurisdictionsList = new List<ZoneJurisdiction>()
+        {
+
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","ACTRR", 0, 100, 100),//acter
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","ACTIP", 0, 100, 100),//acter indus
+            new ZoneJurisdiction("AMBIENT_GANG_LOST","ALDCI", 0, 100, 100),//acter prison
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","SCHOL", 0, 100, 100),//schlotter
+            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","BEECW", 0, 100, 100),//beachwood city
+            new ZoneJurisdiction("AMBIENT_GANG_YARDIES","WILLI", 0, 100, 100),//Willis
+
+            //new ZoneJurisdiction("AMBIENT_GANG_DIABLOS","", 0, 100, 100),
+            
+            //new ZoneJurisdiction("AMBIENT_GANG_FAMILY","", 0, 100, 100),
+           // new ZoneJurisdiction("AMBIENT_GANG_BALLAS","", 0, 100, 100),
+            
+           // new ZoneJurisdiction("AMBIENT_GANG_MARABUNTE","", 0, 100, 100),
+           // new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","", 0, 100, 100),
+           // new ZoneJurisdiction("AMBIENT_GANG_SALVA","", 0, 100, 100),
+
+            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","NRTGA", 0, 100, 100),//northern gardens
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CHITO", 0, 100, 100),//CHinatown
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CITH", 0, 100, 100),//city hall
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","THXCH", 0, 100, 100),//the exchange
+            new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","FISSO", 0, 100, 100),//fishmarket south
+            //
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_ARMENIAN","MEADP", 0, 100, 100),//measdows park
+           // new ZoneJurisdiction("AMBIENT_GANG_MADRAZO","", 0, 100, 100),
+
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","LITAL", 0, 100, 100),//little italy
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","LITAL", 1, 20, 20),//little italy
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","LITAL", 2, 20, 20),//little italy
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LITAL", 3, 20, 20),//little italy
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","LITAL", 4, 20, 20),//little italy
+
+
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","SUFFO", 0, 100, 100),//suffolk
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","SUFFO", 1, 20, 20),//suffolk
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","SUFFO", 2, 20, 20),//suffolk
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","SUFFO", 3, 20, 20),//suffolk
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","SUFFO", 4, 20, 20),//suffolk
+
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","LOWEA", 0, 100, 100),//lower easton
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","LOWEA", 1, 20, 20),//lower easton
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","LOWEA", 2, 20, 20),//lower easton
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","LOWEA", 3, 20, 20),//lower easton
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","LOWEA", 4, 20, 20),//lower easton
+
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","THPRES", 0, 100, 100),//presidents city
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","THPRES", 1, 20, 20),//presidents city
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THPRES", 2, 20, 20),//presidents city
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","THPRES", 3, 20, 20),//presidents city
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","THPRES", 4, 20, 20),//presidents city
+
+            new ZoneJurisdiction("AMBIENT_GANG_MESSINA","THTRI", 0, 100, 100),//the triangle
+            new ZoneJurisdiction("AMBIENT_GANG_GAMBETTI","THTRI", 1, 20, 20),//the triangle
+            new ZoneJurisdiction("AMBIENT_GANG_PAVANO","THTRI", 2, 20, 20),//the triangle
+            new ZoneJurisdiction("AMBIENT_GANG_LUPISELLA","THTRI", 3, 20, 20),//the triangle
+            new ZoneJurisdiction("AMBIENT_GANG_ANCELOTTI","THTRI", 4, 20, 20),//the triangle
+
+        };
+        Serialization.SerializeParams(LibertyZOneJurisdictionsList, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\GangTerritories_LibertyCity.xml");
     }
     private void DefaultConfig_LosSantos2008()
     {
