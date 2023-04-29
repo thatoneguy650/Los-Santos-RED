@@ -74,6 +74,10 @@ class GoToOnFootTaskState : TaskState
     }
     private void UpdateDistances()
     {
+        if(!PedGeneral.Pedestrian.Exists())
+        {
+            return;
+        }
         float DistanceToCoordinates = PedGeneral.Pedestrian.DistanceTo2D(PlaceToWalkTo);
         if (DistanceToCoordinates <= 7f)
         {

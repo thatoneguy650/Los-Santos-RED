@@ -46,7 +46,7 @@ public class VanillaSettings : ISettingsDefaultable
 //TerminateScenarioPeds = false;//gets rid of them ALLLLLLLLL, not driving gang members tho
         SupressRandomPoliceEvents = true;
         BlockGangScenarios = true;
-        BlockGangScenariosAroundDensDistance = 200f;
+        BlockGangScenariosAroundDensDistance = 50f;// 200f;
         BlockVanillaPoliceCarGenerators = true;
         BlockVanillaPoliceAndSecurityScenarios = true;
         TerminateVanillaShops = false;

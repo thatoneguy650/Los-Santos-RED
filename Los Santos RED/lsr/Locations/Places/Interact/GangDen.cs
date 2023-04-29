@@ -39,6 +39,9 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
 
     public bool IsPrimaryGangDen { get; set; } = false;
 
+
+    public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
+
     public override bool IsBlipEnabled { get; set; } = false;
     [XmlIgnore]
     public bool IsAvailableForPlayer { get; set; } = false;

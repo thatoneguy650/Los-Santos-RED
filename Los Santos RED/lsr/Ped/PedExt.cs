@@ -82,6 +82,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
     public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
+
+    public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
+
+
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -693,6 +697,56 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CellX = (int)(position.X / EntryPoint.CellSize);
         CellY = (int)(position.Y / EntryPoint.CellSize);
     }
+
+
+    public void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
+    {
+        if(!Pedestrian.Exists())
+        {
+            return;
+        }
+        bool Spoke = false;
+        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(2))
+        {
+            string voiceName = null;
+            bool IsOverWrittingVoice = false;
+            if (VoiceName != "")
+            {
+                voiceName = VoiceName;
+                IsOverWrittingVoice = true;
+            }
+            bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Pedestrian, AmbientSpeech, false);
+            SpeechModifier speechModifier = SpeechModifier.Force;
+            if (useMegaphone)
+            {
+                speechModifier = SpeechModifier.ForceMegaphone;
+            }
+            else if (isShouted)
+            {
+                speechModifier = SpeechModifier.ForceShouted;
+            }
+
+            if (IsOverWrittingVoice)
+            {
+                Pedestrian.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, speechModifier);
+            }
+            else
+            {
+                Pedestrian.PlayAmbientSpeech(AmbientSpeech, useMegaphone);
+            }
+            GameFiber.Sleep(300);//100
+            if (Pedestrian.Exists() && Pedestrian.IsAnySpeechPlaying)
+            {
+                Spoke = true;
+            }
+            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {Cop.Pedestrian.Handle} voiceName {voiceName} Attempting {AmbientSpeech}, Result: {Spoke} IsOverWrittingVoice {IsOverWrittingVoice}");
+            if (Spoke)
+            {
+                break;
+            }
+        }
+    }
+
     public void UpdateVehicleState()
     {
         bool wasInVehicle = IsInVehicle;

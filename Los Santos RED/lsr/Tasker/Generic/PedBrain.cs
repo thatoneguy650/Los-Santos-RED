@@ -175,7 +175,7 @@ public class PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new ScaredCallIn(PedExt, Player) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
+        PedExt.CurrentTask = new ScaredCallIn(PedExt, Player, Settings) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }

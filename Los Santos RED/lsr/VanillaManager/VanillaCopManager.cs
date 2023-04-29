@@ -16,20 +16,11 @@ public class VanillaCopManager
     private uint GameTimeLastTerminatedVanillaDispatch;
     private uint GameTimeLastTerminatedScenarioCops;
     private ISettingsProvideable Settings;
-    private List<string> CopScenarios;
     private bool IsTimeToTerminatedVanillaDispatch => GameTimeLastTerminatedVanillaDispatch == 0 || Game.GameTime - GameTimeLastTerminatedVanillaDispatch >= 5000;
     private bool IsTimeToTerminateScenarioCops => GameTimeLastTerminatedScenarioCops == 0 || Game.GameTime - GameTimeLastTerminatedScenarioCops >= 5000;
     public VanillaCopManager(ISettingsProvideable settings)
     {
         Settings = settings;
-        CopScenarios = new List<string>
-        {
-            "WORLD_VEHICLE_POLICE_BIKE",
-            "WORLD_VEHICLE_POLICE_CAR",
-            "WORLD_VEHICLE_POLICE_NEXT_TO_CAR",
-            "CODE_HUMAN_POLICE_CROWD_CONTROL",
-            "CODE_HUMAN_POLICE_INVESTIGATE",
-        };
     }
 
     public void Setup()
@@ -88,15 +79,12 @@ public class VanillaCopManager
                 ActivateScenarioCops();
             }
         }
-
-
     }
     private void SuppressRandomEvents()
     {
         NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopChase, true);
         NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopChaseFlee, true);
         NativeFunction.Natives.SUPRESS_RANDOM_EVENT_THIS_FRAME((int)eRandomEventType.CopFast, true);
-
     }
     private void TerminateDispatch()
     {
@@ -145,11 +133,6 @@ public class VanillaCopManager
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_CREATE_RANDOM_COPS_NOT_ON_SCENARIOS(Enabled);
         NativeFunction.Natives.SET_DISPATCH_COPS_FOR_PLAYER(Enabled);
-        //foreach (string scenario in CopScenarios)
-        //{
-        //    NativeFunction.Natives.SET_SCENARIO_TYPE_ENABLED(scenario, Enabled);
-        //}
-
     }
 }
 

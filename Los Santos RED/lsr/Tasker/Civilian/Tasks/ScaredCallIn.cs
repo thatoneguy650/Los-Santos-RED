@@ -11,66 +11,95 @@ using System.Threading.Tasks;
 public class ScaredCallIn : ComplexTask
 {
     private uint GameTimeStartedCallIn;
-    public ScaredCallIn(IComplexTaskable ped, ITargetable player) : base(player, ped, 1000)
+    private uint GameTimeStartedFlee;
+    private bool HasStartedPhoneTask;
+    private uint GameTimeToCallIn = 10000;
+    private ISettingsProvideable Settings;
+    public ScaredCallIn(IComplexTaskable ped, ITargetable player, ISettingsProvideable settings) : base(player, ped, 1000)
     {
         Name = "ScaredCallIn";
         SubTaskName = "";
         GameTimeStartedCallIn = Game.GameTime;
+        Settings = settings;
     }
     public override void Start()
     {
         if (Ped.Pedestrian.Exists())
         {
-            if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
-            {
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 50f, 10000);//100f
-                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 1500f, -1);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
-            }
-            else
-            {
-                unsafe
-                {
-                    int lol = 0;
-                    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000);//100f
-                    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
-                    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1);
-                    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
-                    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
-                    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
-                    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
-                }
-            }
+            GameTimeToCallIn = RandomItems.GetRandomNumber(Settings.SettingsManager.CivilianSettings.GameTimeToCallInMinimum, Settings.SettingsManager.CivilianSettings.GameTimeToCallInMaximum);
+            TaskFlee();
+            GameTimeStartedFlee = Game.GameTime;
+            HasStartedPhoneTask = false;
         }
         GameTimeLastRan = Game.GameTime;
     }
-    public override void Update()
+    private void TaskFlee()
     {
-        if (Ped.Pedestrian.Exists())
+        if (OtherTarget != null && OtherTarget.Pedestrian.Exists())
         {
-            NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
-            if (Game.GameTime - GameTimeStartedCallIn >= 10000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
-            {
-                 Ped.ReportCrime(Player);
-            }
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 1500f, -1);
+            //unsafe
+            //{
+            //    int lol = 0;
+            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 50f, 10000);//100f
+            //    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+            //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, OtherTarget.Pedestrian, 1500f, -1);
+            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //}
         }
         else
         {
-            if (Game.GameTime - GameTimeStartedCallIn >= 4000 && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
+            NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", Ped.Pedestrian, Player.Character, 1500f, -1);
+            //unsafe
+            //{
+            //    int lol = 0;
+            //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+            //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 50f, 10000);//100f
+            //    NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", 0, 5000);
+            //    NativeFunction.CallByName<bool>("TASK_SMART_FLEE_PED", 0, Player.Character, 1500f, -1);
+            //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+            //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+            //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Ped.Pedestrian, lol);
+            //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            //}
+        }
+    }
+    public override void Update()
+    {
+        if (!Ped.Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist)
+        {
+            if (Settings.SettingsManager.CivilianSettings.AllowCallInIfPedDoesNotExist && Game.GameTime - GameTimeStartedCallIn >= Settings.SettingsManager.CivilianSettings.GameTimeToCallInIfPedDoesNotExist && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
             {
+                EntryPoint.WriteToConsole("NOT EXISTING PED CALLED IN CRIME");
                 Ped.ReportCrime(Player);
             }
+            return;
         }
+        if (!Ped.Pedestrian.Exists() || !Ped.CanFlee)
+        {
+            return;
+        }
+        if(!HasStartedPhoneTask && Game.GameTime - GameTimeStartedFlee >= GameTimeToCallIn)
+        {
+            NativeFunction.CallByName<bool>("TASK_USE_MOBILE_PHONE_TIMED", Ped.Pedestrian, Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime);
+            HasStartedPhoneTask = true;
+            Ped.PlaySpeech(new List<string>() { "GENERIC_SHOCKED_HIGH", "GENERIC_FRUSTRATED_HIGH", "GET_OUT_OF_HERE" }, false, false);
+            EntryPoint.WriteToConsole($"{Ped.Handle} STARTED PHONE TASK");
+        }
+        if (HasStartedPhoneTask && Game.GameTime - GameTimeStartedCallIn >= GameTimeToCallIn + Settings.SettingsManager.CivilianSettings.GameTimeAfterCallInToReportCrime && (Ped.PlayerCrimesWitnessed.Any() || Ped.OtherCrimesWitnessed.Any() || Ped.HasSeenDistressedPed))
+        {
+            Ped.ReportCrime(Player);
+            EntryPoint.WriteToConsole($"{Ped.Handle} CALLED IN CRIME");
+            if(Ped.Pedestrian.Exists())
+            {
+                TaskFlee();
+            }
+        }
+        NativeFunction.Natives.SET_DRIVE_TASK_DRIVING_STYLE(Ped.Pedestrian, (int)eCustomDrivingStyles.Code3);
         GameTimeLastRan = Game.GameTime;
     }
     public override void Stop()

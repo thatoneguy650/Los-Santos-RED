@@ -120,18 +120,17 @@ public class DebugMenu : ModUIMenu
         CreateRelationshipsMenu();
         CreateVehicleMenu();
         CreateMovementItems();
-        CreateYmapMenu();
+# if DEBUG
+        CreateLCYMAPMenu();
+#endif
     }
-    private void CreateYmapMenu()
+    private void CreateLCYMAPMenu()
     {
 
-        UIMenu HelperMenuItem = MenuPool.AddSubMenu(Debug, "YMAP Menu");
-        HelperMenuItem.SetBannerType(EntryPoint.LSRedColor);
-        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various YMAP items";
-
-        HelperMenuItem.Width = 0.35f;
-
-
+        UIMenu OtherMapMenuItem = MenuPool.AddSubMenu(Debug, "LC YMAP Stuff");
+        OtherMapMenuItem.SetBannerType(EntryPoint.LSRedColor);
+        Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Various LC YMAP Map items";
+        OtherMapMenuItem.Width = 0.35f;
         List<YmapDisabler> CoolStuff = new List<YmapDisabler>() {
 
 new YmapDisabler("manhatsw_stream3",true),
@@ -314,14 +313,12 @@ new YmapDisabler("manhat01_strbig0",true),
 new YmapDisabler("manhat01_lod",true),
 new YmapDisabler("manhat01",true),
         };
-
         UIMenuListScrollerItem<YmapDisabler> uIMenuListScrollerItem = new UIMenuListScrollerItem<YmapDisabler>("Toggler", "Toggle YMAP ON and OFF", CoolStuff);
         uIMenuListScrollerItem.Activated += (menu, item) =>
         {
             uIMenuListScrollerItem.SelectedItem.Toggle();
             //menu.Visible = false;
         };
-
         List<YmapGroupDisabler> ymapGroupDisablers = new List<YmapGroupDisabler>()
         { 
             new YmapGroupDisabler("manhat01",new List<string>() { 
@@ -357,7 +354,7 @@ new YmapDisabler("manhat01",true),
                 "manhat01_lod",
                 "manhat01", 
             }, true),
-               new YmapGroupDisabler("manhat02",new List<string>() {
+            new YmapGroupDisabler("manhat02",new List<string>() {
 "manhat02_stream9",
 "manhat02_stream8",
 "manhat02_stream7",
@@ -374,8 +371,8 @@ new YmapDisabler("manhat01",true),
 "manhat02_strbig0",
 "manhat02_lod",
 "manhat02",
-            }, true),
-               new YmapGroupDisabler("manhat03",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat03",new List<string>() {
 "manhat03_stream6",
 "manhat03_stream5",
 "manhat03_stream4",
@@ -386,9 +383,8 @@ new YmapDisabler("manhat01",true),
 "manhat03_strbig0",
 "manhat03_lod",
 "manhat03",
-            }, true),
-
-               new YmapGroupDisabler("manhat04",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat04",new List<string>() {
 "manhat04_stream7",
 "manhat04_stream6",
 "manhat04_stream5",
@@ -400,9 +396,8 @@ new YmapDisabler("manhat01",true),
 "manhat04_strbig0",
 "manhat04_lod",
 "manhat04",
-            }, true),
-
-               new YmapGroupDisabler("manhat05",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat05",new List<string>() {
 "manhat05_stream9",
 "manhat05_stream8",
 "manhat05_stream7",
@@ -420,19 +415,16 @@ new YmapDisabler("manhat01",true),
 "manhat05_strbig0",
 "manhat05_lod",
 "manhat05",
-            }, true),
-
-
-               new YmapGroupDisabler("manhat06",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat06",new List<string>() {
 "manhat06_stream2",
 "manhat06_stream1",
 "manhat06_stream0",
 "manhat06_strbig0",
 "manhat06_lod",
 "manhat06",
-            }, true),
-
-               new YmapGroupDisabler("manhat07",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat07",new List<string>() {
 "manhat07_stream9",
 "manhat07_stream8",
 "manhat07_stream7",
@@ -449,9 +441,8 @@ new YmapDisabler("manhat01",true),
 "manhat07_strbig0",
 "manhat07_lod",
 "manhat07",
-            }, true),
-
-               new YmapGroupDisabler("manhat08",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat08",new List<string>() {
 "manhat08_stream9",
 "manhat08_stream8",
 "manhat08_stream7",
@@ -467,8 +458,8 @@ new YmapDisabler("manhat01",true),
 "manhat08_strbig0",
 "manhat08_lod",
 "manhat08",
-            }, true),
-               new YmapGroupDisabler("manhat09",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat09",new List<string>() {
 "manhat09_stream7",
 "manhat09_stream6",
 "manhat09_stream5",
@@ -480,9 +471,8 @@ new YmapDisabler("manhat01",true),
 "manhat09_strbig0",
 "manhat09_lod",
 "manhat09",
-            }, true),
-
-               new YmapGroupDisabler("manhat10",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat10",new List<string>() {
 "manhat10_stream8",
 "manhat10_stream7",
 "manhat10_stream6",
@@ -495,9 +485,8 @@ new YmapDisabler("manhat01",true),
 "manhat10_strbig0",
 "manhat10_lod",
 "manhat10",
-            }, true),
-
-               new YmapGroupDisabler("manhat11",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat11",new List<string>() {
 "manhat11_stream8",
 "manhat11_stream7",
 "manhat11_stream6",
@@ -510,9 +499,8 @@ new YmapDisabler("manhat01",true),
 "manhat11_strbig0",
 "manhat11_lod",
 "manhat11",
-            }, true),
-
-               new YmapGroupDisabler("manhat12",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhat12",new List<string>() {
 "manhat12_stream8_lod",
 "manhat12_stream8",
 "manhat12_stream7",
@@ -527,9 +515,8 @@ new YmapDisabler("manhat01",true),
 "manhat12_strbig0",
 "manhat12_lod",
 "manhat12",
-            }, true),
-
-               new YmapGroupDisabler("manhatsw",new List<string>() {
+        }, true),
+            new YmapGroupDisabler("manhatsw",new List<string>() {
 "manhatsw_stream3",
 "manhatsw_stream2",
 "manhatsw_stream1",
@@ -538,22 +525,17 @@ new YmapDisabler("manhat01",true),
 "manhatsw_strbig0",
 "manhatsw_lod",
 "manhatsw",
-            }, true),
+        }, true),
         };
-
-
-
         UIMenuListScrollerItem<YmapGroupDisabler> uIMenuListScrollerItem2 = new UIMenuListScrollerItem<YmapGroupDisabler>("Toggler Group", "Toggle YMAP ON and OFF", ymapGroupDisablers);
         uIMenuListScrollerItem2.Activated += (menu, item) =>
         {
             uIMenuListScrollerItem2.SelectedItem.Toggle();
             //menu.Visible = false;
         };
-
-        HelperMenuItem.AddItem(uIMenuListScrollerItem);
-        HelperMenuItem.AddItem(uIMenuListScrollerItem2);
-
-        UIMenuItem fixLCLOD = new UIMenuItem("LC Performance Mode", "disable some pesky ymap stuffo");
+        OtherMapMenuItem.AddItem(uIMenuListScrollerItem);
+        OtherMapMenuItem.AddItem(uIMenuListScrollerItem2);
+        UIMenuItem fixLCLOD = new UIMenuItem("LC Disable 7", "disable some pesky ymap stuffo");
         fixLCLOD.Activated += (menu, item) =>
         {
             //Player.ClipsetManager.SetWeaponAnimationOverride(fixLCLOD.SelectedItem);
@@ -575,7 +557,7 @@ new YmapDisabler("manhat01",true),
 "manhat07_lod",
 "manhat07",};
 
-            foreach(string ipl in toDisable)
+            foreach (string ipl in toDisable)
             {
                 NativeFunction.Natives.REMOVE_IPL(ipl);
             }
@@ -588,12 +570,8 @@ new YmapDisabler("manhat01",true),
             }
             menu.Visible = false;
         };
-        HelperMenuItem.AddItem(fixLCLOD);
-
-
-
+        OtherMapMenuItem.AddItem(fixLCLOD);
     }
-
     private void CreateOutfitMenu()
     {
         outfitsSubMenu = MenuPool.AddSubMenu(Debug, "Outfits");
@@ -623,7 +601,6 @@ new YmapDisabler("manhat01",true),
             outfitsSubMenu.AddItem(uIMenuItem);
         }
     }
-
     private void CreateMovementItems()
     {
         UIMenu ClipsetsSubMenu = MenuPool.AddSubMenu(Debug, "Movement Clipsets");
@@ -681,7 +658,6 @@ new YmapDisabler("manhat01",true),
         ClipsetsSubMenu.AddItem(ResetStrafeMenuItem);
 
     }
-
     private void UpdateVehicleItems()
     {
         vehicleItemsMenu.Clear();
@@ -701,7 +677,6 @@ new YmapDisabler("manhat01",true),
         Debug.MenuItems[Debug.MenuItems.Count() - 1].Description = "Change various vehicle items.";
         UpdateVehicleItems();
     }
-
     private void CreateExtraMenuItem()
     {
         UIMenuNumericScrollerItem<int> VehicleExtraMenuItem = new UIMenuNumericScrollerItem<int>("Set Extra", "Set the vehicle Extra", 1, 14, 1);
@@ -729,7 +704,6 @@ new YmapDisabler("manhat01",true),
         };
         vehicleItemsMenu.AddItem(VehicleColorMenuItem);
     }
-
     private void CreateLiveryMenuItem()
     {
         int Total = NativeFunction.Natives.GET_VEHICLE_LIVERY_COUNT<int>(Player.CurrentVehicle.Vehicle);
@@ -749,8 +723,6 @@ new YmapDisabler("manhat01",true),
         };
         vehicleItemsMenu.AddItem(LogLocationMenu);
     }
-
-
     private void CreatePlateMenuItem()
     {
         UIMenuListScrollerItem<PlateType> plateIndex = new UIMenuListScrollerItem<PlateType>("Plate Type","Select Plate Type to change",PlateTypes.PlateTypeManager.PlateTypeList);
@@ -778,7 +750,6 @@ new YmapDisabler("manhat01",true),
         };
         vehicleItemsMenu.AddItem(plateIndex);
     }
-
     private void CreateLocationMenu()
     {
         UIMenu LocationItemsMenu = MenuPool.AddSubMenu(Debug, "Location Menu");
@@ -870,9 +841,30 @@ new YmapDisabler("manhat01",true),
 
 
 
+        UIMenuItem SetLCSettingAndItemsMenu = new UIMenuItem("Set LC Active", "Disable LS ymaps, scenarios, set the settings, and set a mission flag for LC.");
+        SetLCSettingAndItemsMenu.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            Game.DisplaySubtitle("Disabling LS");
+            LSMapDisabler lSMapDisabler = new LSMapDisabler();
+            lSMapDisabler.DisableLS();
+            GameFiber.Sleep(500);
+            Game.DisplaySubtitle("LS Disabled");
+            GameFiber.Sleep(500);
+            Settings.SetLC();
+            Game.DisplaySubtitle("Set LC Settings");
+            NativeFunction.Natives.SET_MISSION_FLAG(true);
+
+        };
 
 
+        UIMenuItem TurnOffInterior = new UIMenuItem("Turn Interior", "Turn Off Interior by ID");
+        TurnOffInterior.Activated += (menu, item) =>
+        {
+            menu.Visible = false;
+            TunOffInterior();
 
+        };
 
         LocationItemsMenu.AddItem(LogSpawnPositionMenu);
         LocationItemsMenu.AddItem(LogLocationMenu);
@@ -886,6 +878,24 @@ new YmapDisabler("manhat01",true),
         LocationItemsMenu.AddItem(AddAllBlips);
         LocationItemsMenu.AddItem(RemoveAllBlips);
         LocationItemsMenu.AddItem(DisableLS);
+        LocationItemsMenu.AddItem(SetLCSettingAndItemsMenu);
+        LocationItemsMenu.AddItem(TurnOffInterior);
+    }
+    private void TunOffInterior()
+    {
+        if (!int.TryParse(NativeHelper.GetKeyboardInput(""), out int interiorID))
+        {
+            return;
+        }
+        NativeFunction.Natives.UNPIN_INTERIOR(interiorID);
+        NativeFunction.Natives.SET_INTERIOR_ACTIVE(interiorID, false);
+        if (NativeFunction.Natives.IS_INTERIOR_CAPPED<bool>(interiorID))
+        {
+            NativeFunction.Natives.CAP_INTERIOR(interiorID, true);
+        }
+        NativeFunction.Natives.DISABLE_INTERIOR(interiorID, true);
+        NativeFunction.Natives.REFRESH_INTERIOR(interiorID);
+        Game.DisplaySubtitle($"Disabled Interior {interiorID}");
     }
     private void CreateTeleportMenu()
     {
@@ -1546,7 +1556,6 @@ new YmapDisabler("manhat01",true),
         //VehicleShowcase
 
     }
-
     private void CreateTimeMenu()
     {
         UIMenu TimeItems = MenuPool.AddSubMenu(Debug, "Time Menu");
@@ -1950,7 +1959,6 @@ new YmapDisabler("manhat01",true),
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
-
     private void WriteToClassCreator(String TextToLog, int test)
     {
         StringBuilder sb = new StringBuilder();
@@ -1958,9 +1966,6 @@ new YmapDisabler("manhat01",true),
         File.AppendAllText("Plugins\\LosSantosRED\\" + "ClassCreator.txt", sb.ToString());
         sb.Clear();
     }
-
-
-
     private void SpawnGunAttackers()
     {
         GameFiber.StartNew(delegate
@@ -2644,8 +2649,6 @@ new YmapDisabler("manhat01",true),
         }
         WriteToClassCreator($"}},", 0);
     }
-
-
     private void LongListStruff()
     {
         MovementClipsetsList = new List<string>()
@@ -3202,9 +3205,6 @@ new YmapDisabler("manhat01",true),
 
         };
     }
-
-
-
     private class YmapDisabler
     {
         public YmapDisabler(string name, bool isEnabled)
@@ -3272,5 +3272,4 @@ new YmapDisabler("manhat01",true),
         }
 
     }
-
 }

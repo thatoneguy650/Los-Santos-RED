@@ -2026,6 +2026,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1390.856f, 1139.184f, 114.4433f), 56.59644f, 35f) { TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipSidearmWhenIdle | TaskRequirements.EquipLongGunWhenIdle, LongGunAlwaysEquipped = true, ForceSidearm = true,ForceLongGun = true },
@@ -2143,6 +2144,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1193.946f, -1651.643f, 42.358f), 18.49724f, 50f),
@@ -2170,6 +2172,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(1301.137f, -1754.575f, 53.87848f), 184.4178f, 50f),
@@ -2391,6 +2394,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(84.76484f, -1953.536f, 20.8518f), 334.0088f, 35f),
@@ -2605,6 +2609,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(-219.9773f, -1594.828f, 34.86927f), 326.5532f, 35f),
@@ -2835,6 +2840,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(987.3098f, -107.0706f, 74.32984f), 138.8955f, 35f),
@@ -2870,6 +2876,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>()
             {
                 new GangConditionalLocation(new Vector3(84.73796f, 3718.092f, 40.33084f), 60.53624f, 25f),
@@ -2935,6 +2942,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             OpenTime = 0,
             CloseTime = 24,
             IsEnabled = true,
+            HasVanillaGangSpawnedAroundToBeBlocked = true,
             PossiblePedSpawns = new List<ConditionalLocation>() 
             {
                 new GangConditionalLocation(new Vector3(963.3468f, -1869.211f, 31.21046f), 130.5827f, 35f),

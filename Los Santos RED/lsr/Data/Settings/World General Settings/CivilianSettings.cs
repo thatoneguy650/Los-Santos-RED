@@ -128,6 +128,15 @@ public class CivilianSettings : ISettingsDefaultable
     public float PercentageKnowsAnyDrugTerritory { get; set; }
 
 
+    public bool AllowCallInIfPedDoesNotExist { get; set; }
+    
+    public uint GameTimeToCallInMinimum { get; set; }
+    public uint GameTimeToCallInMaximum { get; set; }
+    public uint GameTimeToCallInIfPedDoesNotExist { get; set; }
+
+
+    public uint GameTimeAfterCallInToReportCrime { get; set; }
+
     public CivilianSettings()
     {
         SetDefault();
@@ -202,6 +211,13 @@ public class CivilianSettings : ISettingsDefaultable
 //#endif
         PercentageKnowsAnyGangTerritory = 45f;
         PercentageKnowsAnyDrugTerritory = 45f;
+
+        AllowCallInIfPedDoesNotExist = true;
+        GameTimeToCallInIfPedDoesNotExist = 5000;
+        GameTimeToCallInMinimum = 7000;
+        GameTimeToCallInMaximum = 15000;
+
+        GameTimeAfterCallInToReportCrime = 3000;
 
 
     }

@@ -61,7 +61,9 @@ namespace LosSantosRED.lsr.Interface
         bool IsAnimal { get; }
         int DefaultCombatFlag { get; }
         int DefaultEnterExitFlag { get; }
+        bool CanFlee { get; }
 
+        void PlaySpeech(List<string> list, bool isInVehicle, bool v);
         void ReportCrime(ITargetable player);
         void SetWantedLevel(int v);
     }

@@ -266,21 +266,21 @@ public class Zones : IZones
             new Zone("EAHOL", "East Holland", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("LANCA", "Lancaster", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("MIDPE", "Middle Park East", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
-            new Zone("MIDPA", "Middle Park", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
+            new Zone("MIDPA", "Middle Park", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("MIDPW", "Middle Park West", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("NOHOL", "North Holland", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("NORWO", "Northwood", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("VASIH", "Varsity Heights", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
 
             //Algonquin MidTown
-            new Zone("COISL", "Colony Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural) { BoroughName = "Algonquin" },
+            new Zone("COISL", "Colony Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Rural) { BoroughName = "Algonquin" },
             new Zone("EASON", "Easton", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("HATGA", "Hatton Gardens", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("LANCE", "Lancet", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("TMEQU", "The Meat Quarter", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("THPRES", "Presidents City", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("PUGAT", "Purgatory", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
-            new Zone("STARJ", "Star Junction", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
+            new Zone("STARJ", "Star Junction", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("THTRI", "The Triangle", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown) { BoroughName = "Algonquin" },
 
             //Algonquin Downtown
@@ -291,7 +291,7 @@ public class Zones : IZones
             new Zone("THXCH", "The Exchange", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("FISSO", "Fishmarket South", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("FISSN", "Fishmarket North", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
-            new Zone("HAPIN", "Happiness Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Rural) { BoroughName = "Algonquin" },
+            new Zone("HAPIN", "Happiness Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Rich, eLocationType.Rural) { BoroughName = "Algonquin" },
             new Zone("LITAL", "Little Italy", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("LOWEA", "Lower Easton", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
             new Zone("SUFFO", "Suffolk", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Rich, eLocationType.Downtown) { BoroughName = "Algonquin" },
@@ -300,7 +300,7 @@ public class Zones : IZones
             //Broker      
             new Zone("BEGGA", "Beachgate", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
             new Zone("BEECW", "Beechwood City", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
-            new Zone("BOAB", "BOABO", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
+            new Zone("BOAB", "BOABO", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
             new Zone("DOWTW", "Downtown", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
             new Zone("ESHOO", "East Hook", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb) { BoroughName = "Broker" },
             new Zone("FIISL", "Firefly Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural) { BoroughName = "Broker" },
@@ -315,7 +315,7 @@ public class Zones : IZones
             new Zone("CERHE", "Cerveza Heights", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
             new Zone("CHISL", "Charge Island", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
             new Zone("EISLC", "East Island City", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
-            new Zone("FRANI", "Francis International Airport", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Industrial) { BoroughName = "Dukes" },
+            new Zone("FRANI", "Francis International Airport", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Industrial) { BoroughName = "Dukes" },
             new Zone("MEADP", "Meadows Park", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
             new Zone("MEADH", "Meadow Hills", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
             new Zone("STEIN", "Steinway", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Suburb) { BoroughName = "Dukes" },
@@ -332,7 +332,7 @@ public class Zones : IZones
 
             //Alderney
             
-            new Zone("ALSCF", "Acter", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb),
+            new Zone("ALSCF", "Alderney State Correctional Facility", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, true, eLocationEconomy.Poor, eLocationType.Industrial),
             new Zone("ACTRR", "Acter", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Suburb),
             new Zone("ALDCI", "Alderney City", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Downtown),
             new Zone("ACTIP", "Acter Industrial Park", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Poor, eLocationType.Industrial),
@@ -344,13 +344,13 @@ public class Zones : IZones
             new Zone("WESDY", "Westdyke", StaticStrings.AlderneyCountyID, StaticStrings.AlderneyStateID, false, eLocationEconomy.Rich, eLocationType.Suburb),
 
             //Bridges and Tunnels      
-            new Zone("BRALG", "Algonquin Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BRDBB", "Dukes Bay Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BREBB", "East Borough Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BRBRO", "Broker Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("BOTU", "Booth Tunnel", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("HIBRG", "Hickey Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
-            new Zone("NOWOB", "Northwood Heights Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRALG", "Algonquin Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRDBB", "Dukes Bay Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BREBB", "East Borough Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BRBRO", "Broker Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("BOTU", "Booth Tunnel", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("HIBRG", "Hickey Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            new Zone("NOWOB", "Northwood Heights Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
             
             //Other
             new Zone("OCEANA", "Atlantic Ocean", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),

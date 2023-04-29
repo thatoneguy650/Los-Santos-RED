@@ -4,6 +4,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,114 +16,9 @@ public class VanillaGangManager
     private List<string> GangScenarios;
     private bool IsVanillaGangPedsSupressed;
     private uint GameTimeLastStoppedGang;
-    private uint GameTimeBetweenGangSupression = 5000;
-    private uint GameTimeLastSupressedGang;
-    private bool IsTimeToSupressGang => GameTimeLastSupressedGang == 0 || Game.GameTime - GameTimeLastSupressedGang >= GameTimeBetweenGangSupression;
-    private List<int> GangHashes = new List<int>() {
 
-
-        653210662//MexGoon01GMY
-        ,832784782//MexGoon02GMY
-        ,-1773333796 //MexGoon03GMY
-        ,-1109568186//MexGang01GMY
-        ,1226102803//MexBoss02GMM
-        ,1466037421//MexBoss01GMM
-        ,1329576454//PoloGoon01GMY
-        ,-1561829034//PoloGoon02GMY
-        ,-1872961334//SalvaBoss01GMY
-        ,663522487//SalvaGoon01GMY
-        ,846439045//SalvaGoon02GMY
-        ,62440720//SalvaGoon03GMY
-        ,-48477765//StrPunk01GMY
-        ,228715206//StrPunk02GMY
-        ,-236444766//ArmBoss01GMM
-        ,-39239064//ArmGoon01GMM
-        ,-984709238//ArmGoon02GMY
-        ,-412008429//ArmLieut01GMM
-        ,1752208920//Azteca01GMY
-        ,-198252413//BallaEast01GMY
-        ,588969535//BallaOrig01GMY
-        ,361513884//Ballas01GFY
-        ,-1492432238//BallasOG
-        ,599294057//BallaSout01GMY
-        ,-1176698112//ChiBoss01GMM
-        ,2119136831//ChiGoon01GMM
-        ,-9308122//ChiGoon02GMM
-        ,-398748745//FamCA01GMY
-        ,-613248456//FamDNF01GMY
-        ,-2077218039//FamFor01GMY
-        ,1309468115//Families01GFY
-        ,891945583//KorBoss01GMM
-        ,611648169//Korean01GMY
-        ,-1880237687//Korean02GMY
-        ,2093736314//KorLieut01GMY
-        ,1330042375//Lost01GMY
-        ,1032073858//Lost02GMY
-        ,850468060//Lost03GMY
-        ,-44746786//Lost01GFY
-
-
-        ,810804565//Mexthug01AMY
-        ,0x3053E555//Mexthug01AMY (hash?)
-        ,-605196176//Mexthug01AMY (hash?)
-        ,-570949536//Mexthug01AMY hi?
-
-
-
-        ,1520708641//Vagos01GFY
-        ,1370084608//Vagos01GFY
-        ,0x5AA42C21//Vagos01GFY
-
-
-
-        ,-1350144833//G_M_Y_BallaSout_01
-        ,-912864237//G_M_Y_BallaEast_01
-        ,-1142106906//A_M_M_Hillbilly_01
-
-
-        ,2064532783//A_M_M_HILLBILLY_02
-        ,-1492906811//A_M_M_HILLBILLY_02 hi?
-
-
-
-    };
-    private List<uint> uGangHashes = new List<uint>() {
-
-        1226102803//G_M_M_MexBoss_02
-        ,0x4914D813//G_M_M_MexBoss_02
-
-        ,1466037421//G_M_M_MexBoss_01
-        ,0x5761F4AD//G_M_M_MexBoss_01
-
-
-
-        ,3185399110//G_M_Y_MexGang_01
-        ,0xBDDD5546//G_M_Y_MexGang_01
-
-
-
-
-        ,810804565//a_m_y_mexthug_01
-        ,0x3053E555//a_m_y_mexthug_01 (hash?)
-
-        ,4096714883//G_M_Y_BallaEast_01
-        ,0xF42EE883//G_M_Y_BallaEast_01
-
-        ,361513884//G_F_Y_ballas_01
-        ,0x158C439C//G_F_Y_ballas_01
-
-        ,588969535//G_M_Y_BallaOrig_01
-        ,0x231AF63F//G_M_Y_BallaOrig_01
-
-        ,599294057//G_M_Y_BallaSout_01
-        ,0x23B88069//G_M_Y_BallaSout_01
-
-        ,1520708641//G_F_Y_Vagos_01
-        ,0x5AA42C21//G_F_Y_Vagos_01
-    };
     private IPlacesOfInterest PlacesOfInterest;
     private List<Vector3> LargeGangBlockingAreas;
-
     private float SmallScenarioDistance => 2f;
     private float ScenarioBlockingDistance => Settings.SettingsManager.VanillaSettings.BlockGangScenariosAroundDensDistance; //goes in both directions so within 400 meters, no scenarios will be spawned
     private List<Vector3> GangBlockingAreas = new List<Vector3>();
@@ -130,15 +26,11 @@ public class VanillaGangManager
     {
         Settings = settings;
         PlacesOfInterest = placesOfInterest;
-
-
         LargeGangBlockingAreas = new List<Vector3>();
         LargeGangBlockingAreas.AddRange(new List<Vector3>() { 
             new Vector3(1193.61f, -1656.411f, 43.02641f),
             new Vector3(361.514f, -2016.978f, 21.33359f),
         });
-
-
         GangBlockingAreas = new List<Vector3>();
         GangBlockingAreas.AddRange(new List<Vector3>() { 
             new Vector3(392.4433f, -1994.735f, 22.54048f),//Vagos
@@ -223,134 +115,42 @@ public class VanillaGangManager
             new Vector3(326.0322f, -1955.318f, 23.39419f),
             new Vector3(323.2572f, -1952.835f, 23.5227f),
             new Vector3(323.0382f, -1951.968f, 23.56685f),
-        new Vector3(422.6576f, -2026.561f, 22.12029f),
-new Vector3(423.8715f, -2025.57f, 22.04238f),
-new Vector3(423.7046f, -2024.244f, 22.05896f),
-new Vector3(423.0401f, -2021.845f, 22.07076f),
-new Vector3(423.7558f, -2026.33f, 23.61898f),
-new Vector3(457.7604f, -2057.756f, 23.09805f),
-new Vector3(458.7604f, -2057.802f, 23.14327f),
-new Vector3(458.3245f, -2058.571f, 23.0685f),
-new Vector3(458.9694f, -2061.615f, 22.92887f),
-new Vector3(457.8723f, -2062.138f, 22.86517f),
-new Vector3(455.6201f, -2063.873f, 22.62046f),
-new Vector3(455.1259f, -2064.674f, 22.56774f),
-new Vector3(385.5409f, -1892.321f, 24.15725f),
-new Vector3(384.1115f, -1892.948f, 24.12367f),
-new Vector3(384.1791f, -1894.289f, 24.07714f),
-new Vector3(383.2886f, -1893.773f, 24.10502f),
-new Vector3(381.4803f, -1895.502f, 24.04661f),
-new Vector3(387.5752f, -1889.911f, 24.26877f),
-new Vector3(386.7265f, -1890.356f, 24.24751f),
-new Vector3(387.5752f, -1889.911f, 24.26877f),
-new Vector3(391.5532f, -1885.042f, 25.67244f),
-new Vector3(390.5208f, -1886.083f, 24.48816f),
-new Vector3(391.2015f, -1886.407f, 24.48876f),
-new Vector3(390.9937f, -1887.646f, 24.39243f),
-new Vector3(415.8138f, -1894.987f, 24.90992f),
-new Vector3(416.3756f, -1894.456f, 24.94747f),
-new Vector3(416.8386f, -1893.73f, 24.98651f),
-new Vector3(396.2281f, -1873.671f, 25.22363f),
-new Vector3(397.1217f, -1872.883f, 25.22164f),
-new Vector3(460.9929f, -1850.348f, 26.86265f),
-new Vector3(460.9394f, -1849.516f, 26.8489f),
-new Vector3(343.4177f, -1814.855f, 27.25144f),
-new Vector3(342.3925f, -1815.652f, 27.19483f),
-new Vector3(340.2542f, -1818.779f, 27.07004f),
-
-
-
+            new Vector3(422.6576f, -2026.561f, 22.12029f),
+            new Vector3(423.8715f, -2025.57f, 22.04238f),
+            new Vector3(423.7046f, -2024.244f, 22.05896f),
+            new Vector3(423.0401f, -2021.845f, 22.07076f),
+            new Vector3(423.7558f, -2026.33f, 23.61898f),
+            new Vector3(457.7604f, -2057.756f, 23.09805f),
+            new Vector3(458.7604f, -2057.802f, 23.14327f),
+            new Vector3(458.3245f, -2058.571f, 23.0685f),
+            new Vector3(458.9694f, -2061.615f, 22.92887f),
+            new Vector3(457.8723f, -2062.138f, 22.86517f),
+            new Vector3(455.6201f, -2063.873f, 22.62046f),
+            new Vector3(455.1259f, -2064.674f, 22.56774f),
+            new Vector3(385.5409f, -1892.321f, 24.15725f),
+            new Vector3(384.1115f, -1892.948f, 24.12367f),
+            new Vector3(384.1791f, -1894.289f, 24.07714f),
+            new Vector3(383.2886f, -1893.773f, 24.10502f),
+            new Vector3(381.4803f, -1895.502f, 24.04661f),
+            new Vector3(387.5752f, -1889.911f, 24.26877f),
+            new Vector3(386.7265f, -1890.356f, 24.24751f),
+            new Vector3(387.5752f, -1889.911f, 24.26877f),
+            new Vector3(391.5532f, -1885.042f, 25.67244f),
+            new Vector3(390.5208f, -1886.083f, 24.48816f),
+            new Vector3(391.2015f, -1886.407f, 24.48876f),
+            new Vector3(390.9937f, -1887.646f, 24.39243f),
+            new Vector3(415.8138f, -1894.987f, 24.90992f),
+            new Vector3(416.3756f, -1894.456f, 24.94747f),
+            new Vector3(416.8386f, -1893.73f, 24.98651f),
+            new Vector3(396.2281f, -1873.671f, 25.22363f),
+            new Vector3(397.1217f, -1872.883f, 25.22164f),
+            new Vector3(460.9929f, -1850.348f, 26.86265f),
+            new Vector3(460.9394f, -1849.516f, 26.8489f),
+            new Vector3(343.4177f, -1814.855f, 27.25144f),
+            new Vector3(342.3925f, -1815.652f, 27.19483f),
+            new Vector3(340.2542f, -1818.779f, 27.07004f),
         });
-
-
-
-
-        GangScenarios = new List<string>()
-        {
-                    "Chumash_14_Bikers".ToLower(),
-        "Chumash_14_Bikers".ToLower(),
-        "Chumash_14_Cops".ToLower(),
-        "Chumash_14_Cops".ToLower(),
-        "Chumash_14_Hookers".ToLower(),
-        "Chumash_14_Hookers".ToLower(),
-        "Chumash_14_Vagos".ToLower(),
-        "Chumash_14_Vagos".ToLower(),
-        "Del_Perro_16_Vagos".ToLower(),
-        "Del_Perro_16_Vagos".ToLower(),
-        "Del_Perro_16_Bikers".ToLower(),
-        "Del_Perro_16_Bikers".ToLower(),
-        "DowntownAlley_33_Vagos".ToLower(),
-        "DowntownAlley_33_Vagos".ToLower(),
-        "DowntownAlley_33_Bikers".ToLower(),
-        "DowntownAlley_33_Bikers".ToLower(),
-        "E_Canals_22_Vagos".ToLower(),
-        "E_Cypress_05_Vagos".ToLower(),
-        "E_Hollywood_39_Bikers".ToLower(),
-        "E_Hollywood_39_Vagos".ToLower(),
-        "E_PaletoBay_10_Bikers".ToLower(),
-        "E_PaletoBay_10_Vagos".ToLower(),
-        "E_Puerto_26_Bikers".ToLower(),
-        "E_Puerto_26_Vagos".ToLower(),
-        "E_SandyShores_12_Bikers".ToLower(),
-        "E_SandyShores_12_Vagos".ToLower(),
-        "E_Silverlake_40_Bikers".ToLower(),
-        "E_Silverlake_40_Vagos".ToLower(),
-        "EastLS_Chopshop_35_Bikers".ToLower(),
-        "EastLS_Chopshop_35_Vagos".ToLower(),
-        "EastLS_Skatepark_36_Bikers".ToLower(),
-        "EastLS_Skatepark_36_Vagos".ToLower(),
-        "Eclipse_32_Bikers".ToLower(),
-        "Eclipse_32_Vagos".ToLower(),
-        "ElBurro_Shed_38_Bikers".ToLower(),
-        "ElBurro_Shed_38_Vagos".ToLower(),
-        "ElBurro_Wreck_37_Bikers".ToLower(),
-        "ElBurro_Wreck_37_Vagos".ToLower(),
-        "Harmony_ChopShop_13_Bikers".ToLower(),
-        "Harmony_ChopShop_13_Vagos".ToLower(),
-        "LOST_BIKERS".ToLower(),
-        "LOST_HANGOUT".ToLower(),
-        "Mid_Seoul_24_Bikers".ToLower(),
-        "Mid_Seoul_24_Vagos".ToLower(),
-        "MirrorPark_41_Bikers".ToLower(),
-        "MirrorPark_41_Vagos".ToLower(),
-        "Morningwood_17_Bikers".ToLower(),
-        "Morningwood_17_Vagos".ToLower(),
-        "N_W_Hollywood_31_Bikers".ToLower(),
-        "N_W_Hollywood_31_Vagos".ToLower(),
-        "OceanHighway_15_Bikers".ToLower(),
-        "OceanHighway_15_Vagos".ToLower(),
-        "Pershing_04_Bikers".ToLower(),
-        "Pershing_04_Vagos".ToLower(),
-        "Pier_18_Bikers".ToLower(),
-        "Pier_18_Vagos".ToLower(),
-        "Racecourse_06_Bikers".ToLower(),
-        "RaceCourse_06_Vagos".ToLower(),
-        "S_SanPedro_28_Bikers".ToLower(),
-        "S_SanPedro_28_Vagos".ToLower(),
-        "S_Seoul_27_Bikers".ToLower(),
-        "S_Seoul_27_Vagos".ToLower(),
-        "SanPedroGarage_30_Bikers".ToLower(),
-        "SanPedroGarage_30_Vagos".ToLower(),
-        "Scrapyard_29_Bikers".ToLower(),
-        "Scrapyard_29_Vagos".ToLower(),
-        "SeoulPark_23_Bikers".ToLower(),
-        "SeoulPark_23_Vagos".ToLower(),
-        "StrawberryClub_34_Bikers".ToLower(),
-        "StrawberryClub_34_Vagos".ToLower(),
-        "VAGOS_HANGOUT".ToLower(),
-        "Vespucci_20_Bikers".ToLower(),
-        "Vespucci_20_Vagos".ToLower(),
-        "VespucciBeach_19_Bikers".ToLower(),
-        "VespucciBeach_19_Vagos".ToLower(),
-        "W_Canals_21_Bikers".ToLower(),
-        "W_Canals_21_Vagos".ToLower(),
-        "W_PaletoBay_09_Bikers".ToLower(),
-        "W_PaletoBay_09_Vagos".ToLower(),
-        "W_Puerto_25_Bikers".ToLower(),
-        "W_Puerto_25_Vagos".ToLower(),
-        "W_SandyShores_11_Bikers".ToLower(),
-        "W_SandyShores_11_Vagos".ToLower(),
-    };
+ 
     }
     public void Setup()
     {
@@ -358,8 +158,8 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
     }
     public void Dispose()
     {
-        ActivateScenarioGangs();
-        UnSupressVanillaGangPeds();
+        //ActivateScenarioGangs();
+        //UnSupressVanillaGangPeds();
         SetGangScenarioBlocking(false);
     }
     public void Tick()
@@ -368,70 +168,12 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
         {
             SetGangScenarioBlocking(Settings.SettingsManager.VanillaSettings.BlockGangScenarios);
         }
-
-
-        //if (Settings.SettingsManager.VanillaSettings.SuppressVanillaGangPeds)
-        //{
-        //    SupressVanillaGangPeds();
-        //}
-        //else
-        //{
-        //    UnSupressVanillaGangPeds();
-        //}
-    }
-    public void SupressVanillaGangPeds()
-    {
-        if (!IsVanillaGangPedsSupressed || IsTimeToSupressGang)
-        {
-            IsVanillaGangPedsSupressed = true;
-            SetGangPedsSupression(true);
-            GameTimeLastSupressedGang = Game.GameTime;
-        }
-    }
-    public void UnSupressVanillaGangPeds()
-    {
-        if (IsVanillaGangPedsSupressed)
-        {
-            IsVanillaGangPedsSupressed = false;
-            SetGangPedsSupression(false);
-        }
-    }
-    private void SetGangPedsSupression(bool isSuppressed)
-    {
-        foreach (int gangHash in GangHashes)
-        {
-            NativeFunction.Natives.SET_PED_MODEL_IS_SUPPRESSED(gangHash, isSuppressed);
-        }
-    }
-    public void ActivateScenarioGangs()
-    {
-        if (!IsVanillaScenarioGangsActive)
-        {
-            IsVanillaScenarioGangsActive = true;
-            SetGangScenarios(true);
-        }
-    }
-    public void TerminateScenarioGangs()
-    {
-        IsVanillaScenarioGangsActive = false;
-        SetGangScenarios(false);
-    }
-    private void SetGangScenarios(bool Enabled)
-    {
-        foreach (string scenario in GangScenarios)
-        {
-            NativeFunction.Natives.SET_SCENARIO_TYPE_ENABLED(scenario, Enabled);
-            NativeFunction.Natives.SET_SCENARIO_GROUP_ENABLED(scenario, Enabled);
-        }
     }
     private void SetGangScenarioBlocking(bool IsBlocked)
     {
-
-        //new Vector3(-223.1647f, -1601.309f, 34.88379f) Near Familes Houses
-
         if (IsBlocked)
         {
-            foreach(GangDen gangDen in PlacesOfInterest.PossibleLocations.GangDens)
+            foreach(GangDen gangDen in PlacesOfInterest.PossibleLocations.GangDens.Where(x=>x.HasVanillaGangSpawnedAroundToBeBlocked))
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(gangDen.EntrancePosition.X - ScenarioBlockingDistance, gangDen.EntrancePosition.Y - ScenarioBlockingDistance, gangDen.EntrancePosition.Z - ScenarioBlockingDistance, gangDen.EntrancePosition.X + ScenarioBlockingDistance, gangDen.EntrancePosition.Y + ScenarioBlockingDistance, gangDen.EntrancePosition.Z + ScenarioBlockingDistance, false, true, true, true);
             }
@@ -439,15 +181,10 @@ new Vector3(340.2542f, -1818.779f, 27.07004f),
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(areas.X - ScenarioBlockingDistance, areas.Y - ScenarioBlockingDistance, areas.Z - ScenarioBlockingDistance, areas.X + ScenarioBlockingDistance, areas.Y + ScenarioBlockingDistance, areas.Z + ScenarioBlockingDistance, false, true, true, true);
             }
-
             foreach (Vector3 areas in GangBlockingAreas)
             {
                 NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(areas.X - SmallScenarioDistance, areas.Y - SmallScenarioDistance, areas.Z - SmallScenarioDistance, areas.X + SmallScenarioDistance, areas.Y + SmallScenarioDistance, areas.Z + SmallScenarioDistance, false, true, true, true);
             }
-
-
-
-            //NativeFunction.Natives.ADD_SCENARIO_BLOCKING_AREA<int>(-323.1647f, -1701.309f, -34.88379f, -123.1647f, -1501.309f, 134.88379f, false, true, true, true);
         }
         else
         {

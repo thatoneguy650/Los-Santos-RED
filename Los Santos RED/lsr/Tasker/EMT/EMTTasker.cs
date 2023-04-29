@@ -168,7 +168,7 @@ public class EMTTasker
     {
         if (emt.CurrentTask?.Name != "ScaredCallIn")
         {
-            emt.CurrentTask = new ScaredCallIn(emt, Player) { OtherTarget = HighestPriority?.Perpetrator };
+            emt.CurrentTask = new ScaredCallIn(emt, Player, Settings) { OtherTarget = HighestPriority?.Perpetrator };
             GameFiber.Yield();//TR Added back 7
             emt.CurrentTask?.Start();
         }

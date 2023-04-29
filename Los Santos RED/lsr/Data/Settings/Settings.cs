@@ -127,6 +127,16 @@ public class Settings : ISettingsProvideable
 
 
     }
+    public void SetLC()
+    {
+        IsBackendChanged = true;
+        SettingsManager.PedSwapSettings.AliasPedAsMainCharacter = false;
+        SettingsManager.VanillaSettings.TerminateVanillaBlips = true;
+        SettingsManager.VanillaSettings.TerminateVanillaShops = true;
+        SettingsManager.VanillaSettings.BlockVanillaPoliceCarGenerators = false;
+        SettingsManager.VanillaSettings.BlockGangScenarios = false;
+        SettingsManager.VanillaSettings.BlockVanillaPoliceAndSecurityScenarios = false;
+    }
     public void SetHard()
     {
         IsBackendChanged = true;

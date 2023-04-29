@@ -216,9 +216,7 @@ public class VanillaSpawnManager
             //Luxury AUtos Security
             new Vector3(-802.0435f, -225.7791f, 36.20076f),
         };
-
         DisableScenariosAndGenerators();
-
     }
     public void Dispose()
     {
@@ -227,11 +225,11 @@ public class VanillaSpawnManager
     }
     public void Tick()
     {
-      if(Game.GameTime - GameTimeLastDisabledVehicles >= 30000)
+      if(Game.GameTime - GameTimeLastDisabledVehicles >= 120000)
         {
             DisableScenariosAndGenerators();
             GameTimeLastDisabledVehicles = Game.GameTime;
-            EntryPoint.WriteToConsole("SCENARIO AND GENERATOR DISABLE RAN");
+            //EntryPoint.WriteToConsole("SCENARIO AND GENERATOR DISABLE RAN");
         }
     }
     private void DisableScenariosAndGenerators()

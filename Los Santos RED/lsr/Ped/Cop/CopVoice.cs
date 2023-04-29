@@ -55,7 +55,7 @@ public class CopVoice
     {    
         if(Game.GameTime - GameTimeLastForcedRadioSpeech >= 5000 && Cop.Pedestrian.Exists() && (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 3) || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "radio_chatter", 3)))
         {
-            PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }, false, false);
+            Cop.PlaySpeech(new List<string>() { "SETTLE_DOWN", "CRIMINAL_APPREHENDED", "ARREST_PLAYER" }, false, false);
             GameTimeLastForcedRadioSpeech = Game.GameTime;
         }
         else if (Cop.CurrentTask != null && Cop.CurrentTask.OtherTarget != null && Cop.CurrentTask.OtherTarget.Pedestrian.Exists() && Cop.CurrentTask.OtherTarget.Pedestrian.IsAlive)
@@ -100,11 +100,11 @@ public class CopVoice
                 {
                     if (currentPlayer.IsInVehicle)
                     {
-                        PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
+                        Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
                     }
                     else 
                     {
-                        PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
+                        Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
                     }
                 }
                 else
@@ -113,17 +113,17 @@ public class CopVoice
                     {
                         if(currentPlayer.WantedLevel == 1)
                         {
-                            PlaySpeech(IdleSpeech, Cop.IsInVehicle,false);
+                            Cop.PlaySpeech(IdleSpeech, Cop.IsInVehicle,false);
                         }
                         else
                         {
-                            PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
+                            Cop.PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
                         }
                         
                     }
                     else if (currentPlayer.IsDead)
                     {
-                        PlaySpeech(SuspectDown, Cop.IsInVehicle,false);
+                        Cop.PlaySpeech(SuspectDown, Cop.IsInVehicle,false);
                     }
                     else
                     {
@@ -131,20 +131,20 @@ public class CopVoice
                         {
                             if (currentPlayer.PoliceResponse.IsWeaponsFree)
                             {
-                                PlaySpeech(WeaponsFreeSpeech, Cop.IsInVehicle,true);
+                                Cop.PlaySpeech(WeaponsFreeSpeech, Cop.IsInVehicle,true);
                             }
                             else
                             {
-                                PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
+                                Cop.PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
                             }
                         }
                         else if(currentPlayer.IsDangerouslyArmed)
                         {
-                            PlaySpeech(DangerousUnarmedSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(DangerousUnarmedSpeech, Cop.IsInVehicle,true);
                         }
                         else
                         {
-                            PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
                         }
                     }
                 }
@@ -170,28 +170,28 @@ public class CopVoice
                 {
                     if (Cop.CurrentTask.OtherTarget.IsInVehicle)
                     {
-                        PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
+                        Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
                     }
                     else
                     {
-                        PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
+                        Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
                     }
                 }
                 else
                 {
                     if (Cop.CurrentTask.OtherTarget.IsBusted)
                     {
-                        PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
+                        Cop.PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
                     }
                     else
                     {
                         if (Cop.CurrentTask.OtherTarget.IsDeadlyChase)
                         {
-                            PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
                         }
                         else
                         {
-                            PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
                         }
                     }
                 }
@@ -199,49 +199,49 @@ public class CopVoice
             GameTimeLastSpoke = Game.GameTime;
         }
     }
-    private void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
-    {
-        bool Spoke = false;
-        foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(2))
-        {
-            string voiceName = null;
-            bool IsOverWrittingVoice = false;
-            if (Cop.VoiceName != "")
-            {
-                voiceName = Cop.VoiceName;
-                IsOverWrittingVoice = true;
-            }
-            bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Cop.Pedestrian, AmbientSpeech, false);
-            SpeechModifier speechModifier = SpeechModifier.Force;
-            if (useMegaphone)
-            {
-                speechModifier = SpeechModifier.ForceMegaphone;
-            }
-            else if (isShouted)
-            {
-                speechModifier = SpeechModifier.ForceShouted;
-            }
+    //private void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
+    //{
+    //    bool Spoke = false;
+    //    foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(2))
+    //    {
+    //        string voiceName = null;
+    //        bool IsOverWrittingVoice = false;
+    //        if (Cop.VoiceName != "")
+    //        {
+    //            voiceName = Cop.VoiceName;
+    //            IsOverWrittingVoice = true;
+    //        }
+    //        bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Cop.Pedestrian, AmbientSpeech, false);
+    //        SpeechModifier speechModifier = SpeechModifier.Force;
+    //        if (useMegaphone)
+    //        {
+    //            speechModifier = SpeechModifier.ForceMegaphone;
+    //        }
+    //        else if (isShouted)
+    //        {
+    //            speechModifier = SpeechModifier.ForceShouted;
+    //        }
 
-            if(IsOverWrittingVoice)
-            {
-                Cop.Pedestrian.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, speechModifier);
-            }
-            else
-            {
-                Cop.Pedestrian.PlayAmbientSpeech(AmbientSpeech, useMegaphone);
-            }
-            GameFiber.Sleep(300);//100
-            if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAnySpeechPlaying)
-            {
-                Spoke = true;
-            }
-            //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {Cop.Pedestrian.Handle} voiceName {voiceName} Attempting {AmbientSpeech}, Result: {Spoke} IsOverWrittingVoice {IsOverWrittingVoice}");
-            if (Spoke)
-            {
-                break;
-            }
-        }
-    }
+    //        if(IsOverWrittingVoice)
+    //        {
+    //            Cop.Pedestrian.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, speechModifier);
+    //        }
+    //        else
+    //        {
+    //            Cop.Pedestrian.PlayAmbientSpeech(AmbientSpeech, useMegaphone);
+    //        }
+    //        GameFiber.Sleep(300);//100
+    //        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAnySpeechPlaying)
+    //        {
+    //            Spoke = true;
+    //        }
+    //        //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {Cop.Pedestrian.Handle} voiceName {voiceName} Attempting {AmbientSpeech}, Result: {Spoke} IsOverWrittingVoice {IsOverWrittingVoice}");
+    //        if (Spoke)
+    //        {
+    //            break;
+    //        }
+    //    }
+    //}
     public void ResetSpeech()
     {
         GameTimeLastSpoke = 0;

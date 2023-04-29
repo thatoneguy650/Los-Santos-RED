@@ -1249,8 +1249,9 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+        //TunOffInterior();
 
-        ResetCops();
+        //ResetCops();
 
         //if (!Test)
         //{
@@ -1276,6 +1277,9 @@ public class Debug
         //Game.DisplaySubtitle("Audio Finished");
 
     }
+
+
+
     public void DebugNumpad8()
     {
         DoCops();
