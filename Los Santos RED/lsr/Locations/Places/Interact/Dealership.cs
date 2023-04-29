@@ -112,6 +112,14 @@ public class Dealership : InteractableLocation
             Transaction?.SellMenu?.Show();
         }
     }
-
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach(SpawnPlace sp in ItemDeliveryLocations)
+        {
+            sp.AddDistanceOffset(offsetToAdd);
+        }
+        ItemPreviewPosition += offsetToAdd;
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

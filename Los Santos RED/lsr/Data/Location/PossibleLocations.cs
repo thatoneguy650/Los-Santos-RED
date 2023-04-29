@@ -47,5 +47,53 @@ public class PossibleLocations
     public List<Airport> Airports { get; private set; } = new List<Airport>();
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
     public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
+
+    public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
+
+
+    public List<InteractableLocation> InteractableLocations()
+    {
+        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        AllLocations.AddRange(PoliceStations);
+        AllLocations.AddRange(Hospitals);
+        AllLocations.AddRange(FireStations);
+        AllLocations.AddRange(Banks);
+        AllLocations.AddRange(BeautyShops);
+        AllLocations.AddRange(Landmarks);
+        AllLocations.AddRange(Prisons);
+        AllLocations.AddRange(SubwayStations);
+        AllLocations.AddRange(DeadDrops);
+        AllLocations.AddRange(ScrapYards);
+        AllLocations.AddRange(CarCrushers);
+        AllLocations.AddRange(GangDens);
+        AllLocations.AddRange(GunStores);
+        AllLocations.AddRange(Hotels);
+        AllLocations.AddRange(Residences);
+        AllLocations.AddRange(CityHalls);
+        AllLocations.AddRange(VendingMachines);
+        AllLocations.AddRange(Restaurants);
+        AllLocations.AddRange(Pharmacies);
+        AllLocations.AddRange(Dispensaries);
+        AllLocations.AddRange(HeadShops);
+        AllLocations.AddRange(HardwareStores);
+        AllLocations.AddRange(PawnShops);
+        AllLocations.AddRange(ConvenienceStores);
+        AllLocations.AddRange(LiquorStores);
+        AllLocations.AddRange(GasStations);
+        AllLocations.AddRange(Bars);
+        AllLocations.AddRange(FoodStands);
+        AllLocations.AddRange(CarDealerships);
+        AllLocations.AddRange(DriveThrus);
+        AllLocations.AddRange(ClothingShops);
+        AllLocations.AddRange(BusStops);
+        AllLocations.AddRange(Morgues);
+        AllLocations.AddRange(SportingGoodsStores);
+        AllLocations.AddRange(Airports);
+        AllLocations.AddRange(IllicitMarketplaces);
+        AllLocations.AddRange(BlankLocations);
+        return AllLocations;
+    }
+
+
 }
 

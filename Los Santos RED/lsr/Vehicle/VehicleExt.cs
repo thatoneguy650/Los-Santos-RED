@@ -575,7 +575,7 @@ namespace LSR.Vehicles
         }
         public void UpdatePlatePrefix(IPlatePrefixable AssignedAgency)
         {
-            if (AssignedAgency == null)
+            if (AssignedAgency == null || string.IsNullOrEmpty(AssignedAgency.LicensePlatePrefix))
             {
                 return;
             }
@@ -788,7 +788,7 @@ namespace LSR.Vehicles
             {
                 NewType = PlateTypes.GetRandomPlateType();
             }
-            else if (CurrentZone != null && CurrentZone.State != "San Andreas")//change the plates based on state
+            else if (CurrentZone != null && CurrentZone.State != "San Andreas" && RandomItems.RandomPercent(Settings.SettingsManager.WorldSettings.OutOfStateRandomVehiclePlatesPercent))//change the plates based on state
             {
                 NewType = PlateTypes.GetPlateType(CurrentZone.State);
             }

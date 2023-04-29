@@ -86,45 +86,48 @@ public class PlacesOfInterest : IPlacesOfInterest
     }
     public List<InteractableLocation> InteractableLocations()
     {
-        List<InteractableLocation> AllLocations = new List<InteractableLocation>();
-        AllLocations.AddRange(PossibleLocations.PoliceStations);
-        AllLocations.AddRange(PossibleLocations.Hospitals);
-        AllLocations.AddRange(PossibleLocations.FireStations);
-        AllLocations.AddRange(PossibleLocations.Banks);
-        AllLocations.AddRange(PossibleLocations.BeautyShops);
-        AllLocations.AddRange(PossibleLocations.Landmarks);
-        AllLocations.AddRange(PossibleLocations.Prisons);
-        AllLocations.AddRange(PossibleLocations.SubwayStations);
-        AllLocations.AddRange(PossibleLocations.DeadDrops);
-        AllLocations.AddRange(PossibleLocations.ScrapYards);
-        AllLocations.AddRange(PossibleLocations.CarCrushers);
-        AllLocations.AddRange(PossibleLocations.GangDens);
-        AllLocations.AddRange(PossibleLocations.GunStores);
-        AllLocations.AddRange(PossibleLocations.Hotels);
-        AllLocations.AddRange(PossibleLocations.Residences);
-        AllLocations.AddRange(PossibleLocations.CityHalls);
-        AllLocations.AddRange(PossibleLocations.VendingMachines);
-        AllLocations.AddRange(PossibleLocations.Restaurants);
-        AllLocations.AddRange(PossibleLocations.Pharmacies);
-        AllLocations.AddRange(PossibleLocations.Dispensaries);
-        AllLocations.AddRange(PossibleLocations.HeadShops);
-        AllLocations.AddRange(PossibleLocations.HardwareStores);
-        AllLocations.AddRange(PossibleLocations.PawnShops);
-        AllLocations.AddRange(PossibleLocations.ConvenienceStores);
-        AllLocations.AddRange(PossibleLocations.LiquorStores);
-        AllLocations.AddRange(PossibleLocations.GasStations);
-        AllLocations.AddRange(PossibleLocations.Bars);
-        AllLocations.AddRange(PossibleLocations.FoodStands);
-        AllLocations.AddRange(PossibleLocations.CarDealerships);
-        AllLocations.AddRange(PossibleLocations.DriveThrus);
-        AllLocations.AddRange(PossibleLocations.ClothingShops);
-        AllLocations.AddRange(PossibleLocations.BusStops);
-        AllLocations.AddRange(PossibleLocations.Morgues);
-        AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
-        AllLocations.AddRange(PossibleLocations.Airports);
-        AllLocations.AddRange(PossibleLocations.IllicitMarketplaces);
-        AllLocations.AddRange(PossibleLocations.BlankLocations);
-        return AllLocations;
+        return PossibleLocations.InteractableLocations();
+
+
+        //List<InteractableLocation> AllLocations = new List<InteractableLocation>();
+        //AllLocations.AddRange(PossibleLocations.PoliceStations);
+        //AllLocations.AddRange(PossibleLocations.Hospitals);
+        //AllLocations.AddRange(PossibleLocations.FireStations);
+        //AllLocations.AddRange(PossibleLocations.Banks);
+        //AllLocations.AddRange(PossibleLocations.BeautyShops);
+        //AllLocations.AddRange(PossibleLocations.Landmarks);
+        //AllLocations.AddRange(PossibleLocations.Prisons);
+        //AllLocations.AddRange(PossibleLocations.SubwayStations);
+        //AllLocations.AddRange(PossibleLocations.DeadDrops);
+        //AllLocations.AddRange(PossibleLocations.ScrapYards);
+        //AllLocations.AddRange(PossibleLocations.CarCrushers);
+        //AllLocations.AddRange(PossibleLocations.GangDens);
+        //AllLocations.AddRange(PossibleLocations.GunStores);
+        //AllLocations.AddRange(PossibleLocations.Hotels);
+        //AllLocations.AddRange(PossibleLocations.Residences);
+        //AllLocations.AddRange(PossibleLocations.CityHalls);
+        //AllLocations.AddRange(PossibleLocations.VendingMachines);
+        //AllLocations.AddRange(PossibleLocations.Restaurants);
+        //AllLocations.AddRange(PossibleLocations.Pharmacies);
+        //AllLocations.AddRange(PossibleLocations.Dispensaries);
+        //AllLocations.AddRange(PossibleLocations.HeadShops);
+        //AllLocations.AddRange(PossibleLocations.HardwareStores);
+        //AllLocations.AddRange(PossibleLocations.PawnShops);
+        //AllLocations.AddRange(PossibleLocations.ConvenienceStores);
+        //AllLocations.AddRange(PossibleLocations.LiquorStores);
+        //AllLocations.AddRange(PossibleLocations.GasStations);
+        //AllLocations.AddRange(PossibleLocations.Bars);
+        //AllLocations.AddRange(PossibleLocations.FoodStands);
+        //AllLocations.AddRange(PossibleLocations.CarDealerships);
+        //AllLocations.AddRange(PossibleLocations.DriveThrus);
+        //AllLocations.AddRange(PossibleLocations.ClothingShops);
+        //AllLocations.AddRange(PossibleLocations.BusStops);
+        //AllLocations.AddRange(PossibleLocations.Morgues);
+        //AllLocations.AddRange(PossibleLocations.SportingGoodsStores);
+        //AllLocations.AddRange(PossibleLocations.Airports);
+        //AllLocations.AddRange(PossibleLocations.IllicitMarketplaces);
+        //AllLocations.AddRange(PossibleLocations.BlankLocations);
+        //return AllLocations;
     }
     public List<ILocationSetupable> LocationsToSetup()
     {
@@ -3408,6 +3411,15 @@ public class PlacesOfInterest : IPlacesOfInterest
         LibertyCityLocations.Prisons.AddRange(LCPrison);
         LibertyCityLocations.GangDens.AddRange(LCGangDens);
         Serialization.SerializeParam(LibertyCityLocations, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCity.xml");
+
+        PossibleLocations centeredAbove = LibertyCityLocations.Copy();
+        foreach(InteractableLocation bl in centeredAbove.InteractableLocations())
+        {
+            bl.AddDistanceOffset(new Vector3(0f, 0f, 200f));
+        }
+        Serialization.SerializeParam(centeredAbove, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\Locations_LibertyCityCenteredAbove.xml");
+
+
     }
     public void Setup()
     {

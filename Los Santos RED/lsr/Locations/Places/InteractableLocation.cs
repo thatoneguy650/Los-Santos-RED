@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -379,6 +380,37 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     {
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
+    }
+
+    public virtual void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        EntrancePosition += offsetToAdd;
+        if (VendorPosition != Vector3.Zero)
+        {
+            VendorPosition += offsetToAdd;
+        }
+        if (CameraPosition != Vector3.Zero)
+        {
+            CameraPosition += offsetToAdd;
+        }
+        if (CameraDirection != Vector3.Zero)
+        {
+            CameraDirection += offsetToAdd;
+        }
+
+        List<ConditionalLocation> AllLocation = new List<ConditionalLocation>();
+        if (PossiblePedSpawns != null)
+        {
+            AllLocation.AddRange(PossiblePedSpawns);
+        }
+        if (PossibleVehicleSpawns != null)
+        {
+            AllLocation.AddRange(PossibleVehicleSpawns);
+        }
+        foreach(ConditionalLocation cl in AllLocation)
+        {
+            cl.AddDistanceOffset(offsetToAdd);
+        }
     }
 }
 

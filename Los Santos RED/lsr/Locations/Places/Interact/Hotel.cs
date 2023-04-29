@@ -169,5 +169,13 @@ public class Hotel : InteractableLocation
             }
         }, "FastForwardWatcher");    
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach(HotelRoom hr in HotelRooms)
+        {
+            hr.AddDistanceOffset(offsetToAdd);
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

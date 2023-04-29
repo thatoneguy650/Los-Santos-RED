@@ -190,6 +190,9 @@ public class ConditionalLocation
         //EntryPoint.WriteToConsoleTestLong("ADDED LOCATION REQUIREMENTS");
     }
 
-
+    public void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        Location += offsetToAdd;
+    }
 }
 

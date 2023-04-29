@@ -72,6 +72,7 @@ public class Debug
     private uint GameTimeLastAttached;
     private bool Test;
     private bool OnOff1;
+    private bool IsOn = true;
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1107,38 +1108,74 @@ public class Debug
 
     private void DebugNumpad6()
     {
-        Vector3 position = Game.LocalPlayer.Character.Position;
-        bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
-        Vector3 ClosestNode = outPos;
+
+        List<string> CoolStuff = new List<string>() {
+
+        "manhat09_stream7",
+"manhat09_stream6",
+"manhat09_stream5",
+"manhat09_stream4",
+"manhat09_stream3",
+"manhat09_stream2",
+"manhat09_stream1",
+"manhat09_stream0",
+"manhat09_strbig0",
+"manhat09_lod",
+"manhat09",
+
+        };
 
 
 
-
-        int StreetHash = 0;
-        int CrossingHash = 0;
-        string CurrentStreetName;
-        unsafe
+        if (IsOn)
         {
-            NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
-        }
-        string StreetName = string.Empty;
-        if (StreetHash != 0)
-        {
-            unsafe
+            foreach (string ipl in CoolStuff)
             {
-                IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
-                StreetName = Marshal.PtrToStringAnsi(ptr);
+                NativeFunction.Natives.REMOVE_IPL(ipl);
             }
-            CurrentStreetName = StreetName;
-            GameFiber.Yield();
+            Game.DisplaySubtitle("IPLS REMOVED");
         }
         else
         {
-            CurrentStreetName = "";
+            foreach (string ipl in CoolStuff)
+            {
+                NativeFunction.Natives.REQUEST_IPL(ipl);
+            }
+            Game.DisplaySubtitle("IPLS REQUESTED");
         }
+        IsOn = !IsOn;
+        //Vector3 position = Game.LocalPlayer.Character.Position;
+        //bool hasNode = NativeFunction.Natives.GET_CLOSEST_VEHICLE_NODE<bool>(position.X, position.Y, position.Z, out Vector3 outPos, 0, 3.0f, 0f);
+        //Vector3 ClosestNode = outPos;
 
 
-        Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
+
+
+        //int StreetHash = 0;
+        //int CrossingHash = 0;
+        //string CurrentStreetName;
+        //unsafe
+        //{
+        //    NativeFunction.CallByName<uint>("GET_STREET_NAME_AT_COORD", ClosestNode.X, ClosestNode.Y, ClosestNode.Z, &StreetHash, &CrossingHash);
+        //}
+        //string StreetName = string.Empty;
+        //if (StreetHash != 0)
+        //{
+        //    unsafe
+        //    {
+        //        IntPtr ptr = NativeFunction.CallByName<IntPtr>("GET_STREET_NAME_FROM_HASH_KEY", StreetHash);
+        //        StreetName = Marshal.PtrToStringAnsi(ptr);
+        //    }
+        //    CurrentStreetName = StreetName;
+        //    GameFiber.Yield();
+        //}
+        //else
+        //{
+        //    CurrentStreetName = "";
+        //}
+
+
+        //Game.DisplaySubtitle($"StreetHash {StreetHash} CurrentStreetName {CurrentStreetName} StreetName {StreetName}");
         GameFiber.Sleep(200);
 
 

@@ -372,5 +372,17 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         Game.RemoveNotification(NotificationHandle);
         NotificationHandle = Game.DisplayNotification(AssociatedGang.ContactIcon, AssociatedGang.ContactIcon, AssociatedGang.ContactName, header, message);
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        foreach (SpawnPlace sp in ItemDeliveryLocations)
+        {
+            sp.AddDistanceOffset(offsetToAdd);
+        }
+        if (ItemPreviewPosition != Vector3.Zero)
+        {
+            ItemPreviewPosition += offsetToAdd;
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

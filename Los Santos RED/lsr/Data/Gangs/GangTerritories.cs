@@ -279,8 +279,8 @@ public class GangTerritories : IGangTerritories
            // new ZoneJurisdiction("AMBIENT_GANG_MEXICAN","", 0, 100, 100),
            // new ZoneJurisdiction("AMBIENT_GANG_SALVA","", 0, 100, 100),
 
-            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","NRTGA", 0, 100, 100),//northern gardens
-
+            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","ALDCI", 0, 100, 100),//alderney city
+            new ZoneJurisdiction("AMBIENT_GANG_KKANGPAE","BERCH", 0, 100, 100),//bercham
 
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CHITO", 0, 100, 100),//CHinatown
             new ZoneJurisdiction("AMBIENT_GANG_WEICHENG","CITH", 0, 100, 100),//city hall

@@ -20,5 +20,10 @@ using System.Threading.Tasks;
 
     public Vector3 Position { get; set; }
     public float Heading { get; set; }
+
+    public void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        Position += offsetToAdd;
     }
+}
 

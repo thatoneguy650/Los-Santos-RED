@@ -45,17 +45,23 @@ public class Zone
     public string State { get; set; }
     public bool IsRestrictedDuringWanted { get; set; } = false;
     public bool IsSpecificLocation { get; set; } = false;
+    public string BoroughName { get; set; }
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
     public eLocationType Type { get; set; } = eLocationType.Rural;
     public Vector2[] Boundaries { get; set; }
     public string FullDisplayName(ICounties counties)
     {
         GameCounty myCounty = counties.GetCounty(CountyID);
+        string initialDisplay = DisplayName;
+        if(!string.IsNullOrEmpty(BoroughName))
+        {
+            initialDisplay += ", " + BoroughName;
+        }
         if(myCounty != null)
         {
-            return DisplayName + ", " + myCounty.CountyName;
+            return initialDisplay + ", " + myCounty.CountyName;
         }
-        return DisplayName;
+        return initialDisplay;
     }
 
 

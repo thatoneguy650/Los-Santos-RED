@@ -118,5 +118,13 @@ public class Hospital : InteractableLocation, ILocationRespawnable
         PlaySuccessSound();
         DisplayMessage("~g~Purchase", $"Thank you for your purchase.");
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        if (RespawnLocation != Vector3.Zero)
+        {
+            RespawnLocation += offsetToAdd;
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

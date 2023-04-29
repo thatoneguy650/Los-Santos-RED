@@ -24,5 +24,11 @@ public class HotelRoom
     public Vector3 CameraPosition { get; set; }
     public Vector3 CameraDirection { get; set; }
     public Rotator CameraRotation { get; set; }
+
+    public void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        CameraPosition += offsetToAdd;
+        CameraDirection += offsetToAdd;
+    }
 }
 

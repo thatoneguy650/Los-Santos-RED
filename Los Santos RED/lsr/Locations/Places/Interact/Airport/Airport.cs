@@ -481,5 +481,11 @@ public class Airport : InteractableLocation, ILocationSetupable
             new Carrier(StaticStrings.AdiosAirlinesCarrierID,"Adios Airlines", "Say your goodbyes!"),
         };
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        ArrivalPosition += offsetToAdd;
+        AirArrivalPosition += offsetToAdd;
+        base.AddDistanceOffset(offsetToAdd);
+    }
 }
 

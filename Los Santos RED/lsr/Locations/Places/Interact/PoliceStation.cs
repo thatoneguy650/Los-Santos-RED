@@ -51,6 +51,14 @@ public class PoliceStation : InteractableLocation, ILocationRespawnable
             Game.DisplayHelp("Police Personnel Only.~r~WIP~s~");
         }
     }
+    public override void AddDistanceOffset(Vector3 offsetToAdd)
+    {
+        if (RespawnLocation != Vector3.Zero)
+        {
+            RespawnLocation += offsetToAdd;
+        }
+        base.AddDistanceOffset(offsetToAdd);
+    }
 
 }
 
