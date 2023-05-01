@@ -38,9 +38,9 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 
-    public virtual string AssociationID => AssignedAgencyID;
+    public virtual string AssociationID => AssignedAssociationID;
 
-    public string AssignedAgencyID { get; set; }
+    public string AssignedAssociationID { get; set; }
     [XmlIgnore]
     public Agency AssignedAgency { get; set; }
 
@@ -221,9 +221,9 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     {
         World = world;
         //EntryPoint.WriteToConsole($"Storing Data for {Name}");
-        if (AssignedAgencyID != null)
+        if (AssignedAssociationID != null)
         {
-            AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+            AssignedAgency = agencies.GetAgency(AssignedAssociationID);
         }
         Menu = shopMenus.GetSpecificMenu(MenuID);
         if (PossiblePedSpawns != null)

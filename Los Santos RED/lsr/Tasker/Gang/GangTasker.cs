@@ -62,17 +62,17 @@ public class GangTasker
                             continue;
                         }
 
-                        if (gangMember.DistanceToPlayer >= 230f)
-                        {
-                            continue;
-                        }
+                        //if (gangMember.DistanceToPlayer >= 230f)
+                        //{
+                        //    continue;
+                        //}
 
                         if (gangMember.NeedsTaskAssignmentCheck)
                         {
-                            if (gangMember.DistanceToPlayer <= 200f)
-                            {
+                            //if (gangMember.DistanceToPlayer <= 200f)
+                            //{
                                 UpdateCurrentTask(gangMember);//has yields if it does anything
-                            }
+                            //}
                         }
 
 
@@ -112,10 +112,10 @@ public class GangTasker
         } 
         if (GangMember.IsBusted)
         {
-            if (GangMember.DistanceToPlayer <= 275f)
-            {
+            //if (GangMember.DistanceToPlayer <= 275f)
+            //{
                 SetArrested(GangMember);
-            }
+            //}
         }
         else if (GangMember.IsWanted && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)
         {
@@ -128,7 +128,7 @@ public class GangTasker
                 SetFlee(GangMember, null);
             }
         }
-        else if (GangMember.DistanceToPlayer <= 275f && GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
+        else if (GangMember.CanBeTasked && GangMember.CanBeAmbientTasked)//50f
         {
             //GangMember.PedReactions.Update(); need a version for this?
 
@@ -215,6 +215,7 @@ public class GangTasker
                 }
             }
         }
+
         GangMember.GameTimeLastUpdatedTask = Game.GameTime;
     }
     private void SetFlee(GangMember GangMember, WitnessedCrime HighestPriority)

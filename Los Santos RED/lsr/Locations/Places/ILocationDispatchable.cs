@@ -16,7 +16,7 @@ public interface ILocationDispatchable
     bool IsEnabled { get; }
     float DistanceToPlayer { get; }
     bool IsNearby { get; }
-    string AssignedAgencyID { get; }
+    string AssignedAssociationID { get; }
     bool IsActivated { get; }
 }
 

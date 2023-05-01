@@ -116,7 +116,7 @@ public class PerformanceSettings : ISettingsDefaultable
         CopUpdatePerformanceMode2 = false;
         IsCopYield1Active = false;
         IsCopYield2Active = false;
-        IsCopYield3Active = false;
+        IsCopYield3Active = true;//TURNED ON TEMP?
 
         IsCopYield10Active = false;
         IsCopYield11Active = false;

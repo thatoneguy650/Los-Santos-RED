@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
 using System.Text;
 using System.Windows.Forms;
 using System.Windows.Media;
@@ -1491,13 +1492,29 @@ new YmapDisabler("manhat01",true),
 
 
 
-        UIMenuItem PrintClassStuffMenu = new UIMenuItem("Print Class Stuff", "Print some select class stuff to the log");
+        UIMenuItem PrintClassStuffMenu = new UIMenuItem("Print Vehicle Class", "Print some select class stuff to the log. DispatchableVehicles");
         PrintClassStuffMenu.Activated += (menu, item) =>
         {
-            PrintClassStuff();
+            PrintVehicleClasses();
             menu.Visible = false;
         };
         HelperMenuItem.AddItem(PrintClassStuffMenu);
+
+        UIMenuItem PrintLocClassStuffMenu = new UIMenuItem("Print Location Class", "Print some select class stuff to the log. Locations.");
+        PrintLocClassStuffMenu.Activated += (menu, item) =>
+        {
+            PrintLocationClasses(null);
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintLocClassStuffMenu);
+
+        UIMenuItem PrintLocBAseClassStuffMenu = new UIMenuItem("Print Location Class Base", "Print some select class stuff to the log. Locations Base.");
+        PrintLocBAseClassStuffMenu.Activated += (menu, item) =>
+        {
+            PrintLocationClasses(new List<string>() { "Name", "Description", "EntrancePosition", "EntranceHeading", "OpenTime", "CloseTime", "StateLocation", "AssignedAssociationID", "MenuID" });
+            menu.Visible = false;
+        };
+        HelperMenuItem.AddItem(PrintLocBAseClassStuffMenu);
 
 
 
@@ -1959,11 +1976,11 @@ new YmapDisabler("manhat01",true),
         File.AppendAllText("Plugins\\LosSantosRED\\" + "StoredInteriors.txt", sb.ToString());
         sb.Clear();
     }
-    private void WriteToClassCreator(String TextToLog, int test)
+    private void WriteToClassCreator(String TextToLog, int test, string fileName)
     {
         StringBuilder sb = new StringBuilder();
         sb.Append(TextToLog + System.Environment.NewLine);
-        File.AppendAllText("Plugins\\LosSantosRED\\" + "ClassCreator.txt", sb.ToString());
+        File.AppendAllText("Plugins\\LosSantosRED\\" + $"{fileName}.txt", sb.ToString());
         sb.Clear();
     }
     private void SpawnGunAttackers()
@@ -2540,31 +2557,48 @@ new YmapDisabler("manhat01",true),
         }
 
     }
-    private void PrintClassStuff()
+    private void PrintVehicleClasses()
     {
-        WriteToClassCreator($"PRINT CLASSES VEHICLES START++++++++++++++++++++++++++++++", 0);
-        foreach (DispatchableVehicleGroup dvg in ModDataFileManager.DispatchableVehicles.AllVehicles)
-        {
-            WriteToClassCreator($"START {dvg.DispatchableVehicleGroupID}++++++++++++++++++++++++++++++", 0);
-            foreach (DispatchableVehicle dv in dvg.DispatchableVehicles)
-            {
-                WriteToClassCreator($"DispatchableVehicle TestVehicle = new DispatchableVehicle() {{", 0);
-                PrintClass(dv);
-                WriteToClassCreator($"}};", 0);
-            }
-            WriteToClassCreator($"END {dvg.DispatchableVehicleGroupID}++++++++++++++++++++++++++++++", 0);
-        }
-        WriteToClassCreator($"PRINT CLASSES VEHICLES END++++++++++++++++++++++++++++++", 0);
-        WriteToClassCreator($"PRINT CLASSES GANG START++++++++++++++++++++++++++++++", 0);
         foreach (GangDen gangDen in ModDataFileManager.PlacesOfInterest.PossibleLocations.GangDens)
         {
-            WriteToClassCreator($"GangDen {gangDen.Name.Replace(" ", String.Empty)} = new GangDen() {{", 0);
-            PrintClass(gangDen);
-            WriteToClassCreator($"}};", 0);
+            WriteToClassCreator($"GangDen {gangDen.Name.Replace(" ", String.Empty)} = new GangDen() {{", 0, "DispatchableVehicles");
+            PrintClass(gangDen,null, "DispatchableVehicles");
+            WriteToClassCreator($"}};", 0, "DispatchableVehicles");
         }
-        WriteToClassCreator($"PRINT CLASSES GANG END++++++++++++++++++++++++++++++", 0);
     }
-    private void PrintClass(object dv)
+    private void PrintLocationClasses(List<string> AllowedProperties)
+    {
+        File.WriteAllText(@"Plugins\\LosSantosRED\\Locations.txt", string.Empty);
+        int Number = 1;
+        foreach (string locationType in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().GroupBy(x=> x.GetType().ToString()).Distinct().Select(x=>x.Key))
+        {
+            WriteToClassCreator($"List<{locationType}> {locationType}List_{Number} = new List<{locationType}>()", 0, "Locations");
+            WriteToClassCreator($"{{", 0, "Locations");
+            foreach (InteractableLocation location2 in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations().Where(x=> x.GetType().ToString() == locationType))
+            {
+                string type = location2.GetType().ToString();
+                WriteToClassCreator($"new {type}() {{", 0, "Locations");
+                PrintClass(location2, AllowedProperties, "Locations");
+                
+                WriteToClassCreator($"}},", 0, "Locations");
+            }
+            WriteToClassCreator($"}};", 0, "Locations");
+            WriteToClassCreator($"Locations.LocationTypeList.AddRange({locationType}List_{Number});", 0, "Locations");
+            Number++;
+        }
+    }
+    //private void PrintLocationClasses()
+    //{
+    //    File.WriteAllText(@"Plugins\\LosSantosRED\\Locations.txt", string.Empty);
+    //    foreach (InteractableLocation location in ModDataFileManager.PlacesOfInterest.PossibleLocations.InteractableLocations())
+    //    {
+    //        string type = location.GetType().ToString();
+    //        WriteToClassCreator($"{type} {location.Name.Replace(" ", String.Empty)} = new {type}() {{", 0, "Locations");
+    //        PrintClass(location, null, "Locations");
+    //        WriteToClassCreator($"}};", 0, "Locations");
+    //    }
+    //}
+    private void PrintClass(object dv, List<string> AllowedProperties, string fileName)
     {
         if (dv == null)
         {
@@ -2577,59 +2611,64 @@ new YmapDisabler("manhat01",true),
             {
                 continue;
             }
+            if(AllowedProperties != null && !AllowedProperties.Any(x=> x == property.Name))
+            {
+                continue;
+            }
             if (property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
             {
-                WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0);
+                WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0, fileName);
             }
             else if (property.PropertyType == typeof(float))
             {
-                WriteToClassCreator($"{property.Name} = {property.GetValue(dv)}f,", 0);
+                WriteToClassCreator($"{property.Name} = {property.GetValue(dv)}f,", 0, fileName);
             }
             else if (property.PropertyType == typeof(Vector3))
             {
-                WriteToClassCreator($"{property.Name} = new Vector3({property.GetValue(dv)}),", 0);
+                Vector3 propertyValue = (Vector3)property.GetValue(dv);
+                WriteToClassCreator($"{property.Name} = new Vector3({propertyValue.X}f,{propertyValue.Y}f,{propertyValue.Z}f),", 0, fileName);
             }
             else if (property.PropertyType == typeof(int) || property.PropertyType == typeof(bool))
             {
                 if (property.CanWrite)
                 {
-                    WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0);
+                    WriteToClassCreator($"{property.Name} = {property.GetValue(dv).ToString().ToLower()},", 0, fileName);
                 }
             }
             else if (property.PropertyType == typeof(VehicleVariation) || property.PropertyType == typeof(LicensePlate))
             {
-                WriteToClassCreator($"{property.Name} = new {property.PropertyType}() {{", 0);
-                PrintClass(property.GetValue(dv));
-                WriteToClassCreator($"}},", 0);
+                WriteToClassCreator($"{property.Name} = new {property.PropertyType}() {{", 0, fileName);
+                PrintClass(property.GetValue(dv), AllowedProperties, fileName);
+                WriteToClassCreator($"}},", 0, fileName);
             }
             else if (property.PropertyType == typeof(List<int>))
             {
-                DoListItem(property, dv, "List<int>");
+                DoListItem(property, dv, "List<int>", AllowedProperties, fileName);
             }
             else if (property.PropertyType == typeof(List<SpawnPlace>))
             {
-                DoListItem(property, dv, "List<SpawnPlace>");
+                DoListItem(property, dv, "List<SpawnPlace>", AllowedProperties, fileName);
             }
             else if (property.PropertyType == typeof(List<ConditionalLocation>))
             {
-                DoListItem(property, dv, "List<ConditionalLocation>");
+                DoListItem(property, dv, "List<ConditionalLocation>", AllowedProperties, fileName);
             }
             //
             else if (property.PropertyType == typeof(List<VehicleExtra>))
             {
-                DoListItem(property, dv, "List<VehicleExtra>");
+                DoListItem(property, dv, "List<VehicleExtra>", AllowedProperties, fileName);
             }
             else if (property.PropertyType == typeof(List<DispatchableVehicleExtra>))
             {
-                DoListItem(property, dv, "List<DispatchableVehicleExtra>");
+                DoListItem(property, dv, "List<DispatchableVehicleExtra>", AllowedProperties, fileName);
             }
             else if (property.PropertyType == typeof(List<VehicleToggle>))
             {
-                DoListItem(property, dv, "List<VehicleToggle>");
+                DoListItem(property, dv, "List<VehicleToggle>", AllowedProperties, fileName);
             }
             else if (property.PropertyType == typeof(List<VehicleMod>))
             {
-                DoListItem(property, dv, "List<VehicleMod>");
+                DoListItem(property, dv, "List<VehicleMod>", AllowedProperties, fileName);
             }
             else
             {
@@ -2637,17 +2676,17 @@ new YmapDisabler("manhat01",true),
             }
         }
     }
-    private void DoListItem(PropertyInfo property, object dv, string ListType)
+    private void DoListItem(PropertyInfo property, object dv, string ListType, List<string> AllowedProperties,string fileName)
     {
-        WriteToClassCreator($"{property.Name} = new {ListType}() {{", 0);
+        WriteToClassCreator($"{property.Name} = new {ListType}() {{", 0, fileName);
         var collection = (IEnumerable)property.GetValue(dv, null);
         foreach (object obj in collection)
         {
-            WriteToClassCreator($"new {obj.GetType()}() {{", 0);
-            PrintClass(obj);
-            WriteToClassCreator($"}},", 0);
+            WriteToClassCreator($"new {obj.GetType()}() {{", 0, fileName);
+            PrintClass(obj, null, fileName);
+            WriteToClassCreator($"}},", 0, fileName);
         }
-        WriteToClassCreator($"}},", 0);
+        WriteToClassCreator($"}},", 0, fileName);
     }
     private void LongListStruff()
     {

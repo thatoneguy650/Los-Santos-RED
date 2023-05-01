@@ -23,9 +23,9 @@ public class FireStation : InteractableLocation
 
     public void StoreData(IAgencies agencies)
     {
-        if (AssignedAgencyID != null)
+        if (AssignedAssociationID != null)
         {
-            AssignedAgency = agencies.GetAgency(AssignedAgencyID);
+            AssignedAgency = agencies.GetAgency(AssignedAssociationID);
         }
     }
     public override bool CanCurrentlyInteract(ILocationInteractable player)

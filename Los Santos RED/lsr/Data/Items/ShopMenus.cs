@@ -51,14 +51,10 @@ public class ShopMenus : IShopMenus
     {
         return PossibleShopMenus.ShopMenuGroupList.Where(x => x.ID == groupID).FirstOrDefault()?.GetRandomMenu();
     }
-
-
-
     public ShopMenuGroup GetSpecificMenuGroup(string groupID)
     {
         return PossibleShopMenus.ShopMenuGroupList.Where(x => x.ID == groupID).FirstOrDefault();
     }
-
     public ShopMenu GetWeightedRandomMenuFromContainer(string containerID)
     {
        // EntryPoint.WriteToConsole($"GetWeightedRandomMenuFromOverallGroup {containerID}");
@@ -76,7 +72,6 @@ public class ShopMenus : IShopMenus
     {
         return PossibleShopMenus.ShopMenuGroupList.Where(x => x.CategoryID == StaticStrings.DrugCustomerMenuID).PickRandom()?.GetRandomMenu();
     }
-
     public ShopMenuGroupContainer GetSpecificGroupContainer(string containerID)
     {
         if(string.IsNullOrEmpty(containerID) || containerID == "")
@@ -85,7 +80,6 @@ public class ShopMenus : IShopMenus
         }
         return PossibleShopMenus.ShopMenuGroupContainers.Where(x => x.ID == containerID).FirstOrDefault();
     }
-
     public Tuple<int, int> GetPrices(string itemName)
     {
         int LowestPrice = 9999;
@@ -110,7 +104,6 @@ public class ShopMenus : IShopMenus
         }
         return new Tuple<int, int>(LowestPrice, HighestPrice);
     }
-
     private List<ShopMenu> AllMenus()
     {
         List<ShopMenu> AllShopMenus = new List<ShopMenu>();
@@ -144,32 +137,22 @@ public class ShopMenus : IShopMenus
     }
     private void DefaultConfig()
     {
-        //ShopMenuList = new List<ShopMenu>();
-        //ShopMenuGroups = new List<ShopMenuGroup>();
-
         SetupPropMenus();
-
         GenericLocationsMenu();
         GenericPawnShopMenu();
-
         SpecificVendingMachines();
         SpecificRestaurants();
         SpecificConvenienceStores();
         SpecificHotels();
         SpecificDealerships();
         SpecificWeaponsShops();
-
         DrugDealerMenus();
         DenList();
         GunShopList();
-
         MenuGroupList();
         DealerHangouts();
         Serialization.SerializeParam(PossibleShopMenus, ConfigFileName);
     }
-
-
-
     private void SetupPropMenus()
     {
         PossibleShopMenus.PropShopMenus.AddRange(
@@ -328,7 +311,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Jakeys", 3),
                 new MenuItem("Cup of Coffee", 2),
                 new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Bottle of GREY Water", 3),}),
+                new MenuItem("Bottle of GREY Water", 3),
+            }),
             new ShopMenu("SandwichMenu","Sanwiches",new List<MenuItem>() {
                 new MenuItem("Ham and Cheese Sandwich", 2),
                 new MenuItem("Turkey Sandwich", 2),
@@ -477,7 +461,9 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Blarneys", 3),
                 new MenuItem("Can of Logger", 3),
                 new MenuItem("Cup of Coffee", 2),
-                new MenuItem("Bottle of Raine Water", 2) }),
+                new MenuItem("Bottle of Raine Water", 2)
+            
+            }),
             new ShopMenu("FancyDeliMenu","Deli",new List<MenuItem>() { new MenuItem("Chicken Club Salad",10),new MenuItem("Spicy Seafood Gumbo",14),new MenuItem("Muffaletta",8),new MenuItem("Zucchini Garden Pasta",9),new MenuItem("Pollo Mexicano",12),new MenuItem("Italian Cruz Po'boy",19),new MenuItem("Chipotle Chicken Panini",10),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44),new MenuItem("Key Lime Pie",13),new MenuItem("Bottle of Raine Water",2), }),
             new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
@@ -538,8 +524,108 @@ public class ShopMenus : IShopMenus
 
 
             }),
+            //New
+            new ShopMenu("MallMenu","Mall",new List<MenuItem>() {
+                new MenuItem("Flint Phillips Screwdriver", 14),
+                new MenuItem("Flint Flathead Screwdriver", 16),
+                new MenuItem("Flint Multi-Bit Screwdriver", 20),
+                new MenuItem("Flint Pliers", 35),
+                new MenuItem("TAG-HARD Flashlight", 85),
+                new MenuItem("Flint Handle Flashlight", 60),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 400),
+                new MenuItem("SCHEISS BS Binoculars", 150),
+                new MenuItem("SCHEISS AS Binoculars", 350),
+                new MenuItem("SCHEISS DS Binoculars", 500),
+                new MenuItem("SCHEISS RP Binoculars", 650),
+
+                new MenuItem("Bottle of Raine Water", 2),
+                new MenuItem("Can of eCola", 1),
+                new MenuItem("Can of Sprunk", 1),
+                new MenuItem("Dippo Lighter", 20),
+
+            }),
+            new ShopMenu("DepartmentStoreMenu","DepartmentStore",new List<MenuItem>() {
+               new MenuItem("GASH Black Umbrella", 25),
+                new MenuItem("GASH Blue Umbrella", 30),
+                new MenuItem("TAG-HARD Flashlight", 85),
+                new MenuItem("Flint Handle Flashlight", 60),
+                new MenuItem("G.E.S. Baseball Bat", 95),
+                new MenuItem("ProLaps Five Iron Golf Club", 85),
+                new MenuItem("Schmidt & Priss TL6 Scanner", 400),
+                new MenuItem("SCHEISS BS Binoculars", 150),
+                new MenuItem("SCHEISS AS Binoculars", 350),
+                new MenuItem("SCHEISS DS Binoculars", 500),
+                new MenuItem("SCHEISS RP Binoculars", 650),
+                new MenuItem("Flint Duct Tape", 4),
+                new MenuItem("Flint Phillips Screwdriver", 14),
+                new MenuItem("Flint Flathead Screwdriver", 16),
+                new MenuItem("Flint Multi-Bit Screwdriver", 20),
+                new MenuItem("Flint Rubber Mallet", 35),
+                new MenuItem("Flint Hammer", 30),
+                new MenuItem("Flint Crowbar", 65),
+                new MenuItem("Flint Hatchet", 120),
+                new MenuItem("Vom Feuer Machete", 130),
+                new MenuItem("Flint Pliers", 35),
+                new MenuItem("Flint Heavy Duty Pipe Wrench", 55),
+                new MenuItem("Flint Shovel", 75),
+                new MenuItem("TAG-HARD Flashlight", 80),
+                new MenuItem("Flint Handle Flashlight", 65),
+                new MenuItem("Flint Cordless Drill", 75),
+                new MenuItem("Power Metal Cordless Drill", 90),
+                new MenuItem("Power Metal Cordless Impact Driver", 150),
+            }),
+            new ShopMenu("InternetCafeMenu","InternetCafe",new List<MenuItem>() {
+                new MenuItem("Donut", 1),
+                new MenuItem("Can of eCola", 1),
+                new MenuItem("Can of Sprunk", 1),
+                new MenuItem("Cup of Coffee", 2),
+                new MenuItem("Hot Pretzel", 2),
+                new MenuItem("Bottle of GREY Water", 3),
+                new MenuItem("Bagel Sandwich", 8),
+            }),
+            new ShopMenu("DeliGroceryMenu","Deli Grocery",new List<MenuItem>() {
+                new MenuItem("Sticky Rib Phat Chips", 2),
+                new MenuItem("Habanero Phat Chips", 2),
+                new MenuItem("Supersalt Phat Chips", 2),
+                new MenuItem("Big Cheese Phat Chips", 2),
+                new MenuItem("Ego Chaser Energy Bar", 2),
+                new MenuItem("King Size P's & Q's", 3),
+                new MenuItem("P's & Q's", 2),
+                new MenuItem("Meteorite Bar", 2),
+                new MenuItem("Donut", 1),
+                new MenuItem("Redwood Regular", 30),
+                new MenuItem("Redwood Mild", 32),
+                new MenuItem("Debonaire", 35),
+                new MenuItem("Estancia Cigar", 50),
+                new MenuItem("DIC Lighter", 5),
+                new MenuItem("DIC Lighter Ultra", 7),
+                new MenuItem("DIC Lighter Silver", 10),
+                new MenuItem("DIC Lighter Gold", 15),
+                new MenuItem("Dippo Lighter", 20),
+                new MenuItem("Can of eCola", 1),
+                new MenuItem("Can of Sprunk", 1),
+                new MenuItem("Bottle of PiBwasser", 3),
+                new MenuItem("Bottle of Jakeys", 3),
+                new MenuItem("Can of Hoplivion Double IPA", 4),
+                new MenuItem("Can of Blarneys", 3),
+                new MenuItem("Can of Logger", 3),
+                new MenuItem("Cup of Coffee", 2),
+                new MenuItem("Bottle of Raine Water", 2)
+            }),
+            new ShopMenu("ItalianMenu","Italian",new List<MenuItem>() {
+                new MenuItem("Chesty", 19, 0),
+                new MenuItem("Hingmyralgan", 45, 0),
+                new MenuItem("Deludamol", 85, 0),
+                new MenuItem("Delladamol", 55, 0),
+                new MenuItem("Wach", 35, 0),
+                new MenuItem("Lax", 24, 0),
+                new MenuItem("Bull", 25, 0),
+                new MenuItem("Alco", 55, 0),
+                new MenuItem("Equanox", 89, 0),
+                new MenuItem("Mollis", 345, 0),
+                new MenuItem("Zombix", 267, 0),
+            }),
         });
-        //AllVehiclesMenu();
     }
     private void SpecificRestaurants()
     {

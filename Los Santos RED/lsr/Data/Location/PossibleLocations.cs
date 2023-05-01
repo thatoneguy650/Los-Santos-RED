@@ -48,7 +48,7 @@ public class PossibleLocations
     public List<IllicitMarketplace> IllicitMarketplaces { get; private set; } = new List<IllicitMarketplace>();
     public List<BlankLocation> BlankLocations { get; private set; } = new List<BlankLocation>();
 
-    public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
+  //  public List<InteractableLocation> AllLocationsList { get; private set; } = new List<InteractableLocation>();
 
 
     public List<InteractableLocation> InteractableLocations()

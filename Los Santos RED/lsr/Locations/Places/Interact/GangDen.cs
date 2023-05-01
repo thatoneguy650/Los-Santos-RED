@@ -29,10 +29,10 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public override int MapIcon { get; set; } = (int)BlipSprite.Snitch;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-    public string GangID { get; set; }
+   // public string GangID { get; set; }
 
 
-    public override string AssociationID => GangID;
+    public override string AssociationID => AssignedAssociationID;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
     public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
@@ -65,9 +65,9 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
         return true;
     }
-    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string _gangID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
+    public GangDen(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID, string assignedAssociationID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
-        GangID = _gangID;
+        AssignedAssociationID = assignedAssociationID;
         MenuID = menuID;
     }
     public override void OnInteract(ILocationInteractable player, IModItems modItems, IEntityProvideable world, ISettingsProvideable settings, IWeapons weapons, ITimeControllable time, IPlacesOfInterest placesOfInterest)
@@ -134,7 +134,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
                         Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
 
 
-                        if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == GangID)
+                        if (Player.RelationshipManager.GangRelationships.CurrentGang != null && Player.RelationshipManager.GangRelationships.CurrentGang.ID == AssignedAssociationID)
                         {
                             Transaction.IsFreeVehicles = true;
                             Transaction.IsFreeWeapons = true;
@@ -304,7 +304,7 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public void StoreData(IGangs gangs,IShopMenus shopMenus)
     {
         Menu = shopMenus.GetSpecificMenu(MenuID);
-        AssociatedGang = gangs.GetGang(GangID);
+        AssociatedGang = gangs.GetGang(AssignedAssociationID);
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";
     }
     private void Rest(int Hours)

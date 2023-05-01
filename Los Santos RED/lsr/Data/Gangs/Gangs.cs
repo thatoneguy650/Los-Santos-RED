@@ -78,6 +78,10 @@ public class Gangs : IGangs
     }
     public Gang GetGang(string GangInitials)
     {
+        if(string.IsNullOrEmpty(GangInitials))
+        {
+            return null;
+        }
         return GangsList.Where(x => x.ID.ToLower() == GangInitials.ToLower()).FirstOrDefault();
     }
     public Gang GetGangByContact(string contactName)

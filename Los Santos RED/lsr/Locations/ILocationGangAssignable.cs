@@ -12,7 +12,7 @@ public interface ILocationGangAssignable
     Gang AssociatedGang { get; set; }
     string ButtonPromptText { get; set; }
     string MenuID { get; }
-    string GangID { get; }
+   // string GangID { get; }
     void StoreData(IGangs gangs, IShopMenus shopMenus);
 }
 
