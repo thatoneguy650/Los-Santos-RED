@@ -16,7 +16,7 @@ public class UI : IMenuProvideable
     private IDisplayable DisplayablePlayer;
     private IActionable ActionablePlayer;
     private IJurisdictions Jurisdictions;
-    private ICounties Counties;
+    private ILocationTypes LocationTypes;
     private ITaskerable Tasker;
     private ITimeControllable Time;
     private IEntityProvideable World;
@@ -73,7 +73,7 @@ public class UI : IMenuProvideable
     public UI(IDisplayable displayablePlayer, ISettingsProvideable settings, IJurisdictions jurisdictions, IPedSwap pedSwap, IPlacesOfInterest placesOfInterest, IRespawning respawning, IActionable actionablePlayer, ISaveable saveablePlayer, IWeapons weapons, 
         RadioStations radioStations, IGameSaves gameSaves, IEntityProvideable world, IRespawnable player, IPoliceRespondable policeRespondable, ITaskerable tasker, IInventoryable playerinventory, IModItems modItems, ITimeControllable time, IGangRelateable gangRelateable, 
         IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, Dispatcher dispatcher, IAgencies agencies, ILocationInteractable locationInteractableplayer, IDances dances, IGestures gestures, IShopMenus shopMenus, 
-        IActivityPerformable activityPerformable, ICrimes crimes, ICounties counties, IIntoxicants intoxicants, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
+        IActivityPerformable activityPerformable, ICrimes crimes, ILocationTypes locationTypes, IIntoxicants intoxicants, IPlateTypes plateTypes, INameProvideable names, ModDataFileManager modDataFileManager)
     {
         DisplayablePlayer = displayablePlayer;
         ActionablePlayer = actionablePlayer;
@@ -82,7 +82,7 @@ public class UI : IMenuProvideable
         Time = time;
         Tasker = tasker;
         World = world;
-        Counties = counties;
+        LocationTypes = locationTypes;
         BigMessage = new BigMessageThread(true);
         MenuPool = new MenuPool();
         TimerBarPool = new TimerBarPool();
@@ -91,14 +91,14 @@ public class UI : IMenuProvideable
         MainMenu = new MainMenu(MenuPool,actionablePlayer, locationInteractableplayer, saveablePlayer, gameSaves, weapons, pedSwap, world, Settings, Tasker, playerinventory, modItems, this, gangs, time,placesOfInterest, dances, gestures, activityPerformable,agencies, crimes, intoxicants, shopMenus);
         DebugMenu = new DebugMenu(MenuPool, actionablePlayer, weapons, radioStations, placesOfInterest, Settings, Time, World, Tasker, dispatcher,agencies, gangs, modItems, crimes, plateTypes, names, modDataFileManager);
         MenuList = new List<ModUIMenu>() { DeathMenu, BustedMenu, MainMenu, DebugMenu };
-        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings, Counties);
-        SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, Counties, gameSaves, pedSwap,playerinventory, saveablePlayer);
+        PlayerInfoMenu = new PlayerInfoMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus,modItems, weapons, Settings);
+        SavePauseMenu = new SavePauseMenu(saveablePlayer, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, shopMenus, modItems, weapons, Settings, gameSaves, pedSwap,playerinventory, saveablePlayer);
         MessagesMenu = new MessagesMenu(gangRelateable, Time, placesOfInterest, gangs, gangTerritories, zones, streets, interiors, World, Settings);
         AboutMenu = new AboutMenu(gangRelateable, Time, Settings);
         ActionPopUpMenu = new PopUpMenu(actionablePlayer, Settings, this, gestures, dances);
         TimerBarController = new TimerBarController(displayablePlayer, TimerBarPool, Settings);
         MarkerManager = new MarkerManager(locationInteractableplayer, World, Time, Settings);
-        LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this, Counties);
+        LowerRightDisplay = new LowerRightDisplay(DisplayablePlayer,Time,Settings,this);
         TopRightMenu = new TopRightMenu(DisplayablePlayer, Time, Settings, this);
     }
     public void Setup()

@@ -437,28 +437,28 @@ public class PlacesOfInterest : IPlacesOfInterest
                     new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
                 }
                 ,ZonesToEnable = new HashSet<string>() { "PrLog" }
-                ,StateLocation = StaticStrings.NorthYanktonStateID,
+                ,StateID = StaticStrings.NorthYanktonStateID,
             },
             new CayoPericoAirport("CPA",new Vector3(),0f,"Cayo Perico Airstrip",
                 "Have this crap instead of ~r~REAL~s~ DLC!" +
                 "~n~" +
                 "~n~City: ~y~Cayo Perico~s~" +
-                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateLocation = StaticStrings.ColombiaStateID },
+                "~n~Country: ~p~Colombia~s~") { IsEnabled = false,StateID = StaticStrings.ColombiaStateID },
             new Airport("SFX",new Vector3(),0f,"San Fierro Intl.",
                 "The city of psychedelic wonders." +
                 "~n~" +
                 "~n~City: ~y~San Fierro~s~" +
-                "~n~State: ~p~San Andreas~s~"){ IsEnabled = false,StateLocation = StaticStrings.SanAndreasStateID },
+                "~n~State: ~p~San Andreas~s~"){ IsEnabled = false,StateID = StaticStrings.SanAndreasStateID },
             new Airport("FIA",new Vector3(),0f,"Francis Intl.",
                 "Great To Visit, Even Better To Leave" +
                 "~n~" +
                 "~n~City: ~y~Dukes, Liberty City~s~" +
-                "~n~State: ~p~Liberty~s~") { IsEnabled = false,StateLocation = StaticStrings.LibertyStateID },
+                "~n~State: ~p~Liberty~s~") { IsEnabled = false,StateID = StaticStrings.LibertyStateID },
             new Airport("VCIA",new Vector3(),0f,"Escobar Intl.",
                 "A city run by dealers and weasels" +
                 "~n~" +
                 "~n~City: ~y~Vice City~s~" +
-                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateLocation = StaticStrings.FloridaStateID },
+                "~n~State: ~p~Florida~s~") { IsEnabled = false,StateID = StaticStrings.FloridaStateID },
 
             };
     }
@@ -875,6 +875,261 @@ public class PlacesOfInterest : IPlacesOfInterest
                     TaskRequirements = TaskRequirements.Guard | TaskRequirements.EquipLongGunWhenIdle,},},
             },
         };
+
+        //Gang Shit
+        BlankLocation AncelottiGasStation = new BlankLocation()
+        {
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-2576.103f, 2334.192f, 33.06499f),
+                    Heading = -111.3623f,
+                    Percentage = 75f,
+                    GroupID = "AncelottiGasStation1",
+                    MinHourSpawn = 12,
+                    MaxHourSpawn = 20,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_LEANING_CASINO_TERRACE", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_SMOKING"
+                    },
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-2575.808f, 2333.149f, 33.06003f),
+                    Heading = 0.1772228f,
+                    Percentage = 75f,
+                    GroupID = "AncelottiGasStation1",
+                    MinHourSpawn = 12,
+                    MaxHourSpawn = 20,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_TOURIST_MAP", "WORLD_HUMAN_AA_COFFEE", "WORLD_HUMAN_SMOKING"
+                    },
+                },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-2573.125f, 2334.611f, 32.76001f),
+                    Heading = 150.4924f,
+                    GroupID = "AncelottiGasStation1",
+                    Percentage = 0f,
+                    MinHourSpawn = 12,
+                    MaxHourSpawn = 20,
+                },
+            },
+            AssignedAssociationID = "AMBIENT_GANG_ANCELOTTI",
+            Name = "AncelottiGasStation",
+            Description = "Ancelotti's having a break at the Gas Station",
+            EntrancePosition = new Vector3(-2576.103f, 2334.192f, 33.06499f),
+            EntranceHeading = -111.3623f,
+            ActivateCells = 8,
+            ActivateDistance = 400f,
+        };
+        BlankLocationPlaces.Add(AncelottiGasStation);
+        BlankLocation FamiliesBaseballField = new BlankLocation()
+        {
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-301.9806f, -1641.12f, 32.12749f),
+                    Heading = -122.441f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-314.6769f, -1640.273f, 31.84881f),
+                    Heading = -6.660462f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-315.531f, -1639.359f, 31.84881f),
+                    Heading = -86.77119f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-314.3615f, -1638.53f, 31.84881f),
+                    Heading = 160.9149f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-314.5116f, -1631.374f, 31.84881f),
+                    Heading = -85.18255f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-313.6505f, -1630.512f, 31.84881f),
+                    Heading = 174.248f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-312.4868f, -1630.584f, 31.84881f),
+                    Heading = -92.0695f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-300.5563f, -1658.229f, 31.84879f),
+                    Heading = -72.46208f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-299.8108f, -1659.356f, 31.84879f),
+                    Heading = -0.9050441f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+                new GangConditionalLocation()
+                {
+                    TerritorySpawnsForceMainGang = false,
+                    Location = new Vector3(-298.2735f, -1658.152f, 31.8488f),
+                    Heading = 117.1161f,
+                    Percentage = 35f,
+                    MinHourSpawn = 20,
+                    MaxHourSpawn = 4,
+                },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>() { },
+            AssignedAssociationID = "AMBIENT_GANG_FAMILY",
+            Name = "FamiliesBaseballField",
+            Description = "Families Baseball Field",
+            EntrancePosition = new Vector3(-301.9806f, -1641.12f, 32.12749f),
+            EntranceHeading = -122.441f,
+        };
+        BlankLocationPlaces.Add(FamiliesBaseballField);
+        BlankLocation FamiliesMeetup = new BlankLocation()
+        {
+            PossiblePedSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-176.7435f, -1430.187f, 31.28525f),
+                    Heading = -179.4815f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_HANG_OUT_STREET","WORLD_HUMAN_DRINKING","WORLD_HUMAN_SMOKING","WORLD_HUMAN_SMOKING_POT"
+                    },
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-174.276f, -1431.17f, 31.2626f),
+                    Heading = -127.0762f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_HANG_OUT_STREET","WORLD_HUMAN_DRINKING","WORLD_HUMAN_SMOKING","WORLD_HUMAN_SMOKING_POT"
+                    },
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-173.2247f, -1432.683f, 31.26154f),
+                    Heading = 3.284423f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_HANG_OUT_STREET","WORLD_HUMAN_DRINKING","WORLD_HUMAN_SMOKING","WORLD_HUMAN_SMOKING_POT"
+                    },
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-172.6694f, -1431.62f, 31.24565f),
+                    Heading = 118.8518f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_HANG_OUT_STREET","WORLD_HUMAN_DRINKING","WORLD_HUMAN_SMOKING","WORLD_HUMAN_SMOKING_POT"
+                    },
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-176.829f, -1431.623f, 31.28296f),
+                    Heading = -6.896521f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                    TaskRequirements = TaskRequirements.Guard,
+                    ForcedScenarios = new List<String>()
+                    {
+                        "WORLD_HUMAN_DRUG_DEALER","WORLD_HUMAN_HANG_OUT_STREET","WORLD_HUMAN_DRINKING","WORLD_HUMAN_SMOKING","WORLD_HUMAN_SMOKING_POT"
+                    },
+                },
+            },
+            PossibleVehicleSpawns = new List<ConditionalLocation>()
+            {
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-174.8521f, -1438.027f, 30.81062f),
+                    Heading = -38.86021f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                },
+                new GangConditionalLocation()
+                {
+                    Location = new Vector3(-177.9715f, -1435.419f, 30.82336f),
+                    Heading = 139.328f,
+                    Percentage = 45f,
+                    MinHourSpawn = 18,
+                    MaxHourSpawn = 3,
+                },
+            },
+            AssignedAssociationID = "AMBIENT_GANG_FAMILY",
+            Name = "FamiliesMeetUp",
+            Description = "Families Meet Up",
+            EntrancePosition = new Vector3(-176.7435f, -1430.187f, 31.28525f),
+            EntranceHeading = -179.4815f,
+            
+        };
+        BlankLocationPlaces.Add(FamiliesMeetup);
     }
     private void DefaultConfig_FoodStands()
     {
@@ -1517,7 +1772,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             ,CameraPosition = new Vector3(-859.3407f, -294.1456f, 52.37224f), CameraDirection = new Vector3(-0.7405583f, -0.5703712f, -0.3553168f), CameraRotation = new Rotator(-20.81286f, -2.740125E-06f, 127.6031f) },
 
 
-            new Hospital(new Vector3(3132.073f, -4839.958f, 112.0312f), 354.8388f, "Ludendorff Clinic", "The service you'd expect!") { StateLocation = "North Yankton", OpenTime = 0,CloseTime = 24,
+            new Hospital(new Vector3(3132.073f, -4839.958f, 112.0312f), 354.8388f, "Ludendorff Clinic", "The service you'd expect!") { StateID = StaticStrings.NorthYanktonStateID, OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
             }
             ,RespawnLocation = new Vector3(3132.073f, -4839.958f, 112.0312f),RespawnHeading = 354.8388f },
@@ -1746,7 +2001,7 @@ public class PlacesOfInterest : IPlacesOfInterest
 
 
 
-            new PoliceStation(new Vector3(3142.471f, -4840.832f, 112.0291f), 349.9769f, "NYSP Office Ludendorff","The return of the Keystone Cops") { StateLocation = "North Yankton",AssignedAssociationID = "NYSP", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
+            new PoliceStation(new Vector3(3142.471f, -4840.832f, 112.0291f), 349.9769f, "NYSP Office Ludendorff","The return of the Keystone Cops") { StateID = StaticStrings.NorthYanktonStateID,AssignedAssociationID = "NYSP", OpenTime = 0,CloseTime = 24, PossiblePedSpawns = new List<ConditionalLocation>() {
 
             },PossibleVehicleSpawns = new List<ConditionalLocation>()
             {  } },

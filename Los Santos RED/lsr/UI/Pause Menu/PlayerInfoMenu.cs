@@ -26,7 +26,6 @@ public class PlayerInfoMenu
     private IShopMenus ShopMenus;
     private IModItems ModItems;
     private IWeapons Weapons;
-    private ICounties Counties;
 
     private LocationsTab LocationsTab;
     private VehiclesTab VehiclesTab;
@@ -36,7 +35,7 @@ public class PlayerInfoMenu
 
     private ISettingsProvideable Settings;
 
-    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings, ICounties counties)
+    public PlayerInfoMenu(IGangRelateable player, ITimeReportable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings)
     {
         Player = player;
         Time = time;
@@ -51,7 +50,6 @@ public class PlayerInfoMenu
         ModItems = modItems;
         Weapons = weapons;
         Settings = settings;
-        Counties = counties;
     }
     public void Setup()
     {
@@ -67,7 +65,7 @@ public class PlayerInfoMenu
 
 
         LocationsTab = new LocationsTab(Player, PlacesOfInterest, Time, Settings, tabView);
-        VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView, Counties);
+        VehiclesTab = new VehiclesTab(Player, Streets, Zones, Interiors, tabView, Settings);
         LicensesTab = new LicensesTab(Player, Time, tabView);
         CrimesTab = new CrimesTab(Player, tabView);
         GangTab = new GangTab(Player,PlacesOfInterest,ShopMenus,ModItems,Weapons,GangTerritories,Zones, tabView, Time, Settings, World);

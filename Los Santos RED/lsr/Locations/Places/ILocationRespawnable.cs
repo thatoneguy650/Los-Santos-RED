@@ -15,11 +15,12 @@ public interface ILocationRespawnable
     string FullStreetAddress { get; }
     bool IsEnabled { get; }
     bool IsActivated { get; }
-    string StateLocation { get; }
+    string StateID { get; }
 
 
     Vector3 RespawnLocation { get; }
     float RespawnHeading { get; }
     void Activate(IInteriors interiors, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, ITimeReportable time, IEntityProvideable world);
+    bool IsSameState(GameState gameState);
 }
 

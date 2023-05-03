@@ -1472,8 +1472,8 @@ public class Jurisdictions : IJurisdictions
     {
         List<CountyJurisdiction> CountyJurisdictionList2008 = new List<CountyJurisdiction>()
         {
-            new CountyJurisdiction("LCPD-ASD","LibertyCity", 0, 100, 100),
-            new CountyJurisdiction("LCPD-ASD","Alderney", 0, 100, 100),
+            new CountyJurisdiction("LCPD-ASD",StaticStrings.LibertyCityCountyID, 0, 100, 100),
+            new CountyJurisdiction("LCPD-ASD",StaticStrings.AlderneyCountyID, 0, 100, 100),
         };
         Serialization.SerializeParams(CountyJurisdictionList2008, "Plugins\\LosSantosRED\\AlternateConfigs\\LibertyCity\\CountyJurisdictions_LibertyCity.xml");
     }

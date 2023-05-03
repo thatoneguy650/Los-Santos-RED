@@ -29,9 +29,10 @@ public class StaticPlaces
     private IPedGroups PedGroups;
     private IJurisdictions Jurisdictions;
     private IGangTerritories GangTerritories;
+    private ILocationTypes LocationTypes;
 
     public StaticPlaces(Places places, IPlacesOfInterest placesOfInterest, IEntityProvideable world, IInteriors interiors, IShopMenus shopMenus, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, IZones zones, IStreets streets, IGangs gangs,
-        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories)
+        IAgencies agencies, ITimeReportable time, INameProvideable names, IPedGroups pedGroups, IJurisdictions jurisdictions, IGangTerritories gangTerritories, ILocationTypes locationTypes)
     {
         Places = places;
         PlacesOfInterest = placesOfInterest;
@@ -50,13 +51,14 @@ public class StaticPlaces
         PedGroups = pedGroups;
         Jurisdictions = jurisdictions;
         GangTerritories = gangTerritories;
+        LocationTypes= locationTypes;
     }
     public void Setup()
     {
         //need to combine these
         foreach (BasicLocation basicLocation in PlacesOfInterest.AllLocations())
         {
-            basicLocation.StoreData(Zones, Streets);
+            basicLocation.StoreData(Zones, Streets, LocationTypes);
         }
         foreach (InteractableLocation tl in PlacesOfInterest.InteractableLocations())
         {

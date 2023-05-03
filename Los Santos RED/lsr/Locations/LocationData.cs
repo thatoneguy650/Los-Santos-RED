@@ -110,7 +110,7 @@ namespace LosSantosRED.lsr.Locations
                 if (PreviousZone == null || CurrentZone.InternalGameName != PreviousZone.InternalGameName)
                 {
                     GameTimeEnteredZone = Game.GameTime;
-                    if(PreviousZone != null && CurrentZone != null && PreviousZone.State != CurrentZone.State)
+                    if(PreviousZone != null && CurrentZone != null && PreviousZone.StateID != CurrentZone.StateID)
                     {
                         OnChangedState();
                     }
@@ -124,11 +124,11 @@ namespace LosSantosRED.lsr.Locations
             string currState = "";
             if (PreviousZone != null)
             {
-                prevState = PreviousZone.State;
+                prevState = PreviousZone.StateID;
             }
             if(CurrentZone != null)
             {
-                currState = CurrentZone.State;
+                currState = CurrentZone.StateID;
             }
             //EntryPoint.WriteToConsoleTestLong($"PLAYER EVENT: STATE CHANGED FROM {prevState} TO {currState}");
         }

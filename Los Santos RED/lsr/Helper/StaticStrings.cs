@@ -18,9 +18,12 @@ public static class StaticStrings
     public static readonly string CityOfLosSantosCountyID = "CityOfLosSantos";
     public static readonly string BlaineCountyID = "BlaineCounty";
     public static readonly string MajesticCountyID = "MajesticCounty";
-    public static readonly string SanAndreasStateID = "San Andreas";
+    public static readonly string VenturaCountyID = "VenturaCounty";
+    public static readonly string ViceCountyID = "Vice";
+    public static readonly string CrookCountyID = "Vice";
+    public static readonly string SanAndreasStateID = "SanAndreas";
     public static readonly string NorthYanktonCountyID = "NorthYankton";
-    public static readonly string NorthYanktonStateID = "North Yankton";
+    public static readonly string NorthYanktonStateID = "NorthYankton";
     public static readonly string PacificOceanCountyID = "PacificOcean";
     public static readonly string AlderneyCountyID = "Alderney";
     public static readonly string AlderneyStateID = "Alderney";  

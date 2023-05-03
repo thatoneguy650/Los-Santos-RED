@@ -293,7 +293,7 @@ public class BustedMenu : ModUIMenu
         {
             if (Player.IsBeingBooked)
             {
-                Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
+                Surrender = new UIMenuListScrollerItem<ILocationRespawnable>("Skip Booking", "Skip booking.", PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).Take(1));
                 Surrender.Activated += (sender, selectedItem) =>
                 {
                     Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);
@@ -306,7 +306,7 @@ public class BustedMenu : ModUIMenu
                 GetBooked = new UIMenuItem("Get Booked", "Get Booked. Lose bail money and your guns.");
                 GetBooked.Activated += (sender, selectedItem) =>
                 {
-                    Respawning.Respawning.GetBooked(PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).FirstOrDefault());
+                    Respawning.Respawning.GetBooked(PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)).FirstOrDefault());
                     Menu.Visible = false;
                 };
                 Menu.AddItem(GetBooked);
@@ -314,7 +314,7 @@ public class BustedMenu : ModUIMenu
         }
         else
         {
-            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+            Surrender = new UIMenuListScrollerItem<ILocationRespawnable>(surrenderText, surrenderDescription, PlacesOfInterest.BustedRespawnLocations().Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
             Surrender.Activated += (sender, selectedItem) =>
             {
                 Respawning.Respawning.SurrenderToPolice(Surrender.SelectedItem);

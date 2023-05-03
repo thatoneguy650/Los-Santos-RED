@@ -18,18 +18,17 @@ public class VehiclesTab
     private IZones Zones;
     private IInteriors Interiors;
     private TabView TabView;
-    private ICounties Counties;
+    private ISettingsProvideable Settings;
 
-    public VehiclesTab(IGangRelateable player,IStreets streets, IZones zones, IInteriors interiors, TabView tabView,ICounties counties)
+    public VehiclesTab(IGangRelateable player,IStreets streets, IZones zones, IInteriors interiors, TabView tabView, ISettingsProvideable settings)
     {
         Player = player;
         Streets = streets;
         Zones = zones;
         Interiors = interiors;
         TabView = tabView;
-        Counties = counties;
+        Settings = settings;
     }
-
     public void AddItems()
     {
         List<TabItem> items = new List<TabItem>();
@@ -85,7 +84,7 @@ public class VehiclesTab
                 string ZoneText = "";
                 if (myData.CurrentZone != null)
                 {
-                    ZoneText = $" {(myData.CurrentZone.IsSpecificLocation ? "near" : "in")} ~p~{myData.CurrentZone.FullDisplayName(Counties)}~s~";
+                    ZoneText = $" {(myData.CurrentZone.IsSpecificLocation ? "near" : "in")} ~p~{myData.CurrentZone.FullZoneName(Settings)}~s~";
                 }
                 string LocationText = $"{StreetText} {ZoneText}".Trim();
                 LocationText = LocationText.Trim();

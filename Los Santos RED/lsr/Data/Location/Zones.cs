@@ -62,8 +62,6 @@ public class Zones : IZones
     {
         return ZoneList.Where(x => x.InternalGameName.ToLower() == InternalGameName.ToLower()).FirstOrDefault();
     }
-
-
     public List<Zone> GetZoneByItem(ModItem modItem, IShopMenus shopMenus, bool isPurchase)
     {
         List<Zone> MatchingZones = new List<Zone>();
@@ -86,7 +84,6 @@ public class Zones : IZones
         }
         return MatchingZones;
     }
-
     private string GetInternalZoneString(Vector3 ZonePosition)
     {
         IntPtr ptr = Rage.Native.NativeFunction.Natives.GET_NAME_OF_ZONE<IntPtr>(ZonePosition.X, ZonePosition.Y, ZonePosition.Z);
@@ -99,21 +96,6 @@ public class Zones : IZones
         {
             //One Off
             new Zone("OCEANA", "Pacific Ocean", StaticStrings.PacificOceanCountyID, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Poor, eLocationType.Wilderness),
-
-            ////Ventura County?
-            //new Zone("PROCOB", "Procopio Beach", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("MTCHIL", "Mount Chiliad", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),    
-            //new Zone("PALETO", "Paleto Bay", County.VenturaCounty, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
-            //new Zone("PALCOV", "Paleto Cove", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("PALFOR", "Paleto Forest", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("CMSW", "Chiliad Mountain State Wilderness", County.VenturaCounty, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("CCREAK", "Cassidy Creek", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("CALAFB", "Calafia Bridge", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("GALFISH", "Galilee", County.VenturaCounty, StaticStrings.SanAndreasStateID, false, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("BRADP", "Braddock Pass", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("BRADT", "Braddock Tunnel", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("ELGORL", "El Gordo Lighthouse", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
-            //new Zone("MTGORDO", "Mount Gordo", County.VenturaCounty, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
 
             //Ventura County is now blaine county
             new Zone("PROCOB", "Procopio Beach", StaticStrings.BlaineCountyID, StaticStrings.SanAndreasStateID, true, eLocationEconomy.Middle, eLocationType.Wilderness),
@@ -238,10 +220,6 @@ public class Zones : IZones
 
             //Other
             new Zone("PROL", "Ludendorff", StaticStrings.NorthYanktonCountyID,StaticStrings.NorthYanktonStateID,false,eLocationEconomy.Middle,eLocationType.Rural),
-            //new Zone("LUDEN", "Ludendorff", "NorthYankton", new Vector2[] { new Vector2 { X = 2545.142f, Y = -5124.292f },
-            //                            new Vector2 { X = 2648.361f, Y = -4091.664f },
-            //                            new Vector2 { X = 5647.14f, Y = -4131.478f },
-            //                            new Vector2 { X = 5922.999f, Y = -5640.681f } },"North Yankton",false,eLocationEconomy.Middle,eLocationType.Rural),
 
             //new Zone("CHI1", "Acadia", County.Crook, new Vector2[] { new Vector2 { X = 4830.579f, Y = 1982.126f },
             //                            new Vector2 { X = 7898.494f, Y = 3093.242f },
@@ -380,5 +358,21 @@ public class Zones : IZones
                       ((pointX - endX) < (pointY - endY) * (startX - endX) / (startY - endY));
         }
         return inside;
+    }
+
+    public void Setup(ILocationTypes locationTypes)
+    {
+        foreach(Zone zone in ZoneList)
+        {
+            if(!string.IsNullOrEmpty(zone.CountyID))
+            {
+                zone.GameCounty = locationTypes.GetCounty(zone.CountyID);
+            }
+            if (!string.IsNullOrEmpty(zone.StateID))
+            {
+                zone.GameState = locationTypes.GetState(zone.StateID);
+            }
+        }
+        
     }
 }

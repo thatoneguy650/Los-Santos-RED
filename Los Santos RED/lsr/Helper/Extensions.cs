@@ -20,7 +20,11 @@ namespace ExtensionsMethods
     public static class Extensions
     {
 
-
+        public static bool IsGenericList(this object o)
+        {
+            var oType = o.GetType();
+            return (oType.IsGenericType && (oType.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>)));
+        }
 
         private static List<string> ShopPeds = new List<string>() { "s_m_y_ammucity_01", "s_m_m_ammucountry", "u_m_y_tattoo_01", "s_f_y_shop_low", "s_f_y_shop_mid", "s_f_m_shop_high", "s_m_m_autoshop_01", "s_m_m_autoshop_02" };
         private enum ePedType

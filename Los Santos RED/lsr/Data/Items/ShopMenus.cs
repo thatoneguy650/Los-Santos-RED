@@ -613,17 +613,15 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Raine Water", 2)
             }),
             new ShopMenu("ItalianMenu","Italian",new List<MenuItem>() {
-                new MenuItem("Chesty", 19, 0),
-                new MenuItem("Hingmyralgan", 45, 0),
-                new MenuItem("Deludamol", 85, 0),
-                new MenuItem("Delladamol", 55, 0),
-                new MenuItem("Wach", 35, 0),
-                new MenuItem("Lax", 24, 0),
-                new MenuItem("Bull", 25, 0),
-                new MenuItem("Alco", 55, 0),
-                new MenuItem("Equanox", 89, 0),
-                new MenuItem("Mollis", 345, 0),
-                new MenuItem("Zombix", 267, 0),
+                new MenuItem("Slice of Pizza", 3),
+                new MenuItem("Cup of Sprunk", 2),
+                new MenuItem("Bottle of A.M.", 3),
+                new MenuItem("Bottle of PiBwasser", 3),
+                new MenuItem("Bottle of Barracho", 4),
+                new MenuItem("Bottle of Blarneys", 4),
+                new MenuItem("Bottle of Jakeys", 3),
+                new MenuItem("Bottle of Stronzo", 4),
+                new MenuItem("Bottle of Dusche", 3)
             }),
         });
     }

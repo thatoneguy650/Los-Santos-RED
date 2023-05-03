@@ -4161,7 +4161,7 @@ public class Debug
                     Car.LicensePlate = NewPlateNumber;
                 }
                 NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Car, NewType.Index);
-                Game.DisplaySubtitle($" PlateIndex: {PlateIndex}, Index: {NewType.Index}, State: {NewType.State}, Description: {NewType.Description}");
+                Game.DisplaySubtitle($" PlateIndex: {PlateIndex}, Index: {NewType.Index}, State: {NewType.StateID}, Description: {NewType.Description}");
             }
             else
             {

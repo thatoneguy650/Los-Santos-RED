@@ -124,14 +124,34 @@ public class ConditionalLocation
         GenerateSpawnTypes();
         RunSpawnTask();
     }
+    private bool IsValidTimeToSpawn()
+    {
+       // EntryPoint.WriteToConsole($"IsValidTimeToSpawn Time:{Time.CurrentHour} {MinHourSpawn} {MaxHourSpawn} IsMinLess:{MinHourSpawn <= MaxHourSpawn}");
+        if(MinHourSpawn <= MaxHourSpawn)
+        {
+            if(Time.CurrentHour >= MinHourSpawn && Time.CurrentHour <= MaxHourSpawn)
+            {
+                return true;
+            }
+        }
+        else
+        {
+            if(Time.CurrentHour >= MinHourSpawn || Time.CurrentHour <= MaxHourSpawn)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
     public virtual bool DetermineRun(bool force)
     {
         if(force)
         {
             return true;
         }
-        if (Time.CurrentHour < MinHourSpawn || Time.CurrentHour > MaxHourSpawn)
+        if(!IsValidTimeToSpawn())
         {
+           // EntryPoint.WriteToConsole($"NOT IsValidTimeToSpawn Time:{Time.CurrentHour} {MinHourSpawn} {MaxHourSpawn} IsMinLess:{MinHourSpawn <= MaxHourSpawn}");
             return false;
         }
         if(World.TotalWantedLevel < MinWantedLevelSpawn || World.TotalWantedLevel > MaxWantedLevelSpawn)

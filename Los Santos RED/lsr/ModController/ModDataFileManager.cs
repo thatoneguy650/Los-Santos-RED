@@ -39,7 +39,7 @@ public class ModDataFileManager
     public Speeches SpeechList;
     private PhysicalItems PhysicalItems;
     public Seats Seats;
-    public Counties Counties;
+    public LocationTypes LocationTypes;
     public WeatherForecasts WeatherForecasts;
     public ClothesNames ClothesNames;
     public LanguageStrings LanguageStrings;
@@ -58,13 +58,9 @@ public class ModDataFileManager
         Settings = new Settings();
         Settings.ReadConfig();
         GameFiber.Yield();
-
-
         Weapons = new Weapons();
         Weapons.ReadConfig();
         GameFiber.Yield();
-
-
         PhysicalItems = new PhysicalItems();
         PhysicalItems.ReadConfig();
         GameFiber.Yield();
@@ -76,19 +72,18 @@ public class ModDataFileManager
         ShopMenus.ReadConfig();
         ShopMenus.Setup(ModItems);
         GameFiber.Yield();
-        Counties = new Counties();
-        Counties.ReadConfig();
+        LocationTypes = new LocationTypes();
+        LocationTypes.ReadConfig();
         GameFiber.Yield();
         Zones = new Zones();
         Zones.ReadConfig();
+        Zones.Setup(LocationTypes);
         GameFiber.Yield();
         PlateTypes = new PlateTypes();
         PlateTypes.ReadConfig();
         GameFiber.Yield();
         Streets = new Streets();
         Streets.ReadConfig();
-        
-
         GameFiber.Yield();
         Names = new Names();
         Names.ReadConfig();

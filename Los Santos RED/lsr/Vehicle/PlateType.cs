@@ -9,7 +9,7 @@ public class PlateType
 {
     public int Index { get; set; }
     public string Description { get; set; }
-    public string State { get; set; }
+    public string StateID { get; set; }
     public int SpawnChance { get; set; }
     public bool CanOverwrite { get; set; } = true;
     public string SerialFormat { get; set; } = "";
@@ -30,14 +30,14 @@ public class PlateType
     public PlateType()
     {
     }
-    public PlateType(int index, string description, string state, int spawnChance)
+    public PlateType(int index, string description, string stateID, int spawnChance)
     {
         Index = index;
         Description = description;
-        State = state;
+        StateID = stateID;
         SpawnChance = spawnChance;
     }
-    public PlateType(int index, string description, string state, int spawnChance, string serialFormat) : this(index, description, state, spawnChance)
+    public PlateType(int index, string description, string stateID, int spawnChance, string serialFormat) : this(index, description, stateID, spawnChance)
     {
         SerialFormat = serialFormat;
     }

@@ -85,7 +85,7 @@ public class DeathMenu : ModUIMenu
         {
             Menu.AddItem(Undie);
         }  
-        UIMenuListScrollerItem<Hospital> HospitalRespawn = new UIMenuListScrollerItem<Hospital>("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.StateLocation == Player.CurrentLocation?.CurrentZone?.State).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
+        UIMenuListScrollerItem<Hospital> HospitalRespawn = new UIMenuListScrollerItem<Hospital>("Give Up", "Respawn at the nearest hospital. Lose a hospital fee and your guns.", PlacesOfInterest.PossibleLocations.Hospitals.Where(x => x.IsEnabled && x.IsSameState(Player.CurrentLocation?.CurrentZone?.GameState)).OrderBy(x => x.EntrancePosition.DistanceTo2D(Player.Character)));
         HospitalRespawn.Activated += (sender, selectedItem) =>
         {
             PlayerRespawning.Respawning.RespawnAtHospital(HospitalRespawn.SelectedItem);

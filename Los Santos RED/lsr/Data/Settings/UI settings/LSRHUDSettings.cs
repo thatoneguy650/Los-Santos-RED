@@ -78,7 +78,9 @@
     public bool ZoneDisplayShowSecondaryAgency { get; set; }
     public bool ZoneDisplayShowPrimaryGang { get; set; }
 
-
+    public bool ZoneDisplayShowState { get; set; }
+    public bool ZoneDisplayShowCounty { get; set; }
+    public bool ZoneDisplayShowBorough { get; set; }
 
 
 
@@ -203,6 +205,10 @@
         PlayerStatusPositionX = 0.89f;
         StreetPositionX = 0.92f;
         ZonePositionX = 0.95f;
+
+        ZoneDisplayShowState = false;
+        ZoneDisplayShowBorough = true;
+        ZoneDisplayShowCounty = true;
 
     }
 }

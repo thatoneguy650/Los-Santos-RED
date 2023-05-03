@@ -63,9 +63,11 @@ public class LocationDispatcher
             //EntryPoint.WriteToConsole($"Location Dispatcher, SPAWNED AT {ps.Name}");
             if (ps.PossiblePedSpawns != null)
             {
+
                 foreach (ConditionalLocation cl in ps.PossiblePedSpawns)
                 {
-                    cl.AttemptSpawn(Player, true, false, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems);
+                    bool hasStuff = ForcedGroups.Contains(cl.GroupID);
+                    cl.AttemptSpawn(Player, true, hasStuff, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups,ShopMenus, WeatherReporter, Time, ModItems);
                     if(cl.AttemptedSpawn && !string.IsNullOrEmpty(cl.GroupID))
                     {
                         //EntryPoint.WriteToConsoleTestLong($"ADDED FORCED GROUP {cl.GroupID}");
@@ -82,6 +84,11 @@ public class LocationDispatcher
                     bool hasStuff = ForcedGroups.Contains(cl.GroupID);
                     //EntryPoint.WriteToConsoleTestLong($"CHECKED FORCE GROUP {cl.GroupID} FORCING:{hasStuff}");
                     cl.AttemptSpawn(Player, false, hasStuff, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                    if (cl.AttemptedSpawn && !string.IsNullOrEmpty(cl.GroupID))
+                    {
+                        //EntryPoint.WriteToConsoleTestLong($"ADDED FORCED GROUP {cl.GroupID}");
+                        ForcedGroups.Add(cl.GroupID);
+                    }
                     GameFiber.Yield();
                 }
             }

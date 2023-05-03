@@ -16,23 +16,23 @@ public class Zone
     {
 
     }
-    public Zone(string _GameName, string _TextName, string _CountyID,string state,bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
+    public Zone(string _GameName, string _TextName, string _CountyID,string _StateID,bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
     {
         InternalGameName = _GameName;
         DisplayName = _TextName;
         CountyID = _CountyID;
-        State = state;
+        StateID = _StateID;
         IsSpecificLocation = isSpecificLocation;
         Economy = economy;
         Type = type;     
     }
-    public Zone(string _GameName, string _TextName, string _CountyID, Vector2[] boundaries, string state, bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
+    public Zone(string _GameName, string _TextName, string _CountyID, Vector2[] boundaries, string _StateID, bool isSpecificLocation, eLocationEconomy economy, eLocationType type)
     {
         InternalGameName = _GameName;
         Boundaries = boundaries;
         DisplayName = _TextName;
         CountyID = _CountyID;
-        State = state;
+        StateID = _StateID;
         IsSpecificLocation = isSpecificLocation;
         Economy = economy;
         Type = type;
@@ -42,27 +42,14 @@ public class Zone
     public string InternalGameName { get; set; }
     public string DisplayName { get; set; }
     public string CountyID { get; set; }
-    public string State { get; set; }
+    public string StateID { get; set; }
     public bool IsRestrictedDuringWanted { get; set; } = false;
     public bool IsSpecificLocation { get; set; } = false;
     public string BoroughName { get; set; }
     public eLocationEconomy Economy { get; set; } = eLocationEconomy.Middle;
     public eLocationType Type { get; set; } = eLocationType.Rural;
     public Vector2[] Boundaries { get; set; }
-    public string FullDisplayName(ICounties counties)
-    {
-        GameCounty myCounty = counties.GetCounty(CountyID);
-        string initialDisplay = DisplayName;
-        if(!string.IsNullOrEmpty(BoroughName))
-        {
-            initialDisplay += ", " + BoroughName;
-        }
-        if(myCounty != null)
-        {
-            return initialDisplay + ", " + myCounty.CountyName;
-        }
-        return initialDisplay;
-    }
+
 
 
     [XmlIgnore]
@@ -73,8 +60,10 @@ public class Zone
     public Gang AssignedGang { get; set; }
 
 
-
-
+    [XmlIgnore]
+    public GameCounty GameCounty { get; set; }
+    [XmlIgnore]
+    public GameState GameState { get; set; }
 
     [XmlIgnore]
     public List<Gang> Gangs { get; set; }
@@ -187,9 +176,9 @@ public class Zone
         }
         return null;
     }
-    public string GetFullLocationName(IDisplayable Player, ISettingsProvideable settings, string CurrentDefaultTextColor, ICounties counties)
+    public string GetFullLocationName(IDisplayable Player, ISettingsProvideable settings, string CurrentDefaultTextColor)
     {
-        string toDisplay = $"{CurrentDefaultTextColor}" + FullDisplayName(counties);
+        string toDisplay = $"{CurrentDefaultTextColor}" + FullZoneName(settings);
         if (settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency && AssignedLEAgency != null)
         {
             toDisplay += $"{CurrentDefaultTextColor} / " + AssignedLEAgency.ColorInitials;
@@ -208,6 +197,23 @@ public class Zone
             toDisplay += $"{CurrentDefaultTextColor} - " + AssignedSecondLEAgeny.ColorInitials;
         }
         return toDisplay;
+    }
+    public string FullZoneName(ISettingsProvideable settings)
+    {
+        string initialDisplay = DisplayName;
+        if (!string.IsNullOrEmpty(BoroughName) && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowBorough)
+        {
+            initialDisplay += ", " + BoroughName + "~s~";
+        }
+        if (GameCounty != null && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowCounty)
+        {
+            initialDisplay += ", " + GameCounty.ColorName + "~s~";
+        }
+        if (GameState != null && settings.SettingsManager.LSRHUDSettings.ZoneDisplayShowState)
+        {
+            initialDisplay += ", " + GameState.ColorName + "~s~"; ;
+        }
+        return initialDisplay;
     }
 
 }

@@ -26,7 +26,7 @@ public class SavePauseMenu
     private IShopMenus ShopMenus;
     private IModItems ModItems;
     private IWeapons Weapons;
-    private ICounties Counties;
+    private ILocationTypes Counties;
     private IGameSaves GameSaves;
     private IPedSwap PedSwap;
     private IInventoryable Inventoryable;
@@ -35,7 +35,7 @@ public class SavePauseMenu
     private ISettingsProvideable Settings;
 
     public SavePauseMenu(ISaveable player, ITimeControllable time, IPlacesOfInterest placesOfInterest, IGangs gangs, IGangTerritories gangTerritories, IZones zones, IStreets streets, 
-        IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings, ICounties counties, IGameSaves gameSaves,
+        IInteriors interiors, IEntityProvideable world, IShopMenus shopMenus, IModItems modItems, IWeapons weapons, ISettingsProvideable settings, IGameSaves gameSaves,
         IPedSwap pedSwap, IInventoryable inventoryable, ISaveable saveable)
     {
         Player = player;
@@ -51,7 +51,6 @@ public class SavePauseMenu
         ModItems = modItems;
         Weapons = weapons;
         Settings = settings;
-        Counties = counties;
         GameSaves = gameSaves;
         PedSwap = pedSwap;
         Inventoryable = inventoryable;

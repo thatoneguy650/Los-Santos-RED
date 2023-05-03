@@ -46,7 +46,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 24,
                 IsEnabled = false,
                 CanInteractWhenWanted = true,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.DeadDrops.AddRange(DeadDropList_4);
@@ -58,7 +58,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 117.67f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ScrapYard() {
                 Name = "Dukes Used Auto Parts",
@@ -67,7 +67,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 181.02f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.ScrapYards.AddRange(ScrapYardList_5);
@@ -79,7 +79,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 90.32f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.CarCrushers.AddRange(CarCrusherList_6);
@@ -97,7 +97,7 @@ public class PlacesOfInterest_Liberty
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(1284.30f, 550.90f, 233.12f),181.34f),
                 },
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GunStore() {
                 MenuID = "GunShop1",
@@ -112,7 +112,7 @@ public class PlacesOfInterest_Liberty
                 ParkingSpaces = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(332.38f, 148.26f, 213.98f),177.80f),
                 },
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.GunStores.AddRange(GunStoreList_8);
@@ -125,7 +125,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 355.64f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Hotel() {
                 MenuID = "CheapHotelMenu",
@@ -135,7 +135,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 358.44f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Hotel() {
                 MenuID = "CheapHotelMenu",
@@ -145,7 +145,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 240.01f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
         };
         LibertyCityLocations.Hotels.AddRange(HotelList_9);
@@ -159,7 +159,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 2000,
                 PurchasePrice = 400000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "1666 Valdez St",
@@ -170,7 +170,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1300,
                 PurchasePrice = 260000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "Northern Gardens Apt 248",
@@ -181,7 +181,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1200,
                 PurchasePrice = 240000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "50 Shinnecock Ave",
@@ -192,7 +192,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 3750,
                 PurchasePrice = 750000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "35 Iroquois Ave",
@@ -203,7 +203,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1000,
                 PurchasePrice = 180000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "216 Stillwater Ave",
@@ -214,7 +214,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 3000,
                 PurchasePrice = 600000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "Steinway Projects Apt 98",
@@ -225,7 +225,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1200,
                 PurchasePrice = 240000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "560 Eastwood Apartments",
@@ -236,7 +236,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1500,
                 PurchasePrice = 300000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "3250 Bismarck Ave",
@@ -247,7 +247,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 2500,
                 PurchasePrice = 500000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "1090 Borlock Rd",
@@ -258,7 +258,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1750,
                 PurchasePrice = 350000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "511 Feldspar St",
@@ -269,7 +269,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1875,
                 PurchasePrice = 375000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "130 Columbus Ave Penthouse",
@@ -280,7 +280,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 5000,
                 PurchasePrice = 1000000,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Residence() {
                 Name = "32 Panhandle Rd",
@@ -291,7 +291,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1000,
                 PurchasePrice = 190000,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
                 Name = "9 Cariboo Ave",
@@ -302,7 +302,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 2875,
                 PurchasePrice = 575000,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
                 Name = "1396 Red Wing Ave",
@@ -313,7 +313,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1100,
                 PurchasePrice = 220000,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Residence() {
                 Name = "46 Babbage Dr",
@@ -324,7 +324,7 @@ public class PlacesOfInterest_Liberty
                 RentalDays = 28,
                 RentalFee = 1900,
                 PurchasePrice = 380000,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
         };
         LibertyCityLocations.Residences.AddRange(ResidenceList_10);
@@ -336,7 +336,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 175.24f,
                 OpenTime = 9,
                 CloseTime = 18,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.CityHalls.AddRange(CityHallList_11);
@@ -350,7 +350,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 176.29f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BeanMachineMenu",
@@ -361,7 +361,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 265.13f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "CoffeeMenu",
@@ -371,7 +371,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 177.38f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
@@ -381,7 +381,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 7.14f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
@@ -391,7 +391,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 348.6f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "WigwamMenu",
@@ -402,7 +402,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 2.22f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -412,7 +412,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 88.05f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -422,7 +422,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 95.42f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -432,7 +432,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 40.91f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -442,7 +442,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 269.4f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -452,7 +452,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 23.34f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -462,7 +462,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 358.48f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "BurgerShotMenu",
@@ -472,7 +472,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 180.48f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "CluckinBellMenu",
@@ -482,7 +482,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 2.2f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "CluckinBellMenu",
@@ -492,7 +492,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 103.41f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
@@ -502,7 +502,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 268.24f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "FancyGenericMenu",
@@ -512,7 +512,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 356.24f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "PizzaThisMenu",
@@ -523,7 +523,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 176.4f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "PizzaThisMenu",
@@ -534,7 +534,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 86.71f,
                 OpenTime = 9,
                 CloseTime = 23,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "AlDentesMenu",
@@ -545,7 +545,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 86.71f,
                 OpenTime = 9,
                 CloseTime = 23,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "AlDentesMenu",
@@ -556,7 +556,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 219.37f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "PizzaMenu",
@@ -566,7 +566,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 88.96f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "PizzaMenu",
@@ -576,7 +576,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 89.29f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "NoodleMenu",
@@ -586,7 +586,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 137.64f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "FancyFishMenu",
@@ -596,7 +596,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 88.77f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "InternetCafeMenu",
@@ -606,7 +606,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 63.7f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Restaurant() {
                 MenuID = "InternetCafeMenu",
@@ -616,7 +616,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 88.88f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Restaurant() {
                 MenuID = "InternetCafeMenu",
@@ -626,7 +626,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 280.19f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.Restaurants.AddRange(RestaurantList_12);
@@ -639,7 +639,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 177.06f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Pharmacy() {
                 MenuID = "PharmacyMenu",
@@ -649,7 +649,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 86.71f,
                 OpenTime = 9,
                 CloseTime = 23,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Pharmacy() {
                 MenuID = "PharmacyMenu",
@@ -659,7 +659,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 265.4f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Pharmacy() {
                 MenuID = "PharmacyMenu",
@@ -669,7 +669,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 87.01f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new Pharmacy() {
                 MenuID = "PharmacyMenu",
@@ -679,7 +679,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 226.09f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.Pharmacies.AddRange(PharmacyList_13);
@@ -692,7 +692,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 0.03f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.HeadShops.AddRange(HeadShopList_14);
@@ -705,7 +705,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 2.11f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new HardwareStore() {
                 MenuID = "ToolMenu",
@@ -715,7 +715,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 111.11f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new HardwareStore() {
                 MenuID = "ToolMenu",
@@ -725,7 +725,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 358.58f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.HardwareStores.AddRange(HardwareStoreList_15);
@@ -738,7 +738,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 3.1f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new PawnShop() {
                 MenuID = "PawnShopMenu",
@@ -748,7 +748,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 270.45f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new PawnShop() {
                 MenuID = "PawnShopMenu",
@@ -758,7 +758,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 88.45f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
         };
         LibertyCityLocations.PawnShops.AddRange(PawnShopList_16);
@@ -772,7 +772,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 46.57f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -783,7 +783,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 38.36f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -794,7 +794,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 310.69f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -805,7 +805,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 269.46f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -816,7 +816,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 177.77f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -827,7 +827,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 267.1f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "TwentyFourSevenMenu",
@@ -838,7 +838,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 133.27f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "GasStationMenu",
@@ -848,7 +848,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 179.28f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "ConvenienceStoreMenu",
@@ -858,7 +858,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 271.59f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "DeliGroceryMenu",
@@ -868,7 +868,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 174.93f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "DeliGroceryMenu",
@@ -878,7 +878,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 270.87f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "DeliGroceryMenu",
@@ -888,7 +888,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 358.25f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "DeliGroceryMenu",
@@ -898,7 +898,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 267.96f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new ConvenienceStore() {
                 MenuID = "DeliGroceryMenu",
@@ -908,7 +908,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 358.9f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.ConvenienceStores.AddRange(ConvenienceStoreList_17);
@@ -921,7 +921,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 64.88f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new LiquorStore() {
                 MenuID = "LiquorStoreMenu",
@@ -931,7 +931,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 268.5f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.LiquorStores.AddRange(LiquorStoreList_18);
@@ -944,7 +944,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 230.76f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new GasStation() {
                 MenuID = "XeroMenu",
@@ -955,7 +955,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 355.4f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -966,7 +966,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 234.7f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -977,7 +977,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 83.12f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -988,7 +988,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 72.49f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -999,7 +999,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 181.2f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -1010,7 +1010,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 177.53f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -1021,7 +1021,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 178.63f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new GasStation() {
                 MenuID = "RonMenu",
@@ -1032,7 +1032,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 80.35f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.GasStations.AddRange(GasStationList_19);
@@ -1045,7 +1045,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 91.39f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
                 MenuID = "BarMenu",
@@ -1055,7 +1055,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 60.15f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
                 MenuID = "BarMenu",
@@ -1065,7 +1065,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 42.42f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
                 MenuID = "BarMenu",
@@ -1075,7 +1075,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 178.83f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
                 MenuID = "BarMenu",
@@ -1085,7 +1085,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 224.33f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new Bar() {
                 MenuID = "BarMenu",
@@ -1095,7 +1095,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 267.78f,
                 OpenTime = 0,
                 CloseTime = 24,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.Bars.AddRange(BarList_20);
@@ -1116,7 +1116,7 @@ public class PlacesOfInterest_Liberty
                 ItemDeliveryLocations = new List<SpawnPlace>() {
                     new SpawnPlace(new Vector3(-1417.26f, 496.72f, 209.71f), 132.01f),
                 },
-                StateLocation = StaticStrings.AlderneyStateID,
+                StateID = StaticStrings.AlderneyStateID,
             },
         };
         LibertyCityLocations.CarDealerships.AddRange(DealershipList_21);
@@ -1129,7 +1129,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 269.42f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new SportingGoodsStore() {
                 MenuID = "DepartmentStoreMenu",
@@ -1139,7 +1139,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 86.51f,
                 OpenTime = 6,
                 CloseTime = 20,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
             new SportingGoodsStore() {
                 MenuID = "MallMenu",
@@ -1149,7 +1149,7 @@ public class PlacesOfInterest_Liberty
                 EntranceHeading = 86.7f,
                 OpenTime = 9,
                 CloseTime = 23,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.SportingGoodsStores.AddRange(SportingGoodsStoreList_22);
@@ -1169,7 +1169,7 @@ public class PlacesOfInterest_Liberty
                     new AirportFlight("LDR",StaticStrings.AirHerlerCarrierID,"Relax on one of our state of the art jets and arrive in luxury. ~n~~n~Taxi service to downtown Ludendorff included.", 1500, 5),
                     new AirportFlight("LDR",StaticStrings.CaipiraAirwaysCarrierID,"Only three connections and 12 hours for a 5 hour flight! What else could you ask for? ~n~~n~Taxi service to downtown Ludendorff included.", 550, 12),
                 },
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.Airports.AddRange(AirportList_23);
@@ -1336,7 +1336,7 @@ public class PlacesOfInterest_Liberty
                     new RoadToggler(new Vector3(3186.534f, -4832.798f, 109.8148f),new Vector3(3204.187f, -4833.993f, 114.815f),16.0f),
                 }
                 ,ZonesToEnable = new HashSet<string>() { "PrLog" }
-                ,StateLocation = StaticStrings.NorthYanktonStateID,
+                ,StateID = StaticStrings.NorthYanktonStateID,
             },
         };
         LibertyCityLocations.Airports.AddRange(YanktonAiportList_24);
@@ -1352,7 +1352,7 @@ public class PlacesOfInterest_Liberty
                 CloseTime = 19,
                 VendorPosition = new Vector3(923.45f, 1265.04f, 202.79f),
                 VendorHeading = 83.74f,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
             },
         };
         LibertyCityLocations.IllicitMarketplaces.AddRange(IllicitMarketplaceList_25);
@@ -1371,7 +1371,7 @@ public class PlacesOfInterest_Liberty
                 OpenTime = 0,
                 CloseTime = 24,
                 IsEnabled = true,
-                StateLocation = StaticStrings.LibertyStateID,
+                StateID = StaticStrings.LibertyStateID,
                 PossiblePedSpawns = new List<ConditionalLocation>()
                 {
                     new GangConditionalLocation(new Vector3(116.7614f, 239.4333f, 12.68577f), 117.5893f, 55f) { TaskRequirements = TaskRequirements.Guard },//right by thingo
@@ -1389,7 +1389,7 @@ public class PlacesOfInterest_Liberty
     {
         List<Prison> LCPrison = new List<Prison>()
         {
-            new Prison(new Vector3(-903.9021f, 118.7461f, 3.080931f), 91.96844f, "Alderney State Correctional Facility","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new Prison(new Vector3(-903.9021f, 118.7461f, 3.080931f), 91.96844f, "Alderney State Correctional Facility","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
         };
         LibertyCityLocations.Prisons.AddRange(LCPrison);
     }
@@ -1398,18 +1398,18 @@ public class PlacesOfInterest_Liberty
         List<Hospital> Hospitals = new List<Hospital>()
         {
             //Broker
-            new Hospital(new Vector3(1438.552f, 690.5808f, 33.54961f), 90.19894f, "Schottler Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(1438.552f, 690.5808f, 33.54961f), 90.19894f, "Schottler Medical Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
             //Dukes
-            new Hospital(new Vector3(1486.106f, 977.1287f, 29.53525f), 33.23054f, "Cerveza Heights Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(1486.106f, 977.1287f, 29.53525f), 33.23054f, "Cerveza Heights Medical Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
             //Bohan
-            new Hospital(new Vector3(1220.561f, 2333.059f, 23.89302f), 92.1476f, "Bohan Medical & Dental Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(1220.561f, 2333.059f, 23.89302f), 92.1476f, "Bohan Medical & Dental Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
             //Algon
-            new Hospital(new Vector3(-186.4241f, 1797.527f, 17.43241f), 85.08374f, "Holland Hospital Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new Hospital(new Vector3(334.043f, 643.3015f, 14.77393f), 178.5839f, "Lancet-Hospital Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new Hospital(new Vector3(51.70538f, -64.34246f, 4.941999f), 89.92042f, "City Hall Hospital","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(-186.4241f, 1797.527f, 17.43241f), 85.08374f, "Holland Hospital Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(334.043f, 643.3015f, 14.77393f), 178.5839f, "Lancet-Hospital Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new Hospital(new Vector3(51.70538f, -64.34246f, 4.941999f), 89.92042f, "City Hall Hospital","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
             //Alderny
-            new Hospital(new Vector3(-1080.693f, 1769.972f, 23.37073f), 309.4161f, "Westdyke Memorial Hospital","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
-            new Hospital(new Vector3(-1277.354f, 890.3488f, 21.63032f), 313.0107f, "North Tudor Medical Center","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new Hospital(new Vector3(-1080.693f, 1769.972f, 23.37073f), 309.4161f, "Westdyke Memorial Hospital","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
+            new Hospital(new Vector3(-1277.354f, 890.3488f, 21.63032f), 313.0107f, "North Tudor Medical Center","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
         };
         LibertyCityLocations.Hospitals.AddRange(Hospitals);
     }
@@ -1418,31 +1418,31 @@ public class PlacesOfInterest_Liberty
         List<PoliceStation> PoliceStations = new List<PoliceStation>()
         {
             //Broker
-            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1468.795f, 404.4823f, 28.02845f), 268.9079f, "South Slopes Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1132.495f, 135.204f, 18.18011f), 321.3237f, "Hove Beach Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
 
 
             //Dukes
-            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1471.042f, 1020.193f, 30.82781f), 179.7346f, "East Island City Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(2404.376f, 942.9011f, 7.022036f), 270.644f, "FIA Police Station","") { OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
 
             //Bohan
-            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(673.7206f, 2084.079f, 18.22777f), 2.178002f, "Fortside Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(1220.499f, 2364.085f, 23.89311f), 88.64945f, "Northern Gardens LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
 
             //Algonquin
-            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
-            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-146.7365f, 229.4094f, 13.04987f), 270.1865f, "Suffolk Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(449.9062f, 286.9244f, 10.75325f), 208.419f, "Lower Easton Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(53.50484f, 593.811f, 14.76916f), 357.1598f, "Star Junction Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-168.6235f, 776.5378f, 13.6791f), 178.2846f, "Westminster Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(290.0559f, 1174.093f, 15.32371f), 85.63059f, "Middle Park East Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(-178.7366f, 1597.181f, 11.9273f), 176.7212f, "Varsity Heights Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
+            new PoliceStation(new Vector3(323.3206f, 1685.935f, 14.74491f), 180.4846f, "East Holland LCPD Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.LibertyStateID },
 
             //Alderney
-            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
-            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
-            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateLocation = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-1480.706f, 771.6721f, 22.91864f), 240.3791f, "West District Mini Precinct","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-986.9969f, 257.8285f, 2.994598f), 311.2633f, "Acter Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
+            new PoliceStation(new Vector3(-684.4249f, 1763.837f, 25.79581f), 134.1164f, "Leftwood Police Station","") {OpenTime = 0,CloseTime = 24, StateID = StaticStrings.AlderneyStateID },
 
         };
         LibertyCityLocations.PoliceStations.AddRange(PoliceStations);

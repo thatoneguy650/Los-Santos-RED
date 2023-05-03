@@ -129,7 +129,7 @@
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
     <Compile Include="lsr\Data\Gangs\GangTerritories.cs" />
     <Compile Include="lsr\Data\Interface\IClothesNames.cs" />
-    <Compile Include="lsr\Data\Interface\ICounties.cs" />
+    <Compile Include="lsr\Data\Interface\ILocationTypes.cs" />
     <Compile Include="lsr\Data\Interface\IDances.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchablePeople.cs" />
     <Compile Include="lsr\Data\Interface\IDispatchableVehicles.cs" />
@@ -151,6 +151,7 @@
     <Compile Include="lsr\Data\Interface\IWantedLevels.cs" />
     <Compile Include="lsr\Data\Interface\IWeatherForecasts.cs" />
     <Compile Include="lsr\Data\Items\Intoxicants.cs" />
+    <Compile Include="lsr\Data\Location\LocationTypeManager.cs" />
     <Compile Include="lsr\Data\Location\PlacesOfInterest_Liberty.cs" />
     <Compile Include="lsr\Data\Other\LanguageString.cs" />
     <Compile Include="lsr\Data\Other\LanguageStrings.cs" />
@@ -173,6 +174,7 @@
     <Compile Include="lsr\Dispatcher\LocationDispatcher.cs" />
     <Compile Include="lsr\Helper\eCombat_Attribute.cs" />
     <Compile Include="lsr\Helper\GTA Enums\eEnter_Exit_Vehicle_Flags.cs" />
+    <Compile Include="lsr\Locations\GameState.cs" />
     <Compile Include="lsr\Locations\Menus\PercentageSelectGroupMenuContainer.cs" />
     <Compile Include="lsr\Data\Peds\ClothesNames.cs" />
     <Compile Include="lsr\Data\Peds\PossibleNames.cs" />
@@ -183,6 +185,7 @@
     <Compile Include="lsr\Locations\Menus\ShopMenuTypes.cs" />
     <Compile Include="lsr\Locations\Menus\PropShopMenu.cs" />
     <Compile Include="lsr\Locations\Menus\ShopMenuGroup.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\ConditionalGroup.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\EMSConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\FireConditionalSpawn.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\GangConditionalLocation.cs" />
@@ -275,7 +278,7 @@
     <Compile Include="lsr\Player\Inventory\ItemType.cs" />
     <Compile Include="lsr\Data\Items\PhysicalItems.cs" />
     <Compile Include="lsr\Data\Items\PossibleItems.cs" />
-    <Compile Include="lsr\Data\Location\Counties.cs" />
+    <Compile Include="lsr\Data\Location\LocationTypes.cs" />
     <Compile Include="lsr\Data\Location\eLocationEconomy.cs" />
     <Compile Include="lsr\Data\Location\eLocationType.cs" />
     <Compile Include="lsr\Data\Location\FoodType.cs" />
@@ -867,7 +870,6 @@
     <Compile Include="lsr\Player\Player.cs" />
     <Compile Include="lsr\Ped\PedConfigFlags.cs" />
     <Compile Include="lsr\Police\Police.cs" />
-    <Compile Include="lsr\Locations\County.cs" />
     <Compile Include="lsr\Helper\AnimationDictionary.cs" />
     <Compile Include="lsr\World\World.cs" />
     <Compile Include="lsr\Ped\Demographics\PedName.cs" />

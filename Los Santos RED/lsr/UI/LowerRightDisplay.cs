@@ -16,7 +16,6 @@ public class LowerRightDisplay
     private ITimeReportable Time;
     private ISettingsProvideable Settings;
     private UI UI;
-    private ICounties Counties;
 
     private float lowerRightHeighSpace;
 
@@ -35,7 +34,7 @@ public class LowerRightDisplay
 
     private string overrideTimeDisplay = "";
     private bool playerIsInVehicle = false;
-    public LowerRightDisplay(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI ui, ICounties counties)
+    public LowerRightDisplay(IDisplayable displayablePlayer, ITimeReportable time, ISettingsProvideable settings, UI ui)
     {
         DisplayablePlayer = displayablePlayer;
         Time = time;
@@ -45,7 +44,6 @@ public class LowerRightDisplay
         ZoneFader = new Fader(Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.ZoneDisplayTimeToFade, "ZoneFader");
         VehicleFader = new Fader(Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.VehicleDisplayTimeToFade, "VehicleFader");
         PlayerFader = new Fader(Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToShow, Settings.SettingsManager.LSRHUDSettings.PlayerDisplayTimeToFade, "PlayerFader");
-        Counties = counties;
     }
 
     public void Setup()
@@ -437,7 +435,7 @@ public class LowerRightDisplay
     }
     private string GetZoneDisplay()
     {
-        return DisplayablePlayer.CurrentLocation.CurrentZone?.GetFullLocationName(DisplayablePlayer,Settings, UI.CurrentDefaultTextColor, Counties);
+        return DisplayablePlayer.CurrentLocation.CurrentZone?.GetFullLocationName(DisplayablePlayer,Settings, UI.CurrentDefaultTextColor);
     }
     private string GetViolationsText()
     {

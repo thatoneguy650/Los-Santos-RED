@@ -1,4 +1,5 @@
-﻿using LosSantosRED.lsr.Helper;
+﻿using ExtensionsMethods;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LosSantosRED.lsr.Player.Activity;
 using LSR.Vehicles;
@@ -740,7 +741,7 @@ new YmapDisabler("manhat01",true),
                         Player.CurrentVehicle.Vehicle.LicensePlate = NewPlateNumber;
                     }
                     NativeFunction.CallByName<int>("SET_VEHICLE_NUMBER_PLATE_TEXT_INDEX", Player.CurrentVehicle.Vehicle, NewType.Index);
-                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index}, Index: {NewType.Index}, State: {NewType.State}, Description: {NewType.Description}");
+                    Game.DisplaySubtitle($" PlateIndex: {plateIndex.SelectedItem.Index}, Index: {NewType.Index}, State: {NewType.StateID}, Description: {NewType.Description}");
                 }
                 else
                 {
@@ -2579,7 +2580,6 @@ new YmapDisabler("manhat01",true),
                 string type = location2.GetType().ToString();
                 WriteToClassCreator($"new {type}() {{", 0, "Locations");
                 PrintClass(location2, AllowedProperties, "Locations");
-                
                 WriteToClassCreator($"}},", 0, "Locations");
             }
             WriteToClassCreator($"}};", 0, "Locations");
@@ -2607,15 +2607,27 @@ new YmapDisabler("manhat01",true),
         PropertyInfo[] properties = dv.GetType().GetProperties();
         foreach (PropertyInfo property in properties)
         {
-            if(!property.CanWrite)
+
+            Type type1 = property.PropertyType;
+            Type itemType1 = null;     
+            if(type1 != null)
+            {
+                if(type1.GetGenericArguments() != null && type1.GetGenericArguments().Any())
+                {
+                    itemType1 = type1.GetGenericArguments()[0];
+                }
+            }
+            //EntryPoint.WriteToConsole($"{property.Name} {type1} {property is IEnumerable} {property.IsGenericList()} {property.PropertyType.IsGenericList()} {itemType1?.Name}");
+
+            if (!property.CanWrite)
             {
                 continue;
             }
-            if(AllowedProperties != null && !AllowedProperties.Any(x=> x == property.Name))
+            else if(AllowedProperties != null && !AllowedProperties.Any(x=> x == property.Name))
             {
                 continue;
             }
-            if (property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
+            else if(property.PropertyType == typeof(string) || property.PropertyType == typeof(System.Drawing.Color))
             {
                 WriteToClassCreator($"{property.Name} = \"{property.GetValue(dv)}\",",0, fileName);
             }
@@ -2641,35 +2653,54 @@ new YmapDisabler("manhat01",true),
                 PrintClass(property.GetValue(dv), AllowedProperties, fileName);
                 WriteToClassCreator($"}},", 0, fileName);
             }
-            else if (property.PropertyType == typeof(List<int>))
+
+            if (itemType1 != null)
             {
-                DoListItem(property, dv, "List<int>", AllowedProperties, fileName);
+                EntryPoint.WriteToConsole($"IS LIST {property.Name} {itemType1.Name}");
+                DoListItem(property, dv, $"List<{itemType1.Name}>", AllowedProperties, fileName);
             }
-            else if (property.PropertyType == typeof(List<SpawnPlace>))
-            {
-                DoListItem(property, dv, "List<SpawnPlace>", AllowedProperties, fileName);
-            }
-            else if (property.PropertyType == typeof(List<ConditionalLocation>))
-            {
-                DoListItem(property, dv, "List<ConditionalLocation>", AllowedProperties, fileName);
-            }
-            //
-            else if (property.PropertyType == typeof(List<VehicleExtra>))
-            {
-                DoListItem(property, dv, "List<VehicleExtra>", AllowedProperties, fileName);
-            }
-            else if (property.PropertyType == typeof(List<DispatchableVehicleExtra>))
-            {
-                DoListItem(property, dv, "List<DispatchableVehicleExtra>", AllowedProperties, fileName);
-            }
-            else if (property.PropertyType == typeof(List<VehicleToggle>))
-            {
-                DoListItem(property, dv, "List<VehicleToggle>", AllowedProperties, fileName);
-            }
-            else if (property.PropertyType == typeof(List<VehicleMod>))
-            {
-                DoListItem(property, dv, "List<VehicleMod>", AllowedProperties, fileName);
-            }
+
+
+            //else if(property is IEnumerable)
+            //{
+                
+            //    Type type = property.PropertyType;
+            //    Type itemType = type.GetGenericArguments()[0];
+
+
+            //    EntryPoint.WriteToConsole($"IS GENERIC LIST {property.Name} {itemType}");
+
+            //    DoListItem(property, dv, $"List<{itemType}>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<int>))
+            //{
+            //    DoListItem(property, dv, "List<int>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<SpawnPlace>))
+            //{
+            //    DoListItem(property, dv, "List<SpawnPlace>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<ConditionalLocation>))
+            //{
+            //    DoListItem(property, dv, "List<ConditionalLocation>", AllowedProperties, fileName);
+            //}
+            ////
+            //else if (property.PropertyType == typeof(List<VehicleExtra>))
+            //{
+            //    DoListItem(property, dv, "List<VehicleExtra>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<DispatchableVehicleExtra>))
+            //{
+            //    DoListItem(property, dv, "List<DispatchableVehicleExtra>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<VehicleToggle>))
+            //{
+            //    DoListItem(property, dv, "List<VehicleToggle>", AllowedProperties, fileName);
+            //}
+            //else if (property.PropertyType == typeof(List<VehicleMod>))
+            //{
+            //    DoListItem(property, dv, "List<VehicleMod>", AllowedProperties, fileName);
+            //}
             else
             {
                 //WriteToClassCreator($"{property.Name} {property.PropertyType}", 0);

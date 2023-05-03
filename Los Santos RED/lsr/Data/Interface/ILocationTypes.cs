@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Interface
 {
-    public interface ICounties
+    public interface ILocationTypes
     {
-        List<GameCounty> CountyList { get; }
         GameCounty GetCounty(string InternalGameName);
+        GameState GetState(string stateID);
     }
 }

@@ -118,7 +118,12 @@ public class BasicLocation
     public virtual bool ShowsOnDirectory { get; set; } = true;
     public virtual string TypeName { get; set; } = "Location";
     public virtual int SortOrder { get; set; } = 999;
-    public string StateLocation { get; set; }
+    public string StateID { get; set; }
+
+
+    [XmlIgnore]
+    public GameState GameState { get; set; }
+
     public string ScannerFilePath { get; set; } = "";
 
     public virtual int ActivateCells { get; set; } = 5;
@@ -156,27 +161,29 @@ public class BasicLocation
     public bool HasInterior => InteriorID != -1;
     public bool HasBannerImage => BannerImagePath != "";
     public Interior Interior => interior;
-    public bool IsSameState(string state) => string.IsNullOrEmpty(state) || StateLocation == state || IsSisterState(state);
-
-    private bool IsSisterState(string state)
+    public bool IsSameState(GameState state)// => state == null || StateID == state.StateID || IsSisterState(state);
     {
-        if(state == StaticStrings.AlderneyStateID && StateLocation == StaticStrings.LibertyStateID)
-        {
-            return true;
-        }
-        if (state == StaticStrings.LibertyStateID && StateLocation == StaticStrings.AlderneyStateID)
-        {
-            return true;
-        }
-        return false;
+        return state == null || GameState == null || state.StateID == GameState.StateID || state.IsSisterState(GameState);
     }
+    //private bool IsSisterState(string state)
+    //{
+    //    if(state == StaticStrings.AlderneyStateID && StateID == StaticStrings.LibertyStateID)
+    //    {
+    //        return true;
+    //    }
+    //    if (state == StaticStrings.LibertyStateID && StateID == StaticStrings.AlderneyStateID)
+    //    {
+    //        return true;
+    //    }
+    //    return false;
+    //}
 
-    public void StoreData(IZones zones, IStreets streets)
+    public void StoreData(IZones zones, IStreets streets, ILocationTypes locationTypes)
     {
         Zone placeZone = zones.GetZone(EntrancePosition);
         string betweener = "";
         string zoneString = "";
-        string stateString = "San Andreas";
+        //string stateString = "San Andreas";
         if (placeZone != null)
         {
             if (placeZone.IsSpecificLocation)
@@ -188,7 +195,7 @@ public class BasicLocation
                 betweener = $"in";
             }
             zoneString = $"~p~{placeZone.DisplayName}~s~";
-            stateString = placeZone.State;
+            //stateString = placeZone.GameState?.StateName;
         }
         string streetName = streets.GetStreetNames(EntrancePosition, false);
         string StreetNumber = "";
@@ -207,10 +214,16 @@ public class BasicLocation
         ZoneName = zoneString;
 
 
-        if (String.IsNullOrEmpty(StateLocation))
+        if (string.IsNullOrEmpty(StateID))
         {
-            StateLocation = stateString;
+            StateID = StaticStrings.SanAndreasStateID;
         }
+
+        GameState = locationTypes.GetState(StateID);
+
+
+
+
         CellX = (int)(EntrancePosition.X / EntryPoint.CellSize);
         CellY = (int)(EntrancePosition.Y / EntryPoint.CellSize);
     }
@@ -451,14 +464,15 @@ public class BasicLocation
         }
         if (settings.SettingsManager.WorldSettings.ShowAllBlipsOnMap)
         {
-            if (!IsActivated && IsEnabled && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.State) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
+            if (!IsActivated && IsEnabled && IsBlipEnabled && !Blip.Exists() && IsSameState(EntryPoint.FocusZone?.GameState) && IsCorrectMap(World.IsMPMapLoaded))//(EntryPoint.FocusZone == null || EntryPoint.FocusZone.State == StateLocation))
             {
                 ActivateBlip(time, World);
-               // EntryPoint.WriteToConsole($"Activated BLIP {Name}");
+               // EntryPoint.WriteToConsole($"Activated BLIP {Name} State:{GameState?.StateID} MyState:{EntryPoint.FocusZone?.GameState.StateID}");
             }
-            else if ((!IsEnabled && Blip.Exists()) || (IsEnabled && IsBlipEnabled && Blip.Exists() && !IsSameState(EntryPoint.FocusZone?.State)))
+            else if ((!IsEnabled && Blip.Exists()) || (IsEnabled && IsBlipEnabled && Blip.Exists() && !IsSameState(EntryPoint.FocusZone?.GameState)))
             {
                 DeactivateBlip();
+               // EntryPoint.WriteToConsole($"DeactivateBlip BLIP {Name} State:{GameState?.StateID} MyState:{EntryPoint.FocusZone?.GameState.StateID}");
             }
             else
             {

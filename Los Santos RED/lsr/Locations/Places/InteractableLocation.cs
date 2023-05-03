@@ -38,6 +38,11 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 
+
+
+
+
+
     public virtual string AssociationID => AssignedAssociationID;
 
     public string AssignedAssociationID { get; set; }
