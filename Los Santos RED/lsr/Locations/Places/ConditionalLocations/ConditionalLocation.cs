@@ -50,6 +50,11 @@ public class ConditionalLocation
     [XmlIgnore]
     public bool AttemptedSpawn { get; private set; }
 
+    [XmlIgnore]
+    public bool Ignore { get; private set; }
+
+
+
     public Vector3 Location { get; set; }
     public float Heading { get; set; }
     public float Percentage { get; set; }

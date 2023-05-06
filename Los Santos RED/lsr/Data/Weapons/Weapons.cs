@@ -160,8 +160,15 @@ public class Weapons : IWeapons
         DefaultConfig_Sniper();
         DefaultConfig_Heavy();
         DefaultConfig_Throwable();
+        DefaultConfig_Other();
         Serialization.SerializeParams(WeaponsList, ConfigFileName);
     }
+
+    private void DefaultConfig_Other()
+    {
+
+    }
+
     private void DefaultConfig_Melee()
     {
         //Melee

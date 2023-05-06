@@ -57,8 +57,17 @@ public class LocationDispatcher
 
     public void Dispatch()
     {
-        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
+        foreach (InteractableLocation ps in World.Places.ActiveInteractableLocations.ToList().Where(x => x.IsEnabled && x.DistanceToPlayer <= x.ActivateDistance && x.IsNearby && !x.IsDispatchFilled && (x.PossibleGroupSpawns != null || x.PossiblePedSpawns != null || x.PossibleVehicleSpawns != null)).ToList())
         {
+            if (ps.PossibleGroupSpawns != null)
+            {
+                foreach (ConditionalGroup cg in ps.PossibleGroupSpawns)
+                {
+                    cg.AttemptSpawn(Player, Agencies, Gangs, Zones, Jurisdictions, GangTerritories, Settings, World, ps.AssociationID, Weapons, Names, Crimes, PedGroups, ShopMenus, WeatherReporter, Time, ModItems);
+                }
+            }
+
+
             List<string> ForcedGroups = new List<string>();
             //EntryPoint.WriteToConsole($"Location Dispatcher, SPAWNED AT {ps.Name}");
             if (ps.PossiblePedSpawns != null)

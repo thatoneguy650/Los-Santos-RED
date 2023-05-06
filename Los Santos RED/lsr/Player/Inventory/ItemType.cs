@@ -16,4 +16,5 @@ public enum ItemType
     Weapons,
     LicensePlates,
     Valuables,
+    Meal,
 }

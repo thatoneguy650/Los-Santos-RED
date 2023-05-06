@@ -410,7 +410,7 @@
     <Compile Include="lsr\Locations\Places\ILocationDispatchable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\BusStop.cs" />
     <Compile Include="lsr\Locations\Places\Interact\ClothingShop.cs" />
-    <Compile Include="lsr\Locations\Places\ConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ConditionalLocations\ConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ILocationRespawnable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Hotel\HotelRoom.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Morgue.cs" />

@@ -34,7 +34,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
 
 
-
+    public List<ConditionalGroup> PossibleGroupSpawns { get; set; }
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
 

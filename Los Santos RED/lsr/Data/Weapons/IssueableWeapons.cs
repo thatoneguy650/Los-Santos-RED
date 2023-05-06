@@ -103,11 +103,11 @@ public class IssueableWeapons : IIssuableWeapons
         };
         List<IssuableWeapon> MilitaryLongGuns = new List<IssuableWeapon>()
         {
+
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(),5),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight" )}),20),
             new IssuableWeapon("weapon_carbinerifle", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip"), new WeaponComponent("Flashlight"), new WeaponComponent("Extended Clip" )}),20),
-
             new IssuableWeapon("weapon_combatmg", new WeaponVariation(new List<WeaponComponent> {  new WeaponComponent("Scope"), new WeaponComponent("Grip")}),15),
         };
         List<IssuableWeapon> HeliSidearms = new List<IssuableWeapon>()

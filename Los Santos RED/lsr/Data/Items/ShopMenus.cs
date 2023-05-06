@@ -628,39 +628,85 @@ public class ShopMenus : IShopMenus
     private void SpecificRestaurants()
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
-            //Specific
-            new ShopMenu("BurgerShotMenu","Burger Shot",new List<MenuItem> {
+            //Burger
+            new ShopMenu("BurgerShotMenu","BurgerShotMenu",new List<MenuItem> {
+                new MenuItem("The Bleeder Meal", 9),
+                new MenuItem("Torpedo Meal", 8),
                 new MenuItem("Money Shot Meal", 7),
-                new MenuItem("The Bleeder Meal", 4),
-                new MenuItem("Torpedo Meal", 6),
-                new MenuItem("Meat Free Meal", 5),
-
-
+                new MenuItem("Meat Free Meal", 6),
+                new MenuItem("Bleeder Burger", 5),
+                new MenuItem("Money Shot Burger", 5),
+                new MenuItem("Torpedo Sandwich", 4),
                 new MenuItem("Freedom Fries", 2),
                 new MenuItem("Liter of eCola", 2),
                 new MenuItem("Liter of Sprunk", 2),
-                new MenuItem("Bottle of Raine Water", 2),
-                new MenuItem("Double Shot Coffee", 2) }),
-            new ShopMenu("UpNAtomMenu","Up-N-Atom",new List<MenuItem>() {
-                new MenuItem("Triple Burger", 4),
-                new MenuItem("Bacon Triple Cheese Melt", 3),
-                new MenuItem("Jumbo Shake", 5),
-                new MenuItem("Bacon Burger", 2),
+            }),
+            new ShopMenu("UpNAtomMenu","UpNAtomMenu",new List<MenuItem> {
+                new MenuItem("Trio Trio Combo", 8),
+                new MenuItem("Dual Dual Combo", 7),
+                new MenuItem("Solo Solo Combo", 6),
+                new MenuItem("Trio Trio Burger", 5),
+                new MenuItem("Dual Dual Burger", 5),
+                new MenuItem("Solo Solo Burger", 4),
                 new MenuItem("French Fries", 2),
+                new MenuItem("Jumbo Shake", 5),
                 new MenuItem("Cup of eCola", 2),
                 new MenuItem("Cup of Sprunk", 2),
-                new MenuItem("Cup of Coffee", 3),
-                new MenuItem("Bottle of Raine Water", 5) }),
-            new ShopMenu("BeefyBillsMenu","Beefy Bills",new List<MenuItem>() {
-                new MenuItem("Burger", 3),
-                new MenuItem("Megacheese Burger", 2),
-                new MenuItem("Double Burger", 2),
-                new MenuItem("Kingsize Burger", 2),
-                new MenuItem("Bacon Burger", 2),
+            }),
+            new ShopMenu("BeefyBillsMenu","BeefyBillsMenu",new List<MenuItem> {
+                new MenuItem("Kingsize Burger", 5),
+                new MenuItem("Double Burger", 4),
+                new MenuItem("Megacheese Burger", 3),
                 new MenuItem("French Fries", 2),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
-                new MenuItem("Bottle of Raine Water", 2) }),
+                new MenuItem("Bottle of Raine Water", 2),
+            }),
+            new ShopMenu("WigwamMenu","WigwamMenu",new List<MenuItem> {
+                new MenuItem("Big Wig Combo", 7),
+                new MenuItem("Cheesie Wigwam Combo", 6),
+                new MenuItem("Wigwam Classic Combo", 5),
+                new MenuItem("Big Wig Burger", 4),
+                new MenuItem("Cheesie Wigwam Burger", 3),
+                new MenuItem("Wigwam Classic Burger", 3),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+            new ShopMenu("LaVacaLocaMenu","LaVacaLocaMenu",new List<MenuItem> {
+                new MenuItem("Muy Loca Combo", 8),
+                new MenuItem("Loca Combo", 7),
+                new MenuItem("Locita Combo", 6),
+                new MenuItem("Muy Loca Burger", 5),
+                new MenuItem("Loca Burger", 5),
+                new MenuItem("Locita Burger", 4),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+            new ShopMenu("SnrBunsMenu","SnrBunsMenu",new List<MenuItem> {
+                new MenuItem("Snr. Combo", 9),
+                new MenuItem("Soph. Combo", 8),
+                new MenuItem("Jr. Combo", 7),
+                new MenuItem("Snr. Burger", 6),
+                new MenuItem("Soph. Burger", 5),
+                new MenuItem("Jr. Burger", 4),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+            new ShopMenu("HornysBurgersMenu","HornysBurgersMenu",new List<MenuItem> {
+                new MenuItem("Big Horny Combo", 8),
+                new MenuItem("Horny Combo", 7),
+                new MenuItem("Randy Combo", 6),
+                new MenuItem("Big Horny Burger", 5),
+                new MenuItem("Horny Burger", 5),
+                new MenuItem("Randy Burger", 4),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+
             new ShopMenu("ChihuahuaHotDogMenu","Chihuahua HotDogs",new List<MenuItem>() {
                 new MenuItem("Hot Dog", 5),
                 new MenuItem("Hot Sausage", 5),
@@ -669,19 +715,27 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Nuts", 2),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of Raine Water", 2) }),
+
+            //Mexican
             new ShopMenu("TacoFarmerMenu","Taco Farmer",new List<MenuItem>() {
                 new MenuItem("Taco", 2),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Cup of Coffee", 3),
                 new MenuItem("Bottle of Raine Water", 2) }),
-            new ShopMenu("BiteMenu","Bite!",new List<MenuItem>() {
-                new MenuItem("Gut Buster Sandwich", 9),
-                new MenuItem("Ham and Tuna Sandwich", 7),
-                new MenuItem("Chef's Salad", 4),
-                new MenuItem("Cup of eCola", 1),
-                new MenuItem("Cup of Sprunk", 1),
-                new MenuItem("Bottle of Raine Water", 2) }),
+            new ShopMenu("BiteMenu","BiteMenu",new List<MenuItem> {
+                new MenuItem("Gut Buster Combo", 8),
+                new MenuItem("Meat Tube Combo", 7),
+                new MenuItem("Iceberg Salad Combo", 6),
+                new MenuItem("Gut Buster Sandwich", 4),
+                new MenuItem("Meat Tube Sandwich", 3),
+                new MenuItem("Iceberg Salad", 2),
+                new MenuItem("Sticky Rib Phat Chips", 2),
+                new MenuItem("Habanero Phat Chips", 2),
+                new MenuItem("Supersalt Phat Chips", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
             new ShopMenu("TacoBombMenu","Taco Bomb",new List<MenuItem> {
                 new MenuItem("Breakfast Burrito",4),
                 new MenuItem("Deep Fried Salad",7),
@@ -692,26 +746,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of Raine Water", 2) }),
-            new ShopMenu("WigwamMenu","Wigwam",new List<MenuItem>() {
-                new MenuItem("Wigwam Burger", 3),
-                new MenuItem("Wigwam Cheeseburger", 2),
-                new MenuItem("Big Wig Burger", 5),
-                new MenuItem("French Fries", 2),
-                new MenuItem("Cup of eCola", 1),
-                new MenuItem("Cup of Sprunk", 1),
-                new MenuItem("Bottle of Raine Water", 2) }),
-            new ShopMenu("CluckinBellMenu","Cluckin' Bell",new List<MenuItem>() {
-                new MenuItem("Cluckin' Little Meal",2),
-                new MenuItem("Cluckin' Big Meal",6),
-                new MenuItem("Cluckin' Huge Meal",12),
-                new MenuItem("Wing Piece",7),
-                new MenuItem("Little Peckers",8),
-                new MenuItem("Balls & Rings",4),
-                new MenuItem("Fries",2),
-                new MenuItem("Fowlburger",5),
-                new MenuItem("Cup of Coffee",3),
-                new MenuItem("Cup of eCola",2),
-                new MenuItem("Cup of Sprunk",2), }),
+            
+            //Italian
             new ShopMenu("PizzaThisMenu","Pizza",new List<MenuItem>() {
                 new MenuItem("10 inch Cheese Pizza", 11),
                 new MenuItem("10 inch Pepperoni Pizza", 13),
@@ -731,27 +767,18 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Stronzo", 4),
                 new MenuItem("Bottle of Dusche", 3)
             }),
-            new ShopMenu("AlDentesMenu","Al Dentes",new List<MenuItem>() {
-                new MenuItem("Small Cheese Pizza", 9),
-                new MenuItem("Small Pepperoni Pizza", 11),
-                new MenuItem("Small Supreme Pizza", 12),
-                new MenuItem("Medium Cheese Pizza", 16),
-                new MenuItem("Medium Pepperoni Pizza", 17),
-                new MenuItem("Medium Supreme Pizza", 18),
-                new MenuItem("Large Cheese Pizza", 22),
-                new MenuItem("Large Pepperoni Pizza", 23),
-                new MenuItem("Large Supreme Pizza", 24),
-                new MenuItem("Cup of Sprunk", 2),
-                new MenuItem("Bottle of A.M.", 3),
+            new ShopMenu("AlDentesMenu","AlDentesMenu",new List<MenuItem> {
+                new MenuItem("Tour of Algonquin", 15),
+                new MenuItem("Lasagna Cheesico", 14),
+                new MenuItem("Seafood Ravioli", 13),
+                new MenuItem("Spaghetti & 'Meat' Balls", 10),
+                new MenuItem("Bottle of A.M.", 4),
                 new MenuItem("Bottle of PiBwasser", 3),
-                new MenuItem("Bottle of Barracho", 4),
                 new MenuItem("Bottle of Blarneys", 4),
-                new MenuItem("Bottle of Jakeys", 3),
-                new MenuItem("Bottle of Stronzo", 4),
-                new MenuItem("Bottle of Dusche", 3)
-
-
+                new MenuItem("Bottle of Raine Water", 2),
             }),
+
+            //Coffee
             new ShopMenu("BeanMachineMenu","Bean Machine",new List<MenuItem>() {
                 new MenuItem("High Noon Coffee", 7),
                 new MenuItem("The Eco-ffee", 4),
@@ -764,6 +791,41 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Donut", 3),
                 new MenuItem("Bagel Sandwich", 8),
                 new MenuItem("Bottle of Raine Water", 3)
+            }),
+
+            //Chicken
+            new ShopMenu("CluckinBellMenu","CluckinBellMenu",new List<MenuItem> {
+                new MenuItem("Cluckin' Huge Meal", 8),
+                new MenuItem("Cluckin' Big Meal", 7),
+                new MenuItem("Cluckin' Little Meal", 6),
+                new MenuItem("Wing Piece", 4),
+                new MenuItem("Little Peckers", 4),
+                new MenuItem("Balls & Rings", 4),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+            new ShopMenu("BishopsChickenMenu","BishopsChickenMenu",new List<MenuItem> {
+                new MenuItem("Pope Combo", 8),
+                new MenuItem("Cardinal Combo", 7),
+                new MenuItem("Bishop Combo", 6),
+                new MenuItem("3 pc Chicken", 4),
+                new MenuItem("2 pc Chicken ", 3),
+                new MenuItem("1 pc Chicken", 2),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
+            }),
+            new ShopMenu("LuckyPluckerMenu","LuckyPluckerMenu",new List<MenuItem> {
+                new MenuItem("Plucker Combo 1", 8),
+                new MenuItem("Plucker Combo 2", 7),
+                new MenuItem("Plucker Combo 3", 6),
+                new MenuItem("Plucker Breast", 4),
+                new MenuItem("Plucker Thigh", 4),
+                new MenuItem("Plucker Salad", 4),
+                new MenuItem("French Fries", 2),
+                new MenuItem("Cup of eCola", 2),
+                new MenuItem("Cup of Sprunk", 2),
             }),
         });
     }
@@ -5735,8 +5797,6 @@ public class ShopMenus : IShopMenus
 
         });
     }
-
-
     private void MenuGroupList()
     {
         ShopMenuGroupContainer PoorAreaDealerMenuGroup = new ShopMenuGroupContainer(StaticStrings.PoorAreaDrugDealerMenuGroupID, "Poor Area Dealer Menu",
@@ -5921,7 +5981,6 @@ public class ShopMenus : IShopMenus
         PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaDealerMenuGroup);
         PossibleShopMenus.ShopMenuGroupContainers.Add(SPANKAreaCustomerMenuGroup);
     }
-
     public void Setup(IModItems modItems)
     {
         foreach(ShopMenu sm in AllMenus())

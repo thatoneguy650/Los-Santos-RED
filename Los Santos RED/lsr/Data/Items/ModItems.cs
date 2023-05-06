@@ -228,16 +228,6 @@ public class ModItems : IModItems
         return null;
     }
 
-
-
-
-
-
-
-
-
-
-
     private void DefaultConfig()
     {
         DefaultConfig_Drinks();
@@ -255,9 +245,9 @@ public class ModItems : IModItems
             //Drinks
             //Bottles
             new DrinkItem("Bottle of Raine Water", "The water that rich people drink, and the main reason why there are now entire continents of plastic bottles floating in the ocean", ItemType.Drinks) { 
-                ModelItemID = "ba_prop_club_water_bottle",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//slight clipping, no issyes
+                ModelItemID = "ba_prop_club_water_bottle",HealthChangeAmount = 20, ThirstChangeAmount = 25.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//slight clipping, no issyes
             new DrinkItem("Bottle of GREY Water", "Expensive water that tastes worse than tap!", ItemType.Drinks){
-                ModelItemID = "h4_prop_battle_waterbottle_01a",HealthChangeAmount = 20, ThirstChangeAmount = 20.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//lotsa clipping, does not have gravity
+                ModelItemID = "h4_prop_battle_waterbottle_01a",HealthChangeAmount = 20, ThirstChangeAmount = 25.0f, ItemSubType = ItemSubType.Water, FindPercentage = 10 },//lotsa clipping, does not have gravity
             new DrinkItem("Bottle of JUNK Energy", "The Quick Fix!", ItemType.Drinks){
                 ModelItemID = "prop_energy_drink",HealthChangeAmount = 30, ThirstChangeAmount = 20.0f,SleepChangeAmount = 10.0f, ItemSubType = ItemSubType.Soda, FindPercentage = 10 },//fine
             //Beer
@@ -295,11 +285,11 @@ public class ModItems : IModItems
                 ModelItemID = "ng_proc_sodacan_01b", HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda, FindPercentage = 10},
             new DrinkItem("Can of Orang-O-Tang", "Orange AND Tang! Orang-O-Tang!", ItemType.Drinks){
                 ModelItemID = "prop_orang_can_01",HealthChangeAmount = 10, ItemSubType= ItemSubType.Soda, FindPercentage = 10},//needs better attachment
-            new DrinkItem("Carton of Milk", "Full Fat. Farmed and produced in U.S.A.", ItemType.Drinks) { HealthChangeAmount = 10, ThirstChangeAmount = 10.0f, HungerChangeAmount = 5.0f, ItemSubType= ItemSubType.Milk },
+            new DrinkItem("Carton of Milk", "Full Fat. Farmed and produced in U.S.A.", ItemType.Drinks) { HealthChangeAmount = 10, ThirstChangeAmount = 30.0f, HungerChangeAmount = 5.0f, ItemSubType= ItemSubType.Milk },
             new DrinkItem("Cup of eCola", "Deliciously Infectious!", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacup_01a",HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda},//has no gravity, too far down
+                ModelItemID = "ng_proc_sodacup_01a",HealthChangeAmount = 10, SleepChangeAmount = 5.0f, ThirstChangeAmount = 15.0f, HungerChangeAmount = 1.0f, ItemSubType= ItemSubType.Soda},//has no gravity, too far down
             new DrinkItem("Cup of Sprunk", "Slurp Sprunk Mmm! Delicious", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacup_01b",HealthChangeAmount = 10, SleepChangeAmount = 1.0f, ThirstChangeAmount = 10.0f, ItemSubType= ItemSubType.Soda},//perfecto
+                ModelItemID = "ng_proc_sodacup_01b",HealthChangeAmount = 10, SleepChangeAmount = 5.0f, ThirstChangeAmount = 15.0f, HungerChangeAmount = 1.0f, ItemSubType= ItemSubType.Soda},//perfecto
             new DrinkItem("Cup of Coffee", "Finally something without sugar! Sugar on Request", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_02",HealthChangeAmount = 10, SleepChangeAmount = 10.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Coffee},//perfecto
             new DrinkItem("Can of Hoplivion Double IPA", "So many hops it should be illegal.", ItemType.Drinks){
@@ -327,14 +317,14 @@ public class ModItems : IModItems
                 ModelItemID = "p_ing_coffeecup_01",HealthChangeAmount = 15, SleepChangeAmount = 15.0f, ThirstChangeAmount = 15.0f, ItemSubType = ItemSubType.Coffee},//perfecto
             //UP N ATOM
             new DrinkItem("Jumbo Shake", "Almost a whole cow full of milk", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacup_01c",HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Milk},//no gravity, attached wrong
+                ModelItemID = "ng_proc_sodacup_01c",HealthChangeAmount = 25, HungerChangeAmount = 30.0f, ThirstChangeAmount = 25.0f, SleepChangeAmount = 10.0f, ItemSubType = ItemSubType.Milk},//no gravity, attached wrong
             //burger shot
             new DrinkItem("Double Shot Coffee", ItemType.Drinks){
                 ModelItemID = "p_ing_coffeecup_01",HealthChangeAmount = 5, SleepChangeAmount = 10.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Coffee },//n gravity,not attached right
             new DrinkItem("Liter of eCola", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacup_01a",HealthChangeAmount = 15, SleepChangeAmount = 2.0f, ThirstChangeAmount = 15.0f, ItemSubType = ItemSubType.Soda},//n gravity,not attached right
+                ModelItemID = "ng_proc_sodacup_01a",HealthChangeAmount = 15, SleepChangeAmount = 2.0f, ThirstChangeAmount = 25.0f, HungerChangeAmount = 2.0f, ItemSubType = ItemSubType.Soda},//n gravity,not attached right
             new DrinkItem("Liter of Sprunk", ItemType.Drinks){
-                ModelItemID = "ng_proc_sodacup_01b", HealthChangeAmount = 15, SleepChangeAmount = 2.0f, ThirstChangeAmount = 15.0f,ItemSubType = ItemSubType.Soda },//n gravity,not attached right 
+                ModelItemID = "ng_proc_sodacup_01b", HealthChangeAmount = 15, SleepChangeAmount = 2.0f, ThirstChangeAmount = 25.0f, HungerChangeAmount = 2.0f, ItemSubType = ItemSubType.Soda },//n gravity,not attached right 
         });;
     }
     private void DefaultConfig_Drugs()
@@ -456,22 +446,20 @@ public class ModItems : IModItems
         {
             //Generic Food
             new FoodItem("Hot Dog","Your favorite mystery meat sold on street corners everywhere. Niko would be proud", ItemType.Food) {
-                ModelItemID = "prop_cs_hotdog_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
+                ModelItemID = "prop_cs_hotdog_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
             new FoodItem("Hot Sausage","Get all your jokes out", ItemType.Food) {
-                ModelItemID = "prop_cs_hotdog_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Hot Pretzel","You tie me up", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("3 Mini Pretzels","Like a pretzel, but smaller", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Nuts","You're gonna love my nuts", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack },
+                ModelItemID = "prop_cs_hotdog_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
+            new FoodItem("Hot Pretzel","You tie me up", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
+            new FoodItem("3 Mini Pretzels","Like a pretzel, but smaller", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
+            new FoodItem("Nuts","You're gonna love my nuts", ItemType.Food) {HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack },
             new FoodItem("Burger","100% Certified Food", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
+                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
             new FoodItem("Donut","MMMMMMM Donuts", ItemType.Food) {
-                ModelItemID = "prop_donut_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Snack } ,
+                ModelItemID = "prop_donut_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Snack } ,
             new FoodItem("Bagel Sandwich","Bagel with extras, what more do you need?", ItemType.Food) {
-                ModelItemID = "p_amb_bagel_01", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("French Fries","Freedom fries made from true Cataldo potatoes!", ItemType.Food) {
-                ModelItemID = "prop_food_chips", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Side },
-            new FoodItem("Fries","Freedom fries made from true Cataldo potatoes!", ItemType.Food) {
-                ModelItemID = "prop_food_chips", HealthChangeAmount = 5, HungerChangeAmount = 5.0f,ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Side },
+                ModelItemID = "p_amb_bagel_01", HealthChangeAmount = 12, HungerChangeAmount = 25.0f, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Freedom Fries","Made from true Cataldo potatoes!", ItemType.Food) { ModelItemID = "prop_food_bs_chips",HealthChangeAmount = 5, HungerChangeAmount = 15f, ThirstChangeAmount = -1f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Side},
+            new FoodItem("French Fries","Made from true Cataldo potatoes!", ItemType.Food) { ModelItemID = "prop_food_chips",HealthChangeAmount = 5, HungerChangeAmount = 15f, ThirstChangeAmount = -1f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Side},
             new FoodItem("Banana","An elongated, edible fruit – botanically a berry[1][2] – produced by several kinds of large herbaceous flowering plants in the genus Musa", ItemType.Food) {
                 ModelItemID = "ng_proc_food_nana1a", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Fruit },
             new FoodItem("Orange","Not just a color", ItemType.Food) {
@@ -479,54 +467,54 @@ public class ModItems : IModItems
             new FoodItem("Apple","Certified sleeping death free", ItemType.Food) {
                 ModelItemID = "ng_proc_food_aple1a", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = 5.0f, ItemSubType = ItemSubType.Fruit },
             new FoodItem("Ham and Cheese Sandwich","Basic and shitty, just like you", ItemType.Food) {
-                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
+                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
             new FoodItem("Turkey Sandwich","The most plain sandwich for the most plain person", ItemType.Food) {
-                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
+                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree } ,
             new FoodItem("Tuna Sandwich","Haven't got enough heavy metals in you at your job? Try tuna!", ItemType.Food) {
-                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Taco","", ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree, ModelItemID = "prop_taco_01" },
+                ModelItemID = "prop_sandwich_01", HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Taco","", ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree, ModelItemID = "prop_taco_01" },
             new FoodItem("Strawberry Rails Cereal","The breakfast food you snort!", ItemType.Food) { HealthChangeAmount = 50, HungerChangeAmount = 30.0f, ItemSubType = ItemSubType.Cereal} ,
             new FoodItem("Crackles O' Dawn Cereal","Smile at the crack!", ItemType.Food) { HealthChangeAmount = 60, HungerChangeAmount = 40.0f, ThirstChangeAmount = -5.0f, ItemSubType = ItemSubType.Cereal} ,
-            new FoodItem("White Bread","Extra white, with minimal taste.", ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -5.0f, AmountPerPackage = 25, ItemSubType = ItemSubType.Bread} ,
+            new FoodItem("White Bread","Extra white, with minimal taste.", ItemType.Food) { HealthChangeAmount = 10, HungerChangeAmount = 25.0f, ThirstChangeAmount = -5.0f, AmountPerPackage = 25, ItemSubType = ItemSubType.Bread} ,
             //Pizza
             new FoodItem("Slice of Pizza","Caution may be hot", ItemType.Food) {
-                ModelItemID = "v_res_tt_pizzaplate", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Pizza } ,
+                ModelItemID = "v_res_tt_pizzaplate", HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Small Cheese Pizza","Best when you are home alone.", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 25, HungerChangeAmount = 25.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 25, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Small Pepperoni Pizza","Get a load of our pepperonis!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 30, HungerChangeAmount = 30.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 30, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Small Supreme Pizza","Get stuffed", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 35, HungerChangeAmount = 35.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 35, HungerChangeAmount = 55.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Medium Cheese Pizza","Best when you are home alone.", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 50, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 50, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Medium Pepperoni Pizza","Get a load of our pepperonis!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 55, HungerChangeAmount = 55.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 55, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Medium Supreme Pizza","Get stuffed", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 60, HungerChangeAmount = 60.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 60, HungerChangeAmount = 75.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Large Cheese Pizza","Best when you are home alone.", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 65, HungerChangeAmount = 65.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 65, HungerChangeAmount = 90.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Large Pepperoni Pizza","Get a load of our pepperonis!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 70, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 70, HungerChangeAmount = 95.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("Large Supreme Pizza","Get stuffed", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 75, HungerChangeAmount = 75.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_02", HealthChangeAmount = 75, HungerChangeAmount = 100.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("10 inch Cheese Pizza","Extra cheesy!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 25, HungerChangeAmount = 25.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 25, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("10 inch Pepperoni Pizza","Mostly Meat!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 30, HungerChangeAmount = 30.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 30, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("10 inch Supreme Pizza","We forgot the kitchen sink!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 35, HungerChangeAmount = 35.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 35, HungerChangeAmount = 55.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("12 inch Cheese Pizza","Extra cheesy!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 50, HungerChangeAmount = 50.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 50, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("12 inch Pepperoni Pizza","Mostly Meat!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 55, HungerChangeAmount = 55.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 55, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("12 inch Supreme Pizza","We forgot the kitchen sink!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 60, HungerChangeAmount = 60.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 60, HungerChangeAmount = 75.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("18 inch Cheese Pizza","Extra cheesy! Extra Large!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 65, HungerChangeAmount = 65.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 65, HungerChangeAmount = 100.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("18 inch Pepperoni Pizza","Mostly Meat! Extra Large!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 70, HungerChangeAmount = 70.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 70, HungerChangeAmount = 100.0f, ItemSubType = ItemSubType.Pizza } ,
             new FoodItem("18 inch Supreme Pizza","We forgot the kitchen sink! Extra Large!", ItemType.Food) {
-                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 75, HungerChangeAmount = 75.0f, ItemSubType = ItemSubType.Pizza } ,
+                PackageItemID = "prop_pizza_box_01", HealthChangeAmount = 75, HungerChangeAmount = 100.0f, ItemSubType = ItemSubType.Pizza } ,
             //Chips
             new FoodItem("Sticky Rib Phat Chips","They are extra phat. Sticky Rib Flavor.", ItemType.Food) {
                 ModelItemID = "v_ret_ml_chips1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
@@ -545,122 +533,63 @@ public class ModItems : IModItems
                 ModelItemID = "prop_choc_pq", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
             new FoodItem("Meteorite Bar","Dark chocolate with a GOOEY core", ItemType.Food) {
                 ModelItemID = "prop_choc_meto", HealthChangeAmount = 10, HungerChangeAmount = 10.0f,SleepChangeAmount = 5.0f, ItemSubType = ItemSubType.Snack, FindPercentage = 10 },
-            //UPNATOM
-            new FoodItem("Triple Burger", "Three times the meat, three times the cholesterol", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Bacon Triple Cheese Melt", "More meat AND more bacon", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            //BurgerShot
-            new FoodItem("Money Shot Meal", ItemType.Food) {
-                ModelItemID = "prop_food_bs_burg1"
-                ,PackageItemID = "prop_food_bs_tray_02", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            new FoodItem("The Bleeder Meal","", ItemType.Food) {
-                ModelItemID = "prop_food_bs_burg1"
-                ,PackageItemID = "prop_food_bs_tray_02", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            new FoodItem("Torpedo Meal","Torpedo your hunger", ItemType.Food) {
-                ModelItemID = "prop_food_bs_burger2"
-                ,PackageItemID = "prop_food_bs_tray_03", HealthChangeAmount = 15, HungerChangeAmount = 15.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            new FoodItem("Meat Free Meal","For the bleeding hearts", ItemType.Food) {
-                ModelItemID = "prop_food_bs_burger2"
-                ,PackageItemID = "prop_food_bs_tray_01", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            new FoodItem("Freedom Fries", ItemType.Food) {
-                ModelItemID = "prop_food_bs_chips", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ThirstChangeAmount = -1.0f, ItemSubType = ItemSubType.Snack },
-            //Bite
-            new FoodItem("Gut Buster Sandwich", ItemType.Food) {
-                ModelItemID = "prop_food_burg2", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Ham and Tuna Sandwich", ItemType.Food) {
-                ModelItemID = "prop_food_burg2", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Chef's Salad", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree} ,
-            //BeefyBills
-            new FoodItem("Megacheese Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Double Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Kingsize Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 15.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Bacon Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 17, HungerChangeAmount = 17.0f, ItemSubType = ItemSubType.Entree },
             //Taco Bomb
             new FoodItem("Breakfast Burrito", ItemType.Food) {
                 ModelItemID = "prop_food_bs_burger2"
-                ,PackageItemID = "prop_food_bag1", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
+                ,PackageItemID = "prop_food_bag1", HealthChangeAmount = 12, HungerChangeAmount = 22.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             new FoodItem("Deep Fried Salad", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             new FoodItem("Beef Bazooka", ItemType.Food) {
                 ModelItemID = "prop_food_bs_burger2"
-                ,PackageItemID = "prop_food_bag1", HealthChangeAmount = 15, HungerChangeAmount = 15.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
+                ,PackageItemID = "prop_food_bag1", HealthChangeAmount = 15, HungerChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             new FoodItem("Chimichingado Chiquito", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             new FoodItem("Cheesy Meat Flappers", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             new FoodItem("Volcano Mudsplatter Nachos", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            //Wigwam
-            new FoodItem("Wigwam Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Wigwam Cheeseburger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Big Wig Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 12, HungerChangeAmount = 12.0f, ItemSubType = ItemSubType.Entree },
-            //Cluckin Bell
-            new FoodItem("Cluckin' Little Meal","May contain meat", ItemType.Food) {
-                PackageItemID = "prop_food_cb_tray_03", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ThirstChangeAmount = 5.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Cluckin' Big Meal","200% bigger breasts", ItemType.Food) {
-                PackageItemID = "prop_food_cb_tray_02", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Cluckin' Huge Meal", ItemType.Food) {
-                PackageItemID = "prop_food_cb_tray_02", HealthChangeAmount = 15, HungerChangeAmount = 15.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Wing Piece", ItemType.Food) {
-                PackageItemID = "prop_food_cb_tray_03", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Little Peckers", ItemType.Food) {
-                PackageItemID = "prop_food_cb_tray_03", HealthChangeAmount = 5, HungerChangeAmount = 5.0f , ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
-            new FoodItem("Balls & Rings", ItemType.Food) {
-                ModelItemID = "prop_food_burg3", HealthChangeAmount = 5, HungerChangeAmount = 5.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Side },
-            new FoodItem("Fowlburger", ItemType.Food) {
-                ModelItemID = "prop_food_burg1",
-                PackageItemID = "prop_food_burg3", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 10, HungerChangeAmount = 20.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree},
             //Generic Restaurant
             //FancyDeli
-            new FoodItem("Chicken Club Salad", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Spicy Seafood Gumbo", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Muffaletta", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Zucchini Garden Pasta", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Pollo Mexicano", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Italian Cruz Po'boy", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Chipotle Chicken Panini", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Chicken Club Salad", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Spicy Seafood Gumbo", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Muffaletta", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Zucchini Garden Pasta", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Pollo Mexicano", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Italian Cruz Po'boy", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Chipotle Chicken Panini", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
             //FancyFish
-            new FoodItem("Coconut Crusted Prawns", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Crab and Shrimp Louie", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Open-Faced Crab Melt", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("King Salmon", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Ahi Tuna", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Key Lime Pie", ItemType.Food) {
+            new FoodItem("Coconut Crusted Prawns", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Crab and Shrimp Louie", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Open-Faced Crab Melt", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("King Salmon", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Ahi Tuna", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Key Lime Pie", ItemType.Meal) {
                 PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
             //FancyGeneric
-            new FoodItem("Smokehouse Burger", ItemType.Food) {
-                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree },
-            new FoodItem("Chicken Critters Basket", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Prime Rib 16 oz", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Bone-In Ribeye", ItemType.Food) {
-                PackageItemID = "prop_cs_steak", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Grilled Pork Chops", ItemType.Food) {
-                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
-            new FoodItem("Grilled Shrimp", ItemType.Food) {
-                PackageItemID = "prop_food_bag1" , HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Smokehouse Burger", ItemType.Meal) {
+                ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree },
+            new FoodItem("Chicken Critters Basket", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Prime Rib 16 oz", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Bone-In Ribeye", ItemType.Meal) {
+                PackageItemID = "prop_cs_steak", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Grilled Pork Chops", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1", HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
+            new FoodItem("Grilled Shrimp", ItemType.Meal) {
+                PackageItemID = "prop_food_bag1" , HealthChangeAmount = 20, HungerChangeAmount = 45.0f, ThirstChangeAmount = 25.0f, ConsumeOnPurchase = true, ItemSubType = ItemSubType.Entree } ,
             //Noodles
             new FoodItem("Juek Suk tong Mandu", ItemType.Food) {
                 ModelItemID = "prop_ff_noodle_01", HealthChangeAmount = 10, HungerChangeAmount = 10.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree },
@@ -674,6 +603,100 @@ public class ModItems : IModItems
                 ModelItemID = "prop_ff_noodle_02", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
             new FoodItem("Dakgogo Bokkeum Bap", ItemType.Food) {
                 ModelItemID = "prop_ff_noodle_01", HealthChangeAmount = 20, HungerChangeAmount = 20.0f, ThirstChangeAmount = 10.0f, ItemSubType = ItemSubType.Entree } ,
+
+
+            //Burger Shot
+            new FoodItem("The Bleeder Meal","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Torpedo Meal","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Money Shot Meal","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Meat Free Meal","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 5, HungerChangeAmount = 20f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Bleeder Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Torpedo Sandwich","", ItemType.Food) { ModelItemID = "prop_food_burg2",HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Money Shot Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Cluckin
+            new FoodItem("Cluckin' Huge Meal","", ItemType.Meal) { PackageItemID = "prop_food_cb_tray_02",ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Cluckin' Big Meal","200% bigger breasts", ItemType.Meal) { PackageItemID = "prop_food_cb_tray_02",ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Cluckin' Little Meal","May contain meat", ItemType.Meal) {PackageItemID = "prop_food_cb_tray_03", ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Wing Piece","", ItemType.Food) { PackageItemID = "prop_food_cb_tray_03",ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Little Peckers","", ItemType.Food) { PackageItemID = "prop_food_cb_tray_03",ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Balls & Rings","", ItemType.Food) { PackageItemID = "prop_food_cb_tray_03",ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Side},
+            
+            //UpNAtom
+            new FoodItem("Trio Trio Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 15f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Dual Dual Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 15f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Solo Solo Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 15f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Trio Trio Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Dual Dual Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Solo Solo Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Wigwam
+            new FoodItem("Big Wig Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Cheesie Wigwam Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Wigwam Classic Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Big Wig Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Cheesie Wigwam Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Wigwam Classic Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Horny's
+            new FoodItem("Big Horny Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Horny Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Randy Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Big Horny Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Horny Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Randy Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+  
+            //Snr Buns
+            new FoodItem("Snr. Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Soph. Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Jr. Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Snr. Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Soph. Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Jr. Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Vaca Loca
+            new FoodItem("Muy Loca Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Loca Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Locita Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Muy Loca Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Loca Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Locita Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Beefy Bills
+            new FoodItem("Kingsize Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Double Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Megacheese Burger","", ItemType.Food) { ModelItemID = "prop_cs_burger_01", HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Plucker
+            new FoodItem("Plucker Combo 1","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Plucker Combo 2","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Plucker Combo 3","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Plucker Breast","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Plucker Thigh","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Plucker Salad","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Bishop
+            new FoodItem("Pope Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Cardinal Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Bishop Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("3 pc Chicken","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("2 pc Chicken ","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("1 pc Chicken","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+          
+            //Bite
+            new FoodItem("Gut Buster Combo","", ItemType.Meal) { ModelItemID = "prop_food_burg2",ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Meat Tube Combo","", ItemType.Meal) { ModelItemID = "prop_food_burg2",ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Iceberg Salad Combo","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Gut Buster Sandwich","", ItemType.Food) { ModelItemID = "prop_food_burg2",HealthChangeAmount = 20, HungerChangeAmount = 25f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Meat Tube Sandwich","", ItemType.Food) { ModelItemID = "prop_food_burg2",HealthChangeAmount = 15, HungerChangeAmount = 20f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+            new FoodItem("Iceberg Salad","", ItemType.Food) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 15f, ThirstChangeAmount = 0f, SleepChangeAmount = 0f, ItemSubType = ItemSubType.Entree},
+
+            //Al Dentes
+            new FoodItem("Tour of Algonquin","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 20, HungerChangeAmount = 40f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Lasagna Cheesico","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 15, HungerChangeAmount = 35f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Seafood Ravioli","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+            new FoodItem("Spaghetti & 'Meat' Balls","", ItemType.Meal) { ConsumeOnPurchase = true, HealthChangeAmount = 10, HungerChangeAmount = 30f, ThirstChangeAmount = 25f, SleepChangeAmount = 5f, ItemSubType = ItemSubType.Meal},
+
         });
     }
     private void DefaultConfig_Services()

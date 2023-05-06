@@ -15,7 +15,7 @@ public enum ItemSubType
     Snack,
     Entree,
     Narcotic,
-
+    Meal,
 
 
     Cigarette,

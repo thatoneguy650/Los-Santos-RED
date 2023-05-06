@@ -60,7 +60,7 @@ public class ButtonPrompts
             !toConsider.Vehicle.Exists() || 
             !toConsider.HasBeenEnteredByPlayer || 
             toConsider.VehicleInteractionMenu.IsShowingMenu || 
-            toConsider.Vehicle.Speed >= 0.5f)
+            toConsider.Vehicle.Speed >= 0.5f || Player.ActivityManager.IsPerformingActivity)
         {
             RemovePrompts("VehicleInteract");
             return;
