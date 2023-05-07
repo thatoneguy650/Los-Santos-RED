@@ -16,6 +16,6 @@ public class VehicleNeon
     }
 
     public int ID { get; set; }
-    public bool IsEnabled { get; set; }
+    public bool IsEnabled { get; set; } 
 }
 
