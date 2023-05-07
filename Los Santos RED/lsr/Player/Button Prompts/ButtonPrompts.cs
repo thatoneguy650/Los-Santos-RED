@@ -49,7 +49,7 @@ public class ButtonPrompts
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if(Player.ActivityManager.IsInteractingWithLocation || 
+        if(!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || Player.ActivityManager.IsInteractingWithLocation || 
             Player.IsShowingFrontEndMenus || 
             
             

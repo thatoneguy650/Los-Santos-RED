@@ -440,9 +440,7 @@ namespace LosSantosRED.lsr.Helper
 
             try
             {
-
                 VehicleVariation vehicleVariation = new VehicleVariation();
-
                 int primaryColor;
                 int secondaryColor;
                 unsafe
@@ -451,10 +449,6 @@ namespace LosSantosRED.lsr.Helper
                 }
                 vehicleVariation.PrimaryColor = primaryColor;
                 vehicleVariation.SecondaryColor = secondaryColor;
-
-
-
-
                 vehicleVariation.IsPrimaryColorCustom = NativeFunction.Natives.GET_IS_VEHICLE_PRIMARY_COLOUR_CUSTOM<bool>(vehicle);
                 if(vehicleVariation.IsPrimaryColorCustom)
                 {
@@ -467,8 +461,6 @@ namespace LosSantosRED.lsr.Helper
                     }
                     vehicleVariation.CustomPrimaryColor = Color.FromArgb(r1, g1, b1);
                 }
-
-
                 vehicleVariation.IsSecondaryColorCustom = NativeFunction.Natives.GET_IS_VEHICLE_SECONDARY_COLOUR_CUSTOM<bool>(vehicle);
                 if (vehicleVariation.IsSecondaryColorCustom)
                 {
@@ -481,10 +473,6 @@ namespace LosSantosRED.lsr.Helper
                     }
                     vehicleVariation.CustomSecondaryColor = Color.FromArgb(r2, g2, b2);
                 }
-
-
-
-
                 int pearlescentColor;
                 int wheelColor;
                 unsafe
@@ -493,7 +481,6 @@ namespace LosSantosRED.lsr.Helper
                 }
                 vehicleVariation.PearlescentColor = pearlescentColor;
                 vehicleVariation.WheelColor = wheelColor;
-
                 int mod1paintType;
                 int mod1color;
                 int mod1PearlescentColor;
@@ -504,7 +491,6 @@ namespace LosSantosRED.lsr.Helper
                 vehicleVariation.Mod1PaintType = mod1paintType;
                 vehicleVariation.Mod1Color = mod1color;
                 vehicleVariation.Mod1PearlescentColor = mod1PearlescentColor;
-
                 int mod2paintType;
                 int mod2color;
                 unsafe
@@ -515,29 +501,17 @@ namespace LosSantosRED.lsr.Helper
                 vehicleVariation.Mod2Color = mod2color;
                 vehicleVariation.Livery = NativeFunction.Natives.GET_VEHICLE_LIVERY<int>(vehicle);
                 vehicleVariation.Livery2 = NativeFunction.Natives.GET_VEHICLE_LIVERY2<int>(vehicle);
-
                 vehicleVariation.LicensePlate = new LSR.Vehicles.LicensePlate();
                 vehicleVariation.LicensePlate.PlateNumber = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT<string>(vehicle);
                 vehicleVariation.LicensePlate.PlateType = NativeFunction.Natives.GET_VEHICLE_NUMBER_PLATE_TEXT_INDEX<int>(vehicle);
                 vehicleVariation.WheelType = NativeFunction.Natives.GET_VEHICLE_WHEEL_TYPE<int>(vehicle);
-
-
-
-
                 vehicleVariation.WindowTint = NativeFunction.Natives.GET_VEHICLE_WINDOW_TINT<int>(vehicle);
-
-
                 int customWheelID = 23;
                 if(vehicle.IsBike)
                 {
                     customWheelID = 24;
                 }
                 vehicleVariation.HasCustomWheels = NativeFunction.Natives.GET_VEHICLE_MOD_VARIATION<bool>(vehicle, customWheelID);
-
-
-
-
-
                 vehicleVariation.VehicleExtras = new List<VehicleExtra>();
                 for (int i = 0; i <= 15; i++)
                 {
@@ -568,11 +542,51 @@ namespace LosSantosRED.lsr.Helper
                         //}
                     }
                 }
-
-
                 vehicleVariation.DirtLevel = NativeFunction.Natives.GET_VEHICLE_DIRT_LEVEL<float>(vehicle);
                 vehicleVariation.FuelLevel = vehicle.FuelLevel;
-
+                vehicleVariation.HasInvicibleTires = !NativeFunction.Natives.GET_VEHICLE_TYRES_CAN_BURST<bool>(vehicle);
+                int tireSmokeColorRed;
+                int tireSmokeColorGreen;
+                int tireSmokeColorBlue;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_TYRE_SMOKE_COLOR", vehicle, &tireSmokeColorRed, &tireSmokeColorGreen, &tireSmokeColorBlue);
+                }
+                if(tireSmokeColorRed != 0 || tireSmokeColorGreen != 0 || tireSmokeColorBlue != 0)
+                {
+                    vehicleVariation.IsTireSmokeColorCustom = true;
+                    vehicleVariation.TireSmokeColorR = tireSmokeColorRed;// Color.FromArgb(tireSmokeColorRed, tireSmokeColorGreen, tireSmokeColorBlue);
+                    vehicleVariation.TireSmokeColorG = tireSmokeColorGreen;
+                    vehicleVariation.TireSmokeColorB = tireSmokeColorBlue;
+                }
+                vehicleVariation.VehicleNeons = new List<VehicleNeon>();
+                for (int neonID = 0; neonID <= 3; neonID++)
+                {
+                    vehicleVariation.VehicleNeons.Add(new VehicleNeon(neonID, NativeFunction.Natives.GET_VEHICLE_NEON_ENABLED<bool>(vehicle, neonID)));
+                }
+                int neonColorRed;
+                int neonColorGreen;
+                int neonColorBlue;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_NEON_COLOUR", vehicle, &neonColorRed, &neonColorGreen, &neonColorBlue);
+                }
+                vehicleVariation.NeonColorR = neonColorRed;// Color.FromArgb(neonColorRed, neonColorGreen, neonColorBlue);
+                vehicleVariation.NeonColorG = neonColorGreen;
+                vehicleVariation.NeonColorB = neonColorBlue;
+                int interiorColor = 0;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOUR_5", vehicle, &interiorColor);
+                }
+                vehicleVariation.InteriorColor = interiorColor;
+                int dashboardColor = 0;
+                unsafe
+                {
+                    NativeFunction.CallByName<int>("GET_VEHICLE_EXTRA_COLOUR_6", vehicle, &dashboardColor);
+                }
+                vehicleVariation.DashboardColor = dashboardColor;
+                vehicleVariation.XenonLightColor = NativeFunction.Natives.GET_VEHICLE_XENON_LIGHT_COLOR_INDEX<int>(vehicle);
                 return vehicleVariation;
             }
             catch (Exception e)

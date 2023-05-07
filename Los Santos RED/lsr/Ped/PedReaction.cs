@@ -119,10 +119,15 @@ public class PedReaction
             //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} Player Expired BUSTED AND WANTED BY POLICE");
             return;
         }
-        if (!NativeHelper.IsNearby(ReactingPed.CellX, ReactingPed.CellY, Player.CellX, Player.CellY, 3))
+        if(ReactingPed.DistanceToPlayer >= 155f)
         {
             IsDistanceExpired = true;
             //EntryPoint.WriteToConsoleTestLong($"Ped Reaction {ReactingPed.Handle} Player Expired Distance");
+            return;
+        }
+        if(!ReactingPed.SeenPlayerWithin(60000))
+        {
+            IsOtherExpired = true;
             return;
         }
     }

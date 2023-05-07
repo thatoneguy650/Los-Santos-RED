@@ -331,13 +331,13 @@ public class BasicLocation
         {
             Blip.Alpha = newAlpha;
             currentblipAlpha = newAlpha;
-            EntryPoint.WriteToConsole($"CHANGING BLIP ALPHA {Name} {currentblipAlpha}");
+           // EntryPoint.WriteToConsole($"CHANGING BLIP ALPHA {Name} {currentblipAlpha}");
         }
         if (newColor != currentBlipColor)
         {
             Blip.Color = newColor;
             currentBlipColor = newColor;
-            EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
+            //EntryPoint.WriteToConsole($"CHANGING BLIP Color {Name} {currentBlipColor}");
         }
 
     }

@@ -159,7 +159,7 @@ public class EMTTasker
     {
         if (emt.CurrentTask?.Name != "CalmCallIn")
         {
-            emt.CurrentTask = new CalmCallIn(emt, Player);//oither target not needed, they just call in all crimes
+            emt.CurrentTask = new CalmCallIn(emt, Player, Settings);//oither target not needed, they just call in all crimes
             GameFiber.Yield();//TR Added back 7
             emt.CurrentTask?.Start();
         }

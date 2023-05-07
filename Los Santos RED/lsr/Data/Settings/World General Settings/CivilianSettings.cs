@@ -166,17 +166,17 @@ public class CivilianSettings : ISettingsDefaultable
         DrugDealerPercentagePoorZones = 10f;//5f;
 
         DrugCustomerPercentageRichZones = 10f;// 5f;
-        DrugCustomerPercentageMiddleZones = 12f;// 7f;
-        DrugCustomerPercentagePoorZones = 15f;// 10f;
+        DrugCustomerPercentageMiddleZones = 15f;// 7f;
+        DrugCustomerPercentagePoorZones = 10f;// 10f;
 
-        CallPolicePercentageRichZones = 40f;// 50f;
-        CallPolicePercentageMiddleZones = 20f;// 30f;
+        CallPolicePercentageRichZones = 45f;// 50f;
+        CallPolicePercentageMiddleZones = 25f;// 30f;
         CallPolicePercentagePoorZones = 10f;// 20f;
 
 
-        CallPoliceForSeriousCrimesPercentageRichZones = 70f;// 80f;
-        CallPoliceForSeriousCrimesPercentageMiddleZones = 60f;// 70f;
-        CallPoliceForSeriousCrimesPercentagePoorZones = 40f;// 50f;
+        CallPoliceForSeriousCrimesPercentageRichZones = 80f;// 80f;
+        CallPoliceForSeriousCrimesPercentageMiddleZones = 65f;// 70f;
+        CallPoliceForSeriousCrimesPercentagePoorZones = 45f;// 50f;
 
 
 
@@ -213,11 +213,11 @@ public class CivilianSettings : ISettingsDefaultable
         PercentageKnowsAnyDrugTerritory = 45f;
 
         AllowCallInIfPedDoesNotExist = true;
-        GameTimeToCallInIfPedDoesNotExist = 5000;
-        GameTimeToCallInMinimum = 7000;
-        GameTimeToCallInMaximum = 15000;
+        GameTimeToCallInIfPedDoesNotExist = 4000;
+        GameTimeToCallInMinimum = 6000;
+        GameTimeToCallInMaximum = 10000;
 
-        GameTimeAfterCallInToReportCrime = 3000;
+        GameTimeAfterCallInToReportCrime = 2000;
 
 
     }

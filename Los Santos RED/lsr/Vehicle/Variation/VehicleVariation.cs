@@ -4,6 +4,7 @@ using Rage;
 using Rage.Native;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,8 +38,21 @@ public class VehicleVariation
     public List<VehicleExtra> VehicleExtras { get; set; } = new List<VehicleExtra>();
     public List<VehicleToggle> VehicleToggles { get; set; } = new List<VehicleToggle>();
     public List<VehicleMod> VehicleMods { get; set; } = new List<VehicleMod>();
+    public List<VehicleNeon> VehicleNeons { get; set; } = new List<VehicleNeon>();
     public float FuelLevel { get; set; } = 65.0f;
     public float DirtLevel { get; set; } = 0.0f;
+    public bool HasInvicibleTires { get; set; } = false;
+    public bool IsTireSmokeColorCustom { get; set; } = false;
+    public int TireSmokeColorR { get; set; }
+    public int TireSmokeColorG { get; set; }
+    public int TireSmokeColorB { get; set; }
+    public int NeonColorR { get; set; }
+    public int NeonColorG { get; set; }
+    public int NeonColorB { get; set; }
+    public int InteriorColor { get; set; }
+    public int DashboardColor { get; set; }
+    public int XenonLightColor { get; set; }
+
     public void Apply(VehicleExt vehicleExt)
     {
         if (vehicleExt == null || !vehicleExt.Vehicle.Exists())
@@ -69,14 +83,14 @@ public class VehicleVariation
             {
                 if (vehicleMod.ID == 24)
                 {
-                    isCustomTires = true;
+                    isCustomTires = HasCustomWheels;
                 }
             }
             else
             {
                 if (vehicleMod.ID == 23)
                 {
-                    isCustomTires = true;
+                    isCustomTires = HasCustomWheels;
                 }
             }
             NativeFunction.Natives.SET_VEHICLE_MOD(vehicleExt.Vehicle, vehicleMod.ID, vehicleMod.Output, isCustomTires);
@@ -116,7 +130,21 @@ public class VehicleVariation
             NativeFunction.Natives.SET_VEHICLE_MOD_COLOR_2(vehicleExt.Vehicle, Mod2PaintType, Mod2Color);
         }
         NativeFunction.Natives.SET_VEHICLE_DIRT_LEVEL(vehicleExt.Vehicle, DirtLevel.Clamp(0.0f,15.0f));
-        vehicleExt.Vehicle.FuelLevel = FuelLevel;       
+        vehicleExt.Vehicle.FuelLevel = FuelLevel;        
+        NativeFunction.Natives.GET_VEHICLE_TYRES_CAN_BURST(vehicleExt.Vehicle, HasInvicibleTires);
+
+        if(IsTireSmokeColorCustom)
+        {
+            NativeFunction.Natives.SET_VEHICLE_TYRE_SMOKE_COLOR(vehicleExt.Vehicle,TireSmokeColorR,TireSmokeColorG,TireSmokeColorB);
+        }
+        foreach(VehicleNeon vehicleNeon in VehicleNeons)
+        {
+            NativeFunction.Natives.SET_VEHICLE_NEON_ENABLED(vehicleExt.Vehicle, vehicleNeon.ID, vehicleNeon.IsEnabled);
+        }
+        NativeFunction.Natives.SET_VEHICLE_NEON_COLOUR(vehicleExt.Vehicle,NeonColorR,NeonColorG,NeonColorB);
+        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_5(vehicleExt.Vehicle, InteriorColor);
+        NativeFunction.Natives.SET_VEHICLE_EXTRA_COLOUR_6(vehicleExt.Vehicle, DashboardColor);
+        NativeFunction.Natives.SET_VEHICLE_XENON_LIGHT_COLOR_INDEX(vehicleExt.Vehicle, XenonLightColor);
     }
 
 }

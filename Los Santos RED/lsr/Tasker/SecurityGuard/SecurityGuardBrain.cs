@@ -82,10 +82,6 @@ public class SecurityGuardBrain : PedBrain
             PedExt.PedReactions.Update(Player);
             if(PedExt.PedReactions.ReactionTier == ReactionTier.Intense)
             {
-
-
-
-
                 if (SecurityGuard.WeaponInventory.IsArmed)
                 {
                     if (SecurityGuard.PlayerPerception.HasSeenTargetWithin(30000))
@@ -104,7 +100,6 @@ public class SecurityGuardBrain : PedBrain
             }
             else if (PedExt.PedReactions.ReactionTier == ReactionTier.Alerted)
             {
-
                 if (SecurityGuard.PlayerPerception.HasSeenTargetWithin(30000))
                 {
                     SetApprehend();
@@ -113,8 +108,6 @@ public class SecurityGuardBrain : PedBrain
                 {
                     SetLocate();
                 }
-
-                
             }
             else if (PedExt.CanAttackPlayer)
             {
@@ -237,7 +230,7 @@ public class SecurityGuardBrain : PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new CalmCallIn(PedExt, Player);
+        PedExt.CurrentTask = new CalmCallIn(PedExt, Player, Settings);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
         EntryPoint.WriteToConsole($"SECURITY SET CALM CALL IN {PedExt.Handle}", debugLevel);

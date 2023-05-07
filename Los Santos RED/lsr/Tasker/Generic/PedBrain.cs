@@ -185,7 +185,7 @@ public class PedBrain
         {
             return;
         }
-        PedExt.CurrentTask = new CalmCallIn(PedExt, Player);
+        PedExt.CurrentTask = new CalmCallIn(PedExt, Player, Settings);
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }

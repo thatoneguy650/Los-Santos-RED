@@ -468,6 +468,17 @@ public class ShopMenus : IShopMenus
             new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44),new MenuItem("Key Lime Pie",13),new MenuItem("Bottle of Raine Water",2), }),
             new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
             new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),            
+            new ShopMenu("MexicanMenu","MexicanMenu",new List<MenuItem> {
+                new MenuItem("Asada Plate", 12),
+                new MenuItem("2 Tacos Combo", 10),
+                new MenuItem("2 Enchiladas Combo", 10),
+                new MenuItem("Quesadilla", 9),
+                new MenuItem("San Andreas Burrito", 8),
+                new MenuItem("Torta", 8),
+                new MenuItem("Taco", 3),
+                new MenuItem("Can of eCola", 1),
+                new MenuItem("Can of Sprunk", 1),
+            }),
             //Drugs
             new ShopMenu("WeedMenu","Marijuana",new List<MenuItem>() {
 
@@ -627,6 +638,11 @@ public class ShopMenus : IShopMenus
     }
     private void SpecificRestaurants()
     {
+        int ExpensiveComboPrice = 9;
+        int MediumComboPrice = 8;
+        int CheapComboPrice = 7;
+
+        int SodaPrice = 2;
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
             //Burger
             new ShopMenu("BurgerShotMenu","BurgerShotMenu",new List<MenuItem> {
@@ -716,13 +732,7 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Can of Sprunk", 1),
                 new MenuItem("Bottle of Raine Water", 2) }),
 
-            //Mexican
-            new ShopMenu("TacoFarmerMenu","Taco Farmer",new List<MenuItem>() {
-                new MenuItem("Taco", 2),
-                new MenuItem("Can of eCola", 1),
-                new MenuItem("Can of Sprunk", 1),
-                new MenuItem("Cup of Coffee", 3),
-                new MenuItem("Bottle of Raine Water", 2) }),
+            //Sandwich 
             new ShopMenu("BiteMenu","BiteMenu",new List<MenuItem> {
                 new MenuItem("Gut Buster Combo", 8),
                 new MenuItem("Meat Tube Combo", 7),
@@ -736,16 +746,27 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Cup of eCola", 2),
                 new MenuItem("Cup of Sprunk", 2),
             }),
-            new ShopMenu("TacoBombMenu","Taco Bomb",new List<MenuItem> {
-                new MenuItem("Breakfast Burrito",4),
-                new MenuItem("Deep Fried Salad",7),
-                new MenuItem("Beef Bazooka",8),
-                new MenuItem("Chimichingado Chiquito",5),
-                new MenuItem("Cheesy Meat Flappers",6),
-                new MenuItem("Volcano Mudsplatter Nachos",7),
+            //Mexican
+            new ShopMenu("TacoFarmerMenu","TacoFarmerMenu",new List<MenuItem> {
+                new MenuItem("Asada Plate", 12),
+                new MenuItem("2 Tacos Combo", 10),
+                new MenuItem("2 Enchiladas Combo", 10),
+                new MenuItem("Quesadilla", 9),
+                new MenuItem("San Andreas Burrito", 8),
+                new MenuItem("Torta", 8),
+                new MenuItem("Taco", 3),
                 new MenuItem("Can of eCola", 1),
                 new MenuItem("Can of Sprunk", 1),
-                new MenuItem("Bottle of Raine Water", 2) }),
+            }),
+            new ShopMenu("TacoBombMenu","Taco Bomb",new List<MenuItem> {
+                new MenuItem("Beef Bazooka",8),
+                new MenuItem("Volcano Mudsplatter Nachos",7),
+                new MenuItem("Deep Fried Salad",7),
+                new MenuItem("Cheesy Meat Flappers",6),
+                new MenuItem("Chimichingado Chiquito",5),
+                new MenuItem("Breakfast Burrito",4),
+                new MenuItem("Can of eCola", 1),
+                new MenuItem("Can of Sprunk", 1), }),
             
             //Italian
             new ShopMenu("PizzaThisMenu","Pizza",new List<MenuItem>() {
@@ -826,6 +847,35 @@ public class ShopMenus : IShopMenus
                 new MenuItem("French Fries", 2),
                 new MenuItem("Cup of eCola", 2),
                 new MenuItem("Cup of Sprunk", 2),
+            }),
+            //Cherry Popper
+            new ShopMenu("CherryPopperMenu","CherryPopperMenu",new List<MenuItem> {
+                new MenuItem("Captain's Log", 4),
+                new MenuItem("Uder Milken", 4),
+                new MenuItem("Creamy Chufty", 3),
+                new MenuItem("Chocolate Chufty", 3),
+                new MenuItem("Zebrabar", 4),
+                new MenuItem("Chilldo X-Treme", 3),
+                new MenuItem("Fruity Streak", 3),
+                new MenuItem("Chocco Streak", 3),
+                new MenuItem("Earthquakes", 4),
+                new MenuItem("Chocolate Starfish", 4),
+            }),
+            //Rusty Browns
+            new ShopMenu("RustyBrownsMenu","RustyBrownsMenu",new List<MenuItem> {
+                new MenuItem("Chocolate Donut", 2),
+                new MenuItem("Sprinkles Donut", 2),
+                new MenuItem("Rusty Ring Donut", 2),
+                new MenuItem("Double Choc Whammy Donut", 3),
+                new MenuItem("Cup of Coffee", 2),
+            }),
+            new ShopMenu("IceCreamMenu","IceCreamMenu",new List<MenuItem> {
+                new MenuItem("Chocolate Cone", 3),
+                new MenuItem("Vanilla Cone", 2),
+                new MenuItem("Hot Fudge Sundae", 5),
+                new MenuItem("Banana Split", 7),
+                new MenuItem("Chocolate Shake", 9),
+                new MenuItem("Vanilla Shake", 8),
             }),
         });
     }

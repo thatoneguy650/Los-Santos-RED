@@ -370,6 +370,7 @@
     <Compile Include="lsr\Vehicle\Storage\VehicleBodyManager.cs" />
     <Compile Include="lsr\Vehicle\Storage\VehicleDoorSeatData.cs" />
     <Compile Include="lsr\Vehicle\Storage\WeaponStorage.cs" />
+    <Compile Include="lsr\Vehicle\Variation\VehicleNeon.cs" />
     <Compile Include="lsr\Weapon\IssuableWeaponsGroup.cs" />
     <Compile Include="lsr\Data\Weapons\IssueableWeapons.cs" />
     <Compile Include="lsr\Data\Weather\WeatherForecasts.cs" />

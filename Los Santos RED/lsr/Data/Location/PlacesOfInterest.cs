@@ -1519,7 +1519,7 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             //Generic and Sit Down
             new Restaurant(new Vector3(-2188.348f,-408.6776f, 13.17961f), 226.5375f, "Pipeline Inn", "Take a look, just take a look...","FancyFishMenu", FoodType.Seafood) { CloseTime = 24,OpenTime = 0 },
-            new Restaurant(new Vector3(980.0559f, -1396.695f, 31.68536f), 219.9515f, "La Taqueria", "Autentica Comida Mexicana","TacoFarmerMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(980.0559f, -1396.695f, 31.68536f), 219.9515f, "La Taqueria", "Autentica Comida Mexicana","MexicanMenu", FoodType.Mexican),
             new Restaurant(new Vector3(-1487.163f, -308.0127f, 47.02639f), 231.5184f, "Las Cuadras Restaurant", "No horsing around!","FancyDeliMenu", FoodType.Mexican),
             new Restaurant(new Vector3(-1473.121f, -329.6028f, 44.81668f), 319.3725f, "Las Cuadras Deli", "No horsing around!","FancyDeliMenu", FoodType.Mexican | FoodType.Sandwiches),
             new Restaurant(new Vector3(-1221.254f, -1095.873f, 8.115647f), 111.3174f, "Prawn Vivant", "Come eat our sea bugs","FancyFishMenu", FoodType.Seafood),
@@ -1601,10 +1601,7 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-526.9481f, -679.6907f, 33.67113f), 35.17997f, "Snr. Muffin", "Don't be a chump, taste our rump!","SnrBunsMenu", FoodType.Burger | FoodType.FastFood),//??? 
             new Restaurant(new Vector3(125.9558f, -1537.896f, 29.1772f), 142.693f, "La Vaca Loca", "Whats wrong with a few mad cows?","LaVacaLocaMenu", FoodType.Burger) {CameraPosition = new Vector3(137.813f, -1561.211f, 37.43506f), CameraDirection = new Vector3(-0.1290266f, 0.9696004f, -0.2079113f), CameraRotation = new Rotator(-11.99998f, -2.182118E-07f, 7.579925f) },
             new Restaurant(new Vector3(-241.8231f, 279.747f, 92.04223f), 177.4421f, "Spitroasters Meathouse", "Come One, Come All","BeefyBillsMenu", FoodType.Burger),
-            //Bagels&Donuts
-            new Restaurant(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
-            new Restaurant(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
-            new Restaurant(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, "Rusty Brown's", "Ring lickin' good!","CoffeeMenu", FoodType.Bagels | FoodType.Donut) {BannerImagePath = "rustybrowns.png" },
+
             //Coffee
             new Restaurant(new Vector3(-238.903f, -777.356f, 34.09171f), 71.47642f, "Cafe Redemption", "Who needs head when we have the whole boar?","CoffeeMenu", FoodType.Coffee),
             new Restaurant(new Vector3(370.4181f, -1027.565f, 29.33361f), 184.4234f, "Ground & Pound Cafe", "We know how to take a pounding","CoffeeMenu", FoodType.Coffee),
@@ -1633,22 +1630,27 @@ public class PlacesOfInterest : IPlacesOfInterest
             new Restaurant(new Vector3(-509.1889f, -22.9895f, 45.60899f), 354.7263f, "Little Teapot", "The finest organic & free range teas exploited from the third world","CoffeeMenu", FoodType.Coffee) {ScannerFilePath = "01_specific_location\\0x1980DD57.wav" },
             //Mexican
             new Restaurant(new Vector3(10.96682f, -1605.874f, 29.3931f), 229.8729f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu", FoodType.Mexican) { OpenTime = 0, CloseTime = 24 },
-            new Restaurant(new Vector3(649.765f, 2728.621f, 41.9959f), 276.2882f, "Taco Farmer", "Open All Hours!","TacoFarmerMenu", FoodType.Mexican) { OpenTime = 0, CloseTime = 24 },
-            new Restaurant(new Vector3(-1168.281f, -1267.279f, 6.198249f), 111.9682f, "Taco Libre", "Autentica Comida Mexicana","TacoFarmerMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(649.765f, 2728.621f, 41.9959f), 276.2882f, "The Taco Farmer", "Open All Hours!","TacoFarmerMenu", FoodType.Mexican) { OpenTime = 0, CloseTime = 24 },
+            new Restaurant(new Vector3(-1168.281f, -1267.279f, 6.198249f), 111.9682f, "Taco Libre", "Autentica Comida Mexicana","MexicanMenu", FoodType.Mexican),
             new Restaurant(new Vector3(-657.5089f, -679.4656f, 31.46727f), 317.9819f, "Taco Bomb", "The taste explosion","TacoBombMenu", FoodType.Mexican) {BannerImagePath = "tacobomb.png" },
             new Restaurant(new Vector3(-1196.981f, -791.5534f, 16.40427f), 134.7115f, "Taco Bomb", "The taste explosion","TacoBombMenu", FoodType.Mexican) {BannerImagePath = "tacobomb.png" },
             new Restaurant(new Vector3(-1553.112f, -439.9938f, 40.51905f), 228.7506f, "Taco Bomb", "The taste explosion","TacoBombMenu", FoodType.Mexican) {BannerImagePath = "tacobomb.png" },
-            new Restaurant(new Vector3(99.21678f, -1419.307f, 29.42156f), 323.9604f, "Aguila Burrito", "Best burritos in Strawberry*","TacoFarmerMenu", FoodType.Mexican),
-            new Restaurant(new Vector3(445.9454f, -1241.581f, 30.27799f), 179.553f, "Attack-A-Taco", "Kill that hunger","TacoFarmerMenu", FoodType.Mexican),
-            new Restaurant(new Vector3(1093.13f, -362.9193f, 67.06821f), 168.6222f, "Hearty Taco", "Eat your heart out!","TacoFarmerMenu", FoodType.Mexican),
-            new Restaurant(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, "Hearty Taco", "Eat your heart out!","TacoFarmerMenu", FoodType.Mexican),
-            new Restaurant(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, "Mom's Tacos", "We love mom's taco!","TacoFarmerMenu", FoodType.Mexican),
-            new Restaurant(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, "Mom's Tacos", "We love mom's taco!","TacoFarmerMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(99.21678f, -1419.307f, 29.42156f), 323.9604f, "Aguila Burrito", "Best burritos in Strawberry*","MexicanMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(445.9454f, -1241.581f, 30.27799f), 179.553f, "Attack-A-Taco", "Kill that hunger","MexicanMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(1093.13f, -362.9193f, 67.06821f), 168.6222f, "Hearty Taco", "Eat your heart out!","MexicanMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(438.8823f, -1465.908f, 29.35293f), 69.18111f, "Hearty Taco", "Eat your heart out!","MexicanMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(174.9638f, -2025.427f, 18.32407f), 123.4303f, "Mom's Tacos", "We love mom's taco!","MexicanMenu", FoodType.Mexican),
+            new Restaurant(new Vector3(1138.658f, -962.4339f, 47.54031f), 330.8736f, "Mom's Tacos", "We love mom's taco!","MexicanMenu", FoodType.Mexican),
             //Dessert
-            new Restaurant(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, "The Sundae Post", "Come read up on our sludgies","DonutMenu", FoodType.Dessert),
-            new Restaurant(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, "Icemaiden", "Chill Out and Grill Out","GenericMenu", FoodType.Dessert) {IsWalkup = true },
-            new Restaurant(new Vector3(-1689.895f, -1076.626f, 13.15219f), 52.58161f, "Cream Pie", "I just love getting creampied!","FancyGenericMenu", FoodType.Dessert),
-            new Restaurant(new Vector3(-1698.04f, -1105.689f, 13.15277f), 326.1168f, "The Cherry Popper", "You'll always remember your first","FancyGenericMenu", FoodType.Dessert),
+            new Restaurant(new Vector3(-1193.966f, -1543.693f, 4.373522f), 124.3727f, "The Sundae Post", "Come read up on our sludgies","IceCreamMenu", FoodType.Dessert),
+            new Restaurant(new Vector3(-1171.529f, -1435.118f, 4.461945f), 32.60835f, "Icemaiden", "Chill Out and Grill Out","IceCreamMenu", FoodType.Dessert) {IsWalkup = true },
+            new Restaurant(new Vector3(-1689.895f, -1076.626f, 13.15219f), 52.58161f, "Cream Pie", "I just love getting creampied!","IceCreamMenu", FoodType.Dessert),
+            new Restaurant(new Vector3(-1698.04f, -1105.689f, 13.15277f), 326.1168f, "The Cherry Popper", "You'll always remember your first","CherryPopperMenu", FoodType.Dessert),
+            //Bagels&Donuts
+            new Restaurant(new Vector3(-1318.507f, -282.2458f, 39.98732f), 115.4663f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
+            new Restaurant(new Vector3(-1204.364f, -1146.246f, 7.699615f), 109.2444f, "Dickies Bagels", "Holy Dick!","CoffeeMenu", FoodType.Bagels),
+            new Restaurant(new Vector3(354.0957f, -1028.134f, 29.33102f), 182.3497f, "Rusty Brown's", "Ring lickin' good!","RustyBrownsMenu", FoodType.Bagels | FoodType.Donut) {BannerImagePath = "rustybrowns.png" },
+
             //Juice and Smoothies
             new Restaurant(new Vector3(-1137.926f, -1624.695f, 4.410712f), 127.6497f, "Seaside Juice", "Allegedly healthy!","FruitMenu", FoodType.Smoothies) { FullName = "Vitamin Seaside Juice Bar" },
             new Restaurant(new Vector3(-1187.057f, -1536.73f, 4.379496f), 32.85152f, "Muscle Peach", "Come oggle something new","FruitMenu", FoodType.Smoothies) { FullName = "Muscle Peach Juice Bar" },
