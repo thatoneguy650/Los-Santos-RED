@@ -1282,7 +1282,36 @@ public class Debug
 
     public void DebugNumpad8()
     {
-        DoCops();
+
+
+
+        GameFiber.StartNew(delegate
+        {
+            float CamPitch = 0f;
+            float VehiclePitch = 0f;
+            while (!Game.IsKeyDownRightNow(Keys.Z))
+            {
+                CamPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
+                if (Player.Character.CurrentVehicle.Exists())
+                {
+                    VehiclePitch = Player.Character.CurrentVehicle.Rotation.Pitch;
+                }
+                else
+                {
+                    VehiclePitch = 0f;
+                }
+                Game.DisplaySubtitle($"CamPitch:{Math.Round(CamPitch,4)} VehiclePitch:{Math.Round(VehiclePitch, 4)}");
+                Game.DisplayHelp($"Press Z to Exit");
+                GameFiber.Yield();
+            }
+
+
+        }, "Run Debug Logic");
+
+
+
+
+        //DoCops();
         // Test222();
         //SpawnLocation taxiSpawn = new SpawnLocation(Game.LocalPlayer.Character.Position);
         //taxiSpawn.GetClosestStreet(true);

@@ -154,13 +154,19 @@ public class VanillaGangManager
     }
     public void Setup()
     {
-        SetGangScenarioBlocking(Settings.SettingsManager.VanillaSettings.BlockGangScenarios);
+        if (isGangScenarioBlocked)
+        {
+            SetGangScenarioBlocking(Settings.SettingsManager.VanillaSettings.BlockGangScenarios);
+        }
     }
     public void Dispose()
     {
         //ActivateScenarioGangs();
         //UnSupressVanillaGangPeds();
-        SetGangScenarioBlocking(false);
+        if (isGangScenarioBlocked)
+        {
+            SetGangScenarioBlocking(false);
+        }
     }
     public void Tick()
     {

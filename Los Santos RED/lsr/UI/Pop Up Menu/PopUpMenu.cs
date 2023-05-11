@@ -494,16 +494,16 @@ public class PopUpMenu
     }
     private void DisableControls()
     {
-        Game.DisableControlAction(0, GameControl.LookLeftRight, false);
-        Game.DisableControlAction(0, GameControl.LookUpDown, false);
-        Game.DisableControlAction(0, GameControl.Attack, false);
-        Game.DisableControlAction(0, GameControl.Attack2, false);
-        Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
-        Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
-        Game.DisableControlAction(0, GameControl.Aim, false);
-        Game.DisableControlAction(0, GameControl.VehicleAim, false);
-        Game.DisableControlAction(0, GameControl.AccurateAim, false);
-        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
+        Game.DisableControlAction(0, GameControl.LookLeftRight, true);//false);
+        Game.DisableControlAction(0, GameControl.LookUpDown, true);// false);
+        Game.DisableControlAction(0, GameControl.Attack, true);//false);
+        Game.DisableControlAction(0, GameControl.Attack2, true);// false);
+        Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
+        Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
+        Game.DisableControlAction(0, GameControl.Aim, true);// false);
+        Game.DisableControlAction(0, GameControl.VehicleAim, true);// false);
+        Game.DisableControlAction(0, GameControl.AccurateAim, true);// false);
+        Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);// false);
     }
     private void UpdateDefaultMapping(bool force)
     {

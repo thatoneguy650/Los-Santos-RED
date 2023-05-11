@@ -94,10 +94,10 @@ public class Settings : ISettingsProvideable
         SettingsManager.PlayerOtherSettings.Recognize_BaseTime = 1500;
         SettingsManager.PlayerOtherSettings.Recognize_NightPenalty = 1500;
 
-        SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
+       // SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
 
 
-        SettingsManager.SwaySettings.ApplySwayInVehicle = true;
+       // SettingsManager.SwaySettings.ApplySwayInVehicle = true;
 
 
         SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;
@@ -179,7 +179,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.PlayerOtherSettings.Recognize_BaseTime = 1500;
         SettingsManager.PlayerOtherSettings.Recognize_NightPenalty = 1500;
 
-        SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
+       // SettingsManager.RecoilSettings.ApplyRecoilInVehicle = true;
 
 
 
@@ -200,7 +200,7 @@ public class Settings : ISettingsProvideable
         SettingsManager.SwaySettings.VeritcalInVehicleSwayAdjuster = 1.5f;
         SettingsManager.SwaySettings.HorizontalInVehicleSwayAdjuster = 1.5f;
 
-        SettingsManager.SwaySettings.ApplySwayInVehicle = true;
+       // SettingsManager.SwaySettings.ApplySwayInVehicle = true;
 
 
         SettingsManager.LSRHUDSettings.ZoneDisplayShowPrimaryAgency = false;

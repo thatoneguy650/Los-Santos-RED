@@ -140,11 +140,11 @@ public class SuicideActivity : DynamicActivity
 
     private void DisableControls()
     {
-        Game.DisableControlAction(0, GameControl.Attack, false);
-        Game.DisableControlAction(0, GameControl.Attack2, false);
+        Game.DisableControlAction(0, GameControl.Attack, true);// false);
+        Game.DisableControlAction(0, GameControl.Attack2, true);// false);
 
-        Game.DisableControlAction(0, GameControl.VehicleAttack, false);
-        Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+        Game.DisableControlAction(0, GameControl.VehicleAttack, true);// false);
+        Game.DisableControlAction(0, GameControl.VehicleAttack2, true);// false);
     }
 
     private void IdlePistol()

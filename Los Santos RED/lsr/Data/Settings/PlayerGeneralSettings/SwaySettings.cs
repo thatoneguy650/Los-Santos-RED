@@ -28,7 +28,6 @@ public class SwaySettings : ISettingsDefaultable
     public float VeritcalInVehicleSwayAdjuster { get; set; }
     [Description("In vehicle horizontal sway adjuster. Multiplier for the horizontal intensity of the sway only when in vehicle. Will stack with the global. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
     public float HorizontalInVehicleSwayAdjuster { get; set; }
-
     [Description("Enable or disable the sway system when in first person.")]
     public bool ApplySwayInFirstPerson { get; set; }
     [Description("First person vertical sway adjuster. Multiplier for the vertical intensity of the sway. 1.0 is default, 2.0f would be double the felt sway, 0.5 would be 1/2 of the felt sway")]
@@ -39,9 +38,9 @@ public class SwaySettings : ISettingsDefaultable
     public bool ApplySwayToSnipers { get; set; }
     [Description("Frames to wait after recoil to apply sway. DEBUG SETTING")]
     public int FramesBetweenRecoil { get; set; }
-    [Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
-    public bool UseAlternateCalculation { get; set; }
-
+    //[Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
+    //public bool UseAlternateCalculation { get; set; }
+    public float SmoothRate { get; set; }
 
     public SwaySettings()
     {
@@ -58,24 +57,16 @@ public class SwaySettings : ISettingsDefaultable
         HorizontalOnFootSwayAdjuster = 1.0f;
         VeritcalInVehicleSwayAdjuster = 1.0f;
         HorizontalInVehicleSwayAdjuster = 1.0f;
-
-
         ApplySwayInFirstPerson = false;
         VeritcalFirstPersonSwayAdjuster = 1.0f;
         HorizontalFirstPersonSwayAdjuster = 1.0f;
-
 #if DEBUG
         ApplySwayInFirstPerson = true;
-        ApplySwayInVehicle = true;
 #endif
-
         ApplySwayToSnipers = false;
-
-
         FramesBetweenRecoil = 30;
-
-        UseAlternateCalculation = false;
         ApplySwayWithController = false;
+        SmoothRate = 1.0f;
     }
 
 }

@@ -128,7 +128,7 @@ namespace LosSantosRED.lsr.Player
                         IsFinishedWithSip = true;
                         //EntryPoint.WriteToConsole($"Drinking Sip finished {PlayingAnim} TimesDrank {TimesDrank}");
                     }
-                    if (TimesDrank >= 5 && ConsumableItemNeedGain.IsFinished)
+                    if (TimesDrank >= 1 && ConsumableItemNeedGain.IsFinished)
                     {
                         IsCancelled = true;
                     }

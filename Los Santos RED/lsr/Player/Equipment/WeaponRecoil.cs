@@ -61,74 +61,80 @@ public class WeaponRecoil
             ApplyRecoil();
             TotalShots++;
         } 
-       // Player.DebugString = $"R P: {Math.Round(CurrentPitch,6)} AdjP: {Math.Round(AdjustedPitch,6)} H: {Math.Round(CurrentHeading,6)} AdjH: {Math.Round(AdjustedHeading,6)} TS: {TotalShots}";
-
+        //Player.DebugString = $"R P: {Math.Round(CurrentPitch,6)} AdjP: {Math.Round(AdjustedPitch,6)} H: {Math.Round(CurrentHeading,6)} AdjH: {Math.Round(AdjustedHeading,6)} TS: {TotalShots}";
     }
     private void ApplyRecoil()
     {
-        CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
-        AdjustPitch();
+        CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();    
+        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();    
         if(Player.IsInVehicle)
         {
-            AdjustedPitch *= -1.0f;
-        }
-        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
-        {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, 1.0f);
+            AdjustPitchInVehicle();
+            AdjustHeadingInVehicle();
+            NativeFunction.Natives.FORCE_CAMERA_RELATIVE_HEADING_AND_PITCH(CurrentPitch + AdjustedPitch, CurrentHeading + AdjustedHeading, Settings.SettingsManager.RecoilSettings.SmoothRate);
         }
         else
         {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Math.Abs(AdjustedPitch)); 
-        }
-        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
-        AdjustHeading();
-        if (Math.Abs(AdjustedHeading) > 0)
-        {
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+            AdjustPitchOnFoot();
+            AdjustHeadingOnFoot();
+            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.RecoilSettings.SmoothRate);
+            if (Math.Abs(AdjustedHeading) > 0)
+            {
+                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
+            }
         }
     }
-    private void AdjustPitch()
+
+    private void AdjustPitchInVehicle()
     {
         AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
-        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
+        AdjustedPitch *= 2.0f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
+        AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalInVehicleRecoilAdjuster;  
+        if (Player.IsInFirstPerson)
         {
-            AdjustedPitch *= 2.0f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalFirstPersonRecoilAdjuster;
         }
-        if (Player.IsInVehicle)
+        AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalRecoilAdjuster;
+    }
+    private void AdjustHeadingInVehicle()
+    {
+        AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalRecoil);
+        AdjustedHeading *= 1.5f;
+        if (RandomItems.RandomPercent(50))
         {
-            AdjustedPitch *= 0.2f;//2.0f;//5.0 is good with pistol too much for automatic
-            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalInVehicleRecoilAdjuster;
+            AdjustedHeading *= -1.0f;
         }
-        else
+        AdjustedHeading *= 0.2f;
+        AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalInVehicleRecoilAdjuster;
+        if (Player.IsInFirstPerson)
         {
-            AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalOnFootRecoilAdjuster;
+            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalFirstPersonRecoilAdjuster;
         }
+        AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalRecoilAdjuster;
+    }
+
+
+    private void AdjustPitchOnFoot()
+    {
+        AdjustedPitch = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinVerticalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxVerticalRecoil);
+        AdjustedPitch *= 2.0f * 0.7f;//want this to be near to 1.0 in the settings default;//Settings.SettingsManager.SwaySettings.VeritcalSwayAdjuster * 0.0075f * 20.0f * 1.25f;//want this to be near to 1.0 in the settings default;
+        AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalOnFootRecoilAdjuster;
         if(Player.IsInFirstPerson)
         {
             AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalFirstPersonRecoilAdjuster;
         }
         AdjustedPitch *= Settings.SettingsManager.RecoilSettings.VerticalRecoilAdjuster;
     }
-    private void AdjustHeading()
+    private void AdjustHeadingOnFoot()
     {
         AdjustedHeading = RandomItems.GetRandomNumber(Player.WeaponEquipment.CurrentWeapon.MinHorizontalRecoil, Player.WeaponEquipment.CurrentWeapon.MaxHorizontalRecoil);
-        if (Settings.SettingsManager.RecoilSettings.UseAlternateCalculation)
-        {
-            AdjustedHeading *= 1.5f;
-        }
+        AdjustedHeading *= 1.5f;
         if (RandomItems.RandomPercent(50))
         {
             AdjustedHeading *= -1.0f;
         }
-        if(Player.IsInVehicle)
-        {
-            AdjustedHeading *= 0.2f;
-            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalInVehicleRecoilAdjuster;
-        }
-        else
-        {
-            AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalOnFootRecoilAdjuster;
-        }
+        AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalOnFootRecoilAdjuster;
         if(Player.IsInFirstPerson)
         {
             AdjustedHeading *= Settings.SettingsManager.RecoilSettings.HorizontalFirstPersonRecoilAdjuster;

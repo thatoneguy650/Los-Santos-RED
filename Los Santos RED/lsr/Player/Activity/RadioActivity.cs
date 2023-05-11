@@ -351,36 +351,36 @@ namespace LosSantosRED.lsr.Player
         }
         private void DisableControls()
         {
-            Game.DisableControlAction(0, GameControl.Attack, false);
-            Game.DisableControlAction(0, GameControl.Attack2, false);
-            Game.DisableControlAction(0, GameControl.MeleeAttack1, false);
-            Game.DisableControlAction(0, GameControl.MeleeAttack2, false);
+            Game.DisableControlAction(0, GameControl.Attack, true);// false);
+            Game.DisableControlAction(0, GameControl.Attack2, true);// false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack1, true);// false);
+            Game.DisableControlAction(0, GameControl.MeleeAttack2, true);// false);
 
 
-            Game.DisableControlAction(0, GameControl.Aim, false);
-            Game.DisableControlAction(0, GameControl.VehicleAim, false);
-            Game.DisableControlAction(0, GameControl.AccurateAim, false);
-            Game.DisableControlAction(0, GameControl.VehiclePassengerAim, false);
+            Game.DisableControlAction(0, GameControl.Aim, true);// false);
+            Game.DisableControlAction(0, GameControl.VehicleAim, true);// false);
+            Game.DisableControlAction(0, GameControl.AccurateAim, true);// false);
+            Game.DisableControlAction(0, GameControl.VehiclePassengerAim, true);// false);
 
 
-            Game.DisableControlAction(0, GameControl.VehicleAttack, false);
-            Game.DisableControlAction(0, GameControl.VehicleAttack2, false);
+            Game.DisableControlAction(0, GameControl.VehicleAttack, true);// false);
+            Game.DisableControlAction(0, GameControl.VehicleAttack2, true);// false);
 
-            Game.DisableControlAction(0, GameControl.WeaponWheelNext, false);
-            Game.DisableControlAction(0, GameControl.WeaponWheelPrev, false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelNext, true);// false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelPrev, true);// false);
 
-            Game.DisableControlAction(0, GameControl.WeaponWheelUpDown, false);
-            Game.DisableControlAction(0, GameControl.WeaponWheelLeftRight, false);
-
-
-            Game.DisableControlAction(0, GameControl.SelectWeapon, false);
-
-            Game.DisableControlAction(0, GameControl.SelectNextWeapon, false);
-            Game.DisableControlAction(0, GameControl.SelectPrevWeapon, false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelUpDown, true);// false);
+            Game.DisableControlAction(0, GameControl.WeaponWheelLeftRight, true);// false);
 
 
-            Game.DisableControlAction(0, GameControl.NextWeapon, false);
-            Game.DisableControlAction(0, GameControl.PrevWeapon, false);
+            Game.DisableControlAction(0, GameControl.SelectWeapon, true);// false);
+
+            Game.DisableControlAction(0, GameControl.SelectNextWeapon, true);// false);
+            Game.DisableControlAction(0, GameControl.SelectPrevWeapon, true);// false);
+
+
+            Game.DisableControlAction(0, GameControl.NextWeapon, true);// false);
+            Game.DisableControlAction(0, GameControl.PrevWeapon, true);// false);
         }
         private void Dispose(bool deleteObject)
         {

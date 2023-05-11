@@ -53,7 +53,7 @@ public class ThirstNeed : HumanNeed
         {
             ChangeAmount *= FootSpeedMultiplier();
         }
-        ChangeAmount *= Settings.SettingsManager.NeedsSettings.ThirstChangeScalar;
+        ChangeAmount *= 0.5f * Settings.SettingsManager.NeedsSettings.ThirstChangeScalar;
         Change(ChangeAmount, false);
     }
     private float FootSpeedMultiplier()

@@ -19,5 +19,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsInFirstPerson { get; }
         string DebugString { get; set; }
         bool IsUsingController { get; }
+        Ped Character { get; }
     }
 }

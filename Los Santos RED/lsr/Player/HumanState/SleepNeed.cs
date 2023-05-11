@@ -71,7 +71,7 @@ public class SleepNeed : HumanNeed
         {
             ChangeAmount *= FootSpeedMultiplier();
         }
-        ChangeAmount *= Settings.SettingsManager.NeedsSettings.SleepChangeScalar;
+        ChangeAmount *= 0.5f * Settings.SettingsManager.NeedsSettings.SleepChangeScalar;
         Change(ChangeAmount, false);
     }
     private float FootSpeedMultiplier()

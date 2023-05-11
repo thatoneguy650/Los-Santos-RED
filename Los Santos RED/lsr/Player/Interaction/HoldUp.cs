@@ -161,12 +161,16 @@ public class HoldUp : Interaction
                 if (Player.ButtonPrompts.IsPressed("DemandCash") && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?//if (Player.ButtonPromptList.Any(x => x.Identifier == "DemandCash" && x.IsPressedNow) && IsTargetIntimidated && !Target.HasBeenMugged)//demand cash?
                 {
                     Target.HasBeenMugged = true;
+                    Target.WillCallPolice = false;
+                    Target.WillCallPoliceIntense = false;
                     Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     CreateMoneyDrop();
                 }
                 if (Player.ButtonPrompts.IsPressed("ForceDown") && IsTargetIntimidated && !ForcedCower)//demand cash?//if (Player.ButtonPromptList.Any(x => x.Identifier == "ForceDown" && x.IsPressedNow) && IsTargetIntimidated && !ForcedCower)//demand cash?
                 {
                     ForcedCower = true;
+                    Target.WillCallPolice = false;
+                    Target.WillCallPoliceIntense = false;
                     Player.ButtonPrompts.RemovePrompts("HoldUp");//Player.ButtonPromptList.RemoveAll(x => x.Group == "HoldUp");
                     ForceCower();
                 }
