@@ -10,11 +10,11 @@ public class UmbrellaItem : ModItem
     {
 
     }
-    public UmbrellaItem(string name, string description) : base(name, description, ItemType.Tools)
+    public UmbrellaItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public UmbrellaItem(string name) : base(name, ItemType.Tools)
+    public UmbrellaItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

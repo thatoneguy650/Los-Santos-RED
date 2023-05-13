@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Interface
         bool WasDangerouslyArmedWhenBusted { get; }
         bool VeryRecentlyShot { get; }
         ActivityManager ActivityManager { get; }
+        string DebugString { get; set; }
 
         void SetShot();
     }

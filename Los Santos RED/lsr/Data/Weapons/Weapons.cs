@@ -891,7 +891,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Scope", 0x3C00AFED, ComponentSlot.Optic),
             new WeaponComponent("Yusuf Amir Luxury Finish", 0xD6DABABE,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_mg", 200, WeaponCategory.LMG, 4, 2634544996, false, true, false, 0.4f, 0.5f, 0.15f, 0.25f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = MGComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_mg", 200, WeaponCategory.LMG, 3, 2634544996, false, true, false, 0.4f, 0.5f, 0.15f, 0.25f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = MGComponents });
         List<WeaponComponent> CombatMGComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0xE1FFB34A,ComponentSlot.Magazine),
@@ -900,7 +900,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Grip", 0xC164F53, ComponentSlot.ForwardGrip),
             new WeaponComponent("Etched Gun Metal Finish", 0x92FECCDD,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_combatmg", 200, WeaponCategory.LMG, 4, 2144741730, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = CombatMGComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_combatmg", 200, WeaponCategory.LMG, 3, 2144741730, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = CombatMGComponents });
         List<WeaponComponent> CombatMGMK2Components = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x492B257C,ComponentSlot.Magazine),
@@ -934,13 +934,13 @@ public class Weapons : IWeapons
             new WeaponComponent("Boom!", 0x28B536E,ComponentSlot.Coloring),
             new WeaponComponent("Patriotic", 0xD703C94D,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_combatmg_mk2", 200, WeaponCategory.LMG, 4, 0xDBBD7280, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = CombatMGMK2Components });
+        WeaponsList.Add(new WeaponInformation("weapon_combatmg_mk2", 200, WeaponCategory.LMG, 3, 0xDBBD7280, false, true, false, 0.35f, 0.55f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.FullAuto) { PossibleComponents = CombatMGMK2Components });
         List<WeaponComponent> GusenbergComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x1CE5A6A5,ComponentSlot.Magazine),
             new WeaponComponent("Extended Clip", 0xEAC8C270,ComponentSlot.Magazine)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_gusenberg", 200, WeaponCategory.LMG, 4, 1627465347, false, true, false, 0.5f, 0.7f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = GusenbergComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_gusenberg", 200, WeaponCategory.LMG, 3, 1627465347, false, true, false, 0.5f, 0.7f, 0.2f, 0.3f, 0.75f, 0.75f, 0.75f, 0.75f, SelectorOptions.Safe | SelectorOptions.SemiAuto | SelectorOptions.FullAuto) { PossibleComponents = GusenbergComponents });
     }
     private void DefaultConfig_Sniper()
     {
@@ -952,14 +952,14 @@ public class Weapons : IWeapons
             new WeaponComponent("Advanced Scope", 0xBC54DA77, ComponentSlot.Optic),
             new WeaponComponent("Etched Wood Grip Finish", 0x4032B5E7,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_sniperrifle", 40, WeaponCategory.Sniper, 4, 100416529, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = SniperRifleComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_sniperrifle", 40, WeaponCategory.Sniper, 3, 100416529, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = SniperRifleComponents });
         List<WeaponComponent> HeavySniperComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x476F52F4,ComponentSlot.Magazine),
             new WeaponComponent("Scope", 0xD2443DDC, ComponentSlot.Optic),
             new WeaponComponent("Advanced Scope", 0xBC54DA77, ComponentSlot.Optic)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_heavysniper", 40, WeaponCategory.Sniper, 4, 205991906, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_heavysniper", 40, WeaponCategory.Sniper, 3, 205991906, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperComponents });
         List<WeaponComponent> HeavySniperMK2Components = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0xFA1E1A28,ComponentSlot.Magazine),
@@ -989,7 +989,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Boom!", 0xABC5ACC7,ComponentSlot.Coloring),
             new WeaponComponent("Patriotic", 0x6C32D2EB,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_heavysniper_mk2", 40, WeaponCategory.Sniper, 4, 0xA914799, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperMK2Components });
+        WeaponsList.Add(new WeaponInformation("weapon_heavysniper_mk2", 40, WeaponCategory.Sniper, 3, 0xA914799, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = HeavySniperMK2Components });
         List<WeaponComponent> MarksmanRifleComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0xD83B4141,ComponentSlot.Magazine),
@@ -1000,7 +1000,7 @@ public class Weapons : IWeapons
             new WeaponComponent("Grip", 0xC164F53, ComponentSlot.ForwardGrip),
             new WeaponComponent("Yusuf Amir Luxury Finish", 0x161E9241,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle", 40, WeaponCategory.Sniper, 4, 3342088282, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle", 40, WeaponCategory.Sniper, 3, 3342088282, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleComponents });
         //List<WeaponComponent> RussianSniperComponents = new List<WeaponComponent>
         //{
         //    new WeaponComponent("Default Clip", 0xD83B4141,ComponentSlot.Magazine),
@@ -1045,12 +1045,12 @@ public class Weapons : IWeapons
             new WeaponComponent("Boom!", 0x3B61040B,ComponentSlot.Coloring),
             new WeaponComponent("Boom!", 0xB7A316DA,ComponentSlot.Coloring)
         };
-        WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle_mk2", 40, WeaponCategory.Sniper, 4, 0x6A6C02E0, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleMK2Components });
+        WeaponsList.Add(new WeaponInformation("weapon_marksmanrifle_mk2", 40, WeaponCategory.Sniper, 3, 0x6A6C02E0, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0001f, 0.0001f, 0.0001f, 0.0001f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = MarksmanRifleMK2Components });
         List<WeaponComponent> PrecisionRifleComponents = new List<WeaponComponent>
         {
             new WeaponComponent("Default Clip", 0x9BC64089,ComponentSlot.Magazine),
         };
-        WeaponsList.Add(new WeaponInformation("weapon_precisionrifle", 40, WeaponCategory.Sniper, 4, 1853742572, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = PrecisionRifleComponents });
+        WeaponsList.Add(new WeaponInformation("weapon_precisionrifle", 40, WeaponCategory.Sniper, 3, 1853742572, false, true, true, 0.5f, 0.75f, 0.1f, 0.2f, 0.0f, 0.0f, 0.0f, 0.0f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = PrecisionRifleComponents });
 
     }
     private void DefaultConfig_Heavy()
@@ -1066,7 +1066,7 @@ public class Weapons : IWeapons
         WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher", 32, WeaponCategory.Heavy, 4, 2726580491, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { PossibleComponents = GrenadeLauncherComponents });
         WeaponsList.Add(new WeaponInformation("weapon_grenadelauncher_smoke", 32, WeaponCategory.Heavy, 4, 1305664598, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
         WeaponsList.Add(new WeaponInformation("weapon_minigun", 500, WeaponCategory.Heavy, 4, 1119849093, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.FullAuto));
-        WeaponsList.Add(new WeaponInformation("weapon_firework", 20, WeaponCategory.Heavy, 4, 0x7F7497E5, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
+        WeaponsList.Add(new WeaponInformation("weapon_firework", 20, WeaponCategory.Heavy, 3, 0x7F7497E5, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
         WeaponsList.Add(new WeaponInformation("weapon_railgun", 50, WeaponCategory.Heavy, 4, 0x6D544C99, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
         WeaponsList.Add(new WeaponInformation("weapon_hominglauncher", 3, WeaponCategory.Heavy, 4, 0x63AB0442, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto) { IsRegular = false });
         WeaponsList.Add(new WeaponInformation("weapon_compactlauncher", 10, WeaponCategory.Heavy, 4, 125959754, false, true, false, 0.1f, 0.1f, 0.1f, 0.1f, 0.5f, 0.5f, 0.5f, 0.5f, SelectorOptions.Safe | SelectorOptions.SemiAuto));

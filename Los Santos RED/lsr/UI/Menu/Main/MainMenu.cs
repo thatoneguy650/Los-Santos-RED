@@ -9,10 +9,10 @@ public class MainMenu : ModUIMenu
     private UIMenu Main;
     private UI UI;
 
-    private ActionMenu ActionMenu;
-    private InventoryMenu InventoryMenu;
+   // private ActionMenu ActionMenu;
+   // private InventoryMenu InventoryMenu;
     private PedSwapMenu PedSwapMenu;
-    private SaveMenu SaveMenu;
+   // private SaveMenu SaveMenu;
     private SettingsMenu SettingsMenu;
 
     private IGangs Gangs;
@@ -45,14 +45,11 @@ public class MainMenu : ModUIMenu
         PedSwap = pedswap;
         World = world;
         PlayerInventory = playerinventory;
-
         ModItems = modItems;
         Time = time;
         PlacesOfInterest = placesOfInterest;
         Dances = dances;
         Gestures = gestures;
-
-
         Player = player;
         Settings = settings;
         Tasker = tasker;
@@ -62,34 +59,15 @@ public class MainMenu : ModUIMenu
         ActivityPerformable = activityPerformable;
         Main = new UIMenu("Los Santos RED", "Select an Option");
         SettingsMenu = new SettingsMenu(MenuPool, Main, Settings, Crimes, intoxicants, shopMenus);
-
-        if (Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
-        {
-            SaveMenu = new SaveMenu(MenuPool, Main, SaveablePlayer, GameSaves, Weapons, PedSwap, PlayerInventory, Settings, World, Gangs, Time, PlacesOfInterest, ModItems);
-        }
         PedSwapMenu = new PedSwapMenu(MenuPool, Main, PedSwap, Gangs, agencies);
-
-        if (Settings.SettingsManager.UIGeneralSettings.ShowLegacyActionMenu)
-        {
-            ActionMenu = new ActionMenu(MenuPool, Main, ActionablePlayer, Settings, Dances, Gestures);
-        }
-        if (Settings.SettingsManager.UIGeneralSettings.ShowLegacyInventoryMenu)
-        {
-            InventoryMenu = new InventoryMenu(MenuPool, Main, Player, ModItems, false);
-        }
     }
 
     public void Setup()
     {
         Main.SetBannerType(EntryPoint.LSRedColor);
         MenuPool.Add(Main);
-
-        SettingsMenu.Setup(); 
-        SaveMenu?.Setup();     
+        SettingsMenu.Setup();    
         PedSwapMenu.Setup();    
-        ActionMenu?.Setup();     
-        InventoryMenu?.Setup();
-
         CreateMainMenu();
     }
 
@@ -101,8 +79,6 @@ public class MainMenu : ModUIMenu
     {
         if (!Main.Visible)
         {
-            ActionMenu?.Update();
-            InventoryMenu?.Update();
             Main.Visible = true;
         }
     }
@@ -110,8 +86,6 @@ public class MainMenu : ModUIMenu
     {
         if (!Main.Visible)
         {
-            ActionMenu?.Update();
-            InventoryMenu?.Update();
             Main.Visible = true;
         }
         else
@@ -122,17 +96,14 @@ public class MainMenu : ModUIMenu
     private void CreateMainMenu()
     {
         //The Submenus have already added their items
-        if (!Settings.SettingsManager.UIGeneralSettings.UseLegacySaveMenu)
+        UIMenuItem ShowSaveMenu = new UIMenuItem("Game Saves", "Shows a list of the players saves.");
+        ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
+        ShowSaveMenu.Activated += (s, e) =>
         {
-            UIMenuItem ShowSaveMenu = new UIMenuItem("Game Saves", "Shows a list of the players saves.");
-            ShowSaveMenu.RightBadge = UIMenuItem.BadgeStyle.Makeup;
-            ShowSaveMenu.Activated += (s, e) =>
-            {
-                UI.SavePauseMenu.Toggle();
-                Main.Visible = false;
-            };
-            Main.AddItem(ShowSaveMenu);
-        }
+            UI.SavePauseMenu.Toggle();
+            Main.Visible = false;
+        };
+        Main.AddItem(ShowSaveMenu);
         UIMenuItem AboutMenu = new UIMenuItem("About", "Shows some general information about the mod and its features. More to Come.");
         AboutMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         AboutMenu.Activated += (s, e) =>

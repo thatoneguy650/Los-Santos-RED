@@ -37,9 +37,8 @@ public class UIGeneralSettings : ISettingsDefaultable
     public bool AllowScreenEffectReset { get; set; }
     public bool DisplayButtonPrompts { get; set; }
     public bool ShowDebug { get; set; }
-    public bool UseLegacySaveMenu { get; set; }
-    public bool ShowLegacyActionMenu { get; set; }
-    public bool ShowLegacyInventoryMenu { get; set; }
+
+
     public bool ShowFullscreenWarnings { get; set; }
     public bool ShowFakeWantedLevelStars { get; set; }
 
@@ -95,9 +94,7 @@ public class UIGeneralSettings : ISettingsDefaultable
         HideLSRUIUnlessActionWheelActive = false;
         HideRadarUnlessActionWheelActive = false;
 
-        UseLegacySaveMenu = false;
-        ShowLegacyActionMenu = false;
-        ShowLegacyInventoryMenu = false;
+
 
         ShowFullscreenWarnings = true;
 

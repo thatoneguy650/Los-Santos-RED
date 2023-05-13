@@ -88,13 +88,13 @@ public class Dispatcher
             EntryPoint.WriteToConsole("RECENTLY STARTED PLAYING222 NO DISPTACH");
             return;
         }
-        if (!LEDispatcher.Dispatch())
+        if (EntryPoint.ModController.IsRunning && !LEDispatcher.Dispatch())
         {
-            if (!EMSDispatcher.Dispatch())
+            if (EntryPoint.ModController.IsRunning && !EMSDispatcher.Dispatch())
             {
-                if(!FireDispatcher.Dispatch())
+                if(EntryPoint.ModController.IsRunning && !FireDispatcher.Dispatch())
                 {
-                    if(!SecurityDispatcher.Dispatch())
+                    if(EntryPoint.ModController.IsRunning && !SecurityDispatcher.Dispatch())
                     {
 
                     }
@@ -102,13 +102,29 @@ public class Dispatcher
             }
         }
         GameFiber.Yield();
+        if(!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         GangDispatcher.Dispatch();
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         if (World.IsZombieApocalypse)
         {
             GameFiber.Yield();
             ZombieDispatcher.Dispatch();
         }
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         GameFiber.Yield();
+        if (!EntryPoint.ModController.IsRunning)
+        {
+            return;
+        }
         LocationDispatcher.Dispatch();
     }
     public void Recall()

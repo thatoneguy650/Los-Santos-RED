@@ -51,6 +51,7 @@ public class WeaponEquipment
             {
                 while (isActive)
                 {
+                    string cool = "";
                     if (Game.LocalPlayer.Character.IsShooting)
                     {
                         FramesSinceShot = 0;
@@ -59,18 +60,16 @@ public class WeaponEquipment
                     }
                     else
                     {
-                        if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                        FramesSinceShot++;
+                        if (FramesSinceShot >= Settings.SettingsManager.SwaySettings.FramesBetweenRecoil && (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
                         {
-                            FramesSinceShot++;
+                            WeaponSway.Update();
+                            cool += "IsSwaying";
                         }
-                        if (FramesSinceShot < Settings.SettingsManager.SwaySettings.FramesBetweenRecoil)
+                        else
                         {
                             WeaponSway.Reset();
                         }
-                    }
-                    if (FramesSinceShot >= Settings.SettingsManager.SwaySettings.FramesBetweenRecoil && (Game.LocalPlayer.IsFreeAiming || Game.LocalPlayer.Character.IsAiming))
-                    {
-                        WeaponSway.Update();
                     }
                     GameFiber.Yield();
                 }

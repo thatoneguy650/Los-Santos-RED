@@ -87,6 +87,7 @@ public class ModItem
 
     public int FindPercentage { get; set; } = 0;
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
+    public virtual bool IsDLC => false;
 
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {

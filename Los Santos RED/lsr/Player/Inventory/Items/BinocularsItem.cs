@@ -18,11 +18,11 @@ public class BinocularsItem : ModItem
     {
 
     }
-    public BinocularsItem(string name, string description) : base(name, description, ItemType.Tools)
+    public BinocularsItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public BinocularsItem(string name) : base(name, ItemType.Tools)
+    public BinocularsItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

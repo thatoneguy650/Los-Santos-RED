@@ -11,11 +11,11 @@ public class RadioItem : ModItem
     {
 
     }
-    public RadioItem(string name, string description) : base(name, description, ItemType.Tools)
+    public RadioItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public RadioItem(string name) : base(name, ItemType.Tools)
+    public RadioItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

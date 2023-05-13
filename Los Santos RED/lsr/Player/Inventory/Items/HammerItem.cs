@@ -11,11 +11,11 @@ public class HammerItem : ModItem
     {
 
     }
-    public HammerItem(string name, string description) : base(name, description, ItemType.Tools)
+    public HammerItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public HammerItem(string name) : base(name, ItemType.Tools)
+    public HammerItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

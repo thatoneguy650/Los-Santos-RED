@@ -27,7 +27,9 @@ public class DamageViolations
 
     private List<PedExt> PlayerKilledCivilians = new List<PedExt>();
     private List<PedExt> PlayerKilledCops = new List<PedExt>();
-    public bool NearCivilianMurderVictim => PlayerKilledCivilians.Any(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.ViolationSettings.MurderDistance);
+    public bool NearCivilianMurderVictim => CountNearCivilianMurderVictim > 0;
+    public int CountNearCivilianMurderVictim => PlayerKilledCivilians.Count(x => x.Pedestrian.Exists() && x.Pedestrian.DistanceTo2D(Player.Character) <= Settings.SettingsManager.ViolationSettings.MurderDistance);
+    public int CountRecentCivilianMurderVictim => PlayerKilledCivilians.Count(x => x.Pedestrian.Exists() && Game.GameTime - x.GameTimeKilled <= 15000);
     public bool RecentlyHurtCivilian => GameTimeLastHurtCivilian != 0 && Game.GameTime - GameTimeLastHurtCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyHurtCivilianTime;
     public bool RecentlyKilledCivilian => GameTimeLastKilledCivilian != 0 && Game.GameTime - GameTimeLastKilledCivilian <= Settings.SettingsManager.ViolationSettings.RecentlyKilledCivilianTime;
 
@@ -68,6 +70,13 @@ public class DamageViolations
         {
             Violations.AddViolating(StaticStrings.KillingCiviliansCrimeID);
         }
+        if (CountNearCivilianMurderVictim >= 3 || CountRecentCivilianMurderVictim >= 4)
+        {
+            Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);
+        }
+
+        // if(CountRecentCivilianMurderVictim >= 2)
+
 
         if (RecentlyHurtCivilian)
         {
@@ -96,6 +105,7 @@ public class DamageViolations
     }
     public void AddKilled(PedExt myPed, bool WasShot, bool WasMeleeAttacked, bool WasHitByVehicle)
     {
+        myPed.GameTimeKilled = Game.GameTime;
         if (myPed.IsCop)
         {
             PlayerKilledCops.Add(myPed);

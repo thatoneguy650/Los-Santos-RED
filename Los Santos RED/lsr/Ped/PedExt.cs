@@ -407,6 +407,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
+    public uint GameTimeKilled { get; set; }
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
     public bool HasSeenDistressedPed { get; set; } = false;

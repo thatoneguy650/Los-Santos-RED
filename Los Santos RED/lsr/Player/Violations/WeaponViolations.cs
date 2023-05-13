@@ -74,7 +74,7 @@ public class WeaponViolations
             Violations.AddViolating("BrandishingWeapon");//.IsCurrentlyViolating = true;
             if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 4)
             {
-                Violations.AddViolating("TerroristActivity");//.IsCurrentlyViolating = true;
+                Violations.AddViolating(StaticStrings.TerroristActivityCrimeID);//.IsCurrentlyViolating = true;
             }
             if (Player.WeaponEquipment.CurrentWeapon != null && Player.WeaponEquipment?.CurrentWeapon?.WeaponLevel >= 3)
             {
@@ -140,7 +140,7 @@ public class WeaponViolations
         }
         if (weaponInformation.WeaponLevel >= 4)
         {
-            Violations.AddViolatingAndObserved("TerroristActivity");
+            Violations.AddViolatingAndObserved(StaticStrings.TerroristActivityCrimeID);
             //EntryPoint.WriteToConsoleTestLong("AddFoundWeapon TerroristActivity");
             return true;
         }

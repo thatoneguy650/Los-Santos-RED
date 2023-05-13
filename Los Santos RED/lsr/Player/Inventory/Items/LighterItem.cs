@@ -11,11 +11,11 @@ public class LighterItem : ModItem
     {
 
     }
-    public LighterItem(string name, string description) : base(name, description, ItemType.Tools)
+    public LighterItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public LighterItem(string name) : base(name, ItemType.Tools)
+    public LighterItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

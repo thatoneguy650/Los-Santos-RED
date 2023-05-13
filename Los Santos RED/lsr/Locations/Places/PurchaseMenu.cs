@@ -86,7 +86,7 @@ public class PurchaseMenu : ModUIMenu
         }
         purchaseMenu.Clear();
         CreateCategories2();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderBy(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
+        foreach (MenuItem cii in ShopMenu.Items.Where(x=> x.Purchaseable).OrderByDescending(x=> x.PurchasePrice).ThenBy(x=> x.ModItemName))
         {
             //EntryPoint.WriteToConsoleTestLong($"PURCHASE MENU ADD ITEM {cii.ModItemName} Purchaseable:{cii.Purchaseable} PurchasePrice {cii.PurchasePrice} NumberOfItemsToSellToPlayer:{cii.NumberOfItemsToSellToPlayer} NumberOfItemsToPurchaseFromPlayer:{cii.NumberOfItemsToPurchaseFromPlayer}");
             cii.ModItem.CreatePurchaseMenuItem(Transaction, cii, purchaseMenu, Settings, Player, Transaction.IsStealing, World);
@@ -147,8 +147,8 @@ public class PurchaseMenu : ModUIMenu
     }
     private void CreateCategories2()
     {
-        List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon).ToList();
-        List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle).ToList();
+        List<MenuItem> WeaponItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Weapon  ).ToList();
+        List<MenuItem> VehicleItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type == ePhysicalItemType.Vehicle && (Settings.SettingsManager.PlayerOtherSettings.AllowDLCVehiclesInStores || !x.ModItem.IsDLC)).ToList();
         List<MenuItem> OtherItems = ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon).ToList();
         if (WeaponItems.Any())
         {

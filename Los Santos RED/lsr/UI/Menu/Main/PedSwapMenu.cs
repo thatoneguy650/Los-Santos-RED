@@ -125,13 +125,13 @@ public class PedSwapMenu : ModUIMenu
         //PedSwapUIMenu.AddItem(SetAsCop);
 
 
-        BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian (Legacy)", "Becomes a customized ped from user input. (Old Version)");
-        BecomeCustomPed.Activated += (menu, item) =>
-        {
-            PedSwap.BecomeCustomPed();
-            PedSwapUIMenu.Visible = false;
-        };
-        PedSwapUIMenu.AddItem(BecomeCustomPed);
+        //BecomeCustomPed = new UIMenuItem("Become Custom Pedestrian (Legacy)", "Becomes a customized ped from user input. (Old Version)");
+        //BecomeCustomPed.Activated += (menu, item) =>
+        //{
+        //    PedSwap.BecomeCustomPed();
+        //    PedSwapUIMenu.Visible = false;
+        //};
+        //PedSwapUIMenu.AddItem(BecomeCustomPed);
 
 
 

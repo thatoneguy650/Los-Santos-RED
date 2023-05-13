@@ -24,7 +24,6 @@ public class PedSwap : IPedSwap
     private Model InitialPlayerModel;
     private PedVariation InitialPlayerVariation;
     private INameProvideable Names;
-    private CustomizePedMenu PedSwapCustomMenu;
     private IPedSwappable Player;
     private ISettingsProvideable Settings;
     private bool TargetPedInVehicle;
@@ -78,38 +77,38 @@ public class PedSwap : IPedSwap
     {
         SetPlayerOffset();
     }
-    public void BecomeCustomPed()//OLD
-    {
-        GameFiber.StartNew(delegate
-        {
-            try
-            {
-                ResetOffsetForCurrentModel();
-                Player.IsCustomizingPed = true;
-                MenuPool menuPool = new MenuPool();
-                PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities, Settings);
-                PedSwapCustomMenu.Setup();
-                PedSwapCustomMenu.Show();
-                GameFiber.Yield();
-                while (menuPool.IsAnyMenuOpen())
-                {
-                    PedSwapCustomMenu.Update();
-                    GameFiber.Yield();
-                }
-                PedSwapCustomMenu.Dispose();
-                if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
-                {
-                    AddOffset();
-                }
-                Player.IsCustomizingPed = false;
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
-                EntryPoint.ModController.CrashUnload();
-            }
-        }, "Custom Ped Loop");
-    }
+    //public void BecomeCustomPed()//OLD
+    //{
+    //    GameFiber.StartNew(delegate
+    //    {
+    //        try
+    //        {
+    //            ResetOffsetForCurrentModel();
+    //            Player.IsCustomizingPed = true;
+    //            MenuPool menuPool = new MenuPool();
+    //            PedSwapCustomMenu = new CustomizePedMenu(menuPool, this, Names, Player, Entities, Settings);
+    //            PedSwapCustomMenu.Setup();
+    //            PedSwapCustomMenu.Show();
+    //            GameFiber.Yield();
+    //            while (menuPool.IsAnyMenuOpen())
+    //            {
+    //                PedSwapCustomMenu.Update();
+    //                GameFiber.Yield();
+    //            }
+    //            PedSwapCustomMenu.Dispose();
+    //            if (!PedSwapCustomMenu.ChoseNewModel && Settings.SettingsManager.PedSwapSettings.AliasPedAsMainCharacter && !Player.CharacterModelIsPrimaryCharacter)
+    //            {
+    //                AddOffset();
+    //            }
+    //            Player.IsCustomizingPed = false;
+    //        }
+    //        catch (Exception ex)
+    //        {
+    //            EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+    //            EntryPoint.ModController.CrashUnload();
+    //        }
+    //    }, "Custom Ped Loop");
+    //}
     public void BecomeCreatorPed()
     {
         try

@@ -96,7 +96,7 @@ public class Crimes : ICrimes
     private void SetupCrimes()
     {
         KillingPolice = new Crime(StaticStrings.KillingPoliceCrimeID, "Police Fatality", 3, true, 1, false, true, true) { CanViolateWithoutPerception = true };
-        TerroristActivity = new Crime(StaticStrings.TerroristActivityCrimeID, "Terrorist Activity", 4, true, 2, false, false, true) { CanReportBySound = true };
+        TerroristActivity = new Crime(StaticStrings.TerroristActivityCrimeID, "Terrorist Activity", 3, true, 2, false, false, true) { CanReportBySound = true };
         FiringWeaponNearPolice = new Crime(StaticStrings.FiringWeaponNearPoliceCrimeID, "Shots Fired at Police", 3, true, 3, false, false, true) { CanReportBySound = true };
         AimingWeaponAtPolice = new Crime(StaticStrings.AimingWeaponAtPoliceCrimeID, "Aiming Weapons At Police", 3, true, 4, false, false, true);
         HurtingPolice = new Crime(StaticStrings.HurtingPoliceCrimeID, "Assaulting Police", 3, false, 5, false, false, true) { CanViolateWithoutPerception = true };

@@ -31,6 +31,8 @@ public enum ItemSubType
     Pizza,
     Painkiller,
     Medication,
-
-
+    Dessert,
+    Flashlight,
+    Umbrella,
+    Binoculars,
 }

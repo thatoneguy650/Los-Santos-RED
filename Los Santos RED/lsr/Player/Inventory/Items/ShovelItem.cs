@@ -11,11 +11,11 @@ public class ShovelItem : ModItem
     {
 
     }
-    public ShovelItem(string name, string description) : base(name, description, ItemType.Tools)
+    public ShovelItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public ShovelItem(string name) : base(name, ItemType.Tools)
+    public ShovelItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

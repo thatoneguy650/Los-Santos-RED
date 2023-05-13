@@ -34,6 +34,7 @@ public class VehicleItem : ModItem
     public bool RequiresDLC { get; set; } = false;
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
+    public override bool IsDLC => RequiresDLC;
     public VehicleItem()
     {
     }

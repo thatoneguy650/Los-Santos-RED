@@ -11,11 +11,11 @@ public class DrillItem : ModItem
     {
 
     }
-    public DrillItem(string name, string description) : base(name, description, ItemType.Tools)
+    public DrillItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public DrillItem(string name) : base(name, ItemType.Tools)
+    public DrillItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

@@ -20,7 +20,7 @@ namespace LosSantosRED.lsr.Interface
         void BecomeExistingPed(float Radius, bool Nearest, bool DeleteOld, bool ClearNearPolice, bool createRandomPedIfNoneReturned);
         void BecomeRandomPed();
         void BecomeCop(Agency agency);
-        void BecomeCustomPed();
+       // void BecomeCustomPed();
         void BecomeSavedPed(string playerName, string modelName, int money, PedVariation variation, int speechSkill, string voiceName);
         void RemoveOffset();
         void AddOffset();

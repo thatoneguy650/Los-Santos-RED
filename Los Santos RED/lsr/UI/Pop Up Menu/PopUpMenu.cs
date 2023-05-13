@@ -85,11 +85,10 @@ public class PopUpMenu
     private uint GameTimeStartedDisplaying;
     private bool HasStoppedPressingDisplayKey;
     private uint GameTimeLastClosed;
-
-
-
+    private PopUpBox PrevPopUpBox;
     private string PrevPopUpBoxGroupID;
     private string CurrentPopUpBoxGroupID;
+    private List<Tuple<int, string>> MenuStack = new List<Tuple<int, string>>();
 
     private bool IsCurrentPopUpBoxGroupDefault => CurrentPopUpBoxGroupID == DefaultInVehicleName || CurrentPopUpBoxGroupID == DefaultOnFootGroupName;
     private PopUpBox GetCurrentPopUpBox(int ID) => GetCurrentPopUpBoxes()?.FirstOrDefault(x => x.ID == ID);
@@ -99,6 +98,7 @@ public class PopUpMenu
     private bool SetSlowMo;
     private bool SetPaused;
     private float prevXPercent;
+    private uint GameTimeLastPressedSubMenu;
 
     public bool IsActive { get; private set; }
     public bool RecentlyClosed => Game.GameTime - GameTimeLastClosed <= 500;
@@ -172,6 +172,7 @@ public class PopUpMenu
         HasRanItem = false;
         SetSlowMo = false;
         SetPaused = false;
+        MenuStack = new List<Tuple<int, string>>();
         Game.RawFrameRender += DrawSprites;
         
         NativeFunction.Natives.xFC695459D4D0E219(0.5f, 0.5f);//_SET_CURSOR_LOCATION
@@ -217,7 +218,7 @@ public class PopUpMenu
         UpdateAffiliationMenuGroups();
         GameFiber.Yield();
     }
-    private void UpdateInventoryMenuGroups()
+    private void UpdateInventoryMenuGroups_Old()
     {
         PopUpMenuGroups.RemoveAll(x => x.Group == "Inventory");
         int CategoryID = 0;
@@ -254,6 +255,64 @@ public class PopUpMenu
             CategoryID++;
         }
         PopUpMenuGroups.Add(new PopUpBoxGroup(InventoryCategoriesSubMenuName, InventoryCategoriesSubMenu) { IsChild = true, Group = "Inventory" });
+    }
+    private void UpdateInventoryMenuGroups()
+    {
+        PopUpMenuGroups.RemoveAll(x => x.Group == "Inventory");
+        int ItemTypeID = 0;
+        int ItemSubTypeID = 0;
+        int ItemID = 0;
+        List<PopUpBox> TopLevelList = new List<PopUpBox>();
+        ItemTypeID = 0;
+        foreach (ItemType mi in Player.Inventory.ItemsList.GroupBy(x => x.ModItem?.ItemType).Select(x => x.Key).Distinct().OrderBy(x => x.Value))
+        {
+            PopUpBox itemTypeBox = new PopUpBox(ItemTypeID, mi.ToString(), $"{mi}SubMenu", $"Open the {mi} Sub Menu") { ClosesMenu = false };
+            TopLevelList.Add(itemTypeBox);    
+            List<PopUpBox> MiddleLevelList = new List<PopUpBox>();
+            ItemSubTypeID = 0;
+            foreach (ItemSubType itemSubType in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi).GroupBy(x=> x.ModItem?.ItemSubType).Select(x => x.Key).Distinct().OrderBy(x=> x.Value))
+            {
+                PopUpBox itemSubTypeBox = new PopUpBox(ItemSubTypeID, itemSubType.ToString(), $"{mi}{itemSubType}SubMenu", $"Open the {itemSubType} Sub Menu") { ClosesMenu = false };
+                MiddleLevelList.Add(itemSubTypeBox);
+                List<PopUpBox> LowLevelList = new List<PopUpBox>();
+                ItemID = 0;
+                foreach (InventoryItem ii in Player.Inventory.ItemsList.Where(x => x.ModItem != null && x.ModItem.ItemType == mi && x.ModItem.ItemSubType == itemSubType))
+                {
+                    //EntryPoint.WriteToConsole($"{mi}-{itemSubType} {ii.ModItem?.Name}");
+                    LowLevelList.Add(new PopUpBox(ItemID, ii.ModItem.Name, $"{ii.ModItem.Name}SubMenu", ii.Description) { ClosesMenu = false });
+                    List<PopUpBox> InventoryActionSubMenu = new List<PopUpBox>();
+
+
+
+
+
+
+                    InventoryActionSubMenu.Add(new PopUpBox(0, "Use", new Action(() => Player.ActivityManager.UseInventoryItem(ii.ModItem, true)), $"Use {ii.ModItem.Name}"));
+                    InventoryActionSubMenu.Add(new PopUpBox(1, "Discard", $"Discard{ii.ModItem.Name}SubMenu", $"Discard {ii.ModItem.Name}") { ClosesMenu = false });
+
+
+
+                    List<PopUpBox> InventoryDiscardSubMenu = new List<PopUpBox>();
+                    InventoryDiscardSubMenu.Add(new PopUpBox(0, "Discard All", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, ii.Amount)), $"Discard All {ii.ModItem.Name} ({ii.Amount})"));
+                    InventoryDiscardSubMenu.Add(new PopUpBox(1, "Discard One", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 1)), $"Discard {ii.ModItem.Name}"));
+                    if (ii.Amount > 5)
+                    {
+                        InventoryDiscardSubMenu.Add(new PopUpBox(2, "Discard Five", new Action(() => Player.ActivityManager.DropInventoryItem(ii.ModItem, 5)), $"Discard {ii.ModItem.Name} ({5})"));
+                    }
+                    PopUpMenuGroups.Add(new PopUpBoxGroup($"Discard{ii.ModItem.Name}SubMenu", InventoryDiscardSubMenu) { IsChild = true, Group = "Inventory" });
+
+
+
+                    PopUpMenuGroups.Add(new PopUpBoxGroup($"{ii.ModItem.Name}SubMenu", InventoryActionSubMenu) { IsChild = true, Group = "Inventory" });
+                    ItemID++;
+                }
+                PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi}{itemSubType}SubMenu", LowLevelList) { IsChild = true, Group = "Inventory" });
+                ItemSubTypeID++;
+            }
+            PopUpMenuGroups.Add(new PopUpBoxGroup($"{mi}SubMenu", MiddleLevelList) { IsChild = true, Group = "Inventory" });
+            ItemTypeID++;
+        }
+        PopUpMenuGroups.Add(new PopUpBoxGroup(InventoryCategoriesSubMenuName, TopLevelList) { IsChild = true, Group = "Inventory" });
     }
     private void UpdateGroupMenuGroups()
     {
@@ -416,7 +475,16 @@ public class PopUpMenu
                             CurrentPopUpBoxGroupID = popUpBox.ChildMenuID;
                             CurrentPage = 0;
                             TotalPages = 0;
-                            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED SELECT SUB MENU DRAWN");
+
+                            int max = 0;
+                            if (MenuStack.Any())
+                            {
+                                max = MenuStack.Max(x => x.Item1);
+                            }
+                            MenuStack.Add(new Tuple<int, string>(max + 1, PrevPopUpBoxGroupID));
+
+
+                          //  EntryPoint.WriteToConsole($"ACTION WHEEL: ToMenu:{popUpBox?.ChildMenuID} PrevMenu:{PrevPopUpBoxGroupID}");
                         }
                         //GameTimeLastClicked = Game.GameTime;//Environment.TickCount;
                     }
@@ -438,29 +506,73 @@ public class PopUpMenu
         }
         if (PrevSelectedMenuMap?.Display != SelectedMenuMap?.Display)
         {
-            if(SelectedMenuMap != null)
+            if(SelectedMenuMap != null && Game.GameTime - GameTimeLastPressedSubMenu >= 50)
             {
                 NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "CONTINUE", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
             }
+            //EntryPoint.WriteToConsole($"ACTION WHEEL PrevSelectedMenuMap:{PrevSelectedMenuMap?.ChildMenuID} SelectedMenuMap {SelectedMenuMap?.ChildMenuID}");
             PrevSelectedMenuMap = SelectedMenuMap;
         }
 
         bool isPressingAim = (Game.IsControlJustPressed(0, GameControl.Aim) || NativeFunction.Natives.x91AEF906BCA88877<bool>(0, 25));
         if (!IsCurrentPopUpBoxGroupDefault && isPressingAim)
         {
-            //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED BACK, GOING TO HOMEPAGE");
-            UpdateDefaultMapping(true);
+
+            if(!MenuStack.Any())
+            {
+                UpdateDefaultMapping(true);
+            }
+            else
+            {
+                string menuID = MenuStack.OrderByDescending(x => x.Item1).FirstOrDefault()?.Item2;
+
+                if(string.IsNullOrEmpty(menuID))
+                {
+                    UpdateDefaultMapping(true);
+                }
+                else
+                {
+                    MenuStack.RemoveAll(x=> x.Item2 == menuID);
+                    CurrentPopUpBoxGroupID = menuID;
+                }
+            }
+
+
+           // EntryPoint.WriteToConsole($"ACTION WHEEL PRESSED BACK, GOING TO {PrevPopUpBoxGroupID}");
+            //if(string.IsNullOrEmpty(CurrentPopUpBoxGroupID))
+            //{
+            //    MenuStack.Clear();
+            //    UpdateDefaultMapping(true);
+            //}
+            //else
+            //{
+            //    MenuStack.RemoveAll(x => x.Item2 == PrevPopUpBoxGroupID);
+            //    CurrentPopUpBoxGroupID = PrevPopUpBoxGroupID;
+            //}
+            
+            //UpdateDefaultMapping(true);
             CurrentPage = 0;
             TotalPages = 0;
+
+
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
+
+            GameTimeLastPressedSubMenu = Game.GameTime;
+
+
+
+
         }
         else if(IsCurrentPopUpBoxGroupDefault && !Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && isPressingAim)
         {
             //EntryPoint.WriteToConsoleTestLong($"ACTION WHEEL PRESSED BACK, CLOSING MENU");
             CloseMenu();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
         }
         else if (!Settings.SettingsManager.ActionWheelSettings.RequireButtonHold && UI.IsPressingActionWheelButton && HasStoppedPressingDisplayKey)
         {
             CloseMenu();
+            NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "BACK", "HUD_FRONTEND_DEFAULT_SOUNDSET", 0);
         }
     }
     private void ProcessControllerInput()

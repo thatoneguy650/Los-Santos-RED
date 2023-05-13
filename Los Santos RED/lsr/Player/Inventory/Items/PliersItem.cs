@@ -11,11 +11,11 @@ public class PliersItem : ModItem
     {
 
     }
-    public PliersItem(string name, string description) : base(name, description, ItemType.Tools)
+    public PliersItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public PliersItem(string name) : base(name, ItemType.Tools)
+    public PliersItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

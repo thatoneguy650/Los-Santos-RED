@@ -464,10 +464,10 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Bottle of Raine Water", 2)
             
             }),
-            new ShopMenu("FancyDeliMenu","Deli",new List<MenuItem>() { new MenuItem("Chicken Club Salad",10),new MenuItem("Spicy Seafood Gumbo",14),new MenuItem("Muffaletta",8),new MenuItem("Zucchini Garden Pasta",9),new MenuItem("Pollo Mexicano",12),new MenuItem("Italian Cruz Po'boy",19),new MenuItem("Chipotle Chicken Panini",10),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
-            new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44),new MenuItem("Key Lime Pie",13),new MenuItem("Bottle of Raine Water",2), }),
-            new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),
-            new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),new MenuItem("Bottle of Raine Water",2),new MenuItem("Cup of eCola",2),new MenuItem("Cup of Sprunk",2),}),            
+            new ShopMenu("FancyDeliMenu","Deli",new List<MenuItem>() { new MenuItem("Chicken Club Salad",10),new MenuItem("Spicy Seafood Gumbo",14),new MenuItem("Muffaletta",8),new MenuItem("Zucchini Garden Pasta",9),new MenuItem("Pollo Mexicano",12),new MenuItem("Italian Cruz Po'boy",19),new MenuItem("Chipotle Chicken Panini",10)}),
+            new ShopMenu("FancyFishMenu","Fish",new List<MenuItem>() { new MenuItem("Coconut Crusted Prawns",12),new MenuItem("Crab and Shrimp Louie",10),new MenuItem("Open-Faced Crab Melt",28),new MenuItem("King Salmon",48),new MenuItem("Ahi Tuna",44), }),
+            new ShopMenu("FancyGenericMenu","Restaurant",new List<MenuItem>() { new MenuItem("Smokehouse Burger",10),new MenuItem("Chicken Critters Basket",7),new MenuItem("Prime Rib 16 oz",22),new MenuItem("Bone-In Ribeye",25),new MenuItem("Grilled Pork Chops",14),new MenuItem("Grilled Shrimp",15)}),
+            new ShopMenu("NoodleMenu","Noodles",new List<MenuItem>() { new MenuItem("Juek Suk tong Mandu",8),new MenuItem("Hayan Jam Pong",9),new MenuItem("Sal Gook Su Jam Pong",12),new MenuItem("Chul Pan Bokkeum Jam Pong",20),new MenuItem("Deul Gae Udon",12),new MenuItem("Dakgogo Bokkeum Bap",9),}),            
             new ShopMenu("MexicanMenu","MexicanMenu",new List<MenuItem> {
                 new MenuItem("Asada Plate", 12),
                 new MenuItem("2 Tacos Combo", 10),
@@ -666,8 +666,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Solo Solo Burger", 4),
                 new MenuItem("French Fries", 2),
                 new MenuItem("Jumbo Shake", 5),
-                new MenuItem("Cup of eCola", 2),
-                new MenuItem("Cup of Sprunk", 2),
+                new MenuItem("Large eCola", 2),
+                new MenuItem("Large Sprunk", 2),
             }),
             new ShopMenu("BeefyBillsMenu","BeefyBillsMenu",new List<MenuItem> {
                 new MenuItem("Kingsize Burger", 5),
@@ -823,8 +823,8 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Little Peckers", 4),
                 new MenuItem("Balls & Rings", 4),
                 new MenuItem("French Fries", 2),
-                new MenuItem("Cup of eCola", 2),
-                new MenuItem("Cup of Sprunk", 2),
+                new MenuItem("XXL eCola", 2),
+                new MenuItem("XXL Sprunk", 2),
             }),
             new ShopMenu("BishopsChickenMenu","BishopsChickenMenu",new List<MenuItem> {
                 new MenuItem("Pope Combo", 8),

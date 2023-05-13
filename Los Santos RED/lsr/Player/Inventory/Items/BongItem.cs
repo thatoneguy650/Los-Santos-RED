@@ -11,11 +11,11 @@ public class BongItem : ModItem
     {
 
     }
-    public BongItem(string name, string description) : base(name, description, ItemType.Tools)
+    public BongItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public BongItem(string name) : base(name, ItemType.Tools)
+    public BongItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

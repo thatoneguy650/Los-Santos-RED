@@ -11,11 +11,11 @@ public class TapeItem : ModItem
     {
 
     }
-    public TapeItem(string name, string description) : base(name, description, ItemType.Tools)
+    public TapeItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public TapeItem(string name) : base(name, ItemType.Tools)
+    public TapeItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

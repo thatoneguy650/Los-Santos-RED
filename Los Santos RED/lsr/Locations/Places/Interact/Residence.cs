@@ -23,7 +23,6 @@ public class Residence : InteractableLocation, ILocationSetupable
     private UIMenuItem RentResidenceMenuItem;
     private UIMenuItem RentDisplayItem;
     private bool KeepInteractionGoing;
-    private InventoryMenu InventoryMenu;
     private UIMenu outfitsSubMenu;
     private IActivityPerformable ActivityPerformable;
 

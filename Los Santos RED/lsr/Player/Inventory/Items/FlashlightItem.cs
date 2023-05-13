@@ -32,11 +32,11 @@ public class FlashlightItem : ModItem
     {
 
     }
-    public FlashlightItem(string name, string description) : base(name, description, ItemType.Tools)
+    public FlashlightItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public FlashlightItem(string name) : base(name, ItemType.Tools)
+    public FlashlightItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

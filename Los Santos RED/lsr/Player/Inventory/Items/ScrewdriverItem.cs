@@ -11,11 +11,11 @@ public class ScrewdriverItem : ModItem
     {
 
     }
-    public ScrewdriverItem(string name, string description) : base(name, description, ItemType.Tools)
+    public ScrewdriverItem(string name, string description) : base(name, description, ItemType.Equipment)
     {
 
     }
-    public ScrewdriverItem(string name) : base(name, ItemType.Tools)
+    public ScrewdriverItem(string name) : base(name, ItemType.Equipment)
     {
 
     }

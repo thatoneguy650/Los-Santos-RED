@@ -25,6 +25,8 @@ public class WeaponSway
     private float PercentVeritcalSwayElapsed;
     private float PercentHorizontalSwayElapsed;
     private float Speed;
+    private float DesiredPitch;
+
     public bool IsDisabled { get; set; } = false;
 
     public WeaponSway(IWeaponSwayable player, ISettingsProvideable settings)
@@ -40,6 +42,12 @@ public class WeaponSway
     {
         GameTimeLastHorizontalChangedSwayDirection = 0;
         GameTimeLastVerticalChangedSwayDirection = 0;
+        PercentVeritcalSwayElapsed = 0;
+        PercentHorizontalSwayElapsed = 0;
+        AdjustedPitch = 0.0f;
+        AdjustedHeading = 0.0f;
+        CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
+        CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
     }
     private void Sway()
     {
@@ -87,10 +95,19 @@ public class WeaponSway
     }
     private void ApplySway()
     {
+       
         Speed = Player.Character.Speed;
         UpdateDirection();
         CurrentPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
         CurrentHeading = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_HEADING<float>();
+        if(Math.Abs(CurrentPitch - DesiredPitch) >= Settings.SettingsManager.SwaySettings.ExcessivePitch)// 0.001f)
+        {
+            // EntryPoint.WriteToConsole($"EXCESSIVE PITCH APPLY {CurrentPitch} - {DesiredPitch}");
+            AdjustedPitch = 0.0f;
+            AdjustedHeading = 0.0f;
+            DesiredPitch = CurrentPitch;
+            return;
+        }
         if (Player.IsInVehicle)
         {
             AdjustPitchInVehicle();
@@ -101,12 +118,25 @@ public class WeaponSway
         {
             AdjustPitchOnFoot();
             AdjustHeadingOnFoot();
-            NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.SwaySettings.SmoothRate);
+            if (Math.Abs(AdjustedPitch) > 0f)
+            {
+                NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_PITCH(CurrentPitch + AdjustedPitch, Settings.SettingsManager.SwaySettings.SmoothRate);
+            }
             if (Math.Abs(AdjustedHeading) > 0f)
             {
                 NativeFunction.Natives.SET_GAMEPLAY_CAM_RELATIVE_HEADING(CurrentHeading + AdjustedHeading);
-            }
+            }     
+            //NativeFunction.Natives.FORCE_CAMERA_RELATIVE_HEADING_AND_PITCH(CurrentPitch + AdjustedPitch, CurrentHeading + AdjustedHeading, Settings.SettingsManager.SwaySettings.SmoothRate);
         }
+//
+//string CurrentPitchDisplay = Math.Round(CurrentPitch, 2).ToString("N4");
+       // string AdjustPitchDisplay = Math.Round(AdjustedPitch, 4).ToString("N4");
+       // string CurrentHeadingDisplay = Math.Round(CurrentHeading, 2).ToString("N4");
+       // string AdjustHeadingDisplay = Math.Round(AdjustedHeading, 4).ToString("N4");
+       // string PercentHorDisplay = Math.Round(PercentHorizontalSwayElapsed, 2).ToString("N4");
+       // string PercentVerDisplay = Math.Round(PercentVeritcalSwayElapsed, 2).ToString("N4");
+        DesiredPitch = CurrentPitch + AdjustedPitch;
+       // Player.DebugString = $"CurrentPitch:{CurrentPitchDisplay}/{AdjustPitchDisplay} CurrentHeading:{CurrentHeadingDisplay}/{AdjustHeadingDisplay} {PercentHorDisplay} {PercentVerDisplay}";
         //Player.DebugLine4 = $"Speed {Speed:N2} % Hor {PercentHorizontalSwayElapsed:P2} %Ver {PercentVeritcalSwayElapsed:P2} VerDIr {VerticalSwayDirection} HorDIr {HorizontalSwayDirection}";
     }
     private void UpdateDirection()

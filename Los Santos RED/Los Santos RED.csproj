@@ -213,7 +213,6 @@
     <Compile Include="lsr\Ped\Cop\CanineUnit.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />
     <Compile Include="lsr\Ped\PedDesires.cs" />
-    <Compile Include="lsr\Ped\PedKnowledge.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
     <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
@@ -657,14 +656,12 @@
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\FashionProp.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\Other\HeadLookup.cs" />
     <Compile Include="lsr\UI\Menu\Customize Ped\PedCustomizerMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Main\CustomizePedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\SettingsMenu.cs" />
     <Compile Include="lsr\Ped\Variation\HeadBlendData.cs" />
     <Compile Include="lsr\Player\Inventory\ePhysicalItemType.cs" />
     <Compile Include="lsr\Player\Inventory\Intoxicant.cs" />
     <Compile Include="lsr\UI\Other\eGTAFont.cs" />
     <Compile Include="lsr\UI\Other\Fader.cs" />
-    <Compile Include="lsr\UI\Menu\Main\InventoryMenu.cs" />
     <Compile Include="lsr\Player\Inventory\ItemCategory.cs" />
     <Compile Include="lsr\Player\Inventory\eConsumableType.cs" />
     <Compile Include="lsr\Player\Interface\IPerceptable.cs" />
@@ -735,7 +732,6 @@
     <Compile Include="lsr\Tasker\Other\ITaskerReportable.cs" />
     <Compile Include="lsr\UI\Other\IMenuProvideable.cs" />
     <Compile Include="lsr\UI\Menu\Main\PedSwapMenu.cs" />
-    <Compile Include="lsr\UI\Menu\Main\SaveMenu.cs" />
     <Compile Include="lsr\Player\Inventory\InventoryItem.cs" />
     <Compile Include="lsr\Player\Inventory\MenuItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ModItem.cs" />
@@ -794,7 +790,6 @@
     <Compile Include="lsr\Player\Activity\Data\SmokingData.cs" />
     <Compile Include="lsr\Ped\WeaponInventory\WeaponInventory.cs" />
     <Compile Include="lsr\Tasker\Other\eDrivingStyles.cs" />
-    <Compile Include="lsr\UI\Menu\Main\ActionMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\BustedMenu.cs" />
     <Compile Include="lsr\UI\Menu\Main\DeathMenu.cs" />
     <Compile Include="lsr\UI\Menu\Debug\DebugMenu.cs" />

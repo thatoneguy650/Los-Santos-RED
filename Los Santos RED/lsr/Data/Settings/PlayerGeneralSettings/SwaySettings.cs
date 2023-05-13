@@ -41,6 +41,7 @@ public class SwaySettings : ISettingsDefaultable
     //[Description("If enabled, the alternate pitch and heading calulation will be used. DEBUG SETTING")]
     //public bool UseAlternateCalculation { get; set; }
     public float SmoothRate { get; set; }
+    public float ExcessivePitch { get; set; }
 
     public SwaySettings()
     {
@@ -67,6 +68,7 @@ public class SwaySettings : ISettingsDefaultable
         FramesBetweenRecoil = 30;
         ApplySwayWithController = false;
         SmoothRate = 1.0f;
+        ExcessivePitch = 0.001f;
     }
 
 }
