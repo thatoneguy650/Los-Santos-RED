@@ -175,6 +175,49 @@ public class SavedOutfits : ISavedOutfits
         12);
         SavedOutfit AlexisDefaultOutfit3 = new SavedOutfit("Alexis Davis Coat", "MP_F_FREEMODE_01", AlexisVariation3);
         SavedOutfitList.Add(AlexisDefaultOutfit3);
+
+        PedVariation AlexisVariation4 = new PedVariation(new List<PedComponent>()
+        {
+            new PedComponent(0, 0, 0, 0),
+            new PedComponent(1, 0, 0, 0),
+            new PedComponent(2, 49, 0, 0) ,
+            new PedComponent(3, 15, 0, 0) ,
+            new PedComponent(4, 14, 1, 0) ,
+            new PedComponent(5, 0, 0, 0) ,
+            new PedComponent(6, 5, 1, 0) ,
+            new PedComponent(7, 0, 0, 0) ,
+            new PedComponent(8, 8, 0, 0) ,
+            new PedComponent(9, 0, 0, 0) ,
+            new PedComponent(10, 0, 0, 0) ,
+            new PedComponent(11, 4, 10, 0)
+        },
+        new List<PedPropComponent>()
+        {
+
+        },
+        new List<HeadOverlayData>()
+        {
+            new HeadOverlayData(0,"Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0},
+            new HeadOverlayData(1, "Facial Hair") { ColorType = 1,Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(2, "Eyebrows") { ColorType = 1,Index = 2,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(3, "Ageing") {Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(4, "Makeup") { Index = 1,Opacity = 0.6f, PrimaryColor = 40,SecondaryColor = 0 },
+            new HeadOverlayData(5, "Blush") { ColorType = 2, Index = -1,Opacity = 0.6f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(6, "Complexion"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(7, "Sun Damage"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(8, "Lipstick") { ColorType = 2, Index = 2,Opacity = 0.6f, PrimaryColor = 2,SecondaryColor = 0 },
+            new HeadOverlayData(9, "Moles/Freckles"){ Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(10, "Chest Hair") { ColorType = 1, Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(11, "Body Blemishes") { Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+            new HeadOverlayData(12, "Add Body Blemishes"){Index = 255,Opacity = 1.0f, PrimaryColor = 0,SecondaryColor = 0 },
+        },
+        new HeadBlendData(12, 31, 0, 12, 31, 0, 0.8f, 0.2f, 0.0f),
+        4,
+        3);
+        SavedOutfit AlexisDefaultOutfit4 = new SavedOutfit("Alexis Davis Summer", "MP_F_FREEMODE_01", AlexisVariation4);
+        SavedOutfitList.Add(AlexisDefaultOutfit4);
+
+
     }
     private void AddClaude()
     {

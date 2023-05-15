@@ -329,7 +329,8 @@ public class Zones : IZones
             new Zone("BOTU", "Booth Tunnel", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
             new Zone("HIBRG", "Hickey Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
             new Zone("NOWOB", "Northwood Heights Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
-            
+            new Zone("LEAPE", "Leaper's Bridge", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, true, eLocationEconomy.Middle, eLocationType.Downtown),
+            //LEAPE
             //Other
             new Zone("OCEANA", "Atlantic Ocean", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
             new Zone("SANAND", "Outskirts", StaticStrings.LibertyCityCountyID, StaticStrings.LibertyStateID, false, eLocationEconomy.Middle, eLocationType.Rural),
