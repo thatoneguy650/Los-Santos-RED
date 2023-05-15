@@ -17,8 +17,6 @@ using System.Xml.Serialization;
 
 public class InteractableLocation : BasicLocation, ILocationDispatchable
 {
-
-
     protected LocationCamera StoreCamera;
     protected ILocationInteractable Player;
     protected IModItems ModItems;
@@ -27,49 +25,19 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     protected IWeapons Weapons;
     protected ITimeControllable Time;
     protected Transaction Transaction;
-
-
-
     protected uint NotificationHandle;
     private readonly List<string> FallBackVendorModels = new List<string>() { "s_m_m_strvend_01", "s_m_m_linecook" };
-
-
     public List<ConditionalGroup> PossibleGroupSpawns { get; set; }
     public List<ConditionalLocation> PossiblePedSpawns { get; set; }
     public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
-
-
-
-
-
-
     public virtual string AssociationID => AssignedAssociationID;
-
     public string AssignedAssociationID { get; set; }
     [XmlIgnore]
     public Agency AssignedAgency { get; set; }
-
-
-
     [XmlIgnore]
     public bool IsDispatchFilled { get; set; } = false;
-
-
-
-
-
-
-
-
-
-
     [XmlIgnore]
     public float EntranceGroundZ { get; set; } = 0.0f;
-
-
-
-
-
     public string MenuID { get; set; }
     public Vector3 VendorPosition { get; set; } = Vector3.Zero;
     public float VendorHeading { get; set; } = 0f;
@@ -97,11 +65,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
     public MenuPool MenuPool { get; private set; }
     [XmlIgnore]
     public bool VendorAbandoned { get; set; } = false;
-
-
-
     public virtual float ActivateDistance { get; set; } = 225;
-
     public InteractableLocation(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         
@@ -222,7 +186,7 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         }
         CanInteract = true;
     }
-    public void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world)
+    public virtual void StoreData(IShopMenus shopMenus, IAgencies agencies, IGangs gangs, IZones zones, IJurisdictions jurisdictions, IGangTerritories gangTerritories, INameProvideable Names, ICrimes Crimes, IPedGroups PedGroups, IEntityProvideable world)
     {
         World = world;
         //EntryPoint.WriteToConsole($"Storing Data for {Name}");
@@ -230,6 +194,8 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         {
             AssignedAgency = agencies.GetAgency(AssignedAssociationID);
         }
+
+
         Menu = shopMenus.GetSpecificMenu(MenuID);
         if (PossiblePedSpawns != null)
         {
@@ -370,8 +336,6 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         }
         return false;
     }
-
-
     public virtual void DisplayMessage(string header, string message)
     {
         Game.RemoveNotification(NotificationHandle);
@@ -386,7 +350,6 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "PURCHASE", "HUD_LIQUOR_STORE_SOUNDSET", 0);
         //NativeFunction.Natives.PLAY_SOUND_FRONTEND(-1, "WEAPON_PURCHASE", "HUD_AMMO_SHOP_SOUNDSET", 0);
     }
-
     public virtual void AddDistanceOffset(Vector3 offsetToAdd)
     {
         EntrancePosition += offsetToAdd;
@@ -402,7 +365,6 @@ public class InteractableLocation : BasicLocation, ILocationDispatchable
         {
             CameraDirection += offsetToAdd;
         }
-
         List<ConditionalLocation> AllLocation = new List<ConditionalLocation>();
         if (PossiblePedSpawns != null)
         {

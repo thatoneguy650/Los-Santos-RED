@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         List<ModItem> InventoryItems();
         void WriteToFile();
         WeaponItem GetRandomWeapon(bool allowIllegal);
+        VehicleItem GetVehicle(string modelName);
     }
 }

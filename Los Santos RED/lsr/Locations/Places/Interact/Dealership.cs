@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
 
-public class Dealership : InteractableLocation
+public class Dealership : InteractableLocation, ILicensePlatePreviewable
 {
 
     public Dealership() : base()
@@ -20,14 +20,10 @@ public class Dealership : InteractableLocation
     public override string TypeName { get; set; } = "Dealership";
     public override int MapIcon { get; set; } = (int)BlipSprite.GangVehicle;
     public override string ButtonPromptText { get; set; }
-
     public string LicensePlatePreviewText { get; set; } = "BUYMENOW";
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
-
-
-    public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
-
+    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public Dealership(Vector3 _EntrancePosition, float _EntranceHeading, string _Name, string _Description, string menuID) : base(_EntrancePosition, _EntranceHeading, _Name, _Description)
     {
         MenuID = menuID;
@@ -70,7 +66,7 @@ public class Dealership : InteractableLocation
 
                     CreateInteractionMenu();
                     Transaction = new Transaction(MenuPool, InteractionMenu, Menu, this);
-                    Transaction.Dealership = this;
+                    Transaction.LicensePlatePreviewable = this;
                     Transaction.ItemDeliveryLocations = ItemDeliveryLocations;
 
                     Transaction.ItemPreviewPosition = ItemPreviewPosition;

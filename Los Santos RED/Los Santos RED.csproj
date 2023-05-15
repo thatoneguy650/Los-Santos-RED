@@ -192,6 +192,7 @@
     <Compile Include="lsr\Locations\Places\ConditionalLocations\LEConditionalLocation.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\IGeneratesDispatchables.cs" />
     <Compile Include="lsr\Locations\Places\ConditionalLocations\SecurityConditionalLocation.cs" />
+    <Compile Include="lsr\Locations\Places\ILicensePlatePreviewable.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Airport.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\Carrier.cs" />
     <Compile Include="lsr\Locations\Places\Interact\Airport\CayoPericoAirport.cs" />

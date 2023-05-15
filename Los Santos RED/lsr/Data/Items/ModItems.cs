@@ -56,10 +56,14 @@ public class ModItems : IModItems
     {
         return PossibleItems.WeaponItems.FirstOrDefault(x => x.ModelName.ToLower() == modelName.ToLower());
     }
-    //public ModItem GetRandomItem()
-    //{
-    //    return PossibleFoundItems().PickRandom();
-    //}
+    public VehicleItem GetVehicle(uint modelHash)
+    {
+        return PossibleItems.VehicleItems.FirstOrDefault(x => x.ModelHash == modelHash);
+    }
+    public VehicleItem GetVehicle(string modelName)
+    {
+        return PossibleItems.VehicleItems.FirstOrDefault(x => x.ModelName.ToLower() == modelName.ToLower());
+    }
     public void ReadConfig()
     {
         DirectoryInfo LSRDirectory = new DirectoryInfo("Plugins\\LosSantosRED");
@@ -169,9 +173,6 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.WeaponItems);
         return AllItems.Where(x => x.FindPercentage > 0).ToList();
     }
-
-
-
     public List<ModItem> InventoryItems()
     {
         List<ModItem> AllItems = new List<ModItem>();
@@ -203,8 +204,6 @@ public class ModItems : IModItems
             modItem.Setup(physicalItems, weapons);
         }
     }
-
-
     public ModItem GetRandomItem(bool allowIllegal)// List<string> RequiredModels)
     {
         List<ModItem> ToPickFrom = PossibleFoundItems();
@@ -255,7 +254,6 @@ public class ModItems : IModItems
         }
         return null;
     }
-
     private void DefaultConfig()
     {
         DefaultConfig_Drinks();
@@ -437,7 +435,7 @@ public class ModItems : IModItems
                 FindPercentage = 10},//needs better attachment
             new DrinkItem("Carton of Milk", "Full Fat. Farmed and produced in U.S.A.", ItemType.Drinks) { 
                 HealthChangeAmount = MediumHealthRecover,
-                ThirstChangeAmount = MediumThirstRecover,
+                ThirstChangeAmount = FullThirstRecover,
                 HungerChangeAmount = MediumHungerRecover,
                 ItemSubType= ItemSubType.Milk },
             new DrinkItem("Cup of eCola", "Deliciously Infectious!", ItemType.Drinks){
@@ -2698,10 +2696,4 @@ public class ModItems : IModItems
             new WeaponItem("Tear Gas Grenade","Tear gas grenade, particularly effective at incapacitating multiple assailants. Sustained exposure can be lethal.", false, ItemType.Weapons) { ModelName = "weapon_smokegrenade",PoliceFindDuringPlayerSearchPercentage = 85},
         });
     }
-
-
-
-
-
-
 }

@@ -144,9 +144,6 @@ public class Civilians
             EntryPoint.WriteToConsole($"Civilians.UpdateEMTs Ran Time Since {Game.GameTime - GameTimeLastUpdatedEMTPeds} TotalRan: {TotalEMTsRan} TotalChecked: {TotalEMTsChecked}", 5);
         }
         GameTimeLastUpdatedEMTPeds = Game.GameTime;
-
-
-
     }
     public void UpdateMerchants()
     {
@@ -335,7 +332,6 @@ public class Civilians
                 Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
             }
         }
-
         if (Settings.SettingsManager.SecuritySettings.AllowDetainment && PoliceRespondable.IsNotWanted)
         {
             if (PoliceRespondable.IsDetainable && (PoliceRespondable.IsIncapacitated || (PoliceRespondable.IsDangerouslyArmed && PoliceRespondable.IsStill)) && World.Pedestrians.SecurityGuardList.Any(x => x.CanSeePlayer && x.ShouldDetainPlayer))
@@ -351,8 +347,6 @@ public class Civilians
                 //EntryPoint.WriteToConsoleTestLong("Security Detain 2");
             }
         }
-
-
         if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
         {
             EntryPoint.WriteToConsole($"Civilians.UpdateSecurityGuards Ran Time Since {Game.GameTime - GameTimeLastUpdatedSecurityPeds} TotalRan: {TotalSecurityGuardsRan} TotalChecked: {TotalSecurityGuardsChecked}", 5);
@@ -374,17 +368,6 @@ public class Civilians
             PoliceInterestPoint = Vector3.Zero;
         }
         World.PoliceBackupPoint = PoliceInterestPoint;
-        //if(PoliceInterestPoint == Vector3.Zero)
-        //{
-        //    World.PoliceBackupPoint = PoliceInterestPoint;
-        //}
-        //else if(World.PoliceBackupPoint == Vector3.Zero || PoliceInterestPoint.DistanceTo2D(World.PoliceBackupPoint) >= 25f)
-        //{
-        //    World.PoliceBackupPoint = PoliceInterestPoint;
-        //    EntryPoint.WriteToConsole("Police Interest Point Changed by 25");
-        //}
-
-
         if (worstPed != null)
         {
             World.CitizenWantedLevel = worstPed.WantedLevel;
@@ -393,26 +376,18 @@ public class Civilians
         {
             World.CitizenWantedLevel = 0;
         }
-
-
         if(prevCitizenWantedLevel != World.CitizenWantedLevel)
         {
-            if(World.CitizenWantedLevel > 1 && !PoliceRespondable.Investigation.IsActive && PoliceRespondable.IsNotWanted)
+            if(World.CitizenWantedLevel > 1 && !PoliceRespondable.Investigation.IsActive && PoliceRespondable.IsNotWanted && !PoliceRespondable.IsCop)
             {
                 PoliceRespondable.Scanner.OnRequestedBackUpSimple();
-            }
-            else
-            {
-
             }
             //EntryPoint.WriteToConsoleTestLong($"Citizen Wanted Level Changed from {prevCitizenWantedLevel} to {World.CitizenWantedLevel}");
             prevCitizenWantedLevel = World.CitizenWantedLevel;
         }
-
-
         if (Settings.SettingsManager.PoliceTaskSettings.AllowRespondingWithoutCallIn)
         {
-            if (World.CitizenWantedLevel > 0 && World.PoliceBackupPoint != Vector3.Zero)
+            if (World.CitizenWantedLevel > 0 && World.PoliceBackupPoint != Vector3.Zero && (!PoliceRespondable.IsCop || Settings.SettingsManager.PoliceTaskSettings.AutoDispatchWhenCop))
             {
                 AssignCops();
                 GameFiber.Yield();

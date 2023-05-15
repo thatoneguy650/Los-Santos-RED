@@ -175,7 +175,7 @@ public class VehicleItem : ModItem
         string formattedPurchasePrice = menuItem.PurchasePrice.ToString("C0");
         if (menuItem.PurchasePrice == 0)
         {
-            formattedPurchasePrice = "FREE";
+            formattedPurchasePrice = "";
         }
 
         string description = GetGeneralDescription(menuItem);
@@ -213,7 +213,16 @@ public class VehicleItem : ModItem
         }
 
         //Purchase Stuff Here
-        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this vehicle") { RightLabel = formattedPurchasePrice };
+
+        string PurchaseHeader = "Purchase";
+        string PurchaseDescription = "Select to purchase this vehicle";
+
+        if(!Transaction.IsPurchasing)
+        {
+            PurchaseHeader = "Take";
+            PurchaseDescription = "Select to take possession of this vehicle";
+        }
+        UIMenuItem Purchase = new UIMenuItem(PurchaseHeader, PurchaseDescription) { RightLabel = formattedPurchasePrice };
         Purchase.Activated += (sender, selectedItem) =>
         {
             if(menuItem == null)
@@ -228,7 +237,15 @@ public class VehicleItem : ModItem
             }
             Transaction.IsShowingConfirmDialog = true;
             sender.Visible = false;
-            SimpleWarning popUpWarning = new SimpleWarning("Purchase", $"Are you sure you want to purchase this vehicle for ${menuItem.PurchasePrice}", "", player.ButtonPrompts, settings);
+
+            string PurchaseWarningHeader = "Purchase";
+            string PurchaseWarningDescription = $"Are you sure you want to purchase this vehicle for ${menuItem.PurchasePrice}";
+            if (!Transaction.IsPurchasing)
+            {
+                PurchaseHeader = "Take";
+                PurchaseDescription = $"Are you sure you want to take possession of this vehicle";
+            }
+            SimpleWarning popUpWarning = new SimpleWarning(PurchaseWarningHeader, PurchaseWarningDescription, "", player.ButtonPrompts, settings);
             popUpWarning.Show();
             if (!popUpWarning.IsAccepted)
             {
@@ -356,14 +373,14 @@ public class VehicleItem : ModItem
             else
             {
                 transaction.PlayErrorSound();
-                transaction.DisplayMessage("~r~Delivery Failed", "We are sorry, we are unable to complete this transation");
+                transaction.DisplayMessage("~r~Delivery Failed", "We are sorry, we are unable to complete this delivery");
                 return false;
             }
         }
         else
         {
             transaction.PlayErrorSound();
-            transaction.DisplayMessage("~o~Blocked Delivery", "We are sorry, we are unable to complete this transation, the delivery bay is blocked");
+            transaction.DisplayMessage("~o~Blocked Delivery", "We are sorry, we are unable to complete this delivery, the bay is blocked");
             return false;
         }
     }
@@ -409,7 +426,7 @@ public class VehicleItem : ModItem
             }
         }
         NativeFunction.Natives.SET_VEHICLE_ON_GROUND_PROPERLY<bool>(Transaction.SellingVehicle, 5.0f);
-        Car.ForcePlateType(Transaction?.Dealership?.LicensePlatePreviewText, 0);
+        Car.ForcePlateType(Transaction?.LicensePlatePreviewable?.LicensePlatePreviewText, 0);
     }
     private void CreateLiveryMenuOne(Transaction Transaction)
     {

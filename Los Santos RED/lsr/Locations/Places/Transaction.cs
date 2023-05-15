@@ -42,7 +42,8 @@ public class Transaction
     public bool IsStealing { get; set; }
     public bool IsShowingConfirmDialog { get; set; } = false;
     public bool RotatePreview { get; set; }
-    public Dealership Dealership { get; set; }
+    public ILicensePlatePreviewable LicensePlatePreviewable { get; set; }
+    public bool IsPurchasing { get; set; } = true;
 
     public Transaction(MenuPool menuPool, UIMenu parentMenu, ShopMenu menu, InteractableLocation store)
     {
@@ -74,6 +75,7 @@ public class Transaction
         {
             return;
         }
+        EntryPoint.WriteToConsole($"IsFreeVehicles {IsFreeVehicles} IsFreeWeapons {IsFreeWeapons} IsFreeItems {IsFreeItems}");
         foreach (MenuItem mi in ShopMenu.Items)
         {
             ModItem modItem = modItems.Get(mi.ModItemName);
@@ -405,6 +407,15 @@ public class Transaction
         if (modItem.MeasurementName != "Item")
         {
             Message = $"You have purchased {TotalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~";
+        }    
+        if(!IsPurchasing)
+        {
+            Header = "~g~Acquired";
+            Message = $"You have acquired {TotalItems} ~r~{modItem.Name}(s)~s~";
+            if (modItem.MeasurementName != "Item")
+            {
+                Message = $"You have acquired {TotalItems} {modItem.MeasurementName}(s) of ~r~{modItem.Name}~s~";
+            }
         }
         DisplayMessage(Header, Message);
     }

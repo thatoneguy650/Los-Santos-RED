@@ -216,8 +216,6 @@ public class SavedOutfits : ISavedOutfits
         3);
         SavedOutfit AlexisDefaultOutfit4 = new SavedOutfit("Alexis Davis Summer", "MP_F_FREEMODE_01", AlexisVariation4);
         SavedOutfitList.Add(AlexisDefaultOutfit4);
-
-
     }
     private void AddClaude()
     {

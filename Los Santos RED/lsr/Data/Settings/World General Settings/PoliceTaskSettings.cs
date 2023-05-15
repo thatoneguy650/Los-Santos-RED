@@ -113,6 +113,7 @@ public class PoliceTaskSettings : ISettingsDefaultable
     public int RecklessVehicleChaseWantedLevelRequirement { get; set; }
     public bool AllowVeryRecklessVehicleChaseWithLethalForce { get; set; }
     public bool UseLegacyLocateTasking { get; set; }
+    public bool AutoDispatchWhenCop { get; set; }
 
     public PoliceTaskSettings()
     {
@@ -211,6 +212,6 @@ public class PoliceTaskSettings : ISettingsDefaultable
         RecklessVehicleChaseWantedLevelRequirement = 4;//3;
         AllowVeryRecklessVehicleChaseWithLethalForce = true;
         UseLegacyLocateTasking = false;
-
+        AutoDispatchWhenCop = true;
     }
 }

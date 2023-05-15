@@ -70,10 +70,8 @@ public class ModItem
     public PhysicalItem ModelItem { get; set; }
     [XmlIgnore]
     public PhysicalItem PackageItem { get; set; }
-
     public string Name { get; set; }
     public string Description { get; set; } = "";
-
     public ItemType ItemType { get; set; } = ItemType.None;
     public ItemSubType ItemSubType { get; set; } = ItemSubType.None;
     public string MeasurementName { get; set; } = "Item";
@@ -84,11 +82,9 @@ public class ModItem
     public float PercentLostOnUse { get; set; } = 0.0f;
     public bool ConsumeOnPurchase { get; set; } = false;
     public virtual bool CanConsume { get; set; } = false;//no no
-
     public int FindPercentage { get; set; } = 0;
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
     public virtual bool IsDLC => false;
-
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
         if (ModelItemID != "")
@@ -106,8 +102,7 @@ public class ModItem
         return $"{Description}~n~" 
             + GetTypeDescription(Settings)
             + GetExtendedDescription(Settings)
-            + (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "");
-        
+            + (MeasurementName != "Item" ? " " + MeasurementName + "(s)" : "");      
     }
     public virtual bool UseItem(IActionable actionable, ISettingsProvideable settings, IEntityProvideable world, ICameraControllable cameraControllable, IIntoxicants intoxicants)
     {
@@ -258,7 +253,7 @@ public class ModItem
             $"{(MeasurementName != "Item" || v > 1 ? MeasurementName : "")}" +
             $"{(v > 1 ? "(s)" : "")}" +
             $"{(MeasurementName != "Item" || v > 1 ? " - " : "")}" +
-            $"{(menuItem.PurchasePrice == 0 ? "FREE" : $"${(v * menuItem.PurchasePrice)}")}",
+            $"{(menuItem.PurchasePrice == 0 ? "" : $"${(v * menuItem.PurchasePrice)}")}",
             Value = 1
         };
         UpdatePurchaseMenuItem(Transaction, menuItem, settings, player, isStealing);
@@ -293,11 +288,11 @@ public class ModItem
 
             if (isStealing)
             {
-                formattedPurchasePrice = "FREE";
+                formattedPurchasePrice = "";
             }
             if (menuItem.PurchasePrice == 0)
             {
-                formattedPurchasePrice = "FREE";
+                formattedPurchasePrice = "";
             }
 
             string description = Description;
@@ -340,7 +335,6 @@ public class ModItem
             {
                 RemainingToBuy = 1;
             }
-
             if (!ConsumeOnPurchase)
             { 
                 description += $"~n~Player Inventory: {PlayerItems}~s~ {MeasurementName}(s)";
@@ -511,7 +505,6 @@ public class ModItem
         inventoryItemSubMenu.AddItem(giveScroller);
         UpdateInventoryScrollers(player, simpleInventory, settings);
     }
-
     public void UpdateInventoryScrollers(IInteractionable player, SimpleInventory simpleInventory, ISettingsProvideable settings)
     {
         int storedItems = 0;

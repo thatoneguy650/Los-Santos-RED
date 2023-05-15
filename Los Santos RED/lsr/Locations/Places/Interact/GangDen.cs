@@ -14,12 +14,10 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     private UIMenuItem dropoffCash;
     private UIMenuItem dropoffItem;
     private UIMenuItem completeTask;
-
     private UIMenuNumericScrollerItem<int> RestMenuItem;
     private bool KeepInteractionGoing;
     private UIMenuItem LayLowMenuItem;
     private UIMenuItem dropoffKick;
-
     public GangDen() : base()
     {
 
@@ -29,25 +27,15 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public override int MapIcon { get; set; } = (int)BlipSprite.Snitch;
     public override float MapIconScale { get; set; } = 1.0f;
     public override string ButtonPromptText { get; set; }
-   // public string GangID { get; set; }
-
-
     public override string AssociationID => AssignedAssociationID;
     public Vector3 ItemPreviewPosition { get; set; } = Vector3.Zero;
     public float ItemPreviewHeading { get; set; } = 0f;
-    public List<SpawnPlace> ItemDeliveryLocations = new List<SpawnPlace>();
-
+    public List<SpawnPlace> ItemDeliveryLocations { get; set; } = new List<SpawnPlace>();
     public bool IsPrimaryGangDen { get; set; } = false;
-
-
     public bool HasVanillaGangSpawnedAroundToBeBlocked { get; set; } = false;
-
     public override bool IsBlipEnabled { get; set; } = false;
     [XmlIgnore]
     public bool IsAvailableForPlayer { get; set; } = false;
-
-    
-
     [XmlIgnore]
     public int ExpectedMoney { get; set; }
     [XmlIgnore]
@@ -56,10 +44,6 @@ public class GangDen : InteractableLocation, ILocationGangAssignable
     public int ExpectedItemAmount { get; set; }
     [XmlIgnore]
     public Gang AssociatedGang { get; set; }
-    //[XmlIgnore]
-    //public bool IsDispatchFilled { get; set; } = false;
-    //public List<ConditionalLocation> PossiblePedSpawns { get; set; }
-    //public List<ConditionalLocation> PossibleVehicleSpawns { get; set; }
     public override bool CanCurrentlyInteract(ILocationInteractable player)
     {
         ButtonPromptText = $"Enter {AssociatedGang?.ShortName} {AssociatedGang?.DenName}";

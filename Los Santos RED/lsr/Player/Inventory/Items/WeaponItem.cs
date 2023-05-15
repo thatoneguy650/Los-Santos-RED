@@ -8,6 +8,7 @@ using RAGENativeUI.Elements;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +23,6 @@ public class WeaponItem : ModItem
     public string ModelName { get; set; }
     public uint ModelHash { get; set; }
     public override bool IsDLC => RequiresDLC;
-
     public WeaponItem()
     {
     }
@@ -30,14 +30,8 @@ public class WeaponItem : ModItem
     {
         RequiresDLC = requiresDLC;
     }
-
     public override void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
-        //ModelItem = physicalItems.Get(ModelItemID);
-        //if (ModelItem == null)
-        //{
-            //ModelItem = new PhysicalItem(ModelItemID, Game.GetHashKey(ModelItemID), ePhysicalItemType.Weapon);
-        //}
         ModelItem = new PhysicalItem(ModelName, ModelHash == 0 ? Game.GetHashKey(ModelName) : ModelHash, ePhysicalItemType.Weapon);
         WeaponInformation = weapons.GetWeapon(ModelItem?.ModelName);
         if (WeaponInformation == null)
@@ -49,7 +43,6 @@ public class WeaponItem : ModItem
             MenuCategory = WeaponInformation.Category.ToString();
         }
     }
-
     public override void CreateSellMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu sellMenuRNUI, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
 
@@ -245,8 +238,6 @@ public class WeaponItem : ModItem
         transaction.DisplayMessage("~r~Sale Failed", "We are sorry, we are unable to complete this transation");
         return false;
     }
-
-
     public override void CreatePurchaseMenuItem(Transaction Transaction, MenuItem menuItem, UIMenu purchaseMenu, ISettingsProvideable settings, ILocationInteractable player, bool isStealing, IEntityProvideable world)
     {
         CurrentWeaponVariation = new WeaponVariation();
@@ -269,7 +260,7 @@ public class WeaponItem : ModItem
 
         if (menuItem.PurchasePrice == 0)
         {
-            formattedPurchasePrice = "FREE";
+            formattedPurchasePrice = "";
         }
         if (ModelItem != null && ModelItem.ModelHash != 0)
         {
@@ -399,9 +390,18 @@ public class WeaponItem : ModItem
             }
         }
 
+        string PurchaseAmmoHeader = "Purchase Ammo";
+        string PurchaseAmmoDescription = "Select to purchase ammo for this weapon";
+        Func<int, string> myFormatter = v => $"{v} - ${menuItem.SubPrice * v}";
 
+        if (!Transaction.IsPurchasing)
+        {
+            PurchaseAmmoHeader = "Take Ammo";
+            PurchaseAmmoDescription = "Select to take ammo for this weapon";
+            myFormatter = v => $"{v}";
+        }
 
-        UIMenuNumericScrollerItem<int> PurchaseAmmoMenu = new UIMenuNumericScrollerItem<int>($"Purchase Ammo", $"Select to purchase ammo for this weapon.", menuItem.SubAmount, 500, menuItem.SubAmount) { Index = 0, Formatter = v => $"{v} - ${menuItem.SubPrice * v}" };
+        UIMenuNumericScrollerItem<int> PurchaseAmmoMenu = new UIMenuNumericScrollerItem<int>(PurchaseAmmoHeader, PurchaseAmmoDescription, menuItem.SubAmount, 500, menuItem.SubAmount) { Index = 0, Formatter = myFormatter };
         PurchaseAmmoMenu.Activated += (sender, selectedItem) =>
         {
             int TotalItems = 1;
@@ -433,9 +433,16 @@ public class WeaponItem : ModItem
             WeaponMenu.AddItem(PurchaseAmmoMenu);
         }
 
+        string PurchaseHeader = "Purchase";
+        string PurchaseDescription = "Select to purchase this weapon";
 
+        if (!Transaction.IsPurchasing)
+        {
+            PurchaseHeader = "Take";
+            PurchaseDescription = "Select to take this weapon";
+        }
 
-        UIMenuItem Purchase = new UIMenuItem($"Purchase", "Select to purchase this Weapon") { RightLabel = formattedPurchasePrice };
+        UIMenuItem Purchase = new UIMenuItem(PurchaseHeader, PurchaseDescription) { RightLabel = formattedPurchasePrice };
         if (NativeFunction.Natives.HAS_PED_GOT_WEAPON<bool>(player.Character, WeaponInformation.Hash, false))
         {
             Purchase.Enabled = false;
@@ -468,8 +475,7 @@ public class WeaponItem : ModItem
         WeaponMenu.AddItem(Purchase);
     }
     private void OnWeaponMenuOpen(UIMenu sender, ILocationInteractable player)
-    {
-        
+    {   
         //EntryPoint.WriteToConsole($"OnWeaponMenuOpen RAN! START");
         foreach (UIMenuItem uimen in sender.MenuItems)
         {
@@ -502,7 +508,7 @@ public class WeaponItem : ModItem
                 }
                 myItem.Reformat();
             }
-            else if (uimen.Text == "Purchase")
+            else if (uimen.Text == "Purchase" || uimen.Text == "Take")
             {
                 if (WeaponInformation.HasWeapon(player.Character) && WeaponInformation.Category != WeaponCategory.Throwable)
                 {
@@ -515,7 +521,7 @@ public class WeaponItem : ModItem
                     // uimen.RightLabel = "Owned";
                 }
             }
-            else if (uimen.Text == "Purchase Ammo")
+            else if (uimen.Text == "Purchase Ammo" || uimen.Text == "Take Ammo")
             {
                 if (WeaponInformation.HasWeapon(player.Character))
                 {
@@ -535,11 +541,25 @@ public class WeaponItem : ModItem
         {
             NativeFunction.Natives.ADD_AMMO_TO_PED(player.Character, WeaponInformation.Hash, TotalItems);
             transaction.PlaySuccessSound();
-            transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
+            if (transaction.IsPurchasing)
+            {
+                transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
+            }
+            else
+            {
+                transaction.DisplayMessage("~g~Acquired", $"Acquired ~r~{TotalItems} ~s~rounds for ~o~{menuItem.ModItemName}~s~");
+            }
             return true;
         }
         transaction.PlayErrorSound();
-        transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        if(transaction.IsPurchasing)
+        { 
+            transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        }
+        else
+        {
+            transaction.DisplayMessage("~r~Failed", "Acquiring ammo failed");
+        }
         return false;
     }
     private bool PurchaseComponent(ILocationInteractable player, Transaction transaction, MenuItem menuItem, WeaponComponent myComponent)
@@ -547,11 +567,25 @@ public class WeaponItem : ModItem
         if (WeaponInformation != null && WeaponInformation.AddComponent(player.Character, myComponent))
         {
             transaction.PlaySuccessSound();
-            transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
+            if (transaction.IsPurchasing)
+            {
+                transaction.DisplayMessage("~g~Purchase", $"Thank you for your purchase of ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
+            }
+            else
+            {
+                transaction.DisplayMessage("~g~Acquired", $"Acquired ~r~{myComponent.Name}~s~ for ~o~{menuItem.ModItemName}~s~");
+            }
             return true;
         }
         transaction.PlayErrorSound();
-        transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        if (transaction.IsPurchasing)
+        {
+            transaction.DisplayMessage("~r~Purchase Failed", "We are sorry, we are unable to complete this transation");
+        }
+        else
+        {
+            transaction.DisplayMessage("~r~Failed", "Acquiring weapon component failed");
+        }
         return false;
     }   
     private bool PurchaseWeapon(ILocationInteractable player, Transaction transaction, MenuItem menuItem)
@@ -663,9 +697,16 @@ public class WeaponItem : ModItem
                     }
                     foreach (UIMenuItem uimli in sender.MenuItems)
                     {
-                        if (uimli.Text == "Purchase")
+                        if (uimli.Text == "Purchase" || uimli.Text == "Take")
                         {
-                            uimli.RightLabel = TotalPrice.ToString("C0");
+                            if (TotalPrice <= 0)
+                            {
+                                uimli.RightLabel = "";
+                            }
+                            else
+                            {
+                                uimli.RightLabel = TotalPrice.ToString("C0");
+                            }
                             break;
                         }
                     }
