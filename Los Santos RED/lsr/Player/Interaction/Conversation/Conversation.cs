@@ -130,7 +130,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         if(tosay.SpeechType == eSpeechType.Insult)
         {
             SayInsult(Ped.Pedestrian, false);
-            Ped.InsultedByPlayer(Player);
+            Ped.OnInsultedByPlayer(Player);
             if (Ped.IsFedUpWithPlayer)
             {
                 if (Ped.IsCop)
@@ -462,7 +462,7 @@ public class Conversation : Interaction, IAdvancedConversationable
         SayInsult(Ped.Pedestrian, false);
 
         //Ped.TimesInsultedByPlayer++;
-        Ped.InsultedByPlayer(Player);
+        Ped.OnInsultedByPlayer(Player);
         if (Ped.IsFedUpWithPlayer)
         {
             if (Ped.IsCop)

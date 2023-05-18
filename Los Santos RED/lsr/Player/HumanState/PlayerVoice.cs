@@ -21,7 +21,7 @@ public class PlayerVoice
     private List<string> GenericWonPossibilities;
     private List<string> GenericPoliceFightPossibilities;
 
-    private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer);
+    private bool CanSpeak => Player.IsAliveAndFree && !Player.IsIncapacitated && !Player.Stance.IsBeingStealthy && Game.GameTime - GameTimeLastSpoke >= (GameTimeBetweenSpeaking + TimeBetweenSpeakingRandomizer);
     private uint GameTimeBetweenSpeaking
     {
         get

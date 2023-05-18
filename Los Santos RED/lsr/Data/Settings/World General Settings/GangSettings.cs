@@ -31,40 +31,21 @@ public class GangSettings : ISettingsDefaultable
     public int PercentSpawnOutsideTerritory { get; set; }
     [Description("Minimum time in milliseconds between a spawn.")]
     public int TimeBetweenSpawn { get; set; }
-
     public int TimeBetweenSpawn_DowntownAdditional { get; set; }
     public int TimeBetweenSpawn_WildernessAdditional { get; set; }
     public int TimeBetweenSpawn_RuralAdditional { get; set; }
     public int TimeBetweenSpawn_SuburbAdditional { get; set; }
     public int TimeBetweenSpawn_IndustrialAdditional { get; set; }
-
-
-
-
-
     [Description("Minimum distance in meters to spawn a pedestrian gang member from the player.")]
     public float MinDistanceToSpawnOnFoot { get; set; }
     [Description("Maximum distance in meters to spawn a pedestrian gang member from the player.")]
     public float MaxDistanceToSpawnOnFoot { get; set; }
-
-
     [Description("Minimum distance in meters to spawn a gang member in a vehicle from the player.")]
     public float MinDistanceToSpawnInVehicle { get; set; }
     [Description("Maximum distance in meters to spawn a gang member in a vehicle from the player.")]
     public float MaxDistanceToSpawnInVehicle { get; set; }
-
-
-
-
-
-
-
-
-
     [Description("Total limit of spawned gang members between all gangs. Does not include vanilla members.")]
     public int TotalSpawnedMembersLimit { get; set; }
-
-
     [Description("Total limit of ambient spawned gang members between all gangs. Does not include vanilla members or gang members spawned by location.")]
     public int TotalSpawnedAmbientMembersLimit { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Downtown { get; set; }
@@ -72,9 +53,6 @@ public class GangSettings : ISettingsDefaultable
     public int TotalSpawnedAmbientMembersLimit_Rural { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Suburb { get; set; }
     public int TotalSpawnedAmbientMembersLimit_Industrial { get; set; }
-
-
-
     [Description("Percentage of the time to allow an ambient spawn. Minimum 0, maximum 100.")]
     public int AmbientSpawnPercentage { get; set; }
     public int AmbientSpawnPercentage_Wilderness { get; set; }
@@ -82,11 +60,7 @@ public class GangSettings : ISettingsDefaultable
     public int AmbientSpawnPercentage_Suburb { get; set; }
     public int AmbientSpawnPercentage_Industrial { get; set; }
     public int AmbientSpawnPercentage_Downtown { get; set; }
-
-
     public float AmbientSpawnPedestrianAttemptPercentage { get; set; }
-
-
     [Description("Percentage of the time to spawn a gang outside of the den when near.")]
     public int PercentageSpawnNearDen { get; set; }
     [Description("Attempt to remove all non-mod spawned on-foot gang members from the world. (Not Currently Recommended)")]
@@ -99,12 +73,8 @@ public class GangSettings : ISettingsDefaultable
     public bool ForceAmbientCarDocile { get; set; }
     [Description("If enabled, ambient spawns will happen regardless of the player wanted level. If disabled, gangs will not have ambient spawns when you are wanted.")]
     public bool AllowAmbientSpawningWhenPlayerWanted { get; set; }
-
     [Description("Max wanted level that the mod will ambiently spawn gang peds.")]
     public int AmbientSpawningWhenPlayerWantedMaxWanted { get; set; }
-
-
-
     [Description("Enable or disable ambient spawns around dens.")]
     public bool AllowDenSpawning { get; set; }
     [Description("If enabled, den ambient spawns ignore the ped and vehicle spawn limits.")]
@@ -115,8 +85,10 @@ public class GangSettings : ISettingsDefaultable
     public int DenSpawningWhenPlayerWantedMaxWanted { get; set; }
     public float EscortOffsetValue { get; set; }
     public float EscortSpeed { get; set; }
-
-
+    public float DistanceToReportRepChanges { get; set; }
+    public uint GameTimeToReportRepChanges { get; set; }
+    public float MurderDistance { get; set; }
+    public uint GameTimeRecentlyKilled { get; set; }
     public GangSettings()
     {
         SetDefault();
@@ -199,6 +171,11 @@ public class GangSettings : ISettingsDefaultable
         DenSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawningWhenPlayerWantedMaxWanted = 4;
         AmbientSpawnPedestrianAttemptPercentage = 20f;
+
+        DistanceToReportRepChanges = 75f;
+        GameTimeToReportRepChanges = 45000;
+        MurderDistance = 15f;
+        GameTimeRecentlyKilled = 20000;
     }
 
 }

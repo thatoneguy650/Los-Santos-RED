@@ -271,7 +271,6 @@ namespace Mod
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCop { get; set; } = false;
         public bool AutoDispatch { get; set; } = true;
-        public bool IsCrouched { get; set; }
         public bool IsCustomizingPed { get; set; }
         public bool IsDangerouslyArmed => WeaponEquipment.IsDangerouslyArmed;
         public bool IsDead { get; private set; }
@@ -1715,7 +1714,7 @@ namespace Mod
 
             if (IsMakingInsultingGesture && CurrentLookedAtPed != null)// && !CurrentLookedAtPed.IsFedUpWithPlayer)
             {
-                CurrentLookedAtPed.InsultedByPlayer(this);
+                CurrentLookedAtPed.OnInsultedByPlayer(this);
             }
 
 

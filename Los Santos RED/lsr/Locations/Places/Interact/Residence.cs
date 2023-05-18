@@ -142,23 +142,31 @@ public class Residence : InteractableLocation, ILocationSetupable
     }
     public void ReRent()
     {
-        if (Player.BankAccounts.Money >= RentalFee)
+        try
         {
-            Player.BankAccounts.GiveMoney(-1 * RentalFee);
-            DateRentalPaymentPaid = Time.CurrentDateTime;
-            DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
-            UpdateStoredData();
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rent Paid", $"You have been charged the rental fee of {RentalFee:C0} for {Name}.~n~Next payment date: {DateRentalPaymentDue:d}");
-
-        }
-        else
-        {
-            Reset();
-            if (MenuPool != null && MenuPool.IsAnyMenuOpen())
+            if (Player.BankAccounts.Money >= RentalFee)
             {
-                MenuPool.CloseAllMenus();
+                Player.BankAccounts.GiveMoney(-1 * RentalFee);
+                DateRentalPaymentPaid = Time.CurrentDateTime;
+                DateRentalPaymentDue = DateRentalPaymentPaid.AddDays(RentalDays);
+                UpdateStoredData();
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~g~Rent Paid", $"You have been charged the rental fee of {RentalFee:C0} for {Name}.~n~Next payment date: {DateRentalPaymentDue:d}");
+
             }
-            Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Evicted", $"You have been evicted from {Name} for non-payment.");
+            else
+            {
+                Reset();
+                if (MenuPool != null && MenuPool.IsAnyMenuOpen())
+                {
+                    MenuPool.CloseAllMenus();
+                }
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", Name, "~r~Evicted", $"You have been evicted from {Name} for non-payment.");
+            }
+        }
+        catch(Exception ex)
+        {
+            EntryPoint.WriteToConsole($"{ex.Message} {ex.StackTrace}",0);
+            Game.DisplayNotification($"ERROR RERENTING {ex.Message}");
         }
     }
     private void InteractionMenu_OnItemSelect(UIMenu sender, UIMenuItem selectedItem, int index)

@@ -285,9 +285,9 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             }
         }
     }
-    public override void InsultedByPlayer(IInteractionable player)
+    public override void OnInsultedByPlayer(IInteractionable player)
     {
-        base.InsultedByPlayer(player);
+        base.OnInsultedByPlayer(player);
         if (IsFedUpWithPlayer)
         {
             player.SetAngeredCop();

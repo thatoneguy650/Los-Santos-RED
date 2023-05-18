@@ -72,46 +72,49 @@ public class TheftViolations
         {
             return;
         }
-        if (myPed.IsGangMember)
-        {
-            if (myPed.GetType() == typeof(GangMember))
-            {
-                GangMember gm = (GangMember)myPed;
-                AddCarjackedGang(gm);
-                //AddAttackedGang(gm, true);
-            }
-        }
-        myPed.HasBeenCarJackedByPlayer = true;
+        myPed.OnCarjackedByPlayer(Player,Zones,GangTerritories);
+
+
+        //if (myPed.IsGangMember)
+        //{
+        //    if (myPed.GetType() == typeof(GangMember))
+        //    {
+        //        GangMember gm = (GangMember)myPed;
+        //        AddCarjackedGang(gm);
+        //        //AddAttackedGang(gm, true);
+        //    }
+        //}
+        //myPed.HasBeenCarJackedByPlayer = true;
     }
-    private void AddCarjackedGang(GangMember gm)
-    {
-        if(gm == null)
-        {
-            return;
-        }
-        int RepToRemove = -2500;
-        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
-        if (gr != null)
-        {
-            gr.MembersCarJacked++;
-            //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
-            if (gm.Pedestrian.Exists())
-            {
-                Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
-                if (KillingZone != null)
-                {
-                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
-                    if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
-                    {
-                        RepToRemove -= 2500;
-                        gr.MembersCarJackedInTerritory++;
-                        //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
-                    }
-                }
-            }
-        }
-        Player.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
-        Player.RelationshipManager.GangRelationships.AddAttacked(gm.Gang);
-    }
+    //private void AddCarjackedGang(GangMember gm)
+    //{
+    //    if(gm == null)
+    //    {
+    //        return;
+    //    }
+    //    int RepToRemove = -2500;
+    //    GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(gm.Gang);//.MembersKilled++;
+    //    if (gr != null)
+    //    {
+    //        gr.MembersCarJacked++;
+    //        //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
+    //        if (gm.Pedestrian.Exists())
+    //        {
+    //            Zone KillingZone = Zones.GetZone(gm.Pedestrian.Position);
+    //            if (KillingZone != null)
+    //            {
+    //                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(gm.Gang.ID);
+    //                if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
+    //                {
+    //                    RepToRemove -= 2500;
+    //                    gr.MembersCarJackedInTerritory++;
+    //                    //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    Player.RelationshipManager.GangRelationships.ChangeReputation(gm.Gang, RepToRemove, true);
+    //    Player.RelationshipManager.GangRelationships.AddAttacked(gm.Gang);
+    //}
 }
 

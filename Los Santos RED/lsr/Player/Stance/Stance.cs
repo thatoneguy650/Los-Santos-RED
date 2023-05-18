@@ -13,7 +13,10 @@ public class Stance
     private readonly string StrafeCrouchSet = "move_ped_crouched_strafing";
     private IStanceable Player;
     private ISettingsProvideable Settings;
-    public bool IsCrouched { get; set; }
+    public bool IsCrouched { get; private set; }
+    public bool IsInStealthMode { get; private set; }
+    public bool IsBeingStealthy => IsCrouched || IsInStealthMode;
+
     public Stance(IStanceable player, ISettingsProvideable settings)
     {
         Player = player;
@@ -52,19 +55,26 @@ public class Stance
     {
         bool isUsingActionMode = NativeFunction.Natives.IS_PED_USING_ACTION_MODE<bool>(Player.Character);
         NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Player.Character, !isUsingActionMode, -1, "DEFAULT_ACTION");
+        if(!isUsingActionMode)
+        {
+            IsInStealthMode = false;
+        }
     }
     public void SetActionMode(bool enabled)
     {
         NativeFunction.Natives.SET_PED_USING_ACTION_MODE(Player.Character, enabled, -1, "DEFAULT_ACTION");
+        IsInStealthMode = false;
     }
     public void ToggleStealthMode()
     {
-        bool isUsingStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Player.Character);
-        NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, !isUsingStealthMode, "DEFAULT_ACTION");
+        IsInStealthMode = NativeFunction.Natives.GET_PED_STEALTH_MOVEMENT<bool>(Player.Character);
+        NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, !IsInStealthMode, "DEFAULT_ACTION");
+        IsInStealthMode = !IsInStealthMode;
     }
     public void SetStealthMode(bool enabled)
     {
         NativeFunction.Natives.SET_PED_STEALTH_MOVEMENT(Player.Character, enabled, "DEFAULT_ACTION");
+        IsInStealthMode = enabled;
     }
 }
 

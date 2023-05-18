@@ -213,6 +213,7 @@
     <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
     <Compile Include="lsr\Ped\Cop\CanineUnit.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />
+    <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />

@@ -16,5 +16,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsIncapacitated { get; }
         bool IsWanted { get; }
         int WantedLevel { get; }
+        Stance Stance { get; }
     }
 }

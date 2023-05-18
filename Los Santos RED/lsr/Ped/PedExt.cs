@@ -589,7 +589,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             //return false;
         }
     }
-    public virtual void InsultedByPlayer(IInteractionable player)
+    public virtual void OnInsultedByPlayer(IInteractionable player)
     {
         if (GameTimeLastInsultedByPlayer == 0 || Game.GameTime - GameTimeLastInsultedByPlayer >= 1000)
         {
@@ -1154,6 +1154,17 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
     }
 
+    public virtual void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
 
+    }
 
+    public virtual void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+
+    }
+    public virtual void OnCarjackedByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        HasBeenCarJackedByPlayer = true;
+    }
 }

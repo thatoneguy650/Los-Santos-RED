@@ -20,7 +20,10 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             GameTimeSpawned = Game.GameTime;
         }
+        ReputationReport = new ReputationReport(this);
     }
+    public List<ReputationReport> WitnessedReports { get; private set; } = new List<ReputationReport>();
+    public ReputationReport ReputationReport { get; private set; }
     public override int ShootRate { get; set; } = 400;
     public override int Accuracy { get; set; } = 5;
     public override int CombatAbility { get; set; } = 0;
@@ -97,6 +100,7 @@ public class GangMember : PedExt, IWeaponIssuable
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
+        ReputationReport.Update(perceptable, world, Settings);
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         
     }
@@ -164,9 +168,214 @@ public class GangMember : PedExt, IWeaponIssuable
         player.RelationshipManager.GangRelationships.ChangeReputation(Gang, moneySpent, true);
         base.OnItemSold(player, modItem, numberPurchased, moneySpent);
     }
-    public override void InsultedByPlayer(IInteractionable player)
+    public override void OnInsultedByPlayer(IInteractionable player)
     {
-        base.InsultedByPlayer(player);
+        base.OnInsultedByPlayer(player);
         PlayerToCheck.RelationshipManager.GangRelationships.ChangeReputation(Gang, -100, true);  
     }
+    public override void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        int RepToRemove = -1000;
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+        if (gr != null)
+        {
+            gr.MembersKilled++;
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} {gr.MembersKilled}", 5);
+            if (Pedestrian.Exists())
+            {
+                Zone KillingZone = Zones.GetZone(Pedestrian.Position);
+                if (KillingZone != null)
+                {
+                    //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
+                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+                    {
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
+                        RepToRemove -= 4000;// 1000;
+                        gr.MembersKilledInTerritory++;
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
+                    }
+                }
+                else
+                {
+                    // EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
+                }
+            }
+        }
+
+       // ReputationReport.WasKilledByPlayer = true;
+        ReputationReport.AddReputation(RepToRemove);
+
+        EntryPoint.WriteToConsole($"KILLED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
+
+        //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
+        //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
+
+
+
+        base.OnKilledByPlayer(Player, Zones, GangTerritories);
+    }
+    public override void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        int RepToRemove = -500;
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+        if (gr != null)
+        {
+            gr.MembersHurt++;
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} {gr.MembersHurt}", 5);
+            if (Pedestrian.Exists())
+            {
+                Zone KillingZone = Zones.GetZone(Pedestrian.Position);
+                if (KillingZone != null)
+                {
+                    //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
+                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+                    {
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
+                        RepToRemove -= 2500;// 500;
+                        gr.MembersHurtInTerritory++;
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
+                    }
+                }
+                else
+                {
+                    // EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
+                }
+            }
+        }
+
+
+        // ReputationReport.WasInjuredByPlayer = true;
+        ReputationReport.AddReputation(RepToRemove);
+
+        EntryPoint.WriteToConsole($"INJURED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
+
+
+        //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
+        //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
+
+
+
+        base.OnInjuredByPlayer(Player, Zones, GangTerritories);
+    }
+    public override void OnCarjackedByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    {
+        int RepToRemove = -2500;
+        GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+        if (gr != null)
+        {
+            gr.MembersCarJacked++;
+            //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
+            if (Pedestrian.Exists())
+            {
+                Zone KillingZone = Zones.GetZone(Pedestrian.Position);
+                if (KillingZone != null)
+                {
+                    List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+                    if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
+                    {
+                        RepToRemove -= 2500;
+                        gr.MembersCarJackedInTerritory++;
+                        //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
+                    }
+                }
+            }
+        }
+
+        //ReputationReport.WasCarjackedByPlayer = true;
+        ReputationReport.AddReputation(RepToRemove);
+
+
+        EntryPoint.WriteToConsole($"CARJACKED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
+
+        //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
+        //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
+
+
+
+        base.OnCarjackedByPlayer(Player, Zones, GangTerritories);
+    }
+    //private void AddCarjackedGang(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
+    //{
+    //    int RepToRemove = -2500;
+    //    GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+    //    if (gr != null)
+    //    {
+    //        gr.MembersCarJacked++;
+    //        //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} {gr.MembersCarJacked}", 5);
+    //        if (Pedestrian.Exists())
+    //        {
+    //            Zone KillingZone = Zones.GetZone(Pedestrian.Position);
+    //            if (KillingZone != null)
+    //            {
+    //                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+    //                if (totalTerritories.Any(x => x.ZoneInternalGameName == KillingZone.InternalGameName))
+    //                {
+    //                    RepToRemove -= 2500;
+    //                    gr.MembersCarJackedInTerritory++;
+    //                    //EntryPoint.WriteToConsole($"VIOLATIONS: Carjacking GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersCarJackedInTerritory}", 5);
+    //                }
+    //            }
+    //        }
+    //    }
+    //    Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
+    //    Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
+    //}
+    //private void AddAttackedGang(IViolateable Player, IZones Zones, IGangTerritories GangTerritories, bool isKilled)
+    //{
+    //    int RepToRemove = -500;
+    //    if (isKilled)
+    //    {
+    //        RepToRemove = -1000;
+    //    }
+    //    GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(Gang);//.MembersKilled++;
+    //    if (gr != null)
+    //    {
+    //        if (isKilled)
+    //        {
+    //            gr.MembersKilled++;
+    //            //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} {gr.MembersKilled}", 5);
+    //        }
+    //        else
+    //        {
+    //            gr.MembersHurt++;
+    //            //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} {gr.MembersHurt}", 5);
+    //        }
+    //        if (Pedestrian.Exists())
+    //        {
+    //            Zone KillingZone = Zones.GetZone(Pedestrian.Position);
+    //            if (KillingZone != null)
+    //            {
+    //                //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName}", 5);
+    //                List<ZoneJurisdiction> totalTerritories = GangTerritories.GetGangTerritory(Gang.ID);
+    //                if (totalTerritories.Any(x => x.ZoneInternalGameName.ToLower() == KillingZone.InternalGameName.ToLower()))
+    //                {
+    //                    //EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone {KillingZone.InternalGameName} IS GANG TERRITORY!", 5);
+    //                    if (isKilled)
+    //                    {
+    //                        RepToRemove -= 4000;// 1000;
+    //                        gr.MembersKilledInTerritory++;
+    //                        //EntryPoint.WriteToConsole($"VIOLATIONS: Killing GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersKilledInTerritory}", 5);
+    //                    }
+    //                    else
+    //                    {
+    //                        RepToRemove -= 2500;// 500;
+    //                        gr.MembersHurtInTerritory++;
+    //                        //EntryPoint.WriteToConsole($"VIOLATIONS: Hurting GangMemeber {gm.Gang.ShortName} On Own Turf {gr.MembersHurtInTerritory}", 5);
+    //                    }
+
+    //                }
+    //            }
+    //            else
+    //            {
+    //                // EntryPoint.WriteToConsole($"VIOLATIONS: isKilled {isKilled} GangMemeber {gm.Gang.ShortName} zone fail", 5);
+    //            }
+    //        }
+    //    }
+    //    Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
+    //    Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
+    //}
+
+
 }
