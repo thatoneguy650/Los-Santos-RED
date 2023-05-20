@@ -1602,8 +1602,8 @@ public class PlacesOfInterest : IPlacesOfInterest
     private void DefaultConfig_PawnShops()
     {
         PawnShops = new List<PawnShop>() {
-            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","PawnShopMenu"),
-            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","PawnShopMenu"),
+            new PawnShop(new Vector3(412.5109f, 314.9815f, 103.1327f), 207.4105f, "F.T. Pawn", "","PawnShopMenu1"),
+            new PawnShop(new Vector3(182.735f, -1318.845f, 29.31752f), 246.2635f, "Pawn & Jewelery", "","PawnShopMenu2"),
         };
     }
     private void DefaultConfig_HardwareStores()

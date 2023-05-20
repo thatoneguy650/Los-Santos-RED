@@ -520,15 +520,8 @@ public class Pedestrians : ITaskerReportable
     {
         foreach (GangMember GangMember in GangMembers.Where(x => x.Pedestrian.Exists() && x.CanRemove && x.Pedestrian.IsDead))// && x.Pedestrian.IsPersistent))// && x.Pedestrian.DistanceTo2D(Game.LocalPlayer.Character) >= 200))
         {
-            bool hasBlip = false;
-            Blip myblip = GangMember.Pedestrian.GetAttachedBlip();
-            if (myblip.Exists())
-            {
-                hasBlip = true;
-                myblip.Delete();
-            }
+            GangMember.DeleteBlip();
             GangMember.Pedestrian.IsPersistent = false;
-
             if (GangMember.Pedestrian.CurrentVehicle.Exists() && GangMember.Pedestrian.CurrentVehicle.IsPersistent)
             {
                 GangMember.Pedestrian.CurrentVehicle.IsPersistent = false;

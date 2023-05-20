@@ -94,6 +94,13 @@ public class ReputationReport
                 GangMember.WitnessedReports.ForEach(x => x.ApplyReputation(Player));
                 GangMember.WitnessedReports.Clear();
             }
+            if(EntryPoint.FocusZone.AssignedGang?.ID == GangMember.Gang?.ID && Game.GameTime - GameTimeFirstChangedRep >= settings.SettingsManager.GangSettings.GameTimeToReportRepChangesInTerritory)
+            {
+                EntryPoint.WriteToConsole($"GANGMEMBER EXISTS AND HAS HAD REPORT FOR A BIT IN TERRITORY, ALIVE, APPLYING REP");
+                ApplyReputation(Player);
+                GangMember.WitnessedReports.ForEach(x => x.ApplyReputation(Player));
+                GangMember.WitnessedReports.Clear();
+            }
         }
         if(GangMember.IsDead)
         {

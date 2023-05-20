@@ -41,6 +41,8 @@ public class PlayerTask
     public bool FailOnStandardRespawn { get; set; } = false;
     public bool HasSentExpiringSoon { get; set; } = false;
 
+    public bool JoinGangOnComplete { get; set; } = false;
+
     public void OnReadyForPayment(bool displayHelp, string helpText)
     {
         //EntryPoint.WriteToConsoleTestLong($"OnReadyForPayment {ContactName} displayHelp {displayHelp} helpText {helpText}");

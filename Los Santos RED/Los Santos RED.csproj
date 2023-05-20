@@ -124,6 +124,7 @@
     <Compile Include="lsr\Camera\CameraControl.cs" />
     <Compile Include="lsr\Data\Agencies\IPlatePrefixable.cs" />
     <Compile Include="lsr\Data\Agencies\WantedLevels.cs" />
+    <Compile Include="lsr\Data\Gangs\GangClassification.cs" />
     <Compile Include="lsr\Data\Gangs\Gang.cs" />
     <Compile Include="lsr\Data\Gangs\GangRelationship.cs" />
     <Compile Include="lsr\Data\Gangs\Gangs.cs" />
@@ -220,6 +221,7 @@
     <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
     <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Ped\Variation\SavedOutfit.cs" />
+    <Compile Include="lsr\Player\ActiveTasks\Gang\GangProveWorthTask.cs" />
     <Compile Include="lsr\Player\Activity\DoorToggle.cs" />
     <Compile Include="lsr\Player\Activity\ItemDroppingActivity.cs" />
     <Compile Include="lsr\Player\Activity\Vehicle\VehicleDoorAnimation.cs" />
@@ -247,6 +249,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />

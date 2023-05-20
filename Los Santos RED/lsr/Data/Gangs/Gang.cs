@@ -82,6 +82,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int StartingRep { get; set; } = 200;
     public int NeutralRepLevel { get; set; } = 0;
     public int FriendlyRepLevel { get; set; } = 500;
+    public int MemberOfferRepLevel { get; set; } = 2000;
     public bool AddAmbientRep { get; set; } = true;
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
     public int PickupPaymentMin { get; set; } = 200;
@@ -114,6 +115,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int MemberKickUpDays { get; set; } = 7;
     public int MemberKickUpAmount { get; set; } = 2000;
     public int MemberKickUpMissLimit { get; set; } = 3;
+    public GangClassification GangClassification { get; set; } = GangClassification.Generic;
     public List<string> EnemyGangs { get; set; } = new List<string>();
     [XmlIgnore]
     public List<RandomHeadData> PossibleHeads { get; set; } = new List<RandomHeadData>();

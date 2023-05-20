@@ -17,6 +17,7 @@ public class GangReputation
     private uint GameTimeLastAttacked;
     public int NeutralRepLevel = 0;
     public int FriendlyRepLevel = 500;
+    public bool CanAskToJoin => !IsMember && ReputationLevel >= Gang.MemberOfferRepLevel;
 
     private IGangRelateable Player;
     public int ReputationLevel

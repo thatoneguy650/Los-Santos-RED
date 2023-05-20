@@ -397,6 +397,8 @@ public class GangRelationships
             GangReputations.Add(gr);
         }
         gr.TasksCompleted++;
+
+        
     }
     public void SetFailedTask(Gang gang)
     {

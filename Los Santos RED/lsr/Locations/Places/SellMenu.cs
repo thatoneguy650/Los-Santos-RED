@@ -181,7 +181,7 @@ public class SellMenu : ModUIMenu
             }
         }
         List<string> Categories = new List<string>();
-        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Purchaseable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle))
+        foreach (MenuItem cii in ShopMenu.Items.Where(x => x.Sellable && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Weapon && x.ModItem?.ModelItem?.Type != ePhysicalItemType.Vehicle))
         {
             if (!Categories.Contains(cii.ModItem.MenuCategory))
             {

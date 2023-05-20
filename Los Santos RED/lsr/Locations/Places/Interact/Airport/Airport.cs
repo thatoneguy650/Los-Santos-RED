@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using Mod;
 using Rage;
 using Rage.Native;
 using RAGENativeUI;
@@ -27,13 +28,13 @@ public class Airport : InteractableLocation, ILocationSetupable
 
     private protected List<Carrier> Carriers = new List<Carrier>();
 
-    private LocationCamera StoreCamera;
-    private protected ILocationInteractable Player;
-    private IModItems ModItems;
-    private protected IEntityProvideable World;
-    private protected ISettingsProvideable Settings;
-    private protected IWeapons Weapons;
-    private ITimeControllable Time;
+    //private LocationCamera StoreCamera;
+    //private protected ILocationInteractable Player;
+    //private IModItems ModItems;
+    //private protected IEntityProvideable World;
+    //private protected ISettingsProvideable Settings;
+    //private protected IWeapons Weapons;
+    //private ITimeControllable Time;
     private protected IPlacesOfInterest PlacesOfInterest;
     private bool IsFlyingToLocation;
    
@@ -83,9 +84,6 @@ public class Airport : InteractableLocation, ILocationSetupable
         Weapons = weapons;
         Time = time;
         PlacesOfInterest = placesOfInterest;
-
-
-
         if(!IsOpen(Time.CurrentHour))
         {
             return;
@@ -93,18 +91,7 @@ public class Airport : InteractableLocation, ILocationSetupable
         if(!CanCurrentlyInteract(Player))
         {
             return;
-        }
-            
-            
-            
-            
-             
-
-
-
-
-
-
+        }          
         if (CanInteract)
         {
             Player.ActivityManager.IsInteractingWithLocation = true;
@@ -480,6 +467,10 @@ public class Airport : InteractableLocation, ILocationSetupable
             new Carrier(StaticStrings.FlyUSCarrierID,"FlyUS", "Live A Little, Fly With US"),
             new Carrier(StaticStrings.AdiosAirlinesCarrierID,"Adios Airlines", "Say your goodbyes!"),
         };
+    }
+    public void PlayerSetup(ILocationInteractable player)
+    {
+        Player = player;
     }
     public override void AddDistanceOffset(Vector3 offsetToAdd)
     {

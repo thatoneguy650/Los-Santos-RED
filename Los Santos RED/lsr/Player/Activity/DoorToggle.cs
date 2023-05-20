@@ -208,7 +208,7 @@ public class DoorToggle : DynamicActivity
     {
         bool Continue = true;
         bool StopDriver = false;
-        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: STARTED MOVE TO POSITION");
+        EntryPoint.WriteToConsole($"DOOR TOGGLE: STARTED MOVE TO POSITION");
         NativeFunction.CallByName<uint>("TASK_PED_SLIDE_TO_COORD", Player.Character, DoorTogglePosition.X, DoorTogglePosition.Y, DoorTogglePosition.Z, DoorToggleHeading, -1);
         while (!(Player.Character.DistanceTo2D(DoorTogglePosition) <= 0.25f && FloatIsWithin(Player.Character.Heading, DoorToggleHeading - 5f, DoorToggleHeading + 5f)))//while (!(PedToMove.DistanceTo2D(PositionToMoveTo) <= 0.15f && FloatIsWithin(PedToMove.Heading, DesiredHeading - 5f, DesiredHeading + 5f)))
         {
@@ -229,7 +229,7 @@ public class DoorToggle : DynamicActivity
             }
 
         }
-        //EntryPoint.WriteToConsoleTestLong($"DOOR TOGGLE: END MOVE TO POSITION Continue{Continue}");
+        EntryPoint.WriteToConsole($"DOOR TOGGLE: END MOVE TO POSITION Continue{Continue}");
         if (!Continue)
         {
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);

@@ -19,4 +19,6 @@ public enum ItemType
     Meals,
     Combos,
     Tobacco,
+    Jewelry,
+    Cellphone,
 }

@@ -530,6 +530,12 @@ namespace Mod
             }
             SpeechSkill = RandomItems.GetRandomNumberInt(Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Min, Settings.SettingsManager.PlayerOtherSettings.PlayerSpeechSkill_Max);
 
+
+            foreach(ILocationSetupable locationSetupable in PlacesOfInterest.LocationsToSetup())
+            {
+                locationSetupable.PlayerSetup(this);
+            }
+
             Update();
         }
         public void Update()

@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace LosSantosRED.lsr.Player.ActiveTasks
 {
-    public class RivalGangHitTask
+    public class GangProveWorthTask
     {
         private ITaskAssignable Player;
         private ITimeReportable Time;
@@ -24,6 +25,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private Gang HiringGang;
         private GangDen HiringGangDen;
         private Gang TargetGang;
+        private GangDen TargetGangDen;
         private PlayerTask CurrentTask;
         private int GameTimeToWaitBeforeComplications;
         private int MoneyToRecieve;
@@ -31,12 +33,13 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         private bool WillAddComplications;
         private int KilledMembersAtStart;
         private GangContact Contact;
+        private bool hasExploded = false;
         public int KillRequirement { get; set; } = 1;
-        private bool HasTargetGangAndHiringDen => TargetGang != null && HiringGangDen != null;
+        private bool HasTargetGangAndHiringDen => TargetGang != null && HiringGangDen != null && TargetGangDen != null;
 
         public bool JoinGangOnComplete { get; set; } = false;
 
-        public RivalGangHitTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
+        public GangProveWorthTask(ITaskAssignable player, ITimeReportable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes)
         {
             Player = player;
             Time = time;
@@ -50,7 +53,7 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         public void Setup()
         {
-
+            hasExploded = false;
         }
         public void Dispose()
         {
@@ -91,31 +94,36 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void Loop()
         {
+            uint GameTimeLastCheckedStatus = 0;
             while (true)
             {
-                CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
-                if (CurrentTask == null || !CurrentTask.IsActive)
+                bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, TargetGangDen.EntrancePosition.X, TargetGangDen.EntrancePosition.Y, TargetGangDen.EntrancePosition.Z, 50f);
+                if(isExplosion)
                 {
-                    //EntryPoint.WriteToConsoleTestLong($"Task Inactive for {HiringGang.ContactName}");
-                    break;
+                    hasExploded = true;
                 }
-                if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled >= KilledMembersAtStart + KillRequirement)
+                if (Game.GameTime - GameTimeLastCheckedStatus >= 1000)
                 {
-                    CurrentTask.OnReadyForPayment(true);
-                    //CurrentTask.IsReadyForPayment = true;
-                    //EntryPoint.WriteToConsoleTestLong($"You killed a member so it is now ready for payment!");
-                    //Game.DisplayHelp($"{HiringGang.ContactName} Money Picked Up");
-                    break;
+                    CurrentTask = PlayerTasks.GetTask(HiringGang.ContactName);
+                    if (CurrentTask == null || !CurrentTask.IsActive)
+                    {
+                        break;
+                    }
+                    if (Player.RelationshipManager.GangRelationships.GetReputation(TargetGang)?.MembersKilled >= KilledMembersAtStart + KillRequirement && hasExploded)
+                    {
+                        CurrentTask.OnReadyForPayment(false);
+                        break;
+                    }
+                    GameTimeLastCheckedStatus = Game.GameTime;
                 }
-                GameFiber.Sleep(1000);
+                GameFiber.Yield();
             }
         }
         private void FinishTask()
         {
             if (CurrentTask != null && CurrentTask.IsActive && CurrentTask.IsReadyForPayment)
             {
-                GameFiber.Sleep(RandomItems.GetRandomNumberInt(5000, 15000));
-                SendMoneyPickupMessage();
+                PlayerTasks.CompleteTask(HiringGang.ContactName, true);
             }
             else
             {
@@ -133,6 +141,10 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
             {
                 TargetGang = Gangs.GetAllGangs().Where(x => x.ID != HiringGang.ID).PickRandom();
             }
+            if(TargetGang != null)
+            {
+                TargetGangDen = PlacesOfInterest.PossibleLocations.GangDens.FirstOrDefault(x => x.AssociatedGang?.ID == TargetGang?.ID && x.IsPrimaryGangDen);
+            }
         }
         private void GetHiringDen()
         {
@@ -140,42 +152,25 @@ namespace LosSantosRED.lsr.Player.ActiveTasks
         }
         private void GetPayment()
         {
-            MoneyToRecieve = RandomItems.GetRandomNumberInt(HiringGang.HitPaymentMin, HiringGang.HitPaymentMax).Round(500);
-            if (MoneyToRecieve <= 0)
-            {
-                MoneyToRecieve = 500;
-            }
+            MoneyToRecieve = 0;
         }
         private void AddTask()
         {
             GameTimeToWaitBeforeComplications = RandomItems.GetRandomNumberInt(3000, 10000);
             HasAddedComplications = false;
-            WillAddComplications = false;// RandomItems.RandomPercent(Settings.SettingsManager.TaskSettings.RivalGangHitComplicationsPercentage);
+            WillAddComplications = false;
             GangReputation gr = Player.RelationshipManager.GangRelationships.GetReputation(TargetGang);
             KilledMembersAtStart = gr.MembersKilled;
-            //EntryPoint.WriteToConsoleTestLong($"You are hired to kill {TargetGang.ShortName} starting kill = {CurrentKilledMembers}!");
-            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -500, 7, "Rival Gang Hit");
+            PlayerTasks.AddTask(HiringGang.ContactName, MoneyToRecieve, 2000, 0, -50000, 7, "Rival Gang Hit", JoinGangOnComplete);
         }
         private void SendInitialInstructionsMessage()
         {
             List<string> Replies = new List<string>() {
-                $"Those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ think they can fuck with me? Go give {KillRequirement} of those pricks a dirt nap. Once you are done come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. ${MoneyToRecieve} to you",
-                $"{TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ decided to make some moves against us. Let them know we don't approve by sending {KillRequirement} of those assholes to the other side. When you are finished, get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. I'll have ${MoneyToRecieve} waiting for you.",
-                $"Go find {KillRequirement} of those {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~ pricks. Make sure they won't ever talk to anyone again. Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
+                $"Need to send a message to {TargetGang.ColorPrefix}{TargetGang.ShortName}~s~. Get to the {TargetGang.DenName} on {TargetGangDen.FullStreetAddress} and send them an explosive surprise. Make sure its right outside the {TargetGang.DenName}. Be sure to also get rid of {KillRequirement} members for good measure.",
                     };
             Player.CellPhone.AddPhoneResponse(HiringGang.ContactName, HiringGang.ContactIcon, Replies.PickRandom());
         }
-        private void SendMoneyPickupMessage()
-        {
-            List<string> Replies = new List<string>() {
-                                $"Seems like that thing we discussed is done? Come by the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} to collect the ${MoneyToRecieve}",
-                                $"Word got around that you are done with that thing for us, Come back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"Get back to the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress} for your payment of ${MoneyToRecieve}",
-                                $"{HiringGangDen.FullStreetAddress} for ${MoneyToRecieve}",
-                                $"Heard you were done, see you at the {HiringGang.DenName} on {HiringGangDen.FullStreetAddress}. We owe you ${MoneyToRecieve}",
-                                };
-            Player.CellPhone.AddScheduledText(Contact, Replies.PickRandom(), 1);
-        }
+
         private void SendTaskAbortMessage()
         {
             List<string> Replies = new List<string>() {

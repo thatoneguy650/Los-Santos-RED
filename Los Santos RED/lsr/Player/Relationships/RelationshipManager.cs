@@ -48,7 +48,7 @@ public class RelationshipManager
         GunDealerRelationship.Setup();
         OfficerFriendlyRelationship.Setup();
     }
-    public void SetCompleteTask(string contactName, int repAmountOnCompletion)
+    public void SetCompleteTask(string contactName, int repAmountOnCompletion, bool joinGangOnComplete)
     {
         Gang myGang = Gangs.GetGangByContact(contactName);
         if (myGang != null)
@@ -59,6 +59,10 @@ public class RelationshipManager
             }
             GangRelationships.SetDebt(myGang, 0);
             GangRelationships.SetCompletedTask(myGang);
+            if (joinGangOnComplete)
+            {
+                GangRelationships.SetGang(myGang, true);
+            }
         }
         else if (contactName == StaticStrings.UndergroundGunsContactName)
         {

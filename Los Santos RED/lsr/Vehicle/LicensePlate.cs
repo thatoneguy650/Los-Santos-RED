@@ -28,7 +28,10 @@ namespace LSR.Vehicles
                 return PlateNumber + "!";
             else
                 return PlateNumber;
-
+        }
+        public string GenerateDescription()
+        {
+            return $"Plate that can be applied to most vehicles.~n~Number: {PlateNumber}~n~Type: {PlateType}~n~Wanted: {(IsWanted ? "Yes" : "No")}";
         }
     }
 }

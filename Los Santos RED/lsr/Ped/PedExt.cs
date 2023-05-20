@@ -610,7 +610,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             try
             {
                 KillerHandle = NativeFunction.Natives.GetPedSourceOfDeath<uint>(Pedestrian);
-                //EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}");
+                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Ped To Check: {Pedestrian.Handle} killed by {KillerHandle}");
             }
             catch (Exception ex)
             {

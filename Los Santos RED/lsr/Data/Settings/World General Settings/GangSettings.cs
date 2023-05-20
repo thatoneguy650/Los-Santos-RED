@@ -87,6 +87,7 @@ public class GangSettings : ISettingsDefaultable
     public float EscortSpeed { get; set; }
     public float DistanceToReportRepChanges { get; set; }
     public uint GameTimeToReportRepChanges { get; set; }
+    public uint GameTimeToReportRepChangesInTerritory { get; set; }
     public float MurderDistance { get; set; }
     public uint GameTimeRecentlyKilled { get; set; }
     public GangSettings()
@@ -174,6 +175,7 @@ public class GangSettings : ISettingsDefaultable
 
         DistanceToReportRepChanges = 75f;
         GameTimeToReportRepChanges = 45000;
+        GameTimeToReportRepChangesInTerritory = 20000;
         MurderDistance = 15f;
         GameTimeRecentlyKilled = 20000;
     }

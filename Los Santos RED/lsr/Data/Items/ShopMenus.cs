@@ -170,9 +170,8 @@ public class ShopMenus : IShopMenus
     }
     private void GenericPawnShopMenu()
     {
-        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
-            new ShopMenu("PawnShopMenu","PawnShop",new List<MenuItem>() {
 
+        ShopMenu GenericPawnShopMenu = new ShopMenu("PawnShopMenu", "PawnShop", new List<MenuItem>() {
                 new MenuItem("GASH Black Umbrella", 50, 5),
                 new MenuItem("TAG-HARD Flashlight", 140, 10),
                 new MenuItem("Flint Handle Flashlight", 110, 25),
@@ -195,8 +194,6 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Coil Tesla",1400, 250),
                 new MenuItem("BS M1922",1900, 250),
 
-
-
                 new MenuItem("Flint Duct Tape", 10,1),
                 new MenuItem("Flint Multi-Bit Screwdriver", 40,5),
                 new MenuItem("Flint Rubber Mallet", 70,15),
@@ -210,8 +207,26 @@ public class ShopMenus : IShopMenus
                 new MenuItem("Flint Cordless Drill", 150, 25),
                 new MenuItem("Power Metal Cordless Drill", 110,30),
 
-            }),
+                new MenuItem("Fake Gold Ring", 0,2),
+                new MenuItem("Gold Ring", 0,155),
+                new MenuItem("Fake Silver Ring", 0,1),
+                new MenuItem("Silver Ring", 0,15),
+
+                new MenuItem("iFruit Cellphone", 0,95),
+                new MenuItem("Facade Cellphone", 0,75),
+                new MenuItem("Badger Cellphone", 0,55),
+            });
+
+        PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>{
+            GenericPawnShopMenu,
         });
+        for (int i = 1; i <= 4; i++)
+        {
+            ShopMenu newMenu = GenericPawnShopMenu.Copy();
+            newMenu.Randomize();
+            newMenu.ID += i.ToString();
+            PossibleShopMenus.ShopMenuList.Add(newMenu);
+        }
     }
     private void GenericLocationsMenu()
     {

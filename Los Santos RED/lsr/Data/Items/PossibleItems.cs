@@ -35,6 +35,6 @@ public class PossibleItems
     public List<VehicleItem> VehicleItems { get; private set; } = new List<VehicleItem>();
     public List<BinocularsItem> BinocularsItems { get; private set; } = new List<BinocularsItem>();
     public List<RadioItem> RadioItems { get; private set; } = new List<RadioItem>();
-
+    public List<ValuableItem> ValuableItems { get; private set; } = new List<ValuableItem>();
 }
 

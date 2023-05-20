@@ -87,11 +87,13 @@ public class HealthState
             if(MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
+                FlagDamage(CurrentPlayer);
+                return;
             }
             if (CurrentHealth < Health || CurrentArmor < Armor)
             {
                 int prevHealth = Health;
-                if (MyPed.Pedestrian.Exists() && MyPed.HasExistedFor >= 4000)//10000)
+                if (MyPed.Pedestrian.Exists() && MyPed.HasExistedFor >= 2000)//4000)//10000)
                 {
                     GameFiber.Yield();
                     //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE DETECTED {MyPed.Pedestrian.Handle} HasExistedFor {MyPed.HasExistedFor} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}", 5);

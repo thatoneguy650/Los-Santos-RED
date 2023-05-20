@@ -35,6 +35,7 @@ public class GangTasks
     private List<GangDeliveryTask> GangDeliveryTasks = new List<GangDeliveryTask>();
     private List<GangWheelmanTask> GangWheelmanTasks = new List<GangWheelmanTask>();
     private List<GangPizzaDeliveryTask> GangPizzaDeliveryTasks = new List<GangPizzaDeliveryTask>();
+    private List<GangProveWorthTask> GangProveWorthTasks = new List<GangProveWorthTask>();
 
     public GangTasks(ITaskAssignable player, ITimeControllable time, IGangs gangs, PlayerTasks playerTasks, IPlacesOfInterest placesOfInterest, List<DeadDrop> activeDrops, ISettingsProvideable settings, IEntityProvideable world, ICrimes crimes, IModItems modItems, IShopMenus shopMenus, IWeapons weapons, INameProvideable names, IPedGroups pedGroups)
     {
@@ -66,6 +67,7 @@ public class GangTasks
         GangDeliveryTasks.ForEach(x => x.Dispose());
         GangWheelmanTasks.ForEach(x => x.Dispose());
         GangPizzaDeliveryTasks.ForEach(x => x.Dispose());
+        GangProveWorthTasks.ForEach(x => x.Dispose());
 
         RivalGangHits.Clear();
         PayoffGangTasks.Clear();
@@ -74,10 +76,21 @@ public class GangTasks
         GangDeliveryTasks.Clear();
         GangWheelmanTasks.Clear();
         GangPizzaDeliveryTasks.Clear();
+        GangProveWorthTasks.Clear();
     }
-    public void StartGangHit(Gang gang)
+    public void StartGangProveWorth(Gang gang, int killRequirement)
+    {
+        GangProveWorthTask newTask = new GangProveWorthTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        newTask.KillRequirement = killRequirement;
+        newTask.JoinGangOnComplete = true;
+        GangProveWorthTasks.Add(newTask);
+        newTask.Setup();
+        newTask.Start(gang);
+    }
+    public void StartGangHit(Gang gang, int killRequirement)
     {
         RivalGangHitTask newTask = new RivalGangHitTask(Player, Time, Gangs, PlayerTasks, PlacesOfInterest, ActiveDrops, Settings, World, Crimes);
+        newTask.KillRequirement = killRequirement;
         RivalGangHits.Add(newTask);
         newTask.Setup();
         newTask.Start(gang);

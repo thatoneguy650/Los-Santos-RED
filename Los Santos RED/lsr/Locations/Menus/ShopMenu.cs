@@ -43,25 +43,32 @@ public class ShopMenu
     {
         foreach (MenuItem mi in Items)
         {
-            if (mi.Purchaseable)
+            int existingPurchasePrice = mi.PurchasePrice;
+            int existingSalesPrice = mi.SalesPrice;
+            if (mi.Purchaseable && mi.PurchasePrice >= 15)
             {
-                mi.PurchasePrice += (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.0f, 0.2f));//add anywhere between 0 and 20 percent
-            }
-            if (mi.Sellable)
-            {
-                int AmountToSubtract = (int)((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.0f, 0.2f));//remove 20 to 40 percent, unless its less than the amount, then 0
-                if (mi.SalesPrice >= AmountToSubtract)
+                int purchaseModAmount = (int)Math.Ceiling((float)mi.PurchasePrice * RandomItems.GetRandomNumber(0.0f, 0.25f));
+                if(RandomItems.RandomPercent(50))
                 {
-                    mi.SalesPrice -= AmountToSubtract;
+                    purchaseModAmount *= -1;
                 }
-                else
-                {
-                    mi.SalesPrice = 0;
-                }
+                mi.PurchasePrice += purchaseModAmount;//add anywhere between 0 and 20 percent
             }
-            if (mi.Purchaseable && mi.Sellable && mi.PurchasePrice <= mi.SalesPrice)
+            if (mi.Sellable && mi.SalesPrice >= 15)
             {
-                mi.PurchasePrice = mi.SalesPrice + ((int)((float)mi.SalesPrice * RandomItems.GetRandomNumber(0.1f, 0.4f)));//sales price + between 10 and 40 percent
+                int salesModAmount = (int)Math.Ceiling((float)mi.SalesPrice * RandomItems.GetRandomNumber(0.0f, 0.25f));
+                if (RandomItems.RandomPercent(50))
+                {
+                    salesModAmount *= -1;
+                }
+                mi.SalesPrice += salesModAmount;//add anywhere between 0 and 20 percent
+            }
+            EntryPoint.WriteToConsole($"MODIFIED {mi.ModItem?.DisplayName} FROM:{existingPurchasePrice}-{existingSalesPrice} TO:{mi.PurchasePrice}-{mi.SalesPrice}");
+            if(mi.SalesPrice >= mi.PurchasePrice)
+            {
+                mi.PurchasePrice = existingPurchasePrice;
+                mi.SalesPrice = existingSalesPrice;
+                EntryPoint.WriteToConsole($"MODIFIED {mi.ModItem?.DisplayName} ERROR RESETTING");
             }
         }
     }

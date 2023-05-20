@@ -114,6 +114,8 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.BongItems);
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
+        AllItems.AddRange(PossibleItems.ValuableItems);
+
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -263,8 +265,25 @@ public class ModItems : IModItems
         DefaultConfig_Tools();
         DefaultConfig_Vehicles();
         DefaultConfig_Services();
+        DefaultConfig_Valuables();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
     }
+
+    private void DefaultConfig_Valuables()
+    {
+        PossibleItems.ValuableItems.AddRange(new List<ValuableItem>
+        {
+            new ValuableItem("Fake Gold Ring","As real as the stars in Vinewood.", ItemType.Jewelry) {
+                FindPercentage = 5,ItemSubType = ItemSubType.Ring },
+            new ValuableItem("Gold Ring","No hobbits around.", ItemType.Jewelry) {
+                FindPercentage = 1,ItemSubType = ItemSubType.Ring },
+            new ValuableItem("Fake Silver Ring","It's fakes all the way down.", ItemType.Jewelry) {
+                FindPercentage = 6,ItemSubType = ItemSubType.Ring },
+            new ValuableItem("Silver Ring","Whats wrong with second place?", ItemType.Jewelry) {
+                FindPercentage = 5,ItemSubType = ItemSubType.Ring },
+        });
+    }
+
     private void DefaultConfig_Drinks()
     {
         PossibleItems.DrinkItems.AddRange(new List<DrinkItem> {
@@ -1894,15 +1913,15 @@ public class ModItems : IModItems
         PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
             new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {
                 ModelItemID = "prop_phone_ing",
-                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
             },
             new FlashlightItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.") {
                 ModelItemID = "prop_phone_ing_02",
-                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
             },
             new FlashlightItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.") {
                 ModelItemID = "prop_phone_ing_03",
-                EmissiveDistance = 25.0f,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
             },
             new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.") {
                 ModelItemID = "prop_cs_police_torch",

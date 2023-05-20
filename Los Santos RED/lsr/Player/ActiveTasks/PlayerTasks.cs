@@ -103,7 +103,7 @@ public class PlayerTasks
         PlayerTask myTask = PlayerTaskList.FirstOrDefault(x => x.ContactName == contactName && x.IsActive);
         if(myTask != null)
         {
-            Player.RelationshipManager.SetCompleteTask(contactName, myTask.RepAmountOnCompletion);
+            Player.RelationshipManager.SetCompleteTask(contactName, myTask.RepAmountOnCompletion, myTask.JoinGangOnComplete);
             if (myTask.PaymentAmountOnCompletion != 0)
             {
                 Player.BankAccounts.GiveMoney(myTask.PaymentAmountOnCompletion);
@@ -155,6 +155,13 @@ public class PlayerTasks
         if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
         {
             PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, StartTime = Time.CurrentDateTime });
+        }
+    }
+    public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName, bool joinGangOnComplete)
+    {
+        if (!PlayerTaskList.Any(x => x.ContactName == contactName && x.IsActive))
+        {
+            PlayerTaskList.Add(new PlayerTask(contactName, true, Settings) { JoinGangOnComplete = joinGangOnComplete, Name = taskName, PaymentAmountOnCompletion = moneyOnCompletion, RepAmountOnCompletion = repOnCompletion, DebtAmountOnFail = debtOnFail, RepAmountOnFail = repOnFail, CanExpire = true, ExpireTime = Time.CurrentDateTime.AddDays(daysToComplete), StartTime = Time.CurrentDateTime });
         }
     }
     public void AddTask(string contactName, int moneyOnCompletion, int repOnCompletion, int debtOnFail, int repOnFail, int daysToComplete, string taskName)

@@ -18,6 +18,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
+//using System.Windows.Media;
 using static DispatchScannerFiles;
 using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
@@ -1283,24 +1284,14 @@ public class Debug
     public void DebugNumpad8()
     {
 
-
-
         GameFiber.StartNew(delegate
         {
-            float CamPitch = 0f;
-            float VehiclePitch = 0f;
+            Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
             while (!Game.IsKeyDownRightNow(Keys.Z))
             {
-                CamPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
-                if (Player.Character.CurrentVehicle.Exists())
-                {
-                    VehiclePitch = Player.Character.CurrentVehicle.Rotation.Pitch;
-                }
-                else
-                {
-                    VehiclePitch = 0f;
-                }
-                Game.DisplaySubtitle($"CamPitch:{Math.Round(CamPitch,4)} VehiclePitch:{Math.Round(VehiclePitch, 4)}");
+                Rage.Debug.DrawArrowDebug(PlayerPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+                bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, PlayerPos.X,PlayerPos.Y,PlayerPos.Z,20f);
+                Game.DisplaySubtitle($"isExplosion:{isExplosion}");
                 Game.DisplayHelp($"Press Z to Exit");
                 GameFiber.Yield();
             }
@@ -1308,8 +1299,31 @@ public class Debug
 
         }, "Run Debug Logic");
 
+        //GameFiber.StartNew(delegate
+        //{
+        //    float CamPitch = 0f;
+        //    float VehiclePitch = 0f;
+        //    while (!Game.IsKeyDownRightNow(Keys.Z))
+        //    {
+        //        CamPitch = NativeFunction.Natives.GET_GAMEPLAY_CAM_RELATIVE_PITCH<float>();
+        //        if (Player.Character.CurrentVehicle.Exists())
+        //        {
+        //            VehiclePitch = Player.Character.CurrentVehicle.Rotation.Pitch;
+        //        }
+        //        else
+        //        {
+        //            VehiclePitch = 0f;
+        //        }
+        //        Game.DisplaySubtitle($"CamPitch:{Math.Round(CamPitch,4)} VehiclePitch:{Math.Round(VehiclePitch, 4)}");
+        //        Game.DisplayHelp($"Press Z to Exit");
+        //        GameFiber.Yield();
+        //    }
 
 
+        //}, "Run Debug Logic");
+
+
+       // IS_EXPLOSION_IN_AREA
 
         //DoCops();
         // Test222();

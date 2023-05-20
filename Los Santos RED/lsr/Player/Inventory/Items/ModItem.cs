@@ -12,6 +12,7 @@ using Mod;
 using System.Runtime;
 using static DispatchScannerFiles;
 using LosSantosRED.lsr.Player;
+using System.ComponentModel;
 
 [Serializable()]
 [XmlInclude(typeof(ClothingItem))]
@@ -24,6 +25,7 @@ using LosSantosRED.lsr.Player;
 [XmlInclude(typeof(FoodItem))]
 [XmlInclude(typeof(HammerItem))]
 [XmlInclude(typeof(HotelStayItem))]
+[XmlInclude(typeof(ValuableItem))]
 [XmlInclude(typeof(IngestItem))]
 [XmlInclude(typeof(InhaleItem))]
 [XmlInclude(typeof(InjectItem))]
@@ -85,6 +87,7 @@ public class ModItem
     public int FindPercentage { get; set; } = 0;
     public int PoliceFindDuringPlayerSearchPercentage { get; set; } = 85;
     public virtual bool IsDLC => false;
+    public virtual string DisplayName => Name;
     public virtual void Setup(PhysicalItems physicalItems, IWeapons weapons)
     {
         if (ModelItemID != "")

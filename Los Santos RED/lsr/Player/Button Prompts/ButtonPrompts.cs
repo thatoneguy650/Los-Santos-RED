@@ -49,14 +49,16 @@ public class ButtonPrompts
     private void AttemptAddVehiclePrompts()
     {
         VehicleExt toConsider = Player.InterestedVehicle;
-        if(!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || Player.ActivityManager.IsInteractingWithLocation || 
+        if(!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPrompt || 
+            Player.ActivityManager.IsInteractingWithLocation || 
             Player.IsShowingFrontEndMenus || 
-            
-            
             addedPromptGroup || 
             Player.Surrendering.HandsAreUp || 
             !Player.IsAliveAndFree || 
             toConsider == null || 
+
+            (!Settings.SettingsManager.UIGeneralSettings.ShowVehicleInteractionPromptInVehicle && Player.IsInVehicle) ||
+
             !toConsider.Vehicle.Exists() || 
             !toConsider.HasBeenEnteredByPlayer || 
             toConsider.VehicleInteractionMenu.IsShowingMenu || 

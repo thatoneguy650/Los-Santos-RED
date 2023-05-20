@@ -35,4 +35,6 @@ public enum ItemSubType
     Flashlight,
     Umbrella,
     Binoculars,
+    Ring,
+    LicensePlates,
 }

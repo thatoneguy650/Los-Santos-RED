@@ -101,14 +101,11 @@ public class Residence : InteractableLocation, ILocationSetupable
                 CreateInteractionMenu();
                 InteractionMenu.Visible = true;
                 InteractionMenu.OnItemSelect += InteractionMenu_OnItemSelect;
-
                 if (!HasBannerImage)
                 {
                     InteractionMenu.SetBannerType(EntryPoint.LSRedColor);
                 }
-
                 GenerateResidenceMenu();
-
                 while (IsAnyMenuVisible || Time.IsFastForwarding || KeepInteractionGoing)
                 {
                     MenuPool.ProcessMenus();
@@ -463,5 +460,9 @@ public class Residence : InteractableLocation, ILocationSetupable
         {
             WeaponStorage = new WeaponStorage(settings);
         }
+    }
+    public void PlayerSetup(ILocationInteractable player)
+    {
+        Player = player;
     }
 }

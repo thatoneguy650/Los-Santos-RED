@@ -206,7 +206,7 @@ public class GangMember : PedExt, IWeaponIssuable
        // ReputationReport.WasKilledByPlayer = true;
         ReputationReport.AddReputation(RepToRemove);
 
-        EntryPoint.WriteToConsole($"KILLED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove})");
+        EntryPoint.WriteToConsole($"KILLED ReputationReport.ReputationChangeAmount:{ReputationReport.ReputationChangeAmount} ({RepToRemove}) MembersKilled:{gr?.MembersKilled} {Gang.ShortName}");
 
         //Player.RelationshipManager.GangRelationships.ChangeReputation(Gang, RepToRemove, true);
         //Player.RelationshipManager.GangRelationships.AddAttacked(Gang);
