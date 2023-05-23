@@ -106,7 +106,7 @@ namespace LSR.Vehicles
                     //{
                     //    return true;
                     //}
-                    else if (Vehicle.IsAlarmSounding)
+                    else if (Vehicle.Exists() && Vehicle.IsAlarmSounding)
                     {
                         return true;
                     }

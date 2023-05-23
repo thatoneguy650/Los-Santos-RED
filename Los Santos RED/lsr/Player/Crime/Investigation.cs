@@ -102,47 +102,49 @@ public class Investigation
     }
     public void Start(Vector3 postionToInvestigate, bool havePlayerDescription, bool requiresPolice, bool requiresEMS, bool requiresFirefighters)
     {
-        if (Player.IsNotWanted)
+        if(Player.IsWanted)
         {
-            if(requiresPolice)
-            {
-                RequiresPolice = true;
-            }
-            if(requiresEMS)
-            {
-                RequiresEMS = true;
-            }
-            if(requiresFirefighters)
-            {
-                RequiresFirefighters = true;
-            }
-            Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
-            GameFiber.Yield();
-            if (havePlayerDescription)
-            {
-                HavePlayerDescription = havePlayerDescription;
-            }
-            if (!IsActive)
-            {
-                IsActive = true;
-                GameTimeStartedInvestigation = Game.GameTime;
-                if (Settings.SettingsManager.InvestigationSettings.CreateBlip)
-                {
-                    InvestigationBlip = new Blip(Position, 250f)
-                    {
-                        Name = "Investigation Center",
-                        Color = BlipColor,
-                        Alpha = 0.25f
-                    };
-                    NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
-                    NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Investigation Center");
-                    NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
-                    NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
-                    GameFiber.Yield();
-                }
-                //EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START");
-            }
+            return;
         }
+        if(requiresPolice)
+        {
+            RequiresPolice = true;
+        }
+        if(requiresEMS)
+        {
+            RequiresEMS = true;
+        }
+        if(requiresFirefighters)
+        {
+            RequiresFirefighters = true;
+        }
+        Position = NativeHelper.GetStreetPosition(postionToInvestigate, true);
+        GameFiber.Yield();
+        if (havePlayerDescription)
+        {
+            HavePlayerDescription = havePlayerDescription;
+        }
+        if (!IsActive)
+        {
+            IsActive = true;
+            GameTimeStartedInvestigation = Game.GameTime;
+            if (Settings.SettingsManager.InvestigationSettings.CreateBlip)
+            {
+                InvestigationBlip = new Blip(Position, 250f)
+                {
+                    Name = "Investigation Center",
+                    Color = BlipColor,
+                    Alpha = 0.25f
+                };
+                NativeFunction.Natives.BEGIN_TEXT_COMMAND_SET_BLIP_NAME("STRING");
+                NativeFunction.Natives.ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Investigation Center");
+                NativeFunction.Natives.END_TEXT_COMMAND_SET_BLIP_NAME(InvestigationBlip);
+                NativeFunction.Natives.SET_BLIP_AS_SHORT_RANGE((uint)InvestigationBlip.Handle, true);
+                GameFiber.Yield();
+            }
+            EntryPoint.WriteToConsole($"PLAYER EVENT: INVESTIGATION START {RequiresPolice} {RequiresEMS} {RequiresFirefighters}");
+        }
+        
     }
     public void Update()
     {

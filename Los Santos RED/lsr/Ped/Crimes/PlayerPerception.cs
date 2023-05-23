@@ -62,20 +62,8 @@ public class PlayerPerception
     public VehicleExt VehicleLastSeenTargetIn { get; set; }
     public WeaponInformation WeaponLastSeenTargetWith { get; set; }
     public bool WithinWeaponsAudioRange { get; private set; } = false;
-
     public bool HasSeenTargetWithin(uint time) => CanSeeTarget || Game.GameTime - GameTimeLastSeenTarget <= time;
-
-
-
-
-
-
-
     public List<WitnessedCrime> PlayerCrimesWitnessed { get; private set; } = new List<WitnessedCrime>();
-
-
-
-
     public bool HasSeenTargetCommitCrime => PlayerCrimesWitnessed.Any();
     public Vector3 PositionLastSeenCrime { get; private set; } = Vector3.Zero;
     public bool NeedsUpdate => Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive;
@@ -85,7 +73,7 @@ public class PlayerPerception
     {
         RanSightThisUpdate = false;
         Target = target;
-        if (Originator != null && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
+        if (Originator != null && !Originator.IsUnconscious && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
             bool distanceRan = UpdateTargetDistance(placeLastSeen, target.Position);
             bool losRan = UpdateTargetLineOfSight(Target.IsWanted);
@@ -320,7 +308,6 @@ public class PlayerPerception
         //    PositionLastSeenCrime = PositionToReport;
         //    GameTimeLastSeenTargetCommitCrime = Game.GameTime;
         //}
-
         PositionLastSeenCrime = PositionToReport;
         GameTimeLastSeenTargetCommitCrime = Game.GameTime;
         WitnessedCrime ExistingEvent = PlayerCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == CrimeToAdd.ID );
@@ -332,9 +319,6 @@ public class PlayerPerception
         {
             ExistingEvent.UpdateWitnessed(VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport);
         }
-
-
-
     }
     public void UpdateWitnessedCrimes()
     {
@@ -355,6 +339,11 @@ public class PlayerPerception
                 }
             }
         }
+    }
+
+    public void Reset()
+    {
+        SetTargetUnseen();
     }
 }
 

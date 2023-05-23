@@ -98,7 +98,7 @@ namespace LosSantosRED.lsr
                 CrimesViolating.Add(crime);
             }
         }
-        public void AddViolatingAndObserved(string crimeID) 
+        public void AddViolatingAndObserved(string crimeID) //for when the cops find a gun on you
         {
             Crime crime = Crimes.GetCrime(crimeID);
             if(crime == null)
@@ -109,11 +109,12 @@ namespace LosSantosRED.lsr
         }
         private void AddObservedAndReported()
         {
-            foreach (Crime Violating in CrimesViolating.ToList())
+            foreach (Crime Violating in CrimesViolating.ToList())//for when they see you doing stuffo
             {
-                if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer) || Violating.CanViolateWithoutPerception)
+                if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= Violating.MaxObservingDistance) || Violating.CanViolateWithoutPerception)
                 {
                     Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
+                    //EntryPoint.WriteToConsole($"AddObservedAndReported {Violating.ID} AnyPoliceCanSeePlayer:{Player.AnyPoliceCanSeePlayer} AnyPoliceCanHearPlayer:{Player.AnyPoliceCanHearPlayer} CanReportBySound:{Violating.CanReportBySound} CanViolateWithoutPerception:{Violating.CanViolateWithoutPerception}");
                 }
             }
         }

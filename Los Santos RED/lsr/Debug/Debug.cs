@@ -1289,9 +1289,11 @@ public class Debug
             Vector3 PlayerPos = Game.LocalPlayer.Character.Position;
             while (!Game.IsKeyDownRightNow(Keys.Z))
             {
-                Rage.Debug.DrawArrowDebug(PlayerPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
-                bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, PlayerPos.X,PlayerPos.Y,PlayerPos.Z,20f);
-                Game.DisplaySubtitle($"isExplosion:{isExplosion}");
+                //Rage.Debug.DrawArrowDebug(PlayerPos, Vector3.Zero, Rotator.Zero, 1f, System.Drawing.Color.Red);
+                //bool isExplosion = NativeFunction.Natives.IS_EXPLOSION_IN_SPHERE<bool>(-1, PlayerPos.X,PlayerPos.Y,PlayerPos.Z,20f);
+                bool IsCurrentWeaponSilenced = Player.Character.IsCurrentWeaponSilenced;
+                bool IS_PED_CURRENT_WEAPON_SILENCED = NativeFunction.Natives.IS_PED_CURRENT_WEAPON_SILENCED<bool>(Game.LocalPlayer.Character);
+                Game.DisplaySubtitle($"IsCurrentWeaponSilenced:{IsCurrentWeaponSilenced} IS_PED_CURRENT_WEAPON_SILENCED:{IS_PED_CURRENT_WEAPON_SILENCED}");
                 Game.DisplayHelp($"Press Z to Exit");
                 GameFiber.Yield();
             }
@@ -4057,14 +4059,14 @@ public class Debug
             }
             weaponinventorystring += $" HasHeavyWeaponOnPerson {cop.WeaponInventory.HasHeavyWeaponOnPerson}";
 
-
+            bool canSeePlayer = cop.CanSeePlayer;
 
             string retardedcops = $"IsDriver:{cop.IsDriver}";
 
 
             if (cop.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
@@ -4076,7 +4078,7 @@ public class Debug
 
             else
             {
-                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} Name:{cop.Name} {cop.GroupName} " +
+                EntryPoint.WriteToConsole($"Num6: Cop {cop.Pedestrian.Handle}({cop.Handle})-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, cop.CellX, cop.CellY)}-{cop.DistanceToPlayer} {cop.Pedestrian.Model.Name} SeePlayer:{canSeePlayer} Name:{cop.Name} {cop.GroupName} " +
                     $"weaponhash {currentWeapon} IsUnconscious:{cop.IsUnconscious} IsMale:{cop.Pedestrian.IsMale} " +
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");

@@ -82,10 +82,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
     public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
-
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
-
-
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
     public bool CanRemove
     {
@@ -122,9 +119,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int CombatAbility { get; set; } = 0;
     public virtual int CombatRange { get; set; } = -1;
     public virtual int CombatMovement { get; set; } = -1;
-
-
-
     public virtual int TaserAccuracy { get; set; } = 10;
     public virtual int TaserShootRate { get; set; } = 100;
     public virtual int VehicleAccuracy { get; set; } = 10;
@@ -132,13 +126,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual int TurretAccuracy { get; set; } = 10;
     public virtual int TurretShootRate { get; set; } = 1000;
     public virtual bool IsAnimal { get; set; } = false;
-
-    
-
     public virtual int DefaultCombatFlag { get; set; } = 0;
-
     public virtual int DefaultEnterExitFlag { get; set; } = 0;
-
     public string InteractPrompt(IButtonPromptable player)
     {
         bool toSell = false;
@@ -344,19 +333,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool WasSetCriminal { get; set; } = false;
     public WeaponInformation WeaponLastSeenPlayerWith => PlayerPerception.WeaponLastSeenTargetWith;
     public Blip AttachedLSRBlip { get; set; }
-
     public virtual bool WillCallPolice { get; set; } = false;
     public virtual bool WillCallPoliceIntense { get; set; } = false;
     public virtual bool WillFight { get; set; } = false;
     public virtual bool WillFightPolice { get; set; } = false;
-
-
-
-
-
-
     public bool IsGroupMember { get; set; } = false;
-
     public bool WithinWeaponsAudioRange => PlayerPerception.WithinWeaponsAudioRange;
     public string VoiceName { get; set; } = "";
     private int FullUpdateInterval//dont forget distance and LOS in here
@@ -426,7 +407,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasFullBodyArmor { get; set; } = false;
     public virtual bool CanBeLooted { get; set; } = true;
     public virtual bool CanBeDragged { get; set; } = true;
-
     public bool IsMale { get; set; } = true;
     public bool AlwaysHasLongGun { get; set; } = false;
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
@@ -618,20 +598,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
-    public void LogSourceOfDeathOld()
-    {
-        if (Pedestrian.Exists() && Pedestrian.IsDead)
-        {
-            try
-            {
-                Killer = NativeFunction.Natives.GetPedSourceOfDeath<Entity>(Pedestrian);
-            }
-            catch (Exception ex)
-            {
-                EntryPoint.WriteToConsole($"PEDEXT: LogSourceOfDeath Error! Ped To Check: {Pedestrian.Handle} {ex.Message} {ex.StackTrace}", 5);
-            }
-        }
-    }
     public bool SeenPlayerWithin(int msSince) => PlayerPerception.SeenTargetWithin(msSince);
     public void SetWantedLevel(int toSet)
     {
@@ -698,8 +664,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         CellX = (int)(position.X / EntryPoint.CellSize);
         CellY = (int)(position.Y / EntryPoint.CellSize);
     }
-
-
     public void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
     {
         if(!Pedestrian.Exists())
@@ -747,7 +711,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
-
     public void UpdateVehicleState()
     {
         bool wasInVehicle = IsInVehicle;
@@ -966,7 +929,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         }
 
     }
-
     public void SetBaseStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons weapons, bool addBlip)
     {
         if (!Pedestrian.Exists())
@@ -1046,9 +1008,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         Player.AddMedicalEvent(PositionLastSeenDistressedPed);
         HasSeenDistressedPed = false;
     }
-
-
-
     private float CivilianCallPercentage()
     {
         if (EntryPoint.FocusZone != null)
@@ -1153,12 +1112,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             return Settings.SettingsManager.CivilianSettings.FightPolicePercentageMiddleZones;
         }
     }
-
     public virtual void OnKilledByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
 
     }
-
     public virtual void OnInjuredByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
 
@@ -1166,5 +1123,10 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual void OnCarjackedByPlayer(IViolateable Player, IZones Zones, IGangTerritories GangTerritories)
     {
         HasBeenCarJackedByPlayer = true;
+    }
+
+    public virtual void OnDeath()
+    {
+        PlayerPerception.Reset();
     }
 }

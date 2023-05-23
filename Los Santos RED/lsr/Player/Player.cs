@@ -196,6 +196,7 @@ namespace Mod
         public bool AnyPoliceCanSeePlayer { get; set; }
         public bool AnyPoliceKnowInteriorLocation { get; set; }
         public bool AnyPoliceRecentlySeenPlayer { get; set; }
+        public bool AnyPoliceSawPlayerViolating { get; set; }
         public int AssignedSeat => -1;
         public VehicleExt AssignedVehicle => null;
         public List<Rage.Object> AttachedProp { get; set; } = new List<Rage.Object>();
@@ -462,6 +463,7 @@ namespace Mod
             MeleeManager.Setup();
             PlayerVoice.Setup();
             ActivityManager.Setup();
+            HealthState.Setup();
             ModelName = Game.LocalPlayer.Character.Model.Name;
             CurrentModelVariation = NativeHelper.GetPedVariation(Game.LocalPlayer.Character);
             FreeModeVoice = Game.LocalPlayer.Character.IsMale ? Settings.SettingsManager.PlayerOtherSettings.MaleFreeModeVoice : Settings.SettingsManager.PlayerOtherSettings.FemaleFreeModeVoice;

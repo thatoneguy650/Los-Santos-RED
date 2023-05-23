@@ -50,6 +50,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
+    public bool SawPlayerViolating { get; set; }
     public override int ShootRate { get; set; } = 500;
     public override int Accuracy { get; set; } = 40;
     public override int CombatAbility { get; set; } = 1;
@@ -129,7 +130,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
                 PlayerPerception.Update(perceptable, placeLastSeen);
-                if(Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
+                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
                 {
                     GameFiber.Yield();//TR TEST 30
                 }
@@ -160,6 +161,14 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     HasSeenDistressedPed = false;
                 }
                 UpdateCombatFlags();
+                if (policeRespondable.IsWanted && CanSeePlayer)
+                {
+                    SawPlayerViolating = true;
+                }
+                if (policeRespondable.IsNotWanted && SawPlayerViolating)
+                {
+                    SawPlayerViolating = false;
+                }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }

@@ -6,6 +6,7 @@ using Rage.Native;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ public class HealthState
     private ISettingsProvideable Settings;
     private uint GameTimeLastSetRagDoll;
     private bool IsPlayer;
+    private bool HasSetup = false;
     public HealthState()
     {
 
@@ -29,10 +31,6 @@ public class HealthState
     public HealthState(PedExt _MyPed, ISettingsProvideable settings, bool isPlayer)
     {
         MyPed = _MyPed;
-        Health = _MyPed.Pedestrian.Health;
-        Armor = _MyPed.Pedestrian.Armor;
-        CurrentArmor = Armor;
-        CurrentHealth = Health;
         Settings = settings;
         IsPlayer = isPlayer;
     }
@@ -77,8 +75,24 @@ public class HealthState
     private uint GameTimeLastModifiedDamage;
     private uint GameTimeLastYelledInPain;
     public bool WasHitByVehicle { get; private set; }
+    public void Setup()
+    {
+        if (!MyPed.Pedestrian.Exists())
+        {
+            return;
+        }
+        Health = MyPed.Pedestrian.Health;
+        Armor = MyPed.Pedestrian.Armor;
+        CurrentArmor = Armor;
+        CurrentHealth = Health;
+        HasSetup = true;
+    }
     public void Update(IPoliceRespondable CurrentPlayer)
     {
+        if(!HasSetup)
+        {
+            Setup();
+        }
         if (NeedDamageCheck && MyPed.Pedestrian.Exists() && !HasLoggedDeath)
         {
             GameTimeLastCheckedDamage = Game.GameTime;
@@ -87,6 +101,7 @@ public class HealthState
             if(MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, butr checking more is wasteful
+                MyPed.OnDeath();
                 FlagDamage(CurrentPlayer);
                 return;
             }

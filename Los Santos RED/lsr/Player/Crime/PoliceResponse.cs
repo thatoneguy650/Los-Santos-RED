@@ -519,6 +519,14 @@ namespace LosSantosRED.lsr
                     PlayerSeenInVehicleDuringWanted = true;
                 }
             }
+            else
+            {
+                if(HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime && !Player.AnyPoliceSawPlayerViolating && Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio) 
+                {
+                    ResetWanted();
+                    return;
+                }
+            }
             if (Settings.SettingsManager.PoliceSettings.WantedLevelIncreasesOverTime && HasBeenAtCurrentWantedLevelFor > CurrentWantedLevelIncreaseTime && Player.AnyPoliceCanSeePlayer && Player.WantedLevel <= Settings.SettingsManager.PoliceSettings.MaxWantedLevel-1)// 5)
             {
                 GameTimeLastRequestedBackup = Game.GameTime;
@@ -611,6 +619,37 @@ namespace LosSantosRED.lsr
         {
             GracePeriodCrimes.Clear();
             //EntryPoint.WriteToConsoleTestLong("ResetGracePeriod");
+        }
+
+        private void ResetWanted()
+        {
+            EntryPoint.WriteToConsole("Cops Did Not Radio In, Resetting Wanted");
+            List<CrimeEvent> PrevCrimesReported = CrimesReported.Copy();
+
+            CrimeEvent worst = CrimesReported.OrderBy(x => x.AssociatedCrime.Priority).FirstOrDefault();
+            Crime crime = null;
+            CrimeSceneDescription csd = null;
+            int instances = 0;
+            if (worst != null)
+            {
+                crime = worst.AssociatedCrime;
+                csd = worst.CurrentInformation.Copy();
+                instances = worst.Instances;
+            }
+            Vector3 prevPlaceLastReportedCrime = PlaceLastReportedCrime;
+            bool policeHaveDescription = PoliceHaveDescription;
+            bool reqPolice = Player.Investigation.RequiresPolice;
+            bool reqEMS = Player.Investigation.RequiresEMS;
+            bool reqFire = Player.Investigation.RequiresFirefighters;
+            EntryPoint.WriteToConsole($"prevPlaceLastReportedCrime {prevPlaceLastReportedCrime} policeHaveDescription{policeHaveDescription} reqPolice{reqPolice} reqEMS{reqEMS} reqFire{reqFire}");
+            Reset();
+            Player.Scanner.Reset();
+            if(worst != null && prevPlaceLastReportedCrime != Vector3.Zero)
+            {
+                CrimesReported.Add(new CrimeEvent(crime, csd) { Instances = instances });
+                Player.Investigation.Start(prevPlaceLastReportedCrime, policeHaveDescription, true, reqEMS, reqFire);
+                EntryPoint.WriteToConsole($"STARTING INVESTIGATION {crime.ID}");
+            }
         }
     }
 }

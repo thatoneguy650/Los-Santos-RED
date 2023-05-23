@@ -153,10 +153,11 @@ namespace LosSantosRED.lsr
             bool anyPoliceCanHearPlayer = false;
             bool anyPoliceCanRecognizePlayer = false;
             bool anyPoliceRecentlySeenPlayer = false;
+            bool anyPoliceSawPlayerViolating = false;
             int tested = 0;
             foreach (Cop cop in World.Pedestrians.AllPoliceList)
             {
-                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive)
+                if (cop.Pedestrian.Exists() && cop.Pedestrian.IsAlive && !cop.IsUnconscious)
                 {
                     if (cop.CanSeePlayer)
                     {
@@ -176,6 +177,10 @@ namespace LosSantosRED.lsr
                     {
                         anyPoliceRecentlySeenPlayer = true;
                     }
+                    if(cop.SawPlayerViolating)
+                    {
+                        anyPoliceSawPlayerViolating = true;
+                    }
                 }
 
                 if (anyPoliceCanSeePlayer && anyPoliceCanRecognizePlayer)
@@ -194,27 +199,24 @@ namespace LosSantosRED.lsr
             Player.AnyPoliceCanHearPlayer = anyPoliceCanHearPlayer;
             Player.AnyPoliceCanRecognizePlayer = anyPoliceCanRecognizePlayer;
             Player.AnyPoliceRecentlySeenPlayer = anyPoliceRecentlySeenPlayer;
+            Player.AnyPoliceSawPlayerViolating = anyPoliceSawPlayerViolating;
         }
-
-
         private void UpdateGeneralItmes()
         {
             if (Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !Player.AnyPoliceCanSeePlayer)
             {
-                if (Player.RecentlyShot && Player.AnyPoliceCanHearPlayer)
+                if (Player.RecentlyShot && Player.AnyPoliceCanHearPlayer && !Player.Character.IsCurrentWeaponSilenced)
                 {
                     Player.AnyPoliceCanSeePlayer = true;
                     Player.AnyPoliceRecentlySeenPlayer = true;
                 }
             }
 
-
-
-
             if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {
                 Player.AnyPoliceKnowInteriorLocation = true;
             }
+
             if ((Player.CurrentLocation.TimeOutside >= 10000 && Player.ClosestPoliceDistanceToPlayer >= 100f) || Player.CurrentLocation.TimeOutside >= 25000 || Player.PlacePolicePhysicallyLastSeenPlayer.DistanceTo(Player.Position) >= 200f)
             {
                 Player.AnyPoliceKnowInteriorLocation = false;
@@ -230,8 +232,6 @@ namespace LosSantosRED.lsr
             {
                 Player.PoliceLastSeenOnFoot = Player.IsOnFoot;
             }
-
-
         }
         private void UpdateWantedItems()
         {
@@ -240,6 +240,7 @@ namespace LosSantosRED.lsr
                 return;
             }
             GameFiber.Yield();
+
             if (Player.AnyPoliceRecentlySeenPlayer || Player.AnyPoliceKnowInteriorLocation)
             {
                 Player.PlacePoliceLastSeenPlayer = Player.Position;
@@ -253,7 +254,6 @@ namespace LosSantosRED.lsr
                 }
             }
 
-
             if (Player.PlacePoliceLastSeenPlayer.DistanceTo(prevPlacePoliceLastSeenPlayer) >= 5.0f)
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceLastSeenPlayer CHANGED");
@@ -265,8 +265,6 @@ namespace LosSantosRED.lsr
             {
                 Player.PlacePolicePhysicallyLastSeenPlayer = Player.Position;
             }
-
-
 
             DeterimineInterestedLocation();
 
@@ -305,14 +303,12 @@ namespace LosSantosRED.lsr
                 Player.PlacePoliceShouldSearchForPlayer = Player.PlacePoliceLastSeenPlayer;
             }
 
-
             if (Player.PlacePoliceShouldSearchForPlayer.DistanceTo(prevPlacePoliceShouldSearchForPlayer) >= 5f)
             {
                 //EntryPoint.WriteToConsole("POLICE PlacePoliceShouldSearchForPlayer CHANGED");
                 Player.StreetPlacePoliceShouldSearchForPlayer = NativeHelper.GetStreetPosition(Player.PlacePoliceShouldSearchForPlayer, true);
                 prevPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer;
             }
-
 
             Player.IsNearbyPlacePoliceShouldSearchForPlayer = Player.PlacePoliceShouldSearchForPlayer.DistanceTo2D(Player.Position) <= 200f;
         }

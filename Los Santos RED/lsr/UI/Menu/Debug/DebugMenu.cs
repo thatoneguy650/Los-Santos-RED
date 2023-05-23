@@ -1017,6 +1017,26 @@ new YmapDisabler("manhat01",true),
             }
             menu.Visible = false;
         };
+        UIMenuListScrollerItem<WeaponCategory> GetRandomSuppressedWeapon = new UIMenuListScrollerItem<WeaponCategory>("Get Random Suppressed Weapon", "Gives the Player a random suppressed weapon and ammo.", Enum.GetValues(typeof(WeaponCategory)).Cast<WeaponCategory>());
+        GetRandomSuppressedWeapon.Activated += (menu, item) =>
+        {
+            WeaponInformation myGun = Weapons.GetRandomRegularWeapon(GetRandomSuppressedWeapon.SelectedItem);
+            if (myGun != null)
+            {
+                Game.LocalPlayer.Character.Inventory.GiveNewWeapon(myGun.ModelName, myGun.AmmoAmount, true);
+                WeaponComponent bestMagazineUpgrade = myGun.PossibleComponents.Where(x => x.ComponentSlot == ComponentSlot.Muzzle).OrderBy(x => x.Name == "Suppressed" ? 1 : 4).FirstOrDefault();
+                if (bestMagazineUpgrade != null)
+                {
+                    myGun.AddComponent(Game.LocalPlayer.Character, bestMagazineUpgrade);
+                }
+            }
+            menu.Visible = false;
+        };
+
+
+
+
+
         UIMenuItem SetRandomNeeds = new UIMenuItem("Set Random Needs", "Sets the player needs level random");
         SetRandomNeeds.Activated += (menu, item) =>
         {
@@ -1129,6 +1149,7 @@ new YmapDisabler("manhat01",true),
         PlayerStateItemsMenu.AddItem(FillHealthAndArmor);
         PlayerStateItemsMenu.AddItem(GetRandomWeapon);
         PlayerStateItemsMenu.AddItem(GetRandomUpgradedWeapon);
+        PlayerStateItemsMenu.AddItem(GetRandomSuppressedWeapon);
         PlayerStateItemsMenu.AddItem(SetRandomNeeds);
         PlayerStateItemsMenu.AddItem(SetHealth);
         PlayerStateItemsMenu.AddItem(ResetNeeds);
@@ -1173,6 +1194,10 @@ new YmapDisabler("manhat01",true),
         
         PlayerStateItemsMenu.AddItem(AddOfficerFriendly);
         PlayerStateItemsMenu.AddItem(AddUndergroundGuns);
+
+
+
+
     }
     public void Setup()
     {

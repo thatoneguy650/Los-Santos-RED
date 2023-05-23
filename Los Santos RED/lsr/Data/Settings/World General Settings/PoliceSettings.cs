@@ -129,6 +129,11 @@ public class PoliceSettings : ISettingsDefaultable
     [Description("Set if the police can go into search mode at a one star wanted level or it should just expire.")]
     public bool DisableSearchModeAtOneStart { get; set; }
 
+
+
+    public int RadioInTime { get; set; }
+    public bool AllowLosingWantedByKillingBeforeRadio { get; set; }
+
     public PoliceSettings()
     {
         SetDefault();
@@ -218,5 +223,7 @@ public class PoliceSettings : ISettingsDefaultable
         FullResponseWantedLevelRequirement = 4;
         HighResponseWantedLevelRequirement = 2;
         DisableSearchModeAtOneStart = false;
+        RadioInTime = 5000;
+        AllowLosingWantedByKillingBeforeRadio = true;
     }
 }
