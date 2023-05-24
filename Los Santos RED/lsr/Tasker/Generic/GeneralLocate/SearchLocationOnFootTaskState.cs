@@ -24,7 +24,9 @@ class SearchLocationOnFootTaskState : TaskState
     private ILocationReachable LocationReachable;
     private IWeaponIssuable WeaponIssuable;
     private bool ResetWeapons = false;
-    public SearchLocationOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placeToWalkTo, ILocationReachable locationReachable, IWeaponIssuable weaponIssuable)
+    private bool SetArmed = false;
+    public SearchLocationOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placeToWalkTo, ILocationReachable locationReachable, 
+        IWeaponIssuable weaponIssuable, bool setArmed)
     {
         PedGeneral = pedGeneral;
         Player = player;
@@ -35,6 +37,7 @@ class SearchLocationOnFootTaskState : TaskState
         PlaceToWalkTo = placeToWalkTo;
         LocationReachable = locationReachable;
         WeaponIssuable = weaponIssuable;
+        SetArmed = setArmed;
     }
     public bool IsValid => PedGeneral != null && PedGeneral.Pedestrian.Exists() && PedGeneral.Pedestrian.DistanceTo2D(PlaceToWalkTo) <= 200f;
     public string DebugName => $"SearchLocationOnFootTaskState";
@@ -56,6 +59,10 @@ class SearchLocationOnFootTaskState : TaskState
         if(!PedGeneral.IsInVehicle && !ResetWeapons)
         {
             WeaponIssuable?.WeaponInventory.Reset();
+            if (SetArmed)
+            {
+                WeaponIssuable?.WeaponInventory.SetDefaultArmed();
+            }
             ResetWeapons = true;
         }
     }

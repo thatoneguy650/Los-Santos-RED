@@ -111,7 +111,7 @@ namespace LosSantosRED.lsr
         {
             foreach (Crime Violating in CrimesViolating.ToList())//for when they see you doing stuffo
             {
-                if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= Violating.MaxObservingDistance) || Violating.CanViolateWithoutPerception)
+                if (Player.AnyPoliceCanSeePlayer || (Violating.CanReportBySound && Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= Violating.MaxHearingDistance) || Violating.CanViolateWithoutPerception)
                 {
                     Player.AddCrime(Violating, true, Player.Position, Player.CurrentSeenVehicle, Player.WeaponEquipment.CurrentSeenWeapon, true, true, true);
                     //EntryPoint.WriteToConsole($"AddObservedAndReported {Violating.ID} AnyPoliceCanSeePlayer:{Player.AnyPoliceCanSeePlayer} AnyPoliceCanHearPlayer:{Player.AnyPoliceCanHearPlayer} CanReportBySound:{Violating.CanReportBySound} CanViolateWithoutPerception:{Violating.CanViolateWithoutPerception}");

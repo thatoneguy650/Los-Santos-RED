@@ -237,6 +237,7 @@ public class HealthState
             MyPed.LogSourceOfDeath();
             if (MyPed.CheckKilledBy(CurrentPlayer.Character))
             {
+                MyPed.WasKilledByPlayer = true;
                 MyPed.HasBeenHurtByPlayer = true;
                 CurrentPlayer.Violations.DamageViolations.AddKilled(MyPed, WasShot, WasMeleeAttacked, WasHitByVehicle);
             }

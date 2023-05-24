@@ -19,8 +19,8 @@ public class Investigate : ComplexTask
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
 
-    private Vector3 InvestigationPosition => Player.Investigation.IsActive ? Player.Investigation.Position : World.PoliceBackupPoint;
-    private bool IsRespondingCode3 => Player.Investigation.IsActive ? Player.Investigation.InvestigationWantedLevel > 1 : World.CitizenWantedLevel > 1;
+    private Vector3 InvestigationPosition => Player.Investigation.IsActive ? Player.Investigation.Position : Ped.IsAlerted ? Ped.AlertedPoint : World.PoliceBackupPoint;
+    private bool IsRespondingCode3 => Player.Investigation.IsActive ? Player.Investigation.InvestigationWantedLevel > 1 : Ped.IsAlerted ? true : World.CitizenWantedLevel > 1;
     private enum Task
     {
         WanderCode3,
@@ -135,9 +135,6 @@ public class Investigate : ComplexTask
                     Ped.Pedestrian.BlockPermanentEvents = false;
                 }
                 Ped.Pedestrian.KeepTasks = true;
-
-
-
                 NativeFunction.CallByName<bool>("TASK_VEHICLE_DRIVE_WANDER", Ped.Pedestrian, Ped.Pedestrian.CurrentVehicle, 12f, (int)eCustomDrivingStyles.Code3, 10f);
             }
             else
@@ -201,19 +198,19 @@ public class Investigate : ComplexTask
                 Ped.GameTimeReachedInvestigationPosition = 0;
                 CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(true);
-                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 HasReachedReportedPosition = true;
                 Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
-                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo(true);
-               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
+               EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }
@@ -228,19 +225,19 @@ public class Investigate : ComplexTask
                 Ped.GameTimeReachedInvestigationPosition = 0;
                 CurrentTaskedPosition = InvestigationPosition;// Player.Investigation.Position;
                 UpdateGoTo(false);
-                //EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
+               EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Updated: {0}", Ped.Pedestrian.Handle), 5);
             }
             float DistanceTo = Ped.Pedestrian.DistanceTo2D(CurrentTaskedPosition);
             if (DistanceTo <= 25f)
             {
                 Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
                 HasReachedReportedPosition = true;
-               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Reached: {0}", Ped.Pedestrian.Handle), 5);
             }
             else if (DistanceTo < 50f)
             {
                 UpdateGoTo(false);
-               // EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
+                EntryPoint.WriteToConsole(string.Format("TASKER: Investigation Position Near: {0}", Ped.Pedestrian.Handle), 5);
             }
         }
     }

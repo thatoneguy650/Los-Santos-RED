@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-public class GeneralLocate : ComplexTask, ILocationReachable
+public class GeneralInvestigate : ComplexTask, ILocationReachable
 {
     protected uint GameTimeStarted;
     protected IComplexTaskable complexTaskablePed;
@@ -28,25 +28,22 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     protected Vector3 prevPlaceToDriveTo;
     protected Vector3 prevPlaceToWalkTo;
     public bool HasReachedLocatePosition { get; protected set; } = false;
-
     protected virtual bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter && Player.IsOnFoot;
-
-    public GeneralLocate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
-        IWeaponIssuable weaponIssuable, bool hasSixthSense) : base(player, ped, 1500)//1500
+    protected virtual bool ForceSetArmed => false;
+    public GeneralInvestigate(PedExt pedGeneral, IComplexTaskable ped, ITargetable player, IEntityProvideable world, List<VehicleExt> possibleVehicles, IPlacesOfInterest placesOfInterest, ISettingsProvideable settings, bool blockPermanentEvents,
+        IWeaponIssuable weaponIssuable) : base(player, ped, 1500)//1500
     {
         PedGeneral = pedGeneral;
         complexTaskablePed = ped;
-        Name = "Locate";
+        Name = "Investigate";
         SubTaskName = "";
         World = world;
         PlacesOfInterest = placesOfInterest;
         Settings = settings;
         BlockPermanentEvents = blockPermanentEvents;
         WeaponIssuable = weaponIssuable;
-        HasSixthSense = hasSixthSense;
-        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);     
+        SeatAssigner = new SeatAssigner(Ped, World, possibleVehicles);
     }
-    
     public override void ReTask()
     {
         //Start();
@@ -55,18 +52,12 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     {
         GameTimeStarted = Game.GameTime;
         GetLocations();
-
-
-        //HasReachedLocatePosition = false;
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
-       // LocationsChanged = false;
-
-
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
-        //EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
     }
     public override void Stop()
     {
@@ -79,13 +70,6 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         StandardUpdate();
         UpdateVehicleState();
     }
-    //private void Restart()
-    //{
-    //    CurrentTaskState?.Stop();
-    //    GetNewTaskState();
-    //    CurrentTaskState?.Start();
-    //    EntryPoint.WriteToConsole($"{PedGeneral.Handle} RESTARTED Task{CurrentTaskState?.DebugName} PlaceToDriveTo{PlaceToDriveTo} PlaceToWalkTo {PlaceToWalkTo}");
-    //}
     public virtual void OnLocationReached()
     {
         HasReachedLocatePosition = true;
@@ -97,7 +81,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
             if (Game.GameTime - GameTimeStarted >= 1000)
             {
                 Start();
-                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
+                EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
             }
         }
         else
@@ -108,7 +92,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     }
     private void GetNewTaskState()
     {
-        if(!HasReachedLocatePosition)
+        if (!HasReachedLocatePosition)
         {
             if (Ped.IsInVehicle)
             {
@@ -117,24 +101,34 @@ public class GeneralLocate : ComplexTask, ILocationReachable
             }
             else
             {
-                CurrentTaskState = new GoToOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false);
+                if (PedGeneral.Pedestrian.Exists())
+                {
+                    NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(PedGeneral.Pedestrian);
+                }
+                CurrentTaskState = new GoToOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, ForceSetArmed);
                 SubTaskName = "GoToOnFootTaskState";
             }
         }
         else if (ShouldInvestigateOnFoot)
         {
-            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, false);
+            EntryPoint.WriteToConsole($"SearchLocationOnFootTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
+            if (PedGeneral.Pedestrian.Exists())
+            {
+                NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(PedGeneral.Pedestrian);
+            }
+            CurrentTaskState = new SearchLocationOnFootTaskState(PedGeneral, Player, World, SeatAssigner, Settings, BlockPermanentEvents, PlaceToWalkTo, this, WeaponIssuable, ForceSetArmed);
             SubTaskName = "SearchLocationOnFootTaskState";
         }
         else
         {
+            EntryPoint.WriteToConsole($"WanderInVehicleTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
             CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, true);
             SubTaskName = "WanderInVehicleTaskState";
         }
     }
     protected virtual void UpdateVehicleState()
     {
-        
+
     }
     private void CheckLocationChanged()
     {
@@ -145,7 +139,7 @@ public class GeneralLocate : ComplexTask, ILocationReachable
             LocationsChanged = false;
             return;
         }
-        HasReachedLocatePosition = false;    
+        HasReachedLocatePosition = false;
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;
@@ -154,17 +148,11 @@ public class GeneralLocate : ComplexTask, ILocationReachable
 
     protected virtual void GetLocations()
     {
-        if(OtherTarget != null && OtherTarget.Pedestrian.Exists())
+        if(Ped.IsAlerted)
         {
-            PlaceToDriveTo = OtherTarget.Pedestrian.Position;// Player.StreetPlacePoliceShouldSearchForPlayer;
-            PlaceToWalkTo = OtherTarget.Pedestrian.Position; //Player.PlacePoliceShouldSearchForPlayer;
+            PlaceToDriveTo = Ped.AlertedPoint;
+            PlaceToWalkTo = Ped.AlertedPoint;
         }
-        else
-        {
-            PlaceToDriveTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;// Player.StreetPlacePoliceShouldSearchForPlayer;
-            PlaceToWalkTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget; //Player.PlacePoliceShouldSearchForPlayer;
-        }
-
     }
 }
 

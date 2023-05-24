@@ -17,5 +17,6 @@ namespace LosSantosRED.lsr.Interface
         bool IsWanted { get; }
         int WantedLevel { get; }
         Stance Stance { get; }
+        WeaponEquipment WeaponEquipment { get; }
     }
 }

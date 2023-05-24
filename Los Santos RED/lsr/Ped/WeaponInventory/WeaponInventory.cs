@@ -397,6 +397,22 @@ public class WeaponInventory
         DebugWeaponState = "Set Default";
         GameTimeLastWeaponCheck = Game.GameTime;      
     }
+    public void SetDefaultArmed()
+    {
+        SetDefault();
+        if (LongGun != null && HasHeavyWeaponOnPerson)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, LongGun.GetHash(), true);
+        }
+        else if (Sidearm != null)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Sidearm.GetHash(), true);
+        }
+        else if (Melee != null)
+        {
+            NativeFunction.Natives.SET_CURRENT_PED_WEAPON(WeaponOwner.Pedestrian, Melee.GetHash(), true);
+        }
+    }
     public void SetDeadly(bool ForceLong)
     {
         if(IsSetDeadly || !WeaponOwner.Pedestrian.Exists() || !WeaponOwner.Pedestrian.IsAlive)

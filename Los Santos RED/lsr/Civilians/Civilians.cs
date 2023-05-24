@@ -367,7 +367,11 @@ public class Civilians
             World.TotalWantedLevel = PoliceRespondable.WantedLevel;
             PoliceInterestPoint = Vector3.Zero;
         }
+
+
         World.PoliceBackupPoint = PoliceInterestPoint;
+
+
         if (worstPed != null)
         {
             World.CitizenWantedLevel = worstPed.WantedLevel;

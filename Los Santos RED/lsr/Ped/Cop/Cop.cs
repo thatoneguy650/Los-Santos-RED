@@ -1,5 +1,6 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
+using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
 using Rage.Native;
@@ -13,6 +14,8 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     private bool IsSetStayInVehicle;
     private uint GameTimeSpawned;
     private bool WasAlreadySetPersistent = false;
+    private bool IsShootingCheckerActive;
+
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Cop", world)
     {
         IsCop = true;
@@ -116,6 +119,8 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
     }
 
+    public bool IsShooting { get; private set; }
+
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -151,6 +156,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 {
                     LookForDistressedPeds(world);
                 }
+                if (Pedestrian.Exists() && !IsUnconscious && PlayerPerception.DistanceToTarget <= 100f && world.TotalWantedLevel <= 2)//only care in a bubble around the player, nothing to do with the player tho
+                {
+                    LookForBodiesAlert(world);
+                }
                 if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
                 {
                     GameFiber.Yield();//TR TEST 30
@@ -161,7 +170,18 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     HasSeenDistressedPed = false;
                 }
                 UpdateCombatFlags();
+
+                if(policeRespondable.IsWanted && policeRespondable.PoliceResponse.WantedCanResetOnNoViolationSeen)
+                {
+                    ShootingChecker();
+                }
+
+
                 if (policeRespondable.IsWanted && CanSeePlayer)
+                {
+                    SawPlayerViolating = true;
+                }
+                else if (policeRespondable.IsWanted && !SawPlayerViolating && world.Pedestrians.AllPoliceList.Any(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting))//and there are any police shooting anywhere near you, then THEY SAW IT TOO 
                 {
                     SawPlayerViolating = true;
                 }
@@ -303,6 +323,43 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
     }
 
+    public void ShootingChecker()
+    {
+        if (!IsShootingCheckerActive)
+        {
+            GameFiber.Yield();//TR Yield add 1
+            GameFiber.StartNew(delegate
+            {
+                try
+                {
+                    IsShootingCheckerActive = true;
+                    //EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
+                    uint GameTimeLastShot = 0;
+                    while (Pedestrian.Exists() && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
+                    {
+                        if (Pedestrian.IsShooting)
+                        {
+                            IsShooting = true;
+                            GameTimeLastShot = Game.GameTime;
+                        }
+                        else if (Game.GameTime - GameTimeLastShot >= 5000)
+                        {
+                            IsShooting = false;
+                        }
+                        GameFiber.Yield();
+                    }
+                    IsShootingCheckerActive = false;
+                }
+                catch (Exception ex)
+                {
+                    EntryPoint.WriteToConsole(ex.Message + " " + ex.StackTrace, 0);
+                    EntryPoint.ModController.CrashUnload();
+                }
+            }, "Ped Shooting Checker");
+        }
+    }
+
+
     //public void AddDivision(string forceGroupName)
     //{
     //    if (AssignedAgency.Division != -1)
@@ -354,7 +411,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     //        return;
     //    }
 
-        
+
 
     //    if (dispatchablePerson.DisableBulletRagdoll)
     //    {
@@ -376,7 +433,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     //    }
 
 
-        
+
 
     //    if (overrideHealth)
     //    {
@@ -392,7 +449,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     //        Pedestrian.Armor = armor;
     //    }
 
-        
+
 
     //    if (overrideAccuracy)
     //    {
@@ -415,7 +472,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     //  //  return;
 
 
-       
+
 
     //    //GameFiber.Yield();
     //    //if (!Pedestrian.Exists())

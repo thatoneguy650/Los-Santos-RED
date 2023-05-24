@@ -22,7 +22,9 @@ class GoToOnFootTaskState : TaskState
     private bool BlockPermanentEvents = false;
     private Vector3 PlaceToWalkTo;
     private ILocationReachable LocationReachable;
-    public GoToOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placeToWalkTo, ILocationReachable locationReachable)
+    private IWeaponIssuable WeaponIssuable;
+    private bool SetArmed = false;
+    public GoToOnFootTaskState(PedExt pedGeneral, ITargetable player, IEntityProvideable world, SeatAssigner seatAssigner, ISettingsProvideable settings, bool blockPermanentEvents, Vector3 placeToWalkTo, ILocationReachable locationReachable, IWeaponIssuable weaponIssuable, bool setArmed)
     {
         PedGeneral = pedGeneral;
         Player = player;
@@ -32,7 +34,8 @@ class GoToOnFootTaskState : TaskState
         BlockPermanentEvents = blockPermanentEvents;
         PlaceToWalkTo = placeToWalkTo;
         LocationReachable = locationReachable;
-        
+        WeaponIssuable = weaponIssuable;
+        SetArmed = setArmed;
     }
     public bool IsValid => PedGeneral != null && !PedGeneral.IsInVehicle && !LocationReachable.HasReachedLocatePosition;
     public string DebugName => $"GoToOnFootTaskState";
@@ -43,6 +46,10 @@ class GoToOnFootTaskState : TaskState
     public void Start()
     {
         PedGeneral.ClearTasks(true);
+        if (SetArmed)
+        {
+            WeaponIssuable?.WeaponInventory.SetDefaultArmed();
+        }
         TaskEntry();
     }
     public void Stop()

@@ -29,6 +29,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     private bool HasDrugAreaKnowledge;
     private bool HasGangAreaKnowledge;
     private ICrimes Crimes;
+
     private bool IsYellingTimeOut => Game.GameTime - GameTimeLastYelled < TimeBetweenYelling;
     private bool CanYell => !IsYellingTimeOut;
     public PedExt(Ped _Pedestrian, ISettingsProvideable settings, ICrimes crimes, IWeapons weapons, string _Name, string groupName, IEntityProvideable world)
@@ -77,10 +78,16 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
+    public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
+
+
+    public bool IsAlerted => BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= 60000;
+
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
+    public Vector3 AlertedPoint { get; set; }
     public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
@@ -204,6 +211,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint Handle { get; private set; }
     public bool HasBeenCarJackedByPlayer { get; set; } = false;
     public bool HasBeenHurtByPlayer { get; set; } = false;
+    public bool WasKilledByPlayer { get; set; } = false;
     public bool HasBeenMugged { get; set; } = false;
     public uint HasExistedFor => Game.GameTime - GameTimeCreated;
     public bool HasLoggedDeath => CurrentHealthState.HasLoggedDeath;
@@ -325,6 +333,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
     public Vector3 PositionLastSeenDistressedPed { get; set; }
+
+    public uint GameTimeLastSeenDeadBody { get; private set; }
+
     public ShopMenu ShopMenu { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
@@ -409,6 +420,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public virtual bool CanBeDragged { get; set; } = true;
     public bool IsMale { get; set; } = true;
     public bool AlwaysHasLongGun { get; set; } = false;
+
+
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -647,6 +660,34 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             }
         }
     }
+
+    public void LookForBodiesAlert(IEntityProvideable world)
+    {
+        foreach (PedExt deadBody in world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y=> y.Handle == x.Handle) && x.Pedestrian.Exists() && Pedestrian.Exists()))
+        {
+            float distanceToBody = Pedestrian.DistanceTo2D(deadBody.Pedestrian);
+            bool CanSeeBody = false;
+            if(!deadBody.WasKilledByPlayer && distanceToBody <= 15f)
+            {
+                CanSeeBody = true;
+            }
+            else if(distanceToBody <= 45f && deadBody.Pedestrian.IsThisPedInFrontOf(Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, deadBody.Pedestrian))
+            {
+                CanSeeBody = true;
+            }
+            if(CanSeeBody)
+            {
+                BodiesSeen.Add(deadBody);
+                GameTimeLastSeenDeadBody = Game.GameTime;
+                AlertedPoint = deadBody.Pedestrian.Position;
+                EntryPoint.WriteToConsole($"I AM PED {Handle} AND I JUST SAW A DEAD BODY {deadBody.Handle}");
+            }
+        }
+        BodiesSeen.RemoveAll(x => !x.Pedestrian.Exists());
+    }
+
+
+
     public void CheckPlayerBusted()
     {
         if (PlayerPerception.DistanceToTarget <= Settings.SettingsManager.PoliceSettings.BustDistance)
@@ -836,6 +877,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             Pedestrian.WarpIntoVehicle(CurrentVehicle, seatIndex);
         }
+        
         //EntryPoint.WriteToConsoleTestLong($"PED {Pedestrian.Handle} CLEAR TASKS RAN");
     }
     private void PlaySpeech(string speechName, bool useMegaphone)

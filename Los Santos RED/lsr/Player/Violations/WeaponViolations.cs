@@ -42,7 +42,7 @@ public class WeaponViolations
 
         if (Player.RecentlyShot)
         {
-            if (!(Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable)) //if (!(Player.Character.IsCurrentWeaponSilenced || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable))
+            if (Player.WeaponEquipment.CurrentWeapon != null && !(Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable)) //if (!(Player.Character.IsCurrentWeaponSilenced || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Melee || Player.WeaponEquipment.CurrentWeaponCategory == WeaponCategory.Throwable))
             {
                 if (Player.Character.IsCurrentWeaponSilenced)
                 {

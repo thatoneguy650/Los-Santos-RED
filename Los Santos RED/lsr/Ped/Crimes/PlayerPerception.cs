@@ -332,7 +332,7 @@ public class PlayerPerception
                     {
                         AddWitnessedCrime(committing, Originator.Pedestrian.Position);
                     }
-                    else if (WithinWeaponsAudioRange && committing.CanReportBySound)
+                    else if (WithinWeaponsAudioRange && committing.CanReportBySound && DistanceToTarget <= committing.MaxHearingDistance)
                     {
                         AddWitnessedCrime(committing, Originator.Pedestrian.Position);
                     }

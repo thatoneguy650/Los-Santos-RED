@@ -41,6 +41,10 @@ namespace LosSantosRED.lsr
         public uint HasBeenAtCurrentWantedLevelFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedLevelStarted;
         public uint HasBeenNotWantedFor => Player.WantedLevel != 0 || GameTimeLastWantedEnded == 0 ? 0 : Game.GameTime - GameTimeLastWantedEnded;
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
+
+
+        public bool WantedCanResetOnNoViolationSeen => Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime;
+
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
         public bool IsWeaponsFree { get; set; }
@@ -521,7 +525,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                if(HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime && !Player.AnyPoliceSawPlayerViolating && Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio) 
+                if(WantedCanResetOnNoViolationSeen && !Player.AnyPoliceSawPlayerViolating) 
                 {
                     ResetWanted();
                     return;

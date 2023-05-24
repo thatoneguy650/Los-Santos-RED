@@ -105,7 +105,7 @@ public class CopTasker
             }
             else
             {
-                if (Player.IsWanted && Cop.IsRespondingToWanted)
+                if (Player.IsWanted && Cop.IsRespondingToWanted && (Cop.SawPlayerViolating || !Player.PoliceResponse.WantedCanResetOnNoViolationSeen))
                 {
                     if (Player.IsInSearchMode)
                     {
@@ -135,6 +135,10 @@ public class CopTasker
                     SetInvestigate(Cop);
                 }
                 else if (World.CitizenWantedLevel > 0 && Cop.IsRespondingToCitizenWanted)
+                {
+                    SetInvestigate(Cop);
+                }
+                else if (Cop.BodiesSeen.Any())
                 {
                     SetInvestigate(Cop);
                 }
@@ -301,8 +305,8 @@ public class CopTasker
     {
         if (Cop.CurrentTask?.Name != "Investigate")
         {
-           // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
-            Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+            Cop.CurrentTask = new PoliceGeneralInvestigate(Cop, Cop, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, Cop);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             Cop.WeaponInventory.Reset();
             GameFiber.Yield();//TR Added back 4
             Cop.CurrentTask.Start();
