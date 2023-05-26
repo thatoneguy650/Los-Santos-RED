@@ -20,9 +20,6 @@ public class CopVoice
     private readonly List<string> InVehiclePlayerOnFootMegaPhone = new List<string> { "STOP_ON_FOOT_MEGAPHONE", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE" };
 
     private readonly List<string> InVehiclePlayerInVehicleMegaPhone = new List<string> { "CHASE_VEHICLE_MEGAPHONE", "STOP_VEHICLE_CAR_MEGAPHONE", "STOP_VEHICLE_CAR_WARNING_MEGAPHONE", "STOP_VEHICLE_GENERIC_MEGAPHONE", "SUSPECT_SPOTTED", "COP_ARRIVAL_ANNOUNCE_MEGAPHONE", "COMBAT_TAUNT" };
-
-
-
     private readonly List<string> DeadlyChaseSpeech = new List<string> { "COVER_YOU", "COVER_ME", "DRAW_GUN", "COP_SEES_WEAPON", "COP_SEES_GUN", "GET_HIM", "REQUEST_NOOSE" };
     //{ "DRAW_GUN", "COP_ARRIVAL_ANNOUNCE", "MOVE_IN", "MOVE_IN_PERSONAL", "GET_HIM", "REQUEST_BACKUP", "REQUEST_NOOSE", "SHOOTOUT_OPEN_FIRE" };  
     private readonly List<string> WeaponsFreeSpeech = new List<string> { "CHALLENGE_THREATEN", "FIGHT", "GENERIC_CURSE_HIGH", "GENERIC_WAR_CRY", "OFFICER_DOWN", "SHOOTOUT_OPEN_FIRE", "PINNED_DOWN", "TAKE_COVER" };//,"GENERIC_FRIGHTENED_HIGH" };
@@ -49,9 +46,9 @@ public class CopVoice
     }
     public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < TimeBetweenRadioIn;
     public bool IsSpeechTimedOut => Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
-    public bool CanRadioIn => !Cop.IsUnconscious && !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
+  //  public bool CanRadioIn => !Cop.IsUnconscious && !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
 
-
+    public bool CanRadioIn => !Cop.IsUnconscious && Cop.DistanceToPlayer <= 100f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
 
 
     public bool CanSpeak => !Cop.IsUnconscious && !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
@@ -80,81 +77,82 @@ public class CopVoice
     }
     private void SpeakToPlayer(IPoliceRespondable currentPlayer)
     {
-        if (CanSpeak)
+        if(!CanSpeak)
         {
-            if(currentPlayer.IsDangerouslyArmed && Cop.DistanceToPlayer <= 50f)
+            return;
+        }  
+        if(currentPlayer.IsDangerouslyArmed && Cop.DistanceToPlayer <= 50f)
+        {
+            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Max);
+        }
+        else if (currentPlayer.WantedLevel <= 3)
+        {
+            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
+        }
+        else if (currentPlayer.PoliceResponse.IsWeaponsFree)
+        {
+            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max);
+        }
+        else if (currentPlayer.PoliceResponse.IsDeadlyChase)
+        {
+            TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Max);
+        }
+        if (currentPlayer.IsWanted && Cop.CanSeePlayer)
+        {
+            if (Cop.IsInVehicle)
             {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Armed_Randomizer_Max);
-            }
-            else if (currentPlayer.WantedLevel <= 3)
-            {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_General_Randomizer_Max);
-            }
-            else if (currentPlayer.PoliceResponse.IsWeaponsFree)
-            {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_WeaponsFree_Randomizer_Max);
-            }
-            else if (currentPlayer.PoliceResponse.IsDeadlyChase)
-            {
-                TimeBetweenSpeaking = Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Min + RandomItems.GetRandomNumberInt(Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Min, Settings.SettingsManager.PoliceSpeechSettings.TimeBetweenCopSpeak_Deadly_Randomizer_Max);
-            }
-            if (currentPlayer.IsWanted && Cop.CanSeePlayer)
-            {
-                if (Cop.IsInVehicle)
+                if (currentPlayer.IsInVehicle)
                 {
-                    if (currentPlayer.IsInVehicle)
-                    {
-                        Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
-                    }
-                    else 
-                    {
-                        Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
-                    }
+                    Cop.PlaySpeech(InVehiclePlayerInVehicleMegaPhone, false,false);
                 }
-                else
+                else 
                 {
-                    if (currentPlayer.IsBusted)
+                    Cop.PlaySpeech(InVehiclePlayerOnFootMegaPhone, false,false);
+                }
+            }
+            else
+            {
+                if (currentPlayer.IsBusted)
+                {
+                    if(currentPlayer.WantedLevel == 1)
                     {
-                        if(currentPlayer.WantedLevel == 1)
-                        {
-                            Cop.PlaySpeech(IdleSpeech, Cop.IsInVehicle,false);
-                        }
-                        else
-                        {
-                            Cop.PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
-                        }
-                        
-                    }
-                    else if (currentPlayer.IsDead)
-                    {
-                        Cop.PlaySpeech(SuspectDown, Cop.IsInVehicle,false);
+                        Cop.PlaySpeech(IdleSpeech, Cop.IsInVehicle,false);
                     }
                     else
                     {
-                        if (currentPlayer.PoliceResponse.IsDeadlyChase)
+                        Cop.PlaySpeech(SuspectBusted, Cop.IsInVehicle,false);
+                    }
+                        
+                }
+                else if (currentPlayer.IsDead)
+                {
+                    Cop.PlaySpeech(SuspectDown, Cop.IsInVehicle,false);
+                }
+                else
+                {
+                    if (currentPlayer.PoliceResponse.IsDeadlyChase)
+                    {
+                        if (currentPlayer.PoliceResponse.IsWeaponsFree)
                         {
-                            if (currentPlayer.PoliceResponse.IsWeaponsFree)
-                            {
-                                Cop.PlaySpeech(WeaponsFreeSpeech, Cop.IsInVehicle,true);
-                            }
-                            else
-                            {
-                                Cop.PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
-                            }
-                        }
-                        else if(currentPlayer.IsDangerouslyArmed)
-                        {
-                            Cop.PlaySpeech(DangerousUnarmedSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(WeaponsFreeSpeech, Cop.IsInVehicle,true);
                         }
                         else
                         {
-                            Cop.PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
+                            Cop.PlaySpeech(DeadlyChaseSpeech, Cop.IsInVehicle,true);
                         }
+                    }
+                    else if(currentPlayer.IsDangerouslyArmed)
+                    {
+                        Cop.PlaySpeech(DangerousUnarmedSpeech, Cop.IsInVehicle,true);
+                    }
+                    else
+                    {
+                        Cop.PlaySpeech(UnarmedChaseSpeech, Cop.IsInVehicle,true);
                     }
                 }
             }
-            GameTimeLastSpoke = Game.GameTime;
         }
+        GameTimeLastSpoke = Game.GameTime;     
     }
     private void SpeakToTarget()
     {
@@ -203,74 +201,39 @@ public class CopVoice
             GameTimeLastSpoke = Game.GameTime;
         }
     }
-    //private void PlaySpeech(List<string> Possibilities, bool useMegaphone, bool isShouted)
-    //{
-    //    bool Spoke = false;
-    //    foreach (string AmbientSpeech in Possibilities.OrderBy(x => RandomItems.MyRand.Next()).Take(2))
-    //    {
-    //        string voiceName = null;
-    //        bool IsOverWrittingVoice = false;
-    //        if (Cop.VoiceName != "")
-    //        {
-    //            voiceName = Cop.VoiceName;
-    //            IsOverWrittingVoice = true;
-    //        }
-    //        bool hasContext = NativeFunction.Natives.DOES_CONTEXT_EXIST_FOR_THIS_PED<bool>(Cop.Pedestrian, AmbientSpeech, false);
-    //        SpeechModifier speechModifier = SpeechModifier.Force;
-    //        if (useMegaphone)
-    //        {
-    //            speechModifier = SpeechModifier.ForceMegaphone;
-    //        }
-    //        else if (isShouted)
-    //        {
-    //            speechModifier = SpeechModifier.ForceShouted;
-    //        }
-
-    //        if(IsOverWrittingVoice)
-    //        {
-    //            Cop.Pedestrian.PlayAmbientSpeech(voiceName, AmbientSpeech, 0, speechModifier);
-    //        }
-    //        else
-    //        {
-    //            Cop.Pedestrian.PlayAmbientSpeech(AmbientSpeech, useMegaphone);
-    //        }
-    //        GameFiber.Sleep(300);//100
-    //        if (Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAnySpeechPlaying)
-    //        {
-    //            Spoke = true;
-    //        }
-    //        //EntryPoint.WriteToConsole($"SAYAMBIENTSPEECH: {Cop.Pedestrian.Handle} voiceName {voiceName} Attempting {AmbientSpeech}, Result: {Spoke} IsOverWrittingVoice {IsOverWrittingVoice}");
-    //        if (Spoke)
-    //        {
-    //            break;
-    //        }
-    //    }
-    //}
     public void ResetSpeech()
     {
         GameTimeLastSpoke = 0;
         GameTimeLastRadioed = 0;
     }
-    //public void YellInPain()
-    //{
-    //    if (CanYell)
-    //    {
-    //        if (RandomItems.RandomPercent(80))
-    //        {
-    //            List<int> PossibleYells = new List<int>() { 6, 7, 8 };
-    //            int YellType = PossibleYells.PickRandom();
-    //            NativeFunction.Natives.PLAY_PAIN(Cop.Pedestrian, YellType, 0, 0);
-
-    //            EntryPoint.WriteToConsole($"YELL IN PAIN {Cop.Pedestrian.Handle} YellType {YellType}");
-    //        }
-    //        else
-    //        {
-    //            PlaySpeech("GENERIC_FRIGHTENED_HIGH", Cop.IsInVehicle);
-    //            EntryPoint.WriteToConsole($"CRY SPEECH FOR PAIN {Cop.Pedestrian.Handle}");
-    //        }
-
-    //        GameTimeLastYelled = Game.GameTime;
-    //    }
-    //}
+    public void RadioInWanted(IPoliceRespondable currentPlayer)
+    {
+        if(!Cop.Pedestrian.Exists() || !CanRadioIn)
+        {
+            return;
+        }
+        if(!AnimationDictionary.RequestAnimationDictionayResult("random@arrests"))
+        {
+            EntryPoint.WriteToConsole("RadioInWanted FAIL COULD NOT LOAD ANIMATION DICTIONARY");
+            return;
+        }
+        ResetSpeech();
+        if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimation)
+        {
+            unsafe
+            {
+                int lol = 0;
+                NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 16 | 32, 0, false, false, false);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 16 | 32, 0, false, false, false);
+                NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 16 | 32, 0, false, false, false);
+                NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+                NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+                NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", Cop.Pedestrian, lol);
+                NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+            }
+        }
+        SpeakToPlayer(currentPlayer);
+    }
 }
 

@@ -47,10 +47,10 @@ public class WeaponViolations
                 if (Player.Character.IsCurrentWeaponSilenced)
                 {
                     Violations.AddViolating(StaticStrings.FiringSilencedWeaponCrimeID);
-                    //if (Player.AnyPoliceRecentlySeenPlayer)// || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop))
-                    //{
-                    //    Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
-                    //}
+                    if (Player.AnyPoliceCanSeePlayer && Player.ClosestPoliceDistanceToPlayer <= 30f)// || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop))
+                    {
+                        Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
+                    }
                 }
                 else
                 {

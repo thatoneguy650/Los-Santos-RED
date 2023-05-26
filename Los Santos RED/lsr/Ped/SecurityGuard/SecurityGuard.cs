@@ -70,10 +70,8 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public uint GameTimeLastUpdatedTarget { get; set; }
     public PedExt CurrentTarget { get; set; }
     public bool IsUsingMountedWeapon { get; set; } = false;
-
     public override bool WillCallPolice { get; set; } = true;
     public override bool WillCallPoliceIntense { get; set; } = true;
-
     public override bool NeedsFullUpdate
     {
         get
@@ -114,54 +112,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
             }
         }
     }
-    //public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
-    //{
-    //    PlayerToCheck = policeRespondable;
-    //    if (Pedestrian.Exists())
-    //    {
-    //        if (Pedestrian.IsAlive)
-    //        {
-    //            if (NeedsFullUpdate)
-    //            {
-    //                IsInWrithe = Pedestrian.IsInWrithe;
-    //                UpdatePositionData();
-    //                PlayerPerception.Update(perceptable, placeLastSeen);
-    //                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-    //                {
-    //                    GameFiber.Yield();//TR TEST 30
-    //                }
-    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
-    //                {
-    //                    GameFiber.Yield();//TR TEST 30
-    //                }
-    //                UpdateVehicleState();
-    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
-    //                {
-    //                    GameFiber.Yield();//TR TEST 30
-    //                }
-    //                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-    //                {
-    //                    GameFiber.Yield();//TR TEST 30
-    //                }
-    //                if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-    //                {
-    //                    LookForDistressedPeds(world);
-    //                }
-    //                if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
-    //                {
-    //                    GameFiber.Yield();//TR TEST 30
-    //                }
-    //                if (HasSeenDistressedPed)
-    //                {
-    //                    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-    //                    HasSeenDistressedPed = false;
-    //                }
-    //                GameTimeLastUpdated = Game.GameTime;
-    //            }
-    //        }
-    //        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
-    //    }
-    //}
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {
         Voice.Speak(currentPlayer);
@@ -239,4 +189,74 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         
     }
+
+
+    public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
+    {
+        PlayerToCheck = policeRespondable;
+        if (!Pedestrian.Exists())
+        {
+            return;
+        }
+        if (Pedestrian.IsAlive)
+        {
+            if (NeedsFullUpdate)
+            {
+                IsInWrithe = Pedestrian.IsInWrithe;
+                UpdatePositionData();
+                PlayerPerception.Update(perceptable, placeLastSeen);
+                if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
+                {
+                    GameFiber.Yield();//TR TEST 28
+                }
+                UpdateVehicleState();
+                if (!IsUnconscious)
+                {
+                    if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                    {
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (ShouldCheckCrimes)
+                        {
+                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        PedPerception.Update();
+                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
+                        {
+                            GameFiber.Yield();//TR TEST 28
+                        }
+                    }
+                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                    {
+                        CheckPlayerBusted();
+                    }
+                    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)
+                    {
+                        PedAlerts.LookForUnconsciousPeds(world);
+                    }
+                    if (Settings.SettingsManager.SecuritySettings.AllowReactionsToBodies)
+                    {
+                        PedAlerts.LookForBodiesAlert(world);
+                    }//need to add shooting checker for police and or other security too!
+                }
+                GameTimeLastUpdated = Game.GameTime;
+            }
+        }
+        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+    }
+
 }

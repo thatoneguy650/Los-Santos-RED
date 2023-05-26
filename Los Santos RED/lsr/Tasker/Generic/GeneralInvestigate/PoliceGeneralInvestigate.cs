@@ -16,7 +16,7 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
     {
 
     }
-    private bool IsRespondingCode3 => (Player.Investigation.IsActive && Player.Investigation.InvestigationWantedLevel > 1) || Ped.IsAlerted || World.CitizenWantedLevel > 1;
+    private bool IsRespondingCode3 => (Player.Investigation.IsActive && Player.Investigation.InvestigationWantedLevel > 1) || Ped.PedAlerts.IsAlerted || World.CitizenWantedLevel > 1;
     protected override bool ShouldInvestigateOnFoot => !Ped.IsInHelicopter && Player.IsOnFoot;
     protected override bool ForceSetArmed => IsRespondingCode3;
     protected override void UpdateVehicleState()
@@ -58,10 +58,10 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
             PlaceToDriveTo = Player.Investigation.Position;
             PlaceToWalkTo = Player.Investigation.Position;
         }
-        else if (Ped.IsAlerted)
+        else if (Ped.PedAlerts.IsAlerted)
         {
-            PlaceToDriveTo = Ped.AlertedPoint;
-            PlaceToWalkTo = Ped.AlertedPoint;
+            PlaceToDriveTo = Ped.PedAlerts.AlertedPoint;
+            PlaceToWalkTo = Ped.PedAlerts.AlertedPoint;
         }
         else
         {

@@ -164,7 +164,7 @@ public class Drag : DynamicActivity
         PedCanBeTasked = Ped.CanBeTasked;
         PedCanBeAmbientTasked = Ped.CanBeAmbientTasked;
         //PedWasPersistent = Ped.Pedestrian.IsPersistent;
-
+        NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         Ped.CanBeTasked = false;
         Ped.CanBeAmbientTasked = false;
         Ped.Pedestrian.BlockPermanentEvents = true;
@@ -355,7 +355,7 @@ public class Drag : DynamicActivity
         GameFiber.Yield();
         if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation)
         {
-            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, 2 | 8, 0, false, false, false);
+            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME |  eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
         }
         if (PlayPlayerLoopingAnimation("combat@drag_ped@", "injured_pickup_back_plyr", false, 2, false, true))
         {
@@ -443,7 +443,7 @@ public class Drag : DynamicActivity
                     {
                         if (!AnimationWatcher.IsAnimationRunning(NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped")))
                         {
-                            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, 2 | 8, 0, false, false, false);
+                            NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
                             NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "combat@drag_ped@", "injured_pickup_back_ped", AnimationTime);
                             
                         }
@@ -497,7 +497,7 @@ public class Drag : DynamicActivity
                     if (Ped.Pedestrian.Exists() && Settings.SettingsManager.ActivitySettings.PlayDraggingPedAnimation && !IsRagdoll)
                     {
                         //NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
-                        NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, 2 | 8, 0, false, false, false);
+                        NativeFunction.Natives.TASK_PLAY_ANIM(Ped.Pedestrian, "combat@drag_ped@", "injured_putdown_ped", 2.0f, -2.0f, -1, (int)(eAnimationFlags.AF_HOLD_LAST_FRAME | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_FORCE_START), 0, false, false, false);
                     }
                     isBackingUp = false;
                 }

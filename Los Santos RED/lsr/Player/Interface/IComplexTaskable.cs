@@ -44,8 +44,8 @@ namespace LosSantosRED.lsr.Interface
         bool IsDealingDrugs { get; set; }
         bool HasMenu { get; }
         string VoiceName { get; }
-        bool HasSeenDistressedPed { get; set; }
-        Vector3 PositionLastSeenDistressedPed { get; }
+      //  bool HasSeenDistressedPed { get; set; }
+       // Vector3 PositionLastSeenDistressedPed { get; }
         bool IsOnBike { get; }
         //List<uint> BlackListedVehicles { get; }
         bool RecentlySeenPlayer { get; }
@@ -62,9 +62,12 @@ namespace LosSantosRED.lsr.Interface
         int DefaultCombatFlag { get; }
         int DefaultEnterExitFlag { get; }
         bool CanFlee { get; }
-        List<PedExt> BodiesSeen { get; }
-        Vector3 AlertedPoint { get; }
-        bool IsAlerted { get; }
+        //List<PedExt> BodiesSeen { get; }
+        //Vector3 AlertedPoint { get; }
+        //bool IsAlerted { get; }
+
+
+        PedAlerts PedAlerts { get; }
 
         void PlaySpeech(List<string> list, bool isInVehicle, bool v);
         void ReportCrime(ITargetable player);

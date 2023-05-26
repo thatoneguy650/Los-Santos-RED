@@ -780,4 +780,33 @@ namespace LosSantosRED.lsr.Helper
         [FieldOffset(75)]
         public bool isParent;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct ANIM_DATA
+    {
+        public int type;
+        public string dictionary0;          // The dictionary name containing the first anim (used in single clip and three way blend)
+        public string anim0;			// The first anim name
+        public float phase0;            // The starting phase
+        public float rate0;         // The rate (speed) to play back the anim at. 1.0 is standard rate
+        public float weight0;           // How blended in the anim will be. When using multiple anims this can be used to affect// how much of the anim is visible relative to other anims.
+        public string dictionary1;          // The dictionary name containing the second anim (only used in three way blend)
+        public string anim1;			// The second anim name
+        public float phase1;            // The starting phase
+        public float rate1;         // The rate (speed) to play back the anim at. 1.0 is standard rate
+        public float weight1;           // How blended in the anim will be. When using multiple anims this can be used to affect                           // how much of the anim is visible relative to other anims.
+        public string dictionary2;          // The dictionary name containing the third anim (only used in 3 way blend)
+        public string anim2;            // The third anim name
+        public float phase2;		// The starting phase
+        public float rate2; // The rate (speed) to play back the anim at. 1.0 is standard rate
+        public float weight2;           // How blended in the anim will be. When using multiple anims this can be used to affect                                // how much of the anim is visible relative to other anims.
+        public int filter;                 // The hash of the name of the filter to apply at this priority level
+        public float blendInDelta; // How fast should this priority level be blended in
+        public float blendOutDelta;	// How fast should this priority level be blended out at the end
+        public int timeToPlay;				// Time (in milliseconds) to play this priority level for
+        public int flags;          // Animation flags for this level
+        public int ikFlags;                // Ik control flags for this level
+
+    }
+
 }

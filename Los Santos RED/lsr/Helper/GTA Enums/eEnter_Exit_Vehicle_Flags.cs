@@ -1,4 +1,7 @@
-﻿public enum eEnter_Exit_Vehicle_Flags
+﻿using System;
+
+[Flags]
+public enum eEnter_Exit_Vehicle_Flags
 { 
     // If the task is interupted (bumped, shot), dont resume.
     ECF_RESUME_IF_INTERRUPTED = 1,

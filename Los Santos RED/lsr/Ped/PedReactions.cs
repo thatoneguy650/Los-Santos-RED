@@ -162,7 +162,7 @@ public class PedReactions
     }
     private void OldDistressedUpdate()
     {
-        if (!HasSeenAngryCrime && !HasSeenScaryCrime && Civilian.HasSeenDistressedPed)
+        if (!HasSeenAngryCrime && !HasSeenScaryCrime && Civilian.PedAlerts.HasSeenUnconsciousPed)
         {
             GameTimeLastSeenMundaneCrime = Game.GameTime;
             HasSeenMundaneCrime = true;

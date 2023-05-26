@@ -56,9 +56,9 @@ public class Firefighter : PedExt
                 {
                     GameFiber.Yield();//TR TEST 30
                 }
-                if (Pedestrian.Exists() && Settings.SettingsManager.EMSSettings.AllowEMTsToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+                if (Settings.SettingsManager.EMSSettings.AllowEMTsToCallEMTsOnBodies)
                 {
-                    LookForDistressedPeds(world);
+                    PedAlerts.LookForUnconsciousPeds(world);
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }

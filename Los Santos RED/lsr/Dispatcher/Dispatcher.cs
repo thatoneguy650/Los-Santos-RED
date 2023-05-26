@@ -190,5 +190,9 @@ public class Dispatcher
     {
         SecurityDispatcher.DebugSpawnSecurity(agencyID, onFoot, isEmpty);
     }
+    public void DebugResetLocations()
+    {
+        LocationDispatcher.Reset();
+    }
 }
 

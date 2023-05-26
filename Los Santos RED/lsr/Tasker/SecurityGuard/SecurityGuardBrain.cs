@@ -120,6 +120,10 @@ public class SecurityGuardBrain : PedBrain
                     SetLocate();
                 }
             }
+            else if (SecurityGuard.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
+            {
+                SetInvestigate();
+            }
             else if (PedExt.PedReactions.ReactionTier == ReactionTier.Mundane)
             {
                 SetCalmCallIn();
@@ -157,6 +161,17 @@ public class SecurityGuardBrain : PedBrain
         SecurityGuard.CurrentTask.Start();
        // EntryPoint.WriteToConsole($"SECURITY SET Chase {PedExt.Handle}", debugLevel);
     }
+    private void SetInvestigate()
+    {
+        if (SecurityGuard.CurrentTask?.Name != "Investigate")
+        {
+            // EntryPoint.WriteToConsole($"TASKER: Cop {Cop.Pedestrian.Handle} Task Changed from {Cop.CurrentTask?.Name} to Investigate", 3);
+            SecurityGuard.CurrentTask = new PoliceGeneralInvestigate(SecurityGuard, SecurityGuard, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringInvestigate, SecurityGuard);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            SecurityGuard.WeaponInventory.Reset();
+            GameFiber.Yield();//TR Added back 4
+            SecurityGuard.CurrentTask.Start();
+        }
+    }
     private void SetAIApprehend()
     {
         SecurityGuard.WeaponInventory.SetLessLethal();
@@ -172,7 +187,7 @@ public class SecurityGuardBrain : PedBrain
     }
     private void HandleCrimeReports()
     {
-        if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.HasSeenDistressedPed))
+        if (GameTimeLastSeenCrime == 0 && (PedExt.PlayerCrimesWitnessed.Any() || PedExt.OtherCrimesWitnessed.Any() || PedExt.PedAlerts.HasSeenUnconsciousPed))
         {
             GameTimeLastSeenCrime = Game.GameTime;
             //EntryPoint.WriteToConsole("SECURITY SEEN FIRST CRIME", debugLevel);

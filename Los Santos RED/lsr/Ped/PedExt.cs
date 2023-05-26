@@ -51,6 +51,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         PedInventory = new SimpleInventory(Settings);
         PedBrain = new PedBrain(this, settings, world, weapons);
         PedDesires = new PedDesires(this, settings);
+        PedAlerts = new PedAlerts(this,settings);
         //PedKnowledge = new PedKnowledge(this, settings);
         IsTrustingOfPlayer = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageTrustingOfPlayer);
         HasDrugAreaKnowledge = RandomItems.RandomPercent(Settings.SettingsManager.CivilianSettings.PercentageKnowsAnyDrugTerritory);
@@ -65,21 +66,22 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public SimpleInventory PedInventory { get; private set; }
     public PedBrain PedBrain { get; set; }
     public PedDesires PedDesires { get; private set; }
+    public PedAlerts PedAlerts { get; private set; }
     public uint ArrestingPedHandle { get; set; } = 0;
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
-    public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
+    //public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
 
 
-    public bool IsAlerted => (BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= 60000) || Game.GameTime - GameTimeLastHeardGunshots <= 60000;
+    //public bool IsAlerted => (BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= 60000) || Game.GameTime - GameTimeLastHeardGunshots <= 60000;
 
-
+    public Vector3 Position => position;
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    public Vector3 AlertedPoint { get; set; }
+    //public Vector3 AlertedPoint { get; set; }
     public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
@@ -325,9 +327,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
 
-    public Vector3 PositionLastSeenDistressedPed { get; set; }
-    public uint GameTimeLastSeenDeadBody { get; private set; }
-    public uint GameTimeLastHeardGunshots { get; private set; }
+    //public Vector3 PositionLastSeenDistressedPed { get; set; }
+    //public uint GameTimeLastSeenDeadBody { get; private set; }
+    //public uint GameTimeLastHeardGunshots { get; private set; }
 
     public ShopMenu ShopMenu { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
@@ -395,8 +397,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeKilled { get; set; }
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
-    public bool HasSeenDistressedPed { get; set; } = false;
-    public bool HasBeenSeenInDistress { get; set; } = false;
+    //public bool HasSeenDistressedPed { get; set; } = false;
+    public bool HasBeenSeenUnconscious { get; set; } = false;
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
     public bool IsDead { get; set; } = false;
@@ -434,7 +436,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     GameFiber.Yield();//TR TEST 28
                 }
                 UpdateVehicleState();
-                if (!IsCop && !IsUnconscious)
+                if (!IsUnconscious)
                 {
                     if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
                     {
@@ -468,16 +470,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                     {
                         CheckPlayerBusted();
                     }
+                    if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
+                    {
+                        PedAlerts.LookForUnconsciousPeds(world);
+                    }
                 }
-                if (Pedestrian.Exists() && Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
-                {
-                    LookForDistressedPeds(world);
-                }
-                //if (IsCop && HasSeenDistressedPed)
-                //{
-                //    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                //    HasSeenDistressedPed = false;
-                //}
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
@@ -638,63 +635,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
         {
             CurrentTask.Update();
         }
-    }
-    public void LookForDistressedPeds(IEntityProvideable world)
-    {
-        foreach (PedExt distressedPed in world.Pedestrians.PedExts.Where(x => (x.IsUnconscious || x.IsInWrithe) && !x.HasStartedEMTTreatment && !x.HasBeenTreatedByEMTs && NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 4) && x.Pedestrian.Exists()))
-        {
-            float distanceToBody = Pedestrian.DistanceTo2D(distressedPed.Pedestrian);
-            if (distanceToBody <= 15f || (distanceToBody <= 45f && distressedPed.Pedestrian.IsThisPedInFrontOf(Pedestrian) && (distressedPed.HasBeenSeenInDistress || NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, distressedPed.Pedestrian))))//if someone saw it assume ANYONE close saw it, only performance reason
-            {
-                PositionLastSeenDistressedPed = distressedPed.position;
-                HasSeenDistressedPed = true;
-                distressedPed.HasBeenSeenInDistress = true;
-                break;
-            }
-        }
-    }
-    public void LookForBodiesAlert(IEntityProvideable world)
-    {
-        foreach (PedExt deadBody in world.Pedestrians.DeadPeds.Where(x => !BodiesSeen.Any(y=> y.Handle == x.Handle) && x.Pedestrian.Exists() && Pedestrian.Exists()))
-        {
-            float distanceToBody = Pedestrian.DistanceTo2D(deadBody.Pedestrian);
-            bool CanSeeBody = false;
-            if(!deadBody.WasKilledByPlayer && distanceToBody <= 15f)
-            {
-                CanSeeBody = true;
-            }
-            else if(distanceToBody <= 45f && deadBody.Pedestrian.IsThisPedInFrontOf(Pedestrian) && NativeFunction.CallByName<bool>("HAS_ENTITY_CLEAR_LOS_TO_ENTITY_IN_FRONT", Pedestrian, deadBody.Pedestrian))
-            {
-                CanSeeBody = true;
-                GameFiber.Yield();
-            }
-            if(CanSeeBody)
-            {
-                AddSeenBody(deadBody);
-            }
-        }
-        BodiesSeen.RemoveAll(x => !x.Pedestrian.Exists());
-    }
-    protected void AddSeenBody(PedExt deadBody)
-    {
-        if(deadBody == null || !deadBody.Pedestrian.Exists())
-        {
-            return;
-        }
-        BodiesSeen.Add(deadBody);
-        GameTimeLastSeenDeadBody = Game.GameTime;
-        AlertedPoint = deadBody.Pedestrian.Position;
-        EntryPoint.WriteToConsole($"I AM PED {Handle} AND I JUST SAW A DEAD BODY {deadBody.Handle}");
-    }
-    protected void AddHeardGunfire(Vector3 locationHeard)
-    {
-        if(locationHeard == Vector3.Zero)
-        {
-            return;
-        }
-        GameTimeLastHeardGunshots = Game.GameTime;
-        AlertedPoint = locationHeard;
-        EntryPoint.WriteToConsole($"I AM PED {Handle} AND I JUST HEARD GUNFIRE");
     }
     public void CheckPlayerBusted()
     {
@@ -957,7 +897,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 AddOtherCrimesWitnessed(Player);
             }
-            else if (HasSeenDistressedPed)
+            else if (PedAlerts.HasSeenUnconsciousPed)
             {
                 AddMedicalEventWitnessed(Player);
             }
@@ -972,7 +912,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
             {
                 AddOtherCrimesWitnessed(Player);
             }
-            else if (HasSeenDistressedPed)
+            else if (PedAlerts.HasSeenUnconsciousPed)
             {
                 AddMedicalEventWitnessed(Player);
             }
@@ -1055,8 +995,8 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     private void AddMedicalEventWitnessed(ITargetable Player)
     {
-        Player.AddMedicalEvent(PositionLastSeenDistressedPed);
-        HasSeenDistressedPed = false;
+        Player.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+        PedAlerts.HasSeenUnconsciousPed = false;
     }
     private float CivilianCallPercentage()
     {

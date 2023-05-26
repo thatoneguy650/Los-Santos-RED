@@ -138,7 +138,7 @@ public class CopTasker
                 {
                     SetInvestigate(Cop);
                 }
-                else if (Cop.IsAlerted)// Cop.BodiesSeen.Any() || )
+                else if (Cop.PedAlerts.IsAlerted)// Cop.BodiesSeen.Any() || )
                 {
                     SetInvestigate(Cop);
                 }

@@ -133,6 +133,9 @@ public class PoliceSettings : ISettingsDefaultable
 
     public int RadioInTime { get; set; }
     public bool AllowLosingWantedByKillingBeforeRadio { get; set; }
+    public bool AllowReactionsToBodies { get; set; }
+    public bool AllowShootingInvestigations { get; set; }
+    public bool AllowRadioInAnimation { get; set; }
 
     public PoliceSettings()
     {
@@ -225,5 +228,8 @@ public class PoliceSettings : ISettingsDefaultable
         DisableSearchModeAtOneStart = false;
         RadioInTime = 5000;
         AllowLosingWantedByKillingBeforeRadio = true;
+        AllowReactionsToBodies = true;
+        AllowShootingInvestigations = true;
+        AllowRadioInAnimation = true;
     }
 }

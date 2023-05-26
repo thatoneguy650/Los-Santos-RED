@@ -148,10 +148,10 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
 
     protected virtual void GetLocations()
     {
-        if(Ped.IsAlerted)
+        if(Ped.PedAlerts.IsAlerted)
         {
-            PlaceToDriveTo = Ped.AlertedPoint;
-            PlaceToWalkTo = Ped.AlertedPoint;
+            PlaceToDriveTo = Ped.PedAlerts.AlertedPoint;
+            PlaceToWalkTo = Ped.PedAlerts.AlertedPoint;
         }
     }
 }

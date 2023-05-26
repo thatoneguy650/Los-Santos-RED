@@ -65,7 +65,8 @@ public class Dispatch
     public bool IncludeLicensePlate { get; set; }
     public bool IncludeRapSheet { get; set; }
     public bool IncludeReportedBy { get; set; } = true;
-    public bool IsStatus { get; set; }
+    public bool IsPoliceStatus { get; set; }
+
     public CrimeSceneDescription LatestInformation { get; set; } = new CrimeSceneDescription();
     public LocationSpecificity LocationDescription { get; set; } = LocationSpecificity.Nothing;
     public List<AudioSet> MainAudioSet { get; set; } = new List<AudioSet>();

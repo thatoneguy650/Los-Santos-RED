@@ -19,8 +19,8 @@ public class Investigate : ComplexTask
     private ISettingsProvideable Settings;
     private IEntityProvideable World;
 
-    private Vector3 InvestigationPosition => Player.Investigation.IsActive ? Player.Investigation.Position : Ped.IsAlerted ? Ped.AlertedPoint : World.PoliceBackupPoint;
-    private bool IsRespondingCode3 => Player.Investigation.IsActive ? Player.Investigation.InvestigationWantedLevel > 1 : Ped.IsAlerted ? true : World.CitizenWantedLevel > 1;
+    private Vector3 InvestigationPosition => Player.Investigation.IsActive ? Player.Investigation.Position : Ped.PedAlerts.IsAlerted ? Ped.PedAlerts.AlertedPoint : World.PoliceBackupPoint;
+    private bool IsRespondingCode3 => Player.Investigation.IsActive ? Player.Investigation.InvestigationWantedLevel > 1 : Ped.PedAlerts.IsAlerted ? true : World.CitizenWantedLevel > 1;
     private enum Task
     {
         WanderCode3,

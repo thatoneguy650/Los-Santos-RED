@@ -48,6 +48,8 @@ namespace LosSantosRED.lsr
         private List<CrimeDispatch> DispatchLookup;
         private List<Dispatch> DispatchQueue = new List<Dispatch>();
 
+        private List<Dispatch> HoldingDispatchQueue = new List<Dispatch>();
+
 
         private List<Dispatch> AmbientDispatchQueue = new List<Dispatch>();
 
@@ -224,6 +226,7 @@ namespace LosSantosRED.lsr
             GameTimeLastMentionedLocation = 0;
             //end newish
             DispatchQueue.Clear();
+            HoldingDispatchQueue.Clear();
         }
         public void Dispose()
         {
@@ -339,23 +342,43 @@ namespace LosSantosRED.lsr
                 {
                     try
                     {
-                        if (Player.IsWanted && !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)// Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && Player.PoliceResponse.HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime)
+                        if(Player.IsWanted)
                         {
-                            EntryPoint.WriteToConsole("DOING RADIO IN SLEEP SINCE YOU JUST STARTED BEING WANTED");
-                            while (!Player.PoliceResponse.WantedLevelHasBeenRadioedIn && Player.IsWanted)
+                            if (!Player.PoliceResponse.WantedLevelHasBeenRadioedIn)
                             {
-                                GameFiber.Sleep(1000);
+                                HoldingDispatchQueue.AddRange(DispatchQueue.Where(x => x.LatestInformation.SeenByOfficers));
+                                DispatchQueue.RemoveAll(x => x.LatestInformation.SeenByOfficers);
+                                EntryPoint.WriteToConsole("Player is Wanted Without Radio In Holding Officer Reports");
                             }
-                            GameFiber.Sleep(1000);
-                            //GameFiber.Sleep(Settings.SettingsManager.PoliceSettings.RadioInTime + 2500);
-                            EntryPoint.WriteToConsole("RADIO SLEEP OVER");
+                            else if(HoldingDispatchQueue.Any())
+                            {
+                                DispatchQueue.AddRange(HoldingDispatchQueue);
+                                HoldingDispatchQueue.Clear();
+                                EntryPoint.WriteToConsole("Player is Wanted and has radioed in. Restoring Officer Reports");
+                            }
                         }
-                        else
+
+                        if (DispatchQueue.Any())
                         {
+                            EntryPoint.WriteToConsole($"DISPATCHES {string.Join(",",DispatchQueue.Select(x=> x.Name))}");
+                            //if (Player.IsWanted && !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)// Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && Player.PoliceResponse.HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime)
+                            //{
+                            //    EntryPoint.WriteToConsole("DOING RADIO IN SLEEP SINCE YOU JUST STARTED BEING WANTED");
+                            //    while (!Player.PoliceResponse.WantedLevelHasBeenRadioedIn && Player.IsWanted)
+                            //    {
+                            //        GameFiber.Sleep(1000);
+                            //    }
+                            //    GameFiber.Sleep(1000);
+                            //    //GameFiber.Sleep(Settings.SettingsManager.PoliceSettings.RadioInTime + 2500);
+                            //    EntryPoint.WriteToConsole("RADIO SLEEP OVER");
+                            //}
+                            //else
+                            //{
                             GameFiber.Sleep(RandomItems.MyRand.Next(Settings.SettingsManager.ScannerSettings.DelayMinTime, Settings.SettingsManager.ScannerSettings.DelayMaxTime));//GameFiber.Sleep(RandomItems.MyRand.Next(2500, 4500));//Next(1500, 2500)
+                            // }
+                            CleanQueue();
+                            PlayQueue();
                         }
-                        CleanQueue();
-                        PlayQueue();
                         ExecutingQueue = false;
                     }
                     catch (Exception ex)
@@ -1435,7 +1458,7 @@ namespace LosSantosRED.lsr
             {
                 EventToPlay.NotificationSubtitle = DispatchToPlay.NotificationSubtitle + "~s~";
             }
-            else if (DispatchToPlay.IsStatus)
+            else if (DispatchToPlay.IsPoliceStatus)
             {
                 EventToPlay.NotificationSubtitle = "~g~Status";
             }
@@ -1454,7 +1477,7 @@ namespace LosSantosRED.lsr
             {
                 AddAudioSet(EventToPlay, AttentionAllUnits.PickRandom());
             }
-            else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsPoliceStatus)
             {
                 AddAttentionUnits(EventToPlay);
             }
@@ -1537,7 +1560,7 @@ namespace LosSantosRED.lsr
                 AddLocationDescription(EventToPlay, DispatchToPlay.LocationDescription);
                 GameFiber.Yield();
             }
-            if (DispatchToPlay.CanAddExtras && Player.PoliceResponse.PoliceHaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus)
+            if (DispatchToPlay.CanAddExtras && Player.PoliceResponse.PoliceHaveDescription && !DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsPoliceStatus)
             {
                 AddHaveDescription(EventToPlay);
             }
@@ -1585,7 +1608,7 @@ namespace LosSantosRED.lsr
                 {
                     HighestOfficerReportedPriority = DispatchToPlay.Priority;
                 }
-                else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
+                else if (!DispatchToPlay.LatestInformation.SeenByOfficers && !DispatchToPlay.IsPoliceStatus && DispatchToPlay.Priority < HighestCivilianReportedPriority)
                 {
                     HighestCivilianReportedPriority = DispatchToPlay.Priority;
                 }
@@ -1758,7 +1781,7 @@ namespace LosSantosRED.lsr
         {
             List<string> soundsToPlayer = MyAudioEvent.SoundsToPlay.ToList();
 
-            //EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
+            EntryPoint.WriteToConsole($"Scanner Start. Playing: {string.Join(",", MyAudioEvent.SoundsToPlay)}", 5);
             if (MyAudioEvent.CanInterrupt && CurrentlyPlaying != null && CurrentlyPlaying.CanBeInterrupted && MyAudioEvent.Priority < CurrentlyPlaying.Priority)
             {
                // EntryPoint.WriteToConsole(string.Format("ScannerScript ABORT! Incoming: {0}, Playing: {1}", MyAudioEvent.NotificationText, CurrentlyPlaying.NotificationText), 4);
@@ -2618,7 +2641,7 @@ namespace LosSantosRED.lsr
             RequestAirSupport = new Dispatch()
             {
                 Name = "Air Support Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 MainAudioSet = new List<AudioSet>()
@@ -2638,7 +2661,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = true,
                 Name = "Military Units Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 MainAudioSet = new List<AudioSet>()
@@ -2656,7 +2679,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = true,
                 Name = "NOOSE Units Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 MainAudioSet = new List<AudioSet>()
@@ -2670,7 +2693,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = false,
                 Name = "NOOSE Units Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAddExtras = false,
                 LocationDescription = LocationSpecificity.Nothing,
@@ -2685,7 +2708,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = false,
                 Name = "NOOSE Units Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 CanAddExtras = false,
@@ -2703,7 +2726,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = false,
                 Name = "FIB-HRT Units Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAddExtras = false,
                 LocationDescription = LocationSpecificity.Nothing,
@@ -2717,7 +2740,7 @@ namespace LosSantosRED.lsr
             RequestSwatAirSupport = new Dispatch()
             {
                 Name = "Air Support Requested",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 CanAddExtras = false,
@@ -2739,7 +2762,7 @@ namespace LosSantosRED.lsr
             ShotsFiredStatus = new Dispatch()
             {
                 Name = "Shots Fired",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = true,
                 CanBeReportedMultipleTimes = true,
                 CanAddExtras = false,
@@ -2793,7 +2816,7 @@ namespace LosSantosRED.lsr
             SuspectSpotted = new Dispatch()
             {
                 Name = "Suspect Spotted",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
@@ -2850,7 +2873,7 @@ namespace LosSantosRED.lsr
             SuspectSpottedSimple = new Dispatch()
             {
                 Name = "Suspect Spotted",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.HeadingAndStreet,
                 IncludeDrivingVehicle = true,
@@ -2862,7 +2885,7 @@ namespace LosSantosRED.lsr
             WantedSuspectSpotted = new Dispatch()
             {
                 Name = "Wanted Suspect Spotted",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = true,
                 IncludeRapSheet = true,
                 Priority = 10,
@@ -2922,7 +2945,7 @@ namespace LosSantosRED.lsr
             OnFoot = new Dispatch()
             {
                 Name = "On Foot",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
@@ -2988,7 +3011,7 @@ namespace LosSantosRED.lsr
             ExcessiveSpeed = new Dispatch()
             {
                 Name = "Excessive Speed",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 IncludeDrivingVehicle = false,
                 VehicleIncludesIn = true,
@@ -3004,7 +3027,7 @@ namespace LosSantosRED.lsr
             GotOnFreeway = new Dispatch()
             {
                 Name = "Entered Freeway",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
@@ -3051,7 +3074,7 @@ namespace LosSantosRED.lsr
             GotOffFreeway = new Dispatch()
             {
                 Name = "Exited Freeway",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
@@ -3095,8 +3118,7 @@ namespace LosSantosRED.lsr
                 IncludeReportedBy = true,
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeDrivingVehicle = false,
-                CanAlwaysBeInterrupted = true,
-                IsStatus = true,
+                CanAlwaysBeInterrupted = true,       
                 NotificationTitle = "Emergency Scanner",
                 NotificationSubtitle = "~y~Injured Person Reported~s~",
                 MainAudioSet = new List<AudioSet>()
@@ -3112,7 +3134,6 @@ namespace LosSantosRED.lsr
                 LocationDescription = LocationSpecificity.StreetAndZone,
                 IncludeDrivingVehicle = false,
                 CanAlwaysBeInterrupted = true,
-                IsStatus = true,
                 NotificationTitle = "Emergency Scanner",
                 NotificationSubtitle = "~y~Fire Reported~s~",
                 MainAudioSet = new List<AudioSet>()
@@ -3124,7 +3145,7 @@ namespace LosSantosRED.lsr
             VehicleStartedFire = new Dispatch()
             {
                 Name = "Vehicle On Fire",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = true,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
@@ -3140,7 +3161,7 @@ namespace LosSantosRED.lsr
             VehicleCrashed = new Dispatch()
             {
                 Name = "Vehicle Crashed",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = true,
                 LocationDescription = LocationSpecificity.Nothing,
                 IncludeDrivingVehicle = false,
@@ -3172,7 +3193,7 @@ namespace LosSantosRED.lsr
             NoFurtherUnitsNeeded = new Dispatch()
             {
                 Name = "Officers On-Site, Code 4-ADAM",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysBeInterrupted = true,
                 AnyDispatchInterrupts = true,
@@ -3198,7 +3219,7 @@ namespace LosSantosRED.lsr
             SuspectArrested = new Dispatch()
             {
                 Name = "Suspect Apprehended",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 AnyDispatchInterrupts = true,
@@ -3211,7 +3232,7 @@ namespace LosSantosRED.lsr
             SuspectWasted = new Dispatch()
             {
                 Name = "Suspect Neutralized",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 AnyDispatchInterrupts = true,
@@ -3228,7 +3249,7 @@ namespace LosSantosRED.lsr
             ChangedVehicles = new Dispatch()
             {
                 Name = "Suspect Changed Vehicle",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeDrivingVehicle = true,
                 CanAlwaysInterrupt = true,
                 LocationDescription = LocationSpecificity.StreetAndZone,
@@ -3241,7 +3262,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = true,
                 Name = "Backup Required",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
 
@@ -3318,7 +3339,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = false,
                 Name = "Backup Required",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = false,
 
@@ -3382,7 +3403,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = true,
                 Name = "Weapons Free",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 MainAudioSet = new List<AudioSet>()
@@ -3394,7 +3415,7 @@ namespace LosSantosRED.lsr
             {
                 IncludeAttentionAllUnits = true,
                 Name = "Lethal Force Authorized",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 ResultsInLethalForce = true,
                 CanAlwaysInterrupt = true,
@@ -3403,7 +3424,7 @@ namespace LosSantosRED.lsr
             SuspectEvaded = new Dispatch()
             {
                 Name = "Suspect Evaded",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 CanAlwaysInterrupt = false,
@@ -3435,7 +3456,7 @@ namespace LosSantosRED.lsr
             SuspectEvadedSimple = new Dispatch()
             {
                 Name = "Suspect Evaded",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Nothing,
                 CanAlwaysInterrupt = false,
@@ -3450,7 +3471,7 @@ namespace LosSantosRED.lsr
             RemainInArea = new Dispatch()//runs when you lose wanted organicalls
             {
                 Name = "Remain in Area",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,
@@ -3468,7 +3489,7 @@ namespace LosSantosRED.lsr
             AttemptToReacquireSuspect = new Dispatch()//is the status one
             {
                 Name = "Attempt To Reacquire",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 LocationDescription = LocationSpecificity.Zone,
                 CanAlwaysInterrupt = true,
@@ -3503,7 +3524,7 @@ namespace LosSantosRED.lsr
             ResumePatrol = new Dispatch()
             {
                 Name = "Resume Patrol",
-                IsStatus = true,
+                IsPoliceStatus = true,
                 IncludeReportedBy = false,
                 CanAlwaysInterrupt = true,
                 CanAlwaysBeInterrupted = true,

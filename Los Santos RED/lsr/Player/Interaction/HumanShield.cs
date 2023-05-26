@@ -25,12 +25,16 @@ public class HumanShield : DynamicActivity
     private WeaponInformation LastWeapon;
     private bool isAnimationPaused = false;
     private int storedViewMode;
-    private bool isBackingUp;
+
+
+    private bool IsBackingUp;
+    private bool IsMovingForward;
+
     private RelationshipGroup PreviousRelationshipGroup;
     private RelationshipGroup HostageRG;
     private bool wasPersist = false;
     private bool wasSetPersistent = false;
-    private bool IsMovingForward;
+
     private Vector3 AttachOffset;
 
     private bool IsHostageValid => Ped.Pedestrian.Exists() && Ped.Pedestrian.IsAlive && !Ped.IsUnconscious && !Ped.Pedestrian.IsRagdoll && !Ped.Pedestrian.IsGettingUp;
@@ -187,6 +191,7 @@ public class HumanShield : DynamicActivity
             PreviousRelationshipGroup = Ped.Pedestrian.RelationshipGroup;
             //EntryPoint.WriteToConsoleTestLong($"Grab Started PreviousRelationshipGroup {PreviousRelationshipGroup.Name}");
             Ped.CanBeTasked = false;
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
             Ped.Pedestrian.Tasks.Clear();
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
@@ -194,6 +199,7 @@ public class HumanShield : DynamicActivity
             Ped.IsBeingHeldAsHostage = true;
             NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Ped.Pedestrian, true);
             Ped.Pedestrian.RelationshipGroup = HostageRG;
+            NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(Ped.Pedestrian);
         }
         else
         {
@@ -203,11 +209,15 @@ public class HumanShield : DynamicActivity
     private void TakHostage()
     {
         //SetCloseCamera();
-        //EntryPoint.WriteToConsoleTestLong("Taking Hostage");
+        EntryPoint.WriteToConsole("Taking Hostage 1");
         PlayInitialAnimation();
         SetupPrompts();
+        EntryPoint.WriteToConsole("Taking Hostage 2");
+        //GameFiber.Sleep(1000);
+        
         while (IsHostageValid && IsPlayerValidHostageTaker && !IsCancelled)
         {
+            //EntryPoint.WriteToConsole("Taking Hostage 3");
             Ped.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
             Ped.Pedestrian.Position = Player.Character.GetOffsetPosition(AttachOffset);
             Ped.Pedestrian.Heading = Game.LocalPlayer.Character.Heading;
@@ -217,13 +227,14 @@ public class HumanShield : DynamicActivity
             {
                 break;
             }
+
             AimingLoop();
             PlayerSettingsLoop();
             DisableControls();
             GameFiber.Yield();
         }
-
-        if(Ped.Pedestrian.Exists())
+        EntryPoint.WriteToConsole("Taking Hostage 4");
+        if (Ped.Pedestrian.Exists())
         {
             Ped.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
             Ped.Pedestrian.Position = Player.Character.GetOffsetPosition(AttachOffset);
@@ -235,9 +246,10 @@ public class HumanShield : DynamicActivity
         NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 8 | 16 | 32, 0, false, false, false);//-1//NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);//-1
         if (Ped.Pedestrian.Exists())
         {
-            //Ped.Pedestrian.AttachTo(Player.Character, 0, AttachOffset, new Rotator(0, 0, 0));
+            Ped.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
             Ped.Pedestrian.Position = Player.Character.GetOffsetPosition(AttachOffset);
-            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 8 | 16 | 32, 0, false, false, false);//-1
+            Ped.Pedestrian.Heading = Game.LocalPlayer.Character.Heading;
+            NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, (int)(eAnimationFlags.AF_LOOPING | eAnimationFlags.AF_NOT_INTERRUPTABLE | eAnimationFlags.AF_UPPERBODY | eAnimationFlags.AF_SECONDARY | eAnimationFlags.AF_FORCE_START), 0, false, false, false);//-1
         }
     }
     private void SetupPrompts()
@@ -291,11 +303,11 @@ public class HumanShield : DynamicActivity
             {
                 if (Ped.Pedestrian.Exists())
                 {
-                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16, 0, false, false, false);
+                   // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16, 0, false, false, false);
                 }
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
                 //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Player.Character, Game.GetHashKey("Default"));
-                isBackingUp = false;
+                IsBackingUp = false;
                 IsMovingForward = false;
                 isAnimationPaused = false;
                 SetupPrompts();
@@ -313,32 +325,35 @@ public class HumanShield : DynamicActivity
     }
     private void DirectionLoop()
     {
-        bool isMoveUpPressed = false;
-        bool isMoveDownPressed = false;
+        bool IsMoveUpPressed = false;
+        bool IsMoveDownPressed = false;
 
         if (Game.IsControlPressed(2, GameControl.MoveDownOnly) || Game.IsControlPressed(2, GameControl.MoveDown))
         {
-            isMoveDownPressed = true;
+            IsMoveDownPressed = true;
         }
         if (Game.IsControlPressed(2, GameControl.MoveUpOnly) || Game.IsControlPressed(2, GameControl.MoveUp))
         {
-            isMoveUpPressed = true;
+            IsMoveUpPressed = true;
         }
-        if (isMoveDownPressed)
+
+
+        if (IsMoveDownPressed)
         {
             //EntryPoint.WriteToConsoleTestLong("SHIELD DOWN PRESSED");
-            if(!isBackingUp)
+            if(!IsBackingUp)
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "move_strafe@generic", "walk_bwd_180_loop", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 GameFiber.Wait(50);
                 if (Ped.Pedestrian.Exists())
                 {
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "move_strafe@generic", "walk_bwd_180_loop", 8.0f, -8.0f, -1, 1, 0, false, false, false);
+                    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
                 }
-                isBackingUp = true;
+                IsBackingUp = true;
             }
         }
-        else if (isMoveUpPressed || Player.Character.IsWalking)
+        else if (IsMoveUpPressed || Player.Character.IsWalking)
         {
             //EntryPoint.WriteToConsoleTestLong("SHIELD UP PRESSED");
             if (!IsMovingForward)
@@ -346,14 +361,13 @@ public class HumanShield : DynamicActivity
                 if (Ped.Pedestrian.Exists())
                 {
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "move_action@generic@core", "walk", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-
                 }
                 IsMovingForward = true;
             }
         }
         else
         {
-            if (isBackingUp)
+            if (IsBackingUp)
             {
                 float AnimTime = NativeFunction.CallByName<float>("GET_ENTITY_ANIM_CURRENT_TIME", Player.Character, "anim@gangops@hostage@", "perp_idle");
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
@@ -363,10 +377,10 @@ public class HumanShield : DynamicActivity
                 {
                     NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
-                    NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", AnimTime);
+                   NativeFunction.Natives.SET_ENTITY_ANIM_CURRENT_TIME(Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", AnimTime);
 
                 }
-                isBackingUp = false;
+                IsBackingUp = false;
             }
             if(IsMovingForward)
             {

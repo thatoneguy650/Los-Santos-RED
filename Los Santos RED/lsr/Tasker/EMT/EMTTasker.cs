@@ -246,7 +246,7 @@ public class EMTTasker
     }
     private void SetPossibleTargets()
     {
-        PossibleTargets = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasBeenTreatedByEMTs && x.HasBeenSeenInDistress).ToList();//150f//writhe peds that are still alive
+        PossibleTargets = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasBeenTreatedByEMTs && x.HasBeenSeenUnconscious).ToList();//150f//writhe peds that are still alive
         //PossibleTargets.AddRange(PedProvider.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists() && !x.HasBeenTreatedByEMTs));//dead peds go here?
     }
     private class EMTTarget

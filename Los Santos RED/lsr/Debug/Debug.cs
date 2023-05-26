@@ -1250,6 +1250,63 @@ public class Debug
     }
     private void DebugNumpad7()
     {
+
+        Cop closestCop = World.Pedestrians.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(closestCop == null || !closestCop.Pedestrian.Exists() || !AnimationDictionary.RequestAnimationDictionayResult("random@arrests"))
+        {
+            EntryPoint.WriteToConsole("ERROR DEBUG7d");
+            return;
+        }
+
+
+
+
+
+
+        //unsafe
+        //{
+        //    ANIM_DATA aNIM_DATA;
+        //    aNIM_DATA.type = 0;
+        //    aNIM_DATA.dictionary0 = "random@arrests";
+        //    aNIM_DATA.anim0 = "radio_chatter";
+        //    aNIM_DATA.phase0 = 0.0f;
+        //    aNIM_DATA.weight0 = 1.0f;
+
+
+        //    aNIM_DATA.dictionary1 = "";
+        //    aNIM_DATA.anim1 = "";
+        //    aNIM_DATA.phase1 = 0.0f;
+        //    aNIM_DATA.weight1 = 0.0f;
+
+        //    aNIM_DATA.dictionary2 = "";
+        //    aNIM_DATA.anim2 = "";
+        //    aNIM_DATA.phase2 = 0.0f;
+        //    aNIM_DATA.weight2 = 0.0f;
+
+        //    aNIM_DATA.filter = (int)Game.GetHashKey("BONEMASK_ARMONLY_L");
+        //    aNIM_DATA.blendInDelta = 8.0f;
+        //    aNIM_DATA.blendOutDelta = -8.0f;
+        //    aNIM_DATA.timeToPlay = -1;
+        //    aNIM_DATA.flags = 16 | 32;
+        //    aNIM_DATA.ikFlags = 0;
+
+        //    NativeFunction.CallByName<bool>("TASK_SCRIPTED_ANIMATION", closestCop.Pedestrian, &aNIM_DATA, null, null, 8.0f, -8.0f);
+        //}
+        
+        //unsafe
+        //{
+        //    int lol = 0;
+        //    NativeFunction.CallByName<bool>("OPEN_SEQUENCE_TASK", &lol);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_enter", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_chatter", 2.0f, -2.0f, 2000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", 0, "random@arrests", "radio_exit", 2.0f, -2.0f, 1000, 16 | 32, 0, false, "BONEMASK_ARMONLY_L", false);
+        //    NativeFunction.CallByName<bool>("SET_SEQUENCE_TO_REPEAT", lol, false);
+        //    NativeFunction.CallByName<bool>("CLOSE_SEQUENCE_TASK", lol);
+        //    NativeFunction.CallByName<bool>("TASK_PERFORM_SEQUENCE", closestCop.Pedestrian, lol);
+        //    NativeFunction.CallByName<bool>("CLEAR_SEQUENCE_TASK", &lol);
+        //}
+
+
         //TunOffInterior();
 
         //ResetCops();
@@ -1524,9 +1581,9 @@ public class Debug
     {
         World.Pedestrians.ClearSpawned();
         World.Vehicles.ClearSpawned(true);
+        Dispatcher.DebugResetLocations();
 
-
-        if(Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
+        if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
             Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = false;
             Settings.SettingsManager.EMSSettings.ManageDispatching = false;

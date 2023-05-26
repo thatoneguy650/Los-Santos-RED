@@ -71,6 +71,10 @@ public class SecuritySettings : ISettingsDefaultable
     public bool EnableConfigFlagDiveFromApproachingVehicles { get; set; }
     public bool AllowMinorReactions { get; set; }
 
+
+    public bool AllowReactionsToBodies { get; set; }
+    public bool AllowShootingInvestigations { get; set; }
+    public bool AllowCallEMTsOnBodies { get; set; }
     public SecuritySettings()
     {
         SetDefault();
@@ -107,5 +111,8 @@ public class SecuritySettings : ISettingsDefaultable
         AllowMinorReactions = true;
         RemoveNonSpawnedSecurity = false;
         RemoveAmbientSecurity = false;
+        AllowReactionsToBodies = true;
+        AllowShootingInvestigations = true;
+        AllowCallEMTsOnBodies = true;
     }
 }

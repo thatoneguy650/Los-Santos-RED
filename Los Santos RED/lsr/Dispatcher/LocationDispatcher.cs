@@ -111,5 +111,12 @@ public class LocationDispatcher
             ps.IsDispatchFilled = false;
         }
     }
+    public void Reset()
+    {
+        foreach (InteractableLocation ps in PlacesOfInterest.InteractableLocations().Where(x => x.IsDispatchFilled).ToList())
+        {
+            ps.IsDispatchFilled = false;
+        }
+    }
 }
 

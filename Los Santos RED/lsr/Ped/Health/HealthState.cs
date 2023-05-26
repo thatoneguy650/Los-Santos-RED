@@ -13,10 +13,13 @@ using System.Threading.Tasks;
 public class HealthState
 {
     private int Armor;
+    private int Total;
     private int CurrentArmor;
+    private int CurrentTotal;
     private int CurrentHealth;
     private uint GameTimeLastBled;
     private uint GameTimeLastCheckedDamage;
+    private uint GameTimeLastModifiedPlayerDamage;
     private int Health;
     private bool HurtByPed;
     private bool HurtByVehicle;
@@ -164,6 +167,7 @@ public class HealthState
             GameTimeLastCheckedDamage = Game.GameTime;
             CurrentHealth = MyPed.Pedestrian.Health;
             CurrentArmor = MyPed.Pedestrian.Armor;
+            CurrentTotal = CurrentHealth + CurrentArmor;
             if (MyPed.Pedestrian.IsDead)
             {
                 HasLoggedDeath = true;//need to check once after the ped died to see who killed them, but checking more is wasteful
@@ -173,12 +177,20 @@ public class HealthState
             {
                 GameFiber.Yield(); 
                 //EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor}");
-                if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage)
+                if (Settings.SettingsManager.DamageSettings.ModifyPlayerDamage && Game.GameTime - GameTimeLastModifiedPlayerDamage >= 500)
                 {
-                    ModifyDamage();
+                    if(CurrentTotal < Total)
+                    {
+                        ModifyDamage();
+                    }
+                    else
+                    {
+                        EntryPoint.WriteToConsole($"HEALTHSTATE DAMAGE PLAYER DETECTED {MyPed.Pedestrian.Handle} CurrentHealth {CurrentHealth} CurrentArmor {CurrentArmor} Existing Health {Health} Existing Armor {Armor} CurrentTotal {CurrentTotal} Total{Total}");
+                    }
                 }
                 Health = CurrentHealth;
                 Armor = CurrentArmor;
+                Total = CurrentHealth + CurrentArmor;
             }
             if (Settings.SettingsManager.DamageSettings.AllowPlayerPainYells && Health - prevHealth >= Settings.SettingsManager.DamageSettings.PlayerPainYellsDamageNeeded && MyPed.HasExistedFor >= 4000)
             {

@@ -156,31 +156,26 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 {
                     GameFiber.Yield();//TR TEST 30
                 }
-                if (Pedestrian.Exists() && Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies && !IsUnconscious && !HasSeenDistressedPed && PlayerPerception.DistanceToTarget <= 150f)//only care in a bubble around the player, nothing to do with the player tho
+
+                if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
                 {
-                    LookForDistressedPeds(world);
+                    PedAlerts.LookForUnconsciousPeds(world);
                 }
-                if (Pedestrian.Exists() && !IsUnconscious && PlayerPerception.DistanceToTarget <= 100f && world.TotalWantedLevel <= 2)//only care in a bubble around the player, nothing to do with the player tho
+                if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
                 {
-                    LookForBodiesAlert(world);
+                    PedAlerts.LookForBodiesAlert(world);
                 }
                 if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
                 {
                     GameFiber.Yield();//TR TEST 30
                 }
-                if (HasSeenDistressedPed)
+                if (PedAlerts.HasSeenUnconsciousPed)
                 {
-                    perceptable.AddMedicalEvent(PositionLastSeenDistressedPed);
-                    HasSeenDistressedPed = false;
+                    perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+                    PedAlerts.HasSeenUnconsciousPed = false;
                 }
                 UpdateCombatFlags();
-
-
-
                 PlayerViolationChecker(policeRespondable, world);
-
-
-
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
@@ -341,16 +336,18 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
         if (CanRadioInWanted)
         {
+            Voice.RadioInWanted(policeRespondable);
             policeRespondable.PoliceResponse.RadioInWanted();
             EntryPoint.WriteToConsole($"I AM {Handle} AND I RADIOED IN THE WANTED LEVEL");
         }
+        if(Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations)
         ShootingChecker(policeRespondable);
         if (!SawPlayerViolating)
         {
             Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
             if(cop != null && cop.Pedestrian.Exists())
             {
-                AddHeardGunfire(cop.Pedestrian.Position);
+                PedAlerts.AddHeardGunfire(cop.Pedestrian.Position);
             }
         }      
     }
