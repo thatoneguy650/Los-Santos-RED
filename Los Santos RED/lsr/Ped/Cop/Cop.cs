@@ -1,11 +1,9 @@
-﻿using ExtensionsMethods;
-using LosSantosRED.lsr;
-using LosSantosRED.lsr.Helper;
+﻿using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 
@@ -15,6 +13,9 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     private uint GameTimeSpawned;
     private bool WasAlreadySetPersistent = false;
     private bool IsShootingCheckerActive;
+    private uint GameTimeFirstSawPlayerViolating;
+
+
 
     public Cop(Ped pedestrian, ISettingsProvideable settings, int health, Agency agency, bool wasModSpawned, ICrimes crimes, IWeapons weapons, string name, string modelName, IEntityProvideable world) : base(pedestrian, settings, crimes, weapons, name, "Cop", world)
     {
@@ -53,7 +54,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public bool IsIdleTaskable => WasModSpawned || !WasAlreadySetPersistent;
     public bool ShouldUpdateTarget => Game.GameTime - GameTimeLastUpdatedTarget >= Settings.SettingsManager.PoliceTaskSettings.TargetUpdateTime;
     public string ModelName { get; set; }
-    public bool SawPlayerViolating { get; set; }
+
+    public bool CanRadioInWanted => SawPlayerViolating &&!IsUnconscious && !IsDead && !IsInWrithe && !IsBeingHeldAsHostage && GameTimeFirstSawPlayerViolating > 0 && Game.GameTime - GameTimeFirstSawPlayerViolating >= Settings.SettingsManager.PoliceSettings.RadioInTime && Pedestrian.Exists() && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
+
+    public bool SawPlayerViolating { get; private set; }
     public override int ShootRate { get; set; } = 500;
     public override int Accuracy { get; set; } = 40;
     public override int CombatAbility { get; set; } = 1;
@@ -171,24 +175,12 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                 }
                 UpdateCombatFlags();
 
-                if(policeRespondable.IsWanted && policeRespondable.PoliceResponse.WantedCanResetOnNoViolationSeen)
-                {
-                    ShootingChecker();
-                }
 
 
-                if (policeRespondable.IsWanted && CanSeePlayer)
-                {
-                    SawPlayerViolating = true;
-                }
-                else if (policeRespondable.IsWanted && !SawPlayerViolating && world.Pedestrians.AllPoliceList.Any(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting))//and there are any police shooting anywhere near you, then THEY SAW IT TOO 
-                {
-                    SawPlayerViolating = true;
-                }
-                if (policeRespondable.IsNotWanted && SawPlayerViolating)
-                {
-                    SawPlayerViolating = false;
-                }
+                PlayerViolationChecker(policeRespondable, world);
+
+
+
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
@@ -292,6 +284,10 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             NativeFunction.Natives.SET_PED_ALLOW_MINOR_REACTIONS_AS_MISSION_PED(Pedestrian, true);
         }
+        if(Settings.SettingsManager.PoliceTaskSettings.StopWeaponFiringWhenDropped)
+        {
+            NativeFunction.Natives.STOP_PED_WEAPON_FIRING_WHEN_DROPPED(Pedestrian);
+        }
     }
     private void UpdateCombatFlags()
     {
@@ -323,7 +319,48 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         }
     }
 
-    public void ShootingChecker()
+    private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
+    {
+        if(policeRespondable.IsNotWanted && SawPlayerViolating)
+        {
+            SawPlayerViolating = false;
+            GameTimeFirstSawPlayerViolating = 0;
+            return;
+        }
+        if(policeRespondable.IsNotWanted)
+        {
+            return;
+        }
+        if (CanSeePlayer && !SawPlayerViolating)
+        {
+            OnSawPlayerViolating();
+        }
+        if(policeRespondable.PoliceResponse.WantedLevelHasBeenRadioedIn)
+        {
+            return;
+        }
+        if (CanRadioInWanted)
+        {
+            policeRespondable.PoliceResponse.RadioInWanted();
+            EntryPoint.WriteToConsole($"I AM {Handle} AND I RADIOED IN THE WANTED LEVEL");
+        }
+        ShootingChecker(policeRespondable);
+        if (!SawPlayerViolating)
+        {
+            Cop cop = world.Pedestrians.AllPoliceList.FirstOrDefault(x => NativeHelper.IsNearby(CellX, CellY, x.CellX, x.CellY, 3) && x.IsShooting && x.Pedestrian.Exists());
+            if(cop != null && cop.Pedestrian.Exists())
+            {
+                AddHeardGunfire(cop.Pedestrian.Position);
+            }
+        }      
+    }
+    private void OnSawPlayerViolating()
+    {
+        GameTimeFirstSawPlayerViolating = Game.GameTime;
+        SawPlayerViolating = true;
+        EntryPoint.WriteToConsole($"I AM {Handle} AND I SAW PLAYER VIOLATING");
+    }
+    private void ShootingChecker(IPoliceRespondable policeRespondable)
     {
         if (!IsShootingCheckerActive)
         {
@@ -335,7 +372,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
                     IsShootingCheckerActive = true;
                     //EntryPoint.WriteToConsole($"        Ped {PedExt.Pedestrian.Handle} IsShootingCheckerActive {IsShootingCheckerActive}", 5);
                     uint GameTimeLastShot = 0;
-                    while (Pedestrian.Exists() && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
+                    while (Pedestrian.Exists() && IsShootingCheckerActive && EntryPoint.ModController?.IsRunning == true && !policeRespondable.PoliceResponse.WantedLevelHasBeenRadioedIn)// && CarryingWeapon && IsShootingCheckerActive && ObservedWantedLevel < 3)
                     {
                         if (Pedestrian.IsShooting)
                         {
@@ -358,8 +395,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             }, "Ped Shooting Checker");
         }
     }
-
-
     //public void AddDivision(string forceGroupName)
     //{
     //    if (AssignedAgency.Division != -1)

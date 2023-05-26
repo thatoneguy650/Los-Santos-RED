@@ -1969,12 +1969,16 @@ public class PlacesOfInterest : IPlacesOfInterest
         {
             new PoliceStation(new Vector3(358.9726f, -1582.881f, 29.29195f), 323.5287f, "Davis Sheriff's Station","A Tradition of Suppression") {OpenTime = 0,CloseTime = 24,
                 PossiblePedSpawns = new List<ConditionalLocation>() {
-                    new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
+                    //new LEConditionalLocation(new Vector3(343.7892f, -1602.402f, 29.29194f), 336.6382f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(373.5635f, -1612.563f, 29.29194f), 229.7581f, DavisPercentage),
-                    new LEConditionalLocation(new Vector3(375.4213f, -1609.626f, 29.29194f), 193.4761f, DavisPercentage),
+                    //new LEConditionalLocation(new Vector3(375.4213f, -1609.626f, 29.29194f), 193.4761f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(358.3576f, -1581.505f, 29.29195f), 321.0721f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(370.2834f, -1579.717f, 29.29238f), 303.5159f, DavisPercentage),
                     new LEConditionalLocation(new Vector3(363.9216f, -1575.142f, 29.27452f), 350.0409f, DavisPercentage),
+
+                    new LEConditionalLocation(new Vector3(337.8395f, -1596.521f, 29.31022f), 48.88332f, DavisPercentage),
+
+
                 },PossibleVehicleSpawns = new List<ConditionalLocation>() {
                     new LEConditionalLocation(new Vector3(388.9854f, -1612.977f, 29.21355f), 50f,20f),
                     new LEConditionalLocation(new Vector3(392.7548f, -1608.376f, 29.21355f), 50f,50f),

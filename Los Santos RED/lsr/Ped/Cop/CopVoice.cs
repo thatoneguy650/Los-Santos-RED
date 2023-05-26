@@ -50,6 +50,10 @@ public class CopVoice
     public bool IsRadioTimedOut => Game.GameTime - GameTimeLastRadioed < TimeBetweenRadioIn;
     public bool IsSpeechTimedOut => Game.GameTime - GameTimeLastSpoke < TimeBetweenSpeaking;
     public bool CanRadioIn => !Cop.IsUnconscious && !IsRadioTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && Cop.Pedestrian.Speed <= 0.25f && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
+
+
+
+
     public bool CanSpeak => !Cop.IsUnconscious && !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
     public void Speak(IPoliceRespondable currentPlayer)
     {    

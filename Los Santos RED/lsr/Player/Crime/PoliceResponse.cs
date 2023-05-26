@@ -1,5 +1,6 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
+using NAudio.Wave;
 using Rage;
 using Rage.Native;
 using System;
@@ -43,7 +44,13 @@ namespace LosSantosRED.lsr
         public uint HasBeenWantedFor => Player.WantedLevel == 0 ? 0 : Game.GameTime - GameTimeWantedStarted;
 
 
-        public bool WantedCanResetOnNoViolationSeen => Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime;
+      //  public bool WantedCanResetOnNoViolationSeen => Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime;
+
+
+        public bool WantedLevelHasBeenRadioedIn { get; private set; } = false;
+
+
+
 
         public bool HasObservedCrimes => CrimesObserved.Any();
         public bool IsDeadlyChase => CurrentPoliceState == PoliceState.DeadlyChase;
@@ -333,6 +340,7 @@ namespace LosSantosRED.lsr
             CurrentPoliceState = PoliceState.Normal;
             GameTimeWantedLevelStarted = 0;
             GameTimeWantedEnded = 0;
+            WantedLevelHasBeenRadioedIn = false;
             CrimesObserved.Clear();
             CrimesReported.Clear();
         }
@@ -488,9 +496,18 @@ namespace LosSantosRED.lsr
                     }
                     else
                     {
-                        LastSeenLocationBlip.Color = Color.Red;
-                        LastSeenLocationBlip.Alpha = 0.25f;
-                        LastSeenLocationBlip.Scale = 200f;
+                        if(WantedLevelHasBeenRadioedIn)
+                        {
+                            LastSeenLocationBlip.Color = Color.Red;
+                            LastSeenLocationBlip.Alpha = 0.25f;
+                            LastSeenLocationBlip.Scale = 200f;
+                        }
+                        else
+                        {
+                            LastSeenLocationBlip.Color = Color.Black;
+                            LastSeenLocationBlip.Alpha = 0.1f;
+                            LastSeenLocationBlip.Scale = 20f;
+                        }
 
                     }
                 }
@@ -525,7 +542,7 @@ namespace LosSantosRED.lsr
             }
             else
             {
-                if(WantedCanResetOnNoViolationSeen && !Player.AnyPoliceSawPlayerViolating) 
+                if(!WantedLevelHasBeenRadioedIn && !Player.AnyPoliceSawPlayerViolating) 
                 {
                     ResetWanted();
                     return;
@@ -654,6 +671,11 @@ namespace LosSantosRED.lsr
                 Player.Investigation.Start(prevPlaceLastReportedCrime, policeHaveDescription, true, reqEMS, reqFire);
                 EntryPoint.WriteToConsole($"STARTING INVESTIGATION {crime.ID}");
             }
+        }
+
+        public void RadioInWanted()
+        {
+            WantedLevelHasBeenRadioedIn = true;
         }
     }
 }

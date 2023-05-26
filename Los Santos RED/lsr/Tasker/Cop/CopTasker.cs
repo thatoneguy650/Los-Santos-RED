@@ -105,7 +105,7 @@ public class CopTasker
             }
             else
             {
-                if (Player.IsWanted && Cop.IsRespondingToWanted && (Cop.SawPlayerViolating || !Player.PoliceResponse.WantedCanResetOnNoViolationSeen))
+                if (Player.IsWanted && Cop.IsRespondingToWanted && (Cop.SawPlayerViolating || Player.PoliceResponse.WantedLevelHasBeenRadioedIn))
                 {
                     if (Player.IsInSearchMode)
                     {
@@ -138,7 +138,7 @@ public class CopTasker
                 {
                     SetInvestigate(Cop);
                 }
-                else if (Cop.BodiesSeen.Any())
+                else if (Cop.IsAlerted)// Cop.BodiesSeen.Any() || )
                 {
                     SetInvestigate(Cop);
                 }

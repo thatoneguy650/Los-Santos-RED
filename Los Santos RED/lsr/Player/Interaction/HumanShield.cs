@@ -135,56 +135,63 @@ public class HumanShield : DynamicActivity
     private void Setup()
     {
         IsCancelled = false;
-        SetupPlayer();
         SetupVariables();
+        SetupPlayer();    
         SetupHostage();
     }
     private void SetupVariables()
     {
         Player.ButtonPrompts.RemovePrompts("Grab"); //Player.ButtonPromptList.RemoveAll(x => x.Group == "Grab");
-
         HostageRG = new RelationshipGroup("HOSTAGE");
         Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(HostageRG, Relationship.Companion);
         HostageRG.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Companion);
-
-        AnimationDictionary.RequestAnimationDictionayResult("anim@gangops@hostage@");
-        AnimationDictionary.RequestAnimationDictionayResult("combat@drag_ped@");
-
-
-        AnimationDictionary.RequestAnimationDictionayResult("move_action@generic@core");
-        AnimationDictionary.RequestAnimationDictionayResult("move_strafe@generic");
-        AnimationDictionary.RequestAnimationDictionayResult("move_strafe_melee_unarmed");
-
-
-
-
-
+        if(!AnimationDictionary.RequestAnimationDictionayResult("anim@gangops@hostage@"))
+        {
+            EntryPoint.WriteToConsole("ERROR HUMAN SHIELD COULD NOT LOAD ANIMATION DICTIONARY 1");
+            //IsCancelled = true;
+            //return;
+        }
+        if (!AnimationDictionary.RequestAnimationDictionayResult("move_action@generic@core"))
+        {
+            EntryPoint.WriteToConsole("ERROR HUMAN SHIELD COULD NOT LOAD ANIMATION DICTIONARY 2");
+            //IsCancelled = true;
+            //return;
+        }
+        if (!AnimationDictionary.RequestAnimationDictionayResult("move_strafe@generic"))
+        {
+            EntryPoint.WriteToConsole("ERROR HUMAN SHIELD COULD NOT LOAD ANIMATION DICTIONARY 3");
+            //IsCancelled = true;
+            //return;
+        }
         AttachOffset = new Vector3(-0.31f, 0.12f, 0.04f);
-
-       // AttachOffset = new Vector3(-0.5f, 0.5f, 0.04f);
-        //weapons@unarmed
-        //toolstest@
     }
     private void SetupPlayer()
     {
+        if (IsCancelled)
+        {
+            return;
+        }
+        Player.ActivityManager.IsPerformingActivity = true;
         Player.ActivityManager.IsHoldingHostage = true;
     }
     private void SetupHostage()
     {
+        if (IsCancelled)
+        {
+            return;
+        }
         if (Ped.Pedestrian.Exists())
         {
             wasPersist = Ped.Pedestrian.IsPersistent;
             wasSetPersistent = Ped.WasEverSetPersistent;
             PreviousRelationshipGroup = Ped.Pedestrian.RelationshipGroup;
-
             //EntryPoint.WriteToConsoleTestLong($"Grab Started PreviousRelationshipGroup {PreviousRelationshipGroup.Name}");
-
             Ped.CanBeTasked = false;
             Ped.Pedestrian.Tasks.Clear();
             Ped.Pedestrian.BlockPermanentEvents = true;
             Ped.Pedestrian.KeepTasks = true;
             Ped.Pedestrian.IsPersistent = true;
-
+            Ped.IsBeingHeldAsHostage = true;
             NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Ped.Pedestrian, true);
             Ped.Pedestrian.RelationshipGroup = HostageRG;
         }
@@ -204,8 +211,6 @@ public class HumanShield : DynamicActivity
             Ped.Pedestrian.CollisionIgnoredEntity = Game.LocalPlayer.Character;
             Ped.Pedestrian.Position = Player.Character.GetOffsetPosition(AttachOffset);
             Ped.Pedestrian.Heading = Game.LocalPlayer.Character.Heading;
-
-
             HeadingLoop();
             DirectionLoop();
             if(IsPromptPressed())
@@ -274,13 +279,9 @@ public class HumanShield : DynamicActivity
             if (!isAnimationPaused)
             {
                 NativeFunction.Natives.CLEAR_PED_SECONDARY_TASK(Player.Character);
-
                 //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Player.Character, Game.GetHashKey("Gang1H"));
-
                 isAnimationPaused = true;
-
                 Player.ButtonPrompts.RemovePrompts("Hostage");
-
             }
 
         }
@@ -288,13 +289,11 @@ public class HumanShield : DynamicActivity
         {
             if (isAnimationPaused)
             {
-                // NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 if (Ped.Pedestrian.Exists())
                 {
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16, 0, false, false, false);
                 }
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "anim@gangops@hostage@", "perp_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
-
                 //NativeFunction.Natives.SET_WEAPON_ANIMATION_OVERRIDE(Player.Character, Game.GetHashKey("Default"));
                 isBackingUp = false;
                 IsMovingForward = false;
@@ -310,10 +309,7 @@ public class HumanShield : DynamicActivity
         Player.Stance.SetStealthMode(false);
         Game.DisableControlAction(0, GameControl.Sprint, true);
         Game.DisableControlAction(0, GameControl.Jump, true);
-
         Player.ButtonPrompts.RemovePrompts("Grab");
-
-
     }
     private void DirectionLoop()
     {
@@ -335,21 +331,9 @@ public class HumanShield : DynamicActivity
             {
                 NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "move_strafe@generic", "walk_bwd_180_loop", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 GameFiber.Wait(50);
-                //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
                 if (Ped.Pedestrian.Exists())
                 {
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "combat@drag_ped@", "injured_drag_plyr", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "anim@gangops@hostage@", "victim_idle", 8.0f, -8.0f, -1, 1 | 16 | 32, 0, false, false, false);
-
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "move_action@generic@core", "walk", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "weapons@unarmed", "walk_additive_backward", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-                    //NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "toolstest@", "walk_additive_backward", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-
                     NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Ped.Pedestrian, "move_strafe@generic", "walk_bwd_180_loop", 8.0f, -8.0f, -1, 1, 0, false, false, false);
-
-
                 }
                 isBackingUp = true;
             }
@@ -512,25 +496,22 @@ public class HumanShield : DynamicActivity
     private void ResetHostage()
     {
         if (Ped.Pedestrian.Exists())
-        {
-            
+        {        
             //Ped.Pedestrian.Detach();
             Ped.Pedestrian.BlockPermanentEvents = false;
             Ped.Pedestrian.KeepTasks = false;
             Ped.Pedestrian.IsPersistent = wasPersist;
             NativeFunction.Natives.CLEAR_PED_TASKS(Ped.Pedestrian);
             Ped.Pedestrian.RelationshipGroup = PreviousRelationshipGroup;
-
             Ped.WasEverSetPersistent = wasSetPersistent;
             Ped.CanBeAmbientTasked = true;
             Ped.CanBeTasked = true;
-            
+            Ped.IsBeingHeldAsHostage = false;
             NativeFunction.Natives.SET_ENABLE_HANDCUFFS(Ped.Pedestrian, false);
             //if(Ped.Pedestrian.RelationshipGroup.Name == "HOSTAGE")
             //{
             //    Ped.Pedestrian.RelationshipGroup = new RelationshipGroup("CITIZEN");
             //}
-
             //EntryPoint.WriteToConsole($"PreviousRelationshipGroup {PreviousRelationshipGroup.Name} Ped.Pedestrian.RelationshipGroup {Ped.Pedestrian.RelationshipGroup.Name} 1");
         }
     }
@@ -538,7 +519,7 @@ public class HumanShield : DynamicActivity
     {
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsHoldingHostage = false;
-
+        Player.ActivityManager.IsPerformingActivity = false;
         Game.LocalPlayer.Character.RelationshipGroup.SetRelationshipWith(HostageRG, Relationship.Neutral);
         HostageRG.SetRelationshipWith(Game.LocalPlayer.Character.RelationshipGroup, Relationship.Neutral);
 
@@ -560,58 +541,4 @@ public class HumanShield : DynamicActivity
             Game.DisableControlAction(0, GameControl.VehicleAttack2, true);// false);
         }
     }
-
-    //private void SetCloseCamera()
-    //{
-    //    int viewMode = NativeFunction.Natives.GET_FOLLOW_PED_CAM_VIEW_MODE<int>();
-    //    if (viewMode != 4 && viewMode != 0)
-    //    {
-    //        storedViewMode = viewMode;
-    //        NativeFunction.Natives.SET_FOLLOW_PED_CAM_VIEW_MODE(0);
-    //        EntryPoint.WriteToConsole($"SetCloseCamera viewMode {viewMode} storedViewMode {storedViewMode}", 5);
-    //    }
-    //}
-    //private void SetRegularCamera()
-    //{
-    //    int viewMode = NativeFunction.Natives.GET_FOLLOW_PED_CAM_VIEW_MODE<int>();
-    //    if (viewMode != 4)
-    //    {
-    //        if (viewMode != storedViewMode)
-    //        {
-    //            NativeFunction.Natives.SET_FOLLOW_PED_CAM_VIEW_MODE(storedViewMode);
-    //            storedViewMode = -1;
-    //        }
-    //        EntryPoint.WriteToConsole($"SetCloseCamera storedViewMode {storedViewMode}", 5);
-    //    }
-    //}
-    //private bool PlayAnimation(string dictionary, string animation)
-    //{
-    //    NativeFunction.CallByName<uint>("TASK_PLAY_ANIM", Player.Character, dictionary, animation, 1.0f, -1.0f, -1, 50, 0, false, false, false);//-1
-    //    NativeFunction.Natives.TASK_PLAY_ANIM(Player.Character, dictionary, animation, 8.0f, -8.0f, -1, 2, 0, false, false, false);
-    //    uint GameTimeStartedLootAnimation = Game.GameTime;
-    //    float AnimationTime = 0.0f;
-    //    while (AnimationTime < 1.0f && !IsCancelled && Game.GameTime - GameTimeStartedLootAnimation <= 10000)
-    //    {
-    //        AnimationTime = NativeFunction.Natives.GET_ENTITY_ANIM_CURRENT_TIME<float>(Player.Character, dictionary, animation);
-    //        if (Player.IsMoveControlPressed)
-    //        {
-    //            IsCancelled = true;
-    //        }
-    //        if (!Ped.Pedestrian.Exists() || !Player.IsAliveAndFree)
-    //        {
-    //            IsCancelled = true;
-    //            break;
-    //        }
-    //        GameFiber.Yield();
-    //    }
-    //    if (!IsCancelled && AnimationTime >= 1.0f)
-    //    {
-    //        return true;
-    //    }
-    //    else
-    //    {
-    //        return false;
-    //    }
-    //}
-
 }

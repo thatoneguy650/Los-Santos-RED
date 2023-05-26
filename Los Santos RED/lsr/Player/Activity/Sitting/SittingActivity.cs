@@ -58,6 +58,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsSitting = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             //Player.IsPerformingActivity = false;
         }
         public override void Pause()
@@ -104,6 +105,7 @@ namespace LosSantosRED.lsr.Player
                 if (!GetSittableProp() || !GetSeatCoordinates() || !MoveToSeatCoordinates())
                 {
                     Player.ActivityManager.IsSitting = false;
+                    Player.ActivityManager.IsPerformingActivity = false;
                     if (ClosestSittableEntity.Exists())
                     {
                         ClosestSittableEntity.IsPositionFrozen = false;
@@ -173,7 +175,8 @@ namespace LosSantosRED.lsr.Player
                 Player.Character.Heading = StoredPlayerHeading;
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Game.FadeScreenIn(500, true);
-                Player.ActivityManager.IsSitting = false;         
+                Player.ActivityManager.IsSitting = false;
+                Player.ActivityManager.IsPerformingActivity = false;
             }
             else
             {
@@ -214,6 +217,7 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.ActivityManager.IsSitting = false;
+                Player.ActivityManager.IsPerformingActivity = false;
                 GameFiber.Sleep(5000);
             }
 

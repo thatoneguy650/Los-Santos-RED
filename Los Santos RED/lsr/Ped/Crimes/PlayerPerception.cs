@@ -310,7 +310,7 @@ public class PlayerPerception
         //}
         PositionLastSeenCrime = PositionToReport;
         GameTimeLastSeenTargetCommitCrime = Game.GameTime;
-        WitnessedCrime ExistingEvent = PlayerCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == CrimeToAdd.ID );
+        WitnessedCrime ExistingEvent = PlayerCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == CrimeToAdd.ID);
         if (ExistingEvent == null)
         {
             PlayerCrimesWitnessed.Add(new WitnessedCrime(CrimeToAdd, null, VehicleLastSeenTargetIn, WeaponLastSeenTargetWith, PositionToReport));

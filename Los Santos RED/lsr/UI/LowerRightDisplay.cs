@@ -220,30 +220,38 @@ public class LowerRightDisplay
         string PlayerDisplay = "";
         if (DisplayablePlayer.IsWanted)
         {
-            if (DisplayablePlayer.IsInSearchMode)
+            if (!DisplayablePlayer.PoliceResponse.WantedLevelHasBeenRadioedIn)
             {
-                PlayerDisplay += $"~o~ Attempting To Locate";
+                PlayerDisplay += $"~o~ Alerted{UI.CurrentDefaultTextColor}";
             }
             else
             {
-                if (DisplayablePlayer.CurrentLocation.IsInside && DisplayablePlayer.AnyPoliceKnowInteriorLocation)
+
+                if (DisplayablePlayer.IsInSearchMode)
                 {
-                    PlayerDisplay += $"~r~ Breaching";
-                }
-                else if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
-                {
-                    PlayerDisplay += $"~r~ Weapons Free";
-                }
-                else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
-                {
-                    PlayerDisplay += $"~r~ Lethal Force Authorized";
+                    PlayerDisplay += $"~o~ Attempting To Locate";
                 }
                 else
                 {
-                    PlayerDisplay += $"~r~ Active Pursuit";
+                    if (DisplayablePlayer.CurrentLocation.IsInside && DisplayablePlayer.AnyPoliceKnowInteriorLocation)
+                    {
+                        PlayerDisplay += $"~r~ Breaching";
+                    }
+                    else if (DisplayablePlayer.PoliceResponse.IsWeaponsFree)
+                    {
+                        PlayerDisplay += $"~r~ Weapons Free";
+                    }
+                    else if (DisplayablePlayer.PoliceResponse.IsDeadlyChase)
+                    {
+                        PlayerDisplay += $"~r~ Lethal Force Authorized";
+                    }
+                    else
+                    {
+                        PlayerDisplay += $"~r~ Active Pursuit";
+                    }
                 }
+                PlayerDisplay += $" ({DisplayablePlayer.PoliceResponse.CurrentRespondingPoliceCount}) {UI.CurrentDefaultTextColor}";
             }
-            PlayerDisplay += $" ({DisplayablePlayer.PoliceResponse.CurrentRespondingPoliceCount}) {UI.CurrentDefaultTextColor}";
         }
         else if (DisplayablePlayer.Investigation != null && DisplayablePlayer.Investigation.IsActive)
         {

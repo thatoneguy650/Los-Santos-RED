@@ -93,6 +93,7 @@ public class Drag : DynamicActivity
         }
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character); 
         Player.ActivityManager.IsDraggingBody = false;
+        Player.ActivityManager.IsPerformingActivity = false;
     }
     public override void Pause()
     {

@@ -308,6 +308,7 @@ public class Loot : DynamicActivity
 
         NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
         Player.ActivityManager.IsLootingBody = false;
+        Player.ActivityManager.IsPerformingActivity = false;
         //NativeFunction.Natives.STOP_GAMEPLAY_HINT(false);
     }
     public override void Pause()

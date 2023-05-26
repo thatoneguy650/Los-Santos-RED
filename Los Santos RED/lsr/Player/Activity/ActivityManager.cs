@@ -494,6 +494,7 @@ public class ActivityManager
         if (humanShield.CanPerform(Actionable))
         {
             ForceCancelAllActive();
+            IsPerformingActivity = true;
             LowerBodyActivity = humanShield;
             LowerBodyActivity.Start();
         }
@@ -509,6 +510,7 @@ public class ActivityManager
         if (loot.CanPerform(Actionable))
         {
             ForceCancelAllActive();
+            IsPerformingActivity = true;
             LowerBodyActivity = loot;
             LowerBodyActivity.Start();
         }
@@ -524,6 +526,7 @@ public class ActivityManager
         if (drag.CanPerform(Actionable))
         {
             ForceCancelAllActive();
+            IsPerformingActivity = true;
             LowerBodyActivity = drag;
             LowerBodyActivity.Start();
         }
@@ -539,6 +542,7 @@ public class ActivityManager
         if (sleeping.CanPerform(Actionable))
         {
             ForceCancelAllActive();
+            IsPerformingActivity = true;
             LowerBodyActivity = sleeping;
             LowerBodyActivity.Start();
         }
@@ -554,6 +558,7 @@ public class ActivityManager
         if(sitting.CanPerform(Actionable))
         {
             ForceCancelAllActive();
+            IsPerformingActivity = true;
             LowerBodyActivity = sitting;
             LowerBodyActivity.Start();
         }

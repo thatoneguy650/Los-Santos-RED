@@ -51,6 +51,7 @@ namespace LosSantosRED.lsr.Player
         {
             IsCancelled = true;
             Player.ActivityManager.IsLayingDown = false;
+            Player.ActivityManager.IsPerformingActivity = false;
         }
         public override void Pause()
         {
@@ -163,6 +164,7 @@ namespace LosSantosRED.lsr.Player
             Player.IsSleeping = false;
             Player.IsSleepingOutside = false;
             Player.ActivityManager.IsLayingDown = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Exit_Vehicle();
         }
         private void Exit_Vehicle()
@@ -170,6 +172,7 @@ namespace LosSantosRED.lsr.Player
             //EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle)");
             NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
             Player.ActivityManager.IsLayingDown = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             //EntryPoint.WriteToConsole("Laying Activity Exit (Vehicle) 1");
         }
         private void LayDown_Foot()
@@ -234,6 +237,7 @@ namespace LosSantosRED.lsr.Player
             Player.IsSleeping = false;
             Player.IsSleepingOutside = false;
             Player.ActivityManager.IsLayingDown = false;
+            Player.ActivityManager.IsPerformingActivity = false;
             Exit_Foot();
 
         }
@@ -281,6 +285,7 @@ namespace LosSantosRED.lsr.Player
                 GameFiber.Yield();
                 NativeFunction.Natives.CLEAR_PED_TASKS(Player.Character);
                 Player.ActivityManager.IsLayingDown = false;
+                Player.ActivityManager.IsPerformingActivity = false;
             }
         }
 

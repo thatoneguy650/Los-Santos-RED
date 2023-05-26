@@ -339,10 +339,10 @@ namespace LosSantosRED.lsr
                 {
                     try
                     {
-                        if (Player.IsWanted && Player.PoliceResponse.WantedCanResetOnNoViolationSeen)// Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && Player.PoliceResponse.HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime)
+                        if (Player.IsWanted && !Player.PoliceResponse.WantedLevelHasBeenRadioedIn)// Settings.SettingsManager.PoliceSettings.AllowLosingWantedByKillingBeforeRadio && Player.PoliceResponse.HasBeenWantedFor <= Settings.SettingsManager.PoliceSettings.RadioInTime)
                         {
                             EntryPoint.WriteToConsole("DOING RADIO IN SLEEP SINCE YOU JUST STARTED BEING WANTED");
-                            while (Player.PoliceResponse.WantedCanResetOnNoViolationSeen && Player.IsWanted)
+                            while (!Player.PoliceResponse.WantedLevelHasBeenRadioedIn && Player.IsWanted)
                             {
                                 GameFiber.Sleep(1000);
                             }

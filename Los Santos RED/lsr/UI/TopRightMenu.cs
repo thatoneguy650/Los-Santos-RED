@@ -24,6 +24,7 @@ public class TopRightMenu
     private Texture WantedRegular;
     private Texture WantedRed;
     private Texture WantedGreyed;
+    private Texture WantedWhiteGreyed;
 
     private Texture QuestionGreyed;
     private Texture QuestionWhite;
@@ -50,6 +51,9 @@ public class TopRightMenu
         WantedRegular = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarwhite.png");
         WantedRed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarred.png");
         WantedGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstargreyed.png");
+        WantedWhiteGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\wantedstarwhitegrey.png");
+
+        //wantedstarwhitegrey
 
         QuestionGreyed = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkgrey.png");
         QuestionWhite = Game.CreateTextureFromFile("Plugins\\LosSantosRED\\images\\wantedlevel\\questionmarkwhite.png");
@@ -375,7 +379,11 @@ public class TopRightMenu
             Texture toShow;
             if (wantedLevelStar <= DisplayablePlayer.WantedLevel)
             {
-                if (wantedLevelStar >= Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsRedColorLimit)
+                if(!DisplayablePlayer.PoliceResponse.WantedLevelHasBeenRadioedIn)
+                {
+                    toShow = WantedWhiteGreyed;
+                }
+                else if (wantedLevelStar >= Settings.SettingsManager.UIGeneralSettings.CustomWantedLevelStarsRedColorLimit)
                 {
                     toShow = WantedRed;
                 }
