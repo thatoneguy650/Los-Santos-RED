@@ -965,7 +965,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     private void AddPlayerCrimeWitnessed(ITargetable Player)
     {
-        foreach(WitnessedCrime witnessedCrime in PlayerCrimesWitnessed)
+        foreach(WitnessedCrime witnessedCrime in PlayerCrimesWitnessed.ToList())
         {
             Player.AddCrime(witnessedCrime.Crime, false, PositionLastSeenCrime, VehicleLastSeenPlayerIn, WeaponLastSeenPlayerWith, EverSeenPlayer && ClosestDistanceToPlayer <= 10f, true, true);
         }

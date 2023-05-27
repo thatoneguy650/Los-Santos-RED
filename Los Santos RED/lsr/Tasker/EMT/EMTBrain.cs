@@ -154,7 +154,7 @@ public class EMTBrain : PedBrain
                 MainTarget = MainPossibleTarget.Target;
             }
         }
-        EntryPoint.WriteToConsole($"EMT PedToGoTo {MainTarget?.Handle}");
+        //EntryPoint.WriteToConsole($"EMT PedToGoTo {MainTarget?.Handle}");
         return MainTarget;
     }
     //private void SetPossibleTargets()

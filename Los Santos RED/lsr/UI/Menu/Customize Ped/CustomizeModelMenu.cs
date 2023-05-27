@@ -64,7 +64,7 @@ public class CustomizeModelMenu
         };
         ModelSubMenu.AddItem(InputModel);
 
-        SelectModel = new UIMenuListScrollerItem<string>("Model List", "Select the model name from a list. Only default models are included. Add on models must have the full model name entered in 'Input Model Name'.", Rage.Model.PedModels.Select(x => x.Name).OrderBy(x=> x));
+        SelectModel = new UIMenuListScrollerItem<string>("Model List", "Select the model name from a list. Only default models are included. Add on models must have the full model name entered in 'Input Model Name'.", Rage.Model.PedModels.Select(x => x.Name).OrderBy(x=> uint.TryParse(x, out uint nothing) ? 999 : 0).ThenBy(x=> x));
         SelectModel.Activated += (sender, selectedItem) =>
         {
             SetModelFromString(SelectModel.SelectedItem);

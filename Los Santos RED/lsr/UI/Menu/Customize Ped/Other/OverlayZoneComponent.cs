@@ -20,6 +20,7 @@ public class OverlayZoneComponent
     private UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList;
     private MenuPool MenuPool;
     private UIMenuItem ResetZoneMenu;
+    private List<UIMenuListScrollerItem<TattooOverlay>> MenusToUpdate = new List<UIMenuListScrollerItem<TattooOverlay>>();
 
     public int ID { get; set; }
     public string ZoneName { get; set; }
@@ -50,8 +51,10 @@ public class OverlayZoneComponent
     }
     private void AddMenuItems(UIMenu componentMenu)
     {
+        MenusToUpdate.Clear();
         AddResetMenuItem(componentMenu);
         PossibleTattoos = PedCustomizer.TattooNames.GetOverlaysByZone(ZoneName).ToList();
+        ResetApplied();
         foreach (var speechGroup in PossibleTattoos.GroupBy(x => x.CollectionName).Select(x => x))
         {
             UIMenu GroupMenu = MenuPool.AddSubMenu(componentMenu, speechGroup.Key);
@@ -61,8 +64,10 @@ public class OverlayZoneComponent
             TattooOverlayMenuList.Activated += (sender, selectedItem) =>
             {
                 OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
+                TattooOverlayMenuList.Reformat();
             };
             GroupMenu.AddItem(TattooOverlayMenuList);
+            MenusToUpdate.Add(TattooOverlayMenuList);
         } 
     }
     private void AddResetMenuItem(UIMenu componentMenu)
@@ -74,6 +79,10 @@ public class OverlayZoneComponent
             PossibleTattoos.ForEach(x => x.IsApplied = false);
             PedCustomizer.WorkingVariation.AppliedOverlays?.Clear();
             PedCustomizer.OnVariationChanged();
+            foreach(UIMenuListScrollerItem<TattooOverlay> ui in MenusToUpdate)
+            {
+                ui.Reformat();
+            }
             Game.DisplaySubtitle($"Removed All");
         };
         componentMenu.AddItem(ResetMenu);
@@ -85,6 +94,10 @@ public class OverlayZoneComponent
             PossibleTattoos.Where(x=> x.ZoneName == ZoneName).ToList().ForEach(x => x.IsApplied = false);
             PedCustomizer.WorkingVariation.AppliedOverlays?.RemoveAll(x => x.ZoneName == ZoneName);
             PedCustomizer.OnVariationChanged();
+            foreach (UIMenuListScrollerItem<TattooOverlay> ui in MenusToUpdate)
+            {
+                ui.Reformat();
+            }
             Game.DisplaySubtitle($"Removed All from {ZoneDisplay}");
         };
         componentMenu.AddItem(ResetZoneMenu);
@@ -113,6 +126,23 @@ public class OverlayZoneComponent
         }     
         PedCustomizer.OnVariationChanged();
     }
-
+    private void ResetApplied()
+    {
+        if(PossibleTattoos == null)
+        {
+            return;
+        }
+        foreach (TattooOverlay to in PossibleTattoos)
+        {
+            if (PedCustomizer.WorkingVariation.AppliedOverlays.Any(x => x.CollectionName == to.CollectionName && x.OverlayName == to.OverlayName && x.ZoneName == to.ZoneName))
+            {
+                to.IsApplied = true;
+            }
+            else
+            {
+                to.IsApplied = false;
+            }
+        }
+    }
 }
 
