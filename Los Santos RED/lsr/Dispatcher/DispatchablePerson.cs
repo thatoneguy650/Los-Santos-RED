@@ -86,6 +86,10 @@ public class DispatchablePerson
     public List<string> OverrideVoice { get; set; }
     public List<CustomPropAttachment> CustomPropAttachments { get; set; }
 
+
+    public bool DisableWrithe { get; set; } = true;
+    public bool DisableWritheShooting { get; set; } = true;
+
     public bool DisableCriticalHits { get; set; } = false;
     public bool DisableBulletRagdoll { get; set; } = false;
     public bool HasFullBodyArmor { get; set; } = false;
@@ -191,6 +195,14 @@ public class DispatchablePerson
         {
             //EntryPoint.WriteToConsole($"SET DisableCriticalHits {pedExt.Handle}");
             NativeFunction.Natives.SET_PED_SUFFERS_CRITICAL_HITS(pedExt.Pedestrian, false);
+        }
+        if(DisableWrithe)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(pedExt.Pedestrian, (int)281, true);
+        }
+        if (DisableWritheShooting)
+        {
+            NativeFunction.Natives.SET_PED_CONFIG_FLAG(pedExt.Pedestrian, (int)327, true);
         }
         pedExt.HasFullBodyArmor = HasFullBodyArmor;
         if (FiringPatternHash != 0)

@@ -288,6 +288,7 @@ public class SecurityDispatcher
             SpawnLocation.Heading = 358.3758f;
         }
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
+        SpawnLocation.Heading = Game.LocalPlayer.Character.Heading;
         if (agencyID == "")
         {
             Agency = Agencies.GetRandomAgency(ResponseType.Other);

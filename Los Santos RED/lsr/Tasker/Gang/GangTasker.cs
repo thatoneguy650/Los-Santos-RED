@@ -161,7 +161,7 @@ public class GangTasker
             }
             else
             {
-                if (isHostile && (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked))
+                if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || SeenPlayerReactiveCrime)
                 {
                     if (GangMember.WillFight)
                     {
@@ -183,18 +183,14 @@ public class GangTasker
                         WillFleeFromPlayer = true;
                     }
                 }
-                if (SeenPlayerReactiveCrime)
-                {
-                    WillFleeFromPlayer = true;
-                }
+                //if (SeenPlayerReactiveCrime)
+                //{
+                //    WillFleeFromPlayer = true;
+                //}
             }
             if (WillAttackPlayer)
             {
                 SetFight(GangMember, null);
-            }
-            else if (WillFleeFromPlayer)
-            {
-                SetFlee(GangMember, null);
             }
             else if (SeenOtherReactiveCrime)
             {
@@ -206,6 +202,10 @@ public class GangTasker
                 {
                     SetFlee(GangMember, HighestPriorityOtherCrime);
                 }
+            }
+            else if (WillFleeFromPlayer)
+            {
+                SetFlee(GangMember, null);
             }
             else
             {

@@ -185,6 +185,10 @@ public class Dispatcher
     {
         EMSDispatcher.DebugSpawnEMT(agencyID, onFoot, isEmpty);
     }
+    public void DebugSpawnFire(string agencyID, bool onFoot, bool isEmpty)
+    {
+        FireDispatcher.DebugSpawnFire(agencyID, onFoot, isEmpty);
+    }
 
     public void DebugSpawnSecurityGuard(string agencyID, bool onFoot, bool isEmpty)
     {

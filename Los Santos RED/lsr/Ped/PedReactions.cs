@@ -40,6 +40,7 @@ public class PedReactions
     public bool RecentlySeenIntenseCrime => GameTimeLastSeenIntenseCrime > 0 && Game.GameTime - GameTimeLastSeenIntenseCrime <= 30000;
     public bool RecentlySeenMundaneCrime => GameTimeLastSeenMundaneCrime > 0 && Game.GameTime - GameTimeLastSeenMundaneCrime <= 30000;
     public WitnessedCrime HighestPriorityCrime { get; set; }
+    public bool IncludeUnconsciousAsMundane { get; set; } = true;
 
     public void Update(ITargetable Player)
     {
@@ -162,7 +163,7 @@ public class PedReactions
     }
     private void OldDistressedUpdate()
     {
-        if (!HasSeenAngryCrime && !HasSeenScaryCrime && Civilian.PedAlerts.HasSeenUnconsciousPed)
+        if (!HasSeenAngryCrime && !HasSeenScaryCrime && Civilian.PedAlerts.HasSeenUnconsciousPed && IncludeUnconsciousAsMundane)
         {
             GameTimeLastSeenMundaneCrime = Game.GameTime;
             HasSeenMundaneCrime = true;

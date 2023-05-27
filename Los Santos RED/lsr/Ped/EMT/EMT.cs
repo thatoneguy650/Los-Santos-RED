@@ -18,6 +18,8 @@ public class EMT : PedExt
         {
             GameTimeSpawned = Game.GameTime;
         }
+        PedReactions.IncludeUnconsciousAsMundane = false;
+        PedBrain = new EMTBrain(this, Settings, world, weapons);
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;

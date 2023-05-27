@@ -23,6 +23,8 @@ namespace LosSantosRED.lsr.Interface
         bool AnyGangMemberCanHearPlayer { get; set; }
         bool AnyGangMemberRecentlySeenPlayer { get; set; }
         bool IsInVehicle { get; }
+        Stance Stance { get; }
+
         void AddMedicalEvent(Vector3 positionLastSeenDistressedPed);
     }
 }

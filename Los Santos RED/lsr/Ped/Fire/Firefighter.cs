@@ -17,6 +17,7 @@ public class Firefighter : PedExt
         {
             GameTimeSpawned = Game.GameTime;
         }
+        PedBrain = new FirefighterBrain(this, Settings, world, weapons);
     }
     public Agency AssignedAgency { get; set; } = new Agency();
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
@@ -65,7 +66,6 @@ public class Firefighter : PedExt
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
-
     public void SetStats(DispatchablePerson dispatchablePerson, IShopMenus shopMenus, IWeapons Weapons, bool addBlip)
     {
         dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.CivilianSettings.OverrideHealth, false, Settings.SettingsManager.CivilianSettings.OverrideAccuracy);
@@ -82,5 +82,4 @@ public class Firefighter : PedExt
             AddBlip();
         }
     }
-    //public bool WasModSpawned { get; private set; }
 }

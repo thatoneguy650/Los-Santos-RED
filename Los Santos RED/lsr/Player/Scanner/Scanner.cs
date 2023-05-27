@@ -346,8 +346,8 @@ namespace LosSantosRED.lsr
                         {
                             if (!Player.PoliceResponse.WantedLevelHasBeenRadioedIn)
                             {
-                                HoldingDispatchQueue.AddRange(DispatchQueue.Where(x => x.LatestInformation.SeenByOfficers));
-                                DispatchQueue.RemoveAll(x => x.LatestInformation.SeenByOfficers);
+                                HoldingDispatchQueue.AddRange(DispatchQueue.Where(x => x.LatestInformation.SeenByOfficers || x.IsPoliceStatus));
+                                DispatchQueue.RemoveAll(x => x.LatestInformation.SeenByOfficers || x.IsPoliceStatus);
                                 EntryPoint.WriteToConsole("Player is Wanted Without Radio In Holding Officer Reports");
                             }
                             else if(HoldingDispatchQueue.Any())

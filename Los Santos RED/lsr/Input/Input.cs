@@ -196,6 +196,10 @@ namespace LosSantosRED.lsr
             {
                 Player.ActivityManager.GrabPed();
             }
+            else if (Player.ButtonPrompts.IsGroupPressed("HoldUp"))//Player.ButtonPromptList.Any(x => x.Group == "Grab" && x.IsPressedNow))//string for now...
+            {
+                Player.ActivityManager.StartHoldUp();
+            }
             if (Player.ButtonPrompts.IsGroupPressed("StartScenario"))//Player.ButtonPromptList.Any(x => x.Group == "StartScenario" && x.IsPressedNow))//string for now...
             {
                 Player.ActivityManager.StartScenario();

@@ -43,8 +43,6 @@ public class EMSConditionalLocation : ConditionalLocation
         }
         return base.DetermineRun(force);
     }
-
-
     public override void RunSpawnTask()
     {
         try

@@ -145,6 +145,15 @@ public class ButtonPrompts
             Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
         }
     }
+
+    public void AttemptAddPrompt(string groupName, string prompt, string identifier, GameControl gameControl, int order)
+    {
+        if (!Prompts.Any(x => x.Identifier == identifier) && !Prompts.Any(x=> x.GameControl == gameControl))
+        {
+            Prompts.Add(new ButtonPrompt(prompt, groupName, identifier, gameControl, order));
+        }
+    }
+
     public void AddPrompt(string groupName, string prompt, string identifier, GameControl modifierControl, GameControl gameControl, int order)
     {
         if (!Prompts.Any(x => x.Identifier == identifier))
@@ -183,21 +192,6 @@ public class ButtonPrompts
             string promptText = Player.CurrentLookedAtPed.InteractPrompt(Player);
             AddPrompt("StartConversation", promptText, $"Talk {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractStart, 1);
         }
-        //if (//((Player.CurrentLookedAtPed.GetType() == typeof(Merchant) && Player.CurrentLookedAtPed.IsNearSpawnPosition) || Player.CurrentLookedAtPed.HasMenu)
-            
-        //    Player.CurrentLookedAtPed.CanTransact
-            
-            
-        //    && (!Player.IsInVehicle || !Player.CurrentLookedAtPed.IsInVehicle) && !HasPrompt($"Purchase {Player.CurrentLookedAtPed.Pedestrian.Handle}"))
-        //{
-        //    RemovePrompts("StartTransaction");
-        //    string promptText = Player.CurrentLookedAtPed.TransactionPrompt(Player);
-        //    AddPrompt("StartTransaction", promptText, $"Purchase {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractPositiveOrYes, 2);
-        //}
-        //else
-        //{
-        //    RemovePrompts("StartTransaction");
-        //}
     }
     private void PersonLootingPrompts()
     {
@@ -226,9 +220,20 @@ public class ButtonPrompts
         if (!HasPrompt($"Grab {Player.CurrentLookedAtPed.Handle}"))
         {
             RemovePrompts("Grab");
-            AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", Settings.SettingsManager.KeySettings.InteractCancel, 999);
+            AddPrompt("Grab", $"Grab {Player.CurrentLookedAtPed.FormattedName}", $"Grab {Player.CurrentLookedAtPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
         }
     }
+    //private void PersonHoldUpPrompts()
+    //{
+    //    RemovePrompts("InteractableLocation");
+    //    RemovePrompts("StartScenario");
+    //    if (!HasPrompt($"HoldUp {Player.CurrentLookedAtPed.Handle}"))
+    //    {
+    //        RemovePrompts("HoldUp");
+    //        AddPrompt("HoldUp", $"HoldUp {Player.CurrentLookedAtPed.FormattedName}", $"HoldUp {Player.CurrentLookedAtPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
+    //    }
+    //}
+
     private void LocationInteractingPrompts()
     {
         RemovePrompts("StartConversation");
@@ -304,31 +309,6 @@ public class ButtonPrompts
                 RemovePrompts("ActivityControlContinue");
                 RemovePrompts("ActivityControlCancel");
             }
-
-
-
-
-
-            //if (Player.ActivityManager.CanPauseCurrentActivity && Player.ActivityManager.IsCurrentActivityPaused)
-            //{
-            //    AttemptAddPrompt("ActivityControlContinue", Player.ActivityManager.ContinueCurrentActivityPrompt, "ActivityControlContinue", Settings.SettingsManager.KeySettings.InteractNegativeOrNo, 998);
-            //    if (Player.ActivityManager.CanCancelCurrentActivity)
-            //    {
-            //        AttemptAddPrompt("ActivityControlCancel", Player.ActivityManager.CancelCurrentActivityPrompt, "ActivityControlCancel", Settings.SettingsManager.KeySettings.InteractCancel, 999);
-            //    }
-            //    else
-            //    {
-            //        RemovePrompts("ActivityControlCancel");
-            //    }
-            //}
-            //else
-            //{
-            //    RemovePrompts("ActivityControlContinue");
-            //    RemovePrompts("ActivityControlCancel");
-            //}
-
-
-
             RemovePrompts("ActivityControlCancel");
             RemovePrompts("ActivityControlPause");
         }
@@ -365,18 +345,15 @@ public class ButtonPrompts
     }
     private void AttemptAddAdvancedInteractionPrompts()
     {
-
-            if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanRecruitLookedAtGangMember && !Player.ActivityManager.IsConversing)
-            {
-                PersonRecruitingPrompts();
-                addedPromptGroup = true;
-            }
-            else
-            {
-                Prompts.RemoveAll(x => x.Group == "Recruit");
-            }
-
-
+        if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanRecruitLookedAtGangMember && !Player.ActivityManager.IsConversing)
+        {
+            PersonRecruitingPrompts();
+            addedPromptGroup = true;
+        }
+        else
+        {
+            Prompts.RemoveAll(x => x.Group == "Recruit");
+        }
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup)
         {
             if (Player.CurrentLookedAtObject.Exists() && Player.CanSitOnCurrentLookedAtObject && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsPerformingActivity && Player.ActivityManager.CanPerformActivitiesExtended && !Player.ActivityManager.IsSitting && !Player.IsInVehicle)
@@ -393,7 +370,6 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "Sit");
         }
-
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup)
         {
             if (Player.ActivityManager.CanLootLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowPedLooting)
@@ -415,8 +391,7 @@ public class ButtonPrompts
                 Prompts.RemoveAll(x => x.Group == "Drag");
             }
         }
-
-        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage )
         {
             PersonGrabPrompts();
             addedPromptGroup = true;
@@ -426,8 +401,18 @@ public class ButtonPrompts
             Prompts.RemoveAll(x => x.Group == "Grab");
         }
 
+        //if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
+        //{
+        //    PersonGrabPrompts();
+        //    addedPromptGroup = true;
+        //}
+        //else
+        //{
+        //    Prompts.RemoveAll(x => x.Group == "Grab");
+        //}
 
-        if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
+
+        if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
         }
@@ -435,8 +420,6 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowSurrender");
         }
-
-
         if(!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.Surrendering.HandsAreUp && Player.IsAliveAndFree)
         {
             AddPrompt("ShowStopSurrender", "Stop Surrendering", "ShowStopSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
@@ -445,7 +428,6 @@ public class ButtonPrompts
         {
             RemovePrompts("ShowStopSurrender");
         }
-
     }
     private void SittingPrompts()
     {
@@ -476,9 +458,6 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "InteractableLocation");
         }
-
-
-
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && !addedPromptGroup && !Player.ActivityManager.IsInteracting && Player.ActivityManager.CanPerformActivitiesExtended && Player.IsNearScenario && Settings.SettingsManager.ActivitySettings.AllowStartingScenarios)//currently isnearscenario is turned off
         {
             ScenarioPrompts();
@@ -488,6 +467,11 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "StartScenario");
         }
+    }
+
+    internal void OnTargetHandleChanged()
+    {
+        throw new NotImplementedException();
     }
 }
 

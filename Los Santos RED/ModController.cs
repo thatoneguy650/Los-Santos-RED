@@ -219,6 +219,7 @@ namespace LosSantosRED.lsr
                     new ModTask(250, "Civilians.UpdateEMTs", Civilians.UpdateEMTs, 0),//500//250
                     new ModTask(200, "Civilians.UpdateTotalWanted", Civilians.UpdateTotalWanted, 1),//500//250
                     new ModTask(250, "Civilians.UpdateSecurityGuards", Civilians.UpdateSecurityGuards, 2),//500//250
+                    new ModTask(250, "Civilians.UpdateFirefighters", Civilians.UpdateFirefighters, 3),//500//250
                 }),
                 new ModTaskGroup("RG10:World LowPri", new List<ModTask>()
                 {

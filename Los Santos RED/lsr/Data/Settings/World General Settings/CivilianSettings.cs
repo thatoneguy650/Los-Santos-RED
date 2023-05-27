@@ -136,6 +136,8 @@ public class CivilianSettings : ISettingsDefaultable
 
 
     public uint GameTimeAfterCallInToReportCrime { get; set; }
+    public bool DisableWrithe { get; set; }
+    public bool DisableWritheShooting { get; set; }
 
     public CivilianSettings()
     {
@@ -218,8 +220,8 @@ public class CivilianSettings : ISettingsDefaultable
         GameTimeToCallInMaximum = 10000;
 
         GameTimeAfterCallInToReportCrime = 2000;
-
-
+        DisableWrithe = true;
+        DisableWritheShooting = true;
     }
 
 }

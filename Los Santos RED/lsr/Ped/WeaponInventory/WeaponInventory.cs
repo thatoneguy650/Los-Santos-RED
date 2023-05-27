@@ -38,7 +38,7 @@ public class WeaponInventory
     public bool HasLongGun => LongGun != null;
 
     public bool IsArmed => HasPistol || HasLongGun;
-
+    public bool CanRadioIn => IsSetLessLethal || (IsSetDeadly && !HasHeavyWeaponOnPerson) || (IsSetDefault && !HasHeavyWeaponOnPerson);
     public WeaponInventory(IWeaponIssuable weaponOwner, ISettingsProvideable settings)
     {
         WeaponOwner = weaponOwner;

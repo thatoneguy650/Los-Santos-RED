@@ -1404,12 +1404,13 @@ namespace Mod
             {
                 CurrentTargetedPed = World.Pedestrians.GetPedExt(TargettingHandle);
                 GameFiber.Yield();
-                ActivityManager.OnTargetHandleChanged();
+               // ActivityManager.OnTargetHandleChanged();
             }
             else
             {
                 CurrentTargetedPed = null;
             }
+            ActivityManager.OnTargetHandleChanged();
             //EntryPoint.WriteToConsole($"PLAYER EVENT: CurrentTargetedPed to {CurrentTargetedPed?.Pedestrian?.Handle} CanHoldUpTargettedPed {CanHoldUpTargettedPed} CurrentTargetedPed?.CanBeMugged {CurrentTargetedPed?.CanBeMugged}", 5);
         }
         private void OnWantedLevelChanged()//runs after OnSuspectEluded (If Applicable)

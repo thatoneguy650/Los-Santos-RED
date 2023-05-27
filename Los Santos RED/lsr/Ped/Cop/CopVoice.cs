@@ -218,7 +218,7 @@ public class CopVoice
             return;
         }
         ResetSpeech();
-        if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimation)
+        if (Settings.SettingsManager.PoliceSettings.AllowRadioInAnimation && Cop.CanPlayRadioInAnimation)
         {
             unsafe
             {

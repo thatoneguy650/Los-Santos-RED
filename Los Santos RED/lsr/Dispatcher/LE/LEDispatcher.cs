@@ -1243,7 +1243,7 @@ public class LEDispatcher
         }
 
 
-
+        SpawnLocation.Heading = Game.LocalPlayer.Character.Heading;
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
         if (agencyID == "")
         {

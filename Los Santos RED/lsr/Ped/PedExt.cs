@@ -71,17 +71,11 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public List<Cop> AssignedCops { get; set; } = new List<Cop>();
     public int AssignedSeat { get; set; }
     public VehicleExt AssignedVehicle { get; set; }
-    //public List<PedExt> BodiesSeen { get; private set; } = new List<PedExt>();
-
-
-    //public bool IsAlerted => (BodiesSeen.Any() && Game.GameTime - GameTimeLastSeenDeadBody <= 60000) || Game.GameTime - GameTimeLastHeardGunshots <= 60000;
-
     public Vector3 Position => position;
     public bool CanAttackPlayer => IsFedUpWithPlayer || HatesPlayer;
     public bool CanBeAmbientTasked { get; set; } = true;
     public bool CanBeMugged => !IsCop && Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && !Pedestrian.IsInCombat && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsMerchant || IsGangMember || WasModSpawned);
     public bool CanBeTasked { get; set; } = true;
-    //public Vector3 AlertedPoint { get; set; }
     public virtual bool CanConverse => Pedestrian.Exists() && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsFleeing && !Pedestrian.IsInCombat && !Pedestrian.IsSprinting && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll && (!Pedestrian.IsPersistent || Settings.SettingsManager.CivilianSettings.AllowMissionPedsToInteract || IsCop || IsMerchant || IsGangMember || WasModSpawned);
     public virtual bool CanFlee => Pedestrian.Exists() && CanBeTasked && CanBeAmbientTasked && !IsBusted && !IsUnconscious && !IsDead && !IsArrested && Pedestrian.IsAlive && !Pedestrian.IsStunned && !Pedestrian.IsRagdoll;
     public bool CanRecognizePlayer => PlayerPerception.CanRecognizeTarget;
@@ -326,11 +320,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public uint TimeContinuoslySeenPlayer => PlayerPerception.TimeContinuoslySeenTarget;
     public int TimesInsultedByPlayer { get; private set; }
-
-    //public Vector3 PositionLastSeenDistressedPed { get; set; }
-    //public uint GameTimeLastSeenDeadBody { get; private set; }
-    //public uint GameTimeLastHeardGunshots { get; private set; }
-
     public ShopMenu ShopMenu { get; private set; }
     public VehicleExt VehicleLastSeenPlayerIn => PlayerPerception.VehicleLastSeenTargetIn;
     public int WantedLevel => PedViolations.WantedLevel;
@@ -397,7 +386,6 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public uint GameTimeKilled { get; set; }
     public uint GameTimeLastInjured { get; set; }
     public bool RecentlyInjured => GameTimeLastInjured != 0 && Game.GameTime - GameTimeLastInjured <= 3000;
-    //public bool HasSeenDistressedPed { get; set; } = false;
     public bool HasBeenSeenUnconscious { get; set; } = false;
     public bool HasStartedEMTTreatment { get; set; } = false;
     public bool HasBeenLooted { get; set; } = false;
@@ -413,10 +401,9 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     public bool HasFullBodyArmor { get; set; } = false;
     public virtual bool CanBeLooted { get; set; } = true;
     public virtual bool CanBeDragged { get; set; } = true;
-    public bool IsMale { get; set; } = true;
+    public virtual bool CanPlayRadioInAnimation => false;
     public bool AlwaysHasLongGun { get; set; } = false;
     public bool IsBeingHeldAsHostage { get; set; } = false;
-
     public virtual void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

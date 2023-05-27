@@ -47,13 +47,10 @@ public class CustomizeOverlaysMenu
             new OverlayZoneComponent(4, "ZONE_LEFT_LEG","Left Leg"),
             new OverlayZoneComponent(5, "ZONE_RIGHT_LEG","Right Leg"),
          };
-
-        PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Decorations");
-        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the decorations of the current ped. These include tattoos and clothing logos.";
-        //CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].RightBadge = UIMenuItem.BadgeStyle.Clothes;
+        PickComponentMenu = MenuPool.AddSubMenu(CustomizeMainMenu, "Body Overlays");
+        CustomizeMainMenu.MenuItems[CustomizeMainMenu.MenuItems.Count() - 1].Description = "Change the body overlays of the current ped. These include tattoos and clothing logos.";
         PickComponentMenu.SetBannerType(EntryPoint.LSRedColor);
         PickComponentMenu.InstructionalButtonsEnabled = false;
-
         PickComponentMenu.OnMenuOpen += (sender) =>
         {
             PedCustomizer.CameraCycler.SetDefault();
@@ -62,8 +59,6 @@ public class CustomizeOverlaysMenu
         {
             PedCustomizer.CameraCycler.SetDefault();
         };
-
-
     }
     public void OnModelChanged()
     {

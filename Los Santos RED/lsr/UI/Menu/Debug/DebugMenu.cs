@@ -1732,6 +1732,10 @@ new YmapDisabler("manhat01",true),
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyFoot.SelectedItem.ID, true, false);
             }
+            else if (SpawnAgencyFoot.SelectedItem.Classification == Classification.Fire)
+            {
+                Dispatcher.DebugSpawnFire(SpawnAgencyFoot.SelectedItem.ID, true, false);
+            }
             else if (SpawnAgencyFoot.SelectedItem.Classification == Classification.Security)
             {
                 Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyFoot.SelectedItem.ID, true, false);
@@ -1749,6 +1753,10 @@ new YmapDisabler("manhat01",true),
             {
                 Dispatcher.DebugSpawnEMT(SpawnAgencyVehicle.SelectedItem.ID, false, false);
             }
+            else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Fire)
+            {
+                Dispatcher.DebugSpawnFire(SpawnAgencyVehicle.SelectedItem.ID, false, false);
+            }
             else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
             {
                 Dispatcher.DebugSpawnSecurityGuard(SpawnAgencyVehicle.SelectedItem.ID, false, false);
@@ -1765,6 +1773,10 @@ new YmapDisabler("manhat01",true),
             if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.EMS)
             {
                 Dispatcher.DebugSpawnEMT(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
+            }
+            else if (SpawnEmptyAgencyVehicle.SelectedItem.Classification == Classification.Fire)
+            {
+                Dispatcher.DebugSpawnFire(SpawnEmptyAgencyVehicle.SelectedItem.ID, false, true);
             }
             else if (SpawnAgencyVehicle.SelectedItem.Classification == Classification.Security)
             {

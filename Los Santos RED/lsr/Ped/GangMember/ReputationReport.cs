@@ -16,11 +16,7 @@ public class ReputationReport
     {
         GangMember = gangMember;
     }
-
     public int ReputationChangeAmount { get; private set; }
-    //public bool WasInjuredByPlayer { get; set; } = false;
-    //public bool WasKilledByPlayer { get; set; } = false;
-    //public bool WasCarjackedByPlayer { get; set; } = false;
     public uint GangMemberHandle => GangMember.Handle;  
 
     public void AddReputation(int amount)
@@ -41,23 +37,6 @@ public class ReputationReport
         EntryPoint.WriteToConsole($"APPLIED REPUTATION FOR {GangMember.Handle} ReputationChangeAmount {ReputationChangeAmount}");
         Player.RelationshipManager.GangRelationships.ChangeReputation(GangMember.Gang, ReputationChangeAmount, true);
         Player.RelationshipManager.GangRelationships.AddAttacked(GangMember.Gang);
-        //GangReputation existGangRep = Player.RelationshipManager.GangRelationships.GetReputation(GangMember.Gang);
-        //if(existGangRep == null)
-        //{
-        //    return;
-        //}
-        //if (WasCarjackedByPlayer)
-        //{
-        //    existGangRep.MembersCarJacked++;
-        //}
-        //if(WasInjuredByPlayer)
-        //{
-        //    existGangRep.MembersHurt++;
-        //}
-        //if(WasKilledByPlayer)
-        //{
-        //    existGangRep.MembersKilled++;
-        //}
         ReputationChangeAmount = 0;
     }
     public void Update(IPerceptable Player, IEntityProvideable world, ISettingsProvideable settings)
@@ -87,14 +66,14 @@ public class ReputationReport
                 GangMember.WitnessedReports.ForEach(x => x.ApplyReputation(Player));
                 GangMember.WitnessedReports.Clear();
             }
-            if (Game.GameTime - GameTimeFirstChangedRep >= settings.SettingsManager.GangSettings.GameTimeToReportRepChanges)
+            if (Game.GameTime - GameTimeFirstChangedRep >= settings.SettingsManager.GangSettings.GameTimeToReportRepChanges && GangMember.DistanceToPlayer >= settings.SettingsManager.GangSettings.MinDistanceToReportTimeoutRepChanges && !GangMember.Pedestrian.IsRagdoll && !GangMember.Pedestrian.IsStunned)
             {
                 EntryPoint.WriteToConsole($"GANGMEMBER EXISTS AND HAS HAD REPORT FOR A WHILE, ALIVE, APPLYING REP");
                 ApplyReputation(Player);
                 GangMember.WitnessedReports.ForEach(x => x.ApplyReputation(Player));
                 GangMember.WitnessedReports.Clear();
             }
-            if(EntryPoint.FocusZone.AssignedGang?.ID == GangMember.Gang?.ID && Game.GameTime - GameTimeFirstChangedRep >= settings.SettingsManager.GangSettings.GameTimeToReportRepChangesInTerritory)
+            if(EntryPoint.FocusZone.AssignedGang?.ID == GangMember.Gang?.ID && Game.GameTime - GameTimeFirstChangedRep >= settings.SettingsManager.GangSettings.GameTimeToReportRepChangesInTerritory && GangMember.DistanceToPlayer >= settings.SettingsManager.GangSettings.MinDistanceToReportTimeoutRepChanges && !GangMember.Pedestrian.IsRagdoll && !GangMember.Pedestrian.IsStunned)
             {
                 EntryPoint.WriteToConsole($"GANGMEMBER EXISTS AND HAS HAD REPORT FOR A BIT IN TERRITORY, ALIVE, APPLYING REP");
                 ApplyReputation(Player);

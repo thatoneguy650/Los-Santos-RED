@@ -34,8 +34,9 @@ public class TattooOverlay
     public string Facing { get; set; }
     public override string ToString()
     {
-        return $"{OverlayName}";
+        return $"{OverlayName} {(IsApplied ? " - Applied" :"")}";
     }
+    public bool IsApplied { get; set; } = false;
 }
 
 public class TattooRoot

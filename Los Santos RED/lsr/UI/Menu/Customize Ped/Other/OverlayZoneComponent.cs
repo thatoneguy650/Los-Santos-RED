@@ -51,7 +51,7 @@ public class OverlayZoneComponent
     private void AddMenuItems(UIMenu componentMenu)
     {
         AddResetMenuItem(componentMenu);
-        PossibleTattoos = PedCustomizer.TattooNames.GetOverlaysByZone(ZoneName);
+        PossibleTattoos = PedCustomizer.TattooNames.GetOverlaysByZone(ZoneName).ToList();
         foreach (var speechGroup in PossibleTattoos.GroupBy(x => x.CollectionName).Select(x => x))
         {
             UIMenu GroupMenu = MenuPool.AddSubMenu(componentMenu, speechGroup.Key);
@@ -63,48 +63,31 @@ public class OverlayZoneComponent
                 OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
             };
             GroupMenu.AddItem(TattooOverlayMenuList);
-
-
-            //foreach (var SpeechData in speechGroup.OrderBy(x => x.OverlayName).ThenBy(x => x.OverlayName))
-            //{
-            //    UIMenuListScrollerItem<TattooOverlay> TattooOverlayMenuList = new UIMenuListScrollerItem<TattooOverlay>("Item", "Select item", PossibleTattoos.Where(x=>x.CollectionName == speechGroup.Key));
-            //    TattooOverlayMenuList.IndexChanged += (Sender, oldIndex, newIndex) =>
-            //    {
-
-            //    };
-            //    TattooOverlayMenuList.Activated += (sender, selectedItem) =>
-            //    {
-            //        OnOverlayChanged(TattooOverlayMenuList.SelectedItem);
-            //    };
-            //    GroupMenu.AddItem(TattooOverlayMenuList);
-            //}
-        }
-        //TEST COMMENT   
+        } 
     }
     private void AddResetMenuItem(UIMenu componentMenu)
     {
-
         ResetMenu = new UIMenuItem("Reset All", "Reset all the overlays applied");
         ResetMenu.RightBadge = UIMenuItem.BadgeStyle.Alert;
         ResetMenu.Activated += (sender, e) =>
         {
+            PossibleTattoos.ForEach(x => x.IsApplied = false);
             PedCustomizer.WorkingVariation.AppliedOverlays?.Clear();
             PedCustomizer.OnVariationChanged();
+            Game.DisplaySubtitle($"Removed All");
         };
         componentMenu.AddItem(ResetMenu);
-
-
 
         ResetZoneMenu = new UIMenuItem("Reset Zone", "Reset the overlays for the given zone");
         ResetZoneMenu.RightBadge = UIMenuItem.BadgeStyle.Tatoo;
         ResetZoneMenu.Activated += (sender, e) =>
         {
+            PossibleTattoos.Where(x=> x.ZoneName == ZoneName).ToList().ForEach(x => x.IsApplied = false);
             PedCustomizer.WorkingVariation.AppliedOverlays?.RemoveAll(x => x.ZoneName == ZoneName);
             PedCustomizer.OnVariationChanged();
+            Game.DisplaySubtitle($"Removed All from {ZoneDisplay}");
         };
         componentMenu.AddItem(ResetZoneMenu);
-
-
     }
     private void OnOverlayChanged(TattooOverlay selectedItem)
     {
@@ -118,11 +101,15 @@ public class OverlayZoneComponent
         }
         if(PedCustomizer.WorkingVariation.AppliedOverlays.Any(x=> x.CollectionName == selectedItem.CollectionName && x.OverlayName == selectedItem.OverlayName && x.ZoneName == selectedItem.ZoneName))
         {
+            selectedItem.IsApplied = false;
             PedCustomizer.WorkingVariation.AppliedOverlays?.RemoveAll(x => x.CollectionName == selectedItem.CollectionName && x.OverlayName == selectedItem.OverlayName && x.ZoneName == selectedItem.ZoneName);
+            Game.DisplaySubtitle($"Removed {selectedItem.OverlayName} from {ZoneDisplay}");
         }
         else
         {
+            selectedItem.IsApplied = true;
             PedCustomizer.WorkingVariation.AppliedOverlays.Add(new AppliedOverlay(selectedItem.CollectionName, selectedItem.OverlayName, ZoneName));
+            Game.DisplaySubtitle($"Added {selectedItem.OverlayName} to {ZoneDisplay}");
         }     
         PedCustomizer.OnVariationChanged();
     }

@@ -95,7 +95,10 @@ public class CustomizeAffiliationMenu
             PedCustomizer.AssignedAgency = AgenciesMenu.SelectedItem;
             SetCurrent();
         };
+        AgenciesMenu.Enabled = false;
+#if DEBUG
         AgenciesMenu.Enabled = true;
+#endif
         AffiliationSubMenu.AddItem(AgenciesMenu);
         SetCurrent();
     }

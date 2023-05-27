@@ -117,7 +117,52 @@ public class Civilians
                     localRan++;
                 }
                 ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
-                if (!ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
+                {
+                    ped.CanBeAmbientTasked = false;
+                    ped.WillCallPolice = false;
+                    ped.WillCallPoliceIntense = false;
+                    ped.WillFight = false;
+                    ped.WasEverSetPersistent = true;
+                }
+                if (yield && localRan == Settings.SettingsManager.PerformanceSettings.EMTsUpdateBatch)
+                {
+                    GameFiber.Yield();
+                    localRan = 0;
+                }
+                TotalEMTsChecked++;
+            }
+            catch (Exception e)
+            {
+                EntryPoint.WriteToConsole("Error" + e.Message + " : " + e.StackTrace, 0);
+                Game.DisplayNotification("CHAR_BLANK_ENTRY", "CHAR_BLANK_ENTRY", "~o~Error", "Los Santos ~r~RED", "Los Santos ~r~RED ~s~ Error Updating Civilian Data");
+            }
+        }
+
+        if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes || Settings.SettingsManager.PerformanceSettings.PrintCivilianUpdateTimes)
+        {
+            EntryPoint.WriteToConsole($"Civilians.UpdateEMTs Ran Time Since {Game.GameTime - GameTimeLastUpdatedEMTPeds} TotalRan: {TotalEMTsRan} TotalChecked: {TotalEMTsChecked}", 5);
+        }
+        GameTimeLastUpdatedEMTPeds = Game.GameTime;
+    }
+    public void UpdateFirefighters()
+    {
+        int localRan = 0;
+        TotalEMTsRan = 0;
+        TotalEMTsChecked = 0;
+        foreach (Firefighter ped in World.Pedestrians.FirefighterList.OrderBy(x => x.GameTimeLastUpdated))
+        {
+            try
+            {
+                bool yield = false;
+                if (ped.NeedsFullUpdate || Settings.SettingsManager.PerformanceSettings.YieldAfterEveryPedExtUpdate)
+                {
+                    yield = true;
+                    TotalEMTsRan++;
+                    localRan++;
+                }
+                ped.Update(Perceptable, PoliceRespondable, Vector3.Zero, World);
+                if (!ped.WasModSpawned && !ped.WasEverSetPersistent && ped.Pedestrian.Exists() && ped.Pedestrian.IsPersistent)
                 {
                     ped.CanBeAmbientTasked = false;
                     ped.WillCallPolice = false;

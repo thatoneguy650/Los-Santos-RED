@@ -215,11 +215,13 @@
     <Compile Include="lsr\Locations\Menus\PercentageSelectShopMenu.cs" />
     <Compile Include="lsr\Ped\Cop\CanineUnit.cs" />
     <Compile Include="lsr\Ped\DesiredItem.cs" />
+    <Compile Include="lsr\Ped\GangMember\GangDog.cs" />
     <Compile Include="lsr\Ped\GangMember\ReputationReport.cs" />
     <Compile Include="lsr\Ped\PedAlerts.cs" />
     <Compile Include="lsr\Ped\PedDesires.cs" />
     <Compile Include="lsr\Ped\PedReaction.cs" />
     <Compile Include="lsr\Ped\ReactionTier.cs" />
+    <Compile Include="lsr\Ped\SecurityGuard\SecurityDog.cs" />
     <Compile Include="lsr\Ped\Tasking\LocationTaskRequirements.cs" />
     <Compile Include="lsr\Ped\Variation\AppliedOverlay.cs" />
     <Compile Include="lsr\Ped\Variation\SavedOutfit.cs" />
@@ -256,6 +258,9 @@
     <Compile Include="lsr\Player\SecurityResponse.cs" />
     <Compile Include="lsr\Player\Variation\OutfitManager.cs" />
     <Compile Include="lsr\Tasker\AIChaseable\IAIChaseable.cs" />
+    <Compile Include="lsr\Tasker\EMT\EMTBrain.cs" />
+    <Compile Include="lsr\Tasker\Fire\FirefighterBrain.cs" />
+    <Compile Include="lsr\Tasker\Fire\FirefighterTasker.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralFlee\GeneralFlee.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\GeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\PoliceGeneralInvestigate.cs" />

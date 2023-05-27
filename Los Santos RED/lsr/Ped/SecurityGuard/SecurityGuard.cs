@@ -59,7 +59,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
     public override int TurretAccuracy { get; set; } = 10;
     public override int TurretShootRate { get; set; } = 1000;
     public CopVoice Voice { get; private set; }
-    public SecurityGuardBrain SecurityGuardTaskManager { get; private set; }
     public WeaponInventory WeaponInventory { get; private set; }
     public bool IsRespondingToInvestigation { get; set; }
     public bool IsRespondingToWanted { get; set; }
@@ -189,8 +188,6 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
         }
         
     }
-
-
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;

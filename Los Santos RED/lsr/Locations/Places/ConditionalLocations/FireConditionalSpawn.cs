@@ -23,26 +23,22 @@ public class FireConditionalLocation : ConditionalLocation
         {
             return false;
         }
-        //if (!Settings.SettingsManager.FireSettings.AllowStationSpawning)
-        //{
-        //    return false;
-        //}
-        //if (!Settings.SettingsManager.FireSettings.AllowStationSpawningWhenPlayerWanted && Player.IsWanted)
-        //{
-        //    return false;
-        //}
-        //if (Settings.SettingsManager.FireSettings.AllowStationSpawningWhenPlayerWanted && Player.WantedLevel > Settings.SettingsManager.FireSettings.StationSpawningWhenPlayerWantedMaxWanted)
-        //{
-        //    return false;
-        //}
-        //if (!Settings.SettingsManager.FireSettings.StationSpawningIgnoresLimits && World.Pedestrians.TotalSpawnedFirefighters > Settings.SettingsManager.FireSettings.TotalSpawnedMembersLimit)
-        //{
-        //    return false;
-        //}
-        //if (!force && !RandomItems.RandomPercent(Percentage))
-        //{
-        //    return false;
-        //}
+        if (!Settings.SettingsManager.FireSettings.AllowStationSpawning)
+        {
+            return false;
+        }
+        if (!Settings.SettingsManager.FireSettings.AllowStationSpawningWhenPlayerWanted && Player.IsWanted)
+        {
+            return false;
+        }
+        if (Settings.SettingsManager.FireSettings.AllowStationSpawningWhenPlayerWanted && Player.WantedLevel > Settings.SettingsManager.FireSettings.StationSpawningWhenPlayerWantedMaxWanted)
+        {
+            return false;
+        }
+        if (!Settings.SettingsManager.FireSettings.StationSpawningIgnoresLimits && World.Pedestrians.TotalSpawnedFirefighters > Settings.SettingsManager.FireSettings.TotalSpawnedMembersLimit)
+        {
+            return false;
+        }
         return base.DetermineRun(force);
     }
 
@@ -62,7 +58,7 @@ public class FireConditionalLocation : ConditionalLocation
         }
         catch (Exception ex)
         {
-            EntryPoint.WriteToConsole($"EMS Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
+            EntryPoint.WriteToConsole($"Firefighter Dispatcher Spawn Error: {ex.Message} : {ex.StackTrace}", 0);
         }
     }
     public override void GetDispatchableGenerator()

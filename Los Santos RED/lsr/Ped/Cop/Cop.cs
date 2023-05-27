@@ -56,7 +56,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
     public string ModelName { get; set; }
 
     public bool CanRadioInWanted => SawPlayerViolating &&!IsUnconscious && !IsDead && !IsInWrithe && !IsBeingHeldAsHostage && GameTimeFirstSawPlayerViolating > 0 && Game.GameTime - GameTimeFirstSawPlayerViolating >= Settings.SettingsManager.PoliceSettings.RadioInTime && Pedestrian.Exists() && Pedestrian.Exists() && !Pedestrian.IsRagdoll;
-
+    public override bool CanPlayRadioInAnimation => WeaponInventory.CanRadioIn;
     public bool SawPlayerViolating { get; private set; }
     public override int ShootRate { get; set; } = 500;
     public override int Accuracy { get; set; } = 40;
@@ -122,9 +122,7 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             }
         }
     }
-
     public bool IsShooting { get; private set; }
-
     public override void Update(IPerceptable perceptable, IPoliceRespondable policeRespondable, Vector3 placeLastSeen, IEntityProvideable world)
     {
         PlayerToCheck = policeRespondable;
@@ -313,7 +311,6 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
             player.SetAngeredCop();
         }
     }
-
     private void PlayerViolationChecker(IPoliceRespondable policeRespondable, IEntityProvideable world)
     {
         if(policeRespondable.IsNotWanted && SawPlayerViolating)

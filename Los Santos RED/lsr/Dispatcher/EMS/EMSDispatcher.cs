@@ -451,6 +451,7 @@ public class EMSDispatcher
         SpawnLocation = new SpawnLocation();
         SpawnLocation.InitialPosition = Game.LocalPlayer.Character.GetOffsetPositionFront(10f);
         SpawnLocation.StreetPosition = SpawnLocation.InitialPosition;
+        SpawnLocation.Heading = Game.LocalPlayer.Character.Heading;
         if (agencyID == "")
         {
             Agency = Agencies.GetRandomAgency(ResponseType.EMS);

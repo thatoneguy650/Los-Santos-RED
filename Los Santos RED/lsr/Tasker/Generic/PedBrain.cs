@@ -132,14 +132,14 @@ public class PedBrain
             {
                 SetCalmCallIn();
             }
-            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
-            {
-                SetIdle();
-            }
+        }
+        else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+        {
+            SetIdle();
         }
         PedExt.GameTimeLastUpdatedTask = Game.GameTime;
     }
-    private void SetArrested()
+    protected void SetArrested()
     {
         if (PedExt.CurrentTask?.Name == "GetArrested")
         {
@@ -149,7 +149,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    private void SetFlee()
+    protected void SetFlee()
     {
         if (PedExt.CurrentTask?.Name == "Flee")
         {
@@ -159,7 +159,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    private void SetFight()
+    protected void SetFight()
     {
         if (PedExt.CurrentTask?.Name == "Fight")
         {
@@ -169,7 +169,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    private void SetScaredCallIn()
+    protected void SetScaredCallIn()
     {
         if (PedExt.CurrentTask?.Name == "ScaredCallIn")
         {
@@ -179,7 +179,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 7
         PedExt.CurrentTask?.Start();
     }
-    private void SetCalmCallIn()
+    protected void SetCalmCallIn()
     {
         if (PedExt.CurrentTask?.Name == "CalmCallIn")
         {
@@ -189,7 +189,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }
-    private void SetIdle()
+    protected void SetIdle()
     {
         if (PedExt.CurrentTask?.Name == "Idle")
         {
@@ -199,12 +199,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }
-
-
-
-
-
-    private WeaponInformation GetWeaponToIssue(bool IsGangMember)
+    protected virtual WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
         WeaponInformation ToIssue;
         if (IsGangMember)

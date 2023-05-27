@@ -239,7 +239,16 @@ public class SecurityGuardSpawnTask : SpawnTask
         RelationshipGroup rg = new RelationshipGroup("SECURITY_GUARD");
         ped.RelationshipGroup = rg;
         bool isMale = PersonType.IsMale(ped);
-        SecurityGuard primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        SecurityGuard primarySecurityGuard;
+          
+        if(PersonType.IsAnimal)
+        {
+            primarySecurityGuard = new SecurityDog(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        }
+        else
+        {
+            primarySecurityGuard = new SecurityGuard(ped, Settings, ped.Health, Agency, true, Crimes, Weapons, Names.GetRandomName(isMale), PersonType.ModelName, World);
+        }      
         World.Pedestrians.AddEntity(primarySecurityGuard);
         primarySecurityGuard.SetStats(PersonType, Weapons, AddBlip);
         if (ped.Exists())

@@ -263,7 +263,16 @@ public class GangSpawnTask : SpawnTask
         RelationshipGroup rg = new RelationshipGroup(Gang.ID);
         ped.RelationshipGroup = rg;
         bool isMale = PersonType.IsMale(ped);
-        GangMember GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
+
+        GangMember GangMember;
+        if (PersonType.IsAnimal)
+        {
+            GangMember = new GangDog(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
+        }
+        else
+        {
+            GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
+        }
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
         if (ped.Exists())

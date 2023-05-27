@@ -31,7 +31,7 @@ namespace Mod
         private CivilianTasker CivilianTasker;
         private EMTTasker EMTTasker;
         private PedExt CurrentCriminal;
-
+        private FirefighterTasker FirefighterTasker;
 
 
 
@@ -61,6 +61,10 @@ namespace Mod
 
             EMTTasker = new EMTTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
             EMTTasker.Setup();
+
+
+            FirefighterTasker = new FirefighterTasker(this, PedProvider, player, weapons, settings, PlacesOfInterest);
+            FirefighterTasker.Setup();
         }
         public void Setup()
         {
@@ -100,6 +104,8 @@ namespace Mod
             GameFiber.Yield();//TR 29
             EMTTasker.Update();
             GameFiber.Yield();//TR 29
+            FirefighterTasker.Update();
+            GameFiber.Yield();
             if (Settings.SettingsManager.PerformanceSettings.PrintUpdateTimes)
             {
                 EntryPoint.WriteToConsole($"Tasker.UpdateCivilians Ran Time Since {Game.GameTime - GameTimeLastTaskedCivilians}", 5);

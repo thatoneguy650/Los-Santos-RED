@@ -132,7 +132,9 @@ public class HealthState
                 {
                     SetUnconscious();
                 }
-                else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned && !MyPed.PedViolations.IsCurrentlyViolatingAnyCrimes && RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
+                else if (Settings.SettingsManager.DamageSettings.AllowAIUnconsciousOnStun && MyPed.Pedestrian.Exists() && MyPed.Pedestrian.IsStunned 
+                    && //!MyPed.PedViolations.IsCurrentlyViolatingAnyCrimes && 
+                    RandomItems.RandomPercent(Settings.SettingsManager.DamageSettings.AIUnconsciousOnStunPercentage))
                 {
                     SetUnconscious();
                 }
@@ -448,7 +450,7 @@ public class HealthState
             MyPed.Pedestrian.Health = Health;
             Armor = (Armor - NewArmorDamage).Clamp(0, 99999);
             MyPed.Pedestrian.Armor = Armor;
-            //EntryPoint.WriteToConsoleTestLong($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
+            EntryPoint.WriteToConsole($"Player Damage Modify: Health{Health} NewHealthDamage{NewHealthDamage} Armor{Armor} NewArmorDamage{NewArmorDamage} CurrentHealth{CurrentHealth} CurrentArmor{CurrentArmor}");
 
 
         }

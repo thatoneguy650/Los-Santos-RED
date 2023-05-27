@@ -19,6 +19,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
 //using System.Windows.Media;
+//using System.Windows.Media;
 using static DispatchScannerFiles;
 using static RAGENativeUI.Elements.UIMenuStatsPanel;
 
@@ -74,6 +75,9 @@ public class Debug
     private bool Test;
     private bool OnOff1;
     private bool IsOn = true;
+
+
+
 
     public Debug(PlateTypes plateTypes, Mod.World world, Mod.Player targetable, IStreets streets, Dispatcher dispatcher, Zones zones, Crimes crimes, ModController modController, Settings settings, Mod.Tasker tasker, Mod.Time time, Agencies agencies, Weapons weapons, ModItems modItems, WeatherReporting weather, PlacesOfInterest placesOfInterest, Interiors interiors, Gangs gangs, Input input, ShopMenus shopMenus, ModDataFileManager modDataFileManager)
     {
@@ -1248,24 +1252,36 @@ public class Debug
         //string text2 = NativeHelper.GetKeyboardInput("");
         //WriteToLogLocations($"new GameLocation(new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f,new Vector3({pos.X}f, {pos.Y}f, {pos.Z}f), {Heading}f, LocationType.{text1}, \"{text2}\", \"{text2}\"),");
     }
+
+
+
+
     private void DebugNumpad7()
     {
 
-        Cop closestCop = World.Pedestrians.PoliceList.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
-        if(closestCop == null || !closestCop.Pedestrian.Exists() || !AnimationDictionary.RequestAnimationDictionayResult("random@arrests"))
+        PedExt closestPed = World.Pedestrians.PedExts.OrderBy(x => x.DistanceToPlayer).FirstOrDefault();
+        if(closestPed == null || !closestPed.Pedestrian.Exists())
         {
             EntryPoint.WriteToConsole("ERROR DEBUG7d");
             return;
         }
 
+        //DEFAULT,BASE,COP,EMPTY,GANG,FAMILY,PLAYER,Security, MEDIC,FIREMAN
+        string descisionMakerName = NativeHelper.GetKeyboardInput("DEFAULT");
+        if(!string.IsNullOrEmpty(descisionMakerName))
+        {
+            NativeFunction.Natives.SET_DECISION_MAKER(closestPed.Pedestrian, Game.GetHashKey(descisionMakerName));
+            Game.DisplaySubtitle($"SET_DECISION_MAKER {descisionMakerName}");
+        }
 
+        
 
 
 
 
         //unsafe
         //{
-        //    ANIM_DATA aNIM_DATA;
+        //    ANIM_DATA aNIM_DATA = new ANIM_DATA();
         //    aNIM_DATA.type = 0;
         //    aNIM_DATA.dictionary0 = "random@arrests";
         //    aNIM_DATA.anim0 = "radio_chatter";
@@ -1290,9 +1306,12 @@ public class Debug
         //    aNIM_DATA.flags = 16 | 32;
         //    aNIM_DATA.ikFlags = 0;
 
-        //    NativeFunction.CallByName<bool>("TASK_SCRIPTED_ANIMATION", closestCop.Pedestrian, &aNIM_DATA, null, null, 8.0f, -8.0f);
+        //    IntPtr intPtr = Marshal.AllocHGlobal(Marshal.SizeOf(aNIM_DATA)); //Marshal.AllocHGlobal(1024);
+        //    Marshal.StructureToPtr(aNIM_DATA, intPtr, true);
+        //    long* f = (long*)intPtr.ToInt64();
+        //    NativeFunction.CallByName<bool>("TASK_SCRIPTED_ANIMATION", closestCop.Pedestrian, &f, null, null, 8.0f, -8.0f);
         //}
-        
+
         //unsafe
         //{
         //    int lol = 0;
@@ -3976,8 +3995,12 @@ public class Debug
 
 
 
-            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned} Task {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}";
-
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} " +
+                $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
+                $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
+                $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
+                $"Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WasModSpawned:{ped.WasModSpawned} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked} " +
+                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}";
             if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
             {
                 Text +=$" TASK Target:{ped.CurrentTask.OtherTarget.Pedestrian.Handle}";
@@ -3990,6 +4013,40 @@ public class Debug
 
         }
         EntryPoint.WriteToConsole($"============================================ EMT END", 5);
+
+        EntryPoint.WriteToConsole($"============================================ FIRE START", 5);
+        foreach (PedExt ped in World.Pedestrians.FirefighterList.Where(x => x.Pedestrian.Exists()).OrderBy(x => x.DistanceToPlayer))
+        {
+            uint currentWeapon;
+            NativeFunction.Natives.GET_CURRENT_PED_WEAPON<bool>(ped.Pedestrian, out currentWeapon, true);
+            uint RG = NativeFunction.Natives.GET_PED_RELATIONSHIP_GROUP_HASH<uint>(ped.Pedestrian);
+
+
+
+
+
+
+
+            string Text = $"Handle {ped.Pedestrian.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} " +
+                $"IsUnconscious:{ped.IsUnconscious} Alive:{ped.Pedestrian.IsAlive} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  " +
+                $"PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} IsBusted {ped.IsBusted} " +
+                $"IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} " +
+                $"Stunned {ped.Pedestrian.IsStunned} WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} WasModSpawned:{ped.WasModSpawned} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked} " +
+                $"NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}";
+
+            if (ped.CurrentTask?.OtherTarget?.Pedestrian.Exists() == true)
+            {
+                Text += $" TASK Target:{ped.CurrentTask.OtherTarget.Pedestrian.Handle}";
+
+            }
+
+            EntryPoint.WriteToConsole(Text);
+
+
+
+        }
+        EntryPoint.WriteToConsole($"============================================ FIRE END", 5);
+
         EntryPoint.WriteToConsole($"============================================ GANGS START", 5);
         foreach (GangMember ped in World.Pedestrians.GangMemberList.Where(x => x.Pedestrian.Exists()).OrderBy(x=>x.WasModSpawned).ThenBy(x => x.DistanceToPlayer))
         { 
@@ -4026,7 +4083,7 @@ public class Debug
             weaponinventorystring += $" HasHeavyWeaponOnPerson {ped.WeaponInventory.HasHeavyWeaponOnPerson}";
 
             EntryPoint.WriteToConsole($"Handle {ped.Pedestrian.Handle}-{ped.Handle}-{ped.DistanceToPlayer}-Cells:{NativeHelper.MaxCellsAway(EntryPoint.FocusCellX, EntryPoint.FocusCellY, ped.CellX, ped.CellY)} {ped.Pedestrian.Model.Name} {ped.Name} MENU? {ped.HasMenu} IsUnconscious:{ped.IsUnconscious} Task: {ped.CurrentTask?.Name}-{ped.CurrentTask?.SubTaskName} OtherCrimes {ped.OtherCrimesWitnessed.Count()}  PlayerCrimes {ped.PlayerCrimesWitnessed.Count()} WasModSpawned {ped.WasModSpawned} Gang: {ped.Gang.ID} CanBeAmbientTasked {ped.CanBeAmbientTasked} CanBeTasked {ped.CanBeTasked} ", 5);
-            EntryPoint.WriteToConsole($"     weaponinventorystring {weaponinventorystring}  SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG}", 5);
+            EntryPoint.WriteToConsole($"     weaponinventorystring {weaponinventorystring}  SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements} WantedLevel = {ped.WantedLevel} IsDeadlyChase = {ped.IsDeadlyChase} WorstObservedCrime {ped.PedViolations.WorstObservedCrime?.Name} IsBusted {ped.IsBusted} IsArrested {ped.IsArrested} IsInVehicle {ped.IsInVehicle} ViolationWantedLevel = {ped.CurrentlyViolatingWantedLevel} Weapon {currentWeapon} Reason {ped.PedViolations.CurrentlyViolatingWantedLevelReason} Stunned {ped.Pedestrian.IsStunned}  WasEverSetPersistent:{ped.WasEverSetPersistent} Call:{ped.WillCallPolice} Fight:{ped.WillFight} NewGroup:{ped.Pedestrian.RelationshipGroup.Name} NativeGroup:{RG} CanBeTasked:{ped.CanBeTasked} CanBeAmbientTasked:{ped.CanBeAmbientTasked}", 5);
 
             // SpawnRequirement {ped.LocationTaskRequirements.TaskRequirements}";
 
@@ -4129,8 +4186,7 @@ public class Debug
                     $"Target:{cop.CurrentTask.OtherTarget.Pedestrian.Handle} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                     EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} WEapon: {Weapon} {VehicleWeapon} " +
                     $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} " +
-                    $"WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops}", 5);
-
+                $"WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
             }
 
             else
@@ -4140,7 +4196,7 @@ public class Debug
                     $"TaskStatus:{cop.Pedestrian.Tasks.CurrentTaskStatus} Weapons: {cop.CopDebugString} Task: {cop.CurrentTask?.Name}-{cop.CurrentTask?.SubTaskName} " +
                     $"Target:{0} IsRespondingToInvestigation {cop.IsRespondingToInvestigation} ");
                 EntryPoint.WriteToConsole($"IsRespondingToCitizenWanted {cop.IsRespondingToCitizenWanted} IsInVehicle {cop.IsInVehicle} Vehicle  {VehString} {combat} weapon: {Weapon} {VehicleWeapon} " +
-                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops}", 5);
+                    $"HasLoggedDeath {cop.HasLoggedDeath} WasModSpawned {cop.WasModSpawned} RGotIn:{cop.RecentlyGotInVehicle} RGotOut:{cop.RecentlyGotOutOfVehicle} WeaponSet {weaponinventorystring} DebugWeaponState {cop.WeaponInventory.DebugWeaponState} {retardedcops} CanBeTasked:{cop.CanBeTasked} CanBeAmbientTasked:{cop.CanBeAmbientTasked}", 5);
             }
             
         }

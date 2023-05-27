@@ -54,6 +54,10 @@ public class KeySettings : ISettingsDefaultable
     public int ControllerActionModifier { get; set; }
     public int GameControlToDisable { get; set; }
 
+
+    public int GrabPedGameControl { get; set; }
+
+
     public KeySettings()
     {
         SetDefault();
@@ -118,5 +122,7 @@ public class KeySettings : ISettingsDefaultable
 
         VehicleInteract = Keys.L;
         VehicleInteractModifier = Keys.LShiftKey;
+
+        GrabPedGameControl = 46;
     }
 }

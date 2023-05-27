@@ -612,9 +612,21 @@ public class ActivityManager
     {
         if (Settings.SettingsManager.ActivitySettings.AllowPedHoldUps && !IsInteracting && Player.IsOnFoot && CanHoldUpTargettedPed && Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && (!Player.IsCop || Player.CurrentTargetedPed.IsNotWanted))//isinvehicle added here
         {
-            StartHoldUp();
+            Player.ButtonPrompts.AttemptAddPrompt("HoldUp", $"HoldUp {Player.CurrentTargetedPed.FormattedName}", $"HoldUp {Player.CurrentTargetedPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
+            //StartHoldUp();
+        }
+        else
+        {
+            Player.ButtonPrompts.RemovePrompts("HoldUp");
         }
     }
+    //public void OnTargetHandleChanged()
+    //{   
+    //    if (Settings.SettingsManager.ActivitySettings.AllowPedHoldUps && !IsInteracting && Player.IsOnFoot && CanHoldUpTargettedPed && Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && (!Player.IsCop || Player.CurrentTargetedPed.IsNotWanted))//isinvehicle added here
+    //    {
+    //        StartHoldUp();
+    //    }
+    //}
     public void StartTransaction()
     {
         if (!IsInteracting && CanConverseWithLookedAtPed)
