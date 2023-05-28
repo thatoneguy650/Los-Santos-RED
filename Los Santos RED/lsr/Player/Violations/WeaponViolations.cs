@@ -17,6 +17,8 @@ public class WeaponViolations
     private Violations Violations;
     private ISettingsProvideable Settings;
     private ITimeReportable Time;
+    private uint GameTimeLastViolatedShooting;
+    private uint GameTimeLastViolatedShootingAtCops;
 
     public WeaponViolations(IViolateable player, Violations violations, ISettingsProvideable settings, ITimeReportable time)
     {
@@ -25,6 +27,8 @@ public class WeaponViolations
         Settings = settings;
         Time = time;
     }
+    public bool RecentlyShot => GameTimeLastViolatedShooting > 0 && Game.GameTime - GameTimeLastViolatedShooting <= 5000;
+    public bool RecentlyShotNearCops => GameTimeLastViolatedShootingAtCops > 0 && Game.GameTime - GameTimeLastViolatedShootingAtCops <= 5000;
     public void Setup()
     {
 
@@ -46,19 +50,23 @@ public class WeaponViolations
             {
                 if (Player.Character.IsCurrentWeaponSilenced)
                 {
+                    GameTimeLastViolatedShooting = Game.GameTime;
                     Violations.AddViolating(StaticStrings.FiringSilencedWeaponCrimeID);
                     if (Player.AnyPoliceCanSeePlayer && Player.ClosestPoliceDistanceToPlayer <= 30f)// || (Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop))
                     {
+                        GameTimeLastViolatedShootingAtCops = Game.GameTime;
                         Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
                     }
                 }
                 else
                 {
+                    GameTimeLastViolatedShooting = Game.GameTime;
                     Violations.AddViolating(StaticStrings.FiringWeaponCrimeID);//.IsCurrentlyViolating = true;
                     if (Player.AnyPoliceRecentlySeenPlayer ||
                         //(Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.IsCop) || 
                         (Player.AnyPoliceCanHearPlayer && Player.ClosestPoliceDistanceToPlayer <= 30f))
                     {
+                        GameTimeLastViolatedShootingAtCops = Game.GameTime;
                         Violations.AddViolating(StaticStrings.FiringWeaponNearPoliceCrimeID);//.IsCurrentlyViolating = true;
                     }
                 }

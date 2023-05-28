@@ -143,8 +143,8 @@ public class PlayerOtherSettings : ISettingsDefaultable
         MaxRandomWeaponsToGet = 2;
         PercentageToGetRandomWeaponVariation = 35f;
         PercentageToGetComponentInRandomVariation = 35f;
-        SeeBehindDistanceStealth = 0.25f;
-        SeeBehindDistanceRegular = 4.0f;
+        SeeBehindDistanceStealth = 1.5f;
+        SeeBehindDistanceRegular = 1.5f;
     }
 
 }

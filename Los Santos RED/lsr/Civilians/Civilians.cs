@@ -400,7 +400,7 @@ public class Civilians
     }
     public void UpdateTotalWanted()
     {
-        PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
+        PedExt worstPed = World.Pedestrians.Citizens.Where(x => !x.IsBusted && !x.IsArrested && !x.IsUnconscious && !x.IsDead).OrderByDescending(x => x.WantedLevel).FirstOrDefault();
         Vector3 PoliceInterestPoint;
         if (worstPed != null && worstPed.Pedestrian.Exists() && worstPed.WantedLevel > PoliceRespondable.WantedLevel)
         {

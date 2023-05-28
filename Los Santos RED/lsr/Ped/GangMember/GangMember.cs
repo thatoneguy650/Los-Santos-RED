@@ -42,6 +42,8 @@ public class GangMember : PedExt, IWeaponIssuable
     public override float BlipSize => 0.3f;
     public uint HasBeenSpawnedFor => Game.GameTime - GameTimeSpawned;
     public bool HasTaser { get; set; } = false;
+
+    public bool IsHitSquad { get; set; } = false;
     public new string FormattedName => (PlayerKnownsName ? Name : GroupName);
     public override bool KnowsDrugAreas => true;
     public override bool KnowsGangAreas => true;
@@ -138,6 +140,11 @@ public class GangMember : PedExt, IWeaponIssuable
         WillFight = RandomItems.RandomPercent(Gang.FightPercentage);
         WillCallPolice = false;
         WillFightPolice = RandomItems.RandomPercent(Gang.FightPolicePercentage);    
+        if(IsHitSquad)
+        {
+            WillFight = true;
+            WillFightPolice = true;
+        }
         if (RandomItems.RandomPercent(Gang.DrugDealerPercentage))
         {
             SetupTransactionItems(shopMenus.GetWeightedRandomMenuFromGroup(Gang.DealerMenuGroup));
@@ -156,7 +163,7 @@ public class GangMember : PedExt, IWeaponIssuable
         {
             return;
         }
-        WeaponInventory.IssueWeapons(weapons, forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);       
+        WeaponInventory.IssueWeapons(weapons, IsHitSquad || forceMelee || RandomItems.RandomPercent(Gang.PercentageWithMelee), IsHitSquad || forceSidearm || RandomItems.RandomPercent(Gang.PercentageWithSidearms), IsHitSquad || forceLongGun || RandomItems.RandomPercent(Gang.PercentageWithLongGuns), dispatchablePerson);       
     }
     public override void OnItemPurchased(ILocationInteractable player, ModItem modItem, int numberPurchased, int moneySpent)
     {

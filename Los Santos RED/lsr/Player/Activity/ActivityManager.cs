@@ -610,9 +610,9 @@ public class ActivityManager
     }
     public void OnTargetHandleChanged()
     {
-        if (Settings.SettingsManager.ActivitySettings.AllowPedHoldUps && !IsInteracting && Player.IsOnFoot && CanHoldUpTargettedPed && Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && (!Player.IsCop || Player.CurrentTargetedPed.IsNotWanted))//isinvehicle added here
+        if (Settings.SettingsManager.KeySettings.HoldUpPedGameControl >= 0 && Settings.SettingsManager.ActivitySettings.AllowPedHoldUps && !IsInteracting && Player.IsOnFoot && CanHoldUpTargettedPed && Player.CurrentTargetedPed != null && Player.CurrentTargetedPed.CanBeMugged && (!Player.IsCop || Player.CurrentTargetedPed.IsNotWanted))//isinvehicle added here
         {
-            Player.ButtonPrompts.AttemptAddPrompt("HoldUp", $"HoldUp {Player.CurrentTargetedPed.FormattedName}", $"HoldUp {Player.CurrentTargetedPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.GrabPedGameControl, 999);
+            Player.ButtonPrompts.AttemptAddPrompt("HoldUp", $"HoldUp {Player.CurrentTargetedPed.FormattedName}", $"HoldUp {Player.CurrentTargetedPed.Handle}", (GameControl)Settings.SettingsManager.KeySettings.HoldUpPedGameControl, 999);
             //StartHoldUp();
         }
         else

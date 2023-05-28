@@ -109,8 +109,8 @@ public class SecuritySettings : ISettingsDefaultable
         EnableConfigFlagAlwaysSeeAproachingVehicles = true;
         EnableConfigFlagDiveFromApproachingVehicles = true;
         AllowMinorReactions = true;
-        RemoveNonSpawnedSecurity = false;
-        RemoveAmbientSecurity = false;
+        RemoveNonSpawnedSecurity = true;
+        RemoveAmbientSecurity = true;
         AllowReactionsToBodies = true;
         AllowShootingInvestigations = true;
         AllowCallEMTsOnBodies = true;

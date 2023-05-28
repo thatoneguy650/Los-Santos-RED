@@ -198,5 +198,9 @@ public class Dispatcher
     {
         LocationDispatcher.Reset();
     }
+    public void DebugSpawnHitSquad()
+    {
+        GangDispatcher.DebugSpawnHitSquad();
+    }
 }
 

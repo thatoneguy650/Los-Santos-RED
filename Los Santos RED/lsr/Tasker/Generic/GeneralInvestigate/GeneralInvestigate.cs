@@ -57,7 +57,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
-        EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
+       // EntryPoint.WriteToConsole($"{PedGeneral.Handle} STARTED Task{CurrentTaskState?.DebugName}");
     }
     public override void Stop()
     {
@@ -72,6 +72,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
     }
     public virtual void OnLocationReached()
     {
+        Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
         HasReachedLocatePosition = true;
     }
     private void StandardUpdate()
@@ -81,7 +82,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
             if (Game.GameTime - GameTimeStarted >= 1000)
             {
                 Start();
-                EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
+                //EntryPoint.WriteToConsole($"{PedGeneral.Handle} UPDATE START Task{CurrentTaskState?.DebugName} INVALID {CurrentTaskState?.IsValid}");
             }
         }
         else
@@ -111,7 +112,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
         }
         else if (ShouldInvestigateOnFoot)
         {
-            EntryPoint.WriteToConsole($"SearchLocationOnFootTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
+            //EntryPoint.WriteToConsole($"SearchLocationOnFootTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
             if (PedGeneral.Pedestrian.Exists())
             {
                 NativeFunction.Natives.SET_PED_SHOULD_PLAY_IMMEDIATE_SCENARIO_EXIT(PedGeneral.Pedestrian);
@@ -121,7 +122,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
         }
         else
         {
-            EntryPoint.WriteToConsole($"WanderInVehicleTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
+            //EntryPoint.WriteToConsole($"WanderInVehicleTaskState {PedGeneral.Handle} ShouldInvestigateOnFoot:{ShouldInvestigateOnFoot} IsInHelicopter:{Ped.IsInHelicopter} Player.IsOnFoot:{Player.IsOnFoot}");
             CurrentTaskState = new WanderInVehicleTaskState(PedGeneral, World, SeatAssigner, PlacesOfInterest, Settings, BlockPermanentEvents, true);
             SubTaskName = "WanderInVehicleTaskState";
         }
@@ -140,6 +141,7 @@ public class GeneralInvestigate : ComplexTask, ILocationReachable
             return;
         }
         HasReachedLocatePosition = false;
+        Ped.GameTimeReachedInvestigationPosition = 0;
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
         LocationsChanged = true;

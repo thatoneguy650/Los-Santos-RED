@@ -1709,6 +1709,13 @@ new YmapDisabler("manhat01",true),
             menu.Visible = false;
         };
 
+        UIMenuItem DispatchHitSquad = new UIMenuItem("Dispatch Hit Squad", "Attempt to spawn a hit squad from enemy/hostile gangs");
+        DispatchHitSquad.Activated += (menu, item) =>
+        {
+            Dispatcher.DebugSpawnHitSquad();
+            menu.Visible = false;
+        };
+
         GangItems.AddItem(SetAsGangMember);
         GangItems.AddItem(LeaveGang);
         GangItems.AddItem(SetGangRepDefault);
@@ -1719,6 +1726,7 @@ new YmapDisabler("manhat01",true),
         GangItems.AddItem(RandomSingleGangRep);
         GangItems.AddItem(HostileGangRep);
         GangItems.AddItem(FriendlyGangRep);
+        GangItems.AddItem(DispatchHitSquad);
 
     }
     private void CreateDispatcherMenu()

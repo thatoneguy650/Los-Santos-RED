@@ -17,6 +17,8 @@ public class GangRelationships
     public List<GangReputation> GangReputations { get; private set; } = new List<GangReputation>();
     public Gang CurrentGang { get; private set; }
     public GangKickUp CurrentGangKickUp { get; private set; }
+    public List<Gang> EnemyGangs => GangReputations.Where(x => x.IsEnemy).Select(x => x.Gang).ToList();
+    public List<Gang> HostileGangs => GangReputations.Where(x=> x.IsEnemy || x.GangRelationship == GangRespect.Hostile).Select(x => x.Gang).ToList();
     public GangRelationships(IGangs gangs, IGangRelateable player, ISettingsProvideable settings, IPlacesOfInterest placesOfInterest, ITimeReportable time)
     {
         Gangs = gangs;

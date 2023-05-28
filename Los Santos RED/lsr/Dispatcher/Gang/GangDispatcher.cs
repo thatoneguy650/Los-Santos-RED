@@ -34,9 +34,9 @@ public class GangDispatcher
     private DispatchablePerson PersonType;
     private bool ShouldRunAmbientDispatch;
     private IModItems ModItems;
-
-
     private bool IsPedestrianOnlySpawn = false;
+    private uint TimeBetweenHitSquads;
+    private uint GameTimeLastDispatchedHitSquad;
 
     public GangDispatcher(IEntityProvideable world, IDispatchable player, IGangs gangs, ISettingsProvideable settings, IStreets streets, IZones zones, IGangTerritories gangTerritories, IWeapons weapons, INameProvideable names, IPedGroups pedGroups, ICrimes crimes, IShopMenus shopMenus, IPlacesOfInterest placesOfInterest, IModItems modItems)
     {
@@ -54,42 +54,20 @@ public class GangDispatcher
         ShopMenus = shopMenus;
         PlacesOfInterest = placesOfInterest;
         ModItems = modItems;
+        TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
+        GameTimeLastDispatchedHitSquad = Game.GameTime;
     }
     private float ClosestGangSpawnToPlayerAllowed => 45f;
     private List<GangMember> DeleteableGangMembers => World.Pedestrians.GangMemberList.Where(x => (x.RecentlyUpdated && x.DistanceToPlayer >= MinimumDeleteDistance && x.HasBeenSpawnedFor >= MinimumExistingTime) || x.CanRemove).ToList();
-
-
-
     private float DistanceToDeleteInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle + 150f;// 300f;
-
-
-
     private float DistanceToDeleteOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot + 50f;// 200 + 50f grace = 250f;
-
-
-
-
     private bool IsTimeToAmbientDispatch => Game.GameTime - GameTimeAttemptedDispatch >= TimeBetweenSpawn;//15000;
     private bool IsTimeToRecall => Game.GameTime - GameTimeAttemptedRecall >= 5000;// TimeBetweenSpawn;
-
-
-
-
     private float MaxDistanceToSpawnOnFoot => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnOnFoot;//150f;
     private float MinDistanceToSpawnOnFoot => Settings.SettingsManager.GangSettings.MinDistanceToSpawnOnFoot;//50f;
-
-
-
-
     private float MaxDistanceToSpawnInVehicle => Settings.SettingsManager.GangSettings.MaxDistanceToSpawnInVehicle;//150f;
     private float MinDistanceToSpawnInVehicle => Settings.SettingsManager.GangSettings.MinDistanceToSpawnInVehicle;//50f;
-
-
-
-
-
-
-
+    private bool IsTimeToDispatchHitSquad => Game.GameTime - GameTimeLastDispatchedHitSquad >= TimeBetweenHitSquads;
     private bool HasNeedToAmbientDispatch
     {
         get
@@ -210,9 +188,47 @@ public class GangDispatcher
         {
             HandleAmbientSpawns();
         }
+
+        if(Settings.SettingsManager.GangSettings.AllowHitSquads)
+        {
+            if(IsTimeToDispatchHitSquad)
+            {
+
+                Gang EnemyGang;
+                if(Settings.SettingsManager.GangSettings.AllowHitSquadsOnlyEnemy)
+                {
+                    EnemyGang = Player.RelationshipManager.GangRelationships.EnemyGangs?.PickRandom();
+                }
+                else
+                {
+                    EnemyGang = Player.RelationshipManager.GangRelationships.HostileGangs?.PickRandom();
+                }
+                DispatchHitSquad(EnemyGang);
+                TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
+                GameTimeLastDispatchedHitSquad = Game.GameTime;
+                HasDispatchedThisTick = true;
+            }
+        }
+        
        // EntryPoint.WriteToConsole($"GANG DISPATCHER IsTimeToDispatch:{IsTimeToDispatch} GameTimeSinceDispatch:{Game.GameTime - GameTimeAttemptedDispatch} HasNeedToDispatch:{HasNeedToDispatch} TotalGangMembers:{World.Pedestrians.TotalSpawnedGangMembers} AmbientMemberLimitForZoneType:{AmbientMemberLimitForZoneType} TimeBetweenSpawn:{TimeBetweenSpawn} HasNeedToDispatchToDens:{HasNeedToDispatchToDens} PercentageOfAmbientSpawn:{PercentageOfAmbientSpawn}");
         return HasDispatchedThisTick;
     }
+
+    private void DispatchHitSquad(Gang enemyGang)
+    {
+        if(enemyGang == null)
+        {
+            EntryPoint.WriteToConsole($"DispatchHitSquad Abort, No Enemy Gang");
+            return;
+        }
+        EntryPoint.WriteToConsole($"DispatchHitSquad Attempting to Dispatch {enemyGang.ShortName}");
+        if(GetFarVehicleSpawnLocation() && GetHitSquadSpawnTypes(enemyGang))
+        {
+            EntryPoint.WriteToConsole($"DispatchHitSquad Disptaching HitSquad from {enemyGang.ShortName}");
+            CallSpawnTask(false, true, false, false, TaskRequirements.None, true);
+        }
+    }
+
     public void Dispose()
     {
 
@@ -269,7 +285,7 @@ public class GangDispatcher
             GameTimeAttemptedDispatch = Game.GameTime;
             GameFiber.Yield();
             //EntryPoint.WriteToConsoleTestLong($"AMBIENT GANG CALLED SPAWN TASK");
-            if (CallSpawnTask(false, true, false, false, TaskRequirements.None))
+            if (CallSpawnTask(false, true, false, false, TaskRequirements.None, false))
             {
                 ShouldRunAmbientDispatch = false;
                 //GameTimeAttemptedDispatch = Game.GameTime;
@@ -319,6 +335,28 @@ public class GangDispatcher
         while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
         return isValidSpawn && SpawnLocation.HasSpawns;
     }
+
+    private bool GetFarVehicleSpawnLocation()
+    {
+        int timesTried = 0;
+        bool isValidSpawn;
+        GangDen = null;
+        IsDenSpawn = false;
+        IsPedestrianOnlySpawn = false;
+        SpawnLocation = new SpawnLocation();
+        do
+        {
+            IsPedestrianOnlySpawn = false;
+            SpawnLocation.InitialPosition = GetPositionAroundPlayer();
+            SpawnLocation.GetClosestStreet(false);
+            GameFiber.Yield();
+            isValidSpawn = IsValidSpawn(SpawnLocation);
+            timesTried++;
+        }
+        while (!SpawnLocation.HasSpawns && !isValidSpawn && timesTried < 2);//10
+        return isValidSpawn && SpawnLocation.HasSpawns;
+    }
+
     private bool GetSpawnTypes()
     {
         Gang = null;
@@ -359,7 +397,37 @@ public class GangDispatcher
         }         
         return false;
     }
-    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement)
+
+    private bool GetHitSquadSpawnTypes(Gang gang)
+    {
+        Gang = gang;
+        VehicleType = null;
+        PersonType = null;
+        if (Gang == null)
+        {
+            return false;
+        }
+        if (World.Pedestrians.GangMemberList.Count(x => x.Gang?.ID == Gang.ID) >= Gang.SpawnLimit)
+        {
+            return false;
+        }
+        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);   
+        GameFiber.Yield();
+        string RequiredGroup = "";
+        if (VehicleType != null)
+        {
+            RequiredGroup = VehicleType.RequiredPedGroup;
+        }
+        PersonType = Gang.GetRandomPed(Player.WantedLevel, RequiredGroup);
+        GameFiber.Yield();
+        if (PersonType != null)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private bool CallSpawnTask(bool allowAny, bool allowBuddy, bool isLocationSpawn, bool clearArea, TaskRequirements spawnRequirement, bool isHitSquad)
     {
         try
         {
@@ -369,6 +437,7 @@ public class GangDispatcher
             gangSpawnTask.SpawnRequirement = spawnRequirement;
             gangSpawnTask.ClearArea = clearArea;
             gangSpawnTask.PlacePedOnGround = VehicleType == null;
+            gangSpawnTask.IsHitSquad = isHitSquad;
             gangSpawnTask.AttemptSpawn();
             foreach (PedExt created in gangSpawnTask.CreatedPeople)
             {
@@ -552,7 +621,12 @@ public class GangDispatcher
             PersonType = null;
         }
 
-        CallSpawnTask(true, true, false, false, TaskRequirements.None);
+        CallSpawnTask(true, true, false, false, TaskRequirements.None, false);
+    }
+    public void DebugSpawnHitSquad()
+    {
+        GameTimeLastDispatchedHitSquad = 0;
+        TimeBetweenHitSquads = 0;
     }
     
 }

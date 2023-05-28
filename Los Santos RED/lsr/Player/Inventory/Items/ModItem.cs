@@ -39,6 +39,7 @@ using System.ComponentModel;
 [XmlInclude(typeof(UmbrellaItem))]
 [XmlInclude(typeof(VehicleItem))]
 [XmlInclude(typeof(WeaponItem))]
+[XmlInclude(typeof(EquipmentItem))]
 public class ModItem
 {
     private UIMenuNumericScrollerItem<int> sellScroller;

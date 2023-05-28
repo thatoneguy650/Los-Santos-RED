@@ -51,7 +51,7 @@ public class CopVoice
     public bool CanRadioIn => !Cop.IsUnconscious && Cop.DistanceToPlayer <= 100f && !Cop.IsInVehicle && !Cop.RecentlyGotOutOfVehicle && Cop.Pedestrian.Exists() && !Cop.Pedestrian.IsSwimming && !Cop.Pedestrian.IsInCover && !Cop.Pedestrian.IsGoingIntoCover && !Cop.Pedestrian.IsShooting && !Cop.Pedestrian.IsInWrithe && !Cop.Pedestrian.IsGettingIntoVehicle && !Cop.Pedestrian.IsInAnyVehicle(true) && !Cop.Pedestrian.IsInAnyVehicle(false);
 
 
-    public bool CanSpeak => !Cop.IsUnconscious && !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f;
+    public bool CanSpeak => !Cop.IsUnconscious && !IsSpeechTimedOut && Cop.DistanceToPlayer <= 50f && !Cop.IsBeingHeldAsHostage;
     public void Speak(IPoliceRespondable currentPlayer)
     {    
         if(Game.GameTime - GameTimeLastForcedRadioSpeech >= 5000 && Cop.Pedestrian.Exists() && (NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "generic_radio_chatter", 3) || NativeFunction.Natives.IS_ENTITY_PLAYING_ANIM<bool>(Cop.Pedestrian, "random@arrests", "radio_chatter", 3)))
@@ -208,7 +208,7 @@ public class CopVoice
     }
     public void RadioInWanted(IPoliceRespondable currentPlayer)
     {
-        if(!Cop.Pedestrian.Exists() || !CanRadioIn)
+        if(!Cop.Pedestrian.Exists() || !CanRadioIn || currentPlayer.IsBusted || currentPlayer.IsDead)
         {
             return;
         }

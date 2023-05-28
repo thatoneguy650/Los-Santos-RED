@@ -3810,6 +3810,12 @@ public class ShopMenus : IShopMenus
                     new MenuItem("ProLaps Five Iron Golf Club",150),
                     new MenuItem("Flint Hammer",25),
 
+                //ArmorHealth
+                new MenuItem("Light Body Armor",650),
+                new MenuItem("Medium Body Armor",1250),
+                new MenuItem("Heavy Body Armor",1500),
+                new MenuItem("Full Body Armor",2000),
+                new MenuItem("Health Pack",550),
 
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
@@ -3968,6 +3974,12 @@ public class ShopMenus : IShopMenus
         {
                 new ShopMenu("GunShop2","GunShop2",new List<MenuItem>() {
                     
+                                    //ArmorHealth
+                new MenuItem("Light Body Armor",650),
+                new MenuItem("Medium Body Armor",1250),
+                new MenuItem("Heavy Body Armor",1500),
+                new MenuItem("Full Body Armor",2000),
+                new MenuItem("Health Pack",550),
                 //Pistola
                 new MenuItem("Vom Feuer SCRAMP",990, 770) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip", 0),
@@ -4206,6 +4218,7 @@ public class ShopMenus : IShopMenus
     {
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
         {
+
                 new ShopMenu("GunShop3","GunShop3",new List<MenuItem>() {
                     new MenuItem("Combat Knife",120),
                     new MenuItem("Vom Feuer Machete",29),
@@ -4213,6 +4226,13 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Nightstick",57),
                     new MenuItem("Flint Heavy Duty Pipe Wrench",24),
                     new MenuItem("Pool Cue",45),
+
+                                    //ArmorHealth
+                new MenuItem("Light Body Armor",650),
+                new MenuItem("Medium Body Armor",1250),
+                new MenuItem("Heavy Body Armor",1500),
+                new MenuItem("Full Body Armor",2000),
+                new MenuItem("Health Pack",550),
 
                 //Pistola
                 new MenuItem("Hawk & Little Combat Pistol",950, 700) { Extras = new List<MenuItemExtra>() {
@@ -4351,7 +4371,12 @@ public class ShopMenus : IShopMenus
         PossibleShopMenus.ShopMenuList.AddRange(new List<ShopMenu>
         {
                 new ShopMenu("GunShop4","GunShop4",new List<MenuItem>() {
-
+                                    //ArmorHealth
+                new MenuItem("Light Body Armor",650),
+                new MenuItem("Medium Body Armor",1250),
+                new MenuItem("Heavy Body Armor",1500),
+                new MenuItem("Full Body Armor",2000),
+                new MenuItem("Health Pack",550),
 
                 //Pistola
                 
@@ -4593,7 +4618,12 @@ public class ShopMenus : IShopMenus
                     new MenuItem("Switchblade",78),
                     new MenuItem("Nightstick",57),
 
-
+                //ArmorHealth
+                new MenuItem("Light Body Armor",650),
+                new MenuItem("Medium Body Armor",1250),
+                new MenuItem("Heavy Body Armor",1500),
+                new MenuItem("Full Body Armor",2000),
+                new MenuItem("Health Pack",550),
                 //Pistola
                 new MenuItem("Hawk & Little PTF092F",550,450) { Extras = new List<MenuItemExtra>() {
                     new MenuItemExtra("Default Clip",0),

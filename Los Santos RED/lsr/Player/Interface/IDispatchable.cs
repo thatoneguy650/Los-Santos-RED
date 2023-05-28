@@ -26,6 +26,7 @@ namespace LosSantosRED.lsr.Interface
         uint Handle { get; }
         bool IsSwimming { get; }
         bool RecentlyStartedPlaying { get; }
+        RelationshipManager RelationshipManager { get; }
 
         void OnLawEnforcementSpawn(Agency agency, DispatchableVehicle vehicleType, DispatchablePerson officerType);
     }

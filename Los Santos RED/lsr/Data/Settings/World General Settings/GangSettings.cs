@@ -91,6 +91,13 @@ public class GangSettings : ISettingsDefaultable
     public float MurderDistance { get; set; }
     public uint GameTimeRecentlyKilled { get; set; }
     public float MinDistanceToReportTimeoutRepChanges { get; set; }
+    public bool AllowHitSquads { get; set; }
+
+    public bool AllowHitSquadsOnlyEnemy { get; set; }
+
+    public uint MinTimeBetweenHitSquads { get; set; }
+    public uint MaxTimeBetweenHitSquads { get; set; }
+
     public GangSettings()
     {
         SetDefault();
@@ -180,6 +187,12 @@ public class GangSettings : ISettingsDefaultable
         MurderDistance = 15f;
         GameTimeRecentlyKilled = 20000;
         MinDistanceToReportTimeoutRepChanges = 25f;
+        AllowHitSquads = true;
+
+        MinTimeBetweenHitSquads = 600000;
+        MaxTimeBetweenHitSquads = 1200000;
+        AllowHitSquadsOnlyEnemy = false;
+
     }
 
 }

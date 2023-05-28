@@ -29,6 +29,7 @@ public class GangSpawnTask : SpawnTask
         ForceLongGun = forceLongGun;
     }
     private bool HasGang => Gang != null;
+    public bool IsHitSquad { get; set; } = false;
     public override void AttemptSpawn()
     {
         try
@@ -273,6 +274,7 @@ public class GangSpawnTask : SpawnTask
         {
             GangMember = new GangMember(ped, Settings, Gang, true, Names.GetRandomName(isMale), Crimes, Weapons, World);
         }
+        GangMember.IsHitSquad = IsHitSquad;
         World.Pedestrians.AddEntity(GangMember);
         GangMember.SetStats(PersonType, ShopMenus, Weapons, AddBlip, ForceMelee,ForceSidearm,ForceLongGun);
         if (ped.Exists())

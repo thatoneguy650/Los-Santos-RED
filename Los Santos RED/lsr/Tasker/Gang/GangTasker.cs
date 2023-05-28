@@ -161,7 +161,18 @@ public class GangTasker
             }
             else
             {
-                if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || SeenPlayerReactiveCrime)
+                if(SeenPlayerReactiveCrime)
+                {
+                    if (GangMember.WillFight && !arePoliceNearby && Player.IsNotWanted)
+                    {
+                        WillAttackPlayer = true;
+                    }
+                    else
+                    {
+                        WillFleeFromPlayer = true;
+                    }
+                }
+                else if (GangMember.HasBeenHurtByPlayer || GangMember.HasBeenCarJackedByPlayer || gr.RecentlyAttacked || (GangMember.IsHitSquad && GangMember.EverSeenPlayer))
                 {
                     if (GangMember.WillFight)
                     {
@@ -209,7 +220,11 @@ public class GangTasker
             }
             else
             {
-                if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
+                if(GangMember.IsHitSquad && GangMember.CurrentTask == null && !GangMember.PlayerPerception.EverSeenTarget && GangMember.ClosestDistanceToPlayer >= 20f)
+                {
+                    SetLocate(GangMember);
+                }
+                else if (GangMember.WasModSpawned && GangMember.CurrentTask == null)
                 {
                     SetIdle(GangMember);
                 }
@@ -236,7 +251,15 @@ public class GangTasker
             GangMember.CurrentTask?.Start();
         }
     }
-
+    private void SetLocate(GangMember GangMember)
+    {
+        if (GangMember.CurrentTask?.Name != "Locate")
+        {
+            GangMember.CurrentTask = new GangGeneralLocate(GangMember, GangMember, Player, World, null, PlacesOfInterest, Settings, Settings.SettingsManager.PoliceTaskSettings.BlockEventsDuringLocate, GangMember);
+            GameFiber.Yield();//TR Added back 4
+            GangMember.CurrentTask.Start();
+        }
+    }
     private void SetArrested(GangMember GangMember)
     {
         if (GangMember.CurrentTask?.Name != "GetArrested")

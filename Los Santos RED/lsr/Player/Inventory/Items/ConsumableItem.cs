@@ -25,12 +25,16 @@ public abstract class ConsumableItem : ModItem
     public string IntoxicantName { get; set; } = "";
     public bool IsIntoxicating => IntoxicantName != "";
     public int HealthChangeAmount { get; set; }
+    public int ArmorChangeAmount { get; set; }
     public float HungerChangeAmount { get; set; }
     public float ThirstChangeAmount { get; set; }
     public float SleepChangeAmount { get; set; }
     public bool AlwaysChangesHealth { get; set; } = false;
     public bool ChangesHealth => HealthChangeAmount != 0;
+    public bool ChangesArmor => ArmorChangeAmount != 0;
     public string HealthChangeDescription => HealthChangeAmount > 0 ? $"~g~+{HealthChangeAmount} ~s~HP" : $"~r~{HealthChangeAmount} ~s~HP";
+
+    public string ArmorChangeDescription => ArmorChangeAmount > 0 ? $"~g~+{ArmorChangeAmount} ~s~AP" : $"~r~{ArmorChangeAmount} ~s~AP";
     public string NeedChangeDescription => (ChangesHunger ? HungerChangeDescription + " " : "") + (ChangesThirst ? ThirstChangeDescription + " " : "") + (ChangesSleep ? SleepChangeDescription : "")   + (AlwaysChangesHealth && ChangesHealth ? HealthChangeDescription : "") .Trim();
     public bool ChangesNeeds => ChangesHunger || ChangesThirst || ChangesSleep || (ChangesHealth && AlwaysChangesHealth);
     public bool ChangesHunger => HungerChangeAmount != 0.0f;
@@ -73,11 +77,15 @@ public abstract class ConsumableItem : ModItem
                 actionable.HealthManager.ChangeHealth(HealthChangeAmount);
             }
         }
+        if(ChangesArmor)
+        {
+            actionable.HealthManager.ChangeArmor(ArmorChangeAmount);
+        }
         return true;
     }
     public override string GetExtendedDescription(ISettingsProvideable settings)
     {
-        return (settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ChangesNeeds ? $"~n~{NeedChangeDescription}" : "") : (ChangesHealth ? $"~n~{HealthChangeDescription}" : ""));
+        return (settings.SettingsManager.NeedsSettings.ApplyNeeds ? (ChangesNeeds ? $"~n~{NeedChangeDescription}" : "") : (ChangesHealth ? $"~n~{HealthChangeDescription}" : "")) + (ChangesArmor ? $"~n~{ArmorChangeDescription}" : "");
     }
     public override string PurchaseMenuDescription(ISettingsProvideable settings)
     {
@@ -85,6 +93,10 @@ public abstract class ConsumableItem : ModItem
         if (ChangesHealth && !settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
             description += $"~n~{HealthChangeDescription}";
+        }
+        if (ChangesArmor)
+        {
+            description += $"~n~{ArmorChangeDescription}";
         }
         if (ChangesNeeds && settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
@@ -98,6 +110,10 @@ public abstract class ConsumableItem : ModItem
         if (ChangesHealth && !settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {
             description += $"~n~{HealthChangeDescription}";
+        }
+        if (ChangesArmor)
+        {
+            description += $"~n~{ArmorChangeDescription}";
         }
         if (ChangesNeeds && settings.SettingsManager.NeedsSettings.ApplyNeeds)
         {

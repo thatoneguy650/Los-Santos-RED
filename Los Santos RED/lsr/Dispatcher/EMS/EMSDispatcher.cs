@@ -118,7 +118,7 @@ public class EMSDispatcher
             int TotalTimeBetweenSpawns = Settings.SettingsManager.EMSSettings.TimeBetweenSpawn;
             if(Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
             {
-                TotalTimeBetweenSpawns += 0;
+                TotalTimeBetweenSpawns = 10000;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {

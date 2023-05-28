@@ -172,16 +172,71 @@ public class Investigation
     {
         if(IsOutsideInvestigationRange)
         {
-            //EntryPoint.WriteToConsoleTestLong("Investigation Expire OUTSIDE RANGE");
+            EntryPoint.WriteToConsole("Investigation Expire OUTSIDE RANGE");
             Expire();
         }
-        else if ((IsTimedOut || World.Pedestrians.AllPoliceList.Any(x=>x.IsRespondingToInvestigation && x.GameTimeReachedInvestigationPosition > 0 && Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring)) && World.TotalWantedLevel == 0 && !World.Pedestrians.AnyInjuredPeopleNearPlayer)
+        else if(IsTimedOut)
         {
-            //EntryPoint.WriteToConsoleTestLong("Investigation Expire TIME OUT");
+            EntryPoint.WriteToConsole("Investigation Expire TIMED OUT");
+            Expire();
+        }
+        else if (CheckCriteria())
+        {
+            EntryPoint.WriteToConsole("Investigation Expire CRITERIA EXPIRE");
             Expire();
         }
     }
+    private bool CheckCriteria()
+    {
+        bool CanPoliceExpire = false;
+        bool CanFireExpire = false;
+        bool CanEMSExpire = false;
 
+        if(!RequiresPolice)
+        {
+            CanPoliceExpire = true;
+        }
+        else 
+        {
+            bool isWantedLevelOK = World.TotalWantedLevel <= 1;
+            bool HasArrivedOK = World.Pedestrians.AllPoliceList.Any(x =>
+                        x.GameTimeReachedInvestigationPosition > 0 &&
+                        Game.GameTime - x.GameTimeReachedInvestigationPosition >= Settings.SettingsManager.InvestigationSettings.ExtraTimeAfterReachingInvestigationCenterBeforeExpiring);
+
+            CanPoliceExpire = isWantedLevelOK && HasArrivedOK;
+
+            //EntryPoint.WriteToConsole($"INVESTIGATION CheckCriteria {isWantedLevelOK} {HasArrivedOK} RequiresPolice{RequiresPolice} RequiresFirefighters{RequiresFirefighters} RequiresEMS{RequiresEMS}");
+        }
+
+        
+        if(!RequiresFirefighters)
+        {
+            CanFireExpire = true;
+        }
+        else
+        { 
+            CanFireExpire = true;//NOT IMPLEMENTED!
+        }
+
+        if(!RequiresEMS)
+        {
+            CanEMSExpire = true;
+        }
+        else
+        {
+            CanEMSExpire = !World.Pedestrians.AnyInjuredPeopleNearPlayer;
+        }
+
+        if(CanPoliceExpire)
+        {
+            RequiresPolice = false;
+        }
+        if(CanEMSExpire)
+        {
+            RequiresEMS = false;
+        }
+        return CanPoliceExpire && CanFireExpire && CanEMSExpire;
+    }
     private void AssignCops()
     {
         if (RequiresPolice)
@@ -281,6 +336,7 @@ public class Investigation
     }
     public void Expire()
     {
+        EntryPoint.WriteToConsole($"Investigation Expiring RequiresPolice{RequiresPolice} RequiresEMS{RequiresEMS} RequiresFirefighters{RequiresFirefighters}");
         IsActive = false;
         HavePlayerDescription = false;
         GameTimeStartedInvestigation = 0;

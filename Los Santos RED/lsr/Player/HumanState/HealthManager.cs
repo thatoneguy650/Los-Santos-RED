@@ -89,7 +89,15 @@ public class HealthManager
             }
         }
     }
-
+    public void ChangeArmor(int ToAdd)
+    {
+        if(Player.Character.Armor + ToAdd <= 0)
+        {
+            Player.Character.Armor = 0;
+            return;
+        }
+        Player.Character.Armor += ToAdd;
+    }
     public void SetHealth(int value)
     {
         //EntryPoint.WriteToConsole($"Set Health, Value {value}");

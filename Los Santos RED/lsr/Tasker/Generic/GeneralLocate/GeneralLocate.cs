@@ -49,20 +49,14 @@ public class GeneralLocate : ComplexTask, ILocationReachable
     
     public override void ReTask()
     {
-        //Start();
+
     }
     public override void Start()
     {
         GameTimeStarted = Game.GameTime;
         GetLocations();
-
-
-        //HasReachedLocatePosition = false;
         prevPlaceToDriveTo = PlaceToDriveTo;
         prevPlaceToWalkTo = PlaceToWalkTo;
-       // LocationsChanged = false;
-
-
         CurrentTaskState?.Stop();
         GetNewTaskState();
         CurrentTaskState?.Start();
@@ -79,13 +73,6 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         StandardUpdate();
         UpdateVehicleState();
     }
-    //private void Restart()
-    //{
-    //    CurrentTaskState?.Stop();
-    //    GetNewTaskState();
-    //    CurrentTaskState?.Start();
-    //    EntryPoint.WriteToConsole($"{PedGeneral.Handle} RESTARTED Task{CurrentTaskState?.DebugName} PlaceToDriveTo{PlaceToDriveTo} PlaceToWalkTo {PlaceToWalkTo}");
-    //}
     public virtual void OnLocationReached()
     {
         HasReachedLocatePosition = true;
@@ -161,8 +148,8 @@ public class GeneralLocate : ComplexTask, ILocationReachable
         }
         else
         {
-            PlaceToDriveTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;// Player.StreetPlacePoliceShouldSearchForPlayer;
-            PlaceToWalkTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget; //Player.PlacePoliceShouldSearchForPlayer;
+            PlaceToDriveTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;
+            PlaceToWalkTo = HasSixthSense ? Player.Character.Position : Ped.PlayerPerception.PositionLastSeenTarget;
         }
 
     }

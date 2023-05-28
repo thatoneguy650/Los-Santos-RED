@@ -400,18 +400,6 @@ public class ButtonPrompts
         {
             Prompts.RemoveAll(x => x.Group == "Grab");
         }
-
-        //if (Settings.SettingsManager.KeySettings.GrabPedGameControl >= 0 && !Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.ActivityManager.CanTakeHostageWithLookedAtPed && Settings.SettingsManager.ActivitySettings.AllowTakingOtherPedsHostage)
-        //{
-        //    PersonGrabPrompts();
-        //    addedPromptGroup = true;
-        //}
-        //else
-        //{
-        //    Prompts.RemoveAll(x => x.Group == "Grab");
-        //}
-
-
         if (!Player.ActivityManager.IsInteractingWithLocation && !Player.IsShowingFrontEndMenus && Player.IsWanted && Player.AnyPoliceRecentlySeenPlayer && Player.ClosestPoliceDistanceToPlayer <= 40f && Player.IsAliveAndFree && !Player.PoliceResponse.IsWeaponsFree && Player.Surrendering.CanSurrender)
         {
             AddPrompt("ShowSurrender", "Surrender", "ShowSurrender", Settings.SettingsManager.KeySettings.SurrenderKeyModifier, Settings.SettingsManager.KeySettings.SurrenderKey, 999);
@@ -469,9 +457,5 @@ public class ButtonPrompts
         }
     }
 
-    internal void OnTargetHandleChanged()
-    {
-        throw new NotImplementedException();
-    }
 }
 

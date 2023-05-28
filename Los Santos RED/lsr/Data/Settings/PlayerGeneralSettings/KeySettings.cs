@@ -57,7 +57,7 @@ public class KeySettings : ISettingsDefaultable
 
     public int GrabPedGameControl { get; set; }
 
-
+    public int HoldUpPedGameControl { get; set; }
     public KeySettings()
     {
         SetDefault();
@@ -122,7 +122,7 @@ public class KeySettings : ISettingsDefaultable
 
         VehicleInteract = Keys.L;
         VehicleInteractModifier = Keys.LShiftKey;
-
+        HoldUpPedGameControl = 46;
         GrabPedGameControl = 46;
     }
 }

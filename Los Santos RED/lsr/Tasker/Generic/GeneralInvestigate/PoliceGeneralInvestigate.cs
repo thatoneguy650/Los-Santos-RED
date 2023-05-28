@@ -71,7 +71,9 @@ public class PoliceGeneralInvestigate : GeneralInvestigate
     }
     public override void OnLocationReached()
     {
+        Ped.GameTimeReachedInvestigationPosition = Game.GameTime;
         HasReachedLocatePosition = true;
+        EntryPoint.WriteToConsole($"{PedGeneral.Handle} Police Located HasReachedLocatePosition");
     }
 }
 

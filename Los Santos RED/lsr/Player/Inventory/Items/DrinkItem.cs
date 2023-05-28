@@ -34,15 +34,7 @@ public class DrinkItem : ConsumableItem
     }
     public override string PurchaseMenuDescription(ISettingsProvideable settings)
     {
-        string description = "";
-        if (ChangesHealth && !settings.SettingsManager.NeedsSettings.ApplyNeeds)
-        {
-            description += $"~n~{HealthChangeDescription}";
-        }
-        if (ChangesNeeds && settings.SettingsManager.NeedsSettings.ApplyNeeds)
-        {
-            description += $"~n~{NeedChangeDescription}";
-        }
+        string description = base.PurchaseMenuDescription(settings);
         if (ConsumeOnPurchase)
         {
             description += $"~n~~r~Dine-In Only~s~";

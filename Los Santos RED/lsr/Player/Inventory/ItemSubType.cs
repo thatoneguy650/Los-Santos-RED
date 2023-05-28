@@ -37,4 +37,7 @@ public enum ItemSubType
     Binoculars,
     Ring,
     LicensePlates,
+    BodyArmor,
+    HealthPack,
+    CellPhone,
 }

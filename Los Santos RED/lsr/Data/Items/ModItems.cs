@@ -115,7 +115,7 @@ public class ModItems : IModItems
         AllItems.AddRange(PossibleItems.BinocularsItems);
         AllItems.AddRange(PossibleItems.RadioItems);
         AllItems.AddRange(PossibleItems.ValuableItems);
-
+        AllItems.AddRange(PossibleItems.EquipmentItems);
         return AllItems;
     }
     public List<ModItem> PropItems()
@@ -262,11 +262,31 @@ public class ModItems : IModItems
         DefaultConfig_Food();
         DefaultConfig_Drugs();
         DefaultConfig_Weapons();
+        DefaultConfig_Armor();
         DefaultConfig_Tools();
         DefaultConfig_Vehicles();
         DefaultConfig_Services();
         DefaultConfig_Valuables();
         Serialization.SerializeParam(PossibleItems, ConfigFileName);
+    }
+
+    private void DefaultConfig_Armor()
+    {
+        PossibleItems.EquipmentItems.AddRange(new List<EquipmentItem>
+        {
+            new EquipmentItem("Light Body Armor","It's like you're wearing nothing at all!", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor, ArmorChangeAmount = 50,PackageItemID = "prop_armour_pickup" },
+            new EquipmentItem("Medium Body Armor","Actually offers protection instead of just peace of mind..", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 100,PackageItemID = "prop_armour_pickup" },
+            new EquipmentItem("Heavy Body Armor","Planning on entering a warzone?", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 150,PackageItemID = "prop_armour_pickup" },
+            new EquipmentItem("Full Body Armor","For the bullet hypochondriacs", ItemType.Equipment) {
+                ItemSubType = ItemSubType.BodyArmor,ArmorChangeAmount = 400,PackageItemID = "prop_armour_pickup" },
+
+
+            new EquipmentItem("Health Pack","Is this real life or a video game?", ItemType.Equipment) {
+                ItemSubType = ItemSubType.HealthPack, AlwaysChangesHealth = true, HealthChangeAmount = 75,PackageItemID = "prop_ld_health_pack" },
+        });
     }
 
     private void DefaultConfig_Valuables()
@@ -1913,15 +1933,15 @@ public class ModItems : IModItems
         PossibleItems.FlashlightItems.AddRange(new List<FlashlightItem> {
             new FlashlightItem("iFruit Cellphone","All of the price, none of the features.") {
                 ModelItemID = "prop_phone_ing",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,   IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
             },
             new FlashlightItem("Facade Cellphone","Operating system dictators, software monopolists and licensing racketeers.") {
                 ModelItemID = "prop_phone_ing_02",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
             },
             new FlashlightItem("Badger Cellphone","A first-world global communications company with third-world cell phone coverage.") {
                 ModelItemID = "prop_phone_ing_03",
-                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.Flashlight
+                EmissiveDistance = 25.0f,FindPercentage = 10,EmissiveBrightness = 0.5f,EmissiveRadius = 8.0f,UseFakeEmissive = false,AllowPropRotation = false,IsCellphone = true,CanSearch = false,ItemSubType = ItemSubType.CellPhone
             },
             new FlashlightItem("TAG-HARD Flashlight","Need to beat a suspect, but don't have your nightstick? Look no further.") {
                 ModelItemID = "prop_cs_police_torch",

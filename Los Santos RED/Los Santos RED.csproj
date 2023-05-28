@@ -253,6 +253,7 @@
     <Compile Include="lsr\Player\Interaction\Conversation\IAdvancedConversationable.cs" />
     <Compile Include="lsr\Player\Interface\IClipsetManageable.cs" />
     <Compile Include="lsr\Player\Interface\IOutfitManageable.cs" />
+    <Compile Include="lsr\Player\Inventory\Items\EquipmentItem.cs" />
     <Compile Include="lsr\Player\Inventory\Items\ValuableItem.cs" />
     <Compile Include="lsr\Player\Respawning\SearchActivity.cs" />
     <Compile Include="lsr\Player\SecurityResponse.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="lsr\Tasker\Generic\GeneralFlee\GeneralFlee.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\GeneralInvestigate.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralInvestigate\PoliceGeneralInvestigate.cs" />
+    <Compile Include="lsr\Tasker\Generic\GeneralLocate\GangGeneralLocate.cs" />
     <Compile Include="lsr\Tasker\Old\GeneralLocate_Old.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToInVehicleTaskState.cs" />
     <Compile Include="lsr\Tasker\Generic\GeneralLocate\GoToOnFootTaskState.cs" />

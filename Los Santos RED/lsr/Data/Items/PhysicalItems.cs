@@ -2,6 +2,7 @@
 using LosSantosRED.lsr.Helper;
 using LosSantosRED.lsr.Interface;
 using Rage;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -52,9 +53,26 @@ public class PhysicalItems : IPropItems
         DefaultConfig_Food();
         DefaultConfig_Drugs();
         DefaultConfig_Tools();
+        DefaultConfig_ArmorHealth();
        // DefaultConfig_Vehicles();//not needed, as it created them itself if it doesnt find them
         //DefaultConfig_Weapons();
         Serialization.SerializeParams(PhysicalItemsList, ConfigFileName);
+    }
+
+    private void DefaultConfig_ArmorHealth()
+    {
+        PhysicalItemsList.AddRange(new List<PhysicalItem> {
+
+            new PhysicalItem("prop_armour_pickup", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_bodyarmour_02", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_bodyarmour_03", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_bodyarmour_04", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_bodyarmour_05", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_bodyarmour_06", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }){ IsLarge = true },
+            new PhysicalItem("prop_ld_health_pack", new List<PropAttachment>() { new PropAttachment("LeftHand", "BONETAG_L_PH_HAND", new Vector3(0.0f, 0.0f, 0.0f), new Rotator(0.0f, 0.0f, 0.0f)) }),
+            //prop_ld_health_pack
+        });
+        //prop_armour_pickup
     }
 
     private void DefaultConfig_Drinks()
