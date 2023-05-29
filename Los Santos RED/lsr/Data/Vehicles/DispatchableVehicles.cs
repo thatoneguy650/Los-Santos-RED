@@ -166,7 +166,7 @@ public class DispatchableVehicles : IDispatchableVehicles
         LCPDVehicles = new List<DispatchableVehicle>() {
             new DispatchableVehicle("police4", 100, 100)};
         Firetrucks = new List<DispatchableVehicle>() {
-            new DispatchableVehicle("firetruk", 100, 100) };
+            new DispatchableVehicle("firetruk", 100, 100) { MinOccupants = 2, MaxOccupants = 4 }  };
         Amublance1 = new List<DispatchableVehicle>() {
             new DispatchableVehicle("ambulance", 100, 100) { RequiredLiveries = new List<int>() { 0 } } };
         Amublance2 = new List<DispatchableVehicle>() {

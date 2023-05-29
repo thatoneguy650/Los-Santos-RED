@@ -105,6 +105,7 @@ public class GangReputation
             }
         }
     }
+    public bool CanDispatchHitSquad => IsEnemy || ReputationLevel <= Gang.HitSquadRep;
     public bool RecentlyAttacked => GameTimeLastAttacked > 0 && Game.GameTime - GameTimeLastAttacked <= 90000;
     public int MembersHurt { get; set; }
     public int MembersKilled { get; set; }

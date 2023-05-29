@@ -24,8 +24,6 @@ public class CrimeEvent
         {
             if (Game.GameTime - GameTimeLastOccurred >= InstanceDuration)
                 return true;
-            else if (AssociatedCrime.CanViolateWithoutPerception)
-                return true;
             else
                 return false;
         }

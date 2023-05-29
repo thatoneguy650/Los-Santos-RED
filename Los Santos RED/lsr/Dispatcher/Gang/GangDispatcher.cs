@@ -181,6 +181,10 @@ public class GangDispatcher
     }
     public int LikelyHoodOfAnySpawn => Settings.SettingsManager.GangSettings.PercentSpawnOutsideTerritory;
     public int LikelyHoodOfDenSpawnWhenNear => Settings.SettingsManager.GangSettings.PercentageSpawnNearDen;
+
+    private bool HasNeedToSpawnHeli => World.Vehicles.GangHelicoptersCount < Settings.SettingsManager.GangSettings.HeliSpawnLimit_Default;
+   // private bool HasNeedToSpawnBoat => (Player.CurrentVehicle?.IsBoat == true || Player.IsSwimming) && World.Vehicles.GangBoatsCount < Settings.SettingsManager.GangSettings.BoatSpawnLimit_Default;
+
     public bool Dispatch()
     {      
         HasDispatchedThisTick = false;
@@ -201,7 +205,7 @@ public class GangDispatcher
                 }
                 else
                 {
-                    EnemyGang = Player.RelationshipManager.GangRelationships.HostileGangs?.PickRandom();
+                    EnemyGang = Player.RelationshipManager.GangRelationships.HitSquadGangs?.PickRandom();
                 }
                 DispatchHitSquad(EnemyGang);
                 TimeBetweenHitSquads = RandomItems.GetRandomNumber(Settings.SettingsManager.GangSettings.MinTimeBetweenHitSquads, Settings.SettingsManager.GangSettings.MaxTimeBetweenHitSquads);
@@ -381,7 +385,7 @@ public class GangDispatcher
         }
         if(!IsPedestrianOnlySpawn)
         {
-            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);
+            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);
         }
         GameFiber.Yield();
         string RequiredGroup = "";
@@ -411,7 +415,7 @@ public class GangDispatcher
         {
             return false;
         }
-        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);   
+        VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, HasNeedToSpawnHeli, false, true, "", Settings);   
         GameFiber.Yield();
         string RequiredGroup = "";
         if (VehicleType != null)
@@ -604,7 +608,7 @@ public class GangDispatcher
            
         if (!onFoot)
         {
-            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, false, false, true, "", Settings);
+            VehicleType = Gang.GetRandomVehicle(Player.WantedLevel, true, true, true, "", Settings);
         }
         if (VehicleType != null || onFoot)
         {

@@ -19,6 +19,7 @@ namespace LosSantosRED.lsr.Interface
         int TotalWantedLevel { get; set; }
         Vector3 PoliceBackupPoint { get; set; }
         int CitizenWantedLevel { get; set; }
+        bool AnyFiresNearPlayer { get; }
 
         void LoadMPMap();
         void LoadSPMap();

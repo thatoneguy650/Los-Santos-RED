@@ -76,8 +76,8 @@ public class PlayerPerception
         Target = target;
         if (Originator != null && !Originator.IsUnconscious && Originator.Pedestrian.Exists() && Originator.Pedestrian.IsAlive && Target != null && Target.Character.Exists())
         {
-            bool distanceRan = UpdateTargetDistance(placeLastSeen, target.Position);
-            bool losRan = UpdateTargetLineOfSight(Target.IsWanted);
+            UpdateTargetDistance(placeLastSeen, target.Position);
+            UpdateTargetLineOfSight(Target.IsWanted);
             UpdateWitnessedCrimes();
         }
         else
@@ -226,13 +226,15 @@ public class PlayerPerception
                         {
                             SetTargetUnseen();
                         }
+                        GameFiber.Yield();//TR TEST 28
+                        RanSightThisUpdate = true;
                     }
                     else
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR TEST 28
-                    RanSightThisUpdate = true;
+                    //GameFiber.Yield();//TR TEST 28
+                    //RanSightThisUpdate = true;
                 }
             }
             else if (Originator.Pedestrian.IsInHelicopter)
@@ -287,13 +289,15 @@ public class PlayerPerception
                         {
                             SetTargetUnseen();
                         }
+                        GameFiber.Yield();//TR TEST 28
+                        RanSightThisUpdate = true;
                     }
                     else
                     {
                         SetTargetUnseen();
                     }
-                    GameFiber.Yield();//TR TEST 28
-                    RanSightThisUpdate = true;
+                    //GameFiber.Yield();//TR TEST 28
+                    //RanSightThisUpdate = true;
                 }
             }
             GameTimeLastLOSCheck = Game.GameTime;
@@ -303,12 +307,6 @@ public class PlayerPerception
     }
     public void AddWitnessedCrime(Crime CrimeToAdd, Vector3 PositionToReport)
     {
-        //if (!PlayerCrimesWitnessed.Any(x => x.Name == CrimeToAdd.Name))
-        //{
-        //    PlayerCrimesWitnessed.Add(CrimeToAdd);
-        //    PositionLastSeenCrime = PositionToReport;
-        //    GameTimeLastSeenTargetCommitCrime = Game.GameTime;
-        //}
         PositionLastSeenCrime = PositionToReport;
         GameTimeLastSeenTargetCommitCrime = Game.GameTime;
         WitnessedCrime ExistingEvent = PlayerCrimesWitnessed.FirstOrDefault(x => x.Crime?.ID == CrimeToAdd.ID);

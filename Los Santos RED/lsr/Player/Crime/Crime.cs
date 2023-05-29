@@ -39,7 +39,7 @@ public class Crime
     public bool ScaresCivilians { get; set; } = true;
 
     public bool CanViolateMultipleTimes { get; set; } = true;
-    public bool CanViolateWithoutPerception { get; set; } = false;
+
 
     public bool CanReportBySound { get; set; } = false;
     public bool CanBeReactedToByCivilians { get; set; } = true;

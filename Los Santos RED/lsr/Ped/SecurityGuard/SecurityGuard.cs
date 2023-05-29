@@ -1,6 +1,7 @@
 ﻿using ExtensionsMethods;
 using LosSantosRED.lsr;
 using LosSantosRED.lsr.Interface;
+using Mod;
 using Rage;
 using Rage.Native;
 using System;
@@ -202,58 +203,40 @@ public class SecurityGuard : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChase
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
                 PlayerPerception.Update(perceptable, placeLastSeen);
-                if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
-                {
-                    GameFiber.Yield();//TR TEST 28
-                }
                 UpdateVehicleState();
-                if (!IsUnconscious)
+                if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
                 {
-                    if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                    if (!PlayerPerception.RanSightThisUpdate)
                     {
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (ShouldCheckCrimes)
-                        {
-                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        PedPerception.Update();
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
+                        GameFiber.Yield();
                     }
-                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
-                    {
-                        CheckPlayerBusted();
-                    }
-                    if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)
-                    {
-                        PedAlerts.LookForUnconsciousPeds(world);
-                    }
-                    if (Settings.SettingsManager.SecuritySettings.AllowReactionsToBodies)
-                    {
-                        PedAlerts.LookForBodiesAlert(world);
-                    }//need to add shooting checker for police and or other security too!
+                    PedPerception.Update();
+                    UpdateAlerts(perceptable, policeRespondable, world);    
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
+    }
+    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    {
+        if (Settings.SettingsManager.SecuritySettings.AllowCallEMTsOnBodies)
+        {
+            PedAlerts.LookForUnconsciousPeds(world);
+        }
+        if (Settings.SettingsManager.SecuritySettings.AllowReactionsToBodies)
+        {
+            PedAlerts.LookForBodiesAlert(world);
+        }
+        if (PedAlerts.HasSeenUnconsciousPed)
+        {
+            perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+            PedAlerts.HasSeenUnconsciousPed = false;
+        }
+        if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
+        {
+            PedAlerts.AddHeardGunfire(policeRespondable.Position);
+        }
     }
 
 }

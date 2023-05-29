@@ -83,6 +83,7 @@ public class Gang : IPlatePrefixable, IGeneratesDispatchables
     public int NeutralRepLevel { get; set; } = 0;
     public int FriendlyRepLevel { get; set; } = 500;
     public int MemberOfferRepLevel { get; set; } = 2000;
+    public int HitSquadRep { get; set; } = -1800;
     public bool AddAmbientRep { get; set; } = true;
     public uint GameTimeToRecoverAmbientRep { get; set; } = 5000;
     public int PickupPaymentMin { get; set; } = 200;

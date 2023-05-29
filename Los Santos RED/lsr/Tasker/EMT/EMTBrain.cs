@@ -49,7 +49,6 @@ public class EMTBrain : PedBrain
         if (PedExt.DistanceToPlayer <= 150f)//50f
         {
             PedExt.PedReactions.Update(Player);
-            PedExt MainTarget = PedToGoTo();
             if (PedExt.PedReactions.HasSeenScaryCrime || PedExt.PedReactions.HasSeenAngryCrime)
             {
                 if (PedExt.WillCallPolice || (PedExt.WillCallPoliceIntense && PedExt.PedReactions.HasSeenIntenseCrime))
@@ -76,24 +75,32 @@ public class EMTBrain : PedBrain
             {
                 SetFight();
             }
-            else if (MainTarget != null)
+            else
             {
-                SetTreatTask(MainTarget);
-            }
-            else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
-            {
-                SetCalmCallIn();
-            }
-            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
-            {
-                SetIdle();
+                PedExt MainTarget = PedToGoTo();
+                if (MainTarget != null)
+                {
+                    SetTreatTask(MainTarget);
+                }
+                else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+                {
+                    SetCalmCallIn();
+                }
+                else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+                {
+                    SetRespondTask();
+                }
+                else if (PedExt.WasModSpawned)
+                {
+                    SetIdle();
+                }
             }
         }
         else if (EMT.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresEMS)
         {
             SetRespondTask();
         }
-        else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+        else if (PedExt.WasModSpawned)
         {
             SetIdle();
         }
@@ -105,14 +112,33 @@ public class EMTBrain : PedBrain
     }
     private void SetRespondTask()
     {
-        if (EMT.CurrentTask?.Name != "EMTRespond")// && Cop.IsIdleTaskable)
+        //if (EMT.CurrentTask?.Name != "EMTRespond")// && Cop.IsIdleTaskable)
+        //{
+        //    //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
+        //    EMT.CurrentTask = new EMTRespond(EMT, Player, World, PlacesOfInterest, EMT);
+        //    GameFiber.Yield();//TR Added back 4
+        //    EMT.CurrentTask?.Start();
+        //}
+        if (EMT.CurrentTask?.Name != "Investigate")
         {
-            //EntryPoint.WriteToConsole($"TASKER: Cop {emt.Pedestrian.Handle} Task Changed from {emt.CurrentTask?.Name} to EMTRespond", 3);
-            EMT.CurrentTask = new EMTRespond(EMT, Player, World, PlacesOfInterest, EMT);
+            EMT.CurrentTask = new ServiceGeneralInvestigate(EMT, EMT, Player, World, null, PlacesOfInterest, Settings, false, null);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
             GameFiber.Yield();//TR Added back 4
-            EMT.CurrentTask?.Start();
+            EMT.CurrentTask.Start();
         }
+
     }
+
+    protected override void SetIdle()
+    {
+        if (PedExt.CurrentTask?.Name == "Idle")
+        {
+            return;
+        }
+        PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, false, false, true, true);
+        GameFiber.Yield();//TR Added back 4
+        PedExt.CurrentTask.Start();
+    }
+
     private void SetTreatTask(PedExt targetPed)
     {
         if (EMT.CurrentTask?.Name != "EMTTreat" || (targetPed != null && EMT.CurrentTask?.OtherTarget?.Handle != targetPed.Handle))// && Cop.IsIdleTaskable)
@@ -157,11 +183,6 @@ public class EMTBrain : PedBrain
         //EntryPoint.WriteToConsole($"EMT PedToGoTo {MainTarget?.Handle}");
         return MainTarget;
     }
-    //private void SetPossibleTargets()
-    //{
-    //    PossibleTargets = World.Pedestrians.PedExts.Where(x => x.Pedestrian.Exists() && (x.IsUnconscious || x.IsInWrithe) && !x.IsDead && !x.HasBeenTreatedByEMTs && x.HasBeenSeenUnconscious).ToList();//150f//writhe peds that are still alive
-    //    //PossibleTargets.AddRange(PedProvider.Pedestrians.DeadPeds.Where(x => x.Pedestrian.Exists() && !x.HasBeenTreatedByEMTs));//dead peds go here?
-    //}
     private class EMTTarget
     {
         public EMTTarget(PedExt target, float distanceToTarget)

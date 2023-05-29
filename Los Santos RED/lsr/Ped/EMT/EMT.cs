@@ -42,44 +42,34 @@ public class EMT : PedExt
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
                 PlayerPerception.Update(perceptable, placeLastSeen);
-                if (Settings.SettingsManager.PerformanceSettings.EMSUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                if (Settings.SettingsManager.PerformanceSettings.IsEMSYield1Active)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
                 UpdateVehicleState();
-                if(Settings.SettingsManager.PerformanceSettings.IsEMSYield2Active)
+                if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    GameFiber.Yield();
-                }
-                if (Settings.SettingsManager.PerformanceSettings.EMSUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                if (Settings.SettingsManager.EMSSettings.AllowEMTsToCallEMTsOnBodies)
-                {
-                    PedAlerts.LookForUnconsciousPeds(world);
+                    if (!PlayerPerception.RanSightThisUpdate)
+                    {
+                        GameFiber.Yield();
+                    }
+                    UpdateAlerts(perceptable, policeRespondable, world);
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
     }
+    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    {
+        if (Settings.SettingsManager.EMSSettings.AllowEMTsToCallEMTsOnBodies)
+        {
+            PedAlerts.LookForUnconsciousPeds(world);
+        }
+    }
 
     public void SetStats(DispatchablePerson dispatchablePerson, IWeapons Weapons, bool addBlip)
     {
-        //dispatchablePerson.SetPedExtPermanentStats(this, Settings.SettingsManager.CivilianSettings.OverrideHealth, false, Settings.SettingsManager.CivilianSettings.OverrideAccuracy);
         if (!Pedestrian.Exists())
         {
             return;
         }
-       // if (string.IsNullOrEmpty(AssignedAgency.MemberName) && AssignedAgency.MemberName != "")
-       // {
-       //     GroupName = AssignedAgency.MemberName;
-       // }
         if (addBlip)
         {
             AddBlip();

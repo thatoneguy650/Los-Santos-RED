@@ -69,7 +69,6 @@ namespace LosSantosRED.lsr
                 {
                     if (Cop.Pedestrian.Exists())
                     {
-                        bool yield = false;
                         Cop.Update(Perceptable, Player, Player.PlacePoliceLastSeenPlayer, World);
                         if (Settings.SettingsManager.PoliceSettings.ManageLoadout)
                         {
@@ -77,18 +76,10 @@ namespace LosSantosRED.lsr
                         }
                         if (Settings.SettingsManager.PoliceSpeechSettings.AllowAmbientSpeech)
                         {
-                            if (Settings.SettingsManager.PerformanceSettings.IsCopYield10Active)
-                            {
-                                GameFiber.Yield();
-                            }
                             Cop.UpdateSpeech(Player);
                         }
                         if (Settings.SettingsManager.PoliceTaskSettings.AllowChaseAssists)
                         {
-                            if (Settings.SettingsManager.PerformanceSettings.IsCopYield11Active)
-                            {
-                                GameFiber.Yield();
-                            }
                             if (Settings.SettingsManager.PoliceTaskSettings.AllowReducedCollisionPenaltyAssist)
                             {
                                 Cop.AssistManager.UpdateCollision(Player.IsWanted);
@@ -101,10 +92,6 @@ namespace LosSantosRED.lsr
                             {
                                 Cop.AssistManager.PowerAssist(Player.IsWanted);
                             }
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.IsCopYield13Active)
-                        {
-                            GameFiber.Yield();
                         }
                         if (Cop.DistanceToPlayer <= closestDistanceToPlayer && Cop.Pedestrian.Exists() && Cop.Pedestrian.IsAlive)
                         {
@@ -203,14 +190,14 @@ namespace LosSantosRED.lsr
         }
         private void UpdateGeneralItmes()
         {
-            if (Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !Player.AnyPoliceCanSeePlayer)
-            {
-                if (Player.RecentlyShot && Player.AnyPoliceCanHearPlayer && !Player.Character.IsCurrentWeaponSilenced)
-                {
-                    Player.AnyPoliceCanSeePlayer = true;
-                    Player.AnyPoliceRecentlySeenPlayer = true;
-                }
-            }
+            //if (Settings.SettingsManager.PoliceSettings.KnowsShootingSourceLocation && !Player.AnyPoliceCanSeePlayer)
+            //{
+            //    if (Player.RecentlyShot && Player.AnyPoliceCanHearPlayer && !Player.Character.IsCurrentWeaponSilenced)
+            //    {
+            //        Player.AnyPoliceCanSeePlayer = true;
+            //        Player.AnyPoliceRecentlySeenPlayer = true;
+            //    }
+            //}
 
             if (Player.CurrentLocation.IsInside && (Player.AnyPoliceRecentlySeenPlayer || Player.SearchMode.IsInActiveMode))
             {

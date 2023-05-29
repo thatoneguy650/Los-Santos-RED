@@ -1600,7 +1600,7 @@ public class Debug
     {
         World.Pedestrians.ClearSpawned();
         World.Vehicles.ClearSpawned(true);
-        Dispatcher.DebugResetLocations();
+        
 
         if (Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching)
         {
@@ -1614,6 +1614,7 @@ public class Debug
             Settings.SettingsManager.PoliceSpawnSettings.ManageDispatching = true;
             Settings.SettingsManager.EMSSettings.ManageDispatching = true;
             Settings.SettingsManager.GangSettings.ManageDispatching = true;
+            Dispatcher.DebugResetLocations();
             Game.DisplaySubtitle("Dispatching Enabled");
         }
 

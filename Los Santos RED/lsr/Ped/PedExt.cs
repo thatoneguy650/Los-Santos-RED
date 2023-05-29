@@ -418,55 +418,36 @@ public class PedExt : IComplexTaskable, ISeatAssignable
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
                 PlayerPerception.Update(perceptable, placeLastSeen);
-                if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield1Active)
-                {
-                    GameFiber.Yield();//TR TEST 28
-                }
                 UpdateVehicleState();
-                if (!IsUnconscious)
+                if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
                 {
-                    if (PlayerPerception.DistanceToTarget <= 200f)// && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
-                    {
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield2Active)//THIS IS THGE BEST ONE?
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode1 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (ShouldCheckCrimes)
-                        {
-                            PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield3Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        PedPerception.Update();
-                        if (Settings.SettingsManager.PerformanceSettings.IsCivilianYield4Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.CivilianUpdatePerformanceMode2 && (!PlayerPerception.RanSightThisUpdate || IsGangMember))
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
+                    if (!PlayerPerception.RanSightThisUpdate) 
+                    { 
+                        GameFiber.Yield(); 
                     }
-                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                    if (ShouldCheckCrimes)
+                    {
+                        PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                    }
+                    PedPerception.Update();
+                    if (policeRespondable.CanArrestPeds)
                     {
                         CheckPlayerBusted();
                     }
-                    if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
-                    {
-                        PedAlerts.LookForUnconsciousPeds(world);
-                    }
+                    UpdateAlerts(perceptable, policeRespondable, world);           
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
         
+    }
+    protected virtual void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    {
+        if (Settings.SettingsManager.CivilianSettings.AllowCivilinsToCallEMTsOnBodies)
+        {
+            PedAlerts.LookForUnconsciousPeds(world);
+        }
     }
     public virtual void OnBecameWanted()
     {
@@ -625,7 +606,7 @@ public class PedExt : IComplexTaskable, ISeatAssignable
     }
     public void CheckPlayerBusted()
     {
-        if (PlayerPerception.DistanceToTarget <= Settings.SettingsManager.PoliceSettings.BustDistance)
+        if (IsWanted && PlayerPerception.DistanceToTarget <= Settings.SettingsManager.PoliceSettings.BustDistance)
         {
             if (Pedestrian.Exists() && (Pedestrian.IsStunned || Pedestrian.IsRagdoll) && !IsBusted)
             {

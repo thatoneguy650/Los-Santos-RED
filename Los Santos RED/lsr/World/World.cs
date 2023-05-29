@@ -64,6 +64,7 @@ namespace Mod
         public int TotalWantedLevel { get; set; } = 0;
         public Vector3 PoliceBackupPoint { get; set; }
 
+        public bool AnyFiresNearPlayer { get; private set; }
 
 
 
@@ -122,6 +123,8 @@ namespace Mod
                 NativeFunction.Natives.DISTANT_COP_CAR_SIRENS(false);
             }
 
+            int numFires = NativeFunction.Natives.GET_NUMBER_OF_FIRES_IN_RANGE<int>(Game.LocalPlayer.Character.Position, 150f);
+            AnyFiresNearPlayer = numFires > 0;
         }
         public void Dispose()
         {

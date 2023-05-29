@@ -62,39 +62,16 @@ public class GangMember : PedExt, IWeaponIssuable
                 IsInWrithe = Pedestrian.IsInWrithe;
                 UpdatePositionData();
                 PlayerPerception.Update(perceptable, placeLastSeen);
-                if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield1Active)
-                {
-                    GameFiber.Yield();//TR TEST 28
-                }
                 UpdateVehicleState();
-                if (!IsUnconscious)
+                if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)//was 150 only care in a bubble around the player, nothing to do with the player tho
                 {
-                    if (PlayerPerception.DistanceToTarget <= 200f && ShouldCheckCrimes)//was 150 only care in a bubble around the player, nothing to do with the player tho
+                    if (!PlayerPerception.RanSightThisUpdate)
                     {
-                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield2Active)//THIS IS THGE BEST ONE?
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
-                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield3Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        PedPerception.Update();
-                        if (Settings.SettingsManager.PerformanceSettings.IsGangMemberYield4Active)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
-                        if (Settings.SettingsManager.PerformanceSettings.GangMemberUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                        {
-                            GameFiber.Yield();//TR TEST 28
-                        }
+                        GameFiber.Yield();//TR TEST 28
                     }
-                    if (Pedestrian.Exists() && policeRespondable.IsCop && !policeRespondable.IsIncapacitated)
+                    PedViolations.Update(policeRespondable);//possible yield in here!, REMOVED FOR NOW
+                    PedPerception.Update();
+                    if (policeRespondable.CanArrestPeds)
                     {
                         CheckPlayerBusted();
                     }
@@ -103,8 +80,7 @@ public class GangMember : PedExt, IWeaponIssuable
             }
         }
         ReputationReport.Update(perceptable, world, Settings);
-        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok
-        
+        CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok       
     }
     public override void OnBecameWanted()
     {

@@ -57,7 +57,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         RequestFire = new UIMenuItem("Fire Assistance");
         RequestEMS = new UIMenuItem("Medical Service");
         EmergencyServicesMenu.AddItem(RequestPolice);
-        //EmergencyServicesMenu.AddItem(RequestFire);
+        EmergencyServicesMenu.AddItem(RequestFire);
         EmergencyServicesMenu.AddItem(RequestEMS);
         EmergencyServicesMenu.Visible = true;
 
@@ -135,8 +135,6 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
         }
         fullText += " is en route to ";
         fullText += Player.CurrentLocation?.GetStreetAndZoneString();
-
-        //fullText = "Apologies, ~r~firefighting service~s~ is unavailable due to budget cuts.";
         Player.CellPhone.AddPhoneResponse(StaticStrings.EmergencyServicesContactName, "CHAR_CALL911", fullText);
         CallFire();
     }
@@ -174,7 +172,7 @@ public class EmergencyServicesInteraction : IContactMenuInteraction
     }
     public void CallFire()
     {
-        if (1==1)//World.TotalWantedLevel <= 1)
+        if (Settings.SettingsManager.FireSettings.ManageDispatching && Settings.SettingsManager.FireSettings.ManageTasking)//World.TotalWantedLevel <= 1)
         {
             Player.Scanner.Reset();
             Player.Investigation.Start(Player.Position, false, false, false, true);

@@ -334,7 +334,7 @@ namespace LosSantosRED.lsr
         }
         private void AnnounceQueue()
         {
-            if (DispatchQueue.Count > 0 && !ExecutingQueue)
+            if ((DispatchQueue.Count > 0 || HoldingDispatchQueue.Any()) && !ExecutingQueue)
             {
                 ExecutingQueue = true;
                 GameFiber.Yield();

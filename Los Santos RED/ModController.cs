@@ -112,7 +112,7 @@ namespace LosSantosRED.lsr
             GameFiber.Yield();
             PedSwap.Setup();
             GameFiber.Yield();
-            StartModLogic();
+            SetTaskGroups();
             GameFiber.Yield();
             StartCoreLogic();
             GameFiber.Yield();
@@ -161,7 +161,7 @@ namespace LosSantosRED.lsr
             DisplayCrashMessage();
             Dispose();
         }
-        private void StartModLogic()
+        private void SetTaskGroups()
         {
             TaskGroups = new List<ModTaskGroup>
             {

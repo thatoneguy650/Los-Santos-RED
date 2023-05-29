@@ -78,9 +78,7 @@ public class FireSettings : ISettingsDefaultable
     public bool AllowStationSpawningWhenPlayerWanted { get; set; }
     [Description("Max wanted level that dens will spawn gang peds.")]
     public int StationSpawningWhenPlayerWantedMaxWanted { get; set; }
-
-
-
+    public float FireAwareDistance { get; set; }
 
     public FireSettings()
     {
@@ -136,6 +134,6 @@ public class FireSettings : ISettingsDefaultable
         StationSpawningWhenPlayerWantedMaxWanted = 2;
         AllowAmbientSpawningWhenPlayerWanted = true;
         AmbientSpawningWhenPlayerWantedMaxWanted = 2;
-
+        FireAwareDistance = 35f;
     }
 }

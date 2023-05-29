@@ -98,6 +98,14 @@ public class GangSettings : ISettingsDefaultable
     public uint MinTimeBetweenHitSquads { get; set; }
     public uint MaxTimeBetweenHitSquads { get; set; }
 
+
+   // [Description("Maximum gang boats that can be spawned.")]
+    //public int BoatSpawnLimit_Default { get; set; }
+
+    [Description("Maximum gang helicopters that can be spawned.")]
+    public int HeliSpawnLimit_Default { get; set; }
+
+
     public GangSettings()
     {
         SetDefault();
@@ -193,6 +201,8 @@ public class GangSettings : ISettingsDefaultable
         MaxTimeBetweenHitSquads = 1200000;
         AllowHitSquadsOnlyEnemy = false;
 
+       // BoatSpawnLimit_Default = 1;
+        HeliSpawnLimit_Default = 1;
     }
 
 }

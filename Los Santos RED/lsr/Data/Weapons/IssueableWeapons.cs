@@ -479,7 +479,13 @@ public class IssueableWeapons : IIssuableWeapons
             new IssuableWeapon("weapon_minigun", new WeaponVariation()),
         };
 
-        
+        //Fire
+        List<IssuableWeapon> FireExtinguisher = new List<IssuableWeapon>()
+        {
+            new IssuableWeapon("weapon_fireextinguisher", new WeaponVariation()),
+        };
+
+
 
 
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MeleeWeapons", MeleeWeapons));
@@ -504,7 +510,7 @@ public class IssueableWeapons : IIssuableWeapons
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaSidearms", MafiaSidearms));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("MafiaLongGuns", MafiaLongGuns));
         IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("Minigun", Minigun));
-
+        IssuableWeaponsGroupLookup.Add(new IssuableWeaponsGroup("FireExtinguisher", FireExtinguisher));
         Serialization.SerializeParams(IssuableWeaponsGroupLookup, ConfigFileName);
     }
 

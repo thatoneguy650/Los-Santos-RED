@@ -135,68 +135,52 @@ public class Cop : PedExt, IWeaponIssuable, IPlayerChaseable, IAIChaseable
         {
             if (NeedsFullUpdate)
             {
-                IsInWrithe = Pedestrian.IsInWrithe;
-                UpdatePositionData();
-                PlayerPerception.Update(perceptable, placeLastSeen);
-                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode1 && !PlayerPerception.RanSightThisUpdate)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                if (Settings.SettingsManager.PerformanceSettings.IsCopYield1Active)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                UpdateVehicleState();
-                if (Settings.SettingsManager.PerformanceSettings.IsCopYield2Active)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                if (Settings.SettingsManager.PerformanceSettings.CopUpdatePerformanceMode2 && !PlayerPerception.RanSightThisUpdate)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-
-                if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
-                {
-                    PedAlerts.LookForUnconsciousPeds(world);
-                }
-                if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
-                {
-                    PedAlerts.LookForBodiesAlert(world);
-                }
-                if (Settings.SettingsManager.PerformanceSettings.IsCopYield3Active)
-                {
-                    GameFiber.Yield();//TR TEST 30
-                }
-                if (PedAlerts.HasSeenUnconsciousPed)
-                {
-                    perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
-                    PedAlerts.HasSeenUnconsciousPed = false;
-                }
-                if(Pedestrian.Exists() && Pedestrian.IsRagdoll)
+                if (Pedestrian.IsRagdoll)
                 {
                     GameTimeLastRagdolled = Game.GameTime;
                 }
-
+                IsInWrithe = Pedestrian.IsInWrithe;
+                UpdatePositionData();
+                PlayerPerception.Update(perceptable, placeLastSeen);
+                UpdateVehicleState();
                 UpdateCombatFlags();
-                PlayerViolationChecker(policeRespondable, world);
-
-                if (policeRespondable.Violations.WeaponViolations.RecentlyShotNearCops && WithinWeaponsAudioRange)
+                if (!IsUnconscious && PlayerPerception.DistanceToTarget <= 200f)
                 {
-                    PedAlerts.AddHeardGunfire(policeRespondable.Position);
-                }
-
-                if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations)
-                {
-                    ShootingChecker(policeRespondable);
+                    if (!PlayerPerception.RanSightThisUpdate)
+                    {
+                        GameFiber.Yield();
+                    }
+                    if (Settings.SettingsManager.PoliceSettings.AllowShootingInvestigations && !IsShootingCheckerActive)//Need Frame Perfect checking on cops shooting for stealth
+                    {
+                        ShootingChecker(policeRespondable);
+                    }
+                    UpdateAlerts(perceptable, policeRespondable, world);
+                    PlayerViolationChecker(policeRespondable, world);
                 }
                 GameTimeLastUpdated = Game.GameTime;
             }
-
-            
-
         }
         CurrentHealthState.Update(policeRespondable);//has a yield if they get damaged, seems ok 
+    }
+    protected override void UpdateAlerts(IPerceptable perceptable, IPoliceRespondable policeRespondable, IEntityProvideable world)
+    {
+        if (Settings.SettingsManager.PoliceSettings.AllowPoliceToCallEMTsOnBodies)
+        {
+            PedAlerts.LookForUnconsciousPeds(world);
+        }
+        if (Settings.SettingsManager.PoliceSettings.AllowReactionsToBodies)//only care in a bubble around the player, nothing to do with the player tho
+        {
+            PedAlerts.LookForBodiesAlert(world);
+        }
+        if (PedAlerts.HasSeenUnconsciousPed)
+        {
+            perceptable.AddMedicalEvent(PedAlerts.PositionLastSeenUnconsciousPed);
+            PedAlerts.HasSeenUnconsciousPed = false;
+        }
+        if (policeRespondable.Violations.WeaponViolations.RecentlyShot && WithinWeaponsAudioRange)
+        {
+            PedAlerts.AddHeardGunfire(policeRespondable.Position);
+        }
     }
     public void UpdateSpeech(IPoliceRespondable currentPlayer)
     {

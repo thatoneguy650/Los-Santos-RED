@@ -189,7 +189,7 @@ public class PedBrain
         GameFiber.Yield();//TR Added back 4
         PedExt.CurrentTask.Start();
     }
-    protected void SetIdle()
+    protected virtual void SetIdle()
     {
         if (PedExt.CurrentTask?.Name == "Idle")
         {

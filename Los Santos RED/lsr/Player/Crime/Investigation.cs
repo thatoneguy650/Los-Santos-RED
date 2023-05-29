@@ -69,6 +69,9 @@ public class Investigation
     public int RespondingPolice { get; private set; }
 
     private bool IsTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.TimeLimit;//60000;//short for testing was 180000
+
+    private bool IsMinTimedOut => GameTimeStartedInvestigation != 0 && Game.GameTime - GameTimeStartedInvestigation >= Settings.SettingsManager.InvestigationSettings.MinTimeLimit;//60000;//short for testing was 180000
+
     public bool IsNearPosition { get; private set; }
     public int CurrentRespondingPoliceCount { get; private set; }
 
@@ -180,9 +183,9 @@ public class Investigation
             EntryPoint.WriteToConsole("Investigation Expire TIMED OUT");
             Expire();
         }
-        else if (CheckCriteria())
+        else if (IsMinTimedOut && CheckCriteria())
         {
-            EntryPoint.WriteToConsole("Investigation Expire CRITERIA EXPIRE");
+            EntryPoint.WriteToConsole("Investigation Expire MIN TIME AND CRITERIA EXPIRE");
             Expire();
         }
     }
@@ -215,7 +218,7 @@ public class Investigation
         }
         else
         { 
-            CanFireExpire = true;//NOT IMPLEMENTED!
+            CanFireExpire = !World.AnyFiresNearPlayer;//NOT IMPLEMENTED!
         }
 
         if(!RequiresEMS)

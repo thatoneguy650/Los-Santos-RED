@@ -10,36 +10,39 @@ public class PerformanceSettings : ISettingsDefaultable
     public bool PrintCivilianOnlyUpdateTimes { get; set; }
     public bool PrintCivilianUpdateTimes { get; set; }
     public bool YieldAfterEveryPedExtUpdate { get; set; }
-    public bool CivilianUpdatePerformanceMode1 { get; set; }//Civilians & Merchants
-    public bool CivilianUpdatePerformanceMode2 { get; set; }
-    public bool IsCivilianYield1Active { get; set; }
-    public bool IsCivilianYield2Active { get; set; }
-    public bool IsCivilianYield3Active { get; set; }
-    public bool IsCivilianYield4Active { get; set; }
-    public bool CopUpdatePerformanceMode1 { get; set; }
-    public bool CopUpdatePerformanceMode2 { get; set; }
-    public bool IsCopYield1Active { get; set; }
-    public bool IsCopYield2Active { get; set; }
-    public bool IsCopYield3Active { get; set; }
+    //public bool CivilianUpdatePerformanceMode1 { get; set; }//Civilians & Merchants
+    //public bool CivilianUpdatePerformanceMode2 { get; set; }
+    //public bool IsCivilianYield1Active { get; set; }
+    //public bool IsCivilianYield2Active { get; set; }
+    //public bool IsCivilianYield3Active { get; set; }
+    //public bool IsCivilianYield4Active { get; set; }
+    //public bool CopUpdatePerformanceMode1 { get; set; }
+    //public bool CopUpdatePerformanceMode2 { get; set; }
+    //public bool IsCopYield1Active { get; set; }
+    //public bool IsCopYield2Active { get; set; }
+    //public bool IsCopYield3Active { get; set; }
 
 
 
 
-    public bool IsCopYield10Active { get; set; }
-    public bool IsCopYield11Active { get; set; }
-    public bool IsCopYield12Active { get; set; }
-    public bool IsCopYield13Active { get; set; }
+    //public bool IsCopYield10Active { get; set; }
+    //public bool IsCopYield11Active { get; set; }
+    //public bool IsCopYield12Active { get; set; }
+    //public bool IsCopYield13Active { get; set; }
 
-    public bool GangMemberUpdatePerformanceMode1 { get; set; }
-    public bool GangMemberUpdatePerformanceMode2 { get; set; }
-    public bool IsGangMemberYield1Active { get; set; }
-    public bool IsGangMemberYield2Active { get; set; }
-    public bool IsGangMemberYield3Active { get; set; }
-    public bool IsGangMemberYield4Active { get; set; }
-    public bool EMSUpdatePerformanceMode1 { get; set; }
-    public bool EMSUpdatePerformanceMode2 { get; set; }
-    public bool IsEMSYield2Active { get; set; }
-    public bool IsEMSYield1Active { get; set; }
+    //public bool GangMemberUpdatePerformanceMode1 { get; set; }
+    //public bool GangMemberUpdatePerformanceMode2 { get; set; }
+    //public bool IsGangMemberYield1Active { get; set; }
+    //public bool IsGangMemberYield2Active { get; set; }
+    //public bool IsGangMemberYield3Active { get; set; }
+    //public bool IsGangMemberYield4Active { get; set; }
+    //public bool EMSUpdatePerformanceMode1 { get; set; }
+    //public bool EMSUpdatePerformanceMode2 { get; set; }
+    //public bool IsEMSYield2Active { get; set; }
+    //public bool IsEMSYield1Active { get; set; }
+
+
+
     public int CivilianUpdateBatch { get; set; }
     public int GangUpdateBatch { get; set; }
     public int EMTsUpdateBatch { get; set; }
@@ -57,12 +60,7 @@ public class PerformanceSettings : ISettingsDefaultable
     public int OtherUpdateIntervalVeryFar { get; set; }
 
     public bool CopGetPedToAttackDisable { get; set; }
-  //  public bool CopGetPedToAttackYield1 { get; set; }
     public bool CopDisableFootChaseFiber { get; set; }
-
-
-    // public bool FootChaseFiberSetSleep { get; set; }
-    // public int FootChaseFiberSleepTime { get; set; }
 
     public PerformanceSettings()
     {
@@ -96,38 +94,38 @@ public class PerformanceSettings : ISettingsDefaultable
 
         YieldAfterEveryPedExtUpdate = false;
 
-        CivilianUpdatePerformanceMode1 = true;
-        CivilianUpdatePerformanceMode2 = false;
-        IsCivilianYield1Active = false;
-        IsCivilianYield2Active = false;
-        IsCivilianYield3Active = false;
-        IsCivilianYield4Active = false;
+        //CivilianUpdatePerformanceMode1 = true;
+        //CivilianUpdatePerformanceMode2 = false;
+        //IsCivilianYield1Active = false;
+        //IsCivilianYield2Active = false;
+        //IsCivilianYield3Active = false;
+        //IsCivilianYield4Active = false;
 
 
-        GangMemberUpdatePerformanceMode1 = true;
-        GangMemberUpdatePerformanceMode2 = false;
-        IsGangMemberYield1Active = false;
-        IsGangMemberYield2Active = false;
-        IsGangMemberYield3Active = false;
-        IsGangMemberYield4Active = false;
+        //GangMemberUpdatePerformanceMode1 = true;
+        //GangMemberUpdatePerformanceMode2 = false;
+        //IsGangMemberYield1Active = false;
+        //IsGangMemberYield2Active = false;
+        //IsGangMemberYield3Active = false;
+        //IsGangMemberYield4Active = false;
 
 
-        CopUpdatePerformanceMode1 = true;
-        CopUpdatePerformanceMode2 = false;
-        IsCopYield1Active = false;
-        IsCopYield2Active = false;
-        IsCopYield3Active = true;//TURNED ON TEMP?
+        //CopUpdatePerformanceMode1 = true;
+        //CopUpdatePerformanceMode2 = false;
+        //IsCopYield1Active = false;
+        //IsCopYield2Active = false;
+        //IsCopYield3Active = true;//TURNED ON TEMP?
 
-        IsCopYield10Active = false;
-        IsCopYield11Active = false;
-        IsCopYield12Active = false;
-        IsCopYield13Active = false;
+        //IsCopYield10Active = false;
+        //IsCopYield11Active = false;
+        //IsCopYield12Active = false;
+        //IsCopYield13Active = false;
 
 
-        EMSUpdatePerformanceMode1 = true;
-        EMSUpdatePerformanceMode2 = false;
-        IsEMSYield2Active = false;
-        IsEMSYield1Active = false;
+        //EMSUpdatePerformanceMode1 = true;
+        //EMSUpdatePerformanceMode2 = false;
+        //IsEMSYield2Active = false;
+       // IsEMSYield1Active = false;
 
 
         CopGetPedToAttackDisable = false;

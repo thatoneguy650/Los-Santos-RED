@@ -30,8 +30,6 @@ public class SecurityGuardBrain : PedBrain
     {
 
     }
-
-
     public override void Update(ITargetable player, IPlacesOfInterest placesOfInterest)
     {
         Player = player;
@@ -54,54 +52,6 @@ public class SecurityGuardBrain : PedBrain
             {
                 PedExt.CurrentTask = null;
             }
-        }
-    }
-
-
-
-    //public override void Update(ITargetable player, IPlacesOfInterest placesOfInterest)
-    //{
-    //    Player = player;
-    //    PlacesOfInterest = placesOfInterest;
-
-    //    if (PedExt.CanBeTasked && PedExt.CanBeAmbientTasked)
-    //    {
-    //        UpdateTask();
-    //    }
-    //    else if (!PedExt.CanBeTasked)
-    //    {
-    //        RemoveTask();
-    //    }
-    //}
-    //private void UpdateTask()
-    //{
-    //    if (PedExt.DistanceToPlayer >= 230f)
-    //    {
-    //        PedExt.CurrentTask = null;
-    //        return;
-    //    }
-    //    if (PedExt.NeedsTaskAssignmentCheck)
-    //    {
-    //        if (PedExt.DistanceToPlayer <= 200f)
-    //        {
-    //            UpdateCurrentTask();//has yields if it does anything
-    //        }
-    //        else if (PedExt.CurrentTask != null)
-    //        {
-    //            PedExt.CurrentTask = null;
-    //        }
-    //    }
-    //    if (PedExt.CurrentTask != null && PedExt.CurrentTask.ShouldUpdate)
-    //    {
-    //        PedExt.UpdateTask(null);
-    //        GameFiber.Yield();
-    //    }
-    //}
-    private void RemoveTask()
-    {
-        if (PedExt.CurrentTask != null)
-        {
-            PedExt.CurrentTask = null;
         }
     }
     private void UpdateCurrentTask()
@@ -232,18 +182,6 @@ public class SecurityGuardBrain : PedBrain
            // EntryPoint.WriteToConsole("SECURITY REPORTED CRIME", debugLevel);
         }
     }
-    //private void SetFlee()
-    //{
-    //    if (PedExt.CurrentTask?.Name == "Flee")
-    //    {
-    //        return;
-    //    }
-    //    PedExt.CurrentTask = new Flee(PedExt, Player) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };
-    //    GameFiber.Yield();//TR Added back 7
-    //    PedExt.CurrentTask?.Start();
-    //    //EntryPoint.WriteToConsole($"SECURITY SET FLEE {PedExt.Handle}", debugLevel);
-    //}
-
     private void SetLocate()
     {
         if (PedExt.CurrentTask?.Name == "GeneralLocate")
@@ -255,40 +193,4 @@ public class SecurityGuardBrain : PedBrain
         PedExt.CurrentTask?.Start();
         //EntryPoint.WriteToConsole($"SECURITY SET GeneralLocate {PedExt.Handle}", debugLevel);
     }
-    //private void SetFight()
-    //{
-    //    SecurityGuard.WeaponInventory.SetDeadly(false);
-    //    if (PedExt.CurrentTask?.Name == "Fight")
-    //    {
-    //        return;
-    //    }
-    //    PedExt.CurrentTask?.Stop();
-    //    PedExt.CurrentTask = new Fight(PedExt, Player, null) { OtherTarget = PedExt.PedReactions.HighestPriorityCrime?.Perpetrator };//gang memebrs already have guns
-    //    GameFiber.Yield();//TR Added back 7
-    //    PedExt.CurrentTask?.Start();
-    //    //EntryPoint.WriteToConsole($"SECURITY SET FIGHT {PedExt.Handle}", debugLevel);
-    //}
-    //private void SetCalmCallIn()
-    //{
-    //    if (PedExt.CurrentTask?.Name == "CalmCallIn")
-    //    {
-    //        return;
-    //    }
-    //    PedExt.CurrentTask = new CalmCallIn(PedExt, Player, Settings);
-    //    GameFiber.Yield();//TR Added back 4
-    //    PedExt.CurrentTask.Start();
-    //    EntryPoint.WriteToConsole($"SECURITY SET CALM CALL IN {PedExt.Handle}", debugLevel);
-    //}
-    //private void SetIdle()
-    //{
-    //    if (PedExt.CurrentTask?.Name == "Idle")
-    //    {
-    //        return;
-    //    }
-    //    PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle },  PlacesOfInterest, Settings,false,false,false, true);
-    //    SecurityGuard.WeaponInventory.Reset();
-    //    SecurityGuard.WeaponInventory.SetDefault();
-    //    GameFiber.Yield();//TR Added back 4
-    //    PedExt.CurrentTask.Start();
-    //}
 }

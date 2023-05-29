@@ -271,6 +271,7 @@ namespace Mod
         public bool IsCarJacking { get; set; }
         public bool IsChangingLicensePlates { get; set; }
         public bool IsCop { get; set; } = false;
+        public bool CanArrestPeds => IsCop && !IsIncapacitated;
         public bool AutoDispatch { get; set; } = true;
         public bool IsCustomizingPed { get; set; }
         public bool IsDangerouslyArmed => WeaponEquipment.IsDangerouslyArmed;

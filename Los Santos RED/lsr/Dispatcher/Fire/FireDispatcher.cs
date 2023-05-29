@@ -121,7 +121,7 @@ public class FireDispatcher
             int TotalTimeBetweenSpawns = Settings.SettingsManager.FireSettings.TimeBetweenSpawn;
             if (Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
             {
-                TotalTimeBetweenSpawns += 0;
+                TotalTimeBetweenSpawns = 10000;
             }
             else if (EntryPoint.FocusZone?.Type == eLocationType.Wilderness)
             {

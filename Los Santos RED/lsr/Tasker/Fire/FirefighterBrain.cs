@@ -1,16 +1,15 @@
 ﻿using LosSantosRED.lsr.Interface;
 using LSR.Vehicles;
 using Rage;
-using System;
+using Rage.Native;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 public class FirefighterBrain : PedBrain
 {
     private Firefighter Firefighter;
+    private bool HasFireInArea;
+    private bool prevHasFireInArea;
+
     public FirefighterBrain(Firefighter pedExt, ISettingsProvideable settings, IEntityProvideable world, IWeapons weapons) : base(pedExt, settings, world, weapons)
     {
         Firefighter = pedExt;
@@ -74,24 +73,83 @@ public class FirefighterBrain : PedBrain
             {
                 SetFight();
             }
-            else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+            else
             {
-                SetCalmCallIn();
-            }
-            else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
-            {
-                SetIdle();
+                CheckFires();
+                if (HasFireInArea)
+                {
+                    SetExtinguishTask();
+                }
+                else if (PedExt.PedReactions.HasSeenMundaneCrime && PedExt.WillCallPolice)
+                {
+                    SetCalmCallIn();
+                }
+                else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+                {
+                    SetRespondTask();
+                }
+                else if (PedExt.WasModSpawned)
+                {
+                    SetIdle();
+                }
             }
         }
-        else if (PedExt.WasModSpawned && PedExt.CurrentTask == null)
+        else if (PedExt.DistanceToPlayer <= 1200f && Player.Investigation.IsActive && Player.Investigation.RequiresFirefighters)
+        {
+            SetRespondTask();
+        }
+        else if (PedExt.WasModSpawned)
         {
             SetIdle();
         }
         PedExt.GameTimeLastUpdatedTask = Game.GameTime;
     }
+
+    private void SetExtinguishTask()
+    {
+        if (PedExt.CurrentTask?.Name != "FireExtinguish")// && Cop.IsIdleTaskable)
+        {
+            PedExt.CurrentTask = new FireExtinguish(PedExt, PedExt, Player, World, null, PlacesOfInterest, Settings, false, Firefighter);
+            GameFiber.Yield();//TR Added back 4
+            PedExt.CurrentTask?.Start();
+        }
+    }
+
+    protected override void SetIdle()
+    {
+        if (PedExt.CurrentTask?.Name == "Idle")
+        {
+            return;
+        }
+        PedExt.CurrentTask = new GeneralIdle(PedExt, PedExt, Player, World, new List<VehicleExt>() { PedExt.AssignedVehicle }, PlacesOfInterest, Settings, false, false, true, true);
+        GameFiber.Yield();//TR Added back 4
+        PedExt.CurrentTask.Start();
+    }
+    private void CheckFires()
+    {
+        int numFires = NativeFunction.Natives.GET_NUMBER_OF_FIRES_IN_RANGE<int>(PedExt.Position, Settings.SettingsManager.FireSettings.FireAwareDistance);
+        HasFireInArea = numFires > 0;
+        if(prevHasFireInArea != HasFireInArea)
+        {
+            prevHasFireInArea = HasFireInArea;
+            EntryPoint.WriteToConsole($"{PedExt.Handle} FIRE IN AREA CHANGED TO {HasFireInArea}");
+        }
+    }
+
     protected override WeaponInformation GetWeaponToIssue(bool IsGangMember)
     {
         return null;
     }
+    private void SetRespondTask()
+    {
+        if (PedExt.CurrentTask?.Name != "Investigate")
+        {
+            PedExt.CurrentTask = new ServiceGeneralInvestigate(PedExt, PedExt, Player, World, null, PlacesOfInterest, Settings, false, null);//Cop.CurrentTask = new Investigate(Cop, Player, Settings, World);
+            GameFiber.Yield();//TR Added back 4
+            PedExt.CurrentTask.Start();
+        }
+
+    }
+
 }
 
